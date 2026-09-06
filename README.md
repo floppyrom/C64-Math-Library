@@ -1,4 +1,4 @@
-# C64 Math API
+# C64 Math Library
 
 A source-relocatable integer and game-math library for the Commodore 64 / NMOS 6502/6510, available in four performance and memory profiles.
 
