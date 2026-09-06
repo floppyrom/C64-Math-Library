@@ -1,0 +1,202 @@
+;ABI
+;CPU: mos6502
+;Operation: udiv
+;Entry: div_u24
+;Input n: uint24 = n0, n1, n2
+;Input d: uint24 = d0, d1, d2
+;Output q: uint24 = q0, q1, q2
+;Remainder r: uint24 = r0, r1, r2
+;UDiv zero remainder: zero
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;End ABI
+; ============================================================================
+; FIREMONGER C64 DIVISION REFERENCE — PUBLICATION COPY
+; Family       : udiv24
+; Tier         : 256-class
+; Target       : NMOS 6502/6510, decimal mode clear
+; Measurement  : canonical 2,097,152-case SplitMix64 corpus; seed $C0FFEE where random
+; Timing       : entry instruction through final RTS; caller JSR excluded
+; Avg cycles   : 128.668396
+; Min / Max    : 53 / 2369
+; Stddev       : 153.798737
+; Resident     : 256 bytes (Code 256 + Data 0); ZP 15 bytes separate
+; Validation   : 2097152 cases, 0 errors
+; Edge suite   : 5578 cases in canonical run, 0 errors
+; Architecture : Exactly 256 bytes: q=1/q=2 high-byte shortcuts plus residual shifted-divisor tail.
+;
+; NOTE: this publication block is comments only and does not alter the exact
+; assembled image that produced the result. Raw canonical JSON is supplied
+; beside the source when available. See TECHNICAL_ASSESSMENT.md for caveats.
+; ============================================================================
+!cpu 6502
+n0=$10
+n1=$11
+n2=$12
+d0=$13
+d1=$14
+d2=$15
+q0=$16
+q1=$17
+q2=$18
+r0=$19
+r1=$1a
+r2=$1b
+sd0=$1c
+sd1=$1d
+sd2=$1e
+
+*=$4300
+cg_code_start:
+div_u24:
+ lda d0
+ ora d1
+ ora d2
+ bne nz
+ ldx #5
+zloop:
+ sta q0,x
+ dex
+ bpl zloop
+ sec
+ rts
+nz:
+ !byte $a7,n2
+ cmp d2
+ bcc qzero
+ bne ge
+ lda n1
+ cmp d1
+ bcc qzero
+ bne ge
+ lda n0
+ cmp d0
+ bcs ge
+qzero:
+ !byte $0b,$00
+ sta q0
+ sta q1
+ sta q2
+ lda n0
+ sta r0
+ lda n1
+ sta r1
+ stx r2
+ rts
+ge:
+ lda n0
+ sbc d0
+ sta r0
+ lda n1
+ sbc d1
+ sta r1
+ txa
+ sbc d2
+ sta r2
+ ldx #0
+ lda r2
+ cmp d2
+ bcc q1ret
+ lda r0
+ sbc d0
+ tay
+ lda r1
+ sbc d1
+ sta q1
+ lda r2
+ sbc d2
+ bcs qge2
+q1ret:
+ lda #1
+qsmallret:
+ sta q0
+ stx q1
+ stx q2
+ rts
+qge2:
+ sta r2
+ sty r0
+ lda q1
+ sta r1
+ lda r2
+ cmp d2
+ bcs tail
+ lda #2
+ bne qsmallret
+tail:
+ lda d0
+ sta sd0
+ lda d1
+ sta sd1
+ lda d2
+ sta sd2
+ stx q0
+ stx q1
+ stx q2
+align:
+ asl sd0
+ rol sd1
+ rol sd2
+ bcs over
+ lda r2
+ cmp sd2
+ bcc over
+ bne atake
+ lda r1
+ cmp sd1
+ bcc over
+ bne atake
+ lda r0
+ cmp sd0
+ bcc over
+atake:
+ inx
+ bne align
+over:
+ ror sd2
+ ror sd1
+ ror sd0
+bits:
+ lda r2
+ cmp sd2
+ bcc no
+ bne dosub
+ lda r1
+ cmp sd1
+ bcc no
+ bne dosub
+ lda r0
+ cmp sd0
+ bcc no
+dosub:
+ lda r0
+ sbc sd0
+ sta r0
+ lda r1
+ sbc sd1
+ sta r1
+ lda r2
+ sbc sd2
+ sta r2
+no:
+ rol q0
+ rol q1
+ rol q2
+ lsr sd2
+ ror sd1
+ ror sd0
+ dex
+ bpl bits
+ lda q0
+ clc
+ adc #2
+ sta q0
+ bcc done
+ inc q1
+ bne clear
+ inc q2
+clear:
+ clc
+done:
+ rts
+cg_code_end:

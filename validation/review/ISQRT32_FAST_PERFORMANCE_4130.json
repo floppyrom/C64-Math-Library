@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "corpus": "same 4,130-case deterministic ISQRT32 corpus used by the prior GAME_MATH performance table",
+  "algorithm": "ISQRT16 high-word seed + eight restoring base-4 refinement steps",
+  "profiles": [
+    {
+      "profile": "v1_balanced",
+      "cases": 4130,
+      "mean_cycles": 1378.9009685230023,
+      "min_cycles": 1193,
+      "max_cycles": 1656,
+      "errors": 0
+    },
+    {
+      "profile": "v2_pareto_fast",
+      "cases": 4130,
+      "mean_cycles": 1198.619612590799,
+      "min_cycles": 1052,
+      "max_cycles": 1428,
+      "errors": 0
+    },
+    {
+      "profile": "v3_reu_512k",
+      "cases": 4130,
+      "mean_cycles": 1197.8593220338983,
+      "min_cycles": 1051,
+      "max_cycles": 1428,
+      "errors": 0
+    },
+    {
+      "profile": "v4_reu_16m",
+      "cases": 4130,
+      "mean_cycles": 1046.6225181598063,
+      "min_cycles": 899,
+      "max_cycles": 1237,
+      "errors": 0
+    }
+  ]
+}

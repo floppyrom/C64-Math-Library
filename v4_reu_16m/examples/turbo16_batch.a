@@ -1,0 +1,24 @@
+; UMUL16 turbo batch example.
+; Reference map: 113-byte executable-ZP overlay at $003E-$00AE.
+; Relocatable source builds use TURBO16_ZP_BASE from the generated math_api.inc.
+; Break-even versus the default v3 UMUL16 is 5 multiplies per batch
+; under the documented REU timing model.
+; For a relocated build, include build_source/<map>/v4_reu_16m/math_api.inc instead.
+!source "../resident/math_api.inc"
+
+* = $2000
+
+        jsr MATH_INIT
+        jsr MATH_REU_UMUL16_BEGIN
+
+        ; Repeat as many products as required. Put each x/y in the
+        ; normal public input vectors before each call.
+        jsr MATH_REU_UMUL16
+        jsr MATH_REU_UMUL16
+        jsr MATH_REU_UMUL16
+        jsr MATH_REU_UMUL16
+        jsr MATH_REU_UMUL16
+
+        jsr MATH_REU_UMUL16_END
+        ; Previous configured Turbo16 ZP range has now been restored exactly.
+        rts

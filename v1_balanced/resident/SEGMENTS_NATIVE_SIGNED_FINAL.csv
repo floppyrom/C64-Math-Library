@@ -1,0 +1,14 @@
+segment,load_address_or_map,bytes,purpose
+signed_public_stubs,multiple fixed addresses,39,13 stable signed API JMP stubs
+smul8_native,$2000,60,producer-fused native signed multiply
+smul16_native,$2100,186,producer-fused native signed multiply
+smul24_native,$2200,132,producer-fused native signed multiply
+smul32_native,$2300,178,producer-fused native signed multiply
+sdiv8_adapter,$2500,24,stable-memory adapter
+sdiv8_native,"{""$0010"": ""$000E"", ""$1000"": ""$5000""}",458,native signed DIV source
+sdiv16_adapter,$2520,44,stable-memory adapter
+sdiv16_native,"{""$0008"": ""$000E"", ""$0010"": ""$0012"", ""$0D00"": ""$5200"", ""$1000"": ""$5400""}",442,native signed DIV source
+sdiv24_adapter,$2550,64,stable-memory adapter
+sdiv24_native,"{""$0008"": ""$000E"", ""$0010"": ""$0014"", ""$0C00"": ""$5600"", ""$1000"": ""$5800""}",373,native signed DIV source
+sdiv32_16_adapter,$2590,64,stable-memory adapter
+sdiv32_16_native,"{""$0010"": ""$0014"", ""$0018"": ""$001C"", ""$00E0"": ""$000E"", ""$1000"": ""$5A00"", ""$5000"": ""$5B00"", ""$7000"": ""$5C00""}",480,native signed DIV source

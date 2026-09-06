@@ -1,0 +1,13 @@
+operation,v3_reu_512k_cycles,v4_reu_16m_cycles,v4_evidence
+umul8,69.0,69.0,unchanged V3 path/evidence
+umul16,339.0,317.54103088378906,V4 exact 2^32 timing + 2^21 binary validation
+umul24,475.784575,475.784575,unchanged V3 path/evidence
+umul32,763.822007,763.822007,unchanged V3 path/evidence
+udiv8,70.86328125,70.86328125,unchanged V3 path/evidence
+udiv16,137.282268,137.282268,unchanged V3 path/evidence
+udiv24,203.612991,203.612991,unchanged V3 path/evidence
+udiv32_16,759.730823,759.730823,unchanged V3 path/evidence
+umod8,49.9296875,49.9296875,unchanged V3 path/evidence
+umod16,140.282268,140.282268,unchanged V3 path/evidence
+umod24,206.612991,206.612991,unchanged V3 path/evidence
+umod32_16,762.730823,762.730823,unchanged V3 path/evidence

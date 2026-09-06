@@ -1,0 +1,17 @@
+segment,load_address_or_map,bytes,purpose
+signed_public_stubs,multiple fixed addresses,39,13 stable signed API JMP stubs
+smul8_native,$2000,79,producer-fused native signed multiply
+smul24_native,$2200,139,producer-fused native signed multiply
+smul32_native,$2300,162,producer-fused native signed multiply
+smul16_adapter,$2100,39,stable-memory adapter
+smul16_exec_zp,$0080,116,active optimized executable ZP
+smul16_tail,$5A00,60,active native signed tail
+smul16_tables,$2800/$2A00/$2C00/$2E00,2044,four 511-byte quarter-square planes
+sdiv8_adapter,$2500,24,stable-memory adapter
+sdiv8_native,"{""$0010"": ""$003E"", ""$1000"": ""$7800""}",458,native signed DIV source
+sdiv16_adapter,$2520,44,stable-memory adapter
+sdiv16_native,"{""$0008"": ""$003E"", ""$0010"": ""$0042"", ""$0D00"": ""$7A00"", ""$100C"": ""$7C0C""}",1572,native signed DIV source
+sdiv24_adapter,$2550,64,stable-memory adapter
+sdiv24_native,"{""$0008"": ""$003E"", ""$0010"": ""$0044"", ""$0B00"": ""$8100"", ""$1000"": ""$8400""}",1876,native signed DIV source
+sdiv32_16_adapter,$2590,64,stable-memory adapter
+sdiv32_16_native,"{""$0010"": ""$0044"", ""$0018"": ""$004C"", ""$00E0"": ""$003E"", ""$100C"": ""$890C"", ""$5000"": ""$8E00"", ""$7000"": ""$9200""}",2075,native signed DIV source

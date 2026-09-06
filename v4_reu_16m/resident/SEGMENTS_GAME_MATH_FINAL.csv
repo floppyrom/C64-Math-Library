@@ -1,0 +1,9 @@
+kind,start,end,bytes,file
+game_extension,$5E00,$5E38,57,math_v4_reu_16m_game_math.prg
+game_extension,$9400,$95FF,512,math_v4_reu_16m_game_math.prg
+game_extension,$9A00,$9BFF,512,math_v4_reu_16m_game_math.prg
+game_extension,$C100,$C7CD,1742,math_v4_reu_16m_game_math.prg
+game_extension,$C800,$C8FB,252,math_v4_reu_16m_game_math.prg
+init_patch,$32B0,$32B2,3,math_v4_reu_16m_game_math.prg
+smul16_installer,$32C0,$32CD,14,math_v4_reu_16m_game_math.prg
+smul16_zp_source,$CC00,$CC73,116,math_v4_reu_16m_game_math.prg

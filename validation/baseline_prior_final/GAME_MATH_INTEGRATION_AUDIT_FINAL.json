@@ -1,0 +1,170 @@
+{
+  "status": "PASS",
+  "profiles": {
+    "v1_balanced": {
+      "base_payload_bytes": 29695,
+      "game_math_payload_bytes": 43809,
+      "game_math_prg_sha256": "73636c780d393b9e3397f24f462196b7270e21ce95cfc6d2e60093d901edf440",
+      "changed_bytes_vs_native_signed_base": 4251,
+      "unexpected_changed_bytes": 0,
+      "allowed_change_ranges": [
+        [
+          "$5E00",
+          "$5E38"
+        ],
+        [
+          "$9400",
+          "$94FF"
+        ],
+        [
+          "$9600",
+          "$9BFF"
+        ],
+        [
+          "$C100",
+          "$CB20"
+        ]
+      ],
+      "public_stub_count": 19,
+      "segments_verified": 4,
+      "math_init_patch": "none"
+    },
+    "v2_pareto_fast": {
+      "base_payload_bytes": 29417,
+      "game_math_payload_bytes": 44148,
+      "game_math_prg_sha256": "3dbcf1dfa687b5ad9cda3af93bbae3e1c7023084b18ded86ad81ba725b57b668",
+      "changed_bytes_vs_native_signed_base": 4382,
+      "unexpected_changed_bytes": 0,
+      "allowed_change_ranges": [
+        [
+          "$5E00",
+          "$5E38"
+        ],
+        [
+          "$9400",
+          "$9BFF"
+        ],
+        [
+          "$C100",
+          "$CA31"
+        ],
+        [
+          "$32B8",
+          "$32BA"
+        ],
+        [
+          "$32C0",
+          "$32CB"
+        ],
+        [
+          "$CC00",
+          "$CC73"
+        ]
+      ],
+      "public_stub_count": 19,
+      "segments_verified": 3,
+      "math_init_patch": "JMP $32C0 -> ZP installer"
+    },
+    "v3_reu_512k": {
+      "base_payload_bytes": 33513,
+      "game_math_payload_bytes": 48244,
+      "game_math_prg_sha256": "16568369b62d1defea11102bd39d0983743798a440650a2285fb2ad926b7cb89",
+      "changed_bytes_vs_native_signed_base": 4393,
+      "unexpected_changed_bytes": 0,
+      "allowed_change_ranges": [
+        [
+          "$5E00",
+          "$5E38"
+        ],
+        [
+          "$9400",
+          "$9BFF"
+        ],
+        [
+          "$C100",
+          "$CA3C"
+        ],
+        [
+          "$32B0",
+          "$32B2"
+        ],
+        [
+          "$32C0",
+          "$32CD"
+        ],
+        [
+          "$CC00",
+          "$CC73"
+        ]
+      ],
+      "public_stub_count": 19,
+      "segments_verified": 3,
+      "math_init_patch": "JSR $32C0 -> REU init + ZP installer"
+    },
+    "v4_reu_16m": {
+      "base_payload_bytes": 33513,
+      "game_math_payload_bytes": 48244,
+      "game_math_prg_sha256": "46ef733a15d245d164aab62cdda3284d62243bda4b247c6bf6939229c2f54000",
+      "changed_bytes_vs_native_signed_base": 3113,
+      "unexpected_changed_bytes": 0,
+      "allowed_change_ranges": [
+        [
+          "$5E00",
+          "$5E38"
+        ],
+        [
+          "$9400",
+          "$95FF"
+        ],
+        [
+          "$9A00",
+          "$9BFF"
+        ],
+        [
+          "$C100",
+          "$C7CD"
+        ],
+        [
+          "$C800",
+          "$C8FB"
+        ],
+        [
+          "$32B0",
+          "$32B2"
+        ],
+        [
+          "$32C0",
+          "$32CD"
+        ],
+        [
+          "$CC00",
+          "$CC73"
+        ]
+      ],
+      "public_stub_count": 19,
+      "segments_verified": 5,
+      "math_init_patch": "JSR $32C0 -> REU init + ZP installer"
+    }
+  },
+  "reu_audit": {
+    "v3_reu_512k": {
+      "bytes": 524288,
+      "changed_bytes": 65834,
+      "unexpected_changed_bytes": 0,
+      "sha256": "1d8b844983fa7aa757bc3dff5c12f92d4d9b3732c874f6e83a44116e5719c576"
+    },
+    "v4_reu_16m": {
+      "bytes": 16777216,
+      "changed_bytes": 196685,
+      "unexpected_changed_bytes": 0,
+      "sha256": "71574a5d541058060ff871ea0e5c1db13b1c0053a95c9fcf7dd9dbe7e1f0c503"
+    }
+  },
+  "notes": [],
+  "scratch_ownership": {
+    "v1_balanced": "$C040-$C057 ordinary RAM; original shared ZP remains $02-$20 (31 bytes)",
+    "v2_pareto_fast": "$53-$6A ZP; disjoint from resident $02-$3D, native signed DIV $3E-$52, and SMUL16 executable $80-$F3",
+    "v3_reu_512k": "$53-$6A ZP in normal mode; overlaps Turbo16/Turbo32 ownership and is forbidden while an overlay is active",
+    "v4_reu_16m": "$53-$6A ZP in normal mode; overlaps Turbo16/Turbo32 ownership and is forbidden while an overlay is active"
+  }
+}

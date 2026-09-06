@@ -1,0 +1,14 @@
+operation,avg_cycles,min_cycles,max_cycles,cases,edge_cases,errors,evidence,notes
+math_umul8,90.494644,88,93,65536,65536,0,canonical harness,exhaustive 8-bit
+math_umul16,383.320456,373,398,2097152,262430,0,canonical harness,2^21 fixed corpus
+math_umul24,514.534938,487,565,2097152,590353,0,canonical harness,2^21 fixed corpus
+math_umul32,782.822007,715,900,2097152,1049350,0,canonical harness,2^21 fixed corpus
+math_udiv8,87.445969,60,607,65536,603,0,canonical harness,exhaustive 8-bit
+math_udiv16,160.064966,100,1630,2097152,2505,0,canonical harness,2^21 fixed corpus
+math_udiv24,224.668396,149,2465,2097152,5578,0,canonical harness,2^21 fixed corpus
+math_udiv32_16,857.373105,182,2380,2097152,4907,0,canonical harness,2^21 fixed corpus
+math_umul32_ready,760.822007,693,878,2097152,1049350,0,derived from canonical + fixed paired delta,Requires math_init or prior math_umul32; -22 cycles on every tested paired case
+math_umod8,65.285156,51,495,65536,603,0,exhaustive final-image,Dedicated UMOD8 kernel
+math_umod16,163.064966,103,1633,2097152,2505,0,derived exact path,JMP to corresponding UDIV; quotient vector is a documented side effect
+math_umod24,227.668396,152,2468,2097152,5578,0,derived exact path,JMP to corresponding UDIV; quotient vector is a documented side effect
+math_umod32_16,860.373105,185,2383,2097152,4907,0,derived exact path,JMP to corresponding UDIV; quotient vector is a documented side effect

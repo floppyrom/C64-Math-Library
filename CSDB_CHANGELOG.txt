@@ -1,0 +1,45 @@
+CSDb CHANGELOG — DOCUMENTED LEAN FINAL
+
+Packaging/manual follow-up:
+* added plain-English Turbo16/Turbo32 explanation + BEGIN/CALL/END diagram
+* explains REU as overlay storage/DMA, not the arithmetic engine
+* generated build_source/ trees no longer shipped; recreated on demand
+* removed superseded slow-ISQRT32 candidate evidence and unreferenced legacy intermediates
+* corrected stale segment-manifest paths
+* code, ABI, Turbo overlays and deployable REU images unchanged
+
+* Complete USER_MANUAL.md added
+* All 45 stable calls documented with inputs/outputs/status
+* Full V3/V4 REU + relocatable Turbo16/Turbo32 usage documented
+* V4 QS16 small-batch mode documented
+* Custom assembly-time relocation walkthrough and safety rules added
+* IRQ/reentrancy, C64 banking, REU-image matching and troubleshooting documented
+* Corrected VICE REU filenames in the REU guide
+* Code and ABI are byte-for-byte unchanged from Turbo FINAL
+
+C64 MATH API V1-V4 — TURBO RELOCATION FINAL — 2026-09-06
+
+- same 45-entry stable signed/unsigned/game-math API
+- V3/V4 add 6 Turbo lifecycle entries: 16/32 BEGIN/CALL/END
+- Turbo16 + Turbo32 executable-ZP origins now selectable at build time
+- Turbo16 + Turbo32 REU storage banks now selectable at build time
+- overlay binaries assembled from canonical source; no runtime relocation
+- reference PRGs + V3/V4 REU images reproduce byte-for-byte
+- alternate Turbo16: $3E-$AE -> $40-$B0
+- alternate Turbo32: $0A-$FA -> $06-$F6
+- V3 turbo banks 4/5 -> 0/1; V4 turbo banks 4/5 -> $28/$29
+- 17,164 Turbo product calls + 32 BEGIN/END calls PASS (17,196 Turbo API calls total)
+- exact ZP restore + second-batch reuse verified
+- reference/alternate cycle vectors identical: zero relocation penalty
+- ACME 0.97 independently reproduces resident + overlay builds
+- config safety suite expanded to 27 cases
+- endpoint sweep: T16 $02/$8F + T32 $02/$0F, V3 banks $06/$07, V4 $FE/$FF: 3,556 products PASS
+
+Fast exact ISQRT32 retained:
+V1 1378.900969 / V2 1198.619613 / V3 1197.859322 / V4 1046.622518 cycles
+
+Profiles:
+V1 Balanced / stock C64 low-ZP
+V2 Pareto-Fast / stock C64 speed-space knee
+V3 REU 512K + relocatable Turbo overlays
+V4 REU 16M + QS16 + relocatable Turbo overlays

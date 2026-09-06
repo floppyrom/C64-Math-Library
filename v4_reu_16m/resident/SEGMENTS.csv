@@ -1,0 +1,31 @@
+segment,load_address,bytes,file,purpose
+turbo_umul32_wrapper,$1000,46,resident/bin/turbo_umul32_wrapper.bin,normal-RAM launcher for REU-swapped UMUL32
+public_main,$3000,693,resident/math_v4_reu_16m_game_math.prg,public wrappers + math_init; integrated in V4 PRG (not separately shipped)
+composition_chains,$3300,200,resident/math_v4_reu_16m_game_math.prg,composition helpers; integrated in V4 PRG (not separately shipped)
+umul32_adapter,$3420,75,resident/math_v4_reu_16m_game_math.prg,resident UMUL32 adapter; integrated in V4 PRG (not separately shipped)
+umul24_adapter,$34C0,70,resident/math_v4_reu_16m_game_math.prg,resident UMUL24 adapter; integrated in V4 PRG (not separately shipped)
+reu_umul16_begin,$3800,41,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+reu_umul16_turbo,$3840,40,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+reu_umul16_end,$3880,6,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+reu_umul32_begin,$38C0,41,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+reu_umul32_turbo,$3900,82,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+reu_umul32_end,$3960,6,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+reu_lookup_init,$39A0,26,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+reu_umul8,$39C0,46,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+reu_udiv8,$3A00,58,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+reu_umod8,$3A40,39,resident/math_v4_reu_16m_game_math.prg,REU v3 adapter/transport code; integrated in V4 PRG (not separately shipped)
+v4_qs16_mode,$3A80,231,resident/segments/v4_qs16_mode.bin,V4 16 MiB QS16 begin/call/end
+udiv16,$420C,1104,resident/bin/udiv16_code.bin,UDIV16 Size-Fast
+udiv24,$4800,1191,resident/bin/udiv24_code.bin,UDIV24 Size-Fast
+udiv32_16_outer,$4E00,737,resident/bin/udiv32_16_outer.bin,UDIV32/16 continuation
+umul24,$5600,287,resident/bin/umul24_code.bin,resident UMUL24
+umul32,$5800,277,resident/bin/umul32_code.bin,resident UMUL32
+umul24_sqr_lo,$6000,511,resident/bin/umul24_sqr_lo.bin,UMUL24 table
+umul24_sqr_hi,$6200,511,resident/bin/umul24_sqr_hi.bin,UMUL24 table
+umul24_neg_lo,$6400,511,resident/bin/umul24_neg_lo.bin,UMUL24 table
+umul24_neg_hi,$6600,511,resident/bin/umul24_neg_hi.bin,UMUL24 table
+umul32_sqr_lo,$7000,511,resident/bin/umul32_sqr_lo.bin,shared resident/turbo $CA table
+umul32_sqr_hi,$7200,511,resident/bin/umul32_sqr_hi.bin,shared resident/turbo $CA table
+umul32_neg_lo,$7400,511,resident/bin/umul32_neg_lo.bin,shared resident/turbo $CA table
+umul32_neg_hi,$7600,511,resident/bin/umul32_neg_hi.bin,shared resident/turbo $CA table
+signed_math_api,$3B80,1036,segments/signed_math_api.bin,signed SMUL/SDIV/SMOD public extension; sparse fixed-address image spans $3B80-$3FE5

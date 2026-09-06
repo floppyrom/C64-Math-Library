@@ -1,0 +1,27 @@
+segment,load_address,bytes,file,purpose
+public_main,$3000,698,segments/public_main.bin,"public wrappers, status normalization, math_init"
+composition_chains,$3300,200,segments/composition_chains.bin,assembly-level composition helpers
+umul32_adapter,$3420,75,segments/umul32_adapter.bin,initialized public UMUL32 marshalling adapter
+umul24_adapter,$34C0,70,segments/umul24_adapter.bin,initialized public UMUL24 marshalling adapter
+udiv8,$4000,334,bin/udiv8_code.bin,UDIV8 Fast kernel
+udiv16,$420C,1104,bin/udiv16_code.bin,shared UDIV16 Size-Fast core
+udiv24,$4800,1191,bin/udiv24_code.bin,UDIV24 Size-Fast kernel
+udiv32_16_outer,$4E00,737,bin/udiv32_16_outer.bin,UDIV32/16 continuation; reuses UDIV16 core
+umod8,$5200,114,bin/umod8_code.bin,table-free UMOD8 Size-Fast kernel
+umul8,$5300,35,bin/umul8_code.bin,UMUL8 Practical kernel
+umul16,$5400,167,bin/umul16_code.bin,integrated three-UMUL8 difference-product kernel
+umul24,$5600,287,bin/umul24_code.bin,UMUL24 unrolled low-ZP kernel
+umul32,$5800,277,bin/umul32_code.bin,UMUL32 31-ZP practical-fast kernel
+umul24_sqr_lo,$6000,511,bin/umul24_sqr_lo.bin,quarter-square table
+umul24_sqr_hi,$6200,511,bin/umul24_sqr_hi.bin,quarter-square table
+umul24_neg_lo,$6400,511,bin/umul24_neg_lo.bin,quarter-square table
+umul24_neg_hi,$6600,511,bin/umul24_neg_hi.bin,quarter-square table
+umul8_sqr_lo,$6800,511,bin/umul8_sqr_lo.bin,UMUL8 table
+umul8_sqr_hi,$6A00,511,bin/umul8_sqr_hi.bin,UMUL8 table
+umul8_diff_lo,$6C00,256,bin/umul8_diff_lo.bin,UMUL8 table
+umul8_diff_hi,$6D00,256,bin/umul8_diff_hi.bin,UMUL8 table
+umul32_sqr_lo,$7000,511,bin/umul32_sqr_lo.bin,quarter-square table
+umul32_sqr_hi,$7200,511,bin/umul32_sqr_hi.bin,quarter-square table
+umul32_neg_lo,$7400,511,bin/umul32_neg_lo.bin,quarter-square table
+umul32_neg_hi,$7600,511,bin/umul32_neg_hi.bin,quarter-square table
+signed_math_api,$3B80,1036,segments/signed_math_api.bin,"signed SMUL/SDIV/SMOD public extension; sparse fixed-address image spans $3B80-$3FE5"

@@ -1,0 +1,772 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "python_tools_compile",
+      "status": "PASS",
+      "detail": "14 files"
+    },
+    {
+      "check": "public_api_count",
+      "status": "PASS",
+      "detail": 45
+    },
+    {
+      "check": "public_api_unique",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "game_api_slots",
+      "status": "PASS",
+      "detail": [
+        "$5E00",
+        "$5E03",
+        "$5E06",
+        "$5E09",
+        "$5E0C",
+        "$5E0F",
+        "$5E12",
+        "$5E15",
+        "$5E18",
+        "$5E1B",
+        "$5E1E",
+        "$5E21",
+        "$5E24",
+        "$5E27",
+        "$5E2A",
+        "$5E2D",
+        "$5E30",
+        "$5E33",
+        "$5E36"
+      ]
+    },
+    {
+      "check": "turbo_api_count",
+      "status": "PASS",
+      "detail": 6
+    },
+    {
+      "check": "turbo_api_unique",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "turbo_api_profiles",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "alternate_validation_status",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "alternate_all_profiles",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "alternate_entries_180",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "alternate_calls_16688",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_all_named_entries_hit",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_all_named_entries_hit",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_all_named_entries_hit",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_all_named_entries_hit",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_rebuild",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_reference_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_hash_current_reference_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "reference_exact_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_reference_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_hash_current_reference_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "reference_exact_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_reference_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_hash_current_reference_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "reference_exact_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "reference_reu_exact_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_reference_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_hash_current_reference_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "reference_exact_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "reference_reu_exact_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_alternate_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_hash_current_alternate_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_alternate_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_hash_current_alternate_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_alternate_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_hash_current_alternate_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_alternate_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "deterministic_hash_current_alternate_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_validation",
+      "status": "PASS",
+      "detail": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020"
+    },
+    {
+      "check": "acme_reference_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_reference_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_reference_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_reference_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_reference_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_alternate_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_alternate_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_alternate_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_alternate_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_alternate_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_alternate_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_alternate_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_alternate_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_reference_v3_reu_512k_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_overlay_exact_v3_reu_512k_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_reference_v3_reu_512k_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_overlay_exact_v3_reu_512k_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_reference_v4_reu_16m_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_overlay_exact_v4_reu_16m_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_reference_v4_reu_16m_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_overlay_exact_v4_reu_16m_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_alternate_v3_reu_512k_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_alternate_v3_reu_512k_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_alternate_v4_reu_16m_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_alternate_v4_reu_16m_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_boundary_turbo16_$02",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_boundary_turbo16_$8F",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_boundary_turbo32_$02",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_boundary_turbo32_$0F",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "config_validation",
+      "status": "PASS",
+      "detail": 27
+    },
+    {
+      "check": "turbo_validation_status",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "turbo_product_calls_17164",
+      "status": "PASS",
+      "detail": 17164
+    },
+    {
+      "check": "turbo_lifecycle_calls_32",
+      "status": "PASS",
+      "detail": 32
+    },
+    {
+      "check": "turbo_api_calls_17196",
+      "status": "PASS",
+      "detail": 17196
+    },
+    {
+      "check": "v3_reu_512k_turbo16_cases",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_turbo16_relocated",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_turbo16_zero_cycle_penalty",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_turbo32_cases",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_turbo32_relocated",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_turbo32_zero_cycle_penalty",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo16_cases",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo16_relocated",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo16_zero_cycle_penalty",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo32_cases",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo32_relocated",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo32_zero_cycle_penalty",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "turbo_boundary_status",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "turbo_boundary_products_3556",
+      "status": "PASS",
+      "detail": 3556
+    },
+    {
+      "check": "v3_reu_512k_turbo16_origin_bounds",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_turbo32_origin_bounds",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_turbo16_boundary_cycle_identity",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_turbo32_boundary_cycle_identity",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo16_origin_bounds",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo32_origin_bounds",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo16_boundary_cycle_identity",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo32_boundary_cycle_identity",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "isqrt32_validation",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "binary_delta_confined",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "isqrt32_perf_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "isqrt32_perf_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "isqrt32_perf_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "isqrt32_perf_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_manifest_45",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_reference_prg_exact",
+      "status": "PASS",
+      "detail": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620"
+    },
+    {
+      "check": "v2_pareto_fast_manifest_45",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_reference_prg_exact",
+      "status": "PASS",
+      "detail": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac"
+    },
+    {
+      "check": "v3_reu_512k_manifest_45",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_generated_turbo_api",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_generated_turbo_config",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_reference_prg_exact",
+      "status": "PASS",
+      "detail": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71"
+    },
+    {
+      "check": "v3_reu_512k_reference_reu_exact",
+      "status": "PASS",
+      "detail": "1d8b844983fa7aa757bc3dff5c12f92d4d9b3732c874f6e83a44116e5719c576"
+    },
+    {
+      "check": "v4_reu_16m_manifest_45",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_generated_turbo_api",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_generated_turbo_config",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_reference_prg_exact",
+      "status": "PASS",
+      "detail": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139"
+    },
+    {
+      "check": "v4_reu_16m_reference_reu_exact",
+      "status": "PASS",
+      "detail": "71574a5d541058060ff871ea0e5c1db13b1c0053a95c9fcf7dd9dbe7e1f0c503"
+    },
+    {
+      "check": "v1_balanced_config_symbols",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_source_uses_config",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_config_symbols",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_source_uses_config",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_config_symbols",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_source_uses_config",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_turbo_config_symbols",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_source_uses_turbo_config",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_config_symbols",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_source_uses_config",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_turbo_config_symbols",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_source_uses_turbo_config",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "required_docs",
+      "status": "PASS",
+      "detail": [
+        "README.md",
+        "QUICK_START.md",
+        "CHANGELOG.md",
+        "CSDB_CHANGELOG.txt",
+        "docs/SOURCE_RELOCATION.md",
+        "docs/TURBO_RELOCATION.md",
+        "docs/TURBO_API.csv",
+        "validation/REVIEWED_RELEASE_VALIDATION.md"
+      ]
+    },
+    {
+      "check": "turbo_plain_english_manual",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "package_contents_doc",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "no_interrupted_full_reference_logs",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "no_superseded_binary_relocation_evidence",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "isqrt32_notice_current",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_active_source_comment_current",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_active_source_comment_current",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_active_source_comment_current",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_active_source_comment_current",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_isqrt32_square_planes",
+      "status": "PASS",
+      "detail": null
+    }
+  ],
+  "summary": {
+    "checks_passed": 145,
+    "public_entries": 45,
+    "alternate_entry_executions": 180,
+    "alternate_machine_calls": 16688,
+    "config_cases": 27,
+    "turbo_product_calls": 17164,
+    "turbo_lifecycle_calls": 32,
+    "turbo_api_calls": 17196,
+    "turbo_boundary_product_calls": 3556,
+    "reu_profiles_turbo_entries": 6,
+    "isqrt32_cases_per_profile": 5097
+  }
+}

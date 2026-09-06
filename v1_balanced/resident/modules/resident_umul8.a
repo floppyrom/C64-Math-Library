@@ -1,0 +1,81 @@
+; Unsigned 8x8 -> 16 multiply: balanced 1 KiB quarter-square version.
+; NMOS 6502/6510. RTS included; caller JSR excluded. Decimal mode must be clear.
+;ABI
+;CPU: mos6502
+;Operation: umul
+;Entry: umul8_balanced
+;Input x: uint8 = reg:X
+;Input y: uint8 = reg:Y
+;Output z: uint16 = prod_low, reg:A
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;Region Data: cg_data0_start..cg_data0_end, cg_data1_start..cg_data1_end
+;End ABI
+;Results
+;Status: validated
+;Validation level: exhaustive
+;Validation cases: 65536
+;Validation errors: 0
+;Validation complete: yes
+;Edge cases: 65536
+;Edge errors: 0
+;Edge complete: yes
+;Profile distribution: uniform
+;Profile cases: 65536
+;Profile errors: 0
+;Profile complete: yes
+;Min cycles: 45
+;Max cycles: 50
+;Avg cycles: 47.490234
+;Stddev cycles: 1.802749
+;ZP bytes: 5
+;Code bytes: 28
+;Data bytes: 1022
+;Total bytes: 1050
+;End Results
+;
+; Contract: X=x, Y=y. Returns A:prod_low (high:low), with C always set.
+; A batch can SEC once and use umul8_balanced_c1 on subsequent calls.
+; This is the one-table-family form of the Jameson/TobyLobster method. The
+; negative difference is normalized instead of selecting a second table pair.
+
+!cpu 6502
+
+p_sqr_lo=$10
+p_sqr_hi=$12
+prod_low=$14
+
+
+* = $4700
+cg_code_start:
+umul8_balanced:
+        sec
+umul8_balanced_c1:
+        stx p_sqr_lo
+        stx p_sqr_hi
+        tya
+        sbc p_sqr_lo
+        bcs _difference_ready
+        sbc #0
+        eor #$ff
+_difference_ready:
+        tax
+        lda (p_sqr_lo),y
+        sbc sqr_lo,x
+        sta prod_low
+        lda (p_sqr_hi),y
+        sbc sqr_hi,x
+        rts
+cg_code_end:
+
+* = $8000
+cg_data0_start:
+sqr_lo:
+!for i,0,510 { !byte <((i*i)/4) }
+cg_data0_end:
+
+* = $8200
+cg_data1_start:
+sqr_hi:
+!for i,0,510 { !byte >((i*i)/4) }
+cg_data1_end:

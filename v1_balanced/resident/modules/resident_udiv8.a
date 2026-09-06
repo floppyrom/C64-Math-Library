@@ -1,0 +1,250 @@
+;ABI
+;CPU: mos6502
+;Operation: udiv
+;Entry: div_u8
+;Input n: uint8 = n
+;Input d: uint8 = d
+;Output q: uint8 = q
+;Remainder r: uint8 = r
+;UDiv zero remainder: zero
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;End ABI
+; ============================================================================
+; FIREMONGER C64 DIVISION REFERENCE — PUBLICATION COPY
+; Family       : udiv8
+; Tier         : fast
+; Target       : NMOS 6502/6510, decimal mode clear
+; Measurement  : exhaustive 65,536-pair space; seed $C0FFEE where random
+; Timing       : entry instruction through final RTS; caller JSR excluded
+; Avg cycles   : 47.445969
+; Min / Max    : 20 / 567
+; Stddev       : 61.631763
+; Resident     : 334 bytes (Code 334 + Data 0); ZP 5 bytes separate
+; Validation   : 65536 cases, 0 errors
+; Edge suite   : 603 cases in canonical run, 0 errors
+; Architecture : Best table-free residual-divider point found by exhaustive 8-bit search.
+;
+; NOTE: this publication block is comments only and does not alter the exact
+; assembled image that produced the result. Raw canonical JSON is supplied
+; beside the source when available. See TECHNICAL_ASSESSMENT.md for caveats.
+; ============================================================================
+!cpu 6502
+n=$10
+d=$11
+q=$12
+r=$13
+sd=$14
+
+*=$4000
+cg_code_start:
+zero:
+ sta q
+ sta r
+ sec
+ rts
+div_u8:
+ lda d
+ beq zero
+ lda n
+ cmp d
+ bcs cont0
+ sta r
+ lda #0
+ sta q
+ rts
+cont0:
+ sbc d
+ cmp d
+ bcs cont1
+ sta r
+ lda #1
+ sta q
+ rts
+cont1:
+ sbc d
+ cmp d
+ bcs cont2
+ sta r
+ lda #2
+ sta q
+ rts
+cont2:
+ sbc d
+ cmp d
+ bcs cont3
+ sta r
+ lda #3
+ sta q
+ rts
+cont3:
+ sbc d
+ cmp d
+ bcs cont4
+ sta r
+ lda #4
+ sta q
+ rts
+cont4:
+ sbc d
+ cmp d
+ bcs cont5
+ sta r
+ lda #5
+ sta q
+ rts
+cont5:
+ sbc d
+ cmp d
+ bcs cont6
+ sta r
+ lda #6
+ sta q
+ rts
+cont6:
+ sbc d
+ cmp d
+ bcs cont7
+ sta r
+ lda #7
+ sta q
+ rts
+cont7:
+ sbc d
+ cmp d
+ bcs cont8
+ sta r
+ lda #8
+ sta q
+ rts
+cont8:
+ sbc d
+ cmp d
+ bcs cont9
+ sta r
+ lda #9
+ sta q
+ rts
+cont9:
+ sbc d
+ cmp d
+ bcs cont10
+ sta r
+ lda #10
+ sta q
+ rts
+cont10:
+ sbc d
+ cmp d
+ bcs cont11
+ sta r
+ lda #11
+ sta q
+ rts
+cont11:
+ sbc d
+ cmp d
+ bcs cont12
+ sta r
+ lda #12
+ sta q
+ rts
+cont12:
+ sbc d
+ cmp d
+ bcs cont13
+ sta r
+ lda #13
+ sta q
+ rts
+cont13:
+ sbc d
+ cmp d
+ bcs cont14
+ sta r
+ lda #14
+ sta q
+ rts
+cont14:
+ sbc d
+ cmp d
+ bcs cont15
+ sta r
+ lda #15
+ sta q
+ rts
+cont15:
+ sbc d
+ cmp d
+ bcs cont16
+ sta r
+ lda #16
+ sta q
+ rts
+cont16:
+ sbc d
+ cmp d
+ bcs cont17
+ sta r
+ lda #17
+ sta q
+ rts
+cont17:
+ sbc d
+ cmp d
+ bcs cont18
+ sta r
+ lda #18
+ sta q
+ rts
+cont18:
+ sbc d
+ cmp d
+ bcs cont19
+ sta r
+ lda #19
+ sta q
+ rts
+cont19:
+ sbc d
+ cmp d
+ bcs tail
+ sta r
+ lda #20
+ sta q
+ rts
+tail:
+ sta r
+ lda d
+ sta sd
+ ldx #0
+ stx q
+align:
+ lda sd
+ asl
+ bcs aligned
+ cmp r
+ bcc take
+ beq take
+aligned:
+ lda r
+bits:
+ cmp sd
+ bcc no_sub
+ sbc sd
+no_sub:
+ rol q
+ lsr sd
+ dex
+ bpl bits
+ sta r
+ lda q
+ clc
+ adc #20
+ sta q
+ rts
+take:
+ sta sd
+ inx
+ bne align
+cg_code_end:

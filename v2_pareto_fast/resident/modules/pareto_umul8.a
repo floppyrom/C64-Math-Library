@@ -1,0 +1,113 @@
+; ============================================================================
+; Pareto-Fast profile module — UMUL8 Practical 1.5 KiB
+; ============================================================================
+; This is the size-aware fast selection used by C64 Math API v1-PF.
+; The ordinary-code fast knee: 45.494 cycles native; avoids executable-ZP record variants and saves ~2 cycles vs the 1 KiB balanced kernel.
+; Public adaptation is outside the measured native kernel unless noted.
+; Decimal mode must be clear. A/X/Y are volatile.
+; ============================================================================
+; Unsigned 8x8 -> 16 multiply: fastest ordinary-code practical version.
+; NMOS 6502/6510. RTS included; caller JSR excluded. Decimal mode must be clear.
+;ABI
+;CPU: mos6502
+;Operation: umul
+;Entry: umul8_practical
+;Input x: uint8 = reg:X
+;Input y: uint8 = reg:Y
+;Output z: uint16 = prod_low, reg:A
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;Region Data: cg_data0_start..cg_data0_end, cg_data1_start..cg_data1_end, cg_data2_start..cg_data2_end, cg_data3_start..cg_data3_end
+;End ABI
+;Results
+;Status: validated
+;Validation level: exhaustive
+;Validation cases: 65536
+;Validation errors: 0
+;Validation complete: yes
+;Edge cases: 65536
+;Edge errors: 0
+;Edge complete: yes
+;Profile distribution: uniform
+;Profile cases: 65536
+;Profile errors: 0
+;Profile complete: yes
+;Min cycles: 44
+;Max cycles: 47
+;Avg cycles: 45.494141
+;Stddev cycles: 1.118019
+;ZP bytes: 5
+;Code bytes: 35
+;Data bytes: 1534
+;Total bytes: 1569
+;End Results
+;
+; Contract: X=x, Y=y. Returns A:prod_low (high:low).
+; Exit C is clear only for the 255 cases x=y+1; do not assume carry chaining.
+; Based on Nick Jameson's quarter-square addressing, with TobyLobster's
+; separate negative-difference planes. Only the less frequent y<x case takes
+; the branch. Static high bytes in the two ZP pointers are initialized here.
+
+!cpu 6502
+
+* = $0039
+cg_zp_start:
+p_sqr_lo: !word sqr_lo
+p_sqr_hi: !word sqr_hi
+prod_low:  !byte 0
+cg_zp_end:
+
+* = $5300
+cg_code_start:
+umul8_practical:
+        sec
+umul8_practical_c1:
+        stx p_sqr_lo
+        stx p_sqr_hi
+        tya
+        sbc p_sqr_lo
+        tax
+        lda (p_sqr_lo),y
+        bcc _negative_difference
+
+        sbc sqr_lo,x
+        sta prod_low
+        lda (p_sqr_hi),y
+        sbc sqr_hi,x
+        rts
+
+_negative_difference:
+        sbc diff_neg_lo,x
+        sta prod_low
+        lda (p_sqr_hi),y
+        sbc diff_neg_hi,x
+        rts
+cg_code_end:
+
+* = $6800
+cg_data0_start:
+sqr_lo:
+!for i,0,510 { !byte <((i*i)/4) }
+cg_data0_end:
+
+* = $6a00
+cg_data1_start:
+sqr_hi:
+!for i,0,510 { !byte >((i*i)/4) }
+cg_data1_end:
+
+* = $6c00
+cg_data2_start:
+diff_neg_lo:
+        !byte 0
+!for i,1,255 { !byte <((((256-i)*(256-i))/4)-1) }
+cg_data2_end:
+
+* = $6d00
+cg_data3_start:
+diff_neg_hi:
+        !byte 0
+!for i,1,255 { !byte >((((256-i)*(256-i))/4)-1) }
+cg_data3_end:
+
+; The `-1` table bias consumes SBC's incoming borrow on the y<x path.

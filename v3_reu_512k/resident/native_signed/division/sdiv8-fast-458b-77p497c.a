@@ -1,0 +1,313 @@
+;ABI
+;CPU: mos6502
+;Operation: sdiv
+;Entry: div_s8
+;Input n: int8 = n
+;Input d: int8 = d
+;Output q: int8 = q
+;Remainder r: int8 = r
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;End ABI
+; ============================================================================
+; FIREMONGER C64 DIVISION REFERENCE — PUBLICATION COPY
+; Family       : sdiv8
+; Tier         : fast
+; Target       : NMOS 6502/6510, decimal mode clear
+; Measurement  : exhaustive 65,536-pair space; seed $C0FFEE where random
+; Timing       : entry instruction through final RTS; caller JSR excluded
+; Avg cycles   : 77.496689
+; Min / Max    : 20 / 568
+; Stddev       : 60.618201
+; Resident     : 458 bytes (Code 458 + Data 0); ZP 5 bytes separate
+; Validation   : 65536 cases, 0 errors
+; Edge suite   : 1762 cases in canonical run, 0 errors
+; Architecture : Sign-aware q=0/q=1 specialization plus residual division; table-free fast signed 8-bit.
+;
+; NOTE: this publication block is comments only and does not alter the exact
+; assembled image that produced the result. Raw canonical JSON is supplied
+; beside the source when available. See TECHNICAL_ASSESSMENT.md for caveats.
+; ============================================================================
+!cpu 6502
+*=$10
+cg_zp_start:
+n: !byte 0
+d: !byte 0
+md: !byte 0
+q: !byte 0
+r: !byte 0
+cg_zp_end:
+*=$1000
+cg_code_start:
+zero:
+ sta q
+ sta r
+ sec
+ rts
+div_s8:
+ lda d
+ beq zero
+ bpl dpos
+ eor #$ff
+ clc
+ adc #1
+dpos:
+ sta md
+ lda n
+ bpl npos_mag
+ eor #$ff
+ clc
+ adc #1
+npos_mag:
+ cmp md
+ bcs cont0
+ sta r
+ lda #0
+ sta q
+ bit n
+ bmi q0_neg
+ clc
+ rts
+q0_neg:
+ sec
+ sbc r
+ sta r
+ clc
+ rts
+cont0:
+ sbc md
+ cmp md
+ bcs cont1
+ sta r
+ lda #1
+ sta q
+ bit n
+ bmi q1_nneg
+ bit d
+ bmi q1_negpos
+ clc
+ rts
+q1_negpos:
+ lda #$ff
+ sta q
+ clc
+ rts
+q1_nneg:
+ lda #0
+ sec
+ sbc r
+ sta r
+ bit d
+ bpl q1_negneg
+ clc
+ rts
+q1_negneg:
+ lda #$ff
+ sta q
+ clc
+ rts
+cont1:
+ sbc md
+ cmp md
+ bcs cont2
+ sta r
+ lda #2
+ sta q
+ jmp signed_finish
+cont2:
+ sbc md
+ cmp md
+ bcs cont3
+ sta r
+ lda #3
+ sta q
+ jmp signed_finish
+cont3:
+ sbc md
+ cmp md
+ bcs cont4
+ sta r
+ lda #4
+ sta q
+ jmp signed_finish
+cont4:
+ sbc md
+ cmp md
+ bcs cont5
+ sta r
+ lda #5
+ sta q
+ jmp signed_finish
+cont5:
+ sbc md
+ cmp md
+ bcs cont6
+ sta r
+ lda #6
+ sta q
+ jmp signed_finish
+cont6:
+ sbc md
+ cmp md
+ bcs cont7
+ sta r
+ lda #7
+ sta q
+ jmp signed_finish
+cont7:
+ sbc md
+ cmp md
+ bcs cont8
+ sta r
+ lda #8
+ sta q
+ jmp signed_finish
+cont8:
+ sbc md
+ cmp md
+ bcs cont9
+ sta r
+ lda #9
+ sta q
+ jmp signed_finish
+cont9:
+ sbc md
+ cmp md
+ bcs cont10
+ sta r
+ lda #10
+ sta q
+ jmp signed_finish
+cont10:
+ sbc md
+ cmp md
+ bcs cont11
+ sta r
+ lda #11
+ sta q
+ jmp signed_finish
+cont11:
+ sbc md
+ cmp md
+ bcs cont12
+ sta r
+ lda #12
+ sta q
+ jmp signed_finish
+cont12:
+ sbc md
+ cmp md
+ bcs cont13
+ sta r
+ lda #13
+ sta q
+ jmp signed_finish
+cont13:
+ sbc md
+ cmp md
+ bcs cont14
+ sta r
+ lda #14
+ sta q
+ jmp signed_finish
+cont14:
+ sbc md
+ cmp md
+ bcs cont15
+ sta r
+ lda #15
+ sta q
+ jmp signed_finish
+cont15:
+ sbc md
+ cmp md
+ bcs cont16
+ sta r
+ lda #16
+ sta q
+ jmp signed_finish
+cont16:
+ sbc md
+ cmp md
+ bcs cont17
+ sta r
+ lda #17
+ sta q
+ jmp signed_finish
+cont17:
+ sbc md
+ cmp md
+ bcs cont18
+ sta r
+ lda #18
+ sta q
+ jmp signed_finish
+cont18:
+ sbc md
+ cmp md
+ bcs cont19
+ sta r
+ lda #19
+ sta q
+ jmp signed_finish
+cont19:
+ sbc md
+ cmp md
+ bcs tail
+ sta r
+ lda #20
+ sta q
+ jmp signed_finish
+tail:
+ sta r
+ ldx #0
+ stx q
+align:
+ lda md
+ asl
+ bcs aligned
+ cmp r
+ bcc take
+ beq take
+aligned:
+ lda r
+bits:
+ cmp md
+ bcc no_sub
+ sbc md
+no_sub:
+ rol q
+ lsr md
+ dex
+ bpl bits
+ sta r
+ lda q
+ clc
+ adc #20
+ sta q
+signed_finish:
+ lda n
+ bmi nneg
+ eor d
+ bmi negq
+ rts
+nneg:
+ lda #0
+ sec
+ sbc r
+ sta r
+ lda d
+ bmi done
+negq:
+ lda #0
+ sec
+ sbc q
+ sta q
+done:
+ clc
+ rts
+take:
+ sta md
+ inx
+ bne align
+cg_code_end:

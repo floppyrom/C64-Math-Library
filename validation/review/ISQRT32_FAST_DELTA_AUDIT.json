@@ -1,0 +1,117 @@
+{
+  "status": "PASS",
+  "baseline": "reviewed source-relocatable release immediately preceding fast-ISQRT32 optimization",
+  "statement": "All resident PRG changes are confined to the MATH_ISQRT32 public target, retired old ISQRT32 entry bytes, the new fast hybrid kernel, and V4 square-table support. Other resident code/data remain byte-identical.",
+  "profiles": [
+    {
+      "profile": "v1_balanced",
+      "baseline_sha256": "2daa4b0057f9752765237aee1d3cb06d34511feda30586df506cd7504e169c6b",
+      "fast_sha256": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620",
+      "changed_bytes": 152,
+      "changed_ranges": [
+        "$5E31-$5E32",
+        "$C9ED",
+        "$C9EF-$CA23",
+        "$CB40-$CB6D",
+        "$CB6F-$CB76",
+        "$CB78-$CB7F",
+        "$CB81-$CB85",
+        "$CB87-$CBA3"
+      ],
+      "allowed_ranges": [
+        "$5E31-$5E32",
+        "$C9ED-$CA23",
+        "$CB40-$CBA3"
+      ],
+      "outside_allowed_ranges": 0,
+      "outside_ranges": []
+    },
+    {
+      "profile": "v2_pareto_fast",
+      "baseline_sha256": "013677f26fe7e4cf91b004ca43b22633fa5421c1e703777ce22f713c2f9d60cf",
+      "fast_sha256": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac",
+      "changed_bytes": 134,
+      "changed_ranges": [
+        "$5E31-$5E32",
+        "$C936",
+        "$C938-$C965",
+        "$CB40-$CB68",
+        "$CB6A-$CB70",
+        "$CB72-$CB78",
+        "$CB7A-$CB7D",
+        "$CB7F-$CB98"
+      ],
+      "allowed_ranges": [
+        "$5E31-$5E32",
+        "$C936-$C965",
+        "$CB40-$CB98"
+      ],
+      "outside_allowed_ranges": 0,
+      "outside_ranges": []
+    },
+    {
+      "profile": "v3_reu_512k",
+      "baseline_sha256": "6c8d8781b4612ae4072c1def48a446504c9036e032fc9b7da3074960d62c6591",
+      "fast_sha256": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71",
+      "changed_bytes": 134,
+      "changed_ranges": [
+        "$5E31-$5E32",
+        "$C941",
+        "$C943-$C970",
+        "$CB40-$CB68",
+        "$CB6A-$CB70",
+        "$CB72-$CB78",
+        "$CB7A-$CB7D",
+        "$CB7F-$CB98"
+      ],
+      "allowed_ranges": [
+        "$5E31-$5E32",
+        "$C941-$C970",
+        "$CB40-$CB98"
+      ],
+      "outside_allowed_ranges": 0,
+      "outside_ranges": []
+    },
+    {
+      "profile": "v4_reu_16m",
+      "baseline_sha256": "d29f31fc18f555ed727604204e082ea3925ebee578218a22f2183d878838bdbe",
+      "fast_sha256": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139",
+      "changed_bytes": 614,
+      "changed_ranges": [
+        "$5E31-$5E32",
+        "$9801-$980F",
+        "$9811-$981F",
+        "$9821-$982F",
+        "$9831-$983F",
+        "$9841-$984F",
+        "$9851-$985F",
+        "$9861-$986F",
+        "$9871-$987F",
+        "$9881-$988F",
+        "$9891-$989F",
+        "$98A1-$98AF",
+        "$98B1-$98BF",
+        "$98C1-$98CF",
+        "$98D1-$98DF",
+        "$98E1-$98EF",
+        "$98F1-$98FF",
+        "$9910-$99FF",
+        "$C800",
+        "$C802-$C82F",
+        "$CB40-$CB68",
+        "$CB6A-$CB70",
+        "$CB72-$CB78",
+        "$CB7A-$CB7D",
+        "$CB7F-$CB98"
+      ],
+      "allowed_ranges": [
+        "$5E31-$5E32",
+        "$9800-$99FF",
+        "$C800-$C82F",
+        "$CB40-$CB98"
+      ],
+      "outside_allowed_ranges": 0,
+      "outside_ranges": []
+    }
+  ]
+}

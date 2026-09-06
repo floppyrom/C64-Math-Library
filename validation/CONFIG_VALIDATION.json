@@ -1,0 +1,160 @@
+{
+  "status": "PASS",
+  "tests": 27,
+  "cases": [
+    {
+      "name": "reference config accepted",
+      "profile": "v1_balanced",
+      "status": "PASS"
+    },
+    {
+      "name": "alternate config accepted",
+      "profile": "v1_balanced",
+      "status": "PASS"
+    },
+    {
+      "name": "reference config accepted",
+      "profile": "v2_pareto_fast",
+      "status": "PASS"
+    },
+    {
+      "name": "alternate config accepted",
+      "profile": "v2_pareto_fast",
+      "status": "PASS"
+    },
+    {
+      "name": "reference config accepted",
+      "profile": "v3_reu_512k",
+      "status": "PASS"
+    },
+    {
+      "name": "alternate config accepted",
+      "profile": "v3_reu_512k",
+      "status": "PASS"
+    },
+    {
+      "name": "reference config accepted",
+      "profile": "v4_reu_16m",
+      "status": "PASS"
+    },
+    {
+      "name": "alternate config accepted",
+      "profile": "v4_reu_16m",
+      "status": "PASS"
+    },
+    {
+      "name": "page alignment enforced",
+      "profile": "v2_pareto_fast",
+      "status": "PASS",
+      "rejected_with": "REG_GAME must be page aligned"
+    },
+    {
+      "name": "main-region collision rejected",
+      "profile": "v2_pareto_fast",
+      "status": "PASS",
+      "rejected_with": "collision: REG_KERNEL $4000-$5DFF with REG_TABLE $4000-$7BFF"
+    },
+    {
+      "name": "ZP wrap rejected",
+      "profile": "v2_pareto_fast",
+      "status": "PASS",
+      "rejected_with": "ZP_SMUL out of zp address space: $00F0-$0163"
+    },
+    {
+      "name": "ZP overlap rejected",
+      "profile": "v2_pareto_fast",
+      "status": "PASS",
+      "rejected_with": "collision: ZP_MAIN $0002-$006A with ZP_SMUL $0060-$00D3"
+    },
+    {
+      "name": "6510 processor port protected",
+      "profile": "v1_balanced",
+      "status": "PASS",
+      "rejected_with": "ZP_MAIN overlaps reserved $00-$01 6510 processor port"
+    },
+    {
+      "name": "V1 scratch/I-O collision rejected",
+      "profile": "v1_balanced",
+      "status": "PASS",
+      "rejected_with": "collision: MATH_IO $C040-$C05F with V1_SCRATCH $C040-$C057"
+    },
+    {
+      "name": "REU I/O page protected",
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "rejected_with": "MATH_IO overlaps REU/C64 I/O page $DF00-$DFFF"
+    },
+    {
+      "name": "V3 bank >7 rejected",
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "rejected_with": "V3 is a 512 KiB image: all active banks must be 0..7"
+    },
+    {
+      "name": "V3 operational bank collision rejected",
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "rejected_with": "REU single-bank assignments collide"
+    },
+    {
+      "name": "V3 duplicate stable bank rejected",
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "rejected_with": "REU single-bank assignments collide"
+    },
+    {
+      "name": "V4 QS16 alignment enforced",
+      "profile": "v4_reu_16m",
+      "status": "PASS",
+      "rejected_with": "REU_QS16_BASE_BANK must be aligned to an 8-bank boundary"
+    },
+    {
+      "name": "V4 QS16/single-bank collision rejected",
+      "profile": "v4_reu_16m",
+      "status": "PASS",
+      "rejected_with": "REU_UMUL8_LO_BANK collides with QS16 bank range"
+    },
+    {
+      "name": "V4 operational bank collision rejected",
+      "profile": "v4_reu_16m",
+      "status": "PASS",
+      "rejected_with": "REU single-bank assignments collide"
+    },
+    {
+      "name": "Turbo16 processor-port overlap rejected",
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "rejected_with": "TURBO16_ZP_BASE invalid: $01-$71"
+    },
+    {
+      "name": "Turbo16 ZP wrap rejected",
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "rejected_with": "TURBO16_ZP_BASE invalid: $90-$100"
+    },
+    {
+      "name": "Turbo32 processor-port overlap rejected",
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "rejected_with": "TURBO32_ZP_BASE invalid: $01-$F1"
+    },
+    {
+      "name": "Turbo32 ZP wrap rejected",
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "rejected_with": "TURBO32_ZP_BASE invalid: $10-$100"
+    },
+    {
+      "name": "V3 Turbo bank >7 rejected",
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "rejected_with": "V3 is a 512 KiB image: all active banks must be 0..7"
+    },
+    {
+      "name": "V4 Turbo/QS16 bank collision rejected",
+      "profile": "v4_reu_16m",
+      "status": "PASS",
+      "rejected_with": "REU_TURBO32_BANK collides with QS16 bank range"
+    }
+  ]
+}

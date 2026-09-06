@@ -1,0 +1,319 @@
+; ============================================================================
+; Pareto-Fast profile module — UMUL32 31-ZP practical-fast
+; ============================================================================
+; This is the size-aware fast selection used by C64 Math API v3 REU-Pareto.
+; 649.822 cycles native. Chosen over the 241-ZP 616-cycle record family: ~33 cycles traded for ~210 ZP bytes, with essentially the same total physical footprint.
+; Public adaptation is outside the measured native kernel unless noted.
+; Decimal mode must be clear. A/X/Y are volatile.
+; ============================================================================
+; Firemonger-derived UMUL32, 31-byte-ZP practical-speed variant.
+; Four extra bytes replace the P1 stack lane.  Direct column summation keeps
+; the bounded row-top bytes in X/Y and moves their vanishingly rare overflows
+; through exact out-of-line ripple paths.
+;ABI
+;CPU: mos6502
+;Operation: umul
+;Entry: umult32x32
+;Input x: uint32 = reg:A, x1, x2, x3
+;Input y: uint32 = y0, y1, y2, reg:Y
+;Output z: uint64 = r0, r1, r2, r3, reg:X, reg:Y, reg:A, r7
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;Region Data: cg_sqr_lo_start..cg_sqr_lo_end, cg_sqr_hi_start..cg_sqr_hi_end, cg_neg_lo_start..cg_neg_lo_end, cg_neg_hi_start..cg_neg_hi_end
+;End ABI
+;Results
+;Status: validated
+;Validation level: validate
+;Validation cases: 2097152
+;Validation errors: 0
+;Validation complete: no
+;Edge cases: 1049350
+;Edge errors: 0
+;Edge complete: yes
+;Profile distribution: uniform
+;Profile cases: 2097152
+;Profile errors: 0
+;Profile complete: no
+;Min cycles: 582
+;Max cycles: 767
+;Avg cycles: 649.822007
+;Stddev cycles: 22.631150
+;ZP bytes: 31
+;Code bytes: 277
+;Data bytes: 2044
+;Total bytes: 2321
+;End Results
+
+!cpu 6510
+
+neg_lo_1 = $02
+sqr_hi_1 = $04
+neg_lo_2 = $06
+sqr_hi_2 = $08
+neg_lo_3 = $0a
+sqr_hi_3 = $0c
+
+z00 = $0e : z10 = $0f : z20 = $10 : z30 = $11
+z02 = $12 : z12 = $13 : z22 = $14 : z32 = $15
+z03 = $16 : z13 = $17 : z23 = $18 : z33 = $19
+z14 = $1a : z24 = $1b : z34 = $1c
+z01 = $1d : z11 = $1e : z21 = $1f : z31 = $20
+
+x1 = sqr_hi_1
+x2 = sqr_hi_2
+x3 = sqr_hi_3
+y0 = $0e : y1 = $0f : y2 = $10
+r0 = $0e : r1 = $0f : r2 = $10 : r3 = $11 : r7 = $1c
+
+* = $02
+cg_zp_start
+        !byte 0, >neg_sqr_lo
+        !byte 0, >sqr_hi
+        !byte 0, >neg_sqr_lo
+        !byte 0, >sqr_hi
+        !byte 0, >neg_sqr_lo
+        !byte 0, >sqr_hi
+        !fill 19, 0
+cg_zp_end
+
+* = $5800
+cg_code_start
+umult32x32
+        sta _sqr_lo_0+1
+        sta _sqr_hi_0+1
+        eor #$ff
+        sta _neg_lo_0+1
+        sta _neg_hi_0+1
+
+        lda x1
+        sta _sqr_lo_1+1
+        eor #$ff
+        sta neg_lo_1
+        sta _neg_hi_1+1
+
+        lda x2
+        sta _sqr_lo_2+1
+        eor #$ff
+        sta neg_lo_2
+        sta _neg_hi_2+1
+
+        lda x3
+        sta _sqr_lo_3+1
+        eor #$ff
+        sta neg_lo_3
+        sta _neg_hi_3+1
+
+umult32x32_same_x
+        ldx #3
+        sec
+        bcs kernel
+
+H10
+        clc
+        adc (neg_lo_1),y
+        sta z01,x
+        lda #1
+        adc (sqr_hi_1),y
+        bcc p10_tail
+H20
+        clc
+        adc (neg_lo_2),y
+        sta z02,x
+        lda #1
+        adc (sqr_hi_2),y
+        bcc p20_tail
+H30
+        clc
+        adc (neg_lo_3),y
+        sta z03,x
+        lda #1
+        adc (sqr_hi_3),y
+        bcc p30_tail
+
+row_loop
+        sta z14,x
+        ldy y0,x
+
+kernel
+_sqr_lo_0
+        lda sqr_lo,y
+_neg_lo_0
+        adc neg_sqr_lo,y
+        sta z00,x
+_sqr_hi_0
+        lda sqr_hi,y
+_neg_hi_0
+        adc neg_sqr_hi,y
+
+_sqr_lo_1
+        adc sqr_lo,y
+        bcs H10
+        adc (neg_lo_1),y
+        sta z01,x
+        lda (sqr_hi_1),y
+p10_tail
+_neg_hi_1
+        adc neg_sqr_hi,y
+
+_sqr_lo_2
+        adc sqr_lo,y
+        bcs H20
+        adc (neg_lo_2),y
+        sta z02,x
+        lda (sqr_hi_2),y
+p20_tail
+_neg_hi_2
+        adc neg_sqr_hi,y
+
+_sqr_lo_3
+        adc sqr_lo,y
+        bcs H30
+        adc (neg_lo_3),y
+        sta z03,x
+        lda (sqr_hi_3),y
+p30_tail
+_neg_hi_3
+        adc neg_sqr_hi,y
+
+        dex
+        bpl row_loop
+
+; Direct column summation.  Each intermediate carry is materialized by
+; incrementing a byte in the next column, then C is cleared before continuing.
+summation
+        tax
+        ldy z14
+        clc
+
+        lda z01
+        adc z10
+        sta r1
+
+        lda z11
+        adc z20
+        bcc c2a_done
+        inc z30
+        beq c2a_overflow
+        clc
+c2a_done
+        adc z02
+        sta r2
+
+        lda z12
+        adc z03
+        bcc c3a_done
+        inx
+        clc
+c3a_done
+        adc z30
+        bcc c3b_done
+        inx
+        beq c3b_overflow
+        clc
+c3b_done
+        adc z21
+        sta r3
+
+        txa
+        adc z13
+        bcc c4a_done
+        iny
+        clc
+c4a_done
+        adc z31
+        bcc c4b_done
+        iny
+        beq c4b_overflow
+        clc
+c4b_done
+        adc z22
+        tax
+
+        tya
+        adc z32
+        bcc c5a_done
+        inc z24
+        clc
+c5a_done
+        adc z23
+        tay
+
+        lda z33
+        adc z24
+        bcs final_carry
+        rts
+final_carry
+        inc r7
+        rts
+
+; Rare ripple when materializing the first column-2 carry into a $ff z30.
+; Follow row 3 upward so every possible wrap remains exact.
+c2a_overflow
+        inc z31
+        bne c2a_overflow_done
+        inc z32
+        bne c2a_overflow_done
+        inc z33
+        bne c2a_overflow_done
+        inc z34
+c2a_overflow_done
+        clc
+        jmp c2a_done
+
+; z04 and z14 are top bytes of 32x8 rows, hence at most $fe before
+; summation.  They remain in X and Y until consumed, so their carry bumps
+; use two-cycle INX/INY.  Only the second possible increment can wrap.  The
+; c3 carry enters z32 (column 5); the c4 carry enters z33 (column 6), with
+; each path rippling upward through row 3 as required.
+c3b_overflow
+        inc z32
+        bne c3b_overflow_done
+        inc z33
+        bne c3b_overflow_done
+        inc z34
+c3b_overflow_done
+        clc
+        jmp c3b_done
+c4b_overflow
+        inc z33
+        bne c4b_overflow_done
+        inc z34
+c4b_overflow_done
+        clc
+        jmp c4b_done
+cg_code_end
+
+init
+        lda #>neg_sqr_lo
+        sta neg_lo_1+1
+        sta neg_lo_2+1
+        sta neg_lo_3+1
+        lda #>sqr_hi
+        sta sqr_hi_1+1
+        sta sqr_hi_2+1
+        sta sqr_hi_3+1
+        rts
+
+* = $7000
+cg_sqr_lo_start
+sqr_lo
+!for i,0,510 { !byte <((i*i + 202*(i&1))/4) }
+cg_sqr_lo_end
+
+!align 255, 0, 0
+cg_sqr_hi_start
+sqr_hi
+!for i,0,510 { !byte >((i*i + 202*(i&1))/4) }
+cg_sqr_hi_end
+
+!align 255, 0, 0
+cg_neg_lo_start
+neg_sqr_lo
+!for i,0,510 { !byte 255-(<(((255-i)*(255-i)+202*((255-i)&1))/4)) }
+cg_neg_lo_end
+
+!align 255, 0, 0
+cg_neg_hi_start
+neg_sqr_hi
+!for i,0,510 { !byte 255-(>(((255-i)*(255-i)+202*((255-i)&1))/4)) }
+cg_neg_hi_end

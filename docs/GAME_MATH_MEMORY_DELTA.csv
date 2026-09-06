@@ -1,0 +1,5 @@
+profile,game_math_sparse_c64_bytes,smul16_init_repair_bytes,new_game_math_zp_bytes,new_game_math_ram_scratch_bytes,game_math_reu_reserved_bytes
+v1_balanced,4487,0,0,24,0
+v2_pareto_fast,4500,128,24,0,0
+v3_reu_512k,4511,130,24,0,131072
+v4_reu_16m,3628,130,24,0,262144

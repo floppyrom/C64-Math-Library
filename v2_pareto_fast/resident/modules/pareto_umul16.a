@@ -1,0 +1,132 @@
+; ============================================================================
+; Pareto-Fast profile module — UMUL16 integrated 3xUMUL8
+; ============================================================================
+; This is the size-aware fast selection used by C64 Math API v1-PF.
+; New size-aware resident kernel: avoids 113 executable-ZP bytes while targeting a much lower cycle count than the portable four-product v1 core.
+; Public adaptation is outside the measured native kernel unless noted.
+; Decimal mode must be clear. A/X/Y are volatile.
+; ============================================================================
+!cpu 6502
+; Unsigned 16x16 -> 32, three-UMUL8 difference-product construction.
+; This integration-specific kernel exists because the 156-cycle Firemonger
+; record spends 113 bytes of executable ZP. For the Pareto-Fast resident build
+; we instead reuse the selected 45.49-cycle UMUL8 table bank three times.
+;
+; Let x=a+256b and y=c+256d. With M=a*c, L=b*d and
+; Q=|b-a|*|d-c|:
+;   cross = M + L - Q   when (b-a),(d-c) have the same sign
+;   cross = M + L + Q   otherwise
+;   x*y   = M + (cross<<8) + (L<<16)
+;
+; Public x/y are preserved. Output is written directly to public z0..z3.
+; C is normalized clear. Scratch shares $10-$1B.
+PX0=$c000 : PX1=$c001 : PY0=$c004 : PY1=$c005
+PZ0=$c008 : PZ1=$c009 : PZ2=$c00a : PZ3=$c00b
+UMUL8_CORE=$5300
+MLO=$10 : MHI=$11 : LLO=$12 : LHI=$13 : SIGN=$14 : QHI=$15 : C0=$16 : C1=$17 : C2=$18 : QLO=$19
+
+*=$5400
+umul16_pareto:
+        ; math_init keeps the selected UMUL8 pointer highs in isolated ZP.
+        ; M = a*c
+        ldx PX0
+        ldy PY0
+        jsr UMUL8_CORE
+        sta MHI
+        lda $3d
+        sta MLO
+        sta PZ0
+
+        ; L = b*d
+        ldx PX1
+        ldy PY1
+        jsr UMUL8_CORE
+        sta LHI
+        lda $3d
+        sta LLO
+
+        ; u=|b-a| in X, SIGN bit0 = sign(b-a)
+        lda #0
+        sta SIGN
+        lda PX1
+        sec
+        sbc PX0
+        bcs ux_ready
+        dec SIGN                  ; $ff means first difference negative
+        eor #$ff
+        clc
+        adc #1
+ux_ready:
+        tax
+
+        ; v=|d-c| in Y; toggle SIGN parity when negative.
+        lda PY1
+        sec
+        sbc PY0
+        bcs vy_ready
+        eor #$ff
+        clc
+        adc #1
+        inc SIGN                  ; $ff->0 same-sign; 0->1 opposite-sign
+vy_ready:
+        tay
+
+        ; Q = u*v
+        jsr UMUL8_CORE
+        sta QHI
+        lda $3d
+        sta QLO                   ; keep Q low outside the UMUL8 persistent block
+
+        ; S = M + L as 17-bit C2:C1:C0.
+        lda MLO
+        clc
+        adc LLO
+        sta C0
+        lda MHI
+        adc LHI
+        sta C1
+        lda #0
+        adc #0
+        sta C2
+
+        ; SIGN==0 means difference signs matched -> S-Q. Nonzero -> S+Q.
+        lda SIGN
+        bne cross_add
+cross_sub:
+        sec
+        lda C0
+        sbc QLO
+        sta C0
+        lda C1
+        sbc QHI
+        sta C1
+        lda C2
+        sbc #0
+        sta C2
+        bcs combine               ; mathematical cross is nonnegative
+cross_add:
+        clc
+        lda C0
+        adc QLO
+        sta C0
+        lda C1
+        adc QHI
+        sta C1
+        lda C2
+        adc #0
+        sta C2
+combine:
+        ; z0=M0; add cross<<8 and L<<16 with one carry chain.
+        lda MHI
+        clc
+        adc C0
+        sta PZ1
+        lda LLO
+        adc C1
+        sta PZ2
+        lda LHI
+        adc C2
+        sta PZ3
+        clc
+        rts
+umul16_pareto_end:

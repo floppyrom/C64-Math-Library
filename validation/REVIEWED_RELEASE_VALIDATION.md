@@ -1,0 +1,11 @@
+# Reviewed release validation
+
+This release combines three evidence layers:
+
+1. **Prior exhaustive baseline evidence.** `baseline_prior_final/GAME_MATH_VALIDATION_FINAL.json`, `baseline_prior_final/GAME_MATH_ACCURACY_FINAL.json` and `baseline_prior_final/GAME_MATH_INTEGRATION_AUDIT_FINAL.json` come from the previously validated FINAL image. The fast-kernel delta audit proves that every resident byte outside the documented ISQRT32 target/support ranges remains identical, so those results continue to apply to the unchanged routines.
+2. **Fast ISQRT32 evidence.** `review/ISQRT32_FAST_VALIDATION.json` runs 5,097 boundary, perfect-square-neighbourhood and deterministic-random cases per profile, checks the exact root, input preservation and carry contract. `review/ISQRT32_FAST_PERFORMANCE_4130.json` remeasures the same 4,130-case performance corpus used in the prior table.
+3. **Source-relocation evidence.** `source_relocation/ALTERNATE_MAP_VALIDATION.json` executes all 45 public entries at a deliberately different assembly-time map: 4,172 calls per profile, 16,688 total. `DETERMINISTIC_REBUILD.json` proves clean rebuild identity for all reference/alternate PRGs and generated REU images; `../CONFIG_VALIDATION.json` records 27 accepted/rejected configuration cases.
+
+`review/ISQRT32_FAST_DELTA_AUDIT.json` is the bridge between the prior exhaustive baseline and this optimized release: it records zero modified bytes outside the documented ISQRT32 public-target/old-entry/new-kernel support ranges (plus V4 square planes).
+
+4. **Turbo relocation evidence.** `turbo_relocation/TURBO_RELOCATION_VALIDATION.json` exercises V3/V4 Turbo16/Turbo32 BEGIN/CALL/END in both reference and relocated layouts: 17,164 product calls plus 32 BEGIN/END lifecycle calls (17,196 Turbo API calls total), exact ZP restoration, second-batch reuse, moved overlay REU banks, and cycle-vector identity. `acme/ACME_SOURCE_BUILD_VALIDATION.json` independently assembles all eight reference/alternate Turbo overlays and four endpoint overlays. `turbo_relocation/TURBO_BOUNDARY_SWEEP.json` adds 3,556 exact products at the minimum/maximum supported ZP origins and high REU-bank endpoints.

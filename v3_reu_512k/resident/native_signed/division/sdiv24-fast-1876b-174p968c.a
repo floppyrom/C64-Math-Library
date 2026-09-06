@@ -1,0 +1,1145 @@
+;ABI
+;CPU: mos6502
+;Operation: sdiv
+;Entry: div_s24
+;Input n: int24 = sn0, sn1, sn2
+;Input d: int24 = sdin0, sdin1, sdin2
+;Output q: int24 = q0, q1, q2
+;Remainder r: int24 = r0, r1, r2
+;Region ZP: sg_zp_start..sg_zp_end, cg_zp_start..cg_zp_end
+;Region Code: sg_code_start..sg_code_end, cg_code_start..cg_code_end
+;End ABI
+; ============================================================================
+; FIREMONGER C64 DIVISION REFERENCE — PUBLICATION COPY
+; Family       : sdiv24
+; Tier         : fast
+; Target       : NMOS 6502/6510, decimal mode clear
+; Measurement  : canonical 2,097,152-case SplitMix64 corpus; seed $C0FFEE where random
+; Timing       : entry instruction through final RTS; caller JSR excluded
+; Avg cycles   : 174.967714
+; Min / Max    : 64 / 2408
+; Stddev       : 172.247202
+; Resident     : 1876 bytes (Code 1876 + Data 0); ZP 21 bytes separate
+; Validation   : 2097152 cases, 0 errors
+; Edge suite   : 23336 cases in canonical run, 0 errors
+; Architecture : Four sign-case continuations; table-free high-speed signed 24-bit.
+;
+; NOTE: this publication block is comments only and does not alter the exact
+; assembled image that produced the result. Raw canonical JSON is supplied
+; beside the source when available. See TECHNICAL_ASSESSMENT.md for caveats.
+; ============================================================================
+!cpu 6502
+*=$10
+cg_zp_start:
+n0: !byte 0
+n1: !byte 0
+n2: !byte 0
+d0: !byte 0
+d1: !byte 0
+d2: !byte 0
+q0: !byte 0
+q1: !byte 0
+q2: !byte 0
+r0: !byte 0
+r1: !byte 0
+r2: !byte 0
+sd0: !byte 0
+sd1: !byte 0
+sd2: !byte 0
+cg_zp_end:
+*=$0008
+sg_zp_start:
+sn0: !byte 0
+sn1: !byte 0
+sn2: !byte 0
+sdin0: !byte 0
+sdin1: !byte 0
+sdin2: !byte 0
+sg_zp_end:
+*=$0b00
+sg_code_start:
+div_s24:
+        lda sn2
+        bpl s_npos_entry
+        jmp s_nneg_dispatch
+s_npos_entry:
+        lda sdin2
+        bpl s_case_pp
+        jmp s_case_pn
+
+s_case_pp:
+        ; Positive divisor can be zero.  Decide q=0 on untouched signed bytes.
+        lda sdin0
+        ora sdin1
+        ora sdin2
+        bne s_pp_dnz
+        jmp s_zero
+s_pp_dnz:
+        !byte $a7,sn2
+        cmp sdin2
+        bcs s_pp_hge
+        jmp s_qzero
+s_pp_hge:
+        bne s_pp_ge
+        lda sn1
+        cmp sdin1
+        bcs s_pp_mge
+        jmp s_qzero
+s_pp_mge:
+        bne s_pp_ge
+        lda sn0
+        cmp sdin0
+        bcs s_pp_ge
+        jmp s_qzero
+s_pp_ge:
+        lda sn0
+        sta n0
+        lda sn1
+        sta n1
+        stx n2
+        lda sdin0
+        sta d0
+        lda sdin1
+        sta d1
+        lda sdin2
+        sta d2
+        jmp s_mag_pp
+
+s_case_pn:
+        ; n positive, d negative: form only |d| before q=0 test.
+        lda #0
+        sec
+        sbc sdin0
+        sta d0
+        lda #0
+        sbc sdin1
+        sta d1
+        lda #0
+        sbc sdin2
+        sta d2
+        !byte $a7,sn2
+        cmp d2
+        bcs s_pn_hge
+        jmp s_qzero
+s_pn_hge:
+        bne s_pn_ge
+        lda sn1
+        cmp d1
+        bcs s_pn_mge
+        jmp s_qzero
+s_pn_mge:
+        bne s_pn_ge
+        lda sn0
+        cmp d0
+        bcs s_pn_ge
+        jmp s_qzero
+s_pn_ge:
+        lda sn0
+        sta n0
+        lda sn1
+        sta n1
+        stx n2
+        jmp s_mag_pn
+
+s_nneg_dispatch:
+        lda sdin2
+        bmi s_case_nn
+
+s_case_np:
+        ; n negative, d positive: zero-check d, then form only |n|.
+        lda sdin0
+        ora sdin1
+        ora sdin2
+        bne s_np_dnz
+        jmp s_zero
+s_np_dnz:
+        lda #0
+        sec
+        sbc sn0
+        sta n0
+        lda #0
+        sbc sn1
+        sta n1
+        lda #0
+        sbc sn2
+        sta n2
+        !byte $a7,n2
+        cmp sdin2
+        bcs s_np_hge
+        jmp s_qzero
+s_np_hge:
+        bne s_np_ge
+        lda n1
+        cmp sdin1
+        bcs s_np_mge
+        jmp s_qzero
+s_np_mge:
+        bne s_np_ge
+        lda n0
+        cmp sdin0
+        bcs s_np_ge
+        jmp s_qzero
+s_np_ge:
+        lda sdin0
+        sta d0
+        lda sdin1
+        sta d1
+        lda sdin2
+        sta d2
+        jmp s_mag_np
+
+s_case_nn:
+        ; Both negative: raw two's-complement ordering is reverse magnitude ordering.
+        !byte $a7,sn2
+        cmp sdin2
+        bcc s_nn_ge
+        beq s_nn_heq
+        jmp s_qzero
+s_nn_heq:
+        lda sn1
+        cmp sdin1
+        bcc s_nn_ge
+        beq s_nn_meq
+        jmp s_qzero
+s_nn_meq:
+        lda sn0
+        cmp sdin0
+        bcc s_nn_ge
+        beq s_nn_ge
+        jmp s_qzero
+s_nn_ge:
+        lda #0
+        sec
+        sbc sn0
+        sta n0
+        lda #0
+        sbc sn1
+        sta n1
+        lda #0
+        sbc sn2
+        sta n2
+        lda #0
+        sec
+        sbc sdin0
+        sta d0
+        lda #0
+        sbc sdin1
+        sta d1
+        lda #0
+        sbc sdin2
+        sta d2
+
+        jmp s_mag_nn
+
+s_mag_pp:
+        sec
+        lda n0
+        sbc d0
+        sta r0
+        lda n1
+        sbc d1
+        sta r1
+        lda n2
+        sbc d2
+        sta r2
+        cmp d2
+        bcc s_qone_pp
+        bne s_qge2_pp
+        lda r1
+        cmp d1
+        bcc s_qone_pp
+        bne s_qge2_pp
+        lda r0
+        cmp d0
+        bcs s_qge2_pp
+s_qone_pp:
+        lda #1
+        sta q0
+        lda #0
+        sta q1
+        sta q2
+        clc
+        rts
+s_qge2_pp:
+        ldx #0
+        stx q1
+        stx q2
+        jsr q1_sub_mem
+        jmp s_out_pp
+
+s_mag_pn:
+        sec
+        lda n0
+        sbc d0
+        sta r0
+        lda n1
+        sbc d1
+        sta r1
+        lda n2
+        sbc d2
+        sta r2
+        cmp d2
+        bcc s_qone_pn
+        bne s_qge2_pn
+        lda r1
+        cmp d1
+        bcc s_qone_pn
+        bne s_qge2_pn
+        lda r0
+        cmp d0
+        bcs s_qge2_pn
+s_qone_pn:
+        lda #$ff
+        sta q0
+        sta q1
+        sta q2
+        clc
+        rts
+s_qge2_pn:
+        ldx #0
+        stx q1
+        stx q2
+        jsr q1_sub_mem
+        jmp s_neg_q_out
+
+s_mag_np:
+        sec
+        lda n0
+        sbc d0
+        sta r0
+        lda n1
+        sbc d1
+        sta r1
+        lda n2
+        sbc d2
+        sta r2
+        cmp d2
+        bcc s_qone_np
+        bne s_qge2_np
+        lda r1
+        cmp d1
+        bcc s_qone_np
+        bne s_qge2_np
+        lda r0
+        cmp d0
+        bcs s_qge2_np
+s_qone_np:
+        lda #0
+        sec
+        sbc r0
+        sta r0
+        lda #0
+        sbc r1
+        sta r1
+        lda #0
+        sbc r2
+        sta r2
+        lda #$ff
+        sta q0
+        sta q1
+        sta q2
+        clc
+        rts
+s_qge2_np:
+        ldx #0
+        stx q1
+        stx q2
+        jsr q1_sub_mem
+        jmp s_neg_rq_out
+
+s_mag_nn:
+        sec
+        lda n0
+        sbc d0
+        sta r0
+        lda n1
+        sbc d1
+        sta r1
+        lda n2
+        sbc d2
+        sta r2
+        cmp d2
+        bcc s_qone_nn
+        bne s_qge2_nn
+        lda r1
+        cmp d1
+        bcc s_qone_nn
+        bne s_qge2_nn
+        lda r0
+        cmp d0
+        bcs s_qge2_nn
+s_qone_nn:
+        lda #0
+        sec
+        sbc r0
+        sta r0
+        lda #0
+        sbc r1
+        sta r1
+        lda #0
+        sbc r2
+        sta r2
+        lda #1
+        sta q0
+        lda #0
+        sta q1
+        sta q2
+        clc
+        rts
+s_qge2_nn:
+        ldx #0
+        stx q1
+        stx q2
+        jsr q1_sub_mem
+        jmp s_neg_r_out
+
+s_qzero:
+        lda #0
+        sta q0
+        sta q1
+        sta q2
+        lda sn0
+        sta r0
+        lda sn1
+        sta r1
+        lda sn2
+        sta r2
+        clc
+        rts
+
+s_out_pp:
+        clc
+        rts
+s_neg_rq_out:
+        lda #0
+        sec
+        sbc r0
+        sta r0
+        lda #0
+        sbc r1
+        sta r1
+        lda #0
+        sbc r2
+        sta r2
+s_neg_q_out:
+        lda #0
+        sec
+        sbc q0
+        sta q0
+        lda #0
+        sbc q1
+        sta q1
+        lda #0
+        sbc q2
+        sta q2
+        clc
+        rts
+s_neg_r_out:
+        lda #0
+        sec
+        sbc r0
+        sta r0
+        lda #0
+        sbc r1
+        sta r1
+        lda #0
+        sbc r2
+        sta r2
+        clc
+        rts
+s_zero:
+        lda #0
+        sta q0
+        sta q1
+        sta q2
+        sta r0
+        sta r1
+        sta r2
+        sec
+        rts
+sg_code_end:
+
+*=$1000
+cg_code_start:
+zero:
+ lda #0
+ ldx #5
+zero_loop:
+ sta q0,x
+ dex
+ bpl zero_loop
+ sec
+ rts
+div_u24:
+ !byte $a7,n2
+ cmp d2
+ bcc qzero
+ beq high_equal
+ lda d2
+ beq low_d2
+ jmp high_gt
+high_equal:
+ lda d2
+ beq low_d2_equal
+ lda n1
+ cmp d1
+ bcc qzero
+ bne equal_ge
+ lda n0
+ cmp d0
+ bcc qzero
+equal_ge:
+ lda n0
+ sbc d0
+ sta r0
+ lda n1
+ sbc d1
+ sta r1
+ lda n2
+ sbc d2
+ sta r2
+ !byte $0b,$00
+ sta q1
+ sta q2
+ lda #1
+ sta q0
+ rts
+low_d2_equal:
+ lda d0
+ ora d1
+ beq zero
+ lda n1
+ cmp d1
+ bcc qzero
+ bne low_tail0
+ lda n0
+ cmp d0
+ bcc qzero
+ bcs low_tail0
+low_d2:
+ lda d0
+ ora d1
+ beq zero
+low_tail0:
+ lda n0
+ sta r0
+ lda n1
+ sta r1
+ lda n2
+ sta r2
+ lda #0
+ sta tail_bias+1
+ jmp tail_setup
+qzero:
+ lda #0
+ sta q0
+ sta q1
+ sta q2
+ lda n0
+ sta r0
+ lda n1
+ sta r1
+ stx r2
+ rts
+high_gt:
+ lda n0
+ sec
+ sbc d0
+ sta r0
+ lda n1
+ sbc d1
+ sta r1
+ lda n2
+ sbc d2
+ ldx #0
+ stx q1
+ stx q2
+q1_test:
+ cmp d2
+ bcc q1_ret_live
+ bne q1_sub_live
+ sta r2
+ lda r1
+ cmp d1
+ bcc q1_ret_mem
+ bne q1_sub_mem
+ lda r0
+ cmp d0
+ bcs q1_sub_mem
+q1_ret_mem:
+ lda #1
+ sta q0
+ rts
+q1_ret_live:
+ sta r2
+ lda #1
+ sta q0
+ rts
+q1_sub_live:
+ sta r2
+q1_sub_mem:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+q2_test:
+ cmp d2
+ bcc q2_ret_live
+ bne q2_sub_live
+ sta r2
+ lda r1
+ cmp d1
+ bcc q2_ret_mem
+ bne q2_sub_mem
+ lda r0
+ cmp d0
+ bcs q2_sub_mem
+q2_ret_mem:
+ lda #2
+ sta q0
+ rts
+q2_ret_live:
+ sta r2
+ lda #2
+ sta q0
+ rts
+q2_sub_live:
+ sta r2
+q2_sub_mem:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ lda d2
+ cmp #13
+ bcc tail3_prepare
+ jmp state3
+tail3_prepare:
+ lda #3
+ sta tail_bias+1
+ jmp tail_setup
+state3:
+ lda r2
+ cmp d2
+ bcc ret3
+ bne sub3
+ lda r1
+ cmp d1
+ bcc ret3
+ bne sub3
+ lda r0
+ cmp d0
+ bcs sub3
+ret3:
+ lda #3
+ sta q0
+ rts
+sub3:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state4
+state4:
+ lda r2
+ cmp d2
+ bcc ret4
+ bne sub4
+ lda r1
+ cmp d1
+ bcc ret4
+ bne sub4
+ lda r0
+ cmp d0
+ bcs sub4
+ret4:
+ lda #4
+ sta q0
+ rts
+sub4:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state5
+state5:
+ lda r2
+ cmp d2
+ bcc ret5
+ bne sub5
+ lda r1
+ cmp d1
+ bcc ret5
+ bne sub5
+ lda r0
+ cmp d0
+ bcs sub5
+ret5:
+ lda #5
+ sta q0
+ rts
+sub5:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state6
+state6:
+ lda r2
+ cmp d2
+ bcc ret6
+ bne sub6
+ lda r1
+ cmp d1
+ bcc ret6
+ bne sub6
+ lda r0
+ cmp d0
+ bcs sub6
+ret6:
+ lda #6
+ sta q0
+ rts
+sub6:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state7
+state7:
+ lda r2
+ cmp d2
+ bcc ret7
+ bne sub7
+ lda r1
+ cmp d1
+ bcc ret7
+ bne sub7
+ lda r0
+ cmp d0
+ bcs sub7
+ret7:
+ lda #7
+ sta q0
+ rts
+sub7:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state8
+state8:
+ lda r2
+ cmp d2
+ bcc ret8
+ bne sub8
+ lda r1
+ cmp d1
+ bcc ret8
+ bne sub8
+ lda r0
+ cmp d0
+ bcs sub8
+ret8:
+ lda #8
+ sta q0
+ rts
+sub8:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state9
+state9:
+ lda r2
+ cmp d2
+ bcc ret9
+ bne sub9
+ lda r1
+ cmp d1
+ bcc ret9
+ bne sub9
+ lda r0
+ cmp d0
+ bcs sub9
+ret9:
+ lda #9
+ sta q0
+ rts
+sub9:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state10
+state10:
+ lda r2
+ cmp d2
+ bcc ret10
+ bne sub10
+ lda r1
+ cmp d1
+ bcc ret10
+ bne sub10
+ lda r0
+ cmp d0
+ bcs sub10
+ret10:
+ lda #10
+ sta q0
+ rts
+sub10:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state11
+state11:
+ lda r2
+ cmp d2
+ bcc ret11
+ bne sub11
+ lda r1
+ cmp d1
+ bcc ret11
+ bne sub11
+ lda r0
+ cmp d0
+ bcs sub11
+ret11:
+ lda #11
+ sta q0
+ rts
+sub11:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state12
+state12:
+ lda r2
+ cmp d2
+ bcc ret12
+ bne sub12
+ lda r1
+ cmp d1
+ bcc ret12
+ bne sub12
+ lda r0
+ cmp d0
+ bcs sub12
+ret12:
+ lda #12
+ sta q0
+ rts
+sub12:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state13
+state13:
+ lda r2
+ cmp d2
+ bcc ret13
+ bne sub13
+ lda r1
+ cmp d1
+ bcc ret13
+ bne sub13
+ lda r0
+ cmp d0
+ bcs sub13
+ret13:
+ lda #13
+ sta q0
+ rts
+sub13:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state14
+state14:
+ lda r2
+ cmp d2
+ bcc ret14
+ bne sub14
+ lda r1
+ cmp d1
+ bcc ret14
+ bne sub14
+ lda r0
+ cmp d0
+ bcs sub14
+ret14:
+ lda #14
+ sta q0
+ rts
+sub14:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state15
+state15:
+ lda r2
+ cmp d2
+ bcc ret15
+ bne sub15
+ lda r1
+ cmp d1
+ bcc ret15
+ bne sub15
+ lda r0
+ cmp d0
+ bcs sub15
+ret15:
+ lda #15
+ sta q0
+ rts
+sub15:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state16
+state16:
+ lda r2
+ cmp d2
+ bcc ret16
+ bne sub16
+ lda r1
+ cmp d1
+ bcc ret16
+ bne sub16
+ lda r0
+ cmp d0
+ bcs sub16
+ret16:
+ lda #16
+ sta q0
+ rts
+sub16:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state17
+state17:
+ lda r2
+ cmp d2
+ bcc ret17
+ bne sub17
+ lda r1
+ cmp d1
+ bcc ret17
+ bne sub17
+ lda r0
+ cmp d0
+ bcs sub17
+ret17:
+ lda #17
+ sta q0
+ rts
+sub17:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state18
+state18:
+ lda r2
+ cmp d2
+ bcc ret18
+ bne sub18
+ lda r1
+ cmp d1
+ bcc ret18
+ bne sub18
+ lda r0
+ cmp d0
+ bcs sub18
+ret18:
+ lda #18
+ sta q0
+ rts
+sub18:
+ lda r0
+ sbc d0
+ sta r0
+ lda r1
+ sbc d1
+ sta r1
+ lda r2
+ sbc d2
+ sta r2
+ jmp state19
+state19:
+ lda #19
+ sta q0
+ clc
+ rts
+tail_setup:
+ lda d0
+ sta sd0
+ lda d1
+ sta sd1
+ lda d2
+ sta sd2
+ ldx #0
+ stx q0
+ stx q1
+ stx q2
+align:
+ asl sd0
+ rol sd1
+ rol sd2
+ bcs overshoot
+ lda r2
+ cmp sd2
+ bcc overshoot
+ bne align_take
+ lda r1
+ cmp sd1
+ bcc overshoot
+ bne align_take
+ lda r0
+ cmp sd0
+ bcc overshoot
+align_take:
+ inx
+ bne align
+overshoot:
+ ror sd2
+ ror sd1
+ ror sd0
+bits:
+ lda r2
+ cmp sd2
+ bcc no_sub
+ bne do_sub
+ lda r1
+ cmp sd1
+ bcc no_sub
+ bne do_sub
+ lda r0
+ cmp sd0
+ bcc no_sub
+do_sub:
+ lda r0
+ sbc sd0
+ sta r0
+ lda r1
+ sbc sd1
+ sta r1
+ lda r2
+ sbc sd2
+ sta r2
+no_sub:
+ rol q0
+ rol q1
+ rol q2
+ lsr sd2
+ ror sd1
+ ror sd0
+ dex
+ bpl bits
+ lda q0
+ clc
+tail_bias:
+ adc #0
+ sta q0
+ bcc tail_done
+ inc q1
+ bne tail_clear
+ inc q2
+tail_clear:
+ clc
+tail_done:
+ rts
+cg_code_end:

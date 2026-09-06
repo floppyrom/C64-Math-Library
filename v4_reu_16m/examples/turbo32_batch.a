@@ -1,0 +1,19 @@
+; UMUL32 turbo batch example.
+; This is an exclusive overlay because the 241-byte hot kernel occupies
+; reference map $000A-$00FA. Relocatable source builds use TURBO32_ZP_BASE
+; from the generated math_api.inc. The measured break-even is 43 products per batch.
+; For a relocated build, include build_source/<map>/v4_reu_16m/math_api.inc instead.
+!source "../resident/math_api.inc"
+
+* = $2000
+
+        jsr MATH_INIT
+        jsr MATH_REU_UMUL32_BEGIN
+
+        ; Fill math_x0..math_x3 and math_y0..math_y3 before each call.
+        ; Use MATH_REU_UMUL32 repeatedly here.
+        jsr MATH_REU_UMUL32
+
+        jsr MATH_REU_UMUL32_END
+        ; Normal resident API is usable again after END.
+        rts

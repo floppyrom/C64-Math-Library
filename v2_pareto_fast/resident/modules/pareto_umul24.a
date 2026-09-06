@@ -1,0 +1,295 @@
+; ============================================================================
+; Pareto-Fast profile module — UMUL24 unrolled low-ZP Fast
+; ============================================================================
+; This is the size-aware fast selection used by C64 Math API v1-PF.
+; 24 ZP / 2,331 non-ZP native implementation. Chosen over the 144-ZP fused variants: within ~0.5–5.5 cycles while preserving far more C64 zero page.
+; Public adaptation is outside the measured native kernel unless noted.
+; Decimal mode must be clear. A/X/Y are volatile.
+; ============================================================================
+;ABI
+;Entry: umul24
+;CPU: mos6502
+;Operation: umul
+;Input x: uint24 = x0, x1, x2
+;Input y: uint24 = reg:Y, y1, y2
+;Entry A: x[2]
+;Entry X: x[0]
+;Output z: uint48 = z0, z1, z2, z3, z4, reg:A
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;Region Data: cg_sqr_lo_start..cg_sqr_lo_end, cg_sqr_hi_start..cg_sqr_hi_end, cg_neg_sqr_lo_start..cg_neg_sqr_lo_end, cg_neg_sqr_hi_start..cg_neg_sqr_hi_end
+;End ABI
+;Results
+;Status: validated
+;Validation level: validate
+;Validation cases: 2097152
+;Validation errors: 0
+;Validation complete: yes
+;Edge cases: 590353
+;Edge errors: 0
+;Edge complete: yes
+;Profile distribution: uniform
+;Profile cases: 2097152
+;Profile errors: 0
+;Profile complete: no
+;Min cycles: 342
+;Max cycles: 421
+;Avg cycles: 369.784575
+;Stddev cycles: 12.396318
+;ZP bytes: 24
+;Code bytes: 287
+;Data bytes: 2044
+;Total bytes: 2331
+;End Results
+;Function:
+;(z5..z0) = (x2;x1;x0) * (y2;y1;y0), unsigned
+
+!cpu 6510
+EVEN = $00
+ODD  = $ca
+
+* = $21
+cg_zp_start
+x0
+p_sqr_lo_0 !byte 0 : !byte >sqr_lo
+x1
+p_sqr_lo_1 !byte 0 : !byte >sqr_lo
+x2
+p_sqr_lo_2 !byte 0 : !byte >sqr_lo
+p_sqr_hi_0 !byte 0 : !byte >sqr_hi
+p_sqr_hi_1 !byte 0 : !byte >sqr_hi
+p_sqr_hi_2 !byte 0 : !byte >sqr_hi
+p_neg_lo_0 !byte 0 : !byte >neg_sqr_lo
+p_neg_lo_1 !byte 0 : !byte >neg_sqr_lo
+p_neg_lo_2 !byte 0 : !byte >neg_sqr_lo
+p_neg_hi_0 !byte 0 : !byte >neg_sqr_hi
+p_neg_hi_1 !byte 0 : !byte >neg_sqr_hi
+p_neg_hi_2 !byte 0 : !byte >neg_sqr_hi
+cg_zp_end
+; z1..z4 overlay pointer low bytes, all rebuilt on every call
+; z0 is written during row 0 while every pointer is still live,
+; so it is the one result byte that sits outside the page.
+!addr z1 = $2f
+!addr z2 = $31
+!addr z3 = $33
+!addr z4 = $35
+
+* = $5600
+cg_code_start
+umul24
+        sta+1 p_sqr_hi_2          ; A = x2 on entry
+        eor #$ff
+        sta+1 p_neg_lo_2
+        sta+1 p_neg_hi_2
+        txa                       ; X = x0 on entry
+        sta+1 p_sqr_hi_0
+        eor #$ff
+        sta+1 p_neg_lo_0
+        sta+1 p_neg_hi_0
+        lda+1 x1
+        sta+1 p_sqr_hi_1
+        eor #$ff
+        sta+1 p_neg_lo_1
+        sta+1 p_neg_hi_1
+        sec                       ; one carry seeds all three rows
+
+; ---- row 0 ----
+row0
+        lda (p_sqr_lo_0),y
+        adc (p_neg_lo_0),y
+        sta+2 z0
+        lda (p_sqr_hi_0),y
+        adc (p_neg_hi_0),y
+        adc (p_sqr_lo_1),y
+        bcs h0_1               ; the fused column carried twice
+b0_1
+        adc (p_neg_lo_1),y
+        sta+2 z01_v
+        lda (p_sqr_hi_1),y
+        adc (p_neg_hi_1),y
+        adc (p_sqr_lo_2),y
+        bcs h0_2               ; the fused column carried twice
+b0_2
+        adc (p_neg_lo_2),y
+        sta+2 z02_v
+        lda (p_sqr_hi_2),y
+t0_2
+        adc (p_neg_hi_2),y
+        sta+2 z03_v
+y1 = *+1
+        ldy #0
+
+; ---- row 1 ----
+row1
+        lda (p_sqr_lo_0),y
+        adc (p_neg_lo_0),y
+        sta+2 z10_v
+        lda (p_sqr_hi_0),y
+        adc (p_neg_hi_0),y
+        adc (p_sqr_lo_1),y
+        bcs h1_1               ; the fused column carried twice
+b1_1
+        adc (p_neg_lo_1),y
+        sta+2 z11_v
+        lda (p_sqr_hi_1),y
+        adc (p_neg_hi_1),y
+        adc (p_sqr_lo_2),y
+        bcs h1_2               ; the fused column carried twice
+b1_2
+        adc (p_neg_lo_2),y
+        sta+2 z12_v
+        lda (p_sqr_hi_2),y
+t1_2
+        adc (p_neg_hi_2),y
+        sta+2 z13_v
+y2 = *+1
+        ldy #0
+        jmp row2
+
+; ---- cold carry repair ----
+h0_1
+        clc
+        adc (p_neg_lo_1),y
+        sta+2 z01_v
+        lda #1                    ; the column carry set aside
+        adc (p_sqr_hi_1),y
+        adc (p_neg_hi_1),y
+        adc (p_sqr_lo_2),y
+        bcc b0_2
+h0_2
+        clc
+        adc (p_neg_lo_2),y
+        sta+2 z02_v
+        lda #1                    ; the column carry set aside
+        adc (p_sqr_hi_2),y
+        jmp t0_2
+h1_1
+        clc
+        adc (p_neg_lo_1),y
+        sta+2 z11_v
+        lda #1                    ; the column carry set aside
+        adc (p_sqr_hi_1),y
+        adc (p_neg_hi_1),y
+        adc (p_sqr_lo_2),y
+        bcc b1_2
+h1_2
+        clc
+        adc (p_neg_lo_2),y
+        sta+2 z12_v
+        lda #1                    ; the column carry set aside
+        adc (p_sqr_hi_2),y
+        jmp t1_2
+h2_1
+        clc
+        adc (p_neg_lo_1),y
+        sta+2 z21_v
+        lda #1                    ; the column carry set aside
+        adc (p_sqr_hi_1),y
+        adc (p_neg_hi_1),y
+        adc (p_sqr_lo_2),y
+        bcc b2_2
+h2_2
+        clc
+        adc (p_neg_lo_2),y
+        sta+2 z22_v
+        lda #1                    ; the column carry set aside
+        adc (p_sqr_hi_2),y
+        jmp t2_2
+
+; ---- row 2 ----
+row2
+        lda (p_sqr_lo_0),y
+        adc (p_neg_lo_0),y
+        sta+2 z20_v
+        lda (p_sqr_hi_0),y
+        adc (p_neg_hi_0),y
+        adc (p_sqr_lo_1),y
+        bcs h2_1               ; the fused column carried twice
+b2_1
+        adc (p_neg_lo_1),y
+        sta+2 z21_v
+        lda (p_sqr_hi_1),y
+        adc (p_neg_hi_1),y
+        adc (p_sqr_lo_2),y
+        bcs h2_2               ; the fused column carried twice
+b2_2
+        adc (p_neg_lo_2),y
+        sta+2 z22_v
+        lda (p_sqr_hi_2),y
+t2_2
+        adc (p_neg_hi_2),y
+        tax                       ; top byte of the last row
+
+; ---- summation ----
+summation
+        clc
+z01_v = *+1
+        lda #0
+z10_v = *+1
+        adc #0
+        sta+1 z1
+z02_v = *+1
+        lda #0
+z11_v = *+1
+        adc #0
+        sta+2 t0_v
+z03_v = *+1
+        lda #0
+z12_v = *+1
+        adc #0
+        tay
+        bcc sum2
+        clc
+        inc+2 z13_v           ; z13 <= $fe, so this cannot wrap
+sum2
+t0_v = *+1
+        lda #0
+z20_v = *+1
+        adc #0
+        sta+1 z2
+        tya
+z21_v = *+1
+        adc #0
+        sta+1 z3
+z13_v = *+1
+        lda #0
+z22_v = *+1
+        adc #0
+        sta+1 z4
+        txa
+        adc #0
+        rts
+z0 !byte 0            ; the one result byte outside page zero
+cg_code_end
+
+* = $6000
+cg_sqr_lo_start
+sqr_lo
+!for i,0,510 {
+        !byte <(((i*i)/4) + ODD*(i&1) + EVEN*(1-(i&1)))
+}
+cg_sqr_lo_end
+
+* = $6200
+cg_sqr_hi_start
+sqr_hi
+!for i,0,510 {
+        !byte >(((i*i)/4) + ODD*(i&1) + EVEN*(1-(i&1)))
+}
+cg_sqr_hi_end
+
+* = $6400
+cg_neg_sqr_lo_start
+neg_sqr_lo
+!for i,0,510 {
+        !byte 255 - <(((((255-i)*(255-i))/4) + ODD*((255-i)&1) + EVEN*(1-((255-i)&1))))
+}
+cg_neg_sqr_lo_end
+
+* = $6600
+cg_neg_sqr_hi_start
+neg_sqr_hi
+!for i,0,510 {
+        !byte 255 - >(((((255-i)*(255-i))/4) + ODD*((255-i)&1) + EVEN*(1-((255-i)&1))))
+}
+cg_neg_sqr_hi_end

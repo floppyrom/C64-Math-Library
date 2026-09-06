@@ -1,0 +1,70 @@
+{
+  "v1_balanced": {
+    "ATAN2_8": {
+      "reference": "nearest 1/256 turn mathematical atan2",
+      "max_error_angle_units": 1,
+      "mean_error_angle_units": 0.1016845703125,
+      "cases_over_1_unit": 0
+    },
+    "DIST8_FAST": {
+      "mean_abs_error": 8.471420216821176,
+      "max_abs_error": 17.148723373790233
+    },
+    "DIST8_ACCURATE": {
+      "mean_abs_error": 2.221951907686614,
+      "max_abs_error": 6.07556010550195,
+      "coefficients": "round(243*max/256)+round(107*min/256)"
+    }
+  },
+  "v2_pareto_fast": {
+    "ATAN2_8": {
+      "reference": "nearest 1/256 turn mathematical atan2",
+      "max_error_angle_units": 1,
+      "mean_error_angle_units": 0.1016845703125,
+      "cases_over_1_unit": 0
+    },
+    "DIST8_FAST": {
+      "mean_abs_error": 8.471420216821176,
+      "max_abs_error": 17.148723373790233
+    },
+    "DIST8_ACCURATE": {
+      "mean_abs_error": 2.221951907686614,
+      "max_abs_error": 6.07556010550195,
+      "coefficients": "round(243*max/256)+round(107*min/256)"
+    }
+  },
+  "v3_reu_512k": {
+    "ATAN2_8": {
+      "reference": "nearest 1/256 turn mathematical atan2",
+      "max_error_angle_units": 1,
+      "mean_error_angle_units": 0.1016845703125,
+      "cases_over_1_unit": 0
+    },
+    "DIST8_FAST": {
+      "mean_abs_error": 8.471420216821176,
+      "max_abs_error": 17.148723373790233
+    },
+    "DIST8_ACCURATE": {
+      "mean_abs_error": 2.221951907686614,
+      "max_abs_error": 6.07556010550195,
+      "coefficients": "round(243*max/256)+round(107*min/256)"
+    }
+  },
+  "v4_reu_16m": {
+    "ATAN2_8": {
+      "reference": "nearest 1/256 turn mathematical atan2",
+      "max_error_angle_units": 0,
+      "mean_error_angle_units": 0.0,
+      "cases_over_1_unit": 0
+    },
+    "DIST8_FAST": {
+      "mean_abs_error": 8.471420216821176,
+      "max_abs_error": 17.148723373790233
+    },
+    "DIST8_ACCURATE": {
+      "mean_abs_error": 2.221951907686614,
+      "max_abs_error": 6.07556010550195,
+      "coefficients": "round(243*max/256)+round(107*min/256)"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+; Examples of zero-host-marshalling composition.
+!source "../resident/math_api.inc"
+
+; One-time setup for the faster UMUL32 ready entry.
+        jsr MATH_INIT
+
+; Other public math calls may occur here: they preserve $02-$0D.
+        jsr MATH_UDIV16
+
+; Once initialized, this saves exactly 22 cycles vs MATH_UMUL32.
+        jsr MATH_UMUL32_READY
+
+; Prebuilt assembly-level proof chains in the reference image:
+;   MATH_CHAIN_UMUL16_UDIV32_16
+;   MATH_CHAIN_UDIV16_UMUL16
+;   MATH_CHAIN_UDIV24_UMUL24
+;   MATH_CHAIN_UDIV32_16_UMUL32

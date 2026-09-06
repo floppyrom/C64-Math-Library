@@ -1,0 +1,12 @@
+; Common game-math usage
+!source "../resident/math_api.inc"
+        jsr MATH_INIT
+        lda #$80 : sta math_x0
+        lda #$01 : sta math_x1       ; 1.5 in Q8.8
+        lda #$00 : sta math_y0
+        lda #$02 : sta math_y1       ; 2.0 in Q8.8
+        jsr MATH_SMUL16_SHR8         ; z = $000300 (3.0 Q8.8)
+        lda #1 : sta math_x0
+        lda #1 : sta math_y0
+        jsr MATH_ATAN2_8              ; z0 about $20 = 45 degrees
+        rts

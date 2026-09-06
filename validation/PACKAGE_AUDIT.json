@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "no_pregenerated_build_source",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "no_superseded_slow_isqrt_baseline",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "prior_exhaustive_baseline_retained",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "csdb_changelog_named_correctly",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "package_contents_documented",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "turbo_plain_english_documented",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "four_reference_prgs",
+      "status": "PASS",
+      "detail": [
+        "v4_reu_16m/resident/math_v4_reu_16m_game_math.prg",
+        "v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg",
+        "v1_balanced/resident/math_v1_balanced_game_math.prg",
+        "v3_reu_512k/resident/math_v3_reu_512k_game_math.prg"
+      ]
+    },
+    {
+      "check": "two_reference_reu_images",
+      "status": "PASS",
+      "detail": [
+        "v4_reu_16m/reu/c64_math_v4_16m_game_math.reu",
+        "v3_reu_512k/reu/c64_math_v3_512k_game_math.reu"
+      ]
+    },
+    {
+      "check": "no_nested_archives",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "no_cache_temp_backup_logs",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "no_unreferenced_bin_or_label_artifacts",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "check": "all_segment_manifest_paths_resolve",
+      "status": "PASS",
+      "detail": []
+    }
+  ],
+  "summary": {
+    "checks_passed": 12,
+    "file_count_excluding_checksum": 345,
+    "uncompressed_bytes_excluding_checksum": 19686026,
+    "reference_prgs": 4,
+    "reference_reu_images": 2
+  }
+}

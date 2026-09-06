@@ -1,0 +1,13 @@
+operation,avg_cycles,min_cycles,max_cycles,cases,edge_cases,errors,evidence
+math_umul8,78.494614,77,80,65536,65536,0,canonical harness
+math_umul16,350.782403,338,365,2097152,262430,0,canonical harness
+math_umul24,475.784575,448,527,2097152,590353,0,canonical harness
+math_umul32,763.822007,696,881,2097152,1049350,0,canonical harness
+math_udiv8,87.445969,60,607,65536,603,0,canonical harness
+math_udiv16,137.282268,99,939,2097152,2505,0,canonical harness
+math_udiv24,203.612991,137,2394,2097152,5578,0,canonical harness
+math_udiv32_16,759.730823,210,1794,2097152,4907,0,canonical harness
+math_umod8,64.819153,51,495,65536,603,0,exhaustive final-image/direct path
+math_umod16,140.282268,102,942,2097152,2505,0,exact +3-cycle JMP path
+math_umod24,206.612991,140,2397,2097152,5578,0,exact +3-cycle JMP path
+math_umod32_16,762.730823,213,1797,2097152,4907,0,exact +3-cycle JMP path

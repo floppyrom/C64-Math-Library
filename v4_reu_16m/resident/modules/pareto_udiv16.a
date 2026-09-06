@@ -1,0 +1,891 @@
+; ============================================================================
+; Pareto-Fast profile module — UDIV16 Size-Fast 1,104 B
+; ============================================================================
+; This is the size-aware fast selection used by C64 Math API v3 REU-Pareto.
+; Selected over 13,446 B Extreme: only ~6.15 native cycles slower while saving ~12.3 KiB.
+; Public adaptation is outside the measured native kernel unless noted.
+; Decimal mode must be clear. A/X/Y are volatile.
+; ============================================================================
+;ABI
+;CPU: mos6502
+;Operation: udiv
+;Entry: div_u16
+;Input n: uint16 = n0, n1
+;Input d: uint16 = d0, d1
+;Output q: uint16 = q0, q1
+;Remainder r: uint16 = r0, r1
+;UDiv zero remainder: zero
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;End ABI
+;Results
+;Status: validated
+;Validation level: validate
+;Validation cases: 2097152
+;Validation errors: 0
+;Validation complete: yes
+;Edge cases: 2505
+;Edge errors: 0
+;Edge complete: yes
+;Profile distribution: uniform
+;Profile cases: 2097152
+;Profile errors: 0
+;Profile complete: yes
+;Min cycles: 31
+;Max cycles: 871
+;Avg cycles: 69.282268
+;Stddev cycles: 88.580900
+;ZP bytes: 8
+;Code bytes: 1104
+;Data bytes: 0
+;Total bytes: 1104
+;End Results
+; ============================================================================
+; FIREMONGER C64 DIVISION REFERENCE — PUBLICATION COPY
+; Family       : udiv16
+; Tier         : size-fast
+; Target       : NMOS 6502/6510, decimal mode clear
+; Measurement  : canonical 2,097,152-case SplitMix64 corpus; seed $C0FFEE where random
+; Timing       : entry instruction through final RTS; caller JSR excluded
+; Avg cycles   : 69.282268
+; Min / Max    : 31 / 871
+; Stddev       : 88.580900
+; Resident     : 1104 bytes (Code 1104 + Data 0); ZP 8 bytes separate
+; Validation   : 2097152 cases, 0 errors
+; Edge suite   : 2505 cases in canonical run, 0 errors
+; Architecture : Unrolled small-quotient chains, width-skipping tails, proven-carry branches, tuned page layout.
+;
+; NOTE: this publication block is comments only and does not alter the exact
+; assembled image that produced the result. Raw canonical JSON is supplied
+; beside the source when available. See TECHNICAL_ASSESSMENT.md for caveats.
+; ============================================================================
+; ============================================================================
+; DIV_U16 SIZE LIBRARY — FAST TIER
+; Unsigned 16/16 -> quotient + remainder for NMOS 6502/6510
+;
+; Size-oriented descendant of the 63-cycle hybrid family.
+;
+; Design:
+;   * q=0 and q=1 are handled immediately (dominant random cases).
+;   * d1 >= $0f uses the fast unrolled small-quotient subtraction chain.
+;   * d1=2..14 uses a width-skipping restoring tail.
+;   * d1=0 and d1=1 share one compact full restoring divider.
+;   * NO quotient-estimate tables and NO quarter-square tables.
+;
+; ABI:
+;   input  n1:n0 = dividend, d1:d0 = divisor (preserved)
+;   output q1:q0 = quotient, r1:r0 = remainder
+;          C=0 success
+;          C=1 divide by zero, q=r=0
+;   A/X/Y clobbered. Decimal mode MUST be clear (D=0).
+;
+; Uses stable NMOS undocumented opcodes inherited from the speed core:
+;   LAX zp ($A7), ANC #0 ($0B)
+;
+; Branch-state size-Fast release:
+;   implementation image : 1,104 bytes ($100c-$145b)
+;   ZP ABI               : 8 bytes ($10-$17)
+;   tables               : 0
+;   common 300k $C0FFEE  : 69.313143 cycles average, 0 mismatches
+;   1M $C0FFEE average   : 69.321223 cycles (min/max 31/871)
+;
+; Relative to the immediate 1,129-byte / 69.331250-on-the-common-300k build,
+; this version folds known carry states into guaranteed branches, removes an
+; unnecessary q=17 jump and carry clear, and retunes the physical origin to
+; avoid losing the local savings to a page crossing.
+;   576 structured edge pairs: 0 mismatches
+; ============================================================================
+
+!cpu 6502
+
+* = $0010
+cg_zp_start:
+n0: !byte 0
+n1: !byte 0
+d0: !byte 0
+d1: !byte 0
+q0: !byte 0
+q1: !byte 0
+r0: !byte 0
+r1: !byte 0
+cg_zp_end:
+
+* = $420c
+cg_code_start:
+; ----------------------------------------------------------------------------
+; ENTRY / DOMINANT q=0 PRECHECK
+; First compare only the high bytes.  The common n<d case exits before any
+; specialized divisor dispatch is paid.  Equality is kept out of the hot path.
+; ----------------------------------------------------------------------------
+div_u16
+        !byte $a7,n1
+        cmp d1
+        bcs precheck_high_ge
+quotient_zero
+        lda #0
+        sta q0
+        sta q1
+        lda n0
+        sta r0
+        stx r1
+        rts
+; ----------------------------------------------------------------------------
+; HIGH-BYTE EQUALITY SPECIAL CASE
+; With n1==d1, a successful low-byte subtraction leaves a remainder <256.
+; For d1>0 that proves q=1 immediately; d1=0 is handed to the 16/8 path.
+; ----------------------------------------------------------------------------
+precheck_high_equal
+        lda n0
+        sbc d0
+        bcc quotient_zero
+        cpx #1
+        bcc precheck_equal_d8
+        sta r0
+        !byte $0b,$00
+        sta r1
+        sta q1
+        lda #1
+        sta q0
+        rts
+precheck_equal_d8
+        jmp divisor_byte
+precheck_high_ge
+        beq precheck_high_equal
+dividend_ge_divisor
+        lda n0
+        sbc d0
+        sta r0
+        txa
+        sbc d1
+        cmp d1
+        bcs q1_high_ge
+quotient_one_a
+        sta r1
+        lda #0
+        sta q1
+        lda #1
+        sta q0
+        rts
+low_d1_stub
+        cmp chain_cut,x
+        bcc low_d1_to_chain
+        jmp low_d1
+low_d1_to_chain
+        sec
+        bcs chain_start            ; guaranteed; preserve C=1 into first SBC
+chain_q2_equal
+        lda r0
+        sbc d0
+        bcs chain_q2_equal_take
+        txa
+chain_q2_done
+        sta r1
+        lda #2
+        sta q0
+        rts
+chain_q2_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q3_done          ; ANC #0 guarantees C=0
+chain_q3_equal
+        lda r0
+        sbc d0
+        bcs chain_q3_equal_take
+        txa
+chain_q3_done
+        sta r1
+        lda #3
+        sta q0
+        rts
+chain_q3_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q4_done          ; ANC #0 guarantees C=0
+chain_q4_equal
+        lda r0
+        sbc d0
+        bcs chain_q4_equal_take
+        txa
+chain_q4_done
+        sta r1
+        lda #4
+        sta q0
+        rts
+chain_q4_equal_take
+        sta r0
+        !byte $0b,$00
+        jmp chain_q5_done
+q1_high_equal
+        tax
+        lda r0
+        sbc d0
+        bcs q1_equal_ge
+quotient_one_x
+        stx r1
+        lda #0
+        sta q1
+        lda #1
+        sta q0
+        rts
+q1_equal_ge
+        dex
+        bpl q1_equal_q2
+        jmp divisor_byte
+q1_equal_q2
+        sta r0
+        !byte $0b,$00
+        sta q1
+        bcc chain_q2_done
+q1_high_ge
+        beq q1_high_equal
+; ----------------------------------------------------------------------------
+; q >= 2 DISPATCH
+; Large divisor high bytes use the very cheap repeated-subtraction chain.
+; Small high bytes use a chain cutoff first, then the width-skipping divider.
+; There are no tables in this size-library build.
+; ----------------------------------------------------------------------------
+quotient_ge_two
+        ldx d1
+        cpx #$0f
+        bcc low_d1_stub
+; ----------------------------------------------------------------------------
+; SMALL-QUOTIENT SUBTRACTION CHAIN
+; The high-subtract continuation is the fall-through hot path.  Equality is
+; cold and handled out of line.  Carry is deliberately reused between 16-bit
+; subtractions; the chain is split only where relative-branch reach requires.
+; ----------------------------------------------------------------------------
+chain_start
+        ldy #0
+        sty q1
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q2_test
+        cmp d1
+        bcc chain_q2_done
+        beq chain_q2_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q3_test
+        cmp d1
+        bcc chain_q3_done
+        beq chain_q3_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q4_test
+        cmp d1
+        bcc chain_q4_done
+        beq chain_q4_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q5_test
+        cmp d1
+        bcc chain_q5_done
+        beq chain_q5_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q6_test
+        cmp d1
+        bcc chain_q6_done
+        beq chain_q6_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q7_test
+        cmp d1
+        bcc chain_q7_done
+        beq chain_q7_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q8_test
+        cmp d1
+        bcc chain_q8_done
+        beq chain_q8_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q9_test
+        cmp d1
+        bcc chain_q9_done
+        beq chain_q9_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q10_test
+        cmp d1
+        bcc chain_q10_done
+        beq chain_q10_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q11_test
+        cmp d1
+        bcc chain_q11_done
+        beq chain_q11_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+        jmp chain_q12_test
+chain_q5_equal
+        lda r0
+        sbc d0
+        bcs chain_q5_equal_take
+        txa
+chain_q5_done
+        sta r1
+        lda #5
+        sta q0
+        rts
+chain_q6_equal
+        lda r0
+        sbc d0
+        bcs chain_q6_equal_take
+        txa
+chain_q6_done
+        sta r1
+        lda #6
+        sta q0
+        rts
+chain_q7_equal
+        lda r0
+        sbc d0
+        bcs chain_q7_equal_take
+        txa
+chain_q7_done
+        sta r1
+        lda #7
+        sta q0
+        rts
+chain_q8_equal
+        lda r0
+        sbc d0
+        bcs chain_q8_equal_take
+        txa
+chain_q8_done
+        sta r1
+        lda #8
+        sta q0
+        rts
+chain_q9_equal
+        lda r0
+        sbc d0
+        bcs chain_q9_equal_take
+        txa
+chain_q9_done
+        sta r1
+        lda #9
+        sta q0
+        rts
+chain_q10_equal
+        lda r0
+        sbc d0
+        bcs chain_q10_equal_take
+        txa
+chain_q10_done
+        sta r1
+        lda #10
+        sta q0
+        rts
+chain_q11_equal
+        lda r0
+        sbc d0
+        bcs chain_q11_equal_take
+        txa
+chain_q11_done
+        sta r1
+        lda #11
+        sta q0
+        rts
+chain_q5_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q6_done
+chain_q6_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q7_done
+chain_q7_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q8_done
+chain_q8_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q9_done
+chain_q9_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q10_done
+chain_q10_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q11_done
+chain_q11_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q12_done
+chain_q12_test
+        cmp d1
+        bcc chain_q12_done
+        beq chain_q12_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q13_test
+        cmp d1
+        bcc chain_q13_done
+        beq chain_q13_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q14_test
+        cmp d1
+        bcc chain_q14_done
+        beq chain_q14_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q15_test
+        cmp d1
+        bcc chain_q15_done
+        beq chain_q15_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q16_test
+        cmp d1
+        bcc chain_q16_done
+        beq chain_q16_equal
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+chain_q12_equal
+        lda r0
+        sbc d0
+        bcs chain_q12_equal_take
+        txa
+chain_q12_done
+        sta r1
+        lda #12
+        sta q0
+        rts
+chain_q12_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q13_done         ; ANC #0 guarantees C=0
+chain_q13_equal
+        lda r0
+        sbc d0
+        bcs chain_q13_equal_take
+        txa
+chain_q13_done
+        sta r1
+        lda #13
+        sta q0
+        rts
+chain_q13_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q14_done         ; ANC #0 guarantees C=0
+chain_q14_equal
+        lda r0
+        sbc d0
+        bcs chain_q14_equal_take
+        txa
+chain_q14_done
+        sta r1
+        lda #14
+        sta q0
+        rts
+chain_q14_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q15_done         ; ANC #0 guarantees C=0
+chain_q15_equal
+        lda r0
+        sbc d0
+        bcs chain_q15_equal_take
+        txa
+chain_q15_done
+        sta r1
+        lda #15
+        sta q0
+        rts
+chain_q15_equal_take
+        sta r0
+        !byte $0b,$00
+        bcc chain_q16_done         ; ANC #0 guarantees C=0
+chain_q16_equal
+        lda r0
+        sbc d0
+        bcs chain_q16_equal_take
+        txa
+chain_q16_done
+        sta r1
+        lda #16
+        sta q0
+        rts
+chain_q16_equal_take
+        sta r0
+        !byte $0b,$00
+chain_q17_done
+        sta r1
+        lda #17
+        sta q0
+        rts
+tree_setup_s0
+        jmp generic_long_setup
+divisor_byte_stub
+        jmp divisor_byte
+low_d1_lt4
+        cpx #1
+        bcc divisor_byte_stub
+        beq tree_setup_s0
+        ; d1=2..3: fall through
+tree_setup_s1
+        lda n0
+        asl
+        sta q0
+        lda n1
+        rol
+        sta r0
+        lda #0
+        sta q1
+        rol
+tree_linear_s1
+        rol q0
+        rol r0
+        rol
+        cmp d1
+        bcc tree_linear_s2
+        beq tree_eq_s1_stub
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+        bcs tree_linear_s2
+tree_eq_s1_stub
+        lda r0
+        sbc d0
+        bcc tree_eq_s1_no
+        sta r0
+        lda #0
+        bcs tree_linear_s2         ; successful SBC left quotient bit C=1
+tree_eq_s1_no
+        txa
+        bcc tree_linear_s2         ; failed SBC left quotient bit C=0
+low_d1
+        cpx #4
+        bcc low_d1_lt4
+        cpx #8
+        bcs tree_setup_s3
+        ; d1=4..7: fall through
+; ----------------------------------------------------------------------------
+; WIDTH-SKIPPING RESTORING DIVIDER (small nonzero divisor high bytes)
+; Guaranteed leading zero quotient bits are pre-applied in setup.  Each later
+; comparison leaves the new quotient bit in C, and ROL q0 both shifts the
+; source dividend and records that quotient bit.  No generated 256-leaf tree
+; is required.
+; ----------------------------------------------------------------------------
+tree_setup_s2
+        lda n0
+        asl
+        sta q0
+        lda n1
+        rol
+        sta r0
+        lda #0
+        sta q1
+        rol
+        asl q0
+        rol r0
+        rol
+tree_linear_s2
+        rol q0
+        rol r0
+        rol
+        cmp d1
+        bcc tree_linear_s3
+        beq tree_eq_s2_stub
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+        bcs tree_linear_s3
+tree_eq_s2_stub
+        lda r0
+        sbc d0
+        bcc tree_eq_s2_no
+        sta r0
+        lda #0
+        bcs tree_linear_s3
+tree_eq_s2_no
+        txa
+        bcc tree_linear_s3
+tree_eq_s3
+        lda r0
+        sbc d0
+        bcc tree_eq_s3_no
+        sta r0
+        lda #0
+        bcs tree_linear_s4
+tree_eq_s3_no
+        txa
+        bcc tree_linear_s4
+tree_setup_s3
+        lda n0
+        asl
+        sta q0
+        lda n1
+        rol
+        sta r0
+        lda #0
+        sta q1
+        rol
+        asl q0
+        rol r0
+        rol
+        asl q0
+        rol r0
+        rol
+tree_linear_s3
+        rol q0
+        rol r0
+        rol
+        cmp d1
+        bcc tree_linear_s4
+        beq tree_eq_s3
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+tree_linear_s4
+        rol q0
+        rol r0
+        rol
+        cmp d1
+        bcc tree_linear_s5
+        beq tree_eq_s4
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+tree_linear_s5
+        rol q0
+        rol r0
+        rol
+        cmp d1
+        bcc tree_linear_s6
+        beq tree_eq_s5
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+tree_linear_s6
+        rol q0
+        rol r0
+        rol
+        cmp d1
+        bcc tree_linear_s7
+        beq tree_eq_s6
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+tree_linear_s7
+        rol q0
+        rol r0
+        rol
+        cmp d1
+        bcc tree_finish
+        beq tree_eq_s7
+        tay
+        lda r0
+        sbc d0
+        sta r0
+        tya
+        sbc d1
+tree_finish
+        rol q0
+        sta r1
+        rts
+tree_eq_s4
+        lda r0
+        sbc d0
+        bcc tree_eq_s4_no
+        sta r0
+        lda #0
+        bcs tree_linear_s5
+tree_eq_s4_no
+        txa
+        bcc tree_linear_s5
+tree_eq_s5
+        lda r0
+        sbc d0
+        bcc tree_eq_s5_no
+        sta r0
+        lda #0
+        bcs tree_linear_s6
+tree_eq_s5_no
+        txa
+        bcc tree_linear_s6
+tree_eq_s6
+        lda r0
+        sbc d0
+        bcc tree_eq_s6_no
+        sta r0
+        lda #0
+        bcs tree_linear_s7
+tree_eq_s6_no
+        txa
+        bcc tree_linear_s7
+tree_eq_s7
+        lda r0
+        sbc d0
+        bcc tree_eq_s7_no
+        sta r0
+        lda #0
+        bcs tree_finish
+tree_eq_s7_no
+        txa
+        bcc tree_finish
+; d1=0 enters here to test the low divisor byte. If nonzero, fall directly
+; into the shared restoring setup instead of paying a JMP. d1=1 callers jump
+; straight to generic_long_setup and skip this test.
+divisor_byte
+        lda d0
+        beq divide_by_zero
+
+; d1=1 uses a compact full restoring divider instead of an 8 KiB estimator.
+generic_long_setup
+        lda n0
+        sta q0
+        lda n1
+        sta q1
+        lda #0
+        ; Prime C=0 for delayed quotient insertion while keeping A=0.
+        lsr
+        sta r0
+        sta r1
+        ldy #16
+generic_long_loop
+        rol q0
+        rol q1
+        rol r0
+        rol r1
+        sec
+        lda r0
+        sbc d0
+        tax
+        lda r1
+        sbc d1
+        bcc generic_long_no_sub
+        sta r1
+        stx r0
+generic_long_no_sub
+        ; C is the current quotient bit. DEY/BNE preserve it for the next ROL.
+        dey
+        bne generic_long_loop
+        ; Append the final delayed bit. The placeholder shifted out of q1 is 0,
+        ; so C also returns clear for the success ABI.
+        rol q0
+        rol q1
+        rts
+
+; ----------------------------------------------------------------------------
+; DIVIDE BY ZERO ABI
+; ----------------------------------------------------------------------------
+divide_by_zero
+        ; Reached from divisor_byte only when A=d0=0.
+        sta q0
+        sta q1
+        sta r0
+        sta r1
+        sec
+        rts
+; ----------------------------------------------------------------------------
+; LOW-d1 CHAIN/TREE CUTOFFS
+; If the high byte of the remainder after the first subtraction is below this
+; threshold, repeated subtraction wins; otherwise use the specialized low-d1
+; path.
+;
+; IMPORTANT correctness bound for d1=1:
+;   after the first successful subtraction, chain entry sees remainder r.
+;   The unrolled chain can return at most q=17, so we must guarantee
+;       floor(r/d) <= 16.
+;   With d1=1 and only r1 known, r1 < 17 implies r <= $10ff while d >= $0100,
+;   hence floor(r/d) <= 16.  A cutoff of 18 would admit r1=17 and can require
+;   q=18, which the chain cannot represent.  Therefore 17 is the maximum safe
+;   cutoff as well as the fastest valid value in the retune.
+;
+; The other entries retain the previous benchmark-tuned values because their
+; width-skipping paths were not changed by this Firemonger pass.
+; ----------------------------------------------------------------------------
+chain_cut
+        !byte 0,17,22,32,36,43,52,61,63,69,77,84,91,98,104
+cg_code_end:

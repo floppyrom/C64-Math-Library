@@ -1,0 +1,670 @@
+{
+  "status": "PASS",
+  "profiles": [
+    {
+      "profile": "v1_balanced",
+      "status": "PASS",
+      "math_init_cycles": 30,
+      "counts": {
+        "smul16_repair": 4240,
+        "div32_each": 33444,
+        "mul16_shift_each": 4240,
+        "mul32_shift_each": 2724,
+        "div16_shift_each": 4240,
+        "reciprocal_exhaustive": 65536,
+        "trig_exhaustive": 256,
+        "atan2_exhaustive": 65536,
+        "isqrt16_exhaustive": 65536,
+        "isqrt32": 4130,
+        "distance_each_exhaustive": 65536
+      },
+      "performance": {
+        "SMUL16_REPAIRED": {
+          "cases": 4240,
+          "mean_cycles": 424.9860849056604,
+          "min_cycles": 390,
+          "max_cycles": 465
+        },
+        "UDIV32_32": {
+          "cases": 33444,
+          "mean_cycles": 434.1109915081928,
+          "min_cycles": 151,
+          "max_cycles": 2389
+        },
+        "UMOD32_32": {
+          "cases": 33444,
+          "mean_cycles": 434.1109915081928,
+          "min_cycles": 151,
+          "max_cycles": 2389,
+          "alias_of": "UDIV32_32"
+        },
+        "SDIV32_32": {
+          "cases": 33444,
+          "mean_cycles": 586.2539169955747,
+          "min_cycles": 75,
+          "max_cycles": 2512
+        },
+        "SMOD32_32": {
+          "cases": 33444,
+          "mean_cycles": 586.2539169955747,
+          "min_cycles": 75,
+          "max_cycles": 2512,
+          "alias_of": "SDIV32_32"
+        },
+        "UMUL16_SHR8": {
+          "cases": 4240,
+          "mean_cycles": 424.1162735849057,
+          "min_cycles": 414,
+          "max_cycles": 439
+        },
+        "SMUL16_SHR8": {
+          "cases": 4240,
+          "mean_cycles": 465.07853773584907,
+          "min_cycles": 431,
+          "max_cycles": 506
+        },
+        "UMUL32_SHR16": {
+          "cases": 2724,
+          "mean_cycles": 836.5135829662262,
+          "min_cycles": 780,
+          "max_cycles": 956
+        },
+        "SMUL32_SHR16": {
+          "cases": 2724,
+          "mean_cycles": 896.087738619677,
+          "min_cycles": 800,
+          "max_cycles": 1074
+        },
+        "UDIV16_SHL8": {
+          "cases": 4240,
+          "mean_cycles": 855.6811320754717,
+          "min_cycles": 289,
+          "max_cycles": 1914
+        },
+        "SDIV16_SHL8": {
+          "cases": 4240,
+          "mean_cycles": 971.8724056603774,
+          "min_cycles": 319,
+          "max_cycles": 1975
+        },
+        "URECIP16_Q16": {
+          "cases": 65536,
+          "mean_cycles": 126.17572021484375,
+          "min_cycles": 41,
+          "max_cycles": 2588
+        },
+        "SIN8": {
+          "cases": 256,
+          "mean_cycles": 23.0,
+          "min_cycles": 23,
+          "max_cycles": 23
+        },
+        "COS8": {
+          "cases": 256,
+          "mean_cycles": 29.0,
+          "min_cycles": 29,
+          "max_cycles": 29
+        },
+        "SINCOS8": {
+          "cases": 256,
+          "mean_cycles": 39.0,
+          "min_cycles": 39,
+          "max_cycles": 39
+        },
+        "ATAN2_8": {
+          "cases": 65536,
+          "mean_cycles": 136.2191925048828,
+          "min_cycles": 33,
+          "max_cycles": 168
+        },
+        "ISQRT16": {
+          "cases": 65536,
+          "mean_cycles": 219.74057006835938,
+          "min_cycles": 205,
+          "max_cycles": 258
+        },
+        "ISQRT32": {
+          "cases": 4130,
+          "mean_cycles": 1453.8866828087166,
+          "min_cycles": 1138,
+          "max_cycles": 1779
+        },
+        "DIST8_FAST": {
+          "cases": 65536,
+          "mean_cycles": 86.08560180664062,
+          "min_cycles": 68,
+          "max_cycles": 104
+        },
+        "DIST8_ACCURATE": {
+          "cases": 65536,
+          "mean_cycles": 92.08560180664062,
+          "min_cycles": 74,
+          "max_cycles": 110
+        }
+      },
+      "accuracy": {
+        "ATAN2_8": {
+          "reference": "nearest 1/256 turn mathematical atan2",
+          "max_error_angle_units": 1,
+          "mean_error_angle_units": 0.1016845703125,
+          "cases_over_1_unit": 0
+        },
+        "DIST8_FAST": {
+          "mean_abs_error": 8.471420216821176,
+          "max_abs_error": 17.148723373790233
+        },
+        "DIST8_ACCURATE": {
+          "mean_abs_error": 2.221951907686614,
+          "max_abs_error": 6.07556010550195,
+          "coefficients": "round(243*max/256)+round(107*min/256)"
+        }
+      },
+      "errors": []
+    },
+    {
+      "profile": "v2_pareto_fast",
+      "status": "PASS",
+      "math_init_cycles": 1596,
+      "counts": {
+        "smul16_repair": 4240,
+        "div32_each": 33444,
+        "mul16_shift_each": 4240,
+        "mul32_shift_each": 2724,
+        "div16_shift_each": 4240,
+        "reciprocal_exhaustive": 65536,
+        "trig_exhaustive": 256,
+        "atan2_exhaustive": 65536,
+        "isqrt16_exhaustive": 65536,
+        "isqrt32": 4130,
+        "distance_each_exhaustive": 65536
+      },
+      "performance": {
+        "SMUL16_REPAIRED": {
+          "cases": 4240,
+          "mean_cycles": 253.44103773584905,
+          "min_cycles": 230,
+          "max_cycles": 293
+        },
+        "UDIV32_32": {
+          "cases": 33444,
+          "mean_cycles": 401.97255113024755,
+          "min_cycles": 139,
+          "max_cycles": 2251
+        },
+        "UMOD32_32": {
+          "cases": 33444,
+          "mean_cycles": 401.97255113024755,
+          "min_cycles": 139,
+          "max_cycles": 2251,
+          "alias_of": "UDIV32_32"
+        },
+        "SDIV32_32": {
+          "cases": 33444,
+          "mean_cycles": 541.5828848223897,
+          "min_cycles": 75,
+          "max_cycles": 2358
+        },
+        "SMOD32_32": {
+          "cases": 33444,
+          "mean_cycles": 541.5828848223897,
+          "min_cycles": 75,
+          "max_cycles": 2358,
+          "alias_of": "SDIV32_32"
+        },
+        "UMUL16_SHR8": {
+          "cases": 4240,
+          "mean_cycles": 391.84080188679246,
+          "min_cycles": 379,
+          "max_cycles": 406
+        },
+        "SMUL16_SHR8": {
+          "cases": 4240,
+          "mean_cycles": 294.0686320754717,
+          "min_cycles": 271,
+          "max_cycles": 334
+        },
+        "UMUL32_SHR16": {
+          "cases": 2724,
+          "mean_cycles": 817.5135829662262,
+          "min_cycles": 761,
+          "max_cycles": 937
+        },
+        "SMUL32_SHR16": {
+          "cases": 2724,
+          "mean_cycles": 874.087738619677,
+          "min_cycles": 778,
+          "max_cycles": 1052
+        },
+        "UDIV16_SHL8": {
+          "cases": 4240,
+          "mean_cycles": 762.6063679245283,
+          "min_cycles": 272,
+          "max_cycles": 1849
+        },
+        "SDIV16_SHL8": {
+          "cases": 4240,
+          "mean_cycles": 872.9641509433962,
+          "min_cycles": 304,
+          "max_cycles": 1860
+        },
+        "URECIP16_Q16": {
+          "cases": 65536,
+          "mean_cycles": 119.57756042480469,
+          "min_cycles": 41,
+          "max_cycles": 2079
+        },
+        "SIN8": {
+          "cases": 256,
+          "mean_cycles": 23.0,
+          "min_cycles": 23,
+          "max_cycles": 23
+        },
+        "COS8": {
+          "cases": 256,
+          "mean_cycles": 23.0,
+          "min_cycles": 23,
+          "max_cycles": 23
+        },
+        "SINCOS8": {
+          "cases": 256,
+          "mean_cycles": 31.0,
+          "min_cycles": 31,
+          "max_cycles": 31
+        },
+        "ATAN2_8": {
+          "cases": 65536,
+          "mean_cycles": 125.80775451660156,
+          "min_cycles": 33,
+          "max_cycles": 155
+        },
+        "ISQRT16": {
+          "cases": 65536,
+          "mean_cycles": 205.76058959960938,
+          "min_cycles": 193,
+          "max_cycles": 246
+        },
+        "ISQRT32": {
+          "cases": 4130,
+          "mean_cycles": 1216.1486682808716,
+          "min_cycles": 965,
+          "max_cycles": 1478
+        },
+        "DIST8_FAST": {
+          "cases": 65536,
+          "mean_cycles": 79.57003784179688,
+          "min_cycles": 64,
+          "max_cycles": 95
+        },
+        "DIST8_ACCURATE": {
+          "cases": 65536,
+          "mean_cycles": 85.57003784179688,
+          "min_cycles": 70,
+          "max_cycles": 101
+        }
+      },
+      "accuracy": {
+        "ATAN2_8": {
+          "reference": "nearest 1/256 turn mathematical atan2",
+          "max_error_angle_units": 1,
+          "mean_error_angle_units": 0.1016845703125,
+          "cases_over_1_unit": 0
+        },
+        "DIST8_FAST": {
+          "mean_abs_error": 8.471420216821176,
+          "max_abs_error": 17.148723373790233
+        },
+        "DIST8_ACCURATE": {
+          "mean_abs_error": 2.221951907686614,
+          "max_abs_error": 6.07556010550195,
+          "coefficients": "round(243*max/256)+round(107*min/256)"
+        }
+      },
+      "errors": []
+    },
+    {
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "math_init_cycles": 1637,
+      "counts": {
+        "smul16_repair": 4240,
+        "div32_each": 33444,
+        "mul16_shift_each": 4240,
+        "mul32_shift_each": 2724,
+        "div16_shift_each": 4240,
+        "reciprocal_exhaustive": 65536,
+        "trig_exhaustive": 256,
+        "atan2_exhaustive": 65536,
+        "isqrt16_exhaustive": 65536,
+        "isqrt32": 4130,
+        "distance_each_exhaustive": 65536
+      },
+      "performance": {
+        "SMUL16_REPAIRED": {
+          "cases": 4240,
+          "mean_cycles": 253.44103773584905,
+          "min_cycles": 230,
+          "max_cycles": 293
+        },
+        "UDIV32_32": {
+          "cases": 33444,
+          "mean_cycles": 401.97255113024755,
+          "min_cycles": 139,
+          "max_cycles": 2251
+        },
+        "UMOD32_32": {
+          "cases": 33444,
+          "mean_cycles": 401.97255113024755,
+          "min_cycles": 139,
+          "max_cycles": 2251,
+          "alias_of": "UDIV32_32"
+        },
+        "SDIV32_32": {
+          "cases": 33444,
+          "mean_cycles": 541.5828848223897,
+          "min_cycles": 75,
+          "max_cycles": 2358
+        },
+        "SMOD32_32": {
+          "cases": 33444,
+          "mean_cycles": 541.5828848223897,
+          "min_cycles": 75,
+          "max_cycles": 2358,
+          "alias_of": "SDIV32_32"
+        },
+        "UMUL16_SHR8": {
+          "cases": 4240,
+          "mean_cycles": 380.0,
+          "min_cycles": 380,
+          "max_cycles": 380
+        },
+        "SMUL16_SHR8": {
+          "cases": 4240,
+          "mean_cycles": 294.0686320754717,
+          "min_cycles": 271,
+          "max_cycles": 334
+        },
+        "UMUL32_SHR16": {
+          "cases": 2724,
+          "mean_cycles": 817.5135829662262,
+          "min_cycles": 761,
+          "max_cycles": 937
+        },
+        "SMUL32_SHR16": {
+          "cases": 2724,
+          "mean_cycles": 874.087738619677,
+          "min_cycles": 778,
+          "max_cycles": 1052
+        },
+        "UDIV16_SHL8": {
+          "cases": 4240,
+          "mean_cycles": 762.6063679245283,
+          "min_cycles": 272,
+          "max_cycles": 1849
+        },
+        "SDIV16_SHL8": {
+          "cases": 4240,
+          "mean_cycles": 872.9641509433962,
+          "min_cycles": 304,
+          "max_cycles": 1860
+        },
+        "URECIP16_Q16": {
+          "cases": 65536,
+          "mean_cycles": 66.23379516601562,
+          "min_cycles": 41,
+          "max_cycles": 239
+        },
+        "SIN8": {
+          "cases": 256,
+          "mean_cycles": 23.0,
+          "min_cycles": 23,
+          "max_cycles": 23
+        },
+        "COS8": {
+          "cases": 256,
+          "mean_cycles": 23.0,
+          "min_cycles": 23,
+          "max_cycles": 23
+        },
+        "SINCOS8": {
+          "cases": 256,
+          "mean_cycles": 31.0,
+          "min_cycles": 31,
+          "max_cycles": 31
+        },
+        "ATAN2_8": {
+          "cases": 65536,
+          "mean_cycles": 126.29759216308594,
+          "min_cycles": 33,
+          "max_cycles": 156
+        },
+        "ISQRT16": {
+          "cases": 65536,
+          "mean_cycles": 204.99252319335938,
+          "min_cycles": 192,
+          "max_cycles": 246
+        },
+        "ISQRT32": {
+          "cases": 4130,
+          "mean_cycles": 1216.1486682808716,
+          "min_cycles": 965,
+          "max_cycles": 1478
+        },
+        "DIST8_FAST": {
+          "cases": 65536,
+          "mean_cycles": 79.07003784179688,
+          "min_cycles": 63,
+          "max_cycles": 95
+        },
+        "DIST8_ACCURATE": {
+          "cases": 65536,
+          "mean_cycles": 85.07003784179688,
+          "min_cycles": 69,
+          "max_cycles": 101
+        }
+      },
+      "accuracy": {
+        "ATAN2_8": {
+          "reference": "nearest 1/256 turn mathematical atan2",
+          "max_error_angle_units": 1,
+          "mean_error_angle_units": 0.1016845703125,
+          "cases_over_1_unit": 0
+        },
+        "DIST8_FAST": {
+          "mean_abs_error": 8.471420216821176,
+          "max_abs_error": 17.148723373790233
+        },
+        "DIST8_ACCURATE": {
+          "mean_abs_error": 2.221951907686614,
+          "max_abs_error": 6.07556010550195,
+          "coefficients": "round(243*max/256)+round(107*min/256)"
+        }
+      },
+      "errors": []
+    },
+    {
+      "profile": "v4_reu_16m",
+      "status": "PASS",
+      "math_init_cycles": 1637,
+      "counts": {
+        "smul16_repair": 4240,
+        "div32_each": 33444,
+        "mul16_shift_each": 4240,
+        "mul32_shift_each": 2724,
+        "div16_shift_each": 4240,
+        "reciprocal_exhaustive": 65536,
+        "trig_exhaustive": 256,
+        "atan2_exhaustive": 65536,
+        "isqrt16_exhaustive": 65536,
+        "isqrt32": 4130,
+        "distance_each_exhaustive": 65536
+      },
+      "performance": {
+        "SMUL16_REPAIRED": {
+          "cases": 4240,
+          "mean_cycles": 253.44103773584905,
+          "min_cycles": 230,
+          "max_cycles": 293
+        },
+        "UDIV32_32": {
+          "cases": 33444,
+          "mean_cycles": 401.97255113024755,
+          "min_cycles": 139,
+          "max_cycles": 2251
+        },
+        "UMOD32_32": {
+          "cases": 33444,
+          "mean_cycles": 401.97255113024755,
+          "min_cycles": 139,
+          "max_cycles": 2251,
+          "alias_of": "UDIV32_32"
+        },
+        "SDIV32_32": {
+          "cases": 33444,
+          "mean_cycles": 541.5828848223897,
+          "min_cycles": 75,
+          "max_cycles": 2358
+        },
+        "SMOD32_32": {
+          "cases": 33444,
+          "mean_cycles": 541.5828848223897,
+          "min_cycles": 75,
+          "max_cycles": 2358,
+          "alias_of": "SDIV32_32"
+        },
+        "UMUL16_SHR8": {
+          "cases": 4240,
+          "mean_cycles": 358.63490566037734,
+          "min_cycles": 356,
+          "max_cycles": 370
+        },
+        "SMUL16_SHR8": {
+          "cases": 4240,
+          "mean_cycles": 294.0686320754717,
+          "min_cycles": 271,
+          "max_cycles": 334
+        },
+        "UMUL32_SHR16": {
+          "cases": 2724,
+          "mean_cycles": 817.5135829662262,
+          "min_cycles": 761,
+          "max_cycles": 937
+        },
+        "SMUL32_SHR16": {
+          "cases": 2724,
+          "mean_cycles": 874.087738619677,
+          "min_cycles": 778,
+          "max_cycles": 1052
+        },
+        "UDIV16_SHL8": {
+          "cases": 4240,
+          "mean_cycles": 762.6063679245283,
+          "min_cycles": 272,
+          "max_cycles": 1849
+        },
+        "SDIV16_SHL8": {
+          "cases": 4240,
+          "mean_cycles": 872.9641509433962,
+          "min_cycles": 304,
+          "max_cycles": 1860
+        },
+        "URECIP16_Q16": {
+          "cases": 65536,
+          "mean_cycles": 66.23379516601562,
+          "min_cycles": 41,
+          "max_cycles": 239
+        },
+        "SIN8": {
+          "cases": 256,
+          "mean_cycles": 23.0,
+          "min_cycles": 23,
+          "max_cycles": 23
+        },
+        "COS8": {
+          "cases": 256,
+          "mean_cycles": 23.0,
+          "min_cycles": 23,
+          "max_cycles": 23
+        },
+        "SINCOS8": {
+          "cases": 256,
+          "mean_cycles": 31.0,
+          "min_cycles": 31,
+          "max_cycles": 31
+        },
+        "ATAN2_8": {
+          "cases": 65536,
+          "mean_cycles": 48.0,
+          "min_cycles": 48,
+          "max_cycles": 48
+        },
+        "ISQRT16": {
+          "cases": 65536,
+          "mean_cycles": 54.0,
+          "min_cycles": 54,
+          "max_cycles": 54
+        },
+        "ISQRT32": {
+          "cases": 4130,
+          "mean_cycles": 1216.1486682808716,
+          "min_cycles": 965,
+          "max_cycles": 1478
+        },
+        "DIST8_FAST": {
+          "cases": 65536,
+          "mean_cycles": 79.07003784179688,
+          "min_cycles": 63,
+          "max_cycles": 95
+        },
+        "DIST8_ACCURATE": {
+          "cases": 65536,
+          "mean_cycles": 85.07003784179688,
+          "min_cycles": 69,
+          "max_cycles": 101
+        }
+      },
+      "accuracy": {
+        "ATAN2_8": {
+          "reference": "nearest 1/256 turn mathematical atan2",
+          "max_error_angle_units": 0,
+          "mean_error_angle_units": 0.0,
+          "cases_over_1_unit": 0
+        },
+        "DIST8_FAST": {
+          "mean_abs_error": 8.471420216821176,
+          "max_abs_error": 17.148723373790233
+        },
+        "DIST8_ACCURATE": {
+          "mean_abs_error": 2.221951907686614,
+          "max_abs_error": 6.07556010550195,
+          "coefficients": "round(243*max/256)+round(107*min/256)"
+        }
+      },
+      "errors": []
+    }
+  ],
+  "reu_audit": {
+    "v3_reu_512k": {
+      "bytes": 524288,
+      "changed_bytes": 65834,
+      "unexpected_changed_bytes": 0,
+      "sha256": "1d8b844983fa7aa757bc3dff5c12f92d4d9b3732c874f6e83a44116e5719c576"
+    },
+    "v4_reu_16m": {
+      "bytes": 16777216,
+      "changed_bytes": 196685,
+      "unexpected_changed_bytes": 0,
+      "sha256": "71574a5d541058060ff871ea0e5c1db13b1c0053a95c9fcf7dd9dbe7e1f0c503"
+    }
+  },
+  "distance_coefficient_audit": {
+    "search_space": "all 65,536 unsigned byte coefficient pairs a,b for round(a*max/256)+round(b*min/256), unique |dx|/|dy| magnitudes 0..128",
+    "objective": "lexicographic minimize maximum absolute error, then mean absolute error",
+    "best": {
+      "a": 243,
+      "b": 107,
+      "max_abs_error": 6.07556010550195,
+      "mean_abs_error_unique_magnitudes": 2.2453960185267894
+    },
+    "selected_matches_global_grid_optimum": true
+  }
+}

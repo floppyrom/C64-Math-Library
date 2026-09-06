@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "profiles": [
+    {
+      "profile": "v1_balanced",
+      "source": "relocatable_source/v1_balanced/math_relocatable.asm",
+      "reachable_instructions": 3339,
+      "source_sha256": "44507cf9ea7317141ecfc851837fb1b083a7371646097ab43351d04b1b731be1"
+    },
+    {
+      "profile": "v2_pareto_fast",
+      "source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
+      "reachable_instructions": 6814,
+      "source_sha256": "13cc7a0bbb67354051b7251bc92ab042225c543b666e28e8a0b96f45de2a1993"
+    },
+    {
+      "profile": "v3_reu_512k",
+      "source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
+      "reachable_instructions": 6745,
+      "source_sha256": "fc21f6ac82bd45c6e196ce3189cf9c2923035bde4bdcd462818a584f04ce4bf9"
+    },
+    {
+      "profile": "v4_reu_16m",
+      "source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
+      "reachable_instructions": 6571,
+      "source_sha256": "8ab2f97651a3cbb4b9391c912c2538e574baadb4b79a2e25e4554a838cec8763"
+    }
+  ]
+}

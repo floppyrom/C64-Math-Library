@@ -1,0 +1,13 @@
+operation,v1_balanced,v2_pareto_fast,v3_reu_512k,v4_reu_16m,notes
+umul8,90.494644,78.494614,69.0,69.0,V3/V4 REU transport model
+umul16,383.320456,350.782403,339.0,317.54103088378906,V4 exact exhaustive uniform mean for UMUL16
+umul24,514.534938,475.784575,475.784575,475.784575,canonical/inherited public mean
+umul32,782.822007,763.822007,763.822007,763.822007,canonical/inherited public mean
+udiv8,87.445969,87.445969,70.86328125,70.86328125,V3/V4 REU transport model
+udiv16,160.064966,137.282268,137.282268,137.282268,canonical/inherited public mean
+udiv24,224.668396,203.612991,203.612991,203.612991,canonical/inherited public mean
+udiv32_16,857.373105,759.730823,759.730823,759.730823,canonical/inherited public mean
+umod8,65.285156,64.819153,49.9296875,49.9296875,V3/V4 REU transport model
+umod16,163.064966,140.282268,140.282268,140.282268,canonical/inherited public mean
+umod24,227.668396,206.612991,206.612991,206.612991,canonical/inherited public mean
+umod32_16,860.373105,762.730823,762.730823,762.730823,canonical/inherited public mean

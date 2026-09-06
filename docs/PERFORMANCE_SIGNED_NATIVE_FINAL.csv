@@ -1,0 +1,33 @@
+profile,family,implementation,avg_cycles,min_cycles,max_cycles,zp_bytes,native_bytes,adapter_or_delta_cycles,provenance
+v1_balanced,SMUL8,profile-native fused producer,120.494644,,,profile union,profile producer + signed tail,30.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v1_balanced,SMUL16,profile-native fused producer,422.320456,,,profile union,profile producer + signed tail,39.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v1_balanced,SMUL24,profile-native fused producer,568.534938,,,profile union,profile producer + signed tail,54.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v1_balanced,SMUL32,profile-native fused producer,848.822007,,,profile union,profile producer + signed tail,66.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v1_balanced,SDIV8,native signed DIV + stable-memory adapter,120.496689,63,611,5,458,43,canonical native core + exact fixed adapter
+v1_balanced,SDIV16,native signed DIV + stable-memory adapter,223.570305,107,1498,14,442,71,canonical native core + exact fixed adapter
+v1_balanced,SDIV24,native signed DIV + stable-memory adapter,337.764977,209,5574,18,373,99,canonical native core + exact fixed adapter
+v1_balanced,SDIV32_16,native signed DIV + stable-memory adapter,979.596406,209,1974,18,480,99,canonical native core + exact fixed adapter
+v2_pareto_fast,SMUL8,profile-native fused producer,108.494614,,,profile union,profile producer + signed tail,30.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v2_pareto_fast,SMUL16,uploaded native practical + stable-memory adapter,250.562251,227,290,116,2104,61,measured native core 189.562251 + exact adapter 61
+v2_pareto_fast,SMUL24,profile-native fused producer,526.784575,,,profile union,profile producer + signed tail,51.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v2_pareto_fast,SMUL32,profile-native fused producer,826.822007,,,profile union,profile producer + signed tail,63.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v2_pareto_fast,SDIV8,native signed DIV + stable-memory adapter,120.496689,63,611,5,458,43,canonical native core + exact fixed adapter
+v2_pareto_fast,SDIV16,native signed DIV + stable-memory adapter,198.807033,114,1048,12,1572,71,canonical native core + exact fixed adapter
+v2_pareto_fast,SDIV24,native signed DIV + stable-memory adapter,273.967714,163,2507,21,1876,99,canonical native core + exact fixed adapter
+v2_pareto_fast,SDIV32_16,native signed DIV + stable-memory adapter,881.812479,239,1919,18,2075,99,canonical native core + exact fixed adapter
+v3_reu_512k,SMUL8,profile-native fused producer,96.0,,,profile union,profile producer + signed tail,27.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v3_reu_512k,SMUL16,uploaded native practical + stable-memory adapter,250.562251,227,290,116,2104,61,measured native core 189.562251 + exact adapter 61
+v3_reu_512k,SMUL24,profile-native fused producer,526.784575,,,profile union,profile producer + signed tail,51.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v3_reu_512k,SMUL32,profile-native fused producer,826.822007,,,profile union,profile producer + signed tail,63.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v3_reu_512k,SDIV8,native signed DIV + stable-memory adapter,120.496689,63,611,5,458,43,canonical native core + exact fixed adapter
+v3_reu_512k,SDIV16,native signed DIV + stable-memory adapter,198.807033,114,1048,12,1572,71,canonical native core + exact fixed adapter
+v3_reu_512k,SDIV24,native signed DIV + stable-memory adapter,273.967714,163,2507,21,1876,99,canonical native core + exact fixed adapter
+v3_reu_512k,SDIV32_16,native signed DIV + stable-memory adapter,881.812479,239,1919,18,2075,99,canonical native core + exact fixed adapter
+v4_reu_16m,SMUL8,profile-native fused producer,96.0,,,profile union,profile producer + signed tail,27.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v4_reu_16m,SMUL16,uploaded native practical + stable-memory adapter,250.562251,227,290,116,2104,61,measured native core 189.562251 + exact adapter 61
+v4_reu_16m,SMUL24,profile-native fused producer,526.784575,,,profile union,profile producer + signed tail,51.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v4_reu_16m,SMUL32,profile-native fused producer,826.822007,,,profile union,profile producer + signed tail,63.0,derived exact uniform sign-tail delta with public-stub parity accounted; no public UMUL call
+v4_reu_16m,SDIV8,native signed DIV + stable-memory adapter,120.496689,63,611,5,458,43,canonical native core + exact fixed adapter
+v4_reu_16m,SDIV16,native signed DIV + stable-memory adapter,198.807033,114,1048,12,1572,71,canonical native core + exact fixed adapter
+v4_reu_16m,SDIV24,native signed DIV + stable-memory adapter,273.967714,163,2507,21,1876,99,canonical native core + exact fixed adapter
+v4_reu_16m,SDIV32_16,native signed DIV + stable-memory adapter,881.812479,239,1919,18,2075,99,canonical native core + exact fixed adapter

@@ -1,0 +1,215 @@
+; Signed 16x16 -> signed 32, practical split layout: the quarter-square core
+; stays in zero page while the signed correction tail lives in normal memory.
+;ABI
+;CPU: mos6502
+;Operation: smul
+;Entry: smul16
+;Input x: int16 = x0, x1
+;Input y: int16 = reg:Y, y1
+;Output z: int32 = z0, z1, reg:X, reg:A
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;Region Data: cg_data0_start..cg_data0_end, cg_data1_start..cg_data1_end, cg_data2_start..cg_data2_end, cg_data3_start..cg_data3_end
+;End ABI
+;Results
+;Status: validated
+;Validation level: validate
+;Validation cases: 2097152
+;Validation errors: 0
+;Validation complete: yes
+;Edge cases: 267148
+;Edge errors: 0
+;Edge complete: yes
+;Profile distribution: uniform
+;Profile cases: 2097152
+;Profile errors: 0
+;Profile complete: yes
+;Min cycles: 166
+;Max cycles: 229
+;Avg cycles: 189.562251
+;Stddev cycles: 14.354646
+;ZP bytes: 116
+;Code bytes: 60
+;Data bytes: 2044
+;Total bytes: 2104
+;End Results
+
+!cpu 6502
+PARITY_BIAS = $ca
+
+* = $0002
+cg_zp_start:
+
+smul16:
+        sty corr_y0+1
+
+        lda+1 x1
+        sta+1 sqr_hi_1+1
+        eor #$ff
+        sta+1 neg_lo_1+1
+        sta+1 neg_hi_1+1
+
+        lda+1 x0
+        sta+1 sqr_hi_0+1
+        eor #$ff
+        sta+1 neg_lo_0+1
+        sta+1 neg_hi_0+1
+
+        sec
+
+x0 = *+1
+sqr_lo_0:
+        lda table_sqr_lo,y
+neg_lo_0:
+        adc table_neg_lo,y
+        sta+1 z0
+sqr_hi_0:
+        lda table_sqr_hi,y
+neg_hi_0:
+        adc table_neg_hi,y
+
+x1 = *+1
+sqr_lo_1:
+        adc table_sqr_lo,y
+        bcs p10_carry
+neg_lo_1:
+        adc table_neg_lo,y
+        tax
+        lda (sqr_hi_1+1),y
+p10_tail:
+neg_hi_1:
+        adc table_neg_hi,y
+        sta+1 z2_part1+1
+
+y1 = *+1
+        ldy #0
+
+        lda (sqr_lo_0+1),y
+        adc (neg_lo_0+1),y
+        sta+1 z1_part2+1
+        lda (sqr_hi_0+1),y
+        adc (neg_hi_0+1),y
+
+        adc (sqr_lo_1+1),y
+        bcs p11_carry
+        adc (neg_lo_1+1),y
+        sta+1 z2_part2+1
+sqr_hi_1:
+        lda table_sqr_hi,y
+p11_tail:
+        adc (neg_hi_1+1),y
+        tay
+
+        ; Form the unsigned upper word first, including its final carry.
+        clc
+        txa
+z1_part2:
+        adc #0
+        sta+1 z1
+z2_part1:
+        lda #0
+z2_part2:
+        adc #0
+        jmp signed_tail
+
+p10_carry:
+        clc
+        adc (neg_lo_1+1),y
+        tax
+        lda #1
+        adc (sqr_hi_1+1),y
+        bcc p10_tail
+
+p11_carry:
+        clc
+        adc (neg_lo_1+1),y
+        sta+1 z2_part2+1
+        lda #1
+        adc (sqr_hi_1+1),y
+        bcc p11_tail
+
+z0:     !byte 0
+z1:     !byte 0
+cg_zp_end:
+
+* = $1000
+cg_code_start:
+signed_tail:
+        ; signed = unsigned - (x<0 ? y<<16 : 0)
+        ;                   - (y<0 ? x<<16 : 0)
+        bit+1 x1
+        bmi x_negative
+        bit y1
+        bmi subtract_x
+        tax
+        tya
+        adc #0
+        rts
+
+x_negative:
+        bit y1
+        bmi subtract_both
+        bcc y_top_ready
+        iny
+y_top_ready:
+        sec
+corr_y0:
+        sbc #0
+        tax
+        tya
+        sbc y1
+        rts
+
+subtract_x:
+        bcc x_top_ready
+        iny
+x_top_ready:
+        sec
+        sbc+1 x0
+        tax
+        tya
+        sbc+1 x1
+        rts
+
+subtract_both:
+        bcc both_top_ready
+        iny
+both_top_ready:
+        sec
+        sbc corr_y0+1
+        tax
+        tya
+        sbc y1
+        tay
+        txa
+        sec
+        sbc+1 x0
+        tax
+        tya
+        sbc+1 x1
+        rts
+cg_code_end:
+
+* = $2000
+cg_data0_start:
+table_sqr_lo:
+!for i,0,510 { !byte <(((i*i)/4) + PARITY_BIAS*(i&1)) }
+cg_data0_end:
+
+* = $2200
+cg_data1_start:
+table_sqr_hi:
+!for i,0,510 { !byte >(((i*i)/4) + PARITY_BIAS*(i&1)) }
+cg_data1_end:
+
+* = $2400
+cg_data2_start:
+table_neg_lo:
+!for i,0,510 { !byte 255-<(((((255-i)*(255-i))/4)+PARITY_BIAS*((255-i)&1))) }
+cg_data2_end:
+
+* = $2600
+cg_data3_start:
+table_neg_hi:
+!for i,0,510 { !byte 255->(((((255-i)*(255-i))/4)+PARITY_BIAS*((255-i)&1))) }
+cg_data3_end:

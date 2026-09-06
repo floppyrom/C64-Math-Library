@@ -1,0 +1,42 @@
+; Firemonger C64 Math API v4 — QS16 small-batch example
+; ------------------------------------------------------
+; Use this pattern for 2-8 adjacent unsigned 16x16 multiplies.
+; MATH_INIT must have been called once earlier.
+; Inputs are preserved; A/X/Y are volatile; output is math_z0..math_z3.
+;
+; This file is an integration example, not a standalone program: include/link
+; the resident library and this source from your application build.
+
+!cpu 6510
+!source "../resident/math_api.inc"
+
+example_qs16_batch:
+        jsr MATH_REU_QS16_BEGIN
+
+        ; Product #1: $1234 * $5678
+        lda #$34
+        sta math_x0
+        lda #$12
+        sta math_x1
+        lda #$78
+        sta math_y0
+        lda #$56
+        sta math_y1
+        jsr MATH_REU_QS16
+        ; consume/copy math_z0..math_z3 here
+
+        ; Product #2: $ABCD * $0102
+        lda #$cd
+        sta math_x0
+        lda #$ab
+        sta math_x1
+        lda #$02
+        sta math_y0
+        lda #$01
+        sta math_y1
+        jsr MATH_REU_QS16
+        ; consume/copy math_z0..math_z3 here
+
+        ; Restore V3-compatible one-byte REU lookup mode before ordinary calls.
+        jsr MATH_REU_QS16_END
+        rts

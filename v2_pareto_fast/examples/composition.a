@@ -1,0 +1,5 @@
+; Proven composed paths are exported from the reference image.
+!source "../resident/math_api.inc"
+        jsr MATH_INIT
+        jsr MATH_CHAIN_UMUL16_UDIV32_16
+        jsr MATH_CHAIN_UDIV24_UMUL24

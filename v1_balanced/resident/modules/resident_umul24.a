@@ -1,0 +1,219 @@
+;ABI
+;Entry: umul24
+;CPU: mos6502
+;Operation: umul
+;Input x: uint24 = x0, x1, x2
+;Input y: uint24 = y0, y1, y2
+;Entry Y: y[0]
+;Output z: uint48 = z0, z1, z2, z3, z4, reg:A
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;Region Data: cg_sqr_lo_start..cg_sqr_lo_end, cg_sqr_hi_start..cg_sqr_hi_end, cg_neg_sqr_lo_start..cg_neg_sqr_lo_end, cg_neg_sqr_hi_start..cg_neg_sqr_hi_end
+;End ABI
+;Results
+;Status: validated
+;Validation level: validate
+;Validation cases: 2097152
+;Validation errors: 0
+;Validation complete: yes
+;Edge cases: 590353
+;Edge errors: 0
+;Edge complete: yes
+;Profile distribution: uniform
+;Profile cases: 2097152
+;Profile errors: 0
+;Profile complete: no
+;Min cycles: 392
+;Max cycles: 470
+;Avg cycles: 419.534938
+;Stddev cycles: 12.234786
+;ZP bytes: 12
+;Code bytes: 204
+;Data bytes: 2044
+;Total bytes: 2248
+;End Results
+;Function:
+;(z5..z0) = (x2;x1;x0) * (y2;y1;y0), unsigned
+
+!cpu 6510
+EVEN = $00
+ODD  = $ca
+
+zb0=$10
+zb1=$13
+zb2=$16
+zb3=$19
+
+
+; x is read in setup before any row runs; y_k is read at the top
+; of row k's pass and overwritten by that row's own top byte.
+!addr x0 = zb0+0
+!addr x1 = zb0+1
+!addr x2 = zb0+2
+!addr y0 = zb3+0
+!addr y1 = zb3+1
+!addr y2 = zb3+2
+
+; each result lands on a slot the summation has already read
+!addr z0 = zb0+0
+!addr z1 = zb0+1
+!addr z2 = zb0+2
+!addr z3 = zb1+0
+!addr z4 = zb1+1
+
+* = $4a00
+cg_code_start
+umul24
+        lda+1 x0
+        sta+2 hsl0
+        sta+2 hsh0
+        eor #$ff
+        sta+2 hnl0
+        sta+2 hnh0
+        lda+1 x1
+        sta+2 hsl1
+        sta+2 hsh1
+        sta+2 csh1
+        eor #$ff
+        sta+2 hnl1
+        sta+2 hnh1
+        sta+2 cnl1
+        sta+2 cnh1
+        lda+1 x2
+        sta+2 hsl2
+        sta+2 hsh2
+        sta+2 csl2
+        sta+2 csh2
+        eor #$ff
+        sta+2 hnl2
+        sta+2 hnh2
+        sta+2 cnl2
+        sec                       ; one carry seeds all three rows
+        ldx #2                    ; rows run 2..0
+
+; ---- shared 24x8 row kernel, three passes ----
+kernel
+        ldy+1 zb3,x               ; y_k, read before this row overwrites it
+hsl0 = *+1
+        lda sqr_lo,y
+hnl0 = *+1
+        adc neg_sqr_lo,y
+        sta+1 zb0,x
+hsh0 = *+1
+        lda sqr_hi,y
+hnh0 = *+1
+        adc neg_sqr_hi,y
+hsl1 = *+1
+        adc sqr_lo,y
+        bcs h1
+b1
+hnl1 = *+1
+        adc neg_sqr_lo,y
+        sta+1 zb1,x
+hsh1 = *+1
+        lda sqr_hi,y
+hnh1 = *+1
+        adc neg_sqr_hi,y
+hsl2 = *+1
+        adc sqr_lo,y
+        bcs h2
+b2
+hnl2 = *+1
+        adc neg_sqr_lo,y
+        sta+1 zb2,x
+hsh2 = *+1
+        lda sqr_hi,y
+t2
+hnh2 = *+1
+        adc neg_sqr_hi,y
+        sta+1 zb3,x
+        dex
+        bpl kernel
+        jmp summation             ; past the repair blocks
+
+; ---- cold carry repair ----
+h1
+        clc
+cnl1 = *+1
+        adc neg_sqr_lo,y
+        sta+1 zb1,x
+        lda #1
+csh1 = *+1
+        adc sqr_hi,y
+cnh1 = *+1
+        adc neg_sqr_hi,y
+csl2 = *+1
+        adc sqr_lo,y
+        bcc b2
+h2
+        clc
+cnl2 = *+1
+        adc neg_sqr_lo,y
+        sta+1 zb2,x
+        lda #1
+csh2 = *+1
+        adc sqr_hi,y
+        jmp t2
+
+; ---- summation ----
+summation
+        clc
+        lda+1 zb1+0
+        adc+1 zb0+1
+        sta+1 z1
+        lda+1 zb2+0
+        adc+1 zb1+1
+        sta+2 t0_v
+        lda+1 zb3+0
+        adc+1 zb2+1
+        tay
+        bcc sum2
+        clc
+        inc+1 zb3+1
+sum2
+t0_v = *+1
+        lda #0
+        adc+1 zb0+2
+        sta+1 z2
+        tya
+        adc+1 zb1+2
+        sta+1 z3
+        lda+1 zb3+1
+        adc+1 zb2+2
+        sta+1 z4
+        lda+1 zb3+2
+        adc #0
+        rts
+cg_code_end
+
+* = $8400
+cg_sqr_lo_start
+sqr_lo
+!for i,0,510 {
+        !byte <(((i*i)/4) + ODD*(i&1) + EVEN*(1-(i&1)))
+}
+cg_sqr_lo_end
+
+* = $8600
+cg_sqr_hi_start
+sqr_hi
+!for i,0,510 {
+        !byte >(((i*i)/4) + ODD*(i&1) + EVEN*(1-(i&1)))
+}
+cg_sqr_hi_end
+
+* = $8800
+cg_neg_sqr_lo_start
+neg_sqr_lo
+!for i,0,510 {
+        !byte 255 - <(((((255-i)*(255-i))/4) + ODD*((255-i)&1) + EVEN*(1-((255-i)&1))))
+}
+cg_neg_sqr_lo_end
+
+* = $8a00
+cg_neg_sqr_hi_start
+neg_sqr_hi
+!for i,0,510 {
+        !byte 255 - >(((((255-i)*(255-i))/4) + ODD*((255-i)&1) + EVEN*(1-((255-i)&1))))
+}
+cg_neg_sqr_hi_end

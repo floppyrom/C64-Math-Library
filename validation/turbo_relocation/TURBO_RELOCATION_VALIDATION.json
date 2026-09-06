@@ -1,0 +1,149 @@
+{
+  "status": "PASS",
+  "profiles": {
+    "v3_reu_512k": {
+      "reference": {
+        "turbo16": {
+          "cases": 2098,
+          "begin_cycles": 282,
+          "end_cycles": 327,
+          "second_begin_cycles": 282,
+          "second_call_cycles": 207,
+          "second_end_cycles": 327,
+          "call_mean_cycles": 215.5441106342394,
+          "call_min_cycles": 203,
+          "call_max_cycles": 240,
+          "zp_base": "$3E",
+          "zp_end": "$AE",
+          "reu_bank": "$04",
+          "installed_overlay_sha256": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
+          "cycle_vector_sha256": "df54714ede2228e623d553c2e0dfc7ed70fe70ab63efe9afa3e7b5334cf680dc"
+        },
+        "turbo32": {
+          "cases": 2193,
+          "begin_cycles": 538,
+          "end_cycles": 583,
+          "second_begin_cycles": 538,
+          "second_call_cycles": 743,
+          "second_end_cycles": 583,
+          "call_mean_cycles": 731.4114963503649,
+          "call_min_cycles": 597,
+          "call_max_cycles": 829,
+          "zp_base": "$0A",
+          "zp_end": "$FA",
+          "reu_bank": "$05",
+          "installed_overlay_sha256": "0b041806ec684a2d892ffd0f6f2e6f219293912b0572ae964bba596b0a2774f1",
+          "cycle_vector_sha256": "13de812734243bc64be0acf7d88027e1c825e4730936fe2c97910933972d3460"
+        }
+      },
+      "alternate": {
+        "turbo16": {
+          "cases": 2098,
+          "begin_cycles": 282,
+          "end_cycles": 327,
+          "second_begin_cycles": 282,
+          "second_call_cycles": 207,
+          "second_end_cycles": 327,
+          "call_mean_cycles": 215.5441106342394,
+          "call_min_cycles": 203,
+          "call_max_cycles": 240,
+          "zp_base": "$40",
+          "zp_end": "$B0",
+          "reu_bank": "$00",
+          "installed_overlay_sha256": "a231db022a18841656bcd138eb71b2dc1215b455f3646b27f081a18ffad4b475",
+          "cycle_vector_sha256": "df54714ede2228e623d553c2e0dfc7ed70fe70ab63efe9afa3e7b5334cf680dc"
+        },
+        "turbo32": {
+          "cases": 2193,
+          "begin_cycles": 538,
+          "end_cycles": 583,
+          "second_begin_cycles": 538,
+          "second_call_cycles": 743,
+          "second_end_cycles": 583,
+          "call_mean_cycles": 731.4114963503649,
+          "call_min_cycles": 597,
+          "call_max_cycles": 829,
+          "zp_base": "$06",
+          "zp_end": "$F6",
+          "reu_bank": "$01",
+          "installed_overlay_sha256": "aa580ef7c47bca7ad847211ff2a4404b6267139c3388fe84f99d4857f891fab8",
+          "cycle_vector_sha256": "13de812734243bc64be0acf7d88027e1c825e4730936fe2c97910933972d3460"
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "reference": {
+        "turbo16": {
+          "cases": 2098,
+          "begin_cycles": 282,
+          "end_cycles": 327,
+          "second_begin_cycles": 282,
+          "second_call_cycles": 207,
+          "second_end_cycles": 327,
+          "call_mean_cycles": 215.5441106342394,
+          "call_min_cycles": 203,
+          "call_max_cycles": 240,
+          "zp_base": "$3E",
+          "zp_end": "$AE",
+          "reu_bank": "$04",
+          "installed_overlay_sha256": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
+          "cycle_vector_sha256": "df54714ede2228e623d553c2e0dfc7ed70fe70ab63efe9afa3e7b5334cf680dc"
+        },
+        "turbo32": {
+          "cases": 2193,
+          "begin_cycles": 538,
+          "end_cycles": 583,
+          "second_begin_cycles": 538,
+          "second_call_cycles": 743,
+          "second_end_cycles": 583,
+          "call_mean_cycles": 731.4114963503649,
+          "call_min_cycles": 597,
+          "call_max_cycles": 829,
+          "zp_base": "$0A",
+          "zp_end": "$FA",
+          "reu_bank": "$05",
+          "installed_overlay_sha256": "0b041806ec684a2d892ffd0f6f2e6f219293912b0572ae964bba596b0a2774f1",
+          "cycle_vector_sha256": "13de812734243bc64be0acf7d88027e1c825e4730936fe2c97910933972d3460"
+        }
+      },
+      "alternate": {
+        "turbo16": {
+          "cases": 2098,
+          "begin_cycles": 282,
+          "end_cycles": 327,
+          "second_begin_cycles": 282,
+          "second_call_cycles": 207,
+          "second_end_cycles": 327,
+          "call_mean_cycles": 215.5441106342394,
+          "call_min_cycles": 203,
+          "call_max_cycles": 240,
+          "zp_base": "$40",
+          "zp_end": "$B0",
+          "reu_bank": "$28",
+          "installed_overlay_sha256": "a231db022a18841656bcd138eb71b2dc1215b455f3646b27f081a18ffad4b475",
+          "cycle_vector_sha256": "df54714ede2228e623d553c2e0dfc7ed70fe70ab63efe9afa3e7b5334cf680dc"
+        },
+        "turbo32": {
+          "cases": 2193,
+          "begin_cycles": 538,
+          "end_cycles": 583,
+          "second_begin_cycles": 538,
+          "second_call_cycles": 743,
+          "second_end_cycles": 583,
+          "call_mean_cycles": 731.4114963503649,
+          "call_min_cycles": 597,
+          "call_max_cycles": 829,
+          "zp_base": "$06",
+          "zp_end": "$F6",
+          "reu_bank": "$29",
+          "installed_overlay_sha256": "aa580ef7c47bca7ad847211ff2a4404b6267139c3388fe84f99d4857f891fab8",
+          "cycle_vector_sha256": "13de812734243bc64be0acf7d88027e1c825e4730936fe2c97910933972d3460"
+        }
+      }
+    }
+  },
+  "total_product_calls": 17164,
+  "total_lifecycle_calls": 32,
+  "total_turbo_api_calls": 17196,
+  "statement": "Turbo16/Turbo32 ZP origins and REU overlay banks are build-time relocatable; alternate relocation is cycle-identical on the canonical test corpus."
+}

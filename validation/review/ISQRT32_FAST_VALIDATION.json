@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "algorithm": "hybrid exact ISQRT32: exact ISQRT16 high-byte seed plus eight restoring base-4 refinement steps",
+  "proof_note": "For N=(H<<16)+L and r=floor(sqrt(H)), 256*r <= sqrt(N) < 256*(r+1), so r is exactly the high byte of floor(sqrt(N)). The residual H-r^2 seeds the remaining eight base-4 digits.",
+  "contract": "floor(sqrt(N32)); N preserved; C=0",
+  "case_design": "boundary values, values around representative perfect squares, 5,000 deterministic random 32-bit radicands",
+  "profiles": [
+    {
+      "profile": "v1_balanced",
+      "status": "PASS",
+      "cases": 5097,
+      "mean_cycles": 1380.7045320776926,
+      "min_cycles": 1189,
+      "max_cycles": 1656,
+      "resident_prg_sha256": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620"
+    },
+    {
+      "profile": "v2_pareto_fast",
+      "status": "PASS",
+      "cases": 5097,
+      "mean_cycles": 1200.0986855012752,
+      "min_cycles": 1050,
+      "max_cycles": 1428,
+      "resident_prg_sha256": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac"
+    },
+    {
+      "profile": "v3_reu_512k",
+      "status": "PASS",
+      "cases": 5097,
+      "mean_cycles": 1199.3396115361977,
+      "min_cycles": 1049,
+      "max_cycles": 1428,
+      "resident_prg_sha256": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71"
+    },
+    {
+      "profile": "v4_reu_16m",
+      "status": "PASS",
+      "cases": 5097,
+      "mean_cycles": 1047.7716303708064,
+      "min_cycles": 899,
+      "max_cycles": 1237,
+      "resident_prg_sha256": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139"
+    }
+  ]
+}

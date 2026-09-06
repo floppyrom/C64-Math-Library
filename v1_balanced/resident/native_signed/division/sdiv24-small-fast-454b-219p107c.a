@@ -1,0 +1,339 @@
+;ABI
+;CPU: mos6502
+;Operation: sdiv
+;Entry: div_s24
+;Input n: int24 = sn0, sn1, sn2
+;Input d: int24 = sdin0, sdin1, sdin2
+;Output q: int24 = q0, q1, q2
+;Remainder r: int24 = r0, r1, r2
+;Region ZP: sg_zp_start..sg_zp_end, cg_zp_start..cg_zp_end
+;Region Code: sg_code_start..sg_code_end, cg_code_start..cg_code_end
+;End ABI
+; ============================================================================
+; FIREMONGER C64 DIVISION REFERENCE — PUBLICATION COPY
+; Family       : sdiv24
+; Tier         : small-fast
+; Target       : NMOS 6502/6510, decimal mode clear
+; Measurement  : canonical 2,097,152-case SplitMix64 corpus; seed $C0FFEE where random
+; Timing       : entry instruction through final RTS; caller JSR excluded
+; Avg cycles   : 219.106586
+; Min / Max    : 110 / 2411
+; Stddev       : 170.392965
+; Resident     : 454 bytes (Code 454 + Data 0); ZP 21 bytes separate
+; Validation   : 2097152 cases, 0 errors
+; Edge suite   : 19950 cases in canonical run, 0 errors
+; Architecture : Deep signed entry over the 256-byte residual unsigned core.
+;
+; NOTE: this publication block is comments only and does not alter the exact
+; assembled image that produced the result. Raw canonical JSON is supplied
+; beside the source when available. See TECHNICAL_ASSESSMENT.md for caveats.
+; ============================================================================
+!cpu 6502
+*=$10
+cg_zp_start:
+n0: !byte 0
+n1: !byte 0
+n2: !byte 0
+d0: !byte 0
+d1: !byte 0
+d2: !byte 0
+q0: !byte 0
+q1: !byte 0
+q2: !byte 0
+r0: !byte 0
+r1: !byte 0
+r2: !byte 0
+sd0: !byte 0
+sd1: !byte 0
+sd2: !byte 0
+cg_zp_end:
+*=$0008
+sg_zp_start:
+sn0: !byte 0
+sn1: !byte 0
+sn2: !byte 0
+sdin0: !byte 0
+sdin1: !byte 0
+sdin2: !byte 0
+sg_zp_end:
+
+*=$0c00
+sg_code_start:
+div_s24:
+        ; Signed divide-by-zero check before magnitude formation.
+        lda sdin0
+        ora sdin1
+        ora sdin2
+        bne s_dnz
+s_zero:
+        lda #0
+        sta q0
+        sta q1
+        sta q2
+        sta r0
+        sta r1
+        sta r2
+        sec
+        rts
+s_dnz:
+        lda sdin2
+        bmi s_dneg
+s_dpos:
+        lda sdin0
+        sta d0
+        lda sdin1
+        sta d1
+        lda sdin2
+        sta d2
+        bpl s_nmake
+s_dneg:
+        lda #0
+        sec
+        sbc sdin0
+        sta d0
+        lda #0
+        sbc sdin1
+        sta d1
+        lda #0
+        sbc sdin2
+        sta d2
+s_nmake:
+        lda sn2
+        bmi s_nneg
+s_npos:
+        lda sn0
+        sta n0
+        lda sn1
+        sta n1
+        lda sn2
+        sta n2
+        bpl s_call
+s_nneg:
+        lda #0
+        sec
+        sbc sn0
+        sta n0
+        lda #0
+        sbc sn1
+        sta n1
+        lda #0
+        sbc sn2
+        sta n2
+s_call:
+        ; Magnitudes are now available: resolve q=0 before the unsigned core.
+        lda n2
+        cmp d2
+        bcc s_qzero
+        bne s_do_unsigned
+        lda n1
+        cmp d1
+        bcc s_qzero
+        bne s_do_unsigned
+        lda n0
+        cmp d0
+        bcc s_qzero
+s_do_unsigned:
+        ldx n2
+        sec
+        jsr ge
+
+        ; Remainder has the sign of the original dividend.
+        lda sn2
+        bpl s_rdone
+        lda #0
+        sec
+        sbc r0
+        sta r0
+        lda #0
+        sbc r1
+        sta r1
+        lda #0
+        sbc r2
+        sta r2
+s_rdone:
+        ; Quotient sign = sign(n) XOR sign(d).
+        lda sn2
+        eor sdin2
+        bpl s_success
+        lda #0
+        sec
+        sbc q0
+        sta q0
+        lda #0
+        sbc q1
+        sta q1
+        lda #0
+        sbc q2
+        sta q2
+s_success:
+        clc
+        rts
+s_qzero:
+        lda #0
+        sta q0
+        sta q1
+        sta q2
+        lda sn0
+        sta r0
+        lda sn1
+        sta r1
+        lda sn2
+        sta r2
+        clc
+        rts
+sg_code_end:
+
+*=$1000
+cg_code_start:
+div_u24:
+ lda d0
+ ora d1
+ ora d2
+ bne nz
+ ldx #5
+zloop:
+ sta q0,x
+ dex
+ bpl zloop
+ sec
+ rts
+nz:
+ !byte $a7,n2
+ cmp d2
+ bcc qzero
+ bne ge
+ lda n1
+ cmp d1
+ bcc qzero
+ bne ge
+ lda n0
+ cmp d0
+ bcs ge
+qzero:
+ !byte $0b,$00
+ sta q0
+ sta q1
+ sta q2
+ lda n0
+ sta r0
+ lda n1
+ sta r1
+ stx r2
+ rts
+ge:
+ lda n0
+ sbc d0
+ sta r0
+ lda n1
+ sbc d1
+ sta r1
+ txa
+ sbc d2
+ sta r2
+ ldx #0
+ lda r2
+ cmp d2
+ bcc q1ret
+ lda r0
+ sbc d0
+ tay
+ lda r1
+ sbc d1
+ sta q1
+ lda r2
+ sbc d2
+ bcs qge2
+q1ret:
+ lda #1
+qsmallret:
+ sta q0
+ stx q1
+ stx q2
+ rts
+qge2:
+ sta r2
+ sty r0
+ lda q1
+ sta r1
+ lda r2
+ cmp d2
+ bcs tail
+ lda #2
+ bne qsmallret
+tail:
+ lda d0
+ sta sd0
+ lda d1
+ sta sd1
+ lda d2
+ sta sd2
+ stx q0
+ stx q1
+ stx q2
+align:
+ asl sd0
+ rol sd1
+ rol sd2
+ bcs over
+ lda r2
+ cmp sd2
+ bcc over
+ bne atake
+ lda r1
+ cmp sd1
+ bcc over
+ bne atake
+ lda r0
+ cmp sd0
+ bcc over
+atake:
+ inx
+ bne align
+over:
+ ror sd2
+ ror sd1
+ ror sd0
+bits:
+ lda r2
+ cmp sd2
+ bcc no
+ bne dosub
+ lda r1
+ cmp sd1
+ bcc no
+ bne dosub
+ lda r0
+ cmp sd0
+ bcc no
+dosub:
+ lda r0
+ sbc sd0
+ sta r0
+ lda r1
+ sbc sd1
+ sta r1
+ lda r2
+ sbc sd2
+ sta r2
+no:
+ rol q0
+ rol q1
+ rol q2
+ lsr sd2
+ ror sd1
+ ror sd0
+ dex
+ bpl bits
+ lda q0
+ clc
+ adc #2
+ sta q0
+ bcc done
+ inc q1
+ bne clear
+ inc q2
+clear:
+ clc
+done:
+ rts
+cg_code_end:

@@ -1,0 +1,85 @@
+!cpu 6502
+; Resident-profile unsigned 16x16 -> 32 using four calls to the shared
+; UMUL8 balanced quarter-square kernel at $4700. No extra tables and no
+; persistent ZP state. Public input/output addresses are used directly.
+PX0=$c000
+PX1=$c001
+PY0=$c004
+PY1=$c005
+PZ0=$c008
+PZ1=$c009
+PZ2=$c00a
+PZ3=$c00b
+UMUL8_CORE=$4700
+TMPHI=$18
+
+*=$4800
+umul16_resident:
+        ; Rebuild the shared UMUL8 pointer highs because any division/mod call
+        ; may have reused $10-$14 since the preceding multiply.
+        lda #$80
+        sta $11
+        lda #$82
+        sta $13
+
+        lda #0
+        sta PZ0
+        sta PZ1
+        sta PZ2
+        sta PZ3
+
+        ; p00 = x0*y0, shift 0
+        ldx PX0
+        ldy PY0
+        jsr UMUL8_CORE
+        sta PZ1
+        lda $14
+        sta PZ0
+
+        ; p01 = x0*y1, shift 8
+        ldx PX0
+        ldy PY1
+        jsr UMUL8_CORE
+        sta TMPHI
+        lda $14
+        clc
+        adc PZ1
+        sta PZ1
+        lda TMPHI
+        adc PZ2
+        sta PZ2
+        bcc p01_done
+        inc PZ3
+p01_done:
+
+        ; p10 = x1*y0, shift 8
+        ldx PX1
+        ldy PY0
+        jsr UMUL8_CORE
+        sta TMPHI
+        lda $14
+        clc
+        adc PZ1
+        sta PZ1
+        lda TMPHI
+        adc PZ2
+        sta PZ2
+        bcc p10_done
+        inc PZ3
+p10_done:
+
+        ; p11 = x1*y1, shift 16
+        ldx PX1
+        ldy PY1
+        jsr UMUL8_CORE
+        sta TMPHI
+        lda $14
+        clc
+        adc PZ2
+        sta PZ2
+        lda TMPHI
+        adc PZ3
+        sta PZ3
+        clc
+        rts
+umul16_resident_end:

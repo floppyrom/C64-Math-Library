@@ -1,0 +1,5 @@
+profile,api_stub_bytes,table_bytes,game_code_bytes,init_smul16_repair_reserved_bytes,game_scratch,validation_prg_payload_bytes,validation_prg_end_exclusive,reu_game_math_use
+v1_balanced,57,1792,2638,0,24 B RAM $C040-$C057,43940,$CBA4,none
+v2_pareto_fast,57,2048,2395,131,24 B ZP $53-$6A,44148,$CC74,none
+v3_reu_512k,57,2048,2406,133,24 B ZP $53-$6A,48244,$CC74,banks 6-7 reciprocal tables; signature at bank 5:$FF00
+v4_reu_16m,57,1536,2035,133,24 B ZP $53-$6A,48244,$CC74,"banks 6-7 reciprocal, 8 atan2, 9 isqrt16; signature at bank 5:$FF00"

@@ -1,0 +1,23 @@
+# Game / fixed-point API
+
+The 19 new stable JMP slots occupy `$5E00-$5E38`. They use the existing `$C000-$C01F` vectors. Inputs are preserved, A/X/Y are volatile and D=0 is required. Division-by-zero returns C=1 with zero q/r.
+
+| Entry | Address | Contract |
+|---|---:|---|
+| `MATH_UDIV32_32` / `MATH_UMOD32_32` | `$5E00/$5E03` | n32,d32 -> q32,r32 |
+| `MATH_SDIV32_32` / `MATH_SMOD32_32` | `$5E06/$5E09` | signed n32,d32 -> q32,r32, trunc toward zero |
+| `MATH_UMUL16_SHR8` / `MATH_SMUL16_SHR8` | `$5E0C/$5E0F` | x16*y16 >> 8 -> z24 |
+| `MATH_UMUL32_SHR16` / `MATH_SMUL32_SHR16` | `$5E12/$5E15` | x32*y32 >> 16 -> z48 |
+| `MATH_UDIV16_SHL8` / `MATH_SDIV16_SHL8` | `$5E18/$5E1B` | (n16<<8)/d16 -> q24,r16 |
+| `MATH_URECIP16_Q16` | `$5E1E` | d16 -> q24=`floor(65536/d)` |
+| `MATH_SIN8` / `MATH_COS8` | `$5E21/$5E24` | x0 phase -> z0 signed ±127 |
+| `MATH_SINCOS8` | `$5E27` | x0 phase -> z0 sin, z1 cos |
+| `MATH_ATAN2_8` | `$5E2A` | x0=dx s8, y0=dy s8 -> z0 phase8 |
+| `MATH_ISQRT16` | `$5E2D` | n16 -> z16 exact floor sqrt |
+| `MATH_ISQRT32` | `$5E30` | n32 -> z16 exact floor sqrt |
+| `MATH_DIST8_FAST` | `$5E33` | signed dx,dy -> `max+min/2` |
+| `MATH_DIST8_ACCURATE` | `$5E36` | signed dx,dy -> rounded 243/107 minimax form |
+
+Phase convention: `$00=0°`, `$40=90°`, `$80=180°`, `$C0=270°`. V1–V3 atan2 is within one phase unit of rounded mathematical atan2 over the entire signed-byte plane; V4 is exact against that reference. `(0,0)` returns zero.
+
+V1 uses `$C040-$C057` RAM scratch. V2–V4 use `$53-$6A` ZP. Native V2–V4 SMUL16 executes from `$80-$F3`. On V3/V4, game-math calls are forbidden while a Turbo BEGIN/END overlay is active.
