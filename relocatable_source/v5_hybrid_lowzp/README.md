@@ -1,0 +1,15 @@
+# V5 Hybrid Low-ZP source build
+
+V5 is a **derived source build**. It deliberately does not duplicate the full V1 and V2 assembly trees.
+
+`tools/build_hybrid.py`:
+
+1. builds V1 from `relocatable_source/v1_balanced/math_relocatable.asm` using the selected V5 map;
+2. independently rebuilds V2 from `relocatable_source/v2_pareto_fast/math_relocatable.asm` at its reference map;
+3. imports only the certified low-ZP V2 kernels;
+4. relocates their internal code/data references into `HYBRID_CODE`;
+5. patches the existing stable V1 public wrapper slots in place, so callers keep the same 45-entry ABI and imported direct calls pay no dispatcher penalty.
+
+The certified import set is intentionally conservative. The builder rejects a selected `HYBRID_CODE` range that overlaps the active V1 map, crosses `$D000-$DFFF`, is unaligned, or exceeds 64 KiB.
+
+Reference `HYBRID_CODE=$A000`; alternate proof `HYBRID_CODE=$E000`.

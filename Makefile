@@ -1,8 +1,8 @@
 PYTHON ?= python3
 
-.PHONY: sources reference alternate validate turbo turbo-boundary isqrt config deterministic audit acme clean package-audit all
+.PHONY: sources reference alternate validate turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress audit acme clean package-audit all
 
-all: reference alternate validate turbo turbo-boundary isqrt config deterministic audit
+all: reference alternate validate turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
 
 sources:
 	$(PYTHON) tools/generate_sources.py
@@ -32,6 +32,29 @@ config:
 deterministic: reference alternate
 	$(PYTHON) tools/verify_deterministic_rebuild.py
 
+hybrid:
+	$(PYTHON) tools/build_hybrid.py --config-kind reference
+	$(PYTHON) tools/build_hybrid.py --config-kind alternate
+
+hybrid-validate: hybrid
+	$(PYTHON) tools/validate_hybrid.py
+	$(PYTHON) tools/test_hybrid_config.py
+	$(PYTHON) tools/verify_hybrid_deterministic.py
+
+pareto:
+	$(PYTHON) tools/build_pareto.py --zp-budget 60 --config-kind reference --name default_zp60
+
+pareto-config:
+	$(PYTHON) tools/test_pareto_config.py
+
+pareto-stress:
+	$(PYTHON) tools/stress_pareto.py
+
+pareto-validate:
+	$(PYTHON) tools/validate_pareto.py
+	$(PYTHON) tools/test_pareto_config.py
+	$(PYTHON) tools/stress_pareto.py
+
 audit:
 	$(PYTHON) tools/release_audit.py
 
@@ -39,7 +62,7 @@ acme:
 	$(PYTHON) tools/verify_with_acme.py --acme "$(ACME)" --kind all
 
 clean:
-	rm -rf build_source tools/__pycache__
+	rm -rf build_source build_hybrid build_hybrid_repeat build_pareto tools/__pycache__
 	find . -type d -name __pycache__ -prune -exec rm -rf {} +
 
 package-audit: clean

@@ -1,0 +1,88 @@
+{
+  "profile": "v5_hybrid_lowzp",
+  "status": "PASS",
+  "tests": {
+    "common_reference": {
+      "status": "PASS",
+      "public_entries": 45,
+      "machine_calls": 4172
+    },
+    "common_alternate": {
+      "status": "PASS",
+      "public_entries": 45,
+      "machine_calls": 4172
+    },
+    "direct_v2_parity": {
+      "MATH_UDIV16": {
+        "cases": 3289,
+        "cycle_vector_equal_to_v2": true
+      },
+      "MATH_UDIV24": {
+        "cases": 3169,
+        "cycle_vector_equal_to_v2": true
+      },
+      "MATH_UDIV32_16": {
+        "cases": 3204,
+        "cycle_vector_equal_to_v2": true
+      },
+      "MATH_UMOD16": {
+        "cases": 1000,
+        "cycle_vector_equal_to_v2": true
+      },
+      "MATH_UMOD24": {
+        "cases": 1000,
+        "cycle_vector_equal_to_v2": true
+      },
+      "MATH_UMOD32_16": {
+        "cases": 1000,
+        "cycle_vector_equal_to_v2": true
+      },
+      "MATH_UMOD8": {
+        "cases": 65536,
+        "cycle_vector_equal_to_v2_sampled": true,
+        "exhaustive_correctness": true
+      },
+      "MATH_COS8": {
+        "cases": 256,
+        "cycle_vector_equal_to_v2": true,
+        "exhaustive": true
+      },
+      "MATH_SINCOS8": {
+        "cases": 256,
+        "cycle_vector_equal_to_v2": true,
+        "exhaustive": true
+      }
+    },
+    "zp_confinement": {
+      "reference": {
+        "window": "$02-$20",
+        "bytes": 31,
+        "outside_bytes_unchanged": 225,
+        "stress_iterations": 1000
+      },
+      "alternate": {
+        "window": "$07-$25",
+        "bytes": 31,
+        "outside_bytes_unchanged": 225,
+        "stress_iterations": 1000
+      }
+    },
+    "optional_init_cold_load": {
+      "reference": {
+        "status": "PASS",
+        "cold_load_without_math_init": true,
+        "cases": 1000
+      },
+      "alternate": {
+        "status": "PASS",
+        "cold_load_without_math_init": true,
+        "cases": 1000
+      }
+    },
+    "mixed_state_stress": {
+      "iterations": 3000,
+      "status": "PASS"
+    }
+  },
+  "elapsed_seconds": 15.498
+}

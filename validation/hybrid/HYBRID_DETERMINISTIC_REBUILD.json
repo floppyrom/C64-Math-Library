@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "kind": "reference",
+      "byte_identical": true,
+      "sha256": "14ecc1993917fb68e6c1fbe876728fb845292b49feed47ce10946f1f3906a68a"
+    },
+    {
+      "kind": "alternate",
+      "byte_identical": true,
+      "sha256": "0773631ecdb5239dce3cb6c064ba10da4b4537d7ac318b5420b2d9a66fb953ec"
+    }
+  ]
+}

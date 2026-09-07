@@ -1,4 +1,7 @@
 # Complete technical assessment — C64 Math API Game-Math FINAL
+> **V5 addendum:** This assessment originally covered V1–V4. The repository now also ships V5 Hybrid Low-ZP, which preserves the same 45-entry API and V1 31-byte normal ZP footprint while importing a certified V2 subset. Its independent validation and performance evidence are in `HYBRID_PROFILE.md` and `../validation/hybrid/`.
+> **Custom Pareto addendum:** Stock-C64 users can now generate a resource-budgeted profile instead of choosing only a fixed V1/V2/V5 point. The selector optimizes over certified dependency-compatible packs using total ZP, exact private-RAM and optional workload weights, with no runtime dispatch. See `PARETO_BUILDER.md` and `../validation/pareto/`.
+
 
 ## Result
 

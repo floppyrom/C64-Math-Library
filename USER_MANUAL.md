@@ -1,18 +1,18 @@
-# C64 Math API V1–V4 — Complete User Manual
+# C64 Math Library V1–V5 + Custom Pareto Builder — Complete User Manual
 
 **Release:** Source-Relocatable + Turbo-Relocatable FINAL  
-**Manual revision:** 2026-09-06  
+**Manual revision:** 2026-09-07  
 **Target CPU:** NMOS 6502/6510, Commodore 64  
-**Profiles:** V1 Balanced, V2 Pareto-Fast, V3 REU 512K, V4 REU 16M
+**Profiles:** V1 Balanced, V2 Pareto-Fast, V3 REU 512K, V4 REU 16M, V5 Hybrid Low-ZP
 
-This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math API. It covers the common 45-entry stable API, signed and unsigned arithmetic, game/fixed-point helpers, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 small-batch mode.
+This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 45-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 small-batch mode.
 
 The short version is:
 
-1. Pick a profile.
-2. Build it from `relocatable_source/<profile>/math_relocatable.asm` and a memory-map configuration.
+1. Pick a fixed profile, or use `tools/pareto_wizard.py` for a stock-C64 budget-generated profile.
+2. Build V1–V4 from `relocatable_source/<profile>/math_relocatable.asm`; build V5 with `tools/build_hybrid.py`; build custom stock-C64 profiles with `tools/build_pareto.py`.
 3. Include the generated `math_api.inc` in your application.
-4. Call `MATH_INIT` once; it is mandatory on V2–V4 and recommended on V1.
+4. Call `MATH_INIT` once when required: mandatory on V2–V4 and on generated Pareto profiles whose manifest requires it; optional/recommended on V1 and V5.
 5. Put operands in the 32-byte public I/O block.
 6. `JSR` the desired math entry.
 7. Read the result from the documented output vector and check Carry where required.
@@ -29,6 +29,8 @@ The short version is:
 | **V2 Pareto-Fast** | Stock C64 | Best general no-REU speed/space profile | Larger ZP commitment; `MATH_INIT` required |
 | **V3 REU 512K** | C64 + 512 KiB REU | Fast REU-backed 8-bit services, reciprocal, and Turbo modes | Requires matching 512 KiB REU image and ownership discipline |
 | **V4 REU 16M** | C64 + 16 MiB REU-compatible device/emulator | Fastest feature set; exact REU atan2/ISQRT16, QS16, Turbo | Requires modern/VICE-style 16 MiB REU; 512 extra C64 table bytes for fast ISQRT32 |
+| **V5 Hybrid Low-ZP** | Stock C64 | V1 31-byte ZP footprint with selected V2-speed division/modulo/trig paths | Uses a configurable 4608-byte private code region; reference map is RAM under BASIC ROM |
+| **Custom Pareto Builder** | Stock C64 | Fastest certified V1/V2 combination for your ZP/RAM/workload budget | Generated profile; resource use and `MATH_INIT` requirement depend on selection |
 
 Recommended default choices:
 
@@ -36,8 +38,10 @@ Recommended default choices:
 - No REU and speed matters more: **V2**.
 - Standard 512 KiB REU: **V3**.
 - VICE or modern 16 MiB REU-compatible implementation: **V4**.
+- Stock C64, V1-sized ZP budget but faster division/modulo/COS/SINCOS: **V5**.
+- New stock-C64 game/demo where you know your available ZP/RAM: **Custom Pareto Builder** (recommended flexible path).
 
-All four profiles expose the same **45-entry stable API**. V3/V4 additionally expose six stateful Turbo lifecycle entries. V4 also contains the specialized QS16 small-batch mode.
+All five resident profiles and generated Pareto profiles expose the same **45-entry stable API**. V3/V4 additionally expose six stateful Turbo lifecycle entries. V4 also contains the specialized QS16 small-batch mode. V5 and custom Pareto builds add no new public calls.
 
 ---
 
@@ -69,15 +73,18 @@ The stable public API preserves the documented input bytes in the public I/O vec
 
 ### Reentrancy
 
-The library is **not reentrant**. Its optimized kernels use shared ZP, RAM scratch, tables, self-modifying state, and—on REU profiles—the REU controller.
+The library is **not reentrant**, but **sequential calls—including repeated calls inside ordinary game/demo loops—are fully supported**. A second math call must not begin while a previous math call is still executing. The optimized kernels use shared ZP, RAM scratch, tables, self-modifying state, and—on REU profiles—the REU controller.
 
-Do not:
+This is safe:
 
-- call the math library recursively;
-- call it from an IRQ/NMI while another math call is active;
-- let an IRQ/NMI use the same library-owned ZP or REU state during Turbo mode.
+```asm
+.loop:
+        jsr MATH_UMUL16
+        ; consume/store the result, set the next operands
+        bne .loop
+```
 
-If your interrupt code needs math, serialize access. For short calls you can temporarily mask interrupts; for long Turbo batches it is usually better to design the ISR so it does not touch the math API, the Turbo-owned ZP range, or the REU.
+Do not invoke the library from an IRQ/NMI that interrupts an active foreground math call, and do not let IRQ/NMI code overwrite library-owned ZP or REU state during Turbo mode. If interrupt code also needs the library, serialize access.
 
 ---
 
@@ -173,6 +180,14 @@ Call it once after the library—and on V3/V4, the REU image—has been installe
 
 `MATH_INIT` is not required for the ordinary safe entry points, but it prepares persistent state used by `MATH_UMUL32_READY`. Calling it once is recommended.
 
+### V5
+
+Like V1, `MATH_INIT` is not required for ordinary safe entries. The hybrid validator explicitly exercises imported and untouched V1 paths from a cold load without calling `MATH_INIT`. Calling it once is still recommended if your program may use `MATH_UMUL32_READY`.
+
+### Custom Pareto builds
+
+Read `math_init_required` in the generated `selection_manifest.json` (or `MATH_PROFILE_INIT_REQUIRED` in the generated include). If true, call `MATH_INIT` once before any math routine. `--init-policy optional` forbids selections that would make initialization mandatory.
+
 ### V2
 
 `MATH_INIT` is **mandatory**. It initializes persistent table-page state and installs the native SMUL16 executable-ZP core.
@@ -195,10 +210,10 @@ From the release root:
 # Generate canonical symbolic source/configuration templates
 python3 tools/generate_sources.py
 
-# Build all four reference configurations
+# Build the four canonical V1-V4 reference configurations
 python3 tools/assemble_sources.py --profile all --config-kind reference
 
-# Build all four deliberately different validation configurations
+# Build the four canonical V1-V4 alternate proof configurations
 python3 tools/assemble_sources.py --profile all --config-kind alternate
 ```
 
@@ -207,6 +222,12 @@ Equivalent Makefile targets:
 ```sh
 make reference
 make alternate
+
+# Build the V5 Hybrid Low-ZP reference + alternate maps
+make hybrid
+
+# Build and run all V5-specific validation
+make hybrid-validate
 ```
 
 A reference source build produces, for example:
@@ -229,6 +250,59 @@ build_source/reference/v4_reu_16m/
 ```
 
 Use the `math_api.inc` generated in the **same output directory as the binary you are actually using**.
+
+---
+
+## 5A. Building an optimized stock-C64 profile from a resource budget
+
+For games and demos, the Custom Pareto Builder can choose implementations instead of forcing a fixed V1/V2/V5 decision.
+
+Interactive:
+
+```sh
+python3 tools/pareto_wizard.py
+```
+
+Direct:
+
+```sh
+python3 tools/build_pareto.py --zp-budget 60
+```
+
+The ZP budget is the **total number of zero-page bytes** the generated library may own. The minimum is 31 bytes, matching V1. You can also constrain exact additional private RAM:
+
+```sh
+python3 tools/build_pareto.py --zp-budget 60 --ram-budget 6000
+```
+
+Or forbid selections that make startup initialization mandatory:
+
+```sh
+python3 tools/build_pareto.py --zp-budget 31 --init-policy optional
+```
+
+Hot-routine weights change the optimization objective without changing the ABI:
+
+```sh
+python3 tools/build_pareto.py --zp-budget 55 --weight MATH_UMUL24=100
+```
+
+The generated `selection_manifest.json` records every implementation pack, exact ZP ranges, exact private RAM bytes/ranges, `MATH_INIT` requirement, addresses and SHA-256. Selection is performed entirely at build time; **there is no runtime dispatch overhead**.
+
+Current equal-weight breakpoints are:
+
+| ZP | Default selection | Exact extra RAM vs V1 |
+|---:|---|---:|
+| 31 | V5 zero-ZP imports + initialized UMUL32 | 4976 B |
+| 36 | above + UMUL8/16 | 5698 B |
+| 60 | above + UMUL24 | 6086 B |
+| 147 | V5 imports + initialized UMUL32 + native SMUL16 | 5162 B |
+| 176 | all certified hybrid packs | 6272 B |
+| 221 | complete V2 | 208 B resident increase |
+
+The optimizer maximizes weighted cycle savings, so resource use is not required to be monotonic across those points. At 31 ZP + `--ram-budget 0`, the generated PRG is byte-identical to V1. At 31 ZP + `--init-policy optional`, it is byte-identical to V5. At 221 ZP the builder selects complete V2.
+
+See **`docs/PARETO_BUILDER.md`** for pack geometry, workload weighting, RAM-under-ROM details and validation.
 
 ---
 
@@ -266,10 +340,12 @@ The output will be under the selected output directory. For V3/V4, the build aut
 | `V1_SCRATCH` | V1 ordinary-RAM game scratch | `$C040` |
 | `ZP_MAIN` | normal library ZP origin | `$02` |
 | `ZP_SMUL` | V2–V4 native SMUL16 executable-ZP origin | `$80` |
+| `HYBRID_CODE` | V5/custom-Pareto zero-ZP import region | `$A000` |
+| `PARETO_AUX` | custom-Pareto generated code/data base | `$B200` |
 | `TURBO16_ZP_BASE` | V3/V4 113-byte Turbo16 overlay origin | `$3E` |
 | `TURBO32_ZP_BASE` | V3/V4 241-byte Turbo32 overlay origin | `$0A` |
 
-V3/V4 configurations additionally assign each REU service to a bank. V4's QS16 table uses eight consecutive 64 KiB banks beginning at `REU_QS16_BASE_BANK`.
+V3/V4 configurations additionally assign each REU service to a bank. V4's QS16 table uses eight consecutive 64 KiB banks beginning at `REU_QS16_BASE_BANK`. V5 configures `HYBRID_CODE`; custom Pareto maps configure both `HYBRID_CODE` and `PARETO_AUX`. The builders reject overflow, I/O crossings and collisions with selected resident/private regions.
 
 ### Build-time safety checks
 
@@ -313,9 +389,10 @@ v1_balanced/resident/math_v1_balanced_game_math.prg
 v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
 v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
 v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
 ```
 
-For new development, prefer the source-relocatable build system rather than hardcoding the reference addresses.
+For new development, prefer the source-relocatable build system rather than hardcoding the reference addresses. V5 is generated by `tools/build_hybrid.py`; its reference `$A000-$B1FF` private region is RAM under BASIC ROM, so BASIC must be banked out while imported V5 code executes, or `HYBRID_CODE` must be relocated to a suitable visible RAM region.
 
 The PRGs contain padding between sparse resident regions. If you integrate the library into a larger linker/build system, use the source or documented segment map rather than assuming the entire contiguous PRG span must remain exclusively allocated.
 
@@ -1209,6 +1286,22 @@ The exact benchmark CSV files in `docs/` remain authoritative. A few useful head
 
 These are CPU-model benchmark figures for the release's documented corpus/timing model. REU DMA interacts with real VIC-II bus activity, so raster-critical software should remeasure on its target configuration.
 
+V5 is intentionally V1-based, so unchanged routines retain V1 behavior/timing. Its certified direct V2 imports are:
+
+| Routine | V1 mean | V5 mean | Gain |
+|---|---:|---:|---:|
+| UDIV16 | 160.064966 | **137.282268** | 14.23% |
+| UDIV24 | 224.668396 | **203.612991** | 9.37% |
+| UDIV32/16 | 857.373105 | **759.730823** | 11.39% |
+| UMOD8 | 65.285156 | **64.819153** | 0.71% |
+| UMOD16 | 163.064966 | **140.282268** | 13.97% |
+| UMOD24 | 227.668396 | **206.612991** | 9.25% |
+| UMOD32/16 | 860.373105 | **762.730823** | 11.35% |
+| COS8 | 29 | **23** | 20.69% |
+| SINCOS8 | 39 | **31** | 20.51% |
+
+These direct paths were validated against V2 with cycle-vector equality (UMOD8 uses exhaustive correctness plus sampled cycle parity). `UDIV16_SHL8` and `URECIP16_Q16` benefit indirectly through imported division but retain V1 outer code. See `docs/HYBRID_PROFILE.md`.
+
 ---
 
 ## 36. Turbo timing guidance
@@ -1247,7 +1340,7 @@ and let the generated include supply the selected addresses.
 
 ## 38. Keep a matched build set
 
-For V1/V2, the pair is:
+For V1/V2/V5, the pair is:
 
 ```text
 PRG + generated math_api.inc
@@ -1292,9 +1385,9 @@ Correct:
 
 ## 40. Forgetting `MATH_INIT`
 
-Symptoms can include incorrect fast multiplication, signed multiplication, or REU behavior.
+On V2–V4, symptoms can include incorrect fast multiplication, signed multiplication, or REU behavior. V1/V5 ordinary safe calls are cold-load safe, but `MATH_UMUL32_READY` retains its documented initialized-state requirement.
 
-Rule:
+Universal safe startup rule:
 
 ```asm
         cld
@@ -1382,9 +1475,16 @@ python3 tools/verify_with_acme.py --acme /path/to/acme --kind all
 
 The frozen Turbo FINAL release records:
 
-- 45 stable entries in all four profiles;
-- 180/180 relocated stable entry executions;
-- 16,688 stable-API machine calls;
+- 45 stable entries in all four original V1–V4 profiles, plus the same 45-entry surface in V5;
+- V1–V4 alternate proof: 180/180 relocated stable entry executions and 16,688 machine calls;
+- V5 reference + alternate: 45/45 entries and 4,172 machine calls per map;
+- V5 hybrid direct-import validation: 78,710 cases, plus 2,000 cold-load calls without `MATH_INIT`;
+- V5 ZP confinement: 31-byte normal window, all 225 outside page-zero bytes unchanged in stress on both maps;
+- Custom Pareto matrix: six ZP breakpoints on reference + alternate maps, 12 generated builds, 45/45 entries and 4,172 calls each (**50,064 common-API calls**);
+- Custom Pareto direct V2 cycle parity: 10,108 cases, plus exhaustive 65,536-case UMOD8;
+- Custom Pareto stress: 50,144 SMUL16 cycle-parity cases, 25,000 mixed-workload iterations and 10,000 ZP-guard iterations;
+- Custom Pareto endpoint identity: 31 ZP + zero extra RAM is byte-identical to V1; 31 ZP + optional-init policy is byte-identical to V5;
+- Custom Pareto resource/configuration validation: 12/12 cases;
 - six relocatable Turbo lifecycle entries on V3/V4;
 - 17,196 Turbo API calls in the main reference/alternate regression;
 - 3,556 additional Turbo products at endpoint ZP/bank configurations;
@@ -1394,7 +1494,7 @@ The frozen Turbo FINAL release records:
 - second-batch Turbo overlay reuse;
 - 20,388 fast-ISQRT32 correctness executions;
 - 27/27 configuration validation cases;
-- 143/143 final release-audit checks;
+- 203/203 consolidated release-audit checks;
 - deterministic source rebuild identity;
 - independent ACME 0.97 identity for resident and Turbo builds.
 
@@ -1516,7 +1616,8 @@ These addresses are provided for diagnostics and fixed-reference builds. **Reloc
 |---|---|
 | `USER_MANUAL.md` | complete integration/user guide |
 | `QUICK_START.md` | minimal build commands |
-| `docs/VERSION_SELECTION.md` | profile choice |
+| `docs/VERSION_SELECTION.md` | fixed profile vs custom-builder choice |
+| `docs/PARETO_BUILDER.md` | ZP/RAM budget-driven stock-C64 profile generation |
 | `docs/PUBLIC_API_COMPLETE.csv` | authoritative 45-entry stable surface |
 | `docs/PERFORMANCE_COMPARISON.csv` | common arithmetic performance |
 | `docs/PERFORMANCE_GAME_MATH_FINAL.csv` | game/fixed-point performance |
@@ -1534,18 +1635,19 @@ These addresses are provided for diagnostics and fixed-reference builds. **Reloc
 
 Before shipping a game/demo/tool that uses this API:
 
-- [ ] Choose V1/V2/V3/V4 intentionally.
+- [ ] Choose V1/V2/V3/V4/V5 intentionally, or generate a stock-C64 profile with the Pareto Builder.
 - [ ] Use a source-built memory map that does not collide with your application.
 - [ ] Keep the generated PRG/include/REU image together.
 - [ ] Ensure your C64 banking exposes every selected region when used.
 - [ ] `CLD` before math calls or guarantee decimal mode is always clear.
-- [ ] Call `MATH_INIT` once; mandatory V2–V4.
+- [ ] Call `MATH_INIT` once when required; mandatory V2–V4, optional/recommended V1/V5, and manifest-controlled for custom Pareto builds.
 - [ ] Store all operands little-endian.
 - [ ] Treat A/X/Y as clobbered.
 - [ ] Check Carry after division, modulo where relevant, shifted division, and reciprocal.
 - [ ] Do not call the library reentrantly.
 - [ ] Do not let IRQ/NMI code corrupt shared ZP/REU state.
 - [ ] On V3/V4, initialize/attach the matching REU image before use.
+- [ ] On V5/custom-Pareto reference maps, bank BASIC ROM out while selected `$A000-$BFFF` private regions execute/read data, or relocate `HYBRID_CODE`/`PARETO_AUX`.
 - [ ] Never mix ordinary math with an active Turbo lifecycle.
 - [ ] Always pair Turbo BEGIN and END.
 - [ ] For V4 16-bit batches, consider normal / QS16 / Turbo16 based on batch size.
@@ -1579,7 +1681,7 @@ math_start:
         rts
 ```
 
-For a V3/V4 program, the code pattern is the same after the correct REU image is installed.
+For a V3/V4 program, the code pattern is the same after the correct REU image is installed. For V5/custom Pareto builds, use the generated include, obey its initialization flag, and ensure its selected private regions are CPU-visible.
 
 ---
 
@@ -1587,4 +1689,4 @@ For a V3/V4 program, the code pattern is the same after the correct REU image is
 
 Use the stable API for ordinary composable math. Use QS16 or Turbo only when a measured batch actually justifies their lifecycle overhead. Keep all addresses symbolic, keep the REU image matched to the build, and treat the generated `math_api.inc` as the caller's source of truth.
 
-That gives you the intended property of this release: **one logical math interface across four performance profiles, with build-time relocation instead of application-specific hardcoded addresses.**
+That gives you the intended property of this release: **one logical math interface across five fixed profiles plus budget-generated stock-C64 builds, with implementation selection and relocation done at build time rather than paid for at runtime.**

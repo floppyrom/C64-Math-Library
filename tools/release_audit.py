@@ -3,6 +3,7 @@ from pathlib import Path
 import csv, json, hashlib, py_compile, re
 ROOT=Path(__file__).resolve().parents[1]
 PROFILES=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m']
+HYBRID='v5_hybrid_lowzp'
 sha=lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
 checks=[]
 def ck(name,cond,detail=None):
@@ -110,6 +111,64 @@ for p in PROFILES:
         built_reu=ROOT/'build_source/reference'/p/man['reu_image']['file']
         ck(f'{p}_reference_reu_exact',built_reu.read_bytes()==ref_reu.read_bytes(),sha(ref_reu))
 
+# V5 Hybrid Low-ZP: one stable ABI, V1 ZP budget, selected source-derived V2 kernels.
+hv=json.loads((ROOT/'validation/hybrid/HYBRID_VALIDATION.json').read_text())
+ck('hybrid_validation_status',hv['status']=='PASS')
+for kind in ('reference','alternate'):
+    c=hv['tests'][f'common_{kind}']
+    ck(f'hybrid_{kind}_45_entries',c['public_entries']==45 and c['machine_calls']==4172,c)
+    z=hv['tests']['zp_confinement'][kind]
+    ck(f'hybrid_{kind}_31_zp',z['bytes']==31 and z['outside_bytes_unchanged']==225,z)
+    ni=hv['tests']['optional_init_cold_load'][kind]
+    ck(f'hybrid_{kind}_cold_no_init',ni['status']=='PASS' and ni['cold_load_without_math_init'] is True and ni['cases']==1000,ni)
+par=hv['tests']['direct_v2_parity']
+ck('hybrid_direct_cases_78710',sum(x['cases'] for x in par.values())==78710,sum(x['cases'] for x in par.values()))
+for n in ('MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8'):
+    ck(f'hybrid_v2_cycle_parity_{n}',par[n].get('cycle_vector_equal_to_v2') is True)
+ck('hybrid_umod8_exhaustive',par['MATH_UMOD8']['cases']==65536 and par['MATH_UMOD8']['exhaustive_correctness'] is True and par['MATH_UMOD8']['cycle_vector_equal_to_v2_sampled'] is True)
+hcfg=json.loads((ROOT/'validation/hybrid/HYBRID_CONFIG_VALIDATION.json').read_text())
+ck('hybrid_config_8_of_8',hcfg['status']=='PASS' and hcfg['tests']==8,hcfg.get('tests'))
+hdet=json.loads((ROOT/'validation/hybrid/HYBRID_DETERMINISTIC_REBUILD.json').read_text())
+ck('hybrid_deterministic',hdet['status']=='PASS' and len(hdet['checks'])==2)
+for x in hdet['checks']:
+    ck(f'hybrid_deterministic_{x["kind"]}',x['byte_identical'] is True)
+hman=json.loads((ROOT/'build_hybrid/reference'/HYBRID/'source_build_manifest.json').read_text())
+ck('hybrid_manifest_45',set(hman['public_entries'])==set(names) and len(hman['public_entries'])==45)
+hresident=ROOT/HYBRID/'resident/math_v5_hybrid_lowzp_game_math.prg'
+hbuilt=ROOT/'build_hybrid/reference'/HYBRID/hman['output_prg']
+ck('hybrid_reference_prg_exact',hresident.read_bytes()==hbuilt.read_bytes(),sha(hresident))
+ck('hybrid_docs_present',all((ROOT/x).exists() for x in ('docs/HYBRID_PROFILE.md','v5_hybrid_lowzp/HYBRID_PERFORMANCE.csv','relocatable_source/v5_hybrid_lowzp/README.md')))
+
+# Custom Pareto Builder: budget-driven certified V1/V2 composition.
+pv=json.loads((ROOT/'validation/pareto/PARETO_SELECTOR_VALIDATION.json').read_text())
+ck('pareto_selector_status',pv['status']=='PASS')
+ck('pareto_matrix_12_builds',pv['matrix_current_rerun']['status']=='PASS' and pv['matrix_current_rerun']['builds']==12)
+ck('pareto_matrix_50064_calls',pv['common_api_machine_calls']==50064,pv['common_api_machine_calls'])
+for kind in ('reference','alternate'):
+    ck(f'pareto_{kind}_six_breakpoints',set(pv['standard_points'][kind])=={'31','36','60','147','176','221'})
+    for z,x in pv['standard_points'][kind].items():
+        ck(f'pareto_{kind}_{z}_45_entries',x['common_api']['entries']==45 and x['common_api']['calls']==4172)
+ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==4976)
+ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==6272)
+ck('pareto_221_selects_v2',pv['standard_points']['reference']['221']['selected_packs']==['v2_full'])
+ck('pareto_v1_endpoint_identity',pv['pure_v1_identity'] is True)
+ck('pareto_v5_endpoint_identity',pv['optional31_v5_identity'] is True)
+ck('pareto_direct_v2_cycle_parity',pv['direct_v2_cycle_parity']['status']=='PASS' and pv['direct_v2_cycle_parity']['cases']==10108)
+ck('pareto_umod8_exhaustive',pv['umod8_exhaustive_cases']==65536)
+ck('pareto_zp_confinement',pv['zp_confinement']['outside_bytes_unchanged']==80 and pv['zp_confinement']['iterations']==3000)
+ck('pareto_deterministic',len(pv['deterministic_rebuilds'])==4 and all(x['identical'] for x in pv['deterministic_rebuilds']))
+pcfg=json.loads((ROOT/'validation/pareto/PARETO_CONFIG_VALIDATION.json').read_text())
+ck('pareto_config_12_of_12',pcfg['status']=='PASS' and pcfg['tests']==12,pcfg.get('tests'))
+pstress=json.loads((ROOT/'validation/pareto/PARETO_STRESS.json').read_text())
+ck('pareto_stress_status',pstress['status']=='PASS')
+ck('pareto_smul16_parity_50144',pstress['smul16_v2_cycle_parity_cases']==50144)
+ck('pareto_mixed_25000',pstress['mixed_workload_iterations']==25000)
+ck('pareto_zp_guard_10000',pstress['zp_guard_iterations']==10000 and pstress['outside_zp_bytes_unchanged']==80)
+ck('pareto_docs_tools_present',all((ROOT/x).exists() for x in ('docs/PARETO_BUILDER.md','relocatable_source/custom_pareto/README.md','tools/build_pareto.py','tools/pareto_wizard.py','tools/validate_pareto.py','tools/test_pareto_config.py','tools/stress_pareto.py')))
+for kind in ('reference','alternate'):
+    cfgtext=(ROOT/'relocatable_source/custom_pareto'/f'math_config_{kind}.inc').read_text()
+    ck(f'pareto_{kind}_map_symbols',all(re.search(rf'^\s*{k}\s*=',cfgtext,re.M) for k in ('HYBRID_CODE','PARETO_AUX','ZP_MAIN','ZP_SMUL')))
+
 # Canonical sources must expose every map symbol and use symbolic public API.
 required=['REG_LOW','REG_API','REG_KERNEL','REG_GAME_API','REG_TABLE','REG_GAME','MATH_IO','REU_SCRATCH','V1_SCRATCH','ZP_MAIN','ZP_SMUL','TURBO16_ZP_BASE','TURBO32_ZP_BASE']
 for p in PROFILES:
@@ -122,7 +181,7 @@ for p in PROFILES:
         ck(f'{p}_source_uses_turbo_config',all(k in src for k in ('TURBO16_ZP_BASE','TURBO32_ZP_BASE','REU_TURBO16_BANK','REU_TURBO32_BANK')))
 
 # Documentation/release hygiene.
-needed=['README.md','QUICK_START.md','CHANGELOG.md','CSDB_CHANGELOG.txt','docs/SOURCE_RELOCATION.md','docs/TURBO_RELOCATION.md','docs/TURBO_API.csv','validation/REVIEWED_RELEASE_VALIDATION.md']
+needed=['README.md','QUICK_START.md','CHANGELOG.md','CSDB_CHANGELOG.txt','docs/SOURCE_RELOCATION.md','docs/TURBO_RELOCATION.md','docs/TURBO_API.csv','docs/PARETO_BUILDER.md','validation/REVIEWED_RELEASE_VALIDATION.md']
 ck('required_docs',all((ROOT/x).exists() for x in needed),needed)
 manual=(ROOT/'USER_MANUAL.md').read_text()
 ck('turbo_plain_english_manual','Turbo modes in plain English' in manual and 'zero-page workbench' in manual and 'REU DMA' in manual)
@@ -139,6 +198,6 @@ v4=(ROOT/'v4_reu_16m/resident/math_v4_reu_16m_game_math.prg').read_bytes();ld=v4
 def vb(a): return v4[2+a-ld]
 ck('v4_isqrt32_square_planes',all(vb(0x9800+x)==((x*x)&255) and vb(0x9900+x)==(((x*x)>>8)&255) for x in range(256)))
 
-out={'status':'PASS','checks':checks,'summary':{'checks_passed':len(checks),'public_entries':45,'alternate_entry_executions':180,'alternate_machine_calls':16688,'config_cases':27,'turbo_product_calls':17164,'turbo_lifecycle_calls':32,'turbo_api_calls':17196,'turbo_boundary_product_calls':3556,'reu_profiles_turbo_entries':6,'isqrt32_cases_per_profile':5097}}
+out={'status':'PASS','checks':checks,'summary':{'checks_passed':len(checks),'public_entries':45,'alternate_entry_executions':180,'alternate_machine_calls':16688,'config_cases':27,'turbo_product_calls':17164,'turbo_lifecycle_calls':32,'turbo_api_calls':17196,'turbo_boundary_product_calls':3556,'reu_profiles_turbo_entries':6,'isqrt32_cases_per_profile':5097,'hybrid_public_entries':45,'hybrid_common_machine_calls_per_map':4172,'hybrid_direct_import_cases':78710,'hybrid_optional_init_cases':2000,'hybrid_zp_bytes':31,'pareto_matrix_builds':12,'pareto_common_machine_calls':50064,'pareto_direct_cycle_parity_cases':10108,'pareto_smul16_stress_cases':50144,'pareto_mixed_workload_iterations':25000,'pareto_config_cases':12,'pareto_default_breakpoints':[31,36,60,147,176,221]}}
 (ROOT/'validation/RELEASE_AUDIT.json').write_text(json.dumps(out,indent=2)+'\n')
 print('RELEASE AUDIT PASS',len(checks),'checks')

@@ -10,7 +10,8 @@
     "v1_balanced": "46cd464c25d9785a61804ade9a7c3cc149c8932bb78b4ae23261015cb6a3d29a",
     "v2_pareto_fast": "b6e78167006062714ed92d9848289f9597366b0d9d10973bc8c04e346f301a00",
     "v3_reu_512k": "5cc2b02b983532c0f5785106f49ad08ea58dbd218fcabe544faa94ef1792b6a9",
-    "v4_reu_16m": "34581d82fab5958f399be055fe75700e49ad63534ec3fa863805d4b5386837a5"
+    "v4_reu_16m": "34581d82fab5958f399be055fe75700e49ad63534ec3fa863805d4b5386837a5",
+    "v5_hybrid_lowzp": "0773631ecdb5239dce3cb6c064ba10da4b4537d7ac318b5420b2d9a66fb953ec"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "c763b637535234987aeb418a5dbf6a70e41f24e6880653f64529888d7d55d067",
@@ -21,17 +22,110 @@
     "turbo32": "aa580ef7c47bca7ad847211ff2a4404b6267139c3388fe84f99d4857f891fab8"
   },
   "config_validation_cases": 27,
-  "date": "2026-09-06",
+  "custom_pareto": {
+    "builder": "tools/build_pareto.py",
+    "common_api_machine_calls": 50064,
+    "config_validation_cases": 12,
+    "default_reference_points": {
+      "147": {
+        "extra_private_ram_bytes": 5162,
+        "packs": [
+          "smul16_exec",
+          "umul32_initialized",
+          "zero_zp_v5"
+        ]
+      },
+      "176": {
+        "extra_private_ram_bytes": 6272,
+        "packs": [
+          "smul16_exec",
+          "umul24",
+          "umul32_initialized",
+          "umul8_16",
+          "zero_zp_v5"
+        ]
+      },
+      "221": {
+        "extra_private_ram_bytes": 208,
+        "packs": [
+          "v2_full"
+        ]
+      },
+      "31": {
+        "extra_private_ram_bytes": 4976,
+        "packs": [
+          "umul32_initialized",
+          "zero_zp_v5"
+        ]
+      },
+      "36": {
+        "extra_private_ram_bytes": 5698,
+        "packs": [
+          "umul32_initialized",
+          "umul8_16",
+          "zero_zp_v5"
+        ]
+      },
+      "60": {
+        "extra_private_ram_bytes": 6086,
+        "packs": [
+          "umul24",
+          "umul32_initialized",
+          "umul8_16",
+          "zero_zp_v5"
+        ]
+      }
+    },
+    "default_zp_breakpoints": [
+      31,
+      36,
+      60,
+      147,
+      176,
+      221
+    ],
+    "direct_v2_cycle_parity_cases": 10108,
+    "documentation": "docs/PARETO_BUILDER.md",
+    "matrix_builds": 12,
+    "mixed_workload_iterations": 25000,
+    "optional31_v5_endpoint_byte_identical": true,
+    "pure_v1_endpoint_byte_identical": true,
+    "smul16_stress_cycle_parity_cases": 50144,
+    "stable_api_entries": 45,
+    "status": "PASS",
+    "umod8_exhaustive_cases": 65536,
+    "wizard": "tools/pareto_wizard.py",
+    "zp_guard_iterations": 10000
+  },
+  "date": "2026-09-07",
   "deterministic_builds_checked": 8,
   "documentation": {
-    "code_change_from_turbo_final": false,
+    "code_change_from_turbo_final": true,
     "complete_user_manual": "USER_MANUAL.md",
-    "manual_scope": "profile selection; build/relocation; complete 45-entry stable API; REU; Turbo16/Turbo32; V4 QS16; integration/troubleshooting",
+    "custom_pareto_builder_doc": "docs/PARETO_BUILDER.md",
+    "manual_scope": "V1-V5 fixed profiles; 45-entry stable API; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 45032,
-    "user_manual_lines": 1590,
-    "user_manual_sha256": "5266fb891994f2c39bcddf1359a2ee604fcd28b1cb04b4fb038a73c4029a3bb5"
+    "user_manual_bytes": 52148,
+    "user_manual_lines": 1692,
+    "user_manual_sha256": "7bab0f5aedd6456493bc5382d5181c322d6218ef4cc286c3fea9281207d47434"
+  },
+  "hybrid_v5": {
+    "alternate_hybrid_code": "$E000-$F1FF",
+    "alternate_prg_sha256": "0773631ecdb5239dce3cb6c064ba10da4b4537d7ac318b5420b2d9a66fb953ec",
+    "common_machine_calls_per_map": 4172,
+    "common_public_entries_per_map": 45,
+    "config_validation_cases": 8,
+    "deterministic_maps": 2,
+    "direct_import_cases": 78710,
+    "normal_zp_bytes": 31,
+    "optional_init_cold_load_cases": 2000,
+    "outside_zp_bytes_proven_unchanged": 225,
+    "reference_hybrid_code": "$A000-$B1FF",
+    "reference_normal_zp": "$02-$20",
+    "reference_prg_sha256": "14ecc1993917fb68e6c1fbe876728fb845292b49feed47ce10946f1f3906a68a",
+    "status": "PASS",
+    "umod8_exhaustive_cases": 65536
   },
   "isqrt32_fast_cases_per_profile": 5097,
   "isqrt32_fast_mean_cycles_5097": {
@@ -42,6 +136,17 @@
   },
   "isqrt32_fast_validation_status": "PASS",
   "notes": [
+    "Custom Pareto Builder added for stock-C64 games/demos: total ZP budget, optional exact extra-RAM budget, init policy and routine weights select the fastest certified compatible V1/V2 implementation set at build time.",
+    "Custom Pareto selection has no runtime dispatcher and retains the same 45-entry public API.",
+    "Default equal-weight Pareto breakpoints are 31/36/60/147/176/221 ZP bytes.",
+    "31 ZP + zero extra RAM reproduces V1 byte-for-byte; 31 ZP + optional-init policy reproduces V5 byte-for-byte; 221 ZP selects complete V2.",
+    "RAM budgeting is exact for generated private payload, including the exact emitted MATH_INIT helper; generated manifests list every private RAM and ZP range.",
+    "Pareto validation covers 12 reference/alternate builds and 50,064 common-API calls, 10,108 direct V2 cycle-parity cases, exhaustive UMOD8, 50,144 SMUL16 parity cases, 25,000 mixed iterations, 10,000 ZP-guard iterations, deterministic rebuilds and 12 resource/config cases.",
+    "V5 Hybrid Low-ZP adds a fifth stock-C64 profile while preserving the common 45-entry API.",
+    "V5 keeps V1 normal ZP at 31 bytes and imports certified V2 division/modulo/COS/SINCOS paths with no runtime dispatcher tax.",
+    "V5 ordinary safe entries retain V1-style optional MATH_INIT; 2,000 cold-load calls across reference/alternate maps validate this.",
+    "Sequential calls, including repeated calls inside game/demo loops, are supported; the library remains non-reentrant.",
+    "V5 reference private code uses RAM under BASIC ROM at $A000-$B1FF; bank BASIC out or relocate HYBRID_CODE.",
     "DOCUMENTED LEAN FINAL adds a plain-English Turbo explanation and removes reproducible/superseded packaging waste; code, ABI, overlays and deployable REU data are unchanged.",
     "DOCUMENTED LEAN FINAL includes the complete user/integration manual; resident code, overlays, REU arithmetic data, ABI and performance are unchanged from Turbo FINAL.",
     "The common 45-entry stable API is unchanged across V1-V4.",
@@ -52,12 +157,13 @@
     "Endpoint execution validates Turbo16 at $02/$8F, Turbo32 at $02/$0F, V3 banks $06/$07 and V4 banks $FE/$FF.",
     "Fast exact independently derived ISQRT32 remains active; V4 uses 512 resident square-table bytes at $9800-$99FF."
   ],
-  "package_audit_checks": 12,
+  "package_audit_checks": 16,
   "package_cleanup": {
     "csdb_changelog": "CSDB_CHANGELOG.txt",
+    "generated_build_hybrid_shipped": false,
+    "generated_build_pareto_shipped": false,
     "generated_build_source_shipped": false,
-    "lean_file_count_excluding_checksum": 345,
-    "lean_uncompressed_bytes_excluding_checksum": 19686026,
+    "lean_file_count_excluding_checksum": 379,
     "obsolete_development_validators_removed": 2,
     "package_contents_doc": "docs/PACKAGE_CONTENTS.md",
     "prior_exhaustive_baseline_retained": true,
@@ -68,13 +174,15 @@
     "v1_balanced",
     "v2_pareto_fast",
     "v3_reu_512k",
-    "v4_reu_16m"
+    "v4_reu_16m",
+    "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
     "v1_balanced": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620",
     "v2_pareto_fast": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac",
     "v3_reu_512k": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71",
-    "v4_reu_16m": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139"
+    "v4_reu_16m": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139",
+    "v5_hybrid_lowzp": "14ecc1993917fb68e6c1fbe876728fb845292b49feed47ce10946f1f3906a68a"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "1d8b844983fa7aa757bc3dff5c12f92d4d9b3732c874f6e83a44116e5719c576",
@@ -84,8 +192,8 @@
     "turbo16": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
     "turbo32": "0b041806ec684a2d892ffd0f6f2e6f219293912b0572ae964bba596b0a2774f1"
   },
-  "release": "c64_math_api_v1-v4_SOURCE_RELOCATABLE_TURBO_DOCUMENTED_LEAN_FINAL_2026-09-06",
-  "release_audit_checks": 145,
+  "release": "c64_math_library_v1-v5_CUSTOM_PARETO_BUILDER_2026-09-07",
+  "release_audit_checks": 203,
   "reu_turbo_lifecycle_entries": 6,
   "source_relocation": {
     "entries_executed": 180,

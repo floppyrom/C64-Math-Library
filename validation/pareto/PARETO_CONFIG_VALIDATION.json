@@ -1,0 +1,61 @@
+{
+  "status": "PASS",
+  "tests": 12,
+  "checks": [
+    {
+      "name": "reject_zp_below_v1_minimum",
+      "status": "PASS",
+      "detail": "ZP budget 30 is below the 31-byte V1 minimum"
+    },
+    {
+      "name": "31zp_zero_ram_selects_v1",
+      "status": "PASS"
+    },
+    {
+      "name": "exact_ram_budget_rejects_4976_byte_choice_at_4975",
+      "status": "PASS"
+    },
+    {
+      "name": "exact_ram_budget_accepts_4976_byte_choice",
+      "status": "PASS"
+    },
+    {
+      "name": "reference_31_valid",
+      "status": "PASS"
+    },
+    {
+      "name": "reference_176_valid",
+      "status": "PASS"
+    },
+    {
+      "name": "reject_pareto_aux_cross_io",
+      "status": "PASS",
+      "rejected_with": "PARETO_AUX invalid/crosses I/O"
+    },
+    {
+      "name": "reject_pareto_aux_hybrid_overlap",
+      "status": "PASS",
+      "rejected_with": "PARETO_AUX overlaps HYBRID_CODE"
+    },
+    {
+      "name": "reject_pareto_aux_v1_region_collision",
+      "status": "PASS",
+      "rejected_with": "PARETO_AUX $6000-$6DFF collides with REG_TABLE $6000-$9BFF"
+    },
+    {
+      "name": "reject_umul24_zp_overflow",
+      "status": "PASS",
+      "rejected_with": "UMUL24_ZP $FF-$116 is outside usable ZP"
+    },
+    {
+      "name": "reject_smul16_exec_zp_overlap",
+      "status": "PASS",
+      "rejected_with": "ZP overlap: V1_ZP with SMUL16_EXEC_ZP"
+    },
+    {
+      "name": "reject_pareto_aux_64k_overflow",
+      "status": "PASS",
+      "rejected_with": "PARETO_AUX invalid/crosses I/O"
+    }
+  ]
+}

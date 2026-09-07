@@ -1,0 +1,52 @@
+{
+  "status": "PASS",
+  "tests": 8,
+  "cases": [
+    {
+      "name": "reference_map",
+      "expected": "accept",
+      "status": "PASS"
+    },
+    {
+      "name": "alternate_map",
+      "expected": "accept",
+      "status": "PASS"
+    },
+    {
+      "name": "unaligned_hybrid_code",
+      "expected": "reject",
+      "status": "PASS",
+      "error": "HYBRID_CODE must be page aligned"
+    },
+    {
+      "name": "hybrid_overflow",
+      "expected": "reject",
+      "status": "PASS",
+      "error": "HYBRID_CODE region exceeds 64 KiB address space"
+    },
+    {
+      "name": "io_overlap",
+      "expected": "reject",
+      "status": "PASS",
+      "error": "HYBRID_CODE must not overlap $D000-$DFFF C64 I/O/ROM window"
+    },
+    {
+      "name": "table_overlap",
+      "expected": "reject",
+      "status": "PASS",
+      "error": "HYBRID_CODE $9000-$A1FF collides with REG_TABLE $6000-$9BFF"
+    },
+    {
+      "name": "api_overlap",
+      "expected": "reject",
+      "status": "PASS",
+      "error": "HYBRID_CODE $3000-$41FF collides with REG_API $3000-$3FFF"
+    },
+    {
+      "name": "kernel_overlap",
+      "expected": "reject",
+      "status": "PASS",
+      "error": "HYBRID_CODE $5E00-$6FFF collides with REG_GAME_API $5E00-$5E38"
+    }
+  ]
+}

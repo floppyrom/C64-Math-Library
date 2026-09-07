@@ -4,16 +4,17 @@ The release ZIP is intended to be both **usable** and **reproducible** without c
 
 ## Shipped
 
-- `v1_balanced/` … `v4_reu_16m/`: four reference profiles, including their validated resident PRGs and profile-local source/data required by the assembly trees.
+- `v1_balanced/` … `v4_reu_16m/`: the four original reference profiles, including their validated resident PRGs and profile-local source/data required by the assembly trees.
+- `v5_hybrid_lowzp/`: the validated stock-C64 hybrid reference PRG, generated API include, segment map, performance table and example.
 - `v3_reu_512k/reu/` and `v4_reu_16m/reu/`: the two deployable reference REU images.
-- `relocatable_source/`: canonical source-level relocatable assembly and map configurations, including Turbo16/Turbo32 overlay sources.
-- `tools/`: deterministic builder, machine validator, configuration checks and independent-assembler verification scripts.
-- `validation/`: current validation results plus the compact prior exhaustive baseline needed by the binary-delta validation argument.
+- `relocatable_source/`: canonical source-level relocation inputs and map configurations, including Turbo16/Turbo32 overlays, V5 hybrid maps, and `custom_pareto/` maps used by the budget selector.
+- `tools/`: deterministic builders and validators, including `build_pareto.py`, the interactive `pareto_wizard.py`, Pareto configuration tests and stress validation.
+- `validation/`: current validation results, including `validation/hybrid/` and `validation/pareto/`, plus the compact prior exhaustive baseline needed by the binary-delta validation argument.
 - `docs/`, `USER_MANUAL.md`, `QUICK_START.md`, `README.md`, `CHANGELOG.md`, `CSDB_CHANGELOG.txt`: integration/reference documentation.
 
 ## Intentionally not shipped
 
-- `build_source/reference/` and `build_source/alternate/`: generated outputs. Shipping them would duplicate the four PRGs plus generated REU images, including two additional 16 MiB V4 images. Recreate them with `make reference`, `make alternate`, or `make all`.
+- `build_source/reference/`, `build_source/alternate/`, `build_hybrid/`, `build_hybrid_repeat/`, and `build_pareto/`: generated outputs. Recreate V1–V4 with `make reference` / `make alternate`, V5 with `make hybrid`, and custom budget builds with `build_pareto.py` / `pareto_wizard.py`.
 - Superseded slow-ISQRT32 candidate patch/evidence folder. The active release carries its own fast-kernel correctness, performance and delta evidence.
 - Historical superseded releases, nested ZIPs, interrupted logs, Python caches, editor backups and temporary files.
 - Obsolete development-only validators that depended on an external prior-release working directory, plus unreferenced legacy binary/label intermediates.

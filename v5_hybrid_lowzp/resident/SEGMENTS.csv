@@ -1,0 +1,6 @@
+segment,load_address,bytes,file,purpose
+v1_base,multiple,integrated PRG,integrated PRG,"V1 Balanced implementation for unchanged stable API entries"
+hybrid_v2_division,$A000,4096,integrated PRG,"relocated V2 UDIV16/UDIV24/UDIV32_16 kernels; wider UMOD aliases use these entries"
+hybrid_v2_umod8,$B000,128,integrated PRG,"relocated V2 UMOD8 kernel"
+hybrid_v2_trig,$B080,33,integrated PRG,"relocated V2 COS8 and SINCOS8 implementations"
+hybrid_v2_cos_table,$B100,256,integrated PRG,"private V2 cosine table"

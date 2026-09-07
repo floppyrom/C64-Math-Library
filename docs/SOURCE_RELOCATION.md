@@ -2,7 +2,7 @@
 
 ## Contract
 
-The stable 45-entry API is built from `relocatable_source/<profile>/math_relocatable.asm`. `math_config.inc` supplies the selected map at assembly time. The reference PRGs are reproducibility/provenance outputs, not binary-relocation inputs.
+For V1–V4, the stable 45-entry API is built from `relocatable_source/<profile>/math_relocatable.asm`; `math_config.inc` supplies the selected map at assembly time. V5 is built by `tools/build_hybrid.py`, which source-builds V1 and V2 and deterministically relocates the certified donor kernels into a single V1-based image. The **Custom Pareto Builder** extends that same source-derived approach: `tools/build_pareto.py` selects certified compatible V1/V2 packs from a ZP/RAM/workload budget and links one generated image. The shipped reference PRGs are reproducibility/provenance outputs, not donor inputs. Selection and relocation happen at build time; there is no runtime profile dispatcher.
 
 ### Configurable C64 symbols
 
@@ -19,8 +19,10 @@ The stable 45-entry API is built from `relocatable_source/<profile>/math_relocat
 | `V1_SCRATCH` | V1 ordinary-RAM game scratch | `$C040` | `$C840` |
 | `ZP_MAIN` | normal profile ZP base | `$02` | `$07` |
 | `ZP_SMUL` | V2–V4 installed native SMUL16 ZP base | `$80` | `$70` |
+| `HYBRID_CODE` | V5/custom-Pareto imported code/data base | `$A000` | `$E000` |
+| `PARETO_AUX` | custom-Pareto private code/data base | `$B200` | `$F200` |
 
-V3/V4 additionally expose assembly-time symbols for all operational REU banks, including `REU_TURBO16_BANK` and `REU_TURBO32_BANK`. V4's eight-bank QS16 region moves as an aligned unit. Turbo16/Turbo32 also expose `TURBO16_ZP_BASE` and `TURBO32_ZP_BASE`; their executable overlays are assembled for the selected ZP origin and placed in the selected REU banks at build time.
+V5 additionally validates `HYBRID_CODE` as a page-aligned 4608-byte region that cannot overlap V1 resident claims or `$D000-$DFFF`. Custom Pareto maps validate both `HYBRID_CODE` and the generated `PARETO_AUX` region, plus every selected ZP island (`ZP_MAIN`-relative low ranges and independently relocatable `ZP_SMUL`). V3/V4 additionally expose assembly-time symbols for all operational REU banks, including `REU_TURBO16_BANK` and `REU_TURBO32_BANK`. V4's eight-bank QS16 region moves as an aligned unit. Turbo16/Turbo32 also expose `TURBO16_ZP_BASE` and `TURBO32_ZP_BASE`; their executable overlays are assembled for the selected ZP origin and placed in the selected REU banks at build time.
 
 ## Safety checks
 
@@ -36,12 +38,18 @@ Before assembly, the build rejects:
 - V3 stable banks outside its 512 KiB range;
 - V4 QS16 base not aligned to an eight-bank boundary;
 - Turbo16/32 ZP origin outside the legal one-page range or overlapping `$00-$01`;
-- Turbo REU banks outside the profile capacity or colliding with other active banks/QS16.
+- Turbo REU banks outside the profile capacity or colliding with other active banks/QS16;
+- V5 `HYBRID_CODE` misalignment, 16-bit overflow, `$D000-$DFFF` overlap, or collision with selected resident/table/API/kernel regions;
+- custom-Pareto `PARETO_AUX` overflow/I/O/collision, selected-pack ZP overflow, and overlap between the V1 base ZP, multiplier islands and native SMUL16 executable-ZP range.
 
 `REG_GAME_API` is deliberately not page-alignment constrained; it is a 57-byte JMP block and may move independently.
 
 ## Proof
 
-The reference map source build reproduces the corrected resident PRG exactly for V1–V4 and reproduces the reference V3/V4 REU images byte-for-byte. The alternate proof changes all principal C64 regions and, for V3/V4, changes the REU bank geometry **and** Turbo overlay ZP origins. All 45 stable generated public addresses are invoked literally by the machine validator. A separate Turbo validator executes BEGIN/CALL/END on both maps, verifies products, exact caller-ZP restoration, second-batch reuse and cycle identity.
+The reference map source build reproduces the corrected resident PRG exactly for V1–V4 and reproduces the reference V3/V4 REU images byte-for-byte. The V5 reference and alternate builds are deterministic and preserve all 45 stable public addresses while moving the private hybrid block from `$A000` to `$E000`; both maps execute all 45 entries (4,172 machine calls each). The alternate V1–V4 proof changes all principal C64 regions and, for V3/V4, changes the REU bank geometry **and** Turbo overlay ZP origins. A separate Turbo validator executes BEGIN/CALL/END on both maps, verifies products, exact caller-ZP restoration, second-batch reuse and cycle identity.
 
-See `validation/source_relocation/ALTERNATE_MAP_VALIDATION.json`, `validation/turbo_relocation/TURBO_RELOCATION_VALIDATION.json`, `DETERMINISTIC_REBUILD.json`, and `../CONFIG_VALIDATION.json`. Also see `TURBO_RELOCATION.md`.
+For V5, see `docs/HYBRID_PROFILE.md`, `validation/hybrid/HYBRID_VALIDATION.json`, `validation/hybrid/HYBRID_CONFIG_VALIDATION.json`, and `validation/hybrid/HYBRID_DETERMINISTIC_REBUILD.json`.
+
+For budget-generated stock-C64 builds, see `docs/PARETO_BUILDER.md` and `validation/pareto/`. The release matrix validates six ZP breakpoints on both maps (12 builds / 50,064 common-API calls), plus exact V2 cycle parity, exhaustive UMOD8, deterministic rebuilds, ZP confinement and invalid resource maps.
+
+For V1–V4, see `validation/source_relocation/ALTERNATE_MAP_VALIDATION.json`, `validation/turbo_relocation/TURBO_RELOCATION_VALIDATION.json`, `DETERMINISTIC_REBUILD.json`, and `../CONFIG_VALIDATION.json`. Also see `TURBO_RELOCATION.md`.

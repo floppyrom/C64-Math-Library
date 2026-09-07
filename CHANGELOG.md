@@ -1,3 +1,23 @@
+# 2026-09-07 — Custom Pareto Builder
+
+- Added a **build-time stock-C64 Pareto selector**. Give it a total ZP budget, optional exact extra-RAM budget, initialization policy and optional routine weights; it generates the fastest certified compatible V1/V2 combination that fits. There is no runtime dispatcher.
+- Added `tools/pareto_wizard.py` for interactive game/demo integration and `tools/build_pareto.py` for scripted builds.
+- Generated builds retain the same 45-entry stable API and emit `math_api.inc` plus `selection_manifest.json` containing exact ZP ranges, exact private-RAM ranges, initialization requirement, implementation provenance and SHA-256.
+- Default equal-weight breakpoints: **31 / 36 / 60 / 147 / 176 / 221 ZP bytes**. At 31 ZP + zero extra RAM the builder reproduces V1 byte-for-byte; at 31 ZP + optional-init policy it reproduces V5 byte-for-byte; at 221 ZP it selects complete V2.
+- Exact extra-RAM accounting now includes the actual emitted init helper rather than a conservative allowance. Current default points use 4976 / 5698 / 6086 / 5162 / 6272 bytes of extra private payload before the 221-ZP full-V2 endpoint (208-byte resident increase vs V1).
+- Certified selectable packs cover V5 zero-ZP division/modulo/trig imports, initialized UMUL32, V2 UMUL8/16, V2 UMUL24, and native executable-ZP SMUL16. Workload weights can change the chosen pack at the same resource budget.
+- Validation: 12 representative generated builds across reference/alternate maps, **45/45 entries and 4,172 calls each (50,064 common-API calls)**; 10,108 direct V2 cycle-parity cases; exhaustive 65,536-case UMOD8; 50,144 additional SMUL16 cycle-parity cases; 25,000 mixed-workload iterations; 10,000 ZP-guard iterations; deterministic rebuilds; V1/V5 endpoint identity; and **12/12** invalid resource/configuration tests.
+
+# 2026-09-06 — V5 Hybrid Low-ZP
+
+- Renamed the project presentation to **C64 Math Library**; the stable 45-entry callable surface remains its public API.
+- Added **V5 Hybrid Low-ZP**, a stock-C64 profile that keeps V1's 31-byte normal ZP window while importing selected faster V2 division/modulo/trigonometric paths.
+- Direct gains vs V1: UDIV16 14.23%, UDIV24 9.37%, UDIV32/16 11.39%, UMOD16 13.97%, UMOD24 9.25%, UMOD32/16 11.35%, COS8 20.69%, SINCOS8 20.51%; UMOD8 improves 0.71%.
+- Added deterministic source-derived hybrid builder with configurable `HYBRID_CODE` and no runtime dispatch overhead.
+- Validated 45/45 stable entries and 4,172 calls on both reference and alternate V5 maps; 78,710 direct-import cases; exhaustive UMOD8 and trig-domain checks; V2 cycle parity for certified imports; 31-byte ZP confinement with all 225 outside ZP bytes unchanged; 2,000 cold-load calls without `MATH_INIT`; deterministic rebuild and 8/8 invalid-map/config checks.
+- Clarified non-reentrancy: sequential calls, including calls repeated inside ordinary loops, are fully supported.
+- Reference V5 places its private 4608-byte hybrid region at `$A000-$B1FF` (RAM under BASIC ROM); applications must bank BASIC out while executing it or relocate `HYBRID_CODE`.
+
 # Changelog
 
 ## 2026-09-06 — Documented LEAN FINAL / package audit

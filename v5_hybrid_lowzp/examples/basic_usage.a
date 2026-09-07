@@ -1,0 +1,34 @@
+; V5 Hybrid Low-ZP example. ACME-style caller source.
+!source "../resident/math_api.inc"
+
+; The reference V5 private code lives under BASIC ROM at $A000-$B1FF.
+; Most games leave BASIC ROM disabled. This clears LORAM while preserving
+; the current HIRAM/CHAREN state.
+        lda $01
+        and #$fe
+        sta $01
+
+        cld
+
+        ; 1000 / 37 using the V2-speed UDIV16 path.
+        lda #<$03e8
+        sta MATH_N+0
+        lda #>$03e8
+        sta MATH_N+1
+        lda #37
+        sta MATH_D+0
+        lda #0
+        sta MATH_D+1
+        jsr MATH_UDIV16
+        bcs divide_by_zero
+
+        ; MATH_Q = 27, MATH_R = 1
+
+        ; COS8 uses the V2 23-cycle path in V5.
+        lda #$20                ; 45 degrees / 1/8 turn
+        sta MATH_X
+        jsr MATH_COS8
+        ; signed cosine byte in MATH_Z
+
+divide_by_zero:
+        rts

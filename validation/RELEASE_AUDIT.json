@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "14 files"
+      "detail": "23 files"
     },
     {
       "check": "public_api_count",
@@ -632,6 +632,322 @@
       "detail": "71574a5d541058060ff871ea0e5c1db13b1c0053a95c9fcf7dd9dbe7e1f0c503"
     },
     {
+      "check": "hybrid_validation_status",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_reference_45_entries",
+      "status": "PASS",
+      "detail": {
+        "status": "PASS",
+        "public_entries": 45,
+        "machine_calls": 4172
+      }
+    },
+    {
+      "check": "hybrid_reference_31_zp",
+      "status": "PASS",
+      "detail": {
+        "window": "$02-$20",
+        "bytes": 31,
+        "outside_bytes_unchanged": 225,
+        "stress_iterations": 1000
+      }
+    },
+    {
+      "check": "hybrid_reference_cold_no_init",
+      "status": "PASS",
+      "detail": {
+        "status": "PASS",
+        "cold_load_without_math_init": true,
+        "cases": 1000
+      }
+    },
+    {
+      "check": "hybrid_alternate_45_entries",
+      "status": "PASS",
+      "detail": {
+        "status": "PASS",
+        "public_entries": 45,
+        "machine_calls": 4172
+      }
+    },
+    {
+      "check": "hybrid_alternate_31_zp",
+      "status": "PASS",
+      "detail": {
+        "window": "$07-$25",
+        "bytes": 31,
+        "outside_bytes_unchanged": 225,
+        "stress_iterations": 1000
+      }
+    },
+    {
+      "check": "hybrid_alternate_cold_no_init",
+      "status": "PASS",
+      "detail": {
+        "status": "PASS",
+        "cold_load_without_math_init": true,
+        "cases": 1000
+      }
+    },
+    {
+      "check": "hybrid_direct_cases_78710",
+      "status": "PASS",
+      "detail": 78710
+    },
+    {
+      "check": "hybrid_v2_cycle_parity_MATH_UDIV16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_v2_cycle_parity_MATH_UDIV24",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_v2_cycle_parity_MATH_UDIV32_16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_v2_cycle_parity_MATH_UMOD16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_v2_cycle_parity_MATH_UMOD24",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_v2_cycle_parity_MATH_UMOD32_16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_v2_cycle_parity_MATH_COS8",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_v2_cycle_parity_MATH_SINCOS8",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_umod8_exhaustive",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_config_8_of_8",
+      "status": "PASS",
+      "detail": 8
+    },
+    {
+      "check": "hybrid_deterministic",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_deterministic_reference",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_deterministic_alternate",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_manifest_45",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "hybrid_reference_prg_exact",
+      "status": "PASS",
+      "detail": "14ecc1993917fb68e6c1fbe876728fb845292b49feed47ce10946f1f3906a68a"
+    },
+    {
+      "check": "hybrid_docs_present",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_selector_status",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_matrix_12_builds",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_matrix_50064_calls",
+      "status": "PASS",
+      "detail": 50064
+    },
+    {
+      "check": "pareto_reference_six_breakpoints",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_reference_31_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_reference_36_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_reference_60_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_reference_147_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_reference_176_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_reference_221_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_alternate_six_breakpoints",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_alternate_31_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_alternate_36_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_alternate_60_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_alternate_147_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_alternate_176_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_alternate_221_45_entries",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_31_exact_ram",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_176_exact_ram",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_221_selects_v2",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_v1_endpoint_identity",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_v5_endpoint_identity",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_direct_v2_cycle_parity",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_umod8_exhaustive",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_zp_confinement",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_deterministic",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_config_12_of_12",
+      "status": "PASS",
+      "detail": 12
+    },
+    {
+      "check": "pareto_stress_status",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_smul16_parity_50144",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_mixed_25000",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_zp_guard_10000",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_docs_tools_present",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_reference_map_symbols",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_alternate_map_symbols",
+      "status": "PASS",
+      "detail": null
+    },
+    {
       "check": "v1_balanced_config_symbols",
       "status": "PASS",
       "detail": null
@@ -702,6 +1018,7 @@
         "docs/SOURCE_RELOCATION.md",
         "docs/TURBO_RELOCATION.md",
         "docs/TURBO_API.csv",
+        "docs/PARETO_BUILDER.md",
         "validation/REVIEWED_RELEASE_VALIDATION.md"
       ]
     },
@@ -757,7 +1074,7 @@
     }
   ],
   "summary": {
-    "checks_passed": 145,
+    "checks_passed": 203,
     "public_entries": 45,
     "alternate_entry_executions": 180,
     "alternate_machine_calls": 16688,
@@ -767,6 +1084,25 @@
     "turbo_api_calls": 17196,
     "turbo_boundary_product_calls": 3556,
     "reu_profiles_turbo_entries": 6,
-    "isqrt32_cases_per_profile": 5097
+    "isqrt32_cases_per_profile": 5097,
+    "hybrid_public_entries": 45,
+    "hybrid_common_machine_calls_per_map": 4172,
+    "hybrid_direct_import_cases": 78710,
+    "hybrid_optional_init_cases": 2000,
+    "hybrid_zp_bytes": 31,
+    "pareto_matrix_builds": 12,
+    "pareto_common_machine_calls": 50064,
+    "pareto_direct_cycle_parity_cases": 10108,
+    "pareto_smul16_stress_cases": 50144,
+    "pareto_mixed_workload_iterations": 25000,
+    "pareto_config_cases": 12,
+    "pareto_default_breakpoints": [
+      31,
+      36,
+      60,
+      147,
+      176,
+      221
+    ]
   }
 }

@@ -1,0 +1,8 @@
+{
+  "status": "PASS",
+  "smul16_v2_cycle_parity_cases": 50144,
+  "mixed_workload_iterations": 25000,
+  "zp_guard_iterations": 10000,
+  "outside_zp_bytes_unchanged": 80,
+  "elapsed_seconds": 28.459
+}

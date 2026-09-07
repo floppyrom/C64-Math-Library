@@ -1,3 +1,13 @@
+# 2026-09-07 addendum — Custom Pareto Builder
+
+The repository now includes a build-time stock-C64 Pareto selector. It accepts a total ZP budget, optional exact extra-RAM budget, initialization policy and optional routine weights, and generates the fastest certified compatible V1/V2 combination that fits while retaining the same 45-entry API. Default equal-weight breakpoints are 31/36/60/147/176/221 ZP bytes. See `PARETO_BUILDER.md` and `../validation/pareto/`.
+
+# V5 Hybrid Low-ZP addendum
+
+The current repository extends the original V1–V4 release with **V5 Hybrid Low-ZP**. V5 retains V1's 31-byte normal ZP contract while importing a certified subset of faster V2 division/modulo/COS/SINCOS paths. It preserves the same 45-entry API and has separate reference/alternate, cycle-parity, ZP-confinement, cold-load, deterministic-build and configuration validation under `validation/hybrid/`. See `HYBRID_PROFILE.md`.
+
+The V1–V4 results below remain the historical basis for those four profiles.
+
 # Release Notes — 2026-09-06 Reviewed Source Edition
 
 **Documented LEAN FINAL:** the complete manual now includes a plain-English Turbo16/Turbo32 explanation. Generated `build_source/` outputs and superseded slow-ISQRT32 candidate evidence are intentionally omitted from the distribution and recreated on demand; no active code/ABI/REU data changed.

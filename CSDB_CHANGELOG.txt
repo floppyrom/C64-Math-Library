@@ -1,3 +1,15 @@
+C64 MATH LIBRARY — CUSTOM PARETO BUILDER — 2026-09-07
+
+New stock-C64 build-time optimizer: tell it the total ZP budget (plus optional RAM budget, init policy and hot-routine weights) and it selects the fastest certified compatible V1/V2 implementation mix with no runtime dispatcher. Same 45-entry API. Default breakpoints: 31/36/60/147/176/221 ZP. 31 ZP + zero extra RAM reproduces V1 byte-for-byte; 31 ZP + optional init reproduces V5; 221 ZP selects full V2.
+
+Validation: 12 reference/alternate generated builds, 50,064 common-API calls; 10,108 direct V2 cycle-parity cases; exhaustive UMOD8; 50,144 SMUL16 parity cases; 25,000 mixed iterations; 10,000 ZP-guard iterations; deterministic rebuilds and 12/12 invalid resource-map tests.
+
+C64 MATH LIBRARY — V5 HYBRID LOW-ZP — 2026-09-06
+
+New stock-C64 V5 profile: V1's 31-byte normal ZP budget with selected faster V2 kernels, while retaining the same 45-entry API. Direct gains include UDIV16 14.23%, UDIV32/16 11.39%, COS8 20.69% and SINCOS8 20.51%. Reference + alternate maps pass all 45 entries (4,172 calls each), plus 78,710 direct-import cases, exhaustive UMOD8/trig checks, ZP-confinement stress, cold-load/no-init tests, deterministic rebuild and config rejection tests.
+
+The project is now presented as the C64 Math Library; “API” refers to the stable callable interface.
+
 CSDb CHANGELOG — DOCUMENTED LEAN FINAL
 
 Packaging/manual follow-up:
