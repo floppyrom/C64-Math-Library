@@ -521,7 +521,8 @@
           "address": "$2600",
           "bytes": 28,
           "cloned_from_proven_arithmetic_core": "$4700-$471B"
-        }
+        },
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -536,7 +537,8 @@
           "address": "$2600",
           "bytes": 28,
           "cloned_from_proven_arithmetic_core": "$4700-$471B"
-        }
+        },
+        "published_source": "multiply/native/smul16_native.asm"
       }
     },
     {
@@ -551,7 +553,8 @@
           "address": "$2700",
           "bytes": 204,
           "cloned_from_proven_arithmetic_core": "$4A00-$4ACB"
-        }
+        },
+        "published_source": "multiply/native/smul24_native.asm"
       }
     },
     {
@@ -566,7 +569,8 @@
           "address": "$2800",
           "bytes": 277,
           "cloned_from_proven_arithmetic_core": "$4C00-$4D14"
-        }
+        },
+        "published_source": "multiply/native/smul32_native.asm"
       }
     },
     {
@@ -589,7 +593,8 @@
           "$1000": "$5000"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv8_native.asm"
       }
     },
     {
@@ -614,7 +619,8 @@
           "$1000": "$5400"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv16_native.asm"
       }
     },
     {
@@ -640,7 +646,8 @@
         },
         "source_artifact_status": "active resident selection is 373-byte compact core; shipped sdiv24-small-fast source is a historical/reference point, not an exact source reconstruction of that active 373-byte slice",
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv24_native.asm"
       }
     },
     {
@@ -667,7 +674,8 @@
           "$7000": "$5C00"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv32_16_native.asm"
       }
     },
     {
@@ -682,7 +690,8 @@
           "cloned_from_proven_arithmetic_core": "$C222-$C51D"
         },
         "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
-        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap"
+        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap",
+        "published_source": "division/native/sdiv32_32_native.asm"
       }
     },
     {
@@ -974,7 +983,8 @@
           "address": "$2600",
           "bytes": 35,
           "cloned_from_proven_arithmetic_core": "$5300-$5322"
-        }
+        },
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -986,7 +996,8 @@
         "canonical_source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
         "notes": "signed-specific quarter-square executable-ZP kernel; no unsigned executable dependency",
         "source": "multiply/native/smul16_practical_116zp.a",
-        "relocation": "multiply/native/smul16_practical_116zp.relocation.json"
+        "relocation": "multiply/native/smul16_practical_116zp.relocation.json",
+        "published_source": "multiply/native/smul16_native.asm"
       }
     },
     {
@@ -1001,7 +1012,8 @@
           "address": "$3600",
           "bytes": 287,
           "cloned_from_proven_arithmetic_core": "$5600-$571E"
-        }
+        },
+        "published_source": "multiply/native/smul24_native.asm"
       }
     },
     {
@@ -1016,7 +1028,8 @@
           "address": "$3800",
           "bytes": 277,
           "cloned_from_proven_arithmetic_core": "$5800-$5914"
-        }
+        },
+        "published_source": "multiply/native/smul32_native.asm"
       }
     },
     {
@@ -1039,7 +1052,8 @@
           "$1000": "$7800"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv8_native.asm"
       }
     },
     {
@@ -1064,7 +1078,8 @@
           "$100C": "$7C0C"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv16_native.asm"
       }
     },
     {
@@ -1089,7 +1104,8 @@
           "$1000": "$8400"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv24_native.asm"
       }
     },
     {
@@ -1116,7 +1132,8 @@
           "$7000": "$9200"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv32_16_native.asm"
       }
     },
     {
@@ -1131,7 +1148,8 @@
           "cloned_from_proven_arithmetic_core": "$C1FE-$C4B4"
         },
         "canonical_source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
-        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap"
+        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap",
+        "published_source": "division/native/sdiv32_32_native.asm"
       }
     },
     {
@@ -1418,7 +1436,8 @@
         "kind": "native_signed_kernel",
         "public_entry": 15232,
         "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
-        "notes": "profile-specific signed executable path; may share immutable REU lookup data, but shares no unsigned executable instructions"
+        "notes": "profile-specific signed executable path; may share immutable REU lookup data, but shares no unsigned executable instructions",
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -1430,7 +1449,8 @@
         "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
         "notes": "signed-specific quarter-square executable-ZP kernel; no unsigned executable dependency",
         "source": "multiply/native/smul16_practical_116zp.a",
-        "relocation": "multiply/native/smul16_practical_116zp.relocation.json"
+        "relocation": "multiply/native/smul16_practical_116zp.relocation.json",
+        "published_source": "multiply/native/smul16_native.asm"
       }
     },
     {
@@ -1445,7 +1465,8 @@
           "address": "$1400",
           "bytes": 287,
           "cloned_from_proven_arithmetic_core": "$5600-$571E"
-        }
+        },
+        "published_source": "multiply/native/smul24_native.asm"
       }
     },
     {
@@ -1460,7 +1481,8 @@
           "address": "$1600",
           "bytes": 277,
           "cloned_from_proven_arithmetic_core": "$5800-$5914"
-        }
+        },
+        "published_source": "multiply/native/smul32_native.asm"
       }
     },
     {
@@ -1483,7 +1505,8 @@
           "$1000": "$7800"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv8_native.asm"
       }
     },
     {
@@ -1508,7 +1531,8 @@
           "$100C": "$7C0C"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv16_native.asm"
       }
     },
     {
@@ -1533,7 +1557,8 @@
           "$1000": "$8400"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv24_native.asm"
       }
     },
     {
@@ -1560,7 +1585,8 @@
           "$7000": "$9200"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv32_16_native.asm"
       }
     },
     {
@@ -1575,7 +1601,8 @@
           "cloned_from_proven_arithmetic_core": "$C1FE-$C4B4"
         },
         "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
-        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap"
+        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap",
+        "published_source": "division/native/sdiv32_32_native.asm"
       }
     },
     {
@@ -1862,7 +1889,8 @@
         "kind": "native_signed_kernel",
         "public_entry": 15232,
         "canonical_source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
-        "notes": "profile-specific signed executable path; may share immutable REU lookup data, but shares no unsigned executable instructions"
+        "notes": "profile-specific signed executable path; may share immutable REU lookup data, but shares no unsigned executable instructions",
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -1874,7 +1902,8 @@
         "canonical_source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
         "notes": "signed-specific quarter-square executable-ZP kernel; no unsigned executable dependency",
         "source": "multiply/native/smul16_practical_116zp.a",
-        "relocation": "multiply/native/smul16_practical_116zp.relocation.json"
+        "relocation": "multiply/native/smul16_practical_116zp.relocation.json",
+        "published_source": "multiply/native/smul16_native.asm"
       }
     },
     {
@@ -1889,7 +1918,8 @@
           "address": "$1400",
           "bytes": 287,
           "cloned_from_proven_arithmetic_core": "$5600-$571E"
-        }
+        },
+        "published_source": "multiply/native/smul24_native.asm"
       }
     },
     {
@@ -1904,7 +1934,8 @@
           "address": "$1600",
           "bytes": 277,
           "cloned_from_proven_arithmetic_core": "$5800-$5914"
-        }
+        },
+        "published_source": "multiply/native/smul32_native.asm"
       }
     },
     {
@@ -1927,7 +1958,8 @@
           "$1000": "$7800"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv8_native.asm"
       }
     },
     {
@@ -1952,7 +1984,8 @@
           "$100C": "$7C0C"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv16_native.asm"
       }
     },
     {
@@ -1977,7 +2010,8 @@
           "$1000": "$8400"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv24_native.asm"
       }
     },
     {
@@ -2004,7 +2038,8 @@
           "$7000": "$9200"
         },
         "kind": "native_signed_kernel",
-        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered",
+        "published_source": "division/native/sdiv32_16_native.asm"
       }
     },
     {
@@ -2019,7 +2054,8 @@
           "cloned_from_proven_arithmetic_core": "$C1FE-$C4B4"
         },
         "canonical_source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
-        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap"
+        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap",
+        "published_source": "division/native/sdiv32_32_native.asm"
       }
     },
     {
@@ -2306,7 +2342,8 @@
         "kind": "native_signed_kernel",
         "public_entry": 15232,
         "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
-        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap",
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -2316,7 +2353,8 @@
         "kind": "native_signed_kernel",
         "public_entry": 15280,
         "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
-        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap",
+        "published_source": "multiply/native/smul16_native.asm"
       }
     },
     {
@@ -2326,7 +2364,8 @@
         "kind": "native_signed_kernel",
         "public_entry": 15344,
         "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
-        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap",
+        "published_source": "multiply/native/smul24_native.asm"
       }
     },
     {
@@ -2336,7 +2375,8 @@
         "kind": "native_signed_kernel",
         "public_entry": 15424,
         "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
-        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap",
+        "published_source": "multiply/native/smul32_native.asm"
       }
     },
     {
@@ -2345,7 +2385,8 @@
       "detail": {
         "kind": "native_signed_kernel",
         "public_entry": 15520,
-        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+        "published_source": "division/native/sdiv8_native.asm"
       }
     },
     {
@@ -2354,7 +2395,8 @@
       "detail": {
         "kind": "native_signed_kernel",
         "public_entry": 15648,
-        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+        "published_source": "division/native/sdiv16_native.asm"
       }
     },
     {
@@ -2363,7 +2405,8 @@
       "detail": {
         "kind": "native_signed_kernel",
         "public_entry": 15840,
-        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+        "published_source": "division/native/sdiv24_native.asm"
       }
     },
     {
@@ -2372,7 +2415,8 @@
       "detail": {
         "kind": "native_signed_kernel",
         "public_entry": 16096,
-        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+        "published_source": "division/native/sdiv32_16_native.asm"
       }
     },
     {
@@ -2381,7 +2425,8 @@
       "detail": {
         "kind": "native_signed_kernel",
         "public_entry": 24070,
-        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+        "published_source": "division/native/sdiv32_32_native.asm"
       }
     },
     {

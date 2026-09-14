@@ -62,6 +62,11 @@
       "detail": null
     },
     {
+      "check": "published_signed_sources_shipped",
+      "status": "PASS",
+      "detail": null
+    },
+    {
       "check": "no_legacy_native_signed_tree",
       "status": "PASS",
       "detail": null
@@ -117,9 +122,9 @@
     }
   ],
   "summary": {
-    "checks_passed": 21,
-    "file_count_excluding_checksum": 370,
-    "uncompressed_bytes_excluding_checksum": 20031155,
+    "checks_passed": 22,
+    "file_count_excluding_checksum": 444,
+    "uncompressed_bytes_excluding_checksum": 21400113,
     "reference_prgs": 5,
     "reference_reu_images": 2
   }

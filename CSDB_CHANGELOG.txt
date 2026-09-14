@@ -65,3 +65,7 @@ V1 Balanced / stock C64 low-ZP
 V2 Pareto-Fast / stock C64 speed-space knee
 V3 REU 512K + relocatable Turbo overlays
 V4 REU 16M + QS16 + relocatable Turbo overlays
+2026-09-14 SOURCE-PUBLICATION FIX
+- Added exact per-routine native signed SMUL/SDIV source mirrors to every V1-V5 profile, including V1 where multiply/native previously contained only a README.
+- Added byte-for-byte publication validation; resident PRG/REU payloads are unchanged.
+

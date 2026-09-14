@@ -1,5 +1,19 @@
-# Native signed multiplication
+# Native signed multiplication: published executable sources
 
-All `SMUL8`, `SMUL16`, `SMUL24`, and `SMUL32` public paths for this profile own signed executable paths. The canonical source is the profile's relocatable source file. This directory retains hand-authored specialized source artifacts where one exists (notably the V2–V4 executable-ZP `SMUL16` kernel).
+These files expose the **actual native signed executable paths shipped by `v3_reu_512k`**. They are exact generated source mirrors of the resident image after `MATH_INIT`, not placeholders. Every instruction is annotated with its resident address and bytes and is checked by `tools/validate_published_signed_sources.py`.
 
-Sharing immutable quarter-square/REU tables is allowed; sharing executable unsigned multiply code is not. See `../../SIGNED_LINK_MAP.json` and the signed-layout validator.
+The canonical integrated build source remains `relocatable_source/v3_reu_512k/math_relocatable.asm`. These mirrors exist so a GitHub reader can inspect each signed implementation directly without hunting through the monolithic generated source. Shared immutable lookup/data tables are not duplicated; corresponding unsigned executable instructions are never entered.
+
+| Public API | Published source |
+|---|---|
+| `MATH_SMUL8` | `smul8_native.asm` |
+| `MATH_SMUL16` | `smul16_native.asm` |
+| `MATH_SMUL24` | `smul24_native.asm` |
+| `MATH_SMUL32` | `smul32_native.asm` |
+| `MATH_SMUL32_READY` | `smul32_ready_native.asm` |
+| `MATH_SMUL16_SHR8` | `smul16_shr8_native.asm` |
+| `MATH_SMUL32_SHR16` | `smul32_shr16_native.asm` |
+
+For V2–V4, `smul16_practical_116zp.a` remains the hand-authored executable-ZP SMUL16 source and its relocation JSON remains alongside these mirrors.
+
+See `../../SIGNED_LINK_MAP.json` for placements/provenance and `validation/review/SIGNED_LAYOUT_VALIDATION.json` for the zero-overlap proof.

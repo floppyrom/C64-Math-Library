@@ -1,7 +1,12 @@
 # Native signed implementation map — v3_reu_512k
 
-Every shipped `SMUL*` and `SDIV*` public path in this profile is now classified as a **native signed kernel**. Here, native means the signed API owns its executable arithmetic path and does not enter the corresponding unsigned executable multiply/divide engine. Immutable lookup tables may still be shared.
+Every shipped `SMUL*` and `SDIV*` public path in this profile is a **native signed kernel**: the signed API owns its executable arithmetic path and does not enter the corresponding unsigned executable multiply/divide engine. Immutable lookup/data tables may still be shared.
 
-The canonical build source is `relocatable_source/v3_reu_512k/math_relocatable.asm`. `SIGNED_LINK_MAP.json` records the active signed entries and any private executable cores. `multiply/native/` retains hand-authored native-kernel reference material where available. Division reference sources remain under `division/`.
+The actual per-routine executable source is now published directly under:
 
-The old `multiply/unsigned_derived/` tree has been removed. Zero executable overlap is mechanically checked by `tools/validate_signed_layout.py`.
+- `multiply/native/` — `SMUL8`, `SMUL16`, `SMUL24`, `SMUL32`, `SMUL32_READY`, `SMUL16_SHR8`, `SMUL32_SHR16`
+- `division/native/` — `SDIV8`, `SDIV16`, `SDIV24`, `SDIV32_16`, `SDIV32_32`, `SDIV16_SHL8`
+
+These are exact generated source mirrors of the initialized resident executable, with address/byte annotations. They are verified against the shipped binary by `tools/validate_published_signed_sources.py`; they are no longer placeholder READMEs. The canonical integrated build source remains `relocatable_source/v3_reu_512k/math_relocatable.asm`.
+
+`SIGNED_LINK_MAP.json` records each active entry, private-core placement/provenance, and the corresponding published source file. The zero-executable-overlap contract is independently checked by `tools/validate_signed_layout.py`.

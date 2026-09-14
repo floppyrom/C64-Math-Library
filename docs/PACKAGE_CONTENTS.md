@@ -27,3 +27,7 @@ Some small source/table/module files are identical across V1–V4. They are reta
 ## Manifest hygiene
 
 Legacy segment manifests were audited against the actual files in this distribution. Game-math segment rows now point to the integrated profile PRG rather than removed archival build directories; V4 ranges without separately shipped segment binaries are explicitly marked as integrated in the V4 PRG.
+
+## Native signed per-routine sources
+
+Each V1–V5 profile publishes exact executable source mirrors under `resident/signed/multiply/native/` and `resident/signed/division/native/`. Regenerate them with `tools/publish_native_signed_sources.py` and verify them with `tools/validate_published_signed_sources.py`.

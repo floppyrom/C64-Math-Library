@@ -1,0 +1,295 @@
+{
+  "status": "PASS",
+  "profiles": {
+    "v1_balanced": {
+      "multiply": {
+        "MATH_SMUL8": {
+          "file": "smul8_native.asm",
+          "instructions": 40
+        },
+        "MATH_SMUL16": {
+          "file": "smul16_native.asm",
+          "instructions": 88
+        },
+        "MATH_SMUL24": {
+          "file": "smul24_native.asm",
+          "instructions": 138
+        },
+        "MATH_SMUL32": {
+          "file": "smul32_native.asm",
+          "instructions": 209
+        },
+        "MATH_SMUL32_READY": {
+          "file": "smul32_ready_native.asm",
+          "instructions": 201
+        },
+        "MATH_SMUL16_SHR8": {
+          "file": "smul16_shr8_native.asm",
+          "instructions": 98
+        },
+        "MATH_SMUL32_SHR16": {
+          "file": "smul32_shr16_native.asm",
+          "instructions": 225
+        }
+      },
+      "division": {
+        "MATH_SDIV8": {
+          "file": "sdiv8_native.asm",
+          "instructions": 245
+        },
+        "MATH_SDIV16": {
+          "file": "sdiv16_native.asm",
+          "instructions": 207
+        },
+        "MATH_SDIV24": {
+          "file": "sdiv24_native.asm",
+          "instructions": 225
+        },
+        "MATH_SDIV32_16": {
+          "file": "sdiv32_16_native.asm",
+          "instructions": 285
+        },
+        "MATH_SDIV32_32": {
+          "file": "sdiv32_32_native.asm",
+          "instructions": 387
+        },
+        "MATH_SDIV16_SHL8": {
+          "file": "sdiv16_shl8_native.asm",
+          "instructions": 315
+        }
+      }
+    },
+    "v2_pareto_fast": {
+      "multiply": {
+        "MATH_SMUL8": {
+          "file": "smul8_native.asm",
+          "instructions": 39
+        },
+        "MATH_SMUL16": {
+          "file": "smul16_native.asm",
+          "instructions": 115
+        },
+        "MATH_SMUL24": {
+          "file": "smul24_native.asm",
+          "instructions": 191
+        },
+        "MATH_SMUL32": {
+          "file": "smul32_native.asm",
+          "instructions": 201
+        },
+        "MATH_SMUL32_READY": {
+          "file": "smul32_ready_native.asm",
+          "instructions": 201
+        },
+        "MATH_SMUL16_SHR8": {
+          "file": "smul16_shr8_native.asm",
+          "instructions": 125
+        },
+        "MATH_SMUL32_SHR16": {
+          "file": "smul32_shr16_native.asm",
+          "instructions": 217
+        }
+      },
+      "division": {
+        "MATH_SDIV8": {
+          "file": "sdiv8_native.asm",
+          "instructions": 245
+        },
+        "MATH_SDIV16": {
+          "file": "sdiv16_native.asm",
+          "instructions": 803
+        },
+        "MATH_SDIV24": {
+          "file": "sdiv24_native.asm",
+          "instructions": 870
+        },
+        "MATH_SDIV32_16": {
+          "file": "sdiv32_16_native.asm",
+          "instructions": 1165
+        },
+        "MATH_SDIV32_32": {
+          "file": "sdiv32_32_native.asm",
+          "instructions": 387
+        },
+        "MATH_SDIV16_SHL8": {
+          "file": "sdiv16_shl8_native.asm",
+          "instructions": 1195
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "multiply": {
+        "MATH_SMUL8": {
+          "file": "smul8_native.asm",
+          "instructions": 31
+        },
+        "MATH_SMUL16": {
+          "file": "smul16_native.asm",
+          "instructions": 115
+        },
+        "MATH_SMUL24": {
+          "file": "smul24_native.asm",
+          "instructions": 191
+        },
+        "MATH_SMUL32": {
+          "file": "smul32_native.asm",
+          "instructions": 201
+        },
+        "MATH_SMUL32_READY": {
+          "file": "smul32_ready_native.asm",
+          "instructions": 201
+        },
+        "MATH_SMUL16_SHR8": {
+          "file": "smul16_shr8_native.asm",
+          "instructions": 125
+        },
+        "MATH_SMUL32_SHR16": {
+          "file": "smul32_shr16_native.asm",
+          "instructions": 217
+        }
+      },
+      "division": {
+        "MATH_SDIV8": {
+          "file": "sdiv8_native.asm",
+          "instructions": 245
+        },
+        "MATH_SDIV16": {
+          "file": "sdiv16_native.asm",
+          "instructions": 803
+        },
+        "MATH_SDIV24": {
+          "file": "sdiv24_native.asm",
+          "instructions": 870
+        },
+        "MATH_SDIV32_16": {
+          "file": "sdiv32_16_native.asm",
+          "instructions": 1165
+        },
+        "MATH_SDIV32_32": {
+          "file": "sdiv32_32_native.asm",
+          "instructions": 387
+        },
+        "MATH_SDIV16_SHL8": {
+          "file": "sdiv16_shl8_native.asm",
+          "instructions": 1195
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "multiply": {
+        "MATH_SMUL8": {
+          "file": "smul8_native.asm",
+          "instructions": 31
+        },
+        "MATH_SMUL16": {
+          "file": "smul16_native.asm",
+          "instructions": 115
+        },
+        "MATH_SMUL24": {
+          "file": "smul24_native.asm",
+          "instructions": 191
+        },
+        "MATH_SMUL32": {
+          "file": "smul32_native.asm",
+          "instructions": 201
+        },
+        "MATH_SMUL32_READY": {
+          "file": "smul32_ready_native.asm",
+          "instructions": 201
+        },
+        "MATH_SMUL16_SHR8": {
+          "file": "smul16_shr8_native.asm",
+          "instructions": 125
+        },
+        "MATH_SMUL32_SHR16": {
+          "file": "smul32_shr16_native.asm",
+          "instructions": 217
+        }
+      },
+      "division": {
+        "MATH_SDIV8": {
+          "file": "sdiv8_native.asm",
+          "instructions": 245
+        },
+        "MATH_SDIV16": {
+          "file": "sdiv16_native.asm",
+          "instructions": 803
+        },
+        "MATH_SDIV24": {
+          "file": "sdiv24_native.asm",
+          "instructions": 870
+        },
+        "MATH_SDIV32_16": {
+          "file": "sdiv32_16_native.asm",
+          "instructions": 1165
+        },
+        "MATH_SDIV32_32": {
+          "file": "sdiv32_32_native.asm",
+          "instructions": 387
+        },
+        "MATH_SDIV16_SHL8": {
+          "file": "sdiv16_shl8_native.asm",
+          "instructions": 1195
+        }
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "multiply": {
+        "MATH_SMUL8": {
+          "file": "smul8_native.asm",
+          "instructions": 40
+        },
+        "MATH_SMUL16": {
+          "file": "smul16_native.asm",
+          "instructions": 88
+        },
+        "MATH_SMUL24": {
+          "file": "smul24_native.asm",
+          "instructions": 138
+        },
+        "MATH_SMUL32": {
+          "file": "smul32_native.asm",
+          "instructions": 209
+        },
+        "MATH_SMUL32_READY": {
+          "file": "smul32_ready_native.asm",
+          "instructions": 201
+        },
+        "MATH_SMUL16_SHR8": {
+          "file": "smul16_shr8_native.asm",
+          "instructions": 98
+        },
+        "MATH_SMUL32_SHR16": {
+          "file": "smul32_shr16_native.asm",
+          "instructions": 225
+        }
+      },
+      "division": {
+        "MATH_SDIV8": {
+          "file": "sdiv8_native.asm",
+          "instructions": 245
+        },
+        "MATH_SDIV16": {
+          "file": "sdiv16_native.asm",
+          "instructions": 207
+        },
+        "MATH_SDIV24": {
+          "file": "sdiv24_native.asm",
+          "instructions": 225
+        },
+        "MATH_SDIV32_16": {
+          "file": "sdiv32_16_native.asm",
+          "instructions": 285
+        },
+        "MATH_SDIV32_32": {
+          "file": "sdiv32_32_native.asm",
+          "instructions": 387
+        },
+        "MATH_SDIV16_SHL8": {
+          "file": "sdiv16_shl8_native.asm",
+          "instructions": 315
+        }
+      }
+    }
+  }
+}

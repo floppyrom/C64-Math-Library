@@ -6,6 +6,8 @@ A routine is **native signed** when its signed public API owns the executable ar
 
 This definition prevents the previous ambiguity where a signed wrapper could reuse a full unsigned producer and merely correct the result afterward. `tools/validate_signed_layout.py` traces the executable graph of every signed/unsigned pair and requires zero overlap.
 
+For source transparency, every signed API also has an exact per-routine executable mirror under each profile's `resident/signed/{multiply,division}/native/` directory. `tools/validate_published_signed_sources.py` verifies those mirrors byte-for-byte against the initialized resident image.
+
 ## Multiplication
 
 | Profile | SMUL8 | SMUL16 | SMUL24 | SMUL32 |

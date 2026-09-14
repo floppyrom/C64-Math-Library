@@ -17,6 +17,8 @@ ck('python_tools_compile',True,f'{len(list((ROOT/"tools").glob("*.py")))} files'
 # Signed implementation taxonomy and dedicated arithmetic validation.
 sl=json.loads((ROOT/'validation/review/SIGNED_LAYOUT_VALIDATION.json').read_text())
 ck('signed_layout_validation',sl['status']=='PASS' and sl['summary']['profiles']==5 and sl['summary'].get('zero_overlap_comparisons')==65,sl['summary'])
+ps=json.loads((ROOT/'validation/review/PUBLISHED_SIGNED_SOURCES_VALIDATION.json').read_text())
+ck('published_signed_sources',ps['status']=='PASS' and ps['summary']['profiles']==5 and ps['summary']['published_routines']==65 and ps['summary']['checks_passed']==270,ps['summary'])
 sm=json.loads((ROOT/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
 ck('signed_multiply_validation',sm['status']=='PASS' and set(sm['profiles'])=={'v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'},sm['summary'])
 ck('signed_multiply_zero_errors',all(r['errors']==0 for p in sm['profiles'].values() for r in p.values()),sm['summary'])

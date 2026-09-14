@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "27 files"
+      "detail": "29 files"
     },
     {
       "check": "signed_layout_validation",
@@ -17,6 +17,15 @@
         "taxonomy": [
           "native_signed_kernel"
         ]
+      }
+    },
+    {
+      "check": "published_signed_sources",
+      "status": "PASS",
+      "detail": {
+        "profiles": 5,
+        "published_routines": 65,
+        "checks_passed": 270
       }
     },
     {
@@ -981,7 +990,7 @@
   ],
   "summary": {
     "acme_current_status": "NOT_RUN",
-    "checks_passed": 179,
+    "checks_passed": 180,
     "public_entries": 45,
     "alternate_entry_executions": 180,
     "alternate_machine_calls": 16688,

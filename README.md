@@ -27,6 +27,7 @@ All shipped signed multiply and divide entries now own **native signed executabl
 - V2/V3/V4 retain the signed-specific `smul16_practical_116zp` executable-ZP kernel.
 - Wider signed multiply cores and `SDIV32_32` use signed-owned private executable cores in existing reserved holes, so public ABI addresses and resident load/end ranges are unchanged. The cores may reuse the same arithmetic identities/tables, but they do not execute the corresponding unsigned routine.
 - `tools/validate_signed_layout.py` mechanically requires zero signed/unsigned executable overlap for 13 API pairs in all five profiles.
+- Every signed API now has a directly browsable exact executable source mirror under each profile's `resident/signed/multiply/native/` or `resident/signed/division/native/` directory; `tools/validate_published_signed_sources.py` verifies those mirrors byte-for-byte against the initialized resident image.
 
 See `docs/SIGNED_IMPLEMENTATIONS.md` and each profile's `resident/signed/README.md`.
 

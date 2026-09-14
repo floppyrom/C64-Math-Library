@@ -7,79 +7,93 @@
       "kind": "native_signed_kernel",
       "public_entry": 15232,
       "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
-      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap",
+      "published_source": "multiply/native/smul8_native.asm"
     },
     "16": {
       "kind": "native_signed_kernel",
       "public_entry": 15280,
       "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
-      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap",
+      "published_source": "multiply/native/smul16_native.asm"
     },
     "24": {
       "kind": "native_signed_kernel",
       "public_entry": 15344,
       "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
-      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap",
+      "published_source": "multiply/native/smul24_native.asm"
     },
     "32": {
       "kind": "native_signed_kernel",
       "public_entry": 15424,
       "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
-      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap",
+      "published_source": "multiply/native/smul32_native.asm"
     }
   },
   "division": {
     "8": {
       "kind": "native_signed_kernel",
       "public_entry": 15520,
-      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+      "published_source": "division/native/sdiv8_native.asm"
     },
     "16": {
       "kind": "native_signed_kernel",
       "public_entry": 15648,
-      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+      "published_source": "division/native/sdiv16_native.asm"
     },
     "24": {
       "kind": "native_signed_kernel",
       "public_entry": 15840,
-      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+      "published_source": "division/native/sdiv24_native.asm"
     },
     "32_16": {
       "kind": "native_signed_kernel",
       "public_entry": 16096,
-      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+      "published_source": "division/native/sdiv32_16_native.asm"
     },
     "32_32": {
       "kind": "native_signed_kernel",
       "public_entry": 24070,
-      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs",
+      "published_source": "division/native/sdiv32_32_native.asm"
     }
   },
   "signed_game_api": {
     "MATH_SMUL32_READY": {
       "kind": "native_signed_kernel",
       "public_entry": 16352,
-      "notes": "inherits native signed V1 path"
+      "notes": "inherits native signed V1 path",
+      "published_source": "multiply/native/smul32_ready_native.asm"
     },
     "MATH_SMUL16_SHR8": {
       "kind": "native_signed_kernel",
       "public_entry": 24079,
-      "notes": "inherits native signed V1 path"
+      "notes": "inherits native signed V1 path",
+      "published_source": "multiply/native/smul16_shr8_native.asm"
     },
     "MATH_SMUL32_SHR16": {
       "kind": "native_signed_kernel",
       "public_entry": 24085,
-      "notes": "inherits native signed V1 path"
+      "notes": "inherits native signed V1 path",
+      "published_source": "multiply/native/smul32_shr16_native.asm"
     },
     "MATH_SDIV16_SHL8": {
       "kind": "native_signed_kernel",
       "public_entry": 24091,
-      "notes": "inherits native signed V1 path"
+      "notes": "inherits native signed V1 path",
+      "published_source": "division/native/sdiv16_shl8_native.asm"
     }
   },
   "validation": [
     "validation/review/SIGNED_LAYOUT_VALIDATION.json",
     "validation/review/SIGNED_MULTIPLY_VALIDATION.json",
     "validation/review/SIGNED_DIVISION_VALIDATION.json"
-  ]
+  ],
+  "published_source_validation": "validation/review/PUBLISHED_SIGNED_SOURCES_VALIDATION.json"
 }
