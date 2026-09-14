@@ -69,16 +69,16 @@ python3 tools/build_pareto.py \
   --weight MATH_UMUL16_SHR8=0
 ```
 
-makes the 24-bit multiplier much more important. At the same 55-byte ZP budget, this can choose the UMUL24 pack instead of the normal UMUL8/16 pack.
+makes the 24-bit multiplier much more important. At the same 55-byte ZP budget, this can choose the UMUL24 pack instead of the normal UMUL8 pack.
 
 ## Certified stock-C64 packs
 
 | Pack | Additional ZP | Extra private RAM payload | Main accelerated public paths |
 |---|---:|---:|---|
 | V5 zero-ZP imports | 0 | 4608 B | UDIV16/24/32_16, matching UMOD aliases, UMOD8, COS8, SINCOS8 |
-| initialized UMUL32 | 0 | 350 B | UMUL32/SMUL32 and 32-bit shifted multiply users |
-| UMUL8/16 | 5 B | 714 B | UMUL8, UMUL16, SMUL8, UMUL16_SHR8 |
-| UMUL24 | 24 B | 356 B | UMUL24, SMUL24 |
+| initialized UMUL32 | 0 | 627 B + shared init helper | UMUL32/SMUL32 and 32-bit shifted multiply users |
+| UMUL8 (legacy `umul8_16` pack name) | 5 B | 547 B + shared init helper | UMUL8 only; SMUL8 stays on the faster direct-signed V1 base |
+| UMUL16/24 records | 24 B | 728 B + shared init helper | UMUL16, UMUL16_SHR8, UMUL24, SMUL24 |
 | native SMUL16 executable-ZP | 116 B | 176 B | SMUL16, SMUL16_SHR8 |
 
 When any selected pack requires initialization, the builder also emits a small exact-size `MATH_INIT` helper. Its bytes are included in `--ram-budget` accounting.
@@ -92,10 +92,10 @@ These are the current default selections when RAM is unrestricted and startup `M
 | ZP budget | Selected result | Exact extra RAM vs V1 | Init? |
 |---:|---|---:|---|
 | **31 B** | V5 zero-ZP imports + initialized UMUL32 | **5253 B** | yes |
-| **36 B** | above + UMUL8/16 pack | **5843 B** | yes |
-| **60 B** | above + UMUL24 pack | **6603 B** | yes |
+| **36 B** | above + UMUL8 pack | **5808 B** | yes |
+| **60 B** | above + UMUL16/24 record pack | **6568 B** | yes |
 | **147 B** | V5 imports + initialized UMUL32 + native SMUL16 | **5439 B** | yes |
-| **176 B** | all certified hybrid packs | **6789 B** | yes |
+| **176 B** | all certified hybrid packs | **6754 B** | yes |
 | **221 B** | complete V2 | **208 B resident increase vs V1** | yes |
 
 RAM is not monotonic with ZP because the optimizer maximizes weighted speed, not “number of packs.” For example, the 147-byte point spends most of its ZP budget on the exceptionally fast SMUL16 executable-ZP implementation and omits smaller multiplier packs.
@@ -127,7 +127,7 @@ The ZP budget counts the number of bytes owned, not necessarily one contiguous r
 ```text
 $02-$20   31 B   V1 base window
 $21-$38   24 B   optional UMUL24 pack
-$39-$3D    5 B   optional UMUL8/16 pack
+$39-$3D    5 B   optional UMUL8 pack (legacy internal name `umul8_16`)
 $80-$F3  116 B   optional native SMUL16 executable-ZP pack
 ```
 

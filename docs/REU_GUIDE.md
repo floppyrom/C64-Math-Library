@@ -76,7 +76,7 @@ REU DMA competes with the VIC-II bus. The deterministic model in these releases 
 
 ## Signed calls on REU profiles — final native revision
 
-V3/V4 signed multiplication no longer calls the public unsigned operation as a wrapper. SMUL8/24/32 enter profile-native producer paths directly. SMUL16 uses the validated 116-ZP native practical implementation in normal C64 RAM, with four 511-byte tables at `$2800/$2A00/$2C00/$2E00` and executable ZP at `$80-$F3`. Signed DIV uses native signed cores with `$3E-$52` scratch. These resources are sequentially shared with REU Turbo modes; obey the existing BEGIN/END ownership contracts.
+V3/V4 signed multiplication no longer calls the public unsigned operation as a wrapper. SMUL8 uses a direct signed-domain quarter-square kernel (no unsigned producer/correction tail); SMUL24/32 enter profile-native producer paths directly. SMUL16 uses the validated 116-ZP native practical implementation in normal C64 RAM, with four 511-byte tables at `$2800/$2A00/$2C00/$2E00` and executable ZP at `$80-$F3`. Signed DIV uses native signed cores with `$3E-$52` scratch. These resources are sequentially shared with REU Turbo modes; obey the existing BEGIN/END ownership contracts.
 
 ## 2026-09-06 game-math REU additions
 

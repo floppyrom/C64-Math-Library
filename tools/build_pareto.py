@@ -41,15 +41,18 @@ PACKS = {
     },
     'umul8_16': {
         # Historical pack name retained for CLI/config compatibility.  It now
-        # carries only the V2 UMUL8/SMUL8 island; UMUL16 moved into the UMUL24
+        # carries only the V2 UMUL8 island; UMUL16 moved into the UMUL24
         # pack because the record UMUL16 reuses the first 17 bytes of UMUL24's
-        # 24-byte pointer workspace.
+        # 24-byte pointer workspace.  SMUL8 is deliberately NOT carried: every
+        # hybrid starts from upgraded V1, whose direct signed-domain SMUL8 is
+        # already the same 67.992188-cycle implementation used by the fixed
+        # profiles and is faster than the historical V2 signed path.
         'extra_zp': 5,
-        'extra_ram': 582,
+        'extra_ram': 547,
         'requires_init': True,
-        'description': 'V2 UMUL8 + private native-signed SMUL8 core; reuses V1 tables plus two private 256-byte diff planes (legacy pack name)',
+        'description': 'V2 UMUL8 only; SMUL8 remains the upgraded V1 direct signed-domain kernel (legacy pack name)',
         'savings': {
-            'MATH_UMUL8': 12.000030, 'MATH_SMUL8': 12.000030,
+            'MATH_UMUL8': 12.000030,
         },
     },
     'umul24': {
@@ -90,6 +93,7 @@ AUX_SMUL_FINISH = 0x700
 AUX_SMUL_IMAGE = 0x780
 AUX_INIT = 0x800
 # Private native-signed executable cores carried with packs that upgrade the matching signed path.
+# $900 was formerly a private SMUL8 producer.  SMUL8 now stays in the V1 base.
 AUX_SMUL8_PRIVATE = 0x900
 AUX_SMUL24_PRIVATE = 0xA00
 AUX_SMUL32_PRIVATE = 0xC00
@@ -341,18 +345,15 @@ def emit_init(mem: bytearray, at: int, vals: dict, packs: set[str], aux: int):
 
 def apply_umul8_16(dst, src, vals, man, aux, v2_entries):
     # Historical function/pack name retained for compatibility.  This island now
-    # carries only UMUL8/SMUL8; record UMUL16 travels with UMUL24 because it
+    # carries only UMUL8; SMUL8 remains the direct signed V1 base; record UMUL16 travels with UMUL24 because it
     # shares that pack's first 17 bytes of pointer workspace.
     dst[aux+AUX_DIFF_LO:aux+AUX_DIFF_LO+256]=src[0x6C00:0x6D00]
     dst[aux+AUX_DIFF_HI:aux+AUX_DIFF_HI+256]=src[0x6D00:0x6E00]
     starts=trace(src,v2_entries['MATH_UMUL8'])
     copy_code_block(dst,src,0x5300,0x5322,aux+AUX_UMUL8_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x3000,0x3012,public_addr(man,'MATH_UMUL8'),starts,vals,aux)
-    # Signed SMUL8 fused wrapper follows the selected V2 producer.
-    sstarts=trace(src,v2_entries['MATH_SMUL8'])
-    copy_code_block(dst,src,0x2600,0x2622,aux+AUX_SMUL8_PRIVATE,sstarts,vals,aux)
-    copy_code_block(dst,src,0x2000,0x2033,vals['REG_LOW']+0x1000,sstarts,vals,aux)
-    write_jmp(dst,public_addr(man,'MATH_SMUL8'),vals['REG_LOW']+0x1000)
+    # SMUL8 intentionally remains the upgraded V1 direct signed-domain
+    # quarter-square implementation already present in the base image.
 
 
 def apply_umul24(dst,src,vals,man,aux,v2_entries):
@@ -418,7 +419,6 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
         add('PARETO_DIFF_LO', aux+AUX_DIFF_LO, aux+AUX_DIFF_LO+0xff)
         add('PARETO_DIFF_HI', aux+AUX_DIFF_HI, aux+AUX_DIFF_HI+0xff)
         add('PARETO_UMUL8_CODE', aux+AUX_UMUL8_CODE, aux+AUX_UMUL8_CODE+0x22)
-        add('PARETO_SMUL8_PRIVATE', aux+AUX_SMUL8_PRIVATE, aux+AUX_SMUL8_PRIVATE+0x22)
     if 'umul24' in packs:
         add('PARETO_UMUL16_CODE', aux+AUX_UMUL16_CODE, aux+AUX_UMUL16_CODE+0x6b)
         add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x111)

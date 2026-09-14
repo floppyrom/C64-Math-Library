@@ -1,3 +1,19 @@
+## 2026-09-14 — direct signed-domain SMUL8 optimization
+
+- Replaced the unsigned-product-plus-correction SMUL8 paths in V1–V5 with a direct signed quarter-square formulation, `Q(a+b)-Q(a-b)`.
+- Public `MATH_SMUL8` now measures **67.992188 cycles exact mean (66–70)** over all 65,536 signed input pairs, down from 120.490234 (V1), 108.494141 (V2), and about 96 cycles (V3/V4).
+- The 46-byte kernel fits directly in the stable `$3B80-$3BAF` API slot, eliminating the old JMP adapter. It reserves **0 ZP** and **0 persistent hardware-stack bytes**.
+- Only 1,022 useful bytes of new signed-sum table data are needed; the signed difference term reuses the existing UMUL24 complemented quarter-square planes.
+- Added `tools/upgrade_smul8_direct_signed.py` and exhaustive upgrade evidence in `validation/review/SMUL8_DIRECT_SIGNED_UPGRADE.json`.
+- Refreshed native signed source mirrors, link maps, segment manifests, signed performance/selection tables, and the 240-row consolidated resource table.
+
+## 2026-09-14 — signed partial-product follow-on research
+
+- Qualified two direct mixed-sign 8×8 primitives at 47.992188 and 51.992188 mean cycles; both are exhaustive and expose product sign in carry.
+- Tested a signed-aware 16×16 high-row hybrid over 2,097,152 profile products plus 267,148 edge cases: zero errors, but 192.468827 cycles / 150 ZP / 4,088 B tables, so it is dominated by existing SMUL16 choices.
+- Tested the exact signed 32×8 row subproblem needed by both 16×32 and 32×32 on 103,584 matched cases. Direct signed partial formation is 371.857488 cycles versus 360.908480 for unsigned-row-plus-correction and would add 2,044 mixed-table bytes in an integrated wider multiplier.
+- Decision: retain current wider SMUL16/24/32 kernels; ship only the direct SMUL8 win. Research sources/results are under `research/signed_partial_products/` and `docs/SIGNED_PARTIAL_PRODUCT_RESEARCH.md`.
+
 ## 2026-09-14 — all-native signed kernel refresh
 
 - Published exact per-routine native signed source mirrors under every profile's `resident/signed/multiply/native/` and `resident/signed/division/native/` trees, including V1/V5 and signed fixed-point/READY entries. These mirrors are byte-verified against the initialized resident executable by `tools/validate_published_signed_sources.py`; no resident PRG/REU payload changed.

@@ -5,7 +5,7 @@
       "multiply": {
         "MATH_SMUL8": {
           "file": "smul8_native.asm",
-          "instructions": 40
+          "instructions": 19
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
@@ -63,7 +63,7 @@
       "multiply": {
         "MATH_SMUL8": {
           "file": "smul8_native.asm",
-          "instructions": 39
+          "instructions": 19
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
@@ -121,7 +121,7 @@
       "multiply": {
         "MATH_SMUL8": {
           "file": "smul8_native.asm",
-          "instructions": 31
+          "instructions": 19
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
@@ -179,7 +179,7 @@
       "multiply": {
         "MATH_SMUL8": {
           "file": "smul8_native.asm",
-          "instructions": 31
+          "instructions": 19
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
@@ -237,7 +237,7 @@
       "multiply": {
         "MATH_SMUL8": {
           "file": "smul8_native.asm",
-          "instructions": 40
+          "instructions": 19
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",

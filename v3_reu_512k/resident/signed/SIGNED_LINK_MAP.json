@@ -8,8 +8,32 @@
       "kind": "native_signed_kernel",
       "public_entry": 15232,
       "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
-      "notes": "profile-specific signed executable path; may share immutable REU lookup data, but shares no unsigned executable instructions",
-      "published_source": "multiply/native/smul8_native.asm"
+      "notes": "direct signed-domain quarter-square: sign is absorbed into Q(a+b)-Q(a-b); no unsigned-product correction tail; shared immutable complemented difference planes from UMUL24",
+      "published_source": "multiply/native/smul8_native.asm",
+      "private_executable_core": {
+        "address": "$3B80",
+        "bytes": 46,
+        "algorithm": "direct signed-domain quarter-square; inline stable public API slot"
+      },
+      "signed_sum_tables": {
+        "low": "$6800-$69FE",
+        "high": "$6A00-$6BFE",
+        "useful_bytes": 1022,
+        "reserved_bytes": 1024
+      },
+      "shared_difference_tables": {
+        "low": "$6400-$65FE",
+        "high": "$6600-$67FE",
+        "shared_with": "UMUL24 complemented quarter-square planes"
+      },
+      "standalone_core_mean_cycles": 53.9921875,
+      "public_api_mean_cycles": 67.9921875,
+      "public_api_min_cycles": 66,
+      "public_api_max_cycles": 70,
+      "validation_cases": 65536,
+      "zp_bytes": 0,
+      "stack_page_reserved_bytes": 0,
+      "standalone_register_core_reference_mean_cycles": 53.9921875
     },
     "16": {
       "kind": "native_signed_kernel",

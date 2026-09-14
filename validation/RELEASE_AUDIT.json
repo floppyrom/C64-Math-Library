@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "30 files"
+      "detail": "31 files"
     },
     {
       "check": "signed_layout_validation",
@@ -34,7 +34,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 17.44
+        "elapsed_seconds": 15.36
       }
     },
     {
@@ -43,7 +43,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 17.44
+        "elapsed_seconds": 15.36
       }
     },
     {
@@ -57,8 +57,8 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 364533,
-        "execution": "merged deterministic per-profile parallel runs",
-        "max_profile_elapsed_seconds": 11.51
+        "elapsed_seconds": 11.66,
+        "note": "Merged from deterministic per-profile runs using global profile-index RNG seeding; same corpus as monolithic validator."
       }
     },
     {
@@ -67,8 +67,8 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 364533,
-        "execution": "merged deterministic per-profile parallel runs",
-        "max_profile_elapsed_seconds": 11.51
+        "elapsed_seconds": 11.66,
+        "note": "Merged from deterministic per-profile runs using global profile-index RNG seeding; same corpus as monolithic validator."
       }
     },
     {
@@ -639,7 +639,7 @@
     {
       "check": "v1_balanced_reference_prg_exact",
       "status": "PASS",
-      "detail": "ffbed4dc89c914856b09587ef76f605d81a6535ce8f6ae83a3da40bb5ad5c57b"
+      "detail": "232b225c07151462357c738b4660615a166901627c3f503ae9e678efe607d597"
     },
     {
       "check": "v2_pareto_fast_manifest_45",
@@ -649,7 +649,7 @@
     {
       "check": "v2_pareto_fast_reference_prg_exact",
       "status": "PASS",
-      "detail": "aa2ec8dadf3c445e0d142cba1b2842c58b987791a47ab8cbcb63660d6fc06b6e"
+      "detail": "9b5fe2421fedb8e84b77a7bdd6380b6a4609a4bbcd6e1be9748c8b20a688a700"
     },
     {
       "check": "v3_reu_512k_manifest_45",
@@ -669,7 +669,7 @@
     {
       "check": "v3_reu_512k_reference_prg_exact",
       "status": "PASS",
-      "detail": "9872691b15f5718ba195cb45f0aa22118bc9aeaca1a8da598eb55869cf2684a4"
+      "detail": "03a0842168845392e76bf0386f2e8589e2e89e37274fae4afe0cc4da8462dafd"
     },
     {
       "check": "v3_reu_512k_reference_reu_exact",
@@ -694,7 +694,7 @@
     {
       "check": "v4_reu_16m_reference_prg_exact",
       "status": "PASS",
-      "detail": "e50241725d74b2a18c1090ea41e013f2c9947672f93016e3fc096b4821ebcf99"
+      "detail": "bcf4f35341719190cdb25b7b142c9338b1a955db511cb790129a00f646b73405"
     },
     {
       "check": "v4_reu_16m_reference_reu_exact",
@@ -840,7 +840,7 @@
     {
       "check": "hybrid_reference_prg_exact",
       "status": "PASS",
-      "detail": "f0dc9fb1d21859ae8dd6c4f949693ca85f72845f8af39c80626c9955ebece4af"
+      "detail": "e89e2607851d15f8e31976e909099603d51c494b3e643aa7c32da76de8c8ea8b"
     },
     {
       "check": "hybrid_docs_present",
@@ -1123,6 +1123,31 @@
       "detail": null
     },
     {
+      "check": "signed_partial_research_status",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "signed_partial_smul8_shipped",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "signed_partial_smul16_rejected",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "signed_partial_32x8_matched",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "signed_partial_research_docs",
+      "status": "PASS",
+      "detail": null
+    },
+    {
       "check": "required_docs",
       "status": "PASS",
       "detail": [
@@ -1190,7 +1215,7 @@
   ],
   "summary": {
     "acme_current_status": "PASS",
-    "checks_passed": 220,
+    "checks_passed": 225,
     "public_entries": 45,
     "alternate_entry_executions": 180,
     "alternate_machine_calls": 16688,

@@ -123,8 +123,8 @@
   ],
   "summary": {
     "checks_passed": 22,
-    "file_count_excluding_checksum": 471,
-    "uncompressed_bytes_excluding_checksum": 21763319,
+    "file_count_excluding_checksum": 484,
+    "uncompressed_bytes_excluding_checksum": 21815010,
     "reference_prgs": 5,
     "reference_reu_images": 2
   }

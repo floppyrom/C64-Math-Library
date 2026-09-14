@@ -70,7 +70,8 @@ def main():
     args=ap.parse_args()
     run_profiles=[args.profile] if args.profile else PROFILES
     start=time.time(); results={}
-    for pi,profile in enumerate(run_profiles):
+    for profile in run_profiles:
+        pi=PROFILES.index(profile)
         cpu,api=load_profile(profile); pres={}
         # Exhaustive signed 8x8 on each distinct resident SMUL8 family (V1, V2, V3).
         # V4 shares the V3 resident SMUL8 slice; V5 inherits the V1 signed path,

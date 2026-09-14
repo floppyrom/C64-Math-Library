@@ -1,3 +1,7 @@
+SIGNED PARTIAL-PRODUCT RESEARCH (2026-09-14)
+- Direct SMUL8 remains the production win: 67.992188 cycles, 0 ZP.
+- Wider direct-partial experiments did not beat the existing SMUL16/24/32 correction-based kernels; full measurements and source are included under research/signed_partial_products.
+
 2026-09-14 UMUL RECORD UPGRADE
 - UMUL16: qualified 17-ZP record-derived resident kernel.
 - UMUL24: certified 24-ZP reverse/carry record kernel.

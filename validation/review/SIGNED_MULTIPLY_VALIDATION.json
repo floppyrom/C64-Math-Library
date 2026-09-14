@@ -5,9 +5,9 @@
       "SMUL8": {
         "cases": 65536,
         "errors": 0,
-        "mean_cycles": 120.490234375,
-        "min_cycles": 105,
-        "max_cycles": 136,
+        "mean_cycles": 67.9921875,
+        "min_cycles": 66,
+        "max_cycles": 70,
         "mode": "exhaustive"
       },
       "SMUL16": {
@@ -43,9 +43,9 @@
       "SMUL8": {
         "cases": 65536,
         "errors": 0,
-        "mean_cycles": 108.494140625,
-        "min_cycles": 94,
-        "max_cycles": 123,
+        "mean_cycles": 67.9921875,
+        "min_cycles": 66,
+        "max_cycles": 70,
         "mode": "exhaustive"
       },
       "SMUL16": {
@@ -81,9 +81,9 @@
       "SMUL8": {
         "cases": 65536,
         "errors": 0,
-        "mean_cycles": 96.0,
-        "min_cycles": 83,
-        "max_cycles": 109,
+        "mean_cycles": 67.9921875,
+        "min_cycles": 66,
+        "max_cycles": 70,
         "mode": "exhaustive"
       },
       "SMUL16": {
@@ -119,9 +119,9 @@
       "SMUL8": {
         "cases": 8448,
         "errors": 0,
-        "mean_cycles": 95.81995738636364,
-        "min_cycles": 83,
-        "max_cycles": 109,
+        "mean_cycles": 68.0049715909091,
+        "min_cycles": 66,
+        "max_cycles": 70,
         "mode": "structured_random"
       },
       "SMUL16": {
@@ -157,9 +157,9 @@
       "SMUL8": {
         "cases": 8448,
         "errors": 0,
-        "mean_cycles": 120.24230587121212,
-        "min_cycles": 105,
-        "max_cycles": 136,
+        "mean_cycles": 68.01207386363636,
+        "min_cycles": 66,
+        "max_cycles": 70,
         "mode": "structured_random"
       },
       "SMUL16": {
@@ -195,6 +195,6 @@
   "summary": {
     "profiles": 5,
     "machine_calls": 264999,
-    "elapsed_seconds": 17.44
+    "elapsed_seconds": 15.36
   }
 }

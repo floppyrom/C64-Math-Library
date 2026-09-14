@@ -8,13 +8,32 @@
       "kind": "native_signed_kernel",
       "public_entry": 15232,
       "canonical_source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
-      "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+      "notes": "direct signed-domain quarter-square: sign is absorbed into Q(a+b)-Q(a-b); no unsigned-product correction tail; shared immutable complemented difference planes from UMUL24",
+      "published_source": "multiply/native/smul8_native.asm",
       "private_executable_core": {
-        "address": "$2600",
-        "bytes": 35,
-        "cloned_from_proven_arithmetic_core": "$5300-$5322"
+        "address": "$3B80",
+        "bytes": 46,
+        "algorithm": "direct signed-domain quarter-square; inline stable public API slot"
       },
-      "published_source": "multiply/native/smul8_native.asm"
+      "signed_sum_tables": {
+        "low": "$2600-$27FE",
+        "high": "$6E00-$6FFE",
+        "useful_bytes": 1022,
+        "reserved_bytes": 1024
+      },
+      "shared_difference_tables": {
+        "low": "$6400-$65FE",
+        "high": "$6600-$67FE",
+        "shared_with": "UMUL24 complemented quarter-square planes"
+      },
+      "standalone_core_mean_cycles": 53.9921875,
+      "public_api_mean_cycles": 67.9921875,
+      "public_api_min_cycles": 66,
+      "public_api_max_cycles": 70,
+      "validation_cases": 65536,
+      "zp_bytes": 0,
+      "stack_page_reserved_bytes": 0,
+      "standalone_register_core_reference_mean_cycles": 53.9921875
     },
     "16": {
       "kind": "native_signed_kernel",

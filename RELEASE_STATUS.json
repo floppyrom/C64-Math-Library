@@ -204,8 +204,8 @@
     "turbo16": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
     "turbo32": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a"
   },
-  "release": "c64_math_library_v1-v5_UMUL_RECORD_UPGRADE_ALL_NATIVE_SIGNED_2026-09-14",
-  "release_audit_checks": 220,
+  "release": "c64_math_library_v1-v5_SMUL8_DIRECT_SIGNED_PLUS_WIDE_SIGNED_RESEARCH_2026-09-14",
+  "release_audit_checks": 225,
   "reu_turbo_lifecycle_entries": 6,
   "source_relocation": {
     "entries_executed": 180,
@@ -275,5 +275,27 @@
     "markdown": "docs/CONSOLIDATED_ROUTINE_TABLE.md",
     "machine_evidence": "validation/CONSOLIDATED_ROUTINE_TABLE.json",
     "stack_page_reserved_bytes_all_shipped_rows": 0
+  },
+  "signed_partial_product_research": {
+    "status": "COMPLETE_SCREENING",
+    "production_change": "direct signed-domain SMUL8 only",
+    "smul8_public_mean_cycles": 67.9921875,
+    "smul8_zp_bytes": 0,
+    "mixed_s8xu8_mean_cycles": 47.9921875,
+    "mixed_u8xs8_mean_cycles": 51.9921875,
+    "smul16_hybrid_mean_cycles": 192.46882677078247,
+    "smul16_hybrid_decision": "REJECTED_DOMINATED",
+    "signed_32x8_baseline_mean_cycles": 360.90848007414274,
+    "signed_32x8_direct_mean_cycles": 371.8574876428792,
+    "signed_32x8_direct_delta_cycles": 10.94900756873646,
+    "wide_decision": "retain current correction-based SMUL16/24/32 kernels",
+    "documentation": "docs/SIGNED_PARTIAL_PRODUCT_RESEARCH.md",
+    "results": "research/signed_partial_products/results/SIGNED_PARTIAL_PRODUCT_RESULTS.csv",
+    "machine_evidence": "validation/research/SIGNED_PARTIAL_PRODUCT_RESEARCH.json"
+  },
+  "package": {
+    "lean_file_count_excluding_checksum": 484,
+    "uncompressed_bytes_excluding_checksum": 21815010,
+    "research_files_added": true
   }
 }

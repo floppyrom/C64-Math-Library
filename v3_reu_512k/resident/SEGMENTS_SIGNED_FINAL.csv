@@ -1,6 +1,8 @@
 segment,load_address_or_map,bytes,purpose
-signed_public_stubs,multiple fixed addresses,39,13 stable signed API JMP stubs
-smul8_native_signed,$2000,79,native signed executable path; corresponding unsigned executable engine is not entered
+signed_public_stubs,multiple fixed addresses,36,12 remaining stable signed API JMP stubs; SMUL8 is inline in its 48-byte public slot
+smul8_native_signed,$3B80,46,direct signed-domain quarter-square inline public kernel; 0 ZP / 0 persistent stack bytes; no unsigned-product correction tail
+smul8_signed_sum_lo,$6800,511,signed Q(a+b) low-byte plane; parity-biased; private SMUL8 data
+smul8_signed_sum_hi,$6A00,511,signed Q(a+b) high-byte plane; parity-biased; private SMUL8 data
 smul24_native_signed,$2300,139,native signed executable path; corresponding unsigned executable engine is not entered
 smul32_native_signed,$2400,162,native signed executable path; corresponding unsigned executable engine is not entered
 smul16_public_adapter,$2100,39,native signed executable path; corresponding unsigned executable engine is not entered

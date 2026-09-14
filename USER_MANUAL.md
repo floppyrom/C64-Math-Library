@@ -1702,3 +1702,7 @@ For a V3/V4 program, the code pattern is the same after the correct REU image is
 Use the stable API for ordinary composable math. Use QS16 or Turbo only when a measured batch actually justifies their lifecycle overhead. Keep all addresses symbolic, keep the REU image matched to the build, and treat the generated `math_api.inc` as the caller's source of truth.
 
 That gives you the intended property of this release: **one logical math interface across five fixed profiles plus budget-generated stock-C64 builds, with implementation selection and relocation done at build time rather than paid for at runtime.**
+
+### SMUL8 direct signed-domain implementation
+
+The current `MATH_SMUL8` implementation evaluates the signed quarter-square identity `Q(a+b)-Q(a-b)` directly. It does not execute an unsigned full-width multiply or a post-product sign-correction tail. The public memory-ABI entry is exhaustive over all 65,536 signed byte pairs at **67.992188 mean cycles (66–70)**, uses **0 zero-page bytes** and **0 persistent hardware-stack-page bytes**, with a 46-byte inline kernel and 1,022 useful bytes of private signed-sum tables. The complemented difference planes are shared with UMUL24.

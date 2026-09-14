@@ -17,7 +17,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 8784
+      "stable_api_reachable_code_union_bytes": 8770
     },
     {
       "profile": "v2_pareto_fast",
@@ -28,7 +28,7 @@
       "stable_api_zp_union_touched_bytes": 218,
       "stable_api_zp_union_ranges": "$02-$64;$66-$68;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 14785
+      "stable_api_reachable_code_union_bytes": 14744
     },
     {
       "profile": "v3_reu_512k",
@@ -39,7 +39,7 @@
       "stable_api_zp_union_touched_bytes": 207,
       "stable_api_zp_union_ranges": "$02-$38;$3E-$60;$66;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 14396
+      "stable_api_reachable_code_union_bytes": 14363
     },
     {
       "profile": "v4_reu_16m",
@@ -50,7 +50,7 @@
       "stable_api_zp_union_touched_bytes": 204,
       "stable_api_zp_union_ranges": "$02-$38;$3E-$5E;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 14025
+      "stable_api_reachable_code_union_bytes": 13992
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -61,7 +61,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 11082
+      "stable_api_reachable_code_union_bytes": 11068
     }
   ],
   "rows": [
@@ -182,20 +182,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "120.490234",
-      "min_cycles": 105,
-      "max_cycles": 136,
+      "mean_cycles": "67.992188",
+      "min_cycles": 66,
+      "max_cycles": 70,
       "cases": 65536,
-      "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 88,
-      "zp_bytes": 5,
-      "zp_ranges": "$10-$14",
+      "cycle_basis": "2026-09-14 exhaustive direct signed-domain quarter-square SMUL8",
+      "reachable_code_bytes": 46,
+      "zp_bytes": 0,
+      "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
-      "implementation": "native signed private executable path",
-      "notes": "exhaustive"
+      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
+      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
     },
     {
       "profile": "v1_balanced",
@@ -1172,20 +1172,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "108.494141",
-      "min_cycles": 94,
-      "max_cycles": 123,
+      "mean_cycles": "67.992188",
+      "min_cycles": 66,
+      "max_cycles": 70,
       "cases": 65536,
-      "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 87,
-      "zp_bytes": 5,
-      "zp_ranges": "$39-$3D",
+      "cycle_basis": "2026-09-14 exhaustive direct signed-domain quarter-square SMUL8",
+      "reachable_code_bytes": 46,
+      "zp_bytes": 0,
+      "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 60,
-      "implementation": "native signed private executable path",
-      "notes": "exhaustive"
+      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
+      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
     },
     {
       "profile": "v2_pareto_fast",
@@ -2162,20 +2162,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "96.000000",
-      "min_cycles": 83,
-      "max_cycles": 109,
+      "mean_cycles": "67.992188",
+      "min_cycles": 66,
+      "max_cycles": 70,
       "cases": 65536,
-      "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 79,
+      "cycle_basis": "2026-09-14 exhaustive direct signed-domain quarter-square SMUL8",
+      "reachable_code_bytes": 46,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": 55,
-      "implementation": "native signed private executable path",
-      "notes": "exhaustive"
+      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
+      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
     },
     {
       "profile": "v3_reu_512k",
@@ -3152,20 +3152,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "95.819957",
-      "min_cycles": 83,
-      "max_cycles": 109,
-      "cases": 8448,
-      "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 79,
+      "mean_cycles": "67.992188",
+      "min_cycles": 66,
+      "max_cycles": 70,
+      "cases": 65536,
+      "cycle_basis": "2026-09-14 exhaustive direct signed-domain quarter-square SMUL8",
+      "reachable_code_bytes": 46,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": 55,
-      "implementation": "native signed private executable path",
-      "notes": "structured_random"
+      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
+      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
     },
     {
       "profile": "v4_reu_16m",
@@ -4142,20 +4142,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "120.242306",
-      "min_cycles": 105,
-      "max_cycles": 136,
-      "cases": 8448,
-      "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 88,
-      "zp_bytes": 5,
-      "zp_ranges": "$10-$14",
+      "mean_cycles": "67.992188",
+      "min_cycles": 66,
+      "max_cycles": 70,
+      "cases": 65536,
+      "cycle_basis": "V5 byte-identical V1 SMUL8 path; exhaustive direct signed-domain quarter-square evidence",
+      "reachable_code_bytes": 46,
+      "zp_bytes": 0,
+      "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
-      "implementation": "native signed private executable path",
-      "notes": "structured_random"
+      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
+      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
     },
     {
       "profile": "v5_hybrid_lowzp",

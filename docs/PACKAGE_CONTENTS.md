@@ -38,3 +38,11 @@ Each V1–V5 profile publishes exact executable source mirrors under `resident/s
 - `docs/CONSOLIDATED_ROUTINE_TABLE.csv` — 240-row machine-friendly table.
 - `validation/CONSOLIDATED_ROUTINE_TABLE.json` — definitions, profile summaries, and row evidence.
 - `tools/generate_consolidated_routine_table.py` — regenerates the table from shipped images and validation evidence.
+
+### Signed partial-product research
+
+- `docs/SIGNED_PARTIAL_PRODUCT_RESEARCH.md` — production decision and wider signed-multiply analysis.
+- `research/signed_partial_products/` — reproducible experimental sources/scripts for the direct mixed-sign primitives, the rejected 16×16 hybrid, and the matched signed 32×8 row comparison.
+- `validation/research/SIGNED_PARTIAL_PRODUCT_RESEARCH.json` — machine-readable research conclusions used by the release audit.
+
+These files are evidence only. They do not add public APIs or change the selected wider SMUL16/24/32 execution paths.

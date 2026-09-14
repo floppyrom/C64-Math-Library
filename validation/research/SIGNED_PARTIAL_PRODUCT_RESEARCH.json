@@ -1,0 +1,81 @@
+{
+  "status": "COMPLETE_SCREENING",
+  "date": "2026-09-14",
+  "production_decision": "Integrate direct signed SMUL8 only; retain existing wider SMUL16/24/32 correction-based kernels.",
+  "smul8_public": {
+    "algorithm": "direct signed-domain quarter-square Q(a+b)-Q(a-b)",
+    "cases": 65536,
+    "errors": 0,
+    "mean_cycles": 67.9921875,
+    "min_cycles": 66,
+    "max_cycles": 70,
+    "zp_bytes": 0,
+    "stack_page_reserved_bytes": 0,
+    "code_bytes": 46,
+    "private_table_useful_bytes": 1022,
+    "shared_table_useful_bytes": 1022,
+    "decision": "SHIPPED"
+  },
+  "mixed_primitives": {
+    "signed_bound_s8xu8": {
+      "cases": 65536,
+      "errors": 0,
+      "carry_errors": 0,
+      "mean_cycles": 47.9921875,
+      "min_cycles": 46,
+      "max_cycles": 50,
+      "code_bytes": 31,
+      "property": "C=1 iff mathematical product is non-negative"
+    },
+    "signed_index_u8xs8": {
+      "cases": 65536,
+      "errors": 0,
+      "carry_errors": 0,
+      "mean_cycles": 51.9921875,
+      "min_cycles": 50,
+      "max_cycles": 54,
+      "code_bytes": 33,
+      "property": "C=1 iff mathematical product is non-negative"
+    }
+  },
+  "smul16_hybrid": {
+    "description": "signed-aware X-high-byte row plus one remaining sign correction",
+    "validation_cases": 2097152,
+    "validation_errors": 0,
+    "edge_cases": 267148,
+    "edge_errors": 0,
+    "mean_cycles": 192.46882677078247,
+    "min_cycles": 173,
+    "max_cycles": 222,
+    "zp_bytes": 150,
+    "data_bytes": 4088,
+    "comparison_fast_generic_cycles": 185.312025,
+    "comparison_practical_116zp_cycles": 189.562251,
+    "comparison_compact_101zp_cycles": 190.771,
+    "decision": "REJECTED_DOMINATED"
+  },
+  "signed_32x8_row": {
+    "relevance": "Exact signed top-row subproblem for 16x32, and signed final-row subproblem for 32x32.",
+    "cases": 103584,
+    "baseline_unsigned_plus_correction": {
+      "errors": 0,
+      "mean_cycles": 360.90848007414274,
+      "min_cycles": 335,
+      "max_cycles": 387,
+      "code_bytes": 258,
+      "table_bytes": 2044
+    },
+    "direct_signed_partial_formation": {
+      "errors": 0,
+      "mean_cycles": 371.8574876428792,
+      "min_cycles": 364,
+      "max_cycles": 380,
+      "code_bytes": 255,
+      "table_bytes": 2044
+    },
+    "direct_minus_baseline_cycles": 10.94900756873646,
+    "integrated_incremental_table_bytes": 2044,
+    "decision": "REJECTED_SPEED_AND_MEMORY"
+  },
+  "conclusion": "Direct signed partial-product formation is a decisive win at 8x8. In the tested wider quarter-square compositions, sign-extension/carry composition costs erase that advantage: the 16x16 hybrid is dominated, and the exact 32x8 signed-row building block needed by 16x32 and 32x32 is slower and would require an additional table family. This does not prove global optimality of correction-based wide multiplication, but no wider production replacement was found in this pass."
+}

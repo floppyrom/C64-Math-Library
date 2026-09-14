@@ -1,0 +1,206 @@
+; Experimental hybrid signed-aware 16x16 -> 32.
+; X high-byte row is formed directly as signed partial products; only Y sign needs final correction.
+;ABI
+;CPU: mos6502
+;Operation: smul
+;Entry: smul16
+;Input x: int16 = x0, x1
+;Input y: int16 = reg:Y, y1
+;Output z: int32 = z0, z1, reg:X, reg:A
+;Region ZP: cg_zp_start..cg_zp_end
+;Region Code: cg_code_start..cg_code_end
+;Region Data: cg_data0_start..cg_data0_end, cg_data1_start..cg_data1_end, cg_data2_start..cg_data2_end, cg_data3_start..cg_data3_end, mix_data0_start..mix_data0_end, mix_data1_start..mix_data1_end, mix_data2_start..mix_data2_end, mix_data3_start..mix_data3_end
+;End ABI
+
+!cpu 6502
+PARITY_BIAS = $ca
+
+* = $0002
+cg_zp_start:
+
+smul16:
+        lda+1 x1
+smul16_ax1:
+        sta+1 corr_x1+1
+        eor #$80
+        sta+1 x1
+        sta+1 sqr_hi_1+1
+        eor #$ff
+        sta+1 neg_lo_1+1
+        sta+1 neg_hi_1+1
+
+        lda+1 x0
+        sta+1 sqr_hi_0+1
+        eor #$ff
+        sta+1 neg_lo_0+1
+        sta+1 neg_hi_0+1
+
+smul16_same_x:
+        sty+1 corr_y0+1
+smul16_same_x_y0_ready:
+        sec
+smul16_same_x_ready:
+
+x0 = *+1
+sqr_lo_0:
+        lda table_sqr_lo,y
+neg_lo_0:
+        adc table_neg_lo,y
+        sta+1 z0
+sqr_hi_0:
+        lda table_sqr_hi,y
+neg_hi_0:
+        adc table_neg_hi,y
+
+x1 = *+1
+sqr_lo_1:
+        adc table_mix_f_lo,y
+        bcs p10_carry
+neg_lo_1:
+        adc table_mix_neg_g_lo,y
+        tax
+        lda (sqr_hi_1+1),y
+p10_tail:
+neg_hi_1:
+        adc table_mix_neg_g_hi,y
+        sta+1 z2_part1+1
+        sec                         ; restore quarter-square phase after signed p10
+
+y1 = *+1
+        ldy #0
+
+        lda (sqr_lo_0+1),y
+        adc (neg_lo_0+1),y
+        sta+1 z1_part2+1
+        lda (sqr_hi_0+1),y
+        adc (neg_hi_0+1),y
+
+        adc (sqr_lo_1+1),y
+        bcs p11_carry
+        adc (neg_lo_1+1),y
+        sta+1 z2_part2+1
+sqr_hi_1:
+        lda table_mix_f_hi,y
+p11_tail:
+        adc (neg_hi_1+1),y
+        tay
+
+        ; p10 = signed(x1) * unsigned(y0). Its sign extension contributes
+        ; one extra $ff byte at z3 iff x1<0 and y0!=0.
+        bit+1 corr_x1+1
+        bpl p10_signext_done
+corr_y0:
+        lda #0
+        beq p10_signext_done
+        dey
+p10_signext_done:
+
+        ; Form the upper word. The producer now represents signed X * unsigned Y.
+        clc
+        txa
+z1_part2:
+        adc #0
+        sta+1 z1
+z2_part1:
+        lda #0
+z2_part2:
+        adc #0
+
+        ; Convert unsigned Y to signed Y only when y1 is negative:
+        ; signedX*signedY = signedX*unsignedY - (signedX << 16).
+        bit+1 y1
+        bmi subtract_x
+        tax
+        tya
+        adc #0
+        rts
+
+subtract_x:
+        bcc x_top_ready
+        iny
+x_top_ready:
+        sec
+        sbc+1 x0
+        tax
+        tya
+corr_x1:
+        sbc #0
+        rts
+
+p10_carry:
+        clc
+        adc (neg_lo_1+1),y
+        tax
+        lda #1
+        adc (sqr_hi_1+1),y
+        jmp p10_tail
+
+p11_carry:
+        clc
+        adc (neg_lo_1+1),y
+        sta+1 z2_part2+1
+        lda #1
+        adc (sqr_hi_1+1),y
+        jmp p11_tail
+
+z0:     !byte 0
+z1:     !byte 0
+cg_zp_end:
+
+; Public aliases for harnesses/callers that install the repeated-X SMC state.
+b_sqr_hi_0 = sqr_hi_0+1
+b_neg_lo_0 = neg_lo_0+1
+b_neg_hi_0 = neg_hi_0+1
+b_sqr_hi_1 = sqr_hi_1+1
+b_neg_lo_1 = neg_lo_1+1
+b_neg_hi_1 = neg_hi_1+1
+b_corr_y0 = corr_y0+1
+
+* = $1000
+cg_code_start: !byte $ea
+cg_code_end:
+
+* = $2000
+cg_data0_start:
+table_sqr_lo:
+!for i,0,510 { !byte <(((i*i)/4) + PARITY_BIAS*(i&1)) }
+cg_data0_end:
+
+* = $2200
+cg_data1_start:
+table_sqr_hi:
+!for i,0,510 { !byte >(((i*i)/4) + PARITY_BIAS*(i&1)) }
+cg_data1_end:
+
+* = $2400
+cg_data2_start:
+table_neg_lo:
+!for i,0,510 { !byte 255-<(((((255-i)*(255-i))/4)+PARITY_BIAS*((255-i)&1))) }
+cg_data2_end:
+
+* = $2600
+cg_data3_start:
+table_neg_hi:
+!for i,0,510 { !byte 255->(((((255-i)*(255-i))/4)+PARITY_BIAS*((255-i)&1))) }
+cg_data3_end:
+
+* = $2800
+mix_data0_start:
+table_mix_f_lo:
+!for i,0,510 { !byte <((((i*i)/4) - 64*i + 4160)) }
+mix_data0_end:
+* = $2a00
+mix_data1_start:
+table_mix_f_hi:
+!for i,0,510 { !byte >((((i*i)/4) - 64*i + 4160)) }
+mix_data1_end:
+* = $2c00
+mix_data2_start:
+table_mix_neg_g_lo:
+!for i,0,510 { !byte 255-<((((i*i)/4) - 63*i - (i/2) + 4096)) }
+mix_data2_end:
+* = $2e00
+mix_data3_start:
+table_mix_neg_g_hi:
+!for i,0,510 { !byte 255->((((i*i)/4) - 63*i - (i/2) + 4096)) }
+mix_data3_end:

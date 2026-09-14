@@ -110,6 +110,11 @@ def cycles_catalog():
     for p,rr in sm['profiles'].items():
         for short,v in rr.items():
             n='MATH_'+short; add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'current native-signed multiply validation',v.get('mode',''))
+    # Exact exhaustive SMUL8 direct-signed result supersedes structured/random profile samples.
+    s8=json.loads((ROOT/'validation/review/SMUL8_DIRECT_SIGNED_UPGRADE.json').read_text())
+    for p,v in s8['profiles'].items():
+        e=v['validation']; add_cycle(cat,p,'MATH_SMUL8',e['mean_cycles'],e['min_cycles'],e['max_cycles'],e['cases'],'2026-09-14 exhaustive direct signed-domain quarter-square SMUL8','Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes')
+    e=s8['profiles']['v1_balanced']['validation']; add_cycle(cat,'v5_hybrid_lowzp','MATH_SMUL8',e['mean_cycles'],e['min_cycles'],e['max_cycles'],e['cases'],'V5 byte-identical V1 SMUL8 path; exhaustive direct signed-domain quarter-square evidence','Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes')
     # Current native signed divide/mod/fixed-point divide evidence.
     sd=json.loads((ROOT/'validation/review/SIGNED_DIVISION_VALIDATION.json').read_text())
     for p,rr in sd['profiles'].items():
@@ -145,6 +150,7 @@ def declared_zp(profile):
 
 
 def provenance(profile,n):
+    if n=='MATH_SMUL8': return 'direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes'
     if n=='MATH_UMUL16': return '17-ZP qualified record-derived fused quarter-square resident kernel'
     if n=='MATH_UMUL24': return '24-ZP reverse_24zp_carry certified resident kernel'
     if n in ('MATH_UMUL32','MATH_UMUL32_READY'): return '31-ZP practical resident UMUL32 family (stack-free compromise)'

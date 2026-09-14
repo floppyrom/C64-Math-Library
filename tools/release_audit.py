@@ -170,9 +170,9 @@ for kind in ('reference','alternate'):
     for z,x in pv['standard_points'][kind].items():
         ck(f'pareto_{kind}_{z}_45_entries',x['common_api']['entries']==45 and x['common_api']['calls']==4172)
 ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==5253)
-ck('pareto_36_exact_ram',pv['standard_points']['reference']['36']['extra_private_ram_bytes']==5843)
-ck('pareto_60_exact_ram',pv['standard_points']['reference']['60']['extra_private_ram_bytes']==6603)
-ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==6789)
+ck('pareto_36_exact_ram',pv['standard_points']['reference']['36']['extra_private_ram_bytes']==5808)
+ck('pareto_60_exact_ram',pv['standard_points']['reference']['60']['extra_private_ram_bytes']==6568)
+ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==6754)
 ck('pareto_221_selects_v2',pv['standard_points']['reference']['221']['selected_packs']==['v2_full'])
 ck('pareto_v1_endpoint_identity',pv['pure_v1_identity'] is True)
 ck('pareto_v5_endpoint_identity',pv['optional31_v5_identity'] is True)
@@ -212,6 +212,14 @@ ck('consolidated_profile_coverage',all(sum(r['profile']==p and r['api_class']=='
 ck('consolidated_zero_stack_reservation',all(int(r['stack_page_reserved_bytes'])==0 for r in ct['rows']))
 ck('consolidated_turbo32_135_zp',all(int(r['zp_bytes'])==135 for r in ct['rows'] if r['routine'].startswith('MATH_REU_UMUL32')))
 ck('consolidated_files_present',all((ROOT/x).exists() for x in ('docs/CONSOLIDATED_ROUTINE_TABLE.md','docs/CONSOLIDATED_ROUTINE_TABLE.csv','tools/generate_consolidated_routine_table.py')))
+
+# Signed partial-product follow-on research evidence.
+spr=json.loads((ROOT/'validation/research/SIGNED_PARTIAL_PRODUCT_RESEARCH.json').read_text())
+ck('signed_partial_research_status',spr['status']=='COMPLETE_SCREENING')
+ck('signed_partial_smul8_shipped',spr['smul8_public']['errors']==0 and abs(spr['smul8_public']['mean_cycles']-67.9921875)<1e-9 and spr['smul8_public']['decision']=='SHIPPED')
+ck('signed_partial_smul16_rejected',spr['smul16_hybrid']['validation_errors']==0 and spr['smul16_hybrid']['edge_errors']==0 and spr['smul16_hybrid']['mean_cycles']>spr['smul16_hybrid']['comparison_fast_generic_cycles'])
+row=spr['signed_32x8_row']; ck('signed_partial_32x8_matched',row['baseline_unsigned_plus_correction']['errors']==0 and row['direct_signed_partial_formation']['errors']==0 and row['direct_signed_partial_formation']['mean_cycles']>row['baseline_unsigned_plus_correction']['mean_cycles'])
+ck('signed_partial_research_docs',all((ROOT/x).exists() for x in ('docs/SIGNED_PARTIAL_PRODUCT_RESEARCH.md','research/signed_partial_products/README.md','research/signed_partial_products/results/SIGNED_PARTIAL_PRODUCT_RESULTS.csv')))
 
 # Documentation/release hygiene.
 needed=['README.md','QUICK_START.md','CHANGELOG.md','CSDB_CHANGELOG.txt','docs/SOURCE_RELOCATION.md','docs/TURBO_RELOCATION.md','docs/TURBO_API.csv','docs/PARETO_BUILDER.md','validation/REVIEWED_RELEASE_VALIDATION.md']

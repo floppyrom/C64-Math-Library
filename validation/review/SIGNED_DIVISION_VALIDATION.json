@@ -430,7 +430,7 @@
   "summary": {
     "profiles": 5,
     "machine_calls": 364533,
-    "execution": "merged deterministic per-profile parallel runs",
-    "max_profile_elapsed_seconds": 11.51
+    "elapsed_seconds": 11.66,
+    "note": "Merged from deterministic per-profile runs using global profile-index RNG seeding; same corpus as monolithic validator."
   }
 }

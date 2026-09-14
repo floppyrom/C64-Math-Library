@@ -1,0 +1,127 @@
+{
+  "status": "PASS",
+  "algorithm": "direct signed-domain quarter-square with shared complemented difference planes",
+  "parity_bias": 202,
+  "profiles": {
+    "v1_balanced": {
+      "before_sha256": "2a175b2034e6424c98e2f566b7dd3c3c3b48f318135a2e8fa0a547dbc4b8057c",
+      "after_sha256": "232b225c07151462357c738b4660615a166901627c3f503ae9e678efe607d597",
+      "entry": "$3B80",
+      "code_bytes": 46,
+      "zp_bytes": 0,
+      "stack_page_reserved_bytes": 0,
+      "new_table_useful_bytes": 1022,
+      "new_table_reserved_bytes": 1024,
+      "new_tables": [
+        "$6000-$61FE",
+        "$6200-$63FE"
+      ],
+      "shared_difference_tables": [
+        "$8800-$89FE",
+        "$8A00-$8BFE"
+      ],
+      "validation": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 67.9921875,
+        "min_cycles": 66,
+        "max_cycles": 70,
+        "histogram": {
+          "68": 32768,
+          "70": 16256,
+          "66": 16512
+        }
+      }
+    },
+    "v2_pareto_fast": {
+      "before_sha256": "d3214f59e31d9db9639887d167f7545a31dcd226a7c0b7c2ec79de498654e3c8",
+      "after_sha256": "9b5fe2421fedb8e84b77a7bdd6380b6a4609a4bbcd6e1be9748c8b20a688a700",
+      "entry": "$3B80",
+      "code_bytes": 46,
+      "zp_bytes": 0,
+      "stack_page_reserved_bytes": 0,
+      "new_table_useful_bytes": 1022,
+      "new_table_reserved_bytes": 1024,
+      "new_tables": [
+        "$2600-$27FE",
+        "$6E00-$6FFE"
+      ],
+      "shared_difference_tables": [
+        "$6400-$65FE",
+        "$6600-$67FE"
+      ],
+      "validation": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 67.9921875,
+        "min_cycles": 66,
+        "max_cycles": 70,
+        "histogram": {
+          "68": 32768,
+          "70": 16256,
+          "66": 16512
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "before_sha256": "6db2530bf9d4fe0f6213af96afb3e47bdef9393ccbcfb25554ae86a1de9ae5cc",
+      "after_sha256": "03a0842168845392e76bf0386f2e8589e2e89e37274fae4afe0cc4da8462dafd",
+      "entry": "$3B80",
+      "code_bytes": 46,
+      "zp_bytes": 0,
+      "stack_page_reserved_bytes": 0,
+      "new_table_useful_bytes": 1022,
+      "new_table_reserved_bytes": 1024,
+      "new_tables": [
+        "$6800-$69FE",
+        "$6A00-$6BFE"
+      ],
+      "shared_difference_tables": [
+        "$6400-$65FE",
+        "$6600-$67FE"
+      ],
+      "validation": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 67.9921875,
+        "min_cycles": 66,
+        "max_cycles": 70,
+        "histogram": {
+          "68": 32768,
+          "70": 16256,
+          "66": 16512
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "before_sha256": "d37df9fb9808bf91319b8c308c27a307da1452f9b4110cd4c8551db2f46b004d",
+      "after_sha256": "bcf4f35341719190cdb25b7b142c9338b1a955db511cb790129a00f646b73405",
+      "entry": "$3B80",
+      "code_bytes": 46,
+      "zp_bytes": 0,
+      "stack_page_reserved_bytes": 0,
+      "new_table_useful_bytes": 1022,
+      "new_table_reserved_bytes": 1024,
+      "new_tables": [
+        "$6800-$69FE",
+        "$6A00-$6BFE"
+      ],
+      "shared_difference_tables": [
+        "$6400-$65FE",
+        "$6600-$67FE"
+      ],
+      "validation": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 67.9921875,
+        "min_cycles": 66,
+        "max_cycles": 70,
+        "histogram": {
+          "68": 32768,
+          "70": 16256,
+          "66": 16512
+        }
+      }
+    }
+  }
+}

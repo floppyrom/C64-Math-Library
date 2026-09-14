@@ -12,11 +12,13 @@ For source transparency, every signed API also has an exact per-routine executab
 
 | Profile | SMUL8 | SMUL16 | SMUL24 | SMUL32 |
 |---|---|---|---|---|
-| V1 Balanced | native | native | native | native |
-| V2 Pareto-Fast | native | native signed quarter-square ZP kernel | native | native |
-| V3 REU 512K | native | native signed quarter-square ZP kernel | native | native |
-| V4 REU 16M | native | native signed quarter-square ZP kernel | native | native |
-| V5 Hybrid Low-ZP | native (V1 base) | native (V1 base) | native (V1 base) | native (V1 base) |
+| V1 Balanced | **direct signed QS, 67.9922 cyc** | native | native | native |
+| V2 Pareto-Fast | **direct signed QS, 67.9922 cyc** | native signed quarter-square ZP kernel | native | native |
+| V3 REU 512K | **direct signed QS, 67.9922 cyc** | native signed quarter-square ZP kernel | native | native |
+| V4 REU 16M | **direct signed QS, 67.9922 cyc** | native signed quarter-square ZP kernel | native | native |
+| V5 Hybrid Low-ZP | **direct signed QS, 67.9922 cyc (V1 path)** | native (V1 base) | native (V1 base) | native (V1 base) |
+
+`SMUL8` is now the first shipped multiply that is **algorithmically signed-aware**, not merely executable-independent: it evaluates the signed quarter-square identity `Q(a+b)-Q(a-b)` directly. The stable `$3B80` entry is a 46-byte inline kernel, uses 0 ZP and 0 persistent stack-page bytes, adds 1,022 useful bytes of signed-sum tables, and reuses the 1,022-byte complemented difference planes already owned by UMUL24. Exhaustive timing is 67.992188 cycles (66–70) over all 65,536 signed byte pairs.
 
 The V1/V5 low-ZP routines preserve the 31-byte normal-ZP contract. V2–V4 retain the validated executable-ZP `SMUL16` kernel. Wider signed multipliers use private copies of the proven fast arithmetic cores placed in existing reserved holes; their signed finalizers are compacted where safe. No profile's resident load/end range is expanded.
 

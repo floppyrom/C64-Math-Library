@@ -6,6 +6,13 @@ The **C64 Math Library** exposes one stable **45-entry public API** across its r
 
 For stock-C64 games and demos, the repository now also includes a **Custom Pareto Builder**: tell it how many zero-page bytes (and optionally how much extra RAM) you can spare, and it generates the fastest certified V1/V2 combination that fits. Selection happens at build time, so there is no runtime dispatcher.
 
+### Direct signed SMUL8
+
+`MATH_SMUL8` now uses a direct signed-domain quarter-square kernel rather than an unsigned multiply followed by sign correction. The stable public entry is exhaustive over all 65,536 signed byte pairs at **67.992188 mean cycles (66–70)**, uses **0 ZP** and **0 persistent stack-page bytes**, and adds 1,022 useful bytes of signed-sum table data while sharing the existing UMUL24 complemented difference planes.
+
+
+The follow-on 16×16 / 16×32 / 32×32 signed-partial experiments are documented in `docs/SIGNED_PARTIAL_PRODUCT_RESEARCH.md`. No wider candidate beat the current practical correction-based kernels, so only SMUL8 changed in production.
+
 ## Profiles
 
 | Profile | Hardware | Why choose it? |

@@ -1,0 +1,137 @@
+*=$1000
+row:
+ sta $38
+ sta f1_0
+ sta f3_0
+ sta f1_1
+ sta f3_1
+ sta f1_2
+ sta f3_2
+ sta f1_3
+ sta f3_3
+ eor #$ff
+ sta f2_0
+ sta f4_0
+ sta f2_1
+ sta f4_1
+ sta f2_2
+ sta f4_2
+ sta f2_3
+ sta f4_3
+ lda #0
+ sta $30
+ sta $31
+ sta $32
+ sta $33
+ sta $34
+ ldx $20
+ sec
+f1_0=*+1
+ lda $2000,x
+f2_0=*+1
+ adc $2400,x
+ sta $35
+f3_0=*+1
+ lda $2200,x
+f4_0=*+1
+ adc $2600,x
+ sta $36
+ clc
+ lda $30
+ adc $35
+ sta $30
+ lda $31
+ adc $36
+ sta $31
+ lda $32
+ adc #0
+ sta $32
+ lda $33
+ adc #0
+ sta $33
+ lda $34
+ adc #0
+ sta $34
+ ldx $21
+ sec
+f1_1=*+1
+ lda $2000,x
+f2_1=*+1
+ adc $2400,x
+ sta $35
+f3_1=*+1
+ lda $2200,x
+f4_1=*+1
+ adc $2600,x
+ sta $36
+ clc
+ lda $31
+ adc $35
+ sta $31
+ lda $32
+ adc $36
+ sta $32
+ lda $33
+ adc #0
+ sta $33
+ lda $34
+ adc #0
+ sta $34
+ ldx $22
+ sec
+f1_2=*+1
+ lda $2000,x
+f2_2=*+1
+ adc $2400,x
+ sta $35
+f3_2=*+1
+ lda $2200,x
+f4_2=*+1
+ adc $2600,x
+ sta $36
+ clc
+ lda $32
+ adc $35
+ sta $32
+ lda $33
+ adc $36
+ sta $33
+ lda $34
+ adc #0
+ sta $34
+ ldx $23
+ sec
+f1_3=*+1
+ lda $2000,x
+f2_3=*+1
+ adc $2400,x
+ sta $35
+f3_3=*+1
+ lda $2200,x
+f4_3=*+1
+ adc $2600,x
+ sta $36
+ clc
+ lda $33
+ adc $35
+ sta $33
+ lda $34
+ adc $36
+ sta $34
+ bit $38
+ bpl done
+ sec
+ lda $31
+ sbc $20
+ sta $31
+ lda $32
+ sbc $21
+ sta $32
+ lda $33
+ sbc $22
+ sta $33
+ lda $34
+ sbc $23
+ sta $34
+done:
+ rts

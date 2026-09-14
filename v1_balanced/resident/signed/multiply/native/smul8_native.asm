@@ -4,59 +4,29 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UMUL8. Executable overlap: 0 instructions.
-; Public entry: $3B80. Reachable signed instructions: 40.
+; Public entry: $3B80. Reachable signed instructions: 19.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
-; ---- executable island $2000 ----
-* = $2000
-L2000:
-    lda #$80                           ; @2000 A9 80
-    sta $11                            ; @2002 85 11
-    lda #$82                           ; @2004 A9 82
-    sta $13                            ; @2006 85 13
-    ldx $C000                          ; @2008 AE 00 C0
-    ldy $C004                          ; @200B AC 04 C0
-    jsr L2600                          ; @200E 20 00 26
-    sta $C009                          ; @2011 8D 09 C0
-    lda $14                            ; @2014 A5 14
-    sta $C008                          ; @2016 8D 08 C0
-    lda $C000                          ; @2019 AD 00 C0
-    bpl L2028                          ; @201C 10 0A
-    sec                                ; @201E 38
-    lda $C009                          ; @201F AD 09 C0
-    sbc $C004                          ; @2022 ED 04 C0
-    sta $C009                          ; @2025 8D 09 C0
-L2028:
-    lda $C004                          ; @2028 AD 04 C0
-    bpl L2037                          ; @202B 10 0A
-    sec                                ; @202D 38
-    lda $C009                          ; @202E AD 09 C0
-    sbc $C000                          ; @2031 ED 00 C0
-    sta $C009                          ; @2034 8D 09 C0
-L2037:
-    clc                                ; @2037 18
-    rts                                ; @2038 60
-; ---- executable island $2600 ----
-* = $2600
-L2600:
-    sec                                ; @2600 38
-    stx $10                            ; @2601 86 10
-    stx $12                            ; @2603 86 12
-    tya                                ; @2605 98
-    sbc $10                            ; @2606 E5 10
-    bcs L260E                          ; @2608 B0 04
-    sbc #$00                           ; @260A E9 00
-    eor #$FF                           ; @260C 49 FF
-L260E:
-    tax                                ; @260E AA
-    lda ($10),y                        ; @260F B1 10
-    sbc $8000,x                        ; @2611 FD 00 80
-    sta $14                            ; @2614 85 14
-    lda ($12),y                        ; @2616 B1 12
-    sbc $8200,x                        ; @2618 FD 00 82
-    rts                                ; @261B 60
 ; ---- executable island $3B80 ----
 * = $3B80
 L3B80:
-    jmp L2000                          ; @3B80 4C 00 20
+    lda $C000                          ; @3B80 AD 00 C0
+    eor #$80                           ; @3B83 49 80
+    sta $3B9B                          ; @3B85 8D 9B 3B
+    sta $3BA4                          ; @3B88 8D A4 3B
+    eor #$FF                           ; @3B8B 49 FF
+    sta $3B9E                          ; @3B8D 8D 9E 3B
+    sta $3BA7                          ; @3B90 8D A7 3B
+    lda $C004                          ; @3B93 AD 04 C0
+    eor #$80                           ; @3B96 49 80
+    tax                                ; @3B98 AA
+    sec                                ; @3B99 38
+    lda $6000,x                        ; @3B9A BD 00 60
+    adc $8800,x                        ; @3B9D 7D 00 88
+    sta $C008                          ; @3BA0 8D 08 C0
+    lda $6200,x                        ; @3BA3 BD 00 62
+    adc $8A00,x                        ; @3BA6 7D 00 8A
+    sta $C009                          ; @3BA9 8D 09 C0
+    clc                                ; @3BAC 18
+    rts                                ; @3BAD 60
