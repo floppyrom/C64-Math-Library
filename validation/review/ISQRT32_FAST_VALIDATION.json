@@ -12,7 +12,7 @@
       "mean_cycles": 1380.7045320776926,
       "min_cycles": 1189,
       "max_cycles": 1656,
-      "resident_prg_sha256": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620"
+      "resident_prg_sha256": "2b89da8e1571750d2c734fba27892d5f35ff36e204743f6dd63a78d68d08ff57"
     },
     {
       "profile": "v2_pareto_fast",
@@ -21,7 +21,7 @@
       "mean_cycles": 1200.0986855012752,
       "min_cycles": 1050,
       "max_cycles": 1428,
-      "resident_prg_sha256": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac"
+      "resident_prg_sha256": "72e0621bd32ea6c0b6af99612982e02b007af9ade74275f62f55488663c7385d"
     },
     {
       "profile": "v3_reu_512k",
@@ -30,7 +30,7 @@
       "mean_cycles": 1199.3396115361977,
       "min_cycles": 1049,
       "max_cycles": 1428,
-      "resident_prg_sha256": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71"
+      "resident_prg_sha256": "213ba2efb64abca671a7b1b32f4cbedf5e29d90637fb52ee4af175094709d674"
     },
     {
       "profile": "v4_reu_16m",
@@ -39,7 +39,7 @@
       "mean_cycles": 1047.7716303708064,
       "min_cycles": 899,
       "max_cycles": 1237,
-      "resident_prg_sha256": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139"
+      "resident_prg_sha256": "b3704f55815d4ce4d07b61dac5170184a8d7f9cdcaddac59bb0bb2a8dd2a6f06"
     }
   ]
 }

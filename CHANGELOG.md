@@ -1,10 +1,28 @@
+## 2026-09-14 — all-native signed kernel refresh
+
+- Converted every shipped `SMUL*` and `SDIV*` path to an independently owned signed executable kernel; immutable tables may still be shared.
+- Split `SDIV32_32` and the remaining signed multipliers away from shared unsigned executable engines, without changing public ABI addresses, profile ZP budgets, or resident load/end ranges.
+- Compacted safe signed multiply finalizers for a three-cycle path saving on affected entries.
+- Same-corpus comparison confirms **−3 cycles** on every newly split/compacted SMUL path (V2–V4 SMUL16 was already native and is unchanged); the newly private `SDIV32_32` is also faster in all five profiles.
+- Added zero-overlap executable tracing and dedicated 364,533-call signed division validation alongside the 264,999-call signed multiply validation.
+- Removed the obsolete `multiply/unsigned_derived/` taxonomy.
+
 # 2026-09-07 — Custom Pareto Builder
+
+## 2026-09-14 — signed implementation taxonomy cleanup (superseded later the same day)
+
+- Reorganized `resident/native_signed/` as `resident/signed/` so signed API semantics are no longer conflated with a native signed arithmetic kernel.
+- Earlier in the day, signed multiplication artifacts were separated by implementation provenance. This intermediate taxonomy was superseded by the all-native signed kernel refresh above.
+- Removed stale/mislabelled V2–V4 `smul16_native.*` publication artifacts; the active true-native source is now named directly as `smul16_practical_116zp.a`.
+- Added `SIGNED_LINK_MAP.json`, profile-local signed READMEs, corrected segment/performance/selection documentation, and explicit division architecture terminology.
+- Added `tools/validate_signed_layout.py` and `tools/validate_signed_multiply.py`; the latter currently passes 264,999 signed multiply calls across V1–V5.
+- This was documentation-only at that stage; the later all-native refresh above changed signed resident internals while preserving the public ABI and profile resource contracts.
 
 - Added a **build-time stock-C64 Pareto selector**. Give it a total ZP budget, optional exact extra-RAM budget, initialization policy and optional routine weights; it generates the fastest certified compatible V1/V2 combination that fits. There is no runtime dispatcher.
 - Added `tools/pareto_wizard.py` for interactive game/demo integration and `tools/build_pareto.py` for scripted builds.
 - Generated builds retain the same 45-entry stable API and emit `math_api.inc` plus `selection_manifest.json` containing exact ZP ranges, exact private-RAM ranges, initialization requirement, implementation provenance and SHA-256.
 - Default equal-weight breakpoints: **31 / 36 / 60 / 147 / 176 / 221 ZP bytes**. At 31 ZP + zero extra RAM the builder reproduces V1 byte-for-byte; at 31 ZP + optional-init policy it reproduces V5 byte-for-byte; at 221 ZP it selects complete V2.
-- Exact extra-RAM accounting now includes the actual emitted init helper rather than a conservative allowance. Current default points use 4976 / 5698 / 6086 / 5162 / 6272 bytes of extra private payload before the 221-ZP full-V2 endpoint (208-byte resident increase vs V1).
+- Exact extra-RAM accounting now includes the actual emitted init helper rather than a conservative allowance. Current default points use 5253 / 6010 / 6685 / 5439 / 6871 bytes of extra private payload before the 221-ZP full-V2 endpoint (208-byte resident increase vs V1).
 - Certified selectable packs cover V5 zero-ZP division/modulo/trig imports, initialized UMUL32, V2 UMUL8/16, V2 UMUL24, and native executable-ZP SMUL16. Workload weights can change the chosen pack at the same resource budget.
 - Validation: 12 representative generated builds across reference/alternate maps, **45/45 entries and 4,172 calls each (50,064 common-API calls)**; 10,108 direct V2 cycle-parity cases; exhaustive 65,536-case UMOD8; 50,144 additional SMUL16 cycle-parity cases; 25,000 mixed-workload iterations; 10,000 ZP-guard iterations; deterministic rebuilds; V1/V5 endpoint identity; and **12/12** invalid resource/configuration tests.
 

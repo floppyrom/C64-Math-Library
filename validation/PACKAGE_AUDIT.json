@@ -47,6 +47,31 @@
       "detail": null
     },
     {
+      "check": "signed_taxonomy_documented",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "signed_validation_tools_shipped",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "signed_profile_trees",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "no_legacy_native_signed_tree",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "no_unsigned_derived_signed_tree",
+      "status": "PASS",
+      "detail": null
+    },
+    {
       "check": "turbo_plain_english_documented",
       "status": "PASS",
       "detail": null
@@ -56,10 +81,10 @@
       "status": "PASS",
       "detail": [
         "v4_reu_16m/resident/math_v4_reu_16m_game_math.prg",
-        "v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg",
+        "v3_reu_512k/resident/math_v3_reu_512k_game_math.prg",
         "v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg",
         "v1_balanced/resident/math_v1_balanced_game_math.prg",
-        "v3_reu_512k/resident/math_v3_reu_512k_game_math.prg"
+        "v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg"
       ]
     },
     {
@@ -92,9 +117,9 @@
     }
   ],
   "summary": {
-    "checks_passed": 16,
-    "file_count_excluding_checksum": 379,
-    "uncompressed_bytes_excluding_checksum": 19894302,
+    "checks_passed": 21,
+    "file_count_excluding_checksum": 370,
+    "uncompressed_bytes_excluding_checksum": 20031155,
     "reference_prgs": 5,
     "reference_reu_images": 2
   }

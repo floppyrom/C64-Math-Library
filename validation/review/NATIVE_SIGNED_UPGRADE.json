@@ -1,0 +1,416 @@
+{
+  "status": "PASS",
+  "definition": "private signed executable kernel; immutable tables may be shared",
+  "profiles": {
+    "v1_balanced": {
+      "private_splits": [
+        {
+          "signed": "MATH_SMUL8",
+          "unsigned": "MATH_UMUL8",
+          "source": "$4700-$471B",
+          "private": "$2600-$261B",
+          "bytes": 28,
+          "redirects": [
+            {
+              "pc": "$200E",
+              "from": "$4700",
+              "to": "$2600",
+              "op": "jsr"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SMUL24",
+          "unsigned": "MATH_UMUL24",
+          "source": "$4A00-$4ACB",
+          "private": "$2700-$27CB",
+          "bytes": 204,
+          "redirects": [
+            {
+              "pc": "$221E",
+              "from": "$4A00",
+              "to": "$2700",
+              "op": "jsr"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SMUL32",
+          "unsigned": "MATH_UMUL32",
+          "source": "$4C00-$4D14",
+          "private": "$2800-$2914",
+          "bytes": 277,
+          "redirects": [
+            {
+              "pc": "$2334",
+              "from": "$4C00",
+              "to": "$2800",
+              "op": "jsr"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SDIV32_32",
+          "unsigned": "MATH_UDIV32_32",
+          "source": "$C222-$C51D",
+          "private": "$2A00-$2CFB",
+          "bytes": 764,
+          "redirects": [
+            {
+              "pc": "$C142",
+              "from": "$C222",
+              "to": "$2A00",
+              "op": "jsr"
+            },
+            {
+              "pc": "$C1CF",
+              "from": "$C23E",
+              "to": "$2A1C",
+              "op": "jsr"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SMUL16",
+          "unsigned": "private 8x8 primitive, not MATH_UMUL16",
+          "source": "$4700-$471B",
+          "private": "$2600-$261B",
+          "bytes": 28,
+          "redirects": [
+            {
+              "pc": "$211C",
+              "from": "$4700",
+              "to": "$2600",
+              "op": "jsr"
+            },
+            {
+              "pc": "$212D",
+              "from": "$4700",
+              "to": "$2600",
+              "op": "jsr"
+            },
+            {
+              "pc": "$214E",
+              "from": "$4700",
+              "to": "$2600",
+              "op": "jsr"
+            },
+            {
+              "pc": "$216F",
+              "from": "$4700",
+              "to": "$2600",
+              "op": "jsr"
+            }
+          ]
+        }
+      ],
+      "tail_compactions": [
+        {
+          "from": "$201C",
+          "to": "$2019",
+          "saved_cycles": 3
+        },
+        {
+          "from": "$2188",
+          "to": "$2185",
+          "saved_cycles": 3
+        },
+        {
+          "from": "$2240",
+          "to": "$223D",
+          "saved_cycles": 3
+        },
+        {
+          "from": "$235C",
+          "to": "$2359",
+          "saved_cycles": 3
+        }
+      ]
+    },
+    "v2_pareto_fast": {
+      "private_splits": [
+        {
+          "signed": "MATH_SMUL8",
+          "unsigned": "MATH_UMUL8",
+          "source": "$5300-$5322",
+          "private": "$2600-$2622",
+          "bytes": 35,
+          "redirects": [
+            {
+              "pc": "$2006",
+              "from": "$5300",
+              "to": "$2600",
+              "op": "jsr"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SMUL24",
+          "unsigned": "MATH_UMUL24",
+          "source": "$5600-$571E",
+          "private": "$3600-$371E",
+          "bytes": 287,
+          "redirects": [
+            {
+              "pc": "$2212",
+              "from": "$5645",
+              "to": "$3645",
+              "op": "sta"
+            },
+            {
+              "pc": "$2218",
+              "from": "$566F",
+              "to": "$366F",
+              "op": "sta"
+            },
+            {
+              "pc": "$2224",
+              "from": "$5600",
+              "to": "$3600",
+              "op": "jsr"
+            },
+            {
+              "pc": "$222A",
+              "from": "$571E",
+              "to": "$371E",
+              "op": "lda"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SMUL32",
+          "unsigned": "MATH_UMUL32",
+          "source": "$5800-$5914",
+          "private": "$3800-$3914",
+          "bytes": 277,
+          "redirects": [
+            {
+              "pc": "$2324",
+              "from": "$5800",
+              "to": "$3800",
+              "op": "jsr"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SDIV32_32",
+          "unsigned": "MATH_UDIV32_32",
+          "source": "$C1FE-$C4B4",
+          "private": "$5AA8-$5D5E",
+          "bytes": 695,
+          "redirects": [
+            {
+              "pc": "$C13A",
+              "from": "$C1FE",
+              "to": "$5AA8",
+              "op": "jsr"
+            },
+            {
+              "pc": "$C1AD",
+              "from": "$C21A",
+              "to": "$5AC4",
+              "op": "jsr"
+            }
+          ]
+        }
+      ],
+      "tail_compactions": [
+        {
+          "from": "$2014",
+          "to": "$2011",
+          "saved_cycles": 3
+        },
+        {
+          "from": "$2247",
+          "to": "$2244",
+          "saved_cycles": 3
+        },
+        {
+          "from": "$234C",
+          "to": "$2349",
+          "saved_cycles": 3
+        }
+      ]
+    },
+    "v3_reu_512k": {
+      "private_splits": [
+        {
+          "signed": "MATH_SMUL24",
+          "unsigned": "MATH_UMUL24",
+          "source": "$5600-$571E",
+          "private": "$1400-$151E",
+          "bytes": 287,
+          "redirects": [
+            {
+              "pc": "$2312",
+              "from": "$5645",
+              "to": "$1445",
+              "op": "sta"
+            },
+            {
+              "pc": "$2318",
+              "from": "$566F",
+              "to": "$146F",
+              "op": "sta"
+            },
+            {
+              "pc": "$2324",
+              "from": "$5600",
+              "to": "$1400",
+              "op": "jsr"
+            },
+            {
+              "pc": "$232A",
+              "from": "$571E",
+              "to": "$151E",
+              "op": "lda"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SMUL32",
+          "unsigned": "MATH_UMUL32",
+          "source": "$5800-$5914",
+          "private": "$1600-$1714",
+          "bytes": 277,
+          "redirects": [
+            {
+              "pc": "$2424",
+              "from": "$5800",
+              "to": "$1600",
+              "op": "jsr"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SDIV32_32",
+          "unsigned": "MATH_UDIV32_32",
+          "source": "$C1FE-$C4B4",
+          "private": "$1828-$1ADE",
+          "bytes": 695,
+          "redirects": [
+            {
+              "pc": "$C13A",
+              "from": "$C1FE",
+              "to": "$1828",
+              "op": "jsr"
+            },
+            {
+              "pc": "$C1AD",
+              "from": "$C21A",
+              "to": "$1844",
+              "op": "jsr"
+            }
+          ]
+        }
+      ],
+      "tail_compactions": [
+        {
+          "from": "$202F",
+          "to": "$202C",
+          "saved_cycles": 3
+        },
+        {
+          "from": "$2347",
+          "to": "$2344",
+          "saved_cycles": 3
+        },
+        {
+          "from": "$244C",
+          "to": "$2449",
+          "saved_cycles": 3
+        }
+      ]
+    },
+    "v4_reu_16m": {
+      "private_splits": [
+        {
+          "signed": "MATH_SMUL24",
+          "unsigned": "MATH_UMUL24",
+          "source": "$5600-$571E",
+          "private": "$1400-$151E",
+          "bytes": 287,
+          "redirects": [
+            {
+              "pc": "$2212",
+              "from": "$5645",
+              "to": "$1445",
+              "op": "sta"
+            },
+            {
+              "pc": "$2218",
+              "from": "$566F",
+              "to": "$146F",
+              "op": "sta"
+            },
+            {
+              "pc": "$2224",
+              "from": "$5600",
+              "to": "$1400",
+              "op": "jsr"
+            },
+            {
+              "pc": "$222A",
+              "from": "$571E",
+              "to": "$151E",
+              "op": "lda"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SMUL32",
+          "unsigned": "MATH_UMUL32",
+          "source": "$5800-$5914",
+          "private": "$1600-$1714",
+          "bytes": 277,
+          "redirects": [
+            {
+              "pc": "$2324",
+              "from": "$5800",
+              "to": "$1600",
+              "op": "jsr"
+            }
+          ]
+        },
+        {
+          "signed": "MATH_SDIV32_32",
+          "unsigned": "MATH_UDIV32_32",
+          "source": "$C1FE-$C4B4",
+          "private": "$1828-$1ADE",
+          "bytes": 695,
+          "redirects": [
+            {
+              "pc": "$C13A",
+              "from": "$C1FE",
+              "to": "$1828",
+              "op": "jsr"
+            },
+            {
+              "pc": "$C1AD",
+              "from": "$C21A",
+              "to": "$1844",
+              "op": "jsr"
+            }
+          ]
+        }
+      ],
+      "tail_compactions": [
+        {
+          "from": "$202F",
+          "to": "$202C",
+          "saved_cycles": 3
+        },
+        {
+          "from": "$2247",
+          "to": "$2244",
+          "saved_cycles": 3
+        },
+        {
+          "from": "$234C",
+          "to": "$2349",
+          "saved_cycles": 3
+        }
+      ]
+    }
+  }
+}

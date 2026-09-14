@@ -1,10 +1,71 @@
 {
-  "status": "PASS",
+  "status": "PASS_WITH_ACME_NOT_RUN",
   "checks": [
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "23 files"
+      "detail": "27 files"
+    },
+    {
+      "check": "signed_layout_validation",
+      "status": "PASS",
+      "detail": {
+        "profiles": 5,
+        "api_pairs_per_profile": 13,
+        "zero_overlap_comparisons": 65,
+        "checks_passed": 279,
+        "taxonomy": [
+          "native_signed_kernel"
+        ]
+      }
+    },
+    {
+      "check": "signed_multiply_validation",
+      "status": "PASS",
+      "detail": {
+        "profiles": 5,
+        "machine_calls": 264999,
+        "elapsed_seconds": 18.14
+      }
+    },
+    {
+      "check": "signed_multiply_zero_errors",
+      "status": "PASS",
+      "detail": {
+        "profiles": 5,
+        "machine_calls": 264999,
+        "elapsed_seconds": 18.14
+      }
+    },
+    {
+      "check": "signed_multiply_call_volume",
+      "status": "PASS",
+      "detail": 264999
+    },
+    {
+      "check": "signed_division_validation",
+      "status": "PASS",
+      "detail": {
+        "profiles": 5,
+        "machine_calls": 364533,
+        "elapsed_seconds": 43.79,
+        "execution": "profile-partitioned full corpus with global deterministic profile seeds; merged after independent passes"
+      }
+    },
+    {
+      "check": "signed_division_zero_errors",
+      "status": "PASS",
+      "detail": {
+        "profiles": 5,
+        "machine_calls": 364533,
+        "elapsed_seconds": 43.79,
+        "execution": "profile-partitioned full corpus with global deterministic profile seeds; merged after independent passes"
+      }
+    },
+    {
+      "check": "signed_division_call_volume",
+      "status": "PASS",
+      "detail": 364533
     },
     {
       "check": "public_api_count",
@@ -232,169 +293,14 @@
       "detail": null
     },
     {
-      "check": "acme_validation",
+      "check": "acme_current_not_run_documented",
+      "status": "PASS",
+      "detail": "The execution environment has no ACME binary and outbound package/network access is disabled, so ACME could not be installed for this modified native-signed build."
+    },
+    {
+      "check": "acme_historical_baseline_retained",
       "status": "PASS",
       "detail": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020"
-    },
-    {
-      "check": "acme_reference_v1_balanced",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_hash_current_reference_v1_balanced",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_reference_v2_pareto_fast",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_hash_current_reference_v2_pareto_fast",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_reference_v3_reu_512k",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_hash_current_reference_v3_reu_512k",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_reference_v4_reu_16m",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_hash_current_reference_v4_reu_16m",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_alternate_v1_balanced",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_hash_current_alternate_v1_balanced",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_alternate_v2_pareto_fast",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_hash_current_alternate_v2_pareto_fast",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_alternate_v3_reu_512k",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_hash_current_alternate_v3_reu_512k",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_alternate_v4_reu_16m",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_hash_current_alternate_v4_reu_16m",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_overlay_reference_v3_reu_512k_turbo16",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_reference_overlay_exact_v3_reu_512k_turbo16",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_overlay_reference_v3_reu_512k_turbo32",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_reference_overlay_exact_v3_reu_512k_turbo32",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_overlay_reference_v4_reu_16m_turbo16",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_reference_overlay_exact_v4_reu_16m_turbo16",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_overlay_reference_v4_reu_16m_turbo32",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_reference_overlay_exact_v4_reu_16m_turbo32",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_overlay_alternate_v3_reu_512k_turbo16",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_overlay_alternate_v3_reu_512k_turbo32",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_overlay_alternate_v4_reu_16m_turbo16",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_overlay_alternate_v4_reu_16m_turbo32",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_boundary_turbo16_$02",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_boundary_turbo16_$8F",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_boundary_turbo32_$02",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "acme_boundary_turbo32_$0F",
-      "status": "PASS",
-      "detail": null
     },
     {
       "check": "config_validation",
@@ -569,7 +475,7 @@
     {
       "check": "v1_balanced_reference_prg_exact",
       "status": "PASS",
-      "detail": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620"
+      "detail": "2b89da8e1571750d2c734fba27892d5f35ff36e204743f6dd63a78d68d08ff57"
     },
     {
       "check": "v2_pareto_fast_manifest_45",
@@ -579,7 +485,7 @@
     {
       "check": "v2_pareto_fast_reference_prg_exact",
       "status": "PASS",
-      "detail": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac"
+      "detail": "72e0621bd32ea6c0b6af99612982e02b007af9ade74275f62f55488663c7385d"
     },
     {
       "check": "v3_reu_512k_manifest_45",
@@ -599,7 +505,7 @@
     {
       "check": "v3_reu_512k_reference_prg_exact",
       "status": "PASS",
-      "detail": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71"
+      "detail": "213ba2efb64abca671a7b1b32f4cbedf5e29d90637fb52ee4af175094709d674"
     },
     {
       "check": "v3_reu_512k_reference_reu_exact",
@@ -624,7 +530,7 @@
     {
       "check": "v4_reu_16m_reference_prg_exact",
       "status": "PASS",
-      "detail": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139"
+      "detail": "b3704f55815d4ce4d07b61dac5170184a8d7f9cdcaddac59bb0bb2a8dd2a6f06"
     },
     {
       "check": "v4_reu_16m_reference_reu_exact",
@@ -770,7 +676,7 @@
     {
       "check": "hybrid_reference_prg_exact",
       "status": "PASS",
-      "detail": "14ecc1993917fb68e6c1fbe876728fb845292b49feed47ce10946f1f3906a68a"
+      "detail": "c96501c65061b687fbdecbe291f2e16bab2ab524d52f7e40d36754e6c1a47740"
     },
     {
       "check": "hybrid_docs_present",
@@ -785,7 +691,7 @@
     {
       "check": "pareto_matrix_12_builds",
       "status": "PASS",
-      "detail": null
+      "detail": 12
     },
     {
       "check": "pareto_matrix_50064_calls",
@@ -1074,7 +980,8 @@
     }
   ],
   "summary": {
-    "checks_passed": 203,
+    "acme_current_status": "NOT_RUN",
+    "checks_passed": 179,
     "public_entries": 45,
     "alternate_entry_executions": 180,
     "alternate_machine_calls": 16688,

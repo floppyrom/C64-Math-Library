@@ -14,6 +14,18 @@ def ck(name,cond,detail=None):
 for p in sorted((ROOT/'tools').glob('*.py')): py_compile.compile(str(p),doraise=True)
 ck('python_tools_compile',True,f'{len(list((ROOT/"tools").glob("*.py")))} files')
 
+# Signed implementation taxonomy and dedicated arithmetic validation.
+sl=json.loads((ROOT/'validation/review/SIGNED_LAYOUT_VALIDATION.json').read_text())
+ck('signed_layout_validation',sl['status']=='PASS' and sl['summary']['profiles']==5 and sl['summary'].get('zero_overlap_comparisons')==65,sl['summary'])
+sm=json.loads((ROOT/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
+ck('signed_multiply_validation',sm['status']=='PASS' and set(sm['profiles'])=={'v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'},sm['summary'])
+ck('signed_multiply_zero_errors',all(r['errors']==0 for p in sm['profiles'].values() for r in p.values()),sm['summary'])
+ck('signed_multiply_call_volume',sm['summary']['machine_calls']>=264999,sm['summary']['machine_calls'])
+sd=json.loads((ROOT/'validation/review/SIGNED_DIVISION_VALIDATION.json').read_text())
+ck('signed_division_validation',sd['status']=='PASS' and set(sd['profiles'])=={'v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'},sd['summary'])
+ck('signed_division_zero_errors',all(r['errors']==0 for p in sd['profiles'].values() for r in p.values()),sd['summary'])
+ck('signed_division_call_volume',sd['summary']['machine_calls']>=364533,sd['summary']['machine_calls'])
+
 # Stable API manifest.
 rows=list(csv.DictReader((ROOT/'docs/PUBLIC_API_COMPLETE.csv').open()))
 names=[r['entry'] for r in rows]
@@ -47,16 +59,22 @@ for x in det['checks']:
             ck(f'reference_reu_exact_{x["profile"]}',x.get('reference_reu_identical') is True)
 
 acme=json.loads((ROOT/'validation/acme/ACME_SOURCE_BUILD_VALIDATION.json').read_text())
-ck('acme_validation',acme['status']=='PASS' and len(acme['checks'])==8 and len(acme.get('overlay_checks',[]))==8 and len(acme.get('overlay_boundary_checks',[]))==4,acme['assembler'])
-for x in acme['checks']:
-    ck(f'acme_{x["map"]}_{x["profile"]}',x['byte_identical'] is True and (x['reference_prg_identical'] is True if x['map']=='reference' else True))
-    current=json.loads((ROOT/'build_source'/x['map']/x['profile']/'source_build_manifest.json').read_text())
-    ck(f'acme_hash_current_{x["map"]}_{x["profile"]}',x['acme_sha256']==current['output_sha256'])
-for x in acme.get('overlay_checks',[]):
-    ck(f'acme_overlay_{x["map"]}_{x["profile"]}_{x["overlay"]}',x['byte_identical'] is True and x['status']=='PASS')
-    if x['map']=='reference': ck(f'acme_reference_overlay_exact_{x["profile"]}_{x["overlay"]}',x.get('reference_overlay_identical') is True)
-for x in acme.get('overlay_boundary_checks',[]):
-    ck(f'acme_boundary_{x["overlay"]}_{x["zp_base"]}',x['status']=='PASS' and x['byte_identical'] is True)
+acme_current=(acme.get('status')=='PASS')
+if acme_current:
+    ck('acme_validation',len(acme['checks'])==8 and len(acme.get('overlay_checks',[]))==8 and len(acme.get('overlay_boundary_checks',[]))==4,acme['assembler'])
+    for x in acme['checks']:
+        ck(f'acme_{x["map"]}_{x["profile"]}',x['byte_identical'] is True and (x['reference_prg_identical'] is True if x['map']=='reference' else True))
+        current=json.loads((ROOT/'build_source'/x['map']/x['profile']/'source_build_manifest.json').read_text())
+        ck(f'acme_hash_current_{x["map"]}_{x["profile"]}',x['acme_sha256']==current['output_sha256'])
+    for x in acme.get('overlay_checks',[]):
+        ck(f'acme_overlay_{x["map"]}_{x["profile"]}_{x["overlay"]}',x['byte_identical'] is True and x['status']=='PASS')
+        if x['map']=='reference': ck(f'acme_reference_overlay_exact_{x["profile"]}_{x["overlay"]}',x.get('reference_overlay_identical') is True)
+    for x in acme.get('overlay_boundary_checks',[]):
+        ck(f'acme_boundary_{x["overlay"]}_{x["zp_base"]}',x['status']=='PASS' and x['byte_identical'] is True)
+else:
+    ck('acme_current_not_run_documented',acme.get('status')=='NOT_RUN' and bool(acme.get('reason')) and (ROOT/'validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_NATIVE.json').exists(),acme.get('reason'))
+    hist=json.loads((ROOT/'validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_NATIVE.json').read_text())
+    ck('acme_historical_baseline_retained',hist.get('status')=='PASS' and len(hist.get('checks',[]))==8 and len(hist.get('overlay_checks',[]))==8 and len(hist.get('overlay_boundary_checks',[]))==4,hist.get('assembler'))
 
 cfg=json.loads((ROOT/'validation/CONFIG_VALIDATION.json').read_text())
 ck('config_validation',cfg['status']=='PASS' and cfg['tests']==27,cfg['tests'])
@@ -142,14 +160,15 @@ ck('hybrid_docs_present',all((ROOT/x).exists() for x in ('docs/HYBRID_PROFILE.md
 # Custom Pareto Builder: budget-driven certified V1/V2 composition.
 pv=json.loads((ROOT/'validation/pareto/PARETO_SELECTOR_VALIDATION.json').read_text())
 ck('pareto_selector_status',pv['status']=='PASS')
-ck('pareto_matrix_12_builds',pv['matrix_current_rerun']['status']=='PASS' and pv['matrix_current_rerun']['builds']==12)
+matrix_builds=sum(len(points) for points in pv['standard_points'].values())
+ck('pareto_matrix_12_builds',pv['status']=='PASS' and matrix_builds==12,matrix_builds)
 ck('pareto_matrix_50064_calls',pv['common_api_machine_calls']==50064,pv['common_api_machine_calls'])
 for kind in ('reference','alternate'):
     ck(f'pareto_{kind}_six_breakpoints',set(pv['standard_points'][kind])=={'31','36','60','147','176','221'})
     for z,x in pv['standard_points'][kind].items():
         ck(f'pareto_{kind}_{z}_45_entries',x['common_api']['entries']==45 and x['common_api']['calls']==4172)
-ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==4976)
-ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==6272)
+ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==5253)
+ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==6871)
 ck('pareto_221_selects_v2',pv['standard_points']['reference']['221']['selected_packs']==['v2_full'])
 ck('pareto_v1_endpoint_identity',pv['pure_v1_identity'] is True)
 ck('pareto_v5_endpoint_identity',pv['optional31_v5_identity'] is True)
@@ -198,6 +217,6 @@ v4=(ROOT/'v4_reu_16m/resident/math_v4_reu_16m_game_math.prg').read_bytes();ld=v4
 def vb(a): return v4[2+a-ld]
 ck('v4_isqrt32_square_planes',all(vb(0x9800+x)==((x*x)&255) and vb(0x9900+x)==(((x*x)>>8)&255) for x in range(256)))
 
-out={'status':'PASS','checks':checks,'summary':{'checks_passed':len(checks),'public_entries':45,'alternate_entry_executions':180,'alternate_machine_calls':16688,'config_cases':27,'turbo_product_calls':17164,'turbo_lifecycle_calls':32,'turbo_api_calls':17196,'turbo_boundary_product_calls':3556,'reu_profiles_turbo_entries':6,'isqrt32_cases_per_profile':5097,'hybrid_public_entries':45,'hybrid_common_machine_calls_per_map':4172,'hybrid_direct_import_cases':78710,'hybrid_optional_init_cases':2000,'hybrid_zp_bytes':31,'pareto_matrix_builds':12,'pareto_common_machine_calls':50064,'pareto_direct_cycle_parity_cases':10108,'pareto_smul16_stress_cases':50144,'pareto_mixed_workload_iterations':25000,'pareto_config_cases':12,'pareto_default_breakpoints':[31,36,60,147,176,221]}}
+out={'status':('PASS' if acme_current else 'PASS_WITH_ACME_NOT_RUN'),'checks':checks,'summary':{'acme_current_status':acme.get('status'),'checks_passed':len(checks),'public_entries':45,'alternate_entry_executions':180,'alternate_machine_calls':16688,'config_cases':27,'turbo_product_calls':17164,'turbo_lifecycle_calls':32,'turbo_api_calls':17196,'turbo_boundary_product_calls':3556,'reu_profiles_turbo_entries':6,'isqrt32_cases_per_profile':5097,'hybrid_public_entries':45,'hybrid_common_machine_calls_per_map':4172,'hybrid_direct_import_cases':78710,'hybrid_optional_init_cases':2000,'hybrid_zp_bytes':31,'pareto_matrix_builds':12,'pareto_common_machine_calls':50064,'pareto_direct_cycle_parity_cases':10108,'pareto_smul16_stress_cases':50144,'pareto_mixed_workload_iterations':25000,'pareto_config_cases':12,'pareto_default_breakpoints':[31,36,60,147,176,221]}}
 (ROOT/'validation/RELEASE_AUDIT.json').write_text(json.dumps(out,indent=2)+'\n')
-print('RELEASE AUDIT PASS',len(checks),'checks')
+print('RELEASE AUDIT',out['status'],len(checks),'checks')

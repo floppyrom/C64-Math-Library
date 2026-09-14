@@ -1,4 +1,6 @@
-; FINAL native-signed routing note
-; The former wrapper implementation is under provenance/superseded_signed_compatibility/.
-; Active exact signed implementations are under ../native_signed/.
-; Stable entry symbols remain in ../math_api.inc.
+; Signed routing/provenance note for v4_reu_16m
+; Active signed implementation metadata is under ../signed/.
+; All SMUL*/SDIV* APIs own native signed executable paths. Immutable lookup
+; tables may be shared, but corresponding unsigned executable engines are not.
+; See ../signed/SIGNED_LINK_MAP.json and tools/validate_signed_layout.py.
+; Stable public entry symbols remain in ../math_api.inc.

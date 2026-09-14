@@ -31,9 +31,9 @@ PACKS = {
     },
     'umul32_initialized': {
         'extra_zp': 0,
-        'extra_ram': 350,
+        'extra_ram': 627,
         'requires_init': True,
-        'description': 'V2 initialized UMUL32 core + matching signed/fixed-point users',
+        'description': 'V2 initialized UMUL32 core + private native-signed SMUL32 core and matching signed/fixed-point users',
         'savings': {
             'MATH_UMUL32': 19.0, 'MATH_SMUL32': 22.0,
             'MATH_UMUL32_SHR16': 19.0, 'MATH_SMUL32_SHR16': 22.0,
@@ -42,9 +42,9 @@ PACKS = {
     'umul8_16': {
         # $39-$3D: two pointer pairs plus product scratch byte.
         'extra_zp': 5,
-        'extra_ram': 714,
+        'extra_ram': 749,
         'requires_init': True,
-        'description': 'V2 UMUL8/UMUL16 and signed/fixed-point users; reuses V1 tables plus two private 256-byte diff planes',
+        'description': 'V2 UMUL8/UMUL16 plus private native-signed SMUL8 core; reuses V1 tables plus two private 256-byte diff planes',
         'savings': {
             'MATH_UMUL8': 12.000030, 'MATH_UMUL16': 32.538053,
             'MATH_SMUL8': 12.000030, 'MATH_UMUL16_SHR8': 32.28,
@@ -53,9 +53,9 @@ PACKS = {
     'umul24': {
         # $21-$38: twelve complete pointer pairs.
         'extra_zp': 24,
-        'extra_ram': 356,
+        'extra_ram': 643,
         'requires_init': True,
-        'description': 'V2 UMUL24 + signed producer; reuses V1 quarter-square tables',
+        'description': 'V2 UMUL24 + private native-signed SMUL24 core; reuses V1 quarter-square tables',
         'savings': {
             'MATH_UMUL24': 38.750363, 'MATH_SMUL24': 41.750363,
         },
@@ -82,6 +82,10 @@ AUX_UMUL32_ADAPTER = 0x620
 AUX_SMUL_FINISH = 0x700
 AUX_SMUL_IMAGE = 0x780
 AUX_INIT = 0x800
+# Private native-signed executable cores carried with packs that upgrade the matching signed path.
+AUX_SMUL8_PRIVATE = 0x900
+AUX_SMUL24_PRIVATE = 0xA00
+AUX_SMUL32_PRIVATE = 0xC00
 AUX_BYTES = 0x0E00
 
 
@@ -246,6 +250,10 @@ def map_v2_abs(old: int, vals: dict, aux: int, pack: str|None=None) -> int:
     if 0x5800 <= old <= 0x5912: return aux+AUX_UMUL32_CODE+(old-0x5800)
     if 0x3420 <= old <= 0x346A: return aux+AUX_UMUL32_ADAPTER+(old-0x3420)
     if 0x5A00 <= old <= 0x5A3B: return aux+AUX_SMUL_FINISH+(old-0x5A00)
+    # Native-signed private executable cores in the refreshed V2 donor.
+    if 0x2600 <= old <= 0x2622: return aux+AUX_SMUL8_PRIVATE+(old-0x2600)
+    if 0x3600 <= old <= 0x371E: return aux+AUX_SMUL24_PRIVATE+(old-0x3600)
+    if 0x3800 <= old <= 0x3914: return aux+AUX_SMUL32_PRIVATE+(old-0x3800)
     # Signed producer wrappers live at the same REG_LOW-relative offsets in V1.
     if 0x2000 <= old <= 0x23FF: return vals['REG_LOW']+0x1000+(old-0x2000)
     return old
@@ -333,6 +341,7 @@ def apply_umul8_16(dst, src, vals, man, aux, v2_entries):
     write_jmp(dst,public_addr(man,'MATH_UMUL16'),aux+AUX_UMUL16_CODE)
     # Signed SMUL8 fused wrapper follows the selected V2 producer.
     sstarts=trace(src,v2_entries['MATH_SMUL8'])
+    copy_code_block(dst,src,0x2600,0x2622,aux+AUX_SMUL8_PRIVATE,sstarts,vals,aux)
     copy_code_block(dst,src,0x2000,0x2033,vals['REG_LOW']+0x1000,sstarts,vals,aux)
     write_jmp(dst,public_addr(man,'MATH_SMUL8'),vals['REG_LOW']+0x1000)
 
@@ -343,6 +352,7 @@ def apply_umul24(dst,src,vals,man,aux,v2_entries):
     copy_code_block(dst,src,0x34C0,0x3505,aux+AUX_UMUL24_ADAPTER,starts,vals,aux)
     write_jmp(dst,public_addr(man,'MATH_UMUL24'),aux+AUX_UMUL24_ADAPTER)
     sstarts=trace(src,v2_entries['MATH_SMUL24'])
+    copy_code_block(dst,src,0x3600,0x371E,aux+AUX_SMUL24_PRIVATE,sstarts,vals,aux)
     copy_code_block(dst,src,0x2200,0x228A,vals['REG_LOW']+0x1200,sstarts,vals,aux)
     write_jmp(dst,public_addr(man,'MATH_SMUL24'),vals['REG_LOW']+0x1200)
 
@@ -354,6 +364,7 @@ def apply_umul32(dst,src,vals,man,aux,v2_entries):
     for n in ('MATH_UMUL32','MATH_UMUL32_READY'):
         write_jmp(dst,public_addr(man,n),aux+AUX_UMUL32_ADAPTER)
     sstarts=trace(src,v2_entries['MATH_SMUL32'])
+    copy_code_block(dst,src,0x3800,0x3914,aux+AUX_SMUL32_PRIVATE,sstarts,vals,aux)
     copy_code_block(dst,src,0x2300,0x23A1,vals['REG_LOW']+0x1300,sstarts,vals,aux)
     for n in ('MATH_SMUL32','MATH_SMUL32_READY'):
         write_jmp(dst,public_addr(man,n),vals['REG_LOW']+0x1300)
@@ -391,12 +402,15 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
         add('PARETO_DIFF_HI', aux+AUX_DIFF_HI, aux+AUX_DIFF_HI+0xff)
         add('PARETO_UMUL8_CODE', aux+AUX_UMUL8_CODE, aux+AUX_UMUL8_CODE+0x22)
         add('PARETO_UMUL16_CODE', aux+AUX_UMUL16_CODE, aux+AUX_UMUL16_CODE+0xa6)
+        add('PARETO_SMUL8_PRIVATE', aux+AUX_SMUL8_PRIVATE, aux+AUX_SMUL8_PRIVATE+0x22)
     if 'umul24' in packs:
         add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x11d)
         add('PARETO_UMUL24_ADAPTER', aux+AUX_UMUL24_ADAPTER, aux+AUX_UMUL24_ADAPTER+0x45)
+        add('PARETO_SMUL24_PRIVATE', aux+AUX_SMUL24_PRIVATE, aux+AUX_SMUL24_PRIVATE+0x11e)
     if 'umul32_initialized' in packs:
         add('PARETO_UMUL32_CODE', aux+AUX_UMUL32_CODE, aux+AUX_UMUL32_CODE+0x112)
         add('PARETO_UMUL32_ADAPTER', aux+AUX_UMUL32_ADAPTER, aux+AUX_UMUL32_ADAPTER+0x4a)
+        add('PARETO_SMUL32_PRIVATE', aux+AUX_SMUL32_PRIVATE, aux+AUX_SMUL32_PRIVATE+0x114)
     if 'smul16_exec' in packs:
         add('PARETO_SMUL16_FINISH', aux+AUX_SMUL_FINISH, aux+AUX_SMUL_FINISH+0x3b)
         add('PARETO_SMUL16_IMAGE', aux+AUX_SMUL_IMAGE, aux+AUX_SMUL_IMAGE+0x73)

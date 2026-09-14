@@ -1,0 +1,85 @@
+{
+  "profile": "v5_hybrid_lowzp",
+  "native_signed_definition": "signed API owns its executable arithmetic kernel; immutable lookup tables may be shared; corresponding unsigned executable code is never entered",
+  "inheritance": "native signed paths are inherited from the rebuilt V1 base; hybrid imports replace selected unsigned division/trig paths only",
+  "signed_multiply_classification": {
+    "8": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15232,
+      "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
+      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+    },
+    "16": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15280,
+      "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
+      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+    },
+    "24": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15344,
+      "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
+      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+    },
+    "32": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15424,
+      "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
+      "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+    }
+  },
+  "division": {
+    "8": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15520,
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+    },
+    "16": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15648,
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+    },
+    "24": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15840,
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+    },
+    "32_16": {
+      "kind": "native_signed_kernel",
+      "public_entry": 16096,
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+    },
+    "32_32": {
+      "kind": "native_signed_kernel",
+      "public_entry": 24070,
+      "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+    }
+  },
+  "signed_game_api": {
+    "MATH_SMUL32_READY": {
+      "kind": "native_signed_kernel",
+      "public_entry": 16352,
+      "notes": "inherits native signed V1 path"
+    },
+    "MATH_SMUL16_SHR8": {
+      "kind": "native_signed_kernel",
+      "public_entry": 24079,
+      "notes": "inherits native signed V1 path"
+    },
+    "MATH_SMUL32_SHR16": {
+      "kind": "native_signed_kernel",
+      "public_entry": 24085,
+      "notes": "inherits native signed V1 path"
+    },
+    "MATH_SDIV16_SHL8": {
+      "kind": "native_signed_kernel",
+      "public_entry": 24091,
+      "notes": "inherits native signed V1 path"
+    }
+  },
+  "validation": [
+    "validation/review/SIGNED_LAYOUT_VALIDATION.json",
+    "validation/review/SIGNED_MULTIPLY_VALIDATION.json",
+    "validation/review/SIGNED_DIVISION_VALIDATION.json"
+  ]
+}

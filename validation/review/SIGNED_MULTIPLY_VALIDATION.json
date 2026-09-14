@@ -1,0 +1,200 @@
+{
+  "status": "PASS",
+  "profiles": {
+    "v1_balanced": {
+      "SMUL8": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 120.490234375,
+        "min_cycles": 105,
+        "max_cycles": 136,
+        "mode": "exhaustive"
+      },
+      "SMUL16": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 421.30603544985416,
+        "min_cycles": 387,
+        "max_cycles": 462
+      },
+      "SMUL24": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 563.2851805728518,
+        "min_cycles": 504,
+        "max_cycles": 650
+      },
+      "SMUL32": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 839.1307596513076,
+        "min_cycles": 732,
+        "max_cycles": 1006
+      },
+      "SMUL32_READY": {
+        "cases": 1024,
+        "errors": 0,
+        "mean_cycles": 828.78515625,
+        "min_cycles": 720,
+        "max_cycles": 971
+      }
+    },
+    "v2_pareto_fast": {
+      "SMUL8": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 108.494140625,
+        "min_cycles": 94,
+        "max_cycles": 123,
+        "mode": "exhaustive"
+      },
+      "SMUL16": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 252.32488220776307,
+        "min_cycles": 230,
+        "max_cycles": 293
+      },
+      "SMUL24": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 521.840597758406,
+        "min_cycles": 462,
+        "max_cycles": 609
+      },
+      "SMUL32": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 815.9290161892901,
+        "min_cycles": 710,
+        "max_cycles": 984
+      },
+      "SMUL32_READY": {
+        "cases": 1024,
+        "errors": 0,
+        "mean_cycles": 828.2197265625,
+        "min_cycles": 718,
+        "max_cycles": 953
+      }
+    },
+    "v3_reu_512k": {
+      "SMUL8": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 96.0,
+        "min_cycles": 83,
+        "max_cycles": 109,
+        "mode": "exhaustive"
+      },
+      "SMUL16": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 252.62396230648417,
+        "min_cycles": 230,
+        "max_cycles": 293
+      },
+      "SMUL24": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 521.6608551266086,
+        "min_cycles": 462,
+        "max_cycles": 603
+      },
+      "SMUL32": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 817.6355334163553,
+        "min_cycles": 710,
+        "max_cycles": 984
+      },
+      "SMUL32_READY": {
+        "cases": 1024,
+        "errors": 0,
+        "mean_cycles": 827.052734375,
+        "min_cycles": 723,
+        "max_cycles": 937
+      }
+    },
+    "v4_reu_16m": {
+      "SMUL8": {
+        "cases": 8448,
+        "errors": 0,
+        "mean_cycles": 95.81995738636364,
+        "min_cycles": 83,
+        "max_cycles": 109,
+        "mode": "structured_random"
+      },
+      "SMUL16": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 252.66255328696434,
+        "min_cycles": 230,
+        "max_cycles": 293
+      },
+      "SMUL24": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 522.0182648401826,
+        "min_cycles": 462,
+        "max_cycles": 605
+      },
+      "SMUL32": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 816.4541303445413,
+        "min_cycles": 710,
+        "max_cycles": 984
+      },
+      "SMUL32_READY": {
+        "cases": 1024,
+        "errors": 0,
+        "mean_cycles": 825.6611328125,
+        "min_cycles": 718,
+        "max_cycles": 967
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "SMUL8": {
+        "cases": 8448,
+        "errors": 0,
+        "mean_cycles": 120.24230587121212,
+        "min_cycles": 105,
+        "max_cycles": 136,
+        "mode": "structured_random"
+      },
+      "SMUL16": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 421.01750056091544,
+        "min_cycles": 387,
+        "max_cycles": 462
+      },
+      "SMUL24": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 563.4848484848485,
+        "min_cycles": 504,
+        "max_cycles": 648
+      },
+      "SMUL32": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 838.5134910751349,
+        "min_cycles": 732,
+        "max_cycles": 1006
+      },
+      "SMUL32_READY": {
+        "cases": 1024,
+        "errors": 0,
+        "mean_cycles": 826.4384765625,
+        "min_cycles": 715,
+        "max_cycles": 958
+      }
+    }
+  },
+  "summary": {
+    "profiles": 5,
+    "machine_calls": 264999,
+    "elapsed_seconds": 18.14
+  }
+}

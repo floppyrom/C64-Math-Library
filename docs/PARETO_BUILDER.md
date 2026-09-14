@@ -91,11 +91,11 @@ These are the current default selections when RAM is unrestricted and startup `M
 
 | ZP budget | Selected result | Exact extra RAM vs V1 | Init? |
 |---:|---|---:|---|
-| **31 B** | V5 zero-ZP imports + initialized UMUL32 | **4976 B** | yes |
-| **36 B** | above + UMUL8/16 pack | **5698 B** | yes |
-| **60 B** | above + UMUL24 pack | **6086 B** | yes |
-| **147 B** | V5 imports + initialized UMUL32 + native SMUL16 | **5162 B** | yes |
-| **176 B** | all certified hybrid packs | **6272 B** | yes |
+| **31 B** | V5 zero-ZP imports + initialized UMUL32 | **5253 B** | yes |
+| **36 B** | above + UMUL8/16 pack | **6010 B** | yes |
+| **60 B** | above + UMUL24 pack | **6685 B** | yes |
+| **147 B** | V5 imports + initialized UMUL32 + native SMUL16 | **5439 B** | yes |
+| **176 B** | all certified hybrid packs | **6871 B** | yes |
 | **221 B** | complete V2 | **208 B resident increase vs V1** | yes |
 
 RAM is not monotonic with ZP because the optimizer maximizes weighted speed, not “number of packs.” For example, the 147-byte point spends most of its ZP budget on the exceptionally fast SMUL16 executable-ZP implementation and omits smaller multiplier packs.

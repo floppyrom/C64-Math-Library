@@ -8,6 +8,7 @@ The release ZIP is intended to be both **usable** and **reproducible** without c
 - `v5_hybrid_lowzp/`: the validated stock-C64 hybrid reference PRG, generated API include, segment map, performance table and example.
 - `v3_reu_512k/reu/` and `v4_reu_16m/reu/`: the two deployable reference REU images.
 - `relocatable_source/`: canonical source-level relocation inputs and map configurations, including Turbo16/Turbo32 overlays, V5 hybrid maps, and `custom_pareto/` maps used by the budget selector.
+- `v1_balanced/resident/signed/` … `v5_hybrid_lowzp/resident/signed/`: native-signed implementation/provenance artifacts under `multiply/native` and `division`, with per-profile link maps and zero-overlap validation.
 - `tools/`: deterministic builders and validators, including `build_pareto.py`, the interactive `pareto_wizard.py`, Pareto configuration tests and stress validation.
 - `validation/`: current validation results, including `validation/hybrid/` and `validation/pareto/`, plus the compact prior exhaustive baseline needed by the binary-delta validation argument.
 - `docs/`, `USER_MANUAL.md`, `QUICK_START.md`, `README.md`, `CHANGELOG.md`, `CSDB_CHANGELOG.txt`: integration/reference documentation.

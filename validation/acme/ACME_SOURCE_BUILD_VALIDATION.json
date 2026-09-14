@@ -1,214 +1,50 @@
 {
-  "status": "PASS",
-  "assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
-  "checks": [
+  "status": "NOT_RUN",
+  "assembler": "ACME executable unavailable in validation container",
+  "reason": "The execution environment has no ACME binary and outbound package/network access is disabled, so ACME could not be installed for this modified native-signed build.",
+  "command": "python3 tools/verify_with_acme.py",
+  "current_internal_builds": [
     {
       "profile": "v1_balanced",
       "map": "reference",
-      "status": "PASS",
-      "acme_sha256": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620",
-      "internal_sha256": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620",
-      "byte_identical": true,
-      "reference_prg_identical": true,
-      "acme_stdout": "",
-      "acme_stderr": ""
+      "internal_sha256": "2b89da8e1571750d2c734fba27892d5f35ff36e204743f6dd63a78d68d08ff57"
     },
     {
       "profile": "v2_pareto_fast",
       "map": "reference",
-      "status": "PASS",
-      "acme_sha256": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac",
-      "internal_sha256": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac",
-      "byte_identical": true,
-      "reference_prg_identical": true,
-      "acme_stdout": "",
-      "acme_stderr": ""
+      "internal_sha256": "72e0621bd32ea6c0b6af99612982e02b007af9ade74275f62f55488663c7385d"
     },
     {
       "profile": "v3_reu_512k",
       "map": "reference",
-      "status": "PASS",
-      "acme_sha256": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71",
-      "internal_sha256": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71",
-      "byte_identical": true,
-      "reference_prg_identical": true,
-      "acme_stdout": "",
-      "acme_stderr": ""
+      "internal_sha256": "213ba2efb64abca671a7b1b32f4cbedf5e29d90637fb52ee4af175094709d674"
     },
     {
       "profile": "v4_reu_16m",
       "map": "reference",
-      "status": "PASS",
-      "acme_sha256": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139",
-      "internal_sha256": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139",
-      "byte_identical": true,
-      "reference_prg_identical": true,
-      "acme_stdout": "",
-      "acme_stderr": ""
+      "internal_sha256": "b3704f55815d4ce4d07b61dac5170184a8d7f9cdcaddac59bb0bb2a8dd2a6f06"
     },
     {
       "profile": "v1_balanced",
       "map": "alternate",
-      "status": "PASS",
-      "acme_sha256": "46cd464c25d9785a61804ade9a7c3cc149c8932bb78b4ae23261015cb6a3d29a",
-      "internal_sha256": "46cd464c25d9785a61804ade9a7c3cc149c8932bb78b4ae23261015cb6a3d29a",
-      "byte_identical": true,
-      "reference_prg_identical": null,
-      "acme_stdout": "",
-      "acme_stderr": ""
+      "internal_sha256": "779ca68babfc99b9bf23304b3f7ae668566a389ac443c8768ef40ed0c3eb53cc"
     },
     {
       "profile": "v2_pareto_fast",
       "map": "alternate",
-      "status": "PASS",
-      "acme_sha256": "b6e78167006062714ed92d9848289f9597366b0d9d10973bc8c04e346f301a00",
-      "internal_sha256": "b6e78167006062714ed92d9848289f9597366b0d9d10973bc8c04e346f301a00",
-      "byte_identical": true,
-      "reference_prg_identical": null,
-      "acme_stdout": "",
-      "acme_stderr": ""
+      "internal_sha256": "ac1bf41b2ee5a96475138c7563b27284deb2546b41aedb907a7885a88439e5d2"
     },
     {
       "profile": "v3_reu_512k",
       "map": "alternate",
-      "status": "PASS",
-      "acme_sha256": "5cc2b02b983532c0f5785106f49ad08ea58dbd218fcabe544faa94ef1792b6a9",
-      "internal_sha256": "5cc2b02b983532c0f5785106f49ad08ea58dbd218fcabe544faa94ef1792b6a9",
-      "byte_identical": true,
-      "reference_prg_identical": null,
-      "acme_stdout": "",
-      "acme_stderr": ""
+      "internal_sha256": "47a5a2de3ea90bb851c39d2b56091cda335718853ca9d6b6300a592c7cbe4aa2"
     },
     {
       "profile": "v4_reu_16m",
       "map": "alternate",
-      "status": "PASS",
-      "acme_sha256": "34581d82fab5958f399be055fe75700e49ad63534ec3fa863805d4b5386837a5",
-      "internal_sha256": "34581d82fab5958f399be055fe75700e49ad63534ec3fa863805d4b5386837a5",
-      "byte_identical": true,
-      "reference_prg_identical": null,
-      "acme_stdout": "",
-      "acme_stderr": ""
+      "internal_sha256": "d3fd4b88b1fd38c68212592291648da8ca714c831f8f1da8bdc22ad39e2f6be3"
     }
   ],
-  "overlay_checks": [
-    {
-      "profile": "v3_reu_512k",
-      "map": "reference",
-      "overlay": "turbo16",
-      "status": "PASS",
-      "bytes": 113,
-      "sha256": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
-      "byte_identical": true,
-      "reference_overlay_identical": true
-    },
-    {
-      "profile": "v3_reu_512k",
-      "map": "reference",
-      "overlay": "turbo32",
-      "status": "PASS",
-      "bytes": 241,
-      "sha256": "0b041806ec684a2d892ffd0f6f2e6f219293912b0572ae964bba596b0a2774f1",
-      "byte_identical": true,
-      "reference_overlay_identical": true
-    },
-    {
-      "profile": "v4_reu_16m",
-      "map": "reference",
-      "overlay": "turbo16",
-      "status": "PASS",
-      "bytes": 113,
-      "sha256": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
-      "byte_identical": true,
-      "reference_overlay_identical": true
-    },
-    {
-      "profile": "v4_reu_16m",
-      "map": "reference",
-      "overlay": "turbo32",
-      "status": "PASS",
-      "bytes": 241,
-      "sha256": "0b041806ec684a2d892ffd0f6f2e6f219293912b0572ae964bba596b0a2774f1",
-      "byte_identical": true,
-      "reference_overlay_identical": true
-    },
-    {
-      "profile": "v3_reu_512k",
-      "map": "alternate",
-      "overlay": "turbo16",
-      "status": "PASS",
-      "bytes": 113,
-      "sha256": "a231db022a18841656bcd138eb71b2dc1215b455f3646b27f081a18ffad4b475",
-      "byte_identical": true,
-      "reference_overlay_identical": null
-    },
-    {
-      "profile": "v3_reu_512k",
-      "map": "alternate",
-      "overlay": "turbo32",
-      "status": "PASS",
-      "bytes": 241,
-      "sha256": "aa580ef7c47bca7ad847211ff2a4404b6267139c3388fe84f99d4857f891fab8",
-      "byte_identical": true,
-      "reference_overlay_identical": null
-    },
-    {
-      "profile": "v4_reu_16m",
-      "map": "alternate",
-      "overlay": "turbo16",
-      "status": "PASS",
-      "bytes": 113,
-      "sha256": "a231db022a18841656bcd138eb71b2dc1215b455f3646b27f081a18ffad4b475",
-      "byte_identical": true,
-      "reference_overlay_identical": null
-    },
-    {
-      "profile": "v4_reu_16m",
-      "map": "alternate",
-      "overlay": "turbo32",
-      "status": "PASS",
-      "bytes": 241,
-      "sha256": "aa580ef7c47bca7ad847211ff2a4404b6267139c3388fe84f99d4857f891fab8",
-      "byte_identical": true,
-      "reference_overlay_identical": null
-    }
-  ],
-  "overlay_boundary_checks": [
-    {
-      "overlay": "turbo16",
-      "zp_base": "$02",
-      "reg_table": "$4000",
-      "status": "PASS",
-      "bytes": 113,
-      "sha256": "f76c53476753ff973178fdddbd4376c4864763746f1f1a75fc1a872f9c0fbb0c",
-      "byte_identical": true
-    },
-    {
-      "overlay": "turbo16",
-      "zp_base": "$8F",
-      "reg_table": "$6000",
-      "status": "PASS",
-      "bytes": 113,
-      "sha256": "9071c7a25e21399ea8e94a5db309d9dc1bbaba02b66a648aad750539919dbcb4",
-      "byte_identical": true
-    },
-    {
-      "overlay": "turbo32",
-      "zp_base": "$02",
-      "reg_table": "$4000",
-      "status": "PASS",
-      "bytes": 241,
-      "sha256": "9c8161ee576e2d3edb22e0fdcdd45dbf5425eab5895cfb50de0baba5a0bd7470",
-      "byte_identical": true
-    },
-    {
-      "overlay": "turbo32",
-      "zp_base": "$0F",
-      "reg_table": "$6000",
-      "status": "PASS",
-      "bytes": 241,
-      "sha256": "28bf893082db9c39ddc714aae20527b6323e63a7d4c5c922286c28cec08a5101",
-      "byte_identical": true
-    }
-  ]
+  "historical_baseline": "ACME_SOURCE_BUILD_VALIDATION_PRE_NATIVE.json",
+  "note": "The historical file proves the canonical source syntax and independent-assembler agreement before the native-signed binary delta. Current builds are verified by the bundled independent assembler, byte-exact reference rebuilds, deterministic rebuilds, alternate relocation, and full arithmetic/integration suites; rerun verify_with_acme.py when ACME is available."
 }

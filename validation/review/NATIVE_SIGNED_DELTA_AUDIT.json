@@ -1,0 +1,200 @@
+{
+  "status": "PASS",
+  "baseline": "2026-09-14 signed-taxonomy package immediately before all-native executable split",
+  "definition": "native signed = signed public path owns executable arithmetic and does not enter corresponding unsigned executable engine; immutable tables may be shared",
+  "profiles": {
+    "v1_balanced": {
+      "resident_before_sha256": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620",
+      "resident_after_sha256": "2b89da8e1571750d2c734fba27892d5f35ff36e204743f6dd63a78d68d08ff57",
+      "resident_size_unchanged": true,
+      "multiply_same_corpus": {
+        "SMUL8": {
+          "before_mean_cycles": 123.490234375,
+          "after_mean_cycles": 120.490234375,
+          "delta_cycles": -3.0
+        },
+        "SMUL16": {
+          "before_mean_cycles": 424.30603544985416,
+          "after_mean_cycles": 421.30603544985416,
+          "delta_cycles": -3.0
+        },
+        "SMUL24": {
+          "before_mean_cycles": 566.2851805728518,
+          "after_mean_cycles": 563.2851805728518,
+          "delta_cycles": -3.0
+        },
+        "SMUL32": {
+          "before_mean_cycles": 842.1307596513076,
+          "after_mean_cycles": 839.1307596513076,
+          "delta_cycles": -3.0
+        },
+        "SMUL32_READY": {
+          "before_mean_cycles": 831.78515625,
+          "after_mean_cycles": 828.78515625,
+          "delta_cycles": -3.0
+        }
+      },
+      "sdiv32_32_same_corpus": {
+        "before_mean_cycles": 611.3645409317052,
+        "after_mean_cycles": 604.9749736167647,
+        "delta_cycles": -6.38956731494045
+      }
+    },
+    "v2_pareto_fast": {
+      "resident_before_sha256": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac",
+      "resident_after_sha256": "72e0621bd32ea6c0b6af99612982e02b007af9ade74275f62f55488663c7385d",
+      "resident_size_unchanged": true,
+      "multiply_same_corpus": {
+        "SMUL8": {
+          "before_mean_cycles": 111.494140625,
+          "after_mean_cycles": 108.494140625,
+          "delta_cycles": -3.0
+        },
+        "SMUL16": {
+          "before_mean_cycles": 252.32488220776307,
+          "after_mean_cycles": 252.32488220776307,
+          "delta_cycles": 0.0
+        },
+        "SMUL24": {
+          "before_mean_cycles": 524.840597758406,
+          "after_mean_cycles": 521.840597758406,
+          "delta_cycles": -3.0
+        },
+        "SMUL32": {
+          "before_mean_cycles": 818.9290161892901,
+          "after_mean_cycles": 815.9290161892901,
+          "delta_cycles": -3.0
+        },
+        "SMUL32_READY": {
+          "before_mean_cycles": 831.2197265625,
+          "after_mean_cycles": 828.2197265625,
+          "delta_cycles": -3.0
+        }
+      },
+      "sdiv32_32_same_corpus": {
+        "before_mean_cycles": 568.7019448213478,
+        "after_mean_cycles": 567.7657168701945,
+        "delta_cycles": -0.9362279511532279
+      }
+    },
+    "v3_reu_512k": {
+      "resident_before_sha256": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71",
+      "resident_after_sha256": "213ba2efb64abca671a7b1b32f4cbedf5e29d90637fb52ee4af175094709d674",
+      "resident_size_unchanged": true,
+      "multiply_same_corpus": {
+        "SMUL8": {
+          "before_mean_cycles": 99.0,
+          "after_mean_cycles": 96.0,
+          "delta_cycles": -3.0
+        },
+        "SMUL16": {
+          "before_mean_cycles": 252.62396230648417,
+          "after_mean_cycles": 252.62396230648417,
+          "delta_cycles": 0.0
+        },
+        "SMUL24": {
+          "before_mean_cycles": 524.6608551266086,
+          "after_mean_cycles": 521.6608551266086,
+          "delta_cycles": -3.0
+        },
+        "SMUL32": {
+          "before_mean_cycles": 820.6355334163553,
+          "after_mean_cycles": 817.6355334163553,
+          "delta_cycles": -3.0
+        },
+        "SMUL32_READY": {
+          "before_mean_cycles": 830.052734375,
+          "after_mean_cycles": 827.052734375,
+          "delta_cycles": -3.0
+        }
+      },
+      "sdiv32_32_same_corpus": {
+        "before_mean_cycles": 568.0848786371174,
+        "after_mean_cycles": 567.1489522086537,
+        "delta_cycles": -0.9359264284637447
+      }
+    },
+    "v4_reu_16m": {
+      "resident_before_sha256": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139",
+      "resident_after_sha256": "b3704f55815d4ce4d07b61dac5170184a8d7f9cdcaddac59bb0bb2a8dd2a6f06",
+      "resident_size_unchanged": true,
+      "multiply_same_corpus": {
+        "SMUL8": {
+          "before_mean_cycles": 98.81995738636364,
+          "after_mean_cycles": 95.81995738636364,
+          "delta_cycles": -3.0
+        },
+        "SMUL16": {
+          "before_mean_cycles": 252.66255328696434,
+          "after_mean_cycles": 252.66255328696434,
+          "delta_cycles": 0.0
+        },
+        "SMUL24": {
+          "before_mean_cycles": 525.0182648401826,
+          "after_mean_cycles": 522.0182648401826,
+          "delta_cycles": -3.0
+        },
+        "SMUL32": {
+          "before_mean_cycles": 819.4541303445413,
+          "after_mean_cycles": 816.4541303445413,
+          "delta_cycles": -3.0
+        },
+        "SMUL32_READY": {
+          "before_mean_cycles": 828.6611328125,
+          "after_mean_cycles": 825.6611328125,
+          "delta_cycles": -3.0
+        }
+      },
+      "sdiv32_32_same_corpus": {
+        "before_mean_cycles": 568.4373586612393,
+        "after_mean_cycles": 567.5076134479119,
+        "delta_cycles": -0.9297452133273509
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "resident_before_sha256": "14ecc1993917fb68e6c1fbe876728fb845292b49feed47ce10946f1f3906a68a",
+      "resident_after_sha256": "c96501c65061b687fbdecbe291f2e16bab2ab524d52f7e40d36754e6c1a47740",
+      "resident_size_unchanged": true,
+      "multiply_same_corpus": {
+        "SMUL8": {
+          "before_mean_cycles": 123.24230587121212,
+          "after_mean_cycles": 120.24230587121212,
+          "delta_cycles": -3.0
+        },
+        "SMUL16": {
+          "before_mean_cycles": 424.01750056091544,
+          "after_mean_cycles": 421.01750056091544,
+          "delta_cycles": -3.0
+        },
+        "SMUL24": {
+          "before_mean_cycles": 566.4848484848485,
+          "after_mean_cycles": 563.4848484848485,
+          "delta_cycles": -3.0
+        },
+        "SMUL32": {
+          "before_mean_cycles": 841.5134910751349,
+          "after_mean_cycles": 838.5134910751349,
+          "delta_cycles": -3.0
+        },
+        "SMUL32_READY": {
+          "before_mean_cycles": 829.4384765625,
+          "after_mean_cycles": 826.4384765625,
+          "delta_cycles": -3.0
+        }
+      },
+      "sdiv32_32_same_corpus": {
+        "before_mean_cycles": 616.6381727725011,
+        "after_mean_cycles": 610.1415649027589,
+        "delta_cycles": -6.496607869742206
+      }
+    }
+  },
+  "summary": {
+    "multiply_regressions": 0,
+    "sdiv32_32_regressions": 0,
+    "expected_multiply_delta": "-3 cycles on newly split/compacted paths; 0 on already-native V2-V4 SMUL16",
+    "resident_load_end_ranges_unchanged": true,
+    "division_corpus": "same deterministic global-profile seeds before/after"
+  },
+  "note": "SDIV8/16/24/32_16 and SDIV16_SHL8 were already executable-independent; SDIV32_32 is the division path whose executable ownership changed in this release."
+}

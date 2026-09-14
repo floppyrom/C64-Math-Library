@@ -40,12 +40,14 @@ def main():
     s=bp.select_packs(31,0,'auto',{})
     assert s['packs']==[] and s['extra_ram']==0
     checks.append({'name':'31zp_zero_ram_selects_v1','status':'PASS'})
-    s=bp.select_packs(31,4975,'auto',{})
-    assert 'umul32_initialized' not in s.get('packs',[]) and s['extra_ram'] <= 4975
-    checks.append({'name':'exact_ram_budget_rejects_4976_byte_choice_at_4975','status':'PASS'})
-    s=bp.select_packs(31,4976,'auto',{})
-    assert set(s['packs'])=={'zero_zp_v5','umul32_initialized'} and s['extra_ram']==4976
-    checks.append({'name':'exact_ram_budget_accepts_4976_byte_choice','status':'PASS'})
+    target_packs={'zero_zp_v5','umul32_initialized'}
+    exact31=bp.exact_extra_ram_bytes(target_packs)
+    s=bp.select_packs(31,exact31-1,'auto',{})
+    assert set(s.get('packs',[])) != target_packs and s['extra_ram'] <= exact31-1
+    checks.append({'name':f'exact_ram_budget_rejects_{exact31}_byte_choice_at_{exact31-1}','status':'PASS'})
+    s=bp.select_packs(31,exact31,'auto',{})
+    assert set(s['packs'])==target_packs and s['extra_ram']==exact31
+    checks.append({'name':f'exact_ram_budget_accepts_{exact31}_byte_choice','status':'PASS'})
     # Valid reference/deep selections.
     vals=asm.parse_config(REF)
     bp.validate_custom_config(vals,set(bp.select_packs(31,None,'auto',{})['packs']))

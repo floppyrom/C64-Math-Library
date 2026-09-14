@@ -1,0 +1,17 @@
+segment,load_address_or_map,bytes,purpose
+signed_public_stubs,multiple fixed addresses,39,13 stable signed API JMP stubs
+smul8_native_signed,$2000,52,native signed executable path; corresponding unsigned executable engine is not entered
+smul24_native_signed,$2200,139,native signed executable path; corresponding unsigned executable engine is not entered
+smul32_native_signed,$2300,162,native signed executable path; corresponding unsigned executable engine is not entered
+smul16_public_adapter,$2100,39,native signed executable path; corresponding unsigned executable engine is not entered
+smul16_native_exec_zp,$0080,116,native signed executable path; corresponding unsigned executable engine is not entered
+smul16_native_tail,$5A00,60,native signed executable path; corresponding unsigned executable engine is not entered
+smul16_native_tables,$2800/$2A00/$2C00/$2E00,2044,native signed executable path; corresponding unsigned executable engine is not entered
+sdiv8_adapter,$2500,24,stable-memory adapter
+sdiv8_signed,$003E/$7800,458,native signed executable divide path; corresponding unsigned executable engine is not entered
+sdiv16_adapter,$2520,44,stable-memory adapter
+sdiv16_signed,$003E/$0042/$7A00/$7C0C,1572,native signed executable divide path; corresponding unsigned executable engine is not entered
+sdiv24_adapter,$2550,64,stable-memory adapter
+sdiv24_signed,$003E/$0044/$8100/$8400,1876,native signed executable divide path; corresponding unsigned executable engine is not entered
+sdiv32_16_adapter,$2590,64,stable-memory adapter
+sdiv32_16_signed,$003E/$0044/$004C/$890C/$8E00/$9200,2075,native signed executable divide path; corresponding unsigned executable engine is not entered

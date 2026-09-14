@@ -1,0 +1,177 @@
+{
+  "profile": "v1_balanced",
+  "load": 8192,
+  "end": 37886,
+  "native_signed_definition": "signed API owns its executable arithmetic kernel; immutable lookup tables may be shared; corresponding unsigned executable code is never entered",
+  "signed_multiply_classification": {
+    "8": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15232,
+      "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+      "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+      "private_executable_core": {
+        "address": "$2600",
+        "bytes": 28,
+        "cloned_from_proven_arithmetic_core": "$4700-$471B"
+      }
+    },
+    "16": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15280,
+      "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+      "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+      "private_executable_core": {
+        "address": "$2600",
+        "bytes": 28,
+        "cloned_from_proven_arithmetic_core": "$4700-$471B"
+      }
+    },
+    "24": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15344,
+      "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+      "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+      "private_executable_core": {
+        "address": "$2700",
+        "bytes": 204,
+        "cloned_from_proven_arithmetic_core": "$4A00-$4ACB"
+      }
+    },
+    "32": {
+      "kind": "native_signed_kernel",
+      "public_entry": 15424,
+      "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+      "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+      "private_executable_core": {
+        "address": "$2800",
+        "bytes": 277,
+        "cloned_from_proven_arithmetic_core": "$4C00-$4D14"
+      }
+    }
+  },
+  "division": {
+    "8": {
+      "source": "division/sdiv8-fast-458b-77p497c.a",
+      "native_entry": 20486,
+      "adapter": 9472,
+      "adapter_bytes": 24,
+      "native_core_bytes": 458,
+      "native_zp_bytes": 5,
+      "core_avg_cycles": 77.496689,
+      "core_min": 20,
+      "core_max": 568,
+      "canonical_cases": 65536,
+      "edge_cases": 1762,
+      "relocation": {
+        "$0010": "$000E",
+        "$1000": "$5000"
+      },
+      "kind": "native_signed_kernel",
+      "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+    },
+    "16": {
+      "source": "division/sdiv16-q2-special-442b-152p570c.a",
+      "native_entry": 20992,
+      "adapter": 9504,
+      "adapter_bytes": 44,
+      "native_core_bytes": 442,
+      "native_zp_bytes": 14,
+      "core_avg_cycles": 152.570305,
+      "core_min": 36,
+      "core_max": 1427,
+      "canonical_cases": 2097152,
+      "edge_cases": 10276,
+      "relocation": {
+        "$0008": "$000E",
+        "$0010": "$0012",
+        "$0D00": "$5200",
+        "$1000": "$5400"
+      },
+      "kind": "native_signed_kernel",
+      "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+    },
+    "24": {
+      "source": "sdiv24/sdiv24-deep-practical-373b-238p765c.a",
+      "native_entry": 22016,
+      "adapter": 9552,
+      "adapter_bytes": 64,
+      "native_core_bytes": 373,
+      "native_zp_bytes": 18,
+      "core_avg_cycles": 238.764977,
+      "core_min": 110,
+      "core_max": 5475,
+      "canonical_cases": 2097152,
+      "edge_cases": 19950,
+      "relocation": {
+        "$0008": "$000E",
+        "$0010": "$0014",
+        "$0C00": "$5600",
+        "$1000": "$5800"
+      },
+      "source_artifact_status": "active resident selection is 373-byte compact core; shipped sdiv24-small-fast source is a historical/reference point, not an exact source reconstruction of that active 373-byte slice",
+      "kind": "native_signed_kernel",
+      "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+    },
+    "32_16": {
+      "source": "division/sdiv32_16-512-class-480b-880p596c.a",
+      "native_entry": 23552,
+      "adapter": 9616,
+      "adapter_bytes": 64,
+      "native_core_bytes": 480,
+      "native_zp_bytes": 18,
+      "core_avg_cycles": 880.596406,
+      "core_min": 110,
+      "core_max": 1875,
+      "canonical_cases": 2097152,
+      "edge_cases": 18545,
+      "relocation": {
+        "$00E0": "$000E",
+        "$0010": "$0014",
+        "$0018": "$001C",
+        "$1000": "$5A00",
+        "$5000": "$5B00",
+        "$7000": "$5C00"
+      },
+      "kind": "native_signed_kernel",
+      "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+    },
+    "32_32": {
+      "kind": "native_signed_kernel",
+      "public_entry": 24070,
+      "private_executable_core": {
+        "address": "$2A00",
+        "bytes": 764,
+        "cloned_from_proven_arithmetic_core": "$C222-$C51D"
+      },
+      "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+      "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap"
+    }
+  },
+  "signed_game_api": {
+    "MATH_SMUL32_READY": {
+      "kind": "native_signed_kernel",
+      "public_entry": 16352,
+      "notes": "uses the profile native SMUL32 path"
+    },
+    "MATH_SMUL16_SHR8": {
+      "kind": "native_signed_kernel",
+      "public_entry": 24079,
+      "notes": "signed fixed-point path; zero executable overlap with UMUL16_SHR8"
+    },
+    "MATH_SMUL32_SHR16": {
+      "kind": "native_signed_kernel",
+      "public_entry": 24085,
+      "notes": "signed fixed-point path through private signed SMUL32 engine; zero executable overlap with UMUL32_SHR16"
+    },
+    "MATH_SDIV16_SHL8": {
+      "kind": "native_signed_kernel",
+      "public_entry": 24091,
+      "notes": "signed fixed-point divider with independent executable path"
+    }
+  },
+  "validation": [
+    "validation/review/SIGNED_LAYOUT_VALIDATION.json",
+    "validation/review/SIGNED_MULTIPLY_VALIDATION.json",
+    "validation/review/SIGNED_DIVISION_VALIDATION.json"
+  ]
+}

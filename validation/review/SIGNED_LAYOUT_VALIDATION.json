@@ -1,0 +1,2714 @@
+{
+  "status": "PASS",
+  "definition": "signed path owns executable arithmetic engine; immutable tables may be shared; corresponding unsigned executable instructions may not be entered",
+  "profiles": {
+    "v1_balanced": {
+      "pairs": [
+        {
+          "signed": "MATH_SMUL8",
+          "unsigned": "MATH_UMUL8",
+          "signed_instructions": 40,
+          "unsigned_instructions": 27,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16",
+          "unsigned": "MATH_UMUL16",
+          "signed_instructions": 88,
+          "unsigned_instructions": 70,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL24",
+          "unsigned": "MATH_UMUL24",
+          "signed_instructions": 138,
+          "unsigned_instructions": 113,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32",
+          "unsigned": "MATH_UMUL32",
+          "signed_instructions": 209,
+          "unsigned_instructions": 178,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_READY",
+          "unsigned": "MATH_UMUL32_READY",
+          "signed_instructions": 201,
+          "unsigned_instructions": 170,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV8",
+          "unsigned": "MATH_UDIV8",
+          "signed_instructions": 245,
+          "unsigned_instructions": 192,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16",
+          "unsigned": "MATH_UDIV16",
+          "signed_instructions": 207,
+          "unsigned_instructions": 158,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV24",
+          "unsigned": "MATH_UDIV24",
+          "signed_instructions": 225,
+          "unsigned_instructions": 160,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_16",
+          "unsigned": "MATH_UDIV32_16",
+          "signed_instructions": 285,
+          "unsigned_instructions": 164,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_32",
+          "unsigned": "MATH_UDIV32_32",
+          "signed_instructions": 387,
+          "unsigned_instructions": 313,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16_SHR8",
+          "unsigned": "MATH_UMUL16_SHR8",
+          "signed_instructions": 98,
+          "unsigned_instructions": 80,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_SHR16",
+          "unsigned": "MATH_UMUL32_SHR16",
+          "signed_instructions": 225,
+          "unsigned_instructions": 194,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16_SHL8",
+          "unsigned": "MATH_UDIV16_SHL8",
+          "signed_instructions": 315,
+          "unsigned_instructions": 191,
+          "overlap": 0
+        }
+      ]
+    },
+    "v2_pareto_fast": {
+      "pairs": [
+        {
+          "signed": "MATH_SMUL8",
+          "unsigned": "MATH_UMUL8",
+          "signed_instructions": 39,
+          "unsigned_instructions": 26,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16",
+          "unsigned": "MATH_UMUL16",
+          "signed_instructions": 115,
+          "unsigned_instructions": 101,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL24",
+          "unsigned": "MATH_UMUL24",
+          "signed_instructions": 191,
+          "unsigned_instructions": 167,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32",
+          "unsigned": "MATH_UMUL32",
+          "signed_instructions": 201,
+          "unsigned_instructions": 171,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_READY",
+          "unsigned": "MATH_UMUL32_READY",
+          "signed_instructions": 201,
+          "unsigned_instructions": 171,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV8",
+          "unsigned": "MATH_UDIV8",
+          "signed_instructions": 245,
+          "unsigned_instructions": 192,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16",
+          "unsigned": "MATH_UDIV16",
+          "signed_instructions": 803,
+          "unsigned_instructions": 618,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV24",
+          "unsigned": "MATH_UDIV24",
+          "signed_instructions": 870,
+          "unsigned_instructions": 627,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_16",
+          "unsigned": "MATH_UDIV32_16",
+          "signed_instructions": 1165,
+          "unsigned_instructions": 1043,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_32",
+          "unsigned": "MATH_UDIV32_32",
+          "signed_instructions": 387,
+          "unsigned_instructions": 313,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16_SHR8",
+          "unsigned": "MATH_UMUL16_SHR8",
+          "signed_instructions": 125,
+          "unsigned_instructions": 111,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_SHR16",
+          "unsigned": "MATH_UMUL32_SHR16",
+          "signed_instructions": 217,
+          "unsigned_instructions": 187,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16_SHL8",
+          "unsigned": "MATH_UDIV16_SHL8",
+          "signed_instructions": 1195,
+          "unsigned_instructions": 1070,
+          "overlap": 0
+        }
+      ]
+    },
+    "v3_reu_512k": {
+      "pairs": [
+        {
+          "signed": "MATH_SMUL8",
+          "unsigned": "MATH_UMUL8",
+          "signed_instructions": 31,
+          "unsigned_instructions": 19,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16",
+          "unsigned": "MATH_UMUL16",
+          "signed_instructions": 115,
+          "unsigned_instructions": 103,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL24",
+          "unsigned": "MATH_UMUL24",
+          "signed_instructions": 191,
+          "unsigned_instructions": 167,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32",
+          "unsigned": "MATH_UMUL32",
+          "signed_instructions": 201,
+          "unsigned_instructions": 171,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_READY",
+          "unsigned": "MATH_UMUL32_READY",
+          "signed_instructions": 201,
+          "unsigned_instructions": 171,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV8",
+          "unsigned": "MATH_UDIV8",
+          "signed_instructions": 245,
+          "unsigned_instructions": 25,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16",
+          "unsigned": "MATH_UDIV16",
+          "signed_instructions": 803,
+          "unsigned_instructions": 618,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV24",
+          "unsigned": "MATH_UDIV24",
+          "signed_instructions": 870,
+          "unsigned_instructions": 627,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_16",
+          "unsigned": "MATH_UDIV32_16",
+          "signed_instructions": 1165,
+          "unsigned_instructions": 1043,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_32",
+          "unsigned": "MATH_UDIV32_32",
+          "signed_instructions": 387,
+          "unsigned_instructions": 313,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16_SHR8",
+          "unsigned": "MATH_UMUL16_SHR8",
+          "signed_instructions": 125,
+          "unsigned_instructions": 113,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_SHR16",
+          "unsigned": "MATH_UMUL32_SHR16",
+          "signed_instructions": 217,
+          "unsigned_instructions": 187,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16_SHL8",
+          "unsigned": "MATH_UDIV16_SHL8",
+          "signed_instructions": 1195,
+          "unsigned_instructions": 1070,
+          "overlap": 0
+        }
+      ]
+    },
+    "v4_reu_16m": {
+      "pairs": [
+        {
+          "signed": "MATH_SMUL8",
+          "unsigned": "MATH_UMUL8",
+          "signed_instructions": 31,
+          "unsigned_instructions": 19,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16",
+          "unsigned": "MATH_UMUL16",
+          "signed_instructions": 115,
+          "unsigned_instructions": 99,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL24",
+          "unsigned": "MATH_UMUL24",
+          "signed_instructions": 191,
+          "unsigned_instructions": 167,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32",
+          "unsigned": "MATH_UMUL32",
+          "signed_instructions": 201,
+          "unsigned_instructions": 171,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_READY",
+          "unsigned": "MATH_UMUL32_READY",
+          "signed_instructions": 201,
+          "unsigned_instructions": 171,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV8",
+          "unsigned": "MATH_UDIV8",
+          "signed_instructions": 245,
+          "unsigned_instructions": 25,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16",
+          "unsigned": "MATH_UDIV16",
+          "signed_instructions": 803,
+          "unsigned_instructions": 618,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV24",
+          "unsigned": "MATH_UDIV24",
+          "signed_instructions": 870,
+          "unsigned_instructions": 627,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_16",
+          "unsigned": "MATH_UDIV32_16",
+          "signed_instructions": 1165,
+          "unsigned_instructions": 1043,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_32",
+          "unsigned": "MATH_UDIV32_32",
+          "signed_instructions": 387,
+          "unsigned_instructions": 313,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16_SHR8",
+          "unsigned": "MATH_UMUL16_SHR8",
+          "signed_instructions": 125,
+          "unsigned_instructions": 109,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_SHR16",
+          "unsigned": "MATH_UMUL32_SHR16",
+          "signed_instructions": 217,
+          "unsigned_instructions": 187,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16_SHL8",
+          "unsigned": "MATH_UDIV16_SHL8",
+          "signed_instructions": 1195,
+          "unsigned_instructions": 1070,
+          "overlap": 0
+        }
+      ]
+    },
+    "v5_hybrid_lowzp": {
+      "pairs": [
+        {
+          "signed": "MATH_SMUL8",
+          "unsigned": "MATH_UMUL8",
+          "signed_instructions": 40,
+          "unsigned_instructions": 27,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16",
+          "unsigned": "MATH_UMUL16",
+          "signed_instructions": 88,
+          "unsigned_instructions": 70,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL24",
+          "unsigned": "MATH_UMUL24",
+          "signed_instructions": 138,
+          "unsigned_instructions": 113,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32",
+          "unsigned": "MATH_UMUL32",
+          "signed_instructions": 209,
+          "unsigned_instructions": 178,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_READY",
+          "unsigned": "MATH_UMUL32_READY",
+          "signed_instructions": 201,
+          "unsigned_instructions": 170,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV8",
+          "unsigned": "MATH_UDIV8",
+          "signed_instructions": 245,
+          "unsigned_instructions": 192,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16",
+          "unsigned": "MATH_UDIV16",
+          "signed_instructions": 207,
+          "unsigned_instructions": 618,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV24",
+          "unsigned": "MATH_UDIV24",
+          "signed_instructions": 225,
+          "unsigned_instructions": 627,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_16",
+          "unsigned": "MATH_UDIV32_16",
+          "signed_instructions": 285,
+          "unsigned_instructions": 1043,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV32_32",
+          "unsigned": "MATH_UDIV32_32",
+          "signed_instructions": 387,
+          "unsigned_instructions": 313,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL16_SHR8",
+          "unsigned": "MATH_UMUL16_SHR8",
+          "signed_instructions": 98,
+          "unsigned_instructions": 80,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SMUL32_SHR16",
+          "unsigned": "MATH_UMUL32_SHR16",
+          "signed_instructions": 225,
+          "unsigned_instructions": 194,
+          "overlap": 0
+        },
+        {
+          "signed": "MATH_SDIV16_SHL8",
+          "unsigned": "MATH_UDIV16_SHL8",
+          "signed_instructions": 315,
+          "unsigned_instructions": 1070,
+          "overlap": 0
+        }
+      ]
+    }
+  },
+  "checks": [
+    {
+      "check": "v1_balanced_signed_readme",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_signed_link_map",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_no_legacy_native_signed",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_no_unsigned_derived_tree",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_four_mul_widths",
+      "status": "PASS",
+      "detail": [
+        "16",
+        "24",
+        "32",
+        "8"
+      ]
+    },
+    {
+      "check": "v1_balanced_smul8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15232,
+        "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$2600",
+          "bytes": 28,
+          "cloned_from_proven_arithmetic_core": "$4700-$471B"
+        }
+      }
+    },
+    {
+      "check": "v1_balanced_smul16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15280,
+        "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$2600",
+          "bytes": 28,
+          "cloned_from_proven_arithmetic_core": "$4700-$471B"
+        }
+      }
+    },
+    {
+      "check": "v1_balanced_smul24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15344,
+        "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$2700",
+          "bytes": 204,
+          "cloned_from_proven_arithmetic_core": "$4A00-$4ACB"
+        }
+      }
+    },
+    {
+      "check": "v1_balanced_smul32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15424,
+        "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$2800",
+          "bytes": 277,
+          "cloned_from_proven_arithmetic_core": "$4C00-$4D14"
+        }
+      }
+    },
+    {
+      "check": "v1_balanced_sdiv8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv8-fast-458b-77p497c.a",
+        "native_entry": 20486,
+        "adapter": 9472,
+        "adapter_bytes": 24,
+        "native_core_bytes": 458,
+        "native_zp_bytes": 5,
+        "core_avg_cycles": 77.496689,
+        "core_min": 20,
+        "core_max": 568,
+        "canonical_cases": 65536,
+        "edge_cases": 1762,
+        "relocation": {
+          "$0010": "$000E",
+          "$1000": "$5000"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v1_balanced_sdiv16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv16-q2-special-442b-152p570c.a",
+        "native_entry": 20992,
+        "adapter": 9504,
+        "adapter_bytes": 44,
+        "native_core_bytes": 442,
+        "native_zp_bytes": 14,
+        "core_avg_cycles": 152.570305,
+        "core_min": 36,
+        "core_max": 1427,
+        "canonical_cases": 2097152,
+        "edge_cases": 10276,
+        "relocation": {
+          "$0008": "$000E",
+          "$0010": "$0012",
+          "$0D00": "$5200",
+          "$1000": "$5400"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v1_balanced_sdiv24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "sdiv24/sdiv24-deep-practical-373b-238p765c.a",
+        "native_entry": 22016,
+        "adapter": 9552,
+        "adapter_bytes": 64,
+        "native_core_bytes": 373,
+        "native_zp_bytes": 18,
+        "core_avg_cycles": 238.764977,
+        "core_min": 110,
+        "core_max": 5475,
+        "canonical_cases": 2097152,
+        "edge_cases": 19950,
+        "relocation": {
+          "$0008": "$000E",
+          "$0010": "$0014",
+          "$0C00": "$5600",
+          "$1000": "$5800"
+        },
+        "source_artifact_status": "active resident selection is 373-byte compact core; shipped sdiv24-small-fast source is a historical/reference point, not an exact source reconstruction of that active 373-byte slice",
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v1_balanced_sdiv32_16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv32_16-512-class-480b-880p596c.a",
+        "native_entry": 23552,
+        "adapter": 9616,
+        "adapter_bytes": 64,
+        "native_core_bytes": 480,
+        "native_zp_bytes": 18,
+        "core_avg_cycles": 880.596406,
+        "core_min": 110,
+        "core_max": 1875,
+        "canonical_cases": 2097152,
+        "edge_cases": 18545,
+        "relocation": {
+          "$00E0": "$000E",
+          "$0010": "$0014",
+          "$0018": "$001C",
+          "$1000": "$5A00",
+          "$5000": "$5B00",
+          "$7000": "$5C00"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v1_balanced_sdiv32_32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 24070,
+        "private_executable_core": {
+          "address": "$2A00",
+          "bytes": 764,
+          "cloned_from_proven_arithmetic_core": "$C222-$C51D"
+        },
+        "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
+        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap"
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 40,
+        "unsigned_instructions": 27,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 88,
+        "unsigned_instructions": 70,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 138,
+        "unsigned_instructions": 113,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 209,
+        "unsigned_instructions": 178,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 201,
+        "unsigned_instructions": 170,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 245,
+        "unsigned_instructions": 192,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 207,
+        "unsigned_instructions": 158,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 225,
+        "unsigned_instructions": 160,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV32_16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 285,
+        "unsigned_instructions": 164,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV32_32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 387,
+        "unsigned_instructions": 313,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL16_SHR8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 98,
+        "unsigned_instructions": 80,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 225,
+        "unsigned_instructions": 194,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_UDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v1_balanced_MATH_SDIV16_SHL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 315,
+        "unsigned_instructions": 191,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_signed_readme",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_signed_link_map",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_no_legacy_native_signed",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_no_unsigned_derived_tree",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_four_mul_widths",
+      "status": "PASS",
+      "detail": [
+        "16",
+        "24",
+        "32",
+        "8"
+      ]
+    },
+    {
+      "check": "v2_pareto_fast_smul8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15232,
+        "canonical_source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$2600",
+          "bytes": 35,
+          "cloned_from_proven_arithmetic_core": "$5300-$5322"
+        }
+      }
+    },
+    {
+      "check": "v2_pareto_fast_smul16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15280,
+        "canonical_source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
+        "notes": "signed-specific quarter-square executable-ZP kernel; no unsigned executable dependency",
+        "source": "multiply/native/smul16_practical_116zp.a",
+        "relocation": "multiply/native/smul16_practical_116zp.relocation.json"
+      }
+    },
+    {
+      "check": "v2_pareto_fast_smul24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15344,
+        "canonical_source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$3600",
+          "bytes": 287,
+          "cloned_from_proven_arithmetic_core": "$5600-$571E"
+        }
+      }
+    },
+    {
+      "check": "v2_pareto_fast_smul32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15424,
+        "canonical_source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$3800",
+          "bytes": 277,
+          "cloned_from_proven_arithmetic_core": "$5800-$5914"
+        }
+      }
+    },
+    {
+      "check": "v2_pareto_fast_sdiv8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv8-fast-458b-77p497c.a",
+        "native_entry": 30726,
+        "adapter": 9472,
+        "adapter_bytes": 24,
+        "native_core_bytes": 458,
+        "native_zp_bytes": 5,
+        "core_avg_cycles": 77.496689,
+        "core_min": 20,
+        "core_max": 568,
+        "canonical_cases": 65536,
+        "edge_cases": 1762,
+        "relocation": {
+          "$0010": "$003E",
+          "$1000": "$7800"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v2_pareto_fast_sdiv16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv16-fast-1572b-127p807c.a",
+        "native_entry": 31232,
+        "adapter": 9504,
+        "adapter_bytes": 44,
+        "native_core_bytes": 1572,
+        "native_zp_bytes": 12,
+        "core_avg_cycles": 127.807033,
+        "core_min": 43,
+        "core_max": 977,
+        "canonical_cases": 2097152,
+        "edge_cases": 10276,
+        "relocation": {
+          "$0008": "$003E",
+          "$0010": "$0042",
+          "$0D00": "$7A00",
+          "$100C": "$7C0C"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v2_pareto_fast_sdiv24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv24-fast-1876b-174p968c.a",
+        "native_entry": 33024,
+        "adapter": 9552,
+        "adapter_bytes": 64,
+        "native_core_bytes": 1876,
+        "native_zp_bytes": 21,
+        "core_avg_cycles": 174.967714,
+        "core_min": 64,
+        "core_max": 2408,
+        "canonical_cases": 2097152,
+        "edge_cases": 19950,
+        "relocation": {
+          "$0008": "$003E",
+          "$0010": "$0044",
+          "$0B00": "$8100",
+          "$1000": "$8400"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v2_pareto_fast_sdiv32_16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv32_16-fast-2075b-782p812c.a",
+        "native_entry": 37376,
+        "adapter": 9616,
+        "adapter_bytes": 64,
+        "native_core_bytes": 2075,
+        "native_zp_bytes": 18,
+        "core_avg_cycles": 782.812479,
+        "core_min": 140,
+        "core_max": 1820,
+        "canonical_cases": 2097152,
+        "edge_cases": 18545,
+        "relocation": {
+          "$00E0": "$003E",
+          "$0010": "$0044",
+          "$0018": "$004C",
+          "$100C": "$890C",
+          "$5000": "$8E00",
+          "$7000": "$9200"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v2_pareto_fast_sdiv32_32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 24070,
+        "private_executable_core": {
+          "address": "$5AA8",
+          "bytes": 695,
+          "cloned_from_proven_arithmetic_core": "$C1FE-$C4B4"
+        },
+        "canonical_source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
+        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap"
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 39,
+        "unsigned_instructions": 26,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 115,
+        "unsigned_instructions": 101,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 191,
+        "unsigned_instructions": 167,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 201,
+        "unsigned_instructions": 171,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 201,
+        "unsigned_instructions": 171,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 245,
+        "unsigned_instructions": 192,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 803,
+        "unsigned_instructions": 618,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 870,
+        "unsigned_instructions": 627,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV32_16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 1165,
+        "unsigned_instructions": 1043,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV32_32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 387,
+        "unsigned_instructions": 313,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL16_SHR8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 125,
+        "unsigned_instructions": 111,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 217,
+        "unsigned_instructions": 187,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_UDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_MATH_SDIV16_SHL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 1195,
+        "unsigned_instructions": 1070,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_signed_readme",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_signed_link_map",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_no_legacy_native_signed",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_no_unsigned_derived_tree",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_four_mul_widths",
+      "status": "PASS",
+      "detail": [
+        "16",
+        "24",
+        "32",
+        "8"
+      ]
+    },
+    {
+      "check": "v3_reu_512k_smul8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15232,
+        "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
+        "notes": "profile-specific signed executable path; may share immutable REU lookup data, but shares no unsigned executable instructions"
+      }
+    },
+    {
+      "check": "v3_reu_512k_smul16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15280,
+        "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
+        "notes": "signed-specific quarter-square executable-ZP kernel; no unsigned executable dependency",
+        "source": "multiply/native/smul16_practical_116zp.a",
+        "relocation": "multiply/native/smul16_practical_116zp.relocation.json"
+      }
+    },
+    {
+      "check": "v3_reu_512k_smul24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15344,
+        "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$1400",
+          "bytes": 287,
+          "cloned_from_proven_arithmetic_core": "$5600-$571E"
+        }
+      }
+    },
+    {
+      "check": "v3_reu_512k_smul32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15424,
+        "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$1600",
+          "bytes": 277,
+          "cloned_from_proven_arithmetic_core": "$5800-$5914"
+        }
+      }
+    },
+    {
+      "check": "v3_reu_512k_sdiv8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv8-fast-458b-77p497c.a",
+        "native_entry": 30726,
+        "adapter": 9728,
+        "adapter_bytes": 24,
+        "native_core_bytes": 458,
+        "native_zp_bytes": 5,
+        "core_avg_cycles": 77.496689,
+        "core_min": 20,
+        "core_max": 568,
+        "canonical_cases": 65536,
+        "edge_cases": 1762,
+        "relocation": {
+          "$0010": "$003E",
+          "$1000": "$7800"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v3_reu_512k_sdiv16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv16-fast-1572b-127p807c.a",
+        "native_entry": 31232,
+        "adapter": 9760,
+        "adapter_bytes": 44,
+        "native_core_bytes": 1572,
+        "native_zp_bytes": 12,
+        "core_avg_cycles": 127.807033,
+        "core_min": 43,
+        "core_max": 977,
+        "canonical_cases": 2097152,
+        "edge_cases": 10276,
+        "relocation": {
+          "$0008": "$003E",
+          "$0010": "$0042",
+          "$0D00": "$7A00",
+          "$100C": "$7C0C"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v3_reu_512k_sdiv24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv24-fast-1876b-174p968c.a",
+        "native_entry": 33024,
+        "adapter": 9808,
+        "adapter_bytes": 64,
+        "native_core_bytes": 1876,
+        "native_zp_bytes": 21,
+        "core_avg_cycles": 174.967714,
+        "core_min": 64,
+        "core_max": 2408,
+        "canonical_cases": 2097152,
+        "edge_cases": 19950,
+        "relocation": {
+          "$0008": "$003E",
+          "$0010": "$0044",
+          "$0B00": "$8100",
+          "$1000": "$8400"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v3_reu_512k_sdiv32_16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv32_16-fast-2075b-782p812c.a",
+        "native_entry": 37376,
+        "adapter": 9872,
+        "adapter_bytes": 64,
+        "native_core_bytes": 2075,
+        "native_zp_bytes": 18,
+        "core_avg_cycles": 782.812479,
+        "core_min": 140,
+        "core_max": 1820,
+        "canonical_cases": 2097152,
+        "edge_cases": 18545,
+        "relocation": {
+          "$00E0": "$003E",
+          "$0010": "$0044",
+          "$0018": "$004C",
+          "$100C": "$890C",
+          "$5000": "$8E00",
+          "$7000": "$9200"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v3_reu_512k_sdiv32_32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 24070,
+        "private_executable_core": {
+          "address": "$1828",
+          "bytes": 695,
+          "cloned_from_proven_arithmetic_core": "$C1FE-$C4B4"
+        },
+        "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
+        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap"
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 31,
+        "unsigned_instructions": 19,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 115,
+        "unsigned_instructions": 103,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 191,
+        "unsigned_instructions": 167,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 201,
+        "unsigned_instructions": 171,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 201,
+        "unsigned_instructions": 171,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 245,
+        "unsigned_instructions": 25,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 803,
+        "unsigned_instructions": 618,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 870,
+        "unsigned_instructions": 627,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV32_16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 1165,
+        "unsigned_instructions": 1043,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV32_32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 387,
+        "unsigned_instructions": 313,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL16_SHR8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 125,
+        "unsigned_instructions": 113,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 217,
+        "unsigned_instructions": 187,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_UDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_MATH_SDIV16_SHL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 1195,
+        "unsigned_instructions": 1070,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_signed_readme",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_signed_link_map",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_no_legacy_native_signed",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_no_unsigned_derived_tree",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_four_mul_widths",
+      "status": "PASS",
+      "detail": [
+        "16",
+        "24",
+        "32",
+        "8"
+      ]
+    },
+    {
+      "check": "v4_reu_16m_smul8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15232,
+        "canonical_source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
+        "notes": "profile-specific signed executable path; may share immutable REU lookup data, but shares no unsigned executable instructions"
+      }
+    },
+    {
+      "check": "v4_reu_16m_smul16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15280,
+        "canonical_source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
+        "notes": "signed-specific quarter-square executable-ZP kernel; no unsigned executable dependency",
+        "source": "multiply/native/smul16_practical_116zp.a",
+        "relocation": "multiply/native/smul16_practical_116zp.relocation.json"
+      }
+    },
+    {
+      "check": "v4_reu_16m_smul24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15344,
+        "canonical_source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$1400",
+          "bytes": 287,
+          "cloned_from_proven_arithmetic_core": "$5600-$571E"
+        }
+      }
+    },
+    {
+      "check": "v4_reu_16m_smul32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15424,
+        "canonical_source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
+        "private_executable_core": {
+          "address": "$1600",
+          "bytes": 277,
+          "cloned_from_proven_arithmetic_core": "$5800-$5914"
+        }
+      }
+    },
+    {
+      "check": "v4_reu_16m_sdiv8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv8-fast-458b-77p497c.a",
+        "native_entry": 30726,
+        "adapter": 9472,
+        "adapter_bytes": 24,
+        "native_core_bytes": 458,
+        "native_zp_bytes": 5,
+        "core_avg_cycles": 77.496689,
+        "core_min": 20,
+        "core_max": 568,
+        "canonical_cases": 65536,
+        "edge_cases": 1762,
+        "relocation": {
+          "$0010": "$003E",
+          "$1000": "$7800"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v4_reu_16m_sdiv16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv16-fast-1572b-127p807c.a",
+        "native_entry": 31232,
+        "adapter": 9504,
+        "adapter_bytes": 44,
+        "native_core_bytes": 1572,
+        "native_zp_bytes": 12,
+        "core_avg_cycles": 127.807033,
+        "core_min": 43,
+        "core_max": 977,
+        "canonical_cases": 2097152,
+        "edge_cases": 10276,
+        "relocation": {
+          "$0008": "$003E",
+          "$0010": "$0042",
+          "$0D00": "$7A00",
+          "$100C": "$7C0C"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v4_reu_16m_sdiv24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv24-fast-1876b-174p968c.a",
+        "native_entry": 33024,
+        "adapter": 9552,
+        "adapter_bytes": 64,
+        "native_core_bytes": 1876,
+        "native_zp_bytes": 21,
+        "core_avg_cycles": 174.967714,
+        "core_min": 64,
+        "core_max": 2408,
+        "canonical_cases": 2097152,
+        "edge_cases": 19950,
+        "relocation": {
+          "$0008": "$003E",
+          "$0010": "$0044",
+          "$0B00": "$8100",
+          "$1000": "$8400"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v4_reu_16m_sdiv32_16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "source": "division/sdiv32_16-fast-2075b-782p812c.a",
+        "native_entry": 37376,
+        "adapter": 9616,
+        "adapter_bytes": 64,
+        "native_core_bytes": 2075,
+        "native_zp_bytes": 18,
+        "core_avg_cycles": 782.812479,
+        "core_min": 140,
+        "core_max": 1820,
+        "canonical_cases": 2097152,
+        "edge_cases": 18545,
+        "relocation": {
+          "$00E0": "$003E",
+          "$0010": "$0044",
+          "$0018": "$004C",
+          "$100C": "$890C",
+          "$5000": "$8E00",
+          "$7000": "$9200"
+        },
+        "kind": "native_signed_kernel",
+        "notes": "signed entry owns its executable divide engine; no corresponding unsigned executable path is entered"
+      }
+    },
+    {
+      "check": "v4_reu_16m_sdiv32_32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 24070,
+        "private_executable_core": {
+          "address": "$1828",
+          "bytes": 695,
+          "cloned_from_proven_arithmetic_core": "$C1FE-$C4B4"
+        },
+        "canonical_source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
+        "notes": "private signed 32/32 divide engine split from UDIV32_32; zero executable overlap"
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 31,
+        "unsigned_instructions": 19,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 115,
+        "unsigned_instructions": 99,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 191,
+        "unsigned_instructions": 167,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 201,
+        "unsigned_instructions": 171,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 201,
+        "unsigned_instructions": 171,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 245,
+        "unsigned_instructions": 25,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 803,
+        "unsigned_instructions": 618,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 870,
+        "unsigned_instructions": 627,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV32_16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 1165,
+        "unsigned_instructions": 1043,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV32_32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 387,
+        "unsigned_instructions": 313,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL16_SHR8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 125,
+        "unsigned_instructions": 109,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 217,
+        "unsigned_instructions": 187,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_UDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_MATH_SDIV16_SHL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 1195,
+        "unsigned_instructions": 1070,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_signed_readme",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_signed_link_map",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_no_legacy_native_signed",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_no_unsigned_derived_tree",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_four_mul_widths",
+      "status": "PASS",
+      "detail": [
+        "16",
+        "24",
+        "32",
+        "8"
+      ]
+    },
+    {
+      "check": "v5_hybrid_lowzp_smul8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15232,
+        "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
+        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_smul16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15280,
+        "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
+        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_smul24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15344,
+        "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
+        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_smul32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15424,
+        "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
+        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap"
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_sdiv8_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15520,
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_sdiv16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15648,
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_sdiv24_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 15840,
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_sdiv32_16_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 16096,
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_sdiv32_32_native_kind",
+      "status": "PASS",
+      "detail": {
+        "kind": "native_signed_kernel",
+        "public_entry": 24070,
+        "notes": "inherits native signed executable path from V1 base; selected hybrid imports do not replace signed APIs"
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UMUL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 40,
+        "unsigned_instructions": 27,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UMUL16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 88,
+        "unsigned_instructions": 70,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UMUL24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 138,
+        "unsigned_instructions": 113,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UMUL32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 209,
+        "unsigned_instructions": 178,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UMUL32_READY_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 201,
+        "unsigned_instructions": 170,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UDIV8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 245,
+        "unsigned_instructions": 192,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UDIV16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 207,
+        "unsigned_instructions": 618,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UDIV24_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV24_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 225,
+        "unsigned_instructions": 627,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UDIV32_16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV32_16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 285,
+        "unsigned_instructions": 1043,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UDIV32_32_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV32_32_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 387,
+        "unsigned_instructions": 313,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UMUL16_SHR8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL16_SHR8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 98,
+        "unsigned_instructions": 80,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UMUL32_SHR16_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 225,
+        "unsigned_instructions": 194,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_UDIV16_SHL8_symbol",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v5_hybrid_lowzp_MATH_SDIV16_SHL8_zero_unsigned_exec_overlap",
+      "status": "PASS",
+      "detail": {
+        "signed_instructions": 315,
+        "unsigned_instructions": 1070,
+        "overlap": []
+      }
+    },
+    {
+      "check": "v2_pareto_fast_smul16_source",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v2_pareto_fast_smul16_relocation",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_smul16_source",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v3_reu_512k_smul16_relocation",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_smul16_source",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "v4_reu_16m_smul16_relocation",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "present_SIGNED_IMPLEMENTATIONS.md",
+      "status": "PASS",
+      "detail": "docs/SIGNED_IMPLEMENTATIONS.md"
+    },
+    {
+      "check": "present_SIGNED_IMPLEMENTATION_REFERENCE.md",
+      "status": "PASS",
+      "detail": "docs/SIGNED_IMPLEMENTATION_REFERENCE.md"
+    },
+    {
+      "check": "present_SIGNED_IMPLEMENTATION_SELECTION.csv",
+      "status": "PASS",
+      "detail": "docs/SIGNED_IMPLEMENTATION_SELECTION.csv"
+    },
+    {
+      "check": "present_SIGNED_IMPLEMENTATION_VALIDATION.md",
+      "status": "PASS",
+      "detail": "docs/SIGNED_IMPLEMENTATION_VALIDATION.md"
+    },
+    {
+      "check": "present_PERFORMANCE_SIGNED_IMPLEMENTATIONS.csv",
+      "status": "PASS",
+      "detail": "docs/PERFORMANCE_SIGNED_IMPLEMENTATIONS.csv"
+    },
+    {
+      "check": "present_validate_signed_multiply.py",
+      "status": "PASS",
+      "detail": "tools/validate_signed_multiply.py"
+    },
+    {
+      "check": "present_validate_signed_division.py",
+      "status": "PASS",
+      "detail": "tools/validate_signed_division.py"
+    },
+    {
+      "check": "present_upgrade_native_signed.py",
+      "status": "PASS",
+      "detail": "tools/upgrade_native_signed.py"
+    }
+  ],
+  "summary": {
+    "profiles": 5,
+    "api_pairs_per_profile": 13,
+    "zero_overlap_comparisons": 65,
+    "checks_passed": 279,
+    "taxonomy": [
+      "native_signed_kernel"
+    ]
+  }
+}

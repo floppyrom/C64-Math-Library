@@ -1,8 +1,8 @@
 PYTHON ?= python3
 
-.PHONY: sources reference alternate validate turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress audit acme clean package-audit all
+.PHONY: sources reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress audit acme clean package-audit all
 
-all: reference alternate validate turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
+all: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
 
 sources:
 	$(PYTHON) tools/generate_sources.py
@@ -15,6 +15,12 @@ alternate: sources
 
 validate: alternate
 	$(PYTHON) tools/validate_source_build.py all --build build_source/alternate --out validation/source_relocation
+
+signed-layout:
+	$(PYTHON) tools/validate_signed_layout.py
+
+signed-multiply:
+	$(PYTHON) tools/validate_signed_multiply.py
 
 turbo: reference alternate
 	$(PYTHON) tools/validate_turbo_relocation.py

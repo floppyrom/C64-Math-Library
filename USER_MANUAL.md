@@ -293,11 +293,11 @@ Current equal-weight breakpoints are:
 
 | ZP | Default selection | Exact extra RAM vs V1 |
 |---:|---|---:|
-| 31 | V5 zero-ZP imports + initialized UMUL32 | 4976 B |
-| 36 | above + UMUL8/16 | 5698 B |
-| 60 | above + UMUL24 | 6086 B |
-| 147 | V5 imports + initialized UMUL32 + native SMUL16 | 5162 B |
-| 176 | all certified hybrid packs | 6272 B |
+| 31 | V5 zero-ZP imports + initialized UMUL32 | 5253 B |
+| 36 | above + UMUL8/16 | 6010 B |
+| 60 | above + UMUL24 | 6685 B |
+| 147 | V5 imports + initialized UMUL32 + native SMUL16 | 5439 B |
+| 176 | all certified hybrid packs | 6871 B |
 | 221 | complete V2 | 208 B resident increase |
 
 The optimizer maximizes weighted cycle savings, so resource use is not required to be monotonic across those points. At 31 ZP + `--ram-budget 0`, the generated PRG is byte-identical to V1. At 31 ZP + `--init-policy optional`, it is byte-identical to V5. At 221 ZP the builder selects complete V2.
@@ -471,6 +471,13 @@ Signed values use two's-complement representation.
 | `MATH_SMUL32_READY` | same as SMUL32 | `Z[0..7]` | `C=0` | initialized-state signed entry |
 
 Because the result width is doubled, the full mathematical signed product fits in the destination width.
+
+
+### Implementation provenance
+
+The signed API is uniform and all shipped `MATH_SMUL*`/`MATH_SDIV*` paths now own **native signed executable kernels**. Native here means a signed entry never enters the corresponding unsigned executable engine; immutable lookup tables may still be shared. V2–V4 `MATH_SMUL16` keeps its signed-specific quarter-square kernel in executable ZP, while V1/V5 preserve the 31-byte low-ZP contract with private signed executable arithmetic paths.
+
+See `docs/SIGNED_IMPLEMENTATIONS.md` for the exact per-profile taxonomy and resource trade-offs.
 
 ---
 

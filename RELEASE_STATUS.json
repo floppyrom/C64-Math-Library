@@ -1,17 +1,17 @@
 {
   "acme": {
-    "assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
-    "resident_builds_checked": 8,
-    "status": "PASS",
-    "turbo_boundary_overlays_checked": 4,
-    "turbo_reference_alternate_overlays_checked": 8
+    "status": "NOT_RUN",
+    "assembler": "ACME executable unavailable in validation container",
+    "reason": "The execution environment has no ACME binary and outbound package/network access is disabled, so ACME could not be installed for this modified native-signed build.",
+    "historical_pre_native_validation": "validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_NATIVE.json",
+    "rerun_command": "python3 tools/verify_with_acme.py"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "46cd464c25d9785a61804ade9a7c3cc149c8932bb78b4ae23261015cb6a3d29a",
-    "v2_pareto_fast": "b6e78167006062714ed92d9848289f9597366b0d9d10973bc8c04e346f301a00",
-    "v3_reu_512k": "5cc2b02b983532c0f5785106f49ad08ea58dbd218fcabe544faa94ef1792b6a9",
-    "v4_reu_16m": "34581d82fab5958f399be055fe75700e49ad63534ec3fa863805d4b5386837a5",
-    "v5_hybrid_lowzp": "0773631ecdb5239dce3cb6c064ba10da4b4537d7ac318b5420b2d9a66fb953ec"
+    "v1_balanced": "779ca68babfc99b9bf23304b3f7ae668566a389ac443c8768ef40ed0c3eb53cc",
+    "v2_pareto_fast": "ac1bf41b2ee5a96475138c7563b27284deb2546b41aedb907a7885a88439e5d2",
+    "v3_reu_512k": "47a5a2de3ea90bb851c39d2b56091cda335718853ca9d6b6300a592c7cbe4aa2",
+    "v4_reu_16m": "d3fd4b88b1fd38c68212592291648da8ca714c831f8f1da8bdc22ad39e2f6be3",
+    "v5_hybrid_lowzp": "17c649b649065b47ae3c0c545876e3ad239d32dff1049d97e8d3068735e3583d"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "c763b637535234987aeb418a5dbf6a70e41f24e6880653f64529888d7d55d067",
@@ -28,7 +28,7 @@
     "config_validation_cases": 12,
     "default_reference_points": {
       "147": {
-        "extra_private_ram_bytes": 5162,
+        "extra_private_ram_bytes": 5439,
         "packs": [
           "smul16_exec",
           "umul32_initialized",
@@ -36,7 +36,7 @@
         ]
       },
       "176": {
-        "extra_private_ram_bytes": 6272,
+        "extra_private_ram_bytes": 6871,
         "packs": [
           "smul16_exec",
           "umul24",
@@ -52,14 +52,14 @@
         ]
       },
       "31": {
-        "extra_private_ram_bytes": 4976,
+        "extra_private_ram_bytes": 5253,
         "packs": [
           "umul32_initialized",
           "zero_zp_v5"
         ]
       },
       "36": {
-        "extra_private_ram_bytes": 5698,
+        "extra_private_ram_bytes": 6010,
         "packs": [
           "umul32_initialized",
           "umul8_16",
@@ -67,7 +67,7 @@
         ]
       },
       "60": {
-        "extra_private_ram_bytes": 6086,
+        "extra_private_ram_bytes": 6685,
         "packs": [
           "umul24",
           "umul32_initialized",
@@ -97,7 +97,7 @@
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-09-07",
+  "date": "2026-09-14",
   "deterministic_builds_checked": 8,
   "documentation": {
     "code_change_from_turbo_final": true,
@@ -106,13 +106,13 @@
     "manual_scope": "V1-V5 fixed profiles; 45-entry stable API; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 52148,
-    "user_manual_lines": 1692,
-    "user_manual_sha256": "7bab0f5aedd6456493bc5382d5181c322d6218ef4cc286c3fea9281207d47434"
+    "user_manual_bytes": 52722,
+    "user_manual_lines": 1699,
+    "user_manual_sha256": "d9fd5dc371e4cbd8337fd624ae2fba9d13350a40112ff0e66eda64343d91e65b"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$F1FF",
-    "alternate_prg_sha256": "0773631ecdb5239dce3cb6c064ba10da4b4537d7ac318b5420b2d9a66fb953ec",
+    "alternate_prg_sha256": "17c649b649065b47ae3c0c545876e3ad239d32dff1049d97e8d3068735e3583d",
     "common_machine_calls_per_map": 4172,
     "common_public_entries_per_map": 45,
     "config_validation_cases": 8,
@@ -123,7 +123,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$B1FF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "14ecc1993917fb68e6c1fbe876728fb845292b49feed47ce10946f1f3906a68a",
+    "reference_prg_sha256": "c96501c65061b687fbdecbe291f2e16bab2ab524d52f7e40d36754e6c1a47740",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536
   },
@@ -136,6 +136,12 @@
   },
   "isqrt32_fast_validation_status": "PASS",
   "notes": [
+    "All shipped SMUL*/SDIV* public paths own signed-specific executable paths; corresponding unsigned executable engines are not entered.",
+    "Signed ownership validator: 279 checks and 65/65 zero-overlap signed/unsigned executable comparisons across V1-V5.",
+    "Signed arithmetic regression: 264,999 multiply calls and 364,533 divide/modulo calls, zero errors.",
+    "Same-corpus delta audit finds no signed timing regressions: newly split multiplier paths save 3 cycles; SDIV32_32 is faster in every profile.",
+    "Current ACME rerun was not possible in this execution container because ACME is absent and outbound installation is disabled; historical pre-native ACME evidence is retained and verify_with_acme.py can rerun current sources externally.",
+    "V2-V4 retain the executable-ZP native SMUL16 kernel; V1/V5 keep the 31-byte normal-ZP contract using private signed arithmetic paths in already-reserved resident holes.",
     "Custom Pareto Builder added for stock-C64 games/demos: total ZP budget, optional exact extra-RAM budget, init policy and routine weights select the fastest certified compatible V1/V2 implementation set at build time.",
     "Custom Pareto selection has no runtime dispatcher and retains the same 45-entry public API.",
     "Default equal-weight Pareto breakpoints are 31/36/60/147/176/221 ZP bytes.",
@@ -152,23 +158,24 @@
     "The common 45-entry stable API is unchanged across V1-V4.",
     "V3/V4 additionally expose six stateful Turbo16/Turbo32 BEGIN/CALL/END entries.",
     "Turbo executable-ZP origins and REU storage banks are selected at build time; overlay code is assembled from canonical source with no runtime relocation pass.",
-    "Reference resident PRGs and V3/V4 REU images reproduce the established FAST-ISQRT32 release byte-for-byte.",
     "Reference and alternate Turbo cycle vectors are identical; relocation adds zero runtime cycles.",
     "Endpoint execution validates Turbo16 at $02/$8F, Turbo32 at $02/$0F, V3 banks $06/$07 and V4 banks $FE/$FF.",
     "Fast exact independently derived ISQRT32 remains active; V4 uses 512 resident square-table bytes at $9800-$99FF."
   ],
-  "package_audit_checks": 16,
+  "package_audit_checks": 21,
   "package_cleanup": {
     "csdb_changelog": "CSDB_CHANGELOG.txt",
     "generated_build_hybrid_shipped": false,
     "generated_build_pareto_shipped": false,
     "generated_build_source_shipped": false,
-    "lean_file_count_excluding_checksum": 379,
+    "lean_file_count_excluding_checksum": 370,
     "obsolete_development_validators_removed": 2,
     "package_contents_doc": "docs/PACKAGE_CONTENTS.md",
     "prior_exhaustive_baseline_retained": true,
     "superseded_slow_isqrt32_baseline_shipped": false,
-    "unreferenced_legacy_bin_label_artifacts_removed": 27
+    "unreferenced_legacy_bin_label_artifacts_removed": 27,
+    "legacy_native_signed_tree_removed": true,
+    "uncompressed_bytes_excluding_checksum": 20031155
   },
   "profiles": [
     "v1_balanced",
@@ -178,11 +185,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "3d3ff4f79275c2ad95080e35dd82af84b27ebcf23f6ee0505a3ea9bd077cf620",
-    "v2_pareto_fast": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac",
-    "v3_reu_512k": "0672e1d830618e7ec7b568e3935be0528bc8cee411e9533148ec76cf09a4bb71",
-    "v4_reu_16m": "5ee69a560dec704d3bc5cdc0bb33d21079e3b781adbec4b609306ea06aa73139",
-    "v5_hybrid_lowzp": "14ecc1993917fb68e6c1fbe876728fb845292b49feed47ce10946f1f3906a68a"
+    "v1_balanced": "2b89da8e1571750d2c734fba27892d5f35ff36e204743f6dd63a78d68d08ff57",
+    "v2_pareto_fast": "72e0621bd32ea6c0b6af99612982e02b007af9ade74275f62f55488663c7385d",
+    "v3_reu_512k": "213ba2efb64abca671a7b1b32f4cbedf5e29d90637fb52ee4af175094709d674",
+    "v4_reu_16m": "b3704f55815d4ce4d07b61dac5170184a8d7f9cdcaddac59bb0bb2a8dd2a6f06",
+    "v5_hybrid_lowzp": "c96501c65061b687fbdecbe291f2e16bab2ab524d52f7e40d36754e6c1a47740"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "1d8b844983fa7aa757bc3dff5c12f92d4d9b3732c874f6e83a44116e5719c576",
@@ -192,8 +199,8 @@
     "turbo16": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
     "turbo32": "0b041806ec684a2d892ffd0f6f2e6f219293912b0572ae964bba596b0a2774f1"
   },
-  "release": "c64_math_library_v1-v5_CUSTOM_PARETO_BUILDER_2026-09-07",
-  "release_audit_checks": 203,
+  "release": "c64_math_library_v1-v5_ALL_NATIVE_SIGNED_2026-09-14",
+  "release_audit_checks": 179,
   "reu_turbo_lifecycle_entries": 6,
   "source_relocation": {
     "entries_executed": 180,
@@ -201,7 +208,7 @@
     "status": "PASS"
   },
   "stable_api_entries": 45,
-  "status": "PASS",
+  "status": "PASS_WITH_ACME_NOT_RUN",
   "turbo_boundary_sweep": {
     "product_calls": 3556,
     "status": "PASS",
@@ -236,5 +243,23 @@
     "status": "PASS",
     "total_turbo_api_calls": 17196,
     "zero_runtime_relocation_penalty": true
-  }
+  },
+  "signed_implementation_taxonomy": {
+    "status": "PASS",
+    "definition": "signed path owns executable arithmetic; no corresponding unsigned executable engine entered; immutable tables may be shared",
+    "layout_checks": 279,
+    "zero_overlap_comparisons": 65,
+    "signed_multiply_machine_calls": 264999,
+    "signed_multiply_errors": 0,
+    "signed_division_machine_calls": 364533,
+    "signed_division_errors": 0,
+    "v2_v3_v4_smul16": "native signed smul16_practical_116zp executable-ZP kernel",
+    "v1_v5_smul16": "private native-signed executable path; 31-byte normal-ZP contract preserved",
+    "smul8_24_32": "private native-signed executable paths across fixed profiles",
+    "sdiv32_32": "private native-signed 32/32 division core across fixed profiles",
+    "same_corpus_multiply_regressions": 0,
+    "same_corpus_sdiv32_32_regressions": 0,
+    "resident_load_end_ranges_unchanged": true
+  },
+  "release_audit_status": "PASS_WITH_ACME_NOT_RUN"
 }

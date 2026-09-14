@@ -18,6 +18,18 @@ For stock-C64 games and demos, the repository now also includes a **Custom Paret
 
 V5 is intended particularly for games and demos. It is **one build**, not two complete libraries loaded side-by-side. The stable caller ABI remains unchanged.
 
+
+## Signed implementation taxonomy
+
+All shipped signed multiply and divide entries now own **native signed executable kernels**. In this release, “native signed” means the signed entry never executes the corresponding unsigned multiply/divide engine; immutable lookup tables may still be shared.
+
+- V1/V5 preserve the 31-byte normal-ZP contract while using private signed executable arithmetic paths.
+- V2/V3/V4 retain the signed-specific `smul16_practical_116zp` executable-ZP kernel.
+- Wider signed multiply cores and `SDIV32_32` use signed-owned private executable cores in existing reserved holes, so public ABI addresses and resident load/end ranges are unchanged. The cores may reuse the same arithmetic identities/tables, but they do not execute the corresponding unsigned routine.
+- `tools/validate_signed_layout.py` mechanically requires zero signed/unsigned executable overlap for 13 API pairs in all five profiles.
+
+See `docs/SIGNED_IMPLEMENTATIONS.md` and each profile's `resident/signed/README.md`.
+
 ## Custom Pareto Builder
 
 Interactive use:
@@ -109,6 +121,8 @@ The library is **not reentrant**, but ordinary sequential game/demo loops are fu
 ## Validation headline
 
 V1–V4 retain the previously reviewed validation evidence, including byte-exact source rebuilds, 180/180 alternate-map stable entries, Turbo relocation/boundary testing, fast exact ISQRT32 validation and configuration rejection tests.
+
+The signed-implementation cleanup adds a repository-layout audit and a dedicated **264,999-call V1–V5 signed-multiplication regression**, including exhaustive 8×8 validation on the distinct resident implementation families.
 
 V5 adds:
 

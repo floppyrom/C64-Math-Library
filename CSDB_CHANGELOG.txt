@@ -1,3 +1,13 @@
+Native signed refresh:
+- Every SMUL/SDIV public path now owns a native signed executable kernel; no corresponding unsigned executable engine is entered.
+- Profile ZP budgets and public ABI are unchanged; affected signed multiply finalizers are 3 cycles shorter where safely compacted.
+- Same-corpus check: all newly split SMUL paths are 3 cycles faster; the already-native V2-V4 SMUL16 is unchanged; SDIV32_32 is faster in every profile.
+- Added zero-overlap graph checks plus dedicated multiply/divide arithmetic regressions.
+
+2026-09-14 EARLIER SIGNED SOURCE/TAXONOMY CLEANUP (SUPERSEDED)
+- This intermediate documentation-only taxonomy was replaced later the same day by the all-native signed kernel refresh at the top of this file.
+- Its 264,999-call multiply validation is retained and now complemented by dedicated division and executable-ownership validation.
+
 C64 MATH LIBRARY — CUSTOM PARETO BUILDER — 2026-09-07
 
 New stock-C64 build-time optimizer: tell it the total ZP budget (plus optional RAM budget, init policy and hot-routine weights) and it selects the fastest certified compatible V1/V2 implementation mix with no runtime dispatcher. Same 45-entry API. Default breakpoints: 31/36/60/147/176/221 ZP. 31 ZP + zero extra RAM reproduces V1 byte-for-byte; 31 ZP + optional init reproduces V5; 221 ZP selects full V2.

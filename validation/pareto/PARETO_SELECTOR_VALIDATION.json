@@ -8,13 +8,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_private_ram_bytes": 4976,
+        "extra_private_ram_bytes": 5253,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "142b30086c21e29a10326def7090571d3e0246e0cd6b40a85ad2e4d16a274b47"
+        "sha256": "0f4e27354867cd4cdd299abcf5b5a7b451834c9cdf6d5adf100160327a071374"
       },
       "36": {
         "selected_packs": [
@@ -23,13 +23,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_private_ram_bytes": 5698,
+        "extra_private_ram_bytes": 6010,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "01b6b2b97cfae3f940255268da12e5c3c5bf1b4ff47e86253d427df080ae3d14"
+        "sha256": "242d99c7cc10a49a4f29613bacf5dc196383a18910e41883f39173f934ad6174"
       },
       "60": {
         "selected_packs": [
@@ -39,13 +39,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 6086,
+        "extra_private_ram_bytes": 6685,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "a9b8cf382b3cf468b5c7134b0c8e5719095f1c67834f4ade140769c33f689c1c"
+        "sha256": "a730bbb80ad4a4d7f55b1dc4bad8c5a32053226c826e3e431a68649ce371336f"
       },
       "147": {
         "selected_packs": [
@@ -54,13 +54,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_private_ram_bytes": 5162,
+        "extra_private_ram_bytes": 5439,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "d5c4d9b4df228188eebf76059130ee0ba91e41d2cda8ff16db82b924f3f9b843"
+        "sha256": "5b46f0d5b31908f7da3503d39cf2d1f6e19eec7cd942e3ba3e5048a7b9d55d8f"
       },
       "176": {
         "selected_packs": [
@@ -71,13 +71,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 6272,
+        "extra_private_ram_bytes": 6871,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "1e1b659883684ac5dec7a612b52602d37097942125d6716f9f4502f35fc64085"
+        "sha256": "90723caea345e1a43d2a4a032f5cf4c53f8116ab48faa2ecbdf286c91eeae713"
       },
       "221": {
         "selected_packs": [
@@ -90,7 +90,7 @@
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "6ae0b053c36e2bde6e642e5b7a171470c197e23dff39bce8a318a733df582dac"
+        "sha256": "72e0621bd32ea6c0b6af99612982e02b007af9ade74275f62f55488663c7385d"
       }
     },
     "alternate": {
@@ -100,13 +100,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_private_ram_bytes": 4976,
+        "extra_private_ram_bytes": 5253,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "79dc4423fbf0f5cc5612c1e57a9804cc47b424bbb155698eb6ab3d6759a6e4a5"
+        "sha256": "8fc1305fffaff80e83b881cffb8c16189f916d6a7b25e0ad52ee6b076a2a9d4d"
       },
       "36": {
         "selected_packs": [
@@ -115,13 +115,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_private_ram_bytes": 5698,
+        "extra_private_ram_bytes": 6010,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "b0d3eac9c5d5f3c27f55077127a6d1a679da96c132b02e70112d5b843f30b305"
+        "sha256": "4722166ade680de5a48b213ae3ca22e2d6b254460fef4334869aa945e0a1dec1"
       },
       "60": {
         "selected_packs": [
@@ -131,13 +131,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 6086,
+        "extra_private_ram_bytes": 6685,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "11e7f6cfbedd9d1c1369327f6ca7980bf4288b76e2b878672698ff892335ac62"
+        "sha256": "7a3ce757e5de8c4a7ac8e62381454c20b66c014c19750ac4a0eb669f064cfd3c"
       },
       "147": {
         "selected_packs": [
@@ -146,13 +146,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_private_ram_bytes": 5162,
+        "extra_private_ram_bytes": 5439,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "f7d0d4bcd551af042df4351c42fa566112269167c7fb18012da208b5b871ae1f"
+        "sha256": "7927d0d0ae006006342ffd008bffd4bd21cc0a4adeacf0cc1543f2daf31747b8"
       },
       "176": {
         "selected_packs": [
@@ -163,13 +163,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 6272,
+        "extra_private_ram_bytes": 6871,
         "init_required": true,
         "common_api": {
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "3179784f43c6f109c99511b53877cecb0dae9c0e5e91688d5f113dbcc01aad6b"
+        "sha256": "67d407729595cd4cc90539a4a22194fc59c1599e6246911bbf3ef5bdc1563c51"
       },
       "221": {
         "selected_packs": [
@@ -182,7 +182,7 @@
           "entries": 45,
           "calls": 4172
         },
-        "sha256": "cef9ebf153056c2d63121100d3b8c5ca7593ab447f073f2d105edfdaa3f96876"
+        "sha256": "f3dfd7838625bb74c115679e8361c8021521ec5b7385e39197105f892603f432"
       }
     }
   },
@@ -200,7 +200,7 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_ram": 4976,
+        "extra_ram": 5253,
         "score": 379.426773,
         "init_required": true
       }
@@ -220,7 +220,7 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_ram": 5698,
+        "extra_ram": 6010,
         "score": 468.24488599999995,
         "init_required": true
       }
@@ -242,7 +242,7 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_ram": 6086,
+        "extra_ram": 6685,
         "score": 548.7456119999999,
         "init_required": true
       }
@@ -262,7 +262,7 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_ram": 5162,
+        "extra_ram": 5439,
         "score": 721.97182,
         "init_required": true
       }
@@ -286,8 +286,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_ram": 6272,
-        "score": 891.2906589999999,
+        "extra_ram": 6871,
+        "score": 891.290659,
         "init_required": true
       }
     },
@@ -348,20 +348,12 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 55,
-        "extra_ram": 5364,
+        "extra_ram": 5928,
         "score": 4296.213436,
         "init_required": true
       }
     }
   ],
-  "matrix_current_rerun": {
-    "status": "PASS",
-    "builds": 12,
-    "entries_per_build": 45,
-    "calls_per_build": 4172,
-    "common_api_machine_calls": 50064,
-    "note": "All 12 regenerated builds completed the common API validator successfully after the exact RAM-accounting change; binary hashes are unchanged from the previously deep-validated matrix."
-  },
   "direct_v2_cycle_parity": {
     "status": "PASS",
     "cases": 10108,
@@ -463,29 +455,28 @@
     {
       "map": "reference",
       "zp_budget": 31,
-      "sha256": "142b30086c21e29a10326def7090571d3e0246e0cd6b40a85ad2e4d16a274b47",
+      "sha256": "0f4e27354867cd4cdd299abcf5b5a7b451834c9cdf6d5adf100160327a071374",
       "identical": true
     },
     {
       "map": "reference",
       "zp_budget": 176,
-      "sha256": "1e1b659883684ac5dec7a612b52602d37097942125d6716f9f4502f35fc64085",
+      "sha256": "90723caea345e1a43d2a4a032f5cf4c53f8116ab48faa2ecbdf286c91eeae713",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 31,
-      "sha256": "79dc4423fbf0f5cc5612c1e57a9804cc47b424bbb155698eb6ab3d6759a6e4a5",
+      "sha256": "8fc1305fffaff80e83b881cffb8c16189f916d6a7b25e0ad52ee6b076a2a9d4d",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 176,
-      "sha256": "3179784f43c6f109c99511b53877cecb0dae9c0e5e91688d5f113dbcc01aad6b",
+      "sha256": "67d407729595cd4cc90539a4a22194fc59c1599e6246911bbf3ef5bdc1563c51",
       "identical": true
     }
   ],
   "common_api_machine_calls": 50064,
-  "ram_accounting": "exact selected private payload including exact generated init helper length",
-  "elapsed_seconds_finalize": 15.599
+  "elapsed_seconds": 22.469
 }
