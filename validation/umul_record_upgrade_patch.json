@@ -1,0 +1,82 @@
+{
+  "v1_balanced": {
+    "before_sha256": "2b89da8e1571750d2c734fba27892d5f35ff36e204743f6dd63a78d68d08ff57",
+    "after_sha256": "c4d956b482e3f3051b49bf10b8d9d9da6dbd4638f09cd69774531be57c3d36ae",
+    "umul16": {
+      "zp_base": "0x9",
+      "code_start": "0x47ec",
+      "entry": "0x47ec",
+      "y1": "0x481a",
+      "z0": "0x19",
+      "bytes": 133
+    },
+    "umul24": {
+      "zp_base": "0x9",
+      "code_start": "0x4a49",
+      "entry": "0x4a81",
+      "y0": "0x4af1",
+      "y1": "0x4ac7",
+      "bytes": 307
+    }
+  },
+  "v2_pareto_fast": {
+    "before_sha256": "72e0621bd32ea6c0b6af99612982e02b007af9ade74275f62f55488663c7385d",
+    "after_sha256": "c6c5bc62d3fb6a2f1b43d0632d5af860d0127a6854edde2eb8c8e6264532ac57",
+    "umul16": {
+      "zp_base": "0x21",
+      "code_start": "0x53ec",
+      "entry": "0x53ec",
+      "y1": "0x541a",
+      "z0": "0x31",
+      "bytes": 133
+    },
+    "umul24": {
+      "zp_base": "0x21",
+      "code_start": "0x5649",
+      "entry": "0x5681",
+      "y0": "0x56f1",
+      "y1": "0x56c7",
+      "bytes": 307
+    }
+  },
+  "v3_reu_512k": {
+    "before_sha256": "213ba2efb64abca671a7b1b32f4cbedf5e29d90637fb52ee4af175094709d674",
+    "after_sha256": "17df29a79c4c8c62fecfe54f18b6464e18b749c86102dafae57d6f38e2450a4c",
+    "umul16": {
+      "zp_base": "0x21",
+      "code_start": "0x53ec",
+      "entry": "0x53ec",
+      "y1": "0x541a",
+      "z0": "0x31",
+      "bytes": 133
+    },
+    "umul24": {
+      "zp_base": "0x21",
+      "code_start": "0x5649",
+      "entry": "0x5681",
+      "y0": "0x56f1",
+      "y1": "0x56c7",
+      "bytes": 307
+    }
+  },
+  "v4_reu_16m": {
+    "before_sha256": "b3704f55815d4ce4d07b61dac5170184a8d7f9cdcaddac59bb0bb2a8dd2a6f06",
+    "after_sha256": "7efc3eb6701b47070afdb641084486bcb49f33e97545054bddd3327e91587911",
+    "umul16": {
+      "zp_base": "0x21",
+      "code_start": "0x53ec",
+      "entry": "0x53ec",
+      "y1": "0x541a",
+      "z0": "0x31",
+      "bytes": 133
+    },
+    "umul24": {
+      "zp_base": "0x21",
+      "code_start": "0x5649",
+      "entry": "0x5681",
+      "y0": "0x56f1",
+      "y1": "0x56c7",
+      "bytes": 307
+    }
+  }
+}

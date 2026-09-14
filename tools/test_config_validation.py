@@ -35,7 +35,7 @@ expect_fail('V4 operational bank collision rejected','v4_reu_16m',lambda v:v.__s
 expect_fail('Turbo16 processor-port overlap rejected','v3_reu_512k',lambda v:v.__setitem__('TURBO16_ZP_BASE',0x01))
 expect_fail('Turbo16 ZP wrap rejected','v3_reu_512k',lambda v:v.__setitem__('TURBO16_ZP_BASE',0x90))
 expect_fail('Turbo32 processor-port overlap rejected','v3_reu_512k',lambda v:v.__setitem__('TURBO32_ZP_BASE',0x01))
-expect_fail('Turbo32 ZP wrap rejected','v3_reu_512k',lambda v:v.__setitem__('TURBO32_ZP_BASE',0x10))
+expect_fail('Turbo32 ZP wrap rejected','v3_reu_512k',lambda v:v.__setitem__('TURBO32_ZP_BASE',0x7a))
 expect_fail('V3 Turbo bank >7 rejected','v3_reu_512k',lambda v:v.__setitem__('REU_TURBO16_BANK',8))
 expect_fail('V4 Turbo/QS16 bank collision rejected','v4_reu_16m',lambda v:v.__setitem__('REU_TURBO32_BANK',v['REU_QS16_BASE_BANK']))
 out={'status':'PASS','tests':len(CASES),'cases':CASES}

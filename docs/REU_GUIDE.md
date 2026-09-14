@@ -21,7 +21,7 @@ bank 7  reciprocal high
 
 This makes UMUL8, UDIV8 and UMOD8 direct REU services rather than resident arithmetic loops.
 
-In the reference build Turbo16 swaps a 113-byte kernel into `$003E-$00AE`; Turbo32 swaps a 241-byte kernel into `$000A-$00FA`. These are no longer fixed: `TURBO16_ZP_BASE`/`TURBO32_ZP_BASE` choose the ZP origins and `REU_TURBO16_BANK`/`REU_TURBO32_BANK` choose the storage banks. The overlays are assembled from source for the selected map, so there is no runtime relocation pass. The release model charges one clock/byte for one-way transfers and two clocks/byte for SWAP, plus the normal 6510 instructions used to program the REC.
+In the reference build Turbo16 swaps a 113-byte kernel into `$003E-$00AE`; Turbo32 swaps the stack-free 135-byte `ram135` record compromise into `$000A-$0090`. These are no longer fixed: `TURBO16_ZP_BASE`/`TURBO32_ZP_BASE` choose the ZP origins and `REU_TURBO16_BANK`/`REU_TURBO32_BANK` choose the storage banks. The overlays are assembled from source for the selected map, so there is no runtime relocation pass. The release model charges one clock/byte for one-way transfers and two clocks/byte for SWAP, plus the normal 6510 instructions used to program the REC.
 
 ## V4: 16 MiB
 

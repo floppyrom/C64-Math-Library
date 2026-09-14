@@ -23,7 +23,7 @@
 - Added `tools/pareto_wizard.py` for interactive game/demo integration and `tools/build_pareto.py` for scripted builds.
 - Generated builds retain the same 45-entry stable API and emit `math_api.inc` plus `selection_manifest.json` containing exact ZP ranges, exact private-RAM ranges, initialization requirement, implementation provenance and SHA-256.
 - Default equal-weight breakpoints: **31 / 36 / 60 / 147 / 176 / 221 ZP bytes**. At 31 ZP + zero extra RAM the builder reproduces V1 byte-for-byte; at 31 ZP + optional-init policy it reproduces V5 byte-for-byte; at 221 ZP it selects complete V2.
-- Exact extra-RAM accounting now includes the actual emitted init helper rather than a conservative allowance. Current default points use 5253 / 6010 / 6685 / 5439 / 6871 bytes of extra private payload before the 221-ZP full-V2 endpoint (208-byte resident increase vs V1).
+- Exact extra-RAM accounting now includes the actual emitted init helper rather than a conservative allowance. Current default points use 5253 / 5843 / 6603 / 5439 / 6789 bytes of extra private payload before the 221-ZP full-V2 endpoint (208-byte resident increase vs V1).
 - Certified selectable packs cover V5 zero-ZP division/modulo/trig imports, initialized UMUL32, V2 UMUL8/16, V2 UMUL24, and native executable-ZP SMUL16. Workload weights can change the chosen pack at the same resource budget.
 - Validation: 12 representative generated builds across reference/alternate maps, **45/45 entries and 4,172 calls each (50,064 common-API calls)**; 10,108 direct V2 cycle-parity cases; exhaustive 65,536-case UMOD8; 50,144 additional SMUL16 cycle-parity cases; 25,000 mixed-workload iterations; 10,000 ZP-guard iterations; deterministic rebuilds; V1/V5 endpoint identity; and **12/12** invalid resource/configuration tests.
 
@@ -38,6 +38,16 @@
 - Reference V5 places its private 4608-byte hybrid region at `$A000-$B1FF` (RAM under BASIC ROM); applications must bank BASIC out while executing it or relocate `HYBRID_CODE`.
 
 # Changelog
+
+## 2026-09-14 — UMUL record upgrade + consolidated resource index
+
+- Resident `UMUL16` now uses the qualified 17-ZP record-derived fused quarter-square kernel; V1/V5 preserve the persistent `UMUL32_READY` state contract.
+- Resident `UMUL24` now uses the certified 24-ZP `reverse_24zp_carry` record kernel.
+- V3/V4 Turbo32 now uses the stack-free 135-ZP `ram135` record-family compromise: reference ZP `$0A-$90`, legal origins `$02-$79`, with BEGIN/CALL/END measured at 326 / 728.947080 mean / 371 cycles.
+- The absolute 606.337632-cycle UMUL32 record remains intentionally outside fixed profiles because it reserves hardware stack-page space; shipped fixed choices reserve 0 persistent stack-page bytes.
+- Custom Pareto current extra-private-RAM points are 5253 / 5843 / 6603 / 5439 / 6789 bytes before the 221-ZP full-V2 endpoint.
+- Added `docs/CONSOLIDATED_ROUTINE_TABLE.{md,csv}` plus machine-readable `validation/CONSOLIDATED_ROUTINE_TABLE.json`, covering all 45 stable entries in all five profiles plus V3/V4 Turbo and V4 QS16.
+
 
 ## 2026-09-06 — Documented LEAN FINAL / package audit
 
@@ -105,7 +115,7 @@
 - Reference and alternate cycle vectors are identical: **zero runtime relocation-cycle cost**.
 - ACME 0.97 independently reproduces the Turbo16/Turbo32 overlays for both profiles/maps byte-for-byte.
 - Configuration regression expanded from 21 to **27** cases with Turbo ZP/bank boundary and collision tests.
-- Added endpoint execution sweep: Turbo16 `$02/$8F`, Turbo32 `$02/$0F`, V3 Turbo banks `$06/$07`, V4 Turbo banks `$FE/$FF`: **3,556 products PASS** with cycle-vector identity.
+- Added endpoint execution sweep (pre-135-ZP Turbo32): Turbo16 `$02/$8F`, Turbo32 `$02/$0F`, V3 Turbo banks `$06/$07`, V4 Turbo banks `$FE/$FF`: **3,556 products PASS** with cycle-vector identity.
 - Fixed the bundled deterministic assembler path for the valid Turbo16 `$8F` endpoint; ACME 0.97 independently reproduces the corrected 113-byte overlay exactly.
 
 ## 2026-09-06 — Fast ISQRT32 follow-up

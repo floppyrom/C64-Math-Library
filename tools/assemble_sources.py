@@ -61,7 +61,7 @@ def validate_config(profile,v):
   if max(s,0xdf00)<=min(e,0xdfff):raise ValueError(f'{n} overlaps REU/C64 I/O page $DF00-$DFFF')
  if profile in ('v3_reu_512k','v4_reu_16m'):
   t16s=v['TURBO16_ZP_BASE'];t16e=t16s+112
-  t32s=v['TURBO32_ZP_BASE'];t32e=t32s+240
+  t32s=v['TURBO32_ZP_BASE'];t32e=t32s+134
   if not (2<=t16s<=t16e<=0xff):raise ValueError(f'TURBO16_ZP_BASE invalid: {hx(t16s,2)}-{hx(t16e,2)}')
   if not (2<=t32s<=t32e<=0xff):raise ValueError(f'TURBO32_ZP_BASE invalid: {hx(t32s,2)}-{hx(t32e,2)}')
   # Overlay ranges may overlap normal scratch and each other: BEGIN/END makes
@@ -88,9 +88,9 @@ def validate_reu_banks(profile,v):
 def _assemble_overlay(name,v):
  src=ROOT/'relocatable_source'/'turbo'/f'{name}_overlay.asm'; text=src.read_text()
  basekey='TURBO16_ZP_BASE' if name=='turbo16' else 'TURBO32_ZP_BASE'
- base=v[basekey]; refbase=0x3e if name=='turbo16' else 0x0a; length=113 if name=='turbo16' else 241
+ base=v[basekey]; refbase=0x3e if name=='turbo16' else 0x0a; length=113 if name=='turbo16' else 135
  def cfg_for(b):
-  vals={'REG_TABLE':v['REG_TABLE'],'TURBO16_ZP_BASE':v['TURBO16_ZP_BASE'],'TURBO32_ZP_BASE':v['TURBO32_ZP_BASE']};vals[basekey]=b
+  vals={'REG_LOW':v['REG_LOW'],'REG_TABLE':v['REG_TABLE'],'TURBO16_ZP_BASE':v['TURBO16_ZP_BASE'],'TURBO32_ZP_BASE':v['TURBO32_ZP_BASE']};vals[basekey]=b
   return '\n'.join(f'{k} = {hx(val,2 if k.endswith("ZP_BASE") else 4)}' for k,val in vals.items())+'\n'
  def exact(mem):
   return bool(mem) and min(mem)==base and max(mem)==base+length-1 and not any(a<base or a>=base+length for a in mem)
@@ -134,7 +134,7 @@ def build_reu_image(profile,v,outpath):
  return {'file':outpath.name,'sha256':hashlib.sha256(img).hexdigest(),'bytes':len(img),
          'turbo16_bank':hx(v['REU_TURBO16_BANK'],2),'turbo32_bank':hx(v['REU_TURBO32_BANK'],2),
          'turbo16_zp':f'{hx(v["TURBO16_ZP_BASE"],2)}-{hx(v["TURBO16_ZP_BASE"]+112,2)}',
-         'turbo32_zp':f'{hx(v["TURBO32_ZP_BASE"],2)}-{hx(v["TURBO32_ZP_BASE"]+240,2)}',
+         'turbo32_zp':f'{hx(v["TURBO32_ZP_BASE"],2)}-{hx(v["TURBO32_ZP_BASE"]+134,2)}',
          'turbo16_sha256':hashlib.sha256(turbo16).hexdigest(),'turbo32_sha256':hashlib.sha256(turbo32).hexdigest()}
 
 def preprocess(src,config):
@@ -170,7 +170,7 @@ def build(profile,config,outdir):
   lines += [f'TURBO16_ZP_BASE          = {hx(vals["TURBO16_ZP_BASE"],2)}',f'TURBO32_ZP_BASE          = {hx(vals["TURBO32_ZP_BASE"],2)}',f'REU_TURBO16_BANK         = {hx(vals["REU_TURBO16_BANK"],2)}',f'REU_TURBO32_BANK         = {hx(vals["REU_TURBO32_BANK"],2)}']
  for n,off in [('MATH_X',0),('MATH_Y',4),('MATH_Z',8),('MATH_N',0x10),('MATH_D',0x14),('MATH_Q',0x18),('MATH_R',0x1c)]:lines.append(f'{n:<24} = {hx(vals["MATH_IO"]+off)}')
  inc.write_text('\n'.join(lines)+'\n')
- man={'profile':profile,'status':'BUILT_FROM_SOURCE','config':str(Path(config).relative_to(ROOT)) if Path(config).is_relative_to(ROOT) else str(config),'output_prg':prg.name,'output_load':hx(lo),'output_end':hx(hi),'output_sha256':hashlib.sha256(prg.read_bytes()).hexdigest(),'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),'public_entries':{n:hx(const.get(n,labels.get(n))) for n in pubnames},'math_init':hx(const.get('MATH_INIT',labels.get('MATH_INIT'))),'public_io':f'{hx(vals["MATH_IO"])}-{hx(vals["MATH_IO"]+0x1f)}','reu_scratch':f'{hx(vals["REU_SCRATCH"])}-{hx(vals["REU_SCRATCH"]+3)}','reu_banks':{k:hx(vals[k],2) for k in REU_BANK_KEYS},'turbo_config':({'turbo16_zp':f'{hx(vals["TURBO16_ZP_BASE"],2)}-{hx(vals["TURBO16_ZP_BASE"]+112,2)}','turbo32_zp':f'{hx(vals["TURBO32_ZP_BASE"],2)}-{hx(vals["TURBO32_ZP_BASE"]+240,2)}'} if profile in REU else None),'reu_image':reu_info,'claims':[(n,hx(s),hx(e),sp) for n,s,e,sp in claims]}
+ man={'profile':profile,'status':'BUILT_FROM_SOURCE','config':str(Path(config).relative_to(ROOT)) if Path(config).is_relative_to(ROOT) else str(config),'output_prg':prg.name,'output_load':hx(lo),'output_end':hx(hi),'output_sha256':hashlib.sha256(prg.read_bytes()).hexdigest(),'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),'public_entries':{n:hx(const.get(n,labels.get(n))) for n in pubnames},'math_init':hx(const.get('MATH_INIT',labels.get('MATH_INIT'))),'public_io':f'{hx(vals["MATH_IO"])}-{hx(vals["MATH_IO"]+0x1f)}','reu_scratch':f'{hx(vals["REU_SCRATCH"])}-{hx(vals["REU_SCRATCH"]+3)}','reu_banks':{k:hx(vals[k],2) for k in REU_BANK_KEYS},'turbo_config':({'turbo16_zp':f'{hx(vals["TURBO16_ZP_BASE"],2)}-{hx(vals["TURBO16_ZP_BASE"]+112,2)}','turbo32_zp':f'{hx(vals["TURBO32_ZP_BASE"],2)}-{hx(vals["TURBO32_ZP_BASE"]+134,2)}'} if profile in REU else None),'reu_image':reu_info,'claims':[(n,hx(s),hx(e),sp) for n,s,e,sp in claims]}
  (outdir/'source_build_manifest.json').write_text(json.dumps(man,indent=2)+'\n');return man
 
 def main():

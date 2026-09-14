@@ -1,7 +1,7 @@
 operation,v3_reu_512k_cycles,v4_reu_16m_cycles,v4_evidence
 umul8,69.0,69.0,unchanged V3 path/evidence
-umul16,339.0,317.54103088378906,V4 exact 2^32 timing + 2^21 binary validation
-umul24,475.784575,475.784575,unchanged V3 path/evidence
+umul16,339.0,225.8372,2026-09-14 record-upgrade deterministic comparison corpus
+umul24,475.784575,448.2918,2026-09-14 record-upgrade deterministic comparison corpus
 umul32,763.822007,763.822007,unchanged V3 path/evidence
 udiv8,70.86328125,70.86328125,unchanged V3 path/evidence
 udiv16,137.282268,137.282268,unchanged V3 path/evidence

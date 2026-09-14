@@ -1,50 +1,214 @@
 {
-  "status": "NOT_RUN",
-  "assembler": "ACME executable unavailable in validation container",
-  "reason": "The execution environment has no ACME binary and outbound package/network access is disabled, so ACME could not be installed for this modified native-signed build.",
-  "command": "python3 tools/verify_with_acme.py",
-  "current_internal_builds": [
+  "status": "PASS",
+  "assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
+  "checks": [
     {
       "profile": "v1_balanced",
       "map": "reference",
-      "internal_sha256": "2b89da8e1571750d2c734fba27892d5f35ff36e204743f6dd63a78d68d08ff57"
+      "status": "PASS",
+      "acme_sha256": "ffbed4dc89c914856b09587ef76f605d81a6535ce8f6ae83a3da40bb5ad5c57b",
+      "internal_sha256": "ffbed4dc89c914856b09587ef76f605d81a6535ce8f6ae83a3da40bb5ad5c57b",
+      "byte_identical": true,
+      "reference_prg_identical": true,
+      "acme_stdout": "",
+      "acme_stderr": ""
     },
     {
       "profile": "v2_pareto_fast",
       "map": "reference",
-      "internal_sha256": "72e0621bd32ea6c0b6af99612982e02b007af9ade74275f62f55488663c7385d"
+      "status": "PASS",
+      "acme_sha256": "aa2ec8dadf3c445e0d142cba1b2842c58b987791a47ab8cbcb63660d6fc06b6e",
+      "internal_sha256": "aa2ec8dadf3c445e0d142cba1b2842c58b987791a47ab8cbcb63660d6fc06b6e",
+      "byte_identical": true,
+      "reference_prg_identical": true,
+      "acme_stdout": "",
+      "acme_stderr": ""
     },
     {
       "profile": "v3_reu_512k",
       "map": "reference",
-      "internal_sha256": "213ba2efb64abca671a7b1b32f4cbedf5e29d90637fb52ee4af175094709d674"
+      "status": "PASS",
+      "acme_sha256": "9872691b15f5718ba195cb45f0aa22118bc9aeaca1a8da598eb55869cf2684a4",
+      "internal_sha256": "9872691b15f5718ba195cb45f0aa22118bc9aeaca1a8da598eb55869cf2684a4",
+      "byte_identical": true,
+      "reference_prg_identical": true,
+      "acme_stdout": "",
+      "acme_stderr": ""
     },
     {
       "profile": "v4_reu_16m",
       "map": "reference",
-      "internal_sha256": "b3704f55815d4ce4d07b61dac5170184a8d7f9cdcaddac59bb0bb2a8dd2a6f06"
+      "status": "PASS",
+      "acme_sha256": "e50241725d74b2a18c1090ea41e013f2c9947672f93016e3fc096b4821ebcf99",
+      "internal_sha256": "e50241725d74b2a18c1090ea41e013f2c9947672f93016e3fc096b4821ebcf99",
+      "byte_identical": true,
+      "reference_prg_identical": true,
+      "acme_stdout": "",
+      "acme_stderr": ""
     },
     {
       "profile": "v1_balanced",
       "map": "alternate",
-      "internal_sha256": "779ca68babfc99b9bf23304b3f7ae668566a389ac443c8768ef40ed0c3eb53cc"
+      "status": "PASS",
+      "acme_sha256": "59af5fef47a589c9986fe46fbd1eab8f80bc4a3b475d3efd4581edbba9b2f4ed",
+      "internal_sha256": "59af5fef47a589c9986fe46fbd1eab8f80bc4a3b475d3efd4581edbba9b2f4ed",
+      "byte_identical": true,
+      "reference_prg_identical": null,
+      "acme_stdout": "",
+      "acme_stderr": ""
     },
     {
       "profile": "v2_pareto_fast",
       "map": "alternate",
-      "internal_sha256": "ac1bf41b2ee5a96475138c7563b27284deb2546b41aedb907a7885a88439e5d2"
+      "status": "PASS",
+      "acme_sha256": "f0d48858fdecde069c7e6ef218eabc0c5ae830f1743e59687aa096266ff8da06",
+      "internal_sha256": "f0d48858fdecde069c7e6ef218eabc0c5ae830f1743e59687aa096266ff8da06",
+      "byte_identical": true,
+      "reference_prg_identical": null,
+      "acme_stdout": "",
+      "acme_stderr": ""
     },
     {
       "profile": "v3_reu_512k",
       "map": "alternate",
-      "internal_sha256": "47a5a2de3ea90bb851c39d2b56091cda335718853ca9d6b6300a592c7cbe4aa2"
+      "status": "PASS",
+      "acme_sha256": "bf382e94eb8b104b34200ab79e551fb0b37a8a0cb8e77926f87d1e1ca4926153",
+      "internal_sha256": "bf382e94eb8b104b34200ab79e551fb0b37a8a0cb8e77926f87d1e1ca4926153",
+      "byte_identical": true,
+      "reference_prg_identical": null,
+      "acme_stdout": "",
+      "acme_stderr": ""
     },
     {
       "profile": "v4_reu_16m",
       "map": "alternate",
-      "internal_sha256": "d3fd4b88b1fd38c68212592291648da8ca714c831f8f1da8bdc22ad39e2f6be3"
+      "status": "PASS",
+      "acme_sha256": "0b5f2e058b13cb493dea856eaab7c39404dd2683343bd83fd0578afb7d045d2a",
+      "internal_sha256": "0b5f2e058b13cb493dea856eaab7c39404dd2683343bd83fd0578afb7d045d2a",
+      "byte_identical": true,
+      "reference_prg_identical": null,
+      "acme_stdout": "",
+      "acme_stderr": ""
     }
   ],
-  "historical_baseline": "ACME_SOURCE_BUILD_VALIDATION_PRE_NATIVE.json",
-  "note": "The historical file proves the canonical source syntax and independent-assembler agreement before the native-signed binary delta. Current builds are verified by the bundled independent assembler, byte-exact reference rebuilds, deterministic rebuilds, alternate relocation, and full arithmetic/integration suites; rerun verify_with_acme.py when ACME is available."
+  "overlay_checks": [
+    {
+      "profile": "v3_reu_512k",
+      "map": "reference",
+      "overlay": "turbo16",
+      "status": "PASS",
+      "bytes": 113,
+      "sha256": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
+      "byte_identical": true,
+      "reference_overlay_identical": true
+    },
+    {
+      "profile": "v3_reu_512k",
+      "map": "reference",
+      "overlay": "turbo32",
+      "status": "PASS",
+      "bytes": 135,
+      "sha256": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a",
+      "byte_identical": true,
+      "reference_overlay_identical": true
+    },
+    {
+      "profile": "v4_reu_16m",
+      "map": "reference",
+      "overlay": "turbo16",
+      "status": "PASS",
+      "bytes": 113,
+      "sha256": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
+      "byte_identical": true,
+      "reference_overlay_identical": true
+    },
+    {
+      "profile": "v4_reu_16m",
+      "map": "reference",
+      "overlay": "turbo32",
+      "status": "PASS",
+      "bytes": 135,
+      "sha256": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a",
+      "byte_identical": true,
+      "reference_overlay_identical": true
+    },
+    {
+      "profile": "v3_reu_512k",
+      "map": "alternate",
+      "overlay": "turbo16",
+      "status": "PASS",
+      "bytes": 113,
+      "sha256": "a231db022a18841656bcd138eb71b2dc1215b455f3646b27f081a18ffad4b475",
+      "byte_identical": true,
+      "reference_overlay_identical": null
+    },
+    {
+      "profile": "v3_reu_512k",
+      "map": "alternate",
+      "overlay": "turbo32",
+      "status": "PASS",
+      "bytes": 135,
+      "sha256": "0130dc8e16fe48fe5e98039b95dab0675652ca40829ec89984dba65165f19b97",
+      "byte_identical": true,
+      "reference_overlay_identical": null
+    },
+    {
+      "profile": "v4_reu_16m",
+      "map": "alternate",
+      "overlay": "turbo16",
+      "status": "PASS",
+      "bytes": 113,
+      "sha256": "a231db022a18841656bcd138eb71b2dc1215b455f3646b27f081a18ffad4b475",
+      "byte_identical": true,
+      "reference_overlay_identical": null
+    },
+    {
+      "profile": "v4_reu_16m",
+      "map": "alternate",
+      "overlay": "turbo32",
+      "status": "PASS",
+      "bytes": 135,
+      "sha256": "0130dc8e16fe48fe5e98039b95dab0675652ca40829ec89984dba65165f19b97",
+      "byte_identical": true,
+      "reference_overlay_identical": null
+    }
+  ],
+  "overlay_boundary_checks": [
+    {
+      "overlay": "turbo16",
+      "zp_base": "$02",
+      "reg_table": "$4000",
+      "status": "PASS",
+      "bytes": 113,
+      "sha256": "f76c53476753ff973178fdddbd4376c4864763746f1f1a75fc1a872f9c0fbb0c",
+      "byte_identical": true
+    },
+    {
+      "overlay": "turbo16",
+      "zp_base": "$8F",
+      "reg_table": "$6000",
+      "status": "PASS",
+      "bytes": 113,
+      "sha256": "9071c7a25e21399ea8e94a5db309d9dc1bbaba02b66a648aad750539919dbcb4",
+      "byte_identical": true
+    },
+    {
+      "overlay": "turbo32",
+      "zp_base": "$02",
+      "reg_table": "$4000",
+      "status": "PASS",
+      "bytes": 135,
+      "sha256": "d4329582a0ef45f0a95fcd289527a8453b2a533b47ff7ba058cfa4435bc0bea0",
+      "byte_identical": true
+    },
+    {
+      "overlay": "turbo32",
+      "zp_base": "$79",
+      "reg_table": "$6000",
+      "status": "PASS",
+      "bytes": 135,
+      "sha256": "a4c3ee849cbef01ec3c312936e3e770aebf14bf696c9d9a5ce6dc19737b1d73f",
+      "byte_identical": true
+    }
+  ]
 }

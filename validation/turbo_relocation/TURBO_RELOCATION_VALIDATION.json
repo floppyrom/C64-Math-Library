@@ -21,19 +21,19 @@
         },
         "turbo32": {
           "cases": 2193,
-          "begin_cycles": 538,
-          "end_cycles": 583,
-          "second_begin_cycles": 538,
-          "second_call_cycles": 743,
-          "second_end_cycles": 583,
-          "call_mean_cycles": 731.4114963503649,
-          "call_min_cycles": 597,
-          "call_max_cycles": 829,
+          "begin_cycles": 326,
+          "end_cycles": 371,
+          "second_begin_cycles": 326,
+          "second_call_cycles": 739,
+          "second_end_cycles": 371,
+          "call_mean_cycles": 728.9470802919708,
+          "call_min_cycles": 666,
+          "call_max_cycles": 840,
           "zp_base": "$0A",
-          "zp_end": "$FA",
+          "zp_end": "$90",
           "reu_bank": "$05",
-          "installed_overlay_sha256": "0b041806ec684a2d892ffd0f6f2e6f219293912b0572ae964bba596b0a2774f1",
-          "cycle_vector_sha256": "13de812734243bc64be0acf7d88027e1c825e4730936fe2c97910933972d3460"
+          "installed_overlay_sha256": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a",
+          "cycle_vector_sha256": "def855503550fbb818668860d6e6b8e107f81506c3ca0e17d24fbe1a49851335"
         }
       },
       "alternate": {
@@ -55,19 +55,19 @@
         },
         "turbo32": {
           "cases": 2193,
-          "begin_cycles": 538,
-          "end_cycles": 583,
-          "second_begin_cycles": 538,
-          "second_call_cycles": 743,
-          "second_end_cycles": 583,
-          "call_mean_cycles": 731.4114963503649,
-          "call_min_cycles": 597,
-          "call_max_cycles": 829,
+          "begin_cycles": 326,
+          "end_cycles": 371,
+          "second_begin_cycles": 326,
+          "second_call_cycles": 739,
+          "second_end_cycles": 371,
+          "call_mean_cycles": 728.9470802919708,
+          "call_min_cycles": 666,
+          "call_max_cycles": 840,
           "zp_base": "$06",
-          "zp_end": "$F6",
+          "zp_end": "$8C",
           "reu_bank": "$01",
-          "installed_overlay_sha256": "aa580ef7c47bca7ad847211ff2a4404b6267139c3388fe84f99d4857f891fab8",
-          "cycle_vector_sha256": "13de812734243bc64be0acf7d88027e1c825e4730936fe2c97910933972d3460"
+          "installed_overlay_sha256": "0130dc8e16fe48fe5e98039b95dab0675652ca40829ec89984dba65165f19b97",
+          "cycle_vector_sha256": "def855503550fbb818668860d6e6b8e107f81506c3ca0e17d24fbe1a49851335"
         }
       }
     },
@@ -91,19 +91,19 @@
         },
         "turbo32": {
           "cases": 2193,
-          "begin_cycles": 538,
-          "end_cycles": 583,
-          "second_begin_cycles": 538,
-          "second_call_cycles": 743,
-          "second_end_cycles": 583,
-          "call_mean_cycles": 731.4114963503649,
-          "call_min_cycles": 597,
-          "call_max_cycles": 829,
+          "begin_cycles": 326,
+          "end_cycles": 371,
+          "second_begin_cycles": 326,
+          "second_call_cycles": 739,
+          "second_end_cycles": 371,
+          "call_mean_cycles": 728.9470802919708,
+          "call_min_cycles": 666,
+          "call_max_cycles": 840,
           "zp_base": "$0A",
-          "zp_end": "$FA",
+          "zp_end": "$90",
           "reu_bank": "$05",
-          "installed_overlay_sha256": "0b041806ec684a2d892ffd0f6f2e6f219293912b0572ae964bba596b0a2774f1",
-          "cycle_vector_sha256": "13de812734243bc64be0acf7d88027e1c825e4730936fe2c97910933972d3460"
+          "installed_overlay_sha256": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a",
+          "cycle_vector_sha256": "def855503550fbb818668860d6e6b8e107f81506c3ca0e17d24fbe1a49851335"
         }
       },
       "alternate": {
@@ -125,19 +125,19 @@
         },
         "turbo32": {
           "cases": 2193,
-          "begin_cycles": 538,
-          "end_cycles": 583,
-          "second_begin_cycles": 538,
-          "second_call_cycles": 743,
-          "second_end_cycles": 583,
-          "call_mean_cycles": 731.4114963503649,
-          "call_min_cycles": 597,
-          "call_max_cycles": 829,
+          "begin_cycles": 326,
+          "end_cycles": 371,
+          "second_begin_cycles": 326,
+          "second_call_cycles": 739,
+          "second_end_cycles": 371,
+          "call_mean_cycles": 728.9470802919708,
+          "call_min_cycles": 666,
+          "call_max_cycles": 840,
           "zp_base": "$06",
-          "zp_end": "$F6",
+          "zp_end": "$8C",
           "reu_bank": "$29",
-          "installed_overlay_sha256": "aa580ef7c47bca7ad847211ff2a4404b6267139c3388fe84f99d4857f891fab8",
-          "cycle_vector_sha256": "13de812734243bc64be0acf7d88027e1c825e4730936fe2c97910933972d3460"
+          "installed_overlay_sha256": "0130dc8e16fe48fe5e98039b95dab0675652ca40829ec89984dba65165f19b97",
+          "cycle_vector_sha256": "def855503550fbb818668860d6e6b8e107f81506c3ca0e17d24fbe1a49851335"
         }
       }
     }

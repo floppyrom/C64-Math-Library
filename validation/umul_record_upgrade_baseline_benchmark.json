@@ -1,0 +1,82 @@
+{
+  "v1_balanced": {
+    "MATH_UMUL16": {
+      "mean": 383.4446,
+      "min": 373,
+      "max": 398,
+      "cases": 5000
+    },
+    "MATH_UMUL24": {
+      "mean": 514.4584,
+      "min": 487,
+      "max": 561,
+      "cases": 5000
+    },
+    "MATH_UMUL32": {
+      "mean": 782.7464,
+      "min": 721,
+      "max": 890,
+      "cases": 2500
+    }
+  },
+  "v2_pareto_fast": {
+    "MATH_UMUL16": {
+      "mean": 350.8146,
+      "min": 338,
+      "max": 365,
+      "cases": 5000
+    },
+    "MATH_UMUL24": {
+      "mean": 475.7082,
+      "min": 448,
+      "max": 523,
+      "cases": 5000
+    },
+    "MATH_UMUL32": {
+      "mean": 763.7464,
+      "min": 702,
+      "max": 871,
+      "cases": 2500
+    }
+  },
+  "v3_reu_512k": {
+    "MATH_UMUL16": {
+      "mean": 339.0,
+      "min": 339,
+      "max": 339,
+      "cases": 5000
+    },
+    "MATH_UMUL24": {
+      "mean": 475.7082,
+      "min": 448,
+      "max": 523,
+      "cases": 5000
+    },
+    "MATH_UMUL32": {
+      "mean": 763.7464,
+      "min": 702,
+      "max": 871,
+      "cases": 2500
+    }
+  },
+  "v4_reu_16m": {
+    "MATH_UMUL16": {
+      "mean": 317.592,
+      "min": 315,
+      "max": 329,
+      "cases": 5000
+    },
+    "MATH_UMUL24": {
+      "mean": 475.7082,
+      "min": 448,
+      "max": 523,
+      "cases": 5000
+    },
+    "MATH_UMUL32": {
+      "mean": 763.7464,
+      "min": 702,
+      "max": 871,
+      "cases": 2500
+    }
+  }
+}

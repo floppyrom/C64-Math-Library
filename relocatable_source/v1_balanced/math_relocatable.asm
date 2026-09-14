@@ -1101,39 +1101,39 @@ L2CF7:
     clc
     rts
     !byte $00, $00, $00, $00, $00
-    jmp REG_KERNEL+$0800
+    lda #>REG_TABLE+$2400
+    sta ZP_MAIN+$08
+    sta ZP_MAIN+$10
+    lda #>REG_TABLE+$2800
+    sta ZP_MAIN+$0A
+    sta ZP_MAIN+$12
+    lda #>REG_TABLE+$2600
+    sta ZP_MAIN+$0C
+    sta ZP_MAIN+$14
+    lda #>REG_TABLE+$2A00
+    sta ZP_MAIN+$0E
+    sta ZP_MAIN+$16
+    lda MATH_IO
+    sta ZP_MAIN+$07
+    lda MATH_IO+$01
+    sta ZP_MAIN+$0F
+    lda MATH_IO+$05
+    sta REG_KERNEL+$081A
+    ldy MATH_IO+$04
+    jsr REG_KERNEL+$07EC
+    sta MATH_IO+$0A
+    stx MATH_IO+$09
+    sty MATH_IO+$0B
+    lda ZP_MAIN+$17
+    sta MATH_IO+$08
+    jmp REG_KERNEL+$0871
+    !byte $00
+    jmp REG_KERNEL+$0900
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    lda MATH_IO
-    sta ZP_MAIN+$0E
-    lda MATH_IO+$01
-    sta ZP_MAIN+$0F
-    lda MATH_IO+$02
-    sta ZP_MAIN+$10
-    lda MATH_IO+$04
-    sta ZP_MAIN+$17
-    lda MATH_IO+$05
-    sta ZP_MAIN+$18
-    lda MATH_IO+$06
-    sta ZP_MAIN+$19
-    jsr REG_KERNEL+$0A00
-    sta MATH_IO+$0D
-    lda ZP_MAIN+$0E
-    sta MATH_IO+$08
-    lda ZP_MAIN+$0F
-    sta MATH_IO+$09
-    lda ZP_MAIN+$10
-    sta MATH_IO+$0A
-    lda ZP_MAIN+$11
-    sta MATH_IO+$0B
-    lda ZP_MAIN+$12
-    sta MATH_IO+$0C
-    clc
-    rts
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00
     lda #>REG_TABLE+$3000
     sta ZP_MAIN+$01
     sta ZP_MAIN+$05
@@ -2306,191 +2306,327 @@ L470E:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    lda ZP_MAIN+$07
+    sta ZP_MAIN+$0B
+    eor #$FF
+    sta ZP_MAIN+$09
+    sta ZP_MAIN+$0D
+    lda ZP_MAIN+$0F
+    sta ZP_MAIN+$13
+    eor #$FF
+    sta ZP_MAIN+$11
+    sta ZP_MAIN+$15
+    sec
+    lda (ZP_MAIN+$07),y
+    adc (ZP_MAIN+$09),y
+    sta ZP_MAIN+$17
+    lda (ZP_MAIN+$0B),y
+    adc (ZP_MAIN+$0D),y
+    adc (ZP_MAIN+$0F),y
+    bcs L4842
+    adc (ZP_MAIN+$11),y
+    tax
+    lda (ZP_MAIN+$13),y
+L4814:
+    adc (ZP_MAIN+$15),y
+    sta REG_KERNEL+$083A
+    ldy #$00
+    lda (ZP_MAIN+$07),y
+    adc (ZP_MAIN+$09),y
+    sta REG_KERNEL+$0837
+    lda (ZP_MAIN+$0B),y
+    adc (ZP_MAIN+$0D),y
+    adc (ZP_MAIN+$0F),y
+    bcs L484C
+    adc (ZP_MAIN+$11),y
+    sta REG_KERNEL+$083C
+    lda (ZP_MAIN+$13),y
+L4831:
+    adc (ZP_MAIN+$15),y
+    tay
+    clc
+    txa
+    adc #$00
+    tax
+    lda #$00
+    adc #$00
+    bcs L4840
+    rts
+L4840:
+    iny
+    rts
+L4842:
+    clc
+    adc (ZP_MAIN+$11),y
+    tax
+    lda #$01
+    adc (ZP_MAIN+$13),y
+    bcc L4814
+L484C:
+    clc
+    adc (ZP_MAIN+$11),y
+    sta REG_KERNEL+$083C
+    lda #$01
+    adc (ZP_MAIN+$13),y
+    bcc L4831
+    lda #$84
+    sta ZP_MAIN+$08
+    sta ZP_MAIN+$10
+    lda #$88
+    sta ZP_MAIN+$0A
+    sta ZP_MAIN+$12
+    lda #$86
+    sta ZP_MAIN+$0C
+    sta ZP_MAIN+$14
+    lda #$8A
+    sta ZP_MAIN+$0E
+    sta ZP_MAIN+$16
+    rts
+    lda #>REG_TABLE+$2E00
+    sta ZP_MAIN+$07
+    sta ZP_MAIN+$0B
+    lda #>REG_TABLE+$3000
+    sta ZP_MAIN+$09
+    clc
+    rts
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00
+    lda #>REG_TABLE+$2400
+    sta ZP_MAIN+$08
+    sta ZP_MAIN+$10
+    sta ZP_MAIN+$18
+    lda #>REG_TABLE+$2800
+    sta ZP_MAIN+$0A
+    sta ZP_MAIN+$12
+    sta ZP_MAIN+$1A
+    lda #>REG_TABLE+$2600
+    sta ZP_MAIN+$0C
+    sta ZP_MAIN+$14
+    sta ZP_MAIN+$1C
+    lda #>REG_TABLE+$2A00
+    sta ZP_MAIN+$0E
+    sta ZP_MAIN+$16
+    sta ZP_MAIN+$1E
+    lda MATH_IO
+    sta ZP_MAIN+$07
+    lda MATH_IO+$01
+    sta ZP_MAIN+$0F
+    lda MATH_IO+$02
+    sta ZP_MAIN+$17
+    lda MATH_IO+$04
+    sta REG_KERNEL+$0AF1
+    lda MATH_IO+$05
+    sta REG_KERNEL+$0AC7
+    ldy MATH_IO+$06
+    jsr REG_KERNEL+$0A81
+    sta MATH_IO+$0C
+    stx MATH_IO+$0D
+    sty MATH_IO+$0B
+    lda ZP_MAIN+$09
+    sta MATH_IO+$08
+    lda ZP_MAIN+$0D
+    sta MATH_IO+$09
+    lda ZP_MAIN+$15
+    sta MATH_IO+$0A
+    lda #>REG_TABLE+$2E00
+    sta ZP_MAIN+$07
+    sta ZP_MAIN+$0B
+    lda #>REG_TABLE+$3000
+    sta ZP_MAIN+$09
+    clc
+    rts
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00
-    lda #>REG_TABLE+$2000
-    sta ZP_MAIN+$0F
-    lda #>REG_TABLE+$2200
-    sta ZP_MAIN+$11
-    lda #$00
-    sta MATH_IO+$08
-    sta MATH_IO+$09
-    sta MATH_IO+$0A
-    sta MATH_IO+$0B
-    ldx MATH_IO
-    ldy MATH_IO+$04
-    jsr REG_KERNEL+$0700
-    sta MATH_IO+$09
-    lda ZP_MAIN+$12
-    sta MATH_IO+$08
-    ldx MATH_IO
-    ldy MATH_IO+$05
-    jsr REG_KERNEL+$0700
-    sta ZP_MAIN+$16
-    lda ZP_MAIN+$12
+L4A49:
     clc
-    adc MATH_IO+$09
-    sta MATH_IO+$09
-    lda ZP_MAIN+$16
-    adc MATH_IO+$0A
-    sta MATH_IO+$0A
-    bcc L4848
-    inc MATH_IO+$0B
-L4848:
-    ldx MATH_IO+$01
-    ldy MATH_IO+$04
-    jsr REG_KERNEL+$0700
-    sta ZP_MAIN+$16
-    lda ZP_MAIN+$12
+    adc (ZP_MAIN+$11),y
+    sta REG_KERNEL+$0B34
+    lda #$01
+    adc (ZP_MAIN+$13),y
+    adc (ZP_MAIN+$15),y
+    adc (ZP_MAIN+$17),y
+    bcc L4ABC
+L4A59:
     clc
-    adc MATH_IO+$09
-    sta MATH_IO+$09
-    lda ZP_MAIN+$16
-    adc MATH_IO+$0A
-    sta MATH_IO+$0A
-    bcc L4869
-    inc MATH_IO+$0B
-L4869:
-    ldx MATH_IO+$01
-    ldy MATH_IO+$05
-    jsr REG_KERNEL+$0700
-    sta ZP_MAIN+$16
-    lda ZP_MAIN+$12
+    adc (ZP_MAIN+$19),y
+    sta REG_KERNEL+$0B39
+    lda #$01
+    adc (ZP_MAIN+$1B),y
+    bcc L4AC3
+L4A65:
     clc
-    adc MATH_IO+$0A
-    sta MATH_IO+$0A
-    lda ZP_MAIN+$16
-    adc MATH_IO+$0B
-    sta MATH_IO+$0B
+    adc (ZP_MAIN+$11),y
+    sta REG_KERNEL+$0B21
+    lda #$01
+    adc (ZP_MAIN+$13),y
+    adc (ZP_MAIN+$15),y
+    adc (ZP_MAIN+$17),y
+    bcc L4AE4
+L4A75:
     clc
-    rts
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00
-    lda ZP_MAIN+$0E
-    sta REG_KERNEL+$0A48
-    sta REG_KERNEL+$0A50
+    adc (ZP_MAIN+$19),y
+    sta REG_KERNEL+$0B2C
+    lda #$01
+    adc (ZP_MAIN+$1B),y
+    bcc L4AEB
+    lda ZP_MAIN+$07
+    sta ZP_MAIN+$0B
     eor #$FF
-    sta REG_KERNEL+$0A4B
-    sta REG_KERNEL+$0A53
+    sta ZP_MAIN+$09
+    sta ZP_MAIN+$0D
     lda ZP_MAIN+$0F
-    sta REG_KERNEL+$0A56
-    sta REG_KERNEL+$0A60
-    sta REG_KERNEL+$0A86
+    sta ZP_MAIN+$13
     eor #$FF
-    sta REG_KERNEL+$0A5B
-    sta REG_KERNEL+$0A63
-    sta REG_KERNEL+$0A7F
-    sta REG_KERNEL+$0A89
-    lda ZP_MAIN+$10
-    sta REG_KERNEL+$0A66
-    sta REG_KERNEL+$0A70
-    sta REG_KERNEL+$0A8C
-    sta REG_KERNEL+$0A99
-    eor #$FF
-    sta REG_KERNEL+$0A6B
-    sta REG_KERNEL+$0A73
-    sta REG_KERNEL+$0A92
-    sec
-    ldx #$02
-L4A45:
-    ldy ZP_MAIN+$17,x
-    lda REG_TABLE+$2400,y
-    adc REG_TABLE+$2800,y
-    sta ZP_MAIN+$0E,x
-    lda REG_TABLE+$2600,y
-    adc REG_TABLE+$2A00,y
-    adc REG_TABLE+$2400,y
-    bcs L4A7D
-    adc REG_TABLE+$2800,y
-    sta ZP_MAIN+$11,x
-    lda REG_TABLE+$2600,y
-    adc REG_TABLE+$2A00,y
-    adc REG_TABLE+$2400,y
-    bcs L4A90
-L4A6A:
-    adc REG_TABLE+$2800,y
-    sta ZP_MAIN+$14,x
-    lda REG_TABLE+$2600,y
-    adc REG_TABLE+$2A00,y
-    sta ZP_MAIN+$17,x
-    dex
-    bpl L4A45
-    jmp REG_KERNEL+$0A9E
-L4A7D:
-    clc
-    adc REG_TABLE+$2800,y
-    sta ZP_MAIN+$11,x
-    lda #$01
-    adc REG_TABLE+$2600,y
-    adc REG_TABLE+$2A00,y
-    adc REG_TABLE+$2400,y
-    bcc L4A6A
-L4A90:
-    clc
-    adc REG_TABLE+$2800,y
-    sta ZP_MAIN+$14,x
-    lda #$01
-    adc REG_TABLE+$2600,y
-    jmp REG_KERNEL+$0A72
-    clc
-    lda ZP_MAIN+$11
-    adc ZP_MAIN+$0F
-    sta ZP_MAIN+$0F
-    lda ZP_MAIN+$14
-    adc ZP_MAIN+$12
-    sta REG_KERNEL+$0AB7
-    lda ZP_MAIN+$17
-    adc ZP_MAIN+$15
-    tay
-    bcc L4AB6
-    clc
-    inc ZP_MAIN+$18
-L4AB6:
-    lda #$00
-    adc ZP_MAIN+$10
-    sta ZP_MAIN+$10
-    tya
-    adc ZP_MAIN+$13
     sta ZP_MAIN+$11
-    lda ZP_MAIN+$18
-    adc ZP_MAIN+$16
-    sta ZP_MAIN+$12
-    lda ZP_MAIN+$19
+    sta ZP_MAIN+$15
+    lda ZP_MAIN+$17
+    sta ZP_MAIN+$1B
+    eor #$FF
+    sta ZP_MAIN+$19
+    sta ZP_MAIN+$1D
+    sec
+    lda (ZP_MAIN+$07),y
+    adc (ZP_MAIN+$09),y
+    sta REG_KERNEL+$0B27
+    lda (ZP_MAIN+$0B),y
+    adc (ZP_MAIN+$0D),y
+    adc (ZP_MAIN+$0F),y
+    bcs L4A49
+    adc (ZP_MAIN+$11),y
+    sta REG_KERNEL+$0B34
+    lda (ZP_MAIN+$13),y
+    adc (ZP_MAIN+$15),y
+    adc (ZP_MAIN+$17),y
+    bcs L4A59
+L4ABC:
+    adc (ZP_MAIN+$19),y
+    sta REG_KERNEL+$0B39
+    lda (ZP_MAIN+$1B),y
+L4AC3:
+    adc (ZP_MAIN+$1D),y
+    tax
+    ldy #$00
+    lda (ZP_MAIN+$07),y
+    adc (ZP_MAIN+$09),y
+    sta REG_KERNEL+$0B1B
+    lda (ZP_MAIN+$0B),y
+    adc (ZP_MAIN+$0D),y
+    adc (ZP_MAIN+$0F),y
+    bcs L4A65
+    adc (ZP_MAIN+$11),y
+    sta REG_KERNEL+$0B21
+    lda (ZP_MAIN+$13),y
+    adc (ZP_MAIN+$15),y
+    adc (ZP_MAIN+$17),y
+    bcs L4A75
+L4AE4:
+    adc (ZP_MAIN+$19),y
+    sta REG_KERNEL+$0B2C
+    lda (ZP_MAIN+$1B),y
+L4AEB:
+    adc (ZP_MAIN+$1D),y
+    sta REG_KERNEL+$0B37
+    ldy #$00
+    lda (ZP_MAIN+$07),y
+    adc (ZP_MAIN+$09),y
+    sta ZP_MAIN+$09
+    lda (ZP_MAIN+$0B),y
+    adc (ZP_MAIN+$0D),y
+    adc (ZP_MAIN+$0F),y
+    bcs L4B3F
+    adc (ZP_MAIN+$11),y
+    sta REG_KERNEL+$0B19
+    lda (ZP_MAIN+$13),y
+    adc (ZP_MAIN+$15),y
+    adc (ZP_MAIN+$17),y
+    bcs L4B4F
+L4B0D:
+    adc (ZP_MAIN+$19),y
+    sta REG_KERNEL+$0B1F
+    lda (ZP_MAIN+$1B),y
+L4B14:
+    adc (ZP_MAIN+$1D),y
+    tay
+    clc
+    lda #$00
     adc #$00
+    sta ZP_MAIN+$0D
+    lda #$00
+    adc #$00
+    bcc L4B26
+    iny
+    clc
+L4B26:
+    adc #$00
+    sta ZP_MAIN+$15
+    tya
+    adc #$00
+    bcc L4B33
+    clc
+    inc REG_KERNEL+$0B37
+L4B33:
+    adc #$00
+    tay
+    lda #$00
+    adc #$00
+    bcs L4B3D
     rts
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+L4B3D:
+    inx
+    rts
+L4B3F:
+    clc
+    adc (ZP_MAIN+$11),y
+    sta REG_KERNEL+$0B19
+    lda #$01
+    adc (ZP_MAIN+$13),y
+    adc (ZP_MAIN+$15),y
+    adc (ZP_MAIN+$17),y
+    bcc L4B0D
+L4B4F:
+    clc
+    adc (ZP_MAIN+$19),y
+    sta REG_KERNEL+$0B1F
+    lda #$01
+    adc (ZP_MAIN+$1B),y
+    bcc L4B14
+    lda #$84
+    sta ZP_MAIN+$08
+    sta ZP_MAIN+$10
+    sta ZP_MAIN+$18
+    lda #$88
+    sta ZP_MAIN+$0A
+    sta ZP_MAIN+$12
+    sta ZP_MAIN+$1A
+    lda #$86
+    sta ZP_MAIN+$0C
+    sta ZP_MAIN+$14
+    sta ZP_MAIN+$1C
+    lda #$8A
+    sta ZP_MAIN+$0E
+    sta ZP_MAIN+$16
+    sta ZP_MAIN+$1E
+    rts
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00

@@ -29,7 +29,7 @@ I_UMUL24_Z0=$571e
 I_UMUL32=$5800
 
 ; Exact normal-RAM launch wrapper for the UMUL32 record kernel.
-; The 241-byte executable body itself is swapped into $000a-$00fa by REU.
+; The 135-byte stack-free executable body is swapped into $000a-$0090 by REU.
 *=$1000
 !bin "bin/turbo_umul32_wrapper.bin"
 
@@ -437,7 +437,7 @@ math_reu_umul16_end_end:
 
 *=$38c0
 math_reu_umul32_begin:
-        ; Swap the exact 241-byte record kernel into $000a-$00fa.
+        ; Swap the exact 135-byte stack-free record-family kernel into $000a-$0090.
         lda #$0a
         sta REU_C64_LO
         lda #$00

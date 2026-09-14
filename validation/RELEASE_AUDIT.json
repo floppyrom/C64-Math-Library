@@ -1,10 +1,10 @@
 {
-  "status": "PASS_WITH_ACME_NOT_RUN",
+  "status": "PASS",
   "checks": [
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "29 files"
+      "detail": "30 files"
     },
     {
       "check": "signed_layout_validation",
@@ -34,7 +34,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 18.14
+        "elapsed_seconds": 17.44
       }
     },
     {
@@ -43,7 +43,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 18.14
+        "elapsed_seconds": 17.44
       }
     },
     {
@@ -57,8 +57,8 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 364533,
-        "elapsed_seconds": 43.79,
-        "execution": "profile-partitioned full corpus with global deterministic profile seeds; merged after independent passes"
+        "execution": "merged deterministic per-profile parallel runs",
+        "max_profile_elapsed_seconds": 11.51
       }
     },
     {
@@ -67,8 +67,8 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 364533,
-        "elapsed_seconds": 43.79,
-        "execution": "profile-partitioned full corpus with global deterministic profile seeds; merged after independent passes"
+        "execution": "merged deterministic per-profile parallel runs",
+        "max_profile_elapsed_seconds": 11.51
       }
     },
     {
@@ -302,14 +302,169 @@
       "detail": null
     },
     {
-      "check": "acme_current_not_run_documented",
-      "status": "PASS",
-      "detail": "The execution environment has no ACME binary and outbound package/network access is disabled, so ACME could not be installed for this modified native-signed build."
-    },
-    {
-      "check": "acme_historical_baseline_retained",
+      "check": "acme_validation",
       "status": "PASS",
       "detail": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020"
+    },
+    {
+      "check": "acme_reference_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_reference_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_reference_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_reference_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_reference_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_alternate_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_alternate_v1_balanced",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_alternate_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_alternate_v2_pareto_fast",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_alternate_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_alternate_v3_reu_512k",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_alternate_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_hash_current_alternate_v4_reu_16m",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_reference_v3_reu_512k_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_overlay_exact_v3_reu_512k_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_reference_v3_reu_512k_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_overlay_exact_v3_reu_512k_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_reference_v4_reu_16m_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_overlay_exact_v4_reu_16m_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_reference_v4_reu_16m_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_reference_overlay_exact_v4_reu_16m_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_alternate_v3_reu_512k_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_alternate_v3_reu_512k_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_alternate_v4_reu_16m_turbo16",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_overlay_alternate_v4_reu_16m_turbo32",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_boundary_turbo16_$02",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_boundary_turbo16_$8F",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_boundary_turbo32_$02",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "acme_boundary_turbo32_$79",
+      "status": "PASS",
+      "detail": null
     },
     {
       "check": "config_validation",
@@ -484,7 +639,7 @@
     {
       "check": "v1_balanced_reference_prg_exact",
       "status": "PASS",
-      "detail": "2b89da8e1571750d2c734fba27892d5f35ff36e204743f6dd63a78d68d08ff57"
+      "detail": "ffbed4dc89c914856b09587ef76f605d81a6535ce8f6ae83a3da40bb5ad5c57b"
     },
     {
       "check": "v2_pareto_fast_manifest_45",
@@ -494,7 +649,7 @@
     {
       "check": "v2_pareto_fast_reference_prg_exact",
       "status": "PASS",
-      "detail": "72e0621bd32ea6c0b6af99612982e02b007af9ade74275f62f55488663c7385d"
+      "detail": "aa2ec8dadf3c445e0d142cba1b2842c58b987791a47ab8cbcb63660d6fc06b6e"
     },
     {
       "check": "v3_reu_512k_manifest_45",
@@ -514,12 +669,12 @@
     {
       "check": "v3_reu_512k_reference_prg_exact",
       "status": "PASS",
-      "detail": "213ba2efb64abca671a7b1b32f4cbedf5e29d90637fb52ee4af175094709d674"
+      "detail": "9872691b15f5718ba195cb45f0aa22118bc9aeaca1a8da598eb55869cf2684a4"
     },
     {
       "check": "v3_reu_512k_reference_reu_exact",
       "status": "PASS",
-      "detail": "1d8b844983fa7aa757bc3dff5c12f92d4d9b3732c874f6e83a44116e5719c576"
+      "detail": "f81fb6ad3da84b3af89685483a6b81baeaf3f9817789c9e7b5ce838eddaaa9b9"
     },
     {
       "check": "v4_reu_16m_manifest_45",
@@ -539,12 +694,12 @@
     {
       "check": "v4_reu_16m_reference_prg_exact",
       "status": "PASS",
-      "detail": "b3704f55815d4ce4d07b61dac5170184a8d7f9cdcaddac59bb0bb2a8dd2a6f06"
+      "detail": "e50241725d74b2a18c1090ea41e013f2c9947672f93016e3fc096b4821ebcf99"
     },
     {
       "check": "v4_reu_16m_reference_reu_exact",
       "status": "PASS",
-      "detail": "71574a5d541058060ff871ea0e5c1db13b1c0053a95c9fcf7dd9dbe7e1f0c503"
+      "detail": "eb5bc703ab92add9e1f5ee7a1c55c62a244a104e94895f981535312c8fcd1482"
     },
     {
       "check": "hybrid_validation_status",
@@ -685,7 +840,7 @@
     {
       "check": "hybrid_reference_prg_exact",
       "status": "PASS",
-      "detail": "c96501c65061b687fbdecbe291f2e16bab2ab524d52f7e40d36754e6c1a47740"
+      "detail": "f0dc9fb1d21859ae8dd6c4f949693ca85f72845f8af39c80626c9955ebece4af"
     },
     {
       "check": "hybrid_docs_present",
@@ -779,6 +934,16 @@
     },
     {
       "check": "pareto_31_exact_ram",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_36_exact_ram",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "pareto_60_exact_ram",
       "status": "PASS",
       "detail": null
     },
@@ -923,6 +1088,41 @@
       "detail": null
     },
     {
+      "check": "consolidated_table_status",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "consolidated_table_rows_240",
+      "status": "PASS",
+      "detail": 240
+    },
+    {
+      "check": "consolidated_stable_rows_225",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "consolidated_profile_coverage",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "consolidated_zero_stack_reservation",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "consolidated_turbo32_135_zp",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "consolidated_files_present",
+      "status": "PASS",
+      "detail": null
+    },
+    {
       "check": "required_docs",
       "status": "PASS",
       "detail": [
@@ -989,8 +1189,8 @@
     }
   ],
   "summary": {
-    "acme_current_status": "NOT_RUN",
-    "checks_passed": 180,
+    "acme_current_status": "PASS",
+    "checks_passed": 220,
     "public_entries": 45,
     "alternate_entry_executions": 180,
     "alternate_machine_calls": 16688,

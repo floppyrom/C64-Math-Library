@@ -31,3 +31,10 @@ Legacy segment manifests were audited against the actual files in this distribut
 ## Native signed per-routine sources
 
 Each V1–V5 profile publishes exact executable source mirrors under `resident/signed/multiply/native/` and `resident/signed/division/native/`. Regenerate them with `tools/publish_native_signed_sources.py` and verify them with `tools/validate_published_signed_sources.py`.
+
+### Consolidated performance/resource index
+
+- `docs/CONSOLIDATED_ROUTINE_TABLE.md` — human-readable all-profile table.
+- `docs/CONSOLIDATED_ROUTINE_TABLE.csv` — 240-row machine-friendly table.
+- `validation/CONSOLIDATED_ROUTINE_TABLE.json` — definitions, profile summaries, and row evidence.
+- `tools/generate_consolidated_routine_table.py` — regenerates the table from shipped images and validation evidence.

@@ -1,0 +1,177 @@
+; umul16_zp17: UNSIGNED 16 x 16 -> complete 32-bit product.
+; Generic entry umult installs fresh X bindings on EVERY call.
+; Exact uniform mean: 166.943171495805 cycles, including RTS.
+; All occupied memory: 2194 B; ZP: 17 B.
+; Instruction bytes (including initializer and ZP code): 133.
+; Tables: 2044 B. Ordinary scratch: 0 B.
+; Stack-page code reserved: 0 B; additional live PHA bytes: 0.
+; same_x has the same Y contract and saves 28 cycles.
+; D must be zero; private code, operand slots and scratch must be writable.
+; Clobbers A, X, Y, arithmetic flags and private SMC/scratch. Non-reentrant.
+; Output low to high: z0, CPU X, CPU A, CPU Y. X input labels are preserved.
+; Input Y is y0; memory y1 is an immediate operand and is preserved.
+; Uses documented instructions only.
+; Run init once if the pointer image has not been installed: 38 cycles.
+; No code or persistent data occupies the hardware stack page.
+; gmec Results Total bytes excludes ZP; the occupied total above includes it.
+; Timed entry excludes caller JSR, marshalling, CLD and one-time initialization.
+; Lineage: Firemonger fused quarter-square rows; Repose family-ranking insight;
+; low-ZP layouts, search and qualification produced in this optimization session.
+;
+;ABI
+;CPU: mos6502
+;Operation: umul
+;Entry: umult
+;Input x: uint16 = x0, x1
+;Input y: uint16 = reg:Y, y1
+;Output z: uint32 = z0, reg:X, reg:A, reg:Y
+;Region ZP: zp_start..zp_end
+;Region Code: code_start..code_end, init..init_end
+;Region Data: ram_start..ram_end, t0_start..t0_end, t1_start..t1_end, t2_start..t2_end, t3_start..t3_end
+;End ABI
+;Results
+;Status: validated
+;Validation level: validate
+;Validation cases: 8388608
+;Validation errors: 0
+;Validation complete: yes
+;Edge cases: 262430
+;Edge errors: 0
+;Edge complete: yes
+;Profile distribution: uniform
+;Profile cases: 8388608
+;Profile errors: 0
+;Profile complete: yes
+;Min cycles: 155
+;Max cycles: 190
+;Avg cycles: 166.938727
+;Stddev cycles: 7.104974
+;ZP bytes: 17
+;Code bytes: 133
+;Data bytes: 2044
+;Total bytes: 2177
+;End Results
+!cpu 6510
+; The parity bias is added AFTER dividing n*n by four.
+BIAS=202
+*=$0009
+zp_start:
+p0: !word sl
+p1: !word nl
+p2: !word sh
+p3: !word nh
+p4: !word sl
+p5: !word nl
+p6: !word sh
+p7: !word nh
+z0: !fill 1,0
+zp_end:
+*=$0600
+ram_start:
+ram_end:
+x0 = p0
+x1 = p4
+*=$47ec
+code_start:
+umult:
+; Install x and ~x mirrors once for this multiplication.
+        lda x0
+        sta p2
+        eor #$ff
+        sta p1
+        sta p3
+        lda x1
+        sta p6
+        eor #$ff
+        sta p5
+        sta p7
+same_x:
+; All X bindings must already be installed when entering here directly.
+        sec
+        lda (p0),y
+        adc (p1),y
+        sta z0
+        lda (p2),y
+        adc (p3),y
+        adc (p4),y
+        bcs carry0
+        adc (p5),y
+        tax
+        lda (p6),y
+tail0:
+        adc (p7),y
+        sta high0+1
+y1=*+1
+        ldy #0
+        lda (p0),y
+        adc (p1),y
+        sta low1+1
+        lda (p2),y
+        adc (p3),y
+        adc (p4),y
+        bcs carry1
+hot1:
+        adc (p5),y
+        sta high1+1
+        lda (p6),y
+tail1:
+        adc (p7),y
+        tay
+        clc
+        txa
+low1: adc #0
+        tax
+high0: lda #0
+high1: adc #0
+        bcs final
+        rts
+final: iny
+        rts
+carry0:
+; First row low-sum overflow: preserve the extra high-byte unit.
+        clc
+        adc (p5),y
+        tax
+        lda #1
+        adc (p6),y
+        bcc tail0
+carry1:
+; Second row overflow continuation.
+        clc
+        adc (p5),y
+        sta high1+1
+        lda #1
+        adc (p6),y
+        bcc tail1
+code_end:
+init:
+        lda #>sl
+        sta p0+1
+        sta p4+1
+        lda #>nl
+        sta p1+1
+        sta p5+1
+        lda #>sh
+        sta p2+1
+        sta p6+1
+        lda #>nh
+        sta p3+1
+        sta p7+1
+        rts
+init_end:
+*=$8400
+t0_start:
+sl: !for i,0,510 { !byte <((i*i)/4 + BIAS*(i&1)) }
+t0_end:
+*=$8600
+t1_start:
+sh: !for i,0,510 { !byte >((i*i)/4 + BIAS*(i&1)) }
+t1_end:
+*=$8800
+t2_start:
+nl: !for i,0,510 { !byte (255-(<(((255-i)*(255-i))/4 + BIAS*((255-i)&1)))) }
+t2_end:
+*=$8a00
+t3_start:
+nh: !for i,0,510 { !byte (255-(>(((255-i)*(255-i))/4 + BIAS*((255-i)&1)))) }
+t3_end:

@@ -45,7 +45,7 @@ def validate_one(profile,kind):
  cpu.call(inc['MATH_INIT'],2_000_000)
  mx,my,mz=inc['MATH_X'],inc['MATH_Y'],inc['MATH_Z']
  results={}
- for bits,prefix,zplen in [(16,'MATH_REU_UMUL16',113),(32,'MATH_REU_UMUL32',241)]:
+ for bits,prefix,zplen in [(16,'MATH_REU_UMUL16',113),(32,'MATH_REU_UMUL32',135)]:
   base=cfg[f'TURBO{bits}_ZP_BASE'];before=bytearray(((i*73+bits+17)&255) for i in range(zplen))
   cpu.mem[base:base+zplen]=before
   begin=inc[prefix+'_BEGIN'];call=inc[prefix];end=inc[prefix+'_END']

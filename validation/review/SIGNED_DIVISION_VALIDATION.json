@@ -430,7 +430,7 @@
   "summary": {
     "profiles": 5,
     "machine_calls": 364533,
-    "elapsed_seconds": 43.79,
-    "execution": "profile-partitioned full corpus with global deterministic profile seeds; merged after independent passes"
+    "execution": "merged deterministic per-profile parallel runs",
+    "max_profile_elapsed_seconds": 11.51
   }
 }

@@ -43,7 +43,7 @@ def main():
     internal_bytes,_=_assemble_overlay(name,vals)
     stage=td/'overlay'/kind/p/name;stage.mkdir(parents=True,exist_ok=True)
     shutil.copy2(ROOT/'relocatable_source'/'turbo'/f'{name}_overlay.asm',stage/f'{name}_overlay.asm')
-    wrapper=stage/'wrapper.asm';wrapper.write_text(f'REG_TABLE=${vals["REG_TABLE"]:04x}\n{basekey}=${vals[basekey]:02x}\n!source "{name}_overlay.asm"\n')
+    wrapper=stage/'wrapper.asm';wrapper.write_text(f'REG_LOW=${vals["REG_LOW"]:04x}\nREG_TABLE=${vals["REG_TABLE"]:04x}\n{basekey}=${vals[basekey]:02x}\n!source "{name}_overlay.asm"\n')
     out=stage/'overlay.bin';cp=subprocess.run([acme,'-f','plain','-o',str(out),'wrapper.asm'],cwd=stage,text=True,capture_output=True)
     if cp.returncode:raise RuntimeError(f'ACME overlay failed {p}/{kind}/{name}:\n{cp.stdout}\n{cp.stderr}')
     same=out.read_bytes()==internal_bytes
@@ -57,13 +57,13 @@ def main():
     overlay_rows.append({'profile':p,'map':kind,'overlay':name,'status':'PASS','bytes':len(internal_bytes),'sha256':sha(out),'byte_identical':True,'reference_overlay_identical':ref_overlay_same})
  boundary_rows=[]
  # Edge geometries independently verify the bundled assembler's full supported
- # Turbo origin range, including Turbo16 at $8F and Turbo32 at $0F.
- for name,basekey,base,table in (('turbo16','TURBO16_ZP_BASE',0x02,0x4000),('turbo16','TURBO16_ZP_BASE',0x8f,0x6000),('turbo32','TURBO32_ZP_BASE',0x02,0x4000),('turbo32','TURBO32_ZP_BASE',0x0f,0x6000)):
+ # Turbo origin range, including Turbo16 at $8F and Turbo32 at $79.
+ for name,basekey,base,table in (('turbo16','TURBO16_ZP_BASE',0x02,0x4000),('turbo16','TURBO16_ZP_BASE',0x8f,0x6000),('turbo32','TURBO32_ZP_BASE',0x02,0x4000),('turbo32','TURBO32_ZP_BASE',0x79,0x6000)):
   vals=parse_config(ROOT/'relocatable_source'/'v3_reu_512k'/'math_config_reference.inc');vals[basekey]=base;vals['REG_TABLE']=table
   internal_bytes,_=_assemble_overlay(name,vals)
   stage=td/'overlay_boundary'/name/f'{base:02x}';stage.mkdir(parents=True,exist_ok=True)
   shutil.copy2(ROOT/'relocatable_source'/'turbo'/f'{name}_overlay.asm',stage/f'{name}_overlay.asm')
-  wrapper=stage/'wrapper.asm';wrapper.write_text(f'REG_TABLE=${table:04x}\n{basekey}=${base:02x}\n!source "{name}_overlay.asm"\n')
+  wrapper=stage/'wrapper.asm';wrapper.write_text(f'REG_LOW=${vals["REG_LOW"]:04x}\nREG_TABLE=${table:04x}\n{basekey}=${base:02x}\n!source "{name}_overlay.asm"\n')
   out=stage/'overlay.bin';cp=subprocess.run([acme,'-f','plain','-o',str(out),'wrapper.asm'],cwd=stage,text=True,capture_output=True)
   if cp.returncode:raise RuntimeError(f'ACME boundary overlay failed {name}/${base:02X}:\n{cp.stdout}\n{cp.stderr}')
   if out.read_bytes()!=internal_bytes:raise AssertionError(f'ACME/internal boundary overlay mismatch: {name}/${base:02X}')

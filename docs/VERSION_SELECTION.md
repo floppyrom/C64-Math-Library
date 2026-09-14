@@ -30,10 +30,10 @@ V1, V2 and V5 remain useful as simple, reproducible presets and validation ancho
 | ZP | Default result | Exact extra RAM vs V1 |
 |---:|---|---:|
 | 31 | V5 zero-ZP imports + initialized UMUL32 | 5253 B |
-| 36 | above + UMUL8/16 | 6010 B |
-| 60 | above + UMUL24 | 6685 B |
+| 36 | above + UMUL8/16 | 5843 B |
+| 60 | above + UMUL24 | 6603 B |
 | 147 | V5 imports + initialized UMUL32 + native signed SMUL16 | 5439 B |
-| 176 | all certified hybrid packs | 6871 B |
+| 176 | all certified hybrid packs | 6789 B |
 | 221 | complete V2 | 208 B resident increase |
 
 The optimizer maximizes weighted cycle savings, so RAM usage need not increase monotonically with ZP. Workload weights can change the selected pack at the same resource budget.

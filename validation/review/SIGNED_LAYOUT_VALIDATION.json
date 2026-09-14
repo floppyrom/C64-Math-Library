@@ -15,14 +15,14 @@
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
           "signed_instructions": 88,
-          "unsigned_instructions": 70,
+          "unsigned_instructions": 104,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
           "signed_instructions": 138,
-          "unsigned_instructions": 113,
+          "unsigned_instructions": 200,
           "overlap": 0
         },
         {
@@ -78,7 +78,7 @@
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
           "signed_instructions": 98,
-          "unsigned_instructions": 80,
+          "unsigned_instructions": 114,
           "overlap": 0
         },
         {
@@ -110,14 +110,14 @@
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
           "signed_instructions": 115,
-          "unsigned_instructions": 101,
+          "unsigned_instructions": 86,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
           "signed_instructions": 191,
-          "unsigned_instructions": 167,
+          "unsigned_instructions": 179,
           "overlap": 0
         },
         {
@@ -173,7 +173,7 @@
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
           "signed_instructions": 125,
-          "unsigned_instructions": 111,
+          "unsigned_instructions": 96,
           "overlap": 0
         },
         {
@@ -205,14 +205,14 @@
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
           "signed_instructions": 115,
-          "unsigned_instructions": 103,
+          "unsigned_instructions": 86,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
           "signed_instructions": 191,
-          "unsigned_instructions": 167,
+          "unsigned_instructions": 179,
           "overlap": 0
         },
         {
@@ -268,7 +268,7 @@
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
           "signed_instructions": 125,
-          "unsigned_instructions": 113,
+          "unsigned_instructions": 96,
           "overlap": 0
         },
         {
@@ -300,14 +300,14 @@
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
           "signed_instructions": 115,
-          "unsigned_instructions": 99,
+          "unsigned_instructions": 86,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
           "signed_instructions": 191,
-          "unsigned_instructions": 167,
+          "unsigned_instructions": 179,
           "overlap": 0
         },
         {
@@ -363,7 +363,7 @@
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
           "signed_instructions": 125,
-          "unsigned_instructions": 109,
+          "unsigned_instructions": 96,
           "overlap": 0
         },
         {
@@ -395,14 +395,14 @@
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
           "signed_instructions": 88,
-          "unsigned_instructions": 70,
+          "unsigned_instructions": 104,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
           "signed_instructions": 138,
-          "unsigned_instructions": 113,
+          "unsigned_instructions": 200,
           "overlap": 0
         },
         {
@@ -458,7 +458,7 @@
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
           "signed_instructions": 98,
-          "unsigned_instructions": 80,
+          "unsigned_instructions": 114,
           "overlap": 0
         },
         {
@@ -728,7 +728,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 88,
-        "unsigned_instructions": 70,
+        "unsigned_instructions": 104,
         "overlap": []
       }
     },
@@ -747,7 +747,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 138,
-        "unsigned_instructions": 113,
+        "unsigned_instructions": 200,
         "overlap": []
       }
     },
@@ -899,7 +899,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 98,
-        "unsigned_instructions": 80,
+        "unsigned_instructions": 114,
         "overlap": []
       }
     },
@@ -1186,7 +1186,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 115,
-        "unsigned_instructions": 101,
+        "unsigned_instructions": 86,
         "overlap": []
       }
     },
@@ -1205,7 +1205,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 191,
-        "unsigned_instructions": 167,
+        "unsigned_instructions": 179,
         "overlap": []
       }
     },
@@ -1357,7 +1357,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 125,
-        "unsigned_instructions": 111,
+        "unsigned_instructions": 96,
         "overlap": []
       }
     },
@@ -1639,7 +1639,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 115,
-        "unsigned_instructions": 103,
+        "unsigned_instructions": 86,
         "overlap": []
       }
     },
@@ -1658,7 +1658,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 191,
-        "unsigned_instructions": 167,
+        "unsigned_instructions": 179,
         "overlap": []
       }
     },
@@ -1810,7 +1810,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 125,
-        "unsigned_instructions": 113,
+        "unsigned_instructions": 96,
         "overlap": []
       }
     },
@@ -2092,7 +2092,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 115,
-        "unsigned_instructions": 99,
+        "unsigned_instructions": 86,
         "overlap": []
       }
     },
@@ -2111,7 +2111,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 191,
-        "unsigned_instructions": 167,
+        "unsigned_instructions": 179,
         "overlap": []
       }
     },
@@ -2263,7 +2263,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 125,
-        "unsigned_instructions": 109,
+        "unsigned_instructions": 96,
         "overlap": []
       }
     },
@@ -2463,7 +2463,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 88,
-        "unsigned_instructions": 70,
+        "unsigned_instructions": 104,
         "overlap": []
       }
     },
@@ -2482,7 +2482,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 138,
-        "unsigned_instructions": 113,
+        "unsigned_instructions": 200,
         "overlap": []
       }
     },
@@ -2634,7 +2634,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 98,
-        "unsigned_instructions": 80,
+        "unsigned_instructions": 114,
         "overlap": []
       }
     },

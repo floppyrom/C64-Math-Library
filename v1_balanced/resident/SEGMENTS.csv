@@ -7,8 +7,8 @@ udiv32_16_core,$4400,124,bin/udiv32_16_core.bin,kernel code
 udiv32_16_outer,$4500,123,bin/udiv32_16_outer.bin,kernel code
 umod8,$4600,66,bin/umod8_code.bin,kernel code
 umul8,$4700,28,bin/umul8_code.bin,kernel code
-umul16,$4800,135,bin/umul16_code.bin,kernel code
-umul24,$4A00,204,bin/umul24_code.bin,kernel code
+umul16,$47EC,145,bin/umul16_code.bin,qualified 17-ZP fused quarter-square UMUL16 record kernel + V1 persistent-UMUL32 state restore helper
+umul24,$4A49,307,bin/umul24_code.bin,qualified 24-ZP reverse/carry UMUL24 record kernel (includes retained init)
 umul32,$4C00,277,bin/umul32_code.bin,kernel code
 umul8_sqr_lo,$8000,511,bin/umul8_sqr_lo.bin,page-aligned lookup data
 umul8_sqr_hi,$8200,511,bin/umul8_sqr_hi.bin,page-aligned lookup data
@@ -20,4 +20,5 @@ umul32_sqr_lo,$8C00,511,bin/umul32_sqr_lo.bin,page-aligned lookup data
 umul32_sqr_hi,$8E00,511,bin/umul32_sqr_hi.bin,page-aligned lookup data
 umul32_neg_lo,$9000,511,bin/umul32_neg_lo.bin,page-aligned lookup data
 umul32_neg_hi,$9200,511,bin/umul32_neg_hi.bin,page-aligned lookup data
-signed_math_api,$3B80,1036,segments/signed_math_api.bin,"signed SMUL/SDIV/SMOD public extension; sparse fixed-address image spans $3B80-$3FE5"
+signed_math_api,$3B80,1036,segments/signed_math_api.bin,signed SMUL/SDIV/SMOD public extension; sparse fixed-address image spans $3B80-$3FE5
+umul24_adapter,$4900,101,bin/umul24_adapter.bin,V1 record-UMUL24 ABI adapter + shared-ZP pointer-page setup + persistent-UMUL32 state restore

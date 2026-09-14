@@ -1,6 +1,6 @@
 ; UMUL32 turbo batch example.
-; This is an exclusive overlay because the 241-byte hot kernel occupies
-; reference map $000A-$00FA. Relocatable source builds use TURBO32_ZP_BASE
+; This is an exclusive overlay because the 135-byte stack-free hot kernel occupies
+; reference map $000A-$0090. Relocatable source builds use TURBO32_ZP_BASE
 ; from the generated math_api.inc. The measured break-even is 43 products per batch.
 ; For a relocated build, include build_source/<map>/v4_reu_16m/math_api.inc instead.
 !source "../resident/math_api.inc"

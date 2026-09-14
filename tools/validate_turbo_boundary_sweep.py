@@ -41,7 +41,7 @@ def validate_build(profile,label,v,bdir):
     inc=parse_inc(bdir/'math_api.inc');mem=load_prg(bdir/f'math_{profile}_source_built.prg');reu=bytearray((bdir/f'c64_math_{profile}_source_built.reu').read_bytes())
     cpu=CPU(mem,reu=reu);cpu.d=0;cpu.call(inc['MATH_INIT'],2_000_000)
     mx,my,mz=inc['MATH_X'],inc['MATH_Y'],inc['MATH_Z']; modes={}
-    for bits,prefix,zplen in ((16,'MATH_REU_UMUL16',113),(32,'MATH_REU_UMUL32',241)):
+    for bits,prefix,zplen in ((16,'MATH_REU_UMUL16',113),(32,'MATH_REU_UMUL32',135)):
         base=v[f'TURBO{bits}_ZP_BASE']; before=bytes(((i*37+bits+5)&255) for i in range(zplen));cpu.mem[base:base+zplen]=before
         begin,call,end=inc[prefix+'_BEGIN'],inc[prefix],inc[prefix+'_END'];cb=cpu.call(begin,2_000_000);installed=bytes(cpu.mem[base:base+zplen]);
         if installed==before:raise AssertionError(f'{profile}/{label}/T{bits}: overlay not installed')
@@ -56,7 +56,7 @@ def validate_build(profile,label,v,bdir):
 
 def maps(profile):
     lo=config_values(profile,True);lo['TURBO16_ZP_BASE']=0x02;lo['TURBO32_ZP_BASE']=0x02
-    hi=config_values(profile,False);hi['TURBO16_ZP_BASE']=0x8f;hi['TURBO32_ZP_BASE']=0x0f
+    hi=config_values(profile,False);hi['TURBO16_ZP_BASE']=0x8f;hi['TURBO32_ZP_BASE']=0x79
     if profile=='v3_reu_512k':
         hi.update(REU_UMUL8_LO_BANK=0,REU_UMUL8_HI_BANK=1,REU_UDIV8_Q_BANK=2,REU_UDIV8_R_BANK=3,REU_RECIP_LO_BANK=4,REU_RECIP_HI_BANK=5,REU_TURBO16_BANK=6,REU_TURBO32_BANK=7)
     else:

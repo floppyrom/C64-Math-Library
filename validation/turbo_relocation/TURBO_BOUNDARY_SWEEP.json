@@ -19,15 +19,15 @@
         "turbo32": {
           "cases": 512,
           "zp_base": "$02",
-          "zp_end": "$F2",
+          "zp_end": "$88",
           "reu_bank": "$01",
-          "begin_cycles": 538,
-          "end_cycles": 583,
-          "mean_cycles": 695.859375,
-          "min_cycles": 597,
-          "max_cycles": 829,
-          "cycle_vector_sha256": "f91e7ffe11c5c5697a4439bc284ae64d677229e01d0542a8e14d1d227ed2666d",
-          "overlay_sha256": "9c8161ee576e2d3edb22e0fdcdd45dbf5425eab5895cfb50de0baba5a0bd7470"
+          "begin_cycles": 326,
+          "end_cycles": 371,
+          "mean_cycles": 710.724609375,
+          "min_cycles": 666,
+          "max_cycles": 840,
+          "cycle_vector_sha256": "005ca19a5940919ce1496a05a63955d2d50340c736ab1244d505e4db55174ca6",
+          "overlay_sha256": "768750f3a6a306ed1dc9bbf78096bc0610c856a207d178ecfe1509139c397e05"
         }
       },
       "maximum_origins": {
@@ -46,16 +46,16 @@
         },
         "turbo32": {
           "cases": 512,
-          "zp_base": "$0F",
+          "zp_base": "$79",
           "zp_end": "$FF",
           "reu_bank": "$07",
-          "begin_cycles": 538,
-          "end_cycles": 583,
-          "mean_cycles": 695.859375,
-          "min_cycles": 597,
-          "max_cycles": 829,
-          "cycle_vector_sha256": "f91e7ffe11c5c5697a4439bc284ae64d677229e01d0542a8e14d1d227ed2666d",
-          "overlay_sha256": "28bf893082db9c39ddc714aae20527b6323e63a7d4c5c922286c28cec08a5101"
+          "begin_cycles": 326,
+          "end_cycles": 371,
+          "mean_cycles": 710.724609375,
+          "min_cycles": 666,
+          "max_cycles": 840,
+          "cycle_vector_sha256": "005ca19a5940919ce1496a05a63955d2d50340c736ab1244d505e4db55174ca6",
+          "overlay_sha256": "a4c3ee849cbef01ec3c312936e3e770aebf14bf696c9d9a5ce6dc19737b1d73f"
         }
       }
     },
@@ -77,15 +77,15 @@
         "turbo32": {
           "cases": 512,
           "zp_base": "$02",
-          "zp_end": "$F2",
+          "zp_end": "$88",
           "reu_bank": "$29",
-          "begin_cycles": 538,
-          "end_cycles": 583,
-          "mean_cycles": 695.859375,
-          "min_cycles": 597,
-          "max_cycles": 829,
-          "cycle_vector_sha256": "f91e7ffe11c5c5697a4439bc284ae64d677229e01d0542a8e14d1d227ed2666d",
-          "overlay_sha256": "9c8161ee576e2d3edb22e0fdcdd45dbf5425eab5895cfb50de0baba5a0bd7470"
+          "begin_cycles": 326,
+          "end_cycles": 371,
+          "mean_cycles": 710.724609375,
+          "min_cycles": 666,
+          "max_cycles": 840,
+          "cycle_vector_sha256": "005ca19a5940919ce1496a05a63955d2d50340c736ab1244d505e4db55174ca6",
+          "overlay_sha256": "768750f3a6a306ed1dc9bbf78096bc0610c856a207d178ecfe1509139c397e05"
         }
       },
       "maximum_origins": {
@@ -104,16 +104,16 @@
         },
         "turbo32": {
           "cases": 512,
-          "zp_base": "$0F",
+          "zp_base": "$79",
           "zp_end": "$FF",
           "reu_bank": "$FF",
-          "begin_cycles": 538,
-          "end_cycles": 583,
-          "mean_cycles": 695.859375,
-          "min_cycles": 597,
-          "max_cycles": 829,
-          "cycle_vector_sha256": "f91e7ffe11c5c5697a4439bc284ae64d677229e01d0542a8e14d1d227ed2666d",
-          "overlay_sha256": "28bf893082db9c39ddc714aae20527b6323e63a7d4c5c922286c28cec08a5101"
+          "begin_cycles": 326,
+          "end_cycles": 371,
+          "mean_cycles": 710.724609375,
+          "min_cycles": 666,
+          "max_cycles": 840,
+          "cycle_vector_sha256": "005ca19a5940919ce1496a05a63955d2d50340c736ab1244d505e4db55174ca6",
+          "overlay_sha256": "a4c3ee849cbef01ec3c312936e3e770aebf14bf696c9d9a5ce6dc19737b1d73f"
         }
       }
     }

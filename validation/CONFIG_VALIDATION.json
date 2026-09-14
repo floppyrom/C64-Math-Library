@@ -136,13 +136,13 @@
       "name": "Turbo32 processor-port overlap rejected",
       "profile": "v3_reu_512k",
       "status": "PASS",
-      "rejected_with": "TURBO32_ZP_BASE invalid: $01-$F1"
+      "rejected_with": "TURBO32_ZP_BASE invalid: $01-$87"
     },
     {
       "name": "Turbo32 ZP wrap rejected",
       "profile": "v3_reu_512k",
       "status": "PASS",
-      "rejected_with": "TURBO32_ZP_BASE invalid: $10-$100"
+      "rejected_with": "TURBO32_ZP_BASE invalid: $7A-$100"
     },
     {
       "name": "V3 Turbo bank >7 rejected",

@@ -98,7 +98,7 @@ MATH_REU_BYTE         = $c020
 ; Turbo16 owns $003e-$00ae while active. Resident wide calls that do not use
 ; the REU lookup transport may coexist; do not call default UMUL8/UMUL16,
 ; UDIV8, or UMOD8 until Turbo16 END restores lookup mode.
-; Turbo32 owns $000a-$00fa and is an exclusive math mode.
+; Turbo32 owns the configured 135-byte ZP range (reference $000a-$0090) and is an exclusive math mode.
 
 ; ---------------------------------------------------------------------------
 ; Signed API extension (2026-09-05 complete release)

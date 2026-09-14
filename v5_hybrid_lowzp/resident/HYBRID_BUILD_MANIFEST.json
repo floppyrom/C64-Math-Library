@@ -7,7 +7,7 @@
   "output_prg": "math_v5_hybrid_lowzp_game_math.prg",
   "output_load": "$2000",
   "output_end": "$CBA3",
-  "output_sha256": "c96501c65061b687fbdecbe291f2e16bab2ab524d52f7e40d36754e6c1a47740",
+  "output_sha256": "f0dc9fb1d21859ae8dd6c4f949693ca85f72845f8af39c80626c9955ebece4af",
   "public_entries": {
     "MATH_UMUL8": "$3000",
     "MATH_UMUL16": "$3020",
@@ -84,8 +84,8 @@
     "Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines."
   ],
   "source_inputs": {
-    "v1_source_sha256": "1e2ee2c30e2a33c63997abb28d8e0992cd71c2339d1e424638ae2ce6354328aa",
-    "v2_source_sha256": "04c6a93258b2188b1e7cb543ef8da0b7a34769ef87d57046075a0e3f1fd50859",
+    "v1_source_sha256": "972ec054f6f70098b36e26d1103893c3c00c348e2db5498f44673f629c4eb934",
+    "v2_source_sha256": "61328e285835ee10eb246a1ccd22e82e98575a65c831ae9a6ddfce3040ea44cc",
     "builder_sha256": "56d8afc64fede9bf32c4d0d88c9783657f916001b1ad26d5058faf2474a2dc15"
   }
 }

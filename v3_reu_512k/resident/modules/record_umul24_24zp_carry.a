@@ -1,0 +1,282 @@
+; umul24_reverse_24zp_carry.a -- unsigned 24 x 24 -> 48
+; Carry-transfer refinement of our previous practical low-ZP sources.
+; Fused quarter-square/carry-chain lineage: Firemonger; see assessment.
+;
+; Qualified uniform sample: 357.041715026 cycles, 8,388,608 pairs.
+; Sample min/max: 327/412; not global extrema.
+; Also passed all 590,353 gmec edge cases; zero errors.
+; The sample above is not an exact mean over all 2^48 pairs.
+; Timing includes fresh-X binding and final RTS; caller JSR, loading
+; inputs, caller CLD, output stores and one-time init are excluded.
+;
+; Occupied: 2375 B = 24 ZP + 307 non-ZP code + 2044 data.
+; Table payload: 2044 B; ordinary scratch: 0 B; init code: 33 B.
+; Occupied includes initialization and counts every declared byte once.
+; gmec Results Total bytes means non-ZP Code + Data; add ZP for occupied.
+; Alignment holes and the padded PRG file span are not occupied bytes.
+;
+; CALL CONTRACT: D=0. Write every input using the ABI labels below.
+; Entry A, X and carry are unrestricted unless they hold an ABI input.
+; A/X/Y, arithmetic flags, private scratch and SMC operands are clobbered.
+; Install in writable RAM; private state is not reentrant.
+; Install only one variant at these addresses, or relocate/reassemble.
+; Relocation can change branch penalties; recheck timing and pointer pages.
+; Install the supplied pointer image, or call init once before use.
+; No same_x entry: results borrow dead pointers; use umult and
+; supply all input bytes again on every call.
+; No code or persistent allocation in the hardware stack page.
+; Documented 6502 instructions only; four unchanged table planes.
+;
+; CHANGE:
+; Keep the last row top in Y and absorb the first merge carry with
+; INY. Each original 24x8 top is <= $FE, so one increment is safe.
+; Merge column 2 directly; propagate the next carry into the middle
+; row top. Removing the old temporary reduces code and mean time.
+; This is a mean-speed improvement, not faster for every input pair.
+;
+; See UMUL24_UMUL16_CARRY_TRANSFER_ASSESSMENT.md for evidence,
+; memory maps, comparison limits and reproduction instructions.
+;
+;ABI
+;CPU: mos6502
+;Operation: umul
+;Entry: umult
+;Input x: uint24 = x0, x1, x2
+;Input y: uint24 = y0, y1, reg:Y
+;Output z: uint48 = r0, r1, r2, reg:Y, reg:A, reg:X
+;Region ZP: zp_start..zp_end
+;Region Code: code_start..code_end, init..init_end
+;Region Data: ram_start..ram_end, t0_start..t0_end, t1_start..t1_end, t2_start..t2_end, t3_start..t3_end
+;End ABI
+!cpu 6510
+BIAS=202
+*=$0021
+zp_start:
+p0: !word sl
+p1: !word nl
+p2: !word sh
+p3: !word nh
+p4: !word sl
+p5: !word nl
+p6: !word sh
+p7: !word nh
+p8: !word sl
+p9: !word nl
+p10: !word sh
+p11: !word nh
+zp_end:
+*=$0600
+ram_start:
+ram_end:
+x0 = p0
+x1 = p4
+x2 = p8
+r0=p1
+r1=p3
+r2=p7
+
+*=$5649
+code_start:
+c0_1:
+        clc
+        adc (p5),y
+        sta v21+1
+        lda #1
+        adc (p6),y
+        adc (p7),y
+        adc (p8),y
+        bcc h0_2
+c0_2:
+        clc
+        adc (p9),y
+        sta v22+1
+        lda #1
+        adc (p10),y
+        bcc t0_2
+c1_1:
+        clc
+        adc (p5),y
+        sta v11+1
+        lda #1
+        adc (p6),y
+        adc (p7),y
+        adc (p8),y
+        bcc h1_2
+c1_2:
+        clc
+        adc (p9),y
+        sta v12+1
+        lda #1
+        adc (p10),y
+        bcc t1_2
+umult:
+        lda x0
+        sta p2
+        eor #$ff
+        sta p1
+        sta p3
+        lda x1
+        sta p6
+        eor #$ff
+        sta p5
+        sta p7
+        lda x2
+        sta p10
+        eor #$ff
+        sta p9
+        sta p11
+bound_entry:
+        sec
+row0:
+        lda (p0),y
+        adc (p1),y
+        sta v20+1
+        lda (p2),y
+        adc (p3),y
+        adc (p4),y
+        bcs c0_1
+h0_1:
+        adc (p5),y
+        sta v21+1
+        lda (p6),y
+t0_1:
+        adc (p7),y
+        adc (p8),y
+        bcs c0_2
+h0_2:
+        adc (p9),y
+        sta v22+1
+        lda (p10),y
+t0_2:
+        adc (p11),y
+        tax
+y1=*+1
+        ldy #0
+row1:
+        lda (p0),y
+        adc (p1),y
+        sta v10+1
+        lda (p2),y
+        adc (p3),y
+        adc (p4),y
+        bcs c1_1
+h1_1:
+        adc (p5),y
+        sta v11+1
+        lda (p6),y
+t1_1:
+        adc (p7),y
+        adc (p8),y
+        bcs c1_2
+h1_2:
+        adc (p9),y
+        sta v12+1
+        lda (p10),y
+t1_2:
+        adc (p11),y
+        sta v13+1
+y0=*+1
+        ldy #0
+row2:
+        lda (p0),y
+        adc (p1),y
+        sta r0
+        lda (p2),y
+        adc (p3),y
+        adc (p4),y
+        bcs c2_1
+h2_1:
+        adc (p5),y
+        sta v01+1
+        lda (p6),y
+t2_1:
+        adc (p7),y
+        adc (p8),y
+        bcs c2_2
+h2_2:
+        adc (p9),y
+        sta v02+1
+        lda (p10),y
+t2_2:
+        adc (p11),y
+        tay
+summation:
+; Original row top <= $FE; retain it in Y for the merge.
+        clc
+v01: lda #0
+v10: adc #0
+        sta r1
+v02: lda #0
+v11: adc #0
+        bcc column2
+        iny                 ; One carry cannot wrap the original top.
+        clc
+column2:
+v20: adc #0
+        sta r2
+        tya
+v12: adc #0
+        bcc column3
+        clc
+        inc v13+1
+column3:
+v21: adc #0
+        tay
+v13: lda #0
+v22: adc #0
+        bcs final
+        rts
+final: inx
+        rts
+c2_1:
+        clc
+        adc (p5),y
+        sta v01+1
+        lda #1
+        adc (p6),y
+        adc (p7),y
+        adc (p8),y
+        bcc h2_2
+c2_2:
+        clc
+        adc (p9),y
+        sta v02+1
+        lda #1
+        adc (p10),y
+        bcc t2_2
+code_end:
+init:
+        lda #>sl
+        sta p0+1
+        sta p4+1
+        sta p8+1
+        lda #>nl
+        sta p1+1
+        sta p5+1
+        sta p9+1
+        lda #>sh
+        sta p2+1
+        sta p6+1
+        sta p10+1
+        lda #>nh
+        sta p3+1
+        sta p7+1
+        sta p11+1
+        rts
+init_end:
+*=$6000
+t0_start:
+sl: !for i,0,510 { !byte <((i*i)/4 + BIAS*(i&1)) }
+t0_end:
+*=$6200
+t1_start:
+sh: !for i,0,510 { !byte >((i*i)/4 + BIAS*(i&1)) }
+t1_end:
+*=$6400
+t2_start:
+nl: !for i,0,510 { !byte (255-(<(((255-i)*(255-i))/4 + BIAS*((255-i)&1)))) }
+t2_end:
+*=$6600
+t3_start:
+nh: !for i,0,510 { !byte (255-(>(((255-i)*(255-i))/4 + BIAS*((255-i)&1)))) }
+t3_end:

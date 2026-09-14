@@ -143,3 +143,5 @@ See `validation/hybrid/` for V5 evidence and `validation/pareto/` for the Custom
 ## Project terminology
 
 The project was originally called an API because it was designed around a stable common calling interface across multiple optimized implementations. As it grew to include the implementations, tables, REU images, build tools, tests and documentation, **C64 Math Library** became the more accurate project name; the 45-entry interface is its public API.
+
+- **[Consolidated routine table](docs/CONSOLIDATED_ROUTINE_TABLE.md)** — cycles, reachable code, ZP, hardware-stack reservation and profile footprint for every shipped routine/profile.

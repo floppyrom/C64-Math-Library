@@ -1,0 +1,191 @@
+{
+  "status": "PASS",
+  "basis": "deterministic post-record-upgrade comparison corpus; public entry cycles include RTS and exclude caller JSR/input stores",
+  "profiles": {
+    "v1_balanced": {
+      "MATH_UMUL32_READY": {
+        "cases": 2500,
+        "mean_cycles": 761.1576,
+        "min_cycles": 702,
+        "max_cycles": 841,
+        "seed": "0x32325244"
+      },
+      "MATH_UMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 314.9656,
+        "min_cycles": 303,
+        "max_cycles": 338,
+        "seed": "0x16160816"
+      },
+      "MATH_SMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 463.5234,
+        "min_cycles": 428,
+        "max_cycles": 503,
+        "seed": "0x51616081"
+      },
+      "MATH_UMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 848.1616,
+        "min_cycles": 789,
+        "max_cycles": 928,
+        "seed": "0x32321632"
+      },
+      "MATH_SMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 912.6676,
+        "min_cycles": 810,
+        "max_cycles": 1053,
+        "seed": "0x53231632"
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_UMUL32_READY": {
+        "cases": 2500,
+        "mean_cycles": 764.1576,
+        "min_cycles": 705,
+        "max_cycles": 844,
+        "seed": "0x32325244"
+      },
+      "MATH_UMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 266.9656,
+        "min_cycles": 255,
+        "max_cycles": 290,
+        "seed": "0x16160816"
+      },
+      "MATH_SMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 294.671,
+        "min_cycles": 271,
+        "max_cycles": 334,
+        "seed": "0x51616081"
+      },
+      "MATH_UMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 829.1616,
+        "min_cycles": 770,
+        "max_cycles": 909,
+        "seed": "0x32321632"
+      },
+      "MATH_SMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 890.6676,
+        "min_cycles": 788,
+        "max_cycles": 1031,
+        "seed": "0x53231632"
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_UMUL32_READY": {
+        "cases": 2500,
+        "mean_cycles": 764.1576,
+        "min_cycles": 705,
+        "max_cycles": 844,
+        "seed": "0x32325244"
+      },
+      "MATH_UMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 266.9656,
+        "min_cycles": 255,
+        "max_cycles": 290,
+        "seed": "0x16160816"
+      },
+      "MATH_SMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 294.671,
+        "min_cycles": 271,
+        "max_cycles": 334,
+        "seed": "0x51616081"
+      },
+      "MATH_UMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 829.1616,
+        "min_cycles": 770,
+        "max_cycles": 909,
+        "seed": "0x32321632"
+      },
+      "MATH_SMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 890.6676,
+        "min_cycles": 788,
+        "max_cycles": 1031,
+        "seed": "0x53231632"
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_UMUL32_READY": {
+        "cases": 2500,
+        "mean_cycles": 764.1576,
+        "min_cycles": 705,
+        "max_cycles": 844,
+        "seed": "0x32325244"
+      },
+      "MATH_UMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 266.9656,
+        "min_cycles": 255,
+        "max_cycles": 290,
+        "seed": "0x16160816"
+      },
+      "MATH_SMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 294.671,
+        "min_cycles": 271,
+        "max_cycles": 334,
+        "seed": "0x51616081"
+      },
+      "MATH_UMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 829.1616,
+        "min_cycles": 770,
+        "max_cycles": 909,
+        "seed": "0x32321632"
+      },
+      "MATH_SMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 890.6676,
+        "min_cycles": 788,
+        "max_cycles": 1031,
+        "seed": "0x53231632"
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "MATH_UMUL32_READY": {
+        "cases": 2500,
+        "mean_cycles": 761.1576,
+        "min_cycles": 702,
+        "max_cycles": 841,
+        "seed": "0x32325244"
+      },
+      "MATH_UMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 314.9656,
+        "min_cycles": 303,
+        "max_cycles": 338,
+        "seed": "0x16160816"
+      },
+      "MATH_SMUL16_SHR8": {
+        "cases": 5000,
+        "mean_cycles": 463.5234,
+        "min_cycles": 428,
+        "max_cycles": 503,
+        "seed": "0x51616081"
+      },
+      "MATH_UMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 848.1616,
+        "min_cycles": 789,
+        "max_cycles": 928,
+        "seed": "0x32321632"
+      },
+      "MATH_SMUL32_SHR16": {
+        "cases": 2500,
+        "mean_cycles": 912.6676,
+        "min_cycles": 810,
+        "max_cycles": 1053,
+        "seed": "0x53231632"
+      }
+    }
+  }
+}

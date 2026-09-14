@@ -70,7 +70,7 @@ def run_cases(cpu,entry,cases,nbits,dbits,qbits,rbits,shift=0):
     return {'cases':len(cases),'errors':errors,'mean_cycles':total/len(cases),'min_cycles':mi,'max_cycles':ma}
 
 def main():
-    ap=argparse.ArgumentParser();ap.add_argument('--profile',choices=PROFILES);a=ap.parse_args()
+    ap=argparse.ArgumentParser();ap.add_argument('--profile',choices=PROFILES);ap.add_argument('--out',type=Path);a=ap.parse_args()
     run=[a.profile] if a.profile else PROFILES
     result={};start=time.time()
     defs=[
@@ -106,6 +106,6 @@ def main():
         if any(x['errors'] for x in pr.values()): raise AssertionError((p,pr))
         result[p]=pr;print(p,'PASS',sum(x['cases'] for x in pr.values()),'signed division/modulo calls',flush=True)
     out={'status':'PASS','profiles':result,'summary':{'profiles':len(run),'machine_calls':sum(x['cases'] for p in result.values() for x in p.values()),'elapsed_seconds':round(time.time()-start,2)}}
-    path=ROOT/'validation/review/SIGNED_DIVISION_VALIDATION.json';path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(out,indent=2)+'\n')
+    path=a.out if a.out else ROOT/'validation/review/SIGNED_DIVISION_VALIDATION.json';path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(out,indent=2)+'\n')
     print('SIGNED DIVISION PASS',out['summary']['machine_calls'],'calls')
 if __name__=='__main__': main()

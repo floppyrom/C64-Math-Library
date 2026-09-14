@@ -34,7 +34,7 @@ The supplied validation model charges those DMA clocks plus ordinary 6510 instru
 | 2 | 65,536-byte UDIV8 quotient plane |
 | 3 | 65,536-byte UDIV8 remainder / UMOD8 plane |
 | 4 | 113-byte relocated UMUL16 turbo overlay at bank offset 0 |
-| 5 | 241-byte relocated UMUL32 turbo overlay at bank offset 0 |
+| 5 | 135-byte stack-free relocated UMUL32 turbo overlay at bank offset 0 |
 | 6 | reserved |
 | 7 | metadata; `FIREMATH-REU-V3` signature near `$FF00` |
 
@@ -50,6 +50,6 @@ The record source originally used `$0002-$0072`. Relocating the executable ZP bo
 
 The same `$CA` quarter-square contents already exist in the v3 resident UMUL32 bank at `$7000/$7200/$7400/$7600`; the overlay was assembled against those pages. This avoids duplicating 2,044 C64 bytes.
 
-## Reference Turbo32 geometry (`$000A-$00FA`)
+## Reference Turbo32 geometry (`$000A-$0090`)
 
-The 241-byte record kernel is too large to place above the normal shared-ZP window and still fit in page zero. The reference build uses `$000A-$00FA`; source-relocatable builds may choose any legal `TURBO32_ZP_BASE` from `$02` through `$0F`. Turbo32 remains an explicit exclusive mode.
+The selected stack-free 135-byte `ram135` record-family kernel uses `$000A-$0090` in the reference build; source-relocatable builds may choose any legal `TURBO32_ZP_BASE` from `$02` through `$79`. Turbo32 remains an explicit exclusive mode, but BEGIN/END now swap 106 fewer bytes than the former 241-byte overlay.

@@ -85,11 +85,11 @@
       "check": "five_reference_prgs",
       "status": "PASS",
       "detail": [
+        "v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg",
         "v4_reu_16m/resident/math_v4_reu_16m_game_math.prg",
         "v3_reu_512k/resident/math_v3_reu_512k_game_math.prg",
-        "v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg",
-        "v1_balanced/resident/math_v1_balanced_game_math.prg",
-        "v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg"
+        "v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg",
+        "v1_balanced/resident/math_v1_balanced_game_math.prg"
       ]
     },
     {
@@ -123,8 +123,8 @@
   ],
   "summary": {
     "checks_passed": 22,
-    "file_count_excluding_checksum": 444,
-    "uncompressed_bytes_excluding_checksum": 21400113,
+    "file_count_excluding_checksum": 471,
+    "uncompressed_bytes_excluding_checksum": 21763319,
     "reference_prgs": 5,
     "reference_reu_images": 2
   }

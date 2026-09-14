@@ -170,7 +170,7 @@
       "reu_transport": {
         "programmed_c64_destination": "$C820",
         "expected": "$C820",
-        "reu_image_sha256": "c763b637535234987aeb418a5dbf6a70e41f24e6880653f64529888d7d55d067",
+        "reu_image_sha256": "195764de47c5347651a3240bfff14c680610802a196556d0d8e5ecd1c9d21807",
         "reu_banks": {
           "REU_UMUL8_LO_BANK": "$02",
           "REU_UMUL8_HI_BANK": "$03",
@@ -243,7 +243,7 @@
       "reu_transport": {
         "programmed_c64_destination": "$C820",
         "expected": "$C820",
-        "reu_image_sha256": "b5f426895694e92d6f515d9b26e0b7dcfa1c1c7b7a45e7679af9a86193696095",
+        "reu_image_sha256": "046d7bbc72f5ca3661b875cd6173c19df6d95e561873ef7f061b1573f3b7920e",
         "reu_banks": {
           "REU_UMUL8_LO_BANK": "$20",
           "REU_UMUL8_HI_BANK": "$21",

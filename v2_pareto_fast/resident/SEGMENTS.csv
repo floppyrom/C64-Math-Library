@@ -9,8 +9,8 @@ udiv24,$4800,1191,bin/udiv24_code.bin,UDIV24 Size-Fast kernel
 udiv32_16_outer,$4E00,737,bin/udiv32_16_outer.bin,UDIV32/16 continuation; reuses UDIV16 core
 umod8,$5200,114,bin/umod8_code.bin,table-free UMOD8 Size-Fast kernel
 umul8,$5300,35,bin/umul8_code.bin,UMUL8 Practical kernel
-umul16,$5400,167,bin/umul16_code.bin,integrated three-UMUL8 difference-product kernel
-umul24,$5600,287,bin/umul24_code.bin,UMUL24 unrolled low-ZP kernel
+umul16,$53EC,133,bin/umul16_code.bin,qualified 17-ZP fused quarter-square UMUL16 record kernel (resident adapted)
+umul24,$5649,307,bin/umul24_code.bin,qualified 24-ZP reverse/carry UMUL24 record kernel (includes retained init)
 umul32,$5800,277,bin/umul32_code.bin,UMUL32 31-ZP practical-fast kernel
 umul24_sqr_lo,$6000,511,bin/umul24_sqr_lo.bin,quarter-square table
 umul24_sqr_hi,$6200,511,bin/umul24_sqr_hi.bin,quarter-square table
@@ -24,4 +24,4 @@ umul32_sqr_lo,$7000,511,bin/umul32_sqr_lo.bin,quarter-square table
 umul32_sqr_hi,$7200,511,bin/umul32_sqr_hi.bin,quarter-square table
 umul32_neg_lo,$7400,511,bin/umul32_neg_lo.bin,quarter-square table
 umul32_neg_hi,$7600,511,bin/umul32_neg_hi.bin,quarter-square table
-signed_math_api,$3B80,1036,segments/signed_math_api.bin,"signed SMUL/SDIV/SMOD public extension; sparse fixed-address image spans $3B80-$3FE5"
+signed_math_api,$3B80,1036,segments/signed_math_api.bin,signed SMUL/SDIV/SMOD public extension; sparse fixed-address image spans $3B80-$3FE5

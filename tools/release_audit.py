@@ -100,7 +100,7 @@ ck('turbo_boundary_products_3556',boundary['total_product_calls']==3556,boundary
 for p in ('v3_reu_512k','v4_reu_16m'):
     lo=boundary['profiles'][p]['minimum_origins'];hi=boundary['profiles'][p]['maximum_origins']
     ck(f'{p}_turbo16_origin_bounds',lo['turbo16']['zp_base']=='$02' and hi['turbo16']['zp_base']=='$8F')
-    ck(f'{p}_turbo32_origin_bounds',lo['turbo32']['zp_base']=='$02' and hi['turbo32']['zp_base']=='$0F')
+    ck(f'{p}_turbo32_origin_bounds',lo['turbo32']['zp_base']=='$02' and hi['turbo32']['zp_base']=='$79')
     for t in ('turbo16','turbo32'):
         ck(f'{p}_{t}_boundary_cycle_identity',lo[t]['cycle_vector_sha256']==hi[t]['cycle_vector_sha256'])
 
@@ -170,7 +170,9 @@ for kind in ('reference','alternate'):
     for z,x in pv['standard_points'][kind].items():
         ck(f'pareto_{kind}_{z}_45_entries',x['common_api']['entries']==45 and x['common_api']['calls']==4172)
 ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==5253)
-ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==6871)
+ck('pareto_36_exact_ram',pv['standard_points']['reference']['36']['extra_private_ram_bytes']==5843)
+ck('pareto_60_exact_ram',pv['standard_points']['reference']['60']['extra_private_ram_bytes']==6603)
+ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==6789)
 ck('pareto_221_selects_v2',pv['standard_points']['reference']['221']['selected_packs']==['v2_full'])
 ck('pareto_v1_endpoint_identity',pv['pure_v1_identity'] is True)
 ck('pareto_v5_endpoint_identity',pv['optional31_v5_identity'] is True)
@@ -200,6 +202,16 @@ for p in PROFILES:
     if p in ('v3_reu_512k','v4_reu_16m'):
         ck(f'{p}_turbo_config_symbols',all(re.search(rf'^\s*{k}\s*=',cfgtext,re.M) for k in ('TURBO16_ZP_BASE','TURBO32_ZP_BASE','REU_TURBO16_BANK','REU_TURBO32_BANK')))
         ck(f'{p}_source_uses_turbo_config',all(k in src for k in ('TURBO16_ZP_BASE','TURBO32_ZP_BASE','REU_TURBO16_BANK','REU_TURBO32_BANK')))
+
+# Consolidated routine/resource index.
+ct=json.loads((ROOT/'validation/CONSOLIDATED_ROUTINE_TABLE.json').read_text())
+ck('consolidated_table_status',ct['status']=='PASS')
+ck('consolidated_table_rows_240',len(ct['rows'])==240,len(ct['rows']))
+ck('consolidated_stable_rows_225',sum(r['api_class']=='stable' for r in ct['rows'])==225)
+ck('consolidated_profile_coverage',all(sum(r['profile']==p and r['api_class']=='stable' for r in ct['rows'])==45 for p in PROFILES+[HYBRID]))
+ck('consolidated_zero_stack_reservation',all(int(r['stack_page_reserved_bytes'])==0 for r in ct['rows']))
+ck('consolidated_turbo32_135_zp',all(int(r['zp_bytes'])==135 for r in ct['rows'] if r['routine'].startswith('MATH_REU_UMUL32')))
+ck('consolidated_files_present',all((ROOT/x).exists() for x in ('docs/CONSOLIDATED_ROUTINE_TABLE.md','docs/CONSOLIDATED_ROUTINE_TABLE.csv','tools/generate_consolidated_routine_table.py')))
 
 # Documentation/release hygiene.
 needed=['README.md','QUICK_START.md','CHANGELOG.md','CSDB_CHANGELOG.txt','docs/SOURCE_RELOCATION.md','docs/TURBO_RELOCATION.md','docs/TURBO_API.csv','docs/PARETO_BUILDER.md','validation/REVIEWED_RELEASE_VALIDATION.md']

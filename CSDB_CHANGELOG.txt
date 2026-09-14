@@ -1,3 +1,9 @@
+2026-09-14 UMUL RECORD UPGRADE
+- UMUL16: qualified 17-ZP record-derived resident kernel.
+- UMUL24: certified 24-ZP reverse/carry record kernel.
+- V3/V4 Turbo32: stack-free 135-ZP ram135 compromise, legal ZP origins $02-$79.
+- Added consolidated cycles/code/ZP/stack table for every shipped routine/profile.
+
 Native signed refresh:
 - Every SMUL/SDIV public path now owns a native signed executable kernel; no corresponding unsigned executable engine is entered.
 - Profile ZP budgets and public ABI are unchanged; affected signed multiply finalizers are 3 cycles shorter where safely compacted.

@@ -21,6 +21,11 @@ The short version is:
 
 ---
 
+## Consolidated cycles and memory index
+
+For one cross-profile table covering every stable routine plus the REU Turbo/QS16 surfaces, see [`docs/CONSOLIDATED_ROUTINE_TABLE.md`](docs/CONSOLIDATED_ROUTINE_TABLE.md) or the machine-readable [`docs/CONSOLIDATED_ROUTINE_TABLE.csv`](docs/CONSOLIDATED_ROUTINE_TABLE.csv). It reports public cycles, reachable executable bytes, concrete ZP use/ranges, and persistent hardware-stack-page reservation.
+
+
 ## 1. Which profile should I use?
 
 | Profile | Hardware | Main reason to choose it | Important cost |
@@ -294,10 +299,10 @@ Current equal-weight breakpoints are:
 | ZP | Default selection | Exact extra RAM vs V1 |
 |---:|---|---:|
 | 31 | V5 zero-ZP imports + initialized UMUL32 | 5253 B |
-| 36 | above + UMUL8/16 | 6010 B |
-| 60 | above + UMUL24 | 6685 B |
+| 36 | above + UMUL8/16 | 5843 B |
+| 60 | above + UMUL24 | 6603 B |
 | 147 | V5 imports + initialized UMUL32 + native SMUL16 | 5439 B |
-| 176 | all certified hybrid packs | 6871 B |
+| 176 | all certified hybrid packs | 6789 B |
 | 221 | complete V2 | 208 B resident increase |
 
 The optimizer maximizes weighted cycle savings, so resource use is not required to be monotonic across those points. At 31 ZP + `--ram-budget 0`, the generated PRG is byte-identical to V1. At 31 ZP + `--init-policy optional`, it is byte-identical to V5. At 221 ZP the builder selects complete V2.
@@ -343,7 +348,7 @@ The output will be under the selected output directory. For V3/V4, the build aut
 | `HYBRID_CODE` | V5/custom-Pareto zero-ZP import region | `$A000` |
 | `PARETO_AUX` | custom-Pareto generated code/data base | `$B200` |
 | `TURBO16_ZP_BASE` | V3/V4 113-byte Turbo16 overlay origin | `$3E` |
-| `TURBO32_ZP_BASE` | V3/V4 241-byte Turbo32 overlay origin | `$0A` |
+| `TURBO32_ZP_BASE` | V3/V4 135-byte stack-free Turbo32 overlay origin | `$0A` |
 
 V3/V4 configurations additionally assign each REU service to a bank. V4's QS16 table uses eight consecutive 64 KiB banks beginning at `REU_QS16_BASE_BANK`. V5 configures `HYBRID_CODE`; custom Pareto maps configure both `HYBRID_CODE` and `PARETO_AUX`. The builders reject overflow, I/O crossings and collisions with selected resident/private regions.
 
@@ -367,7 +372,7 @@ Legal Turbo origins are therefore:
 
 ```text
 Turbo16: $02 .. $8F     ; 113 bytes
-Turbo32: $02 .. $0F     ; 241 bytes
+Turbo32: $02 .. $79     ; 135 bytes
 ```
 
 ### Important C64 banking caveat
@@ -1035,10 +1040,10 @@ Reference geometry:
 
 ```text
 TURBO32_ZP_BASE = $0A
-owned range      = $0A-$FA
+owned range      = $0A-$90
 ```
 
-Legal source-configurable origins are `$02-$0F`.
+Legal source-configurable origins are `$02-$79`.
 
 Reference benchmark model:
 
@@ -1058,7 +1063,7 @@ The safest and officially supported rule is simple:
 
 > **Do not call any normal, signed, game-math, QS16, or other Turbo mode between a Turbo BEGIN and its matching END.**
 
-During the active interval, the overlay owns its complete configured ZP range. Turbo32 is especially invasive because its 241-byte overlay occupies nearly all of page zero.
+During the active interval, the overlay owns its complete configured ZP range. Turbo32 is still an exclusive mode, but the stack-free 135-byte overlay is substantially less invasive than the former 241-byte overlay.
 
 Also do not:
 
@@ -1496,7 +1501,7 @@ The frozen Turbo FINAL release records:
 - 17,196 Turbo API calls in the main reference/alternate regression;
 - 3,556 additional Turbo products at endpoint ZP/bank configurations;
 - Turbo16 at minimum `$02` and maximum `$8F` origin;
-- Turbo32 at minimum `$02` and maximum `$0F` origin;
+- Turbo32 at minimum `$02` and maximum `$79` origin;
 - exact ZP restoration after Turbo END;
 - second-batch Turbo overlay reuse;
 - 20,388 fast-ISQRT32 correctness executions;

@@ -1,7 +1,7 @@
 operation,v1_balanced,v2_pareto_fast,v3_reu_512k,v4_reu_16m,notes
 umul8,90.494644,78.494614,69.0,69.0,V3/V4 REU transport model
-umul16,383.320456,350.782403,339.0,317.54103088378906,V4 exact exhaustive uniform mean for UMUL16
-umul24,514.534938,475.784575,475.784575,475.784575,canonical/inherited public mean
+umul16,273.8372,225.8372,225.8372,225.8372,2026-09-14 record-upgrade deterministic public-entry comparison corpus
+umul24,505.2918,448.2918,448.2918,448.2918,2026-09-14 record-upgrade deterministic public-entry comparison corpus
 umul32,782.822007,763.822007,763.822007,763.822007,canonical/inherited public mean
 udiv8,87.445969,87.445969,70.86328125,70.86328125,V3/V4 REU transport model
 udiv16,160.064966,137.282268,137.282268,137.282268,canonical/inherited public mean
