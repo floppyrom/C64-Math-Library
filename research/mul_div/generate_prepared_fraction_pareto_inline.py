@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generate a strict-fraction prepared ratio for the shipped V2 Pareto tables.
 
-This candidate specializes the actual Pareto-Fast UMUL8 geometry rather than
-assuming the record_umul16_17zp research core is installed.
+This candidate specializes the actual Pareto-Fast quarter-square geometry rather
+than assuming the record_umul16_17zp research core is installed.
 
 PREP(n,d), trusted 0<n<d:
     m = round(n*65536/d)   [default]
@@ -14,10 +14,11 @@ PREP(n,d), trusted 0<n<d:
 APPLY_S16(y):
     signed16 result = trunc_toward_zero(y*m/65536)
 
-Why the self-modification is useful:
-    the installed V2 UMUL8 core spends cycles binding X into two ZP pointer lows
-    and pays JSR/RTS for each 8x8 product. Here X is prepared state, so PREP can
-    patch it once. APPLY then uses three inline fixed-X products.
+The fixed-X product uses the balanced Jameson/TobyLobster normalization form:
+negative byte differences are normalized before table lookup, so each product
+needs only three PREP patch writes (SBC #X, sum-low base, sum-high base). APPLY
+therefore avoids the installed UMUL8 core's dynamic pointer binding and all
+three JSR/RTS pairs while reusing the same table bank.
 
 The floor variant intentionally trades a small accuracy-frequency increase for
 removing PREP's final rounding stage. Both nearest and floor retain a maximum
@@ -50,8 +51,6 @@ PDIFF_SIGN = 0xC036
 
 SQR_LO = 0x6800
 SQR_HI = 0x6A00
-DIFF_NEG_LO = 0x6C00
-DIFF_NEG_HI = 0x6D00
 
 
 def _header(origin: int, apply_origin: int, rounding: str) -> str:
@@ -67,44 +66,37 @@ ya0=${YA0:02X}\nya1=${YA1:02X}\nysign=${YSIGN:02X}
 parity=${PARITY:02X}\nqlo=${QLO:02X}\nqhi=${QHI:02X}
 PDIFF_SIGN=${PDIFF_SIGN:04X}
 SQR_LO=${SQR_LO:04X}\nSQR_HI=${SQR_HI:04X}
-DIFF_NEG_LO=${DIFF_NEG_LO:04X}\nDIFF_NEG_HI=${DIFF_NEG_HI:04X}
 .org ${origin:04X}
 """
 
 
 def _fixed_mul(name: str, low: str, high: str) -> str:
-    """Inline prepared-X 8x8 product. Input Y; output low/high bytes."""
+    """Inline prepared-X balanced 8x8 product. Input Y; output low/high."""
     return f"""    sec
     tya
 {name}_sbc:
     sbc #$00
+    bcs {name}_diff_ready
+    sbc #$00
+    eor #$ff
+{name}_diff_ready:
     tax
 {name}_sumlo:
     lda SQR_LO,y
-    bcc {name}_neg
     sbc SQR_LO,x
     sta {low}
 {name}_sumhi:
     lda SQR_HI,y
     sbc SQR_HI,x
-    jmp {name}_done
-{name}_neg:
-    sbc DIFF_NEG_LO,x
-    sta {low}
-{name}_sumhi_neg:
-    lda SQR_HI,y
-    sbc DIFF_NEG_HI,x
-{name}_done:
     sta {high}
 """
 
 
 def _patch_three(prefix: str) -> str:
-    # Only the low operand byte changes. SQR_LO/SQR_HI are page aligned.
+    # SQR_LO/SQR_HI are page aligned; patch only each absolute operand low byte.
     return f"""    sta {prefix}_sbc+1
     sta {prefix}_sumlo+1
     sta {prefix}_sumhi+1
-    sta {prefix}_sumhi_neg+1
 """
 
 
