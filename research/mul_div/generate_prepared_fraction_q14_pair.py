@@ -165,11 +165,14 @@ def generate(origin: int = 0xE000) -> str:
     inc rq1
 
 {p}_rounded:
-    ; Q14 may round to exactly 1.0 ($4000). That is an identity result.
+    ; Q14 may round to exactly 1.0 ($4000). Use a long jump for the rare path
+    ; because the duplicated two-component hot path is larger than a branch span.
     lda rq1
     and #$40
-    bne {p}_identity
+    beq {p}_scale
+    jmp {p}_identity
 
+{p}_scale:
     ; Convert Q14 multiplier to Q16 so the native high-half multiply applies it.
     asl rq0
     rol rq1
