@@ -4,7 +4,9 @@
 
 **Purpose:** turn the standalone Quake-native prepared-fraction evidence into a real-build experiment without changing the C64 Math Library stable API.
 
-The patch should remain a Quake64 experiment until the real GAME build, heap gate and emulator/runtime tests pass.
+The patch remains a Quake64 experiment until the real GAME build, heap gate and emulator/runtime tests pass.
+
+> **Safety correction:** the shared `.nlrun` helper must **not** be replaced globally. It is also used by Cohen-Sutherland side/top/bottom clipping paths that do not call `qfrac_prep`. Only the four dedicated near-plane helpers `.nlx0`, `.nly0`, `.nlx1`, and `.nly1` should call the prepared APPLY routine.
 
 ## 1. Source facts the patch relies on
 
@@ -20,25 +22,23 @@ Current Quake64 near clipping in `src/cube.asm` does:
     clamp Z to ZCLIP
 ```
 
-`.nlrun` currently executes:
+For these crossings:
 
 ```text
-scale_nd
-lerp16
+n = ZCLIP - z_behind
+d = z_front - z_behind
+0 < n < d
 ```
-
-so the ratio is reduced to signed-byte numerator/denominator separately for X and Y.
 
 The proposed replacement prepares the strict fraction once:
 
 ```text
-0 < n < d
-m = Q0.16 approximation of n/d
+m = round(n * 65536 / d)
 ```
 
 then applies the same prepared `m` to both signed 16-bit component deltas.
 
-The game already owns the required 2 KiB quarter-square bank:
+Quake64 already owns the required 2 KiB quarter-square bank:
 
 ```text
 $F000-$F1FF  sqlo
@@ -47,31 +47,32 @@ $F400-$F5FF  negsqlo
 $F600-$F7FF  negsqhi
 ```
 
-and the prototype reuses existing Quake math scratch instead of allocating new ZP.
+The prototype also reuses existing Quake math scratch, so it does not allocate new zero page.
 
 ## 2. Add the prepared-fraction source to GAME
 
-The source include should be placed **after `loader.asm` and before `end_game = *`** in `src/quake64.asm`:
+Insert the generated source after `loader.asm`:
 
 ```asm
 !source "enemy.asm"
 !source "loader.asm"
 !source "prepared_fraction_smc.asm"
 
-end_game = *
+!source "map_bss.asm"
 ```
 
-This is preferable to a fixed `$9000/$9800` research origin. Quake64's GAME image is ordinary writable RAM and the SMC operands must remain writable. Appending before `end_game` also lets the existing heap check account for the exact code size automatically.
+The source is emitted without fixed `.org` directives so it follows the GAME image in writable RAM and is counted by the existing `end_game` / heap checks.
 
-The research generator that supplies the algorithm is:
+Generator/exporter:
 
 ```text
 research/mul_div/generate_quake64_prepared_fraction_smc.py
+research/mul_div/export_quake64_prepared_fraction.py
 ```
 
-For the first game patch, use the **nearest-Q0.16** form. The floor form remains a speed-biased comparison tier.
+Use the **nearest-Q0.16** tier for the first real-game experiment. The floor tier remains a speed-biased comparison point.
 
-The integration version should be emitted as ordinary sequential source with no fixed `.org`, retaining these Quake-native labels:
+The integration source exposes:
 
 ```text
 qfrac_prep
@@ -80,37 +81,7 @@ qfrac_apply_s16
 
 ## 3. Patch `.near0`
 
-Replace the current ratio save/restore sequence:
-
-```asm
-.near0
-    jsr .nd01
-    lda nlo
-    pha
-    lda nhi
-    pha
-    lda dlo
-    pha
-    lda dhi
-    pha
-    jsr .nlx0
-    pla
-    sta dhi
-    pla
-    sta dlo
-    pla
-    sta nhi
-    pla
-    sta nlo
-    jsr .nly0
-    lda #<ZCLIP
-    sta e0z
-    lda #>ZCLIP
-    sta e0zh
-    rts
-```
-
-with:
+Replace the ratio save/restore sequence with one PREP:
 
 ```asm
 .near0
@@ -125,11 +96,9 @@ with:
     rts
 ```
 
-`qfrac_prep` consumes/clobbers `nlo:nhi/dlo:dhi`; this is intentional. After PREP, the ratio is represented by patched fixed multipliers and the original n/d values are no longer needed for X or Y.
+After PREP, the original `nlo:nhi/dlo:dhi` values are no longer required by the two near-plane component applications.
 
 ## 4. Patch `.near1` symmetrically
-
-Replace the stack save/restore block after `.nd10` with:
 
 ```asm
 .near1
@@ -144,36 +113,37 @@ Replace the stack save/restore block after `.nd10` with:
     rts
 ```
 
-The same strict-fraction invariant holds because `.nd10` orients the ratio from the behind endpoint toward the front endpoint.
+`.nd10` establishes the same behind-to-front strict-fraction invariant.
 
-## 5. Replace `.nlrun`
+## 5. Patch only the four near-plane component helpers
 
-The old helper:
+**Do not change `.nlrun`.** It remains the generic `scale_nd + lerp16` helper for the other clipping paths.
 
-```asm
-.nlrun
-    jsr scale_nd
-    lda dlo
-    ora dhi
-    bne +
-    lda #0
-    sta rot0
-    sta rot1
-    rts
-+
-    jmp lerp16
+Change each of:
+
+```text
+.nlx0
+.nly0
+.nlx1
+.nly1
 ```
 
-becomes:
+from:
 
 ```asm
-.nlrun
-    jmp qfrac_apply_s16
+    jsr .nlrun
+    clc
 ```
 
-The prepared APPLY returns its signed result in `rot0:rot1`.
+to:
 
-Unlike the old `lerp16` contract, the current prepared prototype does **not** promise `A=rot0` on return. Therefore add an explicit `lda rot0` after `jsr .nlrun` in all four component helpers before their accumulation carry chain.
+```asm
+    jsr qfrac_apply_s16
+    lda rot0
+    clc
+```
+
+The explicit `lda rot0` is required because the prepared APPLY promises the signed result in `rot0:rot1` but does not promise the old `lerp16` return convention `A=rot0`.
 
 For example:
 
@@ -186,7 +156,7 @@ For example:
     lda e1xh
     sbc e0xh
     sta yhi
-    jsr .nlrun
+    jsr qfrac_apply_s16
     lda rot0
     clc
     adc e0x
@@ -197,29 +167,26 @@ For example:
     rts
 ```
 
-Apply the same one-instruction change to:
+The audited patcher enforces this narrow scope:
 
 ```text
-.nlx0
-.nly0
-.nlx1
-.nly1
+research/mul_div/apply_quake64_nearclip_experiment.py
 ```
 
-This is the arithmetic shape already represented by `benchmark_quake64_nearclip_smc_integration.py`.
+It fails unless there are exactly two PREP calls, exactly four prepared APPLY calls, and the original `.nlrun -> scale_nd` helper remains present.
 
 ## 6. Build and heap gates
 
-Quake64's own build already provides the correct release gate:
+Quake64's build chain provides the authoritative integration gate:
 
 ```text
-ACME builds game-krill and game
-mkreloc.py regenerates relocation data
-checkheap.py validates map/pose heap coexistence
-mkdisk.py rebuilds both disks
+ACME GAME build
+mkreloc.py
+second ACME GAME build
+checkheap.py
 ```
 
-The unmodified snapshot reports:
+The unmodified snapshot reports approximately:
 
 ```text
 GAME next free      $9546
@@ -229,31 +196,18 @@ E1M2 tightest need   7958 B
 current E1M2 slack   2980 B
 ```
 
-The Quake-native candidate is roughly 1 KiB, so it appears feasible, but the real `checkheap.py` result after assembly is authoritative.
+The Quake-native candidate is about 1 KiB. Placement modeling suggests it should fit, but only the actual assembled GAME and `checkheap.py` result count as evidence.
 
-The C64 Math Library research-side assembler check is:
+The automated real-build gate is:
 
 ```text
-research/mul_div/quake64_smc_placement.py
+research/mul_div/build_quake64_experiment.sh
+.github/workflows/quake64-nearclip-integration.yml
 ```
 
-It relocates PREP/APPLY contiguously from the old GAME end and reports the new tightest-level slack before a real Quake build is attempted.
+It checks out the exact audited Quake snapshot, exports the origin-free nearest kernel, applies the narrow patch, assembles GAME, regenerates relocation data, assembles again, runs the heap gate, and archives build evidence.
 
 ## 7. Correctness gate
-
-For a patched Quake build, validate at least:
-
-```text
-near0 crossings
-near1 crossings
-positive X/Y deltas
-negative X/Y deltas
-zero X/Y deltas
-ratios very close to 0
-ratios very close to 1
-large valid 8.8 deltas
-room transitions with heap pressure
-```
 
 The arithmetic promise for the nearest tier is:
 
@@ -261,7 +215,17 @@ The arithmetic promise for the nearest tier is:
 prepared result differs from exact trunc(component*n/d) by at most 1
 ```
 
-The 5,000-edge standalone integration benchmark has already shown zero prepared-contract failures and max endpoint error 1. The full game test must additionally establish that no SMC/table/banking interaction is introduced.
+Standalone 5,000-edge integration testing already produced zero prepared-contract failures and maximum endpoint error 1. The real game experiment must additionally cover:
+
+```text
+near0 crossings
+near1 crossings
+positive / negative / zero X and Y deltas
+ratios near 0 and near 1
+large valid 8.8 deltas
+room transitions under heap pressure
+SMC/table/banking interactions
+```
 
 ## 8. Performance gate
 
@@ -273,16 +237,16 @@ Quake-native nearest        1373.5418 cycles mean
 Quake-native floor          1347.9062 cycles mean
 ```
 
-Nearest is **62.91% lower** and floor **63.60% lower** in the isolated near-clip region.
+Nearest is about **62.91% lower** and floor about **63.60% lower** in the isolated near-clip region.
 
-A real game benchmark should time the same near-clipping work with normal IRQ/VIC/SID activity. The target is not to reproduce the exact isolated percentage; it is to show that the saved arithmetic time survives in the scene and buys useful frame budget.
+A real-game benchmark should time the same work with normal IRQ/VIC/SID activity. The requirement is not to reproduce the isolated percentage exactly; it is to show that the saving survives at scene level and buys useful frame budget.
 
 ## 9. Promotion rule
 
-If the patched Quake64 build passes correctness, heap and scene timing gates, then M2 has a concrete demonstrated capability:
+If the patched Quake64 build passes correctness, heap, and scene-timing gates, M2 has a concrete demonstrated capability:
 
-> dynamic two-component interpolation can replace a reduced-ratio approximation with a <=1-error prepared ratio while cutting the expensive clipping arithmetic substantially.
+> Dynamic two-component interpolation can replace a reduced-ratio approximation with a <=1-error prepared ratio while substantially reducing clipping arithmetic.
 
-At that point the C64 Math Library can design the stable checked `FRAC16_PREP` / `FRAC16_APPLY_S16` ABI from evidence.
+Only then should the library freeze a checked `FRAC16_PREP` / `FRAC16_APPLY_S16` ABI or a higher-level interpolation form.
 
-If the real build fails the memory or scene-wide gate, keep the game-native implementation as research evidence and do **not** force the stable API merely because the isolated arithmetic benchmark is strong.
+If the real build or scene-wide gate fails, keep the game-native implementation as research evidence and do **not** promote the stable API merely because isolated arithmetic benchmarks are strong.
