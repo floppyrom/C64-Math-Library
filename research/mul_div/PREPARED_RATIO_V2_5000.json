@@ -1,0 +1,89 @@
+{
+  "status": "research_evidence_not_release_certification",
+  "date": "2026-09-17",
+  "cpu_model": "tools/mini6502.py",
+  "mini6502_git_blob_sha": "b85ebc9ca276d0831f87cc0a95bd697ea75408a9",
+  "v2_native_umul16_source": "v2_pareto_fast/resident/modules/record_umul16_17zp.a",
+  "v2_native_umul16_git_blob_sha": "de86a12f116e85ab8b94c3d0167b33479e9c867c",
+  "v2_native_umul16_same_x_entry": "0x5400",
+  "quake64_source_commit": "7c84654946a60314568b709e7e7b97467fed69df",
+  "generator_commit": "73f8ff372e02274aac85c2708d8712bfc1b3ae94",
+  "contract": {
+    "prep": "signed16 n,d; d!=0; |n|<=|d|; m=round(|n|*65536/|d|); retain sign(n/d)",
+    "apply": "signed16 y -> trunc_toward_zero(y*sign*m/65536)",
+    "maximum_integer_error_vs_exact_ratio": 1,
+    "state_note": "fast V2 APPLY uses native UMUL16 same_x; another native/public UMUL16 rebind invalidates prepared multiplier state"
+  },
+  "code_bytes": {
+    "compact_prep": 221,
+    "unrolled_prep": 889,
+    "shared_apply": 130,
+    "compact_total": 351,
+    "unrolled_total": 1019
+  },
+  "corpus": {
+    "name": "quake64_near_clip_stress_pair",
+    "seed": "0xC0FFEE",
+    "cases": 5000,
+    "zclip": 256,
+    "z0_range": [-8192, 255],
+    "z1_range": [256, 8191],
+    "component_range": [-8192, 8191],
+    "ratio": "n=ZCLIP-z0, d=z1-z0",
+    "applications_per_preparation": 2,
+    "note": "valid broad near-plane crossings; stress corpus, not claimed to be Quake64 runtime frequency distribution"
+  },
+  "cycles_excluding_external_caller_jsr": {
+    "compact": {
+      "prep": {"mean": 952.2308, "min": 788, "max": 1171},
+      "apply": {"mean": 216.1442, "min": 192, "max": 256, "cases": 10000},
+      "prep_plus_two_apply": {"mean": 1384.5192, "min": 1199, "max": 1608}
+    },
+    "unrolled": {
+      "prep": {"mean": 744.5384, "min": 616, "max": 945},
+      "apply": {"mean": 216.1442, "min": 192, "max": 256, "cases": 10000},
+      "prep_plus_two_apply": {"mean": 1176.8268, "min": 1022, "max": 1380}
+    },
+    "quake64_current": {
+      "two_scale_nd_plus_lerp16_with_saved_ratio": {"mean": 3510.2862, "min": 1863, "max": 3896},
+      "includes_stack_save_restore_cycles": 28,
+      "note": "Quake64 near path restores original n/d between X and Y; each nlrun therefore repeats scale_nd"
+    }
+  },
+  "cycles_including_external_jsr_only": {
+    "compact_prep_plus_two_apply": {"mean": 1402.5192, "min": 1217, "max": 1626, "external_jsr_cycles": 18},
+    "unrolled_prep_plus_two_apply": {"mean": 1194.8268, "min": 1040, "max": 1398, "external_jsr_cycles": 18},
+    "quake64_current_pair": {"mean": 3522.2862, "min": 1875, "max": 3908, "external_jsr_cycles": 12},
+    "note": "caller operand marshalling is excluded for all paths"
+  },
+  "speedup_vs_quake64_current_pair_percent": {
+    "compact_excluding_external_jsr": 60.558224568697554,
+    "unrolled_excluding_external_jsr": 66.47490452487891,
+    "compact_including_external_jsr": 60.18156616574768,
+    "unrolled_including_external_jsr": 66.07808871408575
+  },
+  "accuracy_vs_exact_trunc_y_times_n_over_d": {
+    "prepared_q16": {
+      "outputs": 10000,
+      "nonzero_error_percent": 1.57,
+      "mean_absolute_error": 0.0157,
+      "max_absolute_error": 1
+    },
+    "quake64_scale_nd_lerp16": {
+      "outputs": 10000,
+      "nonzero_error_percent": 94.33,
+      "mean_absolute_error": 16.1613,
+      "max_absolute_error": 107
+    },
+    "warning": "The broad stress corpus intentionally exercises larger depth/component ranges; these error rates are not a claim about visible error frequency in normal Quake64 gameplay."
+  },
+  "validation": {
+    "prepared_arithmetic_errors_against_its_Q16_contract": 0,
+    "prepared_max_error_bound_violations": 0,
+    "native_umul16_random_validation_cases": 10000,
+    "native_umul16_random_validation_errors": 0,
+    "native_umul16_measured_mean_cycles": 166.9883,
+    "native_umul16_measured_min_cycles": 155,
+    "native_umul16_measured_max_cycles": 190
+  }
+}
