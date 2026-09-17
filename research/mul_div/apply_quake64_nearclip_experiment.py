@@ -142,19 +142,24 @@ def patch_cube_asm(path: Path) -> None:
 
     # Patch only the four dedicated near-plane component helpers. Do not touch
     # .nlrun itself: later Cohen-Sutherland interpolation also calls it.
-    helpers = (
-        (".nlx0", "e0x"),
-        (".nly0", "e0y"),
-        (".nlx1", "e1x"),
-        (".nly1", "e1y"),
-    )
-    for label, base in helpers:
-        start = text.index(label + "\n")
+    helpers = (".nlx0", ".nly0", ".nlx1", ".nly1")
+    for label in helpers:
+        # Require a real label at column zero. A plain search for ".nlx0\n"
+        # also matches the earlier "jsr .nlx0" inside .near0.
+        marker = "\n" + label + "\n"
+        found = text.count(marker)
+        if found != 1:
+            raise RuntimeError(f"{label}: expected one audited label, found {found}")
+        start = text.index(marker) + 1
         end = text.index("\trts\n", start) + len("\trts\n")
         block = text[start:end]
         if block.count("\tjsr .nlrun\n") != 1:
             raise RuntimeError(f"{label}: audited .nlrun call not found exactly once")
-        block = block.replace("\tjsr .nlrun\n", "\tjsr qfrac_apply_s16\n\tlda rot0\n", 1)
+        block = block.replace(
+            "\tjsr .nlrun\n",
+            "\tjsr qfrac_apply_s16\n\tlda rot0\n",
+            1,
+        )
         text = text[:start] + block + text[end:]
 
     # Safety gate: the shared generic helper and its non-near callers must still
