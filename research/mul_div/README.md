@@ -100,20 +100,11 @@ all corrected errors   0
 
 The result is a genuine Pareto split, not one universal winner.
 
-For broad 16-bit work, **public UMUL16 + the constrained tail is still the best current exact path**. Inlining the shipped 3xUMUL8 construction is slower, so the research rule is now explicit: deeper fusion must earn its cost; crossing an internal boundary is not automatically an optimization.
+For broad 16-bit work, **public UMUL16 + the constrained tail is still the best current exact path**. Inlining the shipped 3xUMUL8 construction is slower, so the research rule is explicit: deeper fusion must earn its cost; crossing an internal boundary is not automatically an optimization.
 
-For byte-sized game data, the dynamic width knees are transformative. The `game8` corpus has:
+The synthetic byte-sized `game8` corpus initially made the width-knee hybrid look exceptional at **197.820 cycles**, because its quotient distribution was dominated by q=0/q=1. That result remains valid for that distribution, but it has now failed a real-game promotion gate. See the Wolf64 result below.
 
-```text
-product fits 16 bits  100.00%
-q == 0                 74.30%
-q <= 1                 86.58%
-q <= 255               99.94%
-```
-
-The width-knee hybrid averages **197.820 cycles**, 77.95% below public composition and about 45.37% below the existing public hybrid. It remains slower on broad 16-bit inputs, so it is a separate small-data Pareto point rather than the new general implementation.
-
-Full details: `PROFILE_NATIVE_RESULTS_2026-09-17.md`.
+Full profile-native details: `PROFILE_NATIVE_RESULTS_2026-09-17.md`.
 
 ## 3. Independent arithmetic model
 
@@ -143,7 +134,26 @@ The exact routine is useful, but the audits show that `(a*b)/d` syntax alone is 
 
 ### Wolf64
 
-Wolf64 repeatedly exploits constants, bounded quotients, LUTs and DDA/prepared state. Its scaling code is strong evidence for **prepare once, apply many**, not repeated generic division.
+Wolf64 repeatedly exploits constants, bounded quotients, LUTs and DDA/prepared state. Its sprite projection is now an explicit negative promotion test for general MUL_DIV.
+
+The audited call site computes:
+
+```text
+e_col_cx = 20 +/- floor(|side|*20/perp_mid)
+```
+
+with the caller already guaranteeing `|side|<=perp_mid`, an 8-bit denominator and therefore quotient <=20.
+
+An exhaustive test over **all 65,535 accepted signed side/perp pairs** produced zero errors for both implementations:
+
+| Projection path | Mean | Min | Max |
+|---|---:|---:|---:|
+| **Wolf64 current specialized path** | **577.181** | 175 | 649 |
+| V2 width-knee exact MUL_DIV | 1048.155 | 252 | 1156 |
+
+The library candidate is **81.60% slower**. The synthetic ~198-cycle `game8` point therefore does **not** earn a public API slot: Wolf64's fixed multiplier, bounded quotient and 8-bit denominator are easy to exploit more efficiently in game-specific code.
+
+See `WOLF64_PROJECT_COL_RESULTS_2026-09-17.md` and `WOLF64_PROJECT_COL_V2_EXHAUSTIVE.json`.
 
 ### Steel Ranger
 
@@ -177,7 +187,7 @@ benchmark_prepared_fraction_pareto.py
     compares resident-image candidates against literal Quake64 arithmetic
 ```
 
-### Corrected prepared-ratio resident results
+### Arithmetic-level resident results
 
 5,000 valid near-plane ratios, two signed component applications each:
 
@@ -190,7 +200,21 @@ benchmark_prepared_fraction_pareto.py
 
 Nearest Q0.16 has 1.51% one-unit errors on the broad stress corpus; floor has 3.12%. Both remain bounded at one integer unit. The Quake error percentages are stress-test diagnostics, not claims about visible error frequency in normal gameplay.
 
-This prepared ratio passes the roadmap laws more convincingly than general MUL_DIV because it beats a **real game workaround** while expressing reusable dynamic state that LUTs/constants/offline precomputation cannot replace.
+### Integrated Quake64 near-clip result
+
+The next gate includes the surrounding work that differs between Quake64's `.near0` implementation and the prepared path: n/d formation, ratio save/restore on the Quake path, X/Y delta formation, two ratio applications, endpoint accumulation and near-Z writeback.
+
+GitHub Actions run `35246007285` measured 5,000 valid crossings:
+
+| Integrated path | Mean | Min | Max | Gain vs Quake | Max endpoint error |
+|---|---:|---:|---:|---:|---:|
+| fixed-X prepared, nearest | 1487.351 | 1311 | 1670 | **59.83%** | **1** |
+| **fixed-X prepared, floor** | **1458.712** | **1288** | **1644** | **60.61%** | **1** |
+| Quake64 current | 3703.020 | 2220 | 4104 | baseline | stress max 120 |
+
+Both prepared variants had **zero prepared-contract errors**. This is still a standalone integration harness rather than a complete Quake64 build, but it clears the implementation plan's most important realistic-alternative gate: the prepared operation remains decisively useful after caller marshalling and surrounding clipping arithmetic are included.
+
+See `QUAKE64_NEARCLIP_INTEGRATION_RESULTS_2026-09-17.md` and `QUAKE64_NEARCLIP_INTEGRATION_V2_5000.json`.
 
 ## 6. Current API direction
 
@@ -198,10 +222,10 @@ The evidence now suggests an API family based on semantic reuse count rather tha
 
 ```text
 one arbitrary exact value
-    -> exact MUL_DIV fallback/specialized path
+    -> exact MUL_DIV fallback / specialized path
 
 two signed values sharing 0<t<1
-    -> fused SCALE2 / LERP2 candidate
+    -> SCALE2_FRACTION / LERP2 candidate
 
 three or more values sharing one dynamic ratio
     -> PREP_RATIO + repeated APPLY
@@ -210,7 +234,9 @@ static/fixed ratio
     -> precompute / LUT / shifts, not library runtime division
 ```
 
-A fused two-component SCALE2 prototype exists in research, but any cycle results derived from the earlier record-core version are historical. It must be reimplemented/measured on the corrected profile-native Pareto path before promotion.
+The leading demonstrated M2 capability is therefore **prepared/fused strict-fraction interpolation**, not generic MUL_DIV. General exact `UMULDIV16` remains useful research/fallback machinery, while the small-width exact helper has explicitly failed one real-game promotion test.
+
+A profile-native fused two-component SCALE2/LERP2 implementation is still worth researching because it can remove the prepared-state lifecycle for the two-value case. Any earlier record-core SCALE2 timings remain historical until reimplemented against the shipped Pareto geometry.
 
 ## 7. Key files
 
@@ -218,24 +244,29 @@ A fused two-component SCALE2 prototype exists in research, but any cycle results
 - `generate_umuldiv16_pareto.py` — corrected actual V2 3xUMUL8 direct/direct-hybrid generators.
 - `generate_umuldiv16_pareto_width.py` — runtime operand-width hybrid.
 - `benchmark_pareto_direct.py` — corrected exact resident-image benchmark.
+- `benchmark_wolf64_project_col.py` — exhaustive real-domain Wolf64 projection gate.
+- `WOLF64_PROJECT_COL_RESULTS_2026-09-17.md` — interpretation of the exhaustive negative gate.
+- `WOLF64_PROJECT_COL_V2_EXHAUSTIVE.json` — machine-readable Wolf64 evidence.
 - `model.py` — independent bounded-tail arithmetic validator.
-- `PROFILE_NATIVE_RESULTS_2026-09-17.md` — current corrected resident results and interpretation.
+- `PROFILE_NATIVE_RESULTS_2026-09-17.md` — corrected resident results and interpretation.
 - `DIRECT_CORE_PROFILE_CORRECTION_2026-09-17.md` — exact direct-core provenance correction.
 - `PREPARED_RATIO_PROFILE_CORRECTION_2026-09-17.md` — prepared-ratio provenance correction.
 - `generate_prepared_fraction_pareto.py` — installed-core prepared fraction candidate.
 - `generate_prepared_fraction_pareto_inline.py` — fixed-X inline prepared ratio candidate.
 - `prepared_fraction_pareto_model.py` — instruction model calibrated to shipped V2 UMUL8.
-- `benchmark_prepared_fraction_pareto.py` — resident-image Quake comparison.
+- `benchmark_prepared_fraction_pareto.py` — resident-image Quake arithmetic comparison.
+- `benchmark_quake64_nearclip_integration.py` — surrounding-path Quake near-clip integration benchmark.
+- `QUAKE64_NEARCLIP_INTEGRATION_RESULTS_2026-09-17.md` / `QUAKE64_NEARCLIP_INTEGRATION_V2_5000.json` — integrated evidence.
 - `REAL_GAME_AUDIT_2026-09-17.md` / `WOLF64_AUDIT_2026-09-17.md` — workload audits.
 
 ## 8. Promotion gates
 
 Before any stable MUL_DIV/ratio API is added:
 
-1. patch the leading prepared/fused interpolation candidate into a real Quake64 near-clip path and include caller marshalling + surrounding arithmetic;
+1. **Passed at standalone-integration level:** the leading prepared interpolation path includes caller marshalling and surrounding Quake `.near0` arithmetic and remains about 60% below the current workaround. A real patched Quake64 build is still required for coexistence/gameplay certification.
 2. decide nearest versus floor Q0.16 under an explicit accuracy/performance contract;
-3. determine whether the two-value public abstraction should be `SCALE2_FRACTION`, `LERP2`, or remain internal to a later geometry routine;
-4. validate the ~198-cycle small-width exact path against a real game workload before exposing it;
+3. implement/measure the corrected profile-native two-value `SCALE2_FRACTION` / `LERP2` candidate and decide whether that or standalone PREP/APPLY is the better public abstraction;
+4. **Negative gate completed:** the ~198-cycle synthetic small-width exact path loses badly to Wolf64's real constant/bounded specialization and should not be promoted from `game8` evidence alone;
 5. establish V1/V5 profile-native implementations instead of copying V2-private assumptions;
 6. research signed exact semantics only where a real use case demands them;
 7. promote only operations that continue to satisfy the implementation-plan **hard-to-fake** rule.
