@@ -1,0 +1,80 @@
+name: Quake64 near-clip integration
+
+on:
+  push:
+    paths:
+      - 'research/mul_div/generate_quake64_prepared_fraction_smc.py'
+      - 'research/mul_div/export_quake64_prepared_fraction.py'
+      - 'research/mul_div/apply_quake64_nearclip_experiment.py'
+      - 'research/mul_div/build_quake64_experiment.sh'
+      - '.github/workflows/quake64-nearclip-integration.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  real-game-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout C64 Math Library
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install ACME and Python image dependency
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y acme
+          python -m pip install --disable-pip-version-check pillow
+
+      - name: Syntax-check integration tooling
+        run: |
+          python -m py_compile \
+            research/mul_div/generate_quake64_prepared_fraction_smc.py \
+            research/mul_div/export_quake64_prepared_fraction.py \
+            research/mul_div/apply_quake64_nearclip_experiment.py
+
+      - name: Checkout audited Quake64 snapshot
+        run: |
+          git clone https://github.com/Kweepa/Quake64.git /tmp/quake64
+          git -C /tmp/quake64 checkout --detach 7c84654946a60314568b709e7e7b97467fed69df
+          test "$(git -C /tmp/quake64 rev-parse HEAD)" = "7c84654946a60314568b709e7e7b97467fed69df"
+
+      - name: Export nearest prepared-fraction kernel
+        run: |
+          python research/mul_div/export_quake64_prepared_fraction.py \
+            --rounding nearest \
+            --output /tmp/prepared_fraction_smc.asm
+          test -s /tmp/prepared_fraction_smc.asm
+          ! grep -q '^\.org ' /tmp/prepared_fraction_smc.asm
+
+      - name: Apply audited near-clip patch
+        run: |
+          python research/mul_div/apply_quake64_nearclip_experiment.py \
+            /tmp/quake64 \
+            --prepared-source /tmp/prepared_fraction_smc.asm
+          # The shared generic .nlrun must remain in the game source because
+          # non-near Cohen-Sutherland clipping still uses it.
+          grep -A2 '^\.nlrun' /tmp/quake64/src/cube.asm | grep -q 'jsr scale_nd'
+          test "$(grep -c 'jsr qfrac_prep' /tmp/quake64/src/cube.asm)" -eq 2
+          test "$(grep -c 'jsr qfrac_apply_s16' /tmp/quake64/src/cube.asm)" -eq 4
+
+      - name: Assemble GAME, regenerate relocations, and run heap gate
+        run: |
+          chmod +x research/mul_div/build_quake64_experiment.sh
+          research/mul_div/build_quake64_experiment.sh \
+            /tmp/quake64 \
+            /tmp/quake64-experiment
+
+      - name: Upload real-build evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: quake64-nearclip-real-build
+          path: /tmp/quake64-experiment
+          if-no-files-found: warn
