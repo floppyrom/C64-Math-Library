@@ -18,6 +18,6 @@ The 19 new stable JMP slots occupy `$5E00-$5E38`. They use the existing `$C000-$
 | `MATH_DIST8_FAST` | `$5E33` | signed dx,dy -> `max+min/2` |
 | `MATH_DIST8_ACCURATE` | `$5E36` | signed dx,dy -> rounded 243/107 minimax form |
 
-Phase convention: `$00=0°`, `$40=90°`, `$80=180°`, `$C0=270°`. V1–V3 atan2 is within one phase unit of rounded mathematical atan2 over the entire signed-byte plane; V4 is exact against that reference. `(0,0)` returns zero.
+Phase convention: `$00=0°`, `$40=90°`, `$80=180°`, `$C0=270°`. V1 uses the compact 512-byte signed-log ATAN2 tier (**50.441345-cycle mean**); V2/V3 use the 1280-byte four-final-angle-page tier (**46.953064-cycle mean**). Both are within one phase unit of rounded mathematical atan2 over the entire signed-byte plane. V4 is exact against that reference at 48 fixed cycles. `(0,0)` returns zero.
 
 V1 uses `$C040-$C057` RAM scratch. V2–V4 use `$53-$6A` ZP. Native V2–V4 SMUL16 executes from `$80-$F3`. On V3/V4, game-math calls are forbidden while a Turbo BEGIN/END overlay is active.

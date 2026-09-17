@@ -29,6 +29,15 @@ PACKS = {
             'MATH_SINCOS8': 8.0,
         },
     },
+    'atan2_fast': {
+        'extra_zp': 0,
+        'extra_ram': hy.ATAN_EXTRA_TABLE_BYTES,
+        'requires_init': False,
+        'description': 'V2 four-quadrant ATAN2 body using three extra V1-free table pages',
+        'savings': {
+            'MATH_ATAN2_8': 3.48828125,
+        },
+    },
     'umul32_initialized': {
         'extra_zp': 0,
         'extra_ram': 627,
@@ -413,6 +422,10 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
     rr=[]
     def add(name,start,end):
         rr.append({'name':name,'start':hx(start),'end':hx(end),'bytes':end-start+1})
+    if 'atan2_fast' in packs:
+        add('ATAN2_Q1_TABLE', vals['REG_KERNEL']+0x1500, vals['REG_KERNEL']+0x15FF)
+        add('ATAN2_Q2_TABLE', vals['REG_KERNEL']+0x1F00, vals['REG_KERNEL']+0x1FFF)
+        add('ATAN2_Q3_TABLE', vals['REG_KERNEL']+0x1700, vals['REG_KERNEL']+0x17FF)
     if 'zero_zp_v5' in packs:
         add('V5_HYBRID_CODE', vals['HYBRID_CODE'], vals['HYBRID_CODE']+0x11ff)
     if 'umul8_16' in packs:
@@ -442,7 +455,7 @@ def build_hybrid_custom(config: Path, outdir: Path, selection: dict) -> dict:
     with tempfile.TemporaryDirectory(prefix='c64_math_pareto_') as td:
         td=Path(td)
         if 'zero_zp_v5' in packs:
-            bdir=td/'base_hybrid'; base_man=hy.build(config,bdir); base_prg=bdir/base_man['output_prg']
+            bdir=td/'base_hybrid'; base_man=hy.build(config,bdir,include_atan2_fast=('atan2_fast' in packs)); base_prg=bdir/base_man['output_prg']
         else:
             bdir=td/'base_v1'; base_man=asm.build('v1_balanced',config,bdir); base_prg=bdir/base_man['output_prg']
         dst,lo,hi=load_prg(base_prg)
@@ -451,6 +464,8 @@ def build_hybrid_custom(config: Path, outdir: Path, selection: dict) -> dict:
         v2man=asm.build('v2_pareto_fast',v2cfg,v2dir); src_raw,_,_=load_prg(v2dir/v2man['output_prg'])
         _,src_init=sr.load_reference('v2_pareto_fast'); src_init=bytearray(src_init)
         entries=dict(sr.public_entries())
+        if 'atan2_fast' in packs and 'zero_zp_v5' not in packs:
+            hy.apply_atan2_fast(dst,src_raw,vals,base_man,entries,vals.get('HYBRID_CODE',0))
         if 'umul8_16' in packs: apply_umul8_16(dst,src_raw,vals,base_man,aux,entries)
         if 'umul24' in packs: apply_umul24(dst,src_raw,vals,base_man,aux,entries)
         if 'umul32_initialized' in packs: apply_umul32(dst,src_raw,vals,base_man,aux,entries)
@@ -461,7 +476,7 @@ def build_hybrid_custom(config: Path, outdir: Path, selection: dict) -> dict:
         else: helper=init_len=None
         # Preserve the base PRG span. Private Pareto payload is placed in configurable RAM;
         # the reference map uses RAM under BASIC ROM.
-        hi=max(hi, vals['HYBRID_CODE']+0x11ff if 'zero_zp_v5' in packs else hi, aux+AUX_BYTES-1 if (packs-{'zero_zp_v5'}) else hi)
+        hi=max(hi, vals['HYBRID_CODE']+0x11ff if 'zero_zp_v5' in packs else hi, aux+AUX_BYTES-1 if (packs-{'zero_zp_v5','atan2_fast'}) else hi)
         prg=outdir/'math_custom_pareto_game_math.prg'; write_prg(dst,lo,hi,prg)
         # Caller include from base map + generated metadata.
         inc=(bdir/'math_api.inc').read_text().rstrip()+'\n\n; Generated Pareto profile metadata\n'

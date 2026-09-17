@@ -39,7 +39,7 @@ unsigned,reciprocal,Q16 from d16,MATH_URECIP16_Q16,$5E1E,exact quotient ladder +
 signed,trig sine,phase8 -> s8,MATH_SIN8,$5E21,table
 signed,trig cosine,phase8 -> s8,MATH_COS8,$5E24,table/phase offset
 signed,trig sincos,phase8 -> 2xs8,MATH_SINCOS8,$5E27,paired table
-signed,angle,"atan2(s8,s8) -> phase8",MATH_ATAN2_8,$5E2A,V1-V3 log/atan; V4 exact REU
+signed,angle,"atan2(s8,s8) -> phase8",MATH_ATAN2_8,$5E2A,V1 compact signed-log; V2/V3/V5 fast four-quadrant signed-log; V4 exact REU
 unsigned,integer square root,16 -> 16,MATH_ISQRT16,$5E2D,exact table search; V4 exact REU
 unsigned,integer square root,32 -> 16,MATH_ISQRT32,$5E30,exact ISQRT16-seeded hybrid + 8 base-4 refinement steps
 signed,distance approximation,"s8,s8 -> u8",MATH_DIST8_FAST,$5E33,max + min/2

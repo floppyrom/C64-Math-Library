@@ -132,7 +132,7 @@ def cycles_catalog():
     for n in API:
         if n in cat['v5_hybrid_lowzp']: continue
         donor='v1_balanced'
-        if n in {'MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD8','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_UDIV16_SHL8','MATH_URECIP16_Q16'}:
+        if n in {'MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD8','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8','MATH_UDIV16_SHL8','MATH_URECIP16_Q16'}:
             donor='v2_pareto_fast'
         if n in cat[donor]:
             v=dict(cat[donor][n]); v['cycle_basis']='V5 documented '+donor+' path; '+v['cycle_basis']; cat['v5_hybrid_lowzp'][n]=v
@@ -155,7 +155,7 @@ def provenance(profile,n):
     if n=='MATH_UMUL24': return '24-ZP reverse_24zp_carry certified resident kernel'
     if n in ('MATH_UMUL32','MATH_UMUL32_READY'): return '31-ZP practical resident UMUL32 family (stack-free compromise)'
     if n.startswith('MATH_SMUL') or n.startswith('MATH_SDIV') or n.startswith('MATH_SMOD'): return 'native signed private executable path'
-    if profile=='v5_hybrid_lowzp' and n in {'MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD8','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8'}: return 'V2 certified kernel imported into V5 hybrid private RAM'
+    if profile=='v5_hybrid_lowzp' and n in {'MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD8','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8'}: return 'V2 certified kernel imported into V5 hybrid private RAM'
     return 'profile-selected resident implementation'
 
 

@@ -26,7 +26,7 @@ def smul16_parity(out:Path,cases=50144):
 def mixed_workload(out:Path,iterations=25000):
     c,P,I,M=vp.load_custom(out);rng=random.Random(0xC645A11)
     for i in range(iterations):
-        m=i%10
+        m=i%11
         if m==0:
             x=rng.randrange(1<<8);y=rng.randrange(1<<8);vp.wr(c,I,x,1);vp.wr(c,I+4,y,1);c.call(P['MATH_UMUL8'],100000);assert vp.rd(c,I+8,2)==x*y
         elif m==1:
@@ -51,6 +51,12 @@ def mixed_workload(out:Path,iterations=25000):
             assert (c.c==1 and c.mem[I+0x1c]==0) if d==0 else (c.c==0 and c.mem[I+0x1c]==n%d)
         elif m==8:
             ph=rng.randrange(256);c.mem[I]=ph;c.call(P['MATH_SINCOS8'],10000)
+        elif m==9:
+            rx=rng.randrange(256);ry=rng.randrange(256);sx=rx if rx<128 else rx-256;sy=ry if ry<128 else ry-256
+            c.mem[I]=rx;c.mem[I+4]=ry;c.call(P['MATH_ATAN2_8'],10000);got=c.mem[I+8]
+            import math
+            exp=0 if sx==0 and sy==0 else round((math.atan2(sy,sx)%(2*math.pi))*128/math.pi)&255
+            assert min((got-exp)&255,(exp-got)&255)<=1 and c.c==0
         else:
             n=rng.randrange(1<<32);vp.wr(c,I+0x10,n,4);c.call(P['MATH_ISQRT32'],200000);r=vp.rd(c,I+8,2);assert r*r<=n<(r+1)*(r+1)
     return iterations

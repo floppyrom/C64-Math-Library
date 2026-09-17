@@ -13,6 +13,7 @@ The stable **45-entry public API is unchanged**. `MATH_INIT` remains optional, a
 - `MATH_UMOD16`, `MATH_UMOD24`, `MATH_UMOD32_16` through their normal UDIV aliases
 - `MATH_COS8`
 - `MATH_SINCOS8`
+- `MATH_ATAN2_8` (exhaustively parity-checked against V2)
 
 Everything else remains V1.
 
@@ -25,11 +26,12 @@ Reference build:
 ```text
 normal ZP      $02-$20   31 bytes
 hybrid code    $A000-$B1FF   4608 bytes
+ATAN2 pages    $5500/$5F00/$5700   768 bytes total
 ```
 
 `$A000-$BFFF` is RAM under BASIC ROM. The reference build therefore requires BASIC ROM to be banked out while an imported V5 path executes. In most machine-code games/demos BASIC is already disabled. If that does not fit your memory map, relocate `HYBRID_CODE` and rebuild.
 
-The PRG file is the **same length as V1** because V5 fills a hole already inside the V1 PRG's load span; it does, however, consume 4608 bytes of RAM that V1 leaves unused.
+The PRG file is the **same load-span length as V1** because V5 fills holes already inside that span. It consumes the 4,608-byte hybrid region plus three free 256-byte ATAN2 kernel pages, for an exact **5,376-byte private-RAM increase versus V1**.
 
 ## Build
 
@@ -49,9 +51,10 @@ The shipped validation includes:
 
 - 45/45 stable entries on the reference map: 4,172 machine calls;
 - 45/45 stable entries on the alternate map: 4,172 machine calls;
-- 78,710 direct-import correctness/parity cases;
+- **144,246 direct-import correctness/parity cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity and <=1 phase-unit error;
 - exhaustive 65,536-case `UMOD8` correctness;
 - exhaustive 256-phase `COS8` and `SINCOS8` checks;
+- exhaustive 65,536-vector `ATAN2_8` result/cycle parity with V2 and maximum error <=1 phase unit;
 - thousands of 16/24/32-bit division cases with exact V2 cycle-vector parity;
 - dynamic reference/alternate ZP confinement checks: all 225 bytes outside the 31-byte window unchanged;
 - mixed V1/V2 state stress;

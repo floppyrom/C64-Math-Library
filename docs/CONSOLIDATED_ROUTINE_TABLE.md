@@ -11,8 +11,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | Profile | PRG payload span B | REU image B | Declared shared ZP B | Stable API ZP union touched B | Stack-page reserved B |
 |---|---:|---:|---:|---:|---:|
 | `v1_balanced` | 43940 | 0 | 31 | 31 | 0 |
-| `v2_pareto_fast` | 44148 | 0 | 60 | 218 | 0 |
-| `v3_reu_512k` | 48244 | 524288 | 55 | 207 | 0 |
+| `v2_pareto_fast` | 44148 | 0 | 60 | 216 | 0 |
+| `v3_reu_512k` | 48244 | 524288 | 55 | 205 | 0 |
 | `v4_reu_16m` | 48244 | 16777216 | 55 | 204 | 0 |
 | `v5_hybrid_lowzp` | 43940 | 0 | 31 | 31 | 0 |
 
@@ -60,7 +60,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SIN8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_COS8` | 29.000000 | 29 | 29 | 18 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_SINCOS8` | 39.000000 | 39 | 39 | 25 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ATAN2_8` | 136.219193 | 33 | 168 | 202 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_ATAN2_8` | 50.441345 | 30 | 53 | 109 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_ISQRT16` | 219.740570 | 205 | 258 | 277 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_ISQRT32` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_FAST` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
@@ -110,7 +110,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SIN8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_COS8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_SINCOS8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ATAN2_8` | 125.807755 | 33 | 155 | 183 | 4 | $5D-$60 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_ATAN2_8` | 46.953064 | 30 | 48 | 97 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_ISQRT16` | 205.760590 | 193 | 246 | 259 | 1 | $66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_ISQRT32` | 1198.619613 | 1052 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_FAST` | 79.570038 | 64 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
@@ -160,7 +160,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SIN8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_COS8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_SINCOS8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ATAN2_8` | 126.297592 | 33 | 156 | 183 | 4 | $5D-$60 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_ATAN2_8` | 46.953064 | 30 | 48 | 97 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_ISQRT16` | 204.992523 | 192 | 246 | 259 | 1 | $66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_ISQRT32` | 1197.859322 | 1051 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_FAST` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
@@ -275,7 +275,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SIN8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
 | `MATH_COS8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; published game-math benchmark 2026-09-06 |
 | `MATH_SINCOS8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; published game-math benchmark 2026-09-06 |
-| `MATH_ATAN2_8` | 136.219193 | 33 | 168 | 202 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
+| `MATH_ATAN2_8` | 46.953064 | 30 | 48 | 97 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; published game-math benchmark 2026-09-06 |
 | `MATH_ISQRT16` | 219.740570 | 205 | 258 | 277 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
 | `MATH_ISQRT32` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_FAST` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |

@@ -51,6 +51,15 @@
         "cases": 256,
         "cycle_vector_equal_to_v2": true,
         "exhaustive": true
+      },
+      "MATH_ATAN2_8": {
+        "cases": 65536,
+        "cycle_vector_equal_to_v2": true,
+        "exhaustive": true,
+        "mean_cycles": 46.95306396484375,
+        "min_cycles": 30,
+        "max_cycles": 48,
+        "max_phase_error": 1
       }
     },
     "zp_confinement": {
@@ -84,5 +93,5 @@
       "status": "PASS"
     }
   },
-  "elapsed_seconds": 7.465
+  "elapsed_seconds": 12.292
 }
