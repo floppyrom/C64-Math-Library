@@ -1,0 +1,72 @@
+{
+  "status": "research_evidence_not_release_certification",
+  "github_actions_run": 35249462171,
+  "head_sha": "0a30907b6f8a7acd684155d65651f7f75a714e63",
+  "artifact_digest": "sha256:c11ab58f338d318beacfa261c11f95428778096169f9c90781902bd0488cd91f",
+  "v2_prg_sha256": "10af446bd1f49bcf02f9529d7944881d85f0e9b8dec2712638e306b0fab72828",
+  "quake64_source_commit": "7c84654946a60314568b709e7e7b97467fed69df",
+  "cases": 5000,
+  "seed": 12648430,
+  "corpus": {
+    "zclip": 256,
+    "z0_range": [-8192, 255],
+    "z1_range": [257, 8191],
+    "component_range": [-8192, 8191],
+    "invariant": "0<n<d"
+  },
+  "variants": {
+    "nearest": {
+      "scale2_code_bytes": 1105,
+      "separate_cycles": {"mean": 1299.7816, "min": 1116, "max": 1487},
+      "scale2_cycles": {"mean": 1332.2604, "min": 1146, "max": 1522},
+      "scale2_saving_vs_separate_percent": -2.498789027325811,
+      "scale2_saving_vs_quake_percent": 62.04704437593864,
+      "scale2_contract_errors": 0,
+      "separate_contract_errors": 0,
+      "scale2_accuracy_vs_exact": {
+        "outputs": 10000,
+        "nonzero_error_percent": 1.51,
+        "mean_absolute_error": 0.0151,
+        "max_absolute_error": 1
+      },
+      "separate_accuracy_vs_exact": {
+        "outputs": 10000,
+        "nonzero_error_percent": 1.51,
+        "mean_absolute_error": 0.0151,
+        "max_absolute_error": 1
+      }
+    },
+    "floor": {
+      "scale2_code_bytes": 1077,
+      "separate_cycles": {"mean": 1270.9698, "min": 1093, "max": 1463},
+      "scale2_cycles": {"mean": 1304.4428, "min": 1123, "max": 1500},
+      "scale2_saving_vs_separate_percent": -2.6336581718936167,
+      "scale2_saving_vs_quake_percent": 62.839502170501824,
+      "scale2_contract_errors": 0,
+      "separate_contract_errors": 0,
+      "scale2_accuracy_vs_exact": {
+        "outputs": 10000,
+        "nonzero_error_percent": 3.12,
+        "mean_absolute_error": 0.0312,
+        "max_absolute_error": 1
+      },
+      "separate_accuracy_vs_exact": {
+        "outputs": 10000,
+        "nonzero_error_percent": 3.12,
+        "mean_absolute_error": 0.0312,
+        "max_absolute_error": 1
+      }
+    }
+  },
+  "quake64_current": {
+    "cycles": {"mean": 3510.2942, "min": 1863, "max": 3896},
+    "accuracy_vs_exact": {
+      "outputs": 10000,
+      "nonzero_error_percent": 93.92,
+      "mean_absolute_error": 16.1343,
+      "max_absolute_error": 107
+    }
+  },
+  "total_contract_errors": 0,
+  "interpretation": "The first shared-helper fused SCALE2 is correct but slower than PREP+2xAPPLY by 2.50-2.63% on this corpus. Fusion is therefore not promoted on this result; further fusion must remove helper/dispatch overhead rather than merely collapse public calls."
+}
