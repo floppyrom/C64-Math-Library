@@ -1,0 +1,58 @@
+{
+  "status": "standalone_nearclip_integration_research_not_game_build_certification",
+  "v2_prg_sha256": "10af446bd1f49bcf02f9529d7944881d85f0e9b8dec2712638e306b0fab72828",
+  "quake64_source_commit": "7c84654946a60314568b709e7e7b97467fed69df",
+  "github_actions_run": 35246007285,
+  "artifact_id": 10507671590,
+  "artifact_digest": "sha256:d4dc8b7cb537edd7098b923cbbbbc25ef6df3af492940ef44bcb0375ae7ec4a1",
+  "cases": 5000,
+  "seed": 12648430,
+  "included_work": [
+    "n/d formation",
+    "ratio save/restore on Quake path",
+    "X/Y delta formation",
+    "two ratio applications",
+    "endpoint accumulation",
+    "near-Z writeback"
+  ],
+  "excluded_work": [
+    "CAM endpoint loading",
+    "edge-loop dispatch",
+    "projection after clipping",
+    "full Quake64 build/runtime integration",
+    "VIC/IRQ/SID effects"
+  ],
+  "variants": {
+    "prepared_inline_nearest": {
+      "cycles": {"mean": 1487.3514, "min": 1311, "max": 1670},
+      "accuracy_vs_exact_endpoint": {
+        "outputs": 10000,
+        "nonzero_error_percent": 1.59,
+        "mean_absolute_error": 0.0159,
+        "max_absolute_error": 1
+      },
+      "prepared_contract_errors": 0,
+      "speedup_vs_quake64_percent": 59.834101913130155
+    },
+    "prepared_inline_floor": {
+      "cycles": {"mean": 1458.7122, "min": 1288, "max": 1644},
+      "accuracy_vs_exact_endpoint": {
+        "outputs": 10000,
+        "nonzero_error_percent": 2.84,
+        "mean_absolute_error": 0.0284,
+        "max_absolute_error": 1
+      },
+      "prepared_contract_errors": 0,
+      "speedup_vs_quake64_percent": 60.607502999443376
+    },
+    "quake64_current": {
+      "cycles": {"mean": 3703.0204, "min": 2220, "max": 4104},
+      "accuracy_vs_exact_endpoint": {
+        "outputs": 10000,
+        "nonzero_error_percent": 94.6,
+        "mean_absolute_error": 15.9906,
+        "max_absolute_error": 120
+      }
+    }
+  }
+}
