@@ -1,24 +1,28 @@
 #!/usr/bin/env python3
-"""Export the Quake-native prepared-fraction research kernel as an ACME include.
+"""Export a Quake-native prepared-fraction research kernel as an ACME include.
 
-The benchmark generator uses two fixed research origins and the mini6502
-assembler's explicit accumulator spelling (for example `rol a`). A real
-Quake64 GAME build must instead follow Quake's ACME source stream, where the
-accumulator form is written simply as `rol`.
+Two PREP Pareto points are supported:
 
-This exporter therefore performs only integration-syntax transformations:
+  unrolled  fast 16-step fractional divider (~1 KiB complete kernel)
+  compact   looped fractional divider (~360 B complete kernel)
+
+Both share the same Quake-native SMC APPLY algorithm and arithmetic contract.
+The benchmark generators use fixed research origins plus mini6502's explicit
+accumulator spelling (for example `rol a`). A real Quake64 GAME build instead
+follows Quake's ACME source stream, where accumulator mode is written `rol`.
+
+The exporter therefore performs integration-only transformations:
+  * choose the already benchmarked PREP generator;
   * remove the two fixed research `.org` directives;
   * normalize explicit accumulator shifts/rotates to ACME syntax.
-
-The arithmetic, branches, SMC operands, scratch addresses and quarter-square
-table addresses remain identical to the benchmarked kernel.
 """
 from __future__ import annotations
 
 import argparse
 from pathlib import Path
 
-from generate_quake64_prepared_fraction_smc import generate
+from generate_quake64_prepared_fraction_smc import generate as generate_unrolled
+from generate_quake64_prepared_fraction_smc_compact import generate as generate_compact
 
 PROBE_PREP = 0x9000
 PROBE_APPLY = 0x9800
@@ -26,8 +30,8 @@ PROBE_APPLY = 0x9800
 
 def _acme_accumulator_syntax(text: str) -> str:
     # ACME 0.97 parses `rol a` as ROL of symbol `a`, not accumulator mode.
-    # The benchmark assembler accepts the explicit spelling, so keep that in
-    # the generator and normalize only the real-game export.
+    # Benchmark generators retain the explicit spelling for mini6502; only the
+    # real-game export is normalized.
     replacements = {
         '    asl a\n': '    asl\n',
         '    lsr a\n': '    lsr\n',
@@ -39,8 +43,14 @@ def _acme_accumulator_syntax(text: str) -> str:
     return text
 
 
-def export_source(rounding: str) -> str:
-    text = generate(PROBE_PREP, PROBE_APPLY, rounding)
+def export_source(rounding: str, prep: str = 'unrolled') -> str:
+    if prep == 'unrolled':
+        text = generate_unrolled(PROBE_PREP, PROBE_APPLY, rounding)
+    elif prep == 'compact':
+        text = generate_compact(PROBE_PREP, PROBE_APPLY, rounding)
+    else:
+        raise ValueError(prep)
+
     for origin in (PROBE_PREP, PROBE_APPLY):
         marker = f'.org ${origin:04X}\n'
         if marker not in text:
@@ -58,8 +68,9 @@ def export_source(rounding: str) -> str:
         '; Quake64 integration export from C64-Math-Library MUL_DIV research\n'
         '; Audited target: Kweepa/Quake64 @ '
         '7c84654946a60314568b709e7e7b97467fed69df\n'
+        f'; PREP tier: {prep}\n'
         f'; Ratio rounding tier: {rounding}\n'
-        '; Included sequentially before end_game; writable GAME RAM required.\n'
+        '; Included sequentially in writable GAME RAM.\n'
         '; Accumulator shifts/rotates normalized for ACME 0.97 syntax.\n\n'
     )
     return banner + text
@@ -67,10 +78,11 @@ def export_source(rounding: str) -> str:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
+    ap.add_argument('--prep', choices=('unrolled', 'compact'), default='unrolled')
     ap.add_argument('--rounding', choices=('nearest', 'floor'), default='nearest')
     ap.add_argument('--output', type=Path)
     args = ap.parse_args()
-    text = export_source(args.rounding)
+    text = export_source(args.rounding, args.prep)
     if args.output:
         args.output.write_text(text, encoding='utf-8')
     else:
