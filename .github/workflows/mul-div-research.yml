@@ -33,6 +33,8 @@ jobs:
             research/mul_div/generate_prepared_fraction_pareto_inline.py \
             research/mul_div/prepared_fraction_pareto_model.py \
             research/mul_div/benchmark_prepared_fraction_pareto.py \
+            research/mul_div/generate_scale2_fraction_pareto.py \
+            research/mul_div/benchmark_scale2_fraction_pareto.py \
             research/mul_div/benchmark_quake64_nearclip_integration.py \
             research/mul_div/benchmark_wolf64_project_col.py \
             research/mul_div/model.py \
@@ -50,6 +52,13 @@ jobs:
           set +e
           python research/mul_div/benchmark_prepared_fraction_pareto.py --cases 5000 --json > /tmp/prepared_fraction_pareto.json 2> /tmp/prepared_fraction_pareto.stderr
           echo $? > /tmp/prepared_fraction_pareto.exit
+          exit 0
+      - name: Profile-native SCALE2 fraction benchmark
+        continue-on-error: true
+        run: |
+          set +e
+          python research/mul_div/benchmark_scale2_fraction_pareto.py --cases 5000 --json > /tmp/scale2_fraction_pareto.json 2> /tmp/scale2_fraction_pareto.stderr
+          echo $? > /tmp/scale2_fraction_pareto.exit
           exit 0
       - name: Quake64 near-clip integration benchmark
         continue-on-error: true
@@ -92,6 +101,9 @@ jobs:
             /tmp/prepared_fraction_pareto.json
             /tmp/prepared_fraction_pareto.stderr
             /tmp/prepared_fraction_pareto.exit
+            /tmp/scale2_fraction_pareto.json
+            /tmp/scale2_fraction_pareto.stderr
+            /tmp/scale2_fraction_pareto.exit
             /tmp/quake64_nearclip_integration.json
             /tmp/quake64_nearclip_integration.stderr
             /tmp/quake64_nearclip_integration.exit
