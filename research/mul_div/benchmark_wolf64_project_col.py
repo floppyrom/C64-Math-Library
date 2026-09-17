@@ -1,31 +1,37 @@
 #!/usr/bin/env python3
-"""Benchmark the ~198-cycle small-width exact MUL_DIV against a real Wolf64 fake.
+"""Benchmark the small-width exact MUL_DIV against Wolf64's real projection fake.
 
 Wolf64 source snapshot:
     Kweepa/Wolf64 @ d606a14bbfb9fb17059c24824e0d921f23fd6860
 
-Call site:
+Audited call site:
     e_col_cx = 20 +/- min(30, |side|*20/perp_mid)
 
-The real caller has already culled |side| > perp_mid, so accepted projection
-inputs satisfy q=floor(|side|*20/perp_mid) <= 20. This is exactly the kind of
-semantic information the implementation-plan laws require us to benchmark
-against instead of pretending the game must use a general MUL_DIV.
+The actual draw path culls before calling project_col_from_side so that
+|side| <= perp_mid. Wolf64 TechNotes describes this projection as using the
+8/8 or 16/8 div_q40 paths: the denominator is an 8-bit perp_mid, while the
+product |side|*20 may be 8 or 16 bits.
+
+Therefore the authoritative corpus here is the complete accepted domain:
+    perp_mid = 1..255
+    side     = -perp_mid .. +perp_mid
+
+That is exactly 65,535 signed side/perp pairs. The quotient is provably <=20,
+so Wolf64's bounded divide is allowed to exploit that semantic fact.
 
 Compared paths:
   wolf64_current
       literal project_col_from_side + mul_8x8 + div_q40 shape
 
   v2_width_hybrid
-      sign/abs wrapper + research pareto_width_hybrid with Y=20 + final +/-
+      sign/abs wrapper + pareto_width_hybrid with multiplier 20 + final +/-
 
-This is research evidence, not a Wolf64 build certification.
+This is research evidence, not a patched Wolf64 build certification.
 """
 from __future__ import annotations
 
 import argparse
 import json
-import random
 import statistics
 import sys
 from pathlib import Path
@@ -41,18 +47,15 @@ from generate_umuldiv16_pareto_width import generate as generate_width  # noqa: 
 
 WOLF_COMMIT = 'd606a14bbfb9fb17059c24824e0d921f23fd6860'
 
-# Shared standalone-call I/O for both CPUs.
 SIDE0, SIDE1 = 0xB000, 0xB001
 PERP0, PERP1 = 0xB002, 0xB003
 COL = 0xB004
 
-# Library vectors.
 X0, X1 = 0xC000, 0xC001
 Y0, Y1 = 0xC004, 0xC005
 Z0 = 0xC008
 D0, D1 = 0xC014, 0xC015
 WIDTH_ENTRY = 0xE000
-WRAPPER = 0xF000
 
 WOLF_SOURCE = r'''
 side0=$B000
@@ -94,7 +97,6 @@ neg_aux:
     sta aux_h
     rts
 
-; Wolf64 src/mul.asm: Y=factor1, A=factor2 -> X=lo A=hi
 mul_8x8:
     sta sq1_l
     sta sq2_l
@@ -109,7 +111,6 @@ mul_8x8:
     sbc (sq4_l),y
     rts
 
-; Wolf64 src/items_draw.asm: tmp0:1 / tmp2:3 -> tmp4=min(q,40)
 div_q40:
     lda tmp2
     ora tmp3
@@ -281,7 +282,6 @@ lib_mag:
     lda perp1
     sta D1
     jsr MULDIV
-    ; Accepted Wolf64 inputs have |side|<=perp, therefore q<=20.
     lda sign
     bne lib_add
     sec
@@ -306,7 +306,7 @@ def patch(mem: bytearray, source: str):
 
 
 def build_wolf_sqtab() -> bytes:
-    """Exact tools/gen_sqtab.py construction from the audited Wolf64 commit."""
+    """Exact Kweepa/Wolf64 tools/gen_sqtab.py construction."""
     mem = bytearray(0x800)
     s1 = lambda i: i
     s2 = lambda i: 0x200 + i
@@ -358,8 +358,7 @@ def wolf_cpu():
 
 
 def lib_cpu():
-    path = PROFILE_PRG['v2']
-    cpu = CPU(load_prg(path))
+    cpu = CPU(load_prg(PROFILE_PRG['v2']))
     cpu.d = 0
     cpu.call(MATH_INIT)
     labels = patch_source(cpu.mem, generate_width(WIDTH_ENTRY))
@@ -376,100 +375,82 @@ def put16(mem: bytearray, addr: int, value: int):
 
 def expected(side: int, perp: int) -> int:
     q = (abs(side) * 20) // perp
-    q = min(q, 30)
+    assert q <= 20
     return (20 + q if side < 0 else 20 - q) & 0xFF
 
 
-def corpus(kind: str, n: int, seed: int):
-    rng = random.Random(seed)
-    out = []
-    for _ in range(n):
-        if kind == 'perp8':
-            perp = rng.randint(1, 255)
-        elif kind == 'perp16':
-            perp = rng.randint(256, 0x3FFF)
-        elif kind == 'mixed':
-            perp = rng.randint(1, 0x3FFF)
-        else:
-            raise ValueError(kind)
-        mag = rng.randint(0, perp)  # exactly the caller's accepted FOV domain
-        side = -mag if rng.getrandbits(1) and mag else mag
-        out.append((side, perp))
-    return out
+def exhaustive_visible_domain():
+    # Sum(perp*2+1, perp=1..255) = 65,535 cases.
+    for perp in range(1, 256):
+        yield (0, perp)
+        for mag in range(1, perp + 1):
+            yield (mag, perp)
+            yield (-mag, perp)
 
 
 def run(cpu: CPU, entry: int, cases):
     cycles, errors = [], 0
     first = []
+    qhist = [0] * 21
     for side, perp in cases:
         put16(cpu.mem, SIDE0, side)
         put16(cpu.mem, PERP0, perp)
         cyc = cpu.call(entry)
         got = cpu.mem[COL]
         exp = expected(side, perp)
+        qhist[(abs(side) * 20) // perp] += 1
         if got != exp:
             errors += 1
             if len(first) < 8:
                 first.append({'side': side, 'perp': perp, 'got': got, 'expected': exp})
         cycles.append(cyc)
     return {
-        'cases': len(cases),
+        'cases': len(cycles),
         'errors': errors,
         'first_errors': first,
         'mean_cycles': statistics.fmean(cycles),
         'min_cycles': min(cycles),
         'max_cycles': max(cycles),
-    }
-
-
-def shape(cases):
-    qs = [(abs(s) * 20) // d for s, d in cases]
-    return {
-        'q0_percent': 100.0 * sum(q == 0 for q in qs) / len(qs),
-        'q_le_1_percent': 100.0 * sum(q <= 1 for q in qs) / len(qs),
-        'q_le_20_percent': 100.0 * sum(q <= 20 for q in qs) / len(qs),
-        'side_fits_8_percent': 100.0 * sum(abs(s) <= 255 for s, _ in cases) / len(cases),
-        'perp_fits_8_percent': 100.0 * sum(d <= 255 for _, d in cases) / len(cases),
+        'q_histogram': qhist,
     }
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--cases', type=int, default=10000)
-    ap.add_argument('--seed', type=lambda s: int(s, 0), default=0xC0FFEE)
     ap.add_argument('--json', action='store_true')
     args = ap.parse_args()
 
+    cases = list(exhaustive_visible_domain())
+    assert len(cases) == 65535
+    wc, we = wolf_cpu()
+    lc, le = lib_cpu()
+    wr = run(wc, we, cases)
+    lr = run(lc, le, cases)
+    total_errors = wr['errors'] + lr['errors']
+
     result = {
-        'status': 'research_evidence_not_wolf64_build_certification',
+        'status': 'exhaustive_visible_domain_research_not_wolf64_build_certification',
         'wolf64_source_commit': WOLF_COMMIT,
-        'contract': 'accepted sprite projection inputs: |side|<=perp_mid; col=20 +/- floor(|side|*20/perp_mid)',
-        'corpora': {},
+        'domain': {
+            'perp_mid': '1..255',
+            'side': '-perp_mid..+perp_mid',
+            'cases': len(cases),
+            'semantic_invariant': '|side|<=perp_mid, therefore floor(|side|*20/perp_mid)<=20',
+            'source_note': 'Wolf64 TechNotes describes project_col_from_side as 8/8 or 16/8 div_q40',
+        },
+        'wolf64_current': wr,
+        'v2_width_hybrid': lr,
+        'library_gain_percent': 100.0 * (wr['mean_cycles'] - lr['mean_cycles']) / wr['mean_cycles'],
+        'total_errors': total_errors,
     }
-    total_errors = 0
-    for i, name in enumerate(('perp8', 'perp16', 'mixed')):
-        cases = corpus(name, args.cases, args.seed + i)
-        wc, we = wolf_cpu()
-        lc, le = lib_cpu()
-        wr = run(wc, we, cases)
-        lr = run(lc, le, cases)
-        total_errors += wr['errors'] + lr['errors']
-        result['corpora'][name] = {
-            'shape': shape(cases),
-            'wolf64_current': wr,
-            'v2_width_hybrid': lr,
-            'library_gain_percent': 100.0 * (wr['mean_cycles'] - lr['mean_cycles']) / wr['mean_cycles'],
-        }
-    result['total_errors'] = total_errors
 
     if args.json:
         print(json.dumps(result, indent=2))
     else:
-        for name, row in result['corpora'].items():
-            w, l = row['wolf64_current'], row['v2_width_hybrid']
-            print(name, row['shape'])
-            print(f"  Wolf64       {w['mean_cycles']:.3f} ({w['min_cycles']}-{w['max_cycles']}) errors={w['errors']}")
-            print(f"  width hybrid {l['mean_cycles']:.3f} ({l['min_cycles']}-{l['max_cycles']}) errors={l['errors']} gain={row['library_gain_percent']:.2f}%")
+        print(f"cases={len(cases)}")
+        print(f"Wolf64       mean={wr['mean_cycles']:.3f} range={wr['min_cycles']}-{wr['max_cycles']} errors={wr['errors']}")
+        print(f"width hybrid mean={lr['mean_cycles']:.3f} range={lr['min_cycles']}-{lr['max_cycles']} errors={lr['errors']}")
+        print(f"library gain={result['library_gain_percent']:.2f}%")
 
     if total_errors:
         raise SystemExit(1)
