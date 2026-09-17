@@ -1,0 +1,39 @@
+name: Quake64 compact prepared fraction
+
+on:
+  push:
+    paths:
+      - 'research/mul_div/generate_quake64_prepared_fraction_smc.py'
+      - 'research/mul_div/generate_quake64_prepared_fraction_smc_compact.py'
+      - 'research/mul_div/benchmark_quake64_prepared_fraction_compact.py'
+      - 'research/mul_div/benchmark_quake64_prepared_fraction_smc.py'
+      - 'tools/mini6502.py'
+      - '.github/workflows/quake64-fraction-compact.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: |
+          python -m py_compile \
+            research/mul_div/generate_quake64_prepared_fraction_smc_compact.py \
+            research/mul_div/benchmark_quake64_prepared_fraction_compact.py
+      - name: Run paired 5000-edge benchmark
+        run: |
+          python research/mul_div/benchmark_quake64_prepared_fraction_compact.py \
+            --cases 5000 --json | tee /tmp/quake64_fraction_compact.json
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: quake64-fraction-compact-results
+          path: /tmp/quake64_fraction_compact.json
