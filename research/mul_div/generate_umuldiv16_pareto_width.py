@@ -166,7 +166,8 @@ def _hybrid_dispatch(prefix: str) -> str:
     bcc {prefix}_q1
 
 {prefix}_small_div:
-    ; Product is already native UDIV16 numerator $10/$11.
+    ; Native UDIV16 expects n=$10/$11, d=$12/$13 and returns
+    ; q=$14/$15, r=$16/$17.
     lda md0
     sta llo
     lda md1
@@ -175,9 +176,9 @@ def _hybrid_dispatch(prefix: str) -> str:
     bcc {prefix}_small_ok
     jmp {prefix}_fail
 {prefix}_small_ok:
-    lda mq0
+    lda uq0
     sta Z0
-    lda mq1
+    lda uq1
     sta Z1
     lda ur0
     sta Z2
