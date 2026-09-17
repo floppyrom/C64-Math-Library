@@ -1,0 +1,62 @@
+{
+  "status": "standalone_nearclip_game_native_integration_research_not_full_build_certification",
+  "provenance": {
+    "github_actions_run": 35254482690,
+    "head_commit": "c4d136be140fd906b819bc0c466cec2a46b4aa86",
+    "artifact": "mul-div-profile-native-results",
+    "artifact_digest": "sha256:487c424dc1d5b0071b99b3eb13644e3c6e667d2732d4113ce9621c58e1aaa203"
+  },
+  "quake64_source_commit": "7c84654946a60314568b709e7e7b97467fed69df",
+  "cases": 5000,
+  "seed": 12648430,
+  "included_work": [
+    "n/d formation",
+    "X/Y delta formation",
+    "Quake-native prepared fraction",
+    "two Quake-native SMC applications",
+    "endpoint accumulation",
+    "near-Z writeback"
+  ],
+  "excluded_work": [
+    "CAM endpoint loading",
+    "edge-loop dispatch",
+    "projection after clipping",
+    "full Quake64 build/runtime integration",
+    "VIC/IRQ/SID effects"
+  ],
+  "variants": {
+    "quake_smc_nearest": {
+      "cycles": {"mean": 1373.5418, "min": 1209, "max": 1550},
+      "prepared_contract_errors": 0,
+      "accuracy_vs_exact_endpoint": {
+        "outputs": 10000,
+        "nonzero_error_percent": 1.59,
+        "mean_absolute_error": 0.0159,
+        "max_absolute_error": 1
+      },
+      "speedup_vs_quake64_percent": 62.907528135680806,
+      "prepared_kernel_code_bytes": 1033
+    },
+    "quake_smc_floor": {
+      "cycles": {"mean": 1347.9062, "min": 1189, "max": 1524},
+      "prepared_contract_errors": 0,
+      "accuracy_vs_exact_endpoint": {
+        "outputs": 10000,
+        "nonzero_error_percent": 2.84,
+        "mean_absolute_error": 0.0284,
+        "max_absolute_error": 1
+      },
+      "speedup_vs_quake64_percent": 63.59981705744856,
+      "prepared_kernel_code_bytes": 1007
+    },
+    "quake64_current": {
+      "cycles": {"mean": 3703.0204, "min": 2220, "max": 4104},
+      "accuracy_vs_exact_endpoint": {
+        "outputs": 10000,
+        "nonzero_error_percent": 94.6,
+        "mean_absolute_error": 15.9906,
+        "max_absolute_error": 120
+      }
+    }
+  }
+}
