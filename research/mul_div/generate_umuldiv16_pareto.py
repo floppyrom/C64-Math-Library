@@ -33,14 +33,16 @@ SIGN, QHI = 0x14, 0x15
 C0, C1, C2 = 0x16, 0x17, 0x18
 QLO = 0x19
 
-# Divide reinterpretation after multiply is complete.
-MQ0, MQ1 = 0x14, 0x15
-MR0 = 0x16
+# Divide reinterpretation after multiplication.  The final product low16 already
+# lives in MLO/MHI, so use those bytes directly as the quotient pipeline instead
+# of copying into another pair of scratch bytes.
+MQ0, MQ1 = MLO, MHI
+MR0 = C0
 MD0, MD1 = 0x1A, 0x1B  # unused by shipped 3xUMUL8 construction
 PHI = 0x1C             # hybrid-only saved product byte3
 
-# Native UDIV16 ABI for small-product fallback.
-MN0, MN1 = 0x10, 0x11
+# Native UDIV16 ABI for small-product fallback is exactly $10-$17.
+MN0, MN1 = MLO, MHI
 UR0, UR1 = 0x16, 0x17
 
 
@@ -73,9 +75,10 @@ def _fail(label: str) -> str:
 def _multiply_live(prefix: str) -> str:
     """Shipped V2 3xUMUL8 math ending in tail-ready live product state.
 
-    exit: mq0=byte0, mq1=byte1, mr0=byte2, A=byte3.
-    MLO/MHI also contain byte0/byte1, so a 16-bit product is already in the
-    native UDIV16 numerator slots $10/$11.
+    exit: MLO=byte0, MHI=byte1, C0=byte2, A=byte3.
+    Those locations are deliberately the divide pipeline itself, so no byte0/1
+    handoff copy is required.  A 16-bit product is already in the native UDIV16
+    numerator slots $10/$11.
     """
     return f"""    ; M=a*c
     ldx X0
@@ -163,20 +166,17 @@ def _multiply_live(prefix: str) -> str:
     sta c2
 
 {prefix}_combine:
-    ; Product=M+(cross<<8)+(L<<16). Keep byte0/1 also in $10/$11.
+    ; Product=M+(cross<<8)+(L<<16).  Reuse MLO/MHI as final byte0/byte1
+    ; and overwrite C0 only after its cross-low value has been consumed.
     lda mhi
     clc
     adc c0
-    sta mhi              ; final byte1
+    sta mhi              ; final byte1 / divide mq1
     lda llo
     adc c1
-    sta mr0              ; final byte2
-    lda mlo
-    sta mq0              ; final byte0
-    lda mhi
-    sta mq1              ; final byte1
+    sta mr0              ; final byte2 / divide remainder-low
     lda lhi
-    adc c2               ; A=final byte3
+    adc c2               ; A=final byte3 / divide remainder-high
 """
 
 
