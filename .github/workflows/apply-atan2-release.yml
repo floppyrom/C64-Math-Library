@@ -21,6 +21,8 @@ jobs:
           set -euo pipefail
           base64 -d .github/atan2-final.diff.gz.b64 | gzip -dc > /tmp/atan2-final.diff
           git apply --binary --index /tmp/atan2-final.diff
+          rm -f .github/atanpart_* .github/atan2-final.diff.gz.b64 .github/workflows/apply-atan2-release.yml
+          git add -A
           git config user.name 'floppyrom'
           git config user.email 'mihaibn@gmail.com'
           git commit -m 'Optimize ATAN2 tiers and integrate fast V5/Pareto path' -m 'Add 50.441-cycle compact V1 ATAN2 and 46.953-cycle fast V2/V3/V5 tier
