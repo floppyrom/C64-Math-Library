@@ -3,14 +3,13 @@
 
 The new candidate reuses Quake64's already resident quarter-square tables at
 $F000-$F7FF and patches absolute,Y operands for the prepared multiplier bytes.
-It therefore measures the value of the *prepared ratio idea* when integrated
-with the game's own table/memory architecture instead of importing the V2
-profile-native UMUL8 implementation.
+It measures the value of the prepared-ratio idea when integrated with the
+*game's own* table/memory architecture rather than importing V2's UMUL8 path.
 
 Compared on identical strict near-clip inputs:
 
   quake_current                 scale_nd + lerp16 twice
-  v2_inline_nearest/floor       best corrected V2 profile-native PREP/APPLY
+  v2_inline_nearest/floor       corrected V2 profile-native PREP/APPLY
   quake_smc_nearest/floor       new Quake-native SMC fixed-multiplier path
 
 Research evidence only; this does not patch/build Quake64 itself.
@@ -44,18 +43,17 @@ from benchmark_prepared_ratio import (  # noqa: E402
     ZCLIP,
     err_summary,
     gets16,
-    patch,
     put16,
     quake_cpu,
     summarize,
     trunc_div,
 )
 
-# Native Quake scratch ABI used by generate_quake64_prepared_fraction_smc.py.
-QNATIVE_N = 0x48
-QNATIVE_D = 0x4A
-QNATIVE_Y = 0x4C
-QNATIVE_Z = 0x45
+# Actual Quake64 scratch ABI used by the new generator.
+QNATIVE_N = 0x5E
+QNATIVE_D = 0x60
+QNATIVE_Y = 0x62
+QNATIVE_Z = 0x40
 
 
 def fill_quake_sq_tables(mem: bytearray) -> None:
@@ -183,10 +181,9 @@ def main() -> None:
             'speedup_vs_quake_current_percent': 100.0 * (qmean - pair['mean']) / qmean,
         }
         if 'code_bytes' in row:
-            entry['assembled_code_bytes_including_gap'] = row['code_bytes']
+            entry['assembled_code_bytes'] = row['code_bytes']
         result['variants'][name] = entry
 
-    # Same-corpus direct comparison against the corrected V2 fixed-X candidate.
     for rounding in ('nearest', 'floor'):
         qname = f'quake_smc_{rounding}'
         vname = f'v2_inline_{rounding}'
