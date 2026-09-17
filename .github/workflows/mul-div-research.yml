@@ -34,6 +34,7 @@ jobs:
             research/mul_div/prepared_fraction_pareto_model.py \
             research/mul_div/benchmark_prepared_fraction_pareto.py \
             research/mul_div/benchmark_quake64_nearclip_integration.py \
+            research/mul_div/benchmark_wolf64_project_col.py \
             research/mul_div/model.py \
             research/mul_div/prepared_ratio_model.py
       - name: Actual-core exact MUL_DIV benchmark
@@ -56,6 +57,13 @@ jobs:
           set +e
           python research/mul_div/benchmark_quake64_nearclip_integration.py --cases 5000 --json > /tmp/quake64_nearclip_integration.json 2> /tmp/quake64_nearclip_integration.stderr
           echo $? > /tmp/quake64_nearclip_integration.exit
+          exit 0
+      - name: Wolf64 projection benchmark
+        continue-on-error: true
+        run: |
+          set +e
+          python research/mul_div/benchmark_wolf64_project_col.py --cases 10000 --json > /tmp/wolf64_project_col.json 2> /tmp/wolf64_project_col.stderr
+          echo $? > /tmp/wolf64_project_col.exit
           exit 0
       - name: Actual-core prepared fraction model
         continue-on-error: true
@@ -87,6 +95,9 @@ jobs:
             /tmp/quake64_nearclip_integration.json
             /tmp/quake64_nearclip_integration.stderr
             /tmp/quake64_nearclip_integration.exit
+            /tmp/wolf64_project_col.json
+            /tmp/wolf64_project_col.stderr
+            /tmp/wolf64_project_col.exit
             /tmp/prepared_fraction_pareto_model.json
             /tmp/prepared_fraction_pareto_model.stderr
             /tmp/prepared_fraction_pareto_model.exit
