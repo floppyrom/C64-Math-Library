@@ -62,7 +62,7 @@ jobs:
         continue-on-error: true
         run: |
           set +e
-          python research/mul_div/benchmark_wolf64_project_col.py --cases 10000 --json > /tmp/wolf64_project_col.json 2> /tmp/wolf64_project_col.stderr
+          python research/mul_div/benchmark_wolf64_project_col.py --json > /tmp/wolf64_project_col.json 2> /tmp/wolf64_project_col.stderr
           echo $? > /tmp/wolf64_project_col.exit
           exit 0
       - name: Actual-core prepared fraction model
