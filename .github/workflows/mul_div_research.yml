@@ -1,0 +1,56 @@
+name: MUL_DIV research benchmarks
+
+on:
+  push:
+    paths:
+      - 'research/mul_div/**'
+      - '.github/workflows/mul_div_research.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prepared-ratio:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check research tools
+        run: |
+          python -m py_compile research/mul_div/*.py
+      - name: Validate arithmetic models
+        run: |
+          python research/mul_div/model.py --cases 100000 --seed 0xC0FFEE > /tmp/mul_div_model.txt
+          python research/mul_div/prepared_ratio_model.py --cases 100000 --seed 0xC0FFEE --json > /tmp/prepared_ratio_model.json
+          python research/mul_div/prepared_fraction_model.py --cases 5000 --seed 0xC0FFEE --json > /tmp/prepared_fraction_model.json
+          python research/mul_div/prepared_fraction_pair_model.py --cases 5000 --seed 0xC0FFEE --json > /tmp/prepared_fraction_pair_model.json
+      - name: Run V2 resident-image MUL_DIV benchmark
+        run: |
+          python research/mul_div/benchmark.py --profile v2 --cases 5000 --seed 0xC0FFEE --json > /tmp/mul_div_v2.json
+      - name: Run prepared ratio resident-image benchmark
+        run: |
+          python research/mul_div/benchmark_prepared_ratio.py --cases 5000 --seed 0xC0FFEE --json > /tmp/prepared_ratio_v2.json
+      - name: Run strict-fraction resident-image benchmark
+        run: |
+          python research/mul_div/benchmark_prepared_fraction.py --cases 5000 --seed 0xC0FFEE --json > /tmp/prepared_fraction_v2.json
+      - name: Run fused SCALE2 resident-image benchmark
+        run: |
+          python research/mul_div/benchmark_prepared_fraction_pair.py --cases 5000 --seed 0xC0FFEE --json > /tmp/prepared_fraction_pair_v2.json
+      - name: Upload research evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: mul-div-research-evidence
+          path: |
+            /tmp/mul_div_model.txt
+            /tmp/mul_div_v2.json
+            /tmp/prepared_ratio_model.json
+            /tmp/prepared_ratio_v2.json
+            /tmp/prepared_fraction_model.json
+            /tmp/prepared_fraction_v2.json
+            /tmp/prepared_fraction_pair_model.json
+            /tmp/prepared_fraction_pair_v2.json
+          if-no-files-found: error
