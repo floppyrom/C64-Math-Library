@@ -5,7 +5,9 @@ on:
     paths:
       - 'research/mul_div/generate_quake64_prepared_fraction_smc.py'
       - 'research/mul_div/generate_quake64_prepared_fraction_smc_compact.py'
+      - 'research/mul_div/generate_quake64_prepared_fraction_smc_chunked.py'
       - 'research/mul_div/benchmark_quake64_prepared_fraction_compact.py'
+      - 'research/mul_div/benchmark_quake64_prepared_fraction_chunks.py'
       - 'research/mul_div/benchmark_quake64_prepared_fraction_smc.py'
       - 'tools/mini6502.py'
       - '.github/workflows/quake64-fraction-compact.yml'
@@ -17,7 +19,7 @@ permissions:
 jobs:
   benchmark:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -27,13 +29,21 @@ jobs:
         run: |
           python -m py_compile \
             research/mul_div/generate_quake64_prepared_fraction_smc_compact.py \
-            research/mul_div/benchmark_quake64_prepared_fraction_compact.py
-      - name: Run paired 5000-edge benchmark
+            research/mul_div/generate_quake64_prepared_fraction_smc_chunked.py \
+            research/mul_div/benchmark_quake64_prepared_fraction_compact.py \
+            research/mul_div/benchmark_quake64_prepared_fraction_chunks.py
+      - name: Run compact-vs-unrolled 5000-edge benchmark
         run: |
           python research/mul_div/benchmark_quake64_prepared_fraction_compact.py \
             --cases 5000 --json | tee /tmp/quake64_fraction_compact.json
+      - name: Sweep chunked carry-pipeline PREP points
+        run: |
+          python research/mul_div/benchmark_quake64_prepared_fraction_chunks.py \
+            --cases 5000 --json | tee /tmp/quake64_fraction_chunks.json
       - name: Upload evidence
         uses: actions/upload-artifact@v4
         with:
           name: quake64-fraction-compact-results
-          path: /tmp/quake64_fraction_compact.json
+          path: |
+            /tmp/quake64_fraction_compact.json
+            /tmp/quake64_fraction_chunks.json
