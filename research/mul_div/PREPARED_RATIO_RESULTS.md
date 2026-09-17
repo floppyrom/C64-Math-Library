@@ -1,18 +1,18 @@
-# Prepared signed-ratio research — first model
+# Prepared signed-ratio research
 
-**Status:** arithmetic/accuracy research only. No 6502 cycle certification yet.
+**Status:** validated research Pareto family; not yet a stable API.
 
-This work follows the real-game audit of `MUL_DIV`. The strongest call site found in Quake64 is near-plane interpolation, where the same dynamic ratio is applied to both X and Y:
+The real-game MUL_DIV audit identified Quake64 near-plane interpolation as the strongest current use case. A crossing edge needs the same dynamic ratio for both X and Y:
 
 ```text
 delta = component_delta * (ZCLIP - z0) / (z1 - z0)
 ```
 
-The current Quake64 path first arithmetic-shifts the numerator and denominator together until both fit signed 8-bit (`scale_nd`), then performs the reduced multiply/divide. That is a practical way to make the operation cheaper, but it deliberately discards low ratio bits before interpolation.
+The current game path uses `scale_nd + lerp16`: numerator and denominator are arithmetic-shifted together until they fit signed 8-bit, then a 16x8 product is divided by an 8-bit denominator. In the actual near-clip path the original ratio is saved/restored and **`scale_nd` is run again for the second component**.
 
-## Candidate semantic split
+That makes this a natural prepared-state problem rather than two independent generic MUL_DIV calls.
 
-Rather than make every application pay for a full signed multiply/divide, prepare a bounded ratio once:
+## Candidate contract
 
 ```text
 RATIO16_PREP_APPROX
@@ -29,143 +29,139 @@ RATIO16_APPLY_APPROX
     result = trunc_toward_zero(y * sign * m / 65536)
 ```
 
-`|n| == |d|` is represented as an identity/negate flag because the exact Q0.16 magnitude is 65536.
+`|n| == |d|` is represented as an identity/negate mode because exact Q0.16 magnitude would be 65536.
 
-This is **not exact MUL_DIV**. It is a deliberately bounded approximation designed for interpolation and clipping.
+The V2 APPLY prototype binds `m` as the persistent X operand of the existing record UMUL16 core, then uses its `same_x` entry for each new `y`. That is the important fusion: the ratio multiplier stays prepared across X/Y applications instead of being rebound for every multiply.
 
-## Error guarantee
+This is a stateful research contract. Another call that rebinds the native V2 UMUL16 X operand invalidates the prepared state.
 
-Let:
+## Accuracy guarantee
+
+Nearest Q0.16 preparation gives:
 
 ```text
-r = |n| / |d|
-m = round(r * 65536)
+|m/65536 - |n/d|| <= 1 / 131072
 ```
 
-Nearest rounding gives:
+For signed16 `y`, `|y| <= 32768`, so the real-valued product error is at most 0.25. After truncation toward zero, the integer result can differ from exact `trunc(y*n/d)` by **at most one**.
+
+So the semantic promise is explicit:
 
 ```text
-|m/65536 - r| <= 1 / (2*65536)
-```
-
-For any signed 16-bit `y`:
-
-```text
-|y| <= 32768
-```
-
-so the real-valued product error is at most:
-
-```text
-32768 / (2*65536) = 0.25
-```
-
-After truncation toward zero, the integer result can therefore differ from exact `trunc(y*n/d)` by **at most one**.
-
-That is the useful semantic promise of this candidate:
-
-```text
-prepared Q16 ratio apply:
+signed16 y, |n|<=|d|:
     max integer error <= 1
 ```
 
-for signed16 `y` and bounded `|n|<=|d|`.
+This is deliberately approximate. It should not be confused with the exact general `UMULDIV16` research path.
 
-## Deterministic synthetic near-clip model
+## 6502 implementations
 
-`prepared_ratio_model.py` uses valid near-plane crossings with:
+`generate_prepared_ratio.py` emits two V2 research points:
 
-```text
-ZCLIP = $0100
+| Variant | PREP code | APPLY code | Total code | Strategy |
+|---|---:|---:|---:|---|
+| compact | 221 B | 130 B | **351 B** | 16-step loop |
+| unrolled | 889 B | 130 B | **1019 B** | unrolled carry-pipelined fractional divide |
 
-z0 in [-8192, 255]     ; behind the near plane
-z1 in [256, 8191]      ; in front
+Both reuse existing division ZP `$10-$15` during PREP and the existing V2 UMUL16 state at `$21-$31`. The retained sign/mode bytes are ordinary private RAM. No new profile ZP allocation is required by the prototype.
 
-n = ZCLIP - z0
-d = z1 - z0
-```
+The unrolled PREP treats `(n<<16)/d` as the same constrained 16-step geometry discovered during MUL_DIV research: because `|n|<|d|`, `n` is already a legal initial remainder and only 16 fractional quotient bits remain to be generated.
 
-These are deliberately broad stress ranges. They are **not claimed to be the measured runtime distribution of Quake64**.
+## Cycle-accurate Quake64-derived benchmark
 
-Two one-million-case corpora were run.
-
-### Full signed-16 component stress
+The first paired cycle run uses:
 
 ```text
-y in [-32768, 32767]
-seed = $C0FFEE
-cases = 1,000,000
+cases       5,000 edge crossings
+seed        $C0FFEE
+ZCLIP       $0100
+z0          [-8192, 255]   ; behind
+z1          [256, 8191]    ; in front
+X/Y delta   [-8192, 8191]  ; ±32 world units in 8.8
+
+n = ZCLIP-z0
+d = z1-z0
 ```
+
+These are valid near-plane crossings but deliberately broad stress ranges. They are **not claimed to reproduce Quake64's runtime frequency distribution**.
+
+The prepared path is measured against the actual Quake64 arithmetic structure from commit `7c84654946a60314568b709e7e7b97467fed69df`: `scale_nd + lerp16` for X, restore the original ratio, then `scale_nd + lerp16` again for Y. The 28-cycle four-PHA/four-PLA ratio save/restore is included in the Quake pair.
+
+The V2 APPLY uses the exact current `record_umul16_17zp.a` native core (`git blob de86a12f116e85ab8b94c3d0167b33479e9c867c`).
+
+### Cycles excluding the external caller JSR
+
+| Path | PREP | APPLY mean | Pair mean | Pair min | Pair max |
+|---|---:|---:|---:|---:|---:|
+| prepared compact | 952.231 | 216.144 | **1384.519** | 1199 | 1608 |
+| prepared unrolled | **744.538** | **216.144** | **1176.827** | 1022 | 1380 |
+| Quake64 current X+Y | — | — | **3510.286** | 1863 | 3896 |
+
+The unrolled prepared pair is **66.47% lower** in this stress corpus than the current Quake arithmetic pair. The compact 351-byte point is **60.56% lower**.
+
+Including only the external JSRs changes the means to:
+
+```text
+compact prepared   1402.519 cycles
+unrolled prepared  1194.827 cycles
+Quake current      3522.286 cycles
+```
+
+The result remains about **66.08% lower** for the unrolled point. Caller operand marshalling is excluded for both sides; a real integration benchmark is still required.
+
+## Accuracy on the same 5,000 edge-pair corpus
+
+There are 10,000 component outputs.
 
 | Method | Non-zero error | Mean absolute error | Maximum absolute error |
 |---|---:|---:|---:|
-| Quake-style `scale_nd` reduced ratio | 98.1766% | 64.513702 | 485 |
-| Rounded prepared Q16 ratio | **6.2308%** | **0.062308** | **1** |
+| prepared rounded Q16 | **1.57%** | **0.0157** | **1** |
+| Quake `scale_nd + lerp16` | 94.33% | 16.1613 | 107 |
 
-### ±32 world-unit 8.8 component stress
+This does **not** mean Quake64 visibly produces large clipping errors 94% of the time in normal play. The stress corpus is intentionally broad, and the game has additional scene constraints. It shows that when broad valid crossings are exercised, reducing the dynamic ratio to signed 8-bit can lose much more precision than Q0.16 preparation.
 
-```text
-y in [-8192, 8191]
-seed = $C0FFEF
-cases = 1,000,000
-```
+The independent million-case arithmetic model remains useful as a wider accuracy check. For ±32 world-unit deltas it found prepared Q16 max error 1 versus max 123 for the reduced-ratio model.
 
-| Method | Non-zero error | Mean absolute error | Maximum absolute error |
-|---|---:|---:|---:|
-| Quake-style `scale_nd` reduced ratio | 94.4709% | 16.115774 | 123 |
-| Rounded prepared Q16 ratio | **1.5783%** | **0.015783** | **1** |
+## Why this passes the implementation-plan laws better
 
-The large `scale_nd` errors are not a claim that Quake64 is visibly wrong in normal play. The corpus intentionally stresses broad depth/component ranges, and the game has other clipping constraints. The result shows something narrower and useful: reducing a 16-bit dynamic ratio to signed 8-bit can discard much more precision than a prepared Q16 representation.
+The prepared ratio now has a much stronger case than the ~816-cycle general exact `UMULDIV16` fallback:
 
-## Why this is interesting for the roadmap
+- **dynamic:** `n`, `d`, X delta and Y delta are all runtime values;
+- **reused state:** one ratio is applied to multiple values;
+- **not a LUT problem:** the ratio is not fixed or enumerable cheaply;
+- **not a constant-specialization problem:** numerator and denominator both vary;
+- **realistic fake exists:** Quake64 uses `scale_nd + lerp16`, so we can benchmark against an actual game workaround rather than only against our own library primitives;
+- **compound semantic value:** PREP moves expensive denominator/ratio work out of repeated APPLY calls;
+- **explicit approximation contract:** <=1 integer error rather than an undocumented precision trade.
 
-This candidate passes the Hard-to-Fake test more cleanly than the current general `UMULDIV16`:
+Wolf64 independently shows the same architectural pattern in its sprite scaling: prepare a ratio once, then advance it incrementally instead of repeatedly dividing.
 
-- both ratio inputs are dynamic;
-- the same ratio is reused for multiple dynamic values;
-- a small LUT cannot encode all cases;
-- fixed-constant specialization does not apply;
-- offline precomputation does not apply;
-- the existing game uses approximation specifically to avoid the full operation.
+## What is still missing
 
-It also gives us a meaningful semantic trade:
+This is strong research evidence, but promotion would still be premature.
 
-```text
-general UMULDIV16
-    exact, expensive per application
+1. Run a corpus derived from actual Quake64 captured near-clip events, not only valid synthetic crossings.
+2. Include exact caller marshalling/integration costs in a patched game build.
+3. Investigate a safe prepared-state form that does not conflict with an intervening UMUL16 call, and quantify the cost versus the fast `same_x` lifecycle.
+4. Test whether a fused `APPLY2` for X/Y can remove another layer of dispatch/sign overhead.
+5. Decide whether the public semantic name should be ratio/interpolation-oriented rather than exposing implementation detail.
+6. Investigate an exact-corrected prepared form, but only if correction remains cheaper than the current <=1 approximation and a game use actually requires exactness.
 
-prepared Q16 ratio
-    one prepare cost
-    much cheaper apply target
-    guaranteed <= 1 integer error
-```
+## Current decision
 
-## Performance target
-
-No cycle result is claimed yet.
-
-The current V2 direct bounded `UMULDIV16` research path is about 816 cycles on its broad corpus. Two independent applications therefore cost roughly 1632 cycles before any ratio sharing.
-
-For a prepared ratio to be worthwhile on a two-component interpolation, a useful target is:
+The research direction has changed materially:
 
 ```text
-PREP + 2*APPLY < ~1632 cycles
+general exact UMULDIV16
+    -> keep as internal/fallback research
+
+prepared Q16 signed ratio
+    -> now the leading M2 candidate for repeated dynamic ratios
+
+small fixed/bounded ratios
+    -> leave to specialized game or compound geometry kernels
 ```
 
-The existing V2 signed 16x16 multiply is about 252 cycles on its canonical corpus, so an APPLY based on a profile-native high-half multiply looks plausible. A dedicated high-half signed×unsigned kernel may do better, but this must be measured rather than assumed.
+The important result is not just a lower cycle count. We now have a candidate that beats a real game workaround **and** improves its numerical behavior on the same stress inputs, while exploiting reusable runtime state that ordinary MUL + DIV composition cannot preserve.
 
-The more important comparison is **not** against two general MUL_DIV calls. It is against Quake64's existing `scale_nd + lerp16` implementation on real clipping inputs. That is the next benchmark gate.
-
-## Next implementation pass
-
-1. Implement a 16-step fractional `RATIO16_PREP` prototype that generates rounded Q0.16 state directly from `|n|/|d|`.
-2. Implement a V2 direct-core signed16 × unsigned-Q16 high-half APPLY path.
-3. Measure PREP once + APPLY twice.
-4. Build a Quake64-derived clipping corpus and compare:
-   - current `scale_nd + lerp16`,
-   - exact direct signed MUL_DIV,
-   - prepared Q16 approximate,
-   - optionally an exact-corrected prepared form.
-5. Keep this out of the stable API until the realistic-alternative benchmark passes.
-
-The important result is therefore not that generic MUL_DIV is ready. It is that the real-game audit has exposed a **more promising prepared-ratio primitive with a strong, explicit error bound**.
+Machine-readable evidence: `PREPARED_RATIO_V2_5000.json`.
