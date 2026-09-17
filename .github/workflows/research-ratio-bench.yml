@@ -18,3 +18,6 @@ jobs:
       - name: Run fused strict-fraction benchmark
         run: |
           python3 research/mul_div/benchmark_prepared_fraction_pair.py --cases 5000 --seed 0xC0FFEE --json
+      - name: Run Q14 fused strict-fraction benchmark
+        run: |
+          python3 research/mul_div/benchmark_prepared_fraction_q14_pair.py --cases 5000 --full-domain-cases 5000 --seed 0xC0FFEE --json
