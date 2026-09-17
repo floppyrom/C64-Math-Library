@@ -2,15 +2,17 @@
 
 **Status:** research evidence, not yet a stable API certification.
 
-These results use the shipped **V2 Pareto-Fast** resident image, initialized once outside timing, and the cycle-accurate `tools/mini6502.py` model. Every implementation was run on the **same inputs** and checked against exact Python integer `divmod(a*b,d)` semantics with the bounded 16-bit quotient contract.
+> **2026-09-17 correction:** the historical V2 `direct` and `direct_hybrid` candidates in the original run assumed the standalone `record_umul16_17zp.a` ABI was installed at `$53EC/$5400`. Shipped V2 actually installs `pareto_umul16.a`, the integrated 3xUMUL8 kernel, at `$5400`. The old direct/direct-hybrid columns are therefore **superseded and must not be cited as shipped-V2 evidence**. See `DIRECT_CORE_PROFILE_CORRECTION_2026-09-17.md`. The `composed`, `fused`, and `hybrid` paths below use genuine shipped interfaces and remain the valid baseline set.
 
-Resident PRG SHA-256:
+The original run used the shipped **V2 Pareto-Fast** resident image, initialized once outside timing, and the cycle-accurate `tools/mini6502.py` model. Every implementation was run on the same inputs and checked against exact Python integer `divmod(a*b,d)` semantics with the bounded 16-bit quotient contract.
+
+Resident PRG SHA-256 recorded by the historical run:
 
 ```text
 10af446bd1f49bcf02f9529d7944881d85f0e9b8dec2712638e306b0fab72828
 ```
 
-## Candidates
+## Source/profile-consistent candidates
 
 ```text
 composed
@@ -22,26 +24,16 @@ fused
 hybrid
     public UMUL16 -> native UDIV16 if product fits 16 bits
     otherwise constrained tail
-
-direct
-    native V2 UMUL16 -> consume live product directly in constrained tail
-
-direct_hybrid
-    native V2 UMUL16
-    -> direct q=0/q=1 exits for 16-bit products
-    -> native UDIV16 for remaining 16-bit-product cases
-    -> constrained tail when product.high16 != 0
 ```
 
-The direct variants rely on the initialized V2 native UMUL16 contract:
+The corrected profile-native direct replacements now live in:
 
 ```text
-entry       $53EC
-X low bind  $21
-X high bind $29
-Y high SMC  $541A
-product     low=$31, byte1=X, byte2=A, byte3=Y
+generate_umuldiv16_pareto.py
+benchmark_pareto_direct.py
 ```
+
+They inline the actual shipped V2 3xUMUL8 construction. Their results are not inserted into this document until the new harness is run.
 
 ## Structured edge suite
 
@@ -50,12 +42,8 @@ Cartesian product of 13 edge values for `a`, `b`, `d`: **2,197 cases**.
 | Candidate | Mean cycles | Min | Max | Errors |
 |---|---:|---:|---:|---:|
 | composed | 1117.352 | 462 | 2092 | 0 |
-| fused | 731.599 | 265 | 1189 | 0 |
-| hybrid | 639.455 | 279 | 1206 | 0 |
-| direct | 672.844 | **48** | 1141 | 0 |
-| direct_hybrid | **565.961** | **48** | 1206 | 0 |
-
-The 48-cycle minimum is the early divide-by-zero exit, now checked before multiplication.
+| fused | 731.599 | **265** | 1189 | 0 |
+| hybrid | **639.455** | 279 | 1206 | 0 |
 
 ## 5,000-case deterministic corpora
 
@@ -68,12 +56,10 @@ Only **0.06%** of products fit in 16 bits.
 | Candidate | Mean | Min | Max | Errors | Gain vs composed |
 |---|---:|---:|---:|---:|---:|
 | composed | 1027.605 | 885 | 1189 | 0 | baseline |
-| fused | 859.405 | 717 | 1021 | 0 | 16.37% |
+| fused | **859.405** | 717 | 1021 | 0 | **16.37%** |
 | hybrid | 871.733 | 336 | 1033 | 0 | 15.17% |
-| direct | **815.893** | 674 | 977 | 0 | **20.60%** |
-| direct_hybrid | 823.931 | 256 | 985 | 0 | 19.82% |
 
-The direct handoff saves about **43.5 cycles** beyond the first fused version. The hybrid remains slightly slower here because the small-product branch almost never fires.
+The public hybrid is slightly slower than fused here because the small-product branch almost never fires.
 
 ### Mixed unrestricted uniform 16-bit operands
 
@@ -82,16 +68,14 @@ The direct handoff saves about **43.5 cycles** beyond the first fused version. T
 | Candidate | Mean | Min | Max | Errors | Gain vs composed |
 |---|---:|---:|---:|---:|---:|
 | composed | 1055.749 | 891 | 2095 | 0 | baseline |
-| fused | 718.766 | 299 | 1029 | 0 | 31.92% |
+| fused | **718.766** | 299 | 1029 | 0 | **31.92%** |
 | hybrid | 731.481 | 313 | 1041 | 0 | 30.71% |
-| direct | **675.137** | 255 | 985 | 0 | **36.05%** |
-| direct_hybrid | 683.086 | 262 | 994 | 0 | 35.30% |
 
-The large win partly comes from rejecting quotient overflow after the product high-word test instead of paying for a full public 32/16 division first.
+The large gain over public composition partly comes from rejecting quotient overflow after the product high-word test instead of always paying for a full public 32/16 division.
 
 ### `game8`: byte-sized multiplicands
 
-All products fit in 16 bits, and the quotient distribution is strongly biased toward the tiny classes:
+All products fit in 16 bits, and the quotient distribution is strongly biased toward tiny classes:
 
 ```text
 q == 0     74.30%
@@ -103,11 +87,9 @@ q <= 255   99.94%
 |---|---:|---:|---:|---:|---:|
 | composed | 897.260 | 883 | 1193 | 0 | baseline |
 | fused | 729.266 | 715 | 1027 | 0 | 18.72% |
-| hybrid | 362.085 | 334 | 1161 | 0 | 59.65% |
-| direct | 686.076 | 672 | 979 | 0 | 23.54% |
-| direct_hybrid | **294.563** | 254 | 1161 | 0 | **67.17%** |
+| hybrid | **362.085** | **334** | 1161 | 0 | **59.65%** |
 
-The direct q=0/q=1 exits matter substantially here: the earlier direct-hybrid version averaged 336.085 cycles; specializing those two dominant quotient classes removes another **41.5 cycles**.
+This valid result remains important: a q=0/q=1-aware profile-native direct hybrid is worth researching because the workload itself is heavily concentrated in those quotient classes.
 
 ### `game12_bounded`: 12-bit multiplicands
 
@@ -116,37 +98,62 @@ Only **2.78%** of products fit in 16 bits, though **74.60%** of quotients are <=
 | Candidate | Mean | Min | Max | Errors | Gain vs composed |
 |---|---:|---:|---:|---:|---:|
 | composed | 963.851 | 883 | 1205 | 0 | baseline |
-| fused | 795.582 | 715 | 1039 | 0 | 17.46% |
+| fused | **795.582** | 715 | 1039 | 0 | **17.46%** |
 | hybrid | 797.821 | 334 | 1054 | 0 | 17.23% |
-| direct | 752.297 | 672 | 992 | 0 | 21.95% |
-| direct_hybrid | **749.629** | 254 | 998 | 0 | **22.23%** |
 
-The hybrid is nearly neutral on the broad path and only slightly better overall because few products fit in 16 bits.
+The hybrid is nearly neutral on the broad path because few products fit in 16 bits.
+
+## Superseded historical direct columns
+
+For reproducibility, the original run also emitted the following values. They are retained here only so old notes/commits can be interpreted. **Do not use these as V2 resident performance claims.**
+
+| Workload | Historical `direct` | Historical `direct_hybrid` |
+|---|---:|---:|
+| edge suite | 672.844 | 565.961 |
+| bounded uniform | 815.893 | 823.931 |
+| mixed uniform | 675.137 | 683.086 |
+| `game8` | 686.076 | 294.563 |
+| `game12_bounded` | 752.297 | 749.629 |
+
+The corresponding generated wrappers targeted the wrong internal ABI for the image they were patched into. Zero arithmetic mismatches from that run do not repair the provenance mismatch.
+
+## Corrected direct-core architecture
+
+The new `pareto_direct` generator inlines the actual `pareto_umul16.a` construction and deliberately places final product bytes directly into divide state:
+
+```text
+$10 = product byte0 / quotient pipeline low
+$11 = product byte1 / quotient pipeline high
+$16 = product byte2 / initial remainder low
+A   = product byte3 / initial remainder high
+```
+
+The latest optimization keeps bytes 0/1 in their existing `$10/$11` locations instead of copying them into a second quotient pair. The corrected hybrid saves byte3 only when it needs to dispatch the 16-bit-product knees, then uses the actual V2 UDIV16 ABI at `$10-$17` for the remaining small-product cases.
 
 ## Current interpretation
 
-The Pareto split is clearer now:
+The profile-independent result still supports a workload split:
 
 ```text
 broad/full 16-bit workloads
-    -> direct native UMUL16 + constrained 16-step tail
+    -> public multiply + constrained bounded tail is already useful
 
-byte/small-product workloads
-    -> direct native UMUL16
-       + q=0/q=1 direct exits
-       + native UDIV16 fallback
-       + constrained-tail fallback
+small-product / tiny-quotient workloads
+    -> explicit quotient-class knees can be dramatically better
+
+profile-native direct path
+    -> must be derived from the implementation actually installed in that profile
 ```
 
-The main architectural finding is that **intermediate representation matters**. A public-call composition is not a fair lower bound for a fused routine: keeping the native UMUL16 product live removes another ~43 cycles on broad inputs, and exploiting the quotient distribution can remove hundreds more on small-coordinate workloads.
+The architectural lesson remains that intermediate representation matters, but the amount saved by a direct handoff must now be remeasured against the real Pareto 3xUMUL8 core.
 
 ## Not yet proven
 
+- Corrected `pareto_direct` and `pareto_direct_hybrid` have not yet been executed in the resident-image harness in this environment.
 - No stable ABI has been selected.
 - No V1/V5 direct-core equivalent is certified.
-- The V2 direct forms require initialized native UMUL16 state.
-- These 5,000-case runs are development evidence, not final canonical certification.
+- These 5,000-case baseline runs are development evidence, not final canonical certification.
 - Signed and prepared-divisor variants are separate research tasks.
 - No claim is made that the current kernels are globally optimal 6502 MUL_DIV implementations.
 
-Next research should attack the general path itself: deeper multiply/divide state sharing and a width/quotient-class strategy that can beat the fixed 16-step tail without hurting full-width workloads.
+Next gate: run `benchmark_pareto_direct.py`, preserve the machine-readable result, and only then repopulate the direct columns.
