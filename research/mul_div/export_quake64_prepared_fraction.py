@@ -1,22 +1,17 @@
 #!/usr/bin/env python3
 """Export the Quake-native prepared-fraction research kernel as an ACME include.
 
-The benchmark generator uses two fixed research origins so its PREP/APPLY
-sections can be patched into isolated test memory. A real Quake64 GAME build
-must instead let the kernel follow the existing source stream so `end_game`
-and `checkheap.py` see the exact occupied bytes.
+The benchmark generator uses two fixed research origins and the mini6502
+assembler's explicit accumulator spelling (for example `rol a`). A real
+Quake64 GAME build must instead follow Quake's ACME source stream, where the
+accumulator form is written simply as `rol`.
 
-This exporter removes only those two research `.org` directives. All algorithm,
-SMC operands, Quake scratch addresses and table addresses remain identical to
-the benchmarked kernel.
+This exporter therefore performs only integration-syntax transformations:
+  * remove the two fixed research `.org` directives;
+  * normalize explicit accumulator shifts/rotates to ACME syntax.
 
-Example from the C64-Math-Library checkout:
-
-    python research/mul_div/export_quake64_prepared_fraction.py \
-        --rounding nearest \
-        --output /path/to/Quake64/src/prepared_fraction_smc.asm
-
-Then apply `QUAKE64_NEARCLIP_EXPERIMENT.patch` to the audited Quake64 snapshot.
+The arithmetic, branches, SMC operands, scratch addresses and quarter-square
+table addresses remain identical to the benchmarked kernel.
 """
 from __future__ import annotations
 
@@ -29,6 +24,21 @@ PROBE_PREP = 0x9000
 PROBE_APPLY = 0x9800
 
 
+def _acme_accumulator_syntax(text: str) -> str:
+    # ACME 0.97 parses `rol a` as ROL of symbol `a`, not accumulator mode.
+    # The benchmark assembler accepts the explicit spelling, so keep that in
+    # the generator and normalize only the real-game export.
+    replacements = {
+        '    asl a\n': '    asl\n',
+        '    lsr a\n': '    lsr\n',
+        '    rol a\n': '    rol\n',
+        '    ror a\n': '    ror\n',
+    }
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+    return text
+
+
 def export_source(rounding: str) -> str:
     text = generate(PROBE_PREP, PROBE_APPLY, rounding)
     for origin in (PROBE_PREP, PROBE_APPLY):
@@ -38,12 +48,19 @@ def export_source(rounding: str) -> str:
         text = text.replace(marker, '', 1)
     if '.org ' in text:
         raise RuntimeError('unexpected fixed origin remains in integration source')
+
+    text = _acme_accumulator_syntax(text)
+    for bad in ('    asl a\n', '    lsr a\n', '    rol a\n', '    ror a\n'):
+        if bad in text:
+            raise RuntimeError(f'unconverted ACME accumulator syntax: {bad.strip()}')
+
     banner = (
         '; Quake64 integration export from C64-Math-Library MUL_DIV research\n'
         '; Audited target: Kweepa/Quake64 @ '
         '7c84654946a60314568b709e7e7b97467fed69df\n'
         f'; Ratio rounding tier: {rounding}\n'
-        '; Included sequentially before end_game; writable GAME RAM required.\n\n'
+        '; Included sequentially before end_game; writable GAME RAM required.\n'
+        '; Accumulator shifts/rotates normalized for ACME 0.97 syntax.\n\n'
     )
     return banner + text
 
