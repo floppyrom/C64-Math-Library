@@ -40,6 +40,7 @@ jobs:
             research/mul_div/generate_quake64_prepared_fraction_smc.py \
             research/mul_div/benchmark_quake64_prepared_fraction_smc.py \
             research/mul_div/benchmark_quake64_nearclip_integration.py \
+            research/mul_div/benchmark_quake64_nearclip_smc_integration.py \
             research/mul_div/benchmark_wolf64_project_col.py \
             research/mul_div/model.py \
             research/mul_div/prepared_ratio_model.py
@@ -84,6 +85,13 @@ jobs:
           set +e
           python research/mul_div/benchmark_quake64_nearclip_integration.py --cases 5000 --json > /tmp/quake64_nearclip_integration.json 2> /tmp/quake64_nearclip_integration.stderr
           echo $? > /tmp/quake64_nearclip_integration.exit
+          exit 0
+      - name: Quake-native near-clip integration benchmark
+        continue-on-error: true
+        run: |
+          set +e
+          python research/mul_div/benchmark_quake64_nearclip_smc_integration.py --cases 5000 --json > /tmp/quake64_nearclip_smc_integration.json 2> /tmp/quake64_nearclip_smc_integration.stderr
+          echo $? > /tmp/quake64_nearclip_smc_integration.exit
           exit 0
       - name: Wolf64 projection benchmark
         continue-on-error: true
@@ -131,6 +139,9 @@ jobs:
             /tmp/quake64_nearclip_integration.json
             /tmp/quake64_nearclip_integration.stderr
             /tmp/quake64_nearclip_integration.exit
+            /tmp/quake64_nearclip_smc_integration.json
+            /tmp/quake64_nearclip_smc_integration.stderr
+            /tmp/quake64_nearclip_smc_integration.exit
             /tmp/wolf64_project_col.json
             /tmp/wolf64_project_col.stderr
             /tmp/wolf64_project_col.exit
