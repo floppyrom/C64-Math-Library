@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""Benchmark an integrated Quake64 near0 clip path against prepared V2 ratio.
+"""Benchmark integrated Quake64 near0 clipping against V2 ratio candidates.
 
-Unlike the earlier arithmetic-only benchmark, this includes the surrounding
-near-clip work that differs between the implementations:
+This includes the surrounding work that differs between the implementations:
 
 Quake current:
     compute n/d
@@ -12,20 +11,27 @@ Quake current:
     form Y delta -> scale_nd + lerp16 -> add to endpoint
     set clipped Z
 
-Prepared candidate:
-    compute n/d directly into the library public vectors
+Prepared separate candidate:
+    compute n/d into library vectors
     PREP once
     form X delta -> APPLY -> add to endpoint
     form Y delta -> APPLY -> add to endpoint
     set clipped Z
 
-The V2 candidate uses the corrected profile-native fixed-X implementation from
-`generate_prepared_fraction_pareto_inline.py`, in nearest and floor modes.
+Fused SCALE2 candidate:
+    compute n/d into library vectors
+    form X and Y deltas into library X/Y vectors
+    one SCALE2 call -> two scaled deltas
+    add both to endpoint
+    set clipped Z
+
+The V2 candidates use the corrected profile-native Pareto quarter-square geometry.
+Both nearest and floor Q0.16 forms are measured.
 
 This is a standalone integration harness derived from the Quake64 source shape;
-it does not patch or build the Quake64 repository itself. It therefore includes
-caller marshalling around the arithmetic operation, but not unrelated edge-loop,
-CAM loading, projection, IRQ/VIC/SID costs, or a complete game build.
+it does not patch or build the Quake64 repository itself. It includes caller
+marshalling around the arithmetic operation, but not unrelated edge-loop, CAM
+loading, projection, IRQ/VIC/SID costs, or a complete game build.
 """
 from __future__ import annotations
 
@@ -44,6 +50,7 @@ sys.path.insert(0, str(HERE))
 
 from mini6502 import CPU  # noqa: E402
 from generate_prepared_fraction_pareto_inline import generate as generate_inline  # noqa: E402
+from generate_scale2_fraction_pareto import generate as generate_scale2  # noqa: E402
 from benchmark_prepared_ratio import (  # noqa: E402
     MATH_INIT,
     QUAKE_COMMIT,
@@ -59,19 +66,21 @@ from benchmark_prepared_ratio import (  # noqa: E402
     trunc_div,
 )
 
-# Isolated integration endpoint state; deliberately outside the library's
-# public vectors, tables and game-math extension code.
+# Isolated integration endpoint state.
 E0X, E0Y, E0Z = 0xB000, 0xB002, 0xB004
 E1X, E1Y, E1Z = 0xB006, 0xB008, 0xB00A
 
-# Stable library vectors used by the prepared candidate.
+# Stable public vectors.
+PX0 = 0xC000
 PY0 = 0xC004
 PZ0 = 0xC008
+PZ2 = 0xC00A
 PN0 = 0xC010
 PD0 = 0xC014
 
 PREP = 0xE000
 APPLY = 0xE800
+SCALE2 = 0xE000
 WRAPPER = 0xF000
 
 # Quake standalone scratch addresses from benchmark_prepared_ratio.py.
@@ -158,6 +167,80 @@ candidate_near0:
 """
 
 
+def scale2_wrapper_source() -> str:
+    return f"""E0X=${E0X:04X}
+E0Y=${E0Y:04X}
+E0Z=${E0Z:04X}
+E1X=${E1X:04X}
+E1Y=${E1Y:04X}
+E1Z=${E1Z:04X}
+X0=${PX0:04X}
+Y0=${PY0:04X}
+Z0=${PZ0:04X}
+Z2=${PZ2:04X}
+N0=${PN0:04X}
+D0=${PD0:04X}
+SCALE2=${SCALE2:04X}
+.org ${WRAPPER:04X}
+scale2_near0:
+    ; Shared dynamic fraction.
+    sec
+    lda E1Z
+    sbc E0Z
+    sta D0
+    lda E1Z+1
+    sbc E0Z+1
+    sta D0+1
+    sec
+    lda #$00
+    sbc E0Z
+    sta N0
+    lda #$01
+    sbc E0Z+1
+    sta N0+1
+
+    ; Feed both component deltas before the one compound math call.
+    sec
+    lda E1X
+    sbc E0X
+    sta X0
+    lda E1X+1
+    sbc E0X+1
+    sta X0+1
+    sec
+    lda E1Y
+    sbc E0Y
+    sta Y0
+    lda E1Y+1
+    sbc E0Y+1
+    sta Y0+1
+
+    jsr SCALE2
+
+    clc
+    lda Z0
+    adc E0X
+    sta E0X
+    lda Z0+1
+    adc E0X+1
+    sta E0X+1
+
+    clc
+    lda Z2
+    adc E0Y
+    sta E0Y
+    lda Z2+1
+    adc E0Y+1
+    sta E0Y+1
+
+    lda #$00
+    sta E0Z
+    lda #$01
+    sta E0Z+1
+    rts
+"""
+
+
 def quake_wrapper_source(qrun: int) -> str:
     return f"""E0X=${E0X:04X}
 E0Y=${E0Y:04X}
@@ -176,7 +259,6 @@ rot1=${QROT+1:02X}
 NLRUN=${qrun:04X}
 .org ${WRAPPER:04X}
 quake_near0:
-    ; Exact structure of .nd01.
     sec
     lda E1Z
     sbc E0Z
@@ -192,7 +274,6 @@ quake_near0:
     sbc E0Z+1
     sta nhi
 
-    ; Save ratio exactly as .near0 does.
     lda nlo
     pha
     lda nhi
@@ -202,7 +283,6 @@ quake_near0:
     lda dhi
     pha
 
-    ; Inline .nlx0 wrapper around .nlrun.
     sec
     lda E1X
     sbc E0X
@@ -227,7 +307,6 @@ quake_near0:
     pla
     sta nlo
 
-    ; Inline .nly0 wrapper around .nlrun.
     sec
     lda E1Y
     sbc E0Y
@@ -258,6 +337,15 @@ def candidate_cpu(rounding: str):
     patch(cpu.mem, generate_inline(PREP, APPLY, rounding))
     labels = patch(cpu.mem, candidate_wrapper_source())
     return cpu, labels['candidate_near0']
+
+
+def scale2_cpu(rounding: str):
+    cpu = CPU(load_prg(V2_PRG))
+    cpu.d = 0
+    cpu.call(MATH_INIT)
+    patch(cpu.mem, generate_scale2(SCALE2, rounding))
+    labels = patch(cpu.mem, scale2_wrapper_source())
+    return cpu, labels['scale2_near0']
 
 
 def current_quake_cpu():
@@ -298,11 +386,15 @@ def main() -> None:
 
     nearest_cpu, nearest_entry = candidate_cpu('nearest')
     floor_cpu, floor_entry = candidate_cpu('floor')
+    scale_nearest_cpu, scale_nearest_entry = scale2_cpu('nearest')
+    scale_floor_cpu, scale_floor_entry = scale2_cpu('floor')
     quake, quake_entry = current_quake_cpu()
 
     rows = {
         'prepared_inline_nearest': {'cycles': [], 'contract_errors': 0, 'exact_errors': []},
         'prepared_inline_floor': {'cycles': [], 'contract_errors': 0, 'exact_errors': []},
+        'scale2_nearest': {'cycles': [], 'contract_errors': 0, 'exact_errors': []},
+        'scale2_floor': {'cycles': [], 'contract_errors': 0, 'exact_errors': []},
         'quake64_current': {'cycles': [], 'exact_errors': []},
     }
 
@@ -314,8 +406,6 @@ def main() -> None:
         d = e1z - e0z
         assert 0 < n < d <= 0xFFFF
 
-        # Keep endpoint values comfortably inside signed16 while preserving the
-        # earlier broad +/-32-world-unit delta stress range.
         e0x = rng.randint(-4096, 4095)
         e0y = rng.randint(-4096, 4095)
         dx = rng.randint(-8192, 8191)
@@ -329,6 +419,8 @@ def main() -> None:
         for name, cpu, entry, rounding in (
             ('prepared_inline_nearest', nearest_cpu, nearest_entry, 'nearest'),
             ('prepared_inline_floor', floor_cpu, floor_entry, 'floor'),
+            ('scale2_nearest', scale_nearest_cpu, scale_nearest_entry, 'nearest'),
+            ('scale2_floor', scale_floor_cpu, scale_floor_entry, 'floor'),
         ):
             set_endpoints(cpu, e0x, e0y, e0z, e1x, e1y, e1z)
             cyc = cpu.call(entry)
@@ -358,7 +450,7 @@ def main() -> None:
             'n/d formation',
             'ratio save/restore on Quake path',
             'X/Y delta formation',
-            'two ratio applications',
+            'ratio application(s)',
             'endpoint accumulation',
             'near-Z writeback',
         ],
@@ -384,6 +476,15 @@ def main() -> None:
             ) / qmean
         result['variants'][name] = entry
 
+    floor_sep = result['variants']['prepared_inline_floor']['cycles']['mean']
+    floor_s2 = result['variants']['scale2_floor']['cycles']['mean']
+    near_sep = result['variants']['prepared_inline_nearest']['cycles']['mean']
+    near_s2 = result['variants']['scale2_nearest']['cycles']['mean']
+    result['scale2_gain_vs_separate_percent'] = {
+        'nearest': 100.0 * (near_sep - near_s2) / near_sep,
+        'floor': 100.0 * (floor_sep - floor_s2) / floor_sep,
+    }
+
     if args.json:
         print(json.dumps(result, indent=2))
     else:
@@ -394,15 +495,16 @@ def main() -> None:
                 extra = f" speedup={row['speedup_vs_quake64_percent']:.2f}% errors={row['prepared_contract_errors']}"
             c = row['cycles']
             print(f"{name:24s} mean={c['mean']:.3f} range={c['min']}-{c['max']}{extra}")
+        print(
+            f"scale2 gain vs separate nearest={result['scale2_gain_vs_separate_percent']['nearest']:.2f}% "
+            f"floor={result['scale2_gain_vs_separate_percent']['floor']:.2f}%"
+        )
 
-    if rows['prepared_inline_nearest']['contract_errors']:
-        raise SystemExit('nearest prepared contract errors')
-    if rows['prepared_inline_floor']['contract_errors']:
-        raise SystemExit('floor prepared contract errors')
-    if max(abs(e) for e in rows['prepared_inline_nearest']['exact_errors']) > 1:
-        raise SystemExit('nearest exceeded <=1 endpoint error')
-    if max(abs(e) for e in rows['prepared_inline_floor']['exact_errors']) > 1:
-        raise SystemExit('floor exceeded <=1 endpoint error')
+    for name in ('prepared_inline_nearest', 'prepared_inline_floor', 'scale2_nearest', 'scale2_floor'):
+        if rows[name]['contract_errors']:
+            raise SystemExit(f'{name} prepared contract errors')
+        if max(abs(e) for e in rows[name]['exact_errors']) > 1:
+            raise SystemExit(f'{name} exceeded <=1 endpoint error')
 
 
 if __name__ == '__main__':
