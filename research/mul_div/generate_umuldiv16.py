@@ -151,8 +151,6 @@ def generate_bounded(origin: int = 0xE000) -> str:
     sta mq1
     lda Z2
     sta mr0
-
-    ; A 16-bit quotient exists iff product.high16 < divisor.
     lda Z3
     cmp md1
     bcc md_b0
@@ -176,8 +174,6 @@ def generate_hybrid(profile: str = 'v2', origin: int = 0xE000) -> str:
     lda Z2
     ora Z3
     bne mh_general
-
-    ; Numerator is already only 16 bits: use the profile's native UDIV16.
     lda Z0
     sta mn0
     lda Z1
@@ -201,7 +197,6 @@ def generate_hybrid(profile: str = 'v2', origin: int = 0xE000) -> str:
     sta Z3
     clc
     rts
-
 mh_general:
     lda D0
     sta md0
@@ -233,15 +228,7 @@ mh_overflow:
     return ''.join(out)
 
 
-def _v2_direct_product_setup() -> str:
-    """Bind public X/Y to V2 native UMUL16 and leave product in live state.
-
-    After the JSR:
-      mq0 = product byte0
-      mq1 = product byte1
-      mr0 = product byte2
-      Y   = product byte3
-    """
+def _v2_bind_and_call() -> str:
     return f"""    lda X0
     sta ${V2_UMUL16_X0:02X}
     lda X1
@@ -250,33 +237,35 @@ def _v2_direct_product_setup() -> str:
     sta ${V2_UMUL16_Y1_IMM:04X}
     ldy Y0
     jsr ${V2_UMUL16_CORE:04X}
-    sta mr0
-    stx mq1
-    lda ${V2_UMUL16_Z0:02X}
-    sta mq0
 """
 
 
 def generate_direct_v2(origin: int = 0xE000) -> str:
     """V2 native UMUL16 -> constrained tail without public Z32 handoff."""
-    out = [_common(origin), 'umuldiv16_direct_v2:\n', _v2_direct_product_setup()]
+    out = [_common(origin), 'umuldiv16_direct_v2:\n']
+    # Copy/check d before multiplication. It costs nothing extra on successful
+    # calls and makes d=0 a very cheap exit.
     out.append("""    lda D0
     sta md0
     lda D1
     sta md1
     ora md0
-    bne dc_nonzero
+    bne dc_d_ok
     jmp dc_fail
-
-dc_nonzero:
-    tya
+dc_d_ok:
+""")
+    out.append(_v2_bind_and_call())
+    out.append(f"""    sta mr0                 ; product byte2
+    stx mq1                 ; product byte1
+    lda ${V2_UMUL16_Z0:02X}
+    sta mq0                 ; product byte0
+    tya                     ; product byte3 / initial remainder high
     cmp md1
     bcc dc_b0
     bne dc_fail
     ldx mr0
     cpx md0
-    bcs dc_fail
-    jmp dc_b0
+    bcc dc_b0
 """)
     out.append(_fail('dc_fail'))
     out.append(_tail('dc'))
@@ -284,29 +273,82 @@ dc_nonzero:
 
 
 def generate_direct_hybrid_v2(origin: int = 0xE000) -> str:
-    """V2 direct native multiply + UDIV16 fast path for 16-bit products."""
-    out = [_common(origin, INTERNAL_UDIV16['v2']), 'umuldiv16_direct_hybrid_v2:\n', _v2_direct_product_setup()]
-    out.append("""    ; Product high word is Y:mr0.
+    """V2 direct multiply with q=0/q=1 small-product specializations.
+
+    For a 16-bit product, direct q=0/q=1 exits avoid even the native UDIV16
+    call. Larger small-product quotients use native UDIV16; nonzero product high
+    words fall through to the general constrained tail.
+    """
+    out = [_common(origin, INTERNAL_UDIV16['v2']), 'umuldiv16_direct_hybrid_v2:\n']
+    out.append("""    lda D0
+    sta md0
+    lda D1
+    sta md1
+    ora md0
+    bne dh_d_ok
+    jmp dh_fail
+dh_d_ok:
+""")
+    out.append(_v2_bind_and_call())
+    out.append(f"""    sta mr0                 ; product byte2
     tya
     ora mr0
     bne dh_general
 
-    lda mq0
+    ; 16-bit product lives in ${V2_UMUL16_Z0:02X}:X. q=0 and q=1 dominate
+    ; byte/small-coordinate workloads, so resolve them without a divider call.
+    txa
+    cmp md1
+    bcc dh_q0
+    bne dh_small_ge_d
+    lda ${V2_UMUL16_Z0:02X}
+    cmp md0
+    bcc dh_q0
+
+dh_small_ge_d:
+    sec
+    lda ${V2_UMUL16_Z0:02X}
+    sbc md0
+    sta mr0
+    txa
+    sbc md1
+    sta mr1
+    cmp md1
+    bcc dh_q1
+    bne dh_small_div
+    lda mr0
+    cmp md0
+    bcc dh_q1
+
+dh_small_div:
+    lda ${V2_UMUL16_Z0:02X}
     sta mn0
-    lda mq1
-    sta mn1
-    lda D0
-    sta md0
-    lda D1
-    sta md1
+    stx mn1
     jsr I_UDIV16
-    bcc dh_small_ok
-""")
-    out.append(_fail('dh_fail'))
-    out.append("""dh_small_ok:
     lda mq0
     sta Z0
     lda mq1
+    sta Z1
+    lda mr0
+    sta Z2
+    lda mr1
+    sta Z3
+    rts                     ; C remains 0 from native UDIV16
+
+dh_q0:
+    lda #$00
+    sta Z0
+    sta Z1
+    lda ${V2_UMUL16_Z0:02X}
+    sta Z2
+    stx Z3
+    clc
+    rts
+
+dh_q1:
+    lda #$01
+    sta Z0
+    lda #$00
     sta Z1
     lda mr0
     sta Z2
@@ -316,24 +358,18 @@ def generate_direct_hybrid_v2(origin: int = 0xE000) -> str:
     rts
 
 dh_general:
-    lda D0
-    sta md0
-    lda D1
-    sta md1
-    ora md0
-    bne dh_nonzero
-    jmp dh_fail
-
-dh_nonzero:
-    tya
+    stx mq1                 ; product byte1
+    lda ${V2_UMUL16_Z0:02X}
+    sta mq0                 ; product byte0
+    tya                     ; product byte3
     cmp md1
     bcc dh_b0
     bne dh_fail
     ldx mr0
     cpx md0
-    bcs dh_fail
-    jmp dh_b0
+    bcc dh_b0
 """)
+    out.append(_fail('dh_fail'))
     out.append(_tail('dh'))
     return ''.join(out)
 
