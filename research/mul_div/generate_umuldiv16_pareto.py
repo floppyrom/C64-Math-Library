@@ -33,7 +33,7 @@ SIGN, QHI = 0x14, 0x15
 C0, C1, C2 = 0x16, 0x17, 0x18
 QLO = 0x19
 
-# Divide reinterpretation after multiplication.  The final product low16 already
+# Divide reinterpretation after multiplication. The final product low16 already
 # lives in MLO/MHI, so use those bytes directly as the quotient pipeline instead
 # of copying into another pair of scratch bytes.
 MQ0, MQ1 = MLO, MHI
@@ -77,7 +77,7 @@ def _multiply_live(prefix: str) -> str:
 
     exit: MLO=byte0, MHI=byte1, C0=byte2, A=byte3.
     Those locations are deliberately the divide pipeline itself, so no byte0/1
-    handoff copy is required.  A 16-bit product is already in the native UDIV16
+    handoff copy is required. A 16-bit product is already in the native UDIV16
     numerator slots $10/$11.
     """
     return f"""    ; M=a*c
@@ -166,7 +166,7 @@ def _multiply_live(prefix: str) -> str:
     sta c2
 
 {prefix}_combine:
-    ; Product=M+(cross<<8)+(L<<16).  Reuse MLO/MHI as final byte0/byte1
+    ; Product=M+(cross<<8)+(L<<16). Reuse MLO/MHI as final byte0/byte1
     ; and overwrite C0 only after its cross-low value has been consumed.
     lda mhi
     clc
@@ -244,13 +244,17 @@ def generate_direct(origin: int = 0xE000) -> str:
     out = [_header(origin), _start(p, 'umuldiv16_pareto_direct'), _fail(f'{p}_fail')]
     out.append(f'{p}_nonzero:\n')
     out.append(_multiply_live(p))
-    out.append(f"""    ; quotient fits uint16 iff product_hi16 < divisor
+    out.append(f"""    ; quotient fits uint16 iff product_hi16 < divisor.
+    ; Keep all conditional branches local; the unrolled divide tail is large.
     cmp md1
     bcc {p}_b0
-    bne {p}_fail
+    beq {p}_check_low
+    jmp {p}_fail
+{p}_check_low:
     ldx mr0
     cpx md0
-    bcs {p}_fail
+    bcc {p}_b0
+    jmp {p}_fail
 """)
     out.append(_tail(p))
     return ''.join(out)
@@ -300,7 +304,9 @@ def generate_direct_hybrid(origin: int = 0xE000) -> str:
     lda md1
     sta lhi
     jsr I_UDIV16
-    bcs {p}_fail
+    bcc {p}_small_ok
+    jmp {p}_fail
+{p}_small_ok:
     lda mq0
     sta Z0
     lda mq1
@@ -340,10 +346,13 @@ def generate_direct_hybrid(origin: int = 0xE000) -> str:
     ; high16 != 0. Apply the ordinary bounded-fit test before the 16-step tail.
     cmp md1
     bcc {p}_b0
-    bne {p}_fail
+    beq {p}_general_check_low
+    jmp {p}_fail
+{p}_general_check_low:
     ldx mr0
     cpx md0
-    bcs {p}_fail
+    bcc {p}_b0
+    jmp {p}_fail
 """)
     out.append(_tail(p))
     return ''.join(out)
