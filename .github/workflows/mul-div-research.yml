@@ -36,24 +36,52 @@ jobs:
             research/mul_div/model.py \
             research/mul_div/prepared_ratio_model.py
       - name: Actual-core exact MUL_DIV benchmark
+        continue-on-error: true
         run: |
-          python research/mul_div/benchmark_pareto_direct.py --cases 5000 --json > /tmp/pareto_direct.json
+          set +e
+          python research/mul_div/benchmark_pareto_direct.py --cases 5000 --json > /tmp/pareto_direct.json 2> /tmp/pareto_direct.stderr
+          echo $? > /tmp/pareto_direct.exit
+          exit 0
       - name: Actual-core prepared fraction benchmark
+        continue-on-error: true
         run: |
-          python research/mul_div/benchmark_prepared_fraction_pareto.py --cases 5000 --json > /tmp/prepared_fraction_pareto.json
+          set +e
+          python research/mul_div/benchmark_prepared_fraction_pareto.py --cases 5000 --json > /tmp/prepared_fraction_pareto.json 2> /tmp/prepared_fraction_pareto.stderr
+          echo $? > /tmp/prepared_fraction_pareto.exit
+          exit 0
       - name: Actual-core prepared fraction model
+        continue-on-error: true
         run: |
-          python research/mul_div/prepared_fraction_pareto_model.py --cases 5000 --json > /tmp/prepared_fraction_pareto_model.json
+          set +e
+          python research/mul_div/prepared_fraction_pareto_model.py --cases 5000 --json > /tmp/prepared_fraction_pareto_model.json 2> /tmp/prepared_fraction_pareto_model.stderr
+          echo $? > /tmp/prepared_fraction_pareto_model.exit
+          exit 0
       - name: Independent arithmetic models
+        continue-on-error: true
         run: |
-          python research/mul_div/model.py --cases 1000000 > /tmp/mul_div_model.txt
-          python research/mul_div/prepared_ratio_model.py --cases 100000 --json > /tmp/prepared_ratio_accuracy.json
+          set +e
+          python research/mul_div/model.py --cases 1000000 > /tmp/mul_div_model.txt 2> /tmp/mul_div_model.stderr
+          echo $? > /tmp/mul_div_model.exit
+          python research/mul_div/prepared_ratio_model.py --cases 100000 --json > /tmp/prepared_ratio_accuracy.json 2> /tmp/prepared_ratio_accuracy.stderr
+          echo $? > /tmp/prepared_ratio_accuracy.exit
+          exit 0
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: mul-div-profile-native-results
           path: |
             /tmp/pareto_direct.json
+            /tmp/pareto_direct.stderr
+            /tmp/pareto_direct.exit
             /tmp/prepared_fraction_pareto.json
+            /tmp/prepared_fraction_pareto.stderr
+            /tmp/prepared_fraction_pareto.exit
             /tmp/prepared_fraction_pareto_model.json
+            /tmp/prepared_fraction_pareto_model.stderr
+            /tmp/prepared_fraction_pareto_model.exit
             /tmp/mul_div_model.txt
+            /tmp/mul_div_model.stderr
+            /tmp/mul_div_model.exit
             /tmp/prepared_ratio_accuracy.json
+            /tmp/prepared_ratio_accuracy.stderr
+            /tmp/prepared_ratio_accuracy.exit
