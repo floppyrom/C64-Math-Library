@@ -19,9 +19,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          base64 -d .github/atan2-final.diff.gz.b64 | gzip -dc > /tmp/atan2-final.diff
+          cat .github/atanfinal_* | base64 -d | gzip -dc > /tmp/atan2-final.diff
           git apply --binary --index /tmp/atan2-final.diff
-          rm -f .github/atanpart_* .github/atan2-final.diff.gz.b64 .github/workflows/apply-atan2-release.yml
+          rm -f .github/atanpart_* .github/atanfinal_* .github/workflows/apply-atan2-release.yml
           git add -A
           git config user.name 'floppyrom'
           git config user.email 'mihaibn@gmail.com'
