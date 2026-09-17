@@ -2,17 +2,18 @@
 """Benchmark actual-core V2 Pareto MUL_DIV16 candidates.
 
 This harness deliberately excludes the historical record-core `direct` and
-`direct_hybrid` variants from benchmark.py.  It compares only implementations
+`direct_hybrid` variants from benchmark.py. It compares only implementations
 that match the shipped V2 Pareto-Fast resident image:
 
-  composed               public UMUL16 + public UDIV32_16
-  fused                  public UMUL16 + bounded 16-step tail
-  hybrid                 public UMUL16 + native UDIV16 small-product path
-  pareto_direct          inlined shipped 3xUMUL8 + live bounded tail
-  pareto_direct_hybrid   same + q=0/q=1/native UDIV16 small-product knees
+  composed                 public UMUL16 + public UDIV32_16
+  fused                    public UMUL16 + bounded 16-step tail
+  hybrid                   public UMUL16 + native UDIV16 small-product path
+  pareto_direct            inlined shipped 3xUMUL8 + live bounded tail
+  pareto_direct_hybrid     same + q=0/q=1/native UDIV16 small-product knees
+  pareto_width_hybrid      1/2/3-UMUL8 operand-width knees + same quotient knees
 
 The generated research kernels are patched into RAM under KERNAL in the
-mini6502 model.  No shipped binary or stable API is modified.
+mini6502 model. No shipped binary or stable API is modified.
 """
 from __future__ import annotations
 
@@ -51,6 +52,7 @@ from generate_umuldiv16_pareto import (  # noqa: E402
     generate_direct as generate_pareto_direct,
     generate_direct_hybrid as generate_pareto_direct_hybrid,
 )
+from generate_umuldiv16_pareto_width import generate as generate_pareto_width_hybrid  # noqa: E402
 
 VARIANTS = (
     'composed',
@@ -58,6 +60,7 @@ VARIANTS = (
     'hybrid',
     'pareto_direct',
     'pareto_direct_hybrid',
+    'pareto_width_hybrid',
 )
 
 
@@ -84,6 +87,9 @@ def make_cpu(kind: str):
     elif kind == 'pareto_direct_hybrid':
         labels = patch_source(cpu.mem, generate_pareto_direct_hybrid(ORIGIN_CANDIDATE))
         entry = labels['umuldiv16_pareto_direct_hybrid']
+    elif kind == 'pareto_width_hybrid':
+        labels = patch_source(cpu.mem, generate_pareto_width_hybrid(ORIGIN_CANDIDATE))
+        entry = labels['umuldiv16_pareto_width_hybrid']
     else:
         raise ValueError(kind)
     return cpu, entry
@@ -177,7 +183,7 @@ def main() -> None:
         print(f"profile=v2_pareto_fast seed=${args.seed:X}")
         for kind, r in result['edge_cases'].items():
             print(
-                f"edge {kind:20s} mean={r['mean_cycles']:.3f} "
+                f"edge {kind:22s} mean={r['mean_cycles']:.3f} "
                 f"range={r['min_cycles']}-{r['max_cycles']} errors={r['errors']}"
             )
         for name, row in result['corpora'].items():
@@ -185,7 +191,7 @@ def main() -> None:
             for kind in VARIANTS:
                 r = row[kind]
                 print(
-                    f"  {kind:20s} mean={r['mean_cycles']:.3f} "
+                    f"  {kind:22s} mean={r['mean_cycles']:.3f} "
                     f"range={r['min_cycles']}-{r['max_cycles']} errors={r['errors']}"
                 )
 
