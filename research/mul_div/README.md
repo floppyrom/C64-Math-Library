@@ -67,8 +67,10 @@ direct (V2)
     native UMUL16 core + direct live-product handoff to constrained tail
 
 direct_hybrid (V2)
-    native UMUL16 core + native UDIV16 fast path for 16-bit products
-    otherwise direct constrained tail
+    native UMUL16 core
+    + direct q=0/q=1 exits when product fits 16 bits
+    + native UDIV16 for remaining 16-bit-product cases
+    + constrained tail otherwise
 ```
 
 ## Zero-page accounting
@@ -102,18 +104,20 @@ result:
     byte3 = CPU Y
 ```
 
-The direct candidate consumes those bytes immediately instead of forcing the product through public `Z32` first. This alone removes about **43.5 additional cycles** on the 5,000-case uniform bounded corpus relative to the first fused version.
+The direct candidate consumes those bytes immediately instead of forcing the product through public `Z32` first. This removes about **43.5 additional cycles** on the 5,000-case uniform bounded corpus relative to the first fused version.
 
 ## Current measured V2 results
 
-All numbers below are paired same-input measurements against the shipped V2 resident image, with zero arithmetic errors in the listed corpora. See `BENCHMARK_RESULTS.md` for full ranges, corpus shapes and caveats.
+All numbers below are paired same-input measurements against the shipped V2 resident image, with zero arithmetic errors in the listed corpora. See `BENCHMARK_RESULTS.md` and `BENCHMARK_V2_5000.json` for ranges, corpus shapes and exact evidence.
 
 | Workload | Composed | Fused | Direct | Direct hybrid |
 |---|---:|---:|---:|---:|
-| uniform bounded 16-bit | 1027.605 | 859.405 | **815.900** | 824.427 |
-| mixed uniform | 1055.749 | 718.766 | **675.142** | 683.492 |
-| byte-sized `game8` | 897.260 | 729.266 | 686.082 | **336.085** |
-| 12-bit bounded | 963.851 | 795.582 | 752.303 | **751.070** |
+| uniform bounded 16-bit | 1027.605 | 859.405 | **815.893** | 823.931 |
+| mixed uniform | 1055.749 | 718.766 | **675.137** | 683.086 |
+| byte-sized `game8` | 897.260 | 729.266 | 686.076 | **294.563** |
+| 12-bit bounded | 963.851 | 795.582 | 752.297 | **749.629** |
+
+For `game8`, 74.30% of cases have `q=0` and 86.58% have `q<=1`. Resolving those two classes directly, before calling even the native UDIV16 core, cuts the direct-hybrid result from the earlier 336.085 cycles to **294.563 cycles**, a **67.17% reduction versus public composition**.
 
 The emerging Pareto split is therefore:
 
@@ -122,8 +126,10 @@ broad/full 16-bit workloads
     -> direct native UMUL16 + constrained 16-step tail
 
 byte/small-product workloads
-    -> direct native UMUL16 + native UDIV16 fast path
-       with constrained-tail fallback
+    -> direct native UMUL16
+       + q=0/q=1 direct exits
+       + native UDIV16 fallback
+       + constrained-tail fallback
 ```
 
 The hybrid is not universally faster: on uniformly distributed bounded 16-bit operands almost no products fit in 16 bits, so its dispatch is overhead. That is useful evidence against collapsing everything into one implementation.
@@ -149,7 +155,8 @@ Those are model numbers only. `benchmark.py` is authoritative for resident-image
 - `model.py` — independent mathematical validator and tail cycle-geometry model.
 - `benchmark.py` — same-input resident-image correctness/timing harness for V1/V2/V5; V2 additionally exposes the direct variants.
 - `MODEL_RESULTS.md` — preliminary arithmetic and scratch-placement evidence.
-- `BENCHMARK_RESULTS.md` — paired V2 resident-image results.
+- `BENCHMARK_RESULTS.md` — human-readable paired V2 resident-image results.
+- `BENCHMARK_V2_5000.json` — machine-readable 5,000-case evidence plus the 2,197-case edge suite.
 - `direct_core_notes.md` — V2 native handoff details and interpretation.
 
 No stable API entry or shipped profile binary is changed by this research work.
@@ -158,8 +165,8 @@ No stable API entry or shipped profile binary is changed by this research work.
 
 Before a stable `MATH_UMULDIV16` is added, we still need to:
 
-1. run a larger/canonical paired validation corpus and preserve machine-readable evidence;
-2. determine whether quotient-class prechecks can beat the fixed 16-step general tail;
+1. run a larger/canonical paired validation corpus and preserve final machine-readable evidence;
+2. determine whether a width/quotient-class strategy can beat the fixed 16-step general tail;
 3. investigate deeper multiply/divide state sharing beyond the current direct handoff;
 4. establish V1/V5 direct-core equivalents or decide that V2 gets a distinct implementation tier;
 5. compare the bounded 16-bit-result contract with a full-range 32-bit quotient form;
