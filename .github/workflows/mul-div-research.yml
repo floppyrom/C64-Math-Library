@@ -1,0 +1,59 @@
+name: MUL_DIV research
+
+on:
+  push:
+    paths:
+      - 'research/mul_div/**'
+      - 'tools/mini6502.py'
+      - 'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg'
+      - '.github/workflows/mul-div-research.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  v2-research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: |
+          python -m py_compile \
+            research/mul_div/generate_prepared_ratio.py \
+            research/mul_div/generate_prepared_fraction.py \
+            research/mul_div/generate_prepared_fraction_pair.py \
+            research/mul_div/benchmark_prepared_ratio.py \
+            research/mul_div/benchmark_prepared_fraction.py \
+            research/mul_div/benchmark_prepared_fraction_pair.py \
+            research/mul_div/prepared_ratio_model.py \
+            research/mul_div/prepared_fraction_model.py \
+            research/mul_div/prepared_fraction_pair_model.py
+      - name: Prepared ratio benchmark
+        run: |
+          python research/mul_div/benchmark_prepared_ratio.py --cases 5000 --json > /tmp/prepared_ratio.json
+      - name: Strict-fraction benchmark
+        run: |
+          python research/mul_div/benchmark_prepared_fraction.py --cases 5000 --json > /tmp/prepared_fraction.json
+      - name: Fused SCALE2 benchmark
+        run: |
+          python research/mul_div/benchmark_prepared_fraction_pair.py --cases 5000 --json > /tmp/prepared_fraction_pair.json
+      - name: Arithmetic models
+        run: |
+          python research/mul_div/prepared_ratio_model.py --cases 100000 --json > /tmp/prepared_ratio_model.json
+          python research/mul_div/prepared_fraction_model.py --cases 5000 --json > /tmp/prepared_fraction_model.json
+          python research/mul_div/prepared_fraction_pair_model.py --cases 5000 --json > /tmp/prepared_fraction_pair_model.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mul-div-research-results
+          path: |
+            /tmp/prepared_ratio.json
+            /tmp/prepared_fraction.json
+            /tmp/prepared_fraction_pair.json
+            /tmp/prepared_ratio_model.json
+            /tmp/prepared_fraction_model.json
+            /tmp/prepared_fraction_pair_model.json
