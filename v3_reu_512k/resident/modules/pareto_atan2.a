@@ -1,0 +1,81 @@
+; ============================================================================
+; V3 REU 512K resident module — ATAN2 fast four-quadrant kernel
+; ============================================================================
+; Stable public entry: MATH_ATAN2_8 = $5E2A
+; Inputs:  X0 = signed 8-bit x, Y0 = signed 8-bit y
+; Output:  Z0 = phase 0..255 ($00=+X, $40=+Y, $80=-X, $C0=-Y)
+; Accuracy: exhaustive 65,536-vector validation, max error <= 1 phase unit
+; Public-entry timing: 46.953064 mean cycles, range 30-48
+; Normal ZP: 0 bytes
+; Tables: $9600 LOG, $9700 Q0, $5500 Q1, $5F00 Q2, $4700 Q3 = 1280 B
+;
+; V3 uses the same stock-CPU fast ATAN2 body as V2; the REU remains available
+; to other V3 services. Installed body: $C543-$C57A.
+; Canonical reusable source: routines/atan2/atan2_fast.asm
+; ============================================================================
+
+!cpu 6502
+
+X0=$C000
+Y0=$C004
+Z0=$C008
+LOGTAB=$9600
+Q0=$9700
+Q1=$5500
+Q2=$5F00
+Q3=$4700
+
+*=$C543
+atan2_fast:
+    ldx X0
+    bne x_nonzero
+    ldx Y0
+    beq zero
+    bmi x0_yneg
+    lda #$40
+    bne axis_store
+x0_yneg:
+    lda #$C0
+    bne axis_store
+zero:
+    lda #$00
+axis_store:
+    sta Z0
+    clc
+    rts
+x_nonzero:
+    sec
+    bmi xneg
+    lda LOGTAB,x
+    ldx Y0
+    bmi xpyn
+    sbc LOGTAB,x
+    tax
+    lda Q0,x
+    sta Z0
+    clc
+    rts
+xpyn:
+    sbc LOGTAB,x
+    tax
+    lda Q3,x
+    sta Z0
+    clc
+    rts
+xneg:
+    lda LOGTAB,x
+    ldx Y0
+    bmi xnyn
+    sbc LOGTAB,x
+    tax
+    lda Q1,x
+    sta Z0
+    clc
+    rts
+xnyn:
+    sbc LOGTAB,x
+    tax
+    lda Q2,x
+    sta Z0
+    clc
+    rts

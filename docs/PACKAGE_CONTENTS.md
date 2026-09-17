@@ -6,9 +6,10 @@ The release ZIP is intended to be both **usable** and **reproducible** without c
 
 - `v1_balanced/` … `v4_reu_16m/`: the four original reference profiles, including their validated resident PRGs and profile-local source/data required by the assembly trees.
 - `v5_hybrid_lowzp/`: the validated stock-C64 hybrid reference PRG, generated API include, segment map, performance table and example.
+- `v1_balanced/resident/modules/` … `v5_hybrid_lowzp/resident/modules/`: profile-local routine sources. Each profile now includes its own directly browsable ATAN2 source (`resident_atan2.a`, `pareto_atan2.a`, `reu_atan2.a`, or `hybrid_atan2.a`) beside the arithmetic modules.
 - `v3_reu_512k/reu/` and `v4_reu_16m/reu/`: the two deployable reference REU images.
 - `relocatable_source/`: canonical source-level relocation inputs and map configurations, including Turbo16/Turbo32 overlays, V5 hybrid maps, and `custom_pareto/` maps used by the budget selector.
-- `routines/`: readable reusable algorithm sources that are awkward to discover in generated profile assembly. `routines/atan2/` contains the compact and fast stock-C64 ATAN2 kernels, their single table generator, and an exhaustive standalone benchmark.
+- `routines/`: readable reusable algorithm sources. `routines/atan2/` is the shared stock-C64 ATAN2 source family, table generator and exhaustive standalone benchmark; the per-profile resident modules expose the exact/profile-mapped form selected by each profile.
 - `v1_balanced/resident/signed/` … `v5_hybrid_lowzp/resident/signed/`: native-signed implementation/provenance artifacts under `multiply/native` and `division`, with per-profile link maps and zero-overlap validation.
 - `tools/`: deterministic builders and validators, including `build_pareto.py`, the interactive `pareto_wizard.py`, Pareto configuration tests and stress validation. One-shot installers consume reusable sources from `routines/` rather than duplicating assembly bodies inside Python.
 - `validation/`: current validation results, including `validation/hybrid/` and `validation/pareto/`, plus the compact prior exhaustive baseline needed by the binary-delta validation argument.
@@ -25,7 +26,7 @@ The release ZIP is intended to be both **usable** and **reproducible** without c
 
 Some small source/table/module files are identical across V1–V4. They are retained within each profile because the profile trees are designed to remain self-contained and the assembly sources reference those local files. Removing them would save little while making integration and archival use more fragile.
 
-Reusable hand-maintained algorithm sources are **not** duplicated in tooling: ATAN2 now has one readable source family under `routines/atan2/`, while generated profile assembly remains the installed build output.
+ATAN2 follows the same policy: `routines/atan2/` remains the shared algorithm source of truth, while each profile contains a small resident-module view of the implementation it actually uses. Tooling does not carry duplicate embedded assembly strings.
 
 ## Manifest hygiene
 

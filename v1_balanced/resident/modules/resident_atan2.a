@@ -1,0 +1,85 @@
+; ============================================================================
+; V1 Balanced resident module — ATAN2 compact
+; ============================================================================
+; Stable public entry: MATH_ATAN2_8 = $5E2A
+; Inputs:  X0 = signed 8-bit x, Y0 = signed 8-bit y
+; Output:  Z0 = phase 0..255 ($00=+X, $40=+Y, $80=-X, $C0=-Y)
+; Accuracy: exhaustive 65,536-vector validation, max error <= 1 phase unit
+; Public-entry timing: 50.441345 mean cycles, range 30-53
+; Normal ZP: 0 bytes
+; Tables: $9600 LOGTAB + $9700 ATANTAB = 512 bytes
+;
+; This is the profile-local source for the installed V1 body at $C459-$C496.
+; The table pages are already part of the resident image and are not duplicated
+; in this module. Canonical reusable source: routines/atan2/atan2_compact.asm
+; ============================================================================
+
+!cpu 6502
+
+X0=$C000
+Y0=$C004
+Z0=$C008
+LOGTAB=$9600
+ATANTAB=$9700
+
+*=$C459
+atan2_compact:
+    ldx X0
+    bne x_nonzero
+    ldx Y0
+    beq zero
+    bmi x0_yneg
+    lda #$40
+    bne axis_store
+x0_yneg:
+    lda #$C0
+    bne axis_store
+zero:
+    lda #$00
+axis_store:
+    sta Z0
+    clc
+    rts
+x_nonzero:
+    sec
+    bmi xneg
+    lda LOGTAB,x
+    ldx Y0
+    bmi xpyn
+    sbc LOGTAB,x
+    tax
+    lda ATANTAB,x
+    sta Z0
+    clc
+    rts
+xpyn:
+    sbc LOGTAB,x
+    tax
+    lda ATANTAB,x
+    eor #$ff
+    clc
+    adc #$01
+    sta Z0
+    clc
+    rts
+xneg:
+    lda LOGTAB,x
+    ldx Y0
+    bmi xnyn
+    sbc LOGTAB,x
+    tax
+    lda ATANTAB,x
+    eor #$ff
+    clc
+    adc #$81
+    sta Z0
+    clc
+    rts
+xnyn:
+    sbc LOGTAB,x
+    tax
+    lda ATANTAB,x
+    eor #$80
+    sta Z0
+    clc
+    rts

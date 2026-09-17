@@ -1,0 +1,84 @@
+; ============================================================================
+; V5 Hybrid Low-ZP resident module — ATAN2 fast four-quadrant kernel
+; ============================================================================
+; Stable public entry: MATH_ATAN2_8 = $5E2A
+; Inputs:  X0 = signed 8-bit x, Y0 = signed 8-bit y
+; Output:  Z0 = phase 0..255 ($00=+X, $40=+Y, $80=-X, $C0=-Y)
+; Accuracy: exhaustive 65,536-vector result/cycle parity with V2, max error <= 1
+; Public-entry timing: 46.953064 mean cycles, range 30-48
+; Normal ZP: 0 bytes
+; Tables: $9600 LOG, $9700 Q0, $5500 Q1, $5F00 Q2, $5700 Q3 = 1280 B
+;
+; build_hybrid.py transplants the certified V2 body into the V5 ATAN2 slot
+; beginning at $C814 and remaps the donor Q3 page from $4700 to $5700 because
+; $4700 is occupied in the V1-derived base. The build manifest reserves
+; $C814-$C871 for the transplanted body/span. This profile-local listing is the
+; readable assembled kernel with the V5 physical table map.
+; Canonical donor source: routines/atan2/atan2_fast.asm
+; ============================================================================
+
+!cpu 6502
+
+X0=$C000
+Y0=$C004
+Z0=$C008
+LOGTAB=$9600
+Q0=$9700
+Q1=$5500
+Q2=$5F00
+Q3=$5700
+
+*=$C814
+atan2_fast_v5:
+    ldx X0
+    bne x_nonzero
+    ldx Y0
+    beq zero
+    bmi x0_yneg
+    lda #$40
+    bne axis_store
+x0_yneg:
+    lda #$C0
+    bne axis_store
+zero:
+    lda #$00
+axis_store:
+    sta Z0
+    clc
+    rts
+x_nonzero:
+    sec
+    bmi xneg
+    lda LOGTAB,x
+    ldx Y0
+    bmi xpyn
+    sbc LOGTAB,x
+    tax
+    lda Q0,x
+    sta Z0
+    clc
+    rts
+xpyn:
+    sbc LOGTAB,x
+    tax
+    lda Q3,x
+    sta Z0
+    clc
+    rts
+xneg:
+    lda LOGTAB,x
+    ldx Y0
+    bmi xnyn
+    sbc LOGTAB,x
+    tax
+    lda Q1,x
+    sta Z0
+    clc
+    rts
+xnyn:
+    sbc LOGTAB,x
+    tax
+    lda Q2,x
+    sta Z0
+    clc
+    rts

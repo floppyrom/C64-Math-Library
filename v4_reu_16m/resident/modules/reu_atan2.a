@@ -1,0 +1,40 @@
+; ============================================================================
+; V4 REU 16M resident module — exact REU ATAN2 lookup
+; ============================================================================
+; Stable public entry: MATH_ATAN2_8 = $5E2A
+; Inputs:  X0 = signed 8-bit x, Y0 = signed 8-bit y
+; Output:  Z0 = exact 8-bit phase from the V4 REU table
+; Public-entry timing: fixed 48 cycles
+; Normal ZP: 0 bytes
+;
+; This is the exact ATAN2 body used by v4_reu_16m/resident/
+; game_math_extension.asm. The surrounding profile source assigns the body
+; address; this module is therefore intentionally position-neutral rather than
+; inventing a second fixed origin. V4 MATH_INIT/configuration supplies the REU
+; staging setup and the shipped V4 REU image contains the lookup data.
+; ============================================================================
+
+!cpu 6502
+
+X0=$C000
+Y0=$C004
+Z0=$C008
+REU_COMMAND=$DF01
+REU_ADDR_LO=$DF04
+REU_ADDR_HI=$DF05
+REU_BANK=$DF06
+ATAN2_STAGE=$C020
+
+atan2_reu_exact:
+    lda X0
+    sta REU_ADDR_LO
+    lda Y0
+    sta REU_ADDR_HI
+    lda #8
+    sta REU_BANK
+    lda #$81
+    sta REU_COMMAND
+    lda ATAN2_STAGE
+    sta Z0
+    clc
+    rts
