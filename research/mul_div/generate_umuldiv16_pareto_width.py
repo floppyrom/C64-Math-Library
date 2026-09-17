@@ -13,7 +13,7 @@ Every path then shares the same quotient-class dispatch:
   wider product        -> bounded-fit test + constrained 16-step tail
 
 The specialization is dynamic and semantic: it exploits operand width available
-at runtime rather than a benchmark constant.  The broad 16x16 path pays a small
+at runtime rather than a benchmark constant. The broad 16x16 path pays a small
 dispatch cost, so this is intentionally a separate Pareto point.
 
 Research only; no stable API or shipped profile is changed.
@@ -172,7 +172,9 @@ def _hybrid_dispatch(prefix: str) -> str:
     lda md1
     sta lhi
     jsr I_UDIV16
-    bcs {prefix}_fail
+    bcc {prefix}_small_ok
+    jmp {prefix}_fail
+{prefix}_small_ok:
     lda mq0
     sta Z0
     lda mq1
@@ -211,10 +213,13 @@ def _hybrid_dispatch(prefix: str) -> str:
     lda phi
     cmp md1
     bcc {prefix}_b0
-    bne {prefix}_fail
+    beq {prefix}_general_check_low
+    jmp {prefix}_fail
+{prefix}_general_check_low:
     ldx mr0
     cpx md0
-    bcs {prefix}_fail
+    bcc {prefix}_b0
+    jmp {prefix}_fail
 """
 
 
