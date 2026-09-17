@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Build the audited Quake64 near-clip experiment far enough to prove:
-#   * the patched GAME source assembles with ACME;
+# Build an audited Quake64 tree far enough to prove:
+#   * GAME assembles with ACME;
 #   * relocation data can be regenerated;
 #   * the second-pass GAME image assembles;
 #   * Quake64's own checkheap.py accepts the resulting layout.
 #
-# Disk construction and emulator execution are intentionally separate gates.
+# The same script can build the untouched audited baseline or the patched
+# prepared-fraction experiment. Disk construction/emulator execution remain
+# separate gates.
 
 if [[ $# -lt 1 ]]; then
   echo "usage: $0 /path/to/Quake64 [artifact-dir]" >&2
@@ -21,11 +23,20 @@ mkdir -p "$OUT"
 
 cd "$QROOT"
 
-echo "Quake64 commit: $(git rev-parse HEAD)" | tee "$OUT/build-provenance.txt"
+VARIANT=baseline
+if [[ -f src/prepared_fraction_smc.asm ]]; then
+  VARIANT=prepared-fraction
+fi
+
+echo "variant: $VARIANT" | tee "$OUT/build-provenance.txt"
+echo "Quake64 commit: $(git rev-parse HEAD)" | tee -a "$OUT/build-provenance.txt"
 echo "ACME: $($ACME_BIN --version 2>&1 | head -n 1)" | tee -a "$OUT/build-provenance.txt"
 python --version 2>&1 | tee -a "$OUT/build-provenance.txt"
 
-git diff -- src/quake64.asm src/cube.asm src/prepared_fraction_smc.asm > "$OUT/nearclip-experiment.diff" || true
+git diff -- src/quake64.asm src/cube.asm > "$OUT/source.diff" || true
+if [[ -f src/prepared_fraction_smc.asm ]]; then
+  cp -f src/prepared_fraction_smc.asm "$OUT/prepared_fraction_smc.asm"
+fi
 
 # Match the source-generation portion of build.bat.
 python tools/check_irq_contract.py
@@ -68,7 +79,8 @@ if [[ -f src/game.prg ]]; then mv -f src/game.prg game.prg; fi
 
 python tools/mkreloc.py 2>&1 | tee "$OUT/mkreloc.txt"
 
-# Second pass consumes regenerated relocation data and is the actual layout gate.
+# Second pass consumes regenerated relocation data and is the authoritative
+# layout image for the heap comparison.
 pushd src >/dev/null
 "$ACME_BIN" -v3 --vicelabels ../game.lbl quake64.asm 2>&1 | tee "$OUT/acme-second-pass.txt"
 popd >/dev/null
@@ -78,7 +90,6 @@ python tools/checkheap.py 2>&1 | tee "$OUT/checkheap.txt"
 
 cp -f game.lbl "$OUT/game.lbl"
 cp -f game.prg "$OUT/game.prg"
-cp -f src/prepared_fraction_smc.asm "$OUT/prepared_fraction_smc.asm"
 
 # Pull the key addresses/slack lines into a compact summary without assuming
 # exact formatting beyond labels/checkheap's current human-readable output.
@@ -93,4 +104,4 @@ cp -f src/prepared_fraction_smc.asm "$OUT/prepared_fraction_smc.asm"
   echo "game.prg bytes: $(stat -c %s game.prg)"
 } | tee -a "$OUT/build-provenance.txt"
 
-echo "QUAKE64_EXPERIMENT_BUILD_PASS"
+echo "QUAKE64_BUILD_PASS variant=$VARIANT"
