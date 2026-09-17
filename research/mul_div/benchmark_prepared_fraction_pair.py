@@ -47,7 +47,6 @@ from benchmark_prepared_ratio import (  # noqa: E402
     QY,
     QUAKE_COMMIT,
     V2_PRG,
-    X0,
     Y0,
     Z0,
     ZCLIP,
@@ -62,6 +61,7 @@ from benchmark_prepared_ratio import (  # noqa: E402
     trunc_div,
 )
 
+X0 = 0xC000
 Z2 = Z0 + 2
 
 
