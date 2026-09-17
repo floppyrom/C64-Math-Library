@@ -1,0 +1,35 @@
+name: Apply ATAN2 release patch
+
+on:
+  push:
+    branches: [atan2-fast-final-2026-09-17]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.event.head_commit.message == 'Stage ATAN2 release payload'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply validated release delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          base64 -d .github/atan2-final.diff.gz.b64 | gzip -dc > /tmp/atan2-final.diff
+          git apply --binary --index /tmp/atan2-final.diff
+          git config user.name 'floppyrom'
+          git config user.email 'mihaibn@gmail.com'
+          git commit -m 'Optimize ATAN2 tiers and integrate fast V5/Pareto path' -m 'Add 50.441-cycle compact V1 ATAN2 and 46.953-cycle fast V2/V3/V5 tier
+Keep V4 exact 48-cycle REU ATAN2 path
+Certify all 65,536 signed-byte vectors with max phase error 1
+Add independent 0-ZP / 768-byte atan2_fast Pareto pack
+Preserve direct-signed SMUL8 and signed partial-product research from current main
+Remap fast ATAN2 pages around the signed-SMUL8 table layout with collision guards
+Refresh V5/Pareto resource accounting, exhaustive parity evidence and docs
+Add Steel Ranger, Wolf64 and Quake64 game-use audit
+Refresh deterministic source builds, release audit, package audit and checksums'
+          git push origin HEAD:atan2-fast-final-2026-09-17
