@@ -41,8 +41,10 @@ MR0 = C0
 MD0, MD1 = 0x1A, 0x1B  # unused by shipped 3xUMUL8 construction
 PHI = 0x1C             # hybrid-only saved product byte3
 
-# Native UDIV16 ABI for small-product fallback is exactly $10-$17.
+# Native UDIV16 ABI is $10/$11 numerator, $12/$13 divisor,
+# $14/$15 quotient, $16/$17 remainder.
 MN0, MN1 = MLO, MHI
+UQ0, UQ1 = SIGN, QHI
 UR0, UR1 = 0x16, 0x17
 
 
@@ -55,7 +57,7 @@ I_UMUL8=${I_UMUL8:04X}\nI_UDIV16=${I_UDIV16:04X}\nUMUL8_LO=${UMUL8_LO:02X}
 mlo=${MLO:02X}\nmhi=${MHI:02X}\nllo=${LLO:02X}\nlhi=${LHI:02X}
 sign=${SIGN:02X}\nqhi=${QHI:02X}\nc0=${C0:02X}\nc1=${C1:02X}\nc2=${C2:02X}\nqlo=${QLO:02X}
 mq0=${MQ0:02X}\nmq1=${MQ1:02X}\nmr0=${MR0:02X}\nmd0=${MD0:02X}\nmd1=${MD1:02X}\nphi=${PHI:02X}
-mn0=${MN0:02X}\nmn1=${MN1:02X}\nur0=${UR0:02X}\nur1=${UR1:02X}
+mn0=${MN0:02X}\nmn1=${MN1:02X}\nuq0=${UQ0:02X}\nuq1=${UQ1:02X}\nur0=${UR0:02X}\nur1=${UR1:02X}
 .org ${origin:04X}
 """
 
@@ -298,7 +300,8 @@ def generate_direct_hybrid(origin: int = 0xE000) -> str:
     bcc {p}_q1
 
 {p}_small_div:
-    ; Native UDIV16 expects d in $12/$13; product is already in $10/$11.
+    ; Native UDIV16 expects n=$10/$11, d=$12/$13 and returns
+    ; q=$14/$15, r=$16/$17.
     lda md0
     sta llo
     lda md1
@@ -307,9 +310,9 @@ def generate_direct_hybrid(origin: int = 0xE000) -> str:
     bcc {p}_small_ok
     jmp {p}_fail
 {p}_small_ok:
-    lda mq0
+    lda uq0
     sta Z0
-    lda mq1
+    lda uq1
     sta Z1
     lda ur0
     sta Z2
