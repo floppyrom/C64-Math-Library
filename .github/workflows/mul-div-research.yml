@@ -6,6 +6,8 @@ on:
       - 'research/mul_div/**'
       - 'tools/mini6502.py'
       - 'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg'
+      - 'v2_pareto_fast/resident/modules/pareto_umul8.a'
+      - 'v2_pareto_fast/resident/modules/pareto_umul16.a'
       - '.github/workflows/mul-div-research.yml'
   workflow_dispatch:
 
@@ -13,47 +15,45 @@ permissions:
   contents: read
 
 jobs:
-  v2-research:
+  v2-profile-native:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Syntax check
+      - name: Syntax check corrected research
         run: |
           python -m py_compile \
-            research/mul_div/generate_prepared_ratio.py \
-            research/mul_div/generate_prepared_fraction.py \
-            research/mul_div/generate_prepared_fraction_pair.py \
-            research/mul_div/benchmark_prepared_ratio.py \
-            research/mul_div/benchmark_prepared_fraction.py \
-            research/mul_div/benchmark_prepared_fraction_pair.py \
-            research/mul_div/prepared_ratio_model.py \
-            research/mul_div/prepared_fraction_model.py \
-            research/mul_div/prepared_fraction_pair_model.py
-      - name: Prepared ratio benchmark
+            research/mul_div/generate_umuldiv16_pareto.py \
+            research/mul_div/generate_umuldiv16_pareto_width.py \
+            research/mul_div/benchmark_pareto_direct.py \
+            research/mul_div/generate_prepared_fraction_pareto.py \
+            research/mul_div/generate_prepared_fraction_pareto_inline.py \
+            research/mul_div/prepared_fraction_pareto_model.py \
+            research/mul_div/benchmark_prepared_fraction_pareto.py \
+            research/mul_div/model.py \
+            research/mul_div/prepared_ratio_model.py
+      - name: Actual-core exact MUL_DIV benchmark
         run: |
-          python research/mul_div/benchmark_prepared_ratio.py --cases 5000 --json > /tmp/prepared_ratio.json
-      - name: Strict-fraction benchmark
+          python research/mul_div/benchmark_pareto_direct.py --cases 5000 --json > /tmp/pareto_direct.json
+      - name: Actual-core prepared fraction benchmark
         run: |
-          python research/mul_div/benchmark_prepared_fraction.py --cases 5000 --json > /tmp/prepared_fraction.json
-      - name: Fused SCALE2 benchmark
+          python research/mul_div/benchmark_prepared_fraction_pareto.py --cases 5000 --json > /tmp/prepared_fraction_pareto.json
+      - name: Actual-core prepared fraction model
         run: |
-          python research/mul_div/benchmark_prepared_fraction_pair.py --cases 5000 --json > /tmp/prepared_fraction_pair.json
-      - name: Arithmetic models
+          python research/mul_div/prepared_fraction_pareto_model.py --cases 5000 --json > /tmp/prepared_fraction_pareto_model.json
+      - name: Independent arithmetic models
         run: |
-          python research/mul_div/prepared_ratio_model.py --cases 100000 --json > /tmp/prepared_ratio_model.json
-          python research/mul_div/prepared_fraction_model.py --cases 5000 --json > /tmp/prepared_fraction_model.json
-          python research/mul_div/prepared_fraction_pair_model.py --cases 5000 --json > /tmp/prepared_fraction_pair_model.json
+          python research/mul_div/model.py --cases 1000000 > /tmp/mul_div_model.txt
+          python research/mul_div/prepared_ratio_model.py --cases 100000 --json > /tmp/prepared_ratio_accuracy.json
       - uses: actions/upload-artifact@v4
         with:
-          name: mul-div-research-results
+          name: mul-div-profile-native-results
           path: |
-            /tmp/prepared_ratio.json
-            /tmp/prepared_fraction.json
-            /tmp/prepared_fraction_pair.json
-            /tmp/prepared_ratio_model.json
-            /tmp/prepared_fraction_model.json
-            /tmp/prepared_fraction_pair_model.json
+            /tmp/pareto_direct.json
+            /tmp/prepared_fraction_pareto.json
+            /tmp/prepared_fraction_pareto_model.json
+            /tmp/mul_div_model.txt
+            /tmp/prepared_ratio_accuracy.json
