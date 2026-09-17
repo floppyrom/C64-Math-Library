@@ -1,10 +1,10 @@
 # MUL_DIV research
 
-This directory starts the M2 `MUL_DIV` research milestone from the implementation roadmap.
+This directory implements the M2 `MUL_DIV` research milestone from the implementation roadmap.
 
-The first target is deliberately **not** a new stable API entry. The goal is to determine whether a fused 16-bit multiply/divide kernel can materially beat the obvious composition of the existing public routines while preserving exact integer semantics.
+The target is deliberately **not yet a stable API entry**. The question is whether an exact 16-bit multiply/divide family can materially beat composition of the existing public routines while preserving useful game/geometry semantics and the library's resource constraints.
 
-## Initial operation under study
+## Operation under study
 
 ```text
 UMULDIV16_BOUNDED
@@ -29,95 +29,141 @@ error:
     C = 1
 ```
 
-This bounded form is the practical game/geometry case. It is mathematically equivalent to testing the high word of the 32-bit product before a 16-step restoring tail:
+Let the 32-bit product be `hi:lo`. Then:
 
 ```text
-product = hi:lo
 quotient fits 16 bits  <=>  hi < d
 ```
 
-When that condition is true, `hi` is already the initial remainder and only the low 16 product bits need to be streamed through the divider. A general 32/16 divider has to support the wider-quotient cases as well.
+Once that condition is true, `hi` is already a legal initial remainder and only the low 16 product bits need to be streamed through the divider.
 
-## Why this is a real fusion target
+## Why it is hard to fake efficiently
 
-The existing public composition is conceptually:
+The obvious public composition is:
 
 ```text
-UMUL16
+MATH_UMUL16
 copy Z32 -> N32
-UDIV32_16
-copy Q/R -> desired output
+MATH_UDIV32_16
+copy Q/R -> output
 ```
 
-Current public headline averages are:
+That throws away useful internal state twice: first when the multiplier publishes its four-byte product, then when the divider reconstructs its own working state.
+
+The research therefore tests progressively tighter handoffs:
 
 ```text
-V1: UMUL16 273.8372 + UDIV32_16 857.373105 = 1131.210305 cycles before glue
-V2: UMUL16 225.8372 + UDIV32_16 759.730823 =  985.568023 cycles before glue
+composed
+    public multiply + public 32/16 divide
+
+fused
+    public multiply + product-aware constrained 16-step divide tail
+
+hybrid
+    public multiply + native 16/16 divide when product fits 16 bits
+    otherwise constrained tail
+
+direct (V2)
+    native UMUL16 core + direct live-product handoff to constrained tail
+
+direct_hybrid (V2)
+    native UMUL16 core + native UDIV16 fast path for 16-bit products
+    otherwise direct constrained tail
 ```
 
-Those two averages come from their own canonical corpora, so they are only a target-setting reference. `benchmark.py` measures the composed wrapper and fused candidate on the **same MUL_DIV corpus** before we make any performance claim.
+## Zero-page accounting
 
-## Candidate 1: product-aware 16-step tail
-
-`generate_umuldiv16.py` emits an unrolled candidate that:
-
-1. calls the selected profile's current `MATH_UMUL16`;
-2. copies the divisor and product working bytes into the library's already-owned division ZP scratch;
-3. rejects divide-by-zero and `hi >= d` overflow;
-4. performs only the 16 constrained low-word divide steps;
-5. returns quotient and remainder directly in `Z[0..3]`.
-
-The tail is derived from the same carry-pipeline idea used by the resident 32/16 divider: each trial subtraction leaves the next quotient bit in Carry, and the next `ROL` consumes it. The 17th-remainder-bit path is handled separately and is known to require a quotient bit of one.
-
-### Zero-page accounting
-
-The fast research form uses:
+The constrained tail uses:
 
 ```text
-$12-$13  divisor copy
+$12-$13  divisor
 $14-$15  quotient pipeline
 $16      remainder low byte
 ```
 
-These are **not new library ZP bytes**. They are the existing resident unsigned-division ABI/scratch locations already owned by V1/V2 and inherited by the later profiles. Because the multiply has returned before the fused divide tail starts, the same bytes can be reused sequentially.
+These bytes already belong to the resident unsigned-division ABI. Because ordinary library calls are sequential/non-reentrant, the research kernel can reuse them after multiplication returns.
 
-So the candidate is five live ZP bytes internally but **zero incremental profile ZP** if integrated into the current library layout.
+So the first fast candidates require **zero incremental profile ZP**.
 
-## Preliminary arithmetic/cycle-geometry model
+## V2 direct-core handoff
 
-`model.py` validates the bounded restoring recurrence independently of the 6502 image and models the unrolled tail's instruction-path costs. On 1,000,000 deterministic uniform random `(a,b,d)` triples with nonzero `d`, 749,126 cases had a 16-bit quotient.
+V2's selected record UMUL16 kernel already leaves the product in an unusually useful form:
 
-For those bounded cases, the modeled divide stage (including scratch copies/final writeback, but excluding `MATH_UMUL16` and the range precheck) was:
+```text
+entry       $53EC
+X low bind  $21
+X high bind $29
+Y high SMC  $541A
 
-| Scratch placement | Incremental ZP if standalone | Mean modeled cycles | Min | Max |
+result:
+    byte0 = $31
+    byte1 = CPU X
+    byte2 = CPU A
+    byte3 = CPU Y
+```
+
+The direct candidate consumes those bytes immediately instead of forcing the product through public `Z32` first. This alone removes about **43.5 additional cycles** on the 5,000-case uniform bounded corpus relative to the first fused version.
+
+## Current measured V2 results
+
+All numbers below are paired same-input measurements against the shipped V2 resident image, with zero arithmetic errors in the listed corpora. See `BENCHMARK_RESULTS.md` for full ranges, corpus shapes and caveats.
+
+| Workload | Composed | Fused | Direct | Direct hybrid |
 |---|---:|---:|---:|---:|
-| all public/absolute | 0 | 652.82 | 492 | 948 |
-| remainder low in ZP | 1 | 635.89 | 490 | 906 |
-| remainder + divisor in ZP | 3 | 621.81 | 488 | 864 |
-| quotient + remainder + divisor in ZP | 5 | **615.81** | 482 | 858 |
+| uniform bounded 16-bit | 1027.605 | 859.405 | **815.900** | 824.427 |
+| mixed uniform | 1055.749 | 718.766 | **675.142** | 683.492 |
+| byte-sized `game8` | 897.260 | 729.266 | 686.082 | **336.085** |
+| 12-bit bounded | 963.851 | 795.582 | 752.303 | **751.070** |
 
-Because the current library already owns the five selected bytes, the 5-byte live-scratch form is the correct first implementation candidate: it gets the fastest modeled tail without increasing the profile ZP footprint.
+The emerging Pareto split is therefore:
 
-These are **model numbers, not certified resident-image timings**. Page-crossing penalties, public multiply cost on the same corpus, and wrapper effects are measured by `benchmark.py`.
+```text
+broad/full 16-bit workloads
+    -> direct native UMUL16 + constrained 16-step tail
+
+byte/small-product workloads
+    -> direct native UMUL16 + native UDIV16 fast path
+       with constrained-tail fallback
+```
+
+The hybrid is not universally faster: on uniformly distributed bounded 16-bit operands almost no products fit in 16 bits, so its dispatch is overhead. That is useful evidence against collapsing everything into one implementation.
+
+## Independent arithmetic model
+
+`model.py` validates the bounded restoring recurrence independently of the 6502 image. On 1,000,000 deterministic random nonzero-divisor triples it classified 749,126 cases as 16-bit quotient and produced **zero mismatches** against Python integer arithmetic.
+
+Its scratch-placement model predicted the fastest first tail when quotient, remainder-low and divisor all live in the already-owned division ZP:
+
+| Scratch placement | Live scratch | Mean modeled divide-stage cycles |
+|---|---:|---:|
+| all absolute | 0 | 652.82 |
+| remainder low in ZP | 1 | 635.89 |
+| remainder + divisor in ZP | 3 | 621.81 |
+| quotient + remainder + divisor in ZP | 5 | **615.81** |
+
+Those are model numbers only. `benchmark.py` is authoritative for resident-image cycle comparisons.
 
 ## Files
 
-- `generate_umuldiv16.py` - deterministic source generator for the unrolled bounded candidate and composed baseline wrapper.
-- `model.py` - independent mathematical validator and cycle-geometry model.
-- `benchmark.py` - patches generated research wrappers into a loaded V1/V2 resident image and measures both on identical deterministic corpora using `tools/mini6502.py`.
+- `generate_umuldiv16.py` — deterministic generators for composed, bounded, public-hybrid, V2 direct and V2 direct-hybrid kernels.
+- `model.py` — independent mathematical validator and tail cycle-geometry model.
+- `benchmark.py` — same-input resident-image correctness/timing harness for V1/V2/V5; V2 additionally exposes the direct variants.
+- `MODEL_RESULTS.md` — preliminary arithmetic and scratch-placement evidence.
+- `BENCHMARK_RESULTS.md` — paired V2 resident-image results.
+- `direct_core_notes.md` — V2 native handoff details and interpretation.
 
-No public API, profile binary, or shipped validation result is changed by this research commit.
+No stable API entry or shipped profile binary is changed by this research work.
 
-## Research gates before promotion
+## Promotion gates
 
-The routine should not enter the stable API until all of these are true:
+Before a stable `MATH_UMULDIV16` is added, we still need to:
 
-1. exact correctness is validated for structured edge cases and a large deterministic corpus;
-2. composed and fused paths are measured on the same inputs;
-3. V1/V2/V5 integration is checked for zero additional ZP and code-region fit;
-4. signed semantics are investigated separately rather than added as a wrapper by default;
-5. the full-range 32-bit quotient form is compared against the bounded form;
-6. prepared-divisor/reciprocal variants are benchmarked for repeated-denominator workloads.
+1. run a larger/canonical paired validation corpus and preserve machine-readable evidence;
+2. determine whether quotient-class prechecks can beat the fixed 16-step general tail;
+3. investigate deeper multiply/divide state sharing beyond the current direct handoff;
+4. establish V1/V5 direct-core equivalents or decide that V2 gets a distinct implementation tier;
+5. compare the bounded 16-bit-result contract with a full-range 32-bit quotient form;
+6. research prepared-divisor/reciprocal versions for repeated-denominator workloads;
+7. research signed semantics separately instead of assuming an unsigned wrapper is optimal.
 
-The bounded kernel is therefore the first Pareto experiment, not yet the final `MATH_UMULDIV16` contract.
+The current result is therefore a validated **research Pareto family**, not yet the final public routine.
