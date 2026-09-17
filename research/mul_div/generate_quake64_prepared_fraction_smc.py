@@ -169,8 +169,9 @@ def generate(origin: int = 0x9000, apply_origin: int = 0x9800,
     bne {p}_patch
     inc rot1
 """)
-    else:
-        out.append(f"{p}_patch:\n")
+
+    # Common fall-through/branch destination for floor and nearest.
+    out.append(f"{p}_patch:\n")
 
     # Patch multiplier m0/m1 directly into three inline fixed products.
     out.append(_patch_fixed('qm0', 'rot0'))
