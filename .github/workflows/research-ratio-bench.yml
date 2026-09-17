@@ -1,0 +1,20 @@
+name: Ratio Research Benchmark
+
+on:
+  push:
+    paths:
+      - 'research/mul_div/**'
+      - '.github/workflows/research-ratio-bench.yml'
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run fused strict-fraction benchmark
+        run: |
+          python3 research/mul_div/benchmark_prepared_fraction_pair.py --cases 5000 --seed 0xC0FFEE --json
