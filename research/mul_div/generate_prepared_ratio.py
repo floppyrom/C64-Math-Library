@@ -6,14 +6,20 @@ Research contract:
     PREP(n16,d16), |n|<=|d|, d!=0
         m = round(|n|*65536/|d|)
         retain sign(n/d)
-        bind m as the persistent X operand of V2 native UMUL16
 
     APPLY(y16)
         trunc_toward_zero(y*sign*m/65536)
 
 The approximation has a proved integer error bound of <=1 for signed16 y.
-The fast APPLY intentionally uses the V2 record UMUL16 `same_x` entry, so PREP
-state is invalidated by another call that rebinds that native multiply core.
+Two state policies are emitted:
+
+  fast  PREP binds m into the V2 native UMUL16 X state and APPLY uses same_x.
+        Another UMUL16 rebind invalidates the prepared state.
+
+  safe  PREP stores m in private ordinary RAM and each APPLY rebinds the V2
+        native generic UMUL16 core. This costs cycles but survives unrelated
+        multiply calls between applications.
+
 This is research code, not a stable API or lifecycle yet.
 """
 from __future__ import annotations
@@ -33,6 +39,7 @@ RQ0, RQ1 = 0x14, 0x15
 # V2 record UMUL16 selected-core ABI.
 P0, P1, P2, P3 = 0x21, 0x23, 0x25, 0x27
 P4, P5, P6, P7 = 0x29, 0x2B, 0x2D, 0x2F
+UMUL_GENERIC = 0x53EC
 UMUL_SAME_X = 0x5400
 UMUL_Y1_IMM = 0x541A
 
@@ -41,6 +48,8 @@ UMUL_Y1_IMM = 0x541A
 RATIO_SIGN = 0xC030
 RATIO_MODE = 0xC031  # 0 general, 1 zero, 2 identity
 RATIO_TMPSIGN = 0xC032
+RATIO_M0 = 0xC033
+RATIO_M1 = 0xC034
 
 
 def header(origin: int) -> str:
@@ -51,9 +60,9 @@ rn0=${RN0:02X}\nrn1=${RN1:02X}\nrd0=${RD0:02X}\nrd1=${RD1:02X}
 rq0=${RQ0:02X}\nrq1=${RQ1:02X}
 p0=${P0:02X}\np1=${P1:02X}\np2=${P2:02X}\np3=${P3:02X}
 p4=${P4:02X}\np5=${P5:02X}\np6=${P6:02X}\np7=${P7:02X}
-UMUL_SAMEX=${UMUL_SAME_X:04X}\nUMUL_Y1=${UMUL_Y1_IMM:04X}
+UMUL_GENERIC=${UMUL_GENERIC:04X}\nUMUL_SAMEX=${UMUL_SAME_X:04X}\nUMUL_Y1=${UMUL_Y1_IMM:04X}
 RATIO_SIGN=${RATIO_SIGN:04X}\nRATIO_MODE=${RATIO_MODE:04X}
-RATIO_TMPSIGN=${RATIO_TMPSIGN:04X}
+RATIO_TMPSIGN=${RATIO_TMPSIGN:04X}\nRATIO_M0=${RATIO_M0:04X}\nRATIO_M1=${RATIO_M1:04X}
 .org ${origin:04X}
 """
 
@@ -128,9 +137,11 @@ def prep_prefix(label: str) -> str:
 """
 
 
-def bind_and_finish(prefix: str) -> str:
+def bind_and_finish(prefix: str, state: str) -> str:
     p = prefix
-    return f"""{p}_bind:
+    if state == 'fast':
+        body = f"""{p}_bind:
+    ; Bind m as persistent native UMUL16 X for same_x APPLY calls.
     lda rq0
     sta p0
     sta p2
@@ -143,7 +154,18 @@ def bind_and_finish(prefix: str) -> str:
     eor #$ff
     sta p5
     sta p7
-    clc
+"""
+    elif state == 'safe':
+        body = f"""{p}_bind:
+    ; Preserve m independently of native UMUL16 state.
+    lda rq0
+    sta RATIO_M0
+    lda rq1
+    sta RATIO_M1
+"""
+    else:
+        raise ValueError(state)
+    return body + f"""    clc
     rts
 {p}_error:
     lda #$00
@@ -153,8 +175,24 @@ def bind_and_finish(prefix: str) -> str:
 """
 
 
-def apply_source(label: str, origin: int) -> str:
+def apply_source(label: str, origin: int, state: str) -> str:
     p = label
+    if state == 'fast':
+        mul = f"""{p}_mul:
+    jsr UMUL_SAMEX
+"""
+    elif state == 'safe':
+        mul = f"""{p}_mul:
+    ; Rebind from private state so intervening multiply calls are harmless.
+    lda RATIO_M0
+    sta p0
+    lda RATIO_M1
+    sta p4
+    jsr UMUL_GENERIC
+"""
+    else:
+        raise ValueError(state)
+
     return f""".org ${origin:04X}
 {p}:
     lda RATIO_MODE
@@ -192,7 +230,7 @@ def apply_source(label: str, origin: int) -> str:
     and #$80
     sta RATIO_TMPSIGN
 
-    ; abs(y), then use the pre-bound ratio as native UMUL16 X.
+    ; abs(y), then multiply by the prepared Q0.16 magnitude.
     lda Y1
     bpl {p}_ypos
     sec
@@ -206,9 +244,7 @@ def apply_source(label: str, origin: int) -> str:
 {p}_ypos:
     ldy Y0
     sta UMUL_Y1
-{p}_mul:
-    jsr UMUL_SAMEX
-    ; Native result bytes are z0, X, A, Y. Only high16=A:Y is needed.
+""" + mul + f"""    ; Native result bytes are z0, X, A, Y. Only high16=A:Y is needed.
     sta Z0
     sty Z1
     lda RATIO_TMPSIGN
@@ -226,7 +262,8 @@ def apply_source(label: str, origin: int) -> str:
 """
 
 
-def generate_compact(origin: int = 0xE000, apply_origin: int = 0xE800) -> str:
+def generate_compact(origin: int = 0xE000, apply_origin: int = 0xE800,
+                     state: str = 'fast') -> str:
     p = 'ratio_prep_compact'
     out = [header(origin), prep_prefix(p)]
     out.append(f"""    ldx #16
@@ -272,12 +309,13 @@ def generate_compact(origin: int = 0xE000, apply_origin: int = 0xE800) -> str:
     bne {p}_bind
     inc rq1
 """)
-    out.append(bind_and_finish(p))
-    out.append(apply_source('ratio_apply', apply_origin))
+    out.append(bind_and_finish(p, state))
+    out.append(apply_source('ratio_apply', apply_origin, state))
     return ''.join(out)
 
 
-def generate_unrolled(origin: int = 0xE000, apply_origin: int = 0xE800) -> str:
+def generate_unrolled(origin: int = 0xE000, apply_origin: int = 0xE800,
+                      state: str = 'fast') -> str:
     p = 'ratio_prep_unrolled'
     out = [header(origin), prep_prefix(p)]
     # n<d on entry. The compare that branched here left C=0.
@@ -335,23 +373,24 @@ def generate_unrolled(origin: int = 0xE000, apply_origin: int = 0xE800) -> str:
     bne {p}_bind
     inc rq1
 """)
-    out.append(bind_and_finish(p))
-    out.append(apply_source('ratio_apply', apply_origin))
+    out.append(bind_and_finish(p, state))
+    out.append(apply_source('ratio_apply', apply_origin, state))
     return ''.join(out)
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument('--kind', choices=('compact', 'unrolled'), default='unrolled')
+    ap.add_argument('--state', choices=('fast', 'safe'), default='fast')
     ap.add_argument('--origin', type=lambda s: int(s, 0), default=0xE000)
     ap.add_argument('--apply-origin', type=lambda s: int(s, 0), default=0xE800)
     ap.add_argument('--output', type=Path)
     args = ap.parse_args()
 
     if args.kind == 'compact':
-        text = generate_compact(args.origin, args.apply_origin)
+        text = generate_compact(args.origin, args.apply_origin, args.state)
     else:
-        text = generate_unrolled(args.origin, args.apply_origin)
+        text = generate_unrolled(args.origin, args.apply_origin, args.state)
 
     if args.output:
         args.output.write_text(text, encoding='utf-8')
