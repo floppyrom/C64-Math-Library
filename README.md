@@ -21,7 +21,7 @@ The follow-on 16×16 / 16×32 / 32×32 signed-partial experiments are documented
 | **V2 Pareto-Fast** | Stock C64 | Faster general resident profile when larger ZP use is acceptable |
 | **V3 REU 512K** | C64 + 512 KiB REU | REU-backed services plus Turbo16/Turbo32 |
 | **V4 REU 16M** | C64 + 16 MiB REU-compatible device/emulator | Fastest feature set: exact REU atan2/ISQRT16, QS16, Turbo |
-| **V5 Hybrid Low-ZP** | Stock C64 | V1's 31-byte normal ZP plus selected V2-speed division/modulo/trig paths |
+| **V5 Hybrid Low-ZP** | Stock C64 | V1's 31-byte normal ZP plus selected V2-speed division/modulo/trig/ATAN2 paths |
 
 V5 is intended particularly for games and demos. It is **one build**, not two complete libraries loaded side-by-side. The stable caller ABI remains unchanged.
 
@@ -78,8 +78,9 @@ V5 keeps V1's `$02-$20` 31-byte normal ZP window and imports certified V2 paths 
 - `MATH_UMOD8`: 65.29 → **64.82**
 - `MATH_COS8`: 29 → **23**
 - `MATH_SINCOS8`: 39 → **31**
+- `MATH_ATAN2_8`: 50.44 → **46.95** (65,536-vector exhaustive parity; max error 1 phase unit)
 
-The reference V5 private implementation occupies `$A000-$B1FF` (4608 bytes), RAM underneath BASIC ROM. BASIC ROM must therefore be banked out while imported V5 paths execute, or `HYBRID_CODE` can be relocated at build time.
+The reference V5 relocated implementation block occupies `$A000-$B1FF` (4608 bytes), RAM underneath BASIC ROM. Fast ATAN2 additionally claims three page-aligned private pages at `$5500`, `$5700`, and `$5F00` in the reference map, for an exact **5,376-byte private-RAM increase versus V1**. BASIC ROM must therefore be banked out while imported V5 paths execute, or the private regions can be relocated at build time.
 
 See `docs/HYBRID_PROFILE.md`.
 
@@ -135,7 +136,7 @@ The signed-implementation cleanup adds a repository-layout audit and a dedicated
 V5 adds:
 
 - **45/45 stable entries** on both reference and alternate maps, **4,172 machine calls per map**;
-- **78,710 direct-import test cases**;
+- **144,246 direct-import test cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity;
 - exhaustive **65,536-case `UMOD8`** correctness;
 - exhaustive full-domain `COS8` / `SINCOS8` validation;
 - thousands of wide-division cases with **exact V2 cycle-vector parity**;
@@ -145,7 +146,7 @@ V5 adds:
 - deterministic reference/alternate rebuild identity;
 - invalid hybrid map rejection for overlap, I/O, alignment and overflow.
 
-See `validation/hybrid/` for V5 evidence and `validation/pareto/` for the Custom Pareto Builder. The Pareto validation includes a 12-build / 50,064-call API matrix, exact V2 cycle parity for imported kernels, exhaustive UMOD8, resource-map rejection tests, deterministic rebuilds, endpoint identity with V1/V5, and additional mixed/ZP stress.
+See `validation/hybrid/` for V5 evidence and `validation/pareto/` for the Custom Pareto Builder. The Pareto validation includes a 12-build / 50,064-call API matrix, **75,644 direct V2 cycle-parity cases** including exhaustive `ATAN2_8`, exhaustive UMOD8, resource-map rejection tests, deterministic rebuilds, endpoint identity with V1/V5, and additional mixed/ZP stress.
 
 ## Project terminology
 

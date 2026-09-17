@@ -29,6 +29,7 @@ Certified imports:
 | `MATH_UMOD32_16` | 860.373105 | **762.730823** | 11.35% | 0 |
 | `MATH_COS8` | 29 | **23** | 20.69% | 0 |
 | `MATH_SINCOS8` | 39 | **31** | 20.51% | 0 |
+| `MATH_ATAN2_8` | 50.441345 | **46.953064** | 6.92% | 0 |
 
 The V5 direct paths were compared against V2 with cycle-vector equality; these are not estimates from instruction counting.
 
@@ -50,6 +51,7 @@ MATH_IO                  $C000-$C01F
 V1_SCRATCH               $C040-$C057
 normal ZP                $02-$20       31 bytes
 HYBRID_CODE              $A000-$B1FF   4608 bytes
+ATAN2 extra table pages   $5500/$5F00/$5700   3 x 256 bytes
 ```
 
 Private hybrid layout:
@@ -60,6 +62,9 @@ $B000-$B07F  relocated V2 UMOD8 block
 $B080-$B08A  V2 COS8 implementation
 $B090-$B0A0  V2 SINCOS8 implementation
 $B100-$B1FF  private V2 cosine table
+$5500-$55FF  fast ATAN2 final-angle page Q1 (formerly unused V1 table page)
+$5F00-$5FFF  fast ATAN2 final-angle page Q2 (formerly unused V1 table page)
+$5700-$57FF  fast ATAN2 final-angle page Q3 (V2 donor $4700 remapped away from V1-owned data)
 ```
 
 `HYBRID_CODE` is source-build configurable. The alternate proof moves it to `$E000-$F1FF` while also moving the normal resident regions, public I/O and ZP base.
@@ -86,7 +91,7 @@ This design means:
 `validation/hybrid/HYBRID_VALIDATION.json` records:
 
 - common 45-entry validation on reference and alternate maps, 4,172 calls each;
-- 78,710 direct-import test cases;
+- **144,246 direct-import test cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity and an independent <=1 phase-unit error check;
 - exhaustive `UMOD8` correctness over all 65,536 input pairs;
 - exhaustive `COS8/SINCOS8` phase-domain checks;
 - exact V2 cycle-vector parity over thousands of wide-division cases and all trig phases;
@@ -102,4 +107,4 @@ Additional files:
 
 ## Current scope
 
-V5 is a stock-C64 profile. It does not use the REU and does not expose Turbo16/Turbo32 or V4 QS16. It is intended primarily for games/demos that value V1's ZP footprint but have RAM available under BASIC ROM (or another relocatable 4608-byte region).
+V5 is a stock-C64 profile. It does not use the REU and does not expose Turbo16/Turbo32 or V4 QS16. It is intended primarily for games/demos that value V1's ZP footprint but have RAM available under BASIC ROM (or another relocatable 4608-byte region) plus three relocatable page-aligned ATAN2 table pages. The exact V5 private-RAM increase versus V1 is 5,376 bytes.

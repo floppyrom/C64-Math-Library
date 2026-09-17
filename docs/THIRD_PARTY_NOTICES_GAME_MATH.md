@@ -10,6 +10,6 @@ The active contract is exact `floor(sqrt(N32))`, with the 32-bit input preserved
 
 ## Distance and trig algorithms
 
-`DIST8_FAST` uses the well-known `max + min/2` hypotenuse approximation. `DIST8_ACCURATE` uses coefficients 243/107 selected by an exhaustive search performed for this release. SIN/COS tables are generated directly from their mathematical definitions. The V1–V3 atan2 implementation uses generated log/atan tables and a standard log-ratio identity; V4 uses a generated exact REU plane.
+`DIST8_FAST` uses the well-known `max + min/2` hypotenuse approximation. `DIST8_ACCURATE` uses coefficients 243/107 selected by an exhaustive search performed for this release. SIN/COS tables are generated directly from their mathematical definitions. The V1 compact and V2/V3 fast atan2 implementations use generated signed-log/final-angle tables and a standard log-ratio identity; V4 uses a generated exact REU plane. The active table quantization, quadrant folding and integration are generated and exhaustively validated by this repository.
 
 General algorithm references can be useful background, but no external wiki implementation is incorporated into the active ISQRT32 kernel.

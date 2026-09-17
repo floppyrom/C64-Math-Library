@@ -17,6 +17,12 @@ UMOD8_SRC = (0x5200, 0x527F)
 COS_SRC = (0xC766, 0xC770)
 SINCOS_SRC = (0xC771, 0xC781)
 COS_TABLE_SRC = (0x9500, 0x95FF)
+ATAN_LOG_SRC = (0x9600, 0x96FF)
+ATAN_Q0_SRC = (0x9700, 0x97FF)
+ATAN_Q1_SRC = (0x5500, 0x55FF)
+ATAN_Q2_SRC = (0x5F00, 0x5FFF)
+ATAN_Q3_SRC = (0x4700, 0x47FF)
+ATAN_EXTRA_TABLE_BYTES = 3 * 256
 V2_REF_ZP_MAIN = 0x02
 V2_REF_MATH_IO = 0xC000
 
@@ -32,7 +38,7 @@ PUBLIC_WRAPPERS = {
 IMPORTED_API = [
     'MATH_UDIV16', 'MATH_UDIV24', 'MATH_UDIV32_16',
     'MATH_UMOD8', 'MATH_UMOD16', 'MATH_UMOD24', 'MATH_UMOD32_16',
-    'MATH_COS8', 'MATH_SINCOS8',
+    'MATH_COS8', 'MATH_SINCOS8', 'MATH_ATAN2_8',
 ]
 
 
@@ -104,6 +110,20 @@ def map_abs(target: int, vals: dict[str, int], hbase: int) -> int:
     # V2 cosine table differs from V1; retain a private copy.
     if COS_TABLE_SRC[0] <= target <= COS_TABLE_SRC[1]:
         return hbase + 0x1100 + (target - COS_TABLE_SRC[0])
+    # Fast ATAN2 reuses V1's compact LOG/Q0 pages. After direct-signed SMUL8
+    # claimed the old $6E00/$6F00 holes, the extra pages use free kernel pages.
+    # Q1/Q2 can retain their donor locations; donor Q3 at $4700 overlaps V1
+    # UMUL8/UMUL16 and is therefore remapped to the V1-free $5700 page.
+    atan_maps = {
+        ATAN_LOG_SRC[0]: vals['REG_TABLE'] + 0x3600,
+        ATAN_Q0_SRC[0]: vals['REG_TABLE'] + 0x3700,
+        ATAN_Q1_SRC[0]: vals['REG_KERNEL'] + 0x1500,
+        ATAN_Q2_SRC[0]: vals['REG_KERNEL'] + 0x1F00,
+        ATAN_Q3_SRC[0]: vals['REG_KERNEL'] + 0x1700,
+    }
+    for src, dst in atan_maps.items():
+        if src <= target <= src + 0xFF:
+            return dst + (target - src)
     return target
 
 
@@ -148,6 +168,63 @@ def copy_relocated_wrapper(dst_mem: bytearray, src_mem: bytearray,
                          code_starts, vals, hbase)
 
 
+def _jmp_target(mem: bytearray, at: int) -> int:
+    if mem[at] != 0x4C:
+        raise RuntimeError(f'expected JMP at public entry {hx(at)}')
+    return mem[at + 1] | (mem[at + 2] << 8)
+
+
+def apply_atan2_fast(dst_mem: bytearray, src_mem: bytearray,
+                     vals: dict[str, int], base_man: dict,
+                     donor_entries: dict[str, int], hbase: int) -> dict:
+    """Transplant the certified V2 fast ATAN2 into a V1-layout image.
+
+    The public ABI slot stays untouched.  The V2 body is relocated into the
+    existing V1 ATAN2 private slot, LOG/Q0 reuse V1's two compact pages, and
+    Q1/Q2/Q3 occupy three V1 pages that are empty in the canonical layout.
+    """
+    base_pub = _public_addr(base_man, 'MATH_ATAN2_8')
+    base_isqrt_pub = _public_addr(base_man, 'MATH_ISQRT16')
+    donor_pub = donor_entries['MATH_ATAN2_8']
+    donor_isqrt_pub = donor_entries['MATH_ISQRT16']
+    dst_body = _jmp_target(dst_mem, base_pub)
+    dst_isqrt = _jmp_target(dst_mem, base_isqrt_pub)
+    src_body = _jmp_target(src_mem, donor_pub)
+    src_isqrt = _jmp_target(src_mem, donor_isqrt_pub)
+    starts = trace(src_mem, donor_pub)
+    body_starts = {pc for pc in starts if src_body <= pc < src_isqrt}
+    if not body_starts:
+        raise RuntimeError('fast ATAN2 donor body trace is empty')
+    src_end = max(pc + SIZE[REV[src_mem[pc]][1]] - 1 for pc in body_starts)
+    length = src_end - src_body + 1
+    if dst_body + length > dst_isqrt:
+        raise RuntimeError('fast ATAN2 body does not fit stable V1 ATAN2 slot')
+
+    # The destination pages must be unused in the V1 layout before ownership is
+    # assigned to fast ATAN2.  This guard catches future table-layout changes.
+    targets = [vals['REG_KERNEL'] + 0x1500, vals['REG_KERNEL'] + 0x1F00, vals['REG_KERNEL'] + 0x1700]
+    for a in targets:
+        if any(dst_mem[a:a + 256]):
+            raise RuntimeError(f'ATAN2 fast destination page {hx(a)} is not free in V1 base')
+
+    copy_relocated_block(dst_mem, src_mem, src_body, src_end, dst_body,
+                         body_starts, vals, hbase)
+    # Clear the now-dead remainder of the old compact body so private address
+    # geometry stays pinned while the image remains easy to audit.
+    dst_mem[dst_body + length:dst_isqrt] = bytes(dst_isqrt - (dst_body + length))
+    dst_mem[targets[0]:targets[0] + 256] = src_mem[ATAN_Q1_SRC[0]:ATAN_Q1_SRC[1] + 1]
+    dst_mem[targets[1]:targets[1] + 256] = src_mem[ATAN_Q2_SRC[0]:ATAN_Q2_SRC[1] + 1]
+    dst_mem[targets[2]:targets[2] + 256] = src_mem[ATAN_Q3_SRC[0]:ATAN_Q3_SRC[1] + 1]
+    return {
+        'body': f'{hx(dst_body)}-{hx(dst_body + length - 1)}',
+        'body_bytes': length,
+        'extra_table_bytes': ATAN_EXTRA_TABLE_BYTES,
+        'extra_table_pages': [hx(a) for a in targets],
+        'log_page': hx(vals['REG_TABLE'] + 0x3600),
+        'q0_page': hx(vals['REG_TABLE'] + 0x3700),
+    }
+
+
 def validate_hybrid_region(vals: dict[str, int], hbase: int) -> None:
     if hbase & 0xFF:
         raise ValueError('HYBRID_CODE must be page aligned')
@@ -174,7 +251,7 @@ def _public_addr(man: dict, name: str) -> int:
     return int(v[1:], 16) if isinstance(v, str) and v.startswith('$') else int(v)
 
 
-def build(config: Path, outdir: Path) -> dict:
+def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
     vals = asm.parse_config(config)
     if 'HYBRID_CODE' not in vals:
         raise ValueError('hybrid config is missing HYBRID_CODE')
@@ -201,6 +278,7 @@ def build(config: Path, outdir: Path) -> dict:
 
         # Build exact reachability sets from the rebuilt V2 donor image.
         entries = dict(sr.public_entries())
+        atan2_detail = apply_atan2_fast(dst, src, vals, v1man, entries, hbase) if include_atan2_fast else None
         selected_trace: set[int] = set()
         for name in ('MATH_UDIV16', 'MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8'):
             selected_trace |= trace(src, entries[name])
@@ -261,7 +339,9 @@ def build(config: Path, outdir: Path) -> dict:
             'normal_zp_bytes': 31,
             'hybrid_code': f'{hx(hbase)}-{hx(hbase + HYBRID_BYTES - 1)}',
             'hybrid_code_bytes': HYBRID_BYTES,
-            'imported_api_entries': IMPORTED_API,
+            'imported_api_entries': [n for n in IMPORTED_API if include_atan2_fast or n != 'MATH_ATAN2_8'],
+            'atan2_fast_enabled': include_atan2_fast,
+            'atan2_fast': atan2_detail,
             'indirect_beneficiaries': [
                 'MATH_UDIV16_SHL8',
                 'MATH_URECIP16_Q16',
@@ -270,6 +350,7 @@ def build(config: Path, outdir: Path) -> dict:
                 'All 45 stable API addresses and semantics remain V1-compatible.',
                 'MATH_INIT remains optional exactly as in V1.',
                 'The imported certified V2 kernels use only the existing V1 normal ZP window.',
+                'Fast ATAN2, when enabled, adds no ZP and occupies three free V1 kernel pages (768 bytes).',
                 'HYBRID_CODE is private implementation storage and may be relocated at build time.',
                 'Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines.',
             ],

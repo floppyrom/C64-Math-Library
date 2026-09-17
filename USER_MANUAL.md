@@ -298,11 +298,11 @@ Current equal-weight breakpoints are:
 
 | ZP | Default selection | Exact extra RAM vs V1 |
 |---:|---|---:|
-| 31 | V5 zero-ZP imports + initialized UMUL32 | 5253 B |
-| 36 | above + UMUL8/16 | 5843 B |
-| 60 | above + UMUL24 | 6603 B |
-| 147 | V5 imports + initialized UMUL32 + native SMUL16 | 5439 B |
-| 176 | all certified hybrid packs | 6789 B |
+| 31 | `atan2_fast` + V5 zero-ZP imports + initialized UMUL32 | 6021 B |
+| 36 | above + UMUL8/SMUL8 pack | 6576 B |
+| 60 | above + record UMUL16/UMUL24 pack | 7336 B |
+| 147 | `atan2_fast` + V5 imports + initialized UMUL32 + native SMUL16 | 6207 B |
+| 176 | all certified hybrid packs, including `atan2_fast` | 7522 B |
 | 221 | complete V2 | 208 B resident increase |
 
 The optimizer maximizes weighted cycle savings, so resource use is not required to be monotonic across those points. At 31 ZP + `--ram-budget 0`, the generated PRG is byte-identical to V1. At 31 ZP + `--init-policy optional`, it is byte-identical to V5. At 221 ZP the builder selects complete V2.
@@ -1292,7 +1292,7 @@ The exact benchmark CSV files in `docs/` remain authoritative. A few useful head
 | UDIV16 | 160.06 | 137.28 | 137.28 | 137.28 |
 | UDIV32/16 | 857.37 | 759.73 | 759.73 | 759.73 |
 | URECIP16_Q16 | 126.18 | 119.58 | 66.23 | 66.23 |
-| ATAN2_8 | 136.22 | 125.81 | 126.30 | 48.00 |
+| ATAN2_8 | **50.44** | **46.95** | **46.95** | **48.00** |
 | ISQRT16 | 219.74 | 205.76 | 204.99 | 54.00 |
 | ISQRT32 | 1378.90 | 1198.62 | 1197.86 | 1046.62 |
 
@@ -1311,8 +1311,9 @@ V5 is intentionally V1-based, so unchanged routines retain V1 behavior/timing. I
 | UMOD32/16 | 860.373105 | **762.730823** | 11.35% |
 | COS8 | 29 | **23** | 20.69% |
 | SINCOS8 | 39 | **31** | 20.51% |
+| ATAN2_8 | 50.441345 | **46.953064** | 6.92% |
 
-These direct paths were validated against V2 with cycle-vector equality (UMOD8 uses exhaustive correctness plus sampled cycle parity). `UDIV16_SHL8` and `URECIP16_Q16` benefit indirectly through imported division but retain V1 outer code. See `docs/HYBRID_PROFILE.md`.
+These direct paths were validated against V2 with cycle-vector equality. `ATAN2_8` is exhaustive across all 65,536 signed-byte vectors and independently checked for a maximum one-phase-unit approximation error; UMOD8 uses exhaustive correctness plus sampled cycle parity. `UDIV16_SHL8` and `URECIP16_Q16` benefit indirectly through imported division but retain V1 outer code. See `docs/HYBRID_PROFILE.md`.
 
 ---
 
@@ -1490,10 +1491,10 @@ The frozen Turbo FINAL release records:
 - 45 stable entries in all four original V1–V4 profiles, plus the same 45-entry surface in V5;
 - V1–V4 alternate proof: 180/180 relocated stable entry executions and 16,688 machine calls;
 - V5 reference + alternate: 45/45 entries and 4,172 machine calls per map;
-- V5 hybrid direct-import validation: 78,710 cases, plus 2,000 cold-load calls without `MATH_INIT`;
+- V5 hybrid direct-import validation: **144,246 cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity, plus 2,000 cold-load calls without `MATH_INIT`;
 - V5 ZP confinement: 31-byte normal window, all 225 outside page-zero bytes unchanged in stress on both maps;
 - Custom Pareto matrix: six ZP breakpoints on reference + alternate maps, 12 generated builds, 45/45 entries and 4,172 calls each (**50,064 common-API calls**);
-- Custom Pareto direct V2 cycle parity: 10,108 cases, plus exhaustive 65,536-case UMOD8;
+- Custom Pareto direct V2 cycle parity: **75,644 cases**, including exhaustive 65,536-vector `ATAN2_8`, plus exhaustive 65,536-case UMOD8;
 - Custom Pareto stress: 50,144 SMUL16 cycle-parity cases, 25,000 mixed-workload iterations and 10,000 ZP-guard iterations;
 - Custom Pareto endpoint identity: 31 ZP + zero extra RAM is byte-identical to V1; 31 ZP + optional-init policy is byte-identical to V5;
 - Custom Pareto resource/configuration validation: 12/12 cases;

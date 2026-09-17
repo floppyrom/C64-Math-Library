@@ -74,8 +74,8 @@ if acme_current:
     for x in acme.get('overlay_boundary_checks',[]):
         ck(f'acme_boundary_{x["overlay"]}_{x["zp_base"]}',x['status']=='PASS' and x['byte_identical'] is True)
 else:
-    ck('acme_current_not_run_documented',acme.get('status')=='NOT_RUN' and bool(acme.get('reason')) and (ROOT/'validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_NATIVE.json').exists(),acme.get('reason'))
-    hist=json.loads((ROOT/'validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_NATIVE.json').read_text())
+    ck('acme_current_not_run_documented',acme.get('status')=='NOT_RUN' and bool(acme.get('reason')) and (ROOT/'validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_ATAN2.json').exists(),acme.get('reason'))
+    hist=json.loads((ROOT/'validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_ATAN2.json').read_text())
     ck('acme_historical_baseline_retained',hist.get('status')=='PASS' and len(hist.get('checks',[]))==8 and len(hist.get('overlay_checks',[]))==8 and len(hist.get('overlay_boundary_checks',[]))==4,hist.get('assembler'))
 
 cfg=json.loads((ROOT/'validation/CONFIG_VALIDATION.json').read_text())
@@ -142,8 +142,8 @@ for kind in ('reference','alternate'):
     ni=hv['tests']['optional_init_cold_load'][kind]
     ck(f'hybrid_{kind}_cold_no_init',ni['status']=='PASS' and ni['cold_load_without_math_init'] is True and ni['cases']==1000,ni)
 par=hv['tests']['direct_v2_parity']
-ck('hybrid_direct_cases_78710',sum(x['cases'] for x in par.values())==78710,sum(x['cases'] for x in par.values()))
-for n in ('MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8'):
+ck('hybrid_direct_cases_144246',sum(x['cases'] for x in par.values())==144246,sum(x['cases'] for x in par.values()))
+for n in ('MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8'):
     ck(f'hybrid_v2_cycle_parity_{n}',par[n].get('cycle_vector_equal_to_v2') is True)
 ck('hybrid_umod8_exhaustive',par['MATH_UMOD8']['cases']==65536 and par['MATH_UMOD8']['exhaustive_correctness'] is True and par['MATH_UMOD8']['cycle_vector_equal_to_v2_sampled'] is True)
 hcfg=json.loads((ROOT/'validation/hybrid/HYBRID_CONFIG_VALIDATION.json').read_text())
@@ -169,14 +169,16 @@ for kind in ('reference','alternate'):
     ck(f'pareto_{kind}_six_breakpoints',set(pv['standard_points'][kind])=={'31','36','60','147','176','221'})
     for z,x in pv['standard_points'][kind].items():
         ck(f'pareto_{kind}_{z}_45_entries',x['common_api']['entries']==45 and x['common_api']['calls']==4172)
-ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==5253)
-ck('pareto_36_exact_ram',pv['standard_points']['reference']['36']['extra_private_ram_bytes']==5808)
-ck('pareto_60_exact_ram',pv['standard_points']['reference']['60']['extra_private_ram_bytes']==6568)
-ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==6754)
+ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==6021)
+ck('pareto_36_exact_ram',pv['standard_points']['reference']['36']['extra_private_ram_bytes']==6576)
+ck('pareto_60_exact_ram',pv['standard_points']['reference']['60']['extra_private_ram_bytes']==7336)
+ck('pareto_147_exact_ram',pv['standard_points']['reference']['147']['extra_private_ram_bytes']==6207)
+ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==7522)
 ck('pareto_221_selects_v2',pv['standard_points']['reference']['221']['selected_packs']==['v2_full'])
 ck('pareto_v1_endpoint_identity',pv['pure_v1_identity'] is True)
 ck('pareto_v5_endpoint_identity',pv['optional31_v5_identity'] is True)
-ck('pareto_direct_v2_cycle_parity',pv['direct_v2_cycle_parity']['status']=='PASS' and pv['direct_v2_cycle_parity']['cases']==10108)
+ck('pareto_direct_v2_cycle_parity',pv['direct_v2_cycle_parity']['status']=='PASS' and pv['direct_v2_cycle_parity']['cases']==75644)
+ck('pareto_atan2_exhaustive_parity',pv['direct_v2_cycle_parity']['routines']['MATH_ATAN2_8']['cases']==65536 and pv['direct_v2_cycle_parity']['routines']['MATH_ATAN2_8']['cycle_vector_equal_to_v2'] is True and pv['direct_v2_cycle_parity']['routines']['MATH_ATAN2_8']['max_phase_error']<=1)
 ck('pareto_umod8_exhaustive',pv['umod8_exhaustive_cases']==65536)
 ck('pareto_zp_confinement',pv['zp_confinement']['outside_bytes_unchanged']==80 and pv['zp_confinement']['iterations']==3000)
 ck('pareto_deterministic',len(pv['deterministic_rebuilds'])==4 and all(x['identical'] for x in pv['deterministic_rebuilds']))
@@ -202,6 +204,13 @@ for p in PROFILES:
     if p in ('v3_reu_512k','v4_reu_16m'):
         ck(f'{p}_turbo_config_symbols',all(re.search(rf'^\s*{k}\s*=',cfgtext,re.M) for k in ('TURBO16_ZP_BASE','TURBO32_ZP_BASE','REU_TURBO16_BANK','REU_TURBO32_BANK')))
         ck(f'{p}_source_uses_turbo_config',all(k in src for k in ('TURBO16_ZP_BASE','TURBO32_ZP_BASE','REU_TURBO16_BANK','REU_TURBO32_BANK')))
+
+# ATAN2 upgrade certification: exhaustive signed-byte plane and profile tiers.
+at=json.loads((ROOT/'validation/ATAN2_UPGRADE_VALIDATION.json').read_text())
+ck('atan2_upgrade_status',at['status']=='PASS')
+for prof,mean,maxerr in (('v1_balanced',50.44134521484375,1),('v2_pareto_fast',46.95306396484375,1),('v3_reu_512k',46.95306396484375,1)):
+    a=at['profiles'][prof]
+    ck(f'atan2_{prof}_exhaustive',a['cases']==65536 and a['failures_gt_1']==0 and a['max_phase_error']<=maxerr and abs(a['mean_cycles']-mean)<1e-9,a)
 
 # Consolidated routine/resource index.
 ct=json.loads((ROOT/'validation/CONSOLIDATED_ROUTINE_TABLE.json').read_text())
@@ -239,6 +248,6 @@ v4=(ROOT/'v4_reu_16m/resident/math_v4_reu_16m_game_math.prg').read_bytes();ld=v4
 def vb(a): return v4[2+a-ld]
 ck('v4_isqrt32_square_planes',all(vb(0x9800+x)==((x*x)&255) and vb(0x9900+x)==(((x*x)>>8)&255) for x in range(256)))
 
-out={'status':('PASS' if acme_current else 'PASS_WITH_ACME_NOT_RUN'),'checks':checks,'summary':{'acme_current_status':acme.get('status'),'checks_passed':len(checks),'public_entries':45,'alternate_entry_executions':180,'alternate_machine_calls':16688,'config_cases':27,'turbo_product_calls':17164,'turbo_lifecycle_calls':32,'turbo_api_calls':17196,'turbo_boundary_product_calls':3556,'reu_profiles_turbo_entries':6,'isqrt32_cases_per_profile':5097,'hybrid_public_entries':45,'hybrid_common_machine_calls_per_map':4172,'hybrid_direct_import_cases':78710,'hybrid_optional_init_cases':2000,'hybrid_zp_bytes':31,'pareto_matrix_builds':12,'pareto_common_machine_calls':50064,'pareto_direct_cycle_parity_cases':10108,'pareto_smul16_stress_cases':50144,'pareto_mixed_workload_iterations':25000,'pareto_config_cases':12,'pareto_default_breakpoints':[31,36,60,147,176,221]}}
+out={'status':('PASS' if acme_current else 'PASS_WITH_ACME_NOT_RUN'),'checks':checks,'summary':{'acme_current_status':acme.get('status'),'checks_passed':len(checks),'public_entries':45,'alternate_entry_executions':180,'alternate_machine_calls':16688,'config_cases':27,'turbo_product_calls':17164,'turbo_lifecycle_calls':32,'turbo_api_calls':17196,'turbo_boundary_product_calls':3556,'reu_profiles_turbo_entries':6,'isqrt32_cases_per_profile':5097,'hybrid_public_entries':45,'hybrid_common_machine_calls_per_map':4172,'hybrid_direct_import_cases':144246,'hybrid_optional_init_cases':2000,'hybrid_zp_bytes':31,'pareto_matrix_builds':12,'pareto_common_machine_calls':50064,'pareto_direct_cycle_parity_cases':75644,'pareto_smul16_stress_cases':50144,'pareto_mixed_workload_iterations':25000,'pareto_config_cases':12,'pareto_default_breakpoints':[31,36,60,147,176,221]}}
 (ROOT/'validation/RELEASE_AUDIT.json').write_text(json.dumps(out,indent=2)+'\n')
 print('RELEASE AUDIT',out['status'],len(checks),'checks')

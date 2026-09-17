@@ -121,6 +121,23 @@ def main():
         assert ch==cv and gh==gv==exp2 and h.c==v2.c==0
     parity['MATH_COS8']={'cases':256,'cycle_vector_equal_to_v2':True,'exhaustive':True}
     parity['MATH_SINCOS8']={'cases':256,'cycle_vector_equal_to_v2':True,'exhaustive':True}
+
+    # Exhaustive signed-byte ATAN2: exact cycle-vector parity with the V2 fast
+    # donor and <=1 phase-unit error over all 65,536 vectors.
+    atan_cases=0; atan_total=0; atan_min=10**9; atan_max=0; atan_maxerr=0
+    for rx in range(256):
+        sx=rx if rx<128 else rx-256
+        for ry in range(256):
+            sy=ry if ry<128 else ry-256
+            h.mem[IH]=rx; h.mem[IH+4]=ry; ch=h.call(PH['MATH_ATAN2_8'],10000); gh=h.mem[IH+8]
+            v2.mem[I2]=rx; v2.mem[I2+4]=ry; cv=v2.call(P2['MATH_ATAN2_8'],10000); gv=v2.mem[I2+8]
+            exp=0 if sx==0 and sy==0 else round((math.atan2(sy,sx)%(2*math.pi))*128/math.pi)&255
+            er=min((gh-exp)&255,(exp-gh)&255)
+            assert (ch,gh,h.c)==(cv,gv,v2.c),(rx,ry,ch,cv,gh,gv,h.c,v2.c)
+            assert er<=1,(rx,ry,gh,exp,er)
+            atan_cases+=1; atan_total+=ch; atan_min=min(atan_min,ch); atan_max=max(atan_max,ch); atan_maxerr=max(atan_maxerr,er)
+    parity['MATH_ATAN2_8']={'cases':atan_cases,'cycle_vector_equal_to_v2':True,'exhaustive':True,
+        'mean_cycles':atan_total/atan_cases,'min_cycles':atan_min,'max_cycles':atan_max,'max_phase_error':atan_maxerr}
     out['tests']['direct_v2_parity']=parity
 
     # Dynamic ZP confinement on both source maps. Fill every byte outside the
@@ -154,7 +171,7 @@ def main():
         rr=random.Random(0x10A17 + (0 if kind=='reference' else 1))
         cases=0
         for i in range(1000):
-            mode=i%6
+            mode=i%7
             if mode==0:
                 n=rr.randrange(1<<16); d=rr.randrange(1<<16); call_div(c,P,I,'MATH_UDIV16',16,16,n,d)
             elif mode==1:
@@ -167,6 +184,11 @@ def main():
             elif mode==4:
                 ph=rr.randrange(256); c.mem[I]=ph; c.call(P['MATH_COS8'],10000)
                 assert c.mem[I+8]==(round(127*math.cos(2*math.pi*ph/256))&255) and c.c==0
+            elif mode==5:
+                rx=rr.randrange(256); ry=rr.randrange(256); sx=rx if rx<128 else rx-256; sy=ry if ry<128 else ry-256
+                c.mem[I]=rx; c.mem[I+4]=ry; c.call(P['MATH_ATAN2_8'],10000); got=c.mem[I+8]
+                exp=0 if sx==0 and sy==0 else round((math.atan2(sy,sx)%(2*math.pi))*128/math.pi)&255
+                assert min((got-exp)&255,(exp-got)&255)<=1 and c.c==0
             else:
                 # Untouched V1 safe path also remains cold-load callable.
                 x=rr.randrange(1<<16); y=rr.randrange(1<<16); wr(c,I,x,2); wr(c,I+4,y,2); c.call(P['MATH_UMUL16'],100000)

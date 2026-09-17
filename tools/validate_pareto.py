@@ -80,6 +80,21 @@ def parity_tests(out:Path,random_per=500):
             v.mem[I2]=ph;cy2=v.call(P2[name],10000);o2=bytes(v.mem[I2+8:I2+10]);cc2=v.c
             assert (cy,o,cc)==(cy2,o2,cc2),(name,ph,cy,cy2,o,o2)
         detail[name]={'cases':256,'cycle_vector_equal_to_v2':True,'full_phase_domain':True};total+=256
+    # The deep standard point selects atan2_fast.  Exhaustively prove both the
+    # donor cycle vector and the <=1 phase-unit public accuracy contract.
+    atan_total=0; atan_min=10**9; atan_max=0; maxerr=0
+    for rx in range(256):
+        sx=rx if rx<128 else rx-256
+        for ry in range(256):
+            sy=ry if ry<128 else ry-256
+            c.mem[I]=rx;c.mem[I+4]=ry;cy=c.call(P['MATH_ATAN2_8'],10000);o=c.mem[I+8];cc=c.c
+            v.mem[I2]=rx;v.mem[I2+4]=ry;cy2=v.call(P2['MATH_ATAN2_8'],10000);o2=v.mem[I2+8];cc2=v.c
+            exp=0 if sx==0 and sy==0 else round((math.atan2(sy,sx)%(2*math.pi))*128/math.pi)&255
+            er=min((o-exp)&255,(exp-o)&255)
+            assert (cy,o,cc)==(cy2,o2,cc2),('MATH_ATAN2_8',rx,ry,cy,cy2,o,o2,cc,cc2)
+            assert er<=1,('MATH_ATAN2_8',rx,ry,o,exp,er)
+            atan_total+=cy;atan_min=min(atan_min,cy);atan_max=max(atan_max,cy);maxerr=max(maxerr,er)
+    detail['MATH_ATAN2_8']={'cases':65536,'cycle_vector_equal_to_v2':True,'exhaustive':True,'mean_cycles':atan_total/65536,'min_cycles':atan_min,'max_cycles':atan_max,'max_phase_error':maxerr};total+=65536
     return {'status':'PASS','cases':total,'routines':detail}
 
 def exhaustive_umod8(out:Path):
@@ -123,17 +138,17 @@ def selection_tests():
     def ck(z,expect,**kw):
         s=bp.select_packs(z,kw.get('ram'),kw.get('init','auto'),kw.get('weights',{})); got=set(s.get('packs',[])) if s['mode']=='hybrid' else {'v2_full'}
         assert got==set(expect),(z,got,expect,s);cases.append({'zp_budget':z,'expected':expect,'result':s})
-    ck(31,['umul32_initialized','zero_zp_v5'])
-    ck(36,['umul32_initialized','umul8_16','zero_zp_v5'])
-    ck(60,['umul24','umul32_initialized','umul8_16','zero_zp_v5'])
-    ck(147,['smul16_exec','umul32_initialized','zero_zp_v5'])
-    ck(176,['smul16_exec','umul24','umul32_initialized','umul8_16','zero_zp_v5'])
+    ck(31,['atan2_fast','umul32_initialized','zero_zp_v5'])
+    ck(36,['atan2_fast','umul32_initialized','umul8_16','zero_zp_v5'])
+    ck(60,['atan2_fast','umul24','umul32_initialized','umul8_16','zero_zp_v5'])
+    ck(147,['atan2_fast','smul16_exec','umul32_initialized','zero_zp_v5'])
+    ck(176,['atan2_fast','smul16_exec','umul24','umul32_initialized','umul8_16','zero_zp_v5'])
     ck(221,['v2_full'])
     ck(31,[],ram=0)
-    ck(31,['zero_zp_v5'],init='optional')
+    ck(31,['atan2_fast','zero_zp_v5'],init='optional')
     # Workload hint must change the 55-byte choice from UMUL8/16 to UMUL24.
     w={'MATH_UMUL24':100,'MATH_UMUL8':0,'MATH_UMUL16':0,'MATH_SMUL8':0,'MATH_UMUL16_SHR8':0}
-    ck(55,['umul24','umul32_initialized','zero_zp_v5'],weights=w)
+    ck(55,['atan2_fast','umul24','umul32_initialized','zero_zp_v5'],weights=w)
     return cases
 
 def deterministic(points=(31,176,221)):

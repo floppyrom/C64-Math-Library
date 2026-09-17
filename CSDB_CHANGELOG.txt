@@ -1,3 +1,11 @@
+2026-09-17 ATAN2 FAST TIERS + GAME AUDIT
+- ATAN2 exhaustive 65,536-vector result: V1 50.441345 cycles mean (30-53), V2/V3 46.953064 (30-48), V4 exact 48 fixed, V5 46.953064; stock implementations use 0 extra ZP and V1-V3/V5 stay within 1 phase unit.
+- V1 keeps the compact 512-byte table point; V2/V3 use the 1280-byte fast tier. Rebased fast pages use free kernel holes at $5500/$5F00/$4700; V5 remaps the third page to $5700.
+- Custom Pareto adds independent atan2_fast pack: 0 ZP / 768 B. Updated default extra-RAM points: 6021/6576/7336/6207/7522 B.
+- V5 direct-import validation: 144,246 cases including exhaustive ATAN2 result/cycle parity. Pareto deep parity: 75,644 cases including exhaustive ATAN2, plus exhaustive UMOD8 and stress/ZP checks.
+- Added source audit for Steel Ranger, Wolf64 and Quake64: keep existing discrete/direct-angle paths where they are cheaper; use ATAN2 for genuine dynamic vector-to-angle work.
+- Preserves the direct signed-domain SMUL8 release and signed partial-product research from 2026-09-14.
+
 SIGNED PARTIAL-PRODUCT RESEARCH (2026-09-14)
 - Direct SMUL8 remains the production win: 67.992188 cycles, 0 ZP.
 - Wider direct-partial experiments did not beat the existing SMUL16/24/32 correction-based kernels; full measurements and source are included under research/signed_partial_products.

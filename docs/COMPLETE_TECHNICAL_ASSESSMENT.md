@@ -23,7 +23,7 @@ The final exact routine uses quotient-special thresholds q=1..15, directly cover
 
 ## Trig and square root
 
-V1–V3 atan2 uses 256-byte log + 256-byte atan tables; V4 uses an exact 64 KiB REU table. ISQRT16 is table-search on V1–V3 and exact REU lookup on V4. ISQRT32 now uses a faster independently derived hybrid. For `N=(H<<16)+L`, `r=floor(sqrt(H))` is exactly the high byte of `floor(sqrt(N))`; the routine therefore reuses the selected exact ISQRT16 path for `H`, forms the exact residual `H-r^2`, and executes only the eight remaining base-4 refinement steps over `L`. It preserves the public radicand and returns `C=0`. On the same 4,130-case corpus as the previous table the means are **1378.900969 / 1198.619613 / 1197.859322 / 1046.622518 cycles** for V1–V4. V4 restores two 256-byte resident square planes (`$9800-$99FF`) to minimize residual-setup latency.
+ATAN2 is now tiered. V1 uses a compact 512-byte signed-log design. V2/V3 use the same compressed log page plus four pre-resolved final-angle pages (1280 bytes total), eliminating runtime quadrant correction; V4 uses an exact 64 KiB REU plane. ISQRT16 is table-search on V1–V3 and exact REU lookup on V4. ISQRT32 now uses a faster independently derived hybrid. For `N=(H<<16)+L`, `r=floor(sqrt(H))` is exactly the high byte of `floor(sqrt(N))`; the routine therefore reuses the selected exact ISQRT16 path for `H`, forms the exact residual `H-r^2`, and executes only the eight remaining base-4 refinement steps over `L`. It preserves the public radicand and returns `C=0`. On the same 4,130-case corpus as the previous table the means are **1378.900969 / 1198.619613 / 1197.859322 / 1046.622518 cycles** for V1–V4. V4 restores two 256-byte resident square planes (`$9800-$99FF`) to minimize residual-setup latency.
 
 ## Distance
 
@@ -49,7 +49,7 @@ The September 5 V2–V4 package stored 116 zero bytes where the practical native
 | SIN8 | 23.000000 | 23.000000 | 23.000000 | 23.000000 |
 | COS8 | 29.000000 | 23.000000 | 23.000000 | 23.000000 |
 | SINCOS8 | 39.000000 | 31.000000 | 31.000000 | 31.000000 |
-| ATAN2_8 | 136.219193 | 125.807755 | 126.297592 | 48.000000 |
+| ATAN2_8 | **50.441345** | **46.953064** | **46.953064** | **48.000000** |
 | ISQRT16 | 219.740570 | 205.760590 | 204.992523 | 54.000000 |
 | ISQRT32 | 1378.900969 | 1198.619613 | 1197.859322 | 1046.622518 |
 | DIST8_FAST | 86.085602 | 79.570038 | 79.070038 | 79.070038 |
@@ -61,7 +61,7 @@ See `PERFORMANCE_GAME_MATH_FINAL.csv` for min/max and case counts. The ISQRT32 r
 
 V1 consumes no additional ZP for game math and uses `$C040-$C057` RAM scratch. V2–V4 use `$53-$6A` game ZP, adjacent to native signed-DIV scratch `$3E-$52`; practical SMUL16 executes from `$80-$F3`. V3/V4 Turbo overlays own overlapping ZP ranges, so normal game-math calls are prohibited between Turbo BEGIN and END.
 
-Game tables occupy selected pages in `$9400-$9BFF`; V4 now also initializes `$9800-$99FF` for the ISQRT32 square planes. Game code is at `$C100+` with the fast ISQRT32 body at `$CB40+`, and the SMUL installer image is `$CC00-$CC73` on V2–V4. V3 reserves two 64 KiB REU planes for reciprocal; V4 additionally reserves exact atan2 and ISQRT16 banks.
+Game tables occupy selected pages in the resident table region. The optimized ATAN2 layouts add page-aligned tables outside the former `$9400-$9BFF` subset: V2/V3 use reference kernel pages `$5500`, `$5F00`, and `$4700` in addition to the shared log/Q0 pages; V5 keeps `$5500`/`$5F00` and remaps donor `$4700` to V1-free `$5700`. V4 also initializes `$9800-$99FF` for the ISQRT32 square planes. Game code is at `$C100+` with the fast ISQRT32 body at `$CB40+`, and the SMUL installer image is `$CC00-$CC73` on V2–V4. V3 reserves two 64 KiB REU planes for reciprocal; V4 additionally reserves exact atan2 and ISQRT16 banks.
 
 ## Source-level relocation review
 

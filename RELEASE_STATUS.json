@@ -1,21 +1,22 @@
 {
   "acme": {
-    "status": "PASS",
-    "assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
-    "checks": 8,
-    "overlay_checks": 8,
-    "overlay_boundary_checks": 4
+    "status": "NOT_RUN",
+    "assembler": "ACME executable unavailable in current validation container",
+    "reason": "Post-ATAN2 canonical sources are certified by the deterministic internal assembler plus reference/alternate regression suites; prior ACME PASS evidence is retained.",
+    "historical_pre_atan2_validation": "validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_ATAN2.json",
+    "historical_pre_native_validation": "validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_NATIVE.json",
+    "rerun_command": "python3 tools/verify_with_acme.py"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "59af5fef47a589c9986fe46fbd1eab8f80bc4a3b475d3efd4581edbba9b2f4ed",
-    "v2_pareto_fast": "f0d48858fdecde069c7e6ef218eabc0c5ae830f1743e59687aa096266ff8da06",
-    "v3_reu_512k": "bf382e94eb8b104b34200ab79e551fb0b37a8a0cb8e77926f87d1e1ca4926153",
-    "v4_reu_16m": "0b5f2e058b13cb493dea856eaab7c39404dd2683343bd83fd0578afb7d045d2a",
-    "v5_hybrid_lowzp": "53dbb87c9c16feb46b6788fb1ceda1e4a3a82b7eca6da3c1328bed9ae5244c73"
+    "v1_balanced": "64bb25c3c9d686fea817d3c554e8cd811ea6370b3f9a1e6d8783c584ae18e93b",
+    "v2_pareto_fast": "4035e6e2cc62fc095233bc333baf554033277a091b8edae32a7767e6a7a62b8c",
+    "v3_reu_512k": "f13b9c5f947bf80a67df4c29a5872ea3c5d8e84f26fd674c7a01dfe7209e1f82",
+    "v4_reu_16m": "2b8efe30dbd2e9499f20d225d0e8c1ae44bc6c9f0e5c0fa9d0dd4dee951853a8",
+    "v5_hybrid_lowzp": "86fbe91afa1c912dbea3f6843edbe0d964202ef98760c687456691563165258c"
   },
   "alternate_reu_sha256": {
-    "v3_reu_512k": "c763b637535234987aeb418a5dbf6a70e41f24e6880653f64529888d7d55d067",
-    "v4_reu_16m": "b5f426895694e92d6f515d9b26e0b7dcfa1c1c7b7a45e7679af9a86193696095"
+    "v3_reu_512k": "195764de47c5347651a3240bfff14c680610802a196556d0d8e5ecd1c9d21807",
+    "v4_reu_16m": "046d7bbc72f5ca3661b875cd6173c19df6d95e561873ef7f061b1573f3b7920e"
   },
   "alternate_turbo_overlay_sha256": {
     "turbo16": "a231db022a18841656bcd138eb71b2dc1215b455f3646b27f081a18ffad4b475",
@@ -27,17 +28,46 @@
     "common_api_machine_calls": 50064,
     "config_validation_cases": 12,
     "default_reference_points": {
-      "147": {
-        "extra_private_ram_bytes": 5439,
+      "31": {
+        "extra_private_ram_bytes": 6021,
         "packs": [
+          "atan2_fast",
+          "umul32_initialized",
+          "zero_zp_v5"
+        ]
+      },
+      "36": {
+        "extra_private_ram_bytes": 6576,
+        "packs": [
+          "atan2_fast",
+          "umul32_initialized",
+          "umul8_16",
+          "zero_zp_v5"
+        ]
+      },
+      "60": {
+        "extra_private_ram_bytes": 7336,
+        "packs": [
+          "atan2_fast",
+          "umul24",
+          "umul32_initialized",
+          "umul8_16",
+          "zero_zp_v5"
+        ]
+      },
+      "147": {
+        "extra_private_ram_bytes": 6207,
+        "packs": [
+          "atan2_fast",
           "smul16_exec",
           "umul32_initialized",
           "zero_zp_v5"
         ]
       },
       "176": {
-        "extra_private_ram_bytes": 6789,
+        "extra_private_ram_bytes": 7522,
         "packs": [
+          "atan2_fast",
           "smul16_exec",
           "umul24",
           "umul32_initialized",
@@ -50,30 +80,6 @@
         "packs": [
           "v2_full"
         ]
-      },
-      "31": {
-        "extra_private_ram_bytes": 5253,
-        "packs": [
-          "umul32_initialized",
-          "zero_zp_v5"
-        ]
-      },
-      "36": {
-        "extra_private_ram_bytes": 5843,
-        "packs": [
-          "umul32_initialized",
-          "umul8_16",
-          "zero_zp_v5"
-        ]
-      },
-      "60": {
-        "extra_private_ram_bytes": 6603,
-        "packs": [
-          "umul24",
-          "umul32_initialized",
-          "umul8_16",
-          "zero_zp_v5"
-        ]
       }
     },
     "default_zp_breakpoints": [
@@ -84,7 +90,7 @@
       176,
       221
     ],
-    "direct_v2_cycle_parity_cases": 10108,
+    "direct_v2_cycle_parity_cases": 75644,
     "documentation": "docs/PARETO_BUILDER.md",
     "matrix_builds": 12,
     "mixed_workload_iterations": 25000,
@@ -97,7 +103,7 @@
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-09-14",
+  "date": "2026-09-17",
   "deterministic_builds_checked": 8,
   "documentation": {
     "code_change_from_turbo_final": true,
@@ -113,20 +119,35 @@
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$F1FF",
-    "alternate_prg_sha256": "53dbb87c9c16feb46b6788fb1ceda1e4a3a82b7eca6da3c1328bed9ae5244c73",
+    "alternate_prg_sha256": "86fbe91afa1c912dbea3f6843edbe0d964202ef98760c687456691563165258c",
     "common_machine_calls_per_map": 4172,
     "common_public_entries_per_map": 45,
     "config_validation_cases": 8,
     "deterministic_maps": 2,
-    "direct_import_cases": 78710,
+    "direct_import_cases": 144246,
     "normal_zp_bytes": 31,
     "optional_init_cold_load_cases": 2000,
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$B1FF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "f0dc9fb1d21859ae8dd6c4f949693ca85f72845f8af39c80626c9955ebece4af",
+    "reference_prg_sha256": "e43c71d5bbee0c2690d970cff061f77804c4ed0a2bffc0a6281437f55066b7f2",
     "status": "PASS",
-    "umod8_exhaustive_cases": 65536
+    "umod8_exhaustive_cases": 65536,
+    "atan2_fast": {
+      "status": "PASS",
+      "mean_cycles": 46.95306396484375,
+      "min_cycles": 30,
+      "max_cycles": 48,
+      "cases": 65536,
+      "max_phase_error": 1,
+      "zp_bytes": 0,
+      "extra_private_ram_bytes": 768,
+      "reference_extra_pages": [
+        "$5500",
+        "$5700",
+        "$5F00"
+      ]
+    }
   },
   "isqrt32_fast_cases_per_profile": 5097,
   "isqrt32_fast_mean_cycles_5097": {
@@ -137,9 +158,10 @@
   },
   "isqrt32_fast_validation_status": "PASS",
   "notes": [
+    "ATAN2 fast-tier upgrade: V1 50.441345 mean cycles; V2/V3/V5 46.953064; V4 exact 48 fixed; stock max phase error 1 over all 65,536 signed-byte vectors.",
     "UMUL16/UMUL24 resident record upgrades are active; V1/V5 preserve the 31-byte normal-ZP and UMUL32_READY state contracts.",
     "V3/V4 Turbo32 uses the stack-free 135-ZP ram135 record-family compromise; reference range $0A-$90, legal origins $02-$79; BEGIN/CALL/END = 326 / 728.947080 mean / 371 cycles on the canonical corpus.",
-    "Current ACME 0.97 independently reproduces all V1-V4 reference/alternate PRGs and Turbo overlay/boundary builds byte-for-byte.",
+    "Historical ACME 0.97 evidence predates the ATAN2 transplant; post-ATAN2 sources are certified by deterministic internal assembly plus reference/alternate regression, with ACME rerunnable externally.",
     "A 240-row consolidated routine table covers every stable API in V1-V5 plus V3/V4 Turbo and V4 QS16, including cycles, reachable code bytes, ZP and persistent stack-page reservation.",
     "All shipped SMUL*/SDIV* public paths own signed-specific executable paths; corresponding unsigned executable engines are not entered.",
     "Signed ownership validator: 279 checks and 65/65 zero-overlap signed/unsigned executable comparisons across V1-V5.",
@@ -151,12 +173,12 @@
     "Default equal-weight Pareto breakpoints are 31/36/60/147/176/221 ZP bytes.",
     "31 ZP + zero extra RAM reproduces V1 byte-for-byte; 31 ZP + optional-init policy reproduces V5 byte-for-byte; 221 ZP selects complete V2.",
     "RAM budgeting is exact for generated private payload, including the exact emitted MATH_INIT helper; generated manifests list every private RAM and ZP range.",
-    "Pareto validation covers 12 reference/alternate builds and 50,064 common-API calls, 10,108 direct V2 cycle-parity cases, exhaustive UMOD8, 50,144 SMUL16 parity cases, 25,000 mixed iterations, 10,000 ZP-guard iterations, deterministic rebuilds and 12 resource/config cases.",
+    "Pareto validation covers 12 reference/alternate builds and 50,064 common-API calls, 75,644 direct V2 cycle-parity cases including exhaustive ATAN2, exhaustive UMOD8, 50,144 SMUL16 parity cases, 25,000 mixed iterations, 10,000 ZP-guard iterations, deterministic rebuilds and 12 resource/config cases.",
     "V5 Hybrid Low-ZP adds a fifth stock-C64 profile while preserving the common 45-entry API.",
-    "V5 keeps V1 normal ZP at 31 bytes and imports certified V2 division/modulo/COS/SINCOS paths with no runtime dispatcher tax.",
+    "V5 keeps V1 normal ZP at 31 bytes and imports certified V2 division/modulo/COS/SINCOS/ATAN2 paths with no runtime dispatcher tax.",
     "V5 ordinary safe entries retain V1-style optional MATH_INIT; 2,000 cold-load calls across reference/alternate maps validate this.",
     "Sequential calls, including repeated calls inside game/demo loops, are supported; the library remains non-reentrant.",
-    "V5 reference private code uses RAM under BASIC ROM at $A000-$B1FF; bank BASIC out or relocate HYBRID_CODE.",
+    "V5 reference hybrid code uses RAM under BASIC ROM at $A000-$B1FF; fast ATAN2 adds private pages at $5500/$5700/$5F00. Bank BASIC out for the hybrid block or relocate the private regions.",
     "DOCUMENTED LEAN FINAL adds a plain-English Turbo explanation and removes reproducible/superseded packaging waste; code, ABI, overlays and deployable REU data are unchanged.",
     "DOCUMENTED LEAN FINAL includes the complete user/integration manual; resident code, overlays, REU arithmetic data, ABI and performance are unchanged from Turbo FINAL.",
     "The common 45-entry stable API is unchanged across V1-V4.",
@@ -190,22 +212,22 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "ffbed4dc89c914856b09587ef76f605d81a6535ce8f6ae83a3da40bb5ad5c57b",
-    "v2_pareto_fast": "aa2ec8dadf3c445e0d142cba1b2842c58b987791a47ab8cbcb63660d6fc06b6e",
-    "v3_reu_512k": "9872691b15f5718ba195cb45f0aa22118bc9aeaca1a8da598eb55869cf2684a4",
-    "v4_reu_16m": "e50241725d74b2a18c1090ea41e013f2c9947672f93016e3fc096b4821ebcf99",
-    "v5_hybrid_lowzp": "f0dc9fb1d21859ae8dd6c4f949693ca85f72845f8af39c80626c9955ebece4af"
+    "v1_balanced": "2e930fc8c0c487406fd36832e772885d8d11fa708950fd95334f0218dccc9964",
+    "v2_pareto_fast": "10af446bd1f49bcf02f9529d7944881d85f0e9b8dec2712638e306b0fab72828",
+    "v3_reu_512k": "f4113d322f168e3ac30339fe427cf9965d439ca173a2cb78d064eb8ca55e36f8",
+    "v4_reu_16m": "bcf4f35341719190cdb25b7b142c9338b1a955db511cb790129a00f646b73405",
+    "v5_hybrid_lowzp": "e43c71d5bbee0c2690d970cff061f77804c4ed0a2bffc0a6281437f55066b7f2"
   },
   "reference_reu_sha256": {
-    "v3_reu_512k": "1d8b844983fa7aa757bc3dff5c12f92d4d9b3732c874f6e83a44116e5719c576",
-    "v4_reu_16m": "71574a5d541058060ff871ea0e5c1db13b1c0053a95c9fcf7dd9dbe7e1f0c503"
+    "v3_reu_512k": "f81fb6ad3da84b3af89685483a6b81baeaf3f9817789c9e7b5ce838eddaaa9b9",
+    "v4_reu_16m": "eb5bc703ab92add9e1f5ee7a1c55c62a244a104e94895f981535312c8fcd1482"
   },
   "reference_turbo_overlay_sha256": {
     "turbo16": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
     "turbo32": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a"
   },
-  "release": "c64_math_library_v1-v5_SMUL8_DIRECT_SIGNED_PLUS_WIDE_SIGNED_RESEARCH_2026-09-14",
-  "release_audit_checks": 225,
+  "release": "c64_math_library_v1-v5_SMUL8_DIRECT_SIGNED_PLUS_ATAN2_FAST_2026-09-17",
+  "release_audit_checks": 201,
   "reu_turbo_lifecycle_entries": 6,
   "source_relocation": {
     "entries_executed": 180,
@@ -266,7 +288,7 @@
     "same_corpus_sdiv32_32_regressions": 0,
     "resident_load_end_ranges_unchanged": true
   },
-  "release_audit_status": "PASS",
+  "release_audit_status": "PASS_WITH_ACME_NOT_RUN",
   "consolidated_routine_table": {
     "status": "PASS",
     "rows": 240,
@@ -294,8 +316,19 @@
     "machine_evidence": "validation/research/SIGNED_PARTIAL_PRODUCT_RESEARCH.json"
   },
   "package": {
-    "lean_file_count_excluding_checksum": 484,
-    "uncompressed_bytes_excluding_checksum": 21815010,
+    "lean_file_count_excluding_checksum": 488,
+    "uncompressed_bytes_excluding_checksum": 21851479,
     "research_files_added": true
+  },
+  "atan2_upgrade": {
+    "status": "PASS",
+    "machine_evidence": "validation/ATAN2_UPGRADE_VALIDATION.json",
+    "game_audit": "docs/ATAN2_GAME_AUDIT_2026-09-17.md",
+    "v1_mean_cycles": 50.44134521484375,
+    "v2_v3_v5_mean_cycles": 46.95306396484375,
+    "v4_exact_cycles": 48,
+    "max_phase_error_stock": 1,
+    "fast_extra_ram_bytes": 768,
+    "fast_zp_bytes": 0
   }
 }

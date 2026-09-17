@@ -1,10 +1,11 @@
 routine,v1_mean_cycles,v5_mean_cycles,improvement_percent,provenance
-MATH_UDIV16,160.064966,137.282268,14.2334,"V2 direct import; cycle-vector parity validated"
-MATH_UDIV24,224.668396,203.612991,9.3718,"V2 direct import; cycle-vector parity validated"
-MATH_UDIV32_16,857.373105,759.730823,11.3885,"V2 direct import; cycle-vector parity validated"
-MATH_UMOD8,65.285156,64.819153,0.7138,"V2 direct import; exhaustive correctness; sampled cycle parity"
-MATH_UMOD16,163.064966,140.282268,13.9715,"stable alias to imported V2 UDIV16; cycle-vector parity validated"
-MATH_UMOD24,227.668396,206.612991,9.2483,"stable alias to imported V2 UDIV24; cycle-vector parity validated"
-MATH_UMOD32_16,860.373105,762.730823,11.3488,"stable alias to imported V2 UDIV32_16; cycle-vector parity validated"
-MATH_COS8,29,23,20.6897,"V2 direct import; exhaustive phase/cycle parity"
-MATH_SINCOS8,39,31,20.5128,"V2 direct import; exhaustive phase/cycle parity"
+MATH_UDIV16,160.064966,137.282268,14.2334,V2 direct import; cycle-vector parity validated
+MATH_UDIV24,224.668396,203.612991,9.3718,V2 direct import; cycle-vector parity validated
+MATH_UDIV32_16,857.373105,759.730823,11.3885,V2 direct import; cycle-vector parity validated
+MATH_UMOD8,65.285156,64.819153,0.7138,V2 direct import; exhaustive correctness; sampled cycle parity
+MATH_UMOD16,163.064966,140.282268,13.9715,stable alias to imported V2 UDIV16; cycle-vector parity validated
+MATH_UMOD24,227.668396,206.612991,9.2483,stable alias to imported V2 UDIV24; cycle-vector parity validated
+MATH_UMOD32_16,860.373105,762.730823,11.3488,stable alias to imported V2 UDIV32_16; cycle-vector parity validated
+MATH_COS8,29,23,20.6897,V2 direct import; exhaustive phase/cycle parity
+MATH_SINCOS8,39,31,20.5128,V2 direct import; exhaustive phase/cycle parity
+MATH_ATAN2_8,50.441345,46.953064,6.9155,"V2 fast four-quadrant signed-log import; exhaustive 65,536-vector result/cycle parity; <=1 phase-unit error"
