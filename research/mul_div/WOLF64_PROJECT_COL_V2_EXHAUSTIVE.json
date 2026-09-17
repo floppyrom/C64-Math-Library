@@ -1,0 +1,34 @@
+{
+  "status": "exhaustive_visible_domain_research_not_wolf64_build_certification",
+  "wolf64_source_commit": "d606a14bbfb9fb17059c24824e0d921f23fd6860",
+  "github_actions_run": 35247963510,
+  "head_commit": "f4028cb11dcc137a678e105b92dd8ec4391d01d5",
+  "artifact_id": 10508004258,
+  "artifact_digest": "sha256:3ff98676bfc463e7d3799162fe486ff03abab32c1a0d33e60e9adf13f7cac34e",
+  "domain": {
+    "perp_mid": "1..255",
+    "side": "-perp_mid..+perp_mid",
+    "cases": 65535,
+    "semantic_invariant": "|side|<=perp_mid, therefore floor(|side|*20/perp_mid)<=20",
+    "source_note": "Wolf64 TechNotes describes project_col_from_side as 8/8 or 16/8 div_q40"
+  },
+  "wolf64_current": {
+    "cases": 65535,
+    "errors": 0,
+    "mean_cycles": 577.1814297703518,
+    "min_cycles": 175,
+    "max_cycles": 649,
+    "q_histogram": [3255,3250,3276,3224,3252,3302,3278,3224,3302,3150,3380,3224,3302,3252,3226,3276,3302,3250,3276,3024,510]
+  },
+  "v2_width_hybrid": {
+    "cases": 65535,
+    "errors": 0,
+    "mean_cycles": 1048.1553673609521,
+    "min_cycles": 252,
+    "max_cycles": 1156,
+    "q_histogram": [3255,3250,3276,3224,3252,3302,3278,3224,3302,3150,3380,3224,3302,3252,3226,3276,3302,3250,3276,3024,510]
+  },
+  "library_gain_percent": -81.5989415629659,
+  "total_errors": 0,
+  "decision": "The synthetic game8 width-knee UMULDIV16 result does not pass this real-game promotion gate. Wolf64's constant multiplier, 8-bit denominator, and quotient<=20 specialization is substantially faster."
+}
