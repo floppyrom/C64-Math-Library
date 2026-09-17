@@ -35,10 +35,13 @@ from pathlib import Path
 from generate_prepared_fraction_pareto_inline import (
     C0, C1, C2, D0, D1, LHI, LLO, MHI, MLO, N0, N1,
     PARITY, PDIFF_SIGN, QHI, QLO, RD0, RD1, RN0, RN1, RQ0, RQ1,
-    SQR_HI, SQR_LO, X0, X1, Y0, Y1, YA0, YA1, YSIGN,
+    SQR_HI, SQR_LO, Y0, Y1, YA0, YA1, YSIGN,
     Z0, Z1, _fixed_mul, _patch_three,
 )
 
+# Public X vector is not needed by the standalone APPLY generator, so define it
+# here rather than pretending it is exported by that module.
+X0, X1 = 0xC000, 0xC001
 Z2, Z3 = Z0 + 2, Z0 + 3
 
 
