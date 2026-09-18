@@ -152,14 +152,50 @@ def build_reu_image(profile,v,outpath):
          'normalize_ratio_range':'$8000-$FFFF',
          'normalize_ratio_sha256':hashlib.sha256(img[nb+0x8000:nb+0x10000]).hexdigest()}
 
+_SOURCE_RE=re.compile(r'^\s*!source\s+"([^"]+)"\s*(?:;.*)?$',re.I)
+
+def expand_source_file(path, preserve_config_include=False, _stack=()):
+ path=Path(path).resolve()
+ if path in _stack:
+  chain=' -> '.join(str(x) for x in _stack+(path,))
+  raise ValueError(f'recursive !source include: {chain}')
+ out=[]
+ for line in path.read_text().splitlines():
+  st=line.strip()
+  m=_SOURCE_RE.match(st)
+  if not m:
+   out.append(line);continue
+  rel=m.group(1)
+  target=(path.parent/rel).resolve()
+  if target.name=='math_config.inc':
+   if preserve_config_include:out.append(line)
+   continue
+  if not target.exists():raise FileNotFoundError(f'!source target not found from {path}: {rel}')
+  out.append(f'; BEGIN !source "{rel}"')
+  out.extend(expand_source_file(target,preserve_config_include,_stack+(path,)).splitlines())
+  out.append(f'; END !source "{rel}"')
+ return '\n'.join(out)+'\n'
+
 def preprocess(src,config):
  cfg=Path(config).read_text().rstrip()+'\n'
+ expanded=expand_source_file(src,preserve_config_include=False)
  body=[]
- for line in Path(src).read_text().splitlines():
+ for line in expanded.splitlines():
   st=line.strip().lower()
-  if st.startswith('!cpu') or st.startswith('!source'):continue
+  if st.startswith('!cpu'):continue
   body.append(line)
  return cfg+'\n'.join(body)+'\n'
+
+def source_dependencies(path,_seen=None):
+ path=Path(path).resolve();seen=set() if _seen is None else _seen;out=[]
+ for line in path.read_text().splitlines():
+  m=_SOURCE_RE.match(line.strip())
+  if not m:continue
+  target=(path.parent/m.group(1)).resolve()
+  if target.name=='math_config.inc' or target in seen:continue
+  if not target.exists():raise FileNotFoundError(f'!source target not found from {path}: {m.group(1)}')
+  seen.add(target);out.append(target);out.extend(source_dependencies(target,seen))
+ return out
 
 def write_prg(mem,path):
  lo=min(mem);hi=max(mem);b=bytes((lo&255,lo>>8))+bytes(mem.get(a,0) for a in range(lo,hi+1));Path(path).write_bytes(b);return lo,hi
@@ -185,7 +221,9 @@ def build(profile,config,outdir):
   lines += [f'TURBO16_ZP_BASE          = {hx(vals["TURBO16_ZP_BASE"],2)}',f'TURBO32_ZP_BASE          = {hx(vals["TURBO32_ZP_BASE"],2)}',f'REU_TURBO16_BANK         = {hx(vals["REU_TURBO16_BANK"],2)}',f'REU_TURBO32_BANK         = {hx(vals["REU_TURBO32_BANK"],2)}']
  for n,off in [('MATH_X',0),('MATH_Y',4),('MATH_Z',8),('MATH_N',0x10),('MATH_D',0x14),('MATH_Q',0x18),('MATH_R',0x1c)]:lines.append(f'{n:<24} = {hx(vals["MATH_IO"]+off)}')
  inc.write_text('\n'.join(lines)+'\n')
- man={'profile':profile,'status':'BUILT_FROM_SOURCE','config':str(Path(config).relative_to(ROOT)) if Path(config).is_relative_to(ROOT) else str(config),'output_prg':prg.name,'output_load':hx(lo),'output_end':hx(hi),'output_sha256':hashlib.sha256(prg.read_bytes()).hexdigest(),'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),'public_entries':{n:hx(const.get(n,labels.get(n))) for n in pubnames},'math_init':hx(const.get('MATH_INIT',labels.get('MATH_INIT'))),'public_io':f'{hx(vals["MATH_IO"])}-{hx(vals["MATH_IO"]+0x1f)}','reu_scratch':f'{hx(vals["REU_SCRATCH"])}-{hx(vals["REU_SCRATCH"]+3)}','reu_banks':{k:hx(vals[k],2) for k in REU_BANK_KEYS},'turbo_config':({'turbo16_zp':f'{hx(vals["TURBO16_ZP_BASE"],2)}-{hx(vals["TURBO16_ZP_BASE"]+112,2)}','turbo32_zp':f'{hx(vals["TURBO32_ZP_BASE"],2)}-{hx(vals["TURBO32_ZP_BASE"]+134,2)}'} if profile in REU else None),'reu_image':reu_info,'claims':[(n,hx(s),hx(e),sp) for n,s,e,sp in claims]}
+ deps=source_dependencies(src)
+ expanded_source=expand_source_file(src,preserve_config_include=False).encode()
+ man={'profile':profile,'status':'BUILT_FROM_SOURCE','config':str(Path(config).relative_to(ROOT)) if Path(config).is_relative_to(ROOT) else str(config),'output_prg':prg.name,'output_load':hx(lo),'output_end':hx(hi),'output_sha256':hashlib.sha256(prg.read_bytes()).hexdigest(),'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),'expanded_source_sha256':hashlib.sha256(expanded_source).hexdigest(),'included_sources':{str(x.relative_to(ROOT)):hashlib.sha256(x.read_bytes()).hexdigest() for x in deps},'public_entries':{n:hx(const.get(n,labels.get(n))) for n in pubnames},'math_init':hx(const.get('MATH_INIT',labels.get('MATH_INIT'))),'public_io':f'{hx(vals["MATH_IO"])}-{hx(vals["MATH_IO"]+0x1f)}','reu_scratch':f'{hx(vals["REU_SCRATCH"])}-{hx(vals["REU_SCRATCH"]+3)}','reu_banks':{k:hx(vals[k],2) for k in REU_BANK_KEYS},'turbo_config':({'turbo16_zp':f'{hx(vals["TURBO16_ZP_BASE"],2)}-{hx(vals["TURBO16_ZP_BASE"]+112,2)}','turbo32_zp':f'{hx(vals["TURBO32_ZP_BASE"],2)}-{hx(vals["TURBO32_ZP_BASE"]+134,2)}'} if profile in REU else None),'reu_image':reu_info,'claims':[(n,hx(s),hx(e),sp) for n,s,e,sp in claims]}
  (outdir/'source_build_manifest.json').write_text(json.dumps(man,indent=2)+'\n');return man
 
 def main():

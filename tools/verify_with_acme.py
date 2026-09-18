@@ -4,7 +4,7 @@ from pathlib import Path
 import argparse,hashlib,json,os,shutil,subprocess,tempfile,sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
-from assemble_sources import build,parse_config,_assemble_overlay
+from assemble_sources import build,parse_config,_assemble_overlay,expand_source_file
 from source_relocation import PROFILES
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
@@ -22,7 +22,7 @@ def main():
    for p in PROFILES:
     cfg=ROOT/'relocatable_source'/p/f'math_config_{kind}.inc'; internal=build(p,cfg,td/'internal'/kind/p)
     stage=td/'stage'/kind/p;stage.mkdir(parents=True,exist_ok=True)
-    shutil.copy2(ROOT/'relocatable_source'/p/'math_relocatable.asm',stage/'math_relocatable.asm');shutil.copy2(cfg,stage/'math_config.inc')
+    (stage/'math_relocatable.asm').write_text(expand_source_file(ROOT/'relocatable_source'/p/'math_relocatable.asm',preserve_config_include=True));shutil.copy2(cfg,stage/'math_config.inc')
     out=stage/'acme.prg';cp=subprocess.run([acme,'-f','cbm','-o',str(out),'math_relocatable.asm'],cwd=stage,text=True,capture_output=True)
     if cp.returncode:raise RuntimeError(f'ACME failed {p}/{kind}:\n{cp.stdout}\n{cp.stderr}')
     ip=td/'internal'/kind/p/internal['output_prg'];same=out.read_bytes()==ip.read_bytes()

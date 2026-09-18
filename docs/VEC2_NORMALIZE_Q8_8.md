@@ -77,6 +77,37 @@ All fixed profiles expose the same entry and semantics, but use profile-appropri
 
 The cycle figures use the deterministic 107,396-vector normalization corpus and include the public entry path.
 
+
+### Standalone native sources
+
+The optimized kernels are now first-class source files rather than code buried in the
+monolithic relocatable source. V1-V4 include these files directly from their canonical
+`math_relocatable.asm`; V5 is built from the V1 base and publishes the byte-identical
+V1/V5 backend in its own profile directory for independent reuse.
+
+| Profile | Native source |
+|---|---|
+| V1 | `v1_balanced/resident/vector/native/vec2_normalize_q8_8.asm` |
+| V2 | `v2_pareto_fast/resident/vector/native/vec2_normalize_q8_8.asm` |
+| V3 | `v3_reu_512k/resident/vector/native/vec2_normalize_q8_8.asm` |
+| V4 | `v4_reu_16m/resident/vector/native/vec2_normalize_q8_8.asm` |
+| V5 | `v5_hybrid_lowzp/resident/vector/native/vec2_normalize_q8_8.asm` |
+
+Each adjacent `README.md` documents the exact scratch bytes, table pages, REU resources
+and minimal include pattern required to lift the routine into another game or demo.
+The native-source validator assembles every file independently on both reference and
+alternate maps and byte-compares it with the integrated profile build. V1/V5 and V3/V4
+are also checked to remain byte-identical source pairs.
+
+Run:
+
+```sh
+make normalize
+```
+
+The native-source evidence is written to
+`validation/normalize/NATIVE_SOURCE_VALIDATION.json`.
+
 ### V3/V4 REU layout
 
 For V3/V4 the final ratio index is precomputed for every normalized major/minor byte pair. The table is 128 x 256 = 32 KiB and occupies `$8000-$FFFF` inside the configured `REU_TURBO16_BANK`.

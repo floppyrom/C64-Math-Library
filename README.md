@@ -22,6 +22,8 @@ V5 is intended particularly for games and demos. It is **one build**, not two co
 
 The stable API now includes `MATH_VEC2_NORMALIZE_Q8_8`, an arbitrary-runtime signed Q8.8 2D normalizer returning signed Q1.15 components. The same contract is available in every profile and generated Custom Pareto build; the reference address is `$5E39`.
 
+The normalization kernels are also published as **canonical standalone native sources** under each profile's `resident/vector/native/` directory. V1-V4 include those files directly in the relocatable build; the V5 copy is byte-identical to the V1 backend it inherits. Each directory includes extraction/dependency notes for using the routine independently.
+
 | Profile | Mean cycles | Normal ZP policy | Backend |
 |---|---:|---|---|
 | V1 Balanced | **198.77** | 31-byte V1 contract | stock-C64 low-ZP backend |

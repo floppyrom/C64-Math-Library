@@ -821,9 +821,24 @@ The input vector is preserved. A/X/Y are volatile. The routine is approximate bu
 
 The implementation is profile-selected. V1/V5 keep the 31-byte low-ZP integration contract, V2 uses the Pareto-fast stock-C64 path, and V3/V4 use a 32 KiB direct ratio-index table in the upper half of the configured `REU_TURBO16_BANK`. See `docs/VEC2_NORMALIZE_Q8_8.md`.
 
+### Standalone normalization source
+
+The implementation can be taken directly from the profile-specific native source:
+
+- `v1_balanced/resident/vector/native/vec2_normalize_q8_8.asm`
+- `v2_pareto_fast/resident/vector/native/vec2_normalize_q8_8.asm`
+- `v3_reu_512k/resident/vector/native/vec2_normalize_q8_8.asm`
+- `v4_reu_16m/resident/vector/native/vec2_normalize_q8_8.asm`
+- `v5_hybrid_lowzp/resident/vector/native/vec2_normalize_q8_8.asm`
+
+These are executable build inputs, not pseudocode or post-build listings. The adjacent
+README in each directory lists the scratch/table/REU dependencies needed when lifting
+the routine out of the full library.
+
 ---
 
 # Part III — REU profiles
+
 
 ## 21. V3 512 KiB REU setup
 

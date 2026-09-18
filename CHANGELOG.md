@@ -7,6 +7,7 @@
 - Corrected full-domain certification passes at **<=0.360856382 degrees / <=200 Q1.15 LSB**, inside the public <=0.3621 degrees / <=202-LSB contract.
 - Fresh V1–V4 reference/alternate source builds pass **46/46 entries, 4,589 calls per map**. V5 exposes the same routine through its generated and shipped API includes. Custom Pareto validation now totals **55,068 common-API calls** across 12 builds.
 - Updated canonical source regeneration, REU image generation, performance/resource tables, API includes, manual, profile-selection/REU documentation and package metadata.
+- Broke the normalizer out into profile-local canonical native sources under `resident/vector/native/`; V1-V4 now include those files directly from `math_relocatable.asm`, while V5 publishes the byte-identical V1/V5 backend for standalone reuse. Added independent native-source assembly/byte-identity validation.
 
 ## 2026-09-17 — ATAN2 fast tiers + game audit
 

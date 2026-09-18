@@ -11,6 +11,17 @@ PRG={p:ROOT/p/'resident'/f'math_{p}_game_math.prg' for p in PROFILES}
 REU={'v3_reu_512k':ROOT/'v3_reu_512k/reu/c64_math_v3_512k_game_math.reu','v4_reu_16m':ROOT/'v4_reu_16m/reu/c64_math_v4_16m_game_math.reu'}
 PUBCSV=ROOT/'docs/PUBLIC_API_COMPLETE.csv'
 MATH_INIT_OLD=0x3280
+NORMALIZE_ENTRY_OLD=0x5e39
+NORMALIZE_END_OLD={
+ 'v1_balanced':0x5fc0,
+ 'v2_pareto_fast':0x5fb7,
+ 'v3_reu_512k':0x5f92,
+ 'v4_reu_16m':0x5f92,
+}
+NORMALIZE_NATIVE_REL={
+ p:f'../../{p}/resident/vector/native/vec2_normalize_q8_8.asm'
+ for p in PROFILES
+}
 # Source-backed immediate address fragments in the active reference images.
 IMM_ADDR={
  'v1_balanced':{0x3000:0x8000,0x3004:0x8200,0x3020:0x8400,0x3026:0x8800,0x302C:0x8600,0x3032:0x8A00,0x30B0:0x9000,0x30B8:0x8E00,0x3280:0x9000,0x3288:0x8E00,0x4900:0x8400,0x4908:0x8800,0x4910:0x8600,0x4918:0x8A00,0x2000:0x8000,0x2004:0x8200,0x2100:0x8000,0x2104:0x8200,0x2300:0x9000,0x2308:0x8E00,0x4871:0x8E00,0x4877:0x9000,0x4959:0x8E00,0x495F:0x9000},
@@ -269,6 +280,14 @@ def generate_source(profile,outpath:Path):
    for i in range(0,len(data),16):lines.append('    !byte '+', '.join(hx(x,2) for x in data[i:i+16]))
    data=[];data_start=None
   while a<=e:
+   if a==NORMALIZE_ENTRY_OLD:
+    flush()
+    lines += [
+      '; Canonical standalone VEC2 normalization backend for this profile.',
+      f'!source "{NORMALIZE_NATIVE_REL[profile]}"',
+    ]
+    a=NORMALIZE_END_OLD[profile]+1
+    continue
    if a in core_set:
     flush()
     if a==0xcc00:lines.extend(emit_core_image(profile,tm))

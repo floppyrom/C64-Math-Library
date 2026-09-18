@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "33 files"
+      "detail": "34 files"
     },
     {
       "check": "signed_layout_validation",
@@ -194,6 +194,14 @@
       "detail": {
         "angle": 0.36085638159979183,
         "component": 200
+      }
+    },
+    {
+      "check": "normalize_native_sources",
+      "status": "PASS",
+      "detail": {
+        "profiles": 5,
+        "checks": 16
       }
     },
     {
@@ -1160,7 +1168,12 @@
         "docs/TURBO_API.csv",
         "docs/PARETO_BUILDER.md",
         "docs/VEC2_NORMALIZE_Q8_8.md",
-        "validation/REVIEWED_RELEASE_VALIDATION.md"
+        "validation/REVIEWED_RELEASE_VALIDATION.md",
+        "v1_balanced/resident/vector/native/vec2_normalize_q8_8.asm",
+        "v2_pareto_fast/resident/vector/native/vec2_normalize_q8_8.asm",
+        "v3_reu_512k/resident/vector/native/vec2_normalize_q8_8.asm",
+        "v4_reu_16m/resident/vector/native/vec2_normalize_q8_8.asm",
+        "v5_hybrid_lowzp/resident/vector/native/vec2_normalize_q8_8.asm"
       ]
     },
     {
@@ -1216,7 +1229,7 @@
   ],
   "summary": {
     "acme_current_status": "NOT_RUN",
-    "checks_passed": 204,
+    "checks_passed": 205,
     "public_entries": 46,
     "alternate_entry_executions": 184,
     "alternate_machine_calls": 18356,

@@ -15,3 +15,8 @@ This release combines baseline evidence with fresh validation of the all-native-
 11. **Native-signed performance delta.** `review/NATIVE_SIGNED_DELTA_AUDIT.json` compares the immediate pre-refresh signed-taxonomy package with this release on identical corpora. Newly split/compacted multiplier paths improve by **3 cycles** on average exactly; the already-native V2–V4 SMUL16 is unchanged. The newly private `SDIV32_32` is also faster on all five profiles. Resident PRG sizes/load-end ranges are unchanged.
 
 The integrated `tools/release_audit.py` cross-checks these evidence files against the current generated binaries. When ACME is unavailable it reports `PASS_WITH_ACME_NOT_RUN` rather than treating historical ACME hashes as current evidence.
+
+## Standalone VEC2 normalization sources
+
+`MATH_VEC2_NORMALIZE_Q8_8` is published as a profile-local native source under `resident/vector/native/` in all five profiles. V1-V4 canonical relocatable builds include those files directly; V5 publishes the byte-identical V1-compatible backend and the hybrid builder rejects source drift. `tools/validate_normalize_native_sources.py` independently assembles all five files on reference and alternate maps and byte-compares them with the integrated routines. Current result: **16/16 checks PASS**, with no change to certified PRG/REU machine-code hashes or normalization timings.
+

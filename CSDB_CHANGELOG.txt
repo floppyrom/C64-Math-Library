@@ -4,6 +4,7 @@
 - Common precision contract <=0.3621 deg / <=202 LSB; corrected full-domain proof <=0.360856382 deg / <=200 LSB.
 - V1/V5 keep the 31-byte ZP contract. V3/V4 use a 32 KiB direct ratio-index table in the upper half of relocatable REU_TURBO16_BANK, with no extra REU bank.
 - Stable surface is now 46 entries in every fixed profile and generated Custom Pareto build. Fresh reference/alternate V1-V4 validation: 46/46, 4,589 calls per map; Pareto matrix: 55,068 common-API calls.
+- Normalize kernels are now available as standalone native ASM in every profile under resident/vector/native; V1-V4 include them directly in canonical source builds and validation byte-compares isolated vs integrated code on both maps.
 
 2026-09-17 ATAN2 FAST TIERS + GAME AUDIT
 - ATAN2 exhaustive 65,536-vector result: V1 50.441345 cycles mean (30-53), V2/V3 46.953064 (30-48), V4 exact 48 fixed, V5 46.953064; stock implementations use 0 extra ZP and V1-V3/V5 stay within 1 phase unit.

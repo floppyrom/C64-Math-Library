@@ -56,6 +56,8 @@ exact=json.loads((ROOT/'validation/normalize/EXACT_RATIO_FULL_DOMAIN_PRECISION_C
 ck('normalize_exact_ratio_certificate',exact.get('status')=='PASS' and exact.get('cells')==723073 and exact.get('max_angle_deg')<=0.3621 and exact.get('max_component_ceil')<=202,{'angle':exact.get('max_angle_deg'),'component':exact.get('max_component_ceil')})
 v2cert=json.loads((ROOT/'validation/normalize/V2_FULL_DOMAIN_PRECISION_CERTIFICATE.json').read_text())
 ck('normalize_v2_full_domain_certificate',v2cert.get('cells')==723073 and v2cert.get('max_angle_deg')<=0.3621 and v2cert.get('max_component_ceil')<=202,{'angle':v2cert.get('max_angle_deg'),'component':v2cert.get('max_component_ceil')})
+native_norm=json.loads((ROOT/'validation/normalize/NATIVE_SOURCE_VALIDATION.json').read_text())
+ck('normalize_native_sources',native_norm.get('status')=='PASS' and len(native_norm.get('profiles',{}))==5 and len(native_norm.get('checks',[]))==16,{'profiles':len(native_norm.get('profiles',{})),'checks':len(native_norm.get('checks',[]))})
 
 # Build and validation evidence.
 source_val=json.loads((ROOT/'validation/source_relocation/ALTERNATE_MAP_VALIDATION.json').read_text())
@@ -241,7 +243,7 @@ ck('consolidated_turbo32_135_zp',all(int(r['zp_bytes'])==135 for r in ct['rows']
 ck('consolidated_files_present',all((ROOT/x).exists() for x in ('docs/CONSOLIDATED_ROUTINE_TABLE.md','docs/CONSOLIDATED_ROUTINE_TABLE.csv','tools/generate_consolidated_routine_table.py')))
 
 # Documentation/release hygiene.
-needed=['README.md','QUICK_START.md','CHANGELOG.md','CSDB_CHANGELOG.txt','docs/SOURCE_RELOCATION.md','docs/TURBO_RELOCATION.md','docs/TURBO_API.csv','docs/PARETO_BUILDER.md','docs/VEC2_NORMALIZE_Q8_8.md','validation/REVIEWED_RELEASE_VALIDATION.md']
+needed=['README.md','QUICK_START.md','CHANGELOG.md','CSDB_CHANGELOG.txt','docs/SOURCE_RELOCATION.md','docs/TURBO_RELOCATION.md','docs/TURBO_API.csv','docs/PARETO_BUILDER.md','docs/VEC2_NORMALIZE_Q8_8.md','validation/REVIEWED_RELEASE_VALIDATION.md']+[f'{p}/resident/vector/native/vec2_normalize_q8_8.asm' for p in PROFILES+[HYBRID]]
 ck('required_docs',all((ROOT/x).exists() for x in needed),needed)
 manual=(ROOT/'USER_MANUAL.md').read_text()
 ck('turbo_plain_english_manual','Turbo modes in plain English' in manual and 'zero-page workbench' in manual and 'REU DMA' in manual)

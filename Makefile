@@ -51,6 +51,7 @@ pareto:
 	$(PYTHON) tools/build_pareto.py --zp-budget 60 --config-kind reference --name default_zp60
 
 normalize: reference alternate hybrid
+	$(PYTHON) tools/validate_normalize_native_sources.py
 	$(PYTHON) tools/benchmark_normalize_profile_parity.py
 	$(PYTHON) tools/certify_normalize_exact_ratio.py
 

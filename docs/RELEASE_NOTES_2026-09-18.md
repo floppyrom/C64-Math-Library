@@ -29,6 +29,9 @@ V1 and V5 preserve the 31-byte low-ZP integration contract. V2 uses the faster s
 
 - `PUBLIC_API_COMPLETE.csv` contains the 46th entry.
 - Every canonical `math_relocatable.asm` exports `MATH_VEC2_NORMALIZE_Q8_8 = REG_GAME_API+$0039`.
+- V1-V4 canonical relocatable sources now include profile-local `resident/vector/native/vec2_normalize_q8_8.asm` files directly; V5 publishes the byte-identical V1/V5 backend in its own native directory for standalone reuse.
+- Each native directory includes extraction notes covering scratch bytes, table pages and REU requirements.
+- `tools/validate_normalize_native_sources.py` independently assembles each native kernel on both maps and byte-compares it with the integrated build.
 - Every shipped profile `resident/math_api.inc` now exports the routine.
 - V3/V4 source regeneration keeps the normalization REU selector symbolic as `REU_TURBO16_BANK`.
 - `tools/assemble_sources.py` generates the 32 KiB REU ratio-index table for the selected Turbo16 bank.

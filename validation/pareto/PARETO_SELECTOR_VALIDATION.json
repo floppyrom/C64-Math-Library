@@ -259,7 +259,7 @@
         ],
         "zp_bytes": 60,
         "extra_ram": 7371,
-        "score": 556.6654772500001,
+        "score": 556.66547725,
         "init_required": true
       }
     },
@@ -307,7 +307,7 @@
         ],
         "zp_bytes": 176,
         "extra_ram": 7557,
-        "score": 899.2105242500002,
+        "score": 899.21052425,
         "init_required": true
       }
     },
@@ -373,7 +373,7 @@
         ],
         "zp_bytes": 55,
         "extra_ram": 6781,
-        "score": 4824.665417249999,
+        "score": 4824.66541725,
         "init_required": true
       }
     }
@@ -511,5 +511,5 @@
     }
   ],
   "common_api_machine_calls": 55068,
-  "elapsed_seconds": 24.423
+  "elapsed_seconds": 25.526
 }

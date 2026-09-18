@@ -1,12 +1,12 @@
 {
   "acme": {
-    "status": "NOT_RUN_CURRENT",
-    "historical_status": "PASS",
     "historical_assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
-    "note": "ACME is not installed in the current execution environment; historical identity evidence is retained, while current canonical builds pass the internal deterministic assembler and machine regressions.",
     "historical_checks": 8,
+    "historical_overlay_boundary_checks": 4,
     "historical_overlay_checks": 8,
-    "historical_overlay_boundary_checks": 4
+    "historical_status": "PASS",
+    "note": "ACME is not installed in the current execution environment; historical identity evidence is retained, while current canonical builds pass the internal deterministic assembler and machine regressions.",
+    "status": "NOT_RUN_CURRENT"
   },
   "alternate_prg_sha256": {
     "v1_balanced": "2379df65d43f302d11ad15668796925cf1e4c2e4a6176e1a51b1d11e42a2124d",
@@ -24,6 +24,15 @@
     "turbo32": "0130dc8e16fe48fe5e98039b95dab0675652ca40829ec89984dba65165f19b97"
   },
   "config_validation_cases": 27,
+  "consolidated_routine_table": {
+    "csv": "docs/CONSOLIDATED_ROUTINE_TABLE.csv",
+    "machine_evidence": "validation/CONSOLIDATED_ROUTINE_TABLE.json",
+    "markdown": "docs/CONSOLIDATED_ROUTINE_TABLE.md",
+    "rows": 245,
+    "stable_rows": 230,
+    "stack_page_reserved_bytes_all_shipped_rows": 0,
+    "status": "PASS"
+  },
   "custom_pareto": {
     "builder": "tools/build_pareto.py",
     "common_api_machine_calls": 55068,
@@ -109,14 +118,14 @@
   "documentation": {
     "code_change_from_turbo_final": true,
     "complete_user_manual": "USER_MANUAL.md",
+    "consolidated_routine_table": "docs/CONSOLIDATED_ROUTINE_TABLE.md",
     "custom_pareto_builder_doc": "docs/PARETO_BUILDER.md",
-    "manual_scope": "V1-V5 fixed profiles; 46-entry stable API; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; integration/troubleshooting",
+    "manual_scope": "V1-V5 fixed profiles; 46-entry stable API; standalone native VEC2 normalization sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 55408,
-    "user_manual_lines": 1750,
-    "user_manual_sha256": "346c56625d0e3cc1df5b138f6b9516057eae603487454e5f541c3c33367716ac",
-    "consolidated_routine_table": "docs/CONSOLIDATED_ROUTINE_TABLE.md"
+    "user_manual_bytes": 56062,
+    "user_manual_lines": 1764,
+    "user_manual_sha256": "8af9e9c5d2d267f6489ccf63f78a32084ecdb76938f62b5337b4b1f28ca0a840"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$F1FF",
@@ -172,22 +181,22 @@
     "Reference and alternate Turbo cycle vectors are identical; relocation adds zero runtime cycles.",
     "Fast exact independently derived ISQRT32 remains active; V4 uses 512 resident square-table bytes at $9800-$99FF."
   ],
-  "package_audit_checks": 22,
+  "package_audit_checks": 23,
   "package_cleanup": {
+    "consolidated_routine_table_rows": 245,
     "csdb_changelog": "CSDB_CHANGELOG.txt",
+    "current_acme_validation": false,
     "generated_build_hybrid_shipped": false,
     "generated_build_pareto_shipped": false,
     "generated_build_source_shipped": false,
-    "lean_file_count_excluding_checksum": 486,
+    "lean_file_count_excluding_checksum": 498,
+    "legacy_native_signed_tree_removed": true,
     "obsolete_development_validators_removed": 2,
     "package_contents_doc": "docs/PACKAGE_CONTENTS.md",
     "prior_exhaustive_baseline_retained": true,
     "superseded_slow_isqrt32_baseline_shipped": false,
-    "unreferenced_legacy_bin_label_artifacts_removed": 27,
-    "legacy_native_signed_tree_removed": true,
-    "uncompressed_bytes_excluding_checksum": 21882471,
-    "consolidated_routine_table_rows": 245,
-    "current_acme_validation": false
+    "uncompressed_bytes_excluding_checksum": 21925954,
+    "unreferenced_legacy_bin_label_artifacts_removed": 27
   },
   "profiles": [
     "v1_balanced",
@@ -212,8 +221,26 @@
     "turbo32": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a"
   },
   "release": "c64_math_library_v1-v5_VEC2_NORMALIZE_46ENTRY_2026-09-18",
-  "release_audit_checks": 204,
+  "release_audit_checks": 205,
+  "release_audit_status": "PASS_WITH_ACME_NOT_RUN",
   "reu_turbo_lifecycle_entries": 6,
+  "signed_implementation_taxonomy": {
+    "definition": "signed path owns executable arithmetic; no corresponding unsigned executable engine entered; immutable tables may be shared",
+    "layout_checks": 279,
+    "resident_load_end_ranges_unchanged": true,
+    "same_corpus_multiply_regressions": 0,
+    "same_corpus_sdiv32_32_regressions": 0,
+    "sdiv32_32": "private native-signed 32/32 division core across fixed profiles",
+    "signed_division_errors": 0,
+    "signed_division_machine_calls": 364533,
+    "signed_multiply_errors": 0,
+    "signed_multiply_machine_calls": 264999,
+    "smul8_24_32": "private native-signed executable paths across fixed profiles",
+    "status": "PASS",
+    "v1_v5_smul16": "private native-signed executable path; 31-byte normal-ZP contract preserved",
+    "v2_v3_v4_smul16": "native signed smul16_practical_116zp executable-ZP kernel",
+    "zero_overlap_comparisons": 65
+  },
   "source_relocation": {
     "entries_executed": 184,
     "machine_calls": 18356,
@@ -256,47 +283,13 @@
     "total_turbo_api_calls": 17196,
     "zero_runtime_relocation_penalty": true
   },
-  "signed_implementation_taxonomy": {
-    "status": "PASS",
-    "definition": "signed path owns executable arithmetic; no corresponding unsigned executable engine entered; immutable tables may be shared",
-    "layout_checks": 279,
-    "zero_overlap_comparisons": 65,
-    "signed_multiply_machine_calls": 264999,
-    "signed_multiply_errors": 0,
-    "signed_division_machine_calls": 364533,
-    "signed_division_errors": 0,
-    "v2_v3_v4_smul16": "native signed smul16_practical_116zp executable-ZP kernel",
-    "v1_v5_smul16": "private native-signed executable path; 31-byte normal-ZP contract preserved",
-    "smul8_24_32": "private native-signed executable paths across fixed profiles",
-    "sdiv32_32": "private native-signed 32/32 division core across fixed profiles",
-    "same_corpus_multiply_regressions": 0,
-    "same_corpus_sdiv32_32_regressions": 0,
-    "resident_load_end_ranges_unchanged": true
-  },
-  "release_audit_status": "PASS_WITH_ACME_NOT_RUN",
-  "consolidated_routine_table": {
-    "status": "PASS",
-    "rows": 245,
-    "stable_rows": 230,
-    "csv": "docs/CONSOLIDATED_ROUTINE_TABLE.csv",
-    "markdown": "docs/CONSOLIDATED_ROUTINE_TABLE.md",
-    "machine_evidence": "validation/CONSOLIDATED_ROUTINE_TABLE.json",
-    "stack_page_reserved_bytes_all_shipped_rows": 0
-  },
   "vec2_normalize_q8_8": {
-    "status": "PASS",
-    "public_entry": "MATH_VEC2_NORMALIZE_Q8_8",
-    "reference_address": "$5E39",
-    "stable_api_entries": 46,
     "contract": "signed Q8.8 x/y -> signed Q1.15 normalized x/y; C=1 only for zero vector",
-    "precision_contract": {
-      "max_angle_deg": 0.3621,
-      "max_component_lsb": 202
-    },
+    "corpus_vectors": 107396,
     "full_domain_certificate": {
+      "cells": 723073,
       "max_angle_deg": 0.36085638159979183,
-      "max_component_lsb": 200,
-      "cells": 723073
+      "max_component_lsb": 200
     },
     "mean_cycles": {
       "v1_balanced": 198.770271,
@@ -305,6 +298,28 @@
       "v4_reu_16m": 170.058633,
       "v5_hybrid_lowzp": 198.770271
     },
-    "corpus_vectors": 107396
+    "native_sources": {
+      "fixed_profiles_include_native_source_directly": true,
+      "machine_code_changed_by_breakout": false,
+      "status": "PASS",
+      "v1_balanced": "v1_balanced/resident/vector/native/vec2_normalize_q8_8.asm",
+      "v1_v5_identical": true,
+      "v2_pareto_fast": "v2_pareto_fast/resident/vector/native/vec2_normalize_q8_8.asm",
+      "v3_reu_512k": "v3_reu_512k/resident/vector/native/vec2_normalize_q8_8.asm",
+      "v3_v4_identical": true,
+      "v4_reu_16m": "v4_reu_16m/resident/vector/native/vec2_normalize_q8_8.asm",
+      "v5_hybrid_lowzp": "v5_hybrid_lowzp/resident/vector/native/vec2_normalize_q8_8.asm",
+      "v5_inherited_backend_drift_guard": true,
+      "validation": "validation/normalize/NATIVE_SOURCE_VALIDATION.json",
+      "validation_checks": 16
+    },
+    "precision_contract": {
+      "max_angle_deg": 0.3621,
+      "max_component_lsb": 202
+    },
+    "public_entry": "MATH_VEC2_NORMALIZE_Q8_8",
+    "reference_address": "$5E39",
+    "stable_api_entries": 46,
+    "status": "PASS"
   }
 }

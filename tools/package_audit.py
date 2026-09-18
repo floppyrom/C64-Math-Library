@@ -22,6 +22,7 @@ ck('pareto_tools_shipped',all((ROOT/x).exists() for x in ('tools/build_pareto.py
 ck('signed_taxonomy_documented',all((ROOT/x).exists() for x in ('docs/SIGNED_IMPLEMENTATIONS.md','docs/SIGNED_IMPLEMENTATION_REFERENCE.md','docs/SIGNED_IMPLEMENTATION_SELECTION.csv','docs/SIGNED_IMPLEMENTATION_VALIDATION.md','docs/PERFORMANCE_SIGNED_IMPLEMENTATIONS.csv')))
 ck('signed_validation_tools_shipped',all((ROOT/x).exists() for x in ('tools/validate_signed_layout.py','tools/validate_signed_multiply.py','tools/validate_signed_division.py','tools/upgrade_native_signed.py','tools/publish_native_signed_sources.py','tools/validate_published_signed_sources.py')))
 ck('signed_profile_trees',all((ROOT/p/'resident/signed/README.md').exists() for p in ('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')))
+ck('normalize_native_sources_shipped',all((ROOT/p/'resident/vector/native/vec2_normalize_q8_8.asm').exists() and (ROOT/p/'resident/vector/native/README.md').exists() for p in ('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')))
 signed_profiles=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
 published_mul=('smul8_native.asm','smul16_native.asm','smul24_native.asm','smul32_native.asm','smul32_ready_native.asm','smul16_shr8_native.asm','smul32_shr16_native.asm')
 published_div=('sdiv8_native.asm','sdiv16_native.asm','sdiv24_native.asm','sdiv32_16_native.asm','sdiv32_32_native.asm','sdiv16_shl8_native.asm')
