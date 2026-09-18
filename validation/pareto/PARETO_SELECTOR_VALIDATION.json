@@ -12,10 +12,10 @@
         "extra_private_ram_bytes": 6021,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "df0454c7f7259e7585ff399c206d569d09e4c19879e3b7a4b09ede6ab5b48d3e"
+        "sha256": "b9776aef8b486082bf76363a7a8a7df6dddab5985c4489133489ce26a5459565"
       },
       "36": {
         "selected_packs": [
@@ -25,13 +25,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_private_ram_bytes": 6576,
+        "extra_private_ram_bytes": 6611,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "2b29006872bba3395d522c97571f23df9eaa15780c3ccbf199bc5b5124eeb445"
+        "sha256": "496437b3edaf9dded31277844d353fa61831ae5d7aefc9323979e90459fc1817"
       },
       "60": {
         "selected_packs": [
@@ -42,13 +42,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 7336,
+        "extra_private_ram_bytes": 7371,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "b19072f752316652b150ca35fea8e87f481237518e28b743333abc1ce7176bd4"
+        "sha256": "f528c677338a69c01c5e0eca9dea3cff2ca9e2db9f607976207441f125a02f71"
       },
       "147": {
         "selected_packs": [
@@ -61,10 +61,10 @@
         "extra_private_ram_bytes": 6207,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "62efb2254d8ad411d5341b77f0f4eab14aa2333c867beb6dc68970ab86511612"
+        "sha256": "ec45b1332fd09d90c005f4778dd337f005d950e7bcc9a48620fbfbe03c00fce2"
       },
       "176": {
         "selected_packs": [
@@ -76,13 +76,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 7522,
+        "extra_private_ram_bytes": 7557,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "a3438bf92d1b04102c33250b548b2eefc3b1949536a5aae74dc53c8cf1c09be6"
+        "sha256": "78399cfe97df1afefc42ab23f76d55406168a2232b7a6e5105e1f2f8a6a9369e"
       },
       "221": {
         "selected_packs": [
@@ -92,10 +92,10 @@
         "extra_private_ram_bytes": 208,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "10af446bd1f49bcf02f9529d7944881d85f0e9b8dec2712638e306b0fab72828"
+        "sha256": "92613e5e656a80541a7ae2a04aa8cce9775668173d6700f861db1d37f0714421"
       }
     },
     "alternate": {
@@ -109,10 +109,10 @@
         "extra_private_ram_bytes": 6021,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "79a76d3e2ee65c317aaf098ef84f933aac2c99758c6602b8d2039a20cb6d5ec2"
+        "sha256": "4fc92fcd9ff95c94e28464dde59993764572773a46cbbb5d4c92a42eaca9e913"
       },
       "36": {
         "selected_packs": [
@@ -122,13 +122,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_private_ram_bytes": 6576,
+        "extra_private_ram_bytes": 6611,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "695133d9ca60a068f4b026de53543cb8422c4fe5cce45003063c1a3f50f18eda"
+        "sha256": "e7b44d5de529a7ce7ce46a632667f3895116ecd8bce946da59710e4e26c33c21"
       },
       "60": {
         "selected_packs": [
@@ -139,13 +139,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 7336,
+        "extra_private_ram_bytes": 7371,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "742495282ded40840aa247149a7234d06a2f051904b938ce1a19502e5f54596d"
+        "sha256": "94feb5d310e42436bb75f72dd4e4036c8eac97e1a27cd872a4973b76bdb5a2b9"
       },
       "147": {
         "selected_packs": [
@@ -158,10 +158,10 @@
         "extra_private_ram_bytes": 6207,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "5286784cf45eafc80ea398f087d2742e5a65bf900a2c2f29e15b3b8a536f562a"
+        "sha256": "b725a468d058e11d1df051a043c6966660256219641904e599451e61a5522719"
       },
       "176": {
         "selected_packs": [
@@ -173,13 +173,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 7522,
+        "extra_private_ram_bytes": 7557,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "3c6542b55874094943ead2f3eb26d833ae9142bfee9167e743df70ee5f63eeb3"
+        "sha256": "019dfa67f4be44a52faa88ca4293b029610830d2fa0bc11d529b4c48d54b3231"
       },
       "221": {
         "selected_packs": [
@@ -189,10 +189,10 @@
         "extra_private_ram_bytes": 208,
         "init_required": true,
         "common_api": {
-          "entries": 45,
-          "calls": 4172
+          "entries": 46,
+          "calls": 4589
         },
-        "sha256": "fa8f08448e1d4fabf368e33715157ea5627793dee875b72145d4296f9771f66e"
+        "sha256": "a601329ce4c1fa4fbc41ee8cc14551095a120ad6ed5d9eca69fd9e4bb7b24af0"
       }
     }
   },
@@ -234,8 +234,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_ram": 6576,
-        "score": 394.91508425,
+        "extra_ram": 6611,
+        "score": 406.91511425,
         "init_required": true
       }
     },
@@ -258,8 +258,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_ram": 7336,
-        "score": 544.6654472499999,
+        "extra_ram": 7371,
+        "score": 556.6654772500001,
         "init_required": true
       }
     },
@@ -306,8 +306,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_ram": 7522,
-        "score": 887.2104942499999,
+        "extra_ram": 7557,
+        "score": 899.2105242500002,
         "init_required": true
       }
     },
@@ -373,7 +373,7 @@
         ],
         "zp_bytes": 55,
         "extra_ram": 6781,
-        "score": 4824.66541725,
+        "score": 4824.665417249999,
         "init_required": true
       }
     }
@@ -488,28 +488,28 @@
     {
       "map": "reference",
       "zp_budget": 31,
-      "sha256": "df0454c7f7259e7585ff399c206d569d09e4c19879e3b7a4b09ede6ab5b48d3e",
+      "sha256": "b9776aef8b486082bf76363a7a8a7df6dddab5985c4489133489ce26a5459565",
       "identical": true
     },
     {
       "map": "reference",
       "zp_budget": 176,
-      "sha256": "a3438bf92d1b04102c33250b548b2eefc3b1949536a5aae74dc53c8cf1c09be6",
+      "sha256": "78399cfe97df1afefc42ab23f76d55406168a2232b7a6e5105e1f2f8a6a9369e",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 31,
-      "sha256": "79a76d3e2ee65c317aaf098ef84f933aac2c99758c6602b8d2039a20cb6d5ec2",
+      "sha256": "4fc92fcd9ff95c94e28464dde59993764572773a46cbbb5d4c92a42eaca9e913",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 176,
-      "sha256": "3c6542b55874094943ead2f3eb26d833ae9142bfee9167e743df70ee5f63eeb3",
+      "sha256": "019dfa67f4be44a52faa88ca4293b029610830d2fa0bc11d529b4c48d54b3231",
       "identical": true
     }
   ],
-  "common_api_machine_calls": 50064,
-  "elapsed_seconds": 27.386
+  "common_api_machine_calls": 55068,
+  "elapsed_seconds": 24.423
 }

@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "32 files"
+      "detail": "33 files"
     },
     {
       "check": "signed_layout_validation",
@@ -34,7 +34,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 15.36
+        "elapsed_seconds": 23.72
       }
     },
     {
@@ -43,7 +43,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 15.36
+        "elapsed_seconds": 23.72
       }
     },
     {
@@ -57,8 +57,8 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 364533,
-        "elapsed_seconds": 11.66,
-        "note": "Merged from deterministic per-profile runs using global profile-index RNG seeding; same corpus as monolithic validator."
+        "execution": "merged deterministic per-profile parallel runs",
+        "max_profile_elapsed_seconds": 11.51
       }
     },
     {
@@ -67,8 +67,8 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 364533,
-        "elapsed_seconds": 11.66,
-        "note": "Merged from deterministic per-profile runs using global profile-index RNG seeding; same corpus as monolithic validator."
+        "execution": "merged deterministic per-profile parallel runs",
+        "max_profile_elapsed_seconds": 11.51
       }
     },
     {
@@ -79,7 +79,7 @@
     {
       "check": "public_api_count",
       "status": "PASS",
-      "detail": 45
+      "detail": 46
     },
     {
       "check": "public_api_unique",
@@ -108,7 +108,8 @@
         "$5E2D",
         "$5E30",
         "$5E33",
-        "$5E36"
+        "$5E36",
+        "$5E39"
       ]
     },
     {
@@ -127,6 +128,75 @@
       "detail": null
     },
     {
+      "check": "normalize_profile_parity",
+      "status": "PASS",
+      "detail": {
+        "profiles": 5,
+        "corpus": 107396
+      }
+    },
+    {
+      "check": "normalize_v1_balanced_107396",
+      "status": "PASS",
+      "detail": {
+        "mean": 198.77027077358562,
+        "max_angle": 0.35157368676214956,
+        "max_component": 196
+      }
+    },
+    {
+      "check": "normalize_v2_pareto_fast_107396",
+      "status": "PASS",
+      "detail": {
+        "mean": 189.26031695780102,
+        "max_angle": 0.35157368676214956,
+        "max_component": 196
+      }
+    },
+    {
+      "check": "normalize_v3_reu_512k_107396",
+      "status": "PASS",
+      "detail": {
+        "mean": 170.05863346865806,
+        "max_angle": 0.35157368676214956,
+        "max_component": 196
+      }
+    },
+    {
+      "check": "normalize_v4_reu_16m_107396",
+      "status": "PASS",
+      "detail": {
+        "mean": 170.05863346865806,
+        "max_angle": 0.35157368676214956,
+        "max_component": 196
+      }
+    },
+    {
+      "check": "normalize_v5_hybrid_lowzp_107396",
+      "status": "PASS",
+      "detail": {
+        "mean": 198.77027077358562,
+        "max_angle": 0.35157368676214956,
+        "max_component": 196
+      }
+    },
+    {
+      "check": "normalize_exact_ratio_certificate",
+      "status": "PASS",
+      "detail": {
+        "angle": 0.36085638159979183,
+        "component": 199
+      }
+    },
+    {
+      "check": "normalize_v2_full_domain_certificate",
+      "status": "PASS",
+      "detail": {
+        "angle": 0.36085638159979183,
+        "component": 200
+      }
+    },
+    {
       "check": "alternate_validation_status",
       "status": "PASS",
       "detail": null
@@ -137,17 +207,17 @@
       "detail": null
     },
     {
-      "check": "alternate_entries_180",
+      "check": "alternate_entries_184",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "alternate_calls_16688",
+      "check": "alternate_calls_18356",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "v1_balanced_45_entries",
+      "check": "v1_balanced_46_entries",
       "status": "PASS",
       "detail": null
     },
@@ -157,7 +227,7 @@
       "detail": null
     },
     {
-      "check": "v2_pareto_fast_45_entries",
+      "check": "v2_pareto_fast_46_entries",
       "status": "PASS",
       "detail": null
     },
@@ -167,7 +237,7 @@
       "detail": null
     },
     {
-      "check": "v3_reu_512k_45_entries",
+      "check": "v3_reu_512k_46_entries",
       "status": "PASS",
       "detail": null
     },
@@ -177,7 +247,7 @@
       "detail": null
     },
     {
-      "check": "v4_reu_16m_45_entries",
+      "check": "v4_reu_16m_46_entries",
       "status": "PASS",
       "detail": null
     },
@@ -477,27 +547,27 @@
       "detail": null
     },
     {
-      "check": "v1_balanced_manifest_45",
+      "check": "v1_balanced_manifest_46",
       "status": "PASS",
       "detail": null
     },
     {
       "check": "v1_balanced_reference_prg_exact",
       "status": "PASS",
-      "detail": "2e930fc8c0c487406fd36832e772885d8d11fa708950fd95334f0218dccc9964"
+      "detail": "73d0feef6f7dfb88de5b35b8ac3b02365a957d775fd07e4f9ecdbf1fb5414ec0"
     },
     {
-      "check": "v2_pareto_fast_manifest_45",
+      "check": "v2_pareto_fast_manifest_46",
       "status": "PASS",
       "detail": null
     },
     {
       "check": "v2_pareto_fast_reference_prg_exact",
       "status": "PASS",
-      "detail": "10af446bd1f49bcf02f9529d7944881d85f0e9b8dec2712638e306b0fab72828"
+      "detail": "92613e5e656a80541a7ae2a04aa8cce9775668173d6700f861db1d37f0714421"
     },
     {
-      "check": "v3_reu_512k_manifest_45",
+      "check": "v3_reu_512k_manifest_46",
       "status": "PASS",
       "detail": null
     },
@@ -514,15 +584,15 @@
     {
       "check": "v3_reu_512k_reference_prg_exact",
       "status": "PASS",
-      "detail": "f4113d322f168e3ac30339fe427cf9965d439ca173a2cb78d064eb8ca55e36f8"
+      "detail": "a37cb3e6236aec2a417990584eb12d1878e6183b421c2fe56882d923a92affe1"
     },
     {
       "check": "v3_reu_512k_reference_reu_exact",
       "status": "PASS",
-      "detail": "f81fb6ad3da84b3af89685483a6b81baeaf3f9817789c9e7b5ce838eddaaa9b9"
+      "detail": "66a3feab7d1a18356291c2aac9f404627ca13004d1032d6c6efb4cd1e4f1acf5"
     },
     {
-      "check": "v4_reu_16m_manifest_45",
+      "check": "v4_reu_16m_manifest_46",
       "status": "PASS",
       "detail": null
     },
@@ -539,12 +609,12 @@
     {
       "check": "v4_reu_16m_reference_prg_exact",
       "status": "PASS",
-      "detail": "bcf4f35341719190cdb25b7b142c9338b1a955db511cb790129a00f646b73405"
+      "detail": "0d398ea2f08b67f6bbcb546ffeaf06baa225a95520e1e5e1cd2829e3176023f5"
     },
     {
       "check": "v4_reu_16m_reference_reu_exact",
       "status": "PASS",
-      "detail": "eb5bc703ab92add9e1f5ee7a1c55c62a244a104e94895f981535312c8fcd1482"
+      "detail": "123e870c5d30a0ae08098911bdf8c3e37f328f372a71b829d740622f8bf9f240"
     },
     {
       "check": "hybrid_validation_status",
@@ -552,12 +622,12 @@
       "detail": null
     },
     {
-      "check": "hybrid_reference_45_entries",
+      "check": "hybrid_reference_46_entries",
       "status": "PASS",
       "detail": {
         "status": "PASS",
-        "public_entries": 45,
-        "machine_calls": 4172
+        "public_entries": 46,
+        "machine_calls": 4589
       }
     },
     {
@@ -580,12 +650,12 @@
       }
     },
     {
-      "check": "hybrid_alternate_45_entries",
+      "check": "hybrid_alternate_46_entries",
       "status": "PASS",
       "detail": {
         "status": "PASS",
-        "public_entries": 45,
-        "machine_calls": 4172
+        "public_entries": 46,
+        "machine_calls": 4589
       }
     },
     {
@@ -683,14 +753,14 @@
       "detail": null
     },
     {
-      "check": "hybrid_manifest_45",
+      "check": "hybrid_manifest_46",
       "status": "PASS",
       "detail": null
     },
     {
       "check": "hybrid_reference_prg_exact",
       "status": "PASS",
-      "detail": "e43c71d5bbee0c2690d970cff061f77804c4ed0a2bffc0a6281437f55066b7f2"
+      "detail": "510d99d5b31325e6292a9e0c051a9ebedad16cb33ff3a20d6b0ef92329a346ad"
     },
     {
       "check": "hybrid_docs_present",
@@ -708,9 +778,9 @@
       "detail": 12
     },
     {
-      "check": "pareto_matrix_50064_calls",
+      "check": "pareto_matrix_55068_calls",
       "status": "PASS",
-      "detail": 50064
+      "detail": 55068
     },
     {
       "check": "pareto_reference_six_breakpoints",
@@ -718,32 +788,32 @@
       "detail": null
     },
     {
-      "check": "pareto_reference_31_45_entries",
+      "check": "pareto_reference_31_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_36_45_entries",
+      "check": "pareto_reference_36_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_60_45_entries",
+      "check": "pareto_reference_60_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_147_45_entries",
+      "check": "pareto_reference_147_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_176_45_entries",
+      "check": "pareto_reference_176_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_221_45_entries",
+      "check": "pareto_reference_221_46_entries",
       "status": "PASS",
       "detail": null
     },
@@ -753,32 +823,32 @@
       "detail": null
     },
     {
-      "check": "pareto_alternate_31_45_entries",
+      "check": "pareto_alternate_31_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_36_45_entries",
+      "check": "pareto_alternate_36_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_60_45_entries",
+      "check": "pareto_alternate_60_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_147_45_entries",
+      "check": "pareto_alternate_147_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_176_45_entries",
+      "check": "pareto_alternate_176_46_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_221_45_entries",
+      "check": "pareto_alternate_221_46_entries",
       "status": "PASS",
       "detail": null
     },
@@ -959,7 +1029,7 @@
         "atan_body": "$C814-$C87D",
         "isqrt16_body": "$C8DB",
         "code_bytes": 106,
-        "sha256": "2e930fc8c0c487406fd36832e772885d8d11fa708950fd95334f0218dccc9964",
+        "sha256": "1b0f3afeeee150fe98e34dc250cc8ec64ed3fc9b1800927a9063739dfbc63c18",
         "cases": 65536,
         "mean_cycles": 50.44134521484375,
         "min_cycles": 30,
@@ -989,7 +1059,7 @@
         "atan_body": "$C782-$C7DF",
         "isqrt16_body": "$C836",
         "code_bytes": 94,
-        "sha256": "10af446bd1f49bcf02f9529d7944881d85f0e9b8dec2712638e306b0fab72828",
+        "sha256": "668328db298307f75cb17b510dd01bba49f0057bd96f0059b0c2a9ee4c81e77e",
         "cases": 65536,
         "mean_cycles": 46.95306396484375,
         "min_cycles": 30,
@@ -1019,7 +1089,7 @@
         "atan_body": "$C78D-$C7EA",
         "isqrt16_body": "$C841",
         "code_bytes": 94,
-        "sha256": "f4113d322f168e3ac30339fe427cf9965d439ca173a2cb78d064eb8ca55e36f8",
+        "sha256": "6b2eaf5349354a2a2c4b9290387f1a09e6bc8938d370eddcb5329956b751e600",
         "cases": 65536,
         "mean_cycles": 46.95306396484375,
         "min_cycles": 30,
@@ -1048,12 +1118,12 @@
       "detail": null
     },
     {
-      "check": "consolidated_table_rows_240",
+      "check": "consolidated_table_rows_245",
       "status": "PASS",
-      "detail": 240
+      "detail": 245
     },
     {
-      "check": "consolidated_stable_rows_225",
+      "check": "consolidated_stable_rows_230",
       "status": "PASS",
       "detail": null
     },
@@ -1078,31 +1148,6 @@
       "detail": null
     },
     {
-      "check": "signed_partial_research_status",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "signed_partial_smul8_shipped",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "signed_partial_smul16_rejected",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "signed_partial_32x8_matched",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "signed_partial_research_docs",
-      "status": "PASS",
-      "detail": null
-    },
-    {
       "check": "required_docs",
       "status": "PASS",
       "detail": [
@@ -1114,6 +1159,7 @@
         "docs/TURBO_RELOCATION.md",
         "docs/TURBO_API.csv",
         "docs/PARETO_BUILDER.md",
+        "docs/VEC2_NORMALIZE_Q8_8.md",
         "validation/REVIEWED_RELEASE_VALIDATION.md"
       ]
     },
@@ -1170,10 +1216,10 @@
   ],
   "summary": {
     "acme_current_status": "NOT_RUN",
-    "checks_passed": 201,
-    "public_entries": 45,
-    "alternate_entry_executions": 180,
-    "alternate_machine_calls": 16688,
+    "checks_passed": 204,
+    "public_entries": 46,
+    "alternate_entry_executions": 184,
+    "alternate_machine_calls": 18356,
     "config_cases": 27,
     "turbo_product_calls": 17164,
     "turbo_lifecycle_calls": 32,
@@ -1181,13 +1227,13 @@
     "turbo_boundary_product_calls": 3556,
     "reu_profiles_turbo_entries": 6,
     "isqrt32_cases_per_profile": 5097,
-    "hybrid_public_entries": 45,
-    "hybrid_common_machine_calls_per_map": 4172,
+    "hybrid_public_entries": 46,
+    "hybrid_common_machine_calls_per_map": 4589,
     "hybrid_direct_import_cases": 144246,
     "hybrid_optional_init_cases": 2000,
     "hybrid_zp_bytes": 31,
     "pareto_matrix_builds": 12,
-    "pareto_common_machine_calls": 50064,
+    "pareto_common_machine_calls": 55068,
     "pareto_direct_cycle_parity_cases": 75644,
     "pareto_smul16_stress_cases": 50144,
     "pareto_mixed_workload_iterations": 25000,

@@ -5,7 +5,7 @@
 **Target CPU:** NMOS 6502/6510, Commodore 64  
 **Profiles:** V1 Balanced, V2 Pareto-Fast, V3 REU 512K, V4 REU 16M, V5 Hybrid Low-ZP
 
-This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 45-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 small-batch mode.
+This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 46-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 small-batch mode.
 
 The short version is:
 
@@ -46,7 +46,7 @@ Recommended default choices:
 - Stock C64, V1-sized ZP budget but faster division/modulo/COS/SINCOS: **V5**.
 - New stock-C64 game/demo where you know your available ZP/RAM: **Custom Pareto Builder** (recommended flexible path).
 
-All five resident profiles and generated Pareto profiles expose the same **45-entry stable API**. V3/V4 additionally expose six stateful Turbo lifecycle entries. V4 also contains the specialized QS16 small-batch mode. V5 and custom Pareto builds add no new public calls.
+All five resident profiles and generated Pareto profiles expose the same **46-entry stable API**. V3/V4 additionally expose six stateful Turbo lifecycle entries. V4 also contains the specialized QS16 small-batch mode. V5 and custom Pareto builds add no new public calls.
 
 ---
 
@@ -299,10 +299,10 @@ Current equal-weight breakpoints are:
 | ZP | Default selection | Exact extra RAM vs V1 |
 |---:|---|---:|
 | 31 | `atan2_fast` + V5 zero-ZP imports + initialized UMUL32 | 6021 B |
-| 36 | above + UMUL8/SMUL8 pack | 6576 B |
-| 60 | above + record UMUL16/UMUL24 pack | 7336 B |
+| 36 | above + UMUL8/SMUL8 pack | 6611 B |
+| 60 | above + record UMUL16/UMUL24 pack | 7371 B |
 | 147 | `atan2_fast` + V5 imports + initialized UMUL32 + native SMUL16 | 6207 B |
-| 176 | all certified hybrid packs, including `atan2_fast` | 7522 B |
+| 176 | all certified hybrid packs, including `atan2_fast` | 7557 B |
 | 221 | complete V2 | 208 B resident increase |
 
 The optimizer maximizes weighted cycle savings, so resource use is not required to be monotonic across those points. At 31 ZP + `--ram-budget 0`, the generated PRG is byte-identical to V1. At 31 ZP + `--init-policy optional`, it is byte-identical to V5. At 221 ZP the builder selects complete V2.
@@ -447,7 +447,7 @@ For multiply entries, Carry returns clear.
 
 ---
 
-# Part II — Stable 45-entry API reference
+# Part II — Stable 46-entry API reference
 
 ## 9. Unsigned multiplication
 
@@ -802,6 +802,24 @@ Z[0] = rounded 243/256 * max + rounded 107/256 * min
 ```
 
 The accurate coefficient pair was selected exhaustively for the documented integer form. Both routines return an unsigned byte in `Z[0]` and `C=0`.
+
+---
+
+## 20A. 2D Q8.8 vector normalization
+
+```text
+MATH_VEC2_NORMALIZE_Q8_8
+input:   X[0..1] = signed Q8.8 x
+         Y[0..1] = signed Q8.8 y
+output:  Z[0..1] = signed Q1.15 normalized x
+         Z[2..3] = signed Q1.15 normalized y
+status:  C=0 for a non-zero vector
+         C=1 for (0,0), with Z[0..3]=0
+```
+
+The input vector is preserved. A/X/Y are volatile. The routine is approximate but uses the same certified error contract in every fixed profile and generated Custom Pareto build: angular error <=0.3621 degrees and component error <=202 Q1.15 LSB. The current full-domain certificate is tighter at <=0.360856382 degrees / <=200 LSB.
+
+The implementation is profile-selected. V1/V5 keep the 31-byte low-ZP integration contract, V2 uses the Pareto-fast stock-C64 path, and V3/V4 use a 32 KiB direct ratio-index table in the upper half of the configured `REU_TURBO16_BANK`. See `docs/VEC2_NORMALIZE_Q8_8.md`.
 
 ---
 
@@ -1165,7 +1183,7 @@ Do not mix QS16 and Turbo lifecycles.
 
 ## 30. Reference compatibility helper entries
 
-The historical/reference includes also expose several convenience helpers that are not counted among the common 45 stable API entries:
+The historical/reference includes also expose several convenience helpers that are not counted among the common 46 stable API entries:
 
 ```text
 MATH_Z16_TO_N32
@@ -1199,7 +1217,7 @@ MATH_Z16_TO_N32 = MATH_UMUL8+$0230
 ; etc.
 ```
 
-These helpers are useful for zero-host-marshalling composition, but the compatibility guarantee of the release is centered on the 45 stable API entries plus the explicitly documented V3/V4 Turbo lifecycle surface.
+These helpers are useful for zero-host-marshalling composition, but the compatibility guarantee of the release is centered on the 46 stable API entries plus the explicitly documented V3/V4 Turbo lifecycle surface.
 
 ---
 
@@ -1258,6 +1276,27 @@ If chaining in application code, copy values before a later call overwrites the 
 
 ---
 
+## 33A. Normalize a Q8.8 direction
+
+```asm
+        ; vector (3.0, 4.0) in Q8.8
+        lda #$00
+        sta MATH_X+0
+        lda #$03
+        sta MATH_X+1
+        lda #$00
+        sta MATH_Y+0
+        lda #$04
+        sta MATH_Y+1
+
+        jsr MATH_VEC2_NORMALIZE_Q8_8
+        bcs .zero_vector
+        ; Z[0..1] ~= +0.6 Q1.15
+        ; Z[2..3] ~= +0.8 Q1.15
+```
+
+---
+
 ## 34. Exact square root example
 
 ```asm
@@ -1295,6 +1334,7 @@ The exact benchmark CSV files in `docs/` remain authoritative. A few useful head
 | ATAN2_8 | **50.44** | **46.95** | **46.95** | **48.00** |
 | ISQRT16 | 219.74 | 205.76 | 204.99 | 54.00 |
 | ISQRT32 | 1378.90 | 1198.62 | 1197.86 | 1046.62 |
+| VEC2_NORMALIZE_Q8_8 | **198.77** | **189.26** | **170.06** | **170.06** |
 
 These are CPU-model benchmark figures for the release's documented corpus/timing model. REU DMA interacts with real VIC-II bus activity, so raster-critical software should remeasure on its target configuration.
 
@@ -1312,6 +1352,8 @@ V5 is intentionally V1-based, so unchanged routines retain V1 behavior/timing. I
 | COS8 | 29 | **23** | 20.69% |
 | SINCOS8 | 39 | **31** | 20.51% |
 | ATAN2_8 | 50.441345 | **46.953064** | 6.92% |
+
+`MATH_VEC2_NORMALIZE_Q8_8` is also available in V5 at **198.770271 cycles mean**, using the V1-compatible 31-ZP backend.
 
 These direct paths were validated against V2 with cycle-vector equality. `ATAN2_8` is exhaustive across all 65,536 signed-byte vectors and independently checked for a maximum one-phase-unit approximation error; UMOD8 uses exhaustive correctness plus sampled cycle parity. `UDIV16_SHL8` and `URECIP16_Q16` benefit indirectly through imported division but retain V1 outer code. See `docs/HYBRID_PROFILE.md`.
 
@@ -1488,12 +1530,12 @@ python3 tools/verify_with_acme.py --acme /path/to/acme --kind all
 
 The frozen Turbo FINAL release records:
 
-- 45 stable entries in all four original V1–V4 profiles, plus the same 45-entry surface in V5;
-- V1–V4 alternate proof: 180/180 relocated stable entry executions and 16,688 machine calls;
-- V5 reference + alternate: 45/45 entries and 4,172 machine calls per map;
+- 46 stable entries in all four original V1–V4 profiles, plus the same 46-entry surface in V5;
+- V1–V4 alternate proof: 184/184 relocated stable entry executions and 18,356 machine calls;
+- V5 reference + alternate: 46/46 entries and 4,589 machine calls per map;
 - V5 hybrid direct-import validation: **144,246 cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity, plus 2,000 cold-load calls without `MATH_INIT`;
 - V5 ZP confinement: 31-byte normal window, all 225 outside page-zero bytes unchanged in stress on both maps;
-- Custom Pareto matrix: six ZP breakpoints on reference + alternate maps, 12 generated builds, 45/45 entries and 4,172 calls each (**50,064 common-API calls**);
+- Custom Pareto matrix: six ZP breakpoints on reference + alternate maps, 12 generated builds, 46/46 entries and 4,589 calls each (**55,068 common-API calls**);
 - Custom Pareto direct V2 cycle parity: **75,644 cases**, including exhaustive 65,536-vector `ATAN2_8`, plus exhaustive 65,536-case UMOD8;
 - Custom Pareto stress: 50,144 SMUL16 cycle-parity cases, 25,000 mixed-workload iterations and 10,000 ZP-guard iterations;
 - Custom Pareto endpoint identity: 31 ZP + zero extra RAM is byte-identical to V1; 31 ZP + optional-init policy is byte-identical to V5;
@@ -1507,9 +1549,9 @@ The frozen Turbo FINAL release records:
 - second-batch Turbo overlay reuse;
 - 20,388 fast-ISQRT32 correctness executions;
 - 27/27 configuration validation cases;
-- 203/203 consolidated release-audit checks;
+- 204/204 consolidated release-audit checks in the current environment;
 - deterministic source rebuild identity;
-- independent ACME 0.97 identity for resident and Turbo builds.
+- current release audit status `PASS_WITH_ACME_NOT_RUN` because ACME is not installed in this execution environment; historical ACME 0.97 identity evidence is retained for the earlier source baseline.
 
 These tests are extensive, but they do not replace application-level testing of your particular memory banking, IRQ design, raster timing, REU hardware, and surrounding code.
 
@@ -1517,7 +1559,7 @@ These tests are extensive, but they do not replace application-level testing of 
 
 # Part XII — Complete stable API cheat sheet
 
-## 48. All 45 entries at a glance
+## 48. All 46 entries at a glance
 
 | Entry | Inputs | Outputs | Status / note |
 |---|---|---|---|
@@ -1566,6 +1608,7 @@ These tests are extensive, but they do not replace application-level testing of 
 | `MATH_ISQRT32` | N32 | Z16 | exact floor sqrt |
 | `MATH_DIST8_FAST` | signed dx=X8,dy=Y8 | unsigned Z8 | fast approximation |
 | `MATH_DIST8_ACCURATE` | signed dx=X8,dy=Y8 | unsigned Z8 | lower-error approximation |
+| `MATH_VEC2_NORMALIZE_Q8_8` | signed X16,Y16 Q8.8 | signed Z16,Z16 Q1.15 | C=1 only for zero vector |
 
 ## 48A. Reference-map entry addresses
 
@@ -1618,6 +1661,7 @@ These addresses are provided for diagnostics and fixed-reference builds. **Reloc
 | `MATH_ISQRT32` | `$5E30` |
 | `MATH_DIST8_FAST` | `$5E33` |
 | `MATH_DIST8_ACCURATE` | `$5E36` |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `$5E39` |
 
 ---
 
@@ -1631,7 +1675,7 @@ These addresses are provided for diagnostics and fixed-reference builds. **Reloc
 | `QUICK_START.md` | minimal build commands |
 | `docs/VERSION_SELECTION.md` | fixed profile vs custom-builder choice |
 | `docs/PARETO_BUILDER.md` | ZP/RAM budget-driven stock-C64 profile generation |
-| `docs/PUBLIC_API_COMPLETE.csv` | authoritative 45-entry stable surface |
+| `docs/PUBLIC_API_COMPLETE.csv` | authoritative 46-entry stable surface |
 | `docs/PERFORMANCE_COMPARISON.csv` | common arithmetic performance |
 | `docs/PERFORMANCE_GAME_MATH_FINAL.csv` | game/fixed-point performance |
 | `docs/SOURCE_RELOCATION.md` | memory-map relocation contract |
@@ -1703,7 +1747,3 @@ For a V3/V4 program, the code pattern is the same after the correct REU image is
 Use the stable API for ordinary composable math. Use QS16 or Turbo only when a measured batch actually justifies their lifecycle overhead. Keep all addresses symbolic, keep the REU image matched to the build, and treat the generated `math_api.inc` as the caller's source of truth.
 
 That gives you the intended property of this release: **one logical math interface across five fixed profiles plus budget-generated stock-C64 builds, with implementation selection and relocation done at build time rather than paid for at runtime.**
-
-### SMUL8 direct signed-domain implementation
-
-The current `MATH_SMUL8` implementation evaluates the signed quarter-square identity `Q(a+b)-Q(a-b)` directly. It does not execute an unsigned full-width multiply or a post-product sign-correction tail. The public memory-ABI entry is exhaustive over all 65,536 signed byte pairs at **67.992188 mean cycles (66–70)**, uses **0 zero-page bytes** and **0 persistent hardware-stack-page bytes**, with a 46-byte inline kernel and 1,022 useful bytes of private signed-sum tables. The complemented difference planes are shared with UMUL24.

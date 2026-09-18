@@ -2,16 +2,9 @@
 
 High-performance signed, unsigned and game/fixed-point math for the Commodore 64 / NMOS 6502/6510.
 
-The **C64 Math Library** exposes one stable **45-entry public API** across its resident profiles. V3/V4 additionally provide six stateful Turbo16/Turbo32 lifecycle entries, V4 provides QS16, and V5 combines selected V2-speed paths with the V1 low-ZP contract.
+The **C64 Math Library** exposes one stable **46-entry public API** across its resident profiles. V3/V4 additionally provide six stateful Turbo16/Turbo32 lifecycle entries, V4 provides QS16, and V5 combines selected V2-speed paths with the V1 low-ZP contract.
 
 For stock-C64 games and demos, the repository now also includes a **Custom Pareto Builder**: tell it how many zero-page bytes (and optionally how much extra RAM) you can spare, and it generates the fastest certified V1/V2 combination that fits. Selection happens at build time, so there is no runtime dispatcher.
-
-### Direct signed SMUL8
-
-`MATH_SMUL8` now uses a direct signed-domain quarter-square kernel rather than an unsigned multiply followed by sign correction. The stable public entry is exhaustive over all 65,536 signed byte pairs at **67.992188 mean cycles (66–70)**, uses **0 ZP** and **0 persistent stack-page bytes**, and adds 1,022 useful bytes of signed-sum table data while sharing the existing UMUL24 complemented difference planes.
-
-
-The follow-on 16×16 / 16×32 / 32×32 signed-partial experiments are documented in `docs/SIGNED_PARTIAL_PRODUCT_RESEARCH.md`. No wider candidate beat the current practical correction-based kernels, so only SMUL8 changed in production.
 
 ## Profiles
 
@@ -24,6 +17,20 @@ The follow-on 16×16 / 16×32 / 32×32 signed-partial experiments are documented
 | **V5 Hybrid Low-ZP** | Stock C64 | V1's 31-byte normal ZP plus selected V2-speed division/modulo/trig/ATAN2 paths |
 
 V5 is intended particularly for games and demos. It is **one build**, not two complete libraries loaded side-by-side. The stable caller ABI remains unchanged.
+
+## Vector normalization headline
+
+The stable API now includes `MATH_VEC2_NORMALIZE_Q8_8`, an arbitrary-runtime signed Q8.8 2D normalizer returning signed Q1.15 components. The same contract is available in every profile and generated Custom Pareto build; the reference address is `$5E39`.
+
+| Profile | Mean cycles | Normal ZP policy | Backend |
+|---|---:|---|---|
+| V1 Balanced | **198.77** | 31-byte V1 contract | stock-C64 low-ZP backend |
+| V2 Pareto-Fast | **189.26** | V2 resident ZP | Pareto-fast stock-C64 backend |
+| V3 REU 512K | **170.06** | no added normal ZP | direct REU ratio-index lookup |
+| V4 REU 16M | **170.06** | no added normal ZP | direct REU ratio-index lookup |
+| V5 Hybrid Low-ZP | **198.77** | 31-byte V1 contract | V1-compatible low-ZP backend |
+
+The common precision contract is <=0.3621 degrees angular error and <=202 Q1.15 LSB component error; the current full-domain proof is tighter at <=0.360856382 degrees / <=200 LSB. See `docs/VEC2_NORMALIZE_Q8_8.md`.
 
 
 ## Signed implementation taxonomy
@@ -80,7 +87,7 @@ V5 keeps V1's `$02-$20` 31-byte normal ZP window and imports certified V2 paths 
 - `MATH_SINCOS8`: 39 → **31**
 - `MATH_ATAN2_8`: 50.44 → **46.95** (65,536-vector exhaustive parity; max error 1 phase unit)
 
-The reference V5 relocated implementation block occupies `$A000-$B1FF` (4608 bytes), RAM underneath BASIC ROM. Fast ATAN2 additionally claims three page-aligned private pages at `$5500`, `$5700`, and `$5F00` in the reference map, for an exact **5,376-byte private-RAM increase versus V1**. BASIC ROM must therefore be banked out while imported V5 paths execute, or the private regions can be relocated at build time.
+The reference V5 relocated implementation block occupies `$A000-$B1FF` (4608 bytes), RAM underneath BASIC ROM. Fast ATAN2 additionally claims three formerly unused page-aligned table pages (`$6E00`, `$6F00`, `$7000` reference), for an exact **5,376-byte private-RAM increase versus V1**. BASIC ROM must therefore be banked out while imported hybrid-code paths execute, or the private regions can be relocated at build time.
 
 See `docs/HYBRID_PROFILE.md`.
 
@@ -123,19 +130,25 @@ python3 tools/verify_hybrid_deterministic.py
 make pareto-validate
 ```
 
+Validate the cross-profile vector-normalization implementation and full-domain precision proof:
+
+```sh
+make normalize
+```
+
 ## Calling model
 
 The library is **not reentrant**, but ordinary sequential game/demo loops are fully supported. You may call routines repeatedly in loops; a second math call simply must not begin before the first has returned. In particular, do not invoke the same shared library state from an IRQ/NMI while a foreground math call is active.
 
 ## Validation headline
 
-V1–V4 retain the previously reviewed validation evidence, including byte-exact source rebuilds, 180/180 alternate-map stable entries, Turbo relocation/boundary testing, fast exact ISQRT32 validation and configuration rejection tests.
+V1–V4 retain the previously reviewed validation evidence, including byte-exact source rebuilds, 184/184 alternate-map stable entries, Turbo relocation/boundary testing, fast exact ISQRT32 validation and configuration rejection tests.
 
 The signed-implementation cleanup adds a repository-layout audit and a dedicated **264,999-call V1–V5 signed-multiplication regression**, including exhaustive 8×8 validation on the distinct resident implementation families.
 
 V5 adds:
 
-- **45/45 stable entries** on both reference and alternate maps, **4,172 machine calls per map**;
+- **46/46 stable entries** on both reference and alternate maps, **4,589 machine calls per map**;
 - **144,246 direct-import test cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity;
 - exhaustive **65,536-case `UMOD8`** correctness;
 - exhaustive full-domain `COS8` / `SINCOS8` validation;
@@ -146,10 +159,10 @@ V5 adds:
 - deterministic reference/alternate rebuild identity;
 - invalid hybrid map rejection for overlap, I/O, alignment and overflow.
 
-See `validation/hybrid/` for V5 evidence and `validation/pareto/` for the Custom Pareto Builder. The Pareto validation includes a 12-build / 50,064-call API matrix, **75,644 direct V2 cycle-parity cases** including exhaustive `ATAN2_8`, exhaustive UMOD8, resource-map rejection tests, deterministic rebuilds, endpoint identity with V1/V5, and additional mixed/ZP stress.
+See `validation/hybrid/` for V5 evidence and `validation/pareto/` for the Custom Pareto Builder. The Pareto validation includes a 12-build / 55,068-call API matrix, **75,644 direct V2 cycle-parity cases** including exhaustive `ATAN2_8`, exhaustive UMOD8, resource-map rejection tests, deterministic rebuilds, endpoint identity with V1/V5, and additional mixed/ZP stress.
 
 ## Project terminology
 
-The project was originally called an API because it was designed around a stable common calling interface across multiple optimized implementations. As it grew to include the implementations, tables, REU images, build tools, tests and documentation, **C64 Math Library** became the more accurate project name; the 45-entry interface is its public API.
+The project was originally called an API because it was designed around a stable common calling interface across multiple optimized implementations. As it grew to include the implementations, tables, REU images, build tools, tests and documentation, **C64 Math Library** became the more accurate project name; the 46-entry interface is its public API.
 
 - **[Consolidated routine table](docs/CONSOLIDATED_ROUTINE_TABLE.md)** — cycles, reachable code, ZP, hardware-stack reservation and profile footprint for every shipped routine/profile.

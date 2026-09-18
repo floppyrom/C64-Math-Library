@@ -1,6 +1,6 @@
 PYTHON ?= python3
 
-.PHONY: sources reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress audit acme clean package-audit all
+.PHONY: sources reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress normalize audit acme clean package-audit all
 
 all: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
 
@@ -49,6 +49,10 @@ hybrid-validate: hybrid
 
 pareto:
 	$(PYTHON) tools/build_pareto.py --zp-budget 60 --config-kind reference --name default_zp60
+
+normalize: reference alternate hybrid
+	$(PYTHON) tools/benchmark_normalize_profile_parity.py
+	$(PYTHON) tools/certify_normalize_exact_ratio.py
 
 pareto-config:
 	$(PYTHON) tools/test_pareto_config.py

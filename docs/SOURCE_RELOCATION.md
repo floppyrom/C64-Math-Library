@@ -2,7 +2,7 @@
 
 ## Contract
 
-For V1–V4, the stable 45-entry API is built from `relocatable_source/<profile>/math_relocatable.asm`; `math_config.inc` supplies the selected map at assembly time. V5 is built by `tools/build_hybrid.py`, which source-builds V1 and V2 and deterministically relocates the certified donor kernels into a single V1-based image. The **Custom Pareto Builder** extends that same source-derived approach: `tools/build_pareto.py` selects certified compatible V1/V2 packs from a ZP/RAM/workload budget and links one generated image. The shipped reference PRGs are reproducibility/provenance outputs, not donor inputs. Selection and relocation happen at build time; there is no runtime profile dispatcher.
+For V1–V4, the stable 46-entry API is built from `relocatable_source/<profile>/math_relocatable.asm`; `math_config.inc` supplies the selected map at assembly time. V5 is built by `tools/build_hybrid.py`, which source-builds V1 and V2 and deterministically relocates the certified donor kernels into a single V1-based image. The **Custom Pareto Builder** extends that same source-derived approach: `tools/build_pareto.py` selects certified compatible V1/V2 packs from a ZP/RAM/workload budget and links one generated image. The shipped reference PRGs are reproducibility/provenance outputs, not donor inputs. Selection and relocation happen at build time; there is no runtime profile dispatcher.
 
 ### Configurable C64 symbols
 
@@ -46,10 +46,10 @@ Before assembly, the build rejects:
 
 ## Proof
 
-The reference map source build reproduces the corrected resident PRG exactly for V1–V4 and reproduces the reference V3/V4 REU images byte-for-byte. The V5 reference and alternate builds are deterministic and preserve all 45 stable public addresses while moving the private hybrid block from `$A000` to `$E000`; both maps execute all 45 entries (4,172 machine calls each). The alternate V1–V4 proof changes all principal C64 regions and, for V3/V4, changes the REU bank geometry **and** Turbo overlay ZP origins. A separate Turbo validator executes BEGIN/CALL/END on both maps, verifies products, exact caller-ZP restoration, second-batch reuse and cycle identity.
+The reference map source build reproduces the corrected resident PRG exactly for V1–V4 and reproduces the reference V3/V4 REU images byte-for-byte. The V5 reference and alternate builds are deterministic and preserve all 46 stable public addresses while moving the private hybrid block from `$A000` to `$E000`; both maps execute all 46 entries (4,589 machine calls each). The alternate V1–V4 proof changes all principal C64 regions and, for V3/V4, changes the REU bank geometry **and** Turbo overlay ZP origins. A separate Turbo validator executes BEGIN/CALL/END on both maps, verifies products, exact caller-ZP restoration, second-batch reuse and cycle identity.
 
 For V5, see `docs/HYBRID_PROFILE.md`, `validation/hybrid/HYBRID_VALIDATION.json`, `validation/hybrid/HYBRID_CONFIG_VALIDATION.json`, and `validation/hybrid/HYBRID_DETERMINISTIC_REBUILD.json`.
 
-For budget-generated stock-C64 builds, see `docs/PARETO_BUILDER.md` and `validation/pareto/`. The release matrix validates six ZP breakpoints on both maps (12 builds / 50,064 common-API calls), plus exact V2 cycle parity, exhaustive UMOD8, deterministic rebuilds, ZP confinement and invalid resource maps.
+For budget-generated stock-C64 builds, see `docs/PARETO_BUILDER.md` and `validation/pareto/`. The release matrix validates six ZP breakpoints on both maps (12 builds / 55,068 common-API calls), plus exact V2 cycle parity, exhaustive UMOD8, deterministic rebuilds, ZP confinement and invalid resource maps.
 
 For V1–V4, see `validation/source_relocation/ALTERNATE_MAP_VALIDATION.json`, `validation/turbo_relocation/TURBO_RELOCATION_VALIDATION.json`, `DETERMINISTIC_REBUILD.json`, and `../CONFIG_VALIDATION.json`. Also see `TURBO_RELOCATION.md`.

@@ -20,6 +20,7 @@ import csv,json,re,sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU,REV,SIZE
+REV[0xBF]=('lax','absy'); REV[0xAF]=('lax','abs'); REV[0xA7]=('lax','zp')
 
 PROFILES=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp']
 PRG={p:next((ROOT/p/'resident').glob('*game_math.prg')) for p in PROFILES}
@@ -110,11 +111,6 @@ def cycles_catalog():
     for p,rr in sm['profiles'].items():
         for short,v in rr.items():
             n='MATH_'+short; add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'current native-signed multiply validation',v.get('mode',''))
-    # Exact exhaustive SMUL8 direct-signed result supersedes structured/random profile samples.
-    s8=json.loads((ROOT/'validation/review/SMUL8_DIRECT_SIGNED_UPGRADE.json').read_text())
-    for p,v in s8['profiles'].items():
-        e=v['validation']; add_cycle(cat,p,'MATH_SMUL8',e['mean_cycles'],e['min_cycles'],e['max_cycles'],e['cases'],'2026-09-14 exhaustive direct signed-domain quarter-square SMUL8','Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes')
-    e=s8['profiles']['v1_balanced']['validation']; add_cycle(cat,'v5_hybrid_lowzp','MATH_SMUL8',e['mean_cycles'],e['min_cycles'],e['max_cycles'],e['cases'],'V5 byte-identical V1 SMUL8 path; exhaustive direct signed-domain quarter-square evidence','Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes')
     # Current native signed divide/mod/fixed-point divide evidence.
     sd=json.loads((ROOT/'validation/review/SIGNED_DIVISION_VALIDATION.json').read_text())
     for p,rr in sd['profiles'].items():
@@ -128,6 +124,10 @@ def cycles_catalog():
             game[p]['MATH_'+name]=r
             if 'MATH_'+name not in cat[p]:
                 add_cycle(cat,p,'MATH_'+name,r['mean_cycles'],r['min_cycles'],r['max_cycles'],r['cases'],'published game-math benchmark 2026-09-06',('alias '+r['alias_of']) if r.get('alias_of') else '')
+    # Q8.8 vector normalize profile-parity benchmark (107,396-vector deterministic corpus).
+    norm=json.loads((ROOT/'validation/normalize/NORMALIZE_PROFILE_PARITY_107396.json').read_text())
+    for row in norm['profiles']:
+        v=row['reference']; add_cycle(cat,row['profile'],'MATH_VEC2_NORMALIZE_Q8_8',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-18 normalize profile-parity deterministic corpus','Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB')
     # V5 is V1 plus documented V2 imports; current signed/changed rows above override these inheritance rows.
     for n in API:
         if n in cat['v5_hybrid_lowzp']: continue
@@ -150,7 +150,6 @@ def declared_zp(profile):
 
 
 def provenance(profile,n):
-    if n=='MATH_SMUL8': return 'direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes'
     if n=='MATH_UMUL16': return '17-ZP qualified record-derived fused quarter-square resident kernel'
     if n=='MATH_UMUL24': return '24-ZP reverse_24zp_carry certified resident kernel'
     if n in ('MATH_UMUL32','MATH_UMUL32_READY'): return '31-ZP practical resident UMUL32 family (stack-free compromise)'
@@ -174,7 +173,7 @@ def main():
                 'reachable_code_bytes':len(code),'zp_bytes':len(zp),'zp_ranges':fmt_ranges(zp),'stack_page_reserved_bytes':len(stack),
                 'profile_prg_payload_span_bytes':PRG[p].stat().st_size-2,'profile_reu_image_bytes':REU[p].stat().st_size if p in REU else 0,
                 'profile_declared_shared_zp_bytes':declared_zp(p),'implementation':provenance(p,n),'notes':c.get('cycle_notes','')})
-        summaries.append({'profile':p,'stable_api_entries':45,'prg_payload_span_bytes':PRG[p].stat().st_size-2,'reu_image_bytes':REU[p].stat().st_size if p in REU else 0,
+        summaries.append({'profile':p,'stable_api_entries':len(API),'prg_payload_span_bytes':PRG[p].stat().st_size-2,'reu_image_bytes':REU[p].stat().st_size if p in REU else 0,
                           'declared_shared_zp_bytes':declared_zp(p),'stable_api_zp_union_touched_bytes':len(zp_union),'stable_api_zp_union_ranges':fmt_ranges(zp_union),
                           'stable_api_stack_page_reserved_union_bytes':len(stack_union),'stable_api_reachable_code_union_bytes':len(code_union)})
     # REU Turbo lifecycle surface, using validated reference timings and advertised exclusive overlay ownership.
@@ -209,7 +208,7 @@ def main():
     # No shipped routine may reserve hardware stack page under this release policy.
     bad=[(r['profile'],r['routine'],r['stack_page_reserved_bytes']) for r in rows if int(r['stack_page_reserved_bytes'])]
     if bad: raise RuntimeError(f'unexpected hardware-stack-page reservation: {bad}')
-    if len(rows)!=240: raise RuntimeError(f'expected 240 consolidated rows, got {len(rows)}')
+    if len(rows)!=(len(API)*len(PROFILES)+15): raise RuntimeError(f'expected {len(API)*len(PROFILES)+15} consolidated rows, got {len(rows)}')
     fields=list(rows[0])
     outcsv=ROOT/'docs/CONSOLIDATED_ROUTINE_TABLE.csv'
     with outcsv.open('w',newline='') as f:

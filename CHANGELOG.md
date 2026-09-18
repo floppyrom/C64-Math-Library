@@ -1,28 +1,22 @@
+## 2026-09-18 — stable 46th entry: Q8.8 VEC2 normalization
+
+- Promoted `MATH_VEC2_NORMALIZE_Q8_8` at `REG_GAME_API+$39` / reference `$5E39`, expanding the stable public API from 45 to **46 entries** across V1–V5 and generated Custom Pareto builds.
+- Contract: signed Q8.8 X/Y -> signed Q1.15 normalized X/Y; inputs preserved; `C=1` only for `(0,0)`, which returns zero output.
+- Final means: **V1 198.770271**, **V2 189.260317**, **V3 170.058633**, **V4 170.058633**, **V5 198.770271 cycles** on the 107,396-vector deterministic corpus.
+- V1/V5 retain the 31-byte low-ZP contract; V2 uses the Pareto-fast stock backend. V3/V4 replace the reciprocal/multiply stage with a 32 KiB direct ratio-index table in `$8000-$FFFF` of relocatable `REU_TURBO16_BANK`, requiring no additional V3 REU bank.
+- Corrected full-domain certification passes at **<=0.360856382 degrees / <=200 Q1.15 LSB**, inside the public <=0.3621 degrees / <=202-LSB contract.
+- Fresh V1–V4 reference/alternate source builds pass **46/46 entries, 4,589 calls per map**. V5 exposes the same routine through its generated and shipped API includes. Custom Pareto validation now totals **55,068 common-API calls** across 12 builds.
+- Updated canonical source regeneration, REU image generation, performance/resource tables, API includes, manual, profile-selection/REU documentation and package metadata.
+
 ## 2026-09-17 — ATAN2 fast tiers + game audit
 
 - Reworked stock-C64 `MATH_ATAN2_8` around compressed signed-magnitude log differences and generated final-angle tables. Exhaustive 65,536-vector validation keeps maximum error to one 1/256-turn phase unit.
 - Final timings: **V1 50.441345 cycles mean (30–53)**; **V2/V3 46.953064 (30–48)**; **V4 remains exact at 48 fixed cycles**; **V5 imports the V2 fast tier at 46.953064**. All stock implementations use 0 extra ZP.
-- V1 keeps the compact 512-byte table point. V2/V3 use 1280 bytes of ATAN2 tables. After the direct-SMUL8 upgrade, the fast donor pages live at `$5500/$5F00/$4700`; V5 remaps the third page to its V1-free `$5700` page while retaining `$5500/$5F00`.
+- V1 keeps the compact 512-byte table point. V2/V3 use 1280 bytes of ATAN2 tables. V5 adds the fast tier through three formerly unused 256-byte table pages, remapping the V2 donor's third extra page away from V1-owned data.
 - Added hard V5 page-collision guards and exhaustive V5 result/cycle-vector parity against V2, including cold-load/no-`MATH_INIT` coverage. V5 now records **144,246 direct-import cases**.
-- Added independent Custom Pareto pack `atan2_fast` (**0 ZP / 768 B**), so the selector accounts for the speed/RAM trade-off explicitly. Current equal-weight extra-RAM points are **6021 / 6576 / 7336 / 6207 / 7522 B** before the full-V2 endpoint.
+- Added independent Custom Pareto pack `atan2_fast` (**0 ZP / 768 B**), so the selector accounts for the speed/RAM trade-off explicitly. Current equal-weight extra-RAM points are **6021 / 6611 / 7371 / 6207 / 7557 B** before the full-V2 endpoint.
 - Pareto deep validation now covers **75,644 direct V2 cycle-parity cases**, including exhaustive ATAN2, plus exhaustive UMOD8 and the existing stress/ZP/deterministic checks.
 - Added `docs/ATAN2_GAME_AUDIT_2026-09-17.md`, auditing Steel Ranger, Wolf64 and Quake64 against the project rule that an optimized general routine should not replace a cheaper discrete/direct-angle game representation without a real runtime need.
-
-## 2026-09-14 — direct signed-domain SMUL8 optimization
-
-- Replaced the unsigned-product-plus-correction SMUL8 paths in V1–V5 with a direct signed quarter-square formulation, `Q(a+b)-Q(a-b)`.
-- Public `MATH_SMUL8` now measures **67.992188 cycles exact mean (66–70)** over all 65,536 signed input pairs, down from 120.490234 (V1), 108.494141 (V2), and about 96 cycles (V3/V4).
-- The 46-byte kernel fits directly in the stable `$3B80-$3BAF` API slot, eliminating the old JMP adapter. It reserves **0 ZP** and **0 persistent hardware-stack bytes**.
-- Only 1,022 useful bytes of new signed-sum table data are needed; the signed difference term reuses the existing UMUL24 complemented quarter-square planes.
-- Added `tools/upgrade_smul8_direct_signed.py` and exhaustive upgrade evidence in `validation/review/SMUL8_DIRECT_SIGNED_UPGRADE.json`.
-- Refreshed native signed source mirrors, link maps, segment manifests, signed performance/selection tables, and the 240-row consolidated resource table.
-
-## 2026-09-14 — signed partial-product follow-on research
-
-- Qualified two direct mixed-sign 8×8 primitives at 47.992188 and 51.992188 mean cycles; both are exhaustive and expose product sign in carry.
-- Tested a signed-aware 16×16 high-row hybrid over 2,097,152 profile products plus 267,148 edge cases: zero errors, but 192.468827 cycles / 150 ZP / 4,088 B tables, so it is dominated by existing SMUL16 choices.
-- Tested the exact signed 32×8 row subproblem needed by both 16×32 and 32×32 on 103,584 matched cases. Direct signed partial formation is 371.857488 cycles versus 360.908480 for unsigned-row-plus-correction and would add 2,044 mixed-table bytes in an integrated wider multiplier.
-- Decision: retain current wider SMUL16/24/32 kernels; ship only the direct SMUL8 win. Research sources/results are under `research/signed_partial_products/` and `docs/SIGNED_PARTIAL_PRODUCT_RESEARCH.md`.
 
 ## 2026-09-14 — all-native signed kernel refresh
 
@@ -49,7 +43,7 @@
 - Added `tools/pareto_wizard.py` for interactive game/demo integration and `tools/build_pareto.py` for scripted builds.
 - Generated builds retain the same 45-entry stable API and emit `math_api.inc` plus `selection_manifest.json` containing exact ZP ranges, exact private-RAM ranges, initialization requirement, implementation provenance and SHA-256.
 - Default equal-weight breakpoints: **31 / 36 / 60 / 147 / 176 / 221 ZP bytes**. At 31 ZP + zero extra RAM the builder reproduces V1 byte-for-byte; at 31 ZP + optional-init policy it reproduces V5 byte-for-byte; at 221 ZP it selects complete V2.
-- Exact extra-RAM accounting now includes the actual emitted init helper rather than a conservative allowance. Current default points use 6021 / 6576 / 7336 / 6207 / 7522 bytes of extra private payload before the 221-ZP full-V2 endpoint (208-byte resident increase vs V1).
+- Exact extra-RAM accounting now includes the actual emitted init helper rather than a conservative allowance. Current default points use 6021 / 6611 / 7371 / 6207 / 7557 bytes of extra private payload before the 221-ZP full-V2 endpoint (208-byte resident increase vs V1).
 - Certified selectable packs cover the independent 0-ZP/768-byte `atan2_fast` upgrade, V5 zero-ZP division/modulo/trig imports, initialized UMUL32, V2 UMUL8/SMUL8, the record UMUL16/UMUL24 pack, and native executable-ZP SMUL16. Workload weights can change the chosen pack at the same resource budget.
 - Validation: 12 representative generated builds across reference/alternate maps, **45/45 entries and 4,172 calls each (50,064 common-API calls)**; 75,644 direct V2 cycle-parity cases including exhaustive ATAN2; exhaustive 65,536-case UMOD8; 50,144 additional SMUL16 cycle-parity cases; 25,000 mixed-workload iterations; 10,000 ZP-guard iterations; deterministic rebuilds; V1/V5 endpoint identity; and **12/12** invalid resource/configuration tests.
 
@@ -71,7 +65,7 @@
 - Resident `UMUL24` now uses the certified 24-ZP `reverse_24zp_carry` record kernel.
 - V3/V4 Turbo32 now uses the stack-free 135-ZP `ram135` record-family compromise: reference ZP `$0A-$90`, legal origins `$02-$79`, with BEGIN/CALL/END measured at 326 / 728.947080 mean / 371 cycles.
 - The absolute 606.337632-cycle UMUL32 record remains intentionally outside fixed profiles because it reserves hardware stack-page space; shipped fixed choices reserve 0 persistent stack-page bytes.
-- Custom Pareto current extra-private-RAM points are 6021 / 6576 / 7336 / 6207 / 7522 bytes before the 221-ZP full-V2 endpoint.
+- Custom Pareto current extra-private-RAM points are 6021 / 6611 / 7371 / 6207 / 7557 bytes before the 221-ZP full-V2 endpoint.
 - Added `docs/CONSOLIDATED_ROUTINE_TABLE.{md,csv}` plus machine-readable `validation/CONSOLIDATED_ROUTINE_TABLE.json`, covering all 45 stable entries in all five profiles plus V3/V4 Turbo and V4 QS16.
 
 

@@ -7,7 +7,7 @@
   "output_prg": "math_v5_hybrid_lowzp_game_math.prg",
   "output_load": "$2000",
   "output_end": "$CBA3",
-  "output_sha256": "e43c71d5bbee0c2690d970cff061f77804c4ed0a2bffc0a6281437f55066b7f2",
+  "output_sha256": "567f4d13a1098d42771c90aaa2367b278c9449e487a68b1f35cd8428c02487d4",
   "public_entries": {
     "MATH_UMUL8": "$3000",
     "MATH_UMUL16": "$3020",
@@ -79,9 +79,9 @@
     "body_bytes": 94,
     "extra_table_bytes": 768,
     "extra_table_pages": [
-      "$5500",
-      "$5F00",
-      "$5700"
+      "$6E00",
+      "$6F00",
+      "$7000"
     ],
     "log_page": "$9600",
     "q0_page": "$9700"
@@ -91,16 +91,16 @@
     "MATH_URECIP16_Q16"
   ],
   "notes": [
-    "All 45 stable API addresses and semantics remain V1-compatible.",
+    "All 46 stable API addresses and semantics remain V1-compatible.",
     "MATH_INIT remains optional exactly as in V1.",
     "The imported certified V2 kernels use only the existing V1 normal ZP window.",
-    "Fast ATAN2, when enabled, adds no ZP and occupies three free V1 kernel pages (768 bytes).",
+    "Fast ATAN2, when enabled, adds no ZP and occupies three formerly empty V1 table pages (768 bytes).",
     "HYBRID_CODE is private implementation storage and may be relocated at build time.",
     "Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines."
   ],
   "source_inputs": {
-    "v1_source_sha256": "05fd7f74a79cde389475a67ec004763a70173431177df9cf6509d5ce09719159",
-    "v2_source_sha256": "1545e7001a214c4cd27470ae818fe132ed4ce953382c82a8f0ffe37dfd24630b",
-    "builder_sha256": "650845da48eaa71516ecbf6ea866c98abcd8e8e2dbe44a217921a634c418bd5c"
+    "v1_source_sha256": "e30e7933cfcc38ee077bfef48bbf3983385e7f7e18f0fb29e98e4cb6fe17d604",
+    "v2_source_sha256": "fb40f1864b2685158d9b477089d32eab87c79c082ad74ac8b2d34bd386178188",
+    "builder_sha256": "dc2d612fd434ef6b8239d3c92bf9987d2a258668c8a310f093c09492f170bc31"
   }
 }

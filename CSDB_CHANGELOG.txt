@@ -1,14 +1,16 @@
+2026-09-18 VEC2 NORMALIZE — STABLE 46TH API ENTRY
+- Added MATH_VEC2_NORMALIZE_Q8_8 at reference $5E39: signed Q8.8 x/y -> signed Q1.15 unit vector; inputs preserved; C=1 only for zero vector.
+- Final means: V1 198.770271 / V2 189.260317 / V3 170.058633 / V4 170.058633 / V5 198.770271 cycles.
+- Common precision contract <=0.3621 deg / <=202 LSB; corrected full-domain proof <=0.360856382 deg / <=200 LSB.
+- V1/V5 keep the 31-byte ZP contract. V3/V4 use a 32 KiB direct ratio-index table in the upper half of relocatable REU_TURBO16_BANK, with no extra REU bank.
+- Stable surface is now 46 entries in every fixed profile and generated Custom Pareto build. Fresh reference/alternate V1-V4 validation: 46/46, 4,589 calls per map; Pareto matrix: 55,068 common-API calls.
+
 2026-09-17 ATAN2 FAST TIERS + GAME AUDIT
 - ATAN2 exhaustive 65,536-vector result: V1 50.441345 cycles mean (30-53), V2/V3 46.953064 (30-48), V4 exact 48 fixed, V5 46.953064; stock implementations use 0 extra ZP and V1-V3/V5 stay within 1 phase unit.
-- V1 keeps the compact 512-byte table point; V2/V3 use the 1280-byte fast tier. Rebased fast pages use free kernel holes at $5500/$5F00/$4700; V5 remaps the third page to $5700.
-- Custom Pareto adds independent atan2_fast pack: 0 ZP / 768 B. Updated default extra-RAM points: 6021/6576/7336/6207/7522 B.
+- V1 keeps the compact 512-byte table point; V2/V3 use the 1280-byte fast tier. V5 imports the fast tier through 3 previously unused 256-byte pages with collision guards.
+- Custom Pareto adds independent atan2_fast pack: 0 ZP / 768 B. Updated default extra-RAM points: 6021/6611/7371/6207/7557 B.
 - V5 direct-import validation: 144,246 cases including exhaustive ATAN2 result/cycle parity. Pareto deep parity: 75,644 cases including exhaustive ATAN2, plus exhaustive UMOD8 and stress/ZP checks.
 - Added source audit for Steel Ranger, Wolf64 and Quake64: keep existing discrete/direct-angle paths where they are cheaper; use ATAN2 for genuine dynamic vector-to-angle work.
-- Preserves the direct signed-domain SMUL8 release and signed partial-product research from 2026-09-14.
-
-SIGNED PARTIAL-PRODUCT RESEARCH (2026-09-14)
-- Direct SMUL8 remains the production win: 67.992188 cycles, 0 ZP.
-- Wider direct-partial experiments did not beat the existing SMUL16/24/32 correction-based kernels; full measurements and source are included under research/signed_partial_products.
 
 2026-09-14 UMUL RECORD UPGRADE
 - UMUL16: qualified 17-ZP record-derived resident kernel.
@@ -30,11 +32,11 @@ C64 MATH LIBRARY — CUSTOM PARETO BUILDER — 2026-09-07
 
 New stock-C64 build-time optimizer: tell it the total ZP budget (plus optional RAM budget, init policy and hot-routine weights) and it selects the fastest certified compatible V1/V2 implementation mix with no runtime dispatcher. Same 45-entry API. Default breakpoints: 31/36/60/147/176/221 ZP. 31 ZP + zero extra RAM reproduces V1 byte-for-byte; 31 ZP + optional init reproduces V5; 221 ZP selects full V2.
 
-Validation: 12 reference/alternate generated builds, 50,064 common-API calls; 10,108 direct V2 cycle-parity cases; exhaustive UMOD8; 50,144 SMUL16 parity cases; 25,000 mixed iterations; 10,000 ZP-guard iterations; deterministic rebuilds and 12/12 invalid resource-map tests.
+Validation: 12 reference/alternate generated builds, 50,064 common-API calls; 75,644 direct V2 cycle-parity cases including exhaustive ATAN2; exhaustive UMOD8; 50,144 SMUL16 parity cases; 25,000 mixed iterations; 10,000 ZP-guard iterations; deterministic rebuilds and 12/12 invalid resource-map tests.
 
 C64 MATH LIBRARY — V5 HYBRID LOW-ZP — 2026-09-06
 
-New stock-C64 V5 profile: V1's 31-byte normal ZP budget with selected faster V2 kernels, while retaining the same 45-entry API. Direct gains include UDIV16 14.23%, UDIV32/16 11.39%, COS8 20.69% and SINCOS8 20.51%. Reference + alternate maps pass all 45 entries (4,172 calls each), plus 78,710 direct-import cases, exhaustive UMOD8/trig checks, ZP-confinement stress, cold-load/no-init tests, deterministic rebuild and config rejection tests.
+New stock-C64 V5 profile: V1's 31-byte normal ZP budget with selected faster V2 kernels, while retaining the same 45-entry API. Direct gains include UDIV16 14.23%, UDIV32/16 11.39%, COS8 20.69% and SINCOS8 20.51%. Reference + alternate maps pass all 45 entries (4,172 calls each), plus 144,246 direct-import cases including exhaustive ATAN2 result/cycle parity, exhaustive UMOD8/trig checks, ZP-confinement stress, cold-load/no-init tests, deterministic rebuild and config rejection tests.
 
 The project is now presented as the C64 Math Library; “API” refers to the stable callable interface.
 

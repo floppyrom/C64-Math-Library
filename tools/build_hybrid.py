@@ -19,9 +19,9 @@ SINCOS_SRC = (0xC771, 0xC781)
 COS_TABLE_SRC = (0x9500, 0x95FF)
 ATAN_LOG_SRC = (0x9600, 0x96FF)
 ATAN_Q0_SRC = (0x9700, 0x97FF)
-ATAN_Q1_SRC = (0x5500, 0x55FF)
-ATAN_Q2_SRC = (0x5F00, 0x5FFF)
-ATAN_Q3_SRC = (0x4700, 0x47FF)
+ATAN_Q1_SRC = (0x6E00, 0x6EFF)
+ATAN_Q2_SRC = (0x6F00, 0x6FFF)
+ATAN_Q3_SRC = (0x9100, 0x91FF)
 ATAN_EXTRA_TABLE_BYTES = 3 * 256
 V2_REF_ZP_MAIN = 0x02
 V2_REF_MATH_IO = 0xC000
@@ -110,16 +110,15 @@ def map_abs(target: int, vals: dict[str, int], hbase: int) -> int:
     # V2 cosine table differs from V1; retain a private copy.
     if COS_TABLE_SRC[0] <= target <= COS_TABLE_SRC[1]:
         return hbase + 0x1100 + (target - COS_TABLE_SRC[0])
-    # Fast ATAN2 reuses V1's compact LOG/Q0 pages. After direct-signed SMUL8
-    # claimed the old $6E00/$6F00 holes, the extra pages use free kernel pages.
-    # Q1/Q2 can retain their donor locations; donor Q3 at $4700 overlaps V1
-    # UMUL8/UMUL16 and is therefore remapped to the V1-free $5700 page.
+    # Fast ATAN2 reuses V1's compact LOG/Q0 pages and consumes three pages
+    # that are deliberately empty in the V1 table layout.  Q3 cannot stay at
+    # donor $9100 because V1 owns that page; remap it to V1's free +$1000 page.
     atan_maps = {
         ATAN_LOG_SRC[0]: vals['REG_TABLE'] + 0x3600,
         ATAN_Q0_SRC[0]: vals['REG_TABLE'] + 0x3700,
-        ATAN_Q1_SRC[0]: vals['REG_KERNEL'] + 0x1500,
-        ATAN_Q2_SRC[0]: vals['REG_KERNEL'] + 0x1F00,
-        ATAN_Q3_SRC[0]: vals['REG_KERNEL'] + 0x1700,
+        ATAN_Q1_SRC[0]: vals['REG_TABLE'] + 0x0E00,
+        ATAN_Q2_SRC[0]: vals['REG_TABLE'] + 0x0F00,
+        ATAN_Q3_SRC[0]: vals['REG_TABLE'] + 0x1000,
     }
     for src, dst in atan_maps.items():
         if src <= target <= src + 0xFF:
@@ -202,7 +201,7 @@ def apply_atan2_fast(dst_mem: bytearray, src_mem: bytearray,
 
     # The destination pages must be unused in the V1 layout before ownership is
     # assigned to fast ATAN2.  This guard catches future table-layout changes.
-    targets = [vals['REG_KERNEL'] + 0x1500, vals['REG_KERNEL'] + 0x1F00, vals['REG_KERNEL'] + 0x1700]
+    targets = [vals['REG_TABLE'] + 0x0E00, vals['REG_TABLE'] + 0x0F00, vals['REG_TABLE'] + 0x1000]
     for a in targets:
         if any(dst_mem[a:a + 256]):
             raise RuntimeError(f'ATAN2 fast destination page {hx(a)} is not free in V1 base')
@@ -315,7 +314,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         prg = outdir / 'math_v5_hybrid_lowzp_game_math.prg'
         write_prg(dst, lo, new_hi, prg)
 
-        # Reuse the stable 45-entry caller include generated from the same map.
+        # Reuse the stable 46-entry caller include generated from the same map.
         inc_src = v1out / 'math_api.inc'
         inc = outdir / 'math_api.inc'
         inc_text = inc_src.read_text().rstrip() + '\n'
@@ -347,10 +346,10 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'MATH_URECIP16_Q16',
             ],
             'notes': [
-                'All 45 stable API addresses and semantics remain V1-compatible.',
+                'All 46 stable API addresses and semantics remain V1-compatible.',
                 'MATH_INIT remains optional exactly as in V1.',
                 'The imported certified V2 kernels use only the existing V1 normal ZP window.',
-                'Fast ATAN2, when enabled, adds no ZP and occupies three free V1 kernel pages (768 bytes).',
+                'Fast ATAN2, when enabled, adds no ZP and occupies three formerly empty V1 table pages (768 bytes).',
                 'HYBRID_CODE is private implementation storage and may be relocated at build time.',
                 'Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines.',
             ],

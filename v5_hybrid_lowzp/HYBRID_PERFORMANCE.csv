@@ -9,3 +9,4 @@ MATH_UMOD32_16,860.373105,762.730823,11.3488,stable alias to imported V2 UDIV32_
 MATH_COS8,29,23,20.6897,V2 direct import; exhaustive phase/cycle parity
 MATH_SINCOS8,39,31,20.5128,V2 direct import; exhaustive phase/cycle parity
 MATH_ATAN2_8,50.441345,46.953064,6.9155,"V2 fast four-quadrant signed-log import; exhaustive 65,536-vector result/cycle parity; <=1 phase-unit error"
+MATH_VEC2_NORMALIZE_Q8_8,198.770271,198.770271,0.0000,V1-compatible 31-ZP normalization backend; common 46-entry API

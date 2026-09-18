@@ -1,6 +1,6 @@
 # Game / fixed-point API
 
-The 19 new stable JMP slots occupy `$5E00-$5E38`. They use the existing `$C000-$C01F` vectors. Inputs are preserved, A/X/Y are volatile and D=0 is required. Division-by-zero returns C=1 with zero q/r.
+The 20 stable game/fixed-point JMP slots occupy `$5E00-$5E3B`. They use the existing `$C000-$C01F` vectors. Inputs are preserved, A/X/Y are volatile and D=0 is required. Division-by-zero returns C=1 with zero q/r.
 
 | Entry | Address | Contract |
 |---|---:|---|
@@ -17,7 +17,12 @@ The 19 new stable JMP slots occupy `$5E00-$5E38`. They use the existing `$C000-$
 | `MATH_ISQRT32` | `$5E30` | n32 -> z16 exact floor sqrt |
 | `MATH_DIST8_FAST` | `$5E33` | signed dx,dy -> `max+min/2` |
 | `MATH_DIST8_ACCURATE` | `$5E36` | signed dx,dy -> rounded 243/107 minimax form |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `$5E39` | signed Q8.8 x,y -> signed Q1.15 unit vector; C=1 only for zero |
 
 Phase convention: `$00=0°`, `$40=90°`, `$80=180°`, `$C0=270°`. V1 uses the compact 512-byte signed-log ATAN2 tier (**50.441345-cycle mean**); V2/V3 use the 1280-byte four-final-angle-page tier (**46.953064-cycle mean**). Both are within one phase unit of rounded mathematical atan2 over the entire signed-byte plane. V4 is exact against that reference at 48 fixed cycles. `(0,0)` returns zero.
 
 V1 uses `$C040-$C057` RAM scratch. V2–V4 use `$53-$6A` ZP. Native V2–V4 SMUL16 executes from `$80-$F3`. On V3/V4, game-math calls are forbidden while a Turbo BEGIN/END overlay is active.
+
+## Vector normalization
+
+`MATH_VEC2_NORMALIZE_Q8_8` preserves X/Y inputs and returns the Q1.15 direction in `Z[0..3]`. The common precision contract is <=0.3621 degrees / <=202 LSB. V1/V5 use the low-ZP stock backend, V2 uses its faster stock backend, and V3/V4 use the direct REU ratio-index table. See `VEC2_NORMALIZE_Q8_8.md`.

@@ -44,3 +44,4 @@ unsigned,integer square root,16 -> 16,MATH_ISQRT16,$5E2D,exact table search; V4 
 unsigned,integer square root,32 -> 16,MATH_ISQRT32,$5E30,exact ISQRT16-seeded hybrid + 8 base-4 refinement steps
 signed,distance approximation,"s8,s8 -> u8",MATH_DIST8_FAST,$5E33,max + min/2
 signed,distance approximation,"s8,s8 -> u8",MATH_DIST8_ACCURATE,$5E36,exhaustively selected 243/107 coefficients
+signed,vector normalize,"2xs16 Q8.8 -> 2xs16 Q1.15",MATH_VEC2_NORMALIZE_Q8_8,$5E39,profile-selected normalized direction; C=1 only for zero vector

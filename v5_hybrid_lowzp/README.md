@@ -2,7 +2,7 @@
 
 V5 keeps the **V1 31-byte normal zero-page footprint** while selectively importing V2 implementations that are faster without requiring additional ZP.
 
-The stable **45-entry public API is unchanged**. `MATH_INIT` remains optional, as in V1.
+The stable **46-entry public API is unchanged**. `MATH_INIT` remains optional, as in V1.
 
 ## Imported V2 paths
 
@@ -26,12 +26,12 @@ Reference build:
 ```text
 normal ZP      $02-$20   31 bytes
 hybrid code    $A000-$B1FF   4608 bytes
-ATAN2 pages    $5500/$5F00/$5700   768 bytes total
+ATAN2 pages    $6E00/$6F00/$7000   768 bytes total
 ```
 
 `$A000-$BFFF` is RAM under BASIC ROM. The reference build therefore requires BASIC ROM to be banked out while an imported V5 path executes. In most machine-code games/demos BASIC is already disabled. If that does not fit your memory map, relocate `HYBRID_CODE` and rebuild.
 
-The PRG file is the **same load-span length as V1** because V5 fills holes already inside that span. It consumes the 4,608-byte hybrid region plus three free 256-byte ATAN2 kernel pages, for an exact **5,376-byte private-RAM increase versus V1**.
+The PRG file is the **same load-span length as V1** because V5 fills holes already inside that span. It consumes the 4,608-byte hybrid region plus three formerly unused 256-byte ATAN2 table pages, for an exact **5,376-byte private-RAM increase versus V1**.
 
 ## Build
 
@@ -49,8 +49,8 @@ For a custom map, copy `relocatable_source/v5_hybrid_lowzp/math_config_reference
 
 The shipped validation includes:
 
-- 45/45 stable entries on the reference map: 4,172 machine calls;
-- 45/45 stable entries on the alternate map: 4,172 machine calls;
+- 46/46 stable entries on the reference map: 4,589 machine calls;
+- 46/46 stable entries on the alternate map: 4,589 machine calls;
 - **144,246 direct-import correctness/parity cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity and <=1 phase-unit error;
 - exhaustive 65,536-case `UMOD8` correctness;
 - exhaustive 256-phase `COS8` and `SINCOS8` checks;

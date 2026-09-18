@@ -2,10 +2,10 @@
 
 | Profile | Public stubs | Tables | Code | Scratch | Additional integration state |
 |---|---|---|---|---|---|
-| V1 | `$5E00-$5E38` | `$9400-$94FF`, `$9600-$9BFF` | `$C100-$CB20`, `$CB40-$CBA3` | `$C040-$C057` RAM | none; original 31-byte ZP unchanged |
-| V2 | `$5E00-$5E38` | `$9400-$9BFF` | `$C100-$CA31`, `$CB40-$CB98` | `$53-$6A` ZP | init patch `$32B8-$32BA`, loader `$32C0-$32CB`, SMUL16 source `$CC00-$CC73` |
-| V3 | `$5E00-$5E38` | `$9400-$9BFF` | `$C100-$CA3C`, `$CB40-$CB98` | `$53-$6A` ZP | init patch `$32B0-$32B2`, loader `$32C0-$32CD`, SMUL16 source `$CC00-$CC73` |
-| V4 | `$5E00-$5E38` | `$9400-$95FF`, `$9800-$9BFF` | `$C100-$C7CD`, `$C830-$C8FB`, `$CB40-$CB98` | `$53-$6A` ZP | same installer geometry as V3 |
+| V1 | `$5E00-$5E3B` | `$9400-$94FF`, `$9600-$9BFF` | `$C100-$CB20`, `$CB40-$CBA3` | `$C040-$C057` RAM | none; original 31-byte ZP unchanged |
+| V2 | `$5E00-$5E3B` | `$9400-$9BFF` | `$C100-$CA31`, `$CB40-$CB98` | `$53-$6A` ZP | init patch `$32B8-$32BA`, loader `$32C0-$32CB`, SMUL16 source `$CC00-$CC73` |
+| V3 | `$5E00-$5E3B` | `$9400-$9BFF` | `$C100-$CA3C`, `$CB40-$CB98` | `$53-$6A` ZP | init patch `$32B0-$32B2`, loader `$32C0-$32CD`, SMUL16 source `$CC00-$CC73` |
+| V4 | `$5E00-$5E3B` | `$9400-$95FF`, `$9800-$9BFF` | `$C100-$C7CD`, `$C830-$C8FB`, `$CB40-$CB98` | `$53-$6A` ZP | same installer geometry as V3 |
 
 The extension intentionally leaves `$A000-$BFFF` free of executable/table content. Validation PRGs are contiguous files and therefore contain padding across gaps; linkers should use the documented sparse segments rather than treating every byte in the PRG span as active resident content.
 
@@ -13,6 +13,7 @@ The extension intentionally leaves `$A000-$BFFF` free of executable/table conten
 
 V3 game image:
 
+- the configured `REU_TURBO16_BANK` reserves `$8000-$FFFF` for the 32 KiB `VEC2_NORMALIZE_Q8_8` ratio-index table; the Turbo16 overlay remains in the low part of the same bank and does not overlap it;
 - banks 0–5 preserve the established direct lookup/turbo content;
 - bank 6 = reciprocal low byte table;
 - bank 7 = reciprocal high byte table (the old bank-7 metadata signature is replaced);
@@ -20,6 +21,7 @@ V3 game image:
 
 V4 game image:
 
+- the configured `REU_TURBO16_BANK` reserves `$8000-$FFFF` for the same 32 KiB `VEC2_NORMALIZE_Q8_8` ratio-index table; no additional REU bank is required;
 - preserves existing operational content in banks 0–5;
 - bank 6 = reciprocal low; bank 7 = reciprocal high;
 - bank 8 = exact signed-byte atan2 plane;

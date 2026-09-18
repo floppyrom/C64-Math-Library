@@ -1,0 +1,36 @@
+{
+  "mapping": "idx=(1+minor+floor(minor*reciprocal[major]/256)) mod 256",
+  "profiles": [
+    "v1_balanced",
+    "v3_reu_512k",
+    "v4_reu_16m",
+    "v5_hybrid_lowzp"
+  ],
+  "max_angle_deg": 0.36085638159979183,
+  "max_component_float": 198.6126447432748,
+  "max_component_ceil": 199,
+  "angular_contract_deg": 0.3621,
+  "component_contract_lsb": 202,
+  "status": "PASS",
+  "worst_angle": [
+    124,
+    25.529697990533045,
+    26.250242369688888,
+    25.889385988089096,
+    26.250242369688888,
+    29478,
+    14307
+  ],
+  "worst_component": [
+    23,
+    4.890402058053849,
+    5.541204778039854,
+    4.890402058053849,
+    32630,
+    2992,
+    32647.714714562975,
+    2793.387355256725
+  ],
+  "used_indices": 256,
+  "cells": 723073
+}

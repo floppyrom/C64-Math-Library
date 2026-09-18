@@ -46,7 +46,7 @@
       "name": "kernel_overlap",
       "expected": "reject",
       "status": "PASS",
-      "error": "HYBRID_CODE $5E00-$6FFF collides with REG_GAME_API $5E00-$5E38"
+      "error": "HYBRID_CODE $5E00-$6FFF collides with REG_GAME_API $5E00-$5FFF"
     }
   ]
 }

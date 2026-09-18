@@ -45,6 +45,7 @@ MATH_ISQRT16             = $5E2D
 MATH_ISQRT32             = $5E30
 MATH_DIST8_FAST          = $5E33
 MATH_DIST8_ACCURATE      = $5E36
+MATH_VEC2_NORMALIZE_Q8_8 = $5E39
 MATH_X                   = $C000
 MATH_Y                   = $C004
 MATH_Z                   = $C008

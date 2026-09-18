@@ -24,7 +24,7 @@ def ranges(profile,v):
  b=PRG[profile].read_bytes();load=b[0]|b[1]<<8;end=load+len(b)-3
  # Claim exactly the source-backed resident intervals present in this profile.
  # REG_GAME_API remains independently relocatable even though it occupies the
- # reference kernel hole at $5E00-$5E38.
+ # reference public game-API span at $5E00-$5E3B.
  counts={}
  for name,os,oe in REGIONS:
   cs=max(os,load);ce=min(oe,end)
@@ -108,6 +108,8 @@ def _assemble_overlay(name,v):
  if not exact(mem): raise ValueError(f'{name} overlay layout is not exactly {length} bytes at {hx(base,2)}')
  return bytes(mem.get(a,0) for a in range(base,base+length)),labels
 
+NORMALIZE_RECIP = (254, 251, 247, 243, 239, 236, 232, 228, 224, 221, 218, 214, 211, 207, 204, 201, 198, 195, 191, 188, 185, 182, 179, 176, 173, 170, 168, 165, 162, 159, 157, 154, 152, 149, 147, 144, 142, 139, 138, 135, 133, 131, 128, 126, 124, 122, 120, 118, 115, 113, 111, 110, 107, 105, 102, 101, 100, 97, 96, 93, 92, 89, 88, 86, 85, 83, 80, 78, 77, 75, 73, 73, 70, 68, 68, 66, 64, 62, 60, 60, 58, 55, 55, 53, 51, 51, 48, 48, 45, 45, 43, 42, 40, 39, 37, 36, 36, 33, 32, 32, 29, 28, 28, 26, 24, 23, 23, 21, 20, 18, 17, 16, 16, 14, 13, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2, 0, 0, 0)
+
 def build_reu_image(profile,v,outpath):
  if profile not in REU:return None
  src=REU[profile].read_bytes();bank=0x10000;snap=bytes(src);img=bytearray(src)
@@ -126,6 +128,16 @@ def build_reu_image(profile,v,outpath):
   q=v['REU_QS16_BASE_BANK']
   for i,old in enumerate(range(0x10,0x18)):img[(q+i)*bank:(q+i+1)*bank]=snap[old*bank:(old+1)*bank]
  img[v['REU_TURBO16_BANK']*bank:v['REU_TURBO16_BANK']*bank+len(turbo16)]=turbo16
+ # VEC2 normalize direct-ratio index table.  The Turbo16 overlay occupies
+ # only the low bytes of its bank; the normalizer owns $8000-$FFFF.
+ # Address = (normalized_major << 8) | normalized_minor.
+ if len(turbo16) >= 0x8000: raise ValueError('Turbo16 overlay collides with normalize ratio table')
+ nb=v['REU_TURBO16_BANK']*bank
+ for major in range(0x80,0x100):
+  k=NORMALIZE_RECIP[major-0x80]
+  row=nb+(major<<8)
+  for minor in range(0x100):
+   img[row+minor]=(minor+((minor*k)>>8)+1)&0xff
  img[v['REU_TURBO32_BANK']*bank:v['REU_TURBO32_BANK']*bank+len(turbo32)]=turbo32
  # Metadata lives in the unused final page of the logical Turbo32 bank so it
  # can move without consuming a ninth bank in V3.
@@ -135,7 +147,10 @@ def build_reu_image(profile,v,outpath):
          'turbo16_bank':hx(v['REU_TURBO16_BANK'],2),'turbo32_bank':hx(v['REU_TURBO32_BANK'],2),
          'turbo16_zp':f'{hx(v["TURBO16_ZP_BASE"],2)}-{hx(v["TURBO16_ZP_BASE"]+112,2)}',
          'turbo32_zp':f'{hx(v["TURBO32_ZP_BASE"],2)}-{hx(v["TURBO32_ZP_BASE"]+134,2)}',
-         'turbo16_sha256':hashlib.sha256(turbo16).hexdigest(),'turbo32_sha256':hashlib.sha256(turbo32).hexdigest()}
+         'turbo16_sha256':hashlib.sha256(turbo16).hexdigest(),'turbo32_sha256':hashlib.sha256(turbo32).hexdigest(),
+         'normalize_ratio_bank':hx(v['REU_TURBO16_BANK'],2),
+         'normalize_ratio_range':'$8000-$FFFF',
+         'normalize_ratio_sha256':hashlib.sha256(img[nb+0x8000:nb+0x10000]).hexdigest()}
 
 def preprocess(src,config):
  cfg=Path(config).read_text().rstrip()+'\n'

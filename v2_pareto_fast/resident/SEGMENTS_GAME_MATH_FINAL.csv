@@ -1,5 +1,5 @@
 kind,start,end,bytes,file
-game_extension,$5E00,$5E38,57,math_v2_pareto_fast_game_math.prg
+game_extension,$5E00,$5E3B,60,math_v2_pareto_fast_game_math.prg
 game_extension,$9400,$9BFF,2048,math_v2_pareto_fast_game_math.prg
 game_extension,$C100,$CA31,2354,math_v2_pareto_fast_game_math.prg
 init_patch,$32B8,$32BA,3,math_v2_pareto_fast_game_math.prg

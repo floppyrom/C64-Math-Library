@@ -10,10 +10,10 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 
 | Profile | PRG payload span B | REU image B | Declared shared ZP B | Stable API ZP union touched B | Stack-page reserved B |
 |---|---:|---:|---:|---:|---:|
-| `v1_balanced` | 43940 | 0 | 31 | 31 | 0 |
-| `v2_pareto_fast` | 44148 | 0 | 60 | 216 | 0 |
-| `v3_reu_512k` | 48244 | 524288 | 55 | 205 | 0 |
-| `v4_reu_16m` | 48244 | 16777216 | 55 | 204 | 0 |
+| `v1_balanced` | 43940 | 0 |  | 31 | 0 |
+| `v2_pareto_fast` | 44148 | 0 |  | 216 | 0 |
+| `v3_reu_512k` | 48244 | 524288 |  | 205 | 0 |
+| `v4_reu_16m` | 48244 | 16777216 |  | 204 | 0 |
 | `v5_hybrid_lowzp` | 43940 | 0 | 31 | 31 | 0 |
 
 ## v1_balanced
@@ -25,7 +25,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL24` | 505.291800 | 475 | 560 | 411 | 24 | $09-$20 | 0 | 24-ZP reverse_24zp_carry certified resident kernel | 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32` | 781.874800 | 723 | 869 | 368 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32_READY` | 761.157600 | 702 | 841 | 352 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | 2026-09-14 post-upgrade deterministic comparison corpus |
-| `MATH_SMUL8` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes | 2026-09-14 exhaustive direct signed-domain quarter-square SMUL8 |
+| `MATH_SMUL8` | 120.490234 | 105 | 136 | 88 | 5 | $10-$14 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL16` | 421.306035 | 387 | 462 | 214 | 6 | $10-$14;$18 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL24` | 563.285181 | 504 | 650 | 336 | 12 | $10-$1B | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL32` | 839.130760 | 732 | 1006 | 455 | 31 | $02-$20 | 0 | native signed private executable path | current native-signed multiply validation |
@@ -65,6 +65,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_FAST` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_ACCURATE` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_VEC2_NORMALIZE_Q8_8` | 198.770271 | 129 | 333 | 392 | 5 | $14;$1A-$1D | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
 
 ## v2_pareto_fast
 
@@ -75,7 +76,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL24` | 448.291800 | 418 | 503 | 369 | 24 | $21-$38 | 0 | 24-ZP reverse_24zp_carry certified resident kernel | 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32` | 762.874800 | 704 | 850 | 355 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32_READY` | 764.157600 | 705 | 844 | 355 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | 2026-09-14 post-upgrade deterministic comparison corpus |
-| `MATH_SMUL8` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes | 2026-09-14 exhaustive direct signed-domain quarter-square SMUL8 |
+| `MATH_SMUL8` | 108.494141 | 94 | 123 | 87 | 5 | $39-$3D | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL16` | 252.324882 | 230 | 293 | 217 | 116 | $80-$F3 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL24` | 521.840598 | 462 | 609 | 425 | 24 | $21-$38 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL32` | 815.929016 | 710 | 984 | 439 | 31 | $02-$20 | 0 | native signed private executable path | current native-signed multiply validation |
@@ -115,6 +116,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | 1198.619613 | 1052 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_FAST` | 79.570038 | 64 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_ACCURATE` | 85.570038 | 70 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_VEC2_NORMALIZE_Q8_8` | 189.260317 | 127 | 323 | 383 | 8 | $12-$15;$39-$3C | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
 
 ## v3_reu_512k
 
@@ -125,7 +127,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL24` | 448.291800 | 418 | 503 | 369 | 24 | $21-$38 | 0 | 24-ZP reverse_24zp_carry certified resident kernel | 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32` | 762.874800 | 704 | 850 | 355 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32_READY` | 764.157600 | 705 | 844 | 355 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | 2026-09-14 post-upgrade deterministic comparison corpus |
-| `MATH_SMUL8` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes | 2026-09-14 exhaustive direct signed-domain quarter-square SMUL8 |
+| `MATH_SMUL8` | 96.000000 | 83 | 109 | 79 | 0 | — | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL16` | 252.623962 | 230 | 293 | 217 | 116 | $80-$F3 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL24` | 521.660855 | 462 | 603 | 425 | 24 | $21-$38 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL32` | 817.635533 | 710 | 984 | 439 | 31 | $02-$20 | 0 | native signed private executable path | current native-signed multiply validation |
@@ -165,6 +167,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | 1197.859322 | 1051 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_FAST` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_ACCURATE` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_VEC2_NORMALIZE_Q8_8` | 170.058633 | 133 | 306 | 346 | 4 | $12-$15 | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
 | `MATH_REU_UMUL16_BEGIN` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16` | 215.544111 | 203 | 240 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
@@ -181,7 +184,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL24` | 448.291800 | 418 | 503 | 369 | 24 | $21-$38 | 0 | 24-ZP reverse_24zp_carry certified resident kernel | 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32` | 762.874800 | 704 | 850 | 355 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32_READY` | 764.157600 | 705 | 844 | 355 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | 2026-09-14 post-upgrade deterministic comparison corpus |
-| `MATH_SMUL8` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes | 2026-09-14 exhaustive direct signed-domain quarter-square SMUL8 |
+| `MATH_SMUL8` | 95.819957 | 83 | 109 | 79 | 0 | — | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL16` | 252.662553 | 230 | 293 | 217 | 116 | $80-$F3 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL24` | 522.018265 | 462 | 605 | 425 | 24 | $21-$38 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL32` | 816.454130 | 710 | 984 | 439 | 31 | $02-$20 | 0 | native signed private executable path | current native-signed multiply validation |
@@ -221,6 +224,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | 1046.622518 | 899 | 1237 | 219 | 9 | $54-$5C | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_FAST` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_ACCURATE` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_VEC2_NORMALIZE_Q8_8` | 170.058633 | 133 | 306 | 346 | 4 | $12-$15 | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
 | `MATH_REU_UMUL16_BEGIN` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16` | 215.544111 | 203 | 240 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
@@ -240,7 +244,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL24` | 505.291800 | 475 | 560 | 411 | 24 | $09-$20 | 0 | 24-ZP reverse_24zp_carry certified resident kernel | V5 documented v1_balanced path; 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32` | 781.874800 | 723 | 869 | 368 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | V5 documented v1_balanced path; 2026-09-14 record-upgrade deterministic comparison corpus |
 | `MATH_UMUL32_READY` | 761.157600 | 702 | 841 | 352 | 31 | $02-$20 | 0 | 31-ZP practical resident UMUL32 family (stack-free compromise) | 2026-09-14 post-upgrade deterministic comparison corpus |
-| `MATH_SMUL8` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes | V5 byte-identical V1 SMUL8 path; exhaustive direct signed-domain quarter-square evidence |
+| `MATH_SMUL8` | 120.242306 | 105 | 136 | 88 | 5 | $10-$14 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL16` | 421.017501 | 387 | 462 | 214 | 6 | $10-$14;$18 | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL24` | 563.484848 | 504 | 648 | 336 | 12 | $10-$1B | 0 | native signed private executable path | current native-signed multiply validation |
 | `MATH_SMUL32` | 838.513491 | 732 | 1006 | 455 | 31 | $02-$20 | 0 | native signed private executable path | current native-signed multiply validation |
@@ -280,6 +284,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_FAST` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
 | `MATH_DIST8_ACCURATE` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
+| `MATH_VEC2_NORMALIZE_Q8_8` | 198.770271 | 129 | 333 | 392 | 5 | $14;$1A-$1D | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
 
 ## Interpretation notes
 

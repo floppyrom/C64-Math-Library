@@ -1,5 +1,5 @@
 kind,start,end,bytes,file
-game_extension,$5E00,$5E38,57,math_v1_balanced_game_math.prg
+game_extension,$5E00,$5E3B,60,math_v1_balanced_game_math.prg
 game_extension,$9400,$94FF,256,math_v1_balanced_game_math.prg
 game_extension,$9600,$9BFF,1536,math_v1_balanced_game_math.prg
 game_extension,$C100,$CB20,2593,math_v1_balanced_game_math.prg

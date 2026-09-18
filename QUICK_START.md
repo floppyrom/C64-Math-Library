@@ -71,11 +71,21 @@ Validate the selector and generated profiles:
 make pareto-validate
 ```
 
+## Vector normalization validation
+
+```sh
+make normalize
+```
+
+This rebuilds the fixed and hybrid profiles, runs the deterministic 107,396-vector profile-parity benchmark, and regenerates the full-domain exact-ratio precision certificate.
+
 ## Other validation
 
 ```sh
 python3 tools/validate_turbo_relocation.py
 python3 tools/validate_isqrt32_fast.py
+python3 tools/benchmark_normalize_profile_parity.py
+python3 tools/certify_normalize_exact_ratio.py
 python3 tools/test_config_validation.py
 make package-audit
 ```

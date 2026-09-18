@@ -6,18 +6,16 @@ The release ZIP is intended to be both **usable** and **reproducible** without c
 
 - `v1_balanced/` … `v4_reu_16m/`: the four original reference profiles, including their validated resident PRGs and profile-local source/data required by the assembly trees.
 - `v5_hybrid_lowzp/`: the validated stock-C64 hybrid reference PRG, generated API include, segment map, performance table and example.
-- `v1_balanced/resident/modules/` … `v5_hybrid_lowzp/resident/modules/`: profile-local routine sources. Each profile now includes its own directly browsable ATAN2 source (`resident_atan2.a`, `pareto_atan2.a`, `reu_atan2.a`, or `hybrid_atan2.a`) beside the arithmetic modules.
 - `v3_reu_512k/reu/` and `v4_reu_16m/reu/`: the two deployable reference REU images.
 - `relocatable_source/`: canonical source-level relocation inputs and map configurations, including Turbo16/Turbo32 overlays, V5 hybrid maps, and `custom_pareto/` maps used by the budget selector.
-- `routines/`: readable reusable algorithm sources. `routines/atan2/` is the shared stock-C64 ATAN2 source family, table generator and exhaustive standalone benchmark; the per-profile resident modules expose the exact/profile-mapped form selected by each profile.
 - `v1_balanced/resident/signed/` … `v5_hybrid_lowzp/resident/signed/`: native-signed implementation/provenance artifacts under `multiply/native` and `division`, with per-profile link maps and zero-overlap validation.
-- `tools/`: deterministic builders and validators, including `build_pareto.py`, the interactive `pareto_wizard.py`, Pareto configuration tests and stress validation. One-shot installers consume reusable sources from `routines/` rather than duplicating assembly bodies inside Python.
-- `validation/`: current validation results, including `validation/hybrid/` and `validation/pareto/`, plus the compact prior exhaustive baseline needed by the binary-delta validation argument.
-- `docs/`, `USER_MANUAL.md`, `QUICK_START.md`, `README.md`, `CHANGELOG.md`, `CSDB_CHANGELOG.txt`: integration/reference documentation.
+- `tools/`: deterministic builders and validators, including `build_pareto.py`, the interactive `pareto_wizard.py`, Pareto configuration tests and stress validation.
+- `validation/`: current validation results, including `validation/hybrid/`, `validation/pareto/`, and `validation/normalize/`, plus the compact prior exhaustive baseline needed by the binary-delta validation argument.
+- `docs/` (including `VEC2_NORMALIZE_Q8_8.md` and the 2026-09-18 release notes), `USER_MANUAL.md`, `QUICK_START.md`, `README.md`, `CHANGELOG.md`, `CSDB_CHANGELOG.txt`: integration/reference documentation.
 
 ## Intentionally not shipped
 
-- `build_source/reference/`, `build_source/alternate/`, `build_hybrid/`, `build_hybrid_repeat/`, and `build_pareto/`: generated outputs. Recreate V1–V4 with `make reference` / `make alternate`, V5 with `make hybrid`, and custom budget builds with `build_pareto.py` / `pareto_wizard.py`.
+- `build_source/reference/`, `build_source/alternate/`, `build_hybrid/`, `build_hybrid_repeat/`, and `build_pareto/`: generated outputs. Recreate V1–V4 with `make reference` / `make alternate`, V5 with `make hybrid`, validate normalization with `make normalize`, and create custom budget builds with `build_pareto.py` / `pareto_wizard.py`.
 - Superseded slow-ISQRT32 candidate patch/evidence folder. The active release carries its own fast-kernel correctness, performance and delta evidence.
 - Historical superseded releases, nested ZIPs, interrupted logs, Python caches, editor backups and temporary files.
 - Obsolete development-only validators that depended on an external prior-release working directory, plus unreferenced legacy binary/label intermediates.
@@ -25,8 +23,6 @@ The release ZIP is intended to be both **usable** and **reproducible** without c
 ## Intentional duplication
 
 Some small source/table/module files are identical across V1–V4. They are retained within each profile because the profile trees are designed to remain self-contained and the assembly sources reference those local files. Removing them would save little while making integration and archival use more fragile.
-
-ATAN2 follows the same policy: `routines/atan2/` remains the shared algorithm source of truth, while each profile contains a small resident-module view of the implementation it actually uses. Tooling does not carry duplicate embedded assembly strings.
 
 ## Manifest hygiene
 
@@ -39,14 +35,6 @@ Each V1–V5 profile publishes exact executable source mirrors under `resident/s
 ### Consolidated performance/resource index
 
 - `docs/CONSOLIDATED_ROUTINE_TABLE.md` — human-readable all-profile table.
-- `docs/CONSOLIDATED_ROUTINE_TABLE.csv` — 240-row machine-friendly table.
+- `docs/CONSOLIDATED_ROUTINE_TABLE.csv` — 245-row machine-friendly table.
 - `validation/CONSOLIDATED_ROUTINE_TABLE.json` — definitions, profile summaries, and row evidence.
 - `tools/generate_consolidated_routine_table.py` — regenerates the table from shipped images and validation evidence.
-
-### Signed partial-product research
-
-- `docs/SIGNED_PARTIAL_PRODUCT_RESEARCH.md` — production decision and wider signed-multiply analysis.
-- `research/signed_partial_products/` — reproducible experimental sources/scripts for the direct mixed-sign primitives, the rejected 16×16 hybrid, and the matched signed 32×8 row comparison.
-- `validation/research/SIGNED_PARTIAL_PRODUCT_RESEARCH.json` — machine-readable research conclusions used by the release audit.
-
-These files are evidence only. They do not add public APIs or change the selected wider SMUL16/24/32 execution paths.

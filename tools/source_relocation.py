@@ -5,6 +5,7 @@ import csv, json, hashlib, sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU,REV,SIZE
+REV[0xBF]=('lax','absy'); REV[0xAF]=('lax','abs')
 PROFILES=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m']
 PRG={p:ROOT/p/'resident'/f'math_{p}_game_math.prg' for p in PROFILES}
 REU={'v3_reu_512k':ROOT/'v3_reu_512k/reu/c64_math_v3_512k_game_math.reu','v4_reu_16m':ROOT/'v4_reu_16m/reu/c64_math_v4_16m_game_math.reu'}
@@ -23,13 +24,12 @@ REGIONS=[
  ('REG_LOW',0x1000,0x2fff),
  ('REG_API',0x3000,0x3fff),
  ('REG_KERNEL',0x4000,0x5dff),
- ('REG_GAME_API',0x5e00,0x5e38),
- ('REG_KERNEL',0x5e39,0x5fff),
+ ('REG_GAME_API',0x5e00,0x5fff),
  ('REG_TABLE',0x6000,0x9bff),
  ('REG_GAME',0xc100,0xcc73),
 ]
 REGION_DEFAULT={'REG_LOW':0x1000,'REG_API':0x3000,'REG_KERNEL':0x4000,'REG_GAME_API':0x5e00,'REG_TABLE':0x6000,'REG_GAME':0xc100}
-LENGTHS={'REG_LOW':0x2000,'REG_API':0x1000,'REG_KERNEL':0x2000,'REG_GAME_API':0x39,'REG_TABLE':0x3c00,'REG_GAME':0xb74}
+LENGTHS={'REG_LOW':0x2000,'REG_API':0x1000,'REG_KERNEL':0x2000,'REG_GAME_API':0x200,'REG_TABLE':0x3c00,'REG_GAME':0xb74}
 
 REU_BANK_SYMBOL_BY_DEFAULT={
  0x00:'REU_UMUL8_LO_BANK', 0x01:'REU_UMUL8_HI_BANK',
@@ -136,6 +136,12 @@ def operand_text(profile,pc,op,mode,raw,branch_prefix='L'):
   # avoids confusing unrelated constants with bank numbers.
   if profile in REU and pc+4 < len(raw) and raw[pc+2]==0x8D and raw[pc+3]==0x06 and raw[pc+4]==0xDF:
    v=raw[pc+1]
+   # VEC2_NORMALIZE_Q8_8 uses the upper half of the relocatable Turbo16
+   # REU bank for its 32 KiB direct ratio-index table. Keep the selector
+   # symbolic when regenerating canonical source so alternate/custom maps
+   # remain relocatable rather than freezing the reference bank number.
+   if op=='lda' and pc==0x5e39:
+    return ' #REU_TURBO16_BANK'
    if op=='lda' and v in REU_BANK_SYMBOL_BY_DEFAULT:
     # V3 has no stable consumers for the V4-only banks, but harmless symbols
     # are still present in the config for a common schema.
@@ -168,7 +174,12 @@ def emit_instruction(profile,pc,raw,branch_targets):
  oc=raw[pc];op,mode=REV[oc]
  label=(f'L{pc:04X}:\n' if pc in branch_targets else '')
  if op=='lax':
-  ex=addr_expr(profile,raw[pc+1]);return label+f'    !byte $A7, {ex}    ; LAX zp\n'
+  if mode=='zp':
+   ex=addr_expr(profile,raw[pc+1]); return label+f'    !byte $A7, {ex}    ; LAX zp\n'
+  if mode in ('abs','absy'):
+   t=raw[pc+1]|raw[pc+2]<<8; ex=addr_expr(profile,t); opc='$AF' if mode=='abs' else '$BF'; comment='LAX abs' if mode=='abs' else 'LAX abs,Y'
+   return label+f'    !byte {opc}, <{ex}, >{ex}    ; {comment}\n'
+  raise RuntimeError(f'{profile}: unsupported LAX mode {mode} at {hx(pc)}')
  if op=='anc':return label+f'    !byte $0B, {hx(raw[pc+1],2)}    ; ANC #imm\n'
  force=''
  if mode in ('zp','zpx','zpy','indx','indy') and turbo_zp_expr(profile,pc,raw[pc+1]) is not None: force='+1'
@@ -226,7 +237,7 @@ def generate_source(profile,outpath:Path):
   if mode=='rel':
    d=raw[pc+1];d=d-256 if d>=128 else d;btargets.add((pc+2+d)&0xffff)
  lines=[
-  '; GENERATED CANONICAL SOURCE. Builds the stable 45-entry API from symbolic assembly source.',
+  '; GENERATED CANONICAL SOURCE. Builds the stable 46-entry API from symbolic assembly source.',
   '; The fixed FINAL PRG is provenance/reference only. This file is the relocatable build input.',
   '; Compatible with the included source assembler; syntax is intentionally ACME-style.',
   '!cpu 6510','!source "math_config.inc"',''

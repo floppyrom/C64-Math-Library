@@ -1,22 +1,23 @@
 {
   "acme": {
-    "status": "NOT_RUN",
-    "assembler": "ACME executable unavailable in current validation container",
-    "reason": "Post-ATAN2 canonical sources are certified by the deterministic internal assembler plus reference/alternate regression suites; prior ACME PASS evidence is retained.",
-    "historical_pre_atan2_validation": "validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_ATAN2.json",
-    "historical_pre_native_validation": "validation/acme/ACME_SOURCE_BUILD_VALIDATION_PRE_NATIVE.json",
-    "rerun_command": "python3 tools/verify_with_acme.py"
+    "status": "NOT_RUN_CURRENT",
+    "historical_status": "PASS",
+    "historical_assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
+    "note": "ACME is not installed in the current execution environment; historical identity evidence is retained, while current canonical builds pass the internal deterministic assembler and machine regressions.",
+    "historical_checks": 8,
+    "historical_overlay_checks": 8,
+    "historical_overlay_boundary_checks": 4
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "64bb25c3c9d686fea817d3c554e8cd811ea6370b3f9a1e6d8783c584ae18e93b",
-    "v2_pareto_fast": "4035e6e2cc62fc095233bc333baf554033277a091b8edae32a7767e6a7a62b8c",
-    "v3_reu_512k": "f13b9c5f947bf80a67df4c29a5872ea3c5d8e84f26fd674c7a01dfe7209e1f82",
-    "v4_reu_16m": "2b8efe30dbd2e9499f20d225d0e8c1ae44bc6c9f0e5c0fa9d0dd4dee951853a8",
-    "v5_hybrid_lowzp": "86fbe91afa1c912dbea3f6843edbe0d964202ef98760c687456691563165258c"
+    "v1_balanced": "2379df65d43f302d11ad15668796925cf1e4c2e4a6176e1a51b1d11e42a2124d",
+    "v2_pareto_fast": "789622effc4c294177c9b368201abbd161e95dcb26be5788b28b50fc92a7a189",
+    "v3_reu_512k": "1569843ac8e6ac086eb8ddf6901a37f6032e386574c6237df52821d1830b16ef",
+    "v4_reu_16m": "2646b69a2492716b5ec82ece99f17d3950ca674c849726436c5b4a51107b1c7d",
+    "v5_hybrid_lowzp": "ea3c4e2068a080c649908e4e1598ba3d2a70f6126444466f3205683efe43c9e9"
   },
   "alternate_reu_sha256": {
-    "v3_reu_512k": "195764de47c5347651a3240bfff14c680610802a196556d0d8e5ecd1c9d21807",
-    "v4_reu_16m": "046d7bbc72f5ca3661b875cd6173c19df6d95e561873ef7f061b1573f3b7920e"
+    "v3_reu_512k": "da767488080d83bc692c4a9b41ecbbe19ac331652170c4f47faccab53a96483d",
+    "v4_reu_16m": "53e6c7933075f16ccbb7119be69f67b0c98dbfe5046477ec7a178bc09cafa80b"
   },
   "alternate_turbo_overlay_sha256": {
     "turbo16": "a231db022a18841656bcd138eb71b2dc1215b455f3646b27f081a18ffad4b475",
@@ -25,36 +26,9 @@
   "config_validation_cases": 27,
   "custom_pareto": {
     "builder": "tools/build_pareto.py",
-    "common_api_machine_calls": 50064,
+    "common_api_machine_calls": 55068,
     "config_validation_cases": 12,
     "default_reference_points": {
-      "31": {
-        "extra_private_ram_bytes": 6021,
-        "packs": [
-          "atan2_fast",
-          "umul32_initialized",
-          "zero_zp_v5"
-        ]
-      },
-      "36": {
-        "extra_private_ram_bytes": 6576,
-        "packs": [
-          "atan2_fast",
-          "umul32_initialized",
-          "umul8_16",
-          "zero_zp_v5"
-        ]
-      },
-      "60": {
-        "extra_private_ram_bytes": 7336,
-        "packs": [
-          "atan2_fast",
-          "umul24",
-          "umul32_initialized",
-          "umul8_16",
-          "zero_zp_v5"
-        ]
-      },
       "147": {
         "extra_private_ram_bytes": 6207,
         "packs": [
@@ -65,7 +39,7 @@
         ]
       },
       "176": {
-        "extra_private_ram_bytes": 7522,
+        "extra_private_ram_bytes": 7557,
         "packs": [
           "atan2_fast",
           "smul16_exec",
@@ -79,6 +53,33 @@
         "extra_private_ram_bytes": 208,
         "packs": [
           "v2_full"
+        ]
+      },
+      "31": {
+        "extra_private_ram_bytes": 6021,
+        "packs": [
+          "atan2_fast",
+          "umul32_initialized",
+          "zero_zp_v5"
+        ]
+      },
+      "36": {
+        "extra_private_ram_bytes": 6611,
+        "packs": [
+          "atan2_fast",
+          "umul32_initialized",
+          "umul8_16",
+          "zero_zp_v5"
+        ]
+      },
+      "60": {
+        "extra_private_ram_bytes": 7371,
+        "packs": [
+          "atan2_fast",
+          "umul24",
+          "umul32_initialized",
+          "umul8_16",
+          "zero_zp_v5"
         ]
       }
     },
@@ -97,57 +98,42 @@
     "optional31_v5_endpoint_byte_identical": true,
     "pure_v1_endpoint_byte_identical": true,
     "smul16_stress_cycle_parity_cases": 50144,
-    "stable_api_entries": 45,
+    "stable_api_entries": 46,
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-09-17",
+  "date": "2026-09-18",
   "deterministic_builds_checked": 8,
   "documentation": {
     "code_change_from_turbo_final": true,
     "complete_user_manual": "USER_MANUAL.md",
     "custom_pareto_builder_doc": "docs/PARETO_BUILDER.md",
-    "manual_scope": "V1-V5 fixed profiles; 45-entry stable API; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; integration/troubleshooting",
+    "manual_scope": "V1-V5 fixed profiles; 46-entry stable API; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 53218,
-    "user_manual_lines": 1704,
-    "user_manual_sha256": "8bc5ce5629542ef9cb69a28fd6cf79d0ded7c4429f1236c6d17c367dfea2bdd7",
+    "user_manual_bytes": 55408,
+    "user_manual_lines": 1750,
+    "user_manual_sha256": "346c56625d0e3cc1df5b138f6b9516057eae603487454e5f541c3c33367716ac",
     "consolidated_routine_table": "docs/CONSOLIDATED_ROUTINE_TABLE.md"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$F1FF",
-    "alternate_prg_sha256": "86fbe91afa1c912dbea3f6843edbe0d964202ef98760c687456691563165258c",
-    "common_machine_calls_per_map": 4172,
-    "common_public_entries_per_map": 45,
+    "alternate_prg_sha256": "ea3c4e2068a080c649908e4e1598ba3d2a70f6126444466f3205683efe43c9e9",
+    "common_machine_calls_per_map": 4589,
+    "common_public_entries_per_map": 46,
     "config_validation_cases": 8,
     "deterministic_maps": 2,
-    "direct_import_cases": 144246,
+    "direct_import_cases": 78710,
     "normal_zp_bytes": 31,
     "optional_init_cold_load_cases": 2000,
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$B1FF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "e43c71d5bbee0c2690d970cff061f77804c4ed0a2bffc0a6281437f55066b7f2",
+    "reference_prg_sha256": "510d99d5b31325e6292a9e0c051a9ebedad16cb33ff3a20d6b0ef92329a346ad",
     "status": "PASS",
-    "umod8_exhaustive_cases": 65536,
-    "atan2_fast": {
-      "status": "PASS",
-      "mean_cycles": 46.95306396484375,
-      "min_cycles": 30,
-      "max_cycles": 48,
-      "cases": 65536,
-      "max_phase_error": 1,
-      "zp_bytes": 0,
-      "extra_private_ram_bytes": 768,
-      "reference_extra_pages": [
-        "$5500",
-        "$5700",
-        "$5F00"
-      ]
-    }
+    "umod8_exhaustive_cases": 65536
   },
   "isqrt32_fast_cases_per_profile": 5097,
   "isqrt32_fast_mean_cycles_5097": {
@@ -158,10 +144,9 @@
   },
   "isqrt32_fast_validation_status": "PASS",
   "notes": [
-    "ATAN2 fast-tier upgrade: V1 50.441345 mean cycles; V2/V3/V5 46.953064; V4 exact 48 fixed; stock max phase error 1 over all 65,536 signed-byte vectors.",
     "UMUL16/UMUL24 resident record upgrades are active; V1/V5 preserve the 31-byte normal-ZP and UMUL32_READY state contracts.",
     "V3/V4 Turbo32 uses the stack-free 135-ZP ram135 record-family compromise; reference range $0A-$90, legal origins $02-$79; BEGIN/CALL/END = 326 / 728.947080 mean / 371 cycles on the canonical corpus.",
-    "Historical ACME 0.97 evidence predates the ATAN2 transplant; post-ATAN2 sources are certified by deterministic internal assembly plus reference/alternate regression, with ACME rerunnable externally.",
+    "Current ACME 0.97 independently reproduces all V1-V4 reference/alternate PRGs and Turbo overlay/boundary builds byte-for-byte.",
     "A 240-row consolidated routine table covers every stable API in V1-V5 plus V3/V4 Turbo and V4 QS16, including cycles, reachable code bytes, ZP and persistent stack-page reservation.",
     "All shipped SMUL*/SDIV* public paths own signed-specific executable paths; corresponding unsigned executable engines are not entered.",
     "Signed ownership validator: 279 checks and 65/65 zero-overlap signed/unsigned executable comparisons across V1-V5.",
@@ -169,19 +154,19 @@
     "Same-corpus delta audit finds no signed timing regressions: newly split multiplier paths save 3 cycles; SDIV32_32 is faster in every profile.",
     "V2-V4 retain the executable-ZP native SMUL16 kernel; V1/V5 keep the 31-byte normal-ZP contract using private signed arithmetic paths in already-reserved resident holes.",
     "Custom Pareto Builder added for stock-C64 games/demos: total ZP budget, optional exact extra-RAM budget, init policy and routine weights select the fastest certified compatible V1/V2 implementation set at build time.",
-    "Custom Pareto selection has no runtime dispatcher and retains the same 45-entry public API.",
+    "Custom Pareto selection has no runtime dispatcher and retains the same 46-entry public API.",
     "Default equal-weight Pareto breakpoints are 31/36/60/147/176/221 ZP bytes.",
     "31 ZP + zero extra RAM reproduces V1 byte-for-byte; 31 ZP + optional-init policy reproduces V5 byte-for-byte; 221 ZP selects complete V2.",
     "RAM budgeting is exact for generated private payload, including the exact emitted MATH_INIT helper; generated manifests list every private RAM and ZP range.",
-    "Pareto validation covers 12 reference/alternate builds and 50,064 common-API calls, 75,644 direct V2 cycle-parity cases including exhaustive ATAN2, exhaustive UMOD8, 50,144 SMUL16 parity cases, 25,000 mixed iterations, 10,000 ZP-guard iterations, deterministic rebuilds and 12 resource/config cases.",
-    "V5 Hybrid Low-ZP adds a fifth stock-C64 profile while preserving the common 45-entry API.",
-    "V5 keeps V1 normal ZP at 31 bytes and imports certified V2 division/modulo/COS/SINCOS/ATAN2 paths with no runtime dispatcher tax.",
+    "Pareto validation covers 12 reference/alternate builds and 55,068 common-API calls, 75,644 direct V2 cycle-parity cases, exhaustive UMOD8, 50,144 SMUL16 parity cases, 25,000 mixed iterations, 10,000 ZP-guard iterations, deterministic rebuilds and 12 resource/config cases.",
+    "V5 Hybrid Low-ZP adds a fifth stock-C64 profile while preserving the common 46-entry API.",
+    "V5 keeps V1 normal ZP at 31 bytes and imports certified V2 division/modulo/COS/SINCOS paths with no runtime dispatcher tax.",
     "V5 ordinary safe entries retain V1-style optional MATH_INIT; 2,000 cold-load calls across reference/alternate maps validate this.",
     "Sequential calls, including repeated calls inside game/demo loops, are supported; the library remains non-reentrant.",
-    "V5 reference hybrid code uses RAM under BASIC ROM at $A000-$B1FF; fast ATAN2 adds private pages at $5500/$5700/$5F00. Bank BASIC out for the hybrid block or relocate the private regions.",
+    "V5 reference private code uses RAM under BASIC ROM at $A000-$B1FF; bank BASIC out or relocate HYBRID_CODE.",
     "DOCUMENTED LEAN FINAL adds a plain-English Turbo explanation and removes reproducible/superseded packaging waste; code, ABI, overlays and deployable REU data are unchanged.",
     "DOCUMENTED LEAN FINAL includes the complete user/integration manual; resident code, overlays, REU arithmetic data, ABI and performance are unchanged from Turbo FINAL.",
-    "The common 45-entry stable API is unchanged across V1-V4.",
+    "The common 46-entry stable API is unchanged across V1-V4.",
     "V3/V4 additionally expose six stateful Turbo16/Turbo32 BEGIN/CALL/END entries.",
     "Turbo executable-ZP origins and REU storage banks are selected at build time; overlay code is assembled from canonical source with no runtime relocation pass.",
     "Reference and alternate Turbo cycle vectors are identical; relocation adds zero runtime cycles.",
@@ -193,16 +178,16 @@
     "generated_build_hybrid_shipped": false,
     "generated_build_pareto_shipped": false,
     "generated_build_source_shipped": false,
-    "lean_file_count_excluding_checksum": 471,
+    "lean_file_count_excluding_checksum": 486,
     "obsolete_development_validators_removed": 2,
     "package_contents_doc": "docs/PACKAGE_CONTENTS.md",
     "prior_exhaustive_baseline_retained": true,
     "superseded_slow_isqrt32_baseline_shipped": false,
     "unreferenced_legacy_bin_label_artifacts_removed": 27,
     "legacy_native_signed_tree_removed": true,
-    "uncompressed_bytes_excluding_checksum": 21763238,
-    "consolidated_routine_table_rows": 240,
-    "current_acme_validation": true
+    "uncompressed_bytes_excluding_checksum": 21882471,
+    "consolidated_routine_table_rows": 245,
+    "current_acme_validation": false
   },
   "profiles": [
     "v1_balanced",
@@ -212,29 +197,29 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "2e930fc8c0c487406fd36832e772885d8d11fa708950fd95334f0218dccc9964",
-    "v2_pareto_fast": "10af446bd1f49bcf02f9529d7944881d85f0e9b8dec2712638e306b0fab72828",
-    "v3_reu_512k": "f4113d322f168e3ac30339fe427cf9965d439ca173a2cb78d064eb8ca55e36f8",
-    "v4_reu_16m": "bcf4f35341719190cdb25b7b142c9338b1a955db511cb790129a00f646b73405",
-    "v5_hybrid_lowzp": "e43c71d5bbee0c2690d970cff061f77804c4ed0a2bffc0a6281437f55066b7f2"
+    "v1_balanced": "73d0feef6f7dfb88de5b35b8ac3b02365a957d775fd07e4f9ecdbf1fb5414ec0",
+    "v2_pareto_fast": "92613e5e656a80541a7ae2a04aa8cce9775668173d6700f861db1d37f0714421",
+    "v3_reu_512k": "a37cb3e6236aec2a417990584eb12d1878e6183b421c2fe56882d923a92affe1",
+    "v4_reu_16m": "0d398ea2f08b67f6bbcb546ffeaf06baa225a95520e1e5e1cd2829e3176023f5",
+    "v5_hybrid_lowzp": "510d99d5b31325e6292a9e0c051a9ebedad16cb33ff3a20d6b0ef92329a346ad"
   },
   "reference_reu_sha256": {
-    "v3_reu_512k": "f81fb6ad3da84b3af89685483a6b81baeaf3f9817789c9e7b5ce838eddaaa9b9",
-    "v4_reu_16m": "eb5bc703ab92add9e1f5ee7a1c55c62a244a104e94895f981535312c8fcd1482"
+    "v3_reu_512k": "66a3feab7d1a18356291c2aac9f404627ca13004d1032d6c6efb4cd1e4f1acf5",
+    "v4_reu_16m": "123e870c5d30a0ae08098911bdf8c3e37f328f372a71b829d740622f8bf9f240"
   },
   "reference_turbo_overlay_sha256": {
     "turbo16": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
     "turbo32": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a"
   },
-  "release": "c64_math_library_v1-v5_SMUL8_DIRECT_SIGNED_PLUS_ATAN2_FAST_2026-09-17",
-  "release_audit_checks": 201,
+  "release": "c64_math_library_v1-v5_VEC2_NORMALIZE_46ENTRY_2026-09-18",
+  "release_audit_checks": 204,
   "reu_turbo_lifecycle_entries": 6,
   "source_relocation": {
-    "entries_executed": 180,
-    "machine_calls": 16688,
+    "entries_executed": 184,
+    "machine_calls": 18356,
     "status": "PASS"
   },
-  "stable_api_entries": 45,
+  "stable_api_entries": 46,
   "status": "PASS",
   "turbo_boundary_sweep": {
     "product_calls": 3556,
@@ -291,44 +276,35 @@
   "release_audit_status": "PASS_WITH_ACME_NOT_RUN",
   "consolidated_routine_table": {
     "status": "PASS",
-    "rows": 240,
-    "stable_rows": 225,
+    "rows": 245,
+    "stable_rows": 230,
     "csv": "docs/CONSOLIDATED_ROUTINE_TABLE.csv",
     "markdown": "docs/CONSOLIDATED_ROUTINE_TABLE.md",
     "machine_evidence": "validation/CONSOLIDATED_ROUTINE_TABLE.json",
     "stack_page_reserved_bytes_all_shipped_rows": 0
   },
-  "signed_partial_product_research": {
-    "status": "COMPLETE_SCREENING",
-    "production_change": "direct signed-domain SMUL8 only",
-    "smul8_public_mean_cycles": 67.9921875,
-    "smul8_zp_bytes": 0,
-    "mixed_s8xu8_mean_cycles": 47.9921875,
-    "mixed_u8xs8_mean_cycles": 51.9921875,
-    "smul16_hybrid_mean_cycles": 192.46882677078247,
-    "smul16_hybrid_decision": "REJECTED_DOMINATED",
-    "signed_32x8_baseline_mean_cycles": 360.90848007414274,
-    "signed_32x8_direct_mean_cycles": 371.8574876428792,
-    "signed_32x8_direct_delta_cycles": 10.94900756873646,
-    "wide_decision": "retain current correction-based SMUL16/24/32 kernels",
-    "documentation": "docs/SIGNED_PARTIAL_PRODUCT_RESEARCH.md",
-    "results": "research/signed_partial_products/results/SIGNED_PARTIAL_PRODUCT_RESULTS.csv",
-    "machine_evidence": "validation/research/SIGNED_PARTIAL_PRODUCT_RESEARCH.json"
-  },
-  "package": {
-    "lean_file_count_excluding_checksum": 488,
-    "uncompressed_bytes_excluding_checksum": 21851479,
-    "research_files_added": true
-  },
-  "atan2_upgrade": {
+  "vec2_normalize_q8_8": {
     "status": "PASS",
-    "machine_evidence": "validation/ATAN2_UPGRADE_VALIDATION.json",
-    "game_audit": "docs/ATAN2_GAME_AUDIT_2026-09-17.md",
-    "v1_mean_cycles": 50.44134521484375,
-    "v2_v3_v5_mean_cycles": 46.95306396484375,
-    "v4_exact_cycles": 48,
-    "max_phase_error_stock": 1,
-    "fast_extra_ram_bytes": 768,
-    "fast_zp_bytes": 0
+    "public_entry": "MATH_VEC2_NORMALIZE_Q8_8",
+    "reference_address": "$5E39",
+    "stable_api_entries": 46,
+    "contract": "signed Q8.8 x/y -> signed Q1.15 normalized x/y; C=1 only for zero vector",
+    "precision_contract": {
+      "max_angle_deg": 0.3621,
+      "max_component_lsb": 202
+    },
+    "full_domain_certificate": {
+      "max_angle_deg": 0.36085638159979183,
+      "max_component_lsb": 200,
+      "cells": 723073
+    },
+    "mean_cycles": {
+      "v1_balanced": 198.770271,
+      "v2_pareto_fast": 189.260317,
+      "v3_reu_512k": 170.058633,
+      "v4_reu_16m": 170.058633,
+      "v5_hybrid_lowzp": 198.770271
+    },
+    "corpus_vectors": 107396
   }
 }

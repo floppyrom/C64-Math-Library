@@ -10,58 +10,58 @@
   "profile_summary": [
     {
       "profile": "v1_balanced",
-      "stable_api_entries": 45,
+      "stable_api_entries": 46,
       "prg_payload_span_bytes": 43940,
       "reu_image_bytes": 0,
-      "declared_shared_zp_bytes": 31,
+      "declared_shared_zp_bytes": "",
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 8677
+      "stable_api_reachable_code_union_bytes": 9083
     },
     {
       "profile": "v2_pareto_fast",
-      "stable_api_entries": 45,
+      "stable_api_entries": 46,
       "prg_payload_span_bytes": 44148,
       "reu_image_bytes": 0,
-      "declared_shared_zp_bytes": 60,
+      "declared_shared_zp_bytes": "",
       "stable_api_zp_union_touched_bytes": 216,
       "stable_api_zp_union_ranges": "$02-$5E;$61-$64;$66-$68;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 14658
+      "stable_api_reachable_code_union_bytes": 15082
     },
     {
       "profile": "v3_reu_512k",
-      "stable_api_entries": 45,
+      "stable_api_entries": 46,
       "prg_payload_span_bytes": 48244,
       "reu_image_bytes": 524288,
-      "declared_shared_zp_bytes": 55,
+      "declared_shared_zp_bytes": "",
       "stable_api_zp_union_touched_bytes": 205,
       "stable_api_zp_union_ranges": "$02-$38;$3E-$5E;$66;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 14277
+      "stable_api_reachable_code_union_bytes": 14656
     },
     {
       "profile": "v4_reu_16m",
-      "stable_api_entries": 45,
+      "stable_api_entries": 46,
       "prg_payload_span_bytes": 48244,
       "reu_image_bytes": 16777216,
-      "declared_shared_zp_bytes": 55,
+      "declared_shared_zp_bytes": "",
       "stable_api_zp_union_touched_bytes": 204,
       "stable_api_zp_union_ranges": "$02-$38;$3E-$5E;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 13992
+      "stable_api_reachable_code_union_bytes": 14371
     },
     {
       "profile": "v5_hybrid_lowzp",
-      "stable_api_entries": 45,
+      "stable_api_entries": 46,
       "prg_payload_span_bytes": 43940,
       "reu_image_bytes": 0,
       "declared_shared_zp_bytes": 31,
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 10963
+      "stable_api_reachable_code_union_bytes": 11369
     }
   ],
   "rows": [
@@ -83,7 +83,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "exhaustive 8-bit"
     },
@@ -105,7 +105,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel",
       "notes": ""
     },
@@ -127,7 +127,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel",
       "notes": ""
     },
@@ -149,7 +149,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "31-ZP practical resident UMUL32 family (stack-free compromise)",
       "notes": ""
     },
@@ -171,7 +171,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "31-ZP practical resident UMUL32 family (stack-free compromise)",
       "notes": ""
     },
@@ -182,20 +182,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "67.992188",
-      "min_cycles": 66,
-      "max_cycles": 70,
+      "mean_cycles": "120.490234",
+      "min_cycles": 105,
+      "max_cycles": 136,
       "cases": 65536,
-      "cycle_basis": "2026-09-14 exhaustive direct signed-domain quarter-square SMUL8",
-      "reachable_code_bytes": 46,
-      "zp_bytes": 0,
-      "zp_ranges": "",
+      "cycle_basis": "current native-signed multiply validation",
+      "reachable_code_bytes": 88,
+      "zp_bytes": 5,
+      "zp_ranges": "$10-$14",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
-      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
-      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
+      "profile_declared_shared_zp_bytes": "",
+      "implementation": "native signed private executable path",
+      "notes": "exhaustive"
     },
     {
       "profile": "v1_balanced",
@@ -215,7 +215,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -237,7 +237,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -259,7 +259,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -281,7 +281,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -303,7 +303,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "exhaustive 8-bit"
     },
@@ -325,7 +325,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "2^21 fixed corpus"
     },
@@ -347,7 +347,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "2^21 fixed corpus"
     },
@@ -369,7 +369,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "2^21 fixed corpus"
     },
@@ -391,7 +391,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "Dedicated UMOD8 kernel"
     },
@@ -413,7 +413,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "JMP to corresponding UDIV; quotient vector is a documented side effect"
     },
@@ -435,7 +435,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "JMP to corresponding UDIV; quotient vector is a documented side effect"
     },
@@ -457,7 +457,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "JMP to corresponding UDIV; quotient vector is a documented side effect"
     },
@@ -479,7 +479,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "exhaustive"
     },
@@ -501,7 +501,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -523,7 +523,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -545,7 +545,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -567,7 +567,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -589,7 +589,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -611,7 +611,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -633,7 +633,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -655,7 +655,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -677,7 +677,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "alias UDIV32_32"
     },
@@ -699,7 +699,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -721,7 +721,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -743,7 +743,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -765,7 +765,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -787,7 +787,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -809,7 +809,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -831,7 +831,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -853,7 +853,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -875,7 +875,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -897,7 +897,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -919,7 +919,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -941,7 +941,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -963,7 +963,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -985,7 +985,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1007,7 +1007,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1029,7 +1029,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1051,9 +1051,31 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 31,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
+    },
+    {
+      "profile": "v1_balanced",
+      "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "api_class": "stable",
+      "signedness": "signed",
+      "operation": "vector normalize",
+      "width": "2xs16 Q8.8 -> 2xs16 Q1.15",
+      "mean_cycles": "198.770271",
+      "min_cycles": 129,
+      "max_cycles": 333,
+      "cases": 107396,
+      "cycle_basis": "2026-09-18 normalize profile-parity deterministic corpus",
+      "reachable_code_bytes": 392,
+      "zp_bytes": 5,
+      "zp_ranges": "$14;$1A-$1D",
+      "stack_page_reserved_bytes": 0,
+      "profile_prg_payload_span_bytes": 43940,
+      "profile_reu_image_bytes": 0,
+      "profile_declared_shared_zp_bytes": "",
+      "implementation": "profile-selected resident implementation",
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1073,7 +1095,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1095,7 +1117,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel",
       "notes": ""
     },
@@ -1117,7 +1139,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel",
       "notes": ""
     },
@@ -1139,7 +1161,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "31-ZP practical resident UMUL32 family (stack-free compromise)",
       "notes": ""
     },
@@ -1161,7 +1183,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "31-ZP practical resident UMUL32 family (stack-free compromise)",
       "notes": ""
     },
@@ -1172,20 +1194,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "67.992188",
-      "min_cycles": 66,
-      "max_cycles": 70,
+      "mean_cycles": "108.494141",
+      "min_cycles": 94,
+      "max_cycles": 123,
       "cases": 65536,
-      "cycle_basis": "2026-09-14 exhaustive direct signed-domain quarter-square SMUL8",
-      "reachable_code_bytes": 46,
-      "zp_bytes": 0,
-      "zp_ranges": "",
+      "cycle_basis": "current native-signed multiply validation",
+      "reachable_code_bytes": 87,
+      "zp_bytes": 5,
+      "zp_ranges": "$39-$3D",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
-      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
-      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
+      "profile_declared_shared_zp_bytes": "",
+      "implementation": "native signed private executable path",
+      "notes": "exhaustive"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1205,7 +1227,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1227,7 +1249,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1249,7 +1271,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1271,7 +1293,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1293,7 +1315,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1315,7 +1337,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1337,7 +1359,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1359,7 +1381,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1381,7 +1403,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1403,7 +1425,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1425,7 +1447,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1447,7 +1469,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1469,7 +1491,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "exhaustive"
     },
@@ -1491,7 +1513,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -1513,7 +1535,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -1535,7 +1557,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -1557,7 +1579,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1579,7 +1601,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1601,7 +1623,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1623,7 +1645,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1645,7 +1667,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1667,7 +1689,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "alias UDIV32_32"
     },
@@ -1689,7 +1711,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -1711,7 +1733,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1733,7 +1755,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1755,7 +1777,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1777,7 +1799,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1799,7 +1821,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -1821,7 +1843,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1843,7 +1865,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -1865,7 +1887,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1887,7 +1909,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1909,7 +1931,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1931,7 +1953,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1953,7 +1975,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1975,7 +1997,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -1997,7 +2019,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2019,7 +2041,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2041,9 +2063,31 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44148,
       "profile_reu_image_bytes": 0,
-      "profile_declared_shared_zp_bytes": 60,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
+    },
+    {
+      "profile": "v2_pareto_fast",
+      "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "api_class": "stable",
+      "signedness": "signed",
+      "operation": "vector normalize",
+      "width": "2xs16 Q8.8 -> 2xs16 Q1.15",
+      "mean_cycles": "189.260317",
+      "min_cycles": 127,
+      "max_cycles": 323,
+      "cases": 107396,
+      "cycle_basis": "2026-09-18 normalize profile-parity deterministic corpus",
+      "reachable_code_bytes": 383,
+      "zp_bytes": 8,
+      "zp_ranges": "$12-$15;$39-$3C",
+      "stack_page_reserved_bytes": 0,
+      "profile_prg_payload_span_bytes": 44148,
+      "profile_reu_image_bytes": 0,
+      "profile_declared_shared_zp_bytes": "",
+      "implementation": "profile-selected resident implementation",
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
     },
     {
       "profile": "v3_reu_512k",
@@ -2063,7 +2107,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2085,7 +2129,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel",
       "notes": ""
     },
@@ -2107,7 +2151,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel",
       "notes": ""
     },
@@ -2129,7 +2173,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "31-ZP practical resident UMUL32 family (stack-free compromise)",
       "notes": ""
     },
@@ -2151,7 +2195,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "31-ZP practical resident UMUL32 family (stack-free compromise)",
       "notes": ""
     },
@@ -2162,20 +2206,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "67.992188",
-      "min_cycles": 66,
-      "max_cycles": 70,
+      "mean_cycles": "96.000000",
+      "min_cycles": 83,
+      "max_cycles": 109,
       "cases": 65536,
-      "cycle_basis": "2026-09-14 exhaustive direct signed-domain quarter-square SMUL8",
-      "reachable_code_bytes": 46,
+      "cycle_basis": "current native-signed multiply validation",
+      "reachable_code_bytes": 79,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
-      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
-      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
+      "profile_declared_shared_zp_bytes": "",
+      "implementation": "native signed private executable path",
+      "notes": "exhaustive"
     },
     {
       "profile": "v3_reu_512k",
@@ -2195,7 +2239,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2217,7 +2261,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2239,7 +2283,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2261,7 +2305,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2283,7 +2327,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2305,7 +2349,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2327,7 +2371,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2349,7 +2393,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2371,7 +2415,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2393,7 +2437,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2415,7 +2459,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2437,7 +2481,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2459,7 +2503,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "exhaustive"
     },
@@ -2481,7 +2525,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -2503,7 +2547,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -2525,7 +2569,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -2547,7 +2591,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2569,7 +2613,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2591,7 +2635,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2613,7 +2657,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2635,7 +2679,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2657,7 +2701,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "alias UDIV32_32"
     },
@@ -2679,7 +2723,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -2701,7 +2745,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2723,7 +2767,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2745,7 +2789,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2767,7 +2811,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2789,7 +2833,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -2811,7 +2855,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2833,7 +2877,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -2855,7 +2899,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2877,7 +2921,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2899,7 +2943,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2921,7 +2965,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2943,7 +2987,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2965,7 +3009,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -2987,7 +3031,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3009,7 +3053,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3031,9 +3075,31 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
+    },
+    {
+      "profile": "v3_reu_512k",
+      "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "api_class": "stable",
+      "signedness": "signed",
+      "operation": "vector normalize",
+      "width": "2xs16 Q8.8 -> 2xs16 Q1.15",
+      "mean_cycles": "170.058633",
+      "min_cycles": 133,
+      "max_cycles": 306,
+      "cases": 107396,
+      "cycle_basis": "2026-09-18 normalize profile-parity deterministic corpus",
+      "reachable_code_bytes": 346,
+      "zp_bytes": 4,
+      "zp_ranges": "$12-$15",
+      "stack_page_reserved_bytes": 0,
+      "profile_prg_payload_span_bytes": 48244,
+      "profile_reu_image_bytes": 524288,
+      "profile_declared_shared_zp_bytes": "",
+      "implementation": "profile-selected resident implementation",
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
     },
     {
       "profile": "v4_reu_16m",
@@ -3053,7 +3119,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3075,7 +3141,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel",
       "notes": ""
     },
@@ -3097,7 +3163,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel",
       "notes": ""
     },
@@ -3119,7 +3185,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "31-ZP practical resident UMUL32 family (stack-free compromise)",
       "notes": ""
     },
@@ -3141,7 +3207,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "31-ZP practical resident UMUL32 family (stack-free compromise)",
       "notes": ""
     },
@@ -3152,20 +3218,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "67.992188",
-      "min_cycles": 66,
-      "max_cycles": 70,
-      "cases": 65536,
-      "cycle_basis": "2026-09-14 exhaustive direct signed-domain quarter-square SMUL8",
-      "reachable_code_bytes": 46,
+      "mean_cycles": "95.819957",
+      "min_cycles": 83,
+      "max_cycles": 109,
+      "cases": 8448,
+      "cycle_basis": "current native-signed multiply validation",
+      "reachable_code_bytes": 79,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
-      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
-      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
+      "profile_declared_shared_zp_bytes": "",
+      "implementation": "native signed private executable path",
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
@@ -3185,7 +3251,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3207,7 +3273,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3229,7 +3295,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3251,7 +3317,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3273,7 +3339,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3295,7 +3361,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3317,7 +3383,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3339,7 +3405,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3361,7 +3427,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3383,7 +3449,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3405,7 +3471,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3427,7 +3493,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3449,7 +3515,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -3471,7 +3537,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -3493,7 +3559,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -3515,7 +3581,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -3537,7 +3603,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3559,7 +3625,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3581,7 +3647,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3603,7 +3669,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3625,7 +3691,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3647,7 +3713,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": "alias UDIV32_32"
     },
@@ -3669,7 +3735,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -3691,7 +3757,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3713,7 +3779,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3735,7 +3801,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3757,7 +3823,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3779,7 +3845,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": ""
     },
@@ -3801,7 +3867,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3823,7 +3889,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed private executable path",
       "notes": "structured_random"
     },
@@ -3845,7 +3911,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3867,7 +3933,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3889,7 +3955,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3911,7 +3977,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3933,7 +3999,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3955,7 +4021,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3977,7 +4043,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -3999,7 +4065,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
     },
@@ -4021,9 +4087,31 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
       "notes": ""
+    },
+    {
+      "profile": "v4_reu_16m",
+      "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "api_class": "stable",
+      "signedness": "signed",
+      "operation": "vector normalize",
+      "width": "2xs16 Q8.8 -> 2xs16 Q1.15",
+      "mean_cycles": "170.058633",
+      "min_cycles": 133,
+      "max_cycles": 306,
+      "cases": 107396,
+      "cycle_basis": "2026-09-18 normalize profile-parity deterministic corpus",
+      "reachable_code_bytes": 346,
+      "zp_bytes": 4,
+      "zp_ranges": "$12-$15",
+      "stack_page_reserved_bytes": 0,
+      "profile_prg_payload_span_bytes": 48244,
+      "profile_reu_image_bytes": 16777216,
+      "profile_declared_shared_zp_bytes": "",
+      "implementation": "profile-selected resident implementation",
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4142,20 +4230,20 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "8",
-      "mean_cycles": "67.992188",
-      "min_cycles": 66,
-      "max_cycles": 70,
-      "cases": 65536,
-      "cycle_basis": "V5 byte-identical V1 SMUL8 path; exhaustive direct signed-domain quarter-square evidence",
-      "reachable_code_bytes": 46,
-      "zp_bytes": 0,
-      "zp_ranges": "",
+      "mean_cycles": "120.242306",
+      "min_cycles": 105,
+      "max_cycles": 136,
+      "cases": 8448,
+      "cycle_basis": "current native-signed multiply validation",
+      "reachable_code_bytes": 88,
+      "zp_bytes": 5,
+      "zp_ranges": "$10-$14",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 43940,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
-      "implementation": "direct signed-domain quarter-square; 46 B code + 1022 B private signed-sum tables; shares 1022 B UMUL24 complemented planes",
-      "notes": "Q(a+b)-Q(a-b); 1022 B private signed-sum tables + shared UMUL24 complement planes"
+      "implementation": "native signed private executable path",
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -5016,6 +5104,28 @@
       "notes": ""
     },
     {
+      "profile": "v5_hybrid_lowzp",
+      "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "api_class": "stable",
+      "signedness": "signed",
+      "operation": "vector normalize",
+      "width": "2xs16 Q8.8 -> 2xs16 Q1.15",
+      "mean_cycles": "198.770271",
+      "min_cycles": 129,
+      "max_cycles": 333,
+      "cases": 107396,
+      "cycle_basis": "2026-09-18 normalize profile-parity deterministic corpus",
+      "reachable_code_bytes": 392,
+      "zp_bytes": 5,
+      "zp_ranges": "$14;$1A-$1D",
+      "stack_page_reserved_bytes": 0,
+      "profile_prg_payload_span_bytes": 43940,
+      "profile_reu_image_bytes": 0,
+      "profile_declared_shared_zp_bytes": 31,
+      "implementation": "profile-selected resident implementation",
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
+    },
+    {
       "profile": "v3_reu_512k",
       "routine": "MATH_REU_UMUL16_BEGIN",
       "api_class": "reu_turbo",
@@ -5033,7 +5143,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5055,7 +5165,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5077,7 +5187,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5099,7 +5209,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5121,7 +5231,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5143,7 +5253,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 524288,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5165,7 +5275,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5187,7 +5297,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5209,7 +5319,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5231,7 +5341,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5253,7 +5363,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5275,7 +5385,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
       "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
@@ -5297,7 +5407,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "V4 16MiB QS16 mode",
       "notes": "exclusive QS16 mode ZP ownership"
     },
@@ -5319,7 +5429,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "V4 16MiB QS16 mode",
       "notes": "exclusive QS16 mode ZP ownership"
     },
@@ -5341,7 +5451,7 @@
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 48244,
       "profile_reu_image_bytes": 16777216,
-      "profile_declared_shared_zp_bytes": 55,
+      "profile_declared_shared_zp_bytes": "",
       "implementation": "V4 16MiB QS16 mode",
       "notes": "exclusive QS16 mode ZP ownership"
     }

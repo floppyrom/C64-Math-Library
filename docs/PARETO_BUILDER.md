@@ -2,7 +2,7 @@
 
 The **Custom Pareto Builder** generates one stock-C64 C64 Math Library build from certified V1/V2 implementation packs. It is intended for games and demos that know how much zero page and ordinary RAM they can dedicate to math.
 
-There is **no runtime dispatcher**. Selection happens at build time and the generated library keeps the same 45-entry public API.
+There is **no runtime dispatcher**. Selection happens at build time and the generated library keeps the same 46-entry public API.
 
 ## Easiest way: interactive wizard
 
@@ -69,7 +69,7 @@ python3 tools/build_pareto.py \
   --weight MATH_UMUL16_SHR8=0
 ```
 
-makes the 24-bit multiplier much more important. At the same 55-byte ZP budget, this can choose the UMUL24 pack instead of the normal UMUL8 pack.
+makes the 24-bit multiplier much more important. At the same 55-byte ZP budget, this can choose the UMUL24 pack instead of the normal UMUL8/16 pack.
 
 ## Certified stock-C64 packs
 
@@ -77,9 +77,9 @@ makes the 24-bit multiplier much more important. At the same 55-byte ZP budget, 
 |---|---:|---:|---|
 | `atan2_fast` | 0 | 768 B | ATAN2_8 |
 | V5 zero-ZP imports | 0 | 4608 B | UDIV16/24/32_16, matching UMOD aliases, UMOD8, COS8, SINCOS8 |
-| initialized UMUL32 | 0 | 627 B + shared init helper | UMUL32/SMUL32 and 32-bit shifted multiply users |
-| UMUL8 (legacy `umul8_16` pack name) | 5 B | 547 B + shared init helper | UMUL8 only; SMUL8 stays on the faster direct-signed V1 base |
-| UMUL16/24 records | 24 B | 728 B + shared init helper | UMUL16, UMUL16_SHR8, UMUL24, SMUL24 |
+| initialized UMUL32 | 0 | 627 B | UMUL32/SMUL32 and 32-bit shifted multiply users |
+| UMUL8/SMUL8 (legacy pack name `umul8_16`) | 5 B | 582 B | UMUL8, SMUL8 |
+| record UMUL16/UMUL24 | 24 B | 728 B | UMUL16, UMUL16_SHR8, UMUL24, SMUL24 |
 | native SMUL16 executable-ZP | 116 B | 176 B | SMUL16, SMUL16_SHR8 |
 
 `atan2_fast` is deliberately independent from the V5 zero-ZP pack. This keeps RAM accounting honest: selecting the division/modulo/trig transplant does not silently consume the additional three 256-byte ATAN2 pages. When both are selected, the generated code is the fixed V5 ATAN2/division/trig configuration.
@@ -95,13 +95,13 @@ These are the current default selections when RAM is unrestricted and startup `M
 | ZP budget | Selected result | Exact extra RAM vs V1 | Init? |
 |---:|---|---:|---|
 | **31 B** | `atan2_fast` + V5 zero-ZP imports + initialized UMUL32 | **6021 B** | yes |
-| **36 B** | above + UMUL8 pack | **6576 B** | yes |
-| **60 B** | above + UMUL16/24 record pack | **7336 B** | yes |
+| **36 B** | above + UMUL8/SMUL8 pack | **6611 B** | yes |
+| **60 B** | above + record UMUL16/UMUL24 pack | **7371 B** | yes |
 | **147 B** | `atan2_fast` + V5 imports + initialized UMUL32 + native SMUL16 | **6207 B** | yes |
-| **176 B** | all certified hybrid packs, including `atan2_fast` | **7522 B** | yes |
+| **176 B** | all certified hybrid packs, including `atan2_fast` | **7557 B** | yes |
 | **221 B** | complete V2 | **208 B resident increase vs V1** | yes |
 
-RAM is not monotonic with ZP because the optimizer maximizes weighted speed, not “number of packs.” For example, the 147-byte point spends most of its ZP budget on the exceptionally fast SMUL16 executable-ZP implementation and omits smaller multiplier packs.
+RAM is not monotonic with ZP because the optimizer maximizes weighted speed, not “number of packs.” For example, the 147-byte point spends most of its ZP budget on the exceptionally fast SMUL16 executable-ZP implementation and omits the smaller multiplier packs.
 
 The two 31-ZP resource endpoints remain useful checks: `--ram-budget 0` selects no packs and reproduces V1 byte-for-byte, while `--init-policy optional` selects `atan2_fast + zero_zp_v5` and reproduces fixed V5 byte-for-byte with **5376 bytes** of exact extra private RAM.
 
@@ -131,8 +131,8 @@ The ZP budget counts the number of bytes owned, not necessarily one contiguous r
 
 ```text
 $02-$20   31 B   V1 base window
-$21-$38   24 B   optional UMUL16/UMUL24 record pack
-$39-$3D    5 B   optional UMUL8 pack (legacy internal name `umul8_16`)
+$21-$38   24 B   optional record UMUL16/UMUL24 pack
+$39-$3D    5 B   optional UMUL8/SMUL8 pack
 $80-$F3  116 B   optional native SMUL16 executable-ZP pack
 ```
 
@@ -188,4 +188,8 @@ python3 tools/test_pareto_config.py
 python3 tools/stress_pareto.py
 ```
 
-The release validation covers representative budget points on both reference and alternate maps, all 45 public entries, V2 result/cycle parity for imported paths, exhaustive UMOD8, deterministic rebuilds, V1/V5 endpoint identity, ZP confinement, invalid resource maps, signed-multiply stress and mixed workloads.
+The release validation covers representative budget points on both reference and alternate maps, all 46 public entries, V2 result/cycle parity for imported paths, exhaustive UMOD8, deterministic rebuilds, V1/V5 endpoint identity, ZP confinement, invalid resource maps, signed-multiply stress and mixed workloads.
+
+## Validation headline
+
+The release matrix covers 12 reference/alternate generated builds and 55,068 common-API calls. The deepest all-pack build adds **75,644 direct V2 cycle-parity cases**, including exhaustive 65,536-vector `ATAN2_8`; UMOD8 is independently exhaustive over all 65,536 operand pairs. Stress evidence adds 50,144 SMUL16 parity cases, 25,000 mixed operations, 10,000 ZP-guard iterations and deterministic endpoint/rebuild checks.

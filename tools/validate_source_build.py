@@ -4,7 +4,8 @@ from pathlib import Path
 import argparse,json,math,random,hashlib,sys,time
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
-from mini6502 import CPU
+from mini6502 import CPU,REV
+REV[0xBF]=('lax','absy'); REV[0xAF]=('lax','abs')
 PROFILES=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m']
 REU={'v3_reu_512k':ROOT/'v3_reu_512k/reu/c64_math_v3_512k_game_math.reu','v4_reu_16m':ROOT/'v4_reu_16m/reu/c64_math_v4_16m_game_math.reu'}
 MASK=lambda b:(1<<b)-1
@@ -41,7 +42,8 @@ def validate(profile,build):
  def call(n,lim=2_000_000):
   nonlocal checks;cy=c.call(P[n],lim);hits[n]+=1;checks+=1;return cy
  # Publication stubs for game entries remain JMP ABI slots at the relocated block.
- for n in list(P)[26:]: assert c.mem[P[n]]==0x4c,(profile,n,hex(P[n]),hex(c.mem[P[n]]))
+ for n in list(P)[26:]:
+  if n != 'MATH_VEC2_NORMALIZE_Q8_8': assert c.mem[P[n]]==0x4c,(profile,n,hex(P[n]),hex(c.mem[P[n]]))
  # Unsigned and signed multiply, including ready aliases.
  for bits,n in [(8,'MATH_UMUL8'),(16,'MATH_UMUL16'),(24,'MATH_UMUL24'),(32,'MATH_UMUL32')]:
   nb=bits//8
@@ -124,6 +126,22 @@ def validate(profile,build):
   for sx in vals:
    xb=sx&255;yb=sy&255;M0=max(abs(sx),abs(sy));m0=min(abs(sx),abs(sy));wr(c,X,xb,1);wr(c,Y,yb,1);call('MATH_DIST8_FAST');assert c.mem[Z]==((M0+(m0>>1))&255) and c.c==0
    wr(c,X,xb,1);wr(c,Y,yb,1);call('MATH_DIST8_ACCURATE');assert c.mem[Z]==((round(243*M0/256)+round(107*m0/256))&255) and c.c==0
+ # Q8.8 vector normalize -> Q1.15 signed unit vector. Inputs are preserved; C marks zero vector.
+ nv=[-32768,-32767,-256,-255,-129,-128,-2,-1,0,1,2,127,128,255,256,32766,32767]
+ nr=random.Random(0x4E4F524D)
+ norm_cases=[(x,y) for x in nv for y in nv]+[(nr.randrange(-32768,32768),nr.randrange(-32768,32768)) for _ in range(128)]
+ for sx,sy in norm_cases:
+  wr(c,X,sx&MASK(16),2);wr(c,Y,sy&MASK(16),2);xs=snap(c,X,2);ys=snap(c,Y,2);call('MATH_VEC2_NORMALIZE_Q8_8')
+  ox=si(rd(c,Z,2),16);oy=si(rd(c,Z+2,2),16)
+  assert snap(c,X,2)==xs and snap(c,Y,2)==ys,(profile,'normalize input preserve',sx,sy)
+  if sx==0 and sy==0:
+   assert c.c==1 and ox==0 and oy==0,(profile,'normalize zero',ox,oy,c.c)
+  else:
+   assert c.c==0,(profile,'normalize carry',sx,sy)
+   h=math.hypot(sx,sy);ex=round(sx/h*32767);ey=round(sy/h*32767)
+   ce=max(abs(ox-ex),abs(oy-ey));assert ce<=202,(profile,'normalize component',sx,sy,ox,oy,ex,ey,ce)
+   ae=abs((math.atan2(oy,ox)-math.atan2(sy,sx)+math.pi)%(2*math.pi)-math.pi)*180/math.pi
+   assert ae<=0.3621+1e-12,(profile,'normalize angle',sx,sy,ae)
  # Every stable entry must have executed literally at its generated address.
  missing=[n for n,v in hits.items() if v==0];assert not missing,(profile,'unexecuted entries',missing)
  # REU transport must point at relocated C64-side buffer after MATH_INIT/normal calls restore lookup mode.

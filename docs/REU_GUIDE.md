@@ -13,7 +13,7 @@ bank 0  UMUL8 product low
 bank 1  UMUL8 product high
 bank 2  UDIV8 quotient
 bank 3  UDIV8 remainder / UMOD8
-bank 4  Turbo16 ZP image
+bank 4  Turbo16 ZP image; `$8000-$FFFF` also holds VEC2 normalize ratio-index table
 bank 5  Turbo32 ZP image
 bank 6  reciprocal low
 bank 7  reciprocal high
@@ -76,11 +76,11 @@ REU DMA competes with the VIC-II bus. The deterministic model in these releases 
 
 ## Signed calls on REU profiles — final native revision
 
-V3/V4 signed multiplication no longer calls the public unsigned operation as a wrapper. SMUL8 uses a direct signed-domain quarter-square kernel (no unsigned producer/correction tail); SMUL24/32 enter profile-native producer paths directly. SMUL16 uses the validated 116-ZP native practical implementation in normal C64 RAM, with four 511-byte tables at `$2800/$2A00/$2C00/$2E00` and executable ZP at `$80-$F3`. Signed DIV uses native signed cores with `$3E-$52` scratch. These resources are sequentially shared with REU Turbo modes; obey the existing BEGIN/END ownership contracts.
+V3/V4 signed multiplication no longer calls the public unsigned operation as a wrapper. SMUL8/24/32 enter profile-native producer paths directly. SMUL16 uses the validated 116-ZP native practical implementation in normal C64 RAM, with four 511-byte tables at `$2800/$2A00/$2C00/$2E00` and executable ZP at `$80-$F3`. Signed DIV uses native signed cores with `$3E-$52` scratch. These resources are sequentially shared with REU Turbo modes; obey the existing BEGIN/END ownership contracts.
 
 ## 2026-09-06 game-math REU additions
 
-The game-math REU images intentionally use previously reserved banks 6–7 for reciprocal tables. V4 additionally uses banks 8–9 for exact signed-byte atan2 and exact ISQRT16. The V4 QS16 region `$100000-$17FFFB` is preserved. The former statement that the first 512 KiB of V4 is byte-for-byte identical to the old V3 image does not apply to the new game-math image because reserved banks 6–7 now carry defined tables.
+For `MATH_VEC2_NORMALIZE_Q8_8`, V3/V4 generate a 32 KiB final ratio-index table at `$8000-$FFFF` of the configured `REU_TURBO16_BANK`. The Turbo16 overlay remains at the low start of the same bank, so no extra REU bank is consumed. The game-math REU images intentionally use previously reserved banks 6–7 for reciprocal tables. V4 additionally uses banks 8–9 for exact signed-byte atan2 and exact ISQRT16. The V4 QS16 region `$100000-$17FFFB` is preserved. The former statement that the first 512 KiB of V4 is byte-for-byte identical to the old V3 image does not apply to the new game-math image because reserved banks 6–7 now carry defined tables.
 
 
 ## Game-math extension — FINAL 2026-09-06
