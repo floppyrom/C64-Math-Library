@@ -1768,3 +1768,9 @@ For a V3/V4 program, the code pattern is the same after the correct REU image is
 Use the stable API for ordinary composable math. Use QS16 or Turbo only when a measured batch actually justifies their lifecycle overhead. Keep all addresses symbolic, keep the REU image matched to the build, and treat the generated `math_api.inc` as the caller's source of truth.
 
 That gives you the intended property of this release: **one logical math interface across five fixed profiles plus budget-generated stock-C64 builds, with implementation selection and relocation done at build time rather than paid for at runtime.**
+
+## Standalone ASM pickup surface and canonical naming
+
+The library publishes one readable ASM file for every callable profile routine in `<profile>/standalone/`. These are exact executable source mirrors of the shipped profile after `MATH_INIT`, with address/byte annotations for mechanical verification. Shared immutable lookup tables and REU payload data remain profile resources rather than being duplicated into every file.
+
+For binary arithmetic, the canonical source-facing name records operand signedness/width and result geometry. Examples: `mul_u16_u16_u32`, `mul_s8_s8_s16`, `div_u8_u8_u8_8`, and `div_s32_s16_s32_16`. Division names include the remainder width when the public call returns a remainder. The existing `MATH_*` names remain stable aliases at the same addresses, so no existing caller must change. Full rules and mappings are in `docs/NAMING_STANDARD.md`.

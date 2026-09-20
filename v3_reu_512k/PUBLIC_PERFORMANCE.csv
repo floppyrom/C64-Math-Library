@@ -1,13 +1,13 @@
-operation,v1_balanced_cycles,v2_pareto_fast_cycles,v3_reu_default_cycles,v3_evidence
-umul8,90.494644,78.494614,69.0,REU transport model
-umul16,383.320456,350.782403,225.8372,2026-09-14 record-upgrade deterministic comparison corpus
-umul24,514.534938,475.784575,448.2918,2026-09-14 record-upgrade deterministic comparison corpus
-umul32,712.235367,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
-udiv8,59.571976,59.383011,70.863281,2026-09-20 unsigned division-family validation
-udiv16,132.725857,127.773827,125.423943,2026-09-20 unsigned division-family validation
-udiv24,194.156322,183.660846,191.745424,2026-09-20 unsigned division-family validation
-udiv32_16,870.340206,753.99453,755.944246,2026-09-20 unsigned division-family validation
-umod8,67.167555,67.284844,49.71211,2026-09-20 unsigned division-family validation
-umod16,184.082421,203.033484,203.396008,2026-09-20 unsigned division-family validation
-umod24,303.233097,300.949131,302.914359,2026-09-20 unsigned division-family validation
-umod32_16,971.613651,792.160335,789.650998,2026-09-20 unsigned division-family validation
+operation,canonical_name,v1_balanced_cycles,v2_pareto_fast_cycles,v3_reu_default_cycles,v3_evidence
+umul8,mul_u8_u8_u16,90.494644,78.494614,69.0,REU transport model
+umul16,mul_u16_u16_u32,383.320456,350.782403,225.8372,2026-09-14 record-upgrade deterministic comparison corpus
+umul24,mul_u24_u24_u48,514.534938,475.784575,448.2918,2026-09-14 record-upgrade deterministic comparison corpus
+umul32,mul_u32_u32_u64,712.235367,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
+udiv8,div_u8_u8_u8_8,59.571976,59.383011,70.863281,2026-09-20 unsigned division-family validation
+udiv16,div_u16_u16_u16_16,132.725857,127.773827,125.423943,2026-09-20 unsigned division-family validation
+udiv24,div_u24_u24_u24_24,194.156322,183.660846,191.745424,2026-09-20 unsigned division-family validation
+udiv32_16,div_u32_u16_u32_16,870.340206,753.99453,755.944246,2026-09-20 unsigned division-family validation
+umod8,mod_u8_u8_u8,67.167555,67.284844,49.71211,2026-09-20 unsigned division-family validation
+umod16,mod_u16_u16_u16,184.082421,203.033484,203.396008,2026-09-20 unsigned division-family validation
+umod24,mod_u24_u24_u24,303.233097,300.949131,302.914359,2026-09-20 unsigned division-family validation
+umod32_16,mod_u32_u16_u16,971.613651,792.160335,789.650998,2026-09-20 unsigned division-family validation

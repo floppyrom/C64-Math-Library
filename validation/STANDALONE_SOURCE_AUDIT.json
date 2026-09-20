@@ -1,0 +1,2069 @@
+{
+  "status": "PASS",
+  "profiles": {
+    "v1_balanced": {
+      "callable_entries": 46,
+      "files": 46,
+      "aliases": 9,
+      "rows": [
+        {
+          "legacy_api": "MATH_UMUL8",
+          "canonical_name": "mul_u8_u8_u16",
+          "file": "mul_u8_u8_u16.asm",
+          "alias_of": "",
+          "entry_address": "$3000",
+          "reachable_instructions": 27
+        },
+        {
+          "legacy_api": "MATH_UMUL16",
+          "canonical_name": "mul_u16_u16_u32",
+          "file": "mul_u16_u16_u32.asm",
+          "alias_of": "",
+          "entry_address": "$3020",
+          "reachable_instructions": 104
+        },
+        {
+          "legacy_api": "MATH_UMUL24",
+          "canonical_name": "mul_u24_u24_u48",
+          "file": "mul_u24_u24_u48.asm",
+          "alias_of": "",
+          "entry_address": "$3060",
+          "reachable_instructions": 179
+        },
+        {
+          "legacy_api": "MATH_UMUL32",
+          "canonical_name": "mul_u32_u32_u64",
+          "file": "mul_u32_u32_u64.asm",
+          "alias_of": "",
+          "entry_address": "$30B0",
+          "reachable_instructions": 159
+        },
+        {
+          "legacy_api": "MATH_UMUL32_READY",
+          "canonical_name": "mul_u32_u32_u64_ready",
+          "file": "mul_u32_u32_u64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$30C0",
+          "reachable_instructions": 151
+        },
+        {
+          "legacy_api": "MATH_SMUL8",
+          "canonical_name": "mul_s8_s8_s16",
+          "file": "mul_s8_s8_s16.asm",
+          "alias_of": "",
+          "entry_address": "$3B80",
+          "reachable_instructions": 19
+        },
+        {
+          "legacy_api": "MATH_SMUL16",
+          "canonical_name": "mul_s16_s16_s32",
+          "file": "mul_s16_s16_s32.asm",
+          "alias_of": "",
+          "entry_address": "$3BB0",
+          "reachable_instructions": 136
+        },
+        {
+          "legacy_api": "MATH_SMUL24",
+          "canonical_name": "mul_s24_s24_s48",
+          "file": "mul_s24_s24_s48.asm",
+          "alias_of": "",
+          "entry_address": "$3BF0",
+          "reachable_instructions": 248
+        },
+        {
+          "legacy_api": "MATH_SMUL32",
+          "canonical_name": "mul_s32_s32_s64",
+          "file": "mul_s32_s32_s64.asm",
+          "alias_of": "",
+          "entry_address": "$3C40",
+          "reachable_instructions": 669
+        },
+        {
+          "legacy_api": "MATH_SMUL32_READY",
+          "canonical_name": "mul_s32_s32_s64_ready",
+          "file": "mul_s32_s32_s64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$3FE0",
+          "reachable_instructions": 660
+        },
+        {
+          "legacy_api": "MATH_UDIV8",
+          "canonical_name": "div_u8_u8_u8_8",
+          "file": "div_u8_u8_u8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3120",
+          "reachable_instructions": 126
+        },
+        {
+          "legacy_api": "MATH_UDIV16",
+          "canonical_name": "div_u16_u16_u16_16",
+          "file": "div_u16_u16_u16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3140",
+          "reachable_instructions": 142
+        },
+        {
+          "legacy_api": "MATH_UDIV24",
+          "canonical_name": "div_u24_u24_u24_24",
+          "file": "div_u24_u24_u24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3170",
+          "reachable_instructions": 445
+        },
+        {
+          "legacy_api": "MATH_UDIV32_16",
+          "canonical_name": "div_u32_u16_u32_16",
+          "file": "div_u32_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$31B0",
+          "reachable_instructions": 164
+        },
+        {
+          "legacy_api": "MATH_UMOD8",
+          "canonical_name": "mod_u8_u8_u8",
+          "file": "mod_u8_u8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$3200",
+          "reachable_instructions": 45
+        },
+        {
+          "legacy_api": "MATH_UMOD16",
+          "canonical_name": "mod_u16_u16_u16",
+          "file": "mod_u16_u16_u16__math_umod16.asm",
+          "alias_of": "MATH_UDIV16",
+          "entry_address": "$3220",
+          "reachable_instructions": 142
+        },
+        {
+          "legacy_api": "MATH_UMOD24",
+          "canonical_name": "mod_u24_u24_u24",
+          "file": "mod_u24_u24_u24__math_umod24.asm",
+          "alias_of": "MATH_UDIV24",
+          "entry_address": "$3223",
+          "reachable_instructions": 445
+        },
+        {
+          "legacy_api": "MATH_UMOD32_16",
+          "canonical_name": "mod_u32_u16_u16",
+          "file": "mod_u32_u16_u16__math_umod32_16.asm",
+          "alias_of": "MATH_UDIV32_16",
+          "entry_address": "$3226",
+          "reachable_instructions": 165
+        },
+        {
+          "legacy_api": "MATH_SDIV8",
+          "canonical_name": "div_s8_s8_s8_8",
+          "file": "div_s8_s8_s8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3CA0",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SDIV16",
+          "canonical_name": "div_s16_s16_s16_16",
+          "file": "div_s16_s16_s16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3D20",
+          "reachable_instructions": 190
+        },
+        {
+          "legacy_api": "MATH_SDIV24",
+          "canonical_name": "div_s24_s24_s24_24",
+          "file": "div_s24_s24_s24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3DE0",
+          "reachable_instructions": 199
+        },
+        {
+          "legacy_api": "MATH_SDIV32_16",
+          "canonical_name": "div_s32_s16_s32_16",
+          "file": "div_s32_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$3EE0",
+          "reachable_instructions": 274
+        },
+        {
+          "legacy_api": "MATH_SMOD8",
+          "canonical_name": "mod_s8_s8_s8",
+          "file": "mod_s8_s8_s8__math_smod8.asm",
+          "alias_of": "MATH_SDIV8",
+          "entry_address": "$3FD4",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SMOD16",
+          "canonical_name": "mod_s16_s16_s16",
+          "file": "mod_s16_s16_s16__math_smod16.asm",
+          "alias_of": "MATH_SDIV16",
+          "entry_address": "$3FD7",
+          "reachable_instructions": 190
+        },
+        {
+          "legacy_api": "MATH_SMOD24",
+          "canonical_name": "mod_s24_s24_s24",
+          "file": "mod_s24_s24_s24__math_smod24.asm",
+          "alias_of": "MATH_SDIV24",
+          "entry_address": "$3FDA",
+          "reachable_instructions": 199
+        },
+        {
+          "legacy_api": "MATH_SMOD32_16",
+          "canonical_name": "mod_s32_s16_s16",
+          "file": "mod_s32_s16_s16__math_smod32_16.asm",
+          "alias_of": "MATH_SDIV32_16",
+          "entry_address": "$3FDD",
+          "reachable_instructions": 275
+        },
+        {
+          "legacy_api": "MATH_UDIV32_32",
+          "canonical_name": "div_u32_u32_u32_32",
+          "file": "div_u32_u32_u32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E00",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_UMOD32_32",
+          "canonical_name": "mod_u32_u32_u32",
+          "file": "mod_u32_u32_u32__math_umod32_32.asm",
+          "alias_of": "MATH_UDIV32_32",
+          "entry_address": "$5E03",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_SDIV32_32",
+          "canonical_name": "div_s32_s32_s32_32",
+          "file": "div_s32_s32_s32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E06",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_SMOD32_32",
+          "canonical_name": "mod_s32_s32_s32",
+          "file": "mod_s32_s32_s32__math_smod32_32.asm",
+          "alias_of": "MATH_SDIV32_32",
+          "entry_address": "$5E09",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_UMUL16_SHR8",
+          "canonical_name": "mul_u16_u16_u24_shr8",
+          "file": "mul_u16_u16_u24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0C",
+          "reachable_instructions": 114
+        },
+        {
+          "legacy_api": "MATH_SMUL16_SHR8",
+          "canonical_name": "mul_s16_s16_s24_shr8",
+          "file": "mul_s16_s16_s24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0F",
+          "reachable_instructions": 146
+        },
+        {
+          "legacy_api": "MATH_UMUL32_SHR16",
+          "canonical_name": "mul_u32_u32_u48_shr16",
+          "file": "mul_u32_u32_u48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E12",
+          "reachable_instructions": 175
+        },
+        {
+          "legacy_api": "MATH_SMUL32_SHR16",
+          "canonical_name": "mul_s32_s32_s48_shr16",
+          "file": "mul_s32_s32_s48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E15",
+          "reachable_instructions": 685
+        },
+        {
+          "legacy_api": "MATH_UDIV16_SHL8",
+          "canonical_name": "div_u16_u16_u24_16_shl8",
+          "file": "div_u16_u16_u24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E18",
+          "reachable_instructions": 191
+        },
+        {
+          "legacy_api": "MATH_SDIV16_SHL8",
+          "canonical_name": "div_s16_s16_s24_16_shl8",
+          "file": "div_s16_s16_s24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E1B",
+          "reachable_instructions": 304
+        },
+        {
+          "legacy_api": "MATH_URECIP16_Q16",
+          "canonical_name": "recip_u16_u24_q16",
+          "file": "recip_u16_u24_q16.asm",
+          "alias_of": "",
+          "entry_address": "$5E1E",
+          "reachable_instructions": 622
+        },
+        {
+          "legacy_api": "MATH_SIN8",
+          "canonical_name": "sin_u8_s8",
+          "file": "sin_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E21",
+          "reachable_instructions": 6
+        },
+        {
+          "legacy_api": "MATH_COS8",
+          "canonical_name": "cos_u8_s8",
+          "file": "cos_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E24",
+          "reachable_instructions": 9
+        },
+        {
+          "legacy_api": "MATH_SINCOS8",
+          "canonical_name": "sincos_u8_s8_s8",
+          "file": "sincos_u8_s8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E27",
+          "reachable_instructions": 12
+        },
+        {
+          "legacy_api": "MATH_ATAN2_8",
+          "canonical_name": "atan2_s8_s8_u8",
+          "file": "atan2_s8_s8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$5E2A",
+          "reachable_instructions": 53
+        },
+        {
+          "legacy_api": "MATH_ISQRT16",
+          "canonical_name": "isqrt_u16_u16",
+          "file": "isqrt_u16_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E2D",
+          "reachable_instructions": 113
+        },
+        {
+          "legacy_api": "MATH_ISQRT32",
+          "canonical_name": "isqrt_u32_u16",
+          "file": "isqrt_u32_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E30",
+          "reachable_instructions": 199
+        },
+        {
+          "legacy_api": "MATH_DIST8_FAST",
+          "canonical_name": "dist_s8_s8_u8_fast",
+          "file": "dist_s8_s8_u8_fast.asm",
+          "alias_of": "",
+          "entry_address": "$5E33",
+          "reachable_instructions": 30
+        },
+        {
+          "legacy_api": "MATH_DIST8_ACCURATE",
+          "canonical_name": "dist_s8_s8_u8_accurate",
+          "file": "dist_s8_s8_u8_accurate.asm",
+          "alias_of": "",
+          "entry_address": "$5E36",
+          "reachable_instructions": 31
+        },
+        {
+          "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",
+          "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
+          "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
+          "alias_of": "",
+          "entry_address": "$5E39",
+          "reachable_instructions": 183
+        }
+      ]
+    },
+    "v2_pareto_fast": {
+      "callable_entries": 46,
+      "files": 46,
+      "aliases": 9,
+      "rows": [
+        {
+          "legacy_api": "MATH_UMUL8",
+          "canonical_name": "mul_u8_u8_u16",
+          "file": "mul_u8_u8_u16.asm",
+          "alias_of": "",
+          "entry_address": "$3000",
+          "reachable_instructions": 26
+        },
+        {
+          "legacy_api": "MATH_UMUL16",
+          "canonical_name": "mul_u16_u16_u32",
+          "file": "mul_u16_u16_u32.asm",
+          "alias_of": "",
+          "entry_address": "$3020",
+          "reachable_instructions": 86
+        },
+        {
+          "legacy_api": "MATH_UMUL24",
+          "canonical_name": "mul_u24_u24_u48",
+          "file": "mul_u24_u24_u48.asm",
+          "alias_of": "",
+          "entry_address": "$3060",
+          "reachable_instructions": 179
+        },
+        {
+          "legacy_api": "MATH_UMUL32",
+          "canonical_name": "mul_u32_u32_u64",
+          "file": "mul_u32_u32_u64.asm",
+          "alias_of": "",
+          "entry_address": "$30B0",
+          "reachable_instructions": 159
+        },
+        {
+          "legacy_api": "MATH_UMUL32_READY",
+          "canonical_name": "mul_u32_u32_u64_ready",
+          "file": "mul_u32_u32_u64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$30C0",
+          "reachable_instructions": 151
+        },
+        {
+          "legacy_api": "MATH_SMUL8",
+          "canonical_name": "mul_s8_s8_s16",
+          "file": "mul_s8_s8_s16.asm",
+          "alias_of": "",
+          "entry_address": "$3B80",
+          "reachable_instructions": 19
+        },
+        {
+          "legacy_api": "MATH_SMUL16",
+          "canonical_name": "mul_s16_s16_s32",
+          "file": "mul_s16_s16_s32.asm",
+          "alias_of": "",
+          "entry_address": "$3BB0",
+          "reachable_instructions": 115
+        },
+        {
+          "legacy_api": "MATH_SMUL24",
+          "canonical_name": "mul_s24_s24_s48",
+          "file": "mul_s24_s24_s48.asm",
+          "alias_of": "",
+          "entry_address": "$3BF0",
+          "reachable_instructions": 232
+        },
+        {
+          "legacy_api": "MATH_SMUL32",
+          "canonical_name": "mul_s32_s32_s64",
+          "file": "mul_s32_s32_s64.asm",
+          "alias_of": "",
+          "entry_address": "$3C40",
+          "reachable_instructions": 669
+        },
+        {
+          "legacy_api": "MATH_SMUL32_READY",
+          "canonical_name": "mul_s32_s32_s64_ready",
+          "file": "mul_s32_s32_s64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$3FE0",
+          "reachable_instructions": 660
+        },
+        {
+          "legacy_api": "MATH_UDIV8",
+          "canonical_name": "div_u8_u8_u8_8",
+          "file": "div_u8_u8_u8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3120",
+          "reachable_instructions": 182
+        },
+        {
+          "legacy_api": "MATH_UDIV16",
+          "canonical_name": "div_u16_u16_u16_16",
+          "file": "div_u16_u16_u16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3140",
+          "reachable_instructions": 626
+        },
+        {
+          "legacy_api": "MATH_UDIV24",
+          "canonical_name": "div_u24_u24_u24_24",
+          "file": "div_u24_u24_u24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3170",
+          "reachable_instructions": 583
+        },
+        {
+          "legacy_api": "MATH_UDIV32_16",
+          "canonical_name": "div_u32_u16_u32_16",
+          "file": "div_u32_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$31B0",
+          "reachable_instructions": 1043
+        },
+        {
+          "legacy_api": "MATH_UMOD8",
+          "canonical_name": "mod_u8_u8_u8",
+          "file": "mod_u8_u8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$3200",
+          "reachable_instructions": 69
+        },
+        {
+          "legacy_api": "MATH_UMOD16",
+          "canonical_name": "mod_u16_u16_u16",
+          "file": "mod_u16_u16_u16__math_umod16.asm",
+          "alias_of": "MATH_UDIV16",
+          "entry_address": "$3220",
+          "reachable_instructions": 626
+        },
+        {
+          "legacy_api": "MATH_UMOD24",
+          "canonical_name": "mod_u24_u24_u24",
+          "file": "mod_u24_u24_u24__math_umod24.asm",
+          "alias_of": "MATH_UDIV24",
+          "entry_address": "$3223",
+          "reachable_instructions": 583
+        },
+        {
+          "legacy_api": "MATH_UMOD32_16",
+          "canonical_name": "mod_u32_u16_u16",
+          "file": "mod_u32_u16_u16__math_umod32_16.asm",
+          "alias_of": "MATH_UDIV32_16",
+          "entry_address": "$3226",
+          "reachable_instructions": 1044
+        },
+        {
+          "legacy_api": "MATH_SDIV8",
+          "canonical_name": "div_s8_s8_s8_8",
+          "file": "div_s8_s8_s8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3CA0",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SDIV16",
+          "canonical_name": "div_s16_s16_s16_16",
+          "file": "div_s16_s16_s16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3D20",
+          "reachable_instructions": 804
+        },
+        {
+          "legacy_api": "MATH_SDIV24",
+          "canonical_name": "div_s24_s24_s24_24",
+          "file": "div_s24_s24_s24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3DE0",
+          "reachable_instructions": 658
+        },
+        {
+          "legacy_api": "MATH_SDIV32_16",
+          "canonical_name": "div_s32_s16_s32_16",
+          "file": "div_s32_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$3EE0",
+          "reachable_instructions": 1154
+        },
+        {
+          "legacy_api": "MATH_SMOD8",
+          "canonical_name": "mod_s8_s8_s8",
+          "file": "mod_s8_s8_s8__math_smod8.asm",
+          "alias_of": "MATH_SDIV8",
+          "entry_address": "$3FD4",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SMOD16",
+          "canonical_name": "mod_s16_s16_s16",
+          "file": "mod_s16_s16_s16__math_smod16.asm",
+          "alias_of": "MATH_SDIV16",
+          "entry_address": "$3FD7",
+          "reachable_instructions": 804
+        },
+        {
+          "legacy_api": "MATH_SMOD24",
+          "canonical_name": "mod_s24_s24_s24",
+          "file": "mod_s24_s24_s24__math_smod24.asm",
+          "alias_of": "MATH_SDIV24",
+          "entry_address": "$3FDA",
+          "reachable_instructions": 658
+        },
+        {
+          "legacy_api": "MATH_SMOD32_16",
+          "canonical_name": "mod_s32_s16_s16",
+          "file": "mod_s32_s16_s16__math_smod32_16.asm",
+          "alias_of": "MATH_SDIV32_16",
+          "entry_address": "$3FDD",
+          "reachable_instructions": 1155
+        },
+        {
+          "legacy_api": "MATH_UDIV32_32",
+          "canonical_name": "div_u32_u32_u32_32",
+          "file": "div_u32_u32_u32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E00",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_UMOD32_32",
+          "canonical_name": "mod_u32_u32_u32",
+          "file": "mod_u32_u32_u32__math_umod32_32.asm",
+          "alias_of": "MATH_UDIV32_32",
+          "entry_address": "$5E03",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_SDIV32_32",
+          "canonical_name": "div_s32_s32_s32_32",
+          "file": "div_s32_s32_s32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E06",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_SMOD32_32",
+          "canonical_name": "mod_s32_s32_s32",
+          "file": "mod_s32_s32_s32__math_smod32_32.asm",
+          "alias_of": "MATH_SDIV32_32",
+          "entry_address": "$5E09",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_UMUL16_SHR8",
+          "canonical_name": "mul_u16_u16_u24_shr8",
+          "file": "mul_u16_u16_u24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0C",
+          "reachable_instructions": 96
+        },
+        {
+          "legacy_api": "MATH_SMUL16_SHR8",
+          "canonical_name": "mul_s16_s16_s24_shr8",
+          "file": "mul_s16_s16_s24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0F",
+          "reachable_instructions": 125
+        },
+        {
+          "legacy_api": "MATH_UMUL32_SHR16",
+          "canonical_name": "mul_u32_u32_u48_shr16",
+          "file": "mul_u32_u32_u48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E12",
+          "reachable_instructions": 175
+        },
+        {
+          "legacy_api": "MATH_SMUL32_SHR16",
+          "canonical_name": "mul_s32_s32_s48_shr16",
+          "file": "mul_s32_s32_s48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E15",
+          "reachable_instructions": 685
+        },
+        {
+          "legacy_api": "MATH_UDIV16_SHL8",
+          "canonical_name": "div_u16_u16_u24_16_shl8",
+          "file": "div_u16_u16_u24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E18",
+          "reachable_instructions": 1070
+        },
+        {
+          "legacy_api": "MATH_SDIV16_SHL8",
+          "canonical_name": "div_s16_s16_s24_16_shl8",
+          "file": "div_s16_s16_s24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E1B",
+          "reachable_instructions": 1184
+        },
+        {
+          "legacy_api": "MATH_URECIP16_Q16",
+          "canonical_name": "recip_u16_u24_q16",
+          "file": "recip_u16_u24_q16.asm",
+          "alias_of": "",
+          "entry_address": "$5E1E",
+          "reachable_instructions": 760
+        },
+        {
+          "legacy_api": "MATH_SIN8",
+          "canonical_name": "sin_u8_s8",
+          "file": "sin_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E21",
+          "reachable_instructions": 6
+        },
+        {
+          "legacy_api": "MATH_COS8",
+          "canonical_name": "cos_u8_s8",
+          "file": "cos_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E24",
+          "reachable_instructions": 6
+        },
+        {
+          "legacy_api": "MATH_SINCOS8",
+          "canonical_name": "sincos_u8_s8_s8",
+          "file": "sincos_u8_s8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E27",
+          "reachable_instructions": 8
+        },
+        {
+          "legacy_api": "MATH_ATAN2_8",
+          "canonical_name": "atan2_s8_s8_u8",
+          "file": "atan2_s8_s8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$5E2A",
+          "reachable_instructions": 46
+        },
+        {
+          "legacy_api": "MATH_ISQRT16",
+          "canonical_name": "isqrt_u16_u16",
+          "file": "isqrt_u16_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E2D",
+          "reachable_instructions": 113
+        },
+        {
+          "legacy_api": "MATH_ISQRT32",
+          "canonical_name": "isqrt_u32_u16",
+          "file": "isqrt_u32_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E30",
+          "reachable_instructions": 199
+        },
+        {
+          "legacy_api": "MATH_DIST8_FAST",
+          "canonical_name": "dist_s8_s8_u8_fast",
+          "file": "dist_s8_s8_u8_fast.asm",
+          "alias_of": "",
+          "entry_address": "$5E33",
+          "reachable_instructions": 30
+        },
+        {
+          "legacy_api": "MATH_DIST8_ACCURATE",
+          "canonical_name": "dist_s8_s8_u8_accurate",
+          "file": "dist_s8_s8_u8_accurate.asm",
+          "alias_of": "",
+          "entry_address": "$5E36",
+          "reachable_instructions": 31
+        },
+        {
+          "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",
+          "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
+          "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
+          "alias_of": "",
+          "entry_address": "$5E39",
+          "reachable_instructions": 177
+        }
+      ]
+    },
+    "v3_reu_512k": {
+      "callable_entries": 52,
+      "files": 52,
+      "aliases": 9,
+      "rows": [
+        {
+          "legacy_api": "MATH_UMUL8",
+          "canonical_name": "mul_u8_u8_u16",
+          "file": "mul_u8_u8_u16.asm",
+          "alias_of": "",
+          "entry_address": "$3000",
+          "reachable_instructions": 19
+        },
+        {
+          "legacy_api": "MATH_UMUL16",
+          "canonical_name": "mul_u16_u16_u32",
+          "file": "mul_u16_u16_u32.asm",
+          "alias_of": "",
+          "entry_address": "$3020",
+          "reachable_instructions": 86
+        },
+        {
+          "legacy_api": "MATH_UMUL24",
+          "canonical_name": "mul_u24_u24_u48",
+          "file": "mul_u24_u24_u48.asm",
+          "alias_of": "",
+          "entry_address": "$3060",
+          "reachable_instructions": 179
+        },
+        {
+          "legacy_api": "MATH_UMUL32",
+          "canonical_name": "mul_u32_u32_u64",
+          "file": "mul_u32_u32_u64.asm",
+          "alias_of": "",
+          "entry_address": "$30B0",
+          "reachable_instructions": 159
+        },
+        {
+          "legacy_api": "MATH_UMUL32_READY",
+          "canonical_name": "mul_u32_u32_u64_ready",
+          "file": "mul_u32_u32_u64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$30C0",
+          "reachable_instructions": 151
+        },
+        {
+          "legacy_api": "MATH_SMUL8",
+          "canonical_name": "mul_s8_s8_s16",
+          "file": "mul_s8_s8_s16.asm",
+          "alias_of": "",
+          "entry_address": "$3B80",
+          "reachable_instructions": 19
+        },
+        {
+          "legacy_api": "MATH_SMUL16",
+          "canonical_name": "mul_s16_s16_s32",
+          "file": "mul_s16_s16_s32.asm",
+          "alias_of": "",
+          "entry_address": "$3BB0",
+          "reachable_instructions": 115
+        },
+        {
+          "legacy_api": "MATH_SMUL24",
+          "canonical_name": "mul_s24_s24_s48",
+          "file": "mul_s24_s24_s48.asm",
+          "alias_of": "",
+          "entry_address": "$3BF0",
+          "reachable_instructions": 232
+        },
+        {
+          "legacy_api": "MATH_SMUL32",
+          "canonical_name": "mul_s32_s32_s64",
+          "file": "mul_s32_s32_s64.asm",
+          "alias_of": "",
+          "entry_address": "$3C40",
+          "reachable_instructions": 669
+        },
+        {
+          "legacy_api": "MATH_SMUL32_READY",
+          "canonical_name": "mul_s32_s32_s64_ready",
+          "file": "mul_s32_s32_s64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$3FE0",
+          "reachable_instructions": 660
+        },
+        {
+          "legacy_api": "MATH_UDIV8",
+          "canonical_name": "div_u8_u8_u8_8",
+          "file": "div_u8_u8_u8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3120",
+          "reachable_instructions": 25
+        },
+        {
+          "legacy_api": "MATH_UDIV16",
+          "canonical_name": "div_u16_u16_u16_16",
+          "file": "div_u16_u16_u16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3140",
+          "reachable_instructions": 626
+        },
+        {
+          "legacy_api": "MATH_UDIV24",
+          "canonical_name": "div_u24_u24_u24_24",
+          "file": "div_u24_u24_u24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3170",
+          "reachable_instructions": 583
+        },
+        {
+          "legacy_api": "MATH_UDIV32_16",
+          "canonical_name": "div_u32_u16_u32_16",
+          "file": "div_u32_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$31B0",
+          "reachable_instructions": 1043
+        },
+        {
+          "legacy_api": "MATH_UMOD8",
+          "canonical_name": "mod_u8_u8_u8",
+          "file": "mod_u8_u8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$3200",
+          "reachable_instructions": 18
+        },
+        {
+          "legacy_api": "MATH_UMOD16",
+          "canonical_name": "mod_u16_u16_u16",
+          "file": "mod_u16_u16_u16__math_umod16.asm",
+          "alias_of": "MATH_UDIV16",
+          "entry_address": "$3220",
+          "reachable_instructions": 626
+        },
+        {
+          "legacy_api": "MATH_UMOD24",
+          "canonical_name": "mod_u24_u24_u24",
+          "file": "mod_u24_u24_u24__math_umod24.asm",
+          "alias_of": "MATH_UDIV24",
+          "entry_address": "$3223",
+          "reachable_instructions": 583
+        },
+        {
+          "legacy_api": "MATH_UMOD32_16",
+          "canonical_name": "mod_u32_u16_u16",
+          "file": "mod_u32_u16_u16__math_umod32_16.asm",
+          "alias_of": "MATH_UDIV32_16",
+          "entry_address": "$3226",
+          "reachable_instructions": 1044
+        },
+        {
+          "legacy_api": "MATH_SDIV8",
+          "canonical_name": "div_s8_s8_s8_8",
+          "file": "div_s8_s8_s8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3CA0",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SDIV16",
+          "canonical_name": "div_s16_s16_s16_16",
+          "file": "div_s16_s16_s16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3D20",
+          "reachable_instructions": 804
+        },
+        {
+          "legacy_api": "MATH_SDIV24",
+          "canonical_name": "div_s24_s24_s24_24",
+          "file": "div_s24_s24_s24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3DE0",
+          "reachable_instructions": 819
+        },
+        {
+          "legacy_api": "MATH_SDIV32_16",
+          "canonical_name": "div_s32_s16_s32_16",
+          "file": "div_s32_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$3EE0",
+          "reachable_instructions": 1154
+        },
+        {
+          "legacy_api": "MATH_SMOD8",
+          "canonical_name": "mod_s8_s8_s8",
+          "file": "mod_s8_s8_s8__math_smod8.asm",
+          "alias_of": "MATH_SDIV8",
+          "entry_address": "$3FD4",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SMOD16",
+          "canonical_name": "mod_s16_s16_s16",
+          "file": "mod_s16_s16_s16__math_smod16.asm",
+          "alias_of": "MATH_SDIV16",
+          "entry_address": "$3FD7",
+          "reachable_instructions": 804
+        },
+        {
+          "legacy_api": "MATH_SMOD24",
+          "canonical_name": "mod_s24_s24_s24",
+          "file": "mod_s24_s24_s24__math_smod24.asm",
+          "alias_of": "MATH_SDIV24",
+          "entry_address": "$3FDA",
+          "reachable_instructions": 819
+        },
+        {
+          "legacy_api": "MATH_SMOD32_16",
+          "canonical_name": "mod_s32_s16_s16",
+          "file": "mod_s32_s16_s16__math_smod32_16.asm",
+          "alias_of": "MATH_SDIV32_16",
+          "entry_address": "$3FDD",
+          "reachable_instructions": 1155
+        },
+        {
+          "legacy_api": "MATH_UDIV32_32",
+          "canonical_name": "div_u32_u32_u32_32",
+          "file": "div_u32_u32_u32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E00",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_UMOD32_32",
+          "canonical_name": "mod_u32_u32_u32",
+          "file": "mod_u32_u32_u32__math_umod32_32.asm",
+          "alias_of": "MATH_UDIV32_32",
+          "entry_address": "$5E03",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_SDIV32_32",
+          "canonical_name": "div_s32_s32_s32_32",
+          "file": "div_s32_s32_s32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E06",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_SMOD32_32",
+          "canonical_name": "mod_s32_s32_s32",
+          "file": "mod_s32_s32_s32__math_smod32_32.asm",
+          "alias_of": "MATH_SDIV32_32",
+          "entry_address": "$5E09",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_UMUL16_SHR8",
+          "canonical_name": "mul_u16_u16_u24_shr8",
+          "file": "mul_u16_u16_u24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0C",
+          "reachable_instructions": 96
+        },
+        {
+          "legacy_api": "MATH_SMUL16_SHR8",
+          "canonical_name": "mul_s16_s16_s24_shr8",
+          "file": "mul_s16_s16_s24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0F",
+          "reachable_instructions": 125
+        },
+        {
+          "legacy_api": "MATH_UMUL32_SHR16",
+          "canonical_name": "mul_u32_u32_u48_shr16",
+          "file": "mul_u32_u32_u48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E12",
+          "reachable_instructions": 175
+        },
+        {
+          "legacy_api": "MATH_SMUL32_SHR16",
+          "canonical_name": "mul_s32_s32_s48_shr16",
+          "file": "mul_s32_s32_s48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E15",
+          "reachable_instructions": 685
+        },
+        {
+          "legacy_api": "MATH_UDIV16_SHL8",
+          "canonical_name": "div_u16_u16_u24_16_shl8",
+          "file": "div_u16_u16_u24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E18",
+          "reachable_instructions": 1070
+        },
+        {
+          "legacy_api": "MATH_SDIV16_SHL8",
+          "canonical_name": "div_s16_s16_s24_16_shl8",
+          "file": "div_s16_s16_s24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E1B",
+          "reachable_instructions": 1184
+        },
+        {
+          "legacy_api": "MATH_URECIP16_Q16",
+          "canonical_name": "recip_u16_u24_q16",
+          "file": "recip_u16_u24_q16.asm",
+          "alias_of": "",
+          "entry_address": "$5E1E",
+          "reachable_instructions": 183
+        },
+        {
+          "legacy_api": "MATH_SIN8",
+          "canonical_name": "sin_u8_s8",
+          "file": "sin_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E21",
+          "reachable_instructions": 6
+        },
+        {
+          "legacy_api": "MATH_COS8",
+          "canonical_name": "cos_u8_s8",
+          "file": "cos_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E24",
+          "reachable_instructions": 6
+        },
+        {
+          "legacy_api": "MATH_SINCOS8",
+          "canonical_name": "sincos_u8_s8_s8",
+          "file": "sincos_u8_s8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E27",
+          "reachable_instructions": 8
+        },
+        {
+          "legacy_api": "MATH_ATAN2_8",
+          "canonical_name": "atan2_s8_s8_u8",
+          "file": "atan2_s8_s8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$5E2A",
+          "reachable_instructions": 46
+        },
+        {
+          "legacy_api": "MATH_ISQRT16",
+          "canonical_name": "isqrt_u16_u16",
+          "file": "isqrt_u16_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E2D",
+          "reachable_instructions": 113
+        },
+        {
+          "legacy_api": "MATH_ISQRT32",
+          "canonical_name": "isqrt_u32_u16",
+          "file": "isqrt_u32_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E30",
+          "reachable_instructions": 199
+        },
+        {
+          "legacy_api": "MATH_DIST8_FAST",
+          "canonical_name": "dist_s8_s8_u8_fast",
+          "file": "dist_s8_s8_u8_fast.asm",
+          "alias_of": "",
+          "entry_address": "$5E33",
+          "reachable_instructions": 30
+        },
+        {
+          "legacy_api": "MATH_DIST8_ACCURATE",
+          "canonical_name": "dist_s8_s8_u8_accurate",
+          "file": "dist_s8_s8_u8_accurate.asm",
+          "alias_of": "",
+          "entry_address": "$5E36",
+          "reachable_instructions": 31
+        },
+        {
+          "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",
+          "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
+          "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
+          "alias_of": "",
+          "entry_address": "$5E39",
+          "reachable_instructions": 156
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL16_BEGIN",
+          "canonical_name": "mul_u16_u16_u32_turbo_begin",
+          "file": "mul_u16_u16_u32_turbo_begin.asm",
+          "alias_of": "",
+          "entry_address": "$3800",
+          "reachable_instructions": 17
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL16",
+          "canonical_name": "mul_u16_u16_u32_turbo",
+          "file": "mul_u16_u16_u32_turbo.asm",
+          "alias_of": "",
+          "entry_address": "$3840",
+          "reachable_instructions": 17
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL16_END",
+          "canonical_name": "mul_u16_u16_u32_turbo_end",
+          "file": "mul_u16_u16_u32_turbo_end.asm",
+          "alias_of": "",
+          "entry_address": "$3880",
+          "reachable_instructions": 30
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL32_BEGIN",
+          "canonical_name": "mul_u32_u32_u64_turbo_begin",
+          "file": "mul_u32_u32_u64_turbo_begin.asm",
+          "alias_of": "",
+          "entry_address": "$38C0",
+          "reachable_instructions": 17
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL32",
+          "canonical_name": "mul_u32_u32_u64_turbo",
+          "file": "mul_u32_u32_u64_turbo.asm",
+          "alias_of": "",
+          "entry_address": "$3900",
+          "reachable_instructions": 55
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL32_END",
+          "canonical_name": "mul_u32_u32_u64_turbo_end",
+          "file": "mul_u32_u32_u64_turbo_end.asm",
+          "alias_of": "",
+          "entry_address": "$3960",
+          "reachable_instructions": 30
+        }
+      ]
+    },
+    "v4_reu_16m": {
+      "callable_entries": 55,
+      "files": 55,
+      "aliases": 9,
+      "rows": [
+        {
+          "legacy_api": "MATH_UMUL8",
+          "canonical_name": "mul_u8_u8_u16",
+          "file": "mul_u8_u8_u16.asm",
+          "alias_of": "",
+          "entry_address": "$3000",
+          "reachable_instructions": 19
+        },
+        {
+          "legacy_api": "MATH_UMUL16",
+          "canonical_name": "mul_u16_u16_u32",
+          "file": "mul_u16_u16_u32.asm",
+          "alias_of": "",
+          "entry_address": "$3020",
+          "reachable_instructions": 86
+        },
+        {
+          "legacy_api": "MATH_UMUL24",
+          "canonical_name": "mul_u24_u24_u48",
+          "file": "mul_u24_u24_u48.asm",
+          "alias_of": "",
+          "entry_address": "$3060",
+          "reachable_instructions": 179
+        },
+        {
+          "legacy_api": "MATH_UMUL32",
+          "canonical_name": "mul_u32_u32_u64",
+          "file": "mul_u32_u32_u64.asm",
+          "alias_of": "",
+          "entry_address": "$30B0",
+          "reachable_instructions": 159
+        },
+        {
+          "legacy_api": "MATH_UMUL32_READY",
+          "canonical_name": "mul_u32_u32_u64_ready",
+          "file": "mul_u32_u32_u64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$30C0",
+          "reachable_instructions": 151
+        },
+        {
+          "legacy_api": "MATH_SMUL8",
+          "canonical_name": "mul_s8_s8_s16",
+          "file": "mul_s8_s8_s16.asm",
+          "alias_of": "",
+          "entry_address": "$3B80",
+          "reachable_instructions": 19
+        },
+        {
+          "legacy_api": "MATH_SMUL16",
+          "canonical_name": "mul_s16_s16_s32",
+          "file": "mul_s16_s16_s32.asm",
+          "alias_of": "",
+          "entry_address": "$3BB0",
+          "reachable_instructions": 115
+        },
+        {
+          "legacy_api": "MATH_SMUL24",
+          "canonical_name": "mul_s24_s24_s48",
+          "file": "mul_s24_s24_s48.asm",
+          "alias_of": "",
+          "entry_address": "$3BF0",
+          "reachable_instructions": 232
+        },
+        {
+          "legacy_api": "MATH_SMUL32",
+          "canonical_name": "mul_s32_s32_s64",
+          "file": "mul_s32_s32_s64.asm",
+          "alias_of": "",
+          "entry_address": "$3C40",
+          "reachable_instructions": 669
+        },
+        {
+          "legacy_api": "MATH_SMUL32_READY",
+          "canonical_name": "mul_s32_s32_s64_ready",
+          "file": "mul_s32_s32_s64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$3FE0",
+          "reachable_instructions": 660
+        },
+        {
+          "legacy_api": "MATH_UDIV8",
+          "canonical_name": "div_u8_u8_u8_8",
+          "file": "div_u8_u8_u8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3120",
+          "reachable_instructions": 25
+        },
+        {
+          "legacy_api": "MATH_UDIV16",
+          "canonical_name": "div_u16_u16_u16_16",
+          "file": "div_u16_u16_u16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3140",
+          "reachable_instructions": 626
+        },
+        {
+          "legacy_api": "MATH_UDIV24",
+          "canonical_name": "div_u24_u24_u24_24",
+          "file": "div_u24_u24_u24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3170",
+          "reachable_instructions": 583
+        },
+        {
+          "legacy_api": "MATH_UDIV32_16",
+          "canonical_name": "div_u32_u16_u32_16",
+          "file": "div_u32_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$31B0",
+          "reachable_instructions": 1043
+        },
+        {
+          "legacy_api": "MATH_UMOD8",
+          "canonical_name": "mod_u8_u8_u8",
+          "file": "mod_u8_u8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$3200",
+          "reachable_instructions": 18
+        },
+        {
+          "legacy_api": "MATH_UMOD16",
+          "canonical_name": "mod_u16_u16_u16",
+          "file": "mod_u16_u16_u16__math_umod16.asm",
+          "alias_of": "MATH_UDIV16",
+          "entry_address": "$3220",
+          "reachable_instructions": 626
+        },
+        {
+          "legacy_api": "MATH_UMOD24",
+          "canonical_name": "mod_u24_u24_u24",
+          "file": "mod_u24_u24_u24__math_umod24.asm",
+          "alias_of": "MATH_UDIV24",
+          "entry_address": "$3223",
+          "reachable_instructions": 583
+        },
+        {
+          "legacy_api": "MATH_UMOD32_16",
+          "canonical_name": "mod_u32_u16_u16",
+          "file": "mod_u32_u16_u16__math_umod32_16.asm",
+          "alias_of": "MATH_UDIV32_16",
+          "entry_address": "$3226",
+          "reachable_instructions": 1044
+        },
+        {
+          "legacy_api": "MATH_SDIV8",
+          "canonical_name": "div_s8_s8_s8_8",
+          "file": "div_s8_s8_s8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3CA0",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SDIV16",
+          "canonical_name": "div_s16_s16_s16_16",
+          "file": "div_s16_s16_s16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3D20",
+          "reachable_instructions": 804
+        },
+        {
+          "legacy_api": "MATH_SDIV24",
+          "canonical_name": "div_s24_s24_s24_24",
+          "file": "div_s24_s24_s24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3DE0",
+          "reachable_instructions": 819
+        },
+        {
+          "legacy_api": "MATH_SDIV32_16",
+          "canonical_name": "div_s32_s16_s32_16",
+          "file": "div_s32_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$3EE0",
+          "reachable_instructions": 1154
+        },
+        {
+          "legacy_api": "MATH_SMOD8",
+          "canonical_name": "mod_s8_s8_s8",
+          "file": "mod_s8_s8_s8__math_smod8.asm",
+          "alias_of": "MATH_SDIV8",
+          "entry_address": "$3FD4",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SMOD16",
+          "canonical_name": "mod_s16_s16_s16",
+          "file": "mod_s16_s16_s16__math_smod16.asm",
+          "alias_of": "MATH_SDIV16",
+          "entry_address": "$3FD7",
+          "reachable_instructions": 804
+        },
+        {
+          "legacy_api": "MATH_SMOD24",
+          "canonical_name": "mod_s24_s24_s24",
+          "file": "mod_s24_s24_s24__math_smod24.asm",
+          "alias_of": "MATH_SDIV24",
+          "entry_address": "$3FDA",
+          "reachable_instructions": 819
+        },
+        {
+          "legacy_api": "MATH_SMOD32_16",
+          "canonical_name": "mod_s32_s16_s16",
+          "file": "mod_s32_s16_s16__math_smod32_16.asm",
+          "alias_of": "MATH_SDIV32_16",
+          "entry_address": "$3FDD",
+          "reachable_instructions": 1155
+        },
+        {
+          "legacy_api": "MATH_UDIV32_32",
+          "canonical_name": "div_u32_u32_u32_32",
+          "file": "div_u32_u32_u32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E00",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_UMOD32_32",
+          "canonical_name": "mod_u32_u32_u32",
+          "file": "mod_u32_u32_u32__math_umod32_32.asm",
+          "alias_of": "MATH_UDIV32_32",
+          "entry_address": "$5E03",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_SDIV32_32",
+          "canonical_name": "div_s32_s32_s32_32",
+          "file": "div_s32_s32_s32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E06",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_SMOD32_32",
+          "canonical_name": "mod_s32_s32_s32",
+          "file": "mod_s32_s32_s32__math_smod32_32.asm",
+          "alias_of": "MATH_SDIV32_32",
+          "entry_address": "$5E09",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_UMUL16_SHR8",
+          "canonical_name": "mul_u16_u16_u24_shr8",
+          "file": "mul_u16_u16_u24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0C",
+          "reachable_instructions": 96
+        },
+        {
+          "legacy_api": "MATH_SMUL16_SHR8",
+          "canonical_name": "mul_s16_s16_s24_shr8",
+          "file": "mul_s16_s16_s24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0F",
+          "reachable_instructions": 125
+        },
+        {
+          "legacy_api": "MATH_UMUL32_SHR16",
+          "canonical_name": "mul_u32_u32_u48_shr16",
+          "file": "mul_u32_u32_u48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E12",
+          "reachable_instructions": 175
+        },
+        {
+          "legacy_api": "MATH_SMUL32_SHR16",
+          "canonical_name": "mul_s32_s32_s48_shr16",
+          "file": "mul_s32_s32_s48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E15",
+          "reachable_instructions": 685
+        },
+        {
+          "legacy_api": "MATH_UDIV16_SHL8",
+          "canonical_name": "div_u16_u16_u24_16_shl8",
+          "file": "div_u16_u16_u24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E18",
+          "reachable_instructions": 1070
+        },
+        {
+          "legacy_api": "MATH_SDIV16_SHL8",
+          "canonical_name": "div_s16_s16_s24_16_shl8",
+          "file": "div_s16_s16_s24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E1B",
+          "reachable_instructions": 1184
+        },
+        {
+          "legacy_api": "MATH_URECIP16_Q16",
+          "canonical_name": "recip_u16_u24_q16",
+          "file": "recip_u16_u24_q16.asm",
+          "alias_of": "",
+          "entry_address": "$5E1E",
+          "reachable_instructions": 183
+        },
+        {
+          "legacy_api": "MATH_SIN8",
+          "canonical_name": "sin_u8_s8",
+          "file": "sin_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E21",
+          "reachable_instructions": 6
+        },
+        {
+          "legacy_api": "MATH_COS8",
+          "canonical_name": "cos_u8_s8",
+          "file": "cos_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E24",
+          "reachable_instructions": 6
+        },
+        {
+          "legacy_api": "MATH_SINCOS8",
+          "canonical_name": "sincos_u8_s8_s8",
+          "file": "sincos_u8_s8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E27",
+          "reachable_instructions": 8
+        },
+        {
+          "legacy_api": "MATH_ATAN2_8",
+          "canonical_name": "atan2_s8_s8_u8",
+          "file": "atan2_s8_s8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$5E2A",
+          "reachable_instructions": 13
+        },
+        {
+          "legacy_api": "MATH_ISQRT16",
+          "canonical_name": "isqrt_u16_u16",
+          "file": "isqrt_u16_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E2D",
+          "reachable_instructions": 15
+        },
+        {
+          "legacy_api": "MATH_ISQRT32",
+          "canonical_name": "isqrt_u32_u16",
+          "file": "isqrt_u32_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E30",
+          "reachable_instructions": 101
+        },
+        {
+          "legacy_api": "MATH_DIST8_FAST",
+          "canonical_name": "dist_s8_s8_u8_fast",
+          "file": "dist_s8_s8_u8_fast.asm",
+          "alias_of": "",
+          "entry_address": "$5E33",
+          "reachable_instructions": 30
+        },
+        {
+          "legacy_api": "MATH_DIST8_ACCURATE",
+          "canonical_name": "dist_s8_s8_u8_accurate",
+          "file": "dist_s8_s8_u8_accurate.asm",
+          "alias_of": "",
+          "entry_address": "$5E36",
+          "reachable_instructions": 31
+        },
+        {
+          "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",
+          "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
+          "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
+          "alias_of": "",
+          "entry_address": "$5E39",
+          "reachable_instructions": 156
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL16_BEGIN",
+          "canonical_name": "mul_u16_u16_u32_turbo_begin",
+          "file": "mul_u16_u16_u32_turbo_begin.asm",
+          "alias_of": "",
+          "entry_address": "$3800",
+          "reachable_instructions": 17
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL16",
+          "canonical_name": "mul_u16_u16_u32_turbo",
+          "file": "mul_u16_u16_u32_turbo.asm",
+          "alias_of": "",
+          "entry_address": "$3840",
+          "reachable_instructions": 17
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL16_END",
+          "canonical_name": "mul_u16_u16_u32_turbo_end",
+          "file": "mul_u16_u16_u32_turbo_end.asm",
+          "alias_of": "",
+          "entry_address": "$3880",
+          "reachable_instructions": 30
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL32_BEGIN",
+          "canonical_name": "mul_u32_u32_u64_turbo_begin",
+          "file": "mul_u32_u32_u64_turbo_begin.asm",
+          "alias_of": "",
+          "entry_address": "$38C0",
+          "reachable_instructions": 17
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL32",
+          "canonical_name": "mul_u32_u32_u64_turbo",
+          "file": "mul_u32_u32_u64_turbo.asm",
+          "alias_of": "",
+          "entry_address": "$3900",
+          "reachable_instructions": 55
+        },
+        {
+          "legacy_api": "MATH_REU_UMUL32_END",
+          "canonical_name": "mul_u32_u32_u64_turbo_end",
+          "file": "mul_u32_u32_u64_turbo_end.asm",
+          "alias_of": "",
+          "entry_address": "$3960",
+          "reachable_instructions": 30
+        },
+        {
+          "legacy_api": "MATH_REU_QS16_BEGIN",
+          "canonical_name": "mul_u16_u16_u32_qs16_begin",
+          "file": "mul_u16_u16_u32_qs16_begin.asm",
+          "alias_of": "",
+          "entry_address": "$3A80",
+          "reachable_instructions": 5
+        },
+        {
+          "legacy_api": "MATH_REU_QS16",
+          "canonical_name": "mul_u16_u16_u32_qs16",
+          "file": "mul_u16_u16_u32_qs16.asm",
+          "alias_of": "",
+          "entry_address": "$3A8B",
+          "reachable_instructions": 89
+        },
+        {
+          "legacy_api": "MATH_REU_QS16_END",
+          "canonical_name": "mul_u16_u16_u32_qs16_end",
+          "file": "mul_u16_u16_u32_qs16_end.asm",
+          "alias_of": "",
+          "entry_address": "$3B5C",
+          "reachable_instructions": 5
+        }
+      ]
+    },
+    "v5_hybrid_lowzp": {
+      "callable_entries": 46,
+      "files": 46,
+      "aliases": 9,
+      "rows": [
+        {
+          "legacy_api": "MATH_UMUL8",
+          "canonical_name": "mul_u8_u8_u16",
+          "file": "mul_u8_u8_u16.asm",
+          "alias_of": "",
+          "entry_address": "$3000",
+          "reachable_instructions": 27
+        },
+        {
+          "legacy_api": "MATH_UMUL16",
+          "canonical_name": "mul_u16_u16_u32",
+          "file": "mul_u16_u16_u32.asm",
+          "alias_of": "",
+          "entry_address": "$3020",
+          "reachable_instructions": 104
+        },
+        {
+          "legacy_api": "MATH_UMUL24",
+          "canonical_name": "mul_u24_u24_u48",
+          "file": "mul_u24_u24_u48.asm",
+          "alias_of": "",
+          "entry_address": "$3060",
+          "reachable_instructions": 179
+        },
+        {
+          "legacy_api": "MATH_UMUL32",
+          "canonical_name": "mul_u32_u32_u64",
+          "file": "mul_u32_u32_u64.asm",
+          "alias_of": "",
+          "entry_address": "$30B0",
+          "reachable_instructions": 159
+        },
+        {
+          "legacy_api": "MATH_UMUL32_READY",
+          "canonical_name": "mul_u32_u32_u64_ready",
+          "file": "mul_u32_u32_u64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$30C0",
+          "reachable_instructions": 151
+        },
+        {
+          "legacy_api": "MATH_SMUL8",
+          "canonical_name": "mul_s8_s8_s16",
+          "file": "mul_s8_s8_s16.asm",
+          "alias_of": "",
+          "entry_address": "$3B80",
+          "reachable_instructions": 19
+        },
+        {
+          "legacy_api": "MATH_SMUL16",
+          "canonical_name": "mul_s16_s16_s32",
+          "file": "mul_s16_s16_s32.asm",
+          "alias_of": "",
+          "entry_address": "$3BB0",
+          "reachable_instructions": 136
+        },
+        {
+          "legacy_api": "MATH_SMUL24",
+          "canonical_name": "mul_s24_s24_s48",
+          "file": "mul_s24_s24_s48.asm",
+          "alias_of": "",
+          "entry_address": "$3BF0",
+          "reachable_instructions": 248
+        },
+        {
+          "legacy_api": "MATH_SMUL32",
+          "canonical_name": "mul_s32_s32_s64",
+          "file": "mul_s32_s32_s64.asm",
+          "alias_of": "",
+          "entry_address": "$3C40",
+          "reachable_instructions": 669
+        },
+        {
+          "legacy_api": "MATH_SMUL32_READY",
+          "canonical_name": "mul_s32_s32_s64_ready",
+          "file": "mul_s32_s32_s64_ready.asm",
+          "alias_of": "",
+          "entry_address": "$3FE0",
+          "reachable_instructions": 660
+        },
+        {
+          "legacy_api": "MATH_UDIV8",
+          "canonical_name": "div_u8_u8_u8_8",
+          "file": "div_u8_u8_u8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3120",
+          "reachable_instructions": 182
+        },
+        {
+          "legacy_api": "MATH_UDIV16",
+          "canonical_name": "div_u16_u16_u16_16",
+          "file": "div_u16_u16_u16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3140",
+          "reachable_instructions": 626
+        },
+        {
+          "legacy_api": "MATH_UDIV24",
+          "canonical_name": "div_u24_u24_u24_24",
+          "file": "div_u24_u24_u24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3170",
+          "reachable_instructions": 583
+        },
+        {
+          "legacy_api": "MATH_UDIV32_16",
+          "canonical_name": "div_u32_u16_u32_16",
+          "file": "div_u32_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$31B0",
+          "reachable_instructions": 1043
+        },
+        {
+          "legacy_api": "MATH_UMOD8",
+          "canonical_name": "mod_u8_u8_u8",
+          "file": "mod_u8_u8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$3200",
+          "reachable_instructions": 69
+        },
+        {
+          "legacy_api": "MATH_UMOD16",
+          "canonical_name": "mod_u16_u16_u16",
+          "file": "mod_u16_u16_u16__math_umod16.asm",
+          "alias_of": "MATH_UDIV16",
+          "entry_address": "$3220",
+          "reachable_instructions": 626
+        },
+        {
+          "legacy_api": "MATH_UMOD24",
+          "canonical_name": "mod_u24_u24_u24",
+          "file": "mod_u24_u24_u24__math_umod24.asm",
+          "alias_of": "MATH_UDIV24",
+          "entry_address": "$3223",
+          "reachable_instructions": 583
+        },
+        {
+          "legacy_api": "MATH_UMOD32_16",
+          "canonical_name": "mod_u32_u16_u16",
+          "file": "mod_u32_u16_u16__math_umod32_16.asm",
+          "alias_of": "MATH_UDIV32_16",
+          "entry_address": "$3226",
+          "reachable_instructions": 1044
+        },
+        {
+          "legacy_api": "MATH_SDIV8",
+          "canonical_name": "div_s8_s8_s8_8",
+          "file": "div_s8_s8_s8_8.asm",
+          "alias_of": "",
+          "entry_address": "$3CA0",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SDIV16",
+          "canonical_name": "div_s16_s16_s16_16",
+          "file": "div_s16_s16_s16_16.asm",
+          "alias_of": "",
+          "entry_address": "$3D20",
+          "reachable_instructions": 804
+        },
+        {
+          "legacy_api": "MATH_SDIV24",
+          "canonical_name": "div_s24_s24_s24_24",
+          "file": "div_s24_s24_s24_24.asm",
+          "alias_of": "",
+          "entry_address": "$3DE0",
+          "reachable_instructions": 658
+        },
+        {
+          "legacy_api": "MATH_SDIV32_16",
+          "canonical_name": "div_s32_s16_s32_16",
+          "file": "div_s32_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$3EE0",
+          "reachable_instructions": 274
+        },
+        {
+          "legacy_api": "MATH_SMOD8",
+          "canonical_name": "mod_s8_s8_s8",
+          "file": "mod_s8_s8_s8__math_smod8.asm",
+          "alias_of": "MATH_SDIV8",
+          "entry_address": "$3FD4",
+          "reachable_instructions": 235
+        },
+        {
+          "legacy_api": "MATH_SMOD16",
+          "canonical_name": "mod_s16_s16_s16",
+          "file": "mod_s16_s16_s16__math_smod16.asm",
+          "alias_of": "MATH_SDIV16",
+          "entry_address": "$3FD7",
+          "reachable_instructions": 804
+        },
+        {
+          "legacy_api": "MATH_SMOD24",
+          "canonical_name": "mod_s24_s24_s24",
+          "file": "mod_s24_s24_s24__math_smod24.asm",
+          "alias_of": "MATH_SDIV24",
+          "entry_address": "$3FDA",
+          "reachable_instructions": 658
+        },
+        {
+          "legacy_api": "MATH_SMOD32_16",
+          "canonical_name": "mod_s32_s16_s16",
+          "file": "mod_s32_s16_s16__math_smod32_16.asm",
+          "alias_of": "MATH_SDIV32_16",
+          "entry_address": "$3FDD",
+          "reachable_instructions": 275
+        },
+        {
+          "legacy_api": "MATH_UDIV32_32",
+          "canonical_name": "div_u32_u32_u32_32",
+          "file": "div_u32_u32_u32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E00",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_UMOD32_32",
+          "canonical_name": "mod_u32_u32_u32",
+          "file": "mod_u32_u32_u32__math_umod32_32.asm",
+          "alias_of": "MATH_UDIV32_32",
+          "entry_address": "$5E03",
+          "reachable_instructions": 362
+        },
+        {
+          "legacy_api": "MATH_SDIV32_32",
+          "canonical_name": "div_s32_s32_s32_32",
+          "file": "div_s32_s32_s32_32.asm",
+          "alias_of": "",
+          "entry_address": "$5E06",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_SMOD32_32",
+          "canonical_name": "mod_s32_s32_s32",
+          "file": "mod_s32_s32_s32__math_smod32_32.asm",
+          "alias_of": "MATH_SDIV32_32",
+          "entry_address": "$5E09",
+          "reachable_instructions": 380
+        },
+        {
+          "legacy_api": "MATH_UMUL16_SHR8",
+          "canonical_name": "mul_u16_u16_u24_shr8",
+          "file": "mul_u16_u16_u24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0C",
+          "reachable_instructions": 114
+        },
+        {
+          "legacy_api": "MATH_SMUL16_SHR8",
+          "canonical_name": "mul_s16_s16_s24_shr8",
+          "file": "mul_s16_s16_s24_shr8.asm",
+          "alias_of": "",
+          "entry_address": "$5E0F",
+          "reachable_instructions": 146
+        },
+        {
+          "legacy_api": "MATH_UMUL32_SHR16",
+          "canonical_name": "mul_u32_u32_u48_shr16",
+          "file": "mul_u32_u32_u48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E12",
+          "reachable_instructions": 175
+        },
+        {
+          "legacy_api": "MATH_SMUL32_SHR16",
+          "canonical_name": "mul_s32_s32_s48_shr16",
+          "file": "mul_s32_s32_s48_shr16.asm",
+          "alias_of": "",
+          "entry_address": "$5E15",
+          "reachable_instructions": 685
+        },
+        {
+          "legacy_api": "MATH_UDIV16_SHL8",
+          "canonical_name": "div_u16_u16_u24_16_shl8",
+          "file": "div_u16_u16_u24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E18",
+          "reachable_instructions": 1070
+        },
+        {
+          "legacy_api": "MATH_SDIV16_SHL8",
+          "canonical_name": "div_s16_s16_s24_16_shl8",
+          "file": "div_s16_s16_s24_16_shl8.asm",
+          "alias_of": "",
+          "entry_address": "$5E1B",
+          "reachable_instructions": 304
+        },
+        {
+          "legacy_api": "MATH_URECIP16_Q16",
+          "canonical_name": "recip_u16_u24_q16",
+          "file": "recip_u16_u24_q16.asm",
+          "alias_of": "",
+          "entry_address": "$5E1E",
+          "reachable_instructions": 760
+        },
+        {
+          "legacy_api": "MATH_SIN8",
+          "canonical_name": "sin_u8_s8",
+          "file": "sin_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E21",
+          "reachable_instructions": 6
+        },
+        {
+          "legacy_api": "MATH_COS8",
+          "canonical_name": "cos_u8_s8",
+          "file": "cos_u8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E24",
+          "reachable_instructions": 6
+        },
+        {
+          "legacy_api": "MATH_SINCOS8",
+          "canonical_name": "sincos_u8_s8_s8",
+          "file": "sincos_u8_s8_s8.asm",
+          "alias_of": "",
+          "entry_address": "$5E27",
+          "reachable_instructions": 8
+        },
+        {
+          "legacy_api": "MATH_ATAN2_8",
+          "canonical_name": "atan2_s8_s8_u8",
+          "file": "atan2_s8_s8_u8.asm",
+          "alias_of": "",
+          "entry_address": "$5E2A",
+          "reachable_instructions": 46
+        },
+        {
+          "legacy_api": "MATH_ISQRT16",
+          "canonical_name": "isqrt_u16_u16",
+          "file": "isqrt_u16_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E2D",
+          "reachable_instructions": 113
+        },
+        {
+          "legacy_api": "MATH_ISQRT32",
+          "canonical_name": "isqrt_u32_u16",
+          "file": "isqrt_u32_u16.asm",
+          "alias_of": "",
+          "entry_address": "$5E30",
+          "reachable_instructions": 199
+        },
+        {
+          "legacy_api": "MATH_DIST8_FAST",
+          "canonical_name": "dist_s8_s8_u8_fast",
+          "file": "dist_s8_s8_u8_fast.asm",
+          "alias_of": "",
+          "entry_address": "$5E33",
+          "reachable_instructions": 30
+        },
+        {
+          "legacy_api": "MATH_DIST8_ACCURATE",
+          "canonical_name": "dist_s8_s8_u8_accurate",
+          "file": "dist_s8_s8_u8_accurate.asm",
+          "alias_of": "",
+          "entry_address": "$5E36",
+          "reachable_instructions": 31
+        },
+        {
+          "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",
+          "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
+          "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
+          "alias_of": "",
+          "entry_address": "$5E39",
+          "reachable_instructions": 183
+        }
+      ]
+    }
+  },
+  "canonical_names": {
+    "MATH_UMUL8": "mul_u8_u8_u16",
+    "MATH_UMUL16": "mul_u16_u16_u32",
+    "MATH_UMUL24": "mul_u24_u24_u48",
+    "MATH_UMUL32": "mul_u32_u32_u64",
+    "MATH_UMUL32_READY": "mul_u32_u32_u64_ready",
+    "MATH_SMUL8": "mul_s8_s8_s16",
+    "MATH_SMUL16": "mul_s16_s16_s32",
+    "MATH_SMUL24": "mul_s24_s24_s48",
+    "MATH_SMUL32": "mul_s32_s32_s64",
+    "MATH_SMUL32_READY": "mul_s32_s32_s64_ready",
+    "MATH_UDIV8": "div_u8_u8_u8_8",
+    "MATH_UDIV16": "div_u16_u16_u16_16",
+    "MATH_UDIV24": "div_u24_u24_u24_24",
+    "MATH_UDIV32_16": "div_u32_u16_u32_16",
+    "MATH_UMOD8": "mod_u8_u8_u8",
+    "MATH_UMOD16": "mod_u16_u16_u16",
+    "MATH_UMOD24": "mod_u24_u24_u24",
+    "MATH_UMOD32_16": "mod_u32_u16_u16",
+    "MATH_SDIV8": "div_s8_s8_s8_8",
+    "MATH_SDIV16": "div_s16_s16_s16_16",
+    "MATH_SDIV24": "div_s24_s24_s24_24",
+    "MATH_SDIV32_16": "div_s32_s16_s32_16",
+    "MATH_SMOD8": "mod_s8_s8_s8",
+    "MATH_SMOD16": "mod_s16_s16_s16",
+    "MATH_SMOD24": "mod_s24_s24_s24",
+    "MATH_SMOD32_16": "mod_s32_s16_s16",
+    "MATH_UDIV32_32": "div_u32_u32_u32_32",
+    "MATH_UMOD32_32": "mod_u32_u32_u32",
+    "MATH_SDIV32_32": "div_s32_s32_s32_32",
+    "MATH_SMOD32_32": "mod_s32_s32_s32",
+    "MATH_UMUL16_SHR8": "mul_u16_u16_u24_shr8",
+    "MATH_SMUL16_SHR8": "mul_s16_s16_s24_shr8",
+    "MATH_UMUL32_SHR16": "mul_u32_u32_u48_shr16",
+    "MATH_SMUL32_SHR16": "mul_s32_s32_s48_shr16",
+    "MATH_UDIV16_SHL8": "div_u16_u16_u24_16_shl8",
+    "MATH_SDIV16_SHL8": "div_s16_s16_s24_16_shl8",
+    "MATH_URECIP16_Q16": "recip_u16_u24_q16",
+    "MATH_SIN8": "sin_u8_s8",
+    "MATH_COS8": "cos_u8_s8",
+    "MATH_SINCOS8": "sincos_u8_s8_s8",
+    "MATH_ATAN2_8": "atan2_s8_s8_u8",
+    "MATH_ISQRT16": "isqrt_u16_u16",
+    "MATH_ISQRT32": "isqrt_u32_u16",
+    "MATH_DIST8_FAST": "dist_s8_s8_u8_fast",
+    "MATH_DIST8_ACCURATE": "dist_s8_s8_u8_accurate",
+    "MATH_VEC2_NORMALIZE_Q8_8": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
+  },
+  "profile_extras": {
+    "v3_reu_512k": {
+      "MATH_REU_UMUL16_BEGIN": "mul_u16_u16_u32_turbo_begin",
+      "MATH_REU_UMUL16": "mul_u16_u16_u32_turbo",
+      "MATH_REU_UMUL16_END": "mul_u16_u16_u32_turbo_end",
+      "MATH_REU_UMUL32_BEGIN": "mul_u32_u32_u64_turbo_begin",
+      "MATH_REU_UMUL32": "mul_u32_u32_u64_turbo",
+      "MATH_REU_UMUL32_END": "mul_u32_u32_u64_turbo_end"
+    },
+    "v4_reu_16m": {
+      "MATH_REU_UMUL16_BEGIN": "mul_u16_u16_u32_turbo_begin",
+      "MATH_REU_UMUL16": "mul_u16_u16_u32_turbo",
+      "MATH_REU_UMUL16_END": "mul_u16_u16_u32_turbo_end",
+      "MATH_REU_UMUL32_BEGIN": "mul_u32_u32_u64_turbo_begin",
+      "MATH_REU_UMUL32": "mul_u32_u32_u64_turbo",
+      "MATH_REU_UMUL32_END": "mul_u32_u32_u64_turbo_end",
+      "MATH_REU_QS16_BEGIN": "mul_u16_u16_u32_qs16_begin",
+      "MATH_REU_QS16": "mul_u16_u16_u32_qs16",
+      "MATH_REU_QS16_END": "mul_u16_u16_u32_qs16_end"
+    }
+  }
+}

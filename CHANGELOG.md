@@ -1,3 +1,11 @@
+## 2026-09-20 — standalone routine publication and typed API names
+
+- Published one exact readable ASM source mirror for every callable routine in every profile (46/46/52/55/46).
+- Adopted canonical operand/result names such as `mul_u8_u8_u16` and `div_u8_u8_u8_8` while preserving all legacy `MATH_*` symbols and addresses.
+- Added canonical-name columns to public/performance/consolidated tables without changing measured values.
+- Added profile-specific typed names for REU Turbo16/Turbo32 and V4 QS16.
+- Added a 1,371-check standalone/API/table consistency audit.
+
 ## 2026-09-20 — five-profile division refresh
 
 - Re-evaluated `UDIV8/16/24/32_16/32_32`, `SDIV8/16/24/32_16/32_32`, all corresponding modulo/remainder entries, shifted divide helpers and `URECIP16_Q16` across all five fixed profiles.

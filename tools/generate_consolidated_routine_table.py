@@ -20,6 +20,7 @@ import csv,json,re,sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU,REV,SIZE
+from publish_standalone_sources import CANONICAL, PROFILE_EXTRAS
 REV[0xBF]=('lax','absy'); REV[0xAF]=('lax','abs'); REV[0xA7]=('lax','zp')
 
 PROFILES=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp']
@@ -250,7 +251,7 @@ def main():
             code,zp,stack=trace(mems[p],a); code_union|=code; zp_union|=zp; stack_union|=stack
             c=cyc[p][n]; meta=api_meta[n]
             rows.append({
-                'profile':p,'routine':n,'api_class':'stable','signedness':meta['signedness'],'operation':meta['operation'],'width':meta['width'],
+                'profile':p,'routine':n,'canonical_name':meta.get('canonical_name',''),'api_class':'stable','signedness':meta['signedness'],'operation':meta['operation'],'width':meta['width'],
                 'mean_cycles':f"{c['mean_cycles']:.6f}",'min_cycles':c['min_cycles'],'max_cycles':c['max_cycles'],'cases':c['cases'],'cycle_basis':c['cycle_basis'],
                 'reachable_code_bytes':len(code),'zp_bytes':len(zp),'zp_ranges':fmt_ranges(zp),'stack_page_reserved_bytes':len(stack),
                 'profile_prg_payload_span_bytes':PRG[p].stat().st_size-2,'profile_reu_image_bytes':REU[p].stat().st_size if p in REU else 0,
@@ -270,7 +271,7 @@ def main():
             base=int(d['zp_base'][1:],16); zps=set(range(base,base+owned))
             for n,mean,mn,mx,cases in entries:
                 code,_,stack=trace(mems[p],taddr[n])
-                rows.append({'profile':p,'routine':n,'api_class':'reu_turbo','signedness':'unsigned','operation':f'turbo multiply {bits}','width':str(bits),
+                rows.append({'profile':p,'routine':n,'canonical_name':PROFILE_EXTRAS[p][n],'api_class':'reu_turbo','signedness':'unsigned','operation':f'turbo multiply {bits}','width':str(bits),
                   'mean_cycles':f'{float(mean):.6f}','min_cycles':mn,'max_cycles':mx,'cases':cases,'cycle_basis':'Turbo relocation canonical reference corpus',
                   'reachable_code_bytes':len(code),'zp_bytes':owned,'zp_ranges':fmt_ranges(zps),'stack_page_reserved_bytes':len(stack),
                   'profile_prg_payload_span_bytes':PRG[p].stat().st_size-2,'profile_reu_image_bytes':REU[p].stat().st_size,
@@ -282,7 +283,7 @@ def main():
     qzp=set(range(0x10,0x20));p='v4_reu_16m'
     for n,a in qaddr.items():
         code,_,stack=trace(mems[p],a);mean,mn,mx,cases=qcycles[n]
-        rows.append({'profile':p,'routine':n,'api_class':'reu_qs16','signedness':'unsigned','operation':'V4 QS16 multiply mode','width':'16',
+        rows.append({'profile':p,'routine':n,'canonical_name':PROFILE_EXTRAS[p][n],'api_class':'reu_qs16','signedness':'unsigned','operation':'V4 QS16 multiply mode','width':'16',
           'mean_cycles':f'{float(mean):.6f}','min_cycles':mn,'max_cycles':mx,'cases':cases,'cycle_basis':'V4 QS16 source/exact timing classes',
           'reachable_code_bytes':len(code),'zp_bytes':16,'zp_ranges':fmt_ranges(qzp),'stack_page_reserved_bytes':len(stack),
           'profile_prg_payload_span_bytes':PRG[p].stat().st_size-2,'profile_reu_image_bytes':REU[p].stat().st_size,
@@ -305,7 +306,7 @@ def main():
     # Human-readable table, one profile section each.
     md=[]
     md += ['# Consolidated routine performance and memory table','',
-      'Generated from the shipped reference images by `tools/generate_consolidated_routine_table.py`. This is the single cross-profile index for cycles and resource use.','',
+      'Generated from the shipped reference images by `tools/generate_consolidated_routine_table.py`. This is the single cross-profile index for cycles and resource use. Canonical typed names follow `docs/NAMING_STANDARD.md`; legacy `MATH_*` symbols remain ABI-stable.','',
       '**Memory accounting.** `Code B` is the unique executable byte set statically reachable from that entry after `MATH_INIT`; shared callees therefore appear on multiple rows and **must not be summed**. `ZP B` is the concrete page-zero set executable/referenced by the path; Turbo/QS16 rows instead report their exclusive owned overlay. `Stack B` is persistent hardware-stack-page (`$0100-$01FF`) reservation. It is **0 for every shipped choice**; ordinary transient JSR/PHA return/data stack traffic is intentionally not counted. The absolute 606.337632-cycle UMUL32 record is therefore not a shipped fixed-profile kernel because it reserves stack-page space.','',
       '**Cycle accounting.** Mean cycles include the public routine through RTS and exclude the caller JSR/input stores. The `Basis` column identifies the validation corpus/model; specialized exact/canonical source files remain authoritative for their own corpora.','',
       '## Profile-level memory contracts','',
@@ -314,11 +315,11 @@ def main():
     for s in summaries:
         md.append(f"| `{s['profile']}` | {s['prg_payload_span_bytes']} | {s['reu_image_bytes']} | {s['declared_shared_zp_bytes']} | {s['stable_api_zp_union_touched_bytes']} | {s['stable_api_stack_page_reserved_union_bytes']} |")
     for p in PROFILES:
-        md += ['',f'## {p}','', '| Routine | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |','|---|---:|---:|---:|---:|---:|---|---:|---|---|']
+        md += ['',f'## {p}','', '| Routine | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |','|---|---|---:|---:|---:|---:|---:|---|---:|---|---|']
         for r in [x for x in rows if x['profile']==p]:
             basis=r['cycle_basis'].replace('|','/')
             impl=r['implementation'].replace('|','/')
-            md.append(f"| `{r['routine']}` | {r['mean_cycles']} | {r['min_cycles']} | {r['max_cycles']} | {r['reachable_code_bytes']} | {r['zp_bytes']} | {r['zp_ranges'] or '—'} | {r['stack_page_reserved_bytes']} | {impl} | {basis} |")
+            md.append(f"| `{r['routine']}` | `{r.get('canonical_name','')}` | {r['mean_cycles']} | {r['min_cycles']} | {r['max_cycles']} | {r['reachable_code_bytes']} | {r['zp_bytes']} | {r['zp_ranges'] or '—'} | {r['stack_page_reserved_bytes']} | {impl} | {basis} |")
     md += ['', '## Interpretation notes','',
       '- V1/V5 keep the 31-byte resident ZP contract. Their upgraded UMUL16/UMUL24 reuse that window and preserve `UMUL32_READY` state.','- V2-V4 use larger profile-selected ZP regions for some native signed/division kernels; per-routine ZP rows show the actual touched/owned set.','- V3/V4 Turbo16 owns 113 ZP bytes while active. Turbo32 now owns 135 ZP bytes (stack-free `ram135` compromise), down from the old 241-byte overlay.','- V4 QS16 owns `$10-$1F` (16 ZP bytes) while active.','- The PRG payload span includes address gaps in the load image and is not “occupied code bytes”. Use `SEGMENTS.csv` for physical segment placement and this table for per-entry reachable executable size.','']
     (ROOT/'docs/CONSOLIDATED_ROUTINE_TABLE.md').write_text('\n'.join(md))

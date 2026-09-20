@@ -5,7 +5,8 @@
     "reachable_code_bytes": "unique executable bytes statically reachable after MATH_INIT; shared code can appear on multiple rows; do not sum rows",
     "zp_bytes": "unique concrete ZP bytes executable/referenced; exclusive mode rows report owned overlay allocation",
     "stack_page_reserved_bytes": "persistent code/data reserved in $0100-$01FF; transient call/PHA traffic excluded",
-    "profile_prg_payload_span_bytes": "PRG payload span, not a sum of per-routine memory"
+    "profile_prg_payload_span_bytes": "PRG payload span, not a sum of per-routine memory",
+    "canonical_name": "Typed public source name from docs/NAMING_STANDARD.md; legacy MATH_* ABI remains stable."
   },
   "profile_summary": [
     {
@@ -85,7 +86,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": "exhaustive 8-bit"
+      "notes": "exhaustive 8-bit",
+      "canonical_name": "mul_u8_u8_u16"
     },
     {
       "profile": "v1_balanced",
@@ -107,7 +109,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u32"
     },
     {
       "profile": "v1_balanced",
@@ -129,7 +132,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 private 24-ZP carry producer with stable public adapter",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u24_u24_u48"
     },
     {
       "profile": "v1_balanced",
@@ -151,7 +155,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64"
     },
     {
       "profile": "v1_balanced",
@@ -173,7 +178,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64_ready"
     },
     {
       "profile": "v1_balanced",
@@ -195,7 +201,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s8_s8_s16"
     },
     {
       "profile": "v1_balanced",
@@ -217,7 +224,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST17 native signed composition with private 17-ZP magnitude core",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s32"
     },
     {
       "profile": "v1_balanced",
@@ -239,7 +247,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s24_s24_s48"
     },
     {
       "profile": "v1_balanced",
@@ -261,7 +270,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64"
     },
     {
       "profile": "v1_balanced",
@@ -283,7 +293,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64_ready"
     },
     {
       "profile": "v1_balanced",
@@ -305,7 +316,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "div_u8_u8_u8_8"
     },
     {
       "profile": "v1_balanced",
@@ -327,7 +339,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-public 16-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u16_16"
     },
     {
       "profile": "v1_balanced",
@@ -349,7 +362,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-public 24-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u24_u24_u24_24"
     },
     {
       "profile": "v1_balanced",
@@ -371,7 +385,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u16_u32_16"
     },
     {
       "profile": "v1_balanced",
@@ -393,7 +408,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u8_u8_u8"
     },
     {
       "profile": "v1_balanced",
@@ -415,7 +431,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-public 16-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u16_u16_u16"
     },
     {
       "profile": "v1_balanced",
@@ -437,7 +454,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-public 24-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u24_u24_u24"
     },
     {
       "profile": "v1_balanced",
@@ -459,7 +477,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u16_u16"
     },
     {
       "profile": "v1_balanced",
@@ -481,7 +500,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "div_s8_s8_s8_8"
     },
     {
       "profile": "v1_balanced",
@@ -503,7 +523,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-output native signed 16-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s16_16"
     },
     {
       "profile": "v1_balanced",
@@ -525,7 +546,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-output native signed 24-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s24_s24_s24_24"
     },
     {
       "profile": "v1_balanced",
@@ -547,7 +569,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s16_s32_16"
     },
     {
       "profile": "v1_balanced",
@@ -569,7 +592,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s8_s8_s8"
     },
     {
       "profile": "v1_balanced",
@@ -591,7 +615,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-output native signed 16-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s16_s16_s16"
     },
     {
       "profile": "v1_balanced",
@@ -613,7 +638,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-output native signed 24-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s24_s24_s24"
     },
     {
       "profile": "v1_balanced",
@@ -635,7 +661,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s16_s16"
     },
     {
       "profile": "v1_balanced",
@@ -657,7 +684,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u32_u32_32"
     },
     {
       "profile": "v1_balanced",
@@ -679,7 +707,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u32_u32"
     },
     {
       "profile": "v1_balanced",
@@ -701,7 +730,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s32_s32_32"
     },
     {
       "profile": "v1_balanced",
@@ -723,7 +753,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s32_s32"
     },
     {
       "profile": "v1_balanced",
@@ -745,7 +776,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u24_shr8"
     },
     {
       "profile": "v1_balanced",
@@ -767,7 +799,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST17 SMUL16 plus SHR8 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s24_shr8"
     },
     {
       "profile": "v1_balanced",
@@ -789,7 +822,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u48_shr16"
     },
     {
       "profile": "v1_balanced",
@@ -811,7 +845,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s48_shr16"
     },
     {
       "profile": "v1_balanced",
@@ -833,7 +868,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u24_16_shl8"
     },
     {
       "profile": "v1_balanced",
@@ -855,7 +891,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s24_16_shl8"
     },
     {
       "profile": "v1_balanced",
@@ -877,7 +914,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "recip_u16_u24_q16"
     },
     {
       "profile": "v1_balanced",
@@ -899,7 +937,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sin_u8_s8"
     },
     {
       "profile": "v1_balanced",
@@ -921,7 +960,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "cos_u8_s8"
     },
     {
       "profile": "v1_balanced",
@@ -943,7 +983,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sincos_u8_s8_s8"
     },
     {
       "profile": "v1_balanced",
@@ -965,7 +1006,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "atan2_s8_s8_u8"
     },
     {
       "profile": "v1_balanced",
@@ -987,7 +1029,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u16_u16"
     },
     {
       "profile": "v1_balanced",
@@ -1009,7 +1052,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u32_u16"
     },
     {
       "profile": "v1_balanced",
@@ -1031,7 +1075,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_fast"
     },
     {
       "profile": "v1_balanced",
@@ -1053,7 +1098,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_accurate"
     },
     {
       "profile": "v1_balanced",
@@ -1075,7 +1121,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1097,7 +1144,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u8_u8_u16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1119,7 +1167,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u32"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1141,7 +1190,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel (retained; refresh candidate did not win)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u24_u24_u48"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1163,7 +1213,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1185,7 +1236,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64_ready"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1207,7 +1259,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s8_s8_s16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1229,7 +1282,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s32"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1251,7 +1305,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s24_s24_s48"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1273,7 +1328,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1295,7 +1351,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64_ready"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1317,7 +1374,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "div_u8_u8_u8_8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1339,7 +1397,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u16_16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1361,7 +1420,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u24_u24_u24_24"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1383,7 +1443,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u16_u32_16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1405,7 +1466,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u8_u8_u8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1427,7 +1489,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u16_u16_u16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1449,7 +1512,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u24_u24_u24"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1471,7 +1535,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u16_u16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1493,7 +1558,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "div_s8_s8_s8_8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1515,7 +1581,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s16_16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1537,7 +1604,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 24-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s24_s24_s24_24"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1559,7 +1627,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s16_s32_16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1581,7 +1650,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s8_s8_s8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1603,7 +1673,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s16_s16_s16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1625,7 +1696,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 24-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s24_s24_s24"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1647,7 +1719,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s16_s16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1669,7 +1742,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u32_u32_32"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1691,7 +1765,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u32_u32"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1713,7 +1788,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s32_s32_32"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1735,7 +1811,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s32_s32"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1757,7 +1834,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u24_shr8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1779,7 +1857,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native SMUL16 plus SHR8 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s24_shr8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1801,7 +1880,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u48_shr16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1823,7 +1903,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s48_shr16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1845,7 +1926,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u24_16_shl8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1867,7 +1949,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s24_16_shl8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1889,7 +1972,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "recip_u16_u24_q16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1911,7 +1995,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sin_u8_s8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1933,7 +2018,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "cos_u8_s8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1955,7 +2041,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sincos_u8_s8_s8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1977,7 +2064,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "atan2_s8_s8_u8"
     },
     {
       "profile": "v2_pareto_fast",
@@ -1999,7 +2087,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u16_u16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -2021,7 +2110,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u32_u16"
     },
     {
       "profile": "v2_pareto_fast",
@@ -2043,7 +2133,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_fast"
     },
     {
       "profile": "v2_pareto_fast",
@@ -2065,7 +2156,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_accurate"
     },
     {
       "profile": "v2_pareto_fast",
@@ -2087,7 +2179,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
     },
     {
       "profile": "v3_reu_512k",
@@ -2109,7 +2202,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u8_u8_u16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2131,7 +2225,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u32"
     },
     {
       "profile": "v3_reu_512k",
@@ -2153,7 +2248,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel (retained; refresh candidate did not win)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u24_u24_u48"
     },
     {
       "profile": "v3_reu_512k",
@@ -2175,7 +2271,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64"
     },
     {
       "profile": "v3_reu_512k",
@@ -2197,7 +2294,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64_ready"
     },
     {
       "profile": "v3_reu_512k",
@@ -2219,7 +2317,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s8_s8_s16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2241,7 +2340,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s32"
     },
     {
       "profile": "v3_reu_512k",
@@ -2263,7 +2363,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s24_s24_s48"
     },
     {
       "profile": "v3_reu_512k",
@@ -2285,7 +2386,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64"
     },
     {
       "profile": "v3_reu_512k",
@@ -2307,7 +2409,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64_ready"
     },
     {
       "profile": "v3_reu_512k",
@@ -2329,7 +2432,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "div_u8_u8_u8_8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2351,7 +2455,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u16_16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2373,7 +2478,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u24_u24_u24_24"
     },
     {
       "profile": "v3_reu_512k",
@@ -2395,7 +2501,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u16_u32_16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2417,7 +2524,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "REU direct remainder plane retained; direct-public UDIV8 selected separately",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u8_u8_u8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2439,7 +2547,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u16_u16_u16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2461,7 +2570,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u24_u24_u24"
     },
     {
       "profile": "v3_reu_512k",
@@ -2483,7 +2593,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u16_u16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2505,7 +2616,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "div_s8_s8_s8_8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2527,7 +2639,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s16_16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2549,7 +2662,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose-derived direct-output native signed 24-bit divider with private magnitude engine",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s24_s24_s24_24"
     },
     {
       "profile": "v3_reu_512k",
@@ -2571,7 +2685,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s16_s32_16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2593,7 +2708,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s8_s8_s8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2615,7 +2731,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s16_s16_s16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2637,7 +2754,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose-derived direct-output native signed 24-bit divider with private magnitude engine",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s24_s24_s24"
     },
     {
       "profile": "v3_reu_512k",
@@ -2659,7 +2777,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s16_s16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2681,7 +2800,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u32_u32_32"
     },
     {
       "profile": "v3_reu_512k",
@@ -2703,7 +2823,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u32_u32"
     },
     {
       "profile": "v3_reu_512k",
@@ -2725,7 +2846,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s32_s32_32"
     },
     {
       "profile": "v3_reu_512k",
@@ -2747,7 +2869,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s32_s32"
     },
     {
       "profile": "v3_reu_512k",
@@ -2769,7 +2892,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u24_shr8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2791,7 +2915,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native SMUL16 plus SHR8 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s24_shr8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2813,7 +2938,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u48_shr16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2835,7 +2961,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s48_shr16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2857,7 +2984,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u24_16_shl8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2879,7 +3007,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s24_16_shl8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2901,7 +3030,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "recip_u16_u24_q16"
     },
     {
       "profile": "v3_reu_512k",
@@ -2923,7 +3053,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sin_u8_s8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2945,7 +3076,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "cos_u8_s8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2967,7 +3099,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sincos_u8_s8_s8"
     },
     {
       "profile": "v3_reu_512k",
@@ -2989,7 +3122,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "atan2_s8_s8_u8"
     },
     {
       "profile": "v3_reu_512k",
@@ -3011,7 +3145,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u16_u16"
     },
     {
       "profile": "v3_reu_512k",
@@ -3033,7 +3168,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u32_u16"
     },
     {
       "profile": "v3_reu_512k",
@@ -3055,7 +3191,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_fast"
     },
     {
       "profile": "v3_reu_512k",
@@ -3077,7 +3214,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_accurate"
     },
     {
       "profile": "v3_reu_512k",
@@ -3099,7 +3237,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
     },
     {
       "profile": "v4_reu_16m",
@@ -3121,7 +3260,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u8_u8_u16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3143,7 +3283,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u32"
     },
     {
       "profile": "v4_reu_16m",
@@ -3165,7 +3306,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel (retained; refresh candidate did not win)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u24_u24_u48"
     },
     {
       "profile": "v4_reu_16m",
@@ -3187,7 +3329,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64"
     },
     {
       "profile": "v4_reu_16m",
@@ -3209,7 +3352,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64_ready"
     },
     {
       "profile": "v4_reu_16m",
@@ -3231,7 +3375,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s8_s8_s16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3253,7 +3398,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s32"
     },
     {
       "profile": "v4_reu_16m",
@@ -3275,7 +3421,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s24_s24_s48"
     },
     {
       "profile": "v4_reu_16m",
@@ -3297,7 +3444,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64"
     },
     {
       "profile": "v4_reu_16m",
@@ -3319,7 +3467,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64_ready"
     },
     {
       "profile": "v4_reu_16m",
@@ -3341,7 +3490,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "div_u8_u8_u8_8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3363,7 +3513,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u16_16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3385,7 +3536,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u24_u24_u24_24"
     },
     {
       "profile": "v4_reu_16m",
@@ -3407,7 +3559,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u16_u32_16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3429,7 +3582,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "REU direct remainder plane retained; direct-public UDIV8 selected separately",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u8_u8_u8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3451,7 +3605,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u16_u16_u16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3473,7 +3628,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u24_u24_u24"
     },
     {
       "profile": "v4_reu_16m",
@@ -3495,7 +3651,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u16_u16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3517,7 +3674,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s8_s8_s8_8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3539,7 +3697,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s16_16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3561,7 +3720,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose-derived direct-output native signed 24-bit divider with private magnitude engine",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s24_s24_s24_24"
     },
     {
       "profile": "v4_reu_16m",
@@ -3583,7 +3743,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s16_s32_16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3605,7 +3766,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s8_s8_s8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3627,7 +3789,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s16_s16_s16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3649,7 +3812,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose-derived direct-output native signed 24-bit divider with private magnitude engine",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s24_s24_s24"
     },
     {
       "profile": "v4_reu_16m",
@@ -3671,7 +3835,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s16_s16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3693,7 +3858,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u32_u32_32"
     },
     {
       "profile": "v4_reu_16m",
@@ -3715,7 +3881,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u32_u32"
     },
     {
       "profile": "v4_reu_16m",
@@ -3737,7 +3904,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s32_s32_32"
     },
     {
       "profile": "v4_reu_16m",
@@ -3759,7 +3927,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s32_s32"
     },
     {
       "profile": "v4_reu_16m",
@@ -3781,7 +3950,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u24_shr8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3803,7 +3973,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native SMUL16 plus SHR8 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s24_shr8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3825,7 +3996,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u48_shr16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3847,7 +4019,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s48_shr16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3869,7 +4042,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u24_16_shl8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3891,7 +4065,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s24_16_shl8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3913,7 +4088,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "recip_u16_u24_q16"
     },
     {
       "profile": "v4_reu_16m",
@@ -3935,7 +4111,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sin_u8_s8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3957,7 +4134,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "cos_u8_s8"
     },
     {
       "profile": "v4_reu_16m",
@@ -3979,7 +4157,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sincos_u8_s8_s8"
     },
     {
       "profile": "v4_reu_16m",
@@ -4001,7 +4180,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "atan2_s8_s8_u8"
     },
     {
       "profile": "v4_reu_16m",
@@ -4023,7 +4203,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u16_u16"
     },
     {
       "profile": "v4_reu_16m",
@@ -4045,7 +4226,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u32_u16"
     },
     {
       "profile": "v4_reu_16m",
@@ -4067,7 +4249,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_fast"
     },
     {
       "profile": "v4_reu_16m",
@@ -4089,7 +4272,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_accurate"
     },
     {
       "profile": "v4_reu_16m",
@@ -4111,7 +4295,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4133,7 +4318,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": "exhaustive 8-bit"
+      "notes": "exhaustive 8-bit",
+      "canonical_name": "mul_u8_u8_u16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4155,7 +4341,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u32"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4177,7 +4364,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST24 private 24-ZP carry producer with stable public adapter",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u24_u24_u48"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4199,7 +4387,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4221,7 +4410,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u64_ready"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4243,7 +4433,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s8_s8_s16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4265,7 +4456,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST17 native signed composition with private 17-ZP magnitude core",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s32"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4287,7 +4479,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s24_s24_s48"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4309,7 +4502,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4331,7 +4525,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s64_ready"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4353,7 +4548,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "div_u8_u8_u8_8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4375,7 +4571,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-public 16-bit divider; V5 repacked into hybrid private RAM",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u16_16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4397,7 +4594,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "Repose q0-counter/direct-public UDIV24; V5 repacked hybrid copy",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u24_u24_u24_24"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4419,7 +4617,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "V2 certified 32/16 divider imported into V5 hybrid private RAM",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u16_u32_16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4441,7 +4640,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u8_u8_u8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4463,7 +4663,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-public 16-bit divider; V5 repacked into hybrid private RAM",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u16_u16_u16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4485,7 +4686,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "Repose q0-counter/direct-public UDIV24; V5 repacked hybrid copy",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u24_u24_u24"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4507,7 +4709,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "V2 certified 32/16 divider imported into V5 hybrid private RAM",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u16_u16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4529,7 +4732,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s8_s8_s8_8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4551,7 +4755,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-output native signed 16-bit divider; V5 repacked under 31-ZP contract",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s16_16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4573,7 +4778,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-output native signed 24-bit divider repacked under V5 31-ZP contract",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s24_s24_s24_24"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4595,7 +4801,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "refreshed low-ZP native signed 32/16 divider retained in V5",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s16_s32_16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4617,7 +4824,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s8_s8_s8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4639,7 +4847,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-output native signed 16-bit divider; V5 repacked under 31-ZP contract",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s16_s16_s16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4661,7 +4870,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-output native signed 24-bit divider repacked under V5 31-ZP contract",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s24_s24_s24"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4683,7 +4893,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "refreshed low-ZP native signed 32/16 divider retained in V5",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s16_s16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4705,7 +4916,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u32_u32_u32_32"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4727,7 +4939,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_u32_u32_u32"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4749,7 +4962,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s32_s32_s32_32"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4771,7 +4985,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mod_s32_s32_s32"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4793,7 +5008,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u16_u16_u24_shr8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4815,7 +5031,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST17 SMUL16 plus SHR8 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s16_s16_s24_shr8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4837,7 +5054,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_u32_u32_u48_shr16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4859,7 +5077,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "mul_s32_s32_s48_shr16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4881,7 +5100,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_u16_u16_u24_16_shl8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4903,7 +5123,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random"
+      "notes": "structured_random",
+      "canonical_name": "div_s16_s16_s24_16_shl8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4925,7 +5146,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive"
+      "notes": "exhaustive",
+      "canonical_name": "recip_u16_u24_q16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4947,7 +5169,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sin_u8_s8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4969,7 +5192,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "V2 certified kernel imported into V5 hybrid private RAM",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "cos_u8_s8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -4991,7 +5215,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "V2 certified kernel imported into V5 hybrid private RAM",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "sincos_u8_s8_s8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -5013,7 +5238,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "V2 certified kernel imported into V5 hybrid private RAM",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "atan2_s8_s8_u8"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -5035,7 +5261,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u16_u16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -5057,7 +5284,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "isqrt_u32_u16"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -5079,7 +5307,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_fast"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -5101,7 +5330,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": ""
+      "notes": "",
+      "canonical_name": "dist_s8_s8_u8_accurate"
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -5123,7 +5353,8 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
     },
     {
       "profile": "v3_reu_512k",
@@ -5145,7 +5376,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u16_u16_u32_turbo_begin"
     },
     {
       "profile": "v3_reu_512k",
@@ -5167,7 +5399,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u16_u16_u32_turbo"
     },
     {
       "profile": "v3_reu_512k",
@@ -5189,7 +5422,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u16_u16_u32_turbo_end"
     },
     {
       "profile": "v3_reu_512k",
@@ -5211,7 +5445,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u32_u32_u64_turbo_begin"
     },
     {
       "profile": "v3_reu_512k",
@@ -5233,7 +5468,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u32_u32_u64_turbo"
     },
     {
       "profile": "v3_reu_512k",
@@ -5255,7 +5491,8 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u32_u32_u64_turbo_end"
     },
     {
       "profile": "v4_reu_16m",
@@ -5277,7 +5514,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u16_u16_u32_turbo_begin"
     },
     {
       "profile": "v4_reu_16m",
@@ -5299,7 +5537,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u16_u16_u32_turbo"
     },
     {
       "profile": "v4_reu_16m",
@@ -5321,7 +5560,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u16_u16_u32_turbo_end"
     },
     {
       "profile": "v4_reu_16m",
@@ -5343,7 +5583,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u32_u32_u64_turbo_begin"
     },
     {
       "profile": "v4_reu_16m",
@@ -5365,7 +5606,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u32_u32_u64_turbo"
     },
     {
       "profile": "v4_reu_16m",
@@ -5387,7 +5629,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
+      "canonical_name": "mul_u32_u32_u64_turbo_end"
     },
     {
       "profile": "v4_reu_16m",
@@ -5409,7 +5652,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "V4 16MiB QS16 mode",
-      "notes": "exclusive QS16 mode ZP ownership"
+      "notes": "exclusive QS16 mode ZP ownership",
+      "canonical_name": "mul_u16_u16_u32_qs16_begin"
     },
     {
       "profile": "v4_reu_16m",
@@ -5431,7 +5675,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "V4 16MiB QS16 mode",
-      "notes": "exclusive QS16 mode ZP ownership"
+      "notes": "exclusive QS16 mode ZP ownership",
+      "canonical_name": "mul_u16_u16_u32_qs16"
     },
     {
       "profile": "v4_reu_16m",
@@ -5453,7 +5698,8 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "V4 16MiB QS16 mode",
-      "notes": "exclusive QS16 mode ZP ownership"
+      "notes": "exclusive QS16 mode ZP ownership",
+      "canonical_name": "mul_u16_u16_u32_qs16_end"
     }
   ]
 }

@@ -178,3 +178,9 @@ See `validation/hybrid/` for V5 evidence and `validation/pareto/` for the Custom
 The project was originally called an API because it was designed around a stable common calling interface across multiple optimized implementations. As it grew to include the implementations, tables, REU images, build tools, tests and documentation, **C64 Math Library** became the more accurate project name; the 46-entry interface is its public API.
 
 - **[Consolidated routine table](docs/CONSOLIDATED_ROUTINE_TABLE.md)** — cycles, reachable code, ZP, hardware-stack reservation and profile footprint for every shipped routine/profile.
+
+## Standalone routine sources and typed names
+
+Every callable routine is now exposed as a readable ASM source mirror under each profile's `standalone/` directory. Coverage is V1 46, V2 46, V3 52, V4 55, and V5 46 routines, including the REU Turbo lifecycle and V4 QS16 profile-specific entries.
+
+New source-facing aliases use operand/result geometry, for example `mul_u8_u8_u16`, `mul_s16_s16_s32`, `div_u8_u8_u8_8`, and `div_u32_u16_u32_16`. The historical `MATH_*` symbols and fixed addresses remain fully compatible. See `docs/NAMING_STANDARD.md`, `docs/PUBLIC_API_COMPLETE.csv`, and each profile's `standalone/MANIFEST.csv`.

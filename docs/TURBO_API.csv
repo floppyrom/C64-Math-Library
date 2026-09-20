@@ -1,7 +1,7 @@
-entry,profiles,offset_from_REG_API,state,description
-MATH_REU_UMUL16_BEGIN,V3/V4,$0800,begin,Install/swap configured 113-byte Turbo16 ZP overlay
-MATH_REU_UMUL16,V3/V4,$0840,active,One unsigned 16x16->32 multiply while Turbo16 owns ZP
-MATH_REU_UMUL16_END,V3/V4,$0880,end,Restore caller ZP and retain updated overlay for reuse
-MATH_REU_UMUL32_BEGIN,V3/V4,$08C0,begin,Install/swap configured 135-byte stack-free Turbo32 ZP overlay
-MATH_REU_UMUL32,V3/V4,$0900,active,One unsigned 32x32->64 multiply while Turbo32 owns ZP
-MATH_REU_UMUL32_END,V3/V4,$0960,end,Restore caller ZP and retain updated overlay for reuse
+entry,canonical_name,profiles,offset_from_REG_API,state,description
+MATH_REU_UMUL16_BEGIN,mul_u16_u16_u32_turbo_begin,V3/V4,$0800,begin,Install/swap configured 113-byte Turbo16 ZP overlay
+MATH_REU_UMUL16,mul_u16_u16_u32_turbo,V3/V4,$0840,active,One unsigned 16x16->32 multiply while Turbo16 owns ZP
+MATH_REU_UMUL16_END,mul_u16_u16_u32_turbo_end,V3/V4,$0880,end,Restore caller ZP and retain updated overlay for reuse
+MATH_REU_UMUL32_BEGIN,mul_u32_u32_u64_turbo_begin,V3/V4,$08C0,begin,Install/swap configured 135-byte stack-free Turbo32 ZP overlay
+MATH_REU_UMUL32,mul_u32_u32_u64_turbo,V3/V4,$0900,active,One unsigned 32x32->64 multiply while Turbo32 owns ZP
+MATH_REU_UMUL32_END,mul_u32_u32_u64_turbo_end,V3/V4,$0960,end,Restore caller ZP and retain updated overlay for reuse

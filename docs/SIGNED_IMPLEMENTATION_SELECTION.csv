@@ -1,37 +1,37 @@
-profile,family,classification,implementation,cycles,zp_bytes,note_or_relocation
-v1_balanced,SMUL8,native_signed_kernel,direct signed-domain quarter-square kernel; private signed-sum planes,67.992188 public mean,0,"exhaustive 65,536-case validation; selected in all five profiles"
-v1_balanced,SMUL16,native_signed_kernel,FAST17 native signed composition with private magnitude core,293.298407 public mean,17,selected for low-ZP V1/V5; executable path disjoint from UMUL16
-v1_balanced,SMUL24,native_signed_kernel,FAST24 four-quadrant native signed composition,531.496472 public mean,24,selected across all five profiles; immutable tables shared
-v1_balanced,SMUL32,native_signed_kernel,FAST31/V29 native signed quadrant composition,744.569946 public mean,31,mixed-call-safe public binder; selected across all five profiles
-v1_balanced,SDIV8,native_signed_kernel,native signed divide engine,120.786713 public mean (signed regression corpus),5,already executable-independent
-v1_balanced,SDIV16,native_signed_kernel,native signed divide engine,235.629662 public mean (signed regression corpus),14,already executable-independent
-v1_balanced,SDIV24,native_signed_kernel,native signed divide engine,367.885278 public mean (signed regression corpus),18,already executable-independent
-v1_balanced,SDIV32_16,native_signed_kernel,native signed divide engine,989.689422 public mean (signed regression corpus),18,already executable-independent
-v1_balanced,SDIV32_32,native_signed_kernel,private signed 32/32 core,604.974974 public mean (signed regression corpus),profile union,new private executable split; faster on same corpus
-v2_pareto_fast,SMUL8,native_signed_kernel,direct signed-domain quarter-square kernel; private signed-sum planes,67.992188 public mean,0,"exhaustive 65,536-case validation; selected in all five profiles"
-v2_pareto_fast,SMUL16,native_signed_kernel,116-ZP practical native signed quarter-square kernel,252.324882 public mean,116,retained in V2-V4 because FAST17 is slower at their resource point
-v2_pareto_fast,SMUL24,native_signed_kernel,FAST24 four-quadrant native signed composition,487.181818 public mean,24,selected across all five profiles; immutable tables shared
-v2_pareto_fast,SMUL32,native_signed_kernel,FAST31/V29 native signed quadrant composition,743.605230 public mean,31,mixed-call-safe public binder; selected across all five profiles
-v2_pareto_fast,SDIV8,native_signed_kernel,native signed divide engine,120.786713 public mean (signed regression corpus),5,already executable-independent
-v2_pareto_fast,SDIV16,native_signed_kernel,native signed divide engine,216.402835 public mean (signed regression corpus),12,already executable-independent
-v2_pareto_fast,SDIV24,native_signed_kernel,native signed divide engine,304.121483 public mean (signed regression corpus),21,already executable-independent
-v2_pareto_fast,SDIV32_16,native_signed_kernel,native signed divide engine,868.632061 public mean (signed regression corpus),18,already executable-independent
-v2_pareto_fast,SDIV32_32,native_signed_kernel,private signed 32/32 core,567.765717 public mean (signed regression corpus),profile union,new private executable split; faster on same corpus
-v3_reu_512k,SMUL8,native_signed_kernel,direct signed-domain quarter-square kernel; private signed-sum planes,67.992188 public mean,0,"exhaustive 65,536-case validation; selected in all five profiles"
-v3_reu_512k,SMUL16,native_signed_kernel,116-ZP practical native signed quarter-square kernel,252.623962 public mean,116,retained in V2-V4 because FAST17 is slower at their resource point
-v3_reu_512k,SMUL24,native_signed_kernel,FAST24 four-quadrant native signed composition,486.816106 public mean,24,selected across all five profiles; immutable tables shared
-v3_reu_512k,SMUL32,native_signed_kernel,FAST31/V29 native signed quadrant composition,744.033209 public mean,31,mixed-call-safe public binder; selected across all five profiles
-v3_reu_512k,SDIV8,native_signed_kernel,native signed divide engine,120.786713 public mean (signed regression corpus),5,already executable-independent
-v3_reu_512k,SDIV16,native_signed_kernel,native signed divide engine,218.538059 public mean (signed regression corpus),12,already executable-independent
-v3_reu_512k,SDIV24,native_signed_kernel,native signed divide engine,305.640131 public mean (signed regression corpus),21,already executable-independent
-v3_reu_512k,SDIV32_16,native_signed_kernel,native signed divide engine,868.222028 public mean (signed regression corpus),18,already executable-independent
-v3_reu_512k,SDIV32_32,native_signed_kernel,private signed 32/32 core,567.148952 public mean (signed regression corpus),profile union,new private executable split; faster on same corpus
-v4_reu_16m,SMUL8,native_signed_kernel,direct signed-domain quarter-square kernel; private signed-sum planes,67.992188 public mean,0,"exhaustive 65,536-case validation; selected in all five profiles"
-v4_reu_16m,SMUL16,native_signed_kernel,116-ZP practical native signed quarter-square kernel,252.662553 public mean,116,retained in V2-V4 because FAST17 is slower at their resource point
-v4_reu_16m,SMUL24,native_signed_kernel,FAST24 four-quadrant native signed composition,487.220008 public mean,24,selected across all five profiles; immutable tables shared
-v4_reu_16m,SMUL32,native_signed_kernel,FAST31/V29 native signed quadrant composition,744.090079 public mean,31,mixed-call-safe public binder; selected across all five profiles
-v4_reu_16m,SDIV8,native_signed_kernel,native signed divide engine,121.487723 public mean (signed regression corpus),5,already executable-independent
-v4_reu_16m,SDIV16,native_signed_kernel,native signed divide engine,216.681352 public mean (signed regression corpus),12,already executable-independent
-v4_reu_16m,SDIV24,native_signed_kernel,native signed divide engine,306.378190 public mean (signed regression corpus),21,already executable-independent
-v4_reu_16m,SDIV32_16,native_signed_kernel,native signed divide engine,864.277208 public mean (signed regression corpus),18,already executable-independent
-v4_reu_16m,SDIV32_32,native_signed_kernel,private signed 32/32 core,567.507613 public mean (signed regression corpus),profile union,new private executable split; faster on same corpus
+profile,family,canonical_name,classification,implementation,cycles,zp_bytes,note_or_relocation
+v1_balanced,SMUL8,mul_s8_s8_s16,native_signed_kernel,direct signed-domain quarter-square kernel; private signed-sum planes,67.992188 public mean,0,"exhaustive 65,536-case validation; selected in all five profiles"
+v1_balanced,SMUL16,mul_s16_s16_s32,native_signed_kernel,FAST17 native signed composition with private magnitude core,293.298407 public mean,17,selected for low-ZP V1/V5; executable path disjoint from UMUL16
+v1_balanced,SMUL24,mul_s24_s24_s48,native_signed_kernel,FAST24 four-quadrant native signed composition,531.496472 public mean,24,selected across all five profiles; immutable tables shared
+v1_balanced,SMUL32,mul_s32_s32_s64,native_signed_kernel,FAST31/V29 native signed quadrant composition,744.569946 public mean,31,mixed-call-safe public binder; selected across all five profiles
+v1_balanced,SDIV8,div_s8_s8_s8_8,native_signed_kernel,native signed divide engine,120.786713 public mean (signed regression corpus),5,already executable-independent
+v1_balanced,SDIV16,div_s16_s16_s16_16,native_signed_kernel,native signed divide engine,235.629662 public mean (signed regression corpus),14,already executable-independent
+v1_balanced,SDIV24,div_s24_s24_s24_24,native_signed_kernel,native signed divide engine,367.885278 public mean (signed regression corpus),18,already executable-independent
+v1_balanced,SDIV32_16,div_s32_s16_s32_16,native_signed_kernel,native signed divide engine,989.689422 public mean (signed regression corpus),18,already executable-independent
+v1_balanced,SDIV32_32,div_s32_s32_s32_32,native_signed_kernel,private signed 32/32 core,604.974974 public mean (signed regression corpus),profile union,new private executable split; faster on same corpus
+v2_pareto_fast,SMUL8,mul_s8_s8_s16,native_signed_kernel,direct signed-domain quarter-square kernel; private signed-sum planes,67.992188 public mean,0,"exhaustive 65,536-case validation; selected in all five profiles"
+v2_pareto_fast,SMUL16,mul_s16_s16_s32,native_signed_kernel,116-ZP practical native signed quarter-square kernel,252.324882 public mean,116,retained in V2-V4 because FAST17 is slower at their resource point
+v2_pareto_fast,SMUL24,mul_s24_s24_s48,native_signed_kernel,FAST24 four-quadrant native signed composition,487.181818 public mean,24,selected across all five profiles; immutable tables shared
+v2_pareto_fast,SMUL32,mul_s32_s32_s64,native_signed_kernel,FAST31/V29 native signed quadrant composition,743.605230 public mean,31,mixed-call-safe public binder; selected across all five profiles
+v2_pareto_fast,SDIV8,div_s8_s8_s8_8,native_signed_kernel,native signed divide engine,120.786713 public mean (signed regression corpus),5,already executable-independent
+v2_pareto_fast,SDIV16,div_s16_s16_s16_16,native_signed_kernel,native signed divide engine,216.402835 public mean (signed regression corpus),12,already executable-independent
+v2_pareto_fast,SDIV24,div_s24_s24_s24_24,native_signed_kernel,native signed divide engine,304.121483 public mean (signed regression corpus),21,already executable-independent
+v2_pareto_fast,SDIV32_16,div_s32_s16_s32_16,native_signed_kernel,native signed divide engine,868.632061 public mean (signed regression corpus),18,already executable-independent
+v2_pareto_fast,SDIV32_32,div_s32_s32_s32_32,native_signed_kernel,private signed 32/32 core,567.765717 public mean (signed regression corpus),profile union,new private executable split; faster on same corpus
+v3_reu_512k,SMUL8,mul_s8_s8_s16,native_signed_kernel,direct signed-domain quarter-square kernel; private signed-sum planes,67.992188 public mean,0,"exhaustive 65,536-case validation; selected in all five profiles"
+v3_reu_512k,SMUL16,mul_s16_s16_s32,native_signed_kernel,116-ZP practical native signed quarter-square kernel,252.623962 public mean,116,retained in V2-V4 because FAST17 is slower at their resource point
+v3_reu_512k,SMUL24,mul_s24_s24_s48,native_signed_kernel,FAST24 four-quadrant native signed composition,486.816106 public mean,24,selected across all five profiles; immutable tables shared
+v3_reu_512k,SMUL32,mul_s32_s32_s64,native_signed_kernel,FAST31/V29 native signed quadrant composition,744.033209 public mean,31,mixed-call-safe public binder; selected across all five profiles
+v3_reu_512k,SDIV8,div_s8_s8_s8_8,native_signed_kernel,native signed divide engine,120.786713 public mean (signed regression corpus),5,already executable-independent
+v3_reu_512k,SDIV16,div_s16_s16_s16_16,native_signed_kernel,native signed divide engine,218.538059 public mean (signed regression corpus),12,already executable-independent
+v3_reu_512k,SDIV24,div_s24_s24_s24_24,native_signed_kernel,native signed divide engine,305.640131 public mean (signed regression corpus),21,already executable-independent
+v3_reu_512k,SDIV32_16,div_s32_s16_s32_16,native_signed_kernel,native signed divide engine,868.222028 public mean (signed regression corpus),18,already executable-independent
+v3_reu_512k,SDIV32_32,div_s32_s32_s32_32,native_signed_kernel,private signed 32/32 core,567.148952 public mean (signed regression corpus),profile union,new private executable split; faster on same corpus
+v4_reu_16m,SMUL8,mul_s8_s8_s16,native_signed_kernel,direct signed-domain quarter-square kernel; private signed-sum planes,67.992188 public mean,0,"exhaustive 65,536-case validation; selected in all five profiles"
+v4_reu_16m,SMUL16,mul_s16_s16_s32,native_signed_kernel,116-ZP practical native signed quarter-square kernel,252.662553 public mean,116,retained in V2-V4 because FAST17 is slower at their resource point
+v4_reu_16m,SMUL24,mul_s24_s24_s48,native_signed_kernel,FAST24 four-quadrant native signed composition,487.220008 public mean,24,selected across all five profiles; immutable tables shared
+v4_reu_16m,SMUL32,mul_s32_s32_s64,native_signed_kernel,FAST31/V29 native signed quadrant composition,744.090079 public mean,31,mixed-call-safe public binder; selected across all five profiles
+v4_reu_16m,SDIV8,div_s8_s8_s8_8,native_signed_kernel,native signed divide engine,121.487723 public mean (signed regression corpus),5,already executable-independent
+v4_reu_16m,SDIV16,div_s16_s16_s16_16,native_signed_kernel,native signed divide engine,216.681352 public mean (signed regression corpus),12,already executable-independent
+v4_reu_16m,SDIV24,div_s24_s24_s24_24,native_signed_kernel,native signed divide engine,306.378190 public mean (signed regression corpus),21,already executable-independent
+v4_reu_16m,SDIV32_16,div_s32_s16_s32_16,native_signed_kernel,native signed divide engine,864.277208 public mean (signed regression corpus),18,already executable-independent
+v4_reu_16m,SDIV32_32,div_s32_s32_s32_32,native_signed_kernel,private signed 32/32 core,567.507613 public mean (signed regression corpus),profile union,new private executable split; faster on same corpus

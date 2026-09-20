@@ -41,3 +41,7 @@ Each V1–V5 profile publishes exact executable source mirrors under `resident/s
 - `tools/generate_consolidated_routine_table.py` — regenerates the table from shipped images and validation evidence.
 - `docs/MULTIPLY_REFRESH_2026-09-20.md` — profile-by-profile multiplier selection, resource rationale and validation summary.
 - `docs/DIVISION_REFRESH_2026-09-20.md` — profile-by-profile UDIV/SDIV selection, Repose UDIV24 integration and validation summary.
+
+## Standalone source publication
+
+Each shipped profile now contains `standalone/README.md`, `standalone/MANIFEST.csv`, and one generated `.asm` source mirror per callable routine. Counts match the consolidated table exactly: V1 46, V2 46, V3 52, V4 55, V5 46. `docs/NAMING_STANDARD.md` defines the typed naming convention; `docs/PROFILE_SPECIFIC_API.csv` records REU Turbo/QS16 entries.

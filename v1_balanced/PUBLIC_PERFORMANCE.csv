@@ -1,14 +1,14 @@
-operation,avg_cycles,min_cycles,max_cycles,cases,edge_cases,errors,evidence,notes
-math_umul8,90.494644,88,93,65536,65536,0,canonical harness,exhaustive 8-bit
-math_umul16,273.8372,262,297,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus,current public-entry record-upgrade measurement
-math_umul24,489.988792,462,542,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST24 private 24-ZP carry producer; mixed-API validated
-math_umul32,712.235367,652,831,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29-derived private q0 producer; mixed-call-safe public binder
-math_udiv8,59.571976,26,554,65536,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
-math_udiv16,132.725857,41,1535,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
-math_udiv24,194.156322,56,3235,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
-math_udiv32_16,870.340206,182,2099,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
-math_umul32_ready,697.175781,642,784,1024,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29 READY entry; requires initialized/bound pointer state
-math_umod8,67.167555,51,495,1313,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
-math_umod16,184.082421,41,1535,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
-math_umod24,303.233097,56,3235,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
-math_umod32_16,971.613651,185,1978,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+operation,canonical_name,avg_cycles,min_cycles,max_cycles,cases,edge_cases,errors,evidence,notes
+math_umul8,mul_u8_u8_u16,90.494644,88,93,65536,65536,0,canonical harness,exhaustive 8-bit
+math_umul16,mul_u16_u16_u32,273.8372,262,297,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus,current public-entry record-upgrade measurement
+math_umul24,mul_u24_u24_u48,489.988792,462,542,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST24 private 24-ZP carry producer; mixed-API validated
+math_umul32,mul_u32_u32_u64,712.235367,652,831,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29-derived private q0 producer; mixed-call-safe public binder
+math_udiv8,div_u8_u8_u8_8,59.571976,26,554,65536,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_udiv16,div_u16_u16_u16_16,132.725857,41,1535,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_udiv24,div_u24_u24_u24_24,194.156322,56,3235,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_udiv32_16,div_u32_u16_u32_16,870.340206,182,2099,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_umul32_ready,mul_u32_u32_u64_ready,697.175781,642,784,1024,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29 READY entry; requires initialized/bound pointer state
+math_umod8,mod_u8_u8_u8,67.167555,51,495,1313,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_umod16,mod_u16_u16_u16,184.082421,41,1535,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_umod24,mod_u24_u24_u24,303.233097,56,3235,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_umod32_16,mod_u32_u16_u16,971.613651,185,1978,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus

@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "checks": 1371,
+  "failed": 0,
+  "errors": [],
+  "summary": {
+    "profiles": {
+      "v1_balanced": 46,
+      "v2_pareto_fast": 46,
+      "v3_reu_512k": 52,
+      "v4_reu_16m": 55,
+      "v5_hybrid_lowzp": 46
+    },
+    "consolidated_rows": 245,
+    "stable_api_entries": 46
+  }
+}

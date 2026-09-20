@@ -1,13 +1,13 @@
-operation,v1_balanced,v2_pareto_fast,v3_reu_512k,v4_reu_16m,notes
-umul8,90.494644,78.494614,69.0,69.0,V3/V4 REU transport model
-umul16,273.8372,225.8372,225.8372,225.8372,2026-09-14 record-upgrade deterministic public-entry comparison corpus
-umul24,489.988792,448.2918,448.2918,448.2918,2026-09-20 refreshed V1 FAST24 / retained V2-V4 record kernels
-umul32,712.235367,712.235367,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
-udiv8,87.445969,87.445969,70.86328125,70.86328125,V3/V4 REU transport model
-udiv16,160.064966,137.282268,137.282268,137.282268,canonical/inherited public mean
-udiv24,224.668396,203.612991,203.612991,203.612991,canonical/inherited public mean
-udiv32_16,857.373105,759.730823,759.730823,759.730823,canonical/inherited public mean
-umod8,65.285156,64.819153,49.9296875,49.9296875,V3/V4 REU transport model
-umod16,163.064966,140.282268,140.282268,140.282268,canonical/inherited public mean
-umod24,227.668396,206.612991,206.612991,206.612991,canonical/inherited public mean
-umod32_16,860.373105,762.730823,762.730823,762.730823,canonical/inherited public mean
+operation,canonical_name,v1_balanced,v2_pareto_fast,v3_reu_512k,v4_reu_16m,notes
+umul8,mul_u8_u8_u16,90.494644,78.494614,69.0,69.0,V3/V4 REU transport model
+umul16,mul_u16_u16_u32,273.8372,225.8372,225.8372,225.8372,2026-09-14 record-upgrade deterministic public-entry comparison corpus
+umul24,mul_u24_u24_u48,489.988792,448.2918,448.2918,448.2918,2026-09-20 refreshed V1 FAST24 / retained V2-V4 record kernels
+umul32,mul_u32_u32_u64,712.235367,712.235367,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
+udiv8,div_u8_u8_u8_8,87.445969,87.445969,70.86328125,70.86328125,V3/V4 REU transport model
+udiv16,div_u16_u16_u16_16,160.064966,137.282268,137.282268,137.282268,canonical/inherited public mean
+udiv24,div_u24_u24_u24_24,224.668396,203.612991,203.612991,203.612991,canonical/inherited public mean
+udiv32_16,div_u32_u16_u32_16,857.373105,759.730823,759.730823,759.730823,canonical/inherited public mean
+umod8,mod_u8_u8_u8,65.285156,64.819153,49.9296875,49.9296875,V3/V4 REU transport model
+umod16,mod_u16_u16_u16,163.064966,140.282268,140.282268,140.282268,canonical/inherited public mean
+umod24,mod_u24_u24_u24,227.668396,206.612991,206.612991,206.612991,canonical/inherited public mean
+umod32_16,mod_u32_u16_u16,860.373105,762.730823,762.730823,762.730823,canonical/inherited public mean

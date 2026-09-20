@@ -1,13 +1,13 @@
-operation,avg_cycles,min_cycles,max_cycles,cases,edge_cases,errors,evidence
-math_umul8,78.494614,77,80,65536,65536,0,canonical harness
-math_umul16,225.8372,214,249,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus
-math_umul24,448.2918,418,503,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus
-math_umul32,712.235367,652,831,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus
-math_udiv8,59.383011,26,634,65536,,0,2026-09-20 unsigned division-family validation
-math_udiv16,127.773827,41,1076,4753,,0,2026-09-20 unsigned division-family validation
-math_udiv24,183.660846,56,3188,4753,,0,2026-09-20 unsigned division-family validation
-math_udiv32_16,753.99453,175,1880,4753,,0,2026-09-20 unsigned division-family validation
-math_umod8,67.284844,51,495,1313,,0,2026-09-20 unsigned division-family validation
-math_umod16,203.033484,41,1076,1553,,0,2026-09-20 unsigned division-family validation
-math_umod24,300.949131,56,3188,1553,,0,2026-09-20 unsigned division-family validation
-math_umod32_16,792.160335,178,1883,1553,,0,2026-09-20 unsigned division-family validation
+operation,canonical_name,avg_cycles,min_cycles,max_cycles,cases,edge_cases,errors,evidence
+math_umul8,mul_u8_u8_u16,78.494614,77,80,65536,65536,0,canonical harness
+math_umul16,mul_u16_u16_u32,225.8372,214,249,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus
+math_umul24,mul_u24_u24_u48,448.2918,418,503,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus
+math_umul32,mul_u32_u32_u64,712.235367,652,831,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus
+math_udiv8,div_u8_u8_u8_8,59.383011,26,634,65536,,0,2026-09-20 unsigned division-family validation
+math_udiv16,div_u16_u16_u16_16,127.773827,41,1076,4753,,0,2026-09-20 unsigned division-family validation
+math_udiv24,div_u24_u24_u24_24,183.660846,56,3188,4753,,0,2026-09-20 unsigned division-family validation
+math_udiv32_16,div_u32_u16_u32_16,753.99453,175,1880,4753,,0,2026-09-20 unsigned division-family validation
+math_umod8,mod_u8_u8_u8,67.284844,51,495,1313,,0,2026-09-20 unsigned division-family validation
+math_umod16,mod_u16_u16_u16,203.033484,41,1076,1553,,0,2026-09-20 unsigned division-family validation
+math_umod24,mod_u24_u24_u24,300.949131,56,3188,1553,,0,2026-09-20 unsigned division-family validation
+math_umod32_16,mod_u32_u16_u16,792.160335,178,1883,1553,,0,2026-09-20 unsigned division-family validation

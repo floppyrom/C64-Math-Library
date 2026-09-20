@@ -1,12 +1,12 @@
-routine,v1_mean_cycles,v5_mean_cycles,improvement_percent,provenance
-MATH_UDIV16,132.725857,126.385862,4.77676,2026-09-20 final division-family public-ABI validation
-MATH_UDIV24,194.156322,187.122028,3.623005,2026-09-20 final division-family public-ABI validation
-MATH_UDIV32_16,870.340206,756.638544,13.064048,2026-09-20 final division-family public-ABI validation
-MATH_UMOD8,67.167555,68.523229,-2.018347,2026-09-20 final division-family public-ABI validation
-MATH_UMOD16,184.082421,199.918867,-8.60291,2026-09-20 final division-family public-ABI validation
-MATH_UMOD24,303.233097,299.27302,1.305952,2026-09-20 final division-family public-ABI validation
-MATH_UMOD32_16,971.613651,789.508693,18.742528,2026-09-20 final division-family public-ABI validation
-MATH_COS8,29,23,20.6897,V2 direct import; exhaustive phase/cycle parity
-MATH_SINCOS8,39,31,20.5128,V2 direct import; exhaustive phase/cycle parity
-MATH_ATAN2_8,50.441345,46.953064,6.9155,"V2 fast four-quadrant signed-log import; exhaustive 65,536-vector result/cycle parity; <=1 phase-unit error"
-MATH_VEC2_NORMALIZE_Q8_8,198.770271,198.770271,0.0000,V1-compatible 31-ZP normalization backend; common 46-entry API
+routine,canonical_name,v1_mean_cycles,v5_mean_cycles,improvement_percent,provenance
+MATH_UDIV16,div_u16_u16_u16_16,132.725857,126.385862,4.77676,2026-09-20 final division-family public-ABI validation
+MATH_UDIV24,div_u24_u24_u24_24,194.156322,187.122028,3.623005,2026-09-20 final division-family public-ABI validation
+MATH_UDIV32_16,div_u32_u16_u32_16,870.340206,756.638544,13.064048,2026-09-20 final division-family public-ABI validation
+MATH_UMOD8,mod_u8_u8_u8,67.167555,68.523229,-2.018347,2026-09-20 final division-family public-ABI validation
+MATH_UMOD16,mod_u16_u16_u16,184.082421,199.918867,-8.60291,2026-09-20 final division-family public-ABI validation
+MATH_UMOD24,mod_u24_u24_u24,303.233097,299.27302,1.305952,2026-09-20 final division-family public-ABI validation
+MATH_UMOD32_16,mod_u32_u16_u16,971.613651,789.508693,18.742528,2026-09-20 final division-family public-ABI validation
+MATH_COS8,cos_u8_s8,29,23,20.6897,V2 direct import; exhaustive phase/cycle parity
+MATH_SINCOS8,sincos_u8_s8_s8,39,31,20.5128,V2 direct import; exhaustive phase/cycle parity
+MATH_ATAN2_8,atan2_s8_s8_u8,50.441345,46.953064,6.9155,"V2 fast four-quadrant signed-log import; exhaustive 65,536-vector result/cycle parity; <=1 phase-unit error"
+MATH_VEC2_NORMALIZE_Q8_8,normalize_s16_s16_s16_s16_q8_8_to_q1_15,198.770271,198.770271,0.0000,V1-compatible 31-ZP normalization backend; common 46-entry API

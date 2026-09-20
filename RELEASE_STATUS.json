@@ -347,5 +347,22 @@
     "reference_address": "$5E39",
     "stable_api_entries": 46,
     "status": "PASS"
+  },
+  "standalone_source_publication": {
+    "status": "PASS",
+    "audit": "validation/STANDALONE_API_CONSISTENCY_AUDIT.json",
+    "audit_checks": 1371,
+    "failed_checks": 0,
+    "profile_routine_counts": {
+      "v1_balanced": 46,
+      "v2_pareto_fast": 46,
+      "v3_reu_512k": 52,
+      "v4_reu_16m": 55,
+      "v5_hybrid_lowzp": 46
+    },
+    "total_callable_profile_entries": 245,
+    "canonical_naming": "docs/NAMING_STANDARD.md",
+    "legacy_math_api_compatible": true,
+    "benchmark_values_changed": false
   }
 }

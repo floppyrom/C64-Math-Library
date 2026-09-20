@@ -1,3 +1,8 @@
+2026-09-20 - STANDALONE ROUTINE SOURCES / TYPED NAMES
+- 245 callable profile routines now have standalone readable ASM mirrors.
+- Typed names encode operand/result geometry; legacy MATH_* ABI remains unchanged.
+- Tables/manifests updated and cross-checked; measured benchmark values unchanged.
+
 2026-09-20 DIVISION FAMILY REFRESH
 - Re-evaluated the complete UDIV/SDIV + UMOD/SMOD family across V1-V5.
 - Repose q0-counter UDIV24 integrated profile-by-profile; V1/V2/V5 get faster CPU UDIV8 while V3/V4 keep their faster REU 8-bit planes.
