@@ -120,11 +120,11 @@
       "check": "five_reference_prgs",
       "status": "PASS",
       "detail": [
-        "v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg",
         "v1_balanced/resident/math_v1_balanced_game_math.prg",
+        "v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg",
         "v3_reu_512k/resident/math_v3_reu_512k_game_math.prg",
         "v4_reu_16m/resident/math_v4_reu_16m_game_math.prg",
-        "v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg"
+        "v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg"
       ]
     },
     {
@@ -154,12 +154,22 @@
       "check": "all_segment_manifest_paths_resolve",
       "status": "PASS",
       "detail": []
+    },
+    {
+      "check": "sha256_manifest_current",
+      "status": "PASS",
+      "detail": {
+        "bad": [],
+        "missing": [],
+        "extra": [],
+        "entries": 889
+      }
     }
   ],
   "summary": {
-    "checks_passed": 29,
+    "checks_passed": 30,
     "file_count_excluding_checksum": 889,
-    "uncompressed_bytes_excluding_checksum": 28304172,
+    "uncompressed_bytes_excluding_checksum": 28305602,
     "reference_prgs": 5,
     "reference_reu_images": 2
   }

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import json,re
+import hashlib,json,re
 ROOT=Path(__file__).resolve().parents[1]
 
 def repo_files(pattern='*'):
-    return [p for p in ROOT.rglob(pattern) if p.is_file() and '.git' not in p.parts]
+    return sorted((p for p in ROOT.rglob(pattern) if p.is_file() and '.git' not in p.parts), key=lambda p: str(p.relative_to(ROOT)))
 
 checks=[]
 def ck(name,cond,detail=None):
@@ -41,8 +41,8 @@ ck('no_legacy_native_signed_tree',not any((ROOT/p/'resident/native_signed').exis
 ck('no_unsigned_derived_signed_tree',not any((ROOT/p/'resident/signed/multiply/unsigned_derived').exists() for p in ('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')))
 ck('turbo_plain_english_documented','Turbo modes in plain English' in (ROOT/'USER_MANUAL.md').read_text())
 # Only intended deployable binaries are pre-shipped; generated build outputs are absent.
-prgs=list(ROOT.glob('v*/resident/math_*_game_math.prg'))
-reus=list(ROOT.glob('v*/reu/*.reu'))
+prgs=sorted(ROOT.glob('v*/resident/math_*_game_math.prg'), key=lambda p: str(p.relative_to(ROOT)))
+reus=sorted(ROOT.glob('v*/reu/*.reu'), key=lambda p: str(p.relative_to(ROOT)))
 ck('five_reference_prgs',len(prgs)==5,[str(p.relative_to(ROOT)) for p in prgs])
 ck('two_reference_reu_images',len(reus)==2,[str(p.relative_to(ROOT)) for p in reus])
 # No nested release/archive or transient clutter.
@@ -67,7 +67,7 @@ ck('no_unreferenced_bin_or_label_artifacts',not orphans,[str(p.relative_to(ROOT)
 # Segment manifests must resolve to files actually present in the lean distribution.
 import csv
 manifest_bad=[]
-for f in ROOT.glob('v*/resident/SEGMENTS*.csv'):
+for f in sorted(ROOT.glob('v*/resident/SEGMENTS*.csv'), key=lambda p: str(p.relative_to(ROOT))):
     profile=f.parents[1]
     for row in csv.DictReader(f.open()):
         v=row.get('file','')
@@ -75,7 +75,36 @@ for f in ROOT.glob('v*/resident/SEGMENTS*.csv'):
         candidates=[f.parent/v, profile/v, f.parent/Path(v).name]
         if not any(q.exists() for q in candidates): manifest_bad.append((f,v))
 ck('all_segment_manifest_paths_resolve',not manifest_bad,[(str(f.relative_to(ROOT)),v) for f,v in manifest_bad])
+# SHA256SUMS is part of the public package contract. It lists every package
+# file except itself and must match the exact bytes in the repository.
 files=repo_files()
+checksum_path=ROOT/'SHA256SUMS.txt'
+checksum_bad=[]
+checksum_seen=set()
+if checksum_path.exists():
+    for raw in checksum_path.read_text().splitlines():
+        if not raw.strip():
+            continue
+        try:
+            digest,rel=raw.split('  ',1)
+        except ValueError:
+            checksum_bad.append((raw,'malformed'))
+            continue
+        rel=rel.strip(); checksum_seen.add(rel)
+        q=ROOT/rel
+        if not q.is_file():
+            checksum_bad.append((rel,'missing'))
+            continue
+        got=hashlib.sha256(q.read_bytes()).hexdigest()
+        if got!=digest:
+            checksum_bad.append((rel,f'expected {digest} got {got}'))
+else:
+    checksum_bad.append(('SHA256SUMS.txt','missing'))
+expected_checksums={str(p.relative_to(ROOT)) for p in files if p.name!='SHA256SUMS.txt'}
+checksum_missing=sorted(expected_checksums-checksum_seen)
+checksum_extra=sorted(checksum_seen-expected_checksums)
+ck('sha256_manifest_current',not checksum_bad and not checksum_missing and not checksum_extra,
+   {'bad':checksum_bad,'missing':checksum_missing,'extra':checksum_extra,'entries':len(checksum_seen)})
 out={'status':'PASS','checks':checks,'summary':{'checks_passed':len(checks),'file_count_excluding_checksum':len([p for p in files if p.name!='SHA256SUMS.txt']),'uncompressed_bytes_excluding_checksum':sum(p.stat().st_size for p in files if p.name!='SHA256SUMS.txt'),'reference_prgs':5,'reference_reu_images':2}}
 (ROOT/'validation/PACKAGE_AUDIT.json').write_text(json.dumps(out,indent=2)+'\n')
 print('PACKAGE AUDIT PASS',len(checks),'checks')

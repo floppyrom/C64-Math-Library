@@ -176,7 +176,7 @@ def main():
    text,n=render(p,name,mem,vals,prg.name); fn=filename(name,p); (out/fn).write_text(text)
    rows.append({'legacy_api':name,'canonical_name':names[name],'file':fn,'alias_of':ALIAS_OF.get(name,''),'entry_address':f'${vals[name]:04X}','reachable_instructions':n})
   with (out/'MANIFEST.csv').open('w',newline='') as f:
-   w=csv.DictWriter(f,fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+   w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n'); w.writeheader(); w.writerows(rows)
   (out/'README.md').write_text(readme(p,rows))
   all_report['profiles'][p]={'callable_entries':len(rows),'files':len(rows),'aliases':sum(bool(r['alias_of']) for r in rows),'rows':rows}
  (ROOT/'validation/STANDALONE_SOURCE_AUDIT.json').write_text(json.dumps(all_report,indent=2)+'\n')

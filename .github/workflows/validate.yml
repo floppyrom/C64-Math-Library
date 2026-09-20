@@ -7,6 +7,9 @@ on:
 permissions:
   contents: read
 
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
 jobs:
   source-and-publication:
     runs-on: ubuntu-latest
@@ -16,6 +19,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Lean package and checksum contract
+        run: |
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
       - name: Public source and benchmark contract
         run: |
           python3 tools/generate_public_indexes.py

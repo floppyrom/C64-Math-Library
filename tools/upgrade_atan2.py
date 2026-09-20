@@ -172,7 +172,7 @@ def update_perf(profile: str, result: dict):
     if not found:
         raise RuntimeError(f'{profile}: ATAN2 row missing')
     with path.open('w', newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=fields)
+        writer = csv.DictWriter(f, fieldnames=fields, lineterminator='\n')
         writer.writeheader()
         writer.writerows(rows)
 

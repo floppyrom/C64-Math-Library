@@ -303,7 +303,7 @@ def main():
     fields=list(rows[0])
     outcsv=ROOT/'docs/CONSOLIDATED_ROUTINE_TABLE.csv'
     with outcsv.open('w',newline='') as f:
-        w=csv.DictWriter(f,fieldnames=fields);w.writeheader();w.writerows(rows)
+        w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
     # Machine-readable evidence.
     (ROOT/'validation/CONSOLIDATED_ROUTINE_TABLE.json').write_text(json.dumps({'status':'PASS','definitions':{
       'cycles':'public entry including RTS; excludes caller JSR and input stores; see per-row cycle_basis',

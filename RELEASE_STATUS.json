@@ -135,9 +135,9 @@
     "manual_scope": "V1-V5 fixed profiles; 46-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 56619,
-    "user_manual_lines": 1771,
-    "user_manual_sha256": "10841085001220a2aeccfc296de881fd7142933d2831edafc31a06145aa22618"
+    "user_manual_bytes": 57966,
+    "user_manual_lines": 1787,
+    "user_manual_sha256": "25c9f8e03161a1afe70ef304699db1cead550058969bb55f028c2716d8c23b75"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -209,7 +209,7 @@
     "Fast exact independently derived ISQRT32 remains active; V4 uses 512 resident square-table bytes at $9800-$99FF.",
     "ATAN2 profile integration: V1 uses compact_opt (48.447189 mean, 512 B tables); V2/V3/V5 use sum_fast (44.962814 mean, 1024 B tables); V4 retains exact REU ATAN2."
   ],
-  "package_audit_checks": 23,
+  "package_audit_checks": 30,
   "package_cleanup": {
     "consolidated_routine_table_rows": 245,
     "csdb_changelog": "CSDB_CHANGELOG.txt",
@@ -217,13 +217,13 @@
     "generated_build_hybrid_shipped": false,
     "generated_build_pareto_shipped": false,
     "generated_build_source_shipped": false,
-    "lean_file_count_excluding_checksum": 942,
+    "lean_file_count_excluding_checksum": 889,
     "legacy_native_signed_tree_removed": true,
     "obsolete_development_validators_removed": 2,
     "package_contents_doc": "docs/PACKAGE_CONTENTS.md",
     "prior_exhaustive_baseline_retained": true,
     "superseded_slow_isqrt32_baseline_shipped": false,
-    "uncompressed_bytes_excluding_checksum": 28482721,
+    "uncompressed_bytes_excluding_checksum": 28305602,
     "unreferenced_legacy_bin_label_artifacts_removed": 27
   },
   "profiles": [
@@ -354,7 +354,7 @@
   "standalone_source_publication": {
     "status": "PASS",
     "audit": "validation/STANDALONE_API_CONSISTENCY_AUDIT.json",
-    "audit_checks": 1371,
+    "audit_checks": 1357,
     "failed_checks": 0,
     "profile_routine_counts": {
       "v1_balanced": 46,
