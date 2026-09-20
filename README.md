@@ -184,3 +184,11 @@ The project was originally called an API because it was designed around a stable
 Every callable routine is now exposed as a readable ASM source mirror under each profile's `standalone/` directory. Coverage is V1 46, V2 46, V3 52, V4 55, and V5 46 routines, including the REU Turbo lifecycle and V4 QS16 profile-specific entries.
 
 New source-facing aliases use operand/result geometry, for example `mul_u8_u8_u16`, `mul_s16_s16_s32`, `div_u8_u8_u8_8`, and `div_u32_u16_u32_16`. The historical `MATH_*` symbols and fixed addresses remain fully compatible. See `docs/NAMING_STANDARD.md`, `docs/PUBLIC_API_COMPLETE.csv`, and each profile's `standalone/MANIFEST.csv`.
+
+Three additional **optional ATAN2 kernels with complete tables** are available in
+[routines/atan2](routines/atan2/README.md): 606 B at 48.447 cycles, 860 B at
+45.959 cycles, and 1,113 B at 44.963 cycles, all with zero ZP and the existing
+one-phase-unit error bound. These are standalone alternatives; the shipped
+profile images and their performance tables retain their installed kernels.
+See the [optimization note](docs/ATAN2_OPTIMIZATION_2026-09-20.md) for comparisons
+and exhaustive independent validation.

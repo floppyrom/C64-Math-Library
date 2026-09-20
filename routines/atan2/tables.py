@@ -71,3 +71,33 @@ def build_tables():
         bytes(log), bytes(base), bytes(q0), bytes(q1), bytes(q2), bytes(q3),
         q, max_span,
     )
+
+
+def build_sum_tables():
+    """Return LOGX, LOGY, QPOS and QNEG for the carry-clearing sum kernel.
+
+    This is an index transformation of the original quantizer, not a new
+    approximation. Nonzero finite pairs use 82 + q[x] - q[y] in [1, 163];
+    y=0 uses 174 + q[x] in [174, 255]. Those classes are disjoint, and
+    neither can overflow an eight-bit addition. x=0 is handled in code.
+    """
+    _, base, _, _, _, _, q, _ = build_tables()
+    logx = bytes(q[abs(signed8(raw))] for raw in range(256))
+    logy = bytes(174 if raw == 0 else 82 - q[abs(signed8(raw))]
+                 for raw in range(256))
+    positive = bytearray(256)
+    negative = bytearray(256)
+    for d in range(-81, 82):
+        value = base[d & 255]
+        positive[82 + d] = value
+        negative[82 + d] = (-value) & 255
+    return logx, logy, bytes(positive), bytes(negative)
+
+
+def build_sum_small_tables():
+    """Three-page sum kernel; finite near-axis angles use 1 instead of 0."""
+    logx, logy, positive, _ = build_sum_tables()
+    positive = bytearray(positive)
+    for i in range(1, 164):
+        positive[i] = max(1, positive[i])
+    return logx, logy, bytes(positive)

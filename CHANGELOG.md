@@ -1,3 +1,12 @@
+## 2026-09-20 — optional smaller and faster standalone ATAN2 kernels
+
+- Added `compact_opt`: 48.447189 cycles / 606 B code plus tables, preserving every shipped result.
+- Added `sum_small`: 45.958908 cycles / 860 B; 40% fewer table bytes than the shipped fast tier, with the same <=1-unit error bound and exact axes. It changes 202 near-horizontal outputs by one unit.
+- Added `sum_fast`: 44.962814 cycles / 1113 B, preserving every shipped result; 4.24% faster with 20% fewer table bytes than the shipped fast tier.
+- Published complete ACME sources including tables, a deterministic exporter, and a reproducible dual-emulator validator. All variants use zero ZP and return C=0.
+- Certified 917,504 cases against py65 and the bundled emulator, including both entry carry states and relocated page-crossing layouts; six ACME assembly comparisons are byte-identical.
+- These are optional standalone additions. Resident profiles, their source mirrors, build manifests, and installed performance figures are unchanged.
+
 ## 2026-09-20 — standalone routine publication and typed API names
 
 - Published one exact readable ASM source mirror for every callable routine in every profile (46/46/52/55/46).
