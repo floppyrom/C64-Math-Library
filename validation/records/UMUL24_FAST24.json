@@ -1,0 +1,22 @@
+{
+  "status": "PASS_QUALIFIED_SOURCE",
+  "routine": "mul_u24_u24_u48",
+  "variant": "fast24",
+  "mean_cycles": 357.041715026,
+  "min_cycles": 327,
+  "max_cycles": 412,
+  "sample_cases": 8388608,
+  "edge_cases": 590353,
+  "errors": 0,
+  "timing": "fresh-X entry through RTS; caller JSR/input stores/CLD/init excluded",
+  "memory": {
+    "zp_bytes": 24,
+    "code_bytes": 307,
+    "table_bytes": 2044,
+    "occupied_bytes": 2375,
+    "persistent_stack_bytes": 0
+  },
+  "source": "routines/multiply/mul_u24_u24_u48_fast24.asm",
+  "source_sha256": "0ef62699d3943dc7a7a41b2292145ccd6e7895625d05283de4ad8a38152357d5",
+  "note": "Qualified uniform sample mean; not exact over all 2^48 input pairs."
+}

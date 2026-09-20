@@ -1,3 +1,13 @@
+## 2026-09-20 — consolidated public source and benchmark structure
+
+- Added `PERFORMANCE.md` as the human-readable speed front door and `benchmarks/PUBLIC_PROFILE_RESULTS.csv` / `benchmarks/STANDALONE_RESULTS.csv` as machine-readable indexes.
+- Added `routines/SOURCE_CATALOG.csv`, indexing all **245** shipped callable profile sources plus source-backed standalone alternatives.
+- Published exact standalone source files for the current UMUL16 shifted-row Pareto points, UMUL24 FAST24, UMUL32 bounded-carry points, SMUL24 FAST24, and the SMUL32 Turbo135 / FAST31-native research points.
+- Added `tools/generate_public_indexes.py` and `tools/validate_public_catalog.py`; benchmark rows now carry an exact source path and SHA-256 and fail validation if the source/evidence is missing.
+- Fixed generated V5 `math_api.inc` output so canonical typed aliases are preserved by rebuilds; the full standalone/API consistency audit again passes **1,357/1,357 checks**. No resident arithmetic bytes or public addresses changed.
+- Removed the old top-level exploratory `research/` tree from the replacement distribution; Git history remains the archive for superseded experiments.
+- Added a single lean CI workflow focused on source/publication consistency and deterministic reference/alternate builds.
+
 ## 2026-09-20 — smaller and faster ATAN2 kernels and profile integration
 
 - Added `compact_opt`: 48.447189 cycles / 606 B code plus tables, preserving every shipped result.

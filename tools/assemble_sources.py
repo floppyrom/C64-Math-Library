@@ -213,13 +213,27 @@ def build(profile,config,outdir):
  with (ROOT/'docs/PUBLIC_API_COMPLETE.csv').open() as f:
   for r in csv.DictReader(f):pubnames.append(r['entry'])
  inc=outdir/'math_api.inc';lines=['; GENERATED from source-level assembly configuration',f'MATH_INIT = {hx(labels.get("MATH_INIT",const.get("MATH_INIT")))}']
- for n in pubnames:
-  val=const.get(n,labels.get(n));lines.append(f'{n:<24} = {hx(val)}')
+ # Publish every callable legacy entry listed by the profile standalone manifest.
+ # This includes stable API entries plus V3/V4 Turbo and V4 QS16 lifecycle calls.
+ manifest_rows=[]
+ manifest_path=ROOT/profile/'standalone/MANIFEST.csv'
+ if manifest_path.exists():
+  with manifest_path.open() as f: manifest_rows=list(csv.DictReader(f))
+ else:
+  manifest_rows=[{'legacy_api':n,'canonical_name':''} for n in pubnames]
+ emitted=set()
+ for r in manifest_rows:
+  n=r['legacy_api']; val=const.get(n,labels.get(n))
+  if val is not None:
+   lines.append(f'{n:<24} = {hx(val)}'); emitted.add(n)
+ # Keep configured Turbo geometry visible to callers.
  if profile in REU:
-  for n in ('MATH_REU_UMUL16_BEGIN','MATH_REU_UMUL16','MATH_REU_UMUL16_END','MATH_REU_UMUL32_BEGIN','MATH_REU_UMUL32','MATH_REU_UMUL32_END'):
-   val=const.get(n,labels.get(n));lines.append(f'{n:<24} = {hx(val)}')
   lines += [f'TURBO16_ZP_BASE          = {hx(vals["TURBO16_ZP_BASE"],2)}',f'TURBO32_ZP_BASE          = {hx(vals["TURBO32_ZP_BASE"],2)}',f'REU_TURBO16_BANK         = {hx(vals["REU_TURBO16_BANK"],2)}',f'REU_TURBO32_BANK         = {hx(vals["REU_TURBO32_BANK"],2)}']
  for n,off in [('MATH_X',0),('MATH_Y',4),('MATH_Z',8),('MATH_N',0x10),('MATH_D',0x14),('MATH_Q',0x18),('MATH_R',0x1c)]:lines.append(f'{n:<24} = {hx(vals["MATH_IO"]+off)}')
+ lines += ['', '; Canonical typed aliases (source-facing names).', '; Legacy MATH_* names and addresses remain stable.']
+ for r in manifest_rows:
+  n=r['legacy_api']; c=r.get('canonical_name','')
+  if c and n in emitted: lines.append(f'{c:<48} = {n}')
  inc.write_text('\n'.join(lines)+'\n')
  deps=source_dependencies(src)
  expanded_source=expand_source_file(src,preserve_config_include=False).encode()

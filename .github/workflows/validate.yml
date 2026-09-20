@@ -1,0 +1,28 @@
+name: Validate library
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  source-and-publication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Public source and benchmark contract
+        run: |
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          git diff --exit-code -- benchmarks routines/SOURCE_CATALOG.csv validation/PUBLIC_SOURCE_CATALOG_AUDIT.json validation/STANDALONE_API_CONSISTENCY_AUDIT.json
+      - name: Deterministic source builds
+        run: |
+          make reference
+          make alternate

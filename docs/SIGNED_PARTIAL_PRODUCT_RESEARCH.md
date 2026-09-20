@@ -128,9 +128,11 @@ summation may still find a wider win.  Such a routine should be required to beat
 both cycle count **and** the integrated table/ZP cost before replacing the current
 library kernels.
 
-## Reproduction material
+## Preserved evidence
 
-See `research/signed_partial_products/` for the experimental source, scripts and
-machine-readable results.  The production consolidated table remains
-`docs/CONSOLIDATED_ROUTINE_TABLE.{md,csv}`; experimental comparisons are in
-`research/signed_partial_products/results/SIGNED_PARTIAL_PRODUCT_RESULTS.{json,csv}`.
+The qualified machine-readable result is retained in
+`validation/research/SIGNED_PARTIAL_PRODUCT_RESEARCH.json`. The superseded
+experimental generators and intermediate source variants were intentionally
+removed from the lean replacement tree; they remain recoverable from Git
+history. The production consolidated table remains
+`docs/CONSOLIDATED_ROUTINE_TABLE.{md,csv}`.

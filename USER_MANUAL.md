@@ -1,7 +1,7 @@
 # C64 Math Library V1–V5 + Custom Pareto Builder — Complete User Manual
 
-**Release:** Source-Relocatable + Turbo-Relocatable FINAL  
-**Manual revision:** 2026-09-07  
+**Release:** Consolidated source-backed V1–V5  
+**Manual revision:** 2026-09-20  
 **Target CPU:** NMOS 6502/6510, Commodore 64  
 **Profiles:** V1 Balanced, V2 Pareto-Fast, V3 REU 512K, V4 REU 16M, V5 Hybrid Low-ZP
 
@@ -21,6 +21,17 @@ The short version is:
 
 ---
 
+## Finding performance and source code
+
+- Human-readable speed overview: `PERFORMANCE.md`.
+- All shipped profile results with direct source paths: `benchmarks/PUBLIC_PROFILE_RESULTS.csv`.
+- Standalone record/Pareto alternatives: `benchmarks/STANDALONE_RESULTS.csv`.
+- Complete public source index: `routines/SOURCE_CATALOG.csv`.
+- Typed naming rules: `docs/NAMING_STANDARD.md`.
+
+Every published benchmark is source-backed and checked by `tools/validate_public_catalog.py`.
+
+
 ## Consolidated cycles and memory index
 
 For one cross-profile table covering every stable routine plus the REU Turbo/QS16 surfaces, see [`docs/CONSOLIDATED_ROUTINE_TABLE.md`](docs/CONSOLIDATED_ROUTINE_TABLE.md) or the machine-readable [`docs/CONSOLIDATED_ROUTINE_TABLE.csv`](docs/CONSOLIDATED_ROUTINE_TABLE.csv). It reports public cycles, reachable executable bytes, concrete ZP use/ranges, and persistent hardware-stack-page reservation.
@@ -34,7 +45,7 @@ For one cross-profile table covering every stable routine plus the REU Turbo/QS1
 | **V2 Pareto-Fast** | Stock C64 | Best general no-REU speed/space profile | Larger ZP commitment; `MATH_INIT` required |
 | **V3 REU 512K** | C64 + 512 KiB REU | Fast REU-backed 8-bit services, reciprocal, and Turbo modes | Requires matching 512 KiB REU image and ownership discipline |
 | **V4 REU 16M** | C64 + 16 MiB REU-compatible device/emulator | Fastest feature set; exact REU atan2/ISQRT16, QS16, Turbo | Requires modern/VICE-style 16 MiB REU; 512 extra C64 table bytes for fast ISQRT32 |
-| **V5 Hybrid Low-ZP** | Stock C64 | V1 31-byte ZP footprint with selected V2-speed division/modulo/trig paths | Uses a configurable 7,680-byte hybrid code block plus private division/table islands; exact extra private RAM vs V1 is 9,377 B |
+| **V5 Hybrid Low-ZP** | Stock C64 | V1 31-byte ZP footprint with selected V2-speed division/modulo/trig paths | Uses a configurable 7,680-byte hybrid code block plus private division/table islands; exact extra private RAM vs V1 is 9,633 B |
 | **Custom Pareto Builder** | Stock C64 | Fastest certified V1/V2 combination for your ZP/RAM/workload budget | Generated profile; resource use and `MATH_INIT` requirement depend on selection |
 
 Recommended default choices:
@@ -298,11 +309,11 @@ Current equal-weight breakpoints are:
 
 | ZP | Default selection | Exact extra RAM vs V1 |
 |---:|---|---:|
-| 31 | `atan2_fast` + V5 zero-ZP imports | 9377 B |
-| 36 | above + UMUL8 pack | 9950 B |
-| 60 | above + record UMUL16/UMUL24 pack | 10893 B |
-| 147 | `atan2_fast` + V5 imports + native SMUL16 | 9581 B |
-| 176 | all active certified hybrid packs, including `atan2_fast` | 11079 B |
+| 31 | `atan2_fast` + V5 zero-ZP imports | 9633 B |
+| 36 | above + UMUL8 pack | 10206 B |
+| 60 | above + record UMUL16/UMUL24 pack | 11149 B |
+| 147 | `atan2_fast` + V5 imports + native SMUL16 | 9837 B |
+| 176 | all active certified hybrid packs, including `atan2_fast` | 11335 B |
 | 221 | complete V2 | 208 B resident increase |
 
 The optimizer maximizes weighted cycle savings, so resource use is not required to be monotonic across those points. At 31 ZP + `--ram-budget 0`, the generated PRG is byte-identical to V1. At the default 31-ZP point (and with `--init-policy optional`), it is byte-identical to V5. At 221 ZP the builder selects complete V2.

@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "catalog_rows": 258,
+  "shipped_profile_rows": 245,
+  "standalone_alternative_rows": 13,
+  "public_profile_results": 245,
+  "standalone_results": 13,
+  "best_profile_results": 55,
+  "profiles": {
+    "v1_balanced": 46,
+    "v2_pareto_fast": 46,
+    "v3_reu_512k": 52,
+    "v4_reu_16m": 55,
+    "v5_hybrid_lowzp": 46
+  },
+  "errors": []
+}

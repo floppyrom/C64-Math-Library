@@ -1,9 +1,0 @@
-case,implementation,cases,errors,mean_cycles,min_cycles,max_cycles,zp_bytes,code_bytes,data_or_table_bytes,decision
-SMUL8 public,direct signed-domain QS,65536,0,67.9921875,66,70,0,46,1022 private + 1022 shared,SHIPPED
-S8xU8 primitive,signed operand bound,65536,0,47.9921875,46,50,,31,2044 mixed tables,RESEARCH BUILDING BLOCK
-U8xS8 primitive,signed operand indexed,65536,0,51.9921875,50,54,,33,2044 mixed tables,RESEARCH BUILDING BLOCK
-SMUL16,current fastest generic,2097152,0,185.312025,162,224,171,1,2044,KEEP BASELINE
-SMUL16,current practical 116-ZP,2097152,0,189.562251,166,229,116,60,2044,KEEP PRACTICAL
-SMUL16,direct-partial hybrid,2097152,0,192.46882677078247,173,222,150,1,4088,REJECTED DOMINATED
-Signed 32x8 row,unsigned row + sign correction,103584,0,360.90848007414274,335,387,,258,2044,BASELINE
-Signed 32x8 row,direct signed partials,103584,0,371.8574876428792,364,380,,255,2044 standalone / +2044 integrated,REJECTED

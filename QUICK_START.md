@@ -1,5 +1,14 @@
 # Quick start
 
+For speed figures, use [`PERFORMANCE.md`](PERFORMANCE.md). For the exact source behind a shipped or standalone benchmark, use [`routines/SOURCE_CATALOG.csv`](routines/SOURCE_CATALOG.csv).
+
+Before publishing a new benchmark/source pair, run:
+
+```sh
+python3 tools/generate_public_indexes.py
+python3 tools/validate_public_catalog.py
+```
+
 Requirements: Python 3. The repository includes its own deterministic 6502 source assembler/validator; no external assembler is required. ACME 0.97 remains an optional independent cross-check for the V1–V4 canonical source builds.
 
 ## V1–V4
@@ -38,7 +47,7 @@ For a custom V5 map, copy `relocatable_source/v5_hybrid_lowzp/math_config_refere
 python3 tools/build_hybrid.py --config path/to/math_config.inc --out build_hybrid_custom
 ```
 
-The reference V5 `HYBRID_CODE=$A000` occupies `$A000-$B1FF`, so BASIC ROM must be banked out while imported V5 routines execute. Move `HYBRID_CODE` if that does not fit your application.
+The reference V5 `HYBRID_CODE=$A000` occupies `$A000-$BDFF`, so BASIC ROM must be banked out while imported V5 routines execute. Move `HYBRID_CODE` if that does not fit your application.
 
 
 ## Custom Pareto Builder (recommended stock-C64 integration path)

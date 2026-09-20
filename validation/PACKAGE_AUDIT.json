@@ -37,6 +37,36 @@
       "detail": null
     },
     {
+      "check": "no_legacy_research_tree",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "performance_front_door",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "public_benchmark_indexes",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "public_source_catalog",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "public_catalog_tools",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "public_source_catalog_audit",
+      "status": "PASS",
+      "detail": null
+    },
+    {
       "check": "pareto_builder_documented",
       "status": "PASS",
       "detail": null
@@ -90,11 +120,11 @@
       "check": "five_reference_prgs",
       "status": "PASS",
       "detail": [
-        "v3_reu_512k/resident/math_v3_reu_512k_game_math.prg",
+        "v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg",
         "v1_balanced/resident/math_v1_balanced_game_math.prg",
-        "v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg",
+        "v3_reu_512k/resident/math_v3_reu_512k_game_math.prg",
         "v4_reu_16m/resident/math_v4_reu_16m_game_math.prg",
-        "v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg"
+        "v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg"
       ]
     },
     {
@@ -127,9 +157,9 @@
     }
   ],
   "summary": {
-    "checks_passed": 23,
-    "file_count_excluding_checksum": 942,
-    "uncompressed_bytes_excluding_checksum": 28482745,
+    "checks_passed": 29,
+    "file_count_excluding_checksum": 889,
+    "uncompressed_bytes_excluding_checksum": 28304172,
     "reference_prgs": 5,
     "reference_reu_images": 2
   }

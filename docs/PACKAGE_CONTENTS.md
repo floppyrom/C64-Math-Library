@@ -1,47 +1,32 @@
 # Package contents and lean-distribution policy
 
-The release ZIP is intended to be both **usable** and **reproducible** without carrying disposable build output.
+This replacement package is intended to be copied over a clean local checkout and committed as the complete repository tree.
 
-## Shipped
+## Included
 
-- `v1_balanced/` … `v4_reu_16m/`: the four original reference profiles, including their validated resident PRGs and profile-local source/data required by the assembly trees.
-- `v5_hybrid_lowzp/`: the validated stock-C64 hybrid reference PRG, generated API include, segment map, performance table and example.
-- `v3_reu_512k/reu/` and `v4_reu_16m/reu/`: the two deployable reference REU images.
-- `relocatable_source/`: canonical source-level relocation inputs and map configurations, including Turbo16/Turbo32 overlays, V5 hybrid maps, and `custom_pareto/` maps used by the budget selector.
-- `v1_balanced/resident/signed/` … `v5_hybrid_lowzp/resident/signed/`: native-signed implementation/provenance artifacts under `multiply/native` and `division`, with per-profile link maps and zero-overlap validation.
-- `tools/`: deterministic builders and validators, including `build_pareto.py`, the interactive `pareto_wizard.py`, Pareto configuration tests and stress validation. `benchmark_multiply_refresh.py` measures the refresh-sensitive multiply entries on one cross-profile corpus.
-- `validation/`: current validation results, including `validation/hybrid/`, `validation/pareto/`, `validation/normalize/`, `validation/multiply_refresh/`, and `validation/division_refresh/`, plus the compact prior exhaustive baseline needed by the binary-delta validation argument.
-- `v1_balanced/` ... `v5_hybrid_lowzp/` `resident/vector/native/`: canonical standalone `MATH_VEC2_NORMALIZE_Q8_8` source plus per-backend extraction/dependency notes.
-- `docs/` (including `VEC2_NORMALIZE_Q8_8.md` and the 2026-09-18 release notes), `USER_MANUAL.md`, `QUICK_START.md`, `README.md`, `CHANGELOG.md`, `CSDB_CHANGELOG.txt`: integration/reference documentation.
+- all five validated fixed profiles (`v1_balanced` ... `v5_hybrid_lowzp`), including deployable PRGs and the V3/V4 REU images;
+- `relocatable_source/` and the build/validation tools needed to reproduce the profiles;
+- all profile-local typed standalone sources (46 / 46 / 52 / 55 / 46 callable entries);
+- `routines/`, including public standalone record/Pareto sources and the optimized ATAN2 family;
+- `benchmarks/`, with the full profile table, a fastest-shipped-per-routine index, standalone alternatives, direct source paths and SHA-256 for every published row;
+- current validation/certification evidence;
+- integration, naming, profile and performance documentation.
 
-## Intentionally not shipped
+## Intentionally excluded
 
-- `build_source/reference/`, `build_source/alternate/`, `build_hybrid/`, `build_hybrid_repeat/`, and `build_pareto/`: generated outputs. Recreate V1–V4 with `make reference` / `make alternate`, V5 with `make hybrid`, validate normalization with `make normalize`, and create custom budget builds with `build_pareto.py` / `pareto_wizard.py`.
-- Superseded slow-ISQRT32 candidate patch/evidence folder. The active release carries its own fast-kernel correctness, performance and delta evidence.
-- Historical superseded releases, nested ZIPs, interrupted logs, Python caches, editor backups and temporary files.
-- Obsolete development-only validators that depended on an external prior-release working directory, plus unreferenced legacy binary/label intermediates.
+- the old top-level `research/` experiment tree;
+- generated build directories and Python caches;
+- nested release ZIPs, temporary files, logs and editor backups;
+- untracked local scratch work.
 
-## Intentional duplication
+The repository's Git history remains the archive for superseded experiments. The current tree is kept focused on code that can be built, called, audited or benchmarked.
 
-Some small source/table/module files are identical across V1–V4. They are retained within each profile because the profile trees are designed to remain self-contained and the assembly sources reference those local files. Removing them would save little while making integration and archival use more fragile.
+## Public-source rule
 
-## Manifest hygiene
+No standalone performance claim should be added without an exact public source file and validation path. Run:
 
-Legacy segment manifests were audited against the actual files in this distribution. Game-math segment rows now point to the integrated profile PRG rather than removed archival build directories; V4 ranges without separately shipped segment binaries are explicitly marked as integrated in the V4 PRG.
+```sh
+python3 tools/validate_public_catalog.py
+```
 
-## Native signed per-routine sources
-
-Each V1–V5 profile publishes exact executable source mirrors under `resident/signed/multiply/native/` and `resident/signed/division/native/`. Regenerate them with `tools/publish_native_signed_sources.py` and verify them with `tools/validate_published_signed_sources.py`.
-
-### Consolidated performance/resource index
-
-- `docs/CONSOLIDATED_ROUTINE_TABLE.md` — human-readable all-profile table.
-- `docs/CONSOLIDATED_ROUTINE_TABLE.csv` — 245-row machine-friendly table.
-- `validation/CONSOLIDATED_ROUTINE_TABLE.json` — definitions, profile summaries, and row evidence.
-- `tools/generate_consolidated_routine_table.py` — regenerates the table from shipped images and validation evidence.
-- `docs/MULTIPLY_REFRESH_2026-09-20.md` — profile-by-profile multiplier selection, resource rationale and validation summary.
-- `docs/DIVISION_REFRESH_2026-09-20.md` — profile-by-profile UDIV/SDIV selection, Repose UDIV24 integration and validation summary.
-
-## Standalone source publication
-
-Each shipped profile now contains `standalone/README.md`, `standalone/MANIFEST.csv`, and one generated `.asm` source mirror per callable routine. Counts match the consolidated table exactly: V1 46, V2 46, V3 52, V4 55, V5 46. `docs/NAMING_STANDARD.md` defines the typed naming convention; `docs/PROFILE_SPECIFIC_API.csv` records REU Turbo/QS16 entries.
+before release. The validator checks all 245 shipped callable entries plus every standalone alternative in the benchmark table.

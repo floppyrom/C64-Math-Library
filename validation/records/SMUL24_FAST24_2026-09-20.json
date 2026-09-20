@@ -1,0 +1,69 @@
+{
+  "status": "PASS_LOCAL_CYCLE_ACCURATE",
+  "date": "2026-09-20",
+  "routine": "FAST24 / mul_s24_s24_s48",
+  "source": "smul24_24zp_composed_FAST24_2026-09-20.a",
+  "source_sha256": "520a46e1acb4648924bbfea7e7c53c05aed9dbeb09b5fa80ee7071066fe8869c",
+  "timing_convention": "native entry smul24_composed through RTS; caller JSR and input setup excluded; D=0",
+  "memory": {
+    "zp_bytes": 24,
+    "main_executable_bytes": 411,
+    "init_bytes": 33,
+    "table_bytes": 2044,
+    "persistent_stack_bytes": 0,
+    "occupied_total_bytes": 2512
+  },
+  "rerun_30000_c0ffee_paired_style": {
+    "generator": "Python random.Random(0xC0FFEE), 30,000 independent 24-bit signed operand pairs",
+    "cases": 30000,
+    "errors": 0,
+    "mean_cycles": 400.3016,
+    "min_cycles": 339,
+    "max_cycles": 461,
+    "quadrant_counts": [
+      7365,
+      7572,
+      7477,
+      7586
+    ],
+    "quadrant_means": [
+      363.2612355736592,
+      412.8419175911252,
+      411.7900227363916,
+      412.422356973372
+    ]
+  },
+  "rerun_200000_regression": {
+    "generator": "edge set + Python random.Random(1234), 200,000 total cases",
+    "cases": 200000,
+    "errors": 0,
+    "mean_cycles": 400.058495,
+    "min_cycles": 339,
+    "max_cycles": 461,
+    "quadrant_counts": [
+      50234,
+      49998,
+      50211,
+      49557
+    ],
+    "quadrant_means": [
+      363.199406776287,
+      413.0604224168967,
+      411.84822050945013,
+      412.3581734164699
+    ]
+  },
+  "repose_new_post": {
+    "smul24_mean_cycles": 406.11095,
+    "historical_target_cycles": 406.882223,
+    "zp_bytes": 27
+  },
+  "indicative_delta_vs_repose_new": {
+    "using_30k_fast24_mean_cycles": -5.80935,
+    "using_30k_percent_faster": 1.430483467633659,
+    "using_200k_fast24_mean_cycles": -6.052455,
+    "using_200k_percent_faster": 1.4903451876882436,
+    "comparability_note": "These arithmetic deltas compare means from different corpora unless Repose confirms the new 406.110950 uses the same input corpus. The 30k FAST24 result exactly reproduces the earlier paired-run setup."
+  },
+  "qualification": "Local cycle-accurate rerun reproduced the earlier 400.301600 result exactly. Original Repose/Perfect6502/ACME rerun of the new source/corpus is still needed for a fully paired record claim."
+}

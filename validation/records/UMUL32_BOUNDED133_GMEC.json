@@ -1,0 +1,27 @@
+[
+  {
+    "avg": 606.3376320302486,
+    "code_bytes": 236,
+    "current_validation_complete": true,
+    "data_bytes": 2044,
+    "edge_cases": 1049350,
+    "edge_complete": true,
+    "edge_errors": 0,
+    "max": 729,
+    "min": 542,
+    "output": "/workspace/scratch/ea361a66c1f6/attack607/release/validated/umul32_bounded_fast_133zp.a",
+    "passed": true,
+    "profile_cases": 67108864,
+    "profile_complete": true,
+    "profile_errors": 0,
+    "run_cases": 67108864,
+    "run_errors": 0,
+    "source": "/workspace/scratch/ea361a66c1f6/attack607/release/umul32_bounded_fast_133zp.a",
+    "stddev": 22.533569697006772,
+    "total_bytes": 2280,
+    "validation_cases": 67108864,
+    "validation_complete": true,
+    "validation_errors": 0,
+    "zp_bytes": 133
+  }
+]

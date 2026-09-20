@@ -68,3 +68,18 @@ Every canonical name is an alias of the existing fixed-address `MATH_*` symbol i
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | `$5E39` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm` |
 
 The same mapping is machine-readable in `docs/PUBLIC_API_COMPLETE.csv`.
+
+## Variant suffixes for standalone alternatives
+
+The typed geometry is always the base name. A benchmarked implementation variant adds a descriptive suffix after it, for example:
+
+- `mul_s24_s24_s48_fast24`
+- `mul_s32_s32_s64_turbo135`
+- `mul_s32_s32_s64_fast31_native`
+- `mul_u32_u32_u64_bounded133`
+
+The suffix describes an implementation/resource point, not a different arithmetic contract. Profile ABI names remain the unsuffixed typed names.
+
+## Publication requirement
+
+Every published benchmark row must point to an exact source file and source SHA-256. The authoritative indexes are `routines/SOURCE_CATALOG.csv`, `benchmarks/PUBLIC_PROFILE_RESULTS.csv`, `benchmarks/BEST_PROFILE_RESULTS.csv`, and `benchmarks/STANDALONE_RESULTS.csv`. `tools/validate_public_catalog.py` enforces source presence, naming and hash consistency.

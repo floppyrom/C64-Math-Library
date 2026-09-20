@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "39 files"
+      "detail": "41 files"
     },
     {
       "check": "signed_layout_validation",

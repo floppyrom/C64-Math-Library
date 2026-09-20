@@ -17,6 +17,16 @@ ck('no_superseded_slow_isqrt_baseline',not (ROOT/'validation/baseline_reviewed_i
 ck('prior_exhaustive_baseline_retained',(ROOT/'validation/baseline_prior_final/GAME_MATH_VALIDATION_FINAL.json').exists())
 ck('csdb_changelog_named_correctly',(ROOT/'CSDB_CHANGELOG.txt').exists() and not (ROOT/'CARB_CHANGELOG.txt').exists())
 ck('package_contents_documented',(ROOT/'docs/PACKAGE_CONTENTS.md').exists())
+ck('no_legacy_research_tree',not (ROOT/'research').exists())
+ck('performance_front_door',(ROOT/'PERFORMANCE.md').exists())
+ck('public_benchmark_indexes',all((ROOT/x).exists() for x in ('benchmarks/PUBLIC_PROFILE_RESULTS.csv','benchmarks/BEST_PROFILE_RESULTS.csv','benchmarks/STANDALONE_RESULTS.csv','benchmarks/README.md')))
+ck('public_source_catalog',(ROOT/'routines/SOURCE_CATALOG.csv').exists() and (ROOT/'routines/README.md').exists())
+ck('public_catalog_tools',all((ROOT/x).exists() for x in ('tools/generate_public_indexes.py','tools/validate_public_catalog.py')))
+try:
+    public_audit=json.loads((ROOT/'validation/PUBLIC_SOURCE_CATALOG_AUDIT.json').read_text())
+except Exception:
+    public_audit={}
+ck('public_source_catalog_audit',public_audit.get('status')=='PASS',public_audit.get('summary'))
 ck('pareto_builder_documented',(ROOT/'docs/PARETO_BUILDER.md').exists() and (ROOT/'relocatable_source/custom_pareto/README.md').exists())
 ck('pareto_tools_shipped',all((ROOT/x).exists() for x in ('tools/build_pareto.py','tools/pareto_wizard.py','tools/validate_pareto.py','tools/test_pareto_config.py','tools/stress_pareto.py')))
 ck('signed_taxonomy_documented',all((ROOT/x).exists() for x in ('docs/SIGNED_IMPLEMENTATIONS.md','docs/SIGNED_IMPLEMENTATION_REFERENCE.md','docs/SIGNED_IMPLEMENTATION_SELECTION.csv','docs/SIGNED_IMPLEMENTATION_VALIDATION.md','docs/PERFORMANCE_SIGNED_IMPLEMENTATIONS.csv')))
