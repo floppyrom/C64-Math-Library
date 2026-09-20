@@ -4,5 +4,5 @@
   "mixed_workload_iterations": 25000,
   "zp_guard_iterations": 10000,
   "outside_zp_bytes_unchanged": 80,
-  "elapsed_seconds": 19.432
+  "elapsed_seconds": 14.893
 }

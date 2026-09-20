@@ -7,7 +7,7 @@
   "output_prg": "math_v5_hybrid_lowzp_game_math.prg",
   "output_load": "$2000",
   "output_end": "$CF96",
-  "output_sha256": "9e9e85df72bdbaf7be26811b4f9f690b72e138cf7fe2c2f70f8a6fd1f87fac55",
+  "output_sha256": "7b340cf2dd33eb950f02dde864b9a64f55a109ed45e1db26a4f2f5ef780a7071",
   "public_entries": {
     "MATH_UMUL8": "$3000",
     "MATH_UMUL16": "$3020",
@@ -81,16 +81,19 @@
   ],
   "atan2_fast_enabled": true,
   "atan2_fast": {
-    "body": "$C814-$C871",
-    "body_bytes": 94,
-    "extra_table_bytes": 768,
+    "body": "$C814-$C86C",
+    "body_bytes": 89,
+    "extra_table_bytes": 1024,
     "extra_table_pages": [
+      "$6D00",
       "$6E00",
       "$6F00",
       "$7000"
     ],
-    "log_page": "$9600",
-    "q0_page": "$9700"
+    "logx_page": "$6D00",
+    "logy_page": "$6E00",
+    "qpos_page": "$6F00",
+    "qneg_page": "$7000"
   },
   "udiv8_direct": {
     "private_code": "$4000-$41AD",
@@ -122,7 +125,7 @@
     "All 46 stable API addresses and semantics remain V1-compatible.",
     "MATH_INIT remains optional exactly as in V1.",
     "The imported certified V2 kernels use only the existing V1 normal ZP window.",
-    "Fast ATAN2, when enabled, adds no ZP and occupies three formerly empty V1 table pages (768 bytes).",
+    "Fast ATAN2, when enabled, adds no ZP and occupies four formerly empty V1 table pages (1024 bytes).",
     "V2 direct UDIV8 replaces the V1 256-class core in place; V2 direct UDIV16 is repacked into private hybrid RAM; UDIV24 uses the copied Repose direct core.",
     "V2 direct-output SDIV16 and SDIV24 are repacked into V1-free code/table windows and stay wholly inside the normal 31-byte ZP contract.",
     "SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 retains the faster V2 hybrid import.",
@@ -130,9 +133,9 @@
     "Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines."
   ],
   "source_inputs": {
-    "v1_source_sha256": "8eb73acfaeae4ecd0e21849f53906253a29d8d7a2b4c8bfa4ed3a08d4b5ce674",
-    "v2_source_sha256": "7d63d670d5982bf190b5e12b6397bc85cd90fb4088fd5047428250d8aff0d1f8",
+    "v1_source_sha256": "7a2efab1a7a1a032e14cecb1ae498e2e8f5345c175ab7ae82221e281d3c33711",
+    "v2_source_sha256": "8bd4be1e5e035349c57b378b1fa63b38b74ffc0690de1d687a2bc424e5fb3283",
     "normalize_native_sha256": "6d029e517277f8abc4c3ea74b8c4ce51d4f275b8e18add00dfc924f853c2be6c",
-    "builder_sha256": "71d5b2edf86bd5002475709f22259d09b8547805cdaa93235e5189d2566f9dd9"
+    "builder_sha256": "a0a075a3cea5e1fefde2ad81dc8b5ff5a1016f2a27d353d4e124faf6441f4d2f"
   }
 }

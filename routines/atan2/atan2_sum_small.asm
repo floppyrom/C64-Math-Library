@@ -6,9 +6,9 @@
 X0=$C000
 Y0=$C004
 Z0=$C008
-LOGX=$9400
-LOGY=$9500
-QPOS=$9600
+LOGX=@LOGX@
+LOGY=@LOGY@
+QPOS=@QPOS@
 .org @ORG@
 atan2:
     ldx X0

@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 46.
+; Reachable instructions: 44.
 !cpu 6510
 
 ; ---- executable island $5E2A ----
@@ -18,54 +18,50 @@ MATH_ATAN2_8:
 * = $C78D
 LC78D:
     ldx $C000                          ; @C78D AE 00 C0
-    bne LC7A8                          ; @C790 D0 16
-    ldx $C004                          ; @C792 AE 04 C0
-    beq LC7A1                          ; @C795 F0 0A
-    bmi LC79D                          ; @C797 30 04
-    lda #$40                           ; @C799 A9 40
-    bne LC7A3                          ; @C79B D0 06
-LC79D:
-    lda #$C0                           ; @C79D A9 C0
-    bne LC7A3                          ; @C79F D0 02
-LC7A1:
-    lda #$00                           ; @C7A1 A9 00
-LC7A3:
-    sta $C008                          ; @C7A3 8D 08 C0
-    clc                                ; @C7A6 18
+    beq LC7D8                          ; @C790 F0 46
+    bmi LC7B4                          ; @C792 30 20
+    lda $9600,x                        ; @C794 BD 00 96
+    ldx $C004                          ; @C797 AE 04 C0
+    bmi LC7A8                          ; @C79A 30 0C
+    clc                                ; @C79C 18
+    adc $9700,x                        ; @C79D 7D 00 97
+    tax                                ; @C7A0 AA
+    lda $6E00,x                        ; @C7A1 BD 00 6E
+    sta $C008                          ; @C7A4 8D 08 C0
     rts                                ; @C7A7 60
 LC7A8:
-    sec                                ; @C7A8 38
-    bmi LC7CB                          ; @C7A9 30 20
-    lda $9600,x                        ; @C7AB BD 00 96
-    ldx $C004                          ; @C7AE AE 04 C0
-    bmi LC7BF                          ; @C7B1 30 0C
-    sbc $9600,x                        ; @C7B3 FD 00 96
-    tax                                ; @C7B6 AA
-    lda $9700,x                        ; @C7B7 BD 00 97
-    sta $C008                          ; @C7BA 8D 08 C0
-    clc                                ; @C7BD 18
-    rts                                ; @C7BE 60
-LC7BF:
-    sbc $9600,x                        ; @C7BF FD 00 96
-    tax                                ; @C7C2 AA
-    lda $9100,x                        ; @C7C3 BD 00 91
+    clc                                ; @C7A8 18
+    adc $9700,x                        ; @C7A9 7D 00 97
+    tax                                ; @C7AC AA
+    lda $6F00,x                        ; @C7AD BD 00 6F
+    sta $C008                          ; @C7B0 8D 08 C0
+    rts                                ; @C7B3 60
+LC7B4:
+    lda $9600,x                        ; @C7B4 BD 00 96
+    ldx $C004                          ; @C7B7 AE 04 C0
+    bmi LC7CA                          ; @C7BA 30 0E
+    clc                                ; @C7BC 18
+    adc $9700,x                        ; @C7BD 7D 00 97
+    tax                                ; @C7C0 AA
+    lda $6F00,x                        ; @C7C1 BD 00 6F
+    eor #$80                           ; @C7C4 49 80
     sta $C008                          ; @C7C6 8D 08 C0
-    clc                                ; @C7C9 18
-    rts                                ; @C7CA 60
-LC7CB:
-    lda $9600,x                        ; @C7CB BD 00 96
-    ldx $C004                          ; @C7CE AE 04 C0
-    bmi LC7DF                          ; @C7D1 30 0C
-    sbc $9600,x                        ; @C7D3 FD 00 96
-    tax                                ; @C7D6 AA
-    lda $6E00,x                        ; @C7D7 BD 00 6E
-    sta $C008                          ; @C7DA 8D 08 C0
-    clc                                ; @C7DD 18
-    rts                                ; @C7DE 60
-LC7DF:
-    sbc $9600,x                        ; @C7DF FD 00 96
-    tax                                ; @C7E2 AA
-    lda $6F00,x                        ; @C7E3 BD 00 6F
-    sta $C008                          ; @C7E6 8D 08 C0
-    clc                                ; @C7E9 18
-    rts                                ; @C7EA 60
+    rts                                ; @C7C9 60
+LC7CA:
+    clc                                ; @C7CA 18
+    adc $9700,x                        ; @C7CB 7D 00 97
+    tax                                ; @C7CE AA
+    lda $6E00,x                        ; @C7CF BD 00 6E
+    eor #$80                           ; @C7D2 49 80
+    sta $C008                          ; @C7D4 8D 08 C0
+    rts                                ; @C7D7 60
+LC7D8:
+    clc                                ; @C7D8 18
+    lda $C004                          ; @C7D9 AD 04 C0
+    beq LC7E2                          ; @C7DC F0 04
+    asl a                              ; @C7DE 0A
+    lda #$80                           ; @C7DF A9 80
+    ror a                              ; @C7E1 6A
+LC7E2:
+    sta $C008                          ; @C7E2 8D 08 C0
+    rts                                ; @C7E5 60

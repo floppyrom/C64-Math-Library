@@ -2,9 +2,9 @@
 
 Generated from the shipped reference images by `tools/generate_consolidated_routine_table.py`. This is the single cross-profile index for cycles and resource use. Canonical typed names follow `docs/NAMING_STANDARD.md`; legacy `MATH_*` symbols remain ABI-stable.
 
-**Memory accounting.** `Code B` is unique executable bytes statically reachable from the entry after `MATH_INIT`; shared callees can appear on multiple rows and must not be summed. `ZP B` is the concrete page-zero set executable/referenced by the path; Turbo/QS16 rows report their owned overlay. `Stack B` is persistent hardware-stack-page reservation.
+**Memory accounting.** `Code B` is the unique executable byte set statically reachable from that entry after `MATH_INIT`; shared callees therefore appear on multiple rows and **must not be summed**. `ZP B` is the concrete page-zero set executable/referenced by the path; Turbo/QS16 rows instead report their exclusive owned overlay. `Stack B` is persistent hardware-stack-page (`$0100-$01FF`) reservation. It is **0 for every shipped choice**; ordinary transient JSR/PHA return/data stack traffic is intentionally not counted. The absolute 606.337632-cycle UMUL32 record is therefore not a shipped fixed-profile kernel because it reserves stack-page space.
 
-**Cycle accounting.** Mean cycles include the public routine through RTS and exclude caller JSR/input stores. The `Basis` column identifies the validation corpus/model.
+**Cycle accounting.** Mean cycles include the public routine through RTS and exclude the caller JSR/input stores. The `Basis` column identifies the validation corpus/model; specialized exact/canonical source files remain authoritative for their own corpora.
 
 ## Profile-level memory contracts
 
@@ -18,7 +18,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 
 ## v1_balanced
 
-| Legacy | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
+| Routine | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 90.494644 | 88 | 93 | 55 | 5 | $10-$14 | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | canonical harness |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 273.837200 | 262 | 297 | 208 | 17 | $09-$19 | 0 | 17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep) | 2026-09-14 record-upgrade deterministic comparison corpus |
@@ -57,19 +57,19 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 877.773617 | 289 | 1914 | 388 | 12 | $10-$1B | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 952.471538 | 281 | 2007 | 625 | 12 | $14-$1F | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 119.994705 | 41 | 2179 | 1559 | 3 | $10-$12 | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
-| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_COS8` | `cos_u8_s8` | 29.000000 | 29 | 29 | 18 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 39.000000 | 39 | 39 | 25 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 50.441345 | 30 | 53 | 109 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT16` | `isqrt_u16_u16` | 219.740570 | 205 | 258 | 277 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_COS8` | `cos_u8_s8` | 29.000000 | 29 | 29 | 18 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 39.000000 | 39 | 39 | 25 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 48.447189 | 29 | 50 | 97 | 0 | — | 0 | compact_opt signed-log kernel; two table pages; exact parity with prior compact outputs | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT16` | `isqrt_u16_u16` | 219.740570 | 205 | 258 | 277 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 198.770271 | 129 | 333 | 392 | 5 | $14;$1A-$1D | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
 
 ## v2_pareto_fast
 
-| Legacy | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
+| Routine | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 78.494614 | 77 | 80 | 54 | 5 | $39-$3D | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | canonical harness |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 225.837200 | 214 | 249 | 171 | 17 | $21-$31 | 0 | 17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep) | 2026-09-14 record-upgrade deterministic comparison corpus |
@@ -108,19 +108,19 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 764.129182 | 272 | 1849 | 1957 | 16 | $10-$1B;$53-$56 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 834.061287 | 266 | 1908 | 2195 | 16 | $44-$4F;$53-$56 | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 118.523834 | 41 | 2138 | 1887 | 9 | $10-$12;$61-$64;$67-$68 | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
-| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 46.953064 | 30 | 48 | 97 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT16` | `isqrt_u16_u16` | 205.760590 | 193 | 246 | 259 | 1 | $66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1198.619613 | 1052 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.570038 | 64 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.570038 | 70 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 44.962814 | 29 | 47 | 92 | 0 | — | 0 | sum_fast carry-clearing signed-log kernel; four table pages; exact parity with prior fast outputs | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT16` | `isqrt_u16_u16` | 205.760590 | 193 | 246 | 259 | 1 | $66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1198.619613 | 1052 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.570038 | 64 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.570038 | 70 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 189.260317 | 127 | 323 | 383 | 8 | $12-$15;$39-$3C | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
 
 ## v3_reu_512k
 
-| Legacy | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
+| Routine | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 69.000000 |  |  | 49 | 0 | — | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | REU transport model |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 225.837200 | 214 | 249 | 171 | 17 | $21-$31 | 0 | 17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep) | 2026-09-14 record-upgrade deterministic comparison corpus |
@@ -159,14 +159,14 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 764.339154 | 272 | 1849 | 1957 | 16 | $10-$1B;$53-$56 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 832.687023 | 266 | 1908 | 2195 | 16 | $44-$4F;$53-$56 | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 66.233795 | 41 | 239 | 430 | 0 | — | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
-| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 46.953064 | 30 | 48 | 97 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT16` | `isqrt_u16_u16` | 204.992523 | 192 | 246 | 259 | 1 | $66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1197.859322 | 1051 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 44.962814 | 29 | 47 | 92 | 0 | — | 0 | sum_fast carry-clearing signed-log kernel; four table pages; exact parity with prior fast outputs | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT16` | `isqrt_u16_u16` | 204.992523 | 192 | 246 | 259 | 1 | $66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1197.859322 | 1051 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 170.058633 | 133 | 306 | 346 | 4 | $12-$15 | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
@@ -177,7 +177,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 
 ## v4_reu_16m
 
-| Legacy | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
+| Routine | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 69.000000 |  |  | 49 | 0 | — | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | unchanged V3 path/evidence |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 225.837200 | 214 | 249 | 171 | 17 | $21-$31 | 0 | 17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep) | 2026-09-14 record-upgrade deterministic comparison corpus |
@@ -216,14 +216,14 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 764.628235 | 272 | 1849 | 1957 | 16 | $10-$1B;$53-$56 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 831.029880 | 266 | 1908 | 2195 | 16 | $44-$4F;$53-$56 | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 66.233795 | 41 | 239 | 430 | 0 | — | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
-| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 48.000000 | 48 | 48 | 33 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT16` | `isqrt_u16_u16` | 54.000000 | 54 | 54 | 38 | 0 | — | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1046.622518 | 899 | 1237 | 219 | 9 | $54-$5C | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | published game-math benchmark 2026-09-06 |
+| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 48.000000 | 48 | 48 | 33 | 0 | — | 0 | exact signed-byte phase plane in REU bank 8 | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT16` | `isqrt_u16_u16` | 54.000000 | 54 | 54 | 38 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1046.622518 | 899 | 1237 | 219 | 9 | $54-$5C | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 170.058633 | 133 | 306 | 346 | 4 | $12-$15 | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
@@ -237,7 +237,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 
 ## v5_hybrid_lowzp
 
-| Legacy | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
+| Routine | Canonical | Mean cycles | Min | Max | Code B | ZP B | ZP range(s) | Stack B | Implementation | Basis |
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 90.494644 | 88 | 93 | 55 | 5 | $10-$14 | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | V5 documented v1_balanced path; canonical harness |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 273.837200 | 262 | 297 | 208 | 17 | $09-$19 | 0 | 17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep) | V5 documented v1_balanced path; 2026-09-14 record-upgrade deterministic comparison corpus |
@@ -276,12 +276,20 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 774.734904 | 282 | 1859 | 1967 | 12 | $10-$1B | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 953.277863 | 281 | 2007 | 625 | 12 | $14-$1F | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 119.307602 | 41 | 2150 | 1899 | 3 | $10-$12 | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
-| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
-| `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; published game-math benchmark 2026-09-06 |
-| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; published game-math benchmark 2026-09-06 |
-| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 46.953064 | 30 | 48 | 97 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT16` | `isqrt_u16_u16` | 219.740570 | 205 | 258 | 277 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; published game-math benchmark 2026-09-06 |
+| `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
+| `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; current exhaustive/profile game-math benchmark |
+| `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; current exhaustive/profile game-math benchmark |
+| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 44.962814 | 29 | 47 | 92 | 0 | — | 0 | V2 sum_fast kernel imported into V5 with four private table pages | V5 documented v2_pareto_fast path; current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT16` | `isqrt_u16_u16` | 219.740570 | 205 | 258 | 277 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 198.770271 | 129 | 333 | 392 | 5 | $14;$1A-$1D | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
+
+## Interpretation notes
+
+- V1/V5 keep the 31-byte resident ZP contract. Their upgraded UMUL16/UMUL24 reuse that window and preserve `UMUL32_READY` state.
+- V2-V4 use larger profile-selected ZP regions for some native signed/division kernels; per-routine ZP rows show the actual touched/owned set.
+- V3/V4 Turbo16 owns 113 ZP bytes while active. Turbo32 now owns 135 ZP bytes (stack-free `ram135` compromise), down from the old 241-byte overlay.
+- V4 QS16 owns `$10-$1F` (16 ZP bytes) while active.
+- The PRG payload span includes address gaps in the load image and is not “occupied code bytes”. Use `SEGMENTS.csv` for physical segment placement and this table for per-entry reachable executable size.

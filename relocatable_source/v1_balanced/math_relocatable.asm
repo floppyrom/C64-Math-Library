@@ -3856,57 +3856,40 @@ LC780:
     clc
     rts
     ldx MATH_IO
-    bne LC82F
-    ldx MATH_IO+$04
-    beq LC828
-    bmi LC824
-    lda #$40
-    bne LC82A
-LC824:
-    lda #$C0
-    bne LC82A
-LC828:
-    lda #$00
-LC82A:
-    sta MATH_IO+$08
-    clc
-    rts
-LC82F:
+    beq LC864
     sec
-    bmi LC857
+    bmi LC83F
     lda REG_TABLE+$3600,x
     ldx MATH_IO+$04
-    bmi LC846
+    bmi LC830
     sbc REG_TABLE+$3600,x
     tax
     lda REG_TABLE+$3700,x
     sta MATH_IO+$08
     clc
     rts
-LC846:
+LC830:
     sbc REG_TABLE+$3600,x
     tax
-    lda REG_TABLE+$3700,x
-    eor #$FF
-    clc
-    adc #$01
+    lda #$00
+    sec
+    sbc REG_TABLE+$3700,x
     sta MATH_IO+$08
     clc
     rts
-LC857:
+LC83F:
     lda REG_TABLE+$3600,x
     ldx MATH_IO+$04
-    bmi LC870
+    bmi LC856
     sbc REG_TABLE+$3600,x
     tax
-    lda REG_TABLE+$3700,x
-    eor #$FF
-    clc
-    adc #$81
+    lda #$80
+    sec
+    sbc REG_TABLE+$3700,x
     sta MATH_IO+$08
     clc
     rts
-LC870:
+LC856:
     sbc REG_TABLE+$3600,x
     tax
     lda REG_TABLE+$3700,x
@@ -3914,12 +3897,23 @@ LC870:
     sta MATH_IO+$08
     clc
     rts
+LC864:
+    clc
+    lda MATH_IO+$04
+    beq LC86E
+    asl
+    lda #$80
+    ror
+LC86E:
+    sta MATH_IO+$08
+    rts
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00
     lda #$00
     sta V1_SCRATCH+$13
     lda V1_SCRATCH+$13

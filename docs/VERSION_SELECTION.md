@@ -6,7 +6,7 @@
 | V2 Pareto-Fast | stock C64, speed first | faster general kernels; 221-byte ZP commitment and mandatory `MATH_INIT` |
 | V3 REU 512K | standard 512 KiB REU | REU acceleration + Turbo ownership discipline |
 | V4 REU 16M | VICE / modern 16 MiB REU | fastest feature set; large REU requirement |
-| V5 Hybrid Low-ZP | fixed 31-ZP stock-C64 preset | faster V2 division/modulo/trig/ATAN2; 7,680-byte hybrid block plus refreshed private division/table islands; 9,377 B exact extra private RAM versus V1 |
+| V5 Hybrid Low-ZP | fixed 31-ZP stock-C64 preset | faster V2 division/modulo/trig/ATAN2; 7,680-byte hybrid block plus refreshed private division/table islands; 9,633 B exact extra private RAM versus V1 |
 | **Custom Pareto Builder** | games/demos with a known ZP/RAM budget | generates the fastest certified V1/V2 combination fitting the requested resources |
 
 ## Recommended choice
@@ -29,11 +29,11 @@ V1, V2 and V5 remain useful as simple, reproducible presets and validation ancho
 
 | ZP | Default result | Exact extra RAM vs V1 |
 |---:|---|---:|
-| 31 | `atan2_fast` + V5 zero-ZP imports | 9377 B |
-| 36 | above + UMUL8 | 9950 B |
-| 60 | above + record UMUL16/UMUL24 | 10893 B |
-| 147 | `atan2_fast` + V5 imports + native signed SMUL16 | 9581 B |
-| 176 | all active certified hybrid packs, including `atan2_fast` | 11079 B |
+| 31 | `atan2_fast` + V5 zero-ZP imports | 9633 B |
+| 36 | above + UMUL8 | 10206 B |
+| 60 | above + record UMUL16/UMUL24 | 11149 B |
+| 147 | `atan2_fast` + V5 imports + native signed SMUL16 | 9837 B |
+| 176 | all active certified hybrid packs, including `atan2_fast` | 11335 B |
 | 221 | complete V2 | 208 B resident increase |
 
 The optimizer maximizes weighted cycle savings, so RAM usage need not increase monotonically with ZP. Workload weights can change the selected pack at the same resource budget.

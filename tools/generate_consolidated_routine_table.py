@@ -131,7 +131,7 @@ def cycles_catalog():
             if name=='SMUL16_REPAIRED': continue
             game[p]['MATH_'+name]=r
             if 'MATH_'+name not in cat[p]:
-                add_cycle(cat,p,'MATH_'+name,r['mean_cycles'],r['min_cycles'],r['max_cycles'],r['cases'],'published game-math benchmark 2026-09-06',('alias '+r['alias_of']) if r.get('alias_of') else '')
+                add_cycle(cat,p,'MATH_'+name,r['mean_cycles'],r['min_cycles'],r['max_cycles'],r['cases'],'current exhaustive/profile game-math benchmark',('alias '+r['alias_of']) if r.get('alias_of') else '')
     # Multiplication refresh: common deterministic public-entry corpus for all
     # entries whose implementation changed in the 2026-09-20 profile sweep.
     # This intentionally comes after the older game/record rows so the current
@@ -169,6 +169,14 @@ def declared_zp(profile):
 
 
 def provenance(profile,n):
+    if n=='MATH_ATAN2_8':
+        if profile=='v1_balanced':
+            return 'compact_opt signed-log kernel; two table pages; exact parity with prior compact outputs'
+        if profile in ('v2_pareto_fast','v3_reu_512k'):
+            return 'sum_fast carry-clearing signed-log kernel; four table pages; exact parity with prior fast outputs'
+        if profile=='v4_reu_16m':
+            return 'exact signed-byte phase plane in REU bank 8'
+        return 'V2 sum_fast kernel imported into V5 with four private table pages'
     if n=='MATH_UMUL8':
         return 'profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract'
     if n=='MATH_UMUL16':

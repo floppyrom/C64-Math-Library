@@ -12,7 +12,7 @@ V5 is selected profile-by-profile rather than being a blind V2 transplant. The c
 
 Current V5 division highlights on the final resident validator are `UDIV8` **59.383**, `UDIV16` **126.386**, `UDIV24` **187.122**, `UDIV32/16` **756.639**, `SDIV16` **171.905**, and `SDIV24` **253.487** mean cycles. Cross-release selection is certified by the separate same-corpus audit, which reports zero regressions across all 23 measured public division-family paths.
 
-Trig imports remain `COS8` 23 cycles, `SINCOS8` 31 cycles, and exhaustive `ATAN2_8` 46.953064 mean cycles with maximum one-phase-unit error.
+Trig imports remain `COS8` 23 cycles, `SINCOS8` 31 cycles, and exhaustive `ATAN2_8` 44.962814 mean cycles with maximum one-phase-unit error.
 
 ## Why not import every V2 routine?
 
@@ -26,10 +26,10 @@ Reference V5 keeps the normal `$02-$20` 31-byte ZP window. Its principal relocat
 
 ```text
 HYBRID_CODE              $A000-$BDFF   7680 bytes
-ATAN2 extra table pages   $6E00/$6F00/$7000   3 x 256 bytes
+ATAN2 private table pages $6D00-$70FF          4 x 256 bytes
 ```
 
-The division refresh also uses profile-free signed-division islands recorded in `HYBRID_BUILD_MANIFEST.json`; the exact total private-RAM increase versus V1 is **9,377 bytes**. Within `HYBRID_CODE`, the lower 4 KiB remains the relocated V2 division block, `$B000-$B1FF` retains the modulo/trig/cosine region, the refreshed signed-16 magnitude core uses the `$B200` area, and the direct UDIV16 engine occupies the high `$B800-$BDC9` region.
+The division refresh also uses profile-free signed-division islands recorded in `HYBRID_BUILD_MANIFEST.json`; the exact total private-RAM increase versus V1 is **9,633 bytes**. Within `HYBRID_CODE`, the lower 4 KiB remains the relocated V2 division block, `$B000-$B1FF` retains the modulo/trig/cosine region, the refreshed signed-16 magnitude core uses the `$B200` area, and the direct UDIV16 engine occupies the high `$B800-$BDC9` region.
 
 `HYBRID_CODE` is source-build configurable. The alternate proof moves its base to `$E000`, producing `$E000-$FDFF`, while also relocating the normal resident regions, public I/O and ZP base.
 
@@ -71,7 +71,7 @@ Additional files:
 
 ## Current scope
 
-V5 is a stock-C64 profile. It does not use the REU and does not expose Turbo16/Turbo32 or V4 QS16. It is intended primarily for games/demos that value V1's ZP footprint but have RAM available under BASIC ROM (or another relocatable 7,680-byte block) plus the documented private division/table islands. The exact V5 private-RAM increase versus V1 is 9,377 bytes.
+V5 is a stock-C64 profile. It does not use the REU and does not expose Turbo16/Turbo32 or V4 QS16. It is intended primarily for games/demos that value V1's ZP footprint but have RAM available under BASIC ROM (or another relocatable 7,680-byte block) plus the documented private division/table islands. The exact V5 private-RAM increase versus V1 is 9,633 bytes.
 
 ## Q8.8 vector normalization
 

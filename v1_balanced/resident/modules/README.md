@@ -8,4 +8,7 @@ The comments in the imported division/UMOD/multiply sources document the algorit
 
 ## ATAN2
 
-`resident_atan2.a` is the exact readable V1 compact ATAN2 body installed at `$C459-$C496`, behind stable public entry `MATH_ATAN2_8=$5E2A`. It uses 0 ZP and the resident `$9600/$9700` table pages. The shared algorithm source and exhaustive benchmark live in `../../../routines/atan2/`.
+`resident_atan2.a` is the exact readable V1 compact-opt ATAN2 body installed at `$C814-$C871`, behind stable public entry `MATH_ATAN2_8=$5E2A`. It uses 0 ZP and the resident `$9600/$9700` log/angle pages. Exhaustive validation measures 48.447189 mean public-entry cycles (29–50) with maximum error 1 phase unit over all 65,536 vectors.
+
+The canonical algorithm and exhaustive benchmark live in `../../../routines/atan2/`.
+

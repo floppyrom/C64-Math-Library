@@ -4,10 +4,10 @@ Three new stock-6502 alternatives improve the existing ATAN2 size/speed
 trade-offs. They use only documented instructions, no zero page, no mutable
 scratch, and no initialization. Complete ACME sources include their tables.
 
-These are optional standalone kernels. The shipped V1–V5 resident images,
-profile source mirrors, fixed addresses, and Custom Pareto selections continue
-to use their installed implementations. In particular, the new standalone
-table layouts are not binary overlays for an existing resident profile.
+`compact_opt` and `sum_fast` have since been installed in V1–V3 and imported
+into V5. `sum_small` remains an optional standalone kernel. The fixed addresses
+and public API are unchanged, while the installed profile tables and manifests
+now use the optimized layouts described below.
 
 ## Measured results
 
@@ -16,11 +16,11 @@ The baseline assembly and table sources are unchanged by this work.
 
 | Implementation | Code | Tables | Code + tables | Mean cycles | Min–max | Extra ZP |
 |---|---:|---:|---:|---:|---:|---:|
-| Existing compact | 106 B | 512 B | 618 B | 50.441345 | 30–53 | 0 |
-| **New `compact_opt`** | **94 B** | **512 B** | **606 B** | **48.447189** | **29–50** | **0** |
-| Existing fast | 94 B | 1280 B | 1374 B | 46.953064 | 30–48 | 0 |
+| Previous compact | 106 B | 512 B | 618 B | 50.441345 | 30–53 | 0 |
+| **Installed V1 `compact_opt`** | **94 B** | **512 B** | **606 B** | **48.447189** | **29–50** | **0** |
+| Previous fast | 94 B | 1280 B | 1374 B | 46.953064 | 30–48 | 0 |
 | **New `sum_small`** | **92 B** | **768 B** | **860 B** | **45.958908** | **29–48** | **0** |
-| **New `sum_fast`** | **89 B** | **1024 B** | **1113 B** | **44.962814** | **29–47** | **0** |
+| **Installed V2/V3/V5 `sum_fast`** | **89 B** | **1024 B** | **1113 B** | **44.962814** | **29–47** | **0** |
 
 - `compact_opt` is **3.95% faster** and removes 12 code bytes while reusing the
   existing compact tables and preserving every existing result.

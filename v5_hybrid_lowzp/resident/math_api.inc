@@ -54,55 +54,6 @@ MATH_D                   = $C014
 MATH_Q                   = $C018
 MATH_R                   = $C01C
 
-; Canonical typed aliases (CSDb/Jackasser-style naming).
-; Legacy MATH_* names and addresses remain stable for backward compatibility.
-mul_u8_u8_u16                                  = MATH_UMUL8
-mul_u16_u16_u32                                = MATH_UMUL16
-mul_u24_u24_u48                                = MATH_UMUL24
-mul_u32_u32_u64                                = MATH_UMUL32
-mul_u32_u32_u64_ready                          = MATH_UMUL32_READY
-mul_s8_s8_s16                                  = MATH_SMUL8
-mul_s16_s16_s32                                = MATH_SMUL16
-mul_s24_s24_s48                                = MATH_SMUL24
-mul_s32_s32_s64                                = MATH_SMUL32
-mul_s32_s32_s64_ready                          = MATH_SMUL32_READY
-div_u8_u8_u8_8                                 = MATH_UDIV8
-div_u16_u16_u16_16                             = MATH_UDIV16
-div_u24_u24_u24_24                             = MATH_UDIV24
-div_u32_u16_u32_16                             = MATH_UDIV32_16
-mod_u8_u8_u8                                   = MATH_UMOD8
-mod_u16_u16_u16                                = MATH_UMOD16
-mod_u24_u24_u24                                = MATH_UMOD24
-mod_u32_u16_u16                                = MATH_UMOD32_16
-div_s8_s8_s8_8                                 = MATH_SDIV8
-div_s16_s16_s16_16                             = MATH_SDIV16
-div_s24_s24_s24_24                             = MATH_SDIV24
-div_s32_s16_s32_16                             = MATH_SDIV32_16
-mod_s8_s8_s8                                   = MATH_SMOD8
-mod_s16_s16_s16                                = MATH_SMOD16
-mod_s24_s24_s24                                = MATH_SMOD24
-mod_s32_s16_s16                                = MATH_SMOD32_16
-div_u32_u32_u32_32                             = MATH_UDIV32_32
-mod_u32_u32_u32                                = MATH_UMOD32_32
-div_s32_s32_s32_32                             = MATH_SDIV32_32
-mod_s32_s32_s32                                = MATH_SMOD32_32
-mul_u16_u16_u24_shr8                           = MATH_UMUL16_SHR8
-mul_s16_s16_s24_shr8                           = MATH_SMUL16_SHR8
-mul_u32_u32_u48_shr16                          = MATH_UMUL32_SHR16
-mul_s32_s32_s48_shr16                          = MATH_SMUL32_SHR16
-div_u16_u16_u24_16_shl8                        = MATH_UDIV16_SHL8
-div_s16_s16_s24_16_shl8                        = MATH_SDIV16_SHL8
-recip_u16_u24_q16                              = MATH_URECIP16_Q16
-sin_u8_s8                                      = MATH_SIN8
-cos_u8_s8                                      = MATH_COS8
-sincos_u8_s8_s8                                = MATH_SINCOS8
-atan2_s8_s8_u8                                 = MATH_ATAN2_8
-isqrt_u16_u16                                  = MATH_ISQRT16
-isqrt_u32_u16                                  = MATH_ISQRT32
-dist_s8_s8_u8_fast                             = MATH_DIST8_FAST
-dist_s8_s8_u8_accurate                         = MATH_DIST8_ACCURATE
-normalize_s16_s16_s16_s16_q8_8_to_q1_15        = MATH_VEC2_NORMALIZE_Q8_8
-
 ; Hybrid profile metadata (not additional API entries)
 HYBRID_CODE_BASE         = $A000
 HYBRID_CODE_END          = $BDFF

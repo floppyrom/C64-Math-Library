@@ -49,7 +49,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_SIN8` | `sin_u8_s8` | `sin_u8_s8.asm` |  | 6 |
 | `MATH_COS8` | `cos_u8_s8` | `cos_u8_s8.asm` |  | 6 |
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | `sincos_u8_s8_s8.asm` |  | 8 |
-| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | `atan2_s8_s8_u8.asm` |  | 46 |
+| `MATH_ATAN2_8` | `atan2_s8_s8_u8` | `atan2_s8_s8_u8.asm` |  | 44 |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | `isqrt_u16_u16.asm` |  | 113 |
 | `MATH_ISQRT32` | `isqrt_u32_u16` | `isqrt_u32_u16.asm` |  | 199 |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | `dist_s8_s8_u8_fast.asm` |  | 30 |

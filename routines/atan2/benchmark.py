@@ -31,7 +31,12 @@ Q3_PAGE = 0x4700
 
 def source(kind: str, org: int = ORG) -> str:
     path = HERE / f'atan2_{kind}.asm'
-    return path.read_text(encoding='utf-8').replace('@ORG@', f'${org:04X}')
+    text = path.read_text(encoding='utf-8').replace('@ORG@', f'${org:04X}')
+    for symbol, address in {
+        'LOGX': 0x9400, 'LOGY': 0x9500, 'QPOS': 0x9600, 'QNEG': 0x9700,
+    }.items():
+        text = text.replace(f'@{symbol}@', f'${address:04X}')
+    return text
 
 
 def image(kind: str, org: int = ORG) -> bytearray:

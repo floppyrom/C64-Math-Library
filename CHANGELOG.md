@@ -1,11 +1,13 @@
-## 2026-09-20 — optional smaller and faster standalone ATAN2 kernels
+## 2026-09-20 — smaller and faster ATAN2 kernels and profile integration
 
 - Added `compact_opt`: 48.447189 cycles / 606 B code plus tables, preserving every shipped result.
 - Added `sum_small`: 45.958908 cycles / 860 B; 40% fewer table bytes than the shipped fast tier, with the same <=1-unit error bound and exact axes. It changes 202 near-horizontal outputs by one unit.
 - Added `sum_fast`: 44.962814 cycles / 1113 B, preserving every shipped result; 4.24% faster with 20% fewer table bytes than the shipped fast tier.
 - Published complete ACME sources including tables, a deterministic exporter, and a reproducible dual-emulator validator. All variants use zero ZP and return C=0.
 - Certified 917,504 cases against py65 and the bundled emulator, including both entry carry states and relocated page-crossing layouts; six ACME assembly comparisons are byte-identical.
-- These are optional standalone additions. Resident profiles, their source mirrors, build manifests, and installed performance figures are unchanged.
+- Installed `compact_opt` in V1 and `sum_fast` in V2/V3; V4 retains its exact 48-cycle REU plane and V5 imports the new V2 kernel with four private table pages.
+- Regenerated resident binaries, relocatable and standalone source mirrors, hybrid/Pareto resource accounting, manifests, and all public performance/consolidated tables. Installed means are now **48.447189 / 44.962814 / 44.962814 / 48.000000 / 44.962814** for V1–V5.
+- The Custom Pareto `atan2_fast` pack is now **0 ZP / 1,024 B**, and fixed V5 uses **9,633 B** of exact extra private RAM versus V1.
 
 ## 2026-09-20 — standalone routine publication and typed API names
 

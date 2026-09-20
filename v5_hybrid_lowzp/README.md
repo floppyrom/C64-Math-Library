@@ -25,10 +25,10 @@ Reference build:
 ```text
 normal ZP      $02-$20        31 bytes
 hybrid code    $A000-$BDFF    7680 bytes
-ATAN2 pages    $6E00/$6F00/$7000   768 bytes total
+ATAN2 pages    $6D00-$70FF          1024 bytes total
 ```
 
-The refresh also places selected signed-division private islands in otherwise free profile regions. The exact current private-RAM increase versus V1, measured by the Pareto endpoint that reproduces V5 byte-for-byte, is **9,377 bytes**. `$A000-$BFFF` is RAM under BASIC ROM, so the CPU must see RAM while executing code in the reference hybrid block. If that does not fit your map, relocate `HYBRID_CODE` and rebuild.
+The refresh also places selected signed-division private islands in otherwise free profile regions. The exact current private-RAM increase versus V1, measured by the Pareto endpoint that reproduces V5 byte-for-byte, is **9,633 bytes**. `$A000-$BFFF` is RAM under BASIC ROM, so the CPU must see RAM while executing code in the reference hybrid block. If that does not fit your map, relocate `HYBRID_CODE` and rebuild.
 
 ## Build
 

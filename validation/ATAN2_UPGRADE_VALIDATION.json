@@ -1,38 +1,39 @@
 {
   "status": "PASS",
-  "date": "2026-09-17",
+  "date": "2026-09-20",
   "algorithm": {
     "log_scale": 11.63,
     "log_offset": 82,
     "finite_log_span": 81,
     "max_first_quadrant_class_span": 2,
     "compact_tables_bytes": 512,
-    "fast_tables_bytes": 1280,
+    "fast_tables_bytes": 1024,
     "zp_bytes": 0,
-    "fast_extra_pages_reference": [
-      "$5500",
-      "$5F00",
-      "$4700"
+    "readable_sources": "routines/atan2",
+    "fast_pages_reference": [
+      "$9600",
+      "$9700",
+      "$6E00",
+      "$6F00"
     ],
-    "v5_q3_remap_note": "V5 maps donor $4700 to REG_KERNEL+$1700 ($5700 reference); Q1/Q2 remain at $5500/$5F00. These pages are free in the current direct-SMUL8 V1 base."
+    "v5_remap_note": "V5 maps all four donor pages to REG_TABLE+$0D00 through REG_TABLE+$1000. These pages are free in the current V1 base."
   },
   "profiles": {
     "v1_balanced": {
-      "atan_body": "$C814-$C87D",
+      "atan_body": "$C814-$C871",
       "isqrt16_body": "$C8DB",
-      "code_bytes": 106,
-      "sha256": "2e930fc8c0c487406fd36832e772885d8d11fa708950fd95334f0218dccc9964",
+      "code_bytes": 94,
+      "sha256": "acae8921cbc938ad9ca821f682578e3c09cd0969d1dfdce78c09b78456672f8a",
       "cases": 65536,
-      "mean_cycles": 50.44134521484375,
-      "min_cycles": 30,
-      "max_cycles": 53,
+      "mean_cycles": 48.44718933105469,
+      "min_cycles": 29,
+      "max_cycles": 50,
       "cycle_distribution": {
-        "30": 1,
-        "34": 127,
-        "35": 128,
-        "46": 16256,
-        "50": 16384,
-        "53": 32640
+        "29": 1,
+        "34": 255,
+        "45": 16256,
+        "49": 16384,
+        "50": 32640
       },
       "max_phase_error": 1,
       "error_distribution": {
@@ -41,24 +42,24 @@
       },
       "failures_gt_1": 0,
       "status": "PASS",
-      "tier": "compact_512B"
+      "tier": "compact_opt_512B"
     },
     "v2_pareto_fast": {
-      "atan_body": "$C782-$C7DF",
+      "atan_body": "$C782-$C7DA",
       "isqrt16_body": "$C836",
-      "code_bytes": 94,
-      "sha256": "10af446bd1f49bcf02f9529d7944881d85f0e9b8dec2712638e306b0fab72828",
+      "code_bytes": 89,
+      "sha256": "f28a900b2274c7f09290df93d81ec34a16de5c9e6e8a46c1b84b5e5e1dd4d994",
       "cases": 65536,
-      "mean_cycles": 46.95306396484375,
-      "min_cycles": 30,
-      "max_cycles": 48,
+      "mean_cycles": 44.96281433105469,
+      "min_cycles": 29,
+      "max_cycles": 47,
       "cycle_distribution": {
-        "30": 1,
-        "34": 127,
-        "35": 128,
-        "46": 16256,
-        "47": 32640,
-        "48": 16384
+        "29": 1,
+        "34": 255,
+        "43": 16256,
+        "44": 16256,
+        "46": 16384,
+        "47": 16384
       },
       "max_phase_error": 1,
       "error_distribution": {
@@ -67,24 +68,24 @@
       },
       "failures_gt_1": 0,
       "status": "PASS",
-      "tier": "fast_1280B"
+      "tier": "sum_fast_1024B"
     },
     "v3_reu_512k": {
-      "atan_body": "$C78D-$C7EA",
+      "atan_body": "$C78D-$C7E5",
       "isqrt16_body": "$C841",
-      "code_bytes": 94,
-      "sha256": "f4113d322f168e3ac30339fe427cf9965d439ca173a2cb78d064eb8ca55e36f8",
+      "code_bytes": 89,
+      "sha256": "84e85bafa6fbfd33c543f42dec8604e0b2d2fc20e2f878513b21f583d36c1b3e",
       "cases": 65536,
-      "mean_cycles": 46.95306396484375,
-      "min_cycles": 30,
-      "max_cycles": 48,
+      "mean_cycles": 44.96281433105469,
+      "min_cycles": 29,
+      "max_cycles": 47,
       "cycle_distribution": {
-        "30": 1,
-        "34": 127,
-        "35": 128,
-        "46": 16256,
-        "47": 32640,
-        "48": 16384
+        "29": 1,
+        "34": 255,
+        "43": 16256,
+        "44": 16256,
+        "46": 16384,
+        "47": 16384
       },
       "max_phase_error": 1,
       "error_distribution": {
@@ -93,7 +94,7 @@
       },
       "failures_gt_1": 0,
       "status": "PASS",
-      "tier": "fast_1280B"
+      "tier": "sum_fast_1024B"
     }
   }
 }

@@ -5,8 +5,7 @@
     "reachable_code_bytes": "unique executable bytes statically reachable after MATH_INIT; shared code can appear on multiple rows; do not sum rows",
     "zp_bytes": "unique concrete ZP bytes executable/referenced; exclusive mode rows report owned overlay allocation",
     "stack_page_reserved_bytes": "persistent code/data reserved in $0100-$01FF; transient call/PHA traffic excluded",
-    "profile_prg_payload_span_bytes": "PRG payload span, not a sum of per-routine memory",
-    "canonical_name": "Typed public source name from docs/NAMING_STANDARD.md; legacy MATH_* ABI remains stable."
+    "profile_prg_payload_span_bytes": "PRG payload span, not a sum of per-routine memory"
   },
   "profile_summary": [
     {
@@ -18,7 +17,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 11147
+      "stable_api_reachable_code_union_bytes": 11135
     },
     {
       "profile": "v2_pareto_fast",
@@ -29,7 +28,7 @@
       "stable_api_zp_union_touched_bytes": 207,
       "stable_api_zp_union_ranges": "$02-$3D;$44-$4F;$53-$5E;$61-$64;$66-$68;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 18002
+      "stable_api_reachable_code_union_bytes": 17997
     },
     {
       "profile": "v3_reu_512k",
@@ -40,7 +39,7 @@
       "stable_api_zp_union_touched_bytes": 196,
       "stable_api_zp_union_ranges": "$02-$38;$44-$4F;$53-$5E;$66;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 17834
+      "stable_api_reachable_code_union_bytes": 17829
     },
     {
       "profile": "v4_reu_16m",
@@ -62,13 +61,14 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 16826
+      "stable_api_reachable_code_union_bytes": 16821
     }
   ],
   "rows": [
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMUL8",
+      "canonical_name": "mul_u8_u8_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -86,12 +86,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": "exhaustive 8-bit",
-      "canonical_name": "mul_u8_u8_u16"
+      "notes": "exhaustive 8-bit"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMUL16",
+      "canonical_name": "mul_u16_u16_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -109,12 +109,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u32"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMUL24",
+      "canonical_name": "mul_u24_u24_u48",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -132,12 +132,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 private 24-ZP carry producer with stable public adapter",
-      "notes": "",
-      "canonical_name": "mul_u24_u24_u48"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMUL32",
+      "canonical_name": "mul_u32_u32_u64",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -155,12 +155,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMUL32_READY",
+      "canonical_name": "mul_u32_u32_u64_ready",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply-ready",
@@ -178,12 +178,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64_ready"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMUL8",
+      "canonical_name": "mul_s8_s8_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -201,12 +201,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": "",
-      "canonical_name": "mul_s8_s8_s16"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMUL16",
+      "canonical_name": "mul_s16_s16_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -224,12 +224,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST17 native signed composition with private 17-ZP magnitude core",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s32"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMUL24",
+      "canonical_name": "mul_s24_s24_s48",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -247,12 +247,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": "",
-      "canonical_name": "mul_s24_s24_s48"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMUL32",
+      "canonical_name": "mul_s32_s32_s64",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -270,12 +270,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMUL32_READY",
+      "canonical_name": "mul_s32_s32_s64_ready",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply-ready",
@@ -293,12 +293,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64_ready"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UDIV8",
+      "canonical_name": "div_u8_u8_u8_8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -316,12 +316,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive",
-      "canonical_name": "div_u8_u8_u8_8"
+      "notes": "exhaustive"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UDIV16",
+      "canonical_name": "div_u16_u16_u16_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -339,12 +339,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-public 16-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UDIV24",
+      "canonical_name": "div_u24_u24_u24_24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -362,12 +362,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-public 24-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u24_u24_u24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UDIV32_16",
+      "canonical_name": "div_u32_u16_u32_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -385,12 +385,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u16_u32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMOD8",
+      "canonical_name": "mod_u8_u8_u8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -408,12 +408,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "",
-      "canonical_name": "mod_u8_u8_u8"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMOD16",
+      "canonical_name": "mod_u16_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -431,12 +431,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-public 16-bit divider",
-      "notes": "",
-      "canonical_name": "mod_u16_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMOD24",
+      "canonical_name": "mod_u24_u24_u24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -454,12 +454,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-public 24-bit divider",
-      "notes": "",
-      "canonical_name": "mod_u24_u24_u24"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMOD32_16",
+      "canonical_name": "mod_u32_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -477,12 +477,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "",
-      "canonical_name": "mod_u32_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SDIV8",
+      "canonical_name": "div_s8_s8_s8_8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -500,12 +500,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "exhaustive",
-      "canonical_name": "div_s8_s8_s8_8"
+      "notes": "exhaustive"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SDIV16",
+      "canonical_name": "div_s16_s16_s16_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -523,12 +523,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-output native signed 16-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SDIV24",
+      "canonical_name": "div_s24_s24_s24_24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -546,12 +546,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-output native signed 24-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s24_s24_s24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SDIV32_16",
+      "canonical_name": "div_s32_s16_s32_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -569,12 +569,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s16_s32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMOD8",
+      "canonical_name": "mod_s8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -592,12 +592,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "",
-      "canonical_name": "mod_s8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMOD16",
+      "canonical_name": "mod_s16_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -615,12 +615,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-output native signed 16-bit divider",
-      "notes": "",
-      "canonical_name": "mod_s16_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMOD24",
+      "canonical_name": "mod_s24_s24_s24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -638,12 +638,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "balanced direct-output native signed 24-bit divider",
-      "notes": "",
-      "canonical_name": "mod_s24_s24_s24"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMOD32_16",
+      "canonical_name": "mod_s32_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -661,12 +661,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "",
-      "canonical_name": "mod_s32_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UDIV32_32",
+      "canonical_name": "div_u32_u32_u32_32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -684,12 +684,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u32_u32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMOD32_32",
+      "canonical_name": "mod_u32_u32_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -707,12 +707,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "",
-      "canonical_name": "mod_u32_u32_u32"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SDIV32_32",
+      "canonical_name": "div_s32_s32_s32_32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -730,12 +730,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s32_s32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMOD32_32",
+      "canonical_name": "mod_s32_s32_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -753,12 +753,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "",
-      "canonical_name": "mod_s32_s32_s32"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMUL16_SHR8",
+      "canonical_name": "mul_u16_u16_u24_shr8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -776,12 +776,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u24_shr8"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMUL16_SHR8",
+      "canonical_name": "mul_s16_s16_s24_shr8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -799,12 +799,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST17 SMUL16 plus SHR8 extraction",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s24_shr8"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UMUL32_SHR16",
+      "canonical_name": "mul_u32_u32_u48_shr16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -822,12 +822,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u48_shr16"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SMUL32_SHR16",
+      "canonical_name": "mul_s32_s32_s48_shr16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -845,12 +845,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s48_shr16"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_UDIV16_SHL8",
+      "canonical_name": "div_u16_u16_u24_16_shl8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed divide shift",
@@ -868,12 +868,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SDIV16_SHL8",
+      "canonical_name": "div_s16_s16_s24_16_shl8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed divide shift",
@@ -891,12 +891,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_URECIP16_Q16",
+      "canonical_name": "recip_u16_u24_q16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "reciprocal",
@@ -914,12 +914,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive",
-      "canonical_name": "recip_u16_u24_q16"
+      "notes": "exhaustive"
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SIN8",
+      "canonical_name": "sin_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sine",
@@ -928,7 +928,7 @@
       "min_cycles": "23",
       "max_cycles": "23",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 14,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -937,12 +937,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "sin_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_COS8",
+      "canonical_name": "cos_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig cosine",
@@ -951,7 +951,7 @@
       "min_cycles": "29",
       "max_cycles": "29",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 18,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -960,12 +960,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "cos_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_SINCOS8",
+      "canonical_name": "sincos_u8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sincos",
@@ -974,7 +974,7 @@
       "min_cycles": "39",
       "max_cycles": "39",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 25,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -983,35 +983,35 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "sincos_u8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_ATAN2_8",
+      "canonical_name": "atan2_s8_s8_u8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "angle",
       "width": "atan2(s8,s8) -> phase8",
-      "mean_cycles": "50.441345",
-      "min_cycles": "30",
-      "max_cycles": "53",
+      "mean_cycles": "48.447189",
+      "min_cycles": "29",
+      "max_cycles": "50",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
-      "reachable_code_bytes": 109,
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
+      "reachable_code_bytes": 97,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44951,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "atan2_s8_s8_u8"
+      "implementation": "compact_opt signed-log kernel; two table pages; exact parity with prior compact outputs",
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_ISQRT16",
+      "canonical_name": "isqrt_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -1020,7 +1020,7 @@
       "min_cycles": "205",
       "max_cycles": "258",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 277,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -1029,12 +1029,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_ISQRT32",
+      "canonical_name": "isqrt_u32_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -1043,7 +1043,7 @@
       "min_cycles": "1193",
       "max_cycles": "1656",
       "cases": "4130",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 496,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -1052,12 +1052,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u32_u16"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_DIST8_FAST",
+      "canonical_name": "dist_s8_s8_u8_fast",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -1066,7 +1066,7 @@
       "min_cycles": "68",
       "max_cycles": "104",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 67,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -1075,12 +1075,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_fast"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_DIST8_ACCURATE",
+      "canonical_name": "dist_s8_s8_u8_accurate",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -1089,7 +1089,7 @@
       "min_cycles": "74",
       "max_cycles": "110",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 72,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -1098,12 +1098,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_accurate"
+      "notes": ""
     },
     {
       "profile": "v1_balanced",
       "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "vector normalize",
@@ -1121,12 +1121,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
-      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMUL8",
+      "canonical_name": "mul_u8_u8_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -1144,12 +1144,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": "",
-      "canonical_name": "mul_u8_u8_u16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMUL16",
+      "canonical_name": "mul_u16_u16_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -1167,12 +1167,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u32"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMUL24",
+      "canonical_name": "mul_u24_u24_u48",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -1190,12 +1190,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel (retained; refresh candidate did not win)",
-      "notes": "",
-      "canonical_name": "mul_u24_u24_u48"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMUL32",
+      "canonical_name": "mul_u32_u32_u64",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -1213,12 +1213,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMUL32_READY",
+      "canonical_name": "mul_u32_u32_u64_ready",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply-ready",
@@ -1236,12 +1236,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64_ready"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMUL8",
+      "canonical_name": "mul_s8_s8_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -1259,12 +1259,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": "",
-      "canonical_name": "mul_s8_s8_s16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMUL16",
+      "canonical_name": "mul_s16_s16_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -1282,12 +1282,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison)",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s32"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMUL24",
+      "canonical_name": "mul_s24_s24_s48",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -1305,12 +1305,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": "",
-      "canonical_name": "mul_s24_s24_s48"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMUL32",
+      "canonical_name": "mul_s32_s32_s64",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -1328,12 +1328,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMUL32_READY",
+      "canonical_name": "mul_s32_s32_s64_ready",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply-ready",
@@ -1351,12 +1351,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64_ready"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UDIV8",
+      "canonical_name": "div_u8_u8_u8_8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -1374,12 +1374,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive",
-      "canonical_name": "div_u8_u8_u8_8"
+      "notes": "exhaustive"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UDIV16",
+      "canonical_name": "div_u16_u16_u16_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -1397,12 +1397,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UDIV24",
+      "canonical_name": "div_u24_u24_u24_24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -1420,12 +1420,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": "structured_random",
-      "canonical_name": "div_u24_u24_u24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UDIV32_16",
+      "canonical_name": "div_u32_u16_u32_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -1443,12 +1443,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u16_u32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMOD8",
+      "canonical_name": "mod_u8_u8_u8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -1466,12 +1466,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "",
-      "canonical_name": "mod_u8_u8_u8"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMOD16",
+      "canonical_name": "mod_u16_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -1489,12 +1489,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": "",
-      "canonical_name": "mod_u16_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMOD24",
+      "canonical_name": "mod_u24_u24_u24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -1512,12 +1512,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": "",
-      "canonical_name": "mod_u24_u24_u24"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMOD32_16",
+      "canonical_name": "mod_u32_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -1535,12 +1535,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "",
-      "canonical_name": "mod_u32_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SDIV8",
+      "canonical_name": "div_s8_s8_s8_8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -1558,12 +1558,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "exhaustive",
-      "canonical_name": "div_s8_s8_s8_8"
+      "notes": "exhaustive"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SDIV16",
+      "canonical_name": "div_s16_s16_s16_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -1581,12 +1581,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SDIV24",
+      "canonical_name": "div_s24_s24_s24_24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -1604,12 +1604,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 24-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s24_s24_s24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SDIV32_16",
+      "canonical_name": "div_s32_s16_s32_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -1627,12 +1627,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s16_s32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMOD8",
+      "canonical_name": "mod_s8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -1650,12 +1650,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "",
-      "canonical_name": "mod_s8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMOD16",
+      "canonical_name": "mod_s16_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -1673,12 +1673,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": "",
-      "canonical_name": "mod_s16_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMOD24",
+      "canonical_name": "mod_s24_s24_s24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -1696,12 +1696,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 24-bit divider",
-      "notes": "",
-      "canonical_name": "mod_s24_s24_s24"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMOD32_16",
+      "canonical_name": "mod_s32_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -1719,12 +1719,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "",
-      "canonical_name": "mod_s32_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UDIV32_32",
+      "canonical_name": "div_u32_u32_u32_32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -1742,12 +1742,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u32_u32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMOD32_32",
+      "canonical_name": "mod_u32_u32_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -1765,12 +1765,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "",
-      "canonical_name": "mod_u32_u32_u32"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SDIV32_32",
+      "canonical_name": "div_s32_s32_s32_32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -1788,12 +1788,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s32_s32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMOD32_32",
+      "canonical_name": "mod_s32_s32_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -1811,12 +1811,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "",
-      "canonical_name": "mod_s32_s32_s32"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMUL16_SHR8",
+      "canonical_name": "mul_u16_u16_u24_shr8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -1834,12 +1834,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u24_shr8"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMUL16_SHR8",
+      "canonical_name": "mul_s16_s16_s24_shr8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -1857,12 +1857,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native SMUL16 plus SHR8 extraction",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s24_shr8"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UMUL32_SHR16",
+      "canonical_name": "mul_u32_u32_u48_shr16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -1880,12 +1880,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u48_shr16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SMUL32_SHR16",
+      "canonical_name": "mul_s32_s32_s48_shr16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -1903,12 +1903,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s48_shr16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_UDIV16_SHL8",
+      "canonical_name": "div_u16_u16_u24_16_shl8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed divide shift",
@@ -1926,12 +1926,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SDIV16_SHL8",
+      "canonical_name": "div_s16_s16_s24_16_shl8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed divide shift",
@@ -1949,12 +1949,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_URECIP16_Q16",
+      "canonical_name": "recip_u16_u24_q16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "reciprocal",
@@ -1972,12 +1972,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive",
-      "canonical_name": "recip_u16_u24_q16"
+      "notes": "exhaustive"
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SIN8",
+      "canonical_name": "sin_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sine",
@@ -1986,7 +1986,7 @@
       "min_cycles": "23",
       "max_cycles": "23",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 14,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -1995,12 +1995,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "sin_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_COS8",
+      "canonical_name": "cos_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig cosine",
@@ -2009,7 +2009,7 @@
       "min_cycles": "23",
       "max_cycles": "23",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 14,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -2018,12 +2018,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "cos_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_SINCOS8",
+      "canonical_name": "sincos_u8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sincos",
@@ -2032,7 +2032,7 @@
       "min_cycles": "31",
       "max_cycles": "31",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 20,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -2041,35 +2041,35 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "sincos_u8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_ATAN2_8",
+      "canonical_name": "atan2_s8_s8_u8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "angle",
       "width": "atan2(s8,s8) -> phase8",
-      "mean_cycles": "46.953064",
-      "min_cycles": "30",
-      "max_cycles": "48",
+      "mean_cycles": "44.962814",
+      "min_cycles": "29",
+      "max_cycles": "47",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
-      "reachable_code_bytes": 97,
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
+      "reachable_code_bytes": 92,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44951,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "atan2_s8_s8_u8"
+      "implementation": "sum_fast carry-clearing signed-log kernel; four table pages; exact parity with prior fast outputs",
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_ISQRT16",
+      "canonical_name": "isqrt_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -2078,7 +2078,7 @@
       "min_cycles": "193",
       "max_cycles": "246",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 259,
       "zp_bytes": 1,
       "zp_ranges": "$66",
@@ -2087,12 +2087,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_ISQRT32",
+      "canonical_name": "isqrt_u32_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -2101,7 +2101,7 @@
       "min_cycles": "1052",
       "max_cycles": "1428",
       "cases": "4130",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 440,
       "zp_bytes": 10,
       "zp_ranges": "$54-$5C;$66",
@@ -2110,12 +2110,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u32_u16"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_DIST8_FAST",
+      "canonical_name": "dist_s8_s8_u8_fast",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -2124,7 +2124,7 @@
       "min_cycles": "64",
       "max_cycles": "95",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 58,
       "zp_bytes": 2,
       "zp_ranges": "$5D-$5E",
@@ -2133,12 +2133,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_fast"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_DIST8_ACCURATE",
+      "canonical_name": "dist_s8_s8_u8_accurate",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -2147,7 +2147,7 @@
       "min_cycles": "70",
       "max_cycles": "101",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 63,
       "zp_bytes": 2,
       "zp_ranges": "$5D-$5E",
@@ -2156,12 +2156,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_accurate"
+      "notes": ""
     },
     {
       "profile": "v2_pareto_fast",
       "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "vector normalize",
@@ -2179,12 +2179,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
-      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMUL8",
+      "canonical_name": "mul_u8_u8_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -2202,12 +2202,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": "",
-      "canonical_name": "mul_u8_u8_u16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMUL16",
+      "canonical_name": "mul_u16_u16_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -2225,12 +2225,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u32"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMUL24",
+      "canonical_name": "mul_u24_u24_u48",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -2248,12 +2248,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel (retained; refresh candidate did not win)",
-      "notes": "",
-      "canonical_name": "mul_u24_u24_u48"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMUL32",
+      "canonical_name": "mul_u32_u32_u64",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -2271,12 +2271,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMUL32_READY",
+      "canonical_name": "mul_u32_u32_u64_ready",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply-ready",
@@ -2294,12 +2294,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64_ready"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMUL8",
+      "canonical_name": "mul_s8_s8_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -2317,12 +2317,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": "",
-      "canonical_name": "mul_s8_s8_s16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMUL16",
+      "canonical_name": "mul_s16_s16_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -2340,12 +2340,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison)",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s32"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMUL24",
+      "canonical_name": "mul_s24_s24_s48",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -2363,12 +2363,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": "",
-      "canonical_name": "mul_s24_s24_s48"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMUL32",
+      "canonical_name": "mul_s32_s32_s64",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -2386,12 +2386,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMUL32_READY",
+      "canonical_name": "mul_s32_s32_s64_ready",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply-ready",
@@ -2409,12 +2409,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64_ready"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UDIV8",
+      "canonical_name": "div_u8_u8_u8_8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -2432,12 +2432,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive",
-      "canonical_name": "div_u8_u8_u8_8"
+      "notes": "exhaustive"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UDIV16",
+      "canonical_name": "div_u16_u16_u16_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -2455,12 +2455,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UDIV24",
+      "canonical_name": "div_u24_u24_u24_24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -2478,12 +2478,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": "structured_random",
-      "canonical_name": "div_u24_u24_u24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UDIV32_16",
+      "canonical_name": "div_u32_u16_u32_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -2501,12 +2501,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u16_u32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMOD8",
+      "canonical_name": "mod_u8_u8_u8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -2524,12 +2524,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "REU direct remainder plane retained; direct-public UDIV8 selected separately",
-      "notes": "",
-      "canonical_name": "mod_u8_u8_u8"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMOD16",
+      "canonical_name": "mod_u16_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -2547,12 +2547,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": "",
-      "canonical_name": "mod_u16_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMOD24",
+      "canonical_name": "mod_u24_u24_u24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -2570,12 +2570,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": "",
-      "canonical_name": "mod_u24_u24_u24"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMOD32_16",
+      "canonical_name": "mod_u32_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -2593,12 +2593,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "",
-      "canonical_name": "mod_u32_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SDIV8",
+      "canonical_name": "div_s8_s8_s8_8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -2616,12 +2616,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "exhaustive",
-      "canonical_name": "div_s8_s8_s8_8"
+      "notes": "exhaustive"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SDIV16",
+      "canonical_name": "div_s16_s16_s16_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -2639,12 +2639,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SDIV24",
+      "canonical_name": "div_s24_s24_s24_24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -2662,12 +2662,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose-derived direct-output native signed 24-bit divider with private magnitude engine",
-      "notes": "structured_random",
-      "canonical_name": "div_s24_s24_s24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SDIV32_16",
+      "canonical_name": "div_s32_s16_s32_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -2685,12 +2685,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s16_s32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMOD8",
+      "canonical_name": "mod_s8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -2708,12 +2708,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "",
-      "canonical_name": "mod_s8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMOD16",
+      "canonical_name": "mod_s16_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -2731,12 +2731,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": "",
-      "canonical_name": "mod_s16_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMOD24",
+      "canonical_name": "mod_s24_s24_s24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -2754,12 +2754,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose-derived direct-output native signed 24-bit divider with private magnitude engine",
-      "notes": "",
-      "canonical_name": "mod_s24_s24_s24"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMOD32_16",
+      "canonical_name": "mod_s32_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -2777,12 +2777,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "",
-      "canonical_name": "mod_s32_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UDIV32_32",
+      "canonical_name": "div_u32_u32_u32_32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -2800,12 +2800,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u32_u32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMOD32_32",
+      "canonical_name": "mod_u32_u32_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -2823,12 +2823,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "",
-      "canonical_name": "mod_u32_u32_u32"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SDIV32_32",
+      "canonical_name": "div_s32_s32_s32_32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -2846,12 +2846,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s32_s32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMOD32_32",
+      "canonical_name": "mod_s32_s32_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -2869,12 +2869,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "",
-      "canonical_name": "mod_s32_s32_s32"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMUL16_SHR8",
+      "canonical_name": "mul_u16_u16_u24_shr8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -2892,12 +2892,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u24_shr8"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMUL16_SHR8",
+      "canonical_name": "mul_s16_s16_s24_shr8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -2915,12 +2915,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native SMUL16 plus SHR8 extraction",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s24_shr8"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UMUL32_SHR16",
+      "canonical_name": "mul_u32_u32_u48_shr16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -2938,12 +2938,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u48_shr16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SMUL32_SHR16",
+      "canonical_name": "mul_s32_s32_s48_shr16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -2961,12 +2961,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s48_shr16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_UDIV16_SHL8",
+      "canonical_name": "div_u16_u16_u24_16_shl8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed divide shift",
@@ -2984,12 +2984,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SDIV16_SHL8",
+      "canonical_name": "div_s16_s16_s24_16_shl8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed divide shift",
@@ -3007,12 +3007,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_URECIP16_Q16",
+      "canonical_name": "recip_u16_u24_q16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "reciprocal",
@@ -3030,12 +3030,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive",
-      "canonical_name": "recip_u16_u24_q16"
+      "notes": "exhaustive"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SIN8",
+      "canonical_name": "sin_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sine",
@@ -3044,7 +3044,7 @@
       "min_cycles": "23",
       "max_cycles": "23",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 14,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -3053,12 +3053,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "sin_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_COS8",
+      "canonical_name": "cos_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig cosine",
@@ -3067,7 +3067,7 @@
       "min_cycles": "23",
       "max_cycles": "23",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 14,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -3076,12 +3076,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "cos_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_SINCOS8",
+      "canonical_name": "sincos_u8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sincos",
@@ -3090,7 +3090,7 @@
       "min_cycles": "31",
       "max_cycles": "31",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 20,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -3099,35 +3099,35 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "sincos_u8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_ATAN2_8",
+      "canonical_name": "atan2_s8_s8_u8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "angle",
       "width": "atan2(s8,s8) -> phase8",
-      "mean_cycles": "46.953064",
-      "min_cycles": "30",
-      "max_cycles": "48",
+      "mean_cycles": "44.962814",
+      "min_cycles": "29",
+      "max_cycles": "47",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
-      "reachable_code_bytes": 97,
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
+      "reachable_code_bytes": 92,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "atan2_s8_s8_u8"
+      "implementation": "sum_fast carry-clearing signed-log kernel; four table pages; exact parity with prior fast outputs",
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_ISQRT16",
+      "canonical_name": "isqrt_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -3136,7 +3136,7 @@
       "min_cycles": "192",
       "max_cycles": "246",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 259,
       "zp_bytes": 1,
       "zp_ranges": "$66",
@@ -3145,12 +3145,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_ISQRT32",
+      "canonical_name": "isqrt_u32_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -3159,7 +3159,7 @@
       "min_cycles": "1051",
       "max_cycles": "1428",
       "cases": "4130",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 440,
       "zp_bytes": 10,
       "zp_ranges": "$54-$5C;$66",
@@ -3168,12 +3168,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u32_u16"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_DIST8_FAST",
+      "canonical_name": "dist_s8_s8_u8_fast",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -3182,7 +3182,7 @@
       "min_cycles": "63",
       "max_cycles": "95",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 58,
       "zp_bytes": 2,
       "zp_ranges": "$5D-$5E",
@@ -3191,12 +3191,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_fast"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_DIST8_ACCURATE",
+      "canonical_name": "dist_s8_s8_u8_accurate",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -3205,7 +3205,7 @@
       "min_cycles": "69",
       "max_cycles": "101",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 63,
       "zp_bytes": 2,
       "zp_ranges": "$5D-$5E",
@@ -3214,12 +3214,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_accurate"
+      "notes": ""
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "vector normalize",
@@ -3237,12 +3237,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
-      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMUL8",
+      "canonical_name": "mul_u8_u8_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -3260,12 +3260,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": "",
-      "canonical_name": "mul_u8_u8_u16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMUL16",
+      "canonical_name": "mul_u16_u16_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -3283,12 +3283,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u32"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMUL24",
+      "canonical_name": "mul_u24_u24_u48",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -3306,12 +3306,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "24-ZP reverse_24zp_carry certified resident kernel (retained; refresh candidate did not win)",
-      "notes": "",
-      "canonical_name": "mul_u24_u24_u48"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMUL32",
+      "canonical_name": "mul_u32_u32_u64",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -3329,12 +3329,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMUL32_READY",
+      "canonical_name": "mul_u32_u32_u64_ready",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply-ready",
@@ -3352,12 +3352,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64_ready"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMUL8",
+      "canonical_name": "mul_s8_s8_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -3375,12 +3375,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": "",
-      "canonical_name": "mul_s8_s8_s16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMUL16",
+      "canonical_name": "mul_s16_s16_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -3398,12 +3398,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison)",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s32"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMUL24",
+      "canonical_name": "mul_s24_s24_s48",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -3421,12 +3421,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": "",
-      "canonical_name": "mul_s24_s24_s48"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMUL32",
+      "canonical_name": "mul_s32_s32_s64",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -3444,12 +3444,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMUL32_READY",
+      "canonical_name": "mul_s32_s32_s64_ready",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply-ready",
@@ -3467,12 +3467,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64_ready"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UDIV8",
+      "canonical_name": "div_u8_u8_u8_8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -3490,12 +3490,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive",
-      "canonical_name": "div_u8_u8_u8_8"
+      "notes": "exhaustive"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UDIV16",
+      "canonical_name": "div_u16_u16_u16_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -3513,12 +3513,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UDIV24",
+      "canonical_name": "div_u24_u24_u24_24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -3536,12 +3536,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": "structured_random",
-      "canonical_name": "div_u24_u24_u24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UDIV32_16",
+      "canonical_name": "div_u32_u16_u32_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -3559,12 +3559,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u16_u32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMOD8",
+      "canonical_name": "mod_u8_u8_u8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -3582,12 +3582,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "REU direct remainder plane retained; direct-public UDIV8 selected separately",
-      "notes": "",
-      "canonical_name": "mod_u8_u8_u8"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMOD16",
+      "canonical_name": "mod_u16_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -3605,12 +3605,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-public 16-bit divider",
-      "notes": "",
-      "canonical_name": "mod_u16_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMOD24",
+      "canonical_name": "mod_u24_u24_u24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -3628,12 +3628,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose q0-counter/direct-public UDIV24",
-      "notes": "",
-      "canonical_name": "mod_u24_u24_u24"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMOD32_16",
+      "canonical_name": "mod_u32_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -3651,12 +3651,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected native 32/16 divider",
-      "notes": "",
-      "canonical_name": "mod_u32_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SDIV8",
+      "canonical_name": "div_s8_s8_s8_8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -3674,12 +3674,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "structured_random",
-      "canonical_name": "div_s8_s8_s8_8"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SDIV16",
+      "canonical_name": "div_s16_s16_s16_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -3697,12 +3697,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SDIV24",
+      "canonical_name": "div_s24_s24_s24_24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -3720,12 +3720,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose-derived direct-output native signed 24-bit divider with private magnitude engine",
-      "notes": "structured_random",
-      "canonical_name": "div_s24_s24_s24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SDIV32_16",
+      "canonical_name": "div_s32_s16_s32_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -3743,12 +3743,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s16_s32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMOD8",
+      "canonical_name": "mod_s8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -3766,12 +3766,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "",
-      "canonical_name": "mod_s8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMOD16",
+      "canonical_name": "mod_s16_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -3789,12 +3789,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fast direct-output native signed 16-bit divider",
-      "notes": "",
-      "canonical_name": "mod_s16_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMOD24",
+      "canonical_name": "mod_s24_s24_s24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -3812,12 +3812,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "Repose-derived direct-output native signed 24-bit divider with private magnitude engine",
-      "notes": "",
-      "canonical_name": "mod_s24_s24_s24"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMOD32_16",
+      "canonical_name": "mod_s32_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -3835,12 +3835,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "direct-output native signed 32/16 divider",
-      "notes": "",
-      "canonical_name": "mod_s32_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UDIV32_32",
+      "canonical_name": "div_u32_u32_u32_32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -3858,12 +3858,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u32_u32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMOD32_32",
+      "canonical_name": "mod_u32_u32_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -3881,12 +3881,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "",
-      "canonical_name": "mod_u32_u32_u32"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SDIV32_32",
+      "canonical_name": "div_s32_s32_s32_32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -3904,12 +3904,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s32_s32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMOD32_32",
+      "canonical_name": "mod_s32_s32_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -3927,12 +3927,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "",
-      "canonical_name": "mod_s32_s32_s32"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMUL16_SHR8",
+      "canonical_name": "mul_u16_u16_u24_shr8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -3950,12 +3950,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u24_shr8"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMUL16_SHR8",
+      "canonical_name": "mul_s16_s16_s24_shr8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -3973,12 +3973,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "116-ZP practical native SMUL16 plus SHR8 extraction",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s24_shr8"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UMUL32_SHR16",
+      "canonical_name": "mul_u32_u32_u48_shr16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -3996,12 +3996,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u48_shr16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SMUL32_SHR16",
+      "canonical_name": "mul_s32_s32_s48_shr16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -4019,12 +4019,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s48_shr16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_UDIV16_SHL8",
+      "canonical_name": "div_u16_u16_u24_16_shl8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed divide shift",
@@ -4042,12 +4042,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SDIV16_SHL8",
+      "canonical_name": "div_s16_s16_s24_16_shl8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed divide shift",
@@ -4065,12 +4065,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_URECIP16_Q16",
+      "canonical_name": "recip_u16_u24_q16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "reciprocal",
@@ -4088,12 +4088,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive",
-      "canonical_name": "recip_u16_u24_q16"
+      "notes": "exhaustive"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SIN8",
+      "canonical_name": "sin_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sine",
@@ -4102,7 +4102,7 @@
       "min_cycles": "23",
       "max_cycles": "23",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 14,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -4111,12 +4111,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "sin_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_COS8",
+      "canonical_name": "cos_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig cosine",
@@ -4125,7 +4125,7 @@
       "min_cycles": "23",
       "max_cycles": "23",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 14,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -4134,12 +4134,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "cos_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_SINCOS8",
+      "canonical_name": "sincos_u8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sincos",
@@ -4148,7 +4148,7 @@
       "min_cycles": "31",
       "max_cycles": "31",
       "cases": "256",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 20,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -4157,12 +4157,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "sincos_u8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_ATAN2_8",
+      "canonical_name": "atan2_s8_s8_u8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "angle",
@@ -4171,7 +4171,7 @@
       "min_cycles": "48",
       "max_cycles": "48",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 33,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -4179,13 +4179,13 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "atan2_s8_s8_u8"
+      "implementation": "exact signed-byte phase plane in REU bank 8",
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_ISQRT16",
+      "canonical_name": "isqrt_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -4194,7 +4194,7 @@
       "min_cycles": "54",
       "max_cycles": "54",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 38,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -4203,12 +4203,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_ISQRT32",
+      "canonical_name": "isqrt_u32_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -4217,7 +4217,7 @@
       "min_cycles": "899",
       "max_cycles": "1237",
       "cases": "4130",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 219,
       "zp_bytes": 9,
       "zp_ranges": "$54-$5C",
@@ -4226,12 +4226,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u32_u16"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_DIST8_FAST",
+      "canonical_name": "dist_s8_s8_u8_fast",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -4240,7 +4240,7 @@
       "min_cycles": "63",
       "max_cycles": "95",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 58,
       "zp_bytes": 2,
       "zp_ranges": "$5D-$5E",
@@ -4249,12 +4249,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_fast"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_DIST8_ACCURATE",
+      "canonical_name": "dist_s8_s8_u8_accurate",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -4263,7 +4263,7 @@
       "min_cycles": "69",
       "max_cycles": "101",
       "cases": "65536",
-      "cycle_basis": "published game-math benchmark 2026-09-06",
+      "cycle_basis": "current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 63,
       "zp_bytes": 2,
       "zp_ranges": "$5D-$5E",
@@ -4272,12 +4272,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_accurate"
+      "notes": ""
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "vector normalize",
@@ -4295,12 +4295,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
-      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMUL8",
+      "canonical_name": "mul_u8_u8_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -4318,12 +4318,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract",
-      "notes": "exhaustive 8-bit",
-      "canonical_name": "mul_u8_u8_u16"
+      "notes": "exhaustive 8-bit"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMUL16",
+      "canonical_name": "mul_u16_u16_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -4341,12 +4341,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u32"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMUL24",
+      "canonical_name": "mul_u24_u24_u48",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -4364,12 +4364,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST24 private 24-ZP carry producer with stable public adapter",
-      "notes": "",
-      "canonical_name": "mul_u24_u24_u48"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMUL32",
+      "canonical_name": "mul_u32_u32_u64",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply",
@@ -4387,12 +4387,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMUL32_READY",
+      "canonical_name": "mul_u32_u32_u64_ready",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "multiply-ready",
@@ -4410,12 +4410,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u64_ready"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMUL8",
+      "canonical_name": "mul_s8_s8_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -4433,12 +4433,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct signed-domain quarter-square kernel with private signed-sum planes",
-      "notes": "",
-      "canonical_name": "mul_s8_s8_s16"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMUL16",
+      "canonical_name": "mul_s16_s16_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -4456,12 +4456,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST17 native signed composition with private 17-ZP magnitude core",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s32"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMUL24",
+      "canonical_name": "mul_s24_s24_s48",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -4479,12 +4479,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST24 four-quadrant native signed composition; immutable quarter-square tables shared",
-      "notes": "",
-      "canonical_name": "mul_s24_s24_s48"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMUL32",
+      "canonical_name": "mul_s32_s32_s64",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply",
@@ -4502,12 +4502,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMUL32_READY",
+      "canonical_name": "mul_s32_s32_s64_ready",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "multiply-ready",
@@ -4525,12 +4525,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29 native signed quadrant composition; mixed-call-safe public path",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s64_ready"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UDIV8",
+      "canonical_name": "div_u8_u8_u8_8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -4548,12 +4548,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive",
-      "canonical_name": "div_u8_u8_u8_8"
+      "notes": "exhaustive"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UDIV16",
+      "canonical_name": "div_u16_u16_u16_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -4571,12 +4571,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-public 16-bit divider; V5 repacked into hybrid private RAM",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UDIV24",
+      "canonical_name": "div_u24_u24_u24_24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -4594,12 +4594,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "Repose q0-counter/direct-public UDIV24; V5 repacked hybrid copy",
-      "notes": "structured_random",
-      "canonical_name": "div_u24_u24_u24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UDIV32_16",
+      "canonical_name": "div_u32_u16_u32_16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -4617,12 +4617,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "V2 certified 32/16 divider imported into V5 hybrid private RAM",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u16_u32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMOD8",
+      "canonical_name": "mod_u8_u8_u8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -4640,12 +4640,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "",
-      "canonical_name": "mod_u8_u8_u8"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMOD16",
+      "canonical_name": "mod_u16_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -4663,12 +4663,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-public 16-bit divider; V5 repacked into hybrid private RAM",
-      "notes": "",
-      "canonical_name": "mod_u16_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMOD24",
+      "canonical_name": "mod_u24_u24_u24",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -4686,12 +4686,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "Repose q0-counter/direct-public UDIV24; V5 repacked hybrid copy",
-      "notes": "",
-      "canonical_name": "mod_u24_u24_u24"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMOD32_16",
+      "canonical_name": "mod_u32_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -4709,12 +4709,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "V2 certified 32/16 divider imported into V5 hybrid private RAM",
-      "notes": "",
-      "canonical_name": "mod_u32_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SDIV8",
+      "canonical_name": "div_s8_s8_s8_8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -4732,12 +4732,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "structured_random",
-      "canonical_name": "div_s8_s8_s8_8"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SDIV16",
+      "canonical_name": "div_s16_s16_s16_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -4755,12 +4755,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-output native signed 16-bit divider; V5 repacked under 31-ZP contract",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s16_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SDIV24",
+      "canonical_name": "div_s24_s24_s24_24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -4778,12 +4778,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-output native signed 24-bit divider repacked under V5 31-ZP contract",
-      "notes": "structured_random",
-      "canonical_name": "div_s24_s24_s24_24"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SDIV32_16",
+      "canonical_name": "div_s32_s16_s32_16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -4801,12 +4801,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "refreshed low-ZP native signed 32/16 divider retained in V5",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s16_s32_16"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMOD8",
+      "canonical_name": "mod_s8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -4824,12 +4824,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "direct-output native signed 8-bit divider; executable-disjoint from UDIV8",
-      "notes": "",
-      "canonical_name": "mod_s8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMOD16",
+      "canonical_name": "mod_s16_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -4847,12 +4847,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-output native signed 16-bit divider; V5 repacked under 31-ZP contract",
-      "notes": "",
-      "canonical_name": "mod_s16_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMOD24",
+      "canonical_name": "mod_s24_s24_s24",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -4870,12 +4870,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fast direct-output native signed 24-bit divider repacked under V5 31-ZP contract",
-      "notes": "",
-      "canonical_name": "mod_s24_s24_s24"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMOD32_16",
+      "canonical_name": "mod_s32_s16_s16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -4893,12 +4893,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "refreshed low-ZP native signed 32/16 divider retained in V5",
-      "notes": "",
-      "canonical_name": "mod_s32_s16_s16"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UDIV32_32",
+      "canonical_name": "div_u32_u32_u32_32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "divide",
@@ -4916,12 +4916,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "structured_random",
-      "canonical_name": "div_u32_u32_u32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMOD32_32",
+      "canonical_name": "mod_u32_u32_u32",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "modulo",
@@ -4939,12 +4939,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "native tiered 32/32 divider with early q=0 gate",
-      "notes": "",
-      "canonical_name": "mod_u32_u32_u32"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SDIV32_32",
+      "canonical_name": "div_s32_s32_s32_32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "divide",
@@ -4962,12 +4962,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "structured_random",
-      "canonical_name": "div_s32_s32_s32_32"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMOD32_32",
+      "canonical_name": "mod_s32_s32_s32",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "modulo/remainder",
@@ -4985,12 +4985,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "native signed 32/32 magnitude path with redundant zero-test removed",
-      "notes": "",
-      "canonical_name": "mod_s32_s32_s32"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMUL16_SHR8",
+      "canonical_name": "mul_u16_u16_u24_shr8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -5008,12 +5008,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "mul_u16_u16_u24_shr8"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMUL16_SHR8",
+      "canonical_name": "mul_s16_s16_s24_shr8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -5031,12 +5031,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST17 SMUL16 plus SHR8 extraction",
-      "notes": "",
-      "canonical_name": "mul_s16_s16_s24_shr8"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UMUL32_SHR16",
+      "canonical_name": "mul_u32_u32_u48_shr16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed multiply shift",
@@ -5054,12 +5054,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_u32_u32_u48_shr16"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SMUL32_SHR16",
+      "canonical_name": "mul_s32_s32_s48_shr16",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed multiply shift",
@@ -5077,12 +5077,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "FAST31/V29 SMUL32 producer plus existing SHR16 extraction",
-      "notes": "",
-      "canonical_name": "mul_s32_s32_s48_shr16"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_UDIV16_SHL8",
+      "canonical_name": "div_u16_u16_u24_16_shl8",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "fixed divide shift",
@@ -5100,12 +5100,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fixed-point adapter into selected unsigned 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_u16_u16_u24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SDIV16_SHL8",
+      "canonical_name": "div_s16_s16_s24_16_shl8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "fixed divide shift",
@@ -5123,12 +5123,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "fixed-point adapter into selected native signed 32/16 divider",
-      "notes": "structured_random",
-      "canonical_name": "div_s16_s16_s24_16_shl8"
+      "notes": "structured_random"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_URECIP16_Q16",
+      "canonical_name": "recip_u16_u24_q16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "reciprocal",
@@ -5146,12 +5146,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "exact reciprocal ladder with selected profile division fallback",
-      "notes": "exhaustive",
-      "canonical_name": "recip_u16_u24_q16"
+      "notes": "exhaustive"
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SIN8",
+      "canonical_name": "sin_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sine",
@@ -5160,7 +5160,7 @@
       "min_cycles": "23",
       "max_cycles": "23",
       "cases": "256",
-      "cycle_basis": "V5 documented v1_balanced path; published game-math benchmark 2026-09-06",
+      "cycle_basis": "V5 documented v1_balanced path; current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 14,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -5169,12 +5169,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "sin_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_COS8",
+      "canonical_name": "cos_u8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig cosine",
@@ -5183,7 +5183,7 @@
       "min_cycles": "23",
       "max_cycles": "23",
       "cases": "256",
-      "cycle_basis": "V5 documented v2_pareto_fast path; published game-math benchmark 2026-09-06",
+      "cycle_basis": "V5 documented v2_pareto_fast path; current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 14,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -5192,12 +5192,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "V2 certified kernel imported into V5 hybrid private RAM",
-      "notes": "",
-      "canonical_name": "cos_u8_s8"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_SINCOS8",
+      "canonical_name": "sincos_u8_s8_s8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "trig sincos",
@@ -5206,7 +5206,7 @@
       "min_cycles": "31",
       "max_cycles": "31",
       "cases": "256",
-      "cycle_basis": "V5 documented v2_pareto_fast path; published game-math benchmark 2026-09-06",
+      "cycle_basis": "V5 documented v2_pareto_fast path; current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 20,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -5215,35 +5215,35 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "V2 certified kernel imported into V5 hybrid private RAM",
-      "notes": "",
-      "canonical_name": "sincos_u8_s8_s8"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_ATAN2_8",
+      "canonical_name": "atan2_s8_s8_u8",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "angle",
       "width": "atan2(s8,s8) -> phase8",
-      "mean_cycles": "46.953064",
-      "min_cycles": "30",
-      "max_cycles": "48",
+      "mean_cycles": "44.962814",
+      "min_cycles": "29",
+      "max_cycles": "47",
       "cases": "65536",
-      "cycle_basis": "V5 documented v2_pareto_fast path; published game-math benchmark 2026-09-06",
-      "reachable_code_bytes": 97,
+      "cycle_basis": "V5 documented v2_pareto_fast path; current exhaustive/profile game-math benchmark",
+      "reachable_code_bytes": 92,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 44951,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
-      "implementation": "V2 certified kernel imported into V5 hybrid private RAM",
-      "notes": "",
-      "canonical_name": "atan2_s8_s8_u8"
+      "implementation": "V2 sum_fast kernel imported into V5 with four private table pages",
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_ISQRT16",
+      "canonical_name": "isqrt_u16_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -5252,7 +5252,7 @@
       "min_cycles": "205",
       "max_cycles": "258",
       "cases": "65536",
-      "cycle_basis": "V5 documented v1_balanced path; published game-math benchmark 2026-09-06",
+      "cycle_basis": "V5 documented v1_balanced path; current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 277,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -5261,12 +5261,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u16_u16"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_ISQRT32",
+      "canonical_name": "isqrt_u32_u16",
       "api_class": "stable",
       "signedness": "unsigned",
       "operation": "integer square root",
@@ -5275,7 +5275,7 @@
       "min_cycles": "1193",
       "max_cycles": "1656",
       "cases": "4130",
-      "cycle_basis": "V5 documented v1_balanced path; published game-math benchmark 2026-09-06",
+      "cycle_basis": "V5 documented v1_balanced path; current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 496,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -5284,12 +5284,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "isqrt_u32_u16"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_DIST8_FAST",
+      "canonical_name": "dist_s8_s8_u8_fast",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -5298,7 +5298,7 @@
       "min_cycles": "68",
       "max_cycles": "104",
       "cases": "65536",
-      "cycle_basis": "V5 documented v1_balanced path; published game-math benchmark 2026-09-06",
+      "cycle_basis": "V5 documented v1_balanced path; current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 67,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -5307,12 +5307,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_fast"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_DIST8_ACCURATE",
+      "canonical_name": "dist_s8_s8_u8_accurate",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "distance approximation",
@@ -5321,7 +5321,7 @@
       "min_cycles": "74",
       "max_cycles": "110",
       "cases": "65536",
-      "cycle_basis": "V5 documented v1_balanced path; published game-math benchmark 2026-09-06",
+      "cycle_basis": "V5 documented v1_balanced path; current exhaustive/profile game-math benchmark",
       "reachable_code_bytes": 72,
       "zp_bytes": 0,
       "zp_ranges": "",
@@ -5330,12 +5330,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": "",
-      "canonical_name": "dist_s8_s8_u8_accurate"
+      "notes": ""
     },
     {
       "profile": "v5_hybrid_lowzp",
       "routine": "MATH_VEC2_NORMALIZE_Q8_8",
+      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15",
       "api_class": "stable",
       "signedness": "signed",
       "operation": "vector normalize",
@@ -5353,12 +5353,12 @@
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": 31,
       "implementation": "profile-selected resident implementation",
-      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB",
-      "canonical_name": "normalize_s16_s16_s16_s16_q8_8_to_q1_15"
+      "notes": "Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_REU_UMUL16_BEGIN",
+      "canonical_name": "mul_u16_u16_u32_turbo_begin",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 16",
@@ -5376,12 +5376,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u16_u16_u32_turbo_begin"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_REU_UMUL16",
+      "canonical_name": "mul_u16_u16_u32_turbo",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 16",
@@ -5399,12 +5399,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u16_u16_u32_turbo"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_REU_UMUL16_END",
+      "canonical_name": "mul_u16_u16_u32_turbo_end",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 16",
@@ -5422,12 +5422,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u16_u16_u32_turbo_end"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_REU_UMUL32_BEGIN",
+      "canonical_name": "mul_u32_u32_u64_turbo_begin",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 32",
@@ -5445,12 +5445,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u32_u32_u64_turbo_begin"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_REU_UMUL32",
+      "canonical_name": "mul_u32_u32_u64_turbo",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 32",
@@ -5468,12 +5468,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u32_u32_u64_turbo"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v3_reu_512k",
       "routine": "MATH_REU_UMUL32_END",
+      "canonical_name": "mul_u32_u32_u64_turbo_end",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 32",
@@ -5491,12 +5491,12 @@
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u32_u32_u64_turbo_end"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_REU_UMUL16_BEGIN",
+      "canonical_name": "mul_u16_u16_u32_turbo_begin",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 16",
@@ -5514,12 +5514,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u16_u16_u32_turbo_begin"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_REU_UMUL16",
+      "canonical_name": "mul_u16_u16_u32_turbo",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 16",
@@ -5537,12 +5537,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u16_u16_u32_turbo"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_REU_UMUL16_END",
+      "canonical_name": "mul_u16_u16_u32_turbo_end",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 16",
@@ -5560,12 +5560,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "113-ZP Turbo16 overlay",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u16_u16_u32_turbo_end"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_REU_UMUL32_BEGIN",
+      "canonical_name": "mul_u32_u32_u64_turbo_begin",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 32",
@@ -5583,12 +5583,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u32_u32_u64_turbo_begin"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_REU_UMUL32",
+      "canonical_name": "mul_u32_u32_u64_turbo",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 32",
@@ -5606,12 +5606,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u32_u32_u64_turbo"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_REU_UMUL32_END",
+      "canonical_name": "mul_u32_u32_u64_turbo_end",
       "api_class": "reu_turbo",
       "signedness": "unsigned",
       "operation": "turbo multiply 32",
@@ -5629,12 +5629,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "135-ZP stack-free ram135 Turbo32 record compromise",
-      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set",
-      "canonical_name": "mul_u32_u32_u64_turbo_end"
+      "notes": "exclusive overlay mode; ZP ownership is mode allocation, not static wrapper touch set"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_REU_QS16_BEGIN",
+      "canonical_name": "mul_u16_u16_u32_qs16_begin",
       "api_class": "reu_qs16",
       "signedness": "unsigned",
       "operation": "V4 QS16 multiply mode",
@@ -5652,12 +5652,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "V4 16MiB QS16 mode",
-      "notes": "exclusive QS16 mode ZP ownership",
-      "canonical_name": "mul_u16_u16_u32_qs16_begin"
+      "notes": "exclusive QS16 mode ZP ownership"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_REU_QS16",
+      "canonical_name": "mul_u16_u16_u32_qs16",
       "api_class": "reu_qs16",
       "signedness": "unsigned",
       "operation": "V4 QS16 multiply mode",
@@ -5675,12 +5675,12 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "V4 16MiB QS16 mode",
-      "notes": "exclusive QS16 mode ZP ownership",
-      "canonical_name": "mul_u16_u16_u32_qs16"
+      "notes": "exclusive QS16 mode ZP ownership"
     },
     {
       "profile": "v4_reu_16m",
       "routine": "MATH_REU_QS16_END",
+      "canonical_name": "mul_u16_u16_u32_qs16_end",
       "api_class": "reu_qs16",
       "signedness": "unsigned",
       "operation": "V4 QS16 multiply mode",
@@ -5698,8 +5698,7 @@
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
       "implementation": "V4 16MiB QS16 mode",
-      "notes": "exclusive QS16 mode ZP ownership",
-      "canonical_name": "mul_u16_u16_u32_qs16_end"
+      "notes": "exclusive QS16 mode ZP ownership"
     }
   ]
 }

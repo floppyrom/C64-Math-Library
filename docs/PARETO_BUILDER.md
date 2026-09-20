@@ -75,14 +75,14 @@ makes the 24-bit multiplier much more important. At the same 55-byte ZP budget, 
 
 | Pack | Additional ZP | Base extra private RAM payload | Main accelerated public paths |
 |---|---:|---:|---|
-| `atan2_fast` | 0 | 768 B | ATAN2_8 |
+| `atan2_fast` | 0 | 1024 B | ATAN2_8 |
 | V5 zero-ZP imports | 0 | 8609 B | refreshed UDIV/SDIV/UMOD/SMOD transplant plus COS8/SINCOS8 |
 | initialized UMUL32 (retired catalog entry) | 0 | 627 B | no longer selectable: refreshed V1 already carries FAST31/V29 UMUL32/SMUL32 |
 | UMUL8 (legacy pack name `umul8_16`) | 5 B | 547 B | UMUL8 |
 | record UMUL16/UMUL24 | 24 B | 911 B | UMUL16, UMUL16_SHR8, UMUL24, SMUL24 |
 | native SMUL16 executable-ZP | 116 B | 176 B | SMUL16, SMUL16_SHR8 |
 
-`atan2_fast` is deliberately independent from the V5 zero-ZP pack. This keeps RAM accounting honest: selecting the division/modulo/trig transplant does not silently consume the additional three 256-byte ATAN2 pages. When both are selected, the generated code is the fixed V5 ATAN2/division/trig configuration.
+`atan2_fast` is deliberately independent from the V5 zero-ZP pack. This keeps RAM accounting honest: selecting the division/modulo/trig transplant does not silently consume the four 256-byte ATAN2 pages. When both are selected, the generated code is the fixed V5 ATAN2/division/trig configuration.
 
 When any selected pack requires initialization, the builder also emits a small exact-size `MATH_INIT` helper. Its bytes are included in `--ram-budget` accounting, so the exact combination total may exceed the sum of the base payload column above.
 
@@ -94,16 +94,16 @@ These are the current default selections when RAM is unrestricted and startup `M
 
 | ZP budget | Selected result | Exact extra RAM vs V1 | Init? |
 |---:|---|---:|---|
-| **31 B** | `atan2_fast` + V5 zero-ZP imports | **9377 B** | no |
-| **36 B** | above + UMUL8 pack | **9950 B** | yes |
-| **60 B** | above + record UMUL16/UMUL24 pack | **10893 B** | yes |
-| **147 B** | `atan2_fast` + V5 imports + native SMUL16 | **9581 B** | yes |
-| **176 B** | all active certified hybrid packs, including `atan2_fast` | **11079 B** | yes |
+| **31 B** | `atan2_fast` + V5 zero-ZP imports | **9633 B** | no |
+| **36 B** | above + UMUL8 pack | **10206 B** | yes |
+| **60 B** | above + record UMUL16/UMUL24 pack | **11149 B** | yes |
+| **147 B** | `atan2_fast` + V5 imports + native SMUL16 | **9837 B** | yes |
+| **176 B** | all active certified hybrid packs, including `atan2_fast` | **11335 B** | yes |
 | **221 B** | complete V2 | **208 B resident increase vs V1** | yes |
 
 RAM is not monotonic with ZP because the optimizer maximizes weighted speed, not “number of packs.” For example, the 147-byte point spends most of its ZP budget on the exceptionally fast SMUL16 executable-ZP implementation and omits the smaller multiplier packs.
 
-The two 31-ZP resource endpoints remain useful checks: `--ram-budget 0` selects no packs and reproduces V1 byte-for-byte, while the unrestricted/default 31-ZP selection (also selected by `--init-policy optional`) is `atan2_fast + zero_zp_v5` and reproduces fixed V5 byte-for-byte with **9377 bytes** of exact extra private RAM.
+The two 31-ZP resource endpoints remain useful checks: `--ram-budget 0` selects no packs and reproduces V1 byte-for-byte, while the unrestricted/default 31-ZP selection (also selected by `--init-policy optional`) is `atan2_fast + zero_zp_v5` and reproduces fixed V5 byte-for-byte with **9633 bytes** of exact extra private RAM.
 
 ## Why V1 and V5 still matter
 

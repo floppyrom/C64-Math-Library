@@ -33,9 +33,9 @@ PACKS = {
         'extra_zp': 0,
         'extra_ram': hy.ATAN_EXTRA_TABLE_BYTES,
         'requires_init': False,
-        'description': 'V2 four-quadrant ATAN2 body using three extra V1-free table pages',
+        'description': 'V2 sum-fast ATAN2 body using four V1-free table pages',
         'savings': {
-            'MATH_ATAN2_8': 3.48828125,
+            'MATH_ATAN2_8': 3.484375,
         },
     },
     'umul32_initialized': {
@@ -420,9 +420,10 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
     def add(name,start,end):
         rr.append({'name':name,'start':hx(start),'end':hx(end),'bytes':end-start+1})
     if 'atan2_fast' in packs:
-        add('ATAN2_Q1_TABLE', vals['REG_TABLE']+0x0E00, vals['REG_TABLE']+0x0EFF)
-        add('ATAN2_Q2_TABLE', vals['REG_TABLE']+0x0F00, vals['REG_TABLE']+0x0FFF)
-        add('ATAN2_Q3_TABLE', vals['REG_TABLE']+0x1000, vals['REG_TABLE']+0x10FF)
+        add('ATAN2_LOGX_TABLE', vals['REG_TABLE']+0x0D00, vals['REG_TABLE']+0x0DFF)
+        add('ATAN2_LOGY_TABLE', vals['REG_TABLE']+0x0E00, vals['REG_TABLE']+0x0EFF)
+        add('ATAN2_QPOS_TABLE', vals['REG_TABLE']+0x0F00, vals['REG_TABLE']+0x0FFF)
+        add('ATAN2_QNEG_TABLE', vals['REG_TABLE']+0x1000, vals['REG_TABLE']+0x10FF)
     if 'zero_zp_v5' in packs:
         add('V5_HYBRID_CODE', vals['HYBRID_CODE'], vals['HYBRID_CODE']+hy.HYBRID_BYTES-1)
         add('V5_SDIV16_PREFIX', vals['REG_TABLE']+0x1400, vals['REG_TABLE']+0x162A)

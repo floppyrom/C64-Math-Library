@@ -1,4 +1,4 @@
-# ATAN2 optimization and game-source audit — 2026-09-17
+# ATAN2 optimization and game-source audit — 2026-09-17, updated 2026-09-20
 
 ## Release result
 
@@ -16,23 +16,23 @@ The stock-C64 implementations use a compressed signed-magnitude logarithm and ge
 
 | Profile | Mean cycles | Min | Max | ATAN2 tables | Extra ATAN2 ZP | Accuracy |
 |---|---:|---:|---:|---:|---:|---|
-| V1 Balanced | **50.441345** | 30 | 53 | 512 B | 0 | <=1 phase unit |
-| V2 Pareto-Fast | **46.953064** | 30 | 48 | 1280 B | 0 | <=1 phase unit |
-| V3 REU 512K | **46.953064** | 30 | 48 | 1280 B | 0 | <=1 phase unit |
+| V1 Balanced | **48.447189** | 29 | 50 | 512 B | 0 | <=1 phase unit |
+| V2 Pareto-Fast | **44.962814** | 29 | 47 | 1024 B | 0 | <=1 phase unit |
+| V3 REU 512K | **44.962814** | 29 | 47 | 1024 B | 0 | <=1 phase unit |
 | V4 REU 16M | **48.000000** | 48 | 48 | 64 KiB REU exact plane | 0 | exact |
-| V5 Hybrid Low-ZP | **46.953064** | 30 | 48 | V1 base pages + 768 B fast upgrade | 0 | <=1 phase unit |
+| V5 Hybrid Low-ZP | **44.962814** | 29 | 47 | 1024 B private sum-fast tables | 0 | <=1 phase unit |
 
-The V2/V3 fast tier resolves the quadrant in the table selection rather than performing a shared post-lookup correction. V5 imports that fast body but remaps the third added page away from V1-owned data. The reference V2/V3 pages are `$5500`, `$5F00`, and `$4700`; V5 keeps `$5500`/`$5F00` and remaps the donor `$4700` page to its free `$5700` page.
+The V2/V3 sum-fast tier combines two biased log pages with carry-clearing addition and uses two reflected angle pages. V5 imports that body and maps all four pages to the V1-free `$6D00-$70FF` range. The reference V2/V3 pages are `$9600`, `$9700`, `$6E00`, and `$6F00`.
 
 ## Why keep more than one stock-C64 point?
 
-The fast tier saves about 3.49 cycles on average versus the compact V1 implementation but spends three more 256-byte pages. That is a real game integration trade-off, so the release keeps both points:
+The fast tier saves about 3.48 cycles on average versus the optimized compact V1 implementation but spends two more 256-byte pages. That is a real game integration trade-off, so the release keeps both points:
 
 - V1: compact, zero-ZP, 512-byte table footprint;
-- V2/V3/V5: speed-first, zero-ZP, 1280-byte table footprint;
+- V2/V3/V5: speed-first, zero-ZP, 1024-byte table footprint;
 - V4: exact REU plane when 16 MiB REU storage is already part of the target.
 
-The Custom Pareto Builder exposes the fast upgrade separately as `atan2_fast` (0 ZP, 768 B extra private RAM) rather than hiding it inside the other V5 zero-ZP imports.
+The Custom Pareto Builder exposes the fast upgrade separately as `atan2_fast` (0 ZP, 1024 B extra private RAM) rather than hiding it inside the other V5 zero-ZP imports.
 
 ## Real-game audit principle
 

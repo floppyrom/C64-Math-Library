@@ -19,7 +19,7 @@ The 20 stable game/fixed-point JMP slots occupy `$5E00-$5E3B`. They use the exis
 | `MATH_DIST8_ACCURATE` | `$5E36` | signed dx,dy -> rounded 243/107 minimax form |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `$5E39` | signed Q8.8 x,y -> signed Q1.15 unit vector; C=1 only for zero |
 
-Phase convention: `$00=0°`, `$40=90°`, `$80=180°`, `$C0=270°`. V1 uses the compact 512-byte signed-log ATAN2 tier (**50.441345-cycle mean**); V2/V3 use the 1280-byte four-final-angle-page tier (**46.953064-cycle mean**). Both are within one phase unit of rounded mathematical atan2 over the entire signed-byte plane. V4 is exact against that reference at 48 fixed cycles. `(0,0)` returns zero.
+Phase convention: `$00=0°`, `$40=90°`, `$80=180°`, `$C0=270°`. V1 uses the optimized compact 512-byte signed-log ATAN2 tier (**48.447189-cycle mean**); V2/V3 use the 1024-byte carry-clearing sum tier (**44.962814-cycle mean**). Both are within one phase unit of rounded mathematical atan2 over the entire signed-byte plane. V4 is exact against that reference at 48 fixed cycles. `(0,0)` returns zero.
 
 V1 uses `$C040-$C057` RAM scratch. V2–V4 use `$53-$6A` ZP. Native V2–V4 SMUL16 executes from `$80-$F3`. On V3/V4, game-math calls are forbidden while a Turbo BEGIN/END overlay is active.
 

@@ -39,7 +39,7 @@ unsigned,reciprocal,Q16 from d16,MATH_URECIP16_Q16,recip_u16_u24_q16,$5E1E,exact
 signed,trig sine,phase8 -> s8,MATH_SIN8,sin_u8_s8,$5E21,table,sin_u8_s8.asm
 signed,trig cosine,phase8 -> s8,MATH_COS8,cos_u8_s8,$5E24,table/phase offset,cos_u8_s8.asm
 signed,trig sincos,phase8 -> 2xs8,MATH_SINCOS8,sincos_u8_s8_s8,$5E27,paired table,sincos_u8_s8_s8.asm
-signed,angle,"atan2(s8,s8) -> phase8",MATH_ATAN2_8,atan2_s8_s8_u8,$5E2A,V1 compact signed-log; V2/V3/V5 fast four-quadrant signed-log; V4 exact REU,atan2_s8_s8_u8.asm
+signed,angle,"atan2(s8,s8) -> phase8",MATH_ATAN2_8,atan2_s8_s8_u8,$5E2A,V1 compact-opt signed-log; V2/V3/V5 sum-fast signed-log; V4 exact REU,atan2_s8_s8_u8.asm
 unsigned,integer square root,16 -> 16,MATH_ISQRT16,isqrt_u16_u16,$5E2D,exact table search; V4 exact REU,isqrt_u16_u16.asm
 unsigned,integer square root,32 -> 16,MATH_ISQRT32,isqrt_u32_u16,$5E30,exact ISQRT16-seeded hybrid + 8 base-4 refinement steps,isqrt_u32_u16.asm
 signed,distance approximation,"s8,s8 -> u8",MATH_DIST8_FAST,dist_s8_s8_u8_fast,$5E33,max + min/2,dist_s8_s8_u8_fast.asm

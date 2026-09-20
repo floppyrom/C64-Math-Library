@@ -8,13 +8,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_private_ram_bytes": 9377,
+        "extra_private_ram_bytes": 9633,
         "init_required": false,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "9e9e85df72bdbaf7be26811b4f9f690b72e138cf7fe2c2f70f8a6fd1f87fac55"
+        "sha256": "7b340cf2dd33eb950f02dde864b9a64f55a109ed45e1db26a4f2f5ef780a7071"
       },
       "36": {
         "selected_packs": [
@@ -23,13 +23,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_private_ram_bytes": 9950,
+        "extra_private_ram_bytes": 10206,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "f422a443a8c755660057153ee22c0a215c7f9ae5ebbfd436648af6064cc8ca61"
+        "sha256": "5869111a8a0de4acbe3ba77fb6a55adc3c6c98f0aa4a485b352ddd3169482225"
       },
       "60": {
         "selected_packs": [
@@ -39,13 +39,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 10893,
+        "extra_private_ram_bytes": 11149,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "b4f131b8f83bf34792481ca468531fffeaef4e7b64f0a2710f902d9bf95b8b76"
+        "sha256": "5239e0b2a8abc639718cfdceff859c21caf78f192cdb3eea6d7f61fc5fd04be8"
       },
       "147": {
         "selected_packs": [
@@ -54,13 +54,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_private_ram_bytes": 9581,
+        "extra_private_ram_bytes": 9837,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "1fff1fbbcda3755cc9de3c3788eee3d1774fab10c031dee4026eff5033500ff2"
+        "sha256": "803bb5a460d0ad732673ef7bd6c73afd5d65333ef42763a74009f311e26e4ea1"
       },
       "176": {
         "selected_packs": [
@@ -71,13 +71,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 11079,
+        "extra_private_ram_bytes": 11335,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "34fd3f78b7f5674b2abdbc28194182e637c06c479c05cdc53cad0e29b8e6d849"
+        "sha256": "6bfb2c5ec45b3992075d173abd37ca6bf0c2446602d3d881297714b6ae9000c8"
       },
       "221": {
         "selected_packs": [
@@ -90,7 +90,7 @@
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "3bbbb9c007f8197835cf16782c68462e7939896554ccd8d34e10cea1204cb8ff"
+        "sha256": "f28a900b2274c7f09290df93d81ec34a16de5c9e6e8a46c1b84b5e5e1dd4d994"
       }
     },
     "alternate": {
@@ -100,13 +100,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_private_ram_bytes": 9377,
+        "extra_private_ram_bytes": 9633,
         "init_required": false,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "0a2e7f6bfd6f73454e26cf28a7dd3f4400fb79245a3fd6bbc4feca28dcf5bfae"
+        "sha256": "9b354748f63f731d182c31fa27914503f7eaccc7ab0a82890c5bea3bfa8dad42"
       },
       "36": {
         "selected_packs": [
@@ -115,13 +115,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_private_ram_bytes": 9950,
+        "extra_private_ram_bytes": 10206,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "0b0161d80494d48fc6bce3dc090ad19f4dd72e5a3b40da08d1553a8b884760cd"
+        "sha256": "fa14d68c774b135e3a3c059ef241e5cd2b1181333d45321a76c6a8f06cc5b3b8"
       },
       "60": {
         "selected_packs": [
@@ -131,13 +131,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 10893,
+        "extra_private_ram_bytes": 11149,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "6438bce22717d4e4e4708faf063f7e36f7bce1009642e885fe0e2abc23791e0b"
+        "sha256": "2ada53472eb294d3325d4dc7f572c99eb21dd660ebe59e945c499cb849d0da1e"
       },
       "147": {
         "selected_packs": [
@@ -146,13 +146,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_private_ram_bytes": 9581,
+        "extra_private_ram_bytes": 9837,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "aa8fb89a2326155dd465d42821d2e34b9af6ab4dd00812f400f0d79873b1a4c9"
+        "sha256": "81a6f3af3c0484d2d742900318186af3aee02ebca1f567fb1931a9034ff54bf3"
       },
       "176": {
         "selected_packs": [
@@ -163,13 +163,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 11079,
+        "extra_private_ram_bytes": 11335,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "eb406e77dc0eede84c4e8c5b50d4c0cbd8e29d56a7c81edf5933ce39b552389d"
+        "sha256": "5277731c0ad260fa82b5028c2965b350ee70bcde5cb82b1c2e2964e48169c590"
       },
       "221": {
         "selected_packs": [
@@ -182,7 +182,7 @@
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "9f57eba8819b357772389d70de23fbe60ff48f3c8b50d4b4a206f8e00290ef65"
+        "sha256": "36fad182eb3a0ae23f3b3741ab267143cd24378444a31556bde285e08623552f"
       }
     }
   },
@@ -200,8 +200,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_ram": 9377,
-        "score": 300.91505425,
+        "extra_ram": 9633,
+        "score": 300.911148,
         "init_required": false
       }
     },
@@ -220,8 +220,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_ram": 9950,
-        "score": 312.91508425,
+        "extra_ram": 10206,
+        "score": 312.911178,
         "init_required": true
       }
     },
@@ -242,8 +242,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_ram": 10893,
-        "score": 462.66544725,
+        "extra_ram": 11149,
+        "score": 462.661541,
         "init_required": true
       }
     },
@@ -262,8 +262,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_ram": 9581,
-        "score": 643.46010125,
+        "extra_ram": 9837,
+        "score": 643.456195,
         "init_required": true
       }
     },
@@ -286,8 +286,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_ram": 11079,
-        "score": 805.21049425,
+        "extra_ram": 11335,
+        "score": 805.206588,
         "init_required": true
       }
     },
@@ -330,8 +330,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_ram": 9377,
-        "score": 300.91505425,
+        "extra_ram": 9633,
+        "score": 300.911148,
         "init_required": false
       }
     },
@@ -350,8 +350,8 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 55,
-        "extra_ram": 10338,
-        "score": 4742.66541725,
+        "extra_ram": 10594,
+        "score": 4742.661511,
         "init_required": true
       }
     }
@@ -422,9 +422,9 @@
         "cases": 65536,
         "cycle_vector_equal_to_v2": true,
         "exhaustive": true,
-        "mean_cycles": 46.95306396484375,
-        "min_cycles": 30,
-        "max_cycles": 48,
+        "mean_cycles": 44.96281433105469,
+        "min_cycles": 29,
+        "max_cycles": 47,
         "max_phase_error": 1
       }
     }
@@ -466,28 +466,28 @@
     {
       "map": "reference",
       "zp_budget": 31,
-      "sha256": "9e9e85df72bdbaf7be26811b4f9f690b72e138cf7fe2c2f70f8a6fd1f87fac55",
+      "sha256": "7b340cf2dd33eb950f02dde864b9a64f55a109ed45e1db26a4f2f5ef780a7071",
       "identical": true
     },
     {
       "map": "reference",
       "zp_budget": 176,
-      "sha256": "34fd3f78b7f5674b2abdbc28194182e637c06c479c05cdc53cad0e29b8e6d849",
+      "sha256": "6bfb2c5ec45b3992075d173abd37ca6bf0c2446602d3d881297714b6ae9000c8",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 31,
-      "sha256": "0a2e7f6bfd6f73454e26cf28a7dd3f4400fb79245a3fd6bbc4feca28dcf5bfae",
+      "sha256": "9b354748f63f731d182c31fa27914503f7eaccc7ab0a82890c5bea3bfa8dad42",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 176,
-      "sha256": "eb406e77dc0eede84c4e8c5b50d4c0cbd8e29d56a7c81edf5933ce39b552389d",
+      "sha256": "5277731c0ad260fa82b5028c2965b350ee70bcde5cb82b1c2e2964e48169c590",
       "identical": true
     }
   ],
   "common_api_machine_calls": 55068,
-  "elapsed_seconds": 17.636
+  "elapsed_seconds": 30.231
 }

@@ -1,17 +1,14 @@
 ; ============================================================================
-; V1 Balanced resident module — ATAN2 compact
+; V1 Balanced resident module — ATAN2 compact-opt
 ; ============================================================================
 ; Stable public entry: MATH_ATAN2_8 = $5E2A
-; Inputs:  X0 = signed 8-bit x, Y0 = signed 8-bit y
-; Output:  Z0 = phase 0..255 ($00=+X, $40=+Y, $80=-X, $C0=-Y)
+; Inputs: X0=signed x, Y0=signed y; output: Z0=phase8
 ; Accuracy: exhaustive 65,536-vector validation, max error <= 1 phase unit
-; Public-entry timing: 50.441345 mean cycles, range 30-53
+; Public-entry timing: 48.447189 mean cycles, range 29-50
 ; Normal ZP: 0 bytes
-; Tables: $9600 LOGTAB + $9700 ATANTAB = 512 bytes
-;
-; This is the profile-local source for the installed V1 body at $C459-$C496.
-; The table pages are already part of the resident image and are not duplicated
-; in this module. Canonical reusable source: routines/atan2/atan2_compact.asm
+; Installed body: $C814-$C871
+; Tables: LOGTAB=$9600, ATANTAB=$9700
+; Canonical reusable source: routines/atan2/atan2_compact_opt.asm
 ; ============================================================================
 
 !cpu 6502
@@ -21,26 +18,10 @@ Y0=$C004
 Z0=$C008
 LOGTAB=$9600
 ATANTAB=$9700
-
-*=$C459
-atan2_compact:
+*=$C814
+atan2:
     ldx X0
-    bne x_nonzero
-    ldx Y0
-    beq zero
-    bmi x0_yneg
-    lda #$40
-    bne axis_store
-x0_yneg:
-    lda #$C0
-    bne axis_store
-zero:
-    lda #$00
-axis_store:
-    sta Z0
-    clc
-    rts
-x_nonzero:
+    beq axis
     sec
     bmi xneg
     lda LOGTAB,x
@@ -55,10 +36,9 @@ x_nonzero:
 xpyn:
     sbc LOGTAB,x
     tax
-    lda ATANTAB,x
-    eor #$ff
-    clc
-    adc #$01
+    lda #$00
+    sec
+    sbc ATANTAB,x
     sta Z0
     clc
     rts
@@ -68,10 +48,9 @@ xneg:
     bmi xnyn
     sbc LOGTAB,x
     tax
-    lda ATANTAB,x
-    eor #$ff
-    clc
-    adc #$81
+    lda #$80
+    sec
+    sbc ATANTAB,x
     sta Z0
     clc
     rts
@@ -82,4 +61,14 @@ xnyn:
     eor #$80
     sta Z0
     clc
+    rts
+axis:
+    clc
+    lda Y0
+    beq axis_store
+    asl
+    lda #$80
+    ror
+axis_store:
+    sta Z0
     rts

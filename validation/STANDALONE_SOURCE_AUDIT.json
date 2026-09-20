@@ -332,7 +332,7 @@
           "file": "atan2_s8_s8_u8.asm",
           "alias_of": "",
           "entry_address": "$5E2A",
-          "reachable_instructions": 53
+          "reachable_instructions": 48
         },
         {
           "legacy_api": "MATH_ISQRT16",
@@ -707,7 +707,7 @@
           "file": "atan2_s8_s8_u8.asm",
           "alias_of": "",
           "entry_address": "$5E2A",
-          "reachable_instructions": 46
+          "reachable_instructions": 44
         },
         {
           "legacy_api": "MATH_ISQRT16",
@@ -1082,7 +1082,7 @@
           "file": "atan2_s8_s8_u8.asm",
           "alias_of": "",
           "entry_address": "$5E2A",
-          "reachable_instructions": 46
+          "reachable_instructions": 44
         },
         {
           "legacy_api": "MATH_ISQRT16",
@@ -1952,7 +1952,7 @@
           "file": "atan2_s8_s8_u8.asm",
           "alias_of": "",
           "entry_address": "$5E2A",
-          "reachable_instructions": 46
+          "reachable_instructions": 44
         },
         {
           "legacy_api": "MATH_ISQRT16",

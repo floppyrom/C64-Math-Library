@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Install and exhaustively certify the 2026-09-17 stock-C64 ATAN2 upgrade.
+"""Install and exhaustively certify the 2026-09-20 stock-C64 ATAN2 upgrade.
 
 Readable kernel sources and deterministic table generation live in
 ``routines/atan2/``. This tool only installs those kernels into the shipped
 profiles and certifies the installed public entry.
 
-V1 uses the 512-byte / zero-ZP compact implementation. V2/V3 use the
-1280-byte / zero-ZP four-quadrant implementation. V4 keeps the exact REU path.
+V1 uses the 512-byte / zero-ZP optimized compact implementation. V2/V3 use
+the 1024-byte / zero-ZP sum-fast implementation. V4 keeps the exact REU path.
 """
 from __future__ import annotations
 
@@ -23,7 +23,10 @@ sys.path.insert(0, str(ROOT / 'tools'))
 sys.path.insert(0, str(ATAN_DIR))
 
 from mini6502 import Assembler, CPU
-from tables import LOG_OFFSET, LOG_SCALE, build_tables, exact_phase, phase_error, signed8
+from tables import (
+    LOG_OFFSET, LOG_SCALE, build_sum_tables, build_tables,
+    exact_phase, phase_error, signed8,
+)
 
 PROFILES = ('v1_balanced', 'v2_pareto_fast', 'v3_reu_512k')
 PRG = {p: next((ROOT / p / 'resident').glob('*game_math.prg')) for p in PROFILES}
@@ -31,14 +34,13 @@ PUBLIC_ATAN = 0x5E2A
 PUBLIC_ISQRT16 = 0x5E2D
 X0, Y0, Z0 = 0xC000, 0xC004, 0xC008
 
-# Fast donor pages are chosen from page-aligned holes that remain free after the
-# direct-signed SMUL8 upgrade. V5 later remaps donor $4700 to the V1-free
-# REG_KERNEL+$1700 page ($5700 reference); $5500/$5F00 are shared.
-LOG_PAGE = 0x9600
-Q0_PAGE = 0x9700
-Q1_PAGE = 0x5500
-Q2_PAGE = 0x5F00
-Q3_PAGE = 0x4700
+COMPACT_LOG_PAGE = 0x9600
+COMPACT_ANGLE_PAGE = 0x9700
+SUM_LOGX_PAGE = 0x9600
+SUM_LOGY_PAGE = 0x9700
+SUM_QPOS_PAGE = 0x6E00
+SUM_QNEG_PAGE = 0x6F00
+OLD_FAST_Q3_PAGE = 0x9100
 
 
 def load_prg(path: Path):
@@ -60,35 +62,50 @@ def jmp_target(mem: bytearray, addr: int) -> int:
     return mem[addr + 1] | (mem[addr + 2] << 8)
 
 
-def kernel_source(kind: str, org: int) -> str:
+def kernel_source(kind: str, org: int, symbols: dict[str, int] | None = None) -> str:
     path = ATAN_DIR / f'atan2_{kind}.asm'
     if not path.exists():
         raise RuntimeError(f'missing ATAN2 source: {path}')
-    return path.read_text(encoding='utf-8').replace('@ORG@', f'${org:04X}')
+    text = path.read_text(encoding='utf-8').replace('@ORG@', f'${org:04X}')
+    for name, address in (symbols or {}).items():
+        text = text.replace(f'@{name}@', f'${address:04X}')
+    return text
 
 
-def patch_profile(profile: str, tables):
-    log, base, q0, q1, q2, q3, _, _ = tables
+def patch_profile(profile: str, compact_tables, sum_tables):
+    log, base, _, _, _, _, _, _ = compact_tables
+    logx, logy, qpos, qneg = sum_tables
     path = PRG[profile]
     mem, lo, hi = load_prg(path)
     atan = jmp_target(mem, PUBLIC_ATAN)
     isqrt = jmp_target(mem, PUBLIC_ISQRT16)
-    kind = 'compact' if profile == 'v1_balanced' else 'fast'
-    code, _, _ = Assembler().assemble(kernel_source(kind, atan))
+    if profile == 'v1_balanced':
+        kind = 'compact_opt'
+        symbols = None
+    else:
+        kind = 'sum_fast'
+        symbols = {
+            'LOGX': SUM_LOGX_PAGE,
+            'LOGY': SUM_LOGY_PAGE,
+            'QPOS': SUM_QPOS_PAGE,
+            'QNEG': SUM_QNEG_PAGE,
+        }
+    code, _, _ = Assembler().assemble(kernel_source(kind, atan, symbols))
     if min(code) != atan or max(code) >= isqrt:
         raise RuntimeError(f'{profile}: ATAN2 body does not fit stable slot')
     for addr, value in code.items():
         mem[addr] = value
     for addr in range(max(code) + 1, isqrt):
         mem[addr] = 0
-    mem[LOG_PAGE:LOG_PAGE + 256] = log
     if profile == 'v1_balanced':
-        mem[Q0_PAGE:Q0_PAGE + 256] = base
+        mem[COMPACT_LOG_PAGE:COMPACT_LOG_PAGE + 256] = log
+        mem[COMPACT_ANGLE_PAGE:COMPACT_ANGLE_PAGE + 256] = base
     else:
-        mem[Q0_PAGE:Q0_PAGE + 256] = q0
-        mem[Q1_PAGE:Q1_PAGE + 256] = q1
-        mem[Q2_PAGE:Q2_PAGE + 256] = q2
-        mem[Q3_PAGE:Q3_PAGE + 256] = q3
+        mem[SUM_LOGX_PAGE:SUM_LOGX_PAGE + 256] = logx
+        mem[SUM_LOGY_PAGE:SUM_LOGY_PAGE + 256] = logy
+        mem[SUM_QPOS_PAGE:SUM_QPOS_PAGE + 256] = qpos
+        mem[SUM_QNEG_PAGE:SUM_QNEG_PAGE + 256] = qneg
+        mem[OLD_FAST_Q3_PAGE:OLD_FAST_Q3_PAGE + 256] = bytes(256)
     write_prg(mem, lo, hi, path)
     return {
         'atan_body': f'${atan:04X}-${max(code):04X}',
@@ -161,30 +178,30 @@ def update_perf(profile: str, result: dict):
 
 
 def main():
-    tables = build_tables()
+    compact_tables = build_tables()
+    sum_tables = build_sum_tables()
     result = {
         'status': 'PASS',
-        'date': '2026-09-17',
+        'date': '2026-09-20',
         'algorithm': {
             'log_scale': LOG_SCALE,
             'log_offset': LOG_OFFSET,
-            'finite_log_span': max(tables[6][1:]) - min(tables[6][1:]),
-            'max_first_quadrant_class_span': tables[7],
+            'finite_log_span': max(compact_tables[6][1:]) - min(compact_tables[6][1:]),
+            'max_first_quadrant_class_span': compact_tables[7],
             'compact_tables_bytes': 512,
-            'fast_tables_bytes': 1280,
+            'fast_tables_bytes': 1024,
             'zp_bytes': 0,
             'readable_sources': 'routines/atan2',
-            'fast_extra_pages_reference': ['$5500', '$5F00', '$4700'],
-            'v5_q3_remap_note': (
-                'V5 maps donor $4700 to REG_KERNEL+$1700 ($5700 reference); '
-                'Q1/Q2 remain at $5500/$5F00. These pages are free in the '
-                'current direct-SMUL8 V1 base.'
+            'fast_pages_reference': ['$9600', '$9700', '$6E00', '$6F00'],
+            'v5_remap_note': (
+                'V5 maps all four donor pages to REG_TABLE+$0D00 through '
+                'REG_TABLE+$1000. These pages are free in the current V1 base.'
             ),
         },
         'profiles': {},
     }
     for profile in PROFILES:
-        install = patch_profile(profile, tables)
+        install = patch_profile(profile, compact_tables, sum_tables)
         validation = validate_profile(profile)
         if validation['status'] != 'PASS':
             raise RuntimeError(f'{profile}: ATAN2 exhaustive validation failed')
@@ -192,7 +209,7 @@ def main():
         result['profiles'][profile] = {
             **install,
             **validation,
-            'tier': 'compact_512B' if profile == 'v1_balanced' else 'fast_1280B',
+            'tier': 'compact_opt_512B' if profile == 'v1_balanced' else 'sum_fast_1024B',
         }
         print(
             profile,

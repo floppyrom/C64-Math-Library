@@ -189,11 +189,11 @@ for kind in ('reference','alternate'):
     ck(f'pareto_{kind}_six_breakpoints',set(pv['standard_points'][kind])=={'31','36','60','147','176','221'})
     for z,x in pv['standard_points'][kind].items():
         ck(f'pareto_{kind}_{z}_{API_COUNT}_entries',x['common_api']['entries']==API_COUNT and x['common_api']['calls']==4589)
-ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==9377)
-ck('pareto_36_exact_ram',pv['standard_points']['reference']['36']['extra_private_ram_bytes']==9950)
-ck('pareto_60_exact_ram',pv['standard_points']['reference']['60']['extra_private_ram_bytes']==10893)
-ck('pareto_147_exact_ram',pv['standard_points']['reference']['147']['extra_private_ram_bytes']==9581)
-ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==11079)
+ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==9633)
+ck('pareto_36_exact_ram',pv['standard_points']['reference']['36']['extra_private_ram_bytes']==10206)
+ck('pareto_60_exact_ram',pv['standard_points']['reference']['60']['extra_private_ram_bytes']==11149)
+ck('pareto_147_exact_ram',pv['standard_points']['reference']['147']['extra_private_ram_bytes']==9837)
+ck('pareto_176_exact_ram',pv['standard_points']['reference']['176']['extra_private_ram_bytes']==11335)
 ck('pareto_221_selects_v2',pv['standard_points']['reference']['221']['selected_packs']==['v2_full'])
 ck('pareto_v1_endpoint_identity',pv['pure_v1_identity'] is True)
 ck('pareto_v5_endpoint_identity',pv['optional31_v5_identity'] is True)
@@ -228,7 +228,7 @@ for p in PROFILES:
 # ATAN2 upgrade certification: exhaustive signed-byte plane and profile tiers.
 at=json.loads((ROOT/'validation/ATAN2_UPGRADE_VALIDATION.json').read_text())
 ck('atan2_upgrade_status',at['status']=='PASS')
-for prof,mean,maxerr in (('v1_balanced',50.44134521484375,1),('v2_pareto_fast',46.95306396484375,1),('v3_reu_512k',46.95306396484375,1)):
+for prof,mean,maxerr in (('v1_balanced',48.44718933105469,1),('v2_pareto_fast',44.96281433105469,1),('v3_reu_512k',44.96281433105469,1)):
     a=at['profiles'][prof]
     ck(f'atan2_{prof}_exhaustive',a['cases']==65536 and a['failures_gt_1']==0 and a['max_phase_error']<=maxerr and abs(a['mean_cycles']-mean)<1e-9,a)
 

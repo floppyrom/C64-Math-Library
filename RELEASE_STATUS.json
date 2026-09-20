@@ -5,15 +5,16 @@
     "historical_overlay_boundary_checks": 4,
     "historical_overlay_checks": 8,
     "historical_status": "PASS",
-    "note": "ACME is not installed in the current execution environment; historical identity evidence is retained, while current canonical builds pass the internal deterministic assembler and machine regressions.",
-    "status": "NOT_RUN_CURRENT"
+    "note": "ACME 0.97 independently reproduced all current V1-V4 reference/alternate PRGs and Turbo overlay/boundary builds.",
+    "status": "PASS_CURRENT",
+    "current_checks": 8
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "48eb79c2390795418dfd430de051764cc9d52ca9dec9f5761a9c0bc437bd637f",
-    "v2_pareto_fast": "5ad580823c68d86b437df037ed84d0fa2a858750677dcaede3389ec1cb413d17",
-    "v3_reu_512k": "0e2662fb2e9e27e15e6b54cb2e2d93ac0d2e28c90ef134c6261166c18cb7d0f7",
+    "v1_balanced": "8a85b84faa55ae4c767c4228caf8104541ced530a82b4a010ac7a5d8e36c83a5",
+    "v2_pareto_fast": "78cd4318d952b2c7547f8799403c0403a7aa3e9da8118388c4a793d4129de3d9",
+    "v3_reu_512k": "094f8c2711576e1ff62e576af8fc08b1c5348f4750170a2a83c57dbf47ba6098",
     "v4_reu_16m": "e1f4acab4c0d3bfeba1f6fa9d962a07557cb41ac121882e8ce6ce4f22e944326",
-    "v5_hybrid_lowzp": "0a2e7f6bfd6f73454e26cf28a7dd3f4400fb79245a3fd6bbc4feca28dcf5bfae"
+    "v5_hybrid_lowzp": "9b354748f63f731d182c31fa27914503f7eaccc7ab0a82890c5bea3bfa8dad42"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "da767488080d83bc692c4a9b41ecbbe19ac331652170c4f47faccab53a96483d",
@@ -39,7 +40,7 @@
     "config_validation_cases": 12,
     "default_reference_points": {
       "147": {
-        "extra_private_ram_bytes": 9581,
+        "extra_private_ram_bytes": 9837,
         "packs": [
           "atan2_fast",
           "smul16_exec",
@@ -47,7 +48,7 @@
         ]
       },
       "176": {
-        "extra_private_ram_bytes": 11079,
+        "extra_private_ram_bytes": 11335,
         "packs": [
           "atan2_fast",
           "smul16_exec",
@@ -63,14 +64,14 @@
         ]
       },
       "31": {
-        "extra_private_ram_bytes": 9377,
+        "extra_private_ram_bytes": 9633,
         "packs": [
           "atan2_fast",
           "zero_zp_v5"
         ]
       },
       "36": {
-        "extra_private_ram_bytes": 9950,
+        "extra_private_ram_bytes": 10206,
         "packs": [
           "atan2_fast",
           "umul8_16",
@@ -78,7 +79,7 @@
         ]
       },
       "60": {
-        "extra_private_ram_bytes": 10893,
+        "extra_private_ram_bytes": 11149,
         "packs": [
           "atan2_fast",
           "umul24",
@@ -140,22 +141,23 @@
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "0a2e7f6bfd6f73454e26cf28a7dd3f4400fb79245a3fd6bbc4feca28dcf5bfae",
+    "alternate_prg_sha256": "9b354748f63f731d182c31fa27914503f7eaccc7ab0a82890c5bea3bfa8dad42",
     "common_machine_calls_per_map": 4589,
     "common_public_entries_per_map": 46,
     "config_validation_cases": 8,
     "deterministic_maps": 2,
     "direct_import_cases": 144246,
-    "exact_extra_private_ram_vs_v1": 9377,
+    "exact_extra_private_ram_vs_v1": 9633,
     "hybrid_code_bytes": 7680,
     "normal_zp_bytes": 31,
     "optional_init_cold_load_cases": 2000,
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "9e9e85df72bdbaf7be26811b4f9f690b72e138cf7fe2c2f70f8a6fd1f87fac55",
+    "reference_prg_sha256": "7b340cf2dd33eb950f02dde864b9a64f55a109ed45e1db26a4f2f5ef780a7071",
     "status": "PASS",
-    "umod8_exhaustive_cases": 65536
+    "umod8_exhaustive_cases": 65536,
+    "atan2_tables_bytes": 1024
   },
   "isqrt32_fast_cases_per_profile": 5097,
   "isqrt32_fast_mean_cycles_5097": {
@@ -204,23 +206,24 @@
     "V3/V4 additionally expose six stateful Turbo16/Turbo32 BEGIN/CALL/END entries.",
     "Turbo executable-ZP origins and REU storage banks are selected at build time; overlay code is assembled from canonical source with no runtime relocation pass.",
     "Reference and alternate Turbo cycle vectors are identical; relocation adds zero runtime cycles.",
-    "Fast exact independently derived ISQRT32 remains active; V4 uses 512 resident square-table bytes at $9800-$99FF."
+    "Fast exact independently derived ISQRT32 remains active; V4 uses 512 resident square-table bytes at $9800-$99FF.",
+    "ATAN2 profile integration: V1 uses compact_opt (48.447189 mean, 512 B tables); V2/V3/V5 use sum_fast (44.962814 mean, 1024 B tables); V4 retains exact REU ATAN2."
   ],
   "package_audit_checks": 23,
   "package_cleanup": {
     "consolidated_routine_table_rows": 245,
     "csdb_changelog": "CSDB_CHANGELOG.txt",
-    "current_acme_validation": false,
+    "current_acme_validation": true,
     "generated_build_hybrid_shipped": false,
     "generated_build_pareto_shipped": false,
     "generated_build_source_shipped": false,
-    "lean_file_count_excluding_checksum": 613,
+    "lean_file_count_excluding_checksum": 942,
     "legacy_native_signed_tree_removed": true,
     "obsolete_development_validators_removed": 2,
     "package_contents_doc": "docs/PACKAGE_CONTENTS.md",
     "prior_exhaustive_baseline_retained": true,
     "superseded_slow_isqrt32_baseline_shipped": false,
-    "uncompressed_bytes_excluding_checksum": 23050138,
+    "uncompressed_bytes_excluding_checksum": 28482721,
     "unreferenced_legacy_bin_label_artifacts_removed": 27
   },
   "profiles": [
@@ -231,11 +234,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "a5094f3b0a7903ef741d091e508b67324a4421f04e092b9ea4291ee79b1f1ef2",
-    "v2_pareto_fast": "3bbbb9c007f8197835cf16782c68462e7939896554ccd8d34e10cea1204cb8ff",
-    "v3_reu_512k": "3072a492b62c2b699f917dad1918b2010026fe635f9b3fa15408b6f7a321fc89",
+    "v1_balanced": "acae8921cbc938ad9ca821f682578e3c09cd0969d1dfdce78c09b78456672f8a",
+    "v2_pareto_fast": "f28a900b2274c7f09290df93d81ec34a16de5c9e6e8a46c1b84b5e5e1dd4d994",
+    "v3_reu_512k": "84e85bafa6fbfd33c543f42dec8604e0b2d2fc20e2f878513b21f583d36c1b3e",
     "v4_reu_16m": "ae9b2d6c4b34bbbd135ac4a01c729eb84b65f3564bb5b73093eb1ae17c70df76",
-    "v5_hybrid_lowzp": "9e9e85df72bdbaf7be26811b4f9f690b72e138cf7fe2c2f70f8a6fd1f87fac55"
+    "v5_hybrid_lowzp": "7b340cf2dd33eb950f02dde864b9a64f55a109ed45e1db26a4f2f5ef780a7071"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "66a3feab7d1a18356291c2aac9f404627ca13004d1032d6c6efb4cd1e4f1acf5",
@@ -246,8 +249,8 @@
     "turbo32": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a"
   },
   "release": "c64_math_library_v1-v5_MULTIPLY_DIVISION_REFRESH_46ENTRY_2026-09-20",
-  "release_audit_checks": 205,
-  "release_audit_status": "PASS_WITH_ACME_NOT_RUN",
+  "release_audit_checks": 236,
+  "release_audit_status": "PASS",
   "reu_turbo_lifecycle_entries": 6,
   "signed_implementation_taxonomy": {
     "definition": "signed path owns executable arithmetic; no corresponding unsigned executable engine entered; immutable tables may be shared",

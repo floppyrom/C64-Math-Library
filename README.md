@@ -97,9 +97,9 @@ V5 keeps V1's `$02-$20` 31-byte normal ZP window while using the refreshed low-Z
 - `MATH_SDIV24`: **253.487**
 - `MATH_COS8`: **23**
 - `MATH_SINCOS8`: **31**
-- `MATH_ATAN2_8`: **46.953** (65,536-vector exhaustive parity; max error 1 phase unit)
+- `MATH_ATAN2_8`: **44.963** (65,536-vector exhaustive parity; max error 1 phase unit)
 
-The reference V5 `HYBRID_CODE` block now occupies `$A000-$BDFF` (**7,680 bytes**) under BASIC ROM. Additional profile-private division/table islands and the three fast-ATAN2 pages bring the exact current private-RAM increase versus V1 to **9,377 bytes**. BASIC ROM must be banked out while code in the reference hybrid block executes, or `HYBRID_CODE` can be relocated at build time.
+The reference V5 `HYBRID_CODE` block now occupies `$A000-$BDFF` (**7,680 bytes**) under BASIC ROM. Additional profile-private division/table islands and the four sum-fast ATAN2 pages bring the exact current private-RAM increase versus V1 to **9,633 bytes**. BASIC ROM must be banked out while code in the reference hybrid block executes, or `HYBRID_CODE` can be relocated at build time.
 
 See `docs/HYBRID_PROFILE.md`.
 

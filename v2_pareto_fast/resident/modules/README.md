@@ -4,6 +4,7 @@ This directory contains the V2 Pareto-Fast profile's independently assembled ari
 
 ## ATAN2
 
-`pareto_atan2.a` is the V2 fast four-quadrant ATAN2 body installed at `$C543-$C57A`, behind stable public entry `MATH_ATAN2_8=$5E2A`. It uses 0 ZP and five 256-byte table pages (`$9600`, `$9700`, `$5500`, `$5F00`, `$4700`). Exhaustive validation covers all 65,536 signed-byte vectors with maximum error 1 phase unit and 46.953064 mean public-entry cycles.
+`pareto_atan2.a` is the exact readable V2 sum-fast ATAN2 body installed at `$C782-$C7DA`, behind stable public entry `MATH_ATAN2_8=$5E2A`. It uses 0 ZP and four table pages: LOGX `$9600`, LOGY `$9700`, QPOS `$6E00`, and QNEG `$6F00`. Exhaustive validation measures 44.962814 mean public-entry cycles (29–47) with maximum error 1 phase unit.
 
-The shared algorithm source and exhaustive standalone benchmark live in `../../../routines/atan2/`.
+The canonical algorithm and exhaustive benchmark live in `../../../routines/atan2/`.
+

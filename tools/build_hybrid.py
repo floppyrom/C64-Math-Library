@@ -17,12 +17,11 @@ UMOD8_SRC = (0x5200, 0x527F)
 COS_SRC = (0xC766, 0xC770)
 SINCOS_SRC = (0xC771, 0xC781)
 COS_TABLE_SRC = (0x9500, 0x95FF)
-ATAN_LOG_SRC = (0x9600, 0x96FF)
-ATAN_Q0_SRC = (0x9700, 0x97FF)
-ATAN_Q1_SRC = (0x6E00, 0x6EFF)
-ATAN_Q2_SRC = (0x6F00, 0x6FFF)
-ATAN_Q3_SRC = (0x9100, 0x91FF)
-ATAN_EXTRA_TABLE_BYTES = 3 * 256
+ATAN_LOGX_SRC = (0x9600, 0x96FF)
+ATAN_LOGY_SRC = (0x9700, 0x97FF)
+ATAN_QPOS_SRC = (0x6E00, 0x6EFF)
+ATAN_QNEG_SRC = (0x6F00, 0x6FFF)
+ATAN_EXTRA_TABLE_BYTES = 4 * 256
 SDIV24_PREFIX_SRC = (0x8100, 0x83F5)
 SDIV24_CORE_SRC = (0x8400, 0x8849)
 SDIV24_WRAPPER_SRC = (0x2550, 0x256E)
@@ -134,15 +133,12 @@ def map_abs(target: int, vals: dict[str, int], hbase: int) -> int:
     # V2 cosine table differs from V1; retain a private copy.
     if COS_TABLE_SRC[0] <= target <= COS_TABLE_SRC[1]:
         return hbase + 0x1100 + (target - COS_TABLE_SRC[0])
-    # Fast ATAN2 reuses V1's compact LOG/Q0 pages and consumes three pages
-    # that are deliberately empty in the V1 table layout.  Q3 cannot stay at
-    # donor $9100 because V1 owns that page; remap it to V1's free +$1000 page.
+    # Sum-fast ATAN2 consumes four pages deliberately empty in the V1 table layout.
     atan_maps = {
-        ATAN_LOG_SRC[0]: vals['REG_TABLE'] + 0x3600,
-        ATAN_Q0_SRC[0]: vals['REG_TABLE'] + 0x3700,
-        ATAN_Q1_SRC[0]: vals['REG_TABLE'] + 0x0E00,
-        ATAN_Q2_SRC[0]: vals['REG_TABLE'] + 0x0F00,
-        ATAN_Q3_SRC[0]: vals['REG_TABLE'] + 0x1000,
+        ATAN_LOGX_SRC[0]: vals['REG_TABLE'] + 0x0D00,
+        ATAN_LOGY_SRC[0]: vals['REG_TABLE'] + 0x0E00,
+        ATAN_QPOS_SRC[0]: vals['REG_TABLE'] + 0x0F00,
+        ATAN_QNEG_SRC[0]: vals['REG_TABLE'] + 0x1000,
     }
     for src, dst in atan_maps.items():
         if src <= target <= src + 0xFF:
@@ -339,8 +335,8 @@ def apply_atan2_fast(dst_mem: bytearray, src_mem: bytearray,
     """Transplant the certified V2 fast ATAN2 into a V1-layout image.
 
     The public ABI slot stays untouched.  The V2 body is relocated into the
-    existing V1 ATAN2 private slot, LOG/Q0 reuse V1's two compact pages, and
-    Q1/Q2/Q3 occupy three V1 pages that are empty in the canonical layout.
+    existing V1 ATAN2 private slot, and its four tables occupy V1 pages that
+    are empty in the canonical layout.
     """
     base_pub = _public_addr(base_man, 'MATH_ATAN2_8')
     base_isqrt_pub = _public_addr(base_man, 'MATH_ISQRT16')
@@ -361,7 +357,7 @@ def apply_atan2_fast(dst_mem: bytearray, src_mem: bytearray,
 
     # The destination pages must be unused in the V1 layout before ownership is
     # assigned to fast ATAN2.  This guard catches future table-layout changes.
-    targets = [vals['REG_TABLE'] + 0x0E00, vals['REG_TABLE'] + 0x0F00, vals['REG_TABLE'] + 0x1000]
+    targets = [vals['REG_TABLE'] + offset for offset in (0x0D00, 0x0E00, 0x0F00, 0x1000)]
     for a in targets:
         if any(dst_mem[a:a + 256]):
             raise RuntimeError(f'ATAN2 fast destination page {hx(a)} is not free in V1 base')
@@ -371,16 +367,17 @@ def apply_atan2_fast(dst_mem: bytearray, src_mem: bytearray,
     # Clear the now-dead remainder of the old compact body so private address
     # geometry stays pinned while the image remains easy to audit.
     dst_mem[dst_body + length:dst_isqrt] = bytes(dst_isqrt - (dst_body + length))
-    dst_mem[targets[0]:targets[0] + 256] = src_mem[ATAN_Q1_SRC[0]:ATAN_Q1_SRC[1] + 1]
-    dst_mem[targets[1]:targets[1] + 256] = src_mem[ATAN_Q2_SRC[0]:ATAN_Q2_SRC[1] + 1]
-    dst_mem[targets[2]:targets[2] + 256] = src_mem[ATAN_Q3_SRC[0]:ATAN_Q3_SRC[1] + 1]
+    for target, source in zip(targets, (ATAN_LOGX_SRC, ATAN_LOGY_SRC, ATAN_QPOS_SRC, ATAN_QNEG_SRC)):
+        dst_mem[target:target + 256] = src_mem[source[0]:source[1] + 1]
     return {
         'body': f'{hx(dst_body)}-{hx(dst_body + length - 1)}',
         'body_bytes': length,
         'extra_table_bytes': ATAN_EXTRA_TABLE_BYTES,
         'extra_table_pages': [hx(a) for a in targets],
-        'log_page': hx(vals['REG_TABLE'] + 0x3600),
-        'q0_page': hx(vals['REG_TABLE'] + 0x3700),
+        'logx_page': hx(targets[0]),
+        'logy_page': hx(targets[1]),
+        'qpos_page': hx(targets[2]),
+        'qneg_page': hx(targets[3]),
     }
 
 
@@ -637,7 +634,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'All 46 stable API addresses and semantics remain V1-compatible.',
                 'MATH_INIT remains optional exactly as in V1.',
                 'The imported certified V2 kernels use only the existing V1 normal ZP window.',
-                'Fast ATAN2, when enabled, adds no ZP and occupies three formerly empty V1 table pages (768 bytes).',
+                'Fast ATAN2, when enabled, adds no ZP and occupies four formerly empty V1 table pages (1024 bytes).',
                 'V2 direct UDIV8 replaces the V1 256-class core in place; V2 direct UDIV16 is repacked into private hybrid RAM; UDIV24 uses the copied Repose direct core.',
                 'V2 direct-output SDIV16 and SDIV24 are repacked into V1-free code/table windows and stay wholly inside the normal 31-byte ZP contract.',
                 'SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 retains the faster V2 hybrid import.',

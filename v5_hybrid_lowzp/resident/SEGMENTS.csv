@@ -4,6 +4,7 @@ hybrid_v2_division,$A000,4096,integrated PRG,"relocated V2 UDIV16/UDIV24/UDIV32_
 hybrid_v2_umod8,$B000,128,integrated PRG,"relocated V2 UMOD8 kernel"
 hybrid_v2_trig,$B080,33,integrated PRG,"relocated V2 COS8 and SINCOS8 implementations"
 hybrid_v2_cos_table,$B100,256,integrated PRG,"private V2 cosine table"
-atan2_fast_q1,$5500,256,integrated PRG,fast ATAN2 quadrant-1 final-angle table in V1-free REG_KERNEL page
-atan2_fast_q2,$5F00,256,integrated PRG,fast ATAN2 quadrant-2 final-angle table in V1-free REG_KERNEL page
-atan2_fast_q3,$5700,256,integrated PRG,fast ATAN2 quadrant-3 final-angle table; donor $4700 remapped to V1-free REG_KERNEL page
+atan2_fast_logx,$6D00,256,integrated PRG,sum-fast ATAN2 absolute-X logarithm table in V1-free REG_TABLE page
+atan2_fast_logy,$6E00,256,integrated PRG,sum-fast ATAN2 biased absolute-Y logarithm table in V1-free REG_TABLE page
+atan2_fast_qpos,$6F00,256,integrated PRG,sum-fast ATAN2 positive-angle table in V1-free REG_TABLE page
+atan2_fast_qneg,$7000,256,integrated PRG,sum-fast ATAN2 negative-angle table in V1-free REG_TABLE page

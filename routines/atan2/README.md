@@ -27,28 +27,27 @@ published API include rather than these internal addresses.
 
 | File | Profiles | Tables | Published public-entry timing |
 |---|---|---:|---:|
-| `atan2_compact.asm` | V1 | 512 B | **50.441345 mean**, 30-53 cycles |
-| `atan2_fast.asm` | V2, V3, V5 | 1280 B | **46.953064 mean**, 30-48 cycles |
+| `atan2_compact_opt.asm` | V1 | 512 B | **48.447189 mean**, 29-50 cycles |
+| `atan2_sum_fast.asm` | V2, V3, V5 | 1024 B | **44.962814 mean**, 29-47 cycles |
 
-The fast kernel spends three additional 256-byte quadrant pages to avoid the
-compact kernel's runtime quadrant-repair instructions. That is a **768-byte
-incremental cost for about 6.9% lower average latency**.
+The fast kernel spends two additional 256-byte pages and uses a carry-clearing
+log sum plus two reflected angle pages. That is a **512-byte incremental cost
+for about 7.2% lower average latency** than V1.
 
 V4 keeps its separate exact REU-backed ATAN2 path at a fixed 48 cycles.
 
-## Optional optimized kernels (2026-09-20)
+## Optimized kernels (2026-09-20)
 
-These are **standalone alternatives**, not installed-profile upgrades. The
-existing installer still selects `compact`/`fast`; fixed profiles and Custom
-Pareto resource accounting are unchanged.
+`compact_opt` and `sum_fast` are installed in the fixed profiles. `sum_small`
+remains an optional smaller-table alternative.
 
 | Kernel | Code | Tables | Code + tables | Mean cycles | Range | Shipped-output parity |
 |---|---:|---:|---:|---:|---:|---|
-| shipped `compact` | 106 B | 512 B | 618 B | 50.441345 | 30-53 | baseline |
-| **`compact_opt`** | **94 B** | **512 B** | **606 B** | **48.447189** | 29-50 | exact |
-| shipped `fast` | 94 B | 1280 B | 1374 B | 46.953064 | 30-48 | exact |
+| previous `compact` | 106 B | 512 B | 618 B | 50.441345 | 30-53 | baseline |
+| **installed V1 `compact_opt`** | **94 B** | **512 B** | **606 B** | **48.447189** | 29-50 | exact |
+| previous `fast` | 94 B | 1280 B | 1374 B | 46.953064 | 30-48 | exact |
 | **`sum_small`** | **92 B** | **768 B** | **860 B** | **45.958908** | 29-48 | 202 results differ by 1 |
-| **`sum_fast`** | **89 B** | **1024 B** | **1113 B** | **44.962814** | 29-47 | exact |
+| **installed V2/V3/V5 `sum_fast`** | **89 B** | **1024 B** | **1113 B** | **44.962814** | 29-47 | exact |
 
 All five use 0 extra ZP and satisfy the <=1 phase-unit bound against rounded
 mathematical atan2. Every axis and `(0,0)` is exact. The three-page `sum_small`
@@ -74,17 +73,16 @@ carry-clearing log sum and the memory/accuracy trade-offs.
 
 | Profile | Executable source | Installed body |
 |---|---|---|
-| V1 Balanced | `v1_balanced/standalone/atan2_s8_s8_u8.asm` | compact body at `$C814-$C87D` |
-| V2 Pareto-Fast | `v2_pareto_fast/standalone/atan2_s8_s8_u8.asm` | fast body at `$C782-$C7DF` |
-| V3 REU 512K | `v3_reu_512k/standalone/atan2_s8_s8_u8.asm` | fast body at `$C78D-$C7EA` |
+| V1 Balanced | `v1_balanced/standalone/atan2_s8_s8_u8.asm` | compact-opt body at `$C814-$C871` |
+| V2 Pareto-Fast | `v2_pareto_fast/standalone/atan2_s8_s8_u8.asm` | sum-fast body at `$C782-$C7DA` |
+| V3 REU 512K | `v3_reu_512k/standalone/atan2_s8_s8_u8.asm` | sum-fast body at `$C78D-$C7E5` |
 | V4 REU 16M | `v4_reu_16m/standalone/atan2_s8_s8_u8.asm` | exact REU lookup |
-| V5 Hybrid Low-ZP | `v5_hybrid_lowzp/standalone/atan2_s8_s8_u8.asm` | fast body at `$C814-$C871`, Q3 remapped to `$5700` |
+| V5 Hybrid Low-ZP | `v5_hybrid_lowzp/standalone/atan2_s8_s8_u8.asm` | sum-fast body at `$C814-$C86C`, tables at `$6D00-$70FF` |
 
 These generated profile mirrors describe the installed executable and depend
 on the profile's existing tables. `tools/build_hybrid.py` remains authoritative
-for the V5 transplant and table remap. Older files under `resident/modules/`
-may carry historical origin comments; use the current executable mirrors above
-for installed addresses.
+for the V5 transplant and table remap. The profile-local `resident/modules/`
+listings are kept in sync with these installed bodies.
 
 ## Files
 
@@ -104,21 +102,20 @@ for installed addresses.
 - `tools/upgrade_atan2.py` - installer that consumes these sources and writes
   the certified kernels into V1/V2/V3 profile images.
 
-## Reference table map
+## Installed reference table maps
 
 The standalone/reference layout is:
 
 ```text
-$9600  signed-magnitude LOG page
-$9700  compact table / fast Q0
-$5500  fast Q1
-$5F00  fast Q2
-$4700  fast Q3 donor page
+$9600  V1 LOG / V2-V3 LOGX
+$9700  V1 angle / V2-V3 LOGY
+$6E00  V2-V3 QPOS
+$6F00  V2-V3 QNEG
 ```
 
-V5 remaps the donor Q3 page to `$5700` in its reference layout because `$4700`
-is occupied by V1 arithmetic. Custom/relocated builds may use different physical
-addresses; these are implementation pages, not public ABI locations.
+V5 maps V2's four sum-fast pages to `$6D00-$70FF` in its V1-derived reference
+layout. Custom/relocated builds may use different physical addresses; these are
+implementation pages, not public ABI locations.
 
 ## Reproduce the benchmark
 

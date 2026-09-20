@@ -56,9 +56,9 @@
         "cases": 65536,
         "cycle_vector_equal_to_v2": true,
         "exhaustive": true,
-        "mean_cycles": 46.95306396484375,
-        "min_cycles": 30,
-        "max_cycles": 48,
+        "mean_cycles": 44.96281433105469,
+        "min_cycles": 29,
+        "max_cycles": 47,
         "max_phase_error": 1
       }
     },
@@ -93,5 +93,5 @@
       "status": "PASS"
     }
   },
-  "elapsed_seconds": 12.721
+  "elapsed_seconds": 9.045
 }
