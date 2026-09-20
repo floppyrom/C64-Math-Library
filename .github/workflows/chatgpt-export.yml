@@ -1,0 +1,24 @@
+name: Temporary repository export
+
+on:
+  push:
+    branches:
+      - tmp-chatgpt-export-20260920
+
+permissions:
+  contents: read
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Export exact main snapshot
+        run: |
+          git archive --format=zip --output=c64ml-main.zip 1df93d3d6bf0166d92b70ede495055b9375b14dd
+      - uses: actions/upload-artifact@v4
+        with:
+          name: c64ml-main-snapshot
+          path: c64ml-main.zip
