@@ -13,30 +13,30 @@
       "SMUL16": {
         "cases": 4457,
         "errors": 0,
-        "mean_cycles": 421.30603544985416,
-        "min_cycles": 387,
-        "max_cycles": 462
+        "mean_cycles": 293.29840700022436,
+        "min_cycles": 260,
+        "max_cycles": 327
       },
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 563.2851805728518,
-        "min_cycles": 504,
-        "max_cycles": 650
+        "mean_cycles": 531.4964715649647,
+        "min_cycles": 474,
+        "max_cycles": 591
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 839.1307596513076,
-        "min_cycles": 732,
-        "max_cycles": 1006
+        "mean_cycles": 744.5699460356994,
+        "min_cycles": 660,
+        "max_cycles": 873
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 828.78515625,
-        "min_cycles": 720,
-        "max_cycles": 971
+        "mean_cycles": 726.388671875,
+        "min_cycles": 645,
+        "max_cycles": 813
       }
     },
     "v2_pareto_fast": {
@@ -58,23 +58,23 @@
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 521.840597758406,
-        "min_cycles": 462,
-        "max_cycles": 609
+        "mean_cycles": 487.1818181818182,
+        "min_cycles": 430,
+        "max_cycles": 544
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 815.9290161892901,
-        "min_cycles": 710,
-        "max_cycles": 984
+        "mean_cycles": 743.6052303860523,
+        "min_cycles": 660,
+        "max_cycles": 873
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 828.2197265625,
-        "min_cycles": 718,
-        "max_cycles": 953
+        "mean_cycles": 728.0419921875,
+        "min_cycles": 643,
+        "max_cycles": 802
       }
     },
     "v3_reu_512k": {
@@ -96,23 +96,23 @@
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 521.6608551266086,
-        "min_cycles": 462,
-        "max_cycles": 603
+        "mean_cycles": 486.81610626816104,
+        "min_cycles": 430,
+        "max_cycles": 546
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 817.6355334163553,
-        "min_cycles": 710,
-        "max_cycles": 984
+        "mean_cycles": 744.0332088003321,
+        "min_cycles": 660,
+        "max_cycles": 873
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 827.052734375,
-        "min_cycles": 723,
-        "max_cycles": 937
+        "mean_cycles": 728.544921875,
+        "min_cycles": 648,
+        "max_cycles": 809
       }
     },
     "v4_reu_16m": {
@@ -134,23 +134,23 @@
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 522.0182648401826,
-        "min_cycles": 462,
-        "max_cycles": 605
+        "mean_cycles": 487.2200083022001,
+        "min_cycles": 430,
+        "max_cycles": 550
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 816.4541303445413,
-        "min_cycles": 710,
-        "max_cycles": 984
+        "mean_cycles": 744.0900788709008,
+        "min_cycles": 660,
+        "max_cycles": 873
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 825.6611328125,
-        "min_cycles": 718,
-        "max_cycles": 967
+        "mean_cycles": 726.3681640625,
+        "min_cycles": 643,
+        "max_cycles": 825
       }
     },
     "v5_hybrid_lowzp": {
@@ -165,36 +165,36 @@
       "SMUL16": {
         "cases": 4457,
         "errors": 0,
-        "mean_cycles": 421.01750056091544,
-        "min_cycles": 387,
-        "max_cycles": 462
+        "mean_cycles": 292.9748709894548,
+        "min_cycles": 260,
+        "max_cycles": 325
       },
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 563.4848484848485,
-        "min_cycles": 504,
-        "max_cycles": 648
+        "mean_cycles": 530.8742216687422,
+        "min_cycles": 474,
+        "max_cycles": 588
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 838.5134910751349,
-        "min_cycles": 732,
-        "max_cycles": 1006
+        "mean_cycles": 743.9132420091324,
+        "min_cycles": 660,
+        "max_cycles": 873
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 826.4384765625,
-        "min_cycles": 715,
-        "max_cycles": 958
+        "mean_cycles": 726.7392578125,
+        "min_cycles": 640,
+        "max_cycles": 807
       }
     }
   },
   "summary": {
     "profiles": 5,
     "machine_calls": 264999,
-    "elapsed_seconds": 15.36
+    "elapsed_seconds": 18.13
   }
 }

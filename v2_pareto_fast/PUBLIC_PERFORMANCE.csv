@@ -2,7 +2,7 @@ operation,avg_cycles,min_cycles,max_cycles,cases,edge_cases,errors,evidence
 math_umul8,78.494614,77,80,65536,65536,0,canonical harness
 math_umul16,225.8372,214,249,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus
 math_umul24,448.2918,418,503,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus
-math_umul32,763.822007,696,881,2097152,1049350,0,canonical harness
+math_umul32,712.235367,652,831,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus
 math_udiv8,87.445969,60,607,65536,603,0,canonical harness
 math_udiv16,137.282268,99,939,2097152,2505,0,canonical harness
 math_udiv24,203.612991,137,2394,2097152,5578,0,canonical harness

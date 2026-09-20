@@ -138,17 +138,17 @@ def selection_tests():
     def ck(z,expect,**kw):
         s=bp.select_packs(z,kw.get('ram'),kw.get('init','auto'),kw.get('weights',{})); got=set(s.get('packs',[])) if s['mode']=='hybrid' else {'v2_full'}
         assert got==set(expect),(z,got,expect,s);cases.append({'zp_budget':z,'expected':expect,'result':s})
-    ck(31,['atan2_fast','umul32_initialized','zero_zp_v5'])
-    ck(36,['atan2_fast','umul32_initialized','umul8_16','zero_zp_v5'])
-    ck(60,['atan2_fast','umul24','umul32_initialized','umul8_16','zero_zp_v5'])
-    ck(147,['atan2_fast','smul16_exec','umul32_initialized','zero_zp_v5'])
-    ck(176,['atan2_fast','smul16_exec','umul24','umul32_initialized','umul8_16','zero_zp_v5'])
+    ck(31,['atan2_fast','zero_zp_v5'])
+    ck(36,['atan2_fast','umul8_16','zero_zp_v5'])
+    ck(60,['atan2_fast','umul24','umul8_16','zero_zp_v5'])
+    ck(147,['atan2_fast','smul16_exec','zero_zp_v5'])
+    ck(176,['atan2_fast','smul16_exec','umul24','umul8_16','zero_zp_v5'])
     ck(221,['v2_full'])
     ck(31,[],ram=0)
     ck(31,['atan2_fast','zero_zp_v5'],init='optional')
     # Workload hint must change the 55-byte choice from UMUL8/16 to UMUL24.
     w={'MATH_UMUL24':100,'MATH_UMUL8':0,'MATH_UMUL16':0,'MATH_SMUL8':0,'MATH_UMUL16_SHR8':0}
-    ck(55,['atan2_fast','umul24','umul32_initialized','zero_zp_v5'],weights=w)
+    ck(55,['atan2_fast','umul24','zero_zp_v5'],weights=w)
     return cases
 
 def deterministic(points=(31,176,221)):

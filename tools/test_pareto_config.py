@@ -40,7 +40,7 @@ def main():
     s=bp.select_packs(31,0,'auto',{})
     assert s['packs']==[] and s['extra_ram']==0
     checks.append({'name':'31zp_zero_ram_selects_v1','status':'PASS'})
-    target_packs={'atan2_fast','zero_zp_v5','umul32_initialized'}
+    target_packs={'atan2_fast','zero_zp_v5'}
     exact31=bp.exact_extra_ram_bytes(target_packs)
     s=bp.select_packs(31,exact31-1,'auto',{})
     assert set(s.get('packs',[])) != target_packs and s['extra_ram'] <= exact31-1

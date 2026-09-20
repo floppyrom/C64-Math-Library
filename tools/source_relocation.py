@@ -52,6 +52,53 @@ REU_BANK_KEYS=('REU_UMUL8_LO_BANK','REU_UMUL8_HI_BANK','REU_UDIV8_Q_BANK','REU_U
 TURBO_PUBLIC_OLD=(0x3800,0x3840,0x3880,0x38c0,0x3900,0x3960)
 TURBO_PUBLIC_NAMES=('MATH_REU_UMUL16_BEGIN','MATH_REU_UMUL16','MATH_REU_UMUL16_END','MATH_REU_UMUL32_BEGIN','MATH_REU_UMUL32','MATH_REU_UMUL32_END')
 
+# Multiplication refresh modules are deliberately kept as source-level overlays rather
+# than flattened back into the generated monolith.  The resident PRGs are the
+# reference image for source regeneration, so trace() can see these routines.  Strip
+# their decoded instruction starts from the generated body and re-include the
+# canonical modules at the end.  Bytes at these source-map ranges remain harmless raw
+# provenance until the later !source overlay rewrites the exact addresses.  This is
+# analogous to the VEC2 native-source breakout, but covers several sparse islands.
+MULTIPLY_REFRESH_INCLUDES={
+ 'v1_balanced':(
+  'smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
+  'smul24_fast24_composed.inc','umul24_fast24_shared.inc',
+  'smul16_fast17_composed.inc','smul16_shr8_selected.inc'),
+ 'v2_pareto_fast':(
+  'smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
+  'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
+ 'v3_reu_512k':(
+  'smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
+  'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
+ 'v4_reu_16m':(
+  'smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
+  'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
+}
+
+_REFRESH_COMMON=((0x30b0,0x30b2),(0x30c0,0x30c2),(0x3b80,0x3bad),
+                 (0x3bf0,0x3bf2),(0x3c00,0x3c3d),(0x3c40,0x3c95),
+                 (0x3ca3,0x3d0a),(0x3fe0,0x3fe2),(0x5e0f,0x5e11),
+                 (0x5fc8,0x5fda))
+MULTIPLY_REFRESH_DECODE_EXCLUDE={
+ 'v1_balanced':_REFRESH_COMMON+(
+  (0x2700,0x275a),(0x2d00,0x2e11),(0x3060,0x3062),(0x3bb0,0x3bed),
+  (0x4c00,0x4cfa),(0x4d00,0x4d56),(0x6532,0x6625),(0x6700,0x680c),
+  (0x6900,0x69fa),(0x6a41,0x6a76),(0x6b7c,0x6c8b),(0x7100,0x7140),
+  (0xcc00,0xcc73)),
+ 'v2_pareto_fast':_REFRESH_COMMON+(
+  (0x2300,0x2376),(0x3500,0x35fa),(0x397c,0x3a8b),(0x5500,0x560c),
+  (0x5800,0x58fa),(0x5900,0x5956),(0xca32,0xcb25)),
+ 'v3_reu_512k':_REFRESH_COMMON+(
+  (0x3500,0x35fa),(0x467c,0x478b),(0x5132,0x5225),(0x5500,0x560c),
+  (0x5800,0x58fa),(0x5900,0x5956),(0x6c00,0x6c76)),
+ 'v4_reu_16m':_REFRESH_COMMON+(
+  (0x3500,0x35fa),(0x467c,0x478b),(0x5132,0x5225),(0x5500,0x560c),
+  (0x5800,0x58fa),(0x5900,0x5956),(0x6c00,0x6c76)),
+}
+
+def in_multiply_refresh(profile,a):
+ return any(s<=a<=e for s,e in MULTIPLY_REFRESH_DECODE_EXCLUDE.get(profile,()))
+
 def hx(v,w=4):return f'${v:0{w}X}'
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def public_entries():
@@ -226,7 +273,7 @@ def emit_core_image(profile,tm):
 def generate_source(profile,outpath:Path):
  raw,tm=load_reference(profile);seen=trace(profile,tm)
  b=PRG[profile].read_bytes();prg_load=b[0]|b[1]<<8;prg_end=prg_load+len(b)-3
- main_seen={pc for pc in seen if pc>=0x100}
+ main_seen={pc for pc in seen if pc>=0x100 and not in_multiply_refresh(profile,pc)}
  # Turbo32's 135-ZP overlay calls two ordinary-RAM helper blocks that are not
  # reachable while the normal ZP image is installed. Decode them explicitly so
  # relocation rewrites their ZP and REG_LOW references symbolically rather than
@@ -298,6 +345,13 @@ def generate_source(profile,outpath:Path):
    if a in code_bytes:raise RuntimeError(f'{profile}: stranded code byte {hx(a)}')
    data.append(raw[a]);a+=1
   flush()
+ # Re-apply the canonical multiplication modules after the generated resident body.
+ # Keeping these as !source dependencies makes every selected kernel directly reusable
+ # and prevents future source regeneration from flattening the optimized routines.
+ if profile in MULTIPLY_REFRESH_INCLUDES:
+  lines += ['', '; BEGIN MULTIPLY REFRESH 2026-09-20']
+  lines += [f'!source "{name}"' for name in MULTIPLY_REFRESH_INCLUDES[profile]]
+  lines += ['; END MULTIPLY REFRESH 2026-09-20']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 

@@ -14,29 +14,29 @@
         {
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
-          "signed_instructions": 88,
+          "signed_instructions": 136,
           "unsigned_instructions": 104,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 138,
-          "unsigned_instructions": 200,
+          "signed_instructions": 248,
+          "unsigned_instructions": 179,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32",
           "unsigned": "MATH_UMUL32",
-          "signed_instructions": 209,
-          "unsigned_instructions": 178,
+          "signed_instructions": 669,
+          "unsigned_instructions": 159,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32_READY",
           "unsigned": "MATH_UMUL32_READY",
-          "signed_instructions": 201,
-          "unsigned_instructions": 170,
+          "signed_instructions": 660,
+          "unsigned_instructions": 151,
           "overlap": 0
         },
         {
@@ -77,15 +77,15 @@
         {
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
-          "signed_instructions": 98,
+          "signed_instructions": 146,
           "unsigned_instructions": 114,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32_SHR16",
           "unsigned": "MATH_UMUL32_SHR16",
-          "signed_instructions": 225,
-          "unsigned_instructions": 194,
+          "signed_instructions": 685,
+          "unsigned_instructions": 175,
           "overlap": 0
         },
         {
@@ -116,22 +116,22 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 191,
+          "signed_instructions": 232,
           "unsigned_instructions": 179,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32",
           "unsigned": "MATH_UMUL32",
-          "signed_instructions": 201,
-          "unsigned_instructions": 171,
+          "signed_instructions": 669,
+          "unsigned_instructions": 159,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32_READY",
           "unsigned": "MATH_UMUL32_READY",
-          "signed_instructions": 201,
-          "unsigned_instructions": 171,
+          "signed_instructions": 660,
+          "unsigned_instructions": 151,
           "overlap": 0
         },
         {
@@ -179,8 +179,8 @@
         {
           "signed": "MATH_SMUL32_SHR16",
           "unsigned": "MATH_UMUL32_SHR16",
-          "signed_instructions": 217,
-          "unsigned_instructions": 187,
+          "signed_instructions": 685,
+          "unsigned_instructions": 175,
           "overlap": 0
         },
         {
@@ -211,22 +211,22 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 191,
+          "signed_instructions": 232,
           "unsigned_instructions": 179,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32",
           "unsigned": "MATH_UMUL32",
-          "signed_instructions": 201,
-          "unsigned_instructions": 171,
+          "signed_instructions": 669,
+          "unsigned_instructions": 159,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32_READY",
           "unsigned": "MATH_UMUL32_READY",
-          "signed_instructions": 201,
-          "unsigned_instructions": 171,
+          "signed_instructions": 660,
+          "unsigned_instructions": 151,
           "overlap": 0
         },
         {
@@ -274,8 +274,8 @@
         {
           "signed": "MATH_SMUL32_SHR16",
           "unsigned": "MATH_UMUL32_SHR16",
-          "signed_instructions": 217,
-          "unsigned_instructions": 187,
+          "signed_instructions": 685,
+          "unsigned_instructions": 175,
           "overlap": 0
         },
         {
@@ -306,22 +306,22 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 191,
+          "signed_instructions": 232,
           "unsigned_instructions": 179,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32",
           "unsigned": "MATH_UMUL32",
-          "signed_instructions": 201,
-          "unsigned_instructions": 171,
+          "signed_instructions": 669,
+          "unsigned_instructions": 159,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32_READY",
           "unsigned": "MATH_UMUL32_READY",
-          "signed_instructions": 201,
-          "unsigned_instructions": 171,
+          "signed_instructions": 660,
+          "unsigned_instructions": 151,
           "overlap": 0
         },
         {
@@ -369,8 +369,8 @@
         {
           "signed": "MATH_SMUL32_SHR16",
           "unsigned": "MATH_UMUL32_SHR16",
-          "signed_instructions": 217,
-          "unsigned_instructions": 187,
+          "signed_instructions": 685,
+          "unsigned_instructions": 175,
           "overlap": 0
         },
         {
@@ -394,29 +394,29 @@
         {
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
-          "signed_instructions": 88,
+          "signed_instructions": 136,
           "unsigned_instructions": 104,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 138,
-          "unsigned_instructions": 200,
+          "signed_instructions": 248,
+          "unsigned_instructions": 179,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32",
           "unsigned": "MATH_UMUL32",
-          "signed_instructions": 209,
-          "unsigned_instructions": 178,
+          "signed_instructions": 669,
+          "unsigned_instructions": 159,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32_READY",
           "unsigned": "MATH_UMUL32_READY",
-          "signed_instructions": 201,
-          "unsigned_instructions": 170,
+          "signed_instructions": 660,
+          "unsigned_instructions": 151,
           "overlap": 0
         },
         {
@@ -457,15 +457,15 @@
         {
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
-          "signed_instructions": 98,
+          "signed_instructions": 146,
           "unsigned_instructions": 114,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL32_SHR16",
           "unsigned": "MATH_UMUL32_SHR16",
-          "signed_instructions": 225,
-          "unsigned_instructions": 194,
+          "signed_instructions": 685,
+          "unsigned_instructions": 175,
           "overlap": 0
         },
         {
@@ -516,32 +516,13 @@
         "kind": "native_signed_kernel",
         "public_entry": 15232,
         "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm",
-        "notes": "direct signed-domain quarter-square: sign is absorbed into Q(a+b)-Q(a-b); no unsigned-product correction tail; shared immutable complemented difference planes from UMUL24",
-        "published_source": "multiply/native/smul8_native.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
         "private_executable_core": {
-          "address": "$3B80",
-          "bytes": 46,
-          "algorithm": "direct signed-domain quarter-square; inline stable public API slot"
+          "address": "$2600",
+          "bytes": 28,
+          "cloned_from_proven_arithmetic_core": "$4700-$471B"
         },
-        "signed_sum_tables": {
-          "low": "$6000-$61FE",
-          "high": "$6200-$63FE",
-          "useful_bytes": 1022,
-          "reserved_bytes": 1024
-        },
-        "shared_difference_tables": {
-          "low": "$8800-$89FE",
-          "high": "$8A00-$8BFE",
-          "shared_with": "UMUL24 complemented quarter-square planes"
-        },
-        "standalone_core_mean_cycles": 53.9921875,
-        "public_api_mean_cycles": 67.9921875,
-        "public_api_min_cycles": 66,
-        "public_api_max_cycles": 70,
-        "validation_cases": 65536,
-        "zp_bytes": 0,
-        "stack_page_reserved_bytes": 0,
-        "standalone_register_core_reference_mean_cycles": 53.9921875
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -746,7 +727,7 @@
       "check": "v1_balanced_MATH_SMUL16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 88,
+        "signed_instructions": 136,
         "unsigned_instructions": 104,
         "overlap": []
       }
@@ -765,8 +746,8 @@
       "check": "v1_balanced_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 138,
-        "unsigned_instructions": 200,
+        "signed_instructions": 248,
+        "unsigned_instructions": 179,
         "overlap": []
       }
     },
@@ -784,8 +765,8 @@
       "check": "v1_balanced_MATH_SMUL32_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 209,
-        "unsigned_instructions": 178,
+        "signed_instructions": 669,
+        "unsigned_instructions": 159,
         "overlap": []
       }
     },
@@ -803,8 +784,8 @@
       "check": "v1_balanced_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 201,
-        "unsigned_instructions": 170,
+        "signed_instructions": 660,
+        "unsigned_instructions": 151,
         "overlap": []
       }
     },
@@ -917,7 +898,7 @@
       "check": "v1_balanced_MATH_SMUL16_SHR8_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 98,
+        "signed_instructions": 146,
         "unsigned_instructions": 114,
         "overlap": []
       }
@@ -936,8 +917,8 @@
       "check": "v1_balanced_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 225,
-        "unsigned_instructions": 194,
+        "signed_instructions": 685,
+        "unsigned_instructions": 175,
         "overlap": []
       }
     },
@@ -997,32 +978,13 @@
         "kind": "native_signed_kernel",
         "public_entry": 15232,
         "canonical_source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
-        "notes": "direct signed-domain quarter-square: sign is absorbed into Q(a+b)-Q(a-b); no unsigned-product correction tail; shared immutable complemented difference planes from UMUL24",
-        "published_source": "multiply/native/smul8_native.asm",
+        "notes": "signed path owns its executable arithmetic kernel; immutable lookup tables may be shared",
         "private_executable_core": {
-          "address": "$3B80",
-          "bytes": 46,
-          "algorithm": "direct signed-domain quarter-square; inline stable public API slot"
+          "address": "$2600",
+          "bytes": 35,
+          "cloned_from_proven_arithmetic_core": "$5300-$5322"
         },
-        "signed_sum_tables": {
-          "low": "$2600-$27FE",
-          "high": "$6E00-$6FFE",
-          "useful_bytes": 1022,
-          "reserved_bytes": 1024
-        },
-        "shared_difference_tables": {
-          "low": "$6400-$65FE",
-          "high": "$6600-$67FE",
-          "shared_with": "UMUL24 complemented quarter-square planes"
-        },
-        "standalone_core_mean_cycles": 53.9921875,
-        "public_api_mean_cycles": 67.9921875,
-        "public_api_min_cycles": 66,
-        "public_api_max_cycles": 70,
-        "validation_cases": 65536,
-        "zp_bytes": 0,
-        "stack_page_reserved_bytes": 0,
-        "standalone_register_core_reference_mean_cycles": 53.9921875
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -1242,7 +1204,7 @@
       "check": "v2_pareto_fast_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 191,
+        "signed_instructions": 232,
         "unsigned_instructions": 179,
         "overlap": []
       }
@@ -1261,8 +1223,8 @@
       "check": "v2_pareto_fast_MATH_SMUL32_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 201,
-        "unsigned_instructions": 171,
+        "signed_instructions": 669,
+        "unsigned_instructions": 159,
         "overlap": []
       }
     },
@@ -1280,8 +1242,8 @@
       "check": "v2_pareto_fast_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 201,
-        "unsigned_instructions": 171,
+        "signed_instructions": 660,
+        "unsigned_instructions": 151,
         "overlap": []
       }
     },
@@ -1413,8 +1375,8 @@
       "check": "v2_pareto_fast_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 217,
-        "unsigned_instructions": 187,
+        "signed_instructions": 685,
+        "unsigned_instructions": 175,
         "overlap": []
       }
     },
@@ -1474,32 +1436,8 @@
         "kind": "native_signed_kernel",
         "public_entry": 15232,
         "canonical_source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
-        "notes": "direct signed-domain quarter-square: sign is absorbed into Q(a+b)-Q(a-b); no unsigned-product correction tail; shared immutable complemented difference planes from UMUL24",
-        "published_source": "multiply/native/smul8_native.asm",
-        "private_executable_core": {
-          "address": "$3B80",
-          "bytes": 46,
-          "algorithm": "direct signed-domain quarter-square; inline stable public API slot"
-        },
-        "signed_sum_tables": {
-          "low": "$6800-$69FE",
-          "high": "$6A00-$6BFE",
-          "useful_bytes": 1022,
-          "reserved_bytes": 1024
-        },
-        "shared_difference_tables": {
-          "low": "$6400-$65FE",
-          "high": "$6600-$67FE",
-          "shared_with": "UMUL24 complemented quarter-square planes"
-        },
-        "standalone_core_mean_cycles": 53.9921875,
-        "public_api_mean_cycles": 67.9921875,
-        "public_api_min_cycles": 66,
-        "public_api_max_cycles": 70,
-        "validation_cases": 65536,
-        "zp_bytes": 0,
-        "stack_page_reserved_bytes": 0,
-        "standalone_register_core_reference_mean_cycles": 53.9921875
+        "notes": "profile-specific signed executable path; may share immutable REU lookup data, but shares no unsigned executable instructions",
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -1719,7 +1657,7 @@
       "check": "v3_reu_512k_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 191,
+        "signed_instructions": 232,
         "unsigned_instructions": 179,
         "overlap": []
       }
@@ -1738,8 +1676,8 @@
       "check": "v3_reu_512k_MATH_SMUL32_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 201,
-        "unsigned_instructions": 171,
+        "signed_instructions": 669,
+        "unsigned_instructions": 159,
         "overlap": []
       }
     },
@@ -1757,8 +1695,8 @@
       "check": "v3_reu_512k_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 201,
-        "unsigned_instructions": 171,
+        "signed_instructions": 660,
+        "unsigned_instructions": 151,
         "overlap": []
       }
     },
@@ -1890,8 +1828,8 @@
       "check": "v3_reu_512k_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 217,
-        "unsigned_instructions": 187,
+        "signed_instructions": 685,
+        "unsigned_instructions": 175,
         "overlap": []
       }
     },
@@ -1951,32 +1889,8 @@
         "kind": "native_signed_kernel",
         "public_entry": 15232,
         "canonical_source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
-        "notes": "direct signed-domain quarter-square: sign is absorbed into Q(a+b)-Q(a-b); no unsigned-product correction tail; shared immutable complemented difference planes from UMUL24",
-        "published_source": "multiply/native/smul8_native.asm",
-        "private_executable_core": {
-          "address": "$3B80",
-          "bytes": 46,
-          "algorithm": "direct signed-domain quarter-square; inline stable public API slot"
-        },
-        "signed_sum_tables": {
-          "low": "$6800-$69FE",
-          "high": "$6A00-$6BFE",
-          "useful_bytes": 1022,
-          "reserved_bytes": 1024
-        },
-        "shared_difference_tables": {
-          "low": "$6400-$65FE",
-          "high": "$6600-$67FE",
-          "shared_with": "UMUL24 complemented quarter-square planes"
-        },
-        "standalone_core_mean_cycles": 53.9921875,
-        "public_api_mean_cycles": 67.9921875,
-        "public_api_min_cycles": 66,
-        "public_api_max_cycles": 70,
-        "validation_cases": 65536,
-        "zp_bytes": 0,
-        "stack_page_reserved_bytes": 0,
-        "standalone_register_core_reference_mean_cycles": 53.9921875
+        "notes": "profile-specific signed executable path; may share immutable REU lookup data, but shares no unsigned executable instructions",
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -2196,7 +2110,7 @@
       "check": "v4_reu_16m_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 191,
+        "signed_instructions": 232,
         "unsigned_instructions": 179,
         "overlap": []
       }
@@ -2215,8 +2129,8 @@
       "check": "v4_reu_16m_MATH_SMUL32_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 201,
-        "unsigned_instructions": 171,
+        "signed_instructions": 669,
+        "unsigned_instructions": 159,
         "overlap": []
       }
     },
@@ -2234,8 +2148,8 @@
       "check": "v4_reu_16m_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 201,
-        "unsigned_instructions": 171,
+        "signed_instructions": 660,
+        "unsigned_instructions": 151,
         "overlap": []
       }
     },
@@ -2367,8 +2281,8 @@
       "check": "v4_reu_16m_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 217,
-        "unsigned_instructions": 187,
+        "signed_instructions": 685,
+        "unsigned_instructions": 175,
         "overlap": []
       }
     },
@@ -2428,32 +2342,8 @@
         "kind": "native_signed_kernel",
         "public_entry": 15232,
         "canonical_source": "relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py",
-        "notes": "direct signed-domain quarter-square: sign is absorbed into Q(a+b)-Q(a-b); no unsigned-product correction tail; shared immutable complemented difference planes from UMUL24",
-        "published_source": "multiply/native/smul8_native.asm",
-        "private_executable_core": {
-          "address": "$3B80",
-          "bytes": 46,
-          "algorithm": "direct signed-domain quarter-square; inline stable public API slot"
-        },
-        "signed_sum_tables": {
-          "low": "$6000-$61FE",
-          "high": "$6200-$63FE",
-          "useful_bytes": 1022,
-          "reserved_bytes": 1024
-        },
-        "shared_difference_tables": {
-          "low": "$8800-$89FE",
-          "high": "$8A00-$8BFE",
-          "shared_with": "UMUL24 complemented quarter-square planes"
-        },
-        "standalone_core_mean_cycles": 53.9921875,
-        "public_api_mean_cycles": 67.9921875,
-        "public_api_min_cycles": 66,
-        "public_api_max_cycles": 70,
-        "validation_cases": 65536,
-        "zp_bytes": 0,
-        "stack_page_reserved_bytes": 0,
-        "standalone_register_core_reference_mean_cycles": 53.9921875
+        "notes": "inherits V1 private native-signed executable path; no corresponding unsigned executable overlap",
+        "published_source": "multiply/native/smul8_native.asm"
       }
     },
     {
@@ -2572,7 +2462,7 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 88,
+        "signed_instructions": 136,
         "unsigned_instructions": 104,
         "overlap": []
       }
@@ -2591,8 +2481,8 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 138,
-        "unsigned_instructions": 200,
+        "signed_instructions": 248,
+        "unsigned_instructions": 179,
         "overlap": []
       }
     },
@@ -2610,8 +2500,8 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL32_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 209,
-        "unsigned_instructions": 178,
+        "signed_instructions": 669,
+        "unsigned_instructions": 159,
         "overlap": []
       }
     },
@@ -2629,8 +2519,8 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL32_READY_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 201,
-        "unsigned_instructions": 170,
+        "signed_instructions": 660,
+        "unsigned_instructions": 151,
         "overlap": []
       }
     },
@@ -2743,7 +2633,7 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL16_SHR8_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 98,
+        "signed_instructions": 146,
         "unsigned_instructions": 114,
         "overlap": []
       }
@@ -2762,8 +2652,8 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL32_SHR16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 225,
-        "unsigned_instructions": 194,
+        "signed_instructions": 685,
+        "unsigned_instructions": 175,
         "overlap": []
       }
     },

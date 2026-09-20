@@ -41,11 +41,16 @@ All shipped signed multiply and divide entries now own **native signed executabl
 
 - V1/V5 preserve the 31-byte normal-ZP contract while using private signed executable arithmetic paths.
 - V2/V3/V4 retain the signed-specific `smul16_practical_116zp` executable-ZP kernel.
-- Wider signed multiply cores and `SDIV32_32` use signed-owned private executable cores in existing reserved holes, so public ABI addresses and resident load/end ranges are unchanged. The cores may reuse the same arithmetic identities/tables, but they do not execute the corresponding unsigned routine.
+- Wider signed multiply cores and `SDIV32_32` use signed-owned private executable cores. Public API addresses remain unchanged; the multiplication refresh extends the resident payload to `$CF96` to house the private multiply cores. The cores may reuse the same arithmetic identities/tables, but they do not execute the corresponding unsigned routine.
 - `tools/validate_signed_layout.py` mechanically requires zero signed/unsigned executable overlap for 13 API pairs in all five profiles.
 - Every signed API now has a directly browsable exact executable source mirror under each profile's `resident/signed/multiply/native/` or `resident/signed/division/native/` directory; `tools/validate_published_signed_sources.py` verifies those mirrors byte-for-byte against the initialized resident image.
 
 See `docs/SIGNED_IMPLEMENTATIONS.md` and each profile's `resident/signed/README.md`.
+
+
+### 2026-09-20 multiplication refresh
+
+The fixed profiles now apply the latest multiplier research profile-by-profile rather than forcing one kernel everywhere. Direct signed `SMUL8`, FAST24 signed composition and mixed-call-safe FAST31/V29 `SMUL32` are selected across V1–V5; V1/V5 use the low-ZP FAST17 `SMUL16`, while V2/V3/V4 retain their faster 116-ZP practical signed kernel. `UMUL32` is refreshed across all five profiles, V1/V5 also gain the FAST24 `UMUL24`, and `UMUL8`/`UMUL16` are intentionally retained after resource-aware comparison. The refreshed arithmetic is exposed as independent canonical includes in the V1–V4 `relocatable_source/` trees; V5 inherits the V1 low-ZP arithmetic through the hybrid build and publishes its own exact signed executable mirrors under `resident/signed/multiply/native/`. See `docs/MULTIPLY_REFRESH_2026-09-20.md`.
 
 ## Custom Pareto Builder
 

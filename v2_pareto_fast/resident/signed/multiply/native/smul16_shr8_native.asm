@@ -148,16 +148,16 @@ L5A2A:
 ; ---- executable island $5E0F ----
 * = $5E0F
 L5E0F:
-    jmp LC4CC                          ; @5E0F 4C CC C4
-; ---- executable island $C4CC ----
-* = $C4CC
-LC4CC:
-    jsr L3BB0                          ; @C4CC 20 B0 3B
-    lda $C009                          ; @C4CF AD 09 C0
-    sta $C008                          ; @C4D2 8D 08 C0
-    lda $C00A                          ; @C4D5 AD 0A C0
-    sta $C009                          ; @C4D8 8D 09 C0
-    lda $C00B                          ; @C4DB AD 0B C0
-    sta $C00A                          ; @C4DE 8D 0A C0
-    clc                                ; @C4E1 18
-    rts                                ; @C4E2 60
+    jmp LCF80                          ; @5E0F 4C 80 CF
+; ---- executable island $CF80 ----
+* = $CF80
+LCF80:
+    jsr L3BB0                          ; @CF80 20 B0 3B
+    lda $C009                          ; @CF83 AD 09 C0
+    sta $C008                          ; @CF86 8D 08 C0
+    lda $C00A                          ; @CF89 AD 0A C0
+    sta $C009                          ; @CF8C 8D 09 C0
+    lda $C00B                          ; @CF8F AD 0B C0
+    sta $C00A                          ; @CF92 8D 0A C0
+    clc                                ; @CF95 18
+    rts                                ; @CF96 60

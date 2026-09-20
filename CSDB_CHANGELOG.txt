@@ -1,3 +1,11 @@
+2026-09-20 FIVE-PROFILE MULTIPLICATION REFRESH
+- Re-evaluated UMUL8/16/24/32 and SMUL8/16/24/32 across V1-V5, including READY and fixed-shift derivatives, using the Repose signed-quadrant and recent quarter-square/carry work.
+- Direct signed SMUL8 is now 67.992188 cycles exhaustive in every profile. V1/V5 select low-ZP FAST17 SMUL16; V2/V3/V4 keep their faster 116-ZP practical native SMUL16.
+- FAST24 signed composition is selected in every profile; V1/V5 also select the private FAST24 unsigned producer. Mixed-call-safe FAST31/V29 UMUL32 and SMUL32 are selected in all five profiles; UMUL32 measures 712.235367 cycles on the common refresh corpus.
+- Public API addresses are unchanged. Private multiply cores extend the resident payload end to $CF96; no selected fixed profile reserves persistent hardware-stack space. V3/V4 Turbo entry geometry remains intact.
+- Custom Pareto now treats the refreshed V1 baseline correctly: redundant initialized-UMUL32 donor retired, legacy 5-ZP pack accelerates UMUL8 only, and the 24-ZP pack imports the current FAST24 signed core. Equal-weight extra-RAM points: 5376/5949/6892/5580/7078 B at 31/36/60/147/176 ZP.
+- Validation: 264,999 signed multiply calls, 415,078 cross-profile refresh benchmark calls, 17,196 Turbo relocation calls, 12 Pareto reference/alternate builds (55,068 common-API calls), signed/unsigned executable zero-overlap, deterministic source/hybrid rebuilds, and release audit PASS_WITH_ACME_NOT_RUN.
+
 2026-09-18 VEC2 NORMALIZE — STABLE 46TH API ENTRY
 - Added MATH_VEC2_NORMALIZE_Q8_8 at reference $5E39: signed Q8.8 x/y -> signed Q1.15 unit vector; inputs preserved; C=1 only for zero vector.
 - Final means: V1 198.770271 / V2 189.260317 / V3 170.058633 / V4 170.058633 / V5 198.770271 cycles.
@@ -9,7 +17,7 @@
 2026-09-17 ATAN2 FAST TIERS + GAME AUDIT
 - ATAN2 exhaustive 65,536-vector result: V1 50.441345 cycles mean (30-53), V2/V3 46.953064 (30-48), V4 exact 48 fixed, V5 46.953064; stock implementations use 0 extra ZP and V1-V3/V5 stay within 1 phase unit.
 - V1 keeps the compact 512-byte table point; V2/V3 use the 1280-byte fast tier. V5 imports the fast tier through 3 previously unused 256-byte pages with collision guards.
-- Custom Pareto adds independent atan2_fast pack: 0 ZP / 768 B. Updated default extra-RAM points: 6021/6611/7371/6207/7557 B.
+- Custom Pareto adds independent atan2_fast pack: 0 ZP / 768 B. At that revision the default extra-RAM points were 6021/6611/7371/6207/7557 B; superseded by the 2026-09-20 multiplication refresh.
 - V5 direct-import validation: 144,246 cases including exhaustive ATAN2 result/cycle parity. Pareto deep parity: 75,644 cases including exhaustive ATAN2, plus exhaustive UMOD8 and stress/ZP checks.
 - Added source audit for Steel Ranger, Wolf64 and Quake64: keep existing discrete/direct-angle paths where they are cheaper; use ATAN2 for genuine dynamic vector-to-angle work.
 

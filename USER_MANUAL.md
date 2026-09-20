@@ -298,14 +298,14 @@ Current equal-weight breakpoints are:
 
 | ZP | Default selection | Exact extra RAM vs V1 |
 |---:|---|---:|
-| 31 | `atan2_fast` + V5 zero-ZP imports + initialized UMUL32 | 6021 B |
-| 36 | above + UMUL8/SMUL8 pack | 6611 B |
-| 60 | above + record UMUL16/UMUL24 pack | 7371 B |
-| 147 | `atan2_fast` + V5 imports + initialized UMUL32 + native SMUL16 | 6207 B |
-| 176 | all certified hybrid packs, including `atan2_fast` | 7557 B |
+| 31 | `atan2_fast` + V5 zero-ZP imports | 5376 B |
+| 36 | above + UMUL8 pack | 5949 B |
+| 60 | above + record UMUL16/UMUL24 pack | 6892 B |
+| 147 | `atan2_fast` + V5 imports + native SMUL16 | 5580 B |
+| 176 | all active certified hybrid packs, including `atan2_fast` | 7078 B |
 | 221 | complete V2 | 208 B resident increase |
 
-The optimizer maximizes weighted cycle savings, so resource use is not required to be monotonic across those points. At 31 ZP + `--ram-budget 0`, the generated PRG is byte-identical to V1. At 31 ZP + `--init-policy optional`, it is byte-identical to V5. At 221 ZP the builder selects complete V2.
+The optimizer maximizes weighted cycle savings, so resource use is not required to be monotonic across those points. At 31 ZP + `--ram-budget 0`, the generated PRG is byte-identical to V1. At the default 31-ZP point (and with `--init-policy optional`), it is byte-identical to V5. At 221 ZP the builder selects complete V2.
 
 See **`docs/PARETO_BUILDER.md`** for pack geometry, workload weighting, RAM-under-ROM details and validation.
 
@@ -1340,8 +1340,9 @@ The exact benchmark CSV files in `docs/` remain authoritative. A few useful head
 | Routine | V1 | V2 | V3 | V4 |
 |---|---:|---:|---:|---:|
 | UMUL8 | 90.49 | 78.49 | 69.00 | 69.00 |
-| UMUL16 | 383.32 | 350.78 | 339.00 | 317.54 |
-| UMUL32 | 782.82 | 763.82 | 763.82 | 763.82 |
+| UMUL16 | 273.84 | 225.84 | 225.84 | 225.84 |
+| UMUL24 | 489.99 | 448.29 | 448.29 | 448.29 |
+| UMUL32 | 712.24 | 712.24 | 712.24 | 712.24 |
 | UDIV8 | 87.45 | 87.45 | 70.86 | 70.86 |
 | UDIV16 | 160.06 | 137.28 | 137.28 | 137.28 |
 | UDIV32/16 | 857.37 | 759.73 | 759.73 | 759.73 |

@@ -9,11 +9,11 @@
     "status": "NOT_RUN_CURRENT"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "2379df65d43f302d11ad15668796925cf1e4c2e4a6176e1a51b1d11e42a2124d",
-    "v2_pareto_fast": "789622effc4c294177c9b368201abbd161e95dcb26be5788b28b50fc92a7a189",
-    "v3_reu_512k": "1569843ac8e6ac086eb8ddf6901a37f6032e386574c6237df52821d1830b16ef",
-    "v4_reu_16m": "2646b69a2492716b5ec82ece99f17d3950ca674c849726436c5b4a51107b1c7d",
-    "v5_hybrid_lowzp": "ea3c4e2068a080c649908e4e1598ba3d2a70f6126444466f3205683efe43c9e9"
+    "v1_balanced": "ea248a3bb31c94f7206abef0877647485e42b7f2af96bff26dd011b891229f3c",
+    "v2_pareto_fast": "0738889f881e931d226679b466d0439729e5eed24f4e4addc01d44694712fa72",
+    "v3_reu_512k": "5da8506896c7bb61b3ab93cc6a064923d64983f16bee4b9e914cf468b2e2e6ea",
+    "v4_reu_16m": "55837675ea69d954d9acf0dd2005aab65906c2507a586ba0618310af9fa992f4",
+    "v5_hybrid_lowzp": "28a15c18356703ac1619059512bf1fd51e181e7bddf61b0c1c52479a15ffafbe"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "da767488080d83bc692c4a9b41ecbbe19ac331652170c4f47faccab53a96483d",
@@ -39,21 +39,19 @@
     "config_validation_cases": 12,
     "default_reference_points": {
       "147": {
-        "extra_private_ram_bytes": 6207,
+        "extra_private_ram_bytes": 5580,
         "packs": [
           "atan2_fast",
           "smul16_exec",
-          "umul32_initialized",
           "zero_zp_v5"
         ]
       },
       "176": {
-        "extra_private_ram_bytes": 7557,
+        "extra_private_ram_bytes": 7078,
         "packs": [
           "atan2_fast",
           "smul16_exec",
           "umul24",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ]
@@ -65,28 +63,25 @@
         ]
       },
       "31": {
-        "extra_private_ram_bytes": 6021,
+        "extra_private_ram_bytes": 5376,
         "packs": [
           "atan2_fast",
-          "umul32_initialized",
           "zero_zp_v5"
         ]
       },
       "36": {
-        "extra_private_ram_bytes": 6611,
+        "extra_private_ram_bytes": 5949,
         "packs": [
           "atan2_fast",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ]
       },
       "60": {
-        "extra_private_ram_bytes": 7371,
+        "extra_private_ram_bytes": 6892,
         "packs": [
           "atan2_fast",
           "umul24",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ]
@@ -152,6 +147,17 @@
     "v4_reu_16m": 1047.7716303708064
   },
   "isqrt32_fast_validation_status": "PASS",
+  "multiply_refresh": {
+    "benchmark_evidence": "validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json",
+    "benchmark_machine_calls": 415078,
+    "date": "2026-09-20",
+    "persistent_stack_reservation_bytes": 0,
+    "profile_selection": "profile-specific best compatible implementation; UMUL8/UMUL16 retained after resource-aware evaluation",
+    "signed_multiply_machine_calls": 264999,
+    "smul8_exhaustive_mean_cycles": 67.9921875,
+    "technical_note": "docs/MULTIPLY_REFRESH_2026-09-20.md",
+    "umul32_mean_cycles_all_profiles": 712.2353673723537
+  },
   "notes": [
     "UMUL16/UMUL24 resident record upgrades are active; V1/V5 preserve the 31-byte normal-ZP and UMUL32_READY state contracts.",
     "V3/V4 Turbo32 uses the stack-free 135-ZP ram135 record-family compromise; reference range $0A-$90, legal origins $02-$79; BEGIN/CALL/END = 326 / 728.947080 mean / 371 cycles on the canonical corpus.",
@@ -206,11 +212,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "73d0feef6f7dfb88de5b35b8ac3b02365a957d775fd07e4f9ecdbf1fb5414ec0",
-    "v2_pareto_fast": "92613e5e656a80541a7ae2a04aa8cce9775668173d6700f861db1d37f0714421",
-    "v3_reu_512k": "a37cb3e6236aec2a417990584eb12d1878e6183b421c2fe56882d923a92affe1",
-    "v4_reu_16m": "0d398ea2f08b67f6bbcb546ffeaf06baa225a95520e1e5e1cd2829e3176023f5",
-    "v5_hybrid_lowzp": "510d99d5b31325e6292a9e0c051a9ebedad16cb33ff3a20d6b0ef92329a346ad"
+    "v1_balanced": "8d1ff7439a2ed2821360a33972a2d90dbe19266d08b4fe80c8b7a4233bfd3605",
+    "v2_pareto_fast": "e4e19f98b6e68c9f76bf94f04c72273d51b0ff4326c50f47bb43e30f951e3e4e",
+    "v3_reu_512k": "371aa5f8082e7d9cbfdfea2a854383b89136d578a38643f465f239177f0a4889",
+    "v4_reu_16m": "82a0139f56bb512802139c7024f92e6922c9abf7ea2e37e2d9a07552157451a1",
+    "v5_hybrid_lowzp": "e35e171e0cbbfed94f2186f4a4ac9488d7c6dca6fdc72dba362a405ddd482726"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "66a3feab7d1a18356291c2aac9f404627ca13004d1032d6c6efb4cd1e4f1acf5",

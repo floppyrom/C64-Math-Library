@@ -12,11 +12,11 @@
       "status": "PASS"
     },
     {
-      "name": "exact_ram_budget_rejects_6021_byte_choice_at_6020",
+      "name": "exact_ram_budget_rejects_5376_byte_choice_at_5375",
       "status": "PASS"
     },
     {
-      "name": "exact_ram_budget_accepts_6021_byte_choice",
+      "name": "exact_ram_budget_accepts_5376_byte_choice",
       "status": "PASS"
     },
     {

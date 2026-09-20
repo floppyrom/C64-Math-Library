@@ -124,6 +124,17 @@ def cycles_catalog():
             game[p]['MATH_'+name]=r
             if 'MATH_'+name not in cat[p]:
                 add_cycle(cat,p,'MATH_'+name,r['mean_cycles'],r['min_cycles'],r['max_cycles'],r['cases'],'published game-math benchmark 2026-09-06',('alias '+r['alias_of']) if r.get('alias_of') else '')
+    # Multiplication refresh: common deterministic public-entry corpus for all
+    # entries whose implementation changed in the 2026-09-20 profile sweep.
+    # This intentionally comes after the older game/record rows so the current
+    # resident implementation is authoritative. Signed producer rows themselves
+    # remain sourced from SIGNED_MULTIPLY_VALIDATION above.
+    mr=json.loads((ROOT/'validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json').read_text())
+    for p,rr in mr['profiles'].items():
+        for n,v in rr.items():
+            add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
+                      '2026-09-20 multiply-refresh deterministic cross-profile corpus')
+
     # Q8.8 vector normalize profile-parity benchmark (107,396-vector deterministic corpus).
     norm=json.loads((ROOT/'validation/normalize/NORMALIZE_PROFILE_PARITY_107396.json').read_text())
     for row in norm['profiles']:
@@ -150,12 +161,39 @@ def declared_zp(profile):
 
 
 def provenance(profile,n):
-    if n=='MATH_UMUL16': return '17-ZP qualified record-derived fused quarter-square resident kernel'
-    if n=='MATH_UMUL24': return '24-ZP reverse_24zp_carry certified resident kernel'
-    if n in ('MATH_UMUL32','MATH_UMUL32_READY'): return '31-ZP practical resident UMUL32 family (stack-free compromise)'
-    if n.startswith('MATH_SMUL') or n.startswith('MATH_SDIV') or n.startswith('MATH_SMOD'): return 'native signed private executable path'
-    if profile=='v5_hybrid_lowzp' and n in {'MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD8','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8'}: return 'V2 certified kernel imported into V5 hybrid private RAM'
+    if n=='MATH_UMUL8':
+        return 'profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract'
+    if n=='MATH_UMUL16':
+        return '17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)'
+    if n=='MATH_UMUL24':
+        if profile in ('v1_balanced','v5_hybrid_lowzp'):
+            return 'FAST24 private 24-ZP carry producer with stable public adapter'
+        return '24-ZP reverse_24zp_carry certified resident kernel (retained; refresh candidate did not win)'
+    if n in ('MATH_UMUL32','MATH_UMUL32_READY'):
+        return 'FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder'
+    if n=='MATH_UMUL32_SHR16':
+        return 'FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction'
+    if n=='MATH_SMUL8':
+        return 'direct signed-domain quarter-square kernel with private signed-sum planes'
+    if n=='MATH_SMUL16':
+        if profile in ('v1_balanced','v5_hybrid_lowzp'):
+            return 'FAST17 native signed composition with private 17-ZP magnitude core'
+        return '116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison)'
+    if n=='MATH_SMUL16_SHR8':
+        return ('FAST17 SMUL16 plus SHR8 extraction' if profile in ('v1_balanced','v5_hybrid_lowzp')
+                else '116-ZP practical native SMUL16 plus SHR8 extraction')
+    if n=='MATH_SMUL24':
+        return 'FAST24 four-quadrant native signed composition; immutable quarter-square tables shared'
+    if n in ('MATH_SMUL32','MATH_SMUL32_READY'):
+        return 'FAST31/V29 native signed quadrant composition; mixed-call-safe public path'
+    if n=='MATH_SMUL32_SHR16':
+        return 'FAST31/V29 SMUL32 producer plus existing SHR16 extraction'
+    if n.startswith('MATH_SDIV') or n.startswith('MATH_SMOD'):
+        return 'native signed private executable path'
+    if profile=='v5_hybrid_lowzp' and n in {'MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD8','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8'}:
+        return 'V2 certified kernel imported into V5 hybrid private RAM'
     return 'profile-selected resident implementation'
+
 
 
 def main():

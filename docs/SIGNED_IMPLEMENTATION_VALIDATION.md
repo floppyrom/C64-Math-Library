@@ -8,6 +8,6 @@ The native-signed release is verified at three levels.
 
 After these focused gates, the source relocation, alternate-map, deterministic rebuild, Turbo, hybrid, Pareto and release audits exercise the integrated library.
 
-4. `validation/review/NATIVE_SIGNED_DELTA_AUDIT.json` compares the immediate pre-refresh package on identical corpora: all newly split/compacted multiplier paths are 3 cycles faster, V2–V4 SMUL16 is unchanged, and the newly private SDIV32_32 is faster in every profile.
+4. `validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json` is the current cross-profile multiplication benchmark (415,078 machine calls) covering refreshed unsigned/signed producers, READY entries and fixed-shift derivatives. `validation/review/NATIVE_SIGNED_DELTA_AUDIT.json` is retained as historical evidence for the earlier executable-ownership split, not as the current multiplier-performance authority.
 
 The division validator uses the global profile index for its deterministic RNG seed even when `--profile` is used, so partitioned validation is corpus-identical to a monolithic run.

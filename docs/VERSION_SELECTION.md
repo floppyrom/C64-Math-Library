@@ -29,11 +29,11 @@ V1, V2 and V5 remain useful as simple, reproducible presets and validation ancho
 
 | ZP | Default result | Exact extra RAM vs V1 |
 |---:|---|---:|
-| 31 | `atan2_fast` + V5 zero-ZP imports + initialized UMUL32 | 6021 B |
-| 36 | above + UMUL8/SMUL8 | 6611 B |
-| 60 | above + record UMUL16/UMUL24 | 7371 B |
-| 147 | `atan2_fast` + V5 imports + initialized UMUL32 + native signed SMUL16 | 6207 B |
-| 176 | all certified hybrid packs, including `atan2_fast` | 7557 B |
+| 31 | `atan2_fast` + V5 zero-ZP imports | 5376 B |
+| 36 | above + UMUL8 | 5949 B |
+| 60 | above + record UMUL16/UMUL24 | 6892 B |
+| 147 | `atan2_fast` + V5 imports + native signed SMUL16 | 5580 B |
+| 176 | all active certified hybrid packs, including `atan2_fast` | 7078 B |
 | 221 | complete V2 | 208 B resident increase |
 
 The optimizer maximizes weighted cycle savings, so RAM usage need not increase monotonically with ZP. Workload weights can change the selected pack at the same resource budget.

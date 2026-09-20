@@ -5,84 +5,79 @@
       "31": {
         "selected_packs": [
           "atan2_fast",
-          "umul32_initialized",
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_private_ram_bytes": 6021,
-        "init_required": true,
+        "extra_private_ram_bytes": 5376,
+        "init_required": false,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "b9776aef8b486082bf76363a7a8a7df6dddab5985c4489133489ce26a5459565"
+        "sha256": "e35e171e0cbbfed94f2186f4a4ac9488d7c6dca6fdc72dba362a405ddd482726"
       },
       "36": {
         "selected_packs": [
           "atan2_fast",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_private_ram_bytes": 6611,
+        "extra_private_ram_bytes": 5949,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "496437b3edaf9dded31277844d353fa61831ae5d7aefc9323979e90459fc1817"
+        "sha256": "53ad40b7e19af77d0b28e88c78311470ab297331af0ef1df871c0ae32c99961c"
       },
       "60": {
         "selected_packs": [
           "atan2_fast",
           "umul24",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 7371,
+        "extra_private_ram_bytes": 6892,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "f528c677338a69c01c5e0eca9dea3cff2ca9e2db9f607976207441f125a02f71"
+        "sha256": "cf36f26a06f468716bf7542d0a469d9d72ba85947512d863c14a5dc0524ac2bc"
       },
       "147": {
         "selected_packs": [
           "atan2_fast",
           "smul16_exec",
-          "umul32_initialized",
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_private_ram_bytes": 6207,
+        "extra_private_ram_bytes": 5580,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "ec45b1332fd09d90c005f4778dd337f005d950e7bcc9a48620fbfbe03c00fce2"
+        "sha256": "f711d64f94449bf180affbfa71112e3e098dc657187070b68ec96f5d371a9fcb"
       },
       "176": {
         "selected_packs": [
           "atan2_fast",
           "smul16_exec",
           "umul24",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 7557,
+        "extra_private_ram_bytes": 7078,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "78399cfe97df1afefc42ab23f76d55406168a2232b7a6e5105e1f2f8a6a9369e"
+        "sha256": "eb598024d8cb4d1262ce125b9434060d53c50e2d9bee8c78baaed9fc3f344026"
       },
       "221": {
         "selected_packs": [
@@ -95,91 +90,86 @@
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "92613e5e656a80541a7ae2a04aa8cce9775668173d6700f861db1d37f0714421"
+        "sha256": "e4e19f98b6e68c9f76bf94f04c72273d51b0ff4326c50f47bb43e30f951e3e4e"
       }
     },
     "alternate": {
       "31": {
         "selected_packs": [
           "atan2_fast",
-          "umul32_initialized",
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_private_ram_bytes": 6021,
-        "init_required": true,
+        "extra_private_ram_bytes": 5376,
+        "init_required": false,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "4fc92fcd9ff95c94e28464dde59993764572773a46cbbb5d4c92a42eaca9e913"
+        "sha256": "28a15c18356703ac1619059512bf1fd51e181e7bddf61b0c1c52479a15ffafbe"
       },
       "36": {
         "selected_packs": [
           "atan2_fast",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_private_ram_bytes": 6611,
+        "extra_private_ram_bytes": 5949,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "e7b44d5de529a7ce7ce46a632667f3895116ecd8bce946da59710e4e26c33c21"
+        "sha256": "04e0d8ac34a5609d5b8d1199ee7b38dc0a005fec61c18fc539dc4a06e6beee65"
       },
       "60": {
         "selected_packs": [
           "atan2_fast",
           "umul24",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 7371,
+        "extra_private_ram_bytes": 6892,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "94feb5d310e42436bb75f72dd4e4036c8eac97e1a27cd872a4973b76bdb5a2b9"
+        "sha256": "4c0c0913a737c90c3ae81564274320515119c84a5f0b1836cc3c359ea70a31f6"
       },
       "147": {
         "selected_packs": [
           "atan2_fast",
           "smul16_exec",
-          "umul32_initialized",
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_private_ram_bytes": 6207,
+        "extra_private_ram_bytes": 5580,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "b725a468d058e11d1df051a043c6966660256219641904e599451e61a5522719"
+        "sha256": "2a57c16a099e6929cade095f8cf5be10ebdd2f123de1d8bd25432ec6f464a565"
       },
       "176": {
         "selected_packs": [
           "atan2_fast",
           "smul16_exec",
           "umul24",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 7557,
+        "extra_private_ram_bytes": 7078,
         "init_required": true,
         "common_api": {
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "019dfa67f4be44a52faa88ca4293b029610830d2fa0bc11d529b4c48d54b3231"
+        "sha256": "1c73d632675f7399d66a7416d97a09eb169043868057aac5825bc642850fcac7"
       },
       "221": {
         "selected_packs": [
@@ -192,7 +182,7 @@
           "entries": 46,
           "calls": 4589
         },
-        "sha256": "a601329ce4c1fa4fbc41ee8cc14551095a120ad6ed5d9eca69fd9e4bb7b24af0"
+        "sha256": "61a9ad78064e7ac312bf1bed56f7196611810d185812ff0bf21b3da20e101dbd"
       }
     }
   },
@@ -201,27 +191,24 @@
       "zp_budget": 31,
       "expected": [
         "atan2_fast",
-        "umul32_initialized",
         "zero_zp_v5"
       ],
       "result": {
         "mode": "hybrid",
         "packs": [
           "atan2_fast",
-          "umul32_initialized",
           "zero_zp_v5"
         ],
         "zp_bytes": 31,
-        "extra_ram": 6021,
-        "score": 382.91505425,
-        "init_required": true
+        "extra_ram": 5376,
+        "score": 300.91505425,
+        "init_required": false
       }
     },
     {
       "zp_budget": 36,
       "expected": [
         "atan2_fast",
-        "umul32_initialized",
         "umul8_16",
         "zero_zp_v5"
       ],
@@ -229,13 +216,12 @@
         "mode": "hybrid",
         "packs": [
           "atan2_fast",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ],
         "zp_bytes": 36,
-        "extra_ram": 6611,
-        "score": 406.91511425,
+        "extra_ram": 5949,
+        "score": 312.91508425,
         "init_required": true
       }
     },
@@ -244,7 +230,6 @@
       "expected": [
         "atan2_fast",
         "umul24",
-        "umul32_initialized",
         "umul8_16",
         "zero_zp_v5"
       ],
@@ -253,13 +238,12 @@
         "packs": [
           "atan2_fast",
           "umul24",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_ram": 7371,
-        "score": 556.66547725,
+        "extra_ram": 6892,
+        "score": 462.66544725,
         "init_required": true
       }
     },
@@ -268,7 +252,6 @@
       "expected": [
         "atan2_fast",
         "smul16_exec",
-        "umul32_initialized",
         "zero_zp_v5"
       ],
       "result": {
@@ -276,12 +259,11 @@
         "packs": [
           "atan2_fast",
           "smul16_exec",
-          "umul32_initialized",
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_ram": 6207,
-        "score": 725.46010125,
+        "extra_ram": 5580,
+        "score": 643.46010125,
         "init_required": true
       }
     },
@@ -291,7 +273,6 @@
         "atan2_fast",
         "smul16_exec",
         "umul24",
-        "umul32_initialized",
         "umul8_16",
         "zero_zp_v5"
       ],
@@ -301,13 +282,12 @@
           "atan2_fast",
           "smul16_exec",
           "umul24",
-          "umul32_initialized",
           "umul8_16",
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_ram": 7557,
-        "score": 899.21052425,
+        "extra_ram": 7078,
+        "score": 805.21049425,
         "init_required": true
       }
     },
@@ -360,7 +340,6 @@
       "expected": [
         "atan2_fast",
         "umul24",
-        "umul32_initialized",
         "zero_zp_v5"
       ],
       "result": {
@@ -368,12 +347,11 @@
         "packs": [
           "atan2_fast",
           "umul24",
-          "umul32_initialized",
           "zero_zp_v5"
         ],
         "zp_bytes": 55,
-        "extra_ram": 6781,
-        "score": 4824.66541725,
+        "extra_ram": 6337,
+        "score": 4742.66541725,
         "init_required": true
       }
     }
@@ -488,28 +466,28 @@
     {
       "map": "reference",
       "zp_budget": 31,
-      "sha256": "b9776aef8b486082bf76363a7a8a7df6dddab5985c4489133489ce26a5459565",
+      "sha256": "e35e171e0cbbfed94f2186f4a4ac9488d7c6dca6fdc72dba362a405ddd482726",
       "identical": true
     },
     {
       "map": "reference",
       "zp_budget": 176,
-      "sha256": "78399cfe97df1afefc42ab23f76d55406168a2232b7a6e5105e1f2f8a6a9369e",
+      "sha256": "eb598024d8cb4d1262ce125b9434060d53c50e2d9bee8c78baaed9fc3f344026",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 31,
-      "sha256": "4fc92fcd9ff95c94e28464dde59993764572773a46cbbb5d4c92a42eaca9e913",
+      "sha256": "28a15c18356703ac1619059512bf1fd51e181e7bddf61b0c1c52479a15ffafbe",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 176,
-      "sha256": "019dfa67f4be44a52faa88ca4293b029610830d2fa0bc11d529b4c48d54b3231",
+      "sha256": "1c73d632675f7399d66a7416d97a09eb169043868057aac5825bc642850fcac7",
       "identical": true
     }
   ],
   "common_api_machine_calls": 55068,
-  "elapsed_seconds": 25.526
+  "elapsed_seconds": 33.244
 }

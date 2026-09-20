@@ -22,10 +22,10 @@ L3B80:
     eor #$80                           ; @3B96 49 80
     tax                                ; @3B98 AA
     sec                                ; @3B99 38
-    lda $6800,x                        ; @3B9A BD 00 68
+    lda $9C00,x                        ; @3B9A BD 00 9C
     adc $6400,x                        ; @3B9D 7D 00 64
     sta $C008                          ; @3BA0 8D 08 C0
-    lda $6A00,x                        ; @3BA3 BD 00 6A
+    lda $9E00,x                        ; @3BA3 BD 00 9E
     adc $6600,x                        ; @3BA6 7D 00 66
     sta $C009                          ; @3BA9 8D 09 C0
     clc                                ; @3BAC 18

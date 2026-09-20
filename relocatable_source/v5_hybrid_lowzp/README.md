@@ -13,3 +13,7 @@ V5 is a **derived source build**. It deliberately does not duplicate the full V1
 The certified import set is intentionally conservative. The builder rejects a selected `HYBRID_CODE` range that overlaps the active V1 map, crosses `$D000-$DFFF`, is unaligned, or exceeds 64 KiB.
 
 Reference `HYBRID_CODE=$A000`; alternate proof `HYBRID_CODE=$E000`.
+
+## Multiplication refresh inheritance
+
+V5 deliberately inherits the refreshed low-ZP multiplication family from the V1 source build rather than duplicating another canonical assembly tree. The 2026-09-20 refresh therefore gives V5 the V1-selected direct `SMUL8`, FAST17 `SMUL16`, FAST24 `UMUL24`/`SMUL24`, and mixed-call-safe FAST31/V29 `UMUL32`/`SMUL32` paths while preserving the 31-byte normal-ZP contract. Exact V5 signed executable mirrors remain published under `v5_hybrid_lowzp/resident/signed/multiply/native/`. See `docs/MULTIPLY_REFRESH_2026-09-20.md`.

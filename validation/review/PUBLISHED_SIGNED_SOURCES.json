@@ -9,27 +9,27 @@
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
-          "instructions": 88
+          "instructions": 136
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 138
+          "instructions": 248
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
-          "instructions": 209
+          "instructions": 669
         },
         "MATH_SMUL32_READY": {
           "file": "smul32_ready_native.asm",
-          "instructions": 201
+          "instructions": 660
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
-          "instructions": 98
+          "instructions": 146
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
-          "instructions": 225
+          "instructions": 685
         }
       },
       "division": {
@@ -71,15 +71,15 @@
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 191
+          "instructions": 232
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
-          "instructions": 201
+          "instructions": 669
         },
         "MATH_SMUL32_READY": {
           "file": "smul32_ready_native.asm",
-          "instructions": 201
+          "instructions": 660
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
@@ -87,7 +87,7 @@
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
-          "instructions": 217
+          "instructions": 685
         }
       },
       "division": {
@@ -129,15 +129,15 @@
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 191
+          "instructions": 232
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
-          "instructions": 201
+          "instructions": 669
         },
         "MATH_SMUL32_READY": {
           "file": "smul32_ready_native.asm",
-          "instructions": 201
+          "instructions": 660
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
@@ -145,7 +145,7 @@
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
-          "instructions": 217
+          "instructions": 685
         }
       },
       "division": {
@@ -187,15 +187,15 @@
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 191
+          "instructions": 232
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
-          "instructions": 201
+          "instructions": 669
         },
         "MATH_SMUL32_READY": {
           "file": "smul32_ready_native.asm",
-          "instructions": 201
+          "instructions": 660
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
@@ -203,7 +203,7 @@
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
-          "instructions": 217
+          "instructions": 685
         }
       },
       "division": {
@@ -241,27 +241,27 @@
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
-          "instructions": 88
+          "instructions": 136
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 138
+          "instructions": 248
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
-          "instructions": 209
+          "instructions": 669
         },
         "MATH_SMUL32_READY": {
           "file": "smul32_ready_native.asm",
-          "instructions": 201
+          "instructions": 660
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
-          "instructions": 98
+          "instructions": 146
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
-          "instructions": 225
+          "instructions": 685
         }
       },
       "division": {

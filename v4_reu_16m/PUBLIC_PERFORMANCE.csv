@@ -2,7 +2,7 @@ operation,v3_reu_512k_cycles,v4_reu_16m_cycles,v4_evidence
 umul8,69.0,69.0,unchanged V3 path/evidence
 umul16,339.0,225.8372,2026-09-14 record-upgrade deterministic comparison corpus
 umul24,475.784575,448.2918,2026-09-14 record-upgrade deterministic comparison corpus
-umul32,763.822007,763.822007,unchanged V3 path/evidence
+umul32,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
 udiv8,70.86328125,70.86328125,unchanged V3 path/evidence
 udiv16,137.282268,137.282268,unchanged V3 path/evidence
 udiv24,203.612991,203.612991,unchanged V3 path/evidence

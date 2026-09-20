@@ -1,3 +1,16 @@
+## 2026-09-20 — five-profile multiplication refresh
+
+- Re-evaluated `UMUL8/16/24/32` and `SMUL8/16/24/32`, including READY and fixed-shift derivatives, across all five fixed profiles using the recent Repose/quadrant and quarter-square work.
+- Selected direct signed-domain `SMUL8` in every profile at **67.992188 cycles exhaustive**.
+- Selected low-ZP FAST17 `SMUL16` for V1/V5 while deliberately retaining the faster 116-ZP practical native SMUL16 in V2/V3/V4.
+- Selected FAST24 signed composition in every profile; V1/V5 also adopt the FAST24 unsigned producer, while V2/V3/V4 retain their slightly faster existing record UMUL24.
+- Selected mixed-call-safe FAST31/V29-derived `UMUL32` and `SMUL32` in all five profiles, with **712.235367-cycle UMUL32** and profile SMUL32 means around **743–745 cycles**.
+- Preserved V3/V4 Turbo16/Turbo32 entry geometry by relocating the new unsigned q0 core away from the REU Turbo executable islands.
+- Kept existing `UMUL8` and record-derived 17-ZP `UMUL16` after explicit profile-resource evaluation; the faster standalone high-ZP points do not produce a clean fixed-profile integration win.
+- Broke refreshed kernels out as canonical reusable profile includes, taught source regeneration to preserve them, regenerated exact signed native mirrors, and updated consolidated/per-profile performance evidence.
+- Validation includes **264,999 signed multiply calls**, **415,078 refresh benchmark calls**, **17,196 Turbo relocation calls**, reference/alternate 46-entry source builds, deterministic rebuilds, signed executable zero-overlap checks and the full release audit.
+- Custom Pareto was refreshed to match the new fixed-profile baseline: the old `umul32_initialized` donor pack is retired because FAST31/V29 is already in V1; the 5-ZP legacy `umul8_16` pack now accelerates only UMUL8 because direct SMUL8 is already common; and the 24-ZP pack imports the refreshed V2 FAST24 signed core. Current equal-weight extra-RAM points are **5376 / 5949 / 6892 / 5580 / 7078 B** at 31 / 36 / 60 / 147 / 176 ZP before the full-V2 endpoint.
+
 ## 2026-09-18 — stable 46th entry: Q8.8 VEC2 normalization
 
 - Promoted `MATH_VEC2_NORMALIZE_Q8_8` at `REG_GAME_API+$39` / reference `$5E39`, expanding the stable public API from 45 to **46 entries** across V1–V5 and generated Custom Pareto builds.
@@ -15,7 +28,7 @@
 - Final timings: **V1 50.441345 cycles mean (30–53)**; **V2/V3 46.953064 (30–48)**; **V4 remains exact at 48 fixed cycles**; **V5 imports the V2 fast tier at 46.953064**. All stock implementations use 0 extra ZP.
 - V1 keeps the compact 512-byte table point. V2/V3 use 1280 bytes of ATAN2 tables. V5 adds the fast tier through three formerly unused 256-byte table pages, remapping the V2 donor's third extra page away from V1-owned data.
 - Added hard V5 page-collision guards and exhaustive V5 result/cycle-vector parity against V2, including cold-load/no-`MATH_INIT` coverage. V5 now records **144,246 direct-import cases**.
-- Added independent Custom Pareto pack `atan2_fast` (**0 ZP / 768 B**), so the selector accounts for the speed/RAM trade-off explicitly. Current equal-weight extra-RAM points are **6021 / 6611 / 7371 / 6207 / 7557 B** before the full-V2 endpoint.
+- Added independent Custom Pareto pack `atan2_fast` (**0 ZP / 768 B**), so the selector accounts for the speed/RAM trade-off explicitly. At that ATAN2 revision, equal-weight extra-RAM points were **6021 / 6611 / 7371 / 6207 / 7557 B**; the 2026-09-20 multiplication refresh supersedes those selector figures.
 - Pareto deep validation now covers **75,644 direct V2 cycle-parity cases**, including exhaustive ATAN2, plus exhaustive UMOD8 and the existing stress/ZP/deterministic checks.
 - Added `docs/ATAN2_GAME_AUDIT_2026-09-17.md`, auditing Steel Ranger, Wolf64 and Quake64 against the project rule that an optimized general routine should not replace a cheaper discrete/direct-angle game representation without a real runtime need.
 
@@ -44,8 +57,8 @@
 - Added `tools/pareto_wizard.py` for interactive game/demo integration and `tools/build_pareto.py` for scripted builds.
 - Generated builds retain the same 45-entry stable API and emit `math_api.inc` plus `selection_manifest.json` containing exact ZP ranges, exact private-RAM ranges, initialization requirement, implementation provenance and SHA-256.
 - Default equal-weight breakpoints: **31 / 36 / 60 / 147 / 176 / 221 ZP bytes**. At 31 ZP + zero extra RAM the builder reproduces V1 byte-for-byte; at 31 ZP + optional-init policy it reproduces V5 byte-for-byte; at 221 ZP it selects complete V2.
-- Exact extra-RAM accounting now includes the actual emitted init helper rather than a conservative allowance. Current default points use 6021 / 6611 / 7371 / 6207 / 7557 bytes of extra private payload before the 221-ZP full-V2 endpoint (208-byte resident increase vs V1).
-- Certified selectable packs cover the independent 0-ZP/768-byte `atan2_fast` upgrade, V5 zero-ZP division/modulo/trig imports, initialized UMUL32, V2 UMUL8/SMUL8, the record UMUL16/UMUL24 pack, and native executable-ZP SMUL16. Workload weights can change the chosen pack at the same resource budget.
+- Exact extra-RAM accounting now includes the actual emitted init helper rather than a conservative allowance. At that revision, the default points used 6021 / 6611 / 7371 / 6207 / 7557 bytes of extra private payload; the 2026-09-20 multiplication refresh supersedes those selector figures.
+- At that revision, certified selectable packs included the independent 0-ZP/768-byte `atan2_fast` upgrade, V5 zero-ZP division/modulo/trig imports, initialized UMUL32, V2 UMUL8/SMUL8, the record UMUL16/UMUL24 pack, and native executable-ZP SMUL16. The 2026-09-20 refresh retires the redundant initialized-UMUL32 pack and updates the multiply packs. Workload weights can change the chosen pack at the same resource budget.
 - Validation: 12 representative generated builds across reference/alternate maps, **45/45 entries and 4,172 calls each (50,064 common-API calls)**; 75,644 direct V2 cycle-parity cases including exhaustive ATAN2; exhaustive 65,536-case UMOD8; 50,144 additional SMUL16 cycle-parity cases; 25,000 mixed-workload iterations; 10,000 ZP-guard iterations; deterministic rebuilds; V1/V5 endpoint identity; and **12/12** invalid resource/configuration tests.
 
 # 2026-09-06 — V5 Hybrid Low-ZP
@@ -66,7 +79,7 @@
 - Resident `UMUL24` now uses the certified 24-ZP `reverse_24zp_carry` record kernel.
 - V3/V4 Turbo32 now uses the stack-free 135-ZP `ram135` record-family compromise: reference ZP `$0A-$90`, legal origins `$02-$79`, with BEGIN/CALL/END measured at 326 / 728.947080 mean / 371 cycles.
 - The absolute 606.337632-cycle UMUL32 record remains intentionally outside fixed profiles because it reserves hardware stack-page space; shipped fixed choices reserve 0 persistent stack-page bytes.
-- Custom Pareto current extra-private-RAM points are 6021 / 6611 / 7371 / 6207 / 7557 bytes before the 221-ZP full-V2 endpoint.
+- At the 2026-09-14 record-upgrade checkpoint, Custom Pareto extra-private-RAM points were 6021 / 6611 / 7371 / 6207 / 7557 bytes; the 2026-09-20 multiplication refresh supersedes them.
 - Added `docs/CONSOLIDATED_ROUTINE_TABLE.{md,csv}` plus machine-readable `validation/CONSOLIDATED_ROUTINE_TABLE.json`, covering all 45 stable entries in all five profiles plus V3/V4 Turbo and V4 QS16.
 
 

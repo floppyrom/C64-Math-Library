@@ -42,32 +42,30 @@ PACKS = {
         'extra_zp': 0,
         'extra_ram': 627,
         'requires_init': True,
-        'description': 'V2 initialized UMUL32 core + private native-signed SMUL32 core and matching signed/fixed-point users',
-        'savings': {
-            'MATH_UMUL32': 19.0, 'MATH_SMUL32': 22.0,
-            'MATH_UMUL32_SHR16': 19.0, 'MATH_SMUL32_SHR16': 22.0,
-        },
+        'description': 'Retired compatibility catalog entry: V1 already carries the refreshed FAST31/V29 UMUL32/SMUL32 family, so importing the V2 copy has no useful fixed-profile gain',
+        'savings': {},
+        'retired': True,
     },
     'umul8_16': {
         # Historical pack name retained for CLI/config compatibility.  It now
-        # carries only the V2 UMUL8/SMUL8 island; UMUL16 moved into the UMUL24
+        # carries only the V2 UMUL8 island; UMUL16 moved into the UMUL24
         # pack because the record UMUL16 reuses the first 17 bytes of UMUL24's
         # 24-byte pointer workspace.
         'extra_zp': 5,
-        'extra_ram': 582,
+        'extra_ram': 547,
         'requires_init': True,
-        'description': 'V2 UMUL8 + private native-signed SMUL8 core; reuses V1 tables plus two private 256-byte diff planes (legacy pack name)',
+        'description': 'V2 UMUL8 island; SMUL8 is already the refreshed direct-signed kernel in the V1 base (legacy pack name)',
         'savings': {
-            'MATH_UMUL8': 12.000030, 'MATH_SMUL8': 12.000030,
+            'MATH_UMUL8': 12.000030,
         },
     },
     'umul24': {
         # $21-$38: twelve complete pointer pairs.  The record UMUL16 uses the
         # first 17 bytes ($21-$31), so no additional ZP is required for it.
         'extra_zp': 24,
-        'extra_ram': 728,
+        'extra_ram': 911,
         'requires_init': True,
-        'description': 'Record 17-ZP UMUL16 + record 24-ZP UMUL24 + private native-signed SMUL24 core; both unsigned records reuse V1 quarter-square tables',
+        'description': 'Record 17-ZP UMUL16 + record 24-ZP UMUL24 + refreshed V2 FAST24 native-signed SMUL24 core; shared quarter-square tables',
         'savings': {
             'MATH_UMUL16': 32.000000, 'MATH_UMUL16_SHR8': 32.000000,
             'MATH_UMUL24': 44.000000, 'MATH_SMUL24': 41.750363,
@@ -217,7 +215,7 @@ def select_packs(zp_budget: int, ram_budget: int | None, init_policy: str,
     if zp_budget >= FULL_V2_ZP_BYTES and init_policy != 'optional' and (ram_budget is None or ram_budget >= 208):
         return {'mode':'v2_full','packs':[], 'zp_bytes':FULL_V2_ZP_BYTES,
                 'extra_ram':208, 'score':math.inf, 'init_required':True}
-    names=list(PACKS)
+    names=[n for n,v in PACKS.items() if not v.get('retired',False)]
     best=None
     for bits in itertools.product((0,1), repeat=len(names)):
         chosen={n for n,b in zip(names,bits) if b}
@@ -268,7 +266,7 @@ def map_v2_abs(old: int, vals: dict, aux: int, pack: str|None=None) -> int:
     if 0x5A00 <= old <= 0x5A3B: return aux+AUX_SMUL_FINISH+(old-0x5A00)
     # Native-signed private executable cores in the refreshed V2 donor.
     if 0x2600 <= old <= 0x2622: return aux+AUX_SMUL8_PRIVATE+(old-0x2600)
-    if 0x3600 <= old <= 0x371E: return aux+AUX_SMUL24_PRIVATE+(old-0x3600)
+    if 0xCD00 <= old <= 0xCED5: return aux+AUX_SMUL24_PRIVATE+(old-0xCD00)
     if 0x3800 <= old <= 0x3914: return aux+AUX_SMUL32_PRIVATE+(old-0x3800)
     # Signed producer wrappers live at the same REG_LOW-relative offsets in V1.
     if 0x2000 <= old <= 0x23FF: return vals['REG_LOW']+0x1000+(old-0x2000)
@@ -350,18 +348,15 @@ def emit_init(mem: bytearray, at: int, vals: dict, packs: set[str], aux: int):
 
 def apply_umul8_16(dst, src, vals, man, aux, v2_entries):
     # Historical function/pack name retained for compatibility.  This island now
-    # carries only UMUL8/SMUL8; record UMUL16 travels with UMUL24 because it
+    # carries only UMUL8; record UMUL16 travels with UMUL24 because it
     # shares that pack's first 17 bytes of pointer workspace.
     dst[aux+AUX_DIFF_LO:aux+AUX_DIFF_LO+256]=src[0x6C00:0x6D00]
     dst[aux+AUX_DIFF_HI:aux+AUX_DIFF_HI+256]=src[0x6D00:0x6E00]
     starts=trace(src,v2_entries['MATH_UMUL8'])
     copy_code_block(dst,src,0x5300,0x5322,aux+AUX_UMUL8_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x3000,0x3012,public_addr(man,'MATH_UMUL8'),starts,vals,aux)
-    # Signed SMUL8 fused wrapper follows the selected V2 producer.
-    sstarts=trace(src,v2_entries['MATH_SMUL8'])
-    copy_code_block(dst,src,0x2600,0x2622,aux+AUX_SMUL8_PRIVATE,sstarts,vals,aux)
-    copy_code_block(dst,src,0x2000,0x2033,vals['REG_LOW']+0x1000,sstarts,vals,aux)
-    write_jmp(dst,public_addr(man,'MATH_SMUL8'),vals['REG_LOW']+0x1000)
+    # MATH_SMUL8 is intentionally left on the V1 base: all fixed profiles now
+    # share the same 67.992188-cycle direct signed-domain kernel.
 
 
 def apply_umul24(dst,src,vals,man,aux,v2_entries):
@@ -377,10 +372,13 @@ def apply_umul24(dst,src,vals,man,aux,v2_entries):
     copy_code_block(dst,src,0x5649,0x575A,aux+AUX_UMUL24_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x34C0,0x34FA,aux+AUX_UMUL24_ADAPTER,starts,vals,aux)
     write_jmp(dst,public_addr(man,'MATH_UMUL24'),aux+AUX_UMUL24_ADAPTER)
+    # Refreshed FAST24 native-signed core. The current V2 implementation is a
+    # single private island at $CD00-$CED5 plus a 3-byte public trampoline.
+    # Copy the private island and point the stable custom-profile entry directly
+    # at the relocated public implementation ($CE9B in the V2 reference map).
     sstarts=trace(src,v2_entries['MATH_SMUL24'])
-    copy_code_block(dst,src,0x3600,0x371E,aux+AUX_SMUL24_PRIVATE,sstarts,vals,aux)
-    copy_code_block(dst,src,0x2200,0x228A,vals['REG_LOW']+0x1200,sstarts,vals,aux)
-    write_jmp(dst,public_addr(man,'MATH_SMUL24'),vals['REG_LOW']+0x1200)
+    copy_code_block(dst,src,0xCD00,0xCED5,aux+AUX_SMUL24_PRIVATE,sstarts,vals,aux)
+    write_jmp(dst,public_addr(man,'MATH_SMUL24'),aux+AUX_SMUL24_PRIVATE+(0xCE9B-0xCD00))
 
 
 def apply_umul32(dst,src,vals,man,aux,v2_entries):
@@ -431,12 +429,11 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
         add('PARETO_DIFF_LO', aux+AUX_DIFF_LO, aux+AUX_DIFF_LO+0xff)
         add('PARETO_DIFF_HI', aux+AUX_DIFF_HI, aux+AUX_DIFF_HI+0xff)
         add('PARETO_UMUL8_CODE', aux+AUX_UMUL8_CODE, aux+AUX_UMUL8_CODE+0x22)
-        add('PARETO_SMUL8_PRIVATE', aux+AUX_SMUL8_PRIVATE, aux+AUX_SMUL8_PRIVATE+0x22)
     if 'umul24' in packs:
         add('PARETO_UMUL16_CODE', aux+AUX_UMUL16_CODE, aux+AUX_UMUL16_CODE+0x6b)
         add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x111)
         add('PARETO_UMUL24_ADAPTER', aux+AUX_UMUL24_ADAPTER, aux+AUX_UMUL24_ADAPTER+0x3a)
-        add('PARETO_SMUL24_PRIVATE', aux+AUX_SMUL24_PRIVATE, aux+AUX_SMUL24_PRIVATE+0x11e)
+        add('PARETO_SMUL24_PRIVATE', aux+AUX_SMUL24_PRIVATE, aux+AUX_SMUL24_PRIVATE+0x1d5)
     if 'umul32_initialized' in packs:
         add('PARETO_UMUL32_CODE', aux+AUX_UMUL32_CODE, aux+AUX_UMUL32_CODE+0x112)
         add('PARETO_UMUL32_ADAPTER', aux+AUX_UMUL32_ADAPTER, aux+AUX_UMUL32_ADAPTER+0x4a)

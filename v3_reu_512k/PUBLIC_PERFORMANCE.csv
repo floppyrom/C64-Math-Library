@@ -2,7 +2,7 @@ operation,v1_balanced_cycles,v2_pareto_fast_cycles,v3_reu_default_cycles,v3_evid
 umul8,90.494644,78.494614,69.0,REU transport model
 umul16,383.320456,350.782403,225.8372,2026-09-14 record-upgrade deterministic comparison corpus
 umul24,514.534938,475.784575,448.2918,2026-09-14 record-upgrade deterministic comparison corpus
-umul32,782.822007,763.822007,763.822007,unchanged v2 canonical
+umul32,712.235367,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
 udiv8,87.445969,87.445969,70.86328125,REU transport model
 udiv16,160.064966,137.282268,137.282268,unchanged v2 canonical
 udiv24,224.668396,203.612991,203.612991,unchanged v2 canonical
