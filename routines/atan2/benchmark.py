@@ -12,7 +12,12 @@ HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 from mini6502 import Assembler, CPU  # noqa: E402
-from tables import build_tables, exact_phase, phase_error, signed8  # noqa: E402
+from tables import (build_tables, build_sum_tables, build_sum_small_tables,
+                    exact_phase, phase_error, signed8)  # noqa: E402
+
+KINDS = ('compact', 'fast', 'compact_opt', 'sum_small', 'sum_fast')
+TABLE_BYTES = {'compact': 512, 'fast': 1280, 'compact_opt': 512,
+               'sum_small': 768, 'sum_fast': 1024}
 
 ORG = 0x8000
 PUBLIC = 0x7F00  # 3-cycle JMP wrapper so timings match MATH_ATAN2_8 publication.
@@ -24,20 +29,25 @@ Q2_PAGE = 0x5F00
 Q3_PAGE = 0x4700
 
 
-def source(kind: str) -> str:
+def source(kind: str, org: int = ORG) -> str:
     path = HERE / f'atan2_{kind}.asm'
-    return path.read_text(encoding='utf-8').replace('@ORG@', f'${ORG:04X}')
+    return path.read_text(encoding='utf-8').replace('@ORG@', f'${org:04X}')
 
 
-def image(kind: str) -> bytearray:
+def image(kind: str, org: int = ORG) -> bytearray:
     log, base, q0, q1, q2, q3, _, _ = build_tables()
-    code, _, _ = Assembler().assemble(source(kind))
+    code, _, _ = Assembler().assemble(source(kind, org))
     mem = bytearray(65536)
     for addr, value in code.items():
         mem[addr] = value
-    mem[PUBLIC:PUBLIC + 3] = bytes((0x4C, ORG & 0xFF, ORG >> 8))
+    mem[PUBLIC:PUBLIC + 3] = bytes((0x4C, org & 0xFF, org >> 8))
+    if kind in ('sum_small', 'sum_fast'):
+        tables = build_sum_small_tables() if kind == 'sum_small' else build_sum_tables()
+        for addr, data in zip((0x9400, 0x9500, 0x9600, 0x9700), tables):
+            mem[addr:addr + 256] = data
+        return mem
     mem[LOG_PAGE:LOG_PAGE + 256] = log
-    if kind == 'compact':
+    if kind in ('compact', 'compact_opt'):
         mem[Q0_PAGE:Q0_PAGE + 256] = base
     else:
         mem[Q0_PAGE:Q0_PAGE + 256] = q0
@@ -47,14 +57,15 @@ def image(kind: str) -> bytearray:
     return mem
 
 
-def benchmark(kind: str) -> dict:
-    cpu = CPU(image(kind))
+def benchmark(kind: str, initial_carry: int = 0, org: int = ORG) -> dict:
+    cpu = CPU(image(kind, org))
     cpu.d = 0
     total = 0
     mn = 10**9
     mx = 0
     maxerr = 0
     failures = 0
+    abi_failures = 0
     cycles = collections.Counter()
     errors = collections.Counter()
     for rx in range(256):
@@ -63,6 +74,7 @@ def benchmark(kind: str) -> dict:
             sy = signed8(ry)
             cpu.mem[X0] = rx
             cpu.mem[Y0] = ry
+            cpu.c = initial_carry
             cyc = cpu.call(PUBLIC)
             got = cpu.mem[Z0]
             err = phase_error(got, exact_phase(sx, sy))
@@ -74,26 +86,38 @@ def benchmark(kind: str) -> dict:
             errors[err] += 1
             if err > 1:
                 failures += 1
+            if (cpu.c != 0 or cpu.mem[X0] != rx or cpu.mem[Y0] != ry
+                    or cpu.a != got or cpu.sp != 0xFD or cpu.d != 0):
+                abi_failures += 1
+    code, _, _ = Assembler().assemble(source(kind, org))
     return {
         'kernel': kind,
         'cases': 65536,
+        'initial_carry': initial_carry,
+        'origin': f'${org:04X}',
+        'code_bytes': len(code),
+        'table_bytes': TABLE_BYTES[kind],
+        'occupied_bytes_excluding_public_jmp': len(code) + TABLE_BYTES[kind],
+        'zp_bytes': 0,
+        'cycles_include': 'public JMP (3), kernel, RTS (6); exclude caller JSR (6)',
         'mean_cycles': total / 65536,
         'min_cycles': mn,
         'max_cycles': mx,
         'max_phase_error': maxerr,
         'failures_gt_1': failures,
+        'abi_failures': abi_failures,
         'cycle_distribution': {str(k): v for k, v in sorted(cycles.items())},
         'error_distribution': {str(k): v for k, v in sorted(errors.items())},
-        'status': 'PASS' if failures == 0 else 'FAIL',
+        'status': 'PASS' if failures == 0 and abi_failures == 0 else 'FAIL',
     }
 
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument('--kernel', choices=('compact', 'fast', 'all'), default='all')
+    ap.add_argument('--kernel', choices=(*KINDS, 'all'), default='all')
     ap.add_argument('--json', action='store_true', help='emit machine-readable JSON')
     args = ap.parse_args()
-    kinds = ('compact', 'fast') if args.kernel == 'all' else (args.kernel,)
+    kinds = KINDS if args.kernel == 'all' else (args.kernel,)
     results = [benchmark(k) for k in kinds]
     if args.json:
         print(json.dumps(results, indent=2))

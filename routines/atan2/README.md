@@ -5,9 +5,9 @@ This directory is the **readable, reusable source of truth** for the stock-C64
 resident PRGs contain the installed/generated forms; developers should start
 here when studying or reusing the algorithm.
 
-Each shipped V1-V5 profile now also publishes the ATAN2 implementation used by
-that profile beside its other resident module sources, so a profile can be
-inspected without tracing the shared installer/build tooling.
+Each shipped V1-V5 profile publishes its installed executable source under
+`standalone/atan2_s8_s8_u8.asm`. The optional optimized kernels below additionally
+provide self-contained ACME sources with all of their lookup tables.
 
 ## Contract
 
@@ -16,6 +16,7 @@ inspected without tracing the shared installer/build tooling.
 - `(0,0)` returns `$00`
 - maximum error: **1 phase unit** over all 65,536 signed-byte vectors for the stock kernels
 - normal zero-page usage: **0 bytes**
+- inputs preserved; A/X/Y volatile; D=0 required; C=0 returned
 
 The standalone sources use the reference internal I/O addresses `X0=$C000`,
 `Y0=$C004`, `Z0=$C008`. The library build system relocates/installs the kernel
@@ -35,27 +36,66 @@ incremental cost for about 6.9% lower average latency**.
 
 V4 keeps its separate exact REU-backed ATAN2 path at a fixed 48 cycles.
 
-## Profile-local resident sources
+## Optional optimized kernels (2026-09-20)
 
-| Profile | Resident source | Installed form |
+These are **standalone alternatives**, not installed-profile upgrades. The
+existing installer still selects `compact`/`fast`; fixed profiles and Custom
+Pareto resource accounting are unchanged.
+
+| Kernel | Code | Tables | Code + tables | Mean cycles | Range | Shipped-output parity |
+|---|---:|---:|---:|---:|---:|---|
+| shipped `compact` | 106 B | 512 B | 618 B | 50.441345 | 30-53 | baseline |
+| **`compact_opt`** | **94 B** | **512 B** | **606 B** | **48.447189** | 29-50 | exact |
+| shipped `fast` | 94 B | 1280 B | 1374 B | 46.953064 | 30-48 | exact |
+| **`sum_small`** | **92 B** | **768 B** | **860 B** | **45.958908** | 29-48 | 202 results differ by 1 |
+| **`sum_fast`** | **89 B** | **1024 B** | **1113 B** | **44.962814** | 29-47 | exact |
+
+All five use 0 extra ZP and satisfy the <=1 phase-unit bound against rounded
+mathematical atan2. Every axis and `(0,0)` is exact. The three-page `sum_small`
+clamps finite near-horizontal angles from 0 to 1; `compact_opt` and `sum_fast`
+preserve all 65,536 existing results.
+
+Cycle counts include the public JMP and RTS and exclude the caller's JSR.
+Code is placed at `$8000`, lookup pages are aligned, and interrupts/VIC stalls
+are not included. Add 3 bytes to the memory totals for the public JMP wrapper.
+No scratch or extra hardware-stack bytes are used. A caller's usual JSR uses
+two stack bytes. Other code origins can add branch page-crossing cycles.
+
+Complete sources, ready for ACME:
+
+- [atan2_s8_s8_u8_compact_opt.asm](standalone/atan2_s8_s8_u8_compact_opt.asm)
+- [atan2_s8_s8_u8_sum_small.asm](standalone/atan2_s8_s8_u8_sum_small.asm)
+- [atan2_s8_s8_u8_sum_fast.asm](standalone/atan2_s8_s8_u8_sum_fast.asm)
+
+The [technical note](../../docs/ATAN2_OPTIMIZATION_2026-09-20.md) explains the
+carry-clearing log sum and the memory/accuracy trade-offs.
+
+## Installed profile source mirrors
+
+| Profile | Executable source | Installed body |
 |---|---|---|
-| V1 Balanced | `v1_balanced/resident/modules/resident_atan2.a` | compact body at `$C459-$C496` |
-| V2 Pareto-Fast | `v2_pareto_fast/resident/modules/pareto_atan2.a` | fast body at `$C543-$C57A` |
-| V3 REU 512K | `v3_reu_512k/resident/modules/pareto_atan2.a` | fast body at `$C543-$C57A` |
-| V4 REU 16M | `v4_reu_16m/resident/modules/reu_atan2.a` | exact REU lookup body from `game_math_extension.asm` |
-| V5 Hybrid Low-ZP | `v5_hybrid_lowzp/resident/modules/hybrid_atan2.a` | V2 fast body transplanted into the `$C814-$C871` reserved span, Q3 remapped to `$5700` |
+| V1 Balanced | `v1_balanced/standalone/atan2_s8_s8_u8.asm` | compact body at `$C814-$C87D` |
+| V2 Pareto-Fast | `v2_pareto_fast/standalone/atan2_s8_s8_u8.asm` | fast body at `$C782-$C7DF` |
+| V3 REU 512K | `v3_reu_512k/standalone/atan2_s8_s8_u8.asm` | fast body at `$C78D-$C7EA` |
+| V4 REU 16M | `v4_reu_16m/standalone/atan2_s8_s8_u8.asm` | exact REU lookup |
+| V5 Hybrid Low-ZP | `v5_hybrid_lowzp/standalone/atan2_s8_s8_u8.asm` | fast body at `$C814-$C871`, Q3 remapped to `$5700` |
 
-The V1-V3 files are direct profile-local listings of the installed stock-CPU
-kernels. V4 publishes its exact REU source fragment without inventing a second
-fixed implementation address: the surrounding game-math source assigns that
-address. V5 publishes the assembled fast-kernel semantics with the V5 physical
-table map; `tools/build_hybrid.py` remains authoritative for the transplant and
-address-remap operation recorded in `HYBRID_BUILD_MANIFEST.json`.
+These generated profile mirrors describe the installed executable and depend
+on the profile's existing tables. `tools/build_hybrid.py` remains authoritative
+for the V5 transplant and table remap. Older files under `resident/modules/`
+may carry historical origin comments; use the current executable mirrors above
+for installed addresses.
 
 ## Files
 
 - `atan2_compact.asm` - compact 512-byte-table kernel.
 - `atan2_fast.asm` - four-quadrant speed kernel.
+- `atan2_compact_opt.asm`, `atan2_sum_small.asm`, `atan2_sum_fast.asm` - optional
+  optimized bodies; these are the source of truth for the complete exports.
+- `export_optimized.py` - deterministic full-source publisher; `--check` detects
+  stale exports without rewriting anything.
+- `validate_optimized.py` - independent full-domain result/cycle/ABI validator
+  and ACME byte comparison, including relocated page-crossing builds.
 - `tables.py` - one shared deterministic table generator and exact reference
   model. This replaces the duplicate table-generation code that used to live
   inside `tools/upgrade_atan2.py`.
@@ -87,8 +127,19 @@ python3 routines/atan2/benchmark.py
 python3 routines/atan2/benchmark.py --kernel fast --json
 ```
 
-Expected headline results are 50.441345 cycles for `compact` and 46.953064 for
-`fast`, with zero cases exceeding one phase unit of error.
+The default benchmark reports all five kernels; `--kernel` can select any name
+in the comparison table. No case exceeds one phase unit of error.
+
+Reproduce the independent optimized-kernel certification:
+
+```sh
+python3 -m pip install py65==1.2.0
+python3 routines/atan2/export_optimized.py --check
+python3 routines/atan2/validate_optimized.py --acme /path/to/acme
+```
+
+The committed result is
+[`validation/ATAN2_OPTIMIZATION_VALIDATION.json`](../../validation/ATAN2_OPTIMIZATION_VALIDATION.json).
 
 The exhaustive installed-profile evidence remains in
 `validation/ATAN2_UPGRADE_VALIDATION.json`; game-use analysis is in
