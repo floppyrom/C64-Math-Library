@@ -15,10 +15,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Export exact main snapshot
+      - name: Export exact current main snapshot
         run: |
-          git archive --format=zip --output=c64ml-main.zip 1df93d3d6bf0166d92b70ede495055b9375b14dd
+          git fetch origin c99dfdff15077b2b908f91246ab2ddfe363e5d98
+          git archive --format=zip --output=c64ml-main.zip c99dfdff15077b2b908f91246ab2ddfe363e5d98
       - uses: actions/upload-artifact@v4
         with:
-          name: c64ml-main-snapshot
+          name: c64ml-main-snapshot-c99dfdff
           path: c64ml-main.zip
