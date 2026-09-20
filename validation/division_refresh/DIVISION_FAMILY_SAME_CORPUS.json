@@ -1,0 +1,2347 @@
+{
+  "status": "PASS",
+  "baseline": {
+    "profiles": {
+      "v1_balanced": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 102.615,
+          "min_cycles": 60,
+          "max_cycles": 605
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 139.635,
+          "min_cycles": 63,
+          "max_cycles": 611
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 206.715,
+          "min_cycles": 99,
+          "max_cycles": 1452
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 267.81,
+          "min_cycles": 107,
+          "max_cycles": 1529
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 350.875,
+          "min_cycles": 149,
+          "max_cycles": 2998
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 445.755,
+          "min_cycles": 138,
+          "max_cycles": 1815
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 881.585,
+          "min_cycles": 182,
+          "max_cycles": 2040
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 1007.0,
+          "min_cycles": 209,
+          "max_cycles": 2098
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 536.23,
+          "min_cycles": 151,
+          "max_cycles": 2322
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 728.995,
+          "min_cycles": 75,
+          "max_cycles": 2493
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 897.875,
+          "min_cycles": 289,
+          "max_cycles": 1866
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 1046.575,
+          "min_cycles": 319,
+          "max_cycles": 1994
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 70.6,
+          "min_cycles": 51,
+          "max_cycles": 495
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 150.975,
+          "min_cycles": 66,
+          "max_cycles": 614
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 262.15833333333336,
+          "min_cycles": 102,
+          "max_cycles": 1455
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 324.84166666666664,
+          "min_cycles": 110,
+          "max_cycles": 1532
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 472.6666666666667,
+          "min_cycles": 152,
+          "max_cycles": 3001
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 512.3833333333333,
+          "min_cycles": 141,
+          "max_cycles": 1818
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 897.2083333333334,
+          "min_cycles": 185,
+          "max_cycles": 1978
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 1044.9333333333334,
+          "min_cycles": 212,
+          "max_cycles": 2101
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 643.7333333333333,
+          "min_cycles": 151,
+          "max_cycles": 2322
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 815.85,
+          "min_cycles": 75,
+          "max_cycles": 2493
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 151.978886756238,
+          "min_cycles": 41,
+          "max_cycles": 2588
+        }
+      },
+      "v2_pareto_fast": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 102.615,
+          "min_cycles": 60,
+          "max_cycles": 605
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 139.635,
+          "min_cycles": 63,
+          "max_cycles": 611
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 194.71,
+          "min_cycles": 99,
+          "max_cycles": 959
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 241.665,
+          "min_cycles": 114,
+          "max_cycles": 1073
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 328.285,
+          "min_cycles": 137,
+          "max_cycles": 2971
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 416.27,
+          "min_cycles": 153,
+          "max_cycles": 3089
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 753.955,
+          "min_cycles": 175,
+          "max_cycles": 1880
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 862.305,
+          "min_cycles": 204,
+          "max_cycles": 2008
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 504.7,
+          "min_cycles": 139,
+          "max_cycles": 2239
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 689.2,
+          "min_cycles": 75,
+          "max_cycles": 2399
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 772.045,
+          "min_cycles": 272,
+          "max_cycles": 1771
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 885.595,
+          "min_cycles": 304,
+          "max_cycles": 1904
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 70.43333333333334,
+          "min_cycles": 51,
+          "max_cycles": 495
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 150.975,
+          "min_cycles": 66,
+          "max_cycles": 614
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 244.7,
+          "min_cycles": 102,
+          "max_cycles": 962
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 293.51666666666665,
+          "min_cycles": 117,
+          "max_cycles": 1076
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 449.84166666666664,
+          "min_cycles": 140,
+          "max_cycles": 2974
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 500.01666666666665,
+          "min_cycles": 156,
+          "max_cycles": 3092
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 757.3,
+          "min_cycles": 178,
+          "max_cycles": 1883
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 850.4416666666667,
+          "min_cycles": 207,
+          "max_cycles": 2011
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 610.6833333333333,
+          "min_cycles": 139,
+          "max_cycles": 2239
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 776.125,
+          "min_cycles": 75,
+          "max_cycles": 2399
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 141.81381957773513,
+          "min_cycles": 41,
+          "max_cycles": 2079
+        }
+      },
+      "v3_reu_512k": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 67.85,
+          "min_cycles": 36,
+          "max_cycles": 71
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 139.635,
+          "min_cycles": 63,
+          "max_cycles": 611
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 194.71,
+          "min_cycles": 99,
+          "max_cycles": 959
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 241.665,
+          "min_cycles": 114,
+          "max_cycles": 1073
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 328.285,
+          "min_cycles": 137,
+          "max_cycles": 2971
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 416.27,
+          "min_cycles": 153,
+          "max_cycles": 3089
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 753.955,
+          "min_cycles": 175,
+          "max_cycles": 1880
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 862.305,
+          "min_cycles": 204,
+          "max_cycles": 2008
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 504.7,
+          "min_cycles": 139,
+          "max_cycles": 2239
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 689.2,
+          "min_cycles": 75,
+          "max_cycles": 2399
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 772.045,
+          "min_cycles": 272,
+          "max_cycles": 1771
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 885.595,
+          "min_cycles": 304,
+          "max_cycles": 1904
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 47.6,
+          "min_cycles": 32,
+          "max_cycles": 50
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 150.975,
+          "min_cycles": 66,
+          "max_cycles": 614
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 244.7,
+          "min_cycles": 102,
+          "max_cycles": 962
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 293.51666666666665,
+          "min_cycles": 117,
+          "max_cycles": 1076
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 449.84166666666664,
+          "min_cycles": 140,
+          "max_cycles": 2974
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 500.01666666666665,
+          "min_cycles": 156,
+          "max_cycles": 3092
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 757.3,
+          "min_cycles": 178,
+          "max_cycles": 1883
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 850.4416666666667,
+          "min_cycles": 207,
+          "max_cycles": 2011
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 610.6833333333333,
+          "min_cycles": 139,
+          "max_cycles": 2239
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 776.125,
+          "min_cycles": 75,
+          "max_cycles": 2399
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 68.54510556621881,
+          "min_cycles": 41,
+          "max_cycles": 239
+        }
+      },
+      "v4_reu_16m": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 67.85,
+          "min_cycles": 36,
+          "max_cycles": 71
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 139.635,
+          "min_cycles": 63,
+          "max_cycles": 611
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 194.71,
+          "min_cycles": 99,
+          "max_cycles": 959
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 241.665,
+          "min_cycles": 114,
+          "max_cycles": 1073
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 328.285,
+          "min_cycles": 137,
+          "max_cycles": 2971
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 416.27,
+          "min_cycles": 153,
+          "max_cycles": 3089
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 753.955,
+          "min_cycles": 175,
+          "max_cycles": 1880
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 862.305,
+          "min_cycles": 204,
+          "max_cycles": 2008
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 504.7,
+          "min_cycles": 139,
+          "max_cycles": 2239
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 689.2,
+          "min_cycles": 75,
+          "max_cycles": 2399
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 772.045,
+          "min_cycles": 272,
+          "max_cycles": 1771
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 885.595,
+          "min_cycles": 304,
+          "max_cycles": 1904
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 47.6,
+          "min_cycles": 32,
+          "max_cycles": 50
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 150.975,
+          "min_cycles": 66,
+          "max_cycles": 614
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 244.7,
+          "min_cycles": 102,
+          "max_cycles": 962
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 293.51666666666665,
+          "min_cycles": 117,
+          "max_cycles": 1076
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 449.84166666666664,
+          "min_cycles": 140,
+          "max_cycles": 2974
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 500.01666666666665,
+          "min_cycles": 156,
+          "max_cycles": 3092
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 757.3,
+          "min_cycles": 178,
+          "max_cycles": 1883
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 850.4416666666667,
+          "min_cycles": 207,
+          "max_cycles": 2011
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 610.6833333333333,
+          "min_cycles": 139,
+          "max_cycles": 2239
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 776.125,
+          "min_cycles": 75,
+          "max_cycles": 2399
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 68.54510556621881,
+          "min_cycles": 41,
+          "max_cycles": 239
+        }
+      },
+      "v5_hybrid_lowzp": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 102.615,
+          "min_cycles": 60,
+          "max_cycles": 605
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 139.635,
+          "min_cycles": 63,
+          "max_cycles": 611
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 194.71,
+          "min_cycles": 99,
+          "max_cycles": 959
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 267.81,
+          "min_cycles": 107,
+          "max_cycles": 1529
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 328.285,
+          "min_cycles": 137,
+          "max_cycles": 2971
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 445.755,
+          "min_cycles": 138,
+          "max_cycles": 1815
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 753.955,
+          "min_cycles": 175,
+          "max_cycles": 1880
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 1007.0,
+          "min_cycles": 209,
+          "max_cycles": 2098
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 536.23,
+          "min_cycles": 151,
+          "max_cycles": 2322
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 728.995,
+          "min_cycles": 75,
+          "max_cycles": 2493
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 782.045,
+          "min_cycles": 282,
+          "max_cycles": 1781
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 1046.575,
+          "min_cycles": 319,
+          "max_cycles": 1994
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 70.43333333333334,
+          "min_cycles": 51,
+          "max_cycles": 495
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 150.975,
+          "min_cycles": 66,
+          "max_cycles": 614
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 244.7,
+          "min_cycles": 102,
+          "max_cycles": 962
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 324.84166666666664,
+          "min_cycles": 110,
+          "max_cycles": 1532
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 449.84166666666664,
+          "min_cycles": 140,
+          "max_cycles": 2974
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 512.3833333333333,
+          "min_cycles": 141,
+          "max_cycles": 1818
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 757.3,
+          "min_cycles": 178,
+          "max_cycles": 1883
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 1044.9333333333334,
+          "min_cycles": 212,
+          "max_cycles": 2101
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 643.7333333333333,
+          "min_cycles": 151,
+          "max_cycles": 2322
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 815.85,
+          "min_cycles": 75,
+          "max_cycles": 2493
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 142.76775431861805,
+          "min_cycles": 41,
+          "max_cycles": 2091
+        }
+      }
+    },
+    "machine_calls": 20605,
+    "elapsed_seconds": 4.14
+  },
+  "candidate": {
+    "profiles": {
+      "v1_balanced": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 72.145,
+          "min_cycles": 26,
+          "max_cycles": 552
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 107.785,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 161.675,
+          "min_cycles": 41,
+          "max_cycles": 1535
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 222.0,
+          "min_cycles": 45,
+          "max_cycles": 1604
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 268.42,
+          "min_cycles": 56,
+          "max_cycles": 3235
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 402.265,
+          "min_cycles": 51,
+          "max_cycles": 1988
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 881.585,
+          "min_cycles": 182,
+          "max_cycles": 2040
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 972.215,
+          "min_cycles": 171,
+          "max_cycles": 2063
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 439.52,
+          "min_cycles": 90,
+          "max_cycles": 2356
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 711.515,
+          "min_cycles": 75,
+          "max_cycles": 2474
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 897.875,
+          "min_cycles": 289,
+          "max_cycles": 1866
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 1011.755,
+          "min_cycles": 281,
+          "max_cycles": 1959
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 70.6,
+          "min_cycles": 51,
+          "max_cycles": 495
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 116.26666666666667,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 219.3,
+          "min_cycles": 41,
+          "max_cycles": 1535
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 280.78333333333336,
+          "min_cycles": 45,
+          "max_cycles": 1604
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 396.69166666666666,
+          "min_cycles": 56,
+          "max_cycles": 3235
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 473.975,
+          "min_cycles": 51,
+          "max_cycles": 1988
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 897.2083333333334,
+          "min_cycles": 185,
+          "max_cycles": 1978
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 1009.9666666666667,
+          "min_cycles": 174,
+          "max_cycles": 2066
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 507.8833333333333,
+          "min_cycles": 90,
+          "max_cycles": 2356
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 799.3833333333333,
+          "min_cycles": 75,
+          "max_cycles": 2474
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 142.87523992322457,
+          "min_cycles": 41,
+          "max_cycles": 2179
+        }
+      },
+      "v2_pareto_fast": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 75.63,
+          "min_cycles": 26,
+          "max_cycles": 632
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 107.785,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 155.915,
+          "min_cycles": 41,
+          "max_cycles": 1076
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 198.895,
+          "min_cycles": 54,
+          "max_cycles": 1159
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 264.37,
+          "min_cycles": 56,
+          "max_cycles": 3188
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 371.605,
+          "min_cycles": 57,
+          "max_cycles": 3339
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 753.955,
+          "min_cycles": 175,
+          "max_cycles": 1880
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 827.345,
+          "min_cycles": 166,
+          "max_cycles": 1973
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 418.945,
+          "min_cycles": 90,
+          "max_cycles": 2273
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 675.4,
+          "min_cycles": 75,
+          "max_cycles": 2384
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 772.045,
+          "min_cycles": 272,
+          "max_cycles": 1771
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 850.775,
+          "min_cycles": 266,
+          "max_cycles": 1869
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 70.43333333333334,
+          "min_cycles": 51,
+          "max_cycles": 495
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 116.26666666666667,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 211.24166666666667,
+          "min_cycles": 41,
+          "max_cycles": 1076
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 254.56666666666666,
+          "min_cycles": 54,
+          "max_cycles": 1159
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 391.68333333333334,
+          "min_cycles": 56,
+          "max_cycles": 3188
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 458.7,
+          "min_cycles": 57,
+          "max_cycles": 3339
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 757.3,
+          "min_cycles": 178,
+          "max_cycles": 1883
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 815.1833333333333,
+          "min_cycles": 169,
+          "max_cycles": 1976
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 485.89166666666665,
+          "min_cycles": 90,
+          "max_cycles": 2273
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 763.125,
+          "min_cycles": 75,
+          "max_cycles": 2384
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 140.92130518234165,
+          "min_cycles": 41,
+          "max_cycles": 2138
+        }
+      },
+      "v3_reu_512k": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 67.85,
+          "min_cycles": 36,
+          "max_cycles": 71
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 107.785,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 155.915,
+          "min_cycles": 41,
+          "max_cycles": 1076
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 198.9,
+          "min_cycles": 54,
+          "max_cycles": 1159
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 264.37,
+          "min_cycles": 56,
+          "max_cycles": 3188
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 358.855,
+          "min_cycles": 68,
+          "max_cycles": 3314
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 753.955,
+          "min_cycles": 175,
+          "max_cycles": 1880
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 827.345,
+          "min_cycles": 166,
+          "max_cycles": 1973
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 418.945,
+          "min_cycles": 90,
+          "max_cycles": 2273
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 675.4,
+          "min_cycles": 75,
+          "max_cycles": 2384
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 772.045,
+          "min_cycles": 272,
+          "max_cycles": 1771
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 850.775,
+          "min_cycles": 266,
+          "max_cycles": 1869
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 47.6,
+          "min_cycles": 32,
+          "max_cycles": 50
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 116.26666666666667,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 211.24166666666667,
+          "min_cycles": 41,
+          "max_cycles": 1076
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 254.55833333333334,
+          "min_cycles": 54,
+          "max_cycles": 1159
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 391.68333333333334,
+          "min_cycles": 56,
+          "max_cycles": 3188
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 447.60833333333335,
+          "min_cycles": 68,
+          "max_cycles": 3314
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 757.3,
+          "min_cycles": 178,
+          "max_cycles": 1883
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 815.1833333333333,
+          "min_cycles": 169,
+          "max_cycles": 1976
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 485.89166666666665,
+          "min_cycles": 90,
+          "max_cycles": 2273
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 763.125,
+          "min_cycles": 75,
+          "max_cycles": 2384
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 68.54510556621881,
+          "min_cycles": 41,
+          "max_cycles": 239
+        }
+      },
+      "v4_reu_16m": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 67.85,
+          "min_cycles": 36,
+          "max_cycles": 71
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 107.785,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 155.915,
+          "min_cycles": 41,
+          "max_cycles": 1076
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 198.9,
+          "min_cycles": 54,
+          "max_cycles": 1159
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 264.37,
+          "min_cycles": 56,
+          "max_cycles": 3188
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 358.855,
+          "min_cycles": 68,
+          "max_cycles": 3314
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 753.955,
+          "min_cycles": 175,
+          "max_cycles": 1880
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 827.345,
+          "min_cycles": 166,
+          "max_cycles": 1973
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 418.945,
+          "min_cycles": 90,
+          "max_cycles": 2273
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 675.4,
+          "min_cycles": 75,
+          "max_cycles": 2384
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 772.045,
+          "min_cycles": 272,
+          "max_cycles": 1771
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 850.775,
+          "min_cycles": 266,
+          "max_cycles": 1869
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 47.6,
+          "min_cycles": 32,
+          "max_cycles": 50
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 116.26666666666667,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 211.24166666666667,
+          "min_cycles": 41,
+          "max_cycles": 1076
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 254.55833333333334,
+          "min_cycles": 54,
+          "max_cycles": 1159
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 391.68333333333334,
+          "min_cycles": 56,
+          "max_cycles": 3188
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 447.60833333333335,
+          "min_cycles": 68,
+          "max_cycles": 3314
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 757.3,
+          "min_cycles": 178,
+          "max_cycles": 1883
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 815.1833333333333,
+          "min_cycles": 169,
+          "max_cycles": 1976
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 485.89166666666665,
+          "min_cycles": 90,
+          "max_cycles": 2273
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 763.125,
+          "min_cycles": 75,
+          "max_cycles": 2384
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 68.54510556621881,
+          "min_cycles": 41,
+          "max_cycles": 239
+        }
+      },
+      "v5_hybrid_lowzp": {
+        "MATH_UDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 75.63,
+          "min_cycles": 26,
+          "max_cycles": 632
+        },
+        "MATH_SDIV8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 107.785,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 155.915,
+          "min_cycles": 41,
+          "max_cycles": 1076
+        },
+        "MATH_SDIV16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 198.905,
+          "min_cycles": 54,
+          "max_cycles": 1159
+        },
+        "MATH_UDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 264.37,
+          "min_cycles": 56,
+          "max_cycles": 3188
+        },
+        "MATH_SDIV24": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 371.605,
+          "min_cycles": 57,
+          "max_cycles": 3339
+        },
+        "MATH_UDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 753.955,
+          "min_cycles": 175,
+          "max_cycles": 1880
+        },
+        "MATH_SDIV32_16": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 972.215,
+          "min_cycles": 171,
+          "max_cycles": 2063
+        },
+        "MATH_UDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 439.52,
+          "min_cycles": 90,
+          "max_cycles": 2356
+        },
+        "MATH_SDIV32_32": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 711.515,
+          "min_cycles": 75,
+          "max_cycles": 2474
+        },
+        "MATH_UDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 782.045,
+          "min_cycles": 282,
+          "max_cycles": 1781
+        },
+        "MATH_SDIV16_SHL8": {
+          "cases": 200,
+          "errors": 0,
+          "mean_cycles": 1011.755,
+          "min_cycles": 281,
+          "max_cycles": 1959
+        },
+        "MATH_UMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 70.43333333333334,
+          "min_cycles": 51,
+          "max_cycles": 495
+        },
+        "MATH_SMOD8": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 116.26666666666667,
+          "min_cycles": 26,
+          "max_cycles": 598
+        },
+        "MATH_UMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 211.24166666666667,
+          "min_cycles": 41,
+          "max_cycles": 1076
+        },
+        "MATH_SMOD16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 254.55833333333334,
+          "min_cycles": 54,
+          "max_cycles": 1159
+        },
+        "MATH_UMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 391.68333333333334,
+          "min_cycles": 56,
+          "max_cycles": 3188
+        },
+        "MATH_SMOD24": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 458.7,
+          "min_cycles": 57,
+          "max_cycles": 3339
+        },
+        "MATH_UMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 757.3,
+          "min_cycles": 178,
+          "max_cycles": 1883
+        },
+        "MATH_SMOD32_16": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 1009.9666666666667,
+          "min_cycles": 174,
+          "max_cycles": 2066
+        },
+        "MATH_UMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 507.8833333333333,
+          "min_cycles": 90,
+          "max_cycles": 2356
+        },
+        "MATH_SMOD32_32": {
+          "cases": 120,
+          "errors": 0,
+          "mean_cycles": 799.3833333333333,
+          "min_cycles": 75,
+          "max_cycles": 2474
+        },
+        "MATH_URECIP16_Q16": {
+          "cases": 521,
+          "errors": 0,
+          "mean_cycles": 141.87523992322457,
+          "min_cycles": 41,
+          "max_cycles": 2150
+        }
+      }
+    },
+    "machine_calls": 20605,
+    "elapsed_seconds": 3.78
+  },
+  "comparison": {
+    "v1_balanced": {
+      "MATH_UDIV8": {
+        "old": 102.615,
+        "new": 72.145,
+        "delta": -30.47,
+        "improvement_pct": 29.693514593383036
+      },
+      "MATH_SDIV8": {
+        "old": 139.635,
+        "new": 107.785,
+        "delta": -31.849999999999994,
+        "improvement_pct": 22.809467540373113
+      },
+      "MATH_UDIV16": {
+        "old": 206.715,
+        "new": 161.675,
+        "delta": -45.03999999999999,
+        "improvement_pct": 21.788452700578087
+      },
+      "MATH_SDIV16": {
+        "old": 267.81,
+        "new": 222.0,
+        "delta": -45.81,
+        "improvement_pct": 17.105410552257197
+      },
+      "MATH_UDIV24": {
+        "old": 350.875,
+        "new": 268.42,
+        "delta": -82.45499999999998,
+        "improvement_pct": 23.499821873886706
+      },
+      "MATH_SDIV24": {
+        "old": 445.755,
+        "new": 402.265,
+        "delta": -43.49000000000001,
+        "improvement_pct": 9.756480577895932
+      },
+      "MATH_UDIV32_16": {
+        "old": 881.585,
+        "new": 881.585,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV32_16": {
+        "old": 1007.0,
+        "new": 972.215,
+        "delta": -34.78499999999997,
+        "improvement_pct": 3.4543197616683186
+      },
+      "MATH_UDIV32_32": {
+        "old": 536.23,
+        "new": 439.52,
+        "delta": -96.71000000000004,
+        "improvement_pct": 18.03517147492681
+      },
+      "MATH_SDIV32_32": {
+        "old": 728.995,
+        "new": 711.515,
+        "delta": -17.480000000000018,
+        "improvement_pct": 2.3978216585847663
+      },
+      "MATH_UDIV16_SHL8": {
+        "old": 897.875,
+        "new": 897.875,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV16_SHL8": {
+        "old": 1046.575,
+        "new": 1011.755,
+        "delta": -34.82000000000005,
+        "improvement_pct": 3.327042973508831
+      },
+      "MATH_UMOD8": {
+        "old": 70.6,
+        "new": 70.6,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD8": {
+        "old": 150.975,
+        "new": 116.26666666666667,
+        "delta": -34.70833333333333,
+        "improvement_pct": 22.98945741568692
+      },
+      "MATH_UMOD16": {
+        "old": 262.15833333333336,
+        "new": 219.3,
+        "delta": -42.85833333333335,
+        "improvement_pct": 16.348262818271404
+      },
+      "MATH_SMOD16": {
+        "old": 324.84166666666664,
+        "new": 280.78333333333336,
+        "delta": -44.05833333333328,
+        "improvement_pct": 13.563017880505873
+      },
+      "MATH_UMOD24": {
+        "old": 472.6666666666667,
+        "new": 396.69166666666666,
+        "delta": -75.97500000000002,
+        "improvement_pct": 16.073695345557127
+      },
+      "MATH_SMOD24": {
+        "old": 512.3833333333333,
+        "new": 473.975,
+        "delta": -38.4083333333333,
+        "improvement_pct": 7.496015353088502
+      },
+      "MATH_UMOD32_16": {
+        "old": 897.2083333333334,
+        "new": 897.2083333333334,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD32_16": {
+        "old": 1044.9333333333334,
+        "new": 1009.9666666666667,
+        "delta": -34.9666666666667,
+        "improvement_pct": 3.3463059844328216
+      },
+      "MATH_UMOD32_32": {
+        "old": 643.7333333333333,
+        "new": 507.8833333333333,
+        "delta": -135.85000000000002,
+        "improvement_pct": 21.103458989229498
+      },
+      "MATH_SMOD32_32": {
+        "old": 815.85,
+        "new": 799.3833333333333,
+        "delta": -16.466666666666697,
+        "improvement_pct": 2.0183448754877364
+      },
+      "MATH_URECIP16_Q16": {
+        "old": 151.978886756238,
+        "new": 142.87523992322457,
+        "delta": -9.103646833013443,
+        "improvement_pct": 5.990073376188736
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_UDIV8": {
+        "old": 102.615,
+        "new": 75.63,
+        "delta": -26.985,
+        "improvement_pct": 26.29732495249233
+      },
+      "MATH_SDIV8": {
+        "old": 139.635,
+        "new": 107.785,
+        "delta": -31.849999999999994,
+        "improvement_pct": 22.809467540373113
+      },
+      "MATH_UDIV16": {
+        "old": 194.71,
+        "new": 155.915,
+        "delta": -38.795000000000016,
+        "improvement_pct": 19.924503107185053
+      },
+      "MATH_SDIV16": {
+        "old": 241.665,
+        "new": 198.895,
+        "delta": -42.76999999999998,
+        "improvement_pct": 17.698053090021304
+      },
+      "MATH_UDIV24": {
+        "old": 328.285,
+        "new": 264.37,
+        "delta": -63.91500000000002,
+        "improvement_pct": 19.469363510364474
+      },
+      "MATH_SDIV24": {
+        "old": 416.27,
+        "new": 371.605,
+        "delta": -44.664999999999964,
+        "improvement_pct": 10.72981478367405
+      },
+      "MATH_UDIV32_16": {
+        "old": 753.955,
+        "new": 753.955,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV32_16": {
+        "old": 862.305,
+        "new": 827.345,
+        "delta": -34.95999999999992,
+        "improvement_pct": 4.054249946364677
+      },
+      "MATH_UDIV32_32": {
+        "old": 504.7,
+        "new": 418.945,
+        "delta": -85.755,
+        "improvement_pct": 16.991281949673073
+      },
+      "MATH_SDIV32_32": {
+        "old": 689.2,
+        "new": 675.4,
+        "delta": -13.800000000000068,
+        "improvement_pct": 2.002321532211269
+      },
+      "MATH_UDIV16_SHL8": {
+        "old": 772.045,
+        "new": 772.045,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV16_SHL8": {
+        "old": 885.595,
+        "new": 850.775,
+        "delta": -34.82000000000005,
+        "improvement_pct": 3.9318198499314074
+      },
+      "MATH_UMOD8": {
+        "old": 70.43333333333334,
+        "new": 70.43333333333334,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD8": {
+        "old": 150.975,
+        "new": 116.26666666666667,
+        "delta": -34.70833333333333,
+        "improvement_pct": 22.98945741568692
+      },
+      "MATH_UMOD16": {
+        "old": 244.7,
+        "new": 211.24166666666667,
+        "delta": -33.458333333333314,
+        "improvement_pct": 13.673205285383455
+      },
+      "MATH_SMOD16": {
+        "old": 293.51666666666665,
+        "new": 254.56666666666666,
+        "delta": -38.94999999999999,
+        "improvement_pct": 13.270115268866046
+      },
+      "MATH_UMOD24": {
+        "old": 449.84166666666664,
+        "new": 391.68333333333334,
+        "delta": -58.1583333333333,
+        "improvement_pct": 12.928623034030487
+      },
+      "MATH_SMOD24": {
+        "old": 500.01666666666665,
+        "new": 458.7,
+        "delta": -41.31666666666666,
+        "improvement_pct": 8.263057898070063
+      },
+      "MATH_UMOD32_16": {
+        "old": 757.3,
+        "new": 757.3,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD32_16": {
+        "old": 850.4416666666667,
+        "new": 815.1833333333333,
+        "delta": -35.25833333333344,
+        "improvement_pct": 4.145884981333241
+      },
+      "MATH_UMOD32_32": {
+        "old": 610.6833333333333,
+        "new": 485.89166666666665,
+        "delta": -124.79166666666663,
+        "improvement_pct": 20.43475887666821
+      },
+      "MATH_SMOD32_32": {
+        "old": 776.125,
+        "new": 763.125,
+        "delta": -13.0,
+        "improvement_pct": 1.6749879207601868
+      },
+      "MATH_URECIP16_Q16": {
+        "old": 141.81381957773513,
+        "new": 140.92130518234165,
+        "delta": -0.8925143953934764,
+        "improvement_pct": 0.6293564322934306
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_UDIV8": {
+        "old": 67.85,
+        "new": 67.85,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV8": {
+        "old": 139.635,
+        "new": 107.785,
+        "delta": -31.849999999999994,
+        "improvement_pct": 22.809467540373113
+      },
+      "MATH_UDIV16": {
+        "old": 194.71,
+        "new": 155.915,
+        "delta": -38.795000000000016,
+        "improvement_pct": 19.924503107185053
+      },
+      "MATH_SDIV16": {
+        "old": 241.665,
+        "new": 198.9,
+        "delta": -42.764999999999986,
+        "improvement_pct": 17.695984110235237
+      },
+      "MATH_UDIV24": {
+        "old": 328.285,
+        "new": 264.37,
+        "delta": -63.91500000000002,
+        "improvement_pct": 19.469363510364474
+      },
+      "MATH_SDIV24": {
+        "old": 416.27,
+        "new": 358.855,
+        "delta": -57.414999999999964,
+        "improvement_pct": 13.792730679606978
+      },
+      "MATH_UDIV32_16": {
+        "old": 753.955,
+        "new": 753.955,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV32_16": {
+        "old": 862.305,
+        "new": 827.345,
+        "delta": -34.95999999999992,
+        "improvement_pct": 4.054249946364677
+      },
+      "MATH_UDIV32_32": {
+        "old": 504.7,
+        "new": 418.945,
+        "delta": -85.755,
+        "improvement_pct": 16.991281949673073
+      },
+      "MATH_SDIV32_32": {
+        "old": 689.2,
+        "new": 675.4,
+        "delta": -13.800000000000068,
+        "improvement_pct": 2.002321532211269
+      },
+      "MATH_UDIV16_SHL8": {
+        "old": 772.045,
+        "new": 772.045,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV16_SHL8": {
+        "old": 885.595,
+        "new": 850.775,
+        "delta": -34.82000000000005,
+        "improvement_pct": 3.9318198499314074
+      },
+      "MATH_UMOD8": {
+        "old": 47.6,
+        "new": 47.6,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD8": {
+        "old": 150.975,
+        "new": 116.26666666666667,
+        "delta": -34.70833333333333,
+        "improvement_pct": 22.98945741568692
+      },
+      "MATH_UMOD16": {
+        "old": 244.7,
+        "new": 211.24166666666667,
+        "delta": -33.458333333333314,
+        "improvement_pct": 13.673205285383455
+      },
+      "MATH_SMOD16": {
+        "old": 293.51666666666665,
+        "new": 254.55833333333334,
+        "delta": -38.958333333333314,
+        "improvement_pct": 13.272954403497808
+      },
+      "MATH_UMOD24": {
+        "old": 449.84166666666664,
+        "new": 391.68333333333334,
+        "delta": -58.1583333333333,
+        "improvement_pct": 12.928623034030487
+      },
+      "MATH_SMOD24": {
+        "old": 500.01666666666665,
+        "new": 447.60833333333335,
+        "delta": -52.4083333333333,
+        "improvement_pct": 10.48131728942368
+      },
+      "MATH_UMOD32_16": {
+        "old": 757.3,
+        "new": 757.3,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD32_16": {
+        "old": 850.4416666666667,
+        "new": 815.1833333333333,
+        "delta": -35.25833333333344,
+        "improvement_pct": 4.145884981333241
+      },
+      "MATH_UMOD32_32": {
+        "old": 610.6833333333333,
+        "new": 485.89166666666665,
+        "delta": -124.79166666666663,
+        "improvement_pct": 20.43475887666821
+      },
+      "MATH_SMOD32_32": {
+        "old": 776.125,
+        "new": 763.125,
+        "delta": -13.0,
+        "improvement_pct": 1.6749879207601868
+      },
+      "MATH_URECIP16_Q16": {
+        "old": 68.54510556621881,
+        "new": 68.54510556621881,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_UDIV8": {
+        "old": 67.85,
+        "new": 67.85,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV8": {
+        "old": 139.635,
+        "new": 107.785,
+        "delta": -31.849999999999994,
+        "improvement_pct": 22.809467540373113
+      },
+      "MATH_UDIV16": {
+        "old": 194.71,
+        "new": 155.915,
+        "delta": -38.795000000000016,
+        "improvement_pct": 19.924503107185053
+      },
+      "MATH_SDIV16": {
+        "old": 241.665,
+        "new": 198.9,
+        "delta": -42.764999999999986,
+        "improvement_pct": 17.695984110235237
+      },
+      "MATH_UDIV24": {
+        "old": 328.285,
+        "new": 264.37,
+        "delta": -63.91500000000002,
+        "improvement_pct": 19.469363510364474
+      },
+      "MATH_SDIV24": {
+        "old": 416.27,
+        "new": 358.855,
+        "delta": -57.414999999999964,
+        "improvement_pct": 13.792730679606978
+      },
+      "MATH_UDIV32_16": {
+        "old": 753.955,
+        "new": 753.955,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV32_16": {
+        "old": 862.305,
+        "new": 827.345,
+        "delta": -34.95999999999992,
+        "improvement_pct": 4.054249946364677
+      },
+      "MATH_UDIV32_32": {
+        "old": 504.7,
+        "new": 418.945,
+        "delta": -85.755,
+        "improvement_pct": 16.991281949673073
+      },
+      "MATH_SDIV32_32": {
+        "old": 689.2,
+        "new": 675.4,
+        "delta": -13.800000000000068,
+        "improvement_pct": 2.002321532211269
+      },
+      "MATH_UDIV16_SHL8": {
+        "old": 772.045,
+        "new": 772.045,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV16_SHL8": {
+        "old": 885.595,
+        "new": 850.775,
+        "delta": -34.82000000000005,
+        "improvement_pct": 3.9318198499314074
+      },
+      "MATH_UMOD8": {
+        "old": 47.6,
+        "new": 47.6,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD8": {
+        "old": 150.975,
+        "new": 116.26666666666667,
+        "delta": -34.70833333333333,
+        "improvement_pct": 22.98945741568692
+      },
+      "MATH_UMOD16": {
+        "old": 244.7,
+        "new": 211.24166666666667,
+        "delta": -33.458333333333314,
+        "improvement_pct": 13.673205285383455
+      },
+      "MATH_SMOD16": {
+        "old": 293.51666666666665,
+        "new": 254.55833333333334,
+        "delta": -38.958333333333314,
+        "improvement_pct": 13.272954403497808
+      },
+      "MATH_UMOD24": {
+        "old": 449.84166666666664,
+        "new": 391.68333333333334,
+        "delta": -58.1583333333333,
+        "improvement_pct": 12.928623034030487
+      },
+      "MATH_SMOD24": {
+        "old": 500.01666666666665,
+        "new": 447.60833333333335,
+        "delta": -52.4083333333333,
+        "improvement_pct": 10.48131728942368
+      },
+      "MATH_UMOD32_16": {
+        "old": 757.3,
+        "new": 757.3,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD32_16": {
+        "old": 850.4416666666667,
+        "new": 815.1833333333333,
+        "delta": -35.25833333333344,
+        "improvement_pct": 4.145884981333241
+      },
+      "MATH_UMOD32_32": {
+        "old": 610.6833333333333,
+        "new": 485.89166666666665,
+        "delta": -124.79166666666663,
+        "improvement_pct": 20.43475887666821
+      },
+      "MATH_SMOD32_32": {
+        "old": 776.125,
+        "new": 763.125,
+        "delta": -13.0,
+        "improvement_pct": 1.6749879207601868
+      },
+      "MATH_URECIP16_Q16": {
+        "old": 68.54510556621881,
+        "new": 68.54510556621881,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "MATH_UDIV8": {
+        "old": 102.615,
+        "new": 75.63,
+        "delta": -26.985,
+        "improvement_pct": 26.29732495249233
+      },
+      "MATH_SDIV8": {
+        "old": 139.635,
+        "new": 107.785,
+        "delta": -31.849999999999994,
+        "improvement_pct": 22.809467540373113
+      },
+      "MATH_UDIV16": {
+        "old": 194.71,
+        "new": 155.915,
+        "delta": -38.795000000000016,
+        "improvement_pct": 19.924503107185053
+      },
+      "MATH_SDIV16": {
+        "old": 267.81,
+        "new": 198.905,
+        "delta": -68.905,
+        "improvement_pct": 25.729061648183414
+      },
+      "MATH_UDIV24": {
+        "old": 328.285,
+        "new": 264.37,
+        "delta": -63.91500000000002,
+        "improvement_pct": 19.469363510364474
+      },
+      "MATH_SDIV24": {
+        "old": 445.755,
+        "new": 371.605,
+        "delta": -74.14999999999998,
+        "improvement_pct": 16.6346984329957
+      },
+      "MATH_UDIV32_16": {
+        "old": 753.955,
+        "new": 753.955,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV32_16": {
+        "old": 1007.0,
+        "new": 972.215,
+        "delta": -34.78499999999997,
+        "improvement_pct": 3.4543197616683186
+      },
+      "MATH_UDIV32_32": {
+        "old": 536.23,
+        "new": 439.52,
+        "delta": -96.71000000000004,
+        "improvement_pct": 18.03517147492681
+      },
+      "MATH_SDIV32_32": {
+        "old": 728.995,
+        "new": 711.515,
+        "delta": -17.480000000000018,
+        "improvement_pct": 2.3978216585847663
+      },
+      "MATH_UDIV16_SHL8": {
+        "old": 782.045,
+        "new": 782.045,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SDIV16_SHL8": {
+        "old": 1046.575,
+        "new": 1011.755,
+        "delta": -34.82000000000005,
+        "improvement_pct": 3.327042973508831
+      },
+      "MATH_UMOD8": {
+        "old": 70.43333333333334,
+        "new": 70.43333333333334,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD8": {
+        "old": 150.975,
+        "new": 116.26666666666667,
+        "delta": -34.70833333333333,
+        "improvement_pct": 22.98945741568692
+      },
+      "MATH_UMOD16": {
+        "old": 244.7,
+        "new": 211.24166666666667,
+        "delta": -33.458333333333314,
+        "improvement_pct": 13.673205285383455
+      },
+      "MATH_SMOD16": {
+        "old": 324.84166666666664,
+        "new": 254.55833333333334,
+        "delta": -70.2833333333333,
+        "improvement_pct": 21.636181729560548
+      },
+      "MATH_UMOD24": {
+        "old": 449.84166666666664,
+        "new": 391.68333333333334,
+        "delta": -58.1583333333333,
+        "improvement_pct": 12.928623034030487
+      },
+      "MATH_SMOD24": {
+        "old": 512.3833333333333,
+        "new": 458.7,
+        "delta": -53.68333333333334,
+        "improvement_pct": 10.477181797482356
+      },
+      "MATH_UMOD32_16": {
+        "old": 757.3,
+        "new": 757.3,
+        "delta": 0.0,
+        "improvement_pct": 0.0
+      },
+      "MATH_SMOD32_16": {
+        "old": 1044.9333333333334,
+        "new": 1009.9666666666667,
+        "delta": -34.9666666666667,
+        "improvement_pct": 3.3463059844328216
+      },
+      "MATH_UMOD32_32": {
+        "old": 643.7333333333333,
+        "new": 507.8833333333333,
+        "delta": -135.85000000000002,
+        "improvement_pct": 21.103458989229498
+      },
+      "MATH_SMOD32_32": {
+        "old": 815.85,
+        "new": 799.3833333333333,
+        "delta": -16.466666666666697,
+        "improvement_pct": 2.0183448754877364
+      },
+      "MATH_URECIP16_Q16": {
+        "old": 142.76775431861805,
+        "new": 141.87523992322457,
+        "delta": -0.8925143953934764,
+        "improvement_pct": 0.6251512462692603
+      }
+    }
+  }
+}

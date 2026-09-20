@@ -26,5 +26,5 @@ REU_ATAN2_BANK = $08
 REU_ISQRT16_BANK = $09
 REU_QS16_BASE_BANK = $10
 
-; 4608-byte private import region. $A000-$B1FF is RAM under BASIC ROM.
+; 7680-byte private import region. $A000-$BDFF is RAM under BASIC ROM.
 HYBRID_CODE = $A000

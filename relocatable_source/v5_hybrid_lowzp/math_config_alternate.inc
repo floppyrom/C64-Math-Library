@@ -25,5 +25,5 @@ REU_ATAN2_BANK = $08
 REU_ISQRT16_BANK = $09
 REU_QS16_BASE_BANK = $10
 
-; Deliberately moved for relocation proof. RAM under KERNAL must be visible while used.
+; Deliberately moved 7680-byte region for relocation proof ($E000-$FDFF). RAM under KERNAL must be visible while used.
 HYBRID_CODE = $E000

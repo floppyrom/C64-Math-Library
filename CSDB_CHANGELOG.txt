@@ -1,9 +1,18 @@
+2026-09-20 DIVISION FAMILY REFRESH
+- Re-evaluated the complete UDIV/SDIV + UMOD/SMOD family across V1-V5.
+- Repose q0-counter UDIV24 integrated profile-by-profile; V1/V2/V5 get faster CPU UDIV8 while V3/V4 keep their faster REU 8-bit planes.
+- Native signed 8/16/24/32 division refreshed; signed paths remain executable-disjoint from unsigned engines.
+- Same-corpus old/new audit: 23 public division-family paths per profile, zero timing regressions.
+- Final validation: 822,050 unsigned + 364,533 signed division/modulo calls, zero errors.
+- Custom Pareto RAM points: 9377/9950/10893/9581/11079 B at 31/36/60/147/176 ZP; V5 HYBRID_CODE is now $A000-$BDFF (7680 B).
+- Reference/alternate, hybrid, Pareto, deterministic, package and 205-check release audit pass; no fresh external ACME run.
+
 2026-09-20 FIVE-PROFILE MULTIPLICATION REFRESH
 - Re-evaluated UMUL8/16/24/32 and SMUL8/16/24/32 across V1-V5, including READY and fixed-shift derivatives, using the Repose signed-quadrant and recent quarter-square/carry work.
 - Direct signed SMUL8 is now 67.992188 cycles exhaustive in every profile. V1/V5 select low-ZP FAST17 SMUL16; V2/V3/V4 keep their faster 116-ZP practical native SMUL16.
 - FAST24 signed composition is selected in every profile; V1/V5 also select the private FAST24 unsigned producer. Mixed-call-safe FAST31/V29 UMUL32 and SMUL32 are selected in all five profiles; UMUL32 measures 712.235367 cycles on the common refresh corpus.
 - Public API addresses are unchanged. Private multiply cores extend the resident payload end to $CF96; no selected fixed profile reserves persistent hardware-stack space. V3/V4 Turbo entry geometry remains intact.
-- Custom Pareto now treats the refreshed V1 baseline correctly: redundant initialized-UMUL32 donor retired, legacy 5-ZP pack accelerates UMUL8 only, and the 24-ZP pack imports the current FAST24 signed core. Equal-weight extra-RAM points: 5376/5949/6892/5580/7078 B at 31/36/60/147/176 ZP.
+- Custom Pareto now treats the refreshed V1 baseline correctly: redundant initialized-UMUL32 donor retired, legacy 5-ZP pack accelerates UMUL8 only, and the 24-ZP pack imports the current FAST24 signed core. Equal-weight extra-RAM points: 9377/9950/10893/9581/11079 B at 31/36/60/147/176 ZP.
 - Validation: 264,999 signed multiply calls, 415,078 cross-profile refresh benchmark calls, 17,196 Turbo relocation calls, 12 Pareto reference/alternate builds (55,068 common-API calls), signed/unsigned executable zero-overlap, deterministic source/hybrid rebuilds, and release audit PASS_WITH_ACME_NOT_RUN.
 
 2026-09-18 VEC2 NORMALIZE — STABLE 46TH API ENTRY

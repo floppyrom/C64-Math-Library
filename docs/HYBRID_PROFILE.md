@@ -8,32 +8,11 @@ This is not two complete libraries loaded side-by-side. V5 produces **one reside
 
 ## Selection policy
 
-The initial V5 preset is deliberately conservative. A V2 path is imported only when:
+V5 is selected profile-by-profile rather than being a blind V2 transplant. The current refresh keeps the 31-byte V1 normal-ZP contract while repacking division implementations that win under that constraint. V3/V4 REU-specific choices are irrelevant to V5 because V5 is stock-C64.
 
-1. it is measurably faster than V1;
-2. it does not require ZP outside the V1 normal window after relocation;
-3. its code/data dependencies can be privately relocated without altering other V1 routines;
-4. the direct imported path can retain V2 cycle timing without a dispatcher tax;
-5. the complete 46-entry library still passes the common validation suite.
+Current V5 division highlights on the final resident validator are `UDIV8` **59.383**, `UDIV16` **126.386**, `UDIV24` **187.122**, `UDIV32/16` **756.639**, `SDIV16` **171.905**, and `SDIV24` **253.487** mean cycles. Cross-release selection is certified by the separate same-corpus audit, which reports zero regressions across all 23 measured public division-family paths.
 
-Certified imports:
-
-| Stable entry | V1 mean | V5/V2 mean | Gain | Extra normal ZP |
-|---|---:|---:|---:|---:|
-| `MATH_UDIV16` | 160.064966 | **137.282268** | 14.23% | 0 |
-| `MATH_UDIV24` | 224.668396 | **203.612991** | 9.37% | 0 |
-| `MATH_UDIV32_16` | 857.373105 | **759.730823** | 11.39% | 0 |
-| `MATH_UMOD8` | 65.285156 | **64.819153** | 0.71% | 0 |
-| `MATH_UMOD16` | 163.064966 | **140.282268** | 13.97% | 0 |
-| `MATH_UMOD24` | 227.668396 | **206.612991** | 9.25% | 0 |
-| `MATH_UMOD32_16` | 860.373105 | **762.730823** | 11.35% | 0 |
-| `MATH_COS8` | 29 | **23** | 20.69% | 0 |
-| `MATH_SINCOS8` | 39 | **31** | 20.51% | 0 |
-| `MATH_ATAN2_8` | 50.441345 | **46.953064** | 6.92% | 0 |
-
-The V5 direct paths were compared against V2 with cycle-vector equality; these are not estimates from instruction counting.
-
-`MATH_UDIV16_SHL8` and `MATH_URECIP16_Q16` also call imported division entries and therefore benefit indirectly, but their outer V1 implementations remain V1 and are not presented as byte/cycle-identical V2 imports.
+Trig imports remain `COS8` 23 cycles, `SINCOS8` 31 cycles, and exhaustive `ATAN2_8` 46.953064 mean cycles with maximum one-phase-unit error.
 
 ## Why not import every V2 routine?
 
@@ -43,35 +22,20 @@ The hybrid builder is therefore a **certified selector**, not an unsafe arbitrar
 
 ## Memory map
 
-Reference V5:
+Reference V5 keeps the normal `$02-$20` 31-byte ZP window. Its principal relocatable private block is now:
 
 ```text
-V1 resident regions      unchanged
-MATH_IO                  $C000-$C01F
-V1_SCRATCH               $C040-$C057
-normal ZP                $02-$20       31 bytes
-HYBRID_CODE              $A000-$B1FF   4608 bytes
+HYBRID_CODE              $A000-$BDFF   7680 bytes
 ATAN2 extra table pages   $6E00/$6F00/$7000   3 x 256 bytes
 ```
 
-Private hybrid layout:
+The division refresh also uses profile-free signed-division islands recorded in `HYBRID_BUILD_MANIFEST.json`; the exact total private-RAM increase versus V1 is **9,377 bytes**. Within `HYBRID_CODE`, the lower 4 KiB remains the relocated V2 division block, `$B000-$B1FF` retains the modulo/trig/cosine region, the refreshed signed-16 magnitude core uses the `$B200` area, and the direct UDIV16 engine occupies the high `$B800-$BDC9` region.
 
-```text
-$A000-$AFFF  relocated V2 division block
-$B000-$B07F  relocated V2 UMOD8 block
-$B080-$B08A  V2 COS8 implementation
-$B090-$B0A0  V2 SINCOS8 implementation
-$B100-$B1FF  private V2 cosine table
-$6E00-$6EFF  fast ATAN2 final-angle page Q1 (formerly unused V1 table page)
-$6F00-$6FFF  fast ATAN2 final-angle page Q2 (formerly unused V1 table page)
-$7000-$70FF  fast ATAN2 final-angle page Q3 (V2 donor $9100 remapped away from V1-owned data)
-```
-
-`HYBRID_CODE` is source-build configurable. The alternate proof moves it to `$E000-$F1FF` while also moving the normal resident regions, public I/O and ZP base.
+`HYBRID_CODE` is source-build configurable. The alternate proof moves its base to `$E000`, producing `$E000-$FDFF`, while also relocating the normal resident regions, public I/O and ZP base.
 
 ### C64 banking
 
-The reference `$A000-$B1FF` region is RAM underneath BASIC ROM. Writes already go to the underlying RAM, but the CPU must see RAM there when executing V5-imported routines. For typical game/demo startup, disabling BASIC ROM once is preferable to banking it for every call because per-call banking would add cycles not included in the published math timings.
+The reference `$A000-$BDFF` block is RAM underneath BASIC ROM. Writes already reach underlying RAM, but the CPU must see RAM there while imported code executes. Games/demos normally disable BASIC ROM once rather than bank it per call.
 
 ## Build model
 
@@ -107,7 +71,7 @@ Additional files:
 
 ## Current scope
 
-V5 is a stock-C64 profile. It does not use the REU and does not expose Turbo16/Turbo32 or V4 QS16. It is intended primarily for games/demos that value V1's ZP footprint but have RAM available under BASIC ROM (or another relocatable 4608-byte region) plus three relocatable page-aligned ATAN2 table pages. The exact V5 private-RAM increase versus V1 is 5,376 bytes.
+V5 is a stock-C64 profile. It does not use the REU and does not expose Turbo16/Turbo32 or V4 QS16. It is intended primarily for games/demos that value V1's ZP footprint but have RAM available under BASIC ROM (or another relocatable 7,680-byte block) plus the documented private division/table islands. The exact V5 private-RAM increase versus V1 is 9,377 bytes.
 
 ## Q8.8 vector normalization
 

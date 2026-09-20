@@ -22,7 +22,7 @@ For V1–V4, the stable 46-entry API is built from `relocatable_source/<profile>
 | `HYBRID_CODE` | V5/custom-Pareto imported code/data base | `$A000` | `$E000` |
 | `PARETO_AUX` | custom-Pareto private code/data base | `$B200` | `$F200` |
 
-V5 additionally validates `HYBRID_CODE` as a page-aligned 4608-byte region that cannot overlap V1 resident claims or `$D000-$DFFF`. Custom Pareto maps validate both `HYBRID_CODE` and the generated `PARETO_AUX` region, plus every selected ZP island (`ZP_MAIN`-relative low ranges and independently relocatable `ZP_SMUL`). V3/V4 additionally expose assembly-time symbols for all operational REU banks, including `REU_TURBO16_BANK` and `REU_TURBO32_BANK`. V4's eight-bank QS16 region moves as an aligned unit. Turbo16/Turbo32 also expose `TURBO16_ZP_BASE` and `TURBO32_ZP_BASE`; their executable overlays are assembled for the selected ZP origin and placed in the selected REU banks at build time.
+V5 additionally validates `HYBRID_CODE` as a page-aligned 7,680-byte region that cannot overlap V1 resident claims or `$D000-$DFFF`. Custom Pareto maps validate both `HYBRID_CODE` and the generated `PARETO_AUX` region, plus every selected ZP island (`ZP_MAIN`-relative low ranges and independently relocatable `ZP_SMUL`). V3/V4 additionally expose assembly-time symbols for all operational REU banks, including `REU_TURBO16_BANK` and `REU_TURBO32_BANK`. V4's eight-bank QS16 region moves as an aligned unit. Turbo16/Turbo32 also expose `TURBO16_ZP_BASE` and `TURBO32_ZP_BASE`; their executable overlays are assembled for the selected ZP origin and placed in the selected REU banks at build time.
 
 ## Safety checks
 

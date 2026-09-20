@@ -52,6 +52,10 @@ See `docs/SIGNED_IMPLEMENTATIONS.md` and each profile's `resident/signed/README.
 
 The fixed profiles now apply the latest multiplier research profile-by-profile rather than forcing one kernel everywhere. Direct signed `SMUL8`, FAST24 signed composition and mixed-call-safe FAST31/V29 `SMUL32` are selected across V1–V5; V1/V5 use the low-ZP FAST17 `SMUL16`, while V2/V3/V4 retain their faster 116-ZP practical signed kernel. `UMUL32` is refreshed across all five profiles, V1/V5 also gain the FAST24 `UMUL24`, and `UMUL8`/`UMUL16` are intentionally retained after resource-aware comparison. The refreshed arithmetic is exposed as independent canonical includes in the V1–V4 `relocatable_source/` trees; V5 inherits the V1 low-ZP arithmetic through the hybrid build and publishes its own exact signed executable mirrors under `resident/signed/multiply/native/`. See `docs/MULTIPLY_REFRESH_2026-09-20.md`.
 
+### 2026-09-20 division refresh
+
+The complete `UDIV`/`SDIV` family has now been re-evaluated across V1–V5 using Repose’s new UDIV24 q0-counter work plus follow-on direct-output and early-gate optimizations. V1/V2/V5 adopt the faster CPU UDIV8 path while V3/V4 deliberately retain their faster REU 8-bit quotient/remainder planes. Repose-derived UDIV24 is integrated profile-by-profile; native signed 8/16/24/32-bit paths are refreshed without entering the corresponding unsigned executable engines; and 32/32 division gains an early q=0 gate. A deterministic old-vs-new corpus reports **zero public division-family timing regressions** across all five profiles. See `docs/DIVISION_REFRESH_2026-09-20.md`.
+
 ## Custom Pareto Builder
 
 Interactive use:
@@ -83,18 +87,19 @@ The generated `selection_manifest.json` records the exact selected packs, ZP ran
 
 ## V5 headline
 
-V5 keeps V1's `$02-$20` 31-byte normal ZP window and imports certified V2 paths with no extra normal ZP:
+V5 keeps V1's `$02-$20` 31-byte normal ZP window while using the refreshed low-ZP division selection. Final resident validation means include:
 
-- `MATH_UDIV16`: 160.06 → **137.28 cycles**
-- `MATH_UDIV24`: 224.67 → **203.61**
-- `MATH_UDIV32_16`: 857.37 → **759.73**
-- wider `UMOD` aliases inherit those faster division paths
-- `MATH_UMOD8`: 65.29 → **64.82**
-- `MATH_COS8`: 29 → **23**
-- `MATH_SINCOS8`: 39 → **31**
-- `MATH_ATAN2_8`: 50.44 → **46.95** (65,536-vector exhaustive parity; max error 1 phase unit)
+- `MATH_UDIV8`: **59.383 cycles**
+- `MATH_UDIV16`: **126.386**
+- `MATH_UDIV24`: **187.122**
+- `MATH_UDIV32_16`: **756.639**
+- `MATH_SDIV16`: **171.905**
+- `MATH_SDIV24`: **253.487**
+- `MATH_COS8`: **23**
+- `MATH_SINCOS8`: **31**
+- `MATH_ATAN2_8`: **46.953** (65,536-vector exhaustive parity; max error 1 phase unit)
 
-The reference V5 relocated implementation block occupies `$A000-$B1FF` (4608 bytes), RAM underneath BASIC ROM. Fast ATAN2 additionally claims three formerly unused page-aligned table pages (`$6E00`, `$6F00`, `$7000` reference), for an exact **5,376-byte private-RAM increase versus V1**. BASIC ROM must therefore be banked out while imported hybrid-code paths execute, or the private regions can be relocated at build time.
+The reference V5 `HYBRID_CODE` block now occupies `$A000-$BDFF` (**7,680 bytes**) under BASIC ROM. Additional profile-private division/table islands and the three fast-ATAN2 pages bring the exact current private-RAM increase versus V1 to **9,377 bytes**. BASIC ROM must be banked out while code in the reference hybrid block executes, or `HYBRID_CODE` can be relocated at build time.
 
 See `docs/HYBRID_PROFILE.md`.
 

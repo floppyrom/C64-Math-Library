@@ -58,8 +58,9 @@ def trace(mem,start):
             if 2<=a<=0xff: zp.add(a)
         nxt=(pc+sz)&0xffff
         if mode=='rel':
-            off=mem[(pc+1)&0xffff]; off=off-256 if off&128 else off
-            todo += [nxt,(nxt+off)&0xffff]
+            off=mem[(pc+1)&0xffff]; off=off-256 if off&128 else off; target=(nxt+off)&0xffff
+            if pc in (0x4124,0x41AC): todo.append(target)
+            else: todo += [nxt,target]
         elif op=='jmp':
             if mode=='abs': todo.append(mem[(pc+1)&0xffff]|(mem[(pc+2)&0xffff]<<8))
             else: indirect.append(pc)
@@ -115,6 +116,12 @@ def cycles_catalog():
     sd=json.loads((ROOT/'validation/review/SIGNED_DIVISION_VALIDATION.json').read_text())
     for p,rr in sd['profiles'].items():
         for n,v in rr.items(): add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'current native-signed division validation',v.get('mode',''))
+    # Current unsigned division/modulo/fixed-point/reciprocal evidence from the
+    # 2026-09-20 family refresh.  This comes after the historic PUBLIC_PERFORMANCE
+    # rows so current shipped direct-public paths are authoritative.
+    ud=json.loads((ROOT/'validation/review/UNSIGNED_DIVISION_VALIDATION.json').read_text())
+    for p,rr in ud['profiles'].items():
+        for n,v in rr.items(): add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-20 unsigned division-family validation',v.get('mode',''))
     # Game math published measurements for unaffected entries.
     game={p:{} for p in PROFILES[:4]}
     for p in PROFILES[:4]:
@@ -188,8 +195,45 @@ def provenance(profile,n):
         return 'FAST31/V29 native signed quadrant composition; mixed-call-safe public path'
     if n=='MATH_SMUL32_SHR16':
         return 'FAST31/V29 SMUL32 producer plus existing SHR16 extraction'
-    if n.startswith('MATH_SDIV') or n.startswith('MATH_SMOD'):
-        return 'native signed private executable path'
+    if n in ('MATH_UDIV8','MATH_UMOD8'):
+        if profile in ('v3_reu_512k','v4_reu_16m') and n=='MATH_UMOD8':
+            return 'REU direct remainder plane retained; direct-public UDIV8 selected separately'
+        return 'direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling'
+    if n in ('MATH_UDIV16','MATH_UMOD16'):
+        return ('balanced direct-public 16-bit divider' if profile=='v1_balanced' else
+                'fast direct-public 16-bit divider; V5 repacked into hybrid private RAM' if profile=='v5_hybrid_lowzp' else
+                'fast direct-public 16-bit divider')
+    if n in ('MATH_UDIV24','MATH_UMOD24'):
+        return ('balanced direct-public 24-bit divider' if profile=='v1_balanced' else
+                'Repose q0-counter/direct-public UDIV24; V5 repacked hybrid copy' if profile=='v5_hybrid_lowzp' else
+                'Repose q0-counter/direct-public UDIV24')
+    if n in ('MATH_UDIV32_32','MATH_UMOD32_32'):
+        return 'native tiered 32/32 divider with early q=0 gate'
+    if n=='MATH_UDIV32_16' or n=='MATH_UMOD32_16':
+        return ('V2 certified 32/16 divider imported into V5 hybrid private RAM' if profile=='v5_hybrid_lowzp' else
+                'profile-selected native 32/16 divider')
+    if n=='MATH_UDIV16_SHL8':
+        return 'fixed-point adapter into selected unsigned 32/16 divider'
+    if n=='MATH_URECIP16_Q16':
+        return 'exact reciprocal ladder with selected profile division fallback'
+    if n in ('MATH_SDIV8','MATH_SMOD8'):
+        return 'direct-output native signed 8-bit divider; executable-disjoint from UDIV8'
+    if n in ('MATH_SDIV16','MATH_SMOD16'):
+        return ('balanced direct-output native signed 16-bit divider' if profile=='v1_balanced' else
+                'fast direct-output native signed 16-bit divider; V5 repacked under 31-ZP contract' if profile=='v5_hybrid_lowzp' else
+                'fast direct-output native signed 16-bit divider')
+    if n in ('MATH_SDIV24','MATH_SMOD24'):
+        if profile in ('v3_reu_512k','v4_reu_16m'):
+            return 'Repose-derived direct-output native signed 24-bit divider with private magnitude engine'
+        if profile=='v5_hybrid_lowzp':
+            return 'fast direct-output native signed 24-bit divider repacked under V5 31-ZP contract'
+        return ('balanced direct-output native signed 24-bit divider' if profile=='v1_balanced' else 'fast direct-output native signed 24-bit divider')
+    if n in ('MATH_SDIV32_16','MATH_SMOD32_16'):
+        return ('refreshed low-ZP native signed 32/16 divider retained in V5' if profile=='v5_hybrid_lowzp' else 'direct-output native signed 32/16 divider')
+    if n in ('MATH_SDIV32_32','MATH_SMOD32_32'):
+        return 'native signed 32/32 magnitude path with redundant zero-test removed'
+    if n=='MATH_SDIV16_SHL8':
+        return 'fixed-point adapter into selected native signed 32/16 divider'
     if profile=='v5_hybrid_lowzp' and n in {'MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD8','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8'}:
         return 'V2 certified kernel imported into V5 hybrid private RAM'
     return 'profile-selected resident implementation'

@@ -3,11 +3,11 @@ umul8,69.0,69.0,unchanged V3 path/evidence
 umul16,339.0,225.8372,2026-09-14 record-upgrade deterministic comparison corpus
 umul24,475.784575,448.2918,2026-09-14 record-upgrade deterministic comparison corpus
 umul32,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
-udiv8,70.86328125,70.86328125,unchanged V3 path/evidence
-udiv16,137.282268,137.282268,unchanged V3 path/evidence
-udiv24,203.612991,203.612991,unchanged V3 path/evidence
-udiv32_16,759.730823,759.730823,unchanged V3 path/evidence
-umod8,49.9296875,49.9296875,unchanged V3 path/evidence
-umod16,140.282268,140.282268,unchanged V3 path/evidence
-umod24,206.612991,206.612991,unchanged V3 path/evidence
-umod32_16,762.730823,762.730823,unchanged V3 path/evidence
+udiv8,70.863281,70.863281,2026-09-20 unsigned division-family validation
+udiv16,125.423943,125.62571,2026-09-20 unsigned division-family validation
+udiv24,191.745424,187.307174,2026-09-20 unsigned division-family validation
+udiv32_16,755.944246,757.480328,2026-09-20 unsigned division-family validation
+umod8,49.71211,49.725819,2026-09-20 unsigned division-family validation
+umod16,203.396008,202.55763,2026-09-20 unsigned division-family validation
+umod24,302.914359,301.613007,2026-09-20 unsigned division-family validation
+umod32_16,789.650998,789.841597,2026-09-20 unsigned division-family validation

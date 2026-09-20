@@ -60,7 +60,9 @@ def trace(mem,start):
         seen.add(pc); op,mode=REV[oc]; nxt=(pc+SIZE[mode])&0xffff
         if op in ('rts','rti','brk'): continue
         if mode=='rel':
-            d=mem[pc+1]; d=d-256 if d>=128 else d; todo.extend((nxt,(nxt+d)&0xffff))
+            d=mem[pc+1]; d=d-256 if d>=128 else d; target=(nxt+d)&0xffff
+            if pc in (0x4124,0x41AC): todo.append(target)
+            else: todo.extend((nxt,target))
         elif op=='jmp':
             if mode!='abs': raise RuntimeError(f'indirect JMP at ${pc:04X}')
             todo.append(mem[pc+1]|mem[pc+2]<<8)

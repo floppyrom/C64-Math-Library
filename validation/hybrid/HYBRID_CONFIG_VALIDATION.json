@@ -34,19 +34,19 @@
       "name": "table_overlap",
       "expected": "reject",
       "status": "PASS",
-      "error": "HYBRID_CODE $9000-$A1FF collides with REG_TABLE $6000-$9BFF"
+      "error": "HYBRID_CODE $9000-$ADFF collides with REG_TABLE $6000-$9BFF"
     },
     {
       "name": "api_overlap",
       "expected": "reject",
       "status": "PASS",
-      "error": "HYBRID_CODE $3000-$41FF collides with REG_API $3000-$3FFF"
+      "error": "HYBRID_CODE $3000-$4DFF collides with REG_API $3000-$3FFF"
     },
     {
       "name": "kernel_overlap",
       "expected": "reject",
       "status": "PASS",
-      "error": "HYBRID_CODE $5E00-$6FFF collides with REG_GAME_API $5E00-$5FFF"
+      "error": "HYBRID_CODE $5E00-$7BFF collides with REG_GAME_API $5E00-$5FFF"
     }
   ]
 }

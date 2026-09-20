@@ -4,7 +4,7 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UDIV32_32. Executable overlap: 0 instructions.
-; Public entry: $5E06. Reachable signed instructions: 387.
+; Public entry: $5E06. Reachable signed instructions: 380.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
@@ -22,14 +22,8 @@ L2A00:
     sta $C01F                          ; @2A17 8D 1F C0
     sec                                ; @2A1A 38
     rts                                ; @2A1B 60
-L2A1C:
-    lda $C044                          ; @2A1C AD 44 C0
-    ora $C045                          ; @2A1F 0D 45 C0
-    ora $C046                          ; @2A22 0D 46 C0
-    ora $C047                          ; @2A25 0D 47 C0
-    bne L2A2E                          ; @2A28 D0 04
-    jsr L2A00                          ; @2A2A 20 00 2A
-    rts                                ; @2A2D 60
+; ---- executable island $2A2E ----
+* = $2A2E
 L2A2E:
     lda $C047                          ; @2A2E AD 47 C0
     beq L2A36                          ; @2A31 F0 03
@@ -397,7 +391,7 @@ LC194:
     sbc $C047                          ; @C1C9 ED 47 C0
     sta $C047                          ; @C1CC 8D 47 C0
 LC1CF:
-    jsr L2A1C                          ; @C1CF 20 1C 2A
+    jsr L2A2E                          ; @C1CF 20 2E 2A
     bcs LC221                          ; @C1D2 B0 4D
     lda $C048                          ; @C1D4 AD 48 C0
     beq LC1FA                          ; @C1D7 F0 21

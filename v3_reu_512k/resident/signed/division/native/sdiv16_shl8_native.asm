@@ -4,39 +4,27 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UDIV16_SHL8. Executable overlap: 0 instructions.
-; Public entry: $5E1B. Reachable signed instructions: 1195.
+; Public entry: $5E1B. Reachable signed instructions: 1184.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
 ; ---- executable island $2690 ----
 * = $2690
 L2690:
-    lda $C010                          ; @2690 AD 10 C0
-    sta $3E                            ; @2693 85 3E
-    lda $C011                          ; @2695 AD 11 C0
-    sta $3F                            ; @2698 85 3F
-    lda $C012                          ; @269A AD 12 C0
-    sta $40                            ; @269D 85 40
-    lda $C013                          ; @269F AD 13 C0
-    sta $41                            ; @26A2 85 41
-    lda $C014                          ; @26A4 AD 14 C0
-    sta $42                            ; @26A7 85 42
-    lda $C015                          ; @26A9 AD 15 C0
-    sta $43                            ; @26AC 85 43
-    jsr L9200                          ; @26AE 20 00 92
-    lda $4E                            ; @26B1 A5 4E
-    sta $C018                          ; @26B3 8D 18 C0
-    lda $4F                            ; @26B6 A5 4F
-    sta $C019                          ; @26B8 8D 19 C0
-    lda $48                            ; @26BB A5 48
-    sta $C01A                          ; @26BD 8D 1A C0
-    lda $49                            ; @26C0 A5 49
-    sta $C01B                          ; @26C2 8D 1B C0
-    lda $4A                            ; @26C5 A5 4A
-    sta $C01C                          ; @26C7 8D 1C C0
-    lda $4B                            ; @26CA A5 4B
-    sta $C01D                          ; @26CC 8D 1D C0
-    rts                                ; @26CF 60
+    jsr L9200                          ; @2690 20 00 92
+    lda $4E                            ; @2693 A5 4E
+    sta $C018                          ; @2695 8D 18 C0
+    lda $4F                            ; @2698 A5 4F
+    sta $C019                          ; @269A 8D 19 C0
+    lda $48                            ; @269D A5 48
+    sta $C01A                          ; @269F 8D 1A C0
+    lda $49                            ; @26A2 A5 49
+    sta $C01B                          ; @26A4 8D 1B C0
+    lda $4A                            ; @26A7 A5 4A
+    sta $C01C                          ; @26A9 8D 1C C0
+    lda $4B                            ; @26AC A5 4B
+    sta $C01D                          ; @26AE 8D 1D C0
+    rts                                ; @26B1 60
 ; ---- executable island $3EE0 ----
 * = $3EE0
 L3EE0:
@@ -1210,133 +1198,134 @@ L90DA:
 ; ---- executable island $9200 ----
 * = $9200
 L9200:
-    lda $43                            ; @9200 A5 43
-    bmi L9278                          ; @9202 30 74
-    bne L9216                          ; @9204 D0 10
-    lda $42                            ; @9206 A5 42
-    bne L920D                          ; @9208 D0 03
-    jmp L92E2                          ; @920A 4C E2 92
-L920D:
-    sta $46                            ; @920D 85 46
-    lda #$00                           ; @920F A9 00
-    sta $47                            ; @9211 85 47
-    jmp L921C                          ; @9213 4C 1C 92
-L9216:
-    sta $47                            ; @9216 85 47
-    lda $42                            ; @9218 A5 42
-    sta $46                            ; @921A 85 46
-L921C:
-    lda $41                            ; @921C A5 41
-    bmi L9234                          ; @921E 30 14
-    lda $3E                            ; @9220 A5 3E
-    sta $4C                            ; @9222 85 4C
-    lda $3F                            ; @9224 A5 3F
-    sta $4D                            ; @9226 85 4D
-    lda $40                            ; @9228 A5 40
-    sta $44                            ; @922A 85 44
-    lda $41                            ; @922C A5 41
-    sta $45                            ; @922E 85 45
-    jsr L8E00                          ; @9230 20 00 8E
-    rts                                ; @9233 60
-L9234:
-    lda #$00                           ; @9234 A9 00
-    sec                                ; @9236 38
-    sbc $3E                            ; @9237 E5 3E
-    sta $4C                            ; @9239 85 4C
-    lda #$00                           ; @923B A9 00
-    sbc $3F                            ; @923D E5 3F
-    sta $4D                            ; @923F 85 4D
-    lda #$00                           ; @9241 A9 00
-    sbc $40                            ; @9243 E5 40
-    sta $44                            ; @9245 85 44
-    lda #$00                           ; @9247 A9 00
-    sbc $41                            ; @9249 E5 41
-    sta $45                            ; @924B 85 45
-    jsr L8E00                          ; @924D 20 00 8E
-    lda #$00                           ; @9250 A9 00
-    sec                                ; @9252 38
-    sbc $4A                            ; @9253 E5 4A
-    sta $4A                            ; @9255 85 4A
-    lda #$00                           ; @9257 A9 00
-    sbc $4B                            ; @9259 E5 4B
-    sta $4B                            ; @925B 85 4B
-    lda #$00                           ; @925D A9 00
-    sec                                ; @925F 38
-    sbc $4E                            ; @9260 E5 4E
-    sta $4E                            ; @9262 85 4E
-    lda #$00                           ; @9264 A9 00
-    sbc $4F                            ; @9266 E5 4F
-    sta $4F                            ; @9268 85 4F
-    lda #$00                           ; @926A A9 00
-    sbc $48                            ; @926C E5 48
-    sta $48                            ; @926E 85 48
+    lda $C015                          ; @9200 AD 15 C0
+    bmi L9284                          ; @9203 30 7F
+    bne L9218                          ; @9205 D0 11
+    lda $C014                          ; @9207 AD 14 C0
+    bne L920F                          ; @920A D0 03
+    jmp L92F9                          ; @920C 4C F9 92
+L920F:
+    sta $46                            ; @920F 85 46
+    lda #$00                           ; @9211 A9 00
+    sta $47                            ; @9213 85 47
+    jmp L921F                          ; @9215 4C 1F 92
+L9218:
+    sta $47                            ; @9218 85 47
+    lda $C014                          ; @921A AD 14 C0
+    sta $46                            ; @921D 85 46
+L921F:
+    lda $C013                          ; @921F AD 13 C0
+    bmi L923C                          ; @9222 30 18
+    lda $C010                          ; @9224 AD 10 C0
+    sta $4C                            ; @9227 85 4C
+    lda $C011                          ; @9229 AD 11 C0
+    sta $4D                            ; @922C 85 4D
+    lda $C012                          ; @922E AD 12 C0
+    sta $44                            ; @9231 85 44
+    lda $C013                          ; @9233 AD 13 C0
+    sta $45                            ; @9236 85 45
+    jsr L8E00                          ; @9238 20 00 8E
+    rts                                ; @923B 60
+L923C:
+    lda #$00                           ; @923C A9 00
+    sec                                ; @923E 38
+    sbc $C010                          ; @923F ED 10 C0
+    sta $4C                            ; @9242 85 4C
+    lda #$00                           ; @9244 A9 00
+    sbc $C011                          ; @9246 ED 11 C0
+    sta $4D                            ; @9249 85 4D
+    lda #$00                           ; @924B A9 00
+    sbc $C012                          ; @924D ED 12 C0
+    sta $44                            ; @9250 85 44
+    lda #$00                           ; @9252 A9 00
+    sbc $C013                          ; @9254 ED 13 C0
+    sta $45                            ; @9257 85 45
+    jsr L8E00                          ; @9259 20 00 8E
+    lda #$00                           ; @925C A9 00
+    sec                                ; @925E 38
+    sbc $4A                            ; @925F E5 4A
+    sta $4A                            ; @9261 85 4A
+    lda #$00                           ; @9263 A9 00
+    sbc $4B                            ; @9265 E5 4B
+    sta $4B                            ; @9267 85 4B
+    lda #$00                           ; @9269 A9 00
+    sec                                ; @926B 38
+    sbc $4E                            ; @926C E5 4E
+    sta $4E                            ; @926E 85 4E
     lda #$00                           ; @9270 A9 00
-    sbc $49                            ; @9272 E5 49
-    sta $49                            ; @9274 85 49
-    clc                                ; @9276 18
-    rts                                ; @9277 60
-L9278:
-    lda #$00                           ; @9278 A9 00
-    sec                                ; @927A 38
-    sbc $42                            ; @927B E5 42
-    sta $46                            ; @927D 85 46
-    lda #$00                           ; @927F A9 00
-    sbc $43                            ; @9281 E5 43
-    sta $47                            ; @9283 85 47
-    lda $41                            ; @9285 A5 41
-    bmi L92B7                          ; @9287 30 2E
-    lda $3E                            ; @9289 A5 3E
-    sta $4C                            ; @928B 85 4C
-    lda $3F                            ; @928D A5 3F
-    sta $4D                            ; @928F 85 4D
-    lda $40                            ; @9291 A5 40
-    sta $44                            ; @9293 85 44
-    lda $41                            ; @9295 A5 41
-    sta $45                            ; @9297 85 45
-    jsr L8E00                          ; @9299 20 00 8E
-    lda #$00                           ; @929C A9 00
-    sec                                ; @929E 38
-    sbc $4E                            ; @929F E5 4E
-    sta $4E                            ; @92A1 85 4E
-    lda #$00                           ; @92A3 A9 00
-    sbc $4F                            ; @92A5 E5 4F
-    sta $4F                            ; @92A7 85 4F
-    lda #$00                           ; @92A9 A9 00
-    sbc $48                            ; @92AB E5 48
-    sta $48                            ; @92AD 85 48
+    sbc $4F                            ; @9272 E5 4F
+    sta $4F                            ; @9274 85 4F
+    lda #$00                           ; @9276 A9 00
+    sbc $48                            ; @9278 E5 48
+    sta $48                            ; @927A 85 48
+    lda #$00                           ; @927C A9 00
+    sbc $49                            ; @927E E5 49
+    sta $49                            ; @9280 85 49
+    clc                                ; @9282 18
+    rts                                ; @9283 60
+L9284:
+    lda #$00                           ; @9284 A9 00
+    sec                                ; @9286 38
+    sbc $C014                          ; @9287 ED 14 C0
+    sta $46                            ; @928A 85 46
+    lda #$00                           ; @928C A9 00
+    sbc $C015                          ; @928E ED 15 C0
+    sta $47                            ; @9291 85 47
+    lda $C013                          ; @9293 AD 13 C0
+    bmi L92CA                          ; @9296 30 32
+    lda $C010                          ; @9298 AD 10 C0
+    sta $4C                            ; @929B 85 4C
+    lda $C011                          ; @929D AD 11 C0
+    sta $4D                            ; @92A0 85 4D
+    lda $C012                          ; @92A2 AD 12 C0
+    sta $44                            ; @92A5 85 44
+    lda $C013                          ; @92A7 AD 13 C0
+    sta $45                            ; @92AA 85 45
+    jsr L8E00                          ; @92AC 20 00 8E
     lda #$00                           ; @92AF A9 00
-    sbc $49                            ; @92B1 E5 49
-    sta $49                            ; @92B3 85 49
-    clc                                ; @92B5 18
-    rts                                ; @92B6 60
-L92B7:
-    lda #$00                           ; @92B7 A9 00
-    sec                                ; @92B9 38
-    sbc $3E                            ; @92BA E5 3E
-    sta $4C                            ; @92BC 85 4C
-    lda #$00                           ; @92BE A9 00
-    sbc $3F                            ; @92C0 E5 3F
-    sta $4D                            ; @92C2 85 4D
-    lda #$00                           ; @92C4 A9 00
-    sbc $40                            ; @92C6 E5 40
-    sta $44                            ; @92C8 85 44
+    sec                                ; @92B1 38
+    sbc $4E                            ; @92B2 E5 4E
+    sta $4E                            ; @92B4 85 4E
+    lda #$00                           ; @92B6 A9 00
+    sbc $4F                            ; @92B8 E5 4F
+    sta $4F                            ; @92BA 85 4F
+    lda #$00                           ; @92BC A9 00
+    sbc $48                            ; @92BE E5 48
+    sta $48                            ; @92C0 85 48
+    lda #$00                           ; @92C2 A9 00
+    sbc $49                            ; @92C4 E5 49
+    sta $49                            ; @92C6 85 49
+    clc                                ; @92C8 18
+    rts                                ; @92C9 60
+L92CA:
     lda #$00                           ; @92CA A9 00
-    sbc $41                            ; @92CC E5 41
-    sta $45                            ; @92CE 85 45
-    jsr L8E00                          ; @92D0 20 00 8E
-    lda #$00                           ; @92D3 A9 00
-    sec                                ; @92D5 38
-    sbc $4A                            ; @92D6 E5 4A
-    sta $4A                            ; @92D8 85 4A
-    lda #$00                           ; @92DA A9 00
-    sbc $4B                            ; @92DC E5 4B
-    sta $4B                            ; @92DE 85 4B
-    clc                                ; @92E0 18
-    rts                                ; @92E1 60
-L92E2:
-    sta $46                            ; @92E2 85 46
-    sta $47                            ; @92E4 85 47
-    jmp L8E00                          ; @92E6 4C 00 8E
+    sec                                ; @92CC 38
+    sbc $C010                          ; @92CD ED 10 C0
+    sta $4C                            ; @92D0 85 4C
+    lda #$00                           ; @92D2 A9 00
+    sbc $C011                          ; @92D4 ED 11 C0
+    sta $4D                            ; @92D7 85 4D
+    lda #$00                           ; @92D9 A9 00
+    sbc $C012                          ; @92DB ED 12 C0
+    sta $44                            ; @92DE 85 44
+    lda #$00                           ; @92E0 A9 00
+    sbc $C013                          ; @92E2 ED 13 C0
+    sta $45                            ; @92E5 85 45
+    jsr L8E00                          ; @92E7 20 00 8E
+    lda #$00                           ; @92EA A9 00
+    sec                                ; @92EC 38
+    sbc $4A                            ; @92ED E5 4A
+    sta $4A                            ; @92EF 85 4A
+    lda #$00                           ; @92F1 A9 00
+    sbc $4B                            ; @92F3 E5 4B
+    sta $4B                            ; @92F5 85 4B
+    clc                                ; @92F7 18
+    rts                                ; @92F8 60
+L92F9:
+    lda #$00                           ; @92F9 A9 00
+    sta $46                            ; @92FB 85 46
+    sta $47                            ; @92FD 85 47
+    jmp L8E00                          ; @92FF 4C 00 8E
 ; ---- executable island $C575 ----
 * = $C575
 LC575:

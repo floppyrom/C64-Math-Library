@@ -49,6 +49,8 @@ for op,modes in OPS.items():
     for mode,code in modes.items(): REV[code]=(op,mode)
 # Stable NMOS undocumented subset intentionally used by the selected DIV kernels.
 REV[0xA7]=('lax','zp')   # LAX zp: A=X=M, 3 cycles
+REV[0xAF]=('lax','abs')  # LAX abs: A=X=M, 4 cycles
+REV[0xBF]=('lax','absy') # LAX abs,Y: A=X=M, 4 cycles (+ page cross)
 REV[0x0B]=('anc','imm')  # ANC #imm: A&=imm, C=N, 2 cycles
 
 BASE_CYCLES={

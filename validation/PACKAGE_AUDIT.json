@@ -128,8 +128,8 @@
   ],
   "summary": {
     "checks_passed": 23,
-    "file_count_excluding_checksum": 570,
-    "uncompressed_bytes_excluding_checksum": 22628277,
+    "file_count_excluding_checksum": 613,
+    "uncompressed_bytes_excluding_checksum": 23050138,
     "reference_prgs": 5,
     "reference_reu_images": 2
   }

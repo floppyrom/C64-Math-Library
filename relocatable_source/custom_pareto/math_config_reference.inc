@@ -25,4 +25,4 @@ REU_ISQRT16_BANK = $09
 REU_QS16_BASE_BANK = $10
 HYBRID_CODE = $A000
 ; Private generated Pareto code/data. Reference location is RAM under BASIC ROM.
-PARETO_AUX = $B200
+PARETO_AUX = $E000

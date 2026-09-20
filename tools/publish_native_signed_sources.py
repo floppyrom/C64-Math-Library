@@ -68,7 +68,12 @@ def trace(mem,start):
   seen.add(pc); op,mode=REV[oc]; nxt=(pc+SIZE[mode])&0xffff
   if op in ('rts','rti','brk'): continue
   if mode=='rel':
-   d=mem[pc+1]; d=d-256 if d>=128 else d; todo.extend((nxt,(nxt+d)&0xffff))
+   d=mem[pc+1]; d=d-256 if d>=128 else d; target=(nxt+d)&0xffff
+   # Direct UDIV8 ends its alignment loop with INX/BNE.  X cannot wrap in
+   # the bounded alignment search, so the physical fallthrough after these
+   # two branch sites is unreachable and belongs to unrelated resident data.
+   if pc in (0x4124,0x41AC): todo.append(target)
+   else: todo.extend((nxt,target))
   elif op=='jmp':
    if mode!='abs': raise RuntimeError(f'indirect JMP at ${pc:04X}')
    todo.append(mem[pc+1]|mem[pc+2]<<8)

@@ -4,34 +4,31 @@ V5 keeps the **V1 31-byte normal zero-page footprint** while selectively importi
 
 The stable **46-entry public API is unchanged**. `MATH_INIT` remains optional, as in V1.
 
-## Imported V2 paths
+## Refreshed selected paths
 
-- `MATH_UDIV16`
-- `MATH_UDIV24`
-- `MATH_UDIV32_16`
-- `MATH_UMOD8`
-- `MATH_UMOD16`, `MATH_UMOD24`, `MATH_UMOD32_16` through their normal UDIV aliases
-- `MATH_COS8`
-- `MATH_SINCOS8`
-- `MATH_ATAN2_8` (exhaustively parity-checked against V2)
+V5 now combines V1’s 31-byte normal-ZP contract with the current division refresh. Selected/repacked paths include:
 
-Everything else remains V1.
+- direct CPU `MATH_UDIV8`;
+- refreshed `MATH_UDIV16` / `MATH_UDIV24`;
+- V2-selected `MATH_UDIV32_16`;
+- compatible `UMOD8/16/24/32_16` paths;
+- direct-output native `MATH_SDIV16` / `MATH_SDIV24` and their `SMOD` aliases;
+- refreshed low-ZP signed 32/16 and signed 32/32 paths;
+- `MATH_COS8`, `MATH_SINCOS8`, and `MATH_ATAN2_8`.
 
-The imported division paths also accelerate V1 helpers that call those stable entries, notably `MATH_UDIV16_SHL8` and `MATH_URECIP16_Q16`, although the published direct-import parity guarantees apply to the entries listed above.
+`MATH_UDIV16_SHL8`, `MATH_SDIV16_SHL8`, and `MATH_URECIP16_Q16` inherit the selected inner division paths. The complete selection is validated as one fixed V5 image; there is no runtime dispatcher.
 
 ## Memory requirement
 
 Reference build:
 
 ```text
-normal ZP      $02-$20   31 bytes
-hybrid code    $A000-$B1FF   4608 bytes
+normal ZP      $02-$20        31 bytes
+hybrid code    $A000-$BDFF    7680 bytes
 ATAN2 pages    $6E00/$6F00/$7000   768 bytes total
 ```
 
-`$A000-$BFFF` is RAM under BASIC ROM. The reference build therefore requires BASIC ROM to be banked out while an imported V5 path executes. In most machine-code games/demos BASIC is already disabled. If that does not fit your memory map, relocate `HYBRID_CODE` and rebuild.
-
-The PRG file is the **same load-span length as V1** because V5 fills holes already inside that span. It consumes the 4,608-byte hybrid region plus three formerly unused 256-byte ATAN2 table pages, for an exact **5,376-byte private-RAM increase versus V1**.
+The refresh also places selected signed-division private islands in otherwise free profile regions. The exact current private-RAM increase versus V1, measured by the Pareto endpoint that reproduces V5 byte-for-byte, is **9,377 bytes**. `$A000-$BFFF` is RAM under BASIC ROM, so the CPU must see RAM while executing code in the reference hybrid block. If that does not fit your map, relocate `HYBRID_CODE` and rebuild.
 
 ## Build
 

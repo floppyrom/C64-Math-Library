@@ -1,0 +1,476 @@
+{
+  "status": "PASS",
+  "profiles": {
+    "v1_balanced": {
+      "MATH_UDIV8": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 59.57197570800781,
+        "min_cycles": 26,
+        "max_cycles": 554,
+        "mode": "exhaustive"
+      },
+      "MATH_UDIV16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 132.72585735325057,
+        "min_cycles": 41,
+        "max_cycles": 1535,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV24": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 194.15632232274353,
+        "min_cycles": 56,
+        "max_cycles": 3235,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 870.340206185567,
+        "min_cycles": 182,
+        "max_cycles": 2099,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_32": {
+        "cases": 6801,
+        "errors": 0,
+        "mean_cycles": 428.5540361711513,
+        "min_cycles": 90,
+        "max_cycles": 2423,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV16_SHL8": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 877.77361666316,
+        "min_cycles": 289,
+        "max_cycles": 1914,
+        "mode": "structured_random"
+      },
+      "MATH_UMOD8": {
+        "cases": 1313,
+        "errors": 0,
+        "mean_cycles": 67.16755521706017,
+        "min_cycles": 51,
+        "max_cycles": 495
+      },
+      "MATH_UMOD16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 184.0824211204121,
+        "min_cycles": 41,
+        "max_cycles": 1535
+      },
+      "MATH_UMOD24": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 303.23309723116546,
+        "min_cycles": 56,
+        "max_cycles": 3235
+      },
+      "MATH_UMOD32_16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 971.6136509980682,
+        "min_cycles": 185,
+        "max_cycles": 1978
+      },
+      "MATH_UMOD32_32": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 552.2208628461043,
+        "min_cycles": 90,
+        "max_cycles": 2423
+      },
+      "MATH_URECIP16_Q16": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 119.99470520019531,
+        "min_cycles": 41,
+        "max_cycles": 2179,
+        "mode": "exhaustive"
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_UDIV8": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 59.38301086425781,
+        "min_cycles": 26,
+        "max_cycles": 634,
+        "mode": "exhaustive"
+      },
+      "MATH_UDIV16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 127.77382705659583,
+        "min_cycles": 41,
+        "max_cycles": 1076,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV24": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 183.6608457816116,
+        "min_cycles": 56,
+        "max_cycles": 3188,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 753.9945297706712,
+        "min_cycles": 175,
+        "max_cycles": 1880,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_32": {
+        "cases": 6801,
+        "errors": 0,
+        "mean_cycles": 401.5563887663579,
+        "min_cycles": 90,
+        "max_cycles": 2285,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV16_SHL8": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 764.129181569535,
+        "min_cycles": 272,
+        "max_cycles": 1849,
+        "mode": "structured_random"
+      },
+      "MATH_UMOD8": {
+        "cases": 1313,
+        "errors": 0,
+        "mean_cycles": 67.28484386900229,
+        "min_cycles": 51,
+        "max_cycles": 495
+      },
+      "MATH_UMOD16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 203.03348358016743,
+        "min_cycles": 41,
+        "max_cycles": 1076
+      },
+      "MATH_UMOD24": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 300.94913071474565,
+        "min_cycles": 56,
+        "max_cycles": 3188
+      },
+      "MATH_UMOD32_16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 792.1603348358017,
+        "min_cycles": 178,
+        "max_cycles": 1883
+      },
+      "MATH_UMOD32_32": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 524.8815196394075,
+        "min_cycles": 90,
+        "max_cycles": 2285
+      },
+      "MATH_URECIP16_Q16": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 118.52383422851562,
+        "min_cycles": 41,
+        "max_cycles": 2138,
+        "mode": "exhaustive"
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_UDIV8": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 70.86328125,
+        "min_cycles": 36,
+        "max_cycles": 71,
+        "mode": "exhaustive"
+      },
+      "MATH_UDIV16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 125.42394277298548,
+        "min_cycles": 41,
+        "max_cycles": 1076,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV24": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 191.745423942773,
+        "min_cycles": 56,
+        "max_cycles": 3188,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 755.9442457395329,
+        "min_cycles": 175,
+        "max_cycles": 1880,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_32": {
+        "cases": 6801,
+        "errors": 0,
+        "mean_cycles": 395.8845757976768,
+        "min_cycles": 90,
+        "max_cycles": 2285,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV16_SHL8": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 764.3391542183883,
+        "min_cycles": 272,
+        "max_cycles": 1849,
+        "mode": "structured_random"
+      },
+      "MATH_UMOD8": {
+        "cases": 1313,
+        "errors": 0,
+        "mean_cycles": 49.71210967250571,
+        "min_cycles": 32,
+        "max_cycles": 50
+      },
+      "MATH_UMOD16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 203.39600772698003,
+        "min_cycles": 41,
+        "max_cycles": 1076
+      },
+      "MATH_UMOD24": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 302.9143593045718,
+        "min_cycles": 56,
+        "max_cycles": 3188
+      },
+      "MATH_UMOD32_16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 789.650998068255,
+        "min_cycles": 178,
+        "max_cycles": 1883
+      },
+      "MATH_UMOD32_32": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 518.8029620090148,
+        "min_cycles": 90,
+        "max_cycles": 2285
+      },
+      "MATH_URECIP16_Q16": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 66.23379516601562,
+        "min_cycles": 41,
+        "max_cycles": 239,
+        "mode": "exhaustive"
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_UDIV8": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 70.86328125,
+        "min_cycles": 36,
+        "max_cycles": 71,
+        "mode": "exhaustive"
+      },
+      "MATH_UDIV16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 125.62571007784557,
+        "min_cycles": 41,
+        "max_cycles": 1076,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV24": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 187.3071744161582,
+        "min_cycles": 56,
+        "max_cycles": 3188,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 757.4803282137598,
+        "min_cycles": 175,
+        "max_cycles": 1880,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_32": {
+        "cases": 6801,
+        "errors": 0,
+        "mean_cycles": 404.40891045434495,
+        "min_cycles": 90,
+        "max_cycles": 2285,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV16_SHL8": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 764.6282347990742,
+        "min_cycles": 272,
+        "max_cycles": 1849,
+        "mode": "structured_random"
+      },
+      "MATH_UMOD8": {
+        "cases": 1313,
+        "errors": 0,
+        "mean_cycles": 49.72581873571973,
+        "min_cycles": 32,
+        "max_cycles": 50
+      },
+      "MATH_UMOD16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 202.55763039278816,
+        "min_cycles": 41,
+        "max_cycles": 1076
+      },
+      "MATH_UMOD24": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 301.61300708306504,
+        "min_cycles": 56,
+        "max_cycles": 3188
+      },
+      "MATH_UMOD32_16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 789.841596909208,
+        "min_cycles": 178,
+        "max_cycles": 1883
+      },
+      "MATH_UMOD32_32": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 516.7804249839021,
+        "min_cycles": 90,
+        "max_cycles": 2285
+      },
+      "MATH_URECIP16_Q16": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 66.23379516601562,
+        "min_cycles": 41,
+        "max_cycles": 239,
+        "mode": "exhaustive"
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "MATH_UDIV8": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 59.38301086425781,
+        "min_cycles": 26,
+        "max_cycles": 634,
+        "mode": "exhaustive"
+      },
+      "MATH_UDIV16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 126.3858615611193,
+        "min_cycles": 41,
+        "max_cycles": 1076,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV24": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 187.1220281927204,
+        "min_cycles": 56,
+        "max_cycles": 3188,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_16": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 756.6385440774247,
+        "min_cycles": 175,
+        "max_cycles": 1880,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV32_32": {
+        "cases": 6801,
+        "errors": 0,
+        "mean_cycles": 421.07734156741657,
+        "min_cycles": 90,
+        "max_cycles": 2423,
+        "mode": "structured_random"
+      },
+      "MATH_UDIV16_SHL8": {
+        "cases": 4753,
+        "errors": 0,
+        "mean_cycles": 774.7349042709867,
+        "min_cycles": 282,
+        "max_cycles": 1859,
+        "mode": "structured_random"
+      },
+      "MATH_UMOD8": {
+        "cases": 1313,
+        "errors": 0,
+        "mean_cycles": 68.52322924600152,
+        "min_cycles": 51,
+        "max_cycles": 495
+      },
+      "MATH_UMOD16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 199.91886670959434,
+        "min_cycles": 41,
+        "max_cycles": 1076
+      },
+      "MATH_UMOD24": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 299.2730199613651,
+        "min_cycles": 56,
+        "max_cycles": 3188
+      },
+      "MATH_UMOD32_16": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 789.5086928525435,
+        "min_cycles": 178,
+        "max_cycles": 1883
+      },
+      "MATH_UMOD32_32": {
+        "cases": 1553,
+        "errors": 0,
+        "mean_cycles": 548.0,
+        "min_cycles": 90,
+        "max_cycles": 2423
+      },
+      "MATH_URECIP16_Q16": {
+        "cases": 65536,
+        "errors": 0,
+        "mean_cycles": 119.30760192871094,
+        "min_cycles": 41,
+        "max_cycles": 2150,
+        "mode": "exhaustive"
+      }
+    }
+  },
+  "summary": {
+    "profiles": 5,
+    "machine_calls": 822050,
+    "elapsed_seconds_sum": 112.89,
+    "note": "merged from per-profile final resident validation runs"
+  }
+}

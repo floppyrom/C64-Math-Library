@@ -10,7 +10,7 @@ The release ZIP is intended to be both **usable** and **reproducible** without c
 - `relocatable_source/`: canonical source-level relocation inputs and map configurations, including Turbo16/Turbo32 overlays, V5 hybrid maps, and `custom_pareto/` maps used by the budget selector.
 - `v1_balanced/resident/signed/` … `v5_hybrid_lowzp/resident/signed/`: native-signed implementation/provenance artifacts under `multiply/native` and `division`, with per-profile link maps and zero-overlap validation.
 - `tools/`: deterministic builders and validators, including `build_pareto.py`, the interactive `pareto_wizard.py`, Pareto configuration tests and stress validation. `benchmark_multiply_refresh.py` measures the refresh-sensitive multiply entries on one cross-profile corpus.
-- `validation/`: current validation results, including `validation/hybrid/`, `validation/pareto/`, `validation/normalize/`, and `validation/multiply_refresh/`, plus the compact prior exhaustive baseline needed by the binary-delta validation argument.
+- `validation/`: current validation results, including `validation/hybrid/`, `validation/pareto/`, `validation/normalize/`, `validation/multiply_refresh/`, and `validation/division_refresh/`, plus the compact prior exhaustive baseline needed by the binary-delta validation argument.
 - `v1_balanced/` ... `v5_hybrid_lowzp/` `resident/vector/native/`: canonical standalone `MATH_VEC2_NORMALIZE_Q8_8` source plus per-backend extraction/dependency notes.
 - `docs/` (including `VEC2_NORMALIZE_Q8_8.md` and the 2026-09-18 release notes), `USER_MANUAL.md`, `QUICK_START.md`, `README.md`, `CHANGELOG.md`, `CSDB_CHANGELOG.txt`: integration/reference documentation.
 
@@ -40,3 +40,4 @@ Each V1–V5 profile publishes exact executable source mirrors under `resident/s
 - `validation/CONSOLIDATED_ROUTINE_TABLE.json` — definitions, profile summaries, and row evidence.
 - `tools/generate_consolidated_routine_table.py` — regenerates the table from shipped images and validation evidence.
 - `docs/MULTIPLY_REFRESH_2026-09-20.md` — profile-by-profile multiplier selection, resource rationale and validation summary.
+- `docs/DIVISION_REFRESH_2026-09-20.md` — profile-by-profile UDIV/SDIV selection, Repose UDIV24 integration and validation summary.

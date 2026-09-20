@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "35 files"
+      "detail": "36 files"
     },
     {
       "check": "signed_layout_validation",
@@ -34,7 +34,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 18.13
+        "elapsed_seconds": 21.09
       }
     },
     {
@@ -43,7 +43,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 18.13
+        "elapsed_seconds": 21.09
       }
     },
     {
@@ -57,8 +57,8 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 364533,
-        "execution": "merged deterministic per-profile parallel runs",
-        "max_profile_elapsed_seconds": 11.51
+        "elapsed_seconds_sum": 60.05,
+        "note": "merged from per-profile final resident validation runs"
       }
     },
     {
@@ -67,8 +67,8 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 364533,
-        "execution": "merged deterministic per-profile parallel runs",
-        "max_profile_elapsed_seconds": 11.51
+        "elapsed_seconds_sum": 60.05,
+        "note": "merged from per-profile final resident validation runs"
       }
     },
     {
@@ -562,7 +562,7 @@
     {
       "check": "v1_balanced_reference_prg_exact",
       "status": "PASS",
-      "detail": "8d1ff7439a2ed2821360a33972a2d90dbe19266d08b4fe80c8b7a4233bfd3605"
+      "detail": "a5094f3b0a7903ef741d091e508b67324a4421f04e092b9ea4291ee79b1f1ef2"
     },
     {
       "check": "v2_pareto_fast_manifest_46",
@@ -572,7 +572,7 @@
     {
       "check": "v2_pareto_fast_reference_prg_exact",
       "status": "PASS",
-      "detail": "e4e19f98b6e68c9f76bf94f04c72273d51b0ff4326c50f47bb43e30f951e3e4e"
+      "detail": "3bbbb9c007f8197835cf16782c68462e7939896554ccd8d34e10cea1204cb8ff"
     },
     {
       "check": "v3_reu_512k_manifest_46",
@@ -592,7 +592,7 @@
     {
       "check": "v3_reu_512k_reference_prg_exact",
       "status": "PASS",
-      "detail": "371aa5f8082e7d9cbfdfea2a854383b89136d578a38643f465f239177f0a4889"
+      "detail": "3072a492b62c2b699f917dad1918b2010026fe635f9b3fa15408b6f7a321fc89"
     },
     {
       "check": "v3_reu_512k_reference_reu_exact",
@@ -617,7 +617,7 @@
     {
       "check": "v4_reu_16m_reference_prg_exact",
       "status": "PASS",
-      "detail": "82a0139f56bb512802139c7024f92e6922c9abf7ea2e37e2d9a07552157451a1"
+      "detail": "ae9b2d6c4b34bbbd135ac4a01c729eb84b65f3564bb5b73093eb1ae17c70df76"
     },
     {
       "check": "v4_reu_16m_reference_reu_exact",
@@ -768,7 +768,7 @@
     {
       "check": "hybrid_reference_prg_exact",
       "status": "PASS",
-      "detail": "e35e171e0cbbfed94f2186f4a4ac9488d7c6dca6fdc72dba362a405ddd482726"
+      "detail": "9e9e85df72bdbaf7be26811b4f9f690b72e138cf7fe2c2f70f8a6fd1f87fac55"
     },
     {
       "check": "hybrid_docs_present",

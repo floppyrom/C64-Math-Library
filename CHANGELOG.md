@@ -1,3 +1,17 @@
+## 2026-09-20 — five-profile division refresh
+
+- Re-evaluated `UDIV8/16/24/32_16/32_32`, `SDIV8/16/24/32_16/32_32`, all corresponding modulo/remainder entries, shifted divide helpers and `URECIP16_Q16` across all five fixed profiles.
+- Integrated Repose’s selective-q0 UDIV24 idea as profile-local direct-public cores; V1 uses a balanced derivative, V2/V3/V4 use the fast derivative, and V5 repacks the selected core under its 31-byte normal-ZP contract.
+- Selected the new CPU UDIV8 path for V1/V2/V5 while deliberately retaining V3/V4’s faster REU quotient/remainder planes.
+- Added direct-output native signed 8/16/24/32-bit division paths and removed a redundant zero test from signed 32/32 magnitude handling; signed executable ownership remains disjoint from unsigned division engines.
+- Added an early q=0 gate to exact 32/32 unsigned division where it wins and preserved existing 32/16/shifted paths where the new candidate did not beat the installed implementation.
+- Same-corpus old-vs-new selection audit covers 23 public division-family paths per profile and reports **zero regressions** in V1–V5.
+- Final resident validation covers **822,050 unsigned division/modulo calls** and **364,533 signed division/modulo calls**, zero errors.
+- Regenerated exact native signed division mirrors; 65 published signed routines / 270 source checks and 279 signed-layout checks / 65 zero-overlap comparisons pass.
+- Refreshed V5 and Custom Pareto accounting. Equal-weight extra-RAM points are now **9377 / 9950 / 10893 / 9581 / 11079 B** at 31 / 36 / 60 / 147 / 176 ZP before the full-V2 endpoint.
+- Reference V5 `HYBRID_CODE` grows to `$A000-$BDFF` / **7,680 bytes**; exact default 31-ZP V5 private-RAM increase versus V1 is **9,377 bytes**.
+- Reference/alternate source builds, V5 hybrid, Custom Pareto, deterministic rebuild, package audit and the 205-check release audit all pass; external ACME rerun was not performed for this refresh.
+
 ## 2026-09-20 — five-profile multiplication refresh
 
 - Re-evaluated `UMUL8/16/24/32` and `SMUL8/16/24/32`, including READY and fixed-shift derivatives, across all five fixed profiles using the recent Repose/quadrant and quarter-square work.
@@ -9,7 +23,7 @@
 - Kept existing `UMUL8` and record-derived 17-ZP `UMUL16` after explicit profile-resource evaluation; the faster standalone high-ZP points do not produce a clean fixed-profile integration win.
 - Broke refreshed kernels out as canonical reusable profile includes, taught source regeneration to preserve them, regenerated exact signed native mirrors, and updated consolidated/per-profile performance evidence.
 - Validation includes **264,999 signed multiply calls**, **415,078 refresh benchmark calls**, **17,196 Turbo relocation calls**, reference/alternate 46-entry source builds, deterministic rebuilds, signed executable zero-overlap checks and the full release audit.
-- Custom Pareto was refreshed to match the new fixed-profile baseline: the old `umul32_initialized` donor pack is retired because FAST31/V29 is already in V1; the 5-ZP legacy `umul8_16` pack now accelerates only UMUL8 because direct SMUL8 is already common; and the 24-ZP pack imports the refreshed V2 FAST24 signed core. Current equal-weight extra-RAM points are **5376 / 5949 / 6892 / 5580 / 7078 B** at 31 / 36 / 60 / 147 / 176 ZP before the full-V2 endpoint.
+- Custom Pareto was refreshed to match the new fixed-profile baseline: the old `umul32_initialized` donor pack is retired because FAST31/V29 is already in V1; the 5-ZP legacy `umul8_16` pack now accelerates only UMUL8 because direct SMUL8 is already common; and the 24-ZP pack imports the refreshed V2 FAST24 signed core. Current equal-weight extra-RAM points are **9377 / 9950 / 10893 / 9581 / 11079 B** at 31 / 36 / 60 / 147 / 176 ZP before the full-V2 endpoint.
 
 ## 2026-09-18 — stable 46th entry: Q8.8 VEC2 normalization
 
@@ -69,7 +83,7 @@
 - Added deterministic source-derived hybrid builder with configurable `HYBRID_CODE` and no runtime dispatch overhead.
 - Validated 45/45 stable entries and 4,172 calls on both reference and alternate V5 maps; 144,246 direct-import cases including exhaustive ATAN2 result/cycle parity; exhaustive UMOD8 and trig-domain checks; V2 cycle parity for certified imports; 31-byte ZP confinement with all 225 outside ZP bytes unchanged; 2,000 cold-load calls without `MATH_INIT`; deterministic rebuild and 8/8 invalid-map/config checks.
 - Clarified non-reentrancy: sequential calls, including calls repeated inside ordinary loops, are fully supported.
-- Reference V5 places its private 4608-byte hybrid region at `$A000-$B1FF` (RAM under BASIC ROM); applications must bank BASIC out while executing it or relocate `HYBRID_CODE`.
+- Reference V5 places its private 7680-byte hybrid region at `$A000-$BDFF` (RAM under BASIC ROM); applications must bank BASIC out while executing it or relocate `HYBRID_CODE`.
 
 # Changelog
 

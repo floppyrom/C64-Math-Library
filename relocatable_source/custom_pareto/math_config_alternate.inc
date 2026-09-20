@@ -25,4 +25,4 @@ REU_ISQRT16_BANK = $09
 REU_QS16_BASE_BANK = $10
 HYBRID_CODE = $E000
 ; Private generated Pareto code/data for the alternate relocation proof.
-PARETO_AUX = $F200
+PARETO_AUX = $0200

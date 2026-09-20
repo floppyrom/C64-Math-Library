@@ -18,9 +18,9 @@ FULL_V2_ZP_BYTES = 221
 PACKS = {
     'zero_zp_v5': {
         'extra_zp': 0,
-        'extra_ram': 0x1200,
+        'extra_ram': hy.HYBRID_BYTES + 929,
         'requires_init': False,
-        'description': 'V5 zero-extra-ZP V2 division/modulo/COS/SINCOS imports',
+        'description': 'Current V5 zero-extra-ZP division/modulo/COS/SINCOS imports, including direct-output signed division refresh',
         'savings': {
             'MATH_UDIV16': 22.782698, 'MATH_UDIV24': 21.055405,
             'MATH_UDIV32_16': 97.642282, 'MATH_UMOD8': 0.466003,
@@ -168,7 +168,7 @@ def validate_custom_config(vals: dict, packs: set[str]):
         if space=='main' and max(aux,start)<=min(ae,end):
             raise ValueError(f'PARETO_AUX {hx(aux)}-{hx(ae)} collides with {name} {hx(start)}-{hx(end)}')
     if 'HYBRID_CODE' in vals:
-        hb=vals['HYBRID_CODE']; he=hb+0x1200-1
+        hb=vals['HYBRID_CODE']; he=hb+hy.HYBRID_BYTES-1
         if max(aux,hb)<=min(ae,he): raise ValueError('PARETO_AUX overlaps HYBRID_CODE')
     if 'zero_zp_v5' in packs:
         if 'HYBRID_CODE' not in vals: raise ValueError('zero_zp_v5 requires HYBRID_CODE')
@@ -424,7 +424,9 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
         add('ATAN2_Q2_TABLE', vals['REG_TABLE']+0x0F00, vals['REG_TABLE']+0x0FFF)
         add('ATAN2_Q3_TABLE', vals['REG_TABLE']+0x1000, vals['REG_TABLE']+0x10FF)
     if 'zero_zp_v5' in packs:
-        add('V5_HYBRID_CODE', vals['HYBRID_CODE'], vals['HYBRID_CODE']+0x11ff)
+        add('V5_HYBRID_CODE', vals['HYBRID_CODE'], vals['HYBRID_CODE']+hy.HYBRID_BYTES-1)
+        add('V5_SDIV16_PREFIX', vals['REG_TABLE']+0x1400, vals['REG_TABLE']+0x162A)
+        add('V5_SDIV24_PREFIX', vals['REG_TABLE']+0x1678, vals['REG_TABLE']+0x17ED)
     if 'umul8_16' in packs:
         add('PARETO_DIFF_LO', aux+AUX_DIFF_LO, aux+AUX_DIFF_LO+0xff)
         add('PARETO_DIFF_HI', aux+AUX_DIFF_HI, aux+AUX_DIFF_HI+0xff)
@@ -473,7 +475,8 @@ def build_hybrid_custom(config: Path, outdir: Path, selection: dict) -> dict:
         else: helper=init_len=None
         # Preserve the base PRG span. Private Pareto payload is placed in configurable RAM;
         # the reference map uses RAM under BASIC ROM.
-        hi=max(hi, vals['HYBRID_CODE']+0x11ff if 'zero_zp_v5' in packs else hi, aux+AUX_BYTES-1 if (packs-{'zero_zp_v5','atan2_fast'}) else hi)
+        hi=max(hi, vals['HYBRID_CODE']+hy.HYBRID_BYTES-1 if 'zero_zp_v5' in packs else hi, aux+AUX_BYTES-1 if (packs-{'zero_zp_v5','atan2_fast'}) else hi)
+        if packs-{'zero_zp_v5','atan2_fast'}: lo=min(lo,aux)
         prg=outdir/'math_custom_pareto_game_math.prg'; write_prg(dst,lo,hi,prg)
         # Caller include from base map + generated metadata.
         inc=(bdir/'math_api.inc').read_text().rstrip()+'\n\n; Generated Pareto profile metadata\n'

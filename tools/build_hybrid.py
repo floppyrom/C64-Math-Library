@@ -11,7 +11,7 @@ import assemble_sources as asm
 import source_relocation as sr
 
 PROFILE = 'v5_hybrid_lowzp'
-HYBRID_BYTES = 0x1200
+HYBRID_BYTES = 0x1E00
 DIV_SRC = (0x4200, 0x51FF)
 UMOD8_SRC = (0x5200, 0x527F)
 COS_SRC = (0xC766, 0xC770)
@@ -23,15 +23,37 @@ ATAN_Q1_SRC = (0x6E00, 0x6EFF)
 ATAN_Q2_SRC = (0x6F00, 0x6FFF)
 ATAN_Q3_SRC = (0x9100, 0x91FF)
 ATAN_EXTRA_TABLE_BYTES = 3 * 256
+SDIV24_PREFIX_SRC = (0x8100, 0x83F5)
+SDIV24_CORE_SRC = (0x8400, 0x8849)
+SDIV24_WRAPPER_SRC = (0x2550, 0x256E)
+SDIV24_PRIVATE_TABLE_OFFSET = 0x1600
+SDIV24_PREFIX_BYTES = SDIV24_PREFIX_SRC[1]-SDIV24_PREFIX_SRC[0]+1
+SDIV24_CORE_BYTES = SDIV24_CORE_SRC[1]-SDIV24_CORE_SRC[0]+1
+
+# V5 shared fast signed-division components. SDIV16 and SDIV32/16 use the
+# same 1,104-byte private UDIV16 engine; V5 keeps one copy at HYBRID_CODE+$120C.
+SDIV16_PREFIX_SRC=(0x7A00,0x7BD3)
+SDIV16_CG_SRC=(0x7C0C,0x805B)
+SDIV16_WRAPPER_SRC=(0x2520,0x254B)
+SDIV32_CG_SRC=(0x890C,0x8D5B)
+SDIV32_MX_SRC=(0x8E00,0x90E1)
+SDIV32_PREFIX_SRC=(0x9200,0x92E8)
+SDIV32_WRAPPER_SRC=(0x2590,0x25CF)
 V2_REF_ZP_MAIN = 0x02
 V2_REF_MATH_IO = 0xC000
 
 PUBLIC_WRAPPERS = {
-    'MATH_UDIV16': (0x3140, 0x316B),
-    'MATH_UDIV24': (0x3170, 0x31AF),
     'MATH_UDIV32_16': (0x31B0, 0x31EF),
     'MATH_UMOD8': (0x3200, 0x3210),
 }
+
+# Division-refresh direct source ranges in the current V2 donor image.
+UDIV8_DIRECT_SRC = (0x4000, 0x41AD)
+UDIV16_DIRECT_SRC = (0xB800, 0xBDC9)
+SDIV16_DIRECT_PREFIX_SRC = (0x7A00, 0x7C2A)
+SDIV16_DIRECT_CORE_SRC = (0x7C2B, 0x8177)
+SDIV24_DIRECT_PREFIX_SRC = (0x8178, 0x82ED)
+SDIV24_DIRECT_CORE_SRC = (0x82EE, 0x8878)
 
 # Direct imported implementations; wider UMOD entries are stable aliases of the
 # patched UDIV wrappers and therefore inherit the V2 kernels automatically.
@@ -39,6 +61,8 @@ IMPORTED_API = [
     'MATH_UDIV16', 'MATH_UDIV24', 'MATH_UDIV32_16',
     'MATH_UMOD8', 'MATH_UMOD16', 'MATH_UMOD24', 'MATH_UMOD32_16',
     'MATH_COS8', 'MATH_SINCOS8', 'MATH_ATAN2_8',
+    'MATH_SDIV16', 'MATH_SMOD16', 'MATH_SDIV24', 'MATH_SMOD24',
+    'MATH_SDIV16_SHL8',
 ]
 
 
@@ -173,6 +197,142 @@ def _jmp_target(mem: bytearray, at: int) -> int:
     return mem[at + 1] | (mem[at + 2] << 8)
 
 
+
+
+def _v5_div16_zp(vals: dict[str,int], old:int) -> int:
+    # SDIV16 donor map: signed $3E-$41 -> V5 +$0C..+$0F;
+    # private UDIV16 $42-$49 -> shared +$10..+$17.
+    if 0x3E <= old <= 0x41: return vals['ZP_MAIN']+0x0C+(old-0x3E)
+    if 0x42 <= old <= 0x49: return vals['ZP_MAIN']+0x10+(old-0x42)
+    raise RuntimeError(f'SDIV16 import unexpected ZP ${old:02X}')
+
+
+def _v5_div32_zp(vals: dict[str,int], old:int) -> int:
+    # SDIV32/16 donor map: signed $3E-$43, shared UDIV16 $44-$4B,
+    # mixed-width scratch $4C-$4F. All remain inside the 31-byte V5 window.
+    if 0x3E <= old <= 0x43: return vals['ZP_MAIN']+0x0A+(old-0x3E)
+    if 0x44 <= old <= 0x4B: return vals['ZP_MAIN']+0x10+(old-0x44)
+    if 0x4C <= old <= 0x4F: return vals['ZP_MAIN']+0x18+(old-0x4C)
+    raise RuntimeError(f'SDIV32/16 import unexpected ZP ${old:02X}')
+
+
+def _copy_fast_signed_component(dst:bytearray,src:bytearray,ss:int,se:int,ds:int,starts:set[int],
+                                vals:dict[str,int],kind:str,dcg:int,dpre:int=0,dmx:int=0) -> None:
+    dst[ds:ds+(se-ss+1)]=src[ss:se+1]
+    for pc in sorted(x for x in starts if ss<=x<=se):
+        oc=src[pc];op,mode=REV[oc];dp=ds+(pc-ss)
+        if mode in ('zp','zpx','zpy','indx','indy'):
+            old=src[pc+1]; new=_v5_div16_zp(vals,old) if kind=='s16' else _v5_div32_zp(vals,old)
+            if not(vals['ZP_MAIN']<=new<=vals['ZP_MAIN']+0x1E): raise RuntimeError('V5 signed division ZP overflow')
+            dst[dp+1]=new&255
+        elif mode in ('abs','absx','absy','ind'):
+            old=src[pc+1]|src[pc+2]<<8;new=old
+            if kind=='s16':
+                if SDIV16_PREFIX_SRC[0]<=old<=SDIV16_PREFIX_SRC[1]:new=dpre+(old-SDIV16_PREFIX_SRC[0])
+                elif SDIV16_CG_SRC[0]<=old<=SDIV16_CG_SRC[1]:new=dcg+(old-SDIV16_CG_SRC[0])
+            else:
+                if SDIV32_CG_SRC[0]<=old<=SDIV32_CG_SRC[1]:new=dcg+(old-SDIV32_CG_SRC[0])
+                elif SDIV32_MX_SRC[0]<=old<=SDIV32_MX_SRC[1]:new=dmx+(old-SDIV32_MX_SRC[0])
+                elif SDIV32_PREFIX_SRC[0]<=old<=SDIV32_PREFIX_SRC[1]:new=dpre+(old-SDIV32_PREFIX_SRC[0])
+            if V2_REF_MATH_IO<=old<=V2_REF_MATH_IO+0x1F:new=vals['MATH_IO']+(old-V2_REF_MATH_IO)
+            dst[dp+1]=new&255;dst[dp+2]=(new>>8)&255
+
+
+def apply_fast_signed16_32(dst:bytearray,src:bytearray,vals:dict[str,int],base_man:dict,entries:dict[str,int],hbase:int)->dict:
+    # Preserve each donor component's low-byte phase to retain branch timing.
+    dcg=hbase+0x120C                         # reference $B20C
+    d16=vals['REG_KERNEL']+0x1200           # reference $5200
+    dmx=vals['REG_KERNEL']+0x1A00           # reference $5A00
+    d32=vals['REG_KERNEL']+0x1D00           # reference $5D00
+    # Both signed routines derive from the same certified UDIV16 source. Their installed
+    # donor bytes differ only because their ZP/absolute relocations differ, so V5 uses
+    # the SDIV16 copy as the shared canonical private engine.
+    t16=trace(src,entries['MATH_SDIV16']);t32=trace(src,entries['MATH_SDIV32_16'])
+    # The two donor UDIV16 cores are byte-equivalent modulo relocation, but SDIV32/16
+    # enters a few internal labels that SDIV16 never reaches. Relocate the union of
+    # instruction starts before sharing the SDIV16 copy, otherwise those rare paths
+    # retain donor absolute targets.
+    shared_starts=set(t16)
+    shared_starts.update(SDIV16_CG_SRC[0]+(pc-SDIV32_CG_SRC[0])
+                         for pc in t32 if SDIV32_CG_SRC[0] <= pc <= SDIV32_CG_SRC[1])
+    _copy_fast_signed_component(dst,src,*SDIV16_CG_SRC,dcg,shared_starts,vals,'s16',dcg,d16)
+    _copy_fast_signed_component(dst,src,*SDIV16_PREFIX_SRC,d16,t16,vals,'s16',dcg,d16)
+    _copy_fast_signed_component(dst,src,*SDIV32_MX_SRC,dmx,t32,vals,'s32',dcg,d32,dmx)
+    _copy_fast_signed_component(dst,src,*SDIV32_PREFIX_SRC,d32,t32,vals,'s32',dcg,d32,dmx)
+    # Replace the two stable-memory adapters in their existing V1 slots.
+    w16=_jmp_target(dst,_public_addr(base_man,'MATH_SDIV16'))
+    w32=_jmp_target(dst,_public_addr(base_man,'MATH_SDIV32_16'))
+    _copy_fast_signed_component(dst,src,*SDIV16_WRAPPER_SRC,w16,t16,vals,'s16',dcg,d16)
+    _copy_fast_signed_component(dst,src,*SDIV32_WRAPPER_SRC,w32,t32,vals,'s32',dcg,d32,dmx)
+    return {'shared_udiv16_core':f'{hx(dcg)}-{hx(dcg+(SDIV16_CG_SRC[1]-SDIV16_CG_SRC[0]))}',
+            'sdiv16_prefix':f'{hx(d16)}-{hx(d16+(SDIV16_PREFIX_SRC[1]-SDIV16_PREFIX_SRC[0]))}',
+            'sdiv32_16_mixed':f'{hx(dmx)}-{hx(dmx+(SDIV32_MX_SRC[1]-SDIV32_MX_SRC[0]))}',
+            'sdiv32_16_prefix':f'{hx(d32)}-{hx(d32+(SDIV32_PREFIX_SRC[1]-SDIV32_PREFIX_SRC[0]))}',
+            'unique_code_bytes':(SDIV16_CG_SRC[1]-SDIV16_CG_SRC[0]+1)+(SDIV16_PREFIX_SRC[1]-SDIV16_PREFIX_SRC[0]+1)+(SDIV32_MX_SRC[1]-SDIV32_MX_SRC[0]+1)+(SDIV32_PREFIX_SRC[1]-SDIV32_PREFIX_SRC[0]+1),
+            'max_transient_zp_bytes':18}
+
+
+def _map_sdiv24_addr(target: int, vals: dict[str, int], sbase: int, cbase: int, wbase: int) -> int:
+    if SDIV24_PREFIX_SRC[0] <= target <= SDIV24_PREFIX_SRC[1]:
+        return sbase + (target - SDIV24_PREFIX_SRC[0])
+    if SDIV24_CORE_SRC[0] <= target <= SDIV24_CORE_SRC[1]:
+        return cbase + (target - SDIV24_CORE_SRC[0])
+    if SDIV24_WRAPPER_SRC[0] <= target <= SDIV24_WRAPPER_SRC[1]:
+        return wbase + (target - SDIV24_WRAPPER_SRC[0])
+    if V2_REF_MATH_IO <= target <= V2_REF_MATH_IO + 0x1F:
+        return vals['MATH_IO'] + (target - V2_REF_MATH_IO)
+    return target
+
+
+def _relocate_sdiv24_instruction(buf: bytearray, src_mem: bytearray, src_pc: int,
+                                  dst_pc: int, vals: dict[str, int], sbase: int, cbase: int, wbase: int) -> None:
+    oc=src_mem[src_pc]; op,mode=REV[oc]
+    if mode in ('zp','zpx','zpy','indx','indy'):
+        old=src_mem[src_pc+1]
+        if not (0x3E <= old <= 0x4C):
+            raise RuntimeError(f'SDIV24 import unexpected ZP ${old:02X} at ${src_pc:04X}')
+        new=vals['ZP_MAIN'] + 0x0A + (old-0x3E)
+        if not (vals['ZP_MAIN'] <= new <= vals['ZP_MAIN']+0x1E):
+            raise RuntimeError(f'SDIV24 relocated ZP outside 31-byte window at ${src_pc:04X}: ${new:02X}')
+        buf[dst_pc+1]=new&0xff
+    elif mode in ('abs','absx','absy','ind'):
+        old=src_mem[src_pc+1]|src_mem[src_pc+2]<<8
+        new=_map_sdiv24_addr(old,vals,sbase,cbase,wbase)
+        buf[dst_pc+1]=new&255;buf[dst_pc+2]=(new>>8)&255
+
+
+def _copy_sdiv24_block(dst: bytearray, src: bytearray, ss: int, se: int, ds: int,
+                        starts: set[int], vals: dict[str,int], sbase:int,cbase:int,wbase:int) -> None:
+    dst[ds:ds+(se-ss+1)]=src[ss:se+1]
+    for pc in sorted(x for x in starts if ss<=x<=se):
+        _relocate_sdiv24_instruction(dst,src,pc,ds+(pc-ss),vals,sbase,cbase,wbase)
+
+
+def apply_sdiv24_fast(dst: bytearray, src: bytearray, vals: dict[str,int],
+                       base_man: dict, donor_entries: dict[str,int]) -> dict:
+    # Repack the two source islands contiguously into a V1-free table window.
+    sbase=vals['REG_TABLE']+SDIV24_PRIVATE_TABLE_OFFSET
+    # Preserve the donor's page phase: prefix at +$1600, magnitude core at +$1900.
+    # The deliberate gap costs no occupied bytes and avoids branch-page timing penalties.
+    cbase=sbase+0x0300
+    end=cbase+SDIV24_CORE_BYTES-1
+    # Guard the V1-derived destination before assigning V5 ownership.
+    if any(dst[sbase:end+1]):
+        raise RuntimeError(f'V5 SDIV24 private destination {hx(sbase)}-{hx(end)} is not free')
+    starts=trace(src,donor_entries['MATH_SDIV24'])
+    # Reuse the old V1 adapter slot for the direct path's output-store helper.
+    # Unlike the old donor, the public API now jumps straight into the signed prefix.
+    dst_public=_public_addr(base_man,'MATH_SDIV24')
+    dst_wrapper=_jmp_target(dst,dst_public)
+    _copy_sdiv24_block(dst,src,*SDIV24_PREFIX_SRC,sbase,starts,vals,sbase,cbase,dst_wrapper)
+    _copy_sdiv24_block(dst,src,*SDIV24_CORE_SRC,cbase,starts,vals,sbase,cbase,dst_wrapper)
+    _copy_sdiv24_block(dst,src,*SDIV24_WRAPPER_SRC,dst_wrapper,starts,vals,sbase,cbase,dst_wrapper)
+    dst[dst_public:dst_public+3]=bytes((0x4C,sbase&0xFF,(sbase>>8)&0xFF))
+    return {'private_code':f'{hx(sbase)}-{hx(end)}','private_code_bytes':SDIV24_PREFIX_BYTES+SDIV24_CORE_BYTES,
+            'output_helper':f'{hx(dst_wrapper)}-{hx(dst_wrapper+(SDIV24_WRAPPER_SRC[1]-SDIV24_WRAPPER_SRC[0]))}',
+            'zp':f'{hx(vals["ZP_MAIN"]+0x0A,2)}-{hx(vals["ZP_MAIN"]+0x18,2)}','zp_bytes':15}
+
+
 def apply_atan2_fast(dst_mem: bytearray, src_mem: bytearray,
                      vals: dict[str, int], base_man: dict,
                      donor_entries: dict[str, int], hbase: int) -> dict:
@@ -223,6 +383,114 @@ def apply_atan2_fast(dst_mem: bytearray, src_mem: bytearray,
         'q0_page': hx(vals['REG_TABLE'] + 0x3700),
     }
 
+
+
+
+def _copy_direct_component(dst: bytearray, src: bytearray, ss: int, se: int, ds: int,
+                           starts: set[int], vals: dict[str,int],
+                           internal_ranges: list[tuple[int,int,int]],
+                           zp_map=None) -> None:
+    """Relocate one direct-ABI donor component into V5.
+
+    Relative branches remain byte-identical. Absolute references into one of
+    internal_ranges are rebased, public MATH_IO references follow the selected
+    V5 map, and optional ZP operands are remapped by zp_map.
+    """
+    dst[ds:ds+(se-ss+1)] = src[ss:se+1]
+    for pc in sorted(x for x in starts if ss <= x <= se):
+        oc=src[pc]; op,mode=REV[oc]; dp=ds+(pc-ss)
+        if mode in ('zp','zpx','zpy','indx','indy'):
+            old=src[pc+1]
+            if zp_map is None:
+                raise RuntimeError(f'unexpected ZP operand ${old:02X} at ${pc:04X}')
+            new=zp_map(old)
+            if not (vals['ZP_MAIN'] <= new <= vals['ZP_MAIN']+0x1E):
+                raise RuntimeError(f'direct division relocated ZP outside V5 window at ${pc:04X}: ${new:02X}')
+            dst[dp+1]=new&255
+        elif mode in ('abs','absx','absy','ind'):
+            old=src[pc+1] | (src[pc+2]<<8); new=old
+            for rs,re,rd in internal_ranges:
+                if rs <= old <= re:
+                    new=rd+(old-rs); break
+            if V2_REF_MATH_IO <= old <= V2_REF_MATH_IO+0x1F:
+                new=vals['MATH_IO']+(old-V2_REF_MATH_IO)
+            dst[dp+1]=new&255; dst[dp+2]=(new>>8)&255
+
+
+def apply_udiv8_direct(dst: bytearray, src: bytearray, vals: dict[str,int],
+                        base_man: dict, donor_entries: dict[str,int]) -> dict:
+    db=vals['REG_KERNEL']
+    starts=trace(src,donor_entries['MATH_UDIV8'])
+    def zmap(old:int)->int:
+        if old != 0x10: raise RuntimeError(f'UDIV8 direct unexpected ZP ${old:02X}')
+        return vals['ZP_MAIN']+0x0E
+    _copy_direct_component(dst,src,*UDIV8_DIRECT_SRC,db,starts,vals,
+                           [(UDIV8_DIRECT_SRC[0],UDIV8_DIRECT_SRC[1],db)],zmap)
+    entry=db+(0x4008-UDIV8_DIRECT_SRC[0])
+    a=_public_addr(base_man,'MATH_UDIV8'); dst[a:a+3]=bytes((0x4C,entry&255,entry>>8))
+    return {'private_code':f'{hx(db)}-{hx(db+(UDIV8_DIRECT_SRC[1]-UDIV8_DIRECT_SRC[0]))}',
+            'zp':hx(vals['ZP_MAIN']+0x0E,2),'zp_bytes':1}
+
+
+def apply_udiv16_direct(dst: bytearray, src: bytearray, vals: dict[str,int],
+                         base_man: dict, donor_entries: dict[str,int], hbase:int) -> dict:
+    # Put the 1,482-byte direct public-ABI UDIV16 engine in the high end of the
+    # private hybrid region. It uses no ZP scratch.
+    db=hbase+0x1800
+    starts=trace(src,donor_entries['MATH_UDIV16'])
+    _copy_direct_component(dst,src,*UDIV16_DIRECT_SRC,db,starts,vals,
+                           [(UDIV16_DIRECT_SRC[0],UDIV16_DIRECT_SRC[1],db)])
+    for name in ('MATH_UDIV16','MATH_UMOD16'):
+        a=_public_addr(base_man,name); dst[a:a+3]=bytes((0x4C,db&255,db>>8))
+    return {'private_code':f'{hx(db)}-{hx(db+(UDIV16_DIRECT_SRC[1]-UDIV16_DIRECT_SRC[0]))}',
+            'private_code_bytes':UDIV16_DIRECT_SRC[1]-UDIV16_DIRECT_SRC[0]+1,'zp_bytes':0}
+
+
+def apply_sdiv16_direct(dst: bytearray, src: bytearray, vals: dict[str,int],
+                         base_man: dict, donor_entries: dict[str,int], hbase:int) -> dict:
+    # Preserve the signed front-end page phase in a V1-free table page; place the
+    # larger direct-output magnitude engine in private hybrid RAM.
+    pbase=vals['REG_TABLE']+0x1400
+    cbase=hbase+0x1200
+    starts=trace(src,donor_entries['MATH_SDIV16'])
+    def zmap(old:int)->int:
+        if not (0x10 <= old <= 0x15): raise RuntimeError(f'SDIV16 direct unexpected ZP ${old:02X}')
+        return vals['ZP_MAIN']+0x0E+(old-0x10)
+    ranges=[(SDIV16_DIRECT_PREFIX_SRC[0],SDIV16_DIRECT_PREFIX_SRC[1],pbase),
+            (SDIV16_DIRECT_CORE_SRC[0],SDIV16_DIRECT_CORE_SRC[1],cbase)]
+    _copy_direct_component(dst,src,*SDIV16_DIRECT_PREFIX_SRC,pbase,starts,vals,ranges,zmap)
+    _copy_direct_component(dst,src,*SDIV16_DIRECT_CORE_SRC,cbase,starts,vals,ranges,zmap)
+    for name in ('MATH_SDIV16','MATH_SMOD16'):
+        a=_public_addr(base_man,name); dst[a:a+3]=bytes((0x4C,pbase&255,pbase>>8))
+    return {'prefix':f'{hx(pbase)}-{hx(pbase+(SDIV16_DIRECT_PREFIX_SRC[1]-SDIV16_DIRECT_PREFIX_SRC[0]))}',
+            'private_core':f'{hx(cbase)}-{hx(cbase+(SDIV16_DIRECT_CORE_SRC[1]-SDIV16_DIRECT_CORE_SRC[0]))}',
+            'zp':f'{hx(vals["ZP_MAIN"]+0x0E,2)}-{hx(vals["ZP_MAIN"]+0x13,2)}','zp_bytes':6}
+
+
+def apply_sdiv24_direct(dst: bytearray, src: bytearray, vals: dict[str,int],
+                         base_man: dict, donor_entries: dict[str,int]) -> dict:
+    # The V1 table map has a 3.2 KiB free run here. Keep the donor low-byte phase
+    # for both islands so branch page-cross behaviour is preserved exactly.
+    pbase=vals['REG_TABLE']+0x1678
+    cbase=vals['REG_TABLE']+0x19EE
+    starts=trace(src,donor_entries['MATH_SDIV24'])
+    def zmap(old:int)->int:
+        if not (0x10 <= old <= 0x18): raise RuntimeError(f'SDIV24 direct unexpected ZP ${old:02X}')
+        return vals['ZP_MAIN']+0x0E+(old-0x10)
+    ranges=[(SDIV24_DIRECT_PREFIX_SRC[0],SDIV24_DIRECT_PREFIX_SRC[1],pbase),
+            (SDIV24_DIRECT_CORE_SRC[0],SDIV24_DIRECT_CORE_SRC[1],cbase)]
+    # Guard the selected V1-free destinations.
+    for ds,se,ss in ((pbase,SDIV24_DIRECT_PREFIX_SRC[1],SDIV24_DIRECT_PREFIX_SRC[0]),
+                     (cbase,SDIV24_DIRECT_CORE_SRC[1],SDIV24_DIRECT_CORE_SRC[0])):
+        n=se-ss+1
+        if any(dst[ds:ds+n]): raise RuntimeError(f'V5 direct SDIV24 destination {hx(ds)}-{hx(ds+n-1)} is not free')
+    _copy_direct_component(dst,src,*SDIV24_DIRECT_PREFIX_SRC,pbase,starts,vals,ranges,zmap)
+    _copy_direct_component(dst,src,*SDIV24_DIRECT_CORE_SRC,cbase,starts,vals,ranges,zmap)
+    for name in ('MATH_SDIV24','MATH_SMOD24'):
+        a=_public_addr(base_man,name); dst[a:a+3]=bytes((0x4C,pbase&255,pbase>>8))
+    return {'prefix':f'{hx(pbase)}-{hx(pbase+(SDIV24_DIRECT_PREFIX_SRC[1]-SDIV24_DIRECT_PREFIX_SRC[0]))}',
+            'private_core':f'{hx(cbase)}-{hx(cbase+(SDIV24_DIRECT_CORE_SRC[1]-SDIV24_DIRECT_CORE_SRC[0]))}',
+            'zp':f'{hx(vals["ZP_MAIN"]+0x0E,2)}-{hx(vals["ZP_MAIN"]+0x16,2)}','zp_bytes':9}
 
 def validate_hybrid_region(vals: dict[str, int], hbase: int) -> None:
     if hbase & 0xFF:
@@ -285,8 +553,12 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         # Build exact reachability sets from the rebuilt V2 donor image.
         entries = dict(sr.public_entries())
         atan2_detail = apply_atan2_fast(dst, src, vals, v1man, entries, hbase) if include_atan2_fast else None
+        udiv8_detail = apply_udiv8_direct(dst, src, vals, v1man, entries)
+        udiv16_detail = apply_udiv16_direct(dst, src, vals, v1man, entries, hbase)
+        sdiv16_detail = apply_sdiv16_direct(dst, src, vals, v1man, entries, hbase)
+        sdiv24_detail = apply_sdiv24_direct(dst, src, vals, v1man, entries)
         selected_trace: set[int] = set()
-        for name in ('MATH_UDIV16', 'MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8'):
+        for name in ('MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8'):
             selected_trace |= trace(src, entries[name])
         cos_trace = trace(src, entries['MATH_COS8'])
         sincos_trace = trace(src, entries['MATH_SINCOS8'])
@@ -296,6 +568,11 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                              selected_trace, vals, hbase)
         copy_relocated_block(dst, src, UMOD8_SRC[0], UMOD8_SRC[1], hbase + 0x1000,
                              selected_trace, vals, hbase)
+        # The current V2 UDIV24 is a direct-ABI JMP into the copied $4800 island.
+        # Patch both quotient and modulo public entries to that relocated core.
+        u24_target=hbase+(0x4816-DIV_SRC[0])
+        for name in ('MATH_UDIV24','MATH_UMOD24'):
+            a=_public_addr(v1man,name); dst[a:a+3]=bytes((0x4C,u24_target&255,u24_target>>8))
         copy_relocated_block(dst, src, COS_SRC[0], COS_SRC[1], hbase + 0x1080,
                              cos_trace, vals, hbase)
         copy_relocated_block(dst, src, SINCOS_SRC[0], SINCOS_SRC[1], hbase + 0x1090,
@@ -348,6 +625,10 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             'imported_api_entries': [n for n in IMPORTED_API if include_atan2_fast or n != 'MATH_ATAN2_8'],
             'atan2_fast_enabled': include_atan2_fast,
             'atan2_fast': atan2_detail,
+            'udiv8_direct': udiv8_detail,
+            'udiv16_direct': udiv16_detail,
+            'sdiv16_direct': sdiv16_detail,
+            'sdiv24_direct': sdiv24_detail,
             'indirect_beneficiaries': [
                 'MATH_UDIV16_SHL8',
                 'MATH_URECIP16_Q16',
@@ -357,6 +638,9 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'MATH_INIT remains optional exactly as in V1.',
                 'The imported certified V2 kernels use only the existing V1 normal ZP window.',
                 'Fast ATAN2, when enabled, adds no ZP and occupies three formerly empty V1 table pages (768 bytes).',
+                'V2 direct UDIV8 replaces the V1 256-class core in place; V2 direct UDIV16 is repacked into private hybrid RAM; UDIV24 uses the copied Repose direct core.',
+                'V2 direct-output SDIV16 and SDIV24 are repacked into V1-free code/table windows and stay wholly inside the normal 31-byte ZP contract.',
+                'SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 retains the faster V2 hybrid import.',
                 'HYBRID_CODE is private implementation storage and may be relocated at build time.',
                 'Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines.',
             ],

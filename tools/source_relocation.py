@@ -99,6 +99,75 @@ MULTIPLY_REFRESH_DECODE_EXCLUDE={
 def in_multiply_refresh(profile,a):
  return any(s<=a<=e for s,e in MULTIPLY_REFRESH_DECODE_EXCLUDE.get(profile,()))
 
+# Division refresh modules mirror the multiplication refresh policy: keep the
+# selected Repose UDIV24 core and private native SDIV24 magnitude engine as
+# source-level overlays so regeneration preserves directly reusable sources.
+DIVISION_REFRESH_INCLUDES={
+ 'v1_balanced':(
+  'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_balanced.inc',
+  'udiv24_direct_repose_balanced.inc','sdiv16_directout_balanced.inc','sdiv24_directout_balanced.inc',
+  'sdiv32_16_direct_balanced.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc'),
+ 'v2_pareto_fast':(
+  'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
+  'udiv24_direct_repose.inc','sdiv16_directout_fast.inc','sdiv24_directout_fast.inc',
+  'sdiv32_16_direct_fast.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc'),
+ 'v3_reu_512k':(
+  'reu_div8_public_stubs.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
+  'udiv24_direct_repose.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
+  'sdiv32_16_direct_fast.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc'),
+ 'v4_reu_16m':(
+  'reu_div8_public_stubs.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
+  'udiv24_direct_repose.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
+  'sdiv32_16_direct_fast.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc'),
+}
+# Exact emitted address spans of the frozen division-refresh modules in the
+# reference map.  Instruction starts in these spans are intentionally omitted
+# from the generated monolith and restored by the !source overlays above.  Keep
+# these exact: excluding unrelated code would make alternate-map builds retain
+# non-relocatable reference bytes.
+DIVISION_REFRESH_DECODE_EXCLUDE={
+ 'v1_balanced':(
+  (0x3120,0x3122),(0x3200,0x3202),(0x4000,0x4125),
+  (0x3ca0,0x3ca2),(0x3fd4,0x3fd6),(0xbde0,0xbff0),
+  (0x3140,0x3142),(0x3220,0x3222),(0x4200,0x4342),
+  (0x3170,0x3172),(0x3223,0x3225),(0x7200,0x734e),
+  (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x5200,0x52de),(0x5400,0x552c),
+  (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x5600,0x5714),(0x5800,0x58b5),
+  (0x2590,0x25b1),(0x5c00,0x5d01),
+  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1cf,0xc1d1)),
+ 'v2_pareto_fast':(
+  (0x3120,0x3122),(0x3200,0x3202),(0x4000,0x41ad),
+  (0x3ca0,0x3ca2),(0x3fd4,0x3fd6),(0xbde0,0xbff0),
+  (0x3140,0x3142),(0x3220,0x3222),(0xb800,0xbdc8),
+  (0x3170,0x3172),(0x3223,0x3225),(0x4800,0x4cdf),(0x50e1,0x51b9),
+  (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x7a00,0x8177),
+  (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x8178,0x8878),
+  (0x2590,0x25b1),(0x9200,0x9301),
+  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1ad,0xc1af)),
+ 'v3_reu_512k':(
+  (0x3120,0x3122),(0x4000,0x41ad),
+  (0x3ca0,0x3ca2),(0x3fd4,0x3fd6),(0xbde0,0xbff0),
+  (0x3140,0x3142),(0x3220,0x3222),(0xb800,0xbdc8),
+  (0x3170,0x3172),(0x3223,0x3225),(0x4800,0x4cdf),(0x52de,0x53b6),
+  (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x7a00,0x7c2a),(0x7d0c,0x8258),
+  (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x5a40,0x5d72),(0x8300,0x8811),
+  (0x2690,0x26b1),(0x9200,0x9301),
+  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1ad,0xc1af)),
+ 'v4_reu_16m':(
+  (0x3120,0x3122),(0x4000,0x41ad),
+  (0x3ca0,0x3ca2),(0x3fd4,0x3fd6),(0xbde0,0xbff0),
+  (0x3140,0x3142),(0x3220,0x3222),(0xb800,0xbdc8),
+  (0x3170,0x3172),(0x3223,0x3225),(0x4800,0x4cdf),(0x52de,0x53b6),
+  (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x7a00,0x7c2a),(0x7d0c,0x8258),
+  (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x5a40,0x5d72),(0x8300,0x8811),
+  (0x2590,0x25b1),(0x9200,0x9301),
+  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1ad,0xc1af)),
+}
+
+def in_division_refresh(profile,a):
+ return any(s<=a<=e for s,e in DIVISION_REFRESH_DECODE_EXCLUDE.get(profile,()))
+
+
 def hx(v,w=4):return f'${v:0{w}X}'
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def public_entries():
@@ -114,6 +183,13 @@ def load_reference(profile):
  init=CPU(bytearray(raw),reu=reu);init.d=0;init.call(MATH_INIT_OLD,2_000_000)
  return raw,init.mem
 
+DIVISION_KNOWN_NO_FALLTHROUGH={
+ 'v1_balanced':{0x4124},
+ 'v2_pareto_fast':{0x41ac},
+ 'v3_reu_512k':{0x41ac},
+ 'v4_reu_16m':{0x41ac},
+}
+
 def trace(profile,mem):
  todo=[a for _,a in public_entries()]+[MATH_INIT_OLD];seen=set();unknown=[]
  if profile in REU: todo += list(TURBO_PUBLIC_OLD)
@@ -125,7 +201,14 @@ def trace(profile,mem):
   seen.add(pc);op,mode=REV[oc];sz=SIZE[mode];nxt=(pc+sz)&0xffff
   if op in ('rts','rti','brk'):continue
   if mode=='rel':
-   d=mem[pc+1];d=d-256 if d>=128 else d;todo.extend((nxt,(nxt+d)&0xffff));continue
+   d=mem[pc+1];d=d-256 if d>=128 else d;target=(nxt+d)&0xffff
+   # The direct UDIV8 alignment loop ends with INX/BNE.  X starts at zero and
+   # the divisor can only be shifted a handful of times, so the wrap-to-zero
+   # fallthrough is unreachable.  Following it statically walks into the next
+   # unrelated resident data byte and makes source regeneration fail.
+   if pc in DIVISION_KNOWN_NO_FALLTHROUGH.get(profile,set()): todo.append(target)
+   else: todo.extend((nxt,target))
+   continue
   if op=='jmp':
    if mode=='abs':todo.append(mem[pc+1]|mem[pc+2]<<8)
    else:unknown.append((pc,oc))
@@ -273,7 +356,7 @@ def emit_core_image(profile,tm):
 def generate_source(profile,outpath:Path):
  raw,tm=load_reference(profile);seen=trace(profile,tm)
  b=PRG[profile].read_bytes();prg_load=b[0]|b[1]<<8;prg_end=prg_load+len(b)-3
- main_seen={pc for pc in seen if pc>=0x100 and not in_multiply_refresh(profile,pc)}
+ main_seen={pc for pc in seen if pc>=0x100 and not in_multiply_refresh(profile,pc) and not in_division_refresh(profile,pc)}
  # Turbo32's 135-ZP overlay calls two ordinary-RAM helper blocks that are not
  # reachable while the normal ZP image is installed. Decode them explicitly so
  # relocation rewrites their ZP and REG_LOW references symbolically rather than
@@ -352,6 +435,10 @@ def generate_source(profile,outpath:Path):
   lines += ['', '; BEGIN MULTIPLY REFRESH 2026-09-20']
   lines += [f'!source "{name}"' for name in MULTIPLY_REFRESH_INCLUDES[profile]]
   lines += ['; END MULTIPLY REFRESH 2026-09-20']
+ if profile in DIVISION_REFRESH_INCLUDES:
+  lines += ['', '; BEGIN DIVISION REFRESH 2026-09-20']
+  lines += [f'!source "{name}"' for name in DIVISION_REFRESH_INCLUDES[profile]]
+  lines += ['; END DIVISION REFRESH 2026-09-20']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 

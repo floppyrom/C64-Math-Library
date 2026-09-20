@@ -4,39 +4,27 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UDIV16_SHL8. Executable overlap: 0 instructions.
-; Public entry: $5E1B. Reachable signed instructions: 315.
+; Public entry: $5E1B. Reachable signed instructions: 304.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
 ; ---- executable island $2590 ----
 * = $2590
 L2590:
-    lda $C010                          ; @2590 AD 10 C0
-    sta $0E                            ; @2593 85 0E
-    lda $C011                          ; @2595 AD 11 C0
-    sta $0F                            ; @2598 85 0F
-    lda $C012                          ; @259A AD 12 C0
-    sta $10                            ; @259D 85 10
-    lda $C013                          ; @259F AD 13 C0
-    sta $11                            ; @25A2 85 11
-    lda $C014                          ; @25A4 AD 14 C0
-    sta $12                            ; @25A7 85 12
-    lda $C015                          ; @25A9 AD 15 C0
-    sta $13                            ; @25AC 85 13
-    jsr L5C00                          ; @25AE 20 00 5C
-    lda $1E                            ; @25B1 A5 1E
-    sta $C018                          ; @25B3 8D 18 C0
-    lda $1F                            ; @25B6 A5 1F
-    sta $C019                          ; @25B8 8D 19 C0
-    lda $18                            ; @25BB A5 18
-    sta $C01A                          ; @25BD 8D 1A C0
-    lda $19                            ; @25C0 A5 19
-    sta $C01B                          ; @25C2 8D 1B C0
-    lda $1A                            ; @25C5 A5 1A
-    sta $C01C                          ; @25C7 8D 1C C0
-    lda $1B                            ; @25CA A5 1B
-    sta $C01D                          ; @25CC 8D 1D C0
-    rts                                ; @25CF 60
+    jsr L5C00                          ; @2590 20 00 5C
+    lda $1E                            ; @2593 A5 1E
+    sta $C018                          ; @2595 8D 18 C0
+    lda $1F                            ; @2598 A5 1F
+    sta $C019                          ; @259A 8D 19 C0
+    lda $18                            ; @259D A5 18
+    sta $C01A                          ; @259F 8D 1A C0
+    lda $19                            ; @25A2 A5 19
+    sta $C01B                          ; @25A4 8D 1B C0
+    lda $1A                            ; @25A7 A5 1A
+    sta $C01C                          ; @25A9 8D 1C C0
+    lda $1B                            ; @25AC A5 1B
+    sta $C01D                          ; @25AE 8D 1D C0
+    rts                                ; @25B1 60
 ; ---- executable island $3EE0 ----
 * = $3EE0
 L3EE0:
@@ -204,133 +192,134 @@ L5B70:
 ; ---- executable island $5C00 ----
 * = $5C00
 L5C00:
-    lda $13                            ; @5C00 A5 13
-    bmi L5C78                          ; @5C02 30 74
-    bne L5C16                          ; @5C04 D0 10
-    lda $12                            ; @5C06 A5 12
-    bne L5C0D                          ; @5C08 D0 03
-    jmp L5CE2                          ; @5C0A 4C E2 5C
-L5C0D:
-    sta $16                            ; @5C0D 85 16
-    lda #$00                           ; @5C0F A9 00
-    sta $17                            ; @5C11 85 17
-    jmp L5C1C                          ; @5C13 4C 1C 5C
-L5C16:
-    sta $17                            ; @5C16 85 17
-    lda $12                            ; @5C18 A5 12
-    sta $16                            ; @5C1A 85 16
-L5C1C:
-    lda $11                            ; @5C1C A5 11
-    bmi L5C34                          ; @5C1E 30 14
-    lda $0E                            ; @5C20 A5 0E
-    sta $1C                            ; @5C22 85 1C
-    lda $0F                            ; @5C24 A5 0F
-    sta $1D                            ; @5C26 85 1D
-    lda $10                            ; @5C28 A5 10
-    sta $14                            ; @5C2A 85 14
-    lda $11                            ; @5C2C A5 11
-    sta $15                            ; @5C2E 85 15
-    jsr L5B00                          ; @5C30 20 00 5B
-    rts                                ; @5C33 60
-L5C34:
-    lda #$00                           ; @5C34 A9 00
-    sec                                ; @5C36 38
-    sbc $0E                            ; @5C37 E5 0E
-    sta $1C                            ; @5C39 85 1C
-    lda #$00                           ; @5C3B A9 00
-    sbc $0F                            ; @5C3D E5 0F
-    sta $1D                            ; @5C3F 85 1D
-    lda #$00                           ; @5C41 A9 00
-    sbc $10                            ; @5C43 E5 10
-    sta $14                            ; @5C45 85 14
-    lda #$00                           ; @5C47 A9 00
-    sbc $11                            ; @5C49 E5 11
-    sta $15                            ; @5C4B 85 15
-    jsr L5B00                          ; @5C4D 20 00 5B
-    lda #$00                           ; @5C50 A9 00
-    sec                                ; @5C52 38
-    sbc $1A                            ; @5C53 E5 1A
-    sta $1A                            ; @5C55 85 1A
-    lda #$00                           ; @5C57 A9 00
-    sbc $1B                            ; @5C59 E5 1B
-    sta $1B                            ; @5C5B 85 1B
-    lda #$00                           ; @5C5D A9 00
-    sec                                ; @5C5F 38
-    sbc $1E                            ; @5C60 E5 1E
-    sta $1E                            ; @5C62 85 1E
-    lda #$00                           ; @5C64 A9 00
-    sbc $1F                            ; @5C66 E5 1F
-    sta $1F                            ; @5C68 85 1F
-    lda #$00                           ; @5C6A A9 00
-    sbc $18                            ; @5C6C E5 18
-    sta $18                            ; @5C6E 85 18
+    lda $C015                          ; @5C00 AD 15 C0
+    bmi L5C84                          ; @5C03 30 7F
+    bne L5C18                          ; @5C05 D0 11
+    lda $C014                          ; @5C07 AD 14 C0
+    bne L5C0F                          ; @5C0A D0 03
+    jmp L5CF9                          ; @5C0C 4C F9 5C
+L5C0F:
+    sta $16                            ; @5C0F 85 16
+    lda #$00                           ; @5C11 A9 00
+    sta $17                            ; @5C13 85 17
+    jmp L5C1F                          ; @5C15 4C 1F 5C
+L5C18:
+    sta $17                            ; @5C18 85 17
+    lda $C014                          ; @5C1A AD 14 C0
+    sta $16                            ; @5C1D 85 16
+L5C1F:
+    lda $C013                          ; @5C1F AD 13 C0
+    bmi L5C3C                          ; @5C22 30 18
+    lda $C010                          ; @5C24 AD 10 C0
+    sta $1C                            ; @5C27 85 1C
+    lda $C011                          ; @5C29 AD 11 C0
+    sta $1D                            ; @5C2C 85 1D
+    lda $C012                          ; @5C2E AD 12 C0
+    sta $14                            ; @5C31 85 14
+    lda $C013                          ; @5C33 AD 13 C0
+    sta $15                            ; @5C36 85 15
+    jsr L5B00                          ; @5C38 20 00 5B
+    rts                                ; @5C3B 60
+L5C3C:
+    lda #$00                           ; @5C3C A9 00
+    sec                                ; @5C3E 38
+    sbc $C010                          ; @5C3F ED 10 C0
+    sta $1C                            ; @5C42 85 1C
+    lda #$00                           ; @5C44 A9 00
+    sbc $C011                          ; @5C46 ED 11 C0
+    sta $1D                            ; @5C49 85 1D
+    lda #$00                           ; @5C4B A9 00
+    sbc $C012                          ; @5C4D ED 12 C0
+    sta $14                            ; @5C50 85 14
+    lda #$00                           ; @5C52 A9 00
+    sbc $C013                          ; @5C54 ED 13 C0
+    sta $15                            ; @5C57 85 15
+    jsr L5B00                          ; @5C59 20 00 5B
+    lda #$00                           ; @5C5C A9 00
+    sec                                ; @5C5E 38
+    sbc $1A                            ; @5C5F E5 1A
+    sta $1A                            ; @5C61 85 1A
+    lda #$00                           ; @5C63 A9 00
+    sbc $1B                            ; @5C65 E5 1B
+    sta $1B                            ; @5C67 85 1B
+    lda #$00                           ; @5C69 A9 00
+    sec                                ; @5C6B 38
+    sbc $1E                            ; @5C6C E5 1E
+    sta $1E                            ; @5C6E 85 1E
     lda #$00                           ; @5C70 A9 00
-    sbc $19                            ; @5C72 E5 19
-    sta $19                            ; @5C74 85 19
-    clc                                ; @5C76 18
-    rts                                ; @5C77 60
-L5C78:
-    lda #$00                           ; @5C78 A9 00
-    sec                                ; @5C7A 38
-    sbc $12                            ; @5C7B E5 12
-    sta $16                            ; @5C7D 85 16
-    lda #$00                           ; @5C7F A9 00
-    sbc $13                            ; @5C81 E5 13
-    sta $17                            ; @5C83 85 17
-    lda $11                            ; @5C85 A5 11
-    bmi L5CB7                          ; @5C87 30 2E
-    lda $0E                            ; @5C89 A5 0E
-    sta $1C                            ; @5C8B 85 1C
-    lda $0F                            ; @5C8D A5 0F
-    sta $1D                            ; @5C8F 85 1D
-    lda $10                            ; @5C91 A5 10
-    sta $14                            ; @5C93 85 14
-    lda $11                            ; @5C95 A5 11
-    sta $15                            ; @5C97 85 15
-    jsr L5B00                          ; @5C99 20 00 5B
-    lda #$00                           ; @5C9C A9 00
-    sec                                ; @5C9E 38
-    sbc $1E                            ; @5C9F E5 1E
-    sta $1E                            ; @5CA1 85 1E
-    lda #$00                           ; @5CA3 A9 00
-    sbc $1F                            ; @5CA5 E5 1F
-    sta $1F                            ; @5CA7 85 1F
-    lda #$00                           ; @5CA9 A9 00
-    sbc $18                            ; @5CAB E5 18
-    sta $18                            ; @5CAD 85 18
+    sbc $1F                            ; @5C72 E5 1F
+    sta $1F                            ; @5C74 85 1F
+    lda #$00                           ; @5C76 A9 00
+    sbc $18                            ; @5C78 E5 18
+    sta $18                            ; @5C7A 85 18
+    lda #$00                           ; @5C7C A9 00
+    sbc $19                            ; @5C7E E5 19
+    sta $19                            ; @5C80 85 19
+    clc                                ; @5C82 18
+    rts                                ; @5C83 60
+L5C84:
+    lda #$00                           ; @5C84 A9 00
+    sec                                ; @5C86 38
+    sbc $C014                          ; @5C87 ED 14 C0
+    sta $16                            ; @5C8A 85 16
+    lda #$00                           ; @5C8C A9 00
+    sbc $C015                          ; @5C8E ED 15 C0
+    sta $17                            ; @5C91 85 17
+    lda $C013                          ; @5C93 AD 13 C0
+    bmi L5CCA                          ; @5C96 30 32
+    lda $C010                          ; @5C98 AD 10 C0
+    sta $1C                            ; @5C9B 85 1C
+    lda $C011                          ; @5C9D AD 11 C0
+    sta $1D                            ; @5CA0 85 1D
+    lda $C012                          ; @5CA2 AD 12 C0
+    sta $14                            ; @5CA5 85 14
+    lda $C013                          ; @5CA7 AD 13 C0
+    sta $15                            ; @5CAA 85 15
+    jsr L5B00                          ; @5CAC 20 00 5B
     lda #$00                           ; @5CAF A9 00
-    sbc $19                            ; @5CB1 E5 19
-    sta $19                            ; @5CB3 85 19
-    clc                                ; @5CB5 18
-    rts                                ; @5CB6 60
-L5CB7:
-    lda #$00                           ; @5CB7 A9 00
-    sec                                ; @5CB9 38
-    sbc $0E                            ; @5CBA E5 0E
-    sta $1C                            ; @5CBC 85 1C
-    lda #$00                           ; @5CBE A9 00
-    sbc $0F                            ; @5CC0 E5 0F
-    sta $1D                            ; @5CC2 85 1D
-    lda #$00                           ; @5CC4 A9 00
-    sbc $10                            ; @5CC6 E5 10
-    sta $14                            ; @5CC8 85 14
+    sec                                ; @5CB1 38
+    sbc $1E                            ; @5CB2 E5 1E
+    sta $1E                            ; @5CB4 85 1E
+    lda #$00                           ; @5CB6 A9 00
+    sbc $1F                            ; @5CB8 E5 1F
+    sta $1F                            ; @5CBA 85 1F
+    lda #$00                           ; @5CBC A9 00
+    sbc $18                            ; @5CBE E5 18
+    sta $18                            ; @5CC0 85 18
+    lda #$00                           ; @5CC2 A9 00
+    sbc $19                            ; @5CC4 E5 19
+    sta $19                            ; @5CC6 85 19
+    clc                                ; @5CC8 18
+    rts                                ; @5CC9 60
+L5CCA:
     lda #$00                           ; @5CCA A9 00
-    sbc $11                            ; @5CCC E5 11
-    sta $15                            ; @5CCE 85 15
-    jsr L5B00                          ; @5CD0 20 00 5B
-    lda #$00                           ; @5CD3 A9 00
-    sec                                ; @5CD5 38
-    sbc $1A                            ; @5CD6 E5 1A
-    sta $1A                            ; @5CD8 85 1A
-    lda #$00                           ; @5CDA A9 00
-    sbc $1B                            ; @5CDC E5 1B
-    sta $1B                            ; @5CDE 85 1B
-    clc                                ; @5CE0 18
-    rts                                ; @5CE1 60
-L5CE2:
-    sta $16                            ; @5CE2 85 16
-    sta $17                            ; @5CE4 85 17
-    jmp L5B00                          ; @5CE6 4C 00 5B
+    sec                                ; @5CCC 38
+    sbc $C010                          ; @5CCD ED 10 C0
+    sta $1C                            ; @5CD0 85 1C
+    lda #$00                           ; @5CD2 A9 00
+    sbc $C011                          ; @5CD4 ED 11 C0
+    sta $1D                            ; @5CD7 85 1D
+    lda #$00                           ; @5CD9 A9 00
+    sbc $C012                          ; @5CDB ED 12 C0
+    sta $14                            ; @5CDE 85 14
+    lda #$00                           ; @5CE0 A9 00
+    sbc $C013                          ; @5CE2 ED 13 C0
+    sta $15                            ; @5CE5 85 15
+    jsr L5B00                          ; @5CE7 20 00 5B
+    lda #$00                           ; @5CEA A9 00
+    sec                                ; @5CEC 38
+    sbc $1A                            ; @5CED E5 1A
+    sta $1A                            ; @5CEF 85 1A
+    lda #$00                           ; @5CF1 A9 00
+    sbc $1B                            ; @5CF3 E5 1B
+    sta $1B                            ; @5CF5 85 1B
+    clc                                ; @5CF7 18
+    rts                                ; @5CF8 60
+L5CF9:
+    lda #$00                           ; @5CF9 A9 00
+    sta $16                            ; @5CFB 85 16
+    sta $17                            ; @5CFD 85 17
+    jmp L5B00                          ; @5CFF 4C 00 5B
 ; ---- executable island $5E1B ----
 * = $5E1B
 L5E1B:

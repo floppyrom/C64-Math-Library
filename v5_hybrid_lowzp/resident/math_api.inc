@@ -56,4 +56,4 @@ MATH_R                   = $C01C
 
 ; Hybrid profile metadata (not additional API entries)
 HYBRID_CODE_BASE         = $A000
-HYBRID_CODE_END          = $B1FF
+HYBRID_CODE_END          = $BDFF
