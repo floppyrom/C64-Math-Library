@@ -26,7 +26,7 @@ def main():
     public=read_csv(ROOT/'docs/CONSOLIDATED_ROUTINE_TABLE.csv')
     fields=list(public[0].keys())+['source_path','source_sha256']
     with (ROOT/'benchmarks/PUBLIC_PROFILE_RESULTS.csv').open('w',newline='') as f:
-        w=csv.DictWriter(f,fieldnames=fields,lineterminator='\\n');w.writeheader()
+        w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader()
         for r in public:
             m=manifests[r['profile']][r['routine']]
             sp=f"{r['profile']}/standalone/{m['file']}"
@@ -43,7 +43,7 @@ def main():
             best[k]=r
     best_fields=['canonical_name','routine','profile','mean_cycles','min_cycles','max_cycles','zp_bytes','stack_page_reserved_bytes','cycle_basis','source_path','source_sha256']
     with (ROOT/'benchmarks/BEST_PROFILE_RESULTS.csv').open('w',newline='') as f:
-        w=csv.DictWriter(f,fieldnames=best_fields,lineterminator='\\n');w.writeheader()
+        w=csv.DictWriter(f,fieldnames=best_fields,lineterminator='\n');w.writeheader()
         for k in sorted(best):
             r=best[k];w.writerow({x:r.get(x,'') for x in best_fields})
 
@@ -51,7 +51,7 @@ def main():
     standalone=read_csv(standalone_path)
     sfields=list(standalone[0].keys())
     with standalone_path.open('w',newline='') as f:
-        w=csv.DictWriter(f,fieldnames=sfields,lineterminator='\\n');w.writeheader()
+        w=csv.DictWriter(f,fieldnames=sfields,lineterminator='\n');w.writeheader()
         for r in standalone:
             r=dict(r);r['source_sha256']=sha(ROOT/r['source_path']);w.writerow(r)
 
@@ -77,7 +77,7 @@ def main():
     catalog.sort(key=lambda x:(x['category'],x['canonical_name'],x['scope'],x['profile'],x['variant']))
     cfields=['scope','category','profile','legacy_api','canonical_name','variant','mean_cycles','zp_bytes','stack_page_reserved_bytes','source_path','source_sha256','validation_path','status','notes']
     with (ROOT/'routines/SOURCE_CATALOG.csv').open('w',newline='') as f:
-        w=csv.DictWriter(f,fieldnames=cfields,lineterminator='\\n');w.writeheader();w.writerows(catalog)
+        w=csv.DictWriter(f,fieldnames=cfields,lineterminator='\n');w.writeheader();w.writerows(catalog)
     print(f'PUBLIC INDEXES UPDATED: {len(public)} shipped rows, {len(standalone)} standalone alternatives, {len(catalog)} catalog rows')
 
 if __name__=='__main__': main()
