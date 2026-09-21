@@ -36,7 +36,11 @@ for about 7.2% lower average latency** than V1.
 
 V4 keeps its separate exact REU-backed ATAN2 path at a fixed 48 cycles.
 
-## Optimized kernels (2026-09-20)
+The size refresh moves sum-fast carry setup to one common entry instruction,
+saving four code bytes with identical cycles and outputs for every input.
+See [the size-refresh note](../../docs/SIZE_OPTIMIZATION_2026-09-21.md).
+
+## Optimized kernels (updated 2026-09-21)
 
 `compact_opt` and `sum_fast` are installed in the fixed profiles. `sum_small`
 remains an optional smaller-table alternative.
@@ -47,7 +51,7 @@ remains an optional smaller-table alternative.
 | **installed V1 `compact_opt`** | **94 B** | **512 B** | **606 B** | **48.447189** | 29-50 | exact |
 | previous `fast` | 94 B | 1280 B | 1374 B | 46.953064 | 30-48 | exact |
 | **`sum_small`** | **92 B** | **768 B** | **860 B** | **45.958908** | 29-48 | 202 results differ by 1 |
-| **installed V2/V3/V5 `sum_fast`** | **89 B** | **1024 B** | **1113 B** | **44.962814** | 29-47 | exact |
+| **installed V2/V3/V5 `sum_fast`** | **85 B** | **1024 B** | **1109 B** | **44.962814** | 29-47 | exact |
 
 All five use 0 extra ZP and satisfy the <=1 phase-unit bound against rounded
 mathematical atan2. Every axis and `(0,0)` is exact. The three-page `sum_small`
@@ -74,10 +78,10 @@ carry-clearing log sum and the memory/accuracy trade-offs.
 | Profile | Executable source | Installed body |
 |---|---|---|
 | V1 Balanced | `v1_balanced/standalone/atan2_s8_s8_u8.asm` | compact-opt body at `$C814-$C871` |
-| V2 Pareto-Fast | `v2_pareto_fast/standalone/atan2_s8_s8_u8.asm` | sum-fast body at `$C782-$C7DA` |
-| V3 REU 512K | `v3_reu_512k/standalone/atan2_s8_s8_u8.asm` | sum-fast body at `$C78D-$C7E5` |
+| V2 Pareto-Fast | `v2_pareto_fast/standalone/atan2_s8_s8_u8.asm` | sum-fast body at `$C782-$C7D6` |
+| V3 REU 512K | `v3_reu_512k/standalone/atan2_s8_s8_u8.asm` | sum-fast body at `$C78D-$C7E1` |
 | V4 REU 16M | `v4_reu_16m/standalone/atan2_s8_s8_u8.asm` | exact REU lookup |
-| V5 Hybrid Low-ZP | `v5_hybrid_lowzp/standalone/atan2_s8_s8_u8.asm` | sum-fast body at `$C814-$C86C`, tables at `$6D00-$70FF` |
+| V5 Hybrid Low-ZP | `v5_hybrid_lowzp/standalone/atan2_s8_s8_u8.asm` | sum-fast body at `$C814-$C868`, tables at `$6D00-$70FF` |
 
 These generated profile mirrors describe the installed executable and depend
 on the profile's existing tables. `tools/build_hybrid.py` remains authoritative

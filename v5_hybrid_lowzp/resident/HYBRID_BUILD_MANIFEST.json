@@ -7,7 +7,7 @@
   "output_prg": "math_v5_hybrid_lowzp_game_math.prg",
   "output_load": "$1000",
   "output_end": "$CF96",
-  "output_sha256": "4d720909805130529ddb0ecaf92382368a731e1c91dccdd9e530100d84944ae1",
+  "output_sha256": "52697af71bab5a6586536d9d3b8abc0165fe0e9260c0353ed1a4f638e4a9ee0b",
   "public_entries": {
     "MATH_UMUL8": "$3000",
     "MATH_UMUL16": "$3020",
@@ -81,8 +81,8 @@
   ],
   "atan2_fast_enabled": true,
   "atan2_fast": {
-    "body": "$C814-$C86C",
-    "body_bytes": 89,
+    "body": "$C814-$C868",
+    "body_bytes": 85,
     "extra_table_bytes": 1024,
     "extra_table_pages": [
       "$6D00",
@@ -133,10 +133,10 @@
     "Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines."
   ],
   "source_inputs": {
-    "v1_source_sha256": "94f2905f02ff64abed77b41473484820a7e3edb3a6288a633608aca0097c8d43",
-    "v2_source_sha256": "53ff85690503bd514f911d581468e8d92b90aff45dc24f2d4b8707d31e00cfb7",
-    "normalize_native_sha256": "115c046997ae23ea7c74c24eff07a7774841322f4b7f3eacb34bb9720c58d8b7",
-    "normalize_tables_sha256": "4024be67d1106c6698830fc8aafcf7c1e6716e7e94db0475553a6ed58c692cea",
+    "v1_source_sha256": "099498c60cb6b65c9993c104b20be88553e3825f9a521929220ef225016f9929",
+    "v2_source_sha256": "e1f49e1bda06c0adc1bb9fd11826e6e079a3b8592b742bc05b694d4910849c0b",
+    "normalize_native_sha256": "02c62b29908cb367195eb9f8ac3f80c715532f2442369f5181769f3dc468dd58",
+    "normalize_tables_sha256": "59092b96cebca7715f98f1fe7a8264a0169e535fc48946ac4f4b596358b1f0ab",
     "builder_sha256": "78b3a7ddf0f324acc788a79fba0fb78db384497140788410d83168ed03eb1d0d"
   }
 }

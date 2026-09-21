@@ -1,3 +1,5 @@
+2026-09-21: Smaller normalize and ATAN2. Normalize saves 290 B in V1/V2/V5 and 18 B in V3/V4; means improve to 160.150080 and 156.661198 cycles. Fast ATAN2 saves 4 code bytes with identical timings and outputs. No per-case slowdowns in the comparison corpus. Stock normalize outputs change within the existing accuracy bounds; REU outputs and images are unchanged. See docs/SIZE_OPTIMIZATION_2026-09-21.md.
+
 2026-09-21: Faster vector normalization. V1/V2/V5: 161.332256 cycles; V3/V4: 157.552684 cycles. Four scratch bytes, same public precision bounds. Stock code/tables grow; V1/V2/V5 PRG load changes to $1000. See docs/VEC2_NORMALIZE_Q8_8.md.
 
 2026-09-20 - STANDALONE ROUTINE SOURCES / TYPED NAMES
@@ -113,4 +115,3 @@ V4 REU 16M + QS16 + relocatable Turbo overlays
 2026-09-14 SOURCE-PUBLICATION FIX
 - Added exact per-routine native signed SMUL/SDIV source mirrors to every V1-V5 profile, including V1 where multiply/native previously contained only a README.
 - Added byte-for-byte publication validation; resident PRG/REU payloads are unchanged.
-

@@ -10,6 +10,8 @@
 ; Negative magnitudes use one's complement; the small-vector paths correct
 ; this to saturated absolute bytes, exactly as in the original reduction.
 ;
+; Small-vector paths pass the minor byte directly to the DMA setup.
+;
 ; REU backend: existing 32 KiB ratio-index plane in REU_TURBO16_BANK.
 ; Code body: REG_LOW+$0200; component planes supplied by the local include.
 ; This source owns its code/table islands and restores PC to the end of
@@ -24,8 +26,7 @@ norm_entry:
     !byte $AF, <MATH_IO+$01, >MATH_IO+$01
     bmi sign_x_negative
     lda MATH_IO+$05
-    bmi sign_y_negative
-    jmp pp_entry
+    bpl pp_entry
 sign_y_negative:
     eor #$FF
     jmp pn_entry
@@ -48,8 +49,6 @@ pp_entry:
     cpx ZP_MAIN+$1B
     bcc pp_to_y_major
     bne pp_x_major
-    txa
-    bne pp_compare_low
 pp_compare_low:
     lda ZP_MAIN+$18
     cmp ZP_MAIN+$1A
@@ -64,10 +63,9 @@ pp_x_low_loop:
     asl
     bpl pp_x_low_loop
 pp_x_low_done:
-    ldx ZP_MAIN+$1A
-    stx ZP_MAIN+$1B
     tay
-    bmi pp_x_ratio
+    lda ZP_MAIN+$1A
+    jmp pp_x_dma
 pp_zero:
     sta MATH_IO+$08
     sta MATH_IO+$09
@@ -88,6 +86,7 @@ pp_x_shift:
     tay
 pp_x_ratio:
     lda ZP_MAIN+$1B
+pp_x_dma:
     sta $DF04
     sty $DF05
     lda #REU_TURBO16_BANK
@@ -118,6 +117,7 @@ pp_y_shift:
     tay
 pp_y_ratio:
     lda ZP_MAIN+$19
+pp_y_dma:
     sta $DF04
     sty $DF05
     lda #REU_TURBO16_BANK
@@ -145,8 +145,7 @@ pp_y_low_loop:
 pp_y_low_done:
     tay
     lda ZP_MAIN+$18
-    sta ZP_MAIN+$19
-    jmp pp_y_ratio
+    jmp pp_y_dma
 ; Quadrant: X positive, Y negative.
 * = REG_LOW+$0300
 pn_entry:
@@ -178,10 +177,9 @@ pn_x_low_loop:
     asl
     bpl pn_x_low_loop
 pn_x_low_done:
-    ldx ZP_MAIN+$1A
-    stx ZP_MAIN+$1B
     tay
-    bmi pn_x_ratio
+    lda ZP_MAIN+$1A
+    jmp pn_x_dma
 pn_to_y_major:
     jmp pn_y_major
 pn_x_major:
@@ -195,6 +193,7 @@ pn_x_shift:
     tay
 pn_x_ratio:
     lda ZP_MAIN+$1B
+pn_x_dma:
     sta $DF04
     sty $DF05
     lda #REU_TURBO16_BANK
@@ -227,6 +226,7 @@ pn_y_shift:
     tay
 pn_y_ratio:
     lda ZP_MAIN+$19
+pn_y_dma:
     sta $DF04
     sty $DF05
     lda #REU_TURBO16_BANK
@@ -256,8 +256,7 @@ pn_y_low_loop:
 pn_y_low_done:
     tay
     lda ZP_MAIN+$18
-    sta ZP_MAIN+$19
-    jmp pn_y_ratio
+    jmp pn_y_dma
 ; Quadrant: X negative, Y positive.
 * = REG_LOW+$0B00
 np_entry:
@@ -289,10 +288,9 @@ np_x_low_loop:
     asl
     bpl np_x_low_loop
 np_x_low_done:
-    ldx ZP_MAIN+$1A
-    stx ZP_MAIN+$1B
     tay
-    bmi np_x_ratio
+    lda ZP_MAIN+$1A
+    jmp np_x_dma
 np_to_y_major:
     jmp np_y_major
 np_x_major:
@@ -306,6 +304,7 @@ np_x_shift:
     tay
 np_x_ratio:
     lda ZP_MAIN+$1B
+np_x_dma:
     sta $DF04
     sty $DF05
     lda #REU_TURBO16_BANK
@@ -338,6 +337,7 @@ np_y_shift:
     tay
 np_y_ratio:
     lda ZP_MAIN+$19
+np_y_dma:
     sta $DF04
     sty $DF05
     lda #REU_TURBO16_BANK
@@ -367,8 +367,7 @@ np_y_low_loop:
 np_y_low_done:
     tay
     lda ZP_MAIN+$18
-    sta ZP_MAIN+$19
-    jmp np_y_ratio
+    jmp np_y_dma
 ; Quadrant: X negative, Y negative.
 * = REG_LOW+$0720
 nn_entry:
@@ -405,10 +404,9 @@ nn_x_low_loop:
     asl
     bpl nn_x_low_loop
 nn_x_low_done:
-    ldx ZP_MAIN+$1A
-    stx ZP_MAIN+$1B
     tay
-    bmi nn_x_ratio
+    lda ZP_MAIN+$1A
+    jmp nn_x_dma
 nn_to_y_major:
     jmp nn_y_major
 nn_x_major:
@@ -422,6 +420,7 @@ nn_x_shift:
     tay
 nn_x_ratio:
     lda ZP_MAIN+$1B
+nn_x_dma:
     sta $DF04
     sty $DF05
     lda #REU_TURBO16_BANK
@@ -457,6 +456,7 @@ nn_y_shift:
     tay
 nn_y_ratio:
     lda ZP_MAIN+$19
+nn_y_dma:
     sta $DF04
     sty $DF05
     lda #REU_TURBO16_BANK
@@ -489,8 +489,7 @@ nn_y_low_loop:
 nn_y_low_done:
     tay
     lda ZP_MAIN+$18
-    sta ZP_MAIN+$19
-    jmp nn_y_ratio
+    jmp nn_y_dma
 
 VEC2_NORMALIZE_CODE_END:
 !source "vec2_normalize_tables.asm"

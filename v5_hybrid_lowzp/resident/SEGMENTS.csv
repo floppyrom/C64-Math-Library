@@ -9,9 +9,12 @@ atan2_fast_logy,$6E00,256,integrated PRG,sum-fast ATAN2 biased absolute-Y logari
 atan2_fast_qpos,$6F00,256,integrated PRG,sum-fast ATAN2 positive-angle table in V1-free REG_TABLE page
 atan2_fast_qneg,$7000,256,integrated PRG,sum-fast ATAN2 negative-angle table in V1-free REG_TABLE page
 normalize_entry,$5E39,3,integrated PRG,stable vector-normalize JMP
-normalize_code,$1600,912,integrated PRG,sign-specific logarithmic-ratio normalize code
-normalize_ratio_index,$1000,1280,integrated PRG,five logarithmic ratio-to-component-index pages
-normalize_log_low,$1500,256,integrated PRG,low bytes of L(v)=round(160*log2(v))-1120
+normalize_dispatch_pp,$1500,236,integrated PRG,sign-specific normalize code; branches stay within page
+normalize_pn,$1600,208,integrated PRG,sign-specific normalize code; branches stay within page
+normalize_np,$1700,208,integrated PRG,sign-specific normalize code; branches stay within page
+normalize_nn,$1800,226,integrated PRG,sign-specific normalize code; branches stay within page
+normalize_ratio_index,$1000,1024,integrated PRG,four logarithmic ratio-to-component-index pages
+normalize_log_low,$1400,256,integrated PRG,low bytes of L(v)=floor(127.85*log2(v)+0.5)-895
 normalize_log_high,$6400,256,integrated PRG,high bytes of L(v)
 normalize_component_0,$6000,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
 normalize_component_1,$6100,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane

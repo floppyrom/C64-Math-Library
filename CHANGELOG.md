@@ -1,3 +1,13 @@
+## 2026-09-21 — smaller normalize and ATAN2 without timing regressions
+
+- Reduce normalize to 881 code + 2,560 table bytes in V1/V2/V5, saving **290 bytes**. V3/V4 use 849 code + 1,024 C64 table bytes, saving **18 bytes**.
+- Use four certified logarithmic ratio pages, remove redundant instructions and small-vector scratch transfers, and keep each stock quadrant within one code page.
+- Normalize now averages **160.150080 cycles** in V1/V2/V5 and **156.661198 cycles** in V3/V4. No slower call among 107,396 comparison vectors per profile.
+- Reduce V2/V3/V5 ATAN2 bodies from 89 to **85 bytes** by sharing carry setup. All 65,536 inputs retain identical cycles and outputs; mean remains **44.962814 cycles**.
+- Preserve the existing accuracy contract. Stock normalize outputs change, with full-domain bounds of 0.361659109 degrees and 201 LSB; REU normalize outputs are unchanged. PRG spans and REU images are unchanged.
+- Refresh native and standalone sources, profile/segment/result tables and validation. Correct mixed-call validation to bind multiply state before calling `UMUL32_READY`.
+- Full details: `docs/SIZE_OPTIMIZATION_2026-09-21.md`.
+
 ## 2026-09-21 — faster vector normalization
 
 - V1/V2/V5 now average **161.332256 cycles**, down 18.83% for V1/V5 and 14.76% for V2. V3/V4 average **157.552684 cycles**, down 7.35%, on the same 107,396-vector corpus.

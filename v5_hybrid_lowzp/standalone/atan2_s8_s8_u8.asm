@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 44.
+; Reachable instructions: 40.
 !cpu 6510
 
 ; ---- executable island $5E2A ----
@@ -17,51 +17,47 @@ MATH_ATAN2_8:
 ; ---- executable island $C814 ----
 * = $C814
 LC814:
-    ldx $C000                          ; @C814 AE 00 C0
-    beq LC85F                          ; @C817 F0 46
-    bmi LC83B                          ; @C819 30 20
-    lda $6D00,x                        ; @C81B BD 00 6D
-    ldx $C004                          ; @C81E AE 04 C0
-    bmi LC82F                          ; @C821 30 0C
-    clc                                ; @C823 18
+    clc                                ; @C814 18
+    ldx $C000                          ; @C815 AE 00 C0
+    beq LC85C                          ; @C818 F0 42
+    bmi LC83A                          ; @C81A 30 1E
+    lda $6D00,x                        ; @C81C BD 00 6D
+    ldx $C004                          ; @C81F AE 04 C0
+    bmi LC82F                          ; @C822 30 0B
     adc $6E00,x                        ; @C824 7D 00 6E
     tax                                ; @C827 AA
     lda $6F00,x                        ; @C828 BD 00 6F
     sta $C008                          ; @C82B 8D 08 C0
     rts                                ; @C82E 60
 LC82F:
-    clc                                ; @C82F 18
-    adc $6E00,x                        ; @C830 7D 00 6E
-    tax                                ; @C833 AA
-    lda $7000,x                        ; @C834 BD 00 70
-    sta $C008                          ; @C837 8D 08 C0
-    rts                                ; @C83A 60
-LC83B:
-    lda $6D00,x                        ; @C83B BD 00 6D
-    ldx $C004                          ; @C83E AE 04 C0
-    bmi LC851                          ; @C841 30 0E
-    clc                                ; @C843 18
-    adc $6E00,x                        ; @C844 7D 00 6E
-    tax                                ; @C847 AA
-    lda $7000,x                        ; @C848 BD 00 70
-    eor #$80                           ; @C84B 49 80
-    sta $C008                          ; @C84D 8D 08 C0
-    rts                                ; @C850 60
-LC851:
-    clc                                ; @C851 18
-    adc $6E00,x                        ; @C852 7D 00 6E
-    tax                                ; @C855 AA
-    lda $6F00,x                        ; @C856 BD 00 6F
-    eor #$80                           ; @C859 49 80
-    sta $C008                          ; @C85B 8D 08 C0
-    rts                                ; @C85E 60
-LC85F:
-    clc                                ; @C85F 18
-    lda $C004                          ; @C860 AD 04 C0
-    beq LC869                          ; @C863 F0 04
-    asl a                              ; @C865 0A
-    lda #$80                           ; @C866 A9 80
-    ror a                              ; @C868 6A
-LC869:
-    sta $C008                          ; @C869 8D 08 C0
-    rts                                ; @C86C 60
+    adc $6E00,x                        ; @C82F 7D 00 6E
+    tax                                ; @C832 AA
+    lda $7000,x                        ; @C833 BD 00 70
+    sta $C008                          ; @C836 8D 08 C0
+    rts                                ; @C839 60
+LC83A:
+    lda $6D00,x                        ; @C83A BD 00 6D
+    ldx $C004                          ; @C83D AE 04 C0
+    bmi LC84F                          ; @C840 30 0D
+    adc $6E00,x                        ; @C842 7D 00 6E
+    tax                                ; @C845 AA
+    lda $7000,x                        ; @C846 BD 00 70
+    eor #$80                           ; @C849 49 80
+    sta $C008                          ; @C84B 8D 08 C0
+    rts                                ; @C84E 60
+LC84F:
+    adc $6E00,x                        ; @C84F 7D 00 6E
+    tax                                ; @C852 AA
+    lda $6F00,x                        ; @C853 BD 00 6F
+    eor #$80                           ; @C856 49 80
+    sta $C008                          ; @C858 8D 08 C0
+    rts                                ; @C85B 60
+LC85C:
+    lda $C004                          ; @C85C AD 04 C0
+    beq LC865                          ; @C85F F0 04
+    asl a                              ; @C861 0A
+    lda #$80                           ; @C862 A9 80
+    ror a                              ; @C864 6A
+LC865:
+    sta $C008                          ; @C865 8D 08 C0
+    rts                                ; @C868 60

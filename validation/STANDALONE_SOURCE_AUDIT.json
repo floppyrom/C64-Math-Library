@@ -372,7 +372,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 432
+          "reachable_instructions": 413
         }
       ]
     },
@@ -707,7 +707,7 @@
           "file": "atan2_s8_s8_u8.asm",
           "alias_of": "",
           "entry_address": "$5E2A",
-          "reachable_instructions": 44
+          "reachable_instructions": 40
         },
         {
           "legacy_api": "MATH_ISQRT16",
@@ -747,7 +747,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 432
+          "reachable_instructions": 413
         }
       ]
     },
@@ -1082,7 +1082,7 @@
           "file": "atan2_s8_s8_u8.asm",
           "alias_of": "",
           "entry_address": "$5E2A",
-          "reachable_instructions": 44
+          "reachable_instructions": 40
         },
         {
           "legacy_api": "MATH_ISQRT16",
@@ -1122,7 +1122,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 400
+          "reachable_instructions": 389
         },
         {
           "legacy_api": "MATH_REU_UMUL16_BEGIN",
@@ -1545,7 +1545,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 400
+          "reachable_instructions": 389
         },
         {
           "legacy_api": "MATH_REU_UMUL16_BEGIN",
@@ -1952,7 +1952,7 @@
           "file": "atan2_s8_s8_u8.asm",
           "alias_of": "",
           "entry_address": "$5E2A",
-          "reachable_instructions": 44
+          "reachable_instructions": 40
         },
         {
           "legacy_api": "MATH_ISQRT16",
@@ -1992,7 +1992,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 432
+          "reachable_instructions": 413
         }
       ]
     }

@@ -43,7 +43,7 @@ ck('turbo_api_profiles',all(r['profiles']=='V3/V4' for r in turbo_rows))
 # Vector-normalization certification and cross-profile parity.
 norm=json.loads((ROOT/'validation/normalize/NORMALIZE_PROFILE_PARITY_107396.json').read_text())
 ck('normalize_profile_parity',norm.get('status')=='PASS' and norm.get('corpus_vectors')==107396 and len(norm.get('profiles',[]))==5,{'profiles':len(norm.get('profiles',[])),'corpus':norm.get('corpus_vectors')})
-expected_norm={'v1_balanced':161.3322563223956,'v2_pareto_fast':161.3322563223956,'v3_reu_512k':157.5526835263883,'v4_reu_16m':157.5526835263883,'v5_hybrid_lowzp':161.3322563223956}
+expected_norm={'v1_balanced':160.1500800774703,'v2_pareto_fast':160.1500800774703,'v3_reu_512k':156.6611978099743,'v4_reu_16m':156.6611978099743,'v5_hybrid_lowzp':160.1500800774703}
 for row in norm['profiles']:
     prof=row['profile']; rr=row['reference']; aa=row['alternate']
     ok=(prof in expected_norm and rr['entry']=='$5E39' and rr['cases']==107396 and aa['cases']==107396 and
@@ -66,6 +66,20 @@ nv=json.loads((ROOT/'validation/normalize/OPTIMIZED_VALIDATION.json').read_text(
 ck('normalize_reduced_plane_and_mixed_calls',nv.get('status')=='PASS' and len(nv['mixed_calls'])==10 and all(x['cases']==271926 and x['errors']==0 for x in nv['reduced_plane'].values()) and all(x['normalize_calls']==1000 and x['errors']==0 and x['zp_bytes_allowed']==4 for x in nv['mixed_calls'].values()))
 native_norm=json.loads((ROOT/'validation/normalize/NATIVE_SOURCE_VALIDATION.json').read_text())
 ck('normalize_native_sources',native_norm.get('status')=='PASS' and len(native_norm.get('profiles',{}))==5 and len(native_norm.get('checks',[]))==16,{'profiles':len(native_norm.get('profiles',{})),'checks':len(native_norm.get('checks',[]))})
+
+size_refresh=json.loads((ROOT/'validation/SIZE_OPTIMIZATION_VALIDATION.json').read_text())
+ck('size_refresh_per_call_comparison',size_refresh.get('status')=='PASS' and len(size_refresh['normalize'])==5 and len(size_refresh['atan2'])==3)
+for family in ('normalize','atan2'):
+    for row in size_refresh[family]:
+        p=row['profile']; current=ROOT/p/'resident'/f'math_{p}_game_math.prg'
+        expected_cases=107396 if family=='normalize' else 65536
+        ok=(row['cases']==expected_cases and row['slower_calls']==0 and row['ram_bytes_saved']>0
+            and row['current_prg_sha256']==sha(current))
+        if family=='atan2':ok=ok and row['changed_outputs']==row['faster_calls']==0
+        else:
+            sizes=native_norm['profiles'][p]['maps']['reference']
+            ok=ok and row['code_bytes']==sizes['code_bytes'] and row['table_bytes']==sizes['table_bytes']
+        ck(f'size_refresh_{family}_{p}',ok,{'saved_bytes':row['ram_bytes_saved'],'slower_calls':row['slower_calls']})
 
 # Build and validation evidence.
 source_val=json.loads((ROOT/'validation/source_relocation/ALTERNATE_MAP_VALIDATION.json').read_text())

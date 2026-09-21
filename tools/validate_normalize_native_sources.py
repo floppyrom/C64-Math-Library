@@ -11,11 +11,11 @@ from assemble_sources import parse_config, expand_source_file
 
 ENTRY_OFFSET=0x39
 ROUTINE_BYTES={
- 'v1_balanced':915,
- 'v2_pareto_fast':915,
- 'v3_reu_512k':867,
- 'v4_reu_16m':867,
- 'v5_hybrid_lowzp':915,
+ 'v1_balanced':881,
+ 'v2_pareto_fast':881,
+ 'v3_reu_512k':849,
+ 'v4_reu_16m':849,
+ 'v5_hybrid_lowzp':881,
 }
 FIXED=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m')
 ALL=FIXED+('v5_hybrid_lowzp',)
@@ -72,8 +72,8 @@ def main():
    text=cfg.read_text().rstrip()+f'\n* = REG_GAME_API+${ENTRY_OFFSET:04X}\n'+strip_cpu(src)
    mem,labels,const=Assembler().assemble(text)
    n=ROUTINE_BYTES[p]
-   body=vals['REG_LOW']+(0x200 if p in FIXED[2:] else 0x600)
-   tables=1024 if p in FIXED[2:] else 2816
+   body=vals['REG_LOW']+(0x200 if p in FIXED[2:] else 0x500)
+   tables=1024 if p in FIXED[2:] else 2560
    assert len(mem)-tables==n
    assert mem[entry]==0x4c and mem[entry+1]|mem[entry+2]<<8==body
    addresses=sorted(mem)

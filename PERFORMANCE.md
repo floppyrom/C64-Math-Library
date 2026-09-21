@@ -68,7 +68,7 @@ The five fixed profiles use different memory/ZP trade-offs, so the fastest numbe
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1198.619613 | 1197.859322 | 1046.622518 | 1378.900969 |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 79.570038 | 79.070038 | 79.070038 | 86.085602 |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 85.570038 | 85.070038 | 85.070038 | 92.085602 |
-| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 161.332256 | 161.332256 | 157.552684 | 157.552684 | 161.332256 |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 160.150080 | 156.661198 | 156.661198 | 160.150080 |
 
 ## Source-backed standalone / Pareto alternatives
 

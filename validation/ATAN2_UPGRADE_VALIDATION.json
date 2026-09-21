@@ -23,7 +23,7 @@
       "atan_body": "$C814-$C871",
       "isqrt16_body": "$C8DB",
       "code_bytes": 94,
-      "sha256": "acae8921cbc938ad9ca821f682578e3c09cd0969d1dfdce78c09b78456672f8a",
+      "sha256": "2780f653e0236a0ca0a6c5cc13966dad053710a7dbbceab309b3a7f7007af534",
       "cases": 65536,
       "mean_cycles": 48.44718933105469,
       "min_cycles": 29,
@@ -45,10 +45,10 @@
       "tier": "compact_opt_512B"
     },
     "v2_pareto_fast": {
-      "atan_body": "$C782-$C7DA",
+      "atan_body": "$C782-$C7D6",
       "isqrt16_body": "$C836",
-      "code_bytes": 89,
-      "sha256": "f28a900b2274c7f09290df93d81ec34a16de5c9e6e8a46c1b84b5e5e1dd4d994",
+      "code_bytes": 85,
+      "sha256": "507715294f2c7e72ea895b009dde62244f091fdbd8fcd9733668648632a64eb6",
       "cases": 65536,
       "mean_cycles": 44.96281433105469,
       "min_cycles": 29,
@@ -71,10 +71,10 @@
       "tier": "sum_fast_1024B"
     },
     "v3_reu_512k": {
-      "atan_body": "$C78D-$C7E5",
+      "atan_body": "$C78D-$C7E1",
       "isqrt16_body": "$C841",
-      "code_bytes": 89,
-      "sha256": "84e85bafa6fbfd33c543f42dec8604e0b2d2fc20e2f878513b21f583d36c1b3e",
+      "code_bytes": 85,
+      "sha256": "e29fa4245ac9b15e1048bbe16f4126bfc20b39bd95f063d211870f179a776341",
       "cases": 65536,
       "mean_cycles": 44.96281433105469,
       "min_cycles": 29,

@@ -6,137 +6,130 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 400.
+; Reachable instructions: 389.
 !cpu 6510
 
 ; ---- executable island $1200 ----
 * = $1200
 L1200:
     !byte $AF, $01, $C0    ; LAX abs   ; @1200 AF 01 C0
-    bmi L1212                          ; @1203 30 0D
+    bmi L120F                          ; @1203 30 0A
     lda $C005                          ; @1205 AD 05 C0
-    bmi L120D                          ; @1208 30 03
-    jmp L1222                          ; @120A 4C 22 12
-L120D:
-    eor #$FF                           ; @120D 49 FF
-    jmp L1300                          ; @120F 4C 00 13
-L1212:
-    eor #$FF                           ; @1212 49 FF
-    tax                                ; @1214 AA
-    lda $C005                          ; @1215 AD 05 C0
-    bmi L121D                          ; @1218 30 03
-    jmp L1B00                          ; @121A 4C 00 1B
-L121D:
-    eor #$FF                           ; @121D 49 FF
-    jmp L1720                          ; @121F 4C 20 17
-L1222:
-    sta $1D                            ; @1222 85 1D
-    lda $C000                          ; @1224 AD 00 C0
-    sta $1A                            ; @1227 85 1A
-    lda $C004                          ; @1229 AD 04 C0
-    sta $1C                            ; @122C 85 1C
-    cpx $1D                            ; @122E E4 1D
-    bcc L1260                          ; @1230 90 2E
-    bne L1263                          ; @1232 D0 2F
-    txa                                ; @1234 8A
-    bne L1237                          ; @1235 D0 00
-L1237:
-    lda $1A                            ; @1237 A5 1A
-    cmp $1C                            ; @1239 C5 1C
-    bcc L1260                          ; @123B 90 23
-    txa                                ; @123D 8A
-    bne L1264                          ; @123E D0 24
-    lda $1A                            ; @1240 A5 1A
-    bmi L124B                          ; @1242 30 07
-    beq L1252                          ; @1244 F0 0C
-L1246:
-    asl $1C                            ; @1246 06 1C
-    asl a                              ; @1248 0A
-    bpl L1246                          ; @1249 10 FB
+    bpl L121F                          ; @1208 10 15
+    eor #$FF                           ; @120A 49 FF
+    jmp L1300                          ; @120C 4C 00 13
+L120F:
+    eor #$FF                           ; @120F 49 FF
+    tax                                ; @1211 AA
+    lda $C005                          ; @1212 AD 05 C0
+    bmi L121A                          ; @1215 30 03
+    jmp L1B00                          ; @1217 4C 00 1B
+L121A:
+    eor #$FF                           ; @121A 49 FF
+    jmp L1720                          ; @121C 4C 20 17
+L121F:
+    sta $1D                            ; @121F 85 1D
+    lda $C000                          ; @1221 AD 00 C0
+    sta $1A                            ; @1224 85 1A
+    lda $C004                          ; @1226 AD 04 C0
+    sta $1C                            ; @1229 85 1C
+    cpx $1D                            ; @122B E4 1D
+    bcc L1259                          ; @122D 90 2A
+    bne L125C                          ; @122F D0 2B
+    lda $1A                            ; @1231 A5 1A
+    cmp $1C                            ; @1233 C5 1C
+    bcc L1259                          ; @1235 90 22
+    txa                                ; @1237 8A
+    bne L125D                          ; @1238 D0 23
+    lda $1A                            ; @123A A5 1A
+    bmi L1245                          ; @123C 30 07
+    beq L124B                          ; @123E F0 0B
+L1240:
+    asl $1C                            ; @1240 06 1C
+    asl a                              ; @1242 0A
+    bpl L1240                          ; @1243 10 FB
+L1245:
+    tay                                ; @1245 A8
+    lda $1C                            ; @1246 A5 1C
+    jmp L1269                          ; @1248 4C 69 12
 L124B:
-    ldx $1C                            ; @124B A6 1C
-    stx $1D                            ; @124D 86 1D
-    tay                                ; @124F A8
-    bmi L126E                          ; @1250 30 1C
-L1252:
-    sta $C008                          ; @1252 8D 08 C0
-    sta $C009                          ; @1255 8D 09 C0
-    sta $C00A                          ; @1258 8D 0A C0
-    sta $C00B                          ; @125B 8D 0B C0
-    sec                                ; @125E 38
-    rts                                ; @125F 60
-L1260:
-    jmp L129D                          ; @1260 4C 9D 12
-L1263:
-    txa                                ; @1263 8A
-L1264:
-    asl $1C                            ; @1264 06 1C
-    rol $1D                            ; @1266 26 1D
-    asl $1A                            ; @1268 06 1A
-    rol a                              ; @126A 2A
-    bpl L1264                          ; @126B 10 F7
-    tay                                ; @126D A8
-L126E:
-    lda $1D                            ; @126E A5 1D
-    sta $DF04                          ; @1270 8D 04 DF
-    sty $DF05                          ; @1273 8C 05 DF
-    lda #$04                           ; @1276 A9 04
-    sta $DF06                          ; @1278 8D 06 DF
-    lda #$81                           ; @127B A9 81
-    sta $DF01                          ; @127D 8D 01 DF
-    ldx $C020                          ; @1280 AE 20 C0
-    lda $6800,x                        ; @1283 BD 00 68
-    sta $C008                          ; @1286 8D 08 C0
-    lda $6900,x                        ; @1289 BD 00 69
-    sta $C009                          ; @128C 8D 09 C0
-    lda $6A00,x                        ; @128F BD 00 6A
-    sta $C00A                          ; @1292 8D 0A C0
-    lda $6B00,x                        ; @1295 BD 00 6B
-    sta $C00B                          ; @1298 8D 0B C0
-    clc                                ; @129B 18
-    rts                                ; @129C 60
-L129D:
-    lda $1D                            ; @129D A5 1D
-    beq L12DC                          ; @129F F0 3B
-    stx $1B                            ; @12A1 86 1B
-L12A3:
-    asl $1A                            ; @12A3 06 1A
-    rol $1B                            ; @12A5 26 1B
-    asl $1C                            ; @12A7 06 1C
-    rol a                              ; @12A9 2A
-    bpl L12A3                          ; @12AA 10 F7
-    tay                                ; @12AC A8
-L12AD:
-    lda $1B                            ; @12AD A5 1B
-    sta $DF04                          ; @12AF 8D 04 DF
-    sty $DF05                          ; @12B2 8C 05 DF
-    lda #$04                           ; @12B5 A9 04
-    sta $DF06                          ; @12B7 8D 06 DF
-    lda #$81                           ; @12BA A9 81
-    sta $DF01                          ; @12BC 8D 01 DF
-    ldx $C020                          ; @12BF AE 20 C0
-    lda $6A00,x                        ; @12C2 BD 00 6A
-    sta $C008                          ; @12C5 8D 08 C0
-    lda $6B00,x                        ; @12C8 BD 00 6B
-    sta $C009                          ; @12CB 8D 09 C0
-    lda $6800,x                        ; @12CE BD 00 68
-    sta $C00A                          ; @12D1 8D 0A C0
-    lda $6900,x                        ; @12D4 BD 00 69
-    sta $C00B                          ; @12D7 8D 0B C0
-    clc                                ; @12DA 18
-    rts                                ; @12DB 60
-L12DC:
-    lda $1C                            ; @12DC A5 1C
-    bmi L12E5                          ; @12DE 30 05
-L12E0:
-    asl $1A                            ; @12E0 06 1A
-    asl a                              ; @12E2 0A
-    bpl L12E0                          ; @12E3 10 FB
-L12E5:
-    tay                                ; @12E5 A8
-    lda $1A                            ; @12E6 A5 1A
-    sta $1B                            ; @12E8 85 1B
-    jmp L12AD                          ; @12EA 4C AD 12
+    sta $C008                          ; @124B 8D 08 C0
+    sta $C009                          ; @124E 8D 09 C0
+    sta $C00A                          ; @1251 8D 0A C0
+    sta $C00B                          ; @1254 8D 0B C0
+    sec                                ; @1257 38
+    rts                                ; @1258 60
+L1259:
+    jmp L1296                          ; @1259 4C 96 12
+L125C:
+    txa                                ; @125C 8A
+L125D:
+    asl $1C                            ; @125D 06 1C
+    rol $1D                            ; @125F 26 1D
+    asl $1A                            ; @1261 06 1A
+    rol a                              ; @1263 2A
+    bpl L125D                          ; @1264 10 F7
+    tay                                ; @1266 A8
+    lda $1D                            ; @1267 A5 1D
+L1269:
+    sta $DF04                          ; @1269 8D 04 DF
+    sty $DF05                          ; @126C 8C 05 DF
+    lda #$04                           ; @126F A9 04
+    sta $DF06                          ; @1271 8D 06 DF
+    lda #$81                           ; @1274 A9 81
+    sta $DF01                          ; @1276 8D 01 DF
+    ldx $C020                          ; @1279 AE 20 C0
+    lda $6800,x                        ; @127C BD 00 68
+    sta $C008                          ; @127F 8D 08 C0
+    lda $6900,x                        ; @1282 BD 00 69
+    sta $C009                          ; @1285 8D 09 C0
+    lda $6A00,x                        ; @1288 BD 00 6A
+    sta $C00A                          ; @128B 8D 0A C0
+    lda $6B00,x                        ; @128E BD 00 6B
+    sta $C00B                          ; @1291 8D 0B C0
+    clc                                ; @1294 18
+    rts                                ; @1295 60
+L1296:
+    lda $1D                            ; @1296 A5 1D
+    beq L12D5                          ; @1298 F0 3B
+    stx $1B                            ; @129A 86 1B
+L129C:
+    asl $1A                            ; @129C 06 1A
+    rol $1B                            ; @129E 26 1B
+    asl $1C                            ; @12A0 06 1C
+    rol a                              ; @12A2 2A
+    bpl L129C                          ; @12A3 10 F7
+    tay                                ; @12A5 A8
+    lda $1B                            ; @12A6 A5 1B
+L12A8:
+    sta $DF04                          ; @12A8 8D 04 DF
+    sty $DF05                          ; @12AB 8C 05 DF
+    lda #$04                           ; @12AE A9 04
+    sta $DF06                          ; @12B0 8D 06 DF
+    lda #$81                           ; @12B3 A9 81
+    sta $DF01                          ; @12B5 8D 01 DF
+    ldx $C020                          ; @12B8 AE 20 C0
+    lda $6A00,x                        ; @12BB BD 00 6A
+    sta $C008                          ; @12BE 8D 08 C0
+    lda $6B00,x                        ; @12C1 BD 00 6B
+    sta $C009                          ; @12C4 8D 09 C0
+    lda $6800,x                        ; @12C7 BD 00 68
+    sta $C00A                          ; @12CA 8D 0A C0
+    lda $6900,x                        ; @12CD BD 00 69
+    sta $C00B                          ; @12D0 8D 0B C0
+    clc                                ; @12D3 18
+    rts                                ; @12D4 60
+L12D5:
+    lda $1C                            ; @12D5 A5 1C
+    bmi L12DE                          ; @12D7 30 05
+L12D9:
+    asl $1A                            ; @12D9 06 1A
+    asl a                              ; @12DB 0A
+    bpl L12D9                          ; @12DC 10 FB
+L12DE:
+    tay                                ; @12DE A8
+    lda $1A                            ; @12DF A5 1A
+    jmp L12A8                          ; @12E1 4C A8 12
 ; ---- executable island $1300 ----
 * = $1300
 L1300:
@@ -147,8 +140,8 @@ L1300:
     eor #$FF                           ; @130A 49 FF
     sta $1C                            ; @130C 85 1C
     cpx $1D                            ; @130E E4 1D
-    bcc L1336                          ; @1310 90 24
-    bne L1339                          ; @1312 D0 25
+    bcc L1335                          ; @1310 90 23
+    bne L1338                          ; @1312 D0 24
     txa                                ; @1314 8A
     bne L131D                          ; @1315 D0 06
     inc $1C                            ; @1317 E6 1C
@@ -157,9 +150,9 @@ L1300:
 L131D:
     lda $1A                            ; @131D A5 1A
     cmp $1C                            ; @131F C5 1C
-    bcc L1336                          ; @1321 90 13
+    bcc L1335                          ; @1321 90 12
     txa                                ; @1323 8A
-    bne L133A                          ; @1324 D0 14
+    bne L1339                          ; @1324 D0 13
     lda $1A                            ; @1326 A5 1A
     bmi L132F                          ; @1328 30 05
 L132A:
@@ -167,86 +160,84 @@ L132A:
     asl a                              ; @132C 0A
     bpl L132A                          ; @132D 10 FB
 L132F:
-    ldx $1C                            ; @132F A6 1C
-    stx $1D                            ; @1331 86 1D
-    tay                                ; @1333 A8
-    bmi L1344                          ; @1334 30 0E
-L1336:
-    jmp L1377                          ; @1336 4C 77 13
+    tay                                ; @132F A8
+    lda $1C                            ; @1330 A5 1C
+    jmp L1345                          ; @1332 4C 45 13
+L1335:
+    jmp L1376                          ; @1335 4C 76 13
+L1338:
+    txa                                ; @1338 8A
 L1339:
-    txa                                ; @1339 8A
-L133A:
-    asl $1C                            ; @133A 06 1C
-    rol $1D                            ; @133C 26 1D
-    asl $1A                            ; @133E 06 1A
-    rol a                              ; @1340 2A
-    bpl L133A                          ; @1341 10 F7
-    tay                                ; @1343 A8
-L1344:
-    lda $1D                            ; @1344 A5 1D
-    sta $DF04                          ; @1346 8D 04 DF
-    sty $DF05                          ; @1349 8C 05 DF
-    lda #$04                           ; @134C A9 04
-    sta $DF06                          ; @134E 8D 06 DF
-    lda #$81                           ; @1351 A9 81
-    sta $DF01                          ; @1353 8D 01 DF
-    ldx $C020                          ; @1356 AE 20 C0
-    lda $6800,x                        ; @1359 BD 00 68
-    sta $C008                          ; @135C 8D 08 C0
-    lda $6900,x                        ; @135F BD 00 69
-    sta $C009                          ; @1362 8D 09 C0
-    sec                                ; @1365 38
-    lda #$00                           ; @1366 A9 00
-    sbc $6A00,x                        ; @1368 FD 00 6A
-    sta $C00A                          ; @136B 8D 0A C0
-    lda #$00                           ; @136E A9 00
-    sbc $6B00,x                        ; @1370 FD 00 6B
-    sta $C00B                          ; @1373 8D 0B C0
-    rts                                ; @1376 60
-L1377:
-    lda $1D                            ; @1377 A5 1D
-    beq L13BA                          ; @1379 F0 3F
-    stx $1B                            ; @137B 86 1B
-L137D:
-    asl $1A                            ; @137D 06 1A
-    rol $1B                            ; @137F 26 1B
-    asl $1C                            ; @1381 06 1C
-    rol a                              ; @1383 2A
-    bpl L137D                          ; @1384 10 F7
-    tay                                ; @1386 A8
-L1387:
-    lda $1B                            ; @1387 A5 1B
-    sta $DF04                          ; @1389 8D 04 DF
-    sty $DF05                          ; @138C 8C 05 DF
-    lda #$04                           ; @138F A9 04
-    sta $DF06                          ; @1391 8D 06 DF
-    lda #$81                           ; @1394 A9 81
-    sta $DF01                          ; @1396 8D 01 DF
-    ldx $C020                          ; @1399 AE 20 C0
-    lda $6A00,x                        ; @139C BD 00 6A
-    sta $C008                          ; @139F 8D 08 C0
-    lda $6B00,x                        ; @13A2 BD 00 6B
-    sta $C009                          ; @13A5 8D 09 C0
-    sec                                ; @13A8 38
-    lda #$00                           ; @13A9 A9 00
-    sbc $6800,x                        ; @13AB FD 00 68
-    sta $C00A                          ; @13AE 8D 0A C0
-    lda #$00                           ; @13B1 A9 00
-    sbc $6900,x                        ; @13B3 FD 00 69
-    sta $C00B                          ; @13B6 8D 0B C0
-    rts                                ; @13B9 60
-L13BA:
-    lda $1C                            ; @13BA A5 1C
-    bmi L13C3                          ; @13BC 30 05
-L13BE:
-    asl $1A                            ; @13BE 06 1A
-    asl a                              ; @13C0 0A
-    bpl L13BE                          ; @13C1 10 FB
-L13C3:
-    tay                                ; @13C3 A8
-    lda $1A                            ; @13C4 A5 1A
-    sta $1B                            ; @13C6 85 1B
-    jmp L1387                          ; @13C8 4C 87 13
+    asl $1C                            ; @1339 06 1C
+    rol $1D                            ; @133B 26 1D
+    asl $1A                            ; @133D 06 1A
+    rol a                              ; @133F 2A
+    bpl L1339                          ; @1340 10 F7
+    tay                                ; @1342 A8
+    lda $1D                            ; @1343 A5 1D
+L1345:
+    sta $DF04                          ; @1345 8D 04 DF
+    sty $DF05                          ; @1348 8C 05 DF
+    lda #$04                           ; @134B A9 04
+    sta $DF06                          ; @134D 8D 06 DF
+    lda #$81                           ; @1350 A9 81
+    sta $DF01                          ; @1352 8D 01 DF
+    ldx $C020                          ; @1355 AE 20 C0
+    lda $6800,x                        ; @1358 BD 00 68
+    sta $C008                          ; @135B 8D 08 C0
+    lda $6900,x                        ; @135E BD 00 69
+    sta $C009                          ; @1361 8D 09 C0
+    sec                                ; @1364 38
+    lda #$00                           ; @1365 A9 00
+    sbc $6A00,x                        ; @1367 FD 00 6A
+    sta $C00A                          ; @136A 8D 0A C0
+    lda #$00                           ; @136D A9 00
+    sbc $6B00,x                        ; @136F FD 00 6B
+    sta $C00B                          ; @1372 8D 0B C0
+    rts                                ; @1375 60
+L1376:
+    lda $1D                            ; @1376 A5 1D
+    beq L13B9                          ; @1378 F0 3F
+    stx $1B                            ; @137A 86 1B
+L137C:
+    asl $1A                            ; @137C 06 1A
+    rol $1B                            ; @137E 26 1B
+    asl $1C                            ; @1380 06 1C
+    rol a                              ; @1382 2A
+    bpl L137C                          ; @1383 10 F7
+    tay                                ; @1385 A8
+    lda $1B                            ; @1386 A5 1B
+L1388:
+    sta $DF04                          ; @1388 8D 04 DF
+    sty $DF05                          ; @138B 8C 05 DF
+    lda #$04                           ; @138E A9 04
+    sta $DF06                          ; @1390 8D 06 DF
+    lda #$81                           ; @1393 A9 81
+    sta $DF01                          ; @1395 8D 01 DF
+    ldx $C020                          ; @1398 AE 20 C0
+    lda $6A00,x                        ; @139B BD 00 6A
+    sta $C008                          ; @139E 8D 08 C0
+    lda $6B00,x                        ; @13A1 BD 00 6B
+    sta $C009                          ; @13A4 8D 09 C0
+    sec                                ; @13A7 38
+    lda #$00                           ; @13A8 A9 00
+    sbc $6800,x                        ; @13AA FD 00 68
+    sta $C00A                          ; @13AD 8D 0A C0
+    lda #$00                           ; @13B0 A9 00
+    sbc $6900,x                        ; @13B2 FD 00 69
+    sta $C00B                          ; @13B5 8D 0B C0
+    rts                                ; @13B8 60
+L13B9:
+    lda $1C                            ; @13B9 A5 1C
+    bmi L13C2                          ; @13BB 30 05
+L13BD:
+    asl $1A                            ; @13BD 06 1A
+    asl a                              ; @13BF 0A
+    bpl L13BD                          ; @13C0 10 FB
+L13C2:
+    tay                                ; @13C2 A8
+    lda $1A                            ; @13C3 A5 1A
+    jmp L1388                          ; @13C5 4C 88 13
 ; ---- executable island $1720 ----
 * = $1720
 L1720:
@@ -258,8 +249,8 @@ L1720:
     eor #$FF                           ; @172C 49 FF
     sta $1C                            ; @172E 85 1C
     cpx $1D                            ; @1730 E4 1D
-    bcc L175E                          ; @1732 90 2A
-    bne L1761                          ; @1734 D0 2B
+    bcc L175D                          ; @1732 90 29
+    bne L1760                          ; @1734 D0 2A
     txa                                ; @1736 8A
     bne L1745                          ; @1737 D0 0C
     inc $1A                            ; @1739 E6 1A
@@ -272,9 +263,9 @@ L173F:
 L1745:
     lda $1A                            ; @1745 A5 1A
     cmp $1C                            ; @1747 C5 1C
-    bcc L175E                          ; @1749 90 13
+    bcc L175D                          ; @1749 90 12
     txa                                ; @174B 8A
-    bne L1762                          ; @174C D0 14
+    bne L1761                          ; @174C D0 13
     lda $1A                            ; @174E A5 1A
     bmi L1757                          ; @1750 30 05
 L1752:
@@ -282,92 +273,90 @@ L1752:
     asl a                              ; @1754 0A
     bpl L1752                          ; @1755 10 FB
 L1757:
-    ldx $1C                            ; @1757 A6 1C
-    stx $1D                            ; @1759 86 1D
-    tay                                ; @175B A8
-    bmi L176C                          ; @175C 30 0E
-L175E:
-    jmp L17A4                          ; @175E 4C A4 17
+    tay                                ; @1757 A8
+    lda $1C                            ; @1758 A5 1C
+    jmp L176D                          ; @175A 4C 6D 17
+L175D:
+    jmp L17A3                          ; @175D 4C A3 17
+L1760:
+    txa                                ; @1760 8A
 L1761:
-    txa                                ; @1761 8A
-L1762:
-    asl $1C                            ; @1762 06 1C
-    rol $1D                            ; @1764 26 1D
-    asl $1A                            ; @1766 06 1A
-    rol a                              ; @1768 2A
-    bpl L1762                          ; @1769 10 F7
-    tay                                ; @176B A8
-L176C:
-    lda $1D                            ; @176C A5 1D
-    sta $DF04                          ; @176E 8D 04 DF
-    sty $DF05                          ; @1771 8C 05 DF
-    lda #$04                           ; @1774 A9 04
-    sta $DF06                          ; @1776 8D 06 DF
-    lda #$81                           ; @1779 A9 81
-    sta $DF01                          ; @177B 8D 01 DF
-    ldx $C020                          ; @177E AE 20 C0
-    sec                                ; @1781 38
-    lda #$00                           ; @1782 A9 00
-    sbc $6800,x                        ; @1784 FD 00 68
-    sta $C008                          ; @1787 8D 08 C0
-    lda #$00                           ; @178A A9 00
-    sbc $6900,x                        ; @178C FD 00 69
-    sta $C009                          ; @178F 8D 09 C0
-    sec                                ; @1792 38
-    lda #$00                           ; @1793 A9 00
-    sbc $6A00,x                        ; @1795 FD 00 6A
-    sta $C00A                          ; @1798 8D 0A C0
-    lda #$00                           ; @179B A9 00
-    sbc $6B00,x                        ; @179D FD 00 6B
-    sta $C00B                          ; @17A0 8D 0B C0
-    rts                                ; @17A3 60
-L17A4:
-    lda $1D                            ; @17A4 A5 1D
-    beq L17EC                          ; @17A6 F0 44
-    stx $1B                            ; @17A8 86 1B
-L17AA:
-    asl $1A                            ; @17AA 06 1A
-    rol $1B                            ; @17AC 26 1B
-    asl $1C                            ; @17AE 06 1C
-    rol a                              ; @17B0 2A
-    bpl L17AA                          ; @17B1 10 F7
-    tay                                ; @17B3 A8
-L17B4:
-    lda $1B                            ; @17B4 A5 1B
-    sta $DF04                          ; @17B6 8D 04 DF
-    sty $DF05                          ; @17B9 8C 05 DF
-    lda #$04                           ; @17BC A9 04
-    sta $DF06                          ; @17BE 8D 06 DF
-    lda #$81                           ; @17C1 A9 81
-    sta $DF01                          ; @17C3 8D 01 DF
-    ldx $C020                          ; @17C6 AE 20 C0
-    sec                                ; @17C9 38
-    lda #$00                           ; @17CA A9 00
-    sbc $6A00,x                        ; @17CC FD 00 6A
-    sta $C008                          ; @17CF 8D 08 C0
-    lda #$00                           ; @17D2 A9 00
-    sbc $6B00,x                        ; @17D4 FD 00 6B
-    sta $C009                          ; @17D7 8D 09 C0
-    sec                                ; @17DA 38
-    lda #$00                           ; @17DB A9 00
-    sbc $6800,x                        ; @17DD FD 00 68
-    sta $C00A                          ; @17E0 8D 0A C0
-    lda #$00                           ; @17E3 A9 00
-    sbc $6900,x                        ; @17E5 FD 00 69
-    sta $C00B                          ; @17E8 8D 0B C0
-    rts                                ; @17EB 60
-L17EC:
-    lda $1C                            ; @17EC A5 1C
-    bmi L17F5                          ; @17EE 30 05
-L17F0:
-    asl $1A                            ; @17F0 06 1A
-    asl a                              ; @17F2 0A
-    bpl L17F0                          ; @17F3 10 FB
-L17F5:
-    tay                                ; @17F5 A8
-    lda $1A                            ; @17F6 A5 1A
-    sta $1B                            ; @17F8 85 1B
-    jmp L17B4                          ; @17FA 4C B4 17
+    asl $1C                            ; @1761 06 1C
+    rol $1D                            ; @1763 26 1D
+    asl $1A                            ; @1765 06 1A
+    rol a                              ; @1767 2A
+    bpl L1761                          ; @1768 10 F7
+    tay                                ; @176A A8
+    lda $1D                            ; @176B A5 1D
+L176D:
+    sta $DF04                          ; @176D 8D 04 DF
+    sty $DF05                          ; @1770 8C 05 DF
+    lda #$04                           ; @1773 A9 04
+    sta $DF06                          ; @1775 8D 06 DF
+    lda #$81                           ; @1778 A9 81
+    sta $DF01                          ; @177A 8D 01 DF
+    ldx $C020                          ; @177D AE 20 C0
+    sec                                ; @1780 38
+    lda #$00                           ; @1781 A9 00
+    sbc $6800,x                        ; @1783 FD 00 68
+    sta $C008                          ; @1786 8D 08 C0
+    lda #$00                           ; @1789 A9 00
+    sbc $6900,x                        ; @178B FD 00 69
+    sta $C009                          ; @178E 8D 09 C0
+    sec                                ; @1791 38
+    lda #$00                           ; @1792 A9 00
+    sbc $6A00,x                        ; @1794 FD 00 6A
+    sta $C00A                          ; @1797 8D 0A C0
+    lda #$00                           ; @179A A9 00
+    sbc $6B00,x                        ; @179C FD 00 6B
+    sta $C00B                          ; @179F 8D 0B C0
+    rts                                ; @17A2 60
+L17A3:
+    lda $1D                            ; @17A3 A5 1D
+    beq L17EB                          ; @17A5 F0 44
+    stx $1B                            ; @17A7 86 1B
+L17A9:
+    asl $1A                            ; @17A9 06 1A
+    rol $1B                            ; @17AB 26 1B
+    asl $1C                            ; @17AD 06 1C
+    rol a                              ; @17AF 2A
+    bpl L17A9                          ; @17B0 10 F7
+    tay                                ; @17B2 A8
+    lda $1B                            ; @17B3 A5 1B
+L17B5:
+    sta $DF04                          ; @17B5 8D 04 DF
+    sty $DF05                          ; @17B8 8C 05 DF
+    lda #$04                           ; @17BB A9 04
+    sta $DF06                          ; @17BD 8D 06 DF
+    lda #$81                           ; @17C0 A9 81
+    sta $DF01                          ; @17C2 8D 01 DF
+    ldx $C020                          ; @17C5 AE 20 C0
+    sec                                ; @17C8 38
+    lda #$00                           ; @17C9 A9 00
+    sbc $6A00,x                        ; @17CB FD 00 6A
+    sta $C008                          ; @17CE 8D 08 C0
+    lda #$00                           ; @17D1 A9 00
+    sbc $6B00,x                        ; @17D3 FD 00 6B
+    sta $C009                          ; @17D6 8D 09 C0
+    sec                                ; @17D9 38
+    lda #$00                           ; @17DA A9 00
+    sbc $6800,x                        ; @17DC FD 00 68
+    sta $C00A                          ; @17DF 8D 0A C0
+    lda #$00                           ; @17E2 A9 00
+    sbc $6900,x                        ; @17E4 FD 00 69
+    sta $C00B                          ; @17E7 8D 0B C0
+    rts                                ; @17EA 60
+L17EB:
+    lda $1C                            ; @17EB A5 1C
+    bmi L17F4                          ; @17ED 30 05
+L17EF:
+    asl $1A                            ; @17EF 06 1A
+    asl a                              ; @17F1 0A
+    bpl L17EF                          ; @17F2 10 FB
+L17F4:
+    tay                                ; @17F4 A8
+    lda $1A                            ; @17F5 A5 1A
+    jmp L17B5                          ; @17F7 4C B5 17
 ; ---- executable island $1B00 ----
 * = $1B00
 L1B00:
@@ -378,8 +367,8 @@ L1B00:
     lda $C004                          ; @1B09 AD 04 C0
     sta $1C                            ; @1B0C 85 1C
     cpx $1D                            ; @1B0E E4 1D
-    bcc L1B36                          ; @1B10 90 24
-    bne L1B39                          ; @1B12 D0 25
+    bcc L1B35                          ; @1B10 90 23
+    bne L1B38                          ; @1B12 D0 24
     txa                                ; @1B14 8A
     bne L1B1D                          ; @1B15 D0 06
     inc $1A                            ; @1B17 E6 1A
@@ -388,9 +377,9 @@ L1B00:
 L1B1D:
     lda $1A                            ; @1B1D A5 1A
     cmp $1C                            ; @1B1F C5 1C
-    bcc L1B36                          ; @1B21 90 13
+    bcc L1B35                          ; @1B21 90 12
     txa                                ; @1B23 8A
-    bne L1B3A                          ; @1B24 D0 14
+    bne L1B39                          ; @1B24 D0 13
     lda $1A                            ; @1B26 A5 1A
     bmi L1B2F                          ; @1B28 30 05
 L1B2A:
@@ -398,86 +387,84 @@ L1B2A:
     asl a                              ; @1B2C 0A
     bpl L1B2A                          ; @1B2D 10 FB
 L1B2F:
-    ldx $1C                            ; @1B2F A6 1C
-    stx $1D                            ; @1B31 86 1D
-    tay                                ; @1B33 A8
-    bmi L1B44                          ; @1B34 30 0E
-L1B36:
-    jmp L1B77                          ; @1B36 4C 77 1B
+    tay                                ; @1B2F A8
+    lda $1C                            ; @1B30 A5 1C
+    jmp L1B45                          ; @1B32 4C 45 1B
+L1B35:
+    jmp L1B76                          ; @1B35 4C 76 1B
+L1B38:
+    txa                                ; @1B38 8A
 L1B39:
-    txa                                ; @1B39 8A
-L1B3A:
-    asl $1C                            ; @1B3A 06 1C
-    rol $1D                            ; @1B3C 26 1D
-    asl $1A                            ; @1B3E 06 1A
-    rol a                              ; @1B40 2A
-    bpl L1B3A                          ; @1B41 10 F7
-    tay                                ; @1B43 A8
-L1B44:
-    lda $1D                            ; @1B44 A5 1D
-    sta $DF04                          ; @1B46 8D 04 DF
-    sty $DF05                          ; @1B49 8C 05 DF
-    lda #$04                           ; @1B4C A9 04
-    sta $DF06                          ; @1B4E 8D 06 DF
-    lda #$81                           ; @1B51 A9 81
-    sta $DF01                          ; @1B53 8D 01 DF
-    ldx $C020                          ; @1B56 AE 20 C0
-    sec                                ; @1B59 38
-    lda #$00                           ; @1B5A A9 00
-    sbc $6800,x                        ; @1B5C FD 00 68
-    sta $C008                          ; @1B5F 8D 08 C0
-    lda #$00                           ; @1B62 A9 00
-    sbc $6900,x                        ; @1B64 FD 00 69
-    sta $C009                          ; @1B67 8D 09 C0
-    lda $6A00,x                        ; @1B6A BD 00 6A
-    sta $C00A                          ; @1B6D 8D 0A C0
-    lda $6B00,x                        ; @1B70 BD 00 6B
-    sta $C00B                          ; @1B73 8D 0B C0
-    rts                                ; @1B76 60
-L1B77:
-    lda $1D                            ; @1B77 A5 1D
-    beq L1BBA                          ; @1B79 F0 3F
-    stx $1B                            ; @1B7B 86 1B
-L1B7D:
-    asl $1A                            ; @1B7D 06 1A
-    rol $1B                            ; @1B7F 26 1B
-    asl $1C                            ; @1B81 06 1C
-    rol a                              ; @1B83 2A
-    bpl L1B7D                          ; @1B84 10 F7
-    tay                                ; @1B86 A8
-L1B87:
-    lda $1B                            ; @1B87 A5 1B
-    sta $DF04                          ; @1B89 8D 04 DF
-    sty $DF05                          ; @1B8C 8C 05 DF
-    lda #$04                           ; @1B8F A9 04
-    sta $DF06                          ; @1B91 8D 06 DF
-    lda #$81                           ; @1B94 A9 81
-    sta $DF01                          ; @1B96 8D 01 DF
-    ldx $C020                          ; @1B99 AE 20 C0
-    sec                                ; @1B9C 38
-    lda #$00                           ; @1B9D A9 00
-    sbc $6A00,x                        ; @1B9F FD 00 6A
-    sta $C008                          ; @1BA2 8D 08 C0
-    lda #$00                           ; @1BA5 A9 00
-    sbc $6B00,x                        ; @1BA7 FD 00 6B
-    sta $C009                          ; @1BAA 8D 09 C0
-    lda $6800,x                        ; @1BAD BD 00 68
-    sta $C00A                          ; @1BB0 8D 0A C0
-    lda $6900,x                        ; @1BB3 BD 00 69
-    sta $C00B                          ; @1BB6 8D 0B C0
-    rts                                ; @1BB9 60
-L1BBA:
-    lda $1C                            ; @1BBA A5 1C
-    bmi L1BC3                          ; @1BBC 30 05
-L1BBE:
-    asl $1A                            ; @1BBE 06 1A
-    asl a                              ; @1BC0 0A
-    bpl L1BBE                          ; @1BC1 10 FB
-L1BC3:
-    tay                                ; @1BC3 A8
-    lda $1A                            ; @1BC4 A5 1A
-    sta $1B                            ; @1BC6 85 1B
-    jmp L1B87                          ; @1BC8 4C 87 1B
+    asl $1C                            ; @1B39 06 1C
+    rol $1D                            ; @1B3B 26 1D
+    asl $1A                            ; @1B3D 06 1A
+    rol a                              ; @1B3F 2A
+    bpl L1B39                          ; @1B40 10 F7
+    tay                                ; @1B42 A8
+    lda $1D                            ; @1B43 A5 1D
+L1B45:
+    sta $DF04                          ; @1B45 8D 04 DF
+    sty $DF05                          ; @1B48 8C 05 DF
+    lda #$04                           ; @1B4B A9 04
+    sta $DF06                          ; @1B4D 8D 06 DF
+    lda #$81                           ; @1B50 A9 81
+    sta $DF01                          ; @1B52 8D 01 DF
+    ldx $C020                          ; @1B55 AE 20 C0
+    sec                                ; @1B58 38
+    lda #$00                           ; @1B59 A9 00
+    sbc $6800,x                        ; @1B5B FD 00 68
+    sta $C008                          ; @1B5E 8D 08 C0
+    lda #$00                           ; @1B61 A9 00
+    sbc $6900,x                        ; @1B63 FD 00 69
+    sta $C009                          ; @1B66 8D 09 C0
+    lda $6A00,x                        ; @1B69 BD 00 6A
+    sta $C00A                          ; @1B6C 8D 0A C0
+    lda $6B00,x                        ; @1B6F BD 00 6B
+    sta $C00B                          ; @1B72 8D 0B C0
+    rts                                ; @1B75 60
+L1B76:
+    lda $1D                            ; @1B76 A5 1D
+    beq L1BB9                          ; @1B78 F0 3F
+    stx $1B                            ; @1B7A 86 1B
+L1B7C:
+    asl $1A                            ; @1B7C 06 1A
+    rol $1B                            ; @1B7E 26 1B
+    asl $1C                            ; @1B80 06 1C
+    rol a                              ; @1B82 2A
+    bpl L1B7C                          ; @1B83 10 F7
+    tay                                ; @1B85 A8
+    lda $1B                            ; @1B86 A5 1B
+L1B88:
+    sta $DF04                          ; @1B88 8D 04 DF
+    sty $DF05                          ; @1B8B 8C 05 DF
+    lda #$04                           ; @1B8E A9 04
+    sta $DF06                          ; @1B90 8D 06 DF
+    lda #$81                           ; @1B93 A9 81
+    sta $DF01                          ; @1B95 8D 01 DF
+    ldx $C020                          ; @1B98 AE 20 C0
+    sec                                ; @1B9B 38
+    lda #$00                           ; @1B9C A9 00
+    sbc $6A00,x                        ; @1B9E FD 00 6A
+    sta $C008                          ; @1BA1 8D 08 C0
+    lda #$00                           ; @1BA4 A9 00
+    sbc $6B00,x                        ; @1BA6 FD 00 6B
+    sta $C009                          ; @1BA9 8D 09 C0
+    lda $6800,x                        ; @1BAC BD 00 68
+    sta $C00A                          ; @1BAF 8D 0A C0
+    lda $6900,x                        ; @1BB2 BD 00 69
+    sta $C00B                          ; @1BB5 8D 0B C0
+    rts                                ; @1BB8 60
+L1BB9:
+    lda $1C                            ; @1BB9 A5 1C
+    bmi L1BC2                          ; @1BBB 30 05
+L1BBD:
+    asl $1A                            ; @1BBD 06 1A
+    asl a                              ; @1BBF 0A
+    bpl L1BBD                          ; @1BC0 10 FB
+L1BC2:
+    tay                                ; @1BC2 A8
+    lda $1A                            ; @1BC3 A5 1A
+    jmp L1B88                          ; @1BC5 4C 88 1B
 ; ---- executable island $5E39 ----
 * = $5E39
 normalize_s16_s16_s16_s16_q8_8_to_q1_15:

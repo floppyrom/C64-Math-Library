@@ -86,8 +86,12 @@ def main():
                 # Follow normalization with larger shared-ZP operations too.
                 ux, uy = rng.randrange(1 << 32), rng.randrange(1 << 32)
                 vsb.wr(c, io, ux, 4); vsb.wr(c, io + 4, uy, 4)
+                # Arbitrary mixed calls may overwrite READY's persistent pointer
+                # highs. The ordinary entry binds them; READY is valid after it.
+                c.call(entries['MATH_UMUL32'])
+                assert vsb.rd(c, io + 8, 8) == ux * uy, (p, kind, i, 'UMUL32')
                 c.call(entries['MATH_UMUL32_READY'])
-                assert vsb.rd(c, io + 8, 8) == ux * uy
+                assert vsb.rd(c, io + 8, 8) == ux * uy, (p, kind, i, 'UMUL32_READY')
                 sx, sy = rng.randrange(-32768, 32768), rng.randrange(-32768, 32768)
                 vsb.wr(c, io, sx & 65535, 2); vsb.wr(c, io + 4, sy & 65535, 2)
                 c.call(entries['MATH_SMUL16'])
@@ -106,7 +110,8 @@ def main():
                                  rng.randrange(-32768, 32768), rng.randrange(-32768, 32768), design, backend)
                     cold += 1
             out['mixed_calls'][p + '_' + kind] = {
-                'normalize_calls': count, 'other_math_calls': count * 4,
+                'normalize_calls': count, 'other_math_calls': count * 5,
+                'ready_calls_after_safe_binder': count,
                 'cold_no_init_calls': cold, 'zp_bytes_allowed': 4,
                 'errors': 0, 'prg_sha256': man['output_sha256']}
             print(p, kind, 'mixed-call/ZP/cold-load PASS', flush=True)

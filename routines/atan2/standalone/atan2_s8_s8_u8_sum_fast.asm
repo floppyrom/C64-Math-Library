@@ -22,6 +22,7 @@ atan2_s8_s8_u8:
 ; For nonzero x, LOGX=q(abs(x)); LOGY=82-q(abs(y)), or 174 for y=0.
 ; CLC/ADC therefore produces an index <=255 and *clears carry on every path*.
 ; The negative-x paths use an XOR half-turn instead of two additional pages.
+; Carry is cleared once at entry; loads and sign branches preserve it until ADC.
 X0=$C000
 Y0=$C004
 Z0=$C008
@@ -31,20 +32,19 @@ QPOS=$9600
 QNEG=$9700
 * = ATAN2_CODE
 atan2:
+    clc
     ldx X0
     beq axis
     bmi xneg
     lda LOGX,x
     ldx Y0
     bmi xpyn
-    clc
     adc LOGY,x
     tax
     lda QPOS,x
     sta Z0
     rts
 xpyn:
-    clc
     adc LOGY,x
     tax
     lda QNEG,x
@@ -54,7 +54,6 @@ xneg:
     lda LOGX,x
     ldx Y0
     bmi xnyn
-    clc
     adc LOGY,x
     tax
     lda QNEG,x
@@ -62,7 +61,6 @@ xneg:
     sta Z0
     rts
 xnyn:
-    clc
     adc LOGY,x
     tax
     lda QPOS,x
@@ -70,7 +68,6 @@ xnyn:
     sta Z0
     rts
 axis:
-    clc
     lda Y0
     beq axis_store
     asl

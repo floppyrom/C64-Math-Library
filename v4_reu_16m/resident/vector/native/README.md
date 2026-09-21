@@ -16,9 +16,9 @@ The routine selects the sign quadrant once and writes signed outputs directly. I
 
 ## Performance and placement
 
-**157.552684 cycles mean**, 90–298 cycles on 107,396 deterministic vectors. This includes the public entry and RTS, excluding the caller JSR. Both supported maps have identical cycle and output vectors.
+**156.661198 cycles mean**, 84–298 cycles on 107,396 deterministic vectors. This includes the public entry and RTS, excluding the caller JSR. Both supported maps have identical cycle and output vectors.
 
-Code: **867 bytes**, including the public three-byte JMP at `REG_GAME_API+$0039`. Code islands: `REG_LOW+$0200..+$02EC`, `+$0300..+$03CA`, `+$0720..+$07FC`, `+$0B00..+$0BCA`. Tables in C64 RAM: **1024 bytes**.
+Code: **849 bytes**, including the public three-byte JMP at `REG_GAME_API+$0039`. Code islands: `REG_LOW+$0200..+$02E3`, `REG_LOW+$0300..+$03C7`, `REG_LOW+$0720..+$07F9`, `REG_LOW+$0B00..+$0BC7`. Tables in C64 RAM: **1024 bytes**.
 
 - Component planes: `REG_TABLE+$0800`, `+$0900`, `+$0A00`, `+$0B00` (1,024 bytes).
 - Existing REU ratio table: `$8000–$FFFF` within `REU_TURBO16_BANK` (32 KiB).

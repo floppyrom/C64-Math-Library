@@ -17,7 +17,7 @@ NORMALIZE_END_OLD={
 }
 # Canonical native include owns these code islands. Emit their reference bytes
 # as provenance, then let the include assemble them at the selected REG_LOW map.
-NORMALIZE_CODE_RANGES={p:(((0x1200,0x13ff),(0x1720,0x17ff),(0x1b00,0x1bff)) if p in REU else ((0x1600,0x19ff),)) for p in PROFILES}
+NORMALIZE_CODE_RANGES={p:(((0x1200,0x13ff),(0x1720,0x17ff),(0x1b00,0x1bff)) if p in REU else ((0x1500,0x18ff),)) for p in PROFILES}
 NORMALIZE_NATIVE_REL={
  p:f'../../{p}/resident/vector/native/vec2_normalize_q8_8.asm'
  for p in PROFILES

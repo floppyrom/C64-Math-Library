@@ -6,7 +6,7 @@
 ; Accuracy: exhaustive 65,536-vector validation, max error <= 1 phase unit
 ; Public-entry timing: 44.962814 mean cycles, range 29-47
 ; Normal ZP: 0 bytes
-; Installed body: $C78D-$C7E5
+; Installed body: $C78D-$C7E1
 ; Tables: LOGX=$9600, LOGY=$9700, QPOS=$6E00, QNEG=$6F00
 ; Canonical reusable source: routines/atan2/atan2_sum_fast.asm
 ; ============================================================================
@@ -22,20 +22,19 @@ QPOS=$6E00
 QNEG=$6F00
 *=$C78D
 atan2:
+    clc
     ldx X0
     beq axis
     bmi xneg
     lda LOGX,x
     ldx Y0
     bmi xpyn
-    clc
     adc LOGY,x
     tax
     lda QPOS,x
     sta Z0
     rts
 xpyn:
-    clc
     adc LOGY,x
     tax
     lda QNEG,x
@@ -45,7 +44,6 @@ xneg:
     lda LOGX,x
     ldx Y0
     bmi xnyn
-    clc
     adc LOGY,x
     tax
     lda QNEG,x
@@ -53,7 +51,6 @@ xneg:
     sta Z0
     rts
 xnyn:
-    clc
     adc LOGY,x
     tax
     lda QPOS,x
@@ -61,7 +58,6 @@ xnyn:
     sta Z0
     rts
 axis:
-    clc
     lda Y0
     beq axis_store
     asl

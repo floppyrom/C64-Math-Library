@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "44 files"
+      "detail": "45 files"
     },
     {
       "check": "signed_layout_validation",
@@ -139,9 +139,9 @@
       "check": "normalize_v1_balanced_107396",
       "status": "PASS",
       "detail": {
-        "mean": 161.3322563223956,
-        "max_angle": 0.34797411759951596,
-        "max_component": 199
+        "mean": 160.1500800774703,
+        "max_angle": 0.34972268793316263,
+        "max_component": 200
       }
     },
     {
@@ -158,9 +158,9 @@
       "check": "normalize_v2_pareto_fast_107396",
       "status": "PASS",
       "detail": {
-        "mean": 161.3322563223956,
-        "max_angle": 0.34797411759951596,
-        "max_component": 199
+        "mean": 160.1500800774703,
+        "max_angle": 0.34972268793316263,
+        "max_component": 200
       }
     },
     {
@@ -177,7 +177,7 @@
       "check": "normalize_v3_reu_512k_107396",
       "status": "PASS",
       "detail": {
-        "mean": 157.5526835263883,
+        "mean": 156.6611978099743,
         "max_angle": 0.35157368676214956,
         "max_component": 196
       }
@@ -201,7 +201,7 @@
       "check": "normalize_v4_reu_16m_107396",
       "status": "PASS",
       "detail": {
-        "mean": 157.5526835263883,
+        "mean": 156.6611978099743,
         "max_angle": 0.35157368676214956,
         "max_component": 196
       }
@@ -225,9 +225,9 @@
       "check": "normalize_v5_hybrid_lowzp_107396",
       "status": "PASS",
       "detail": {
-        "mean": 161.3322563223956,
-        "max_angle": 0.34797411759951596,
-        "max_component": 199
+        "mean": 160.1500800774703,
+        "max_angle": 0.34972268793316263,
+        "max_component": 200
       }
     },
     {
@@ -252,8 +252,8 @@
       "check": "normalize_log_full_domain_certificate",
       "status": "PASS",
       "detail": {
-        "angle": 0.35615227415791395,
-        "component": 200
+        "angle": 0.36165910827782355,
+        "component": 201
       }
     },
     {
@@ -267,6 +267,75 @@
       "detail": {
         "profiles": 5,
         "checks": 16
+      }
+    },
+    {
+      "check": "size_refresh_per_call_comparison",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "size_refresh_normalize_v1_balanced",
+      "status": "PASS",
+      "detail": {
+        "saved_bytes": 290,
+        "slower_calls": 0
+      }
+    },
+    {
+      "check": "size_refresh_normalize_v2_pareto_fast",
+      "status": "PASS",
+      "detail": {
+        "saved_bytes": 290,
+        "slower_calls": 0
+      }
+    },
+    {
+      "check": "size_refresh_normalize_v3_reu_512k",
+      "status": "PASS",
+      "detail": {
+        "saved_bytes": 18,
+        "slower_calls": 0
+      }
+    },
+    {
+      "check": "size_refresh_normalize_v4_reu_16m",
+      "status": "PASS",
+      "detail": {
+        "saved_bytes": 18,
+        "slower_calls": 0
+      }
+    },
+    {
+      "check": "size_refresh_normalize_v5_hybrid_lowzp",
+      "status": "PASS",
+      "detail": {
+        "saved_bytes": 290,
+        "slower_calls": 0
+      }
+    },
+    {
+      "check": "size_refresh_atan2_v2_pareto_fast",
+      "status": "PASS",
+      "detail": {
+        "saved_bytes": 4,
+        "slower_calls": 0
+      }
+    },
+    {
+      "check": "size_refresh_atan2_v3_reu_512k",
+      "status": "PASS",
+      "detail": {
+        "saved_bytes": 4,
+        "slower_calls": 0
+      }
+    },
+    {
+      "check": "size_refresh_atan2_v5_hybrid_lowzp",
+      "status": "PASS",
+      "detail": {
+        "saved_bytes": 4,
+        "slower_calls": 0
       }
     },
     {
@@ -782,7 +851,7 @@
     {
       "check": "v1_balanced_reference_prg_exact",
       "status": "PASS",
-      "detail": "2e7a9e16c46d2a9ad8f5713481ed39ddfaa101210a2300c5666d5d472f034ba6"
+      "detail": "2780f653e0236a0ca0a6c5cc13966dad053710a7dbbceab309b3a7f7007af534"
     },
     {
       "check": "v2_pareto_fast_manifest_46",
@@ -792,7 +861,7 @@
     {
       "check": "v2_pareto_fast_reference_prg_exact",
       "status": "PASS",
-      "detail": "0fe9d39bd1be588ea17c30a9051d763af943f020b9922c1b2199da930b988ff9"
+      "detail": "507715294f2c7e72ea895b009dde62244f091fdbd8fcd9733668648632a64eb6"
     },
     {
       "check": "v3_reu_512k_manifest_46",
@@ -812,7 +881,7 @@
     {
       "check": "v3_reu_512k_reference_prg_exact",
       "status": "PASS",
-      "detail": "34c1af9d31883f356fd6bff985a4cf1e5dd7b46ce46ae98cd99e713f52e41bb5"
+      "detail": "e29fa4245ac9b15e1048bbe16f4126bfc20b39bd95f063d211870f179a776341"
     },
     {
       "check": "v3_reu_512k_reference_reu_exact",
@@ -837,7 +906,7 @@
     {
       "check": "v4_reu_16m_reference_prg_exact",
       "status": "PASS",
-      "detail": "0481b8a6b1efe46aabd178e97da305690b33165b1c43f94790581b1665a61ca9"
+      "detail": "5036aef397fe973eec665aaae600d115ae9680338749d945bfe9440541d66e2f"
     },
     {
       "check": "v4_reu_16m_reference_reu_exact",
@@ -988,7 +1057,7 @@
     {
       "check": "hybrid_reference_prg_exact",
       "status": "PASS",
-      "detail": "4d720909805130529ddb0ecaf92382368a731e1c91dccdd9e530100d84944ae1"
+      "detail": "52697af71bab5a6586536d9d3b8abc0165fe0e9260c0353ed1a4f638e4a9ee0b"
     },
     {
       "check": "hybrid_docs_present",
@@ -1257,7 +1326,7 @@
         "atan_body": "$C814-$C871",
         "isqrt16_body": "$C8DB",
         "code_bytes": 94,
-        "sha256": "acae8921cbc938ad9ca821f682578e3c09cd0969d1dfdce78c09b78456672f8a",
+        "sha256": "2780f653e0236a0ca0a6c5cc13966dad053710a7dbbceab309b3a7f7007af534",
         "cases": 65536,
         "mean_cycles": 48.44718933105469,
         "min_cycles": 29,
@@ -1283,10 +1352,10 @@
       "check": "atan2_v2_pareto_fast_exhaustive",
       "status": "PASS",
       "detail": {
-        "atan_body": "$C782-$C7DA",
+        "atan_body": "$C782-$C7D6",
         "isqrt16_body": "$C836",
-        "code_bytes": 89,
-        "sha256": "f28a900b2274c7f09290df93d81ec34a16de5c9e6e8a46c1b84b5e5e1dd4d994",
+        "code_bytes": 85,
+        "sha256": "507715294f2c7e72ea895b009dde62244f091fdbd8fcd9733668648632a64eb6",
         "cases": 65536,
         "mean_cycles": 44.96281433105469,
         "min_cycles": 29,
@@ -1313,10 +1382,10 @@
       "check": "atan2_v3_reu_512k_exhaustive",
       "status": "PASS",
       "detail": {
-        "atan_body": "$C78D-$C7E5",
+        "atan_body": "$C78D-$C7E1",
         "isqrt16_body": "$C841",
-        "code_bytes": 89,
-        "sha256": "84e85bafa6fbfd33c543f42dec8604e0b2d2fc20e2f878513b21f583d36c1b3e",
+        "code_bytes": 85,
+        "sha256": "e29fa4245ac9b15e1048bbe16f4126bfc20b39bd95f063d211870f179a776341",
         "cases": 65536,
         "mean_cycles": 44.96281433105469,
         "min_cycles": 29,
@@ -1448,7 +1517,7 @@
   ],
   "summary": {
     "acme_current_status": "PASS",
-    "checks_passed": 249,
+    "checks_passed": 258,
     "public_entries": 46,
     "alternate_entry_executions": 184,
     "alternate_machine_calls": 18356,

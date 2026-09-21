@@ -10,11 +10,11 @@
     "current_checks": 8
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "5d37660a50aa42491ff8e5ae22ab29417d2f7eeb16ae38f56d0b49c73c7632b6",
-    "v2_pareto_fast": "61379c55ce6957d4b5b056752877acfd3d14d9e3090e0141dbcd91028d1475bc",
-    "v3_reu_512k": "a1a6f3e755f3004e8f3d2965432ac7c08a93ad83c602bdd79f4b494654286409",
-    "v4_reu_16m": "19715564c4c3aa679868b6635abea8ba42137b85149fefdc4b892476217d2240",
-    "v5_hybrid_lowzp": "876b5dcd946e9c806143e6ab37f22ad634b6c71590c41c42ec1ed09345fdfafc"
+    "v1_balanced": "ea7e3fea3425e8ab5e9c622c9f81516b8bdf80c41d2eb752062ee292d53c1ede",
+    "v2_pareto_fast": "e116b9f37666498a63e350b5e6070d92aec16603decf83074b247c012713eda7",
+    "v3_reu_512k": "7765c035d588d4f1d3d44557006fafe5120a74a7da7d5693db836e7b0d669356",
+    "v4_reu_16m": "4adb57b5fa3210c74e1a07e117b6f6104567f3cc0ce46089422b2f796e261055",
+    "v5_hybrid_lowzp": "99ec092ebf5b8bee8d3dfe745e9728d58023516fc159ad393e8126735ff09302"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "da767488080d83bc692c4a9b41ecbbe19ac331652170c4f47faccab53a96483d",
@@ -234,11 +234,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "2e7a9e16c46d2a9ad8f5713481ed39ddfaa101210a2300c5666d5d472f034ba6",
-    "v2_pareto_fast": "0fe9d39bd1be588ea17c30a9051d763af943f020b9922c1b2199da930b988ff9",
-    "v3_reu_512k": "34c1af9d31883f356fd6bff985a4cf1e5dd7b46ce46ae98cd99e713f52e41bb5",
-    "v4_reu_16m": "0481b8a6b1efe46aabd178e97da305690b33165b1c43f94790581b1665a61ca9",
-    "v5_hybrid_lowzp": "4d720909805130529ddb0ecaf92382368a731e1c91dccdd9e530100d84944ae1"
+    "v1_balanced": "2780f653e0236a0ca0a6c5cc13966dad053710a7dbbceab309b3a7f7007af534",
+    "v2_pareto_fast": "507715294f2c7e72ea895b009dde62244f091fdbd8fcd9733668648632a64eb6",
+    "v3_reu_512k": "e29fa4245ac9b15e1048bbe16f4126bfc20b39bd95f063d211870f179a776341",
+    "v4_reu_16m": "5036aef397fe973eec665aaae600d115ae9680338749d945bfe9440541d66e2f",
+    "v5_hybrid_lowzp": "52697af71bab5a6586536d9d3b8abc0165fe0e9260c0353ed1a4f638e4a9ee0b"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "66a3feab7d1a18356291c2aac9f404627ca13004d1032d6c6efb4cd1e4f1acf5",
@@ -248,8 +248,8 @@
     "turbo16": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
     "turbo32": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a"
   },
-  "release": "c64_math_library_v1-v5_NORMALIZE_REFRESH_46ENTRY_2026-09-21",
-  "release_audit_checks": 249,
+  "release": "c64_math_library_v1-v5_NORMALIZE_ATAN2_SIZE_REFRESH_46ENTRY_2026-09-21",
+  "release_audit_checks": 258,
   "release_audit_status": "PASS",
   "reu_turbo_lifecycle_entries": 6,
   "signed_implementation_taxonomy": {
@@ -321,11 +321,11 @@
       "max_component_lsb": 200
     },
     "mean_cycles": {
-      "v1_balanced": 161.3322563223956,
-      "v2_pareto_fast": 161.3322563223956,
-      "v3_reu_512k": 157.5526835263883,
-      "v4_reu_16m": 157.5526835263883,
-      "v5_hybrid_lowzp": 161.3322563223956
+      "v1_balanced": 160.1500800774703,
+      "v2_pareto_fast": 160.1500800774703,
+      "v3_reu_512k": 156.6611978099743,
+      "v4_reu_16m": 156.6611978099743,
+      "v5_hybrid_lowzp": 160.1500800774703
     },
     "native_sources": {
       "fixed_profiles_include_native_source_directly": true,
@@ -358,8 +358,8 @@
           "v5_hybrid_lowzp"
         ],
         "cells": 723073,
-        "max_angle_deg": 0.35615227415791395,
-        "max_component_ceil": 200,
+        "max_angle_deg": 0.36165910827782355,
+        "max_component_ceil": 201,
         "file": "validation/normalize/LOG_RATIO_FULL_DOMAIN_PRECISION_CERTIFICATE.json"
       },
       "reu_ratio": {
@@ -378,7 +378,7 @@
     "stock_outputs_changed": true,
     "reu_outputs_preserved": true,
     "stock_reference_prg_load": "$1000",
-    "stock_prg_span_growth_bytes": 4096,
+    "stock_prg_span_growth_bytes": 0,
     "optimized_validation": "validation/normalize/OPTIMIZED_VALIDATION.json",
     "binary_delta_validation": "validation/normalize/BINARY_DELTA_VALIDATION.json"
   },
@@ -398,5 +398,29 @@
     "canonical_naming": "docs/NAMING_STANDARD.md",
     "legacy_math_api_compatible": true,
     "benchmark_values_changed": true
+  },
+  "size_optimization": {
+    "baseline_commit": "7a74e750556c1da09db8759f9ed479cd92bd6d17",
+    "evidence": "validation/SIZE_OPTIMIZATION_VALIDATION.json",
+    "note": "docs/SIZE_OPTIMIZATION_2026-09-21.md",
+    "normalize_code_bytes": {
+      "stock": 881,
+      "reu": 849
+    },
+    "normalize_c64_table_bytes": {
+      "stock": 2560,
+      "reu": 1024
+    },
+    "fast_atan2_body_bytes": 85,
+    "fast_atan2_table_bytes": 1024,
+    "combined_occupied_bytes_saved": {
+      "v1_balanced": 290,
+      "v2_pareto_fast": 294,
+      "v3_reu_512k": 22,
+      "v4_reu_16m": 18,
+      "v5_hybrid_lowzp": 294
+    },
+    "prg_file_spans_changed": false,
+    "slower_benchmark_calls": 0
   }
 }

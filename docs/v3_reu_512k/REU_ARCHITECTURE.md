@@ -56,4 +56,4 @@ The selected stack-free 135-byte `ram135` record-family kernel uses `$000A-$0090
 
 ## VEC2 normalization
 
-`MATH_VEC2_NORMALIZE_Q8_8` uses a generated 32 KiB direct ratio-index table at `$8000-$FFFF` in `REU_TURBO16_BANK`. This shares the bank with the low-address Turbo16 overlay without overlap and moves with `REU_TURBO16_BANK` in alternate/custom maps. The resulting public-call mean is **157.552684 cycles** on the 107,396-vector corpus, with the same <=0.3621 degree / <=202-LSB contract as all other profiles.
+`MATH_VEC2_NORMALIZE_Q8_8` uses a generated 32 KiB direct ratio-index table at `$8000-$FFFF` in `REU_TURBO16_BANK`. This shares the bank with the low-address Turbo16 overlay without overlap and moves with `REU_TURBO16_BANK` in alternate/custom maps. The resulting public-call mean is **156.661198 cycles** on the 107,396-vector corpus, with the same <=0.3621 degree / <=202-LSB contract as all other profiles.

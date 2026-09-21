@@ -4,94 +4,104 @@
     "v1_balanced": {
       "cases": 271926,
       "errors": 0,
-      "prg_sha256": "2e7a9e16c46d2a9ad8f5713481ed39ddfaa101210a2300c5666d5d472f034ba6"
+      "prg_sha256": "2780f653e0236a0ca0a6c5cc13966dad053710a7dbbceab309b3a7f7007af534"
     },
     "v3_reu_512k": {
       "cases": 271926,
       "errors": 0,
-      "prg_sha256": "34c1af9d31883f356fd6bff985a4cf1e5dd7b46ce46ae98cd99e713f52e41bb5"
+      "prg_sha256": "e29fa4245ac9b15e1048bbe16f4126bfc20b39bd95f063d211870f179a776341"
     }
   },
   "mixed_calls": {
     "v1_balanced_reference": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 1000,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "2e7a9e16c46d2a9ad8f5713481ed39ddfaa101210a2300c5666d5d472f034ba6"
+      "prg_sha256": "2780f653e0236a0ca0a6c5cc13966dad053710a7dbbceab309b3a7f7007af534"
     },
     "v1_balanced_alternate": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 1000,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "5d37660a50aa42491ff8e5ae22ab29417d2f7eeb16ae38f56d0b49c73c7632b6"
+      "prg_sha256": "ea7e3fea3425e8ab5e9c622c9f81516b8bdf80c41d2eb752062ee292d53c1ede"
     },
     "v2_pareto_fast_reference": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 1000,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "0fe9d39bd1be588ea17c30a9051d763af943f020b9922c1b2199da930b988ff9"
+      "prg_sha256": "507715294f2c7e72ea895b009dde62244f091fdbd8fcd9733668648632a64eb6"
     },
     "v2_pareto_fast_alternate": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 1000,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "61379c55ce6957d4b5b056752877acfd3d14d9e3090e0141dbcd91028d1475bc"
+      "prg_sha256": "e116b9f37666498a63e350b5e6070d92aec16603decf83074b247c012713eda7"
     },
     "v3_reu_512k_reference": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 0,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "34c1af9d31883f356fd6bff985a4cf1e5dd7b46ce46ae98cd99e713f52e41bb5"
+      "prg_sha256": "e29fa4245ac9b15e1048bbe16f4126bfc20b39bd95f063d211870f179a776341"
     },
     "v3_reu_512k_alternate": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 0,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "a1a6f3e755f3004e8f3d2965432ac7c08a93ad83c602bdd79f4b494654286409"
+      "prg_sha256": "7765c035d588d4f1d3d44557006fafe5120a74a7da7d5693db836e7b0d669356"
     },
     "v4_reu_16m_reference": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 0,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "0481b8a6b1efe46aabd178e97da305690b33165b1c43f94790581b1665a61ca9"
+      "prg_sha256": "5036aef397fe973eec665aaae600d115ae9680338749d945bfe9440541d66e2f"
     },
     "v4_reu_16m_alternate": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 0,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "19715564c4c3aa679868b6635abea8ba42137b85149fefdc4b892476217d2240"
+      "prg_sha256": "4adb57b5fa3210c74e1a07e117b6f6104567f3cc0ce46089422b2f796e261055"
     },
     "v5_hybrid_lowzp_reference": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 1000,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "4d720909805130529ddb0ecaf92382368a731e1c91dccdd9e530100d84944ae1"
+      "prg_sha256": "52697af71bab5a6586536d9d3b8abc0165fe0e9260c0353ed1a4f638e4a9ee0b"
     },
     "v5_hybrid_lowzp_alternate": {
       "normalize_calls": 1000,
-      "other_math_calls": 2000,
+      "other_math_calls": 5000,
+      "ready_calls_after_safe_binder": 1000,
       "cold_no_init_calls": 1000,
       "zp_bytes_allowed": 4,
       "errors": 0,
-      "prg_sha256": "876b5dcd946e9c806143e6ab37f22ad634b6c71590c41c42ec1ed09345fdfafc"
+      "prg_sha256": "99ec092ebf5b8bee8d3dfe745e9728d58023516fc159ad393e8126735ff09302"
     }
   }
 }

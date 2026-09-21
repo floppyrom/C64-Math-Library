@@ -54,7 +54,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_ISQRT32` | `isqrt_u32_u16` | `isqrt_u32_u16.asm` |  | 101 |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | `dist_s8_s8_u8_fast.asm` |  | 30 |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | `dist_s8_s8_u8_accurate.asm` |  | 31 |
-| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm` |  | 400 |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm` |  | 389 |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | `mul_u16_u16_u32_turbo_begin.asm` |  | 17 |
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | `mul_u16_u16_u32_turbo.asm` |  | 17 |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | `mul_u16_u16_u32_turbo_end.asm` |  | 30 |

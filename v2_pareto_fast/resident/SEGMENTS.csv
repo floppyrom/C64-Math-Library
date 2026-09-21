@@ -26,9 +26,12 @@ umul32_neg_lo,$7400,511,bin/umul32_neg_lo.bin,quarter-square table
 umul32_neg_hi,$7600,511,bin/umul32_neg_hi.bin,quarter-square table
 signed_math_api,$3B80,1036,segments/signed_math_api.bin,signed SMUL/SDIV/SMOD public extension; sparse fixed-address image spans $3B80-$3FE5
 normalize_entry,$5E39,3,integrated PRG,stable vector-normalize JMP
-normalize_code,$1600,912,integrated PRG,sign-specific logarithmic-ratio normalize code
-normalize_ratio_index,$1000,1280,integrated PRG,five logarithmic ratio-to-component-index pages
-normalize_log_low,$1500,256,integrated PRG,low bytes of L(v)=round(160*log2(v))-1120
+normalize_dispatch_pp,$1500,236,integrated PRG,sign-specific normalize code; branches stay within page
+normalize_pn,$1600,208,integrated PRG,sign-specific normalize code; branches stay within page
+normalize_np,$1700,208,integrated PRG,sign-specific normalize code; branches stay within page
+normalize_nn,$1800,226,integrated PRG,sign-specific normalize code; branches stay within page
+normalize_ratio_index,$1000,1024,integrated PRG,four logarithmic ratio-to-component-index pages
+normalize_log_low,$1400,256,integrated PRG,low bytes of L(v)=floor(127.85*log2(v)+0.5)-895
 normalize_log_high,$1A00,256,integrated PRG,high bytes of L(v)
 normalize_component_0,$2400,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
 normalize_component_1,$2700,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane

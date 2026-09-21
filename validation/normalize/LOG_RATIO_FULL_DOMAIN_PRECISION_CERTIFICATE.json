@@ -5,15 +5,15 @@
     "v2_pareto_fast",
     "v5_hybrid_lowzp"
   ],
-  "mapping": "index=LUT[L(major)-L(minor)]; minor=0 uses zero_index; L(v)=round(160*log2(v))-1120",
+  "mapping": "index=LUT[L(major)-L(minor)]; minor=0 uses zero_index; L(v)=floor(127.85*log2(v)+0.5)-895",
   "cells": 723073,
   "component_pairs": 256,
-  "minimum_groups": 226,
-  "max_angle_deg": 0.35615227415791395,
-  "max_component_float": 199.11083106722435,
-  "max_component_ceil": 200,
-  "max_relative_unit_length_error": 2.0014146963398538e-05,
+  "minimum_groups": 255,
+  "max_angle_deg": 0.36165910827782355,
+  "max_component_float": 200.48771078861046,
+  "max_component_ceil": 201,
+  "max_relative_unit_length_error": 1.8364770783652062e-05,
   "angular_contract_deg": 0.3621,
   "component_contract_lsb": 202,
-  "table_design_sha256": "60ea637f8977d7ee7189a7a0d765f6a8a54cb58f75bcfabd9f63edf4ff629613"
+  "table_design_sha256": "96b02c162328895428096af776c360fbac450a0edb2b08e6ede81c96e124d6b0"
 }

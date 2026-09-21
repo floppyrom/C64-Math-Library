@@ -60,34 +60,34 @@ The full signed-16-bit input domain is covered by interval bounds over **723,073
 
 | Backend | Profiles | Certified angular bound | Certified component bound | Sampled angle / component maximum |
 |---|---|---:|---:|---:|
-| Logarithmic ratio | V1, V2, V5 | 0.356152275 degrees | 200 LSB | 0.347974118 degrees / 199 LSB |
+| Logarithmic ratio | V1, V2, V5 | 0.361659109 degrees | 201 LSB | 0.349722688 degrees / 200 LSB |
 | Existing REU ratio index | V3, V4 | 0.360856382 degrees | 200 LSB | 0.351573687 degrees / 196 LSB |
 
-Stock outputs change from the previous implementation while retaining the contract. V1/V2/V5 now produce identical outputs. V3/V4 retain the previous component tables and ratio mapping; all 107,396 benchmark outputs are byte-identical to the baseline.
+Stock outputs change from the preceding five-page logarithmic implementation while retaining the contract. V1/V2/V5 produce identical outputs. V3/V4 retain the previous component tables and ratio mapping; all 107,396 benchmark outputs are byte-identical to the baseline.
 
 ## Profile implementations
 
-The sign quadrant is selected once at entry. Each path performs magnitude reduction and writes signed components directly. Stock profiles replace the reciprocal multiply with a logarithmic ratio lookup; REU profiles retain their direct ratio-index lookup.
+The sign quadrant is selected once at entry. Each path performs magnitude reduction and writes signed components directly. Stock profiles use four logarithmic ratio-index pages; REU profiles retain their direct ratio-index lookup. Small vectors pass the minor byte directly to the lookup. Each stock quadrant stays within one code page to avoid branch-crossing penalties.
 
 | Profile | Previous mean | New mean cycles | Reduction | Min–max | Code bytes | Table bytes in C64 RAM |
 |---|---:|---:|---:|---:|---:|---:|
-| V1 Balanced | 198.770271 | **161.332256** | 18.83% | 90–302 | 915 | 2,816 |
-| V2 Pareto-Fast | 189.260317 | **161.332256** | 14.76% | 90–302 | 915 | 2,816 |
-| V3 REU 512K | 170.058633 | **157.552684** | 7.35% | 90–298 | 867 | 1,024 |
-| V4 REU 16M | 170.058633 | **157.552684** | 7.35% | 90–298 | 867 | 1,024 |
-| V5 Hybrid Low-ZP | 198.770271 | **161.332256** | 18.83% | 90–302 | 915 | 2,816 |
+| V1 Balanced | 161.332256 | **160.150080** | 0.73% | 84–302 | 881 | 2,560 |
+| V2 Pareto-Fast | 161.332256 | **160.150080** | 0.73% | 84–302 | 881 | 2,560 |
+| V3 REU 512K | 157.552684 | **156.661198** | 0.57% | 84–298 | 849 | 1,024 |
+| V4 REU 16M | 157.552684 | **156.661198** | 0.57% | 84–298 | 849 | 1,024 |
+| V5 Hybrid Low-ZP | 161.332256 | **160.150080** | 0.73% | 84–302 | 881 | 2,560 |
 
-These are emulator public-call cycles over the unchanged deterministic 107,396-vector corpus, including the entry JMP and RTS, excluding caller JSR/input stores and video/IRQ contention. Reference and alternate maps have identical output and cycle vectors. Code counts include the three-byte public JMP; table counts exclude the existing 32 KiB REU ratio table.
+These are emulator public-call cycles over the unchanged deterministic 107,396-vector corpus, including the entry JMP and RTS, excluding caller JSR/input stores and video/IRQ contention. The comparison baseline is commit `7a74e75`; no individual tested call becomes slower. Reference and alternate maps have identical output and cycle vectors. Code counts include the three-byte public JMP; table counts exclude the existing 32 KiB REU ratio table.
 
 ### RAM and integration tradeoff
 
-The faster routines are larger. V1/V5 add 523 code bytes, V2 adds 532, and V3/V4 add 521. Stock tables total 2,816 bytes, replacing 1,152 bytes of normalizer-specific component/reciprocal data (1,664 additional active table bytes). The old stock reciprocal multiply's shared quarter-square tables remain available to other routines.
+This refresh saves **290 occupied bytes** per stock normalizer: 34 code bytes and one 256-byte ratio page. V3/V4 save **18 code bytes** each. Stock normalizer code plus tables falls from 3,731 to 3,441 bytes (7.77%). The old stock reciprocal multiply's shared quarter-square tables remain available to other routines.
 
-V1/V2/V5 reference PRGs now load at **$1000**, previously $2000. Their contiguous file payload spans therefore grow by **4,096 bytes**, including gaps. This is separate from occupied code/table size; loaders must honor the PRG header and reserve the expanded range. V3/V4 PRG spans and REU images are unchanged.
+All reference PRGs retain their existing **$1000** load address and file span. The saved bytes reduce the occupied code/table islands; fixed gaps in the integrated PRG mean the file itself does not shrink. The stock normalizer frees `REG_LOW+$0900..+$09FF`, but the full profile still reserves its enclosing region. REU images are unchanged. See [the size-refresh note](SIZE_OPTIMIZATION_2026-09-21.md) for the complete comparison.
 
 Every normalizer uses only **four volatile bytes at `ZP_MAIN+$18..+$1B`**, retaining V1/V5's 31-byte shared ZP contract and adding no persistent stack-page reservation. The public entry remains `REG_GAME_API+$0039` ($5E39 by default). Stock code modifies lookup operands and must execute from writable RAM; calls share scratch and are non-reentrant, as elsewhere in the library. The stock normalizer itself needs no initialization. V3/V4 retain the normal `MATH_INIT` and preloaded-REU requirements.
 
-Reference code islands are $1600–$198F for stock profiles and $1200–$12EC, $1300–$13CA, $1720–$17FC, $1B00–$1BCA for REU profiles. The REU placement avoids the fixed signed-multiply planes at $9C00–$9FFF after relocation. Adjacent native READMEs list all table locations and include symbols.
+Reference code islands are $1500–$15EB, $1600–$16CF, $1700–$17CF, $1800–$18E1 for stock profiles and $1200–$12E3, $1300–$13C7, $1720–$17F9, $1B00–$1BC7 for REU profiles. The REU placement avoids the fixed signed-multiply planes at $9C00–$9FFF after relocation. Adjacent native READMEs list all table locations and include symbols.
 
 ### Standalone native sources
 
@@ -132,6 +132,8 @@ Normal math calls, including normalization, remain forbidden while a Turbo `BEGI
 The principal files are:
 
 - `validation/normalize/NORMALIZE_PROFILE_PARITY_107396.json`
+- `validation/SIZE_OPTIMIZATION_VALIDATION.json`
+- `tools/validate_size_optimization.py`
 - `validation/normalize/LOG_RATIO_FULL_DOMAIN_PRECISION_CERTIFICATE.json`
 - `validation/normalize/LOG_RATIO_TABLE_DESIGN.json`
 - `validation/normalize/BASELINE_107396.json`
