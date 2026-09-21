@@ -372,7 +372,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 183
+          "reachable_instructions": 432
         }
       ]
     },
@@ -747,7 +747,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 177
+          "reachable_instructions": 432
         }
       ]
     },
@@ -1122,7 +1122,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 156
+          "reachable_instructions": 400
         },
         {
           "legacy_api": "MATH_REU_UMUL16_BEGIN",
@@ -1545,7 +1545,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 156
+          "reachable_instructions": 400
         },
         {
           "legacy_api": "MATH_REU_UMUL16_BEGIN",
@@ -1992,7 +1992,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 183
+          "reachable_instructions": 432
         }
       ]
     }

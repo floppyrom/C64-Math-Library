@@ -17,7 +17,7 @@ MATH_UDIV16:
 ; ---- executable island $B800 ----
 * = $B800
 LB800:
-    !byte $A7, $11    ; LAX zp         ; @B800 AF 11 C0
+    !byte $AF, $11, $C0    ; LAX abs   ; @B800 AF 11 C0
     cmp $C015                          ; @B803 CD 15 C0
     bcs LB83A                          ; @B806 B0 32
 LB808:

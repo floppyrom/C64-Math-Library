@@ -27,7 +27,7 @@ L7400:
     bne L7415                          ; @7410 D0 03
     jmp L761B                          ; @7412 4C 1B 76
 L7415:
-    !byte $A7, $11    ; LAX zp         ; @7415 AF 11 C0
+    !byte $AF, $11, $C0    ; LAX abs   ; @7415 AF 11 C0
     cmp $C015                          ; @7418 CD 15 C0
     bcs L7420                          ; @741B B0 03
     jmp L75CE                          ; @741D 4C CE 75
@@ -54,7 +54,7 @@ L7441:
     lda #$00                           ; @7449 A9 00
     sbc $C015                          ; @744B ED 15 C0
     sta $13                            ; @744E 85 13
-    !byte $A7, $11    ; LAX zp         ; @7450 AF 11 C0
+    !byte $AF, $11, $C0    ; LAX abs   ; @7450 AF 11 C0
     cmp $13                            ; @7453 C5 13
     bcs L745A                          ; @7455 B0 03
     jmp L75CE                          ; @7457 4C CE 75
@@ -101,7 +101,7 @@ L74A5:
     sta $13                            ; @74AD 85 13
     jmp L754C                          ; @74AF 4C 4C 75
 L74B2:
-    !byte $A7, $11    ; LAX zp         ; @74B2 AF 11 C0
+    !byte $AF, $11, $C0    ; LAX abs   ; @74B2 AF 11 C0
     cmp $C015                          ; @74B5 CD 15 C0
     bcc L74CC                          ; @74B8 90 12
     beq L74BF                          ; @74BA F0 03

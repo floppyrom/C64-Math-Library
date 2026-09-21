@@ -75,4 +75,4 @@ V5 is a stock-C64 profile. It does not use the REU and does not expose Turbo16/T
 
 ## Q8.8 vector normalization
 
-V5 exposes `MATH_VEC2_NORMALIZE_Q8_8` as part of the common 46-entry API. It intentionally uses the V1-compatible 31-ZP backend rather than importing V2's larger-ZP normalizer: **198.770271 cycles mean**, 129–333 cycles on the deterministic corpus, with the common <=0.3621 degree / <=202-LSB precision contract.
+V5 exposes `MATH_VEC2_NORMALIZE_Q8_8` as part of the common 46-entry API. It uses the same four-byte-scratch logarithmic-ratio backend as V1 and V2, inside V5's existing 31-byte ZP window: **161.332256 cycles mean**, 90–302 cycles on the deterministic corpus, with the common <=0.3621 degree / <=202-LSB precision contract.

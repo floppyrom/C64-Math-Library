@@ -22,3 +22,12 @@ umul32_neg_lo,$9000,511,bin/umul32_neg_lo.bin,page-aligned lookup data
 umul32_neg_hi,$9200,511,bin/umul32_neg_hi.bin,page-aligned lookup data
 signed_math_api,$3B80,1036,segments/signed_math_api.bin,signed SMUL/SDIV/SMOD public extension; sparse fixed-address image spans $3B80-$3FE5
 umul24_adapter,$4900,101,bin/umul24_adapter.bin,V1 record-UMUL24 ABI adapter + shared-ZP pointer-page setup + persistent-UMUL32 state restore
+normalize_entry,$5E39,3,integrated PRG,stable vector-normalize JMP
+normalize_code,$1600,912,integrated PRG,sign-specific logarithmic-ratio normalize code
+normalize_ratio_index,$1000,1280,integrated PRG,five logarithmic ratio-to-component-index pages
+normalize_log_low,$1500,256,integrated PRG,low bytes of L(v)=round(160*log2(v))-1120
+normalize_log_high,$6400,256,integrated PRG,high bytes of L(v)
+normalize_component_0,$6000,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
+normalize_component_1,$6100,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
+normalize_component_2,$6200,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
+normalize_component_3,$6300,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane

@@ -1,3 +1,5 @@
+2026-09-21: Faster vector normalization. V1/V2/V5: 161.332256 cycles; V3/V4: 157.552684 cycles. Four scratch bytes, same public precision bounds. Stock code/tables grow; V1/V2/V5 PRG load changes to $1000. See docs/VEC2_NORMALIZE_Q8_8.md.
+
 2026-09-20 - STANDALONE ROUTINE SOURCES / TYPED NAMES
 - 245 callable profile routines now have standalone readable ASM mirrors.
 - Typed names encode operand/result geometry; legacy MATH_* ABI remains unchanged.

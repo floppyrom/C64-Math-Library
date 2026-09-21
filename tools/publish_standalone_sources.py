@@ -139,7 +139,8 @@ def render(profile,name,mem,vals,prg_name):
    lines.append(f'{name}:')
   elif pc in targets: lines.append(f'L{pc:04X}:')
   bs=' '.join(f'{mem[pc+i]:02X}' for i in range(sz))
-  if op=='lax': text=f'    !byte $A7, ${mem[pc+1]:02X}    ; LAX zp'
+  if op=='lax':
+   text='    !byte '+', '.join(f'${mem[pc+i]:02X}' for i in range(sz))+f'    ; LAX {mode}'
   elif op=='anc': text=f'    !byte $0B, ${mem[pc+1]:02X}    ; ANC #imm'
   else: text=f'    {op}{operand(mem,pc,op,mode,code)}'
   lines.append(f'{text:<38} ; @{pc:04X} {bs}')

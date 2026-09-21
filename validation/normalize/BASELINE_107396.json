@@ -1,0 +1,34 @@
+{
+  "baseline_commit": "f74ea7924851e1d5f9136d5f1612193cb0c6ce83",
+  "corpus_sha256": "a9ca775c4b2facbd4eb42305e3222aab274f250f20f08135fd41afa7a61c36a9",
+  "profiles": {
+    "v1_balanced": {
+      "prg_sha256": "acae8921cbc938ad9ca821f682578e3c09cd0969d1dfdce78c09b78456672f8a",
+      "cases": 107396,
+      "mean_cycles": 198.77027077358562,
+      "min_cycles": 129,
+      "max_cycles": 333,
+      "output_sha256": "5d3b74afebc3efa14c84db221b8dd32fbbd0a369ed5f0dd4a944445d46a0a785"
+    },
+    "v2_pareto_fast": {
+      "prg_sha256": "f28a900b2274c7f09290df93d81ec34a16de5c9e6e8a46c1b84b5e5e1dd4d994",
+      "cases": 107396,
+      "mean_cycles": 189.26031695780102,
+      "min_cycles": 127,
+      "max_cycles": 323,
+      "output_sha256": "c57649636808fdfd01068083bf944f4b289018ac3931d2e82e7b76c9749bfc8e"
+    },
+    "v3_reu_512k": {
+      "prg_sha256": "84e85bafa6fbfd33c543f42dec8604e0b2d2fc20e2f878513b21f583d36c1b3e",
+      "cases": 107396,
+      "mean_cycles": 170.05863346865806,
+      "min_cycles": 133,
+      "max_cycles": 306,
+      "output_sha256": "5d3b74afebc3efa14c84db221b8dd32fbbd0a369ed5f0dd4a944445d46a0a785"
+    }
+  },
+  "equivalent_normalizers": {
+    "v4_reu_16m": "v3_reu_512k",
+    "v5_hybrid_lowzp": "v1_balanced"
+  }
+}

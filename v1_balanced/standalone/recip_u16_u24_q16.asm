@@ -31,7 +31,7 @@ L7200:
     sec                                ; @7214 38
     rts                                ; @7215 60
 L7216:
-    !byte $A7, $12    ; LAX zp         ; @7216 AF 12 C0
+    !byte $AF, $12, $C0    ; LAX abs   ; @7216 AF 12 C0
     cmp $C016                          ; @7219 CD 16 C0
     bcs L7221                          ; @721C B0 03
     jmp L72AF                          ; @721E 4C AF 72

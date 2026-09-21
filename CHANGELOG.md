@@ -1,3 +1,11 @@
+## 2026-09-21 — faster vector normalization
+
+- V1/V2/V5 now average **161.332256 cycles**, down 18.83% for V1/V5 and 14.76% for V2. V3/V4 average **157.552684 cycles**, down 7.35%, on the same 107,396-vector corpus.
+- Dispatch the sign quadrant once and write signed components directly. Stock profiles use certified logarithmic-ratio tables; REU profiles retain their existing mapping and outputs.
+- Preserve the public Q8.8-to-Q1.15 ABI, <=0.3621-degree / <=202-LSB contract, and V1/V5 31-byte shared ZP allocation. Each normalizer uses four scratch bytes.
+- Trade more RAM for speed: 915 code + 2,816 table bytes for stock profiles; 867 code + 1,024 C64 table bytes for REU profiles, with unchanged REU images. V1/V2/V5 PRGs now load at $1000, adding 4 KiB to the contiguous file span including gaps.
+- Update canonical code/table sources, resident PRGs, source mirrors, hybrid/Pareto builds, public performance and memory tables, and release validation. Stock outputs change within the existing error contract.
+
 ## 2026-09-20 — consolidated public source and benchmark structure
 
 - Added `PERFORMANCE.md` as the human-readable speed front door and `benchmarks/PUBLIC_PROFILE_RESULTS.csv` / `benchmarks/STANDALONE_RESULTS.csv` as machine-readable indexes.

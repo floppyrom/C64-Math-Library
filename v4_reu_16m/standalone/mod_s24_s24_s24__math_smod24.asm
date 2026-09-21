@@ -32,7 +32,7 @@ L5A50:
     bne L5A5E                          ; @5A59 D0 03
     jmp L5D5D                          ; @5A5B 4C 5D 5D
 L5A5E:
-    !byte $A7, $12    ; LAX zp         ; @5A5E AF 12 C0
+    !byte $AF, $12, $C0    ; LAX abs   ; @5A5E AF 12 C0
     cmp $C016                          ; @5A61 CD 16 C0
     bcs L5A69                          ; @5A64 B0 03
     jmp L5CED                          ; @5A66 4C ED 5C
@@ -72,7 +72,7 @@ L5AA1:
     lda #$00                           ; @5AB0 A9 00
     sbc $C016                          ; @5AB2 ED 16 C0
     sta $15                            ; @5AB5 85 15
-    !byte $A7, $12    ; LAX zp         ; @5AB7 AF 12 C0
+    !byte $AF, $12, $C0    ; LAX abs   ; @5AB7 AF 12 C0
     cmp $15                            ; @5ABA C5 15
     bcs L5AC1                          ; @5ABC B0 03
     jmp L5CED                          ; @5ABE 4C ED 5C
@@ -139,7 +139,7 @@ L5B33:
     sta $15                            ; @5B40 85 15
     jmp L5C2B                          ; @5B42 4C 2B 5C
 L5B45:
-    !byte $A7, $12    ; LAX zp         ; @5B45 AF 12 C0
+    !byte $AF, $12, $C0    ; LAX abs   ; @5B45 AF 12 C0
     cmp $C016                          ; @5B48 CD 16 C0
     bcc L5B6C                          ; @5B4B 90 1F
     beq L5B52                          ; @5B4D F0 03

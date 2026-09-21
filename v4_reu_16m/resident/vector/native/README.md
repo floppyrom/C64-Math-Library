@@ -1,77 +1,47 @@
 # `MATH_VEC2_NORMALIZE_Q8_8` native source
 
-This directory contains the **canonical native implementation** used by this profile.
-Unlike the older published signed-source mirrors, `vec2_normalize_q8_8.asm` is not a
-post-build listing: the relocatable library build includes this file directly.
+This directory contains the canonical REU ratio-index implementation for `v4_reu_16m`. The integrated build consumes `vec2_normalize_q8_8.asm`; it includes the adjacent generated `vec2_normalize_tables.asm`. Copy both files for standalone reuse. V1/V5 sources are identical; V3/V4 sources are identical.
 
-The file is deliberately code-only so it can be lifted into a game/demo without
-dragging in the rest of the library. To reuse it, provide the documented workspace,
-scratch and immutable table pages, set the assembly PC to the desired entry address,
-and assemble/include `vec2_normalize_q8_8.asm`.
+## Contract
 
-## ABI
+- Inputs: signed Q8.8 X at `MATH_IO+$00..+$01`, Y at `MATH_IO+$04..+$05`, preserved.
+- Outputs: signed Q1.15 X at `MATH_IO+$08..+$09`, Y at `MATH_IO+$0A..+$0B`.
+- `C=0` for nonzero input; `(0,0)` returns four zero bytes and `C=1`.
+- A/X/Y are volatile; decimal mode must be clear.
+- Scratch: four bytes, `ZP_MAIN+$18..+$1B`. No persistent stack-page reservation.
+- Public accuracy: <=0.3621 degrees and <=202 component LSB against unit scale 32767.
+- Current full-domain certificate: <=0.360856382 degrees and <=200 LSB.
 
-- input `MATH_IO+$00..$01`: signed Q8.8 X
-- input `MATH_IO+$04..$05`: signed Q8.8 Y
-- output `MATH_IO+$08..$09`: signed Q1.15 normalized X
-- output `MATH_IO+$0A..$0B`: signed Q1.15 normalized Y
-- inputs are preserved
-- `C=0` for non-zero vectors
-- `(0,0)` returns `(0,0)` with `C=1`
-- A/X/Y are volatile
+The routine selects the sign quadrant once and writes signed outputs directly. It uses the stable NMOS 6502/6510 undocumented `LAX` opcode, encoded explicitly as bytes. Calls are sequential and non-reentrant.
 
-Public precision contract: maximum angular error `<= 0.3621 degrees` and maximum
-component error `<= 202` Q1.15 LSB. The certified current implementation is tighter:
-`<= 0.360856382 degrees` and `<= 200` LSB over the full reduced domain.
+## Performance and placement
 
-The sources intentionally use stable NMOS 6502/6510 undocumented `LAX` opcodes,
-encoded explicitly with `!byte`, matching the rest of the optimized library.
+**157.552684 cycles mean**, 90–298 cycles on 107,396 deterministic vectors. This includes the public entry and RTS, excluding the caller JSR. Both supported maps have identical cycle and output vectors.
 
-## V3 / V4 REU direct-index backend
+Code: **867 bytes**, including the public three-byte JMP at `REG_GAME_API+$0039`. Code islands: `REG_LOW+$0200..+$02EC`, `+$0300..+$03CA`, `+$0720..+$07FC`, `+$0B00..+$0BCA`. Tables in C64 RAM: **1024 bytes**.
 
-Performance on the deterministic 107,396-vector corpus:
+- Component planes: `REG_TABLE+$0800`, `+$0900`, `+$0A00`, `+$0B00` (1,024 bytes).
+- Existing REU ratio table: `$8000–$FFFF` within `REU_TURBO16_BANK` (32 KiB).
 
-- V3 REU 512K: **170.058633 average cycles**
-- V4 REU 16M: **170.058633 average cycles**
-- reachable routine code: **346 bytes**
+Load the profile REU image, or generate its ratio table with `tools/assemble_sources.py`, and initialize the normal one-byte REU transport with `MATH_INIT`. Normal calls remain forbidden during Turbo BEGIN/END modes. The component tables and REU mapping are unchanged from the previous implementation.
 
-V3 and V4 use byte-identical native code.
+Stock-profile reference PRGs now load at $1000; reserve the expanded range. V1/V5 retain their 31-byte shared ZP allocation. Full memory and baseline comparisons are in `docs/VEC2_NORMALIZE_Q8_8.md`.
 
-### Required symbols
+## Standalone include
 
-`MATH_IO`, `ZP_MAIN`, `REG_TABLE`, `REU_SCRATCH`, `REU_TURBO16_BANK`.
-
-### C64-side dependencies
-
-- Q1.15 component planes:
-  - `REG_TABLE+$0800`
-  - `REG_TABLE+$0900`
-  - `REG_TABLE+$0A00`
-  - `REG_TABLE+$0B00`
-- one-byte `REU_SCRATCH` destination used by the direct ratio-index lookup
-
-### REU dependency
-
-The upper 32 KiB of `REU_TURBO16_BANK`, offsets `$8000-$FFFF`, contains a
-128 x 256 direct ratio-index table. The row is the normalized major mantissa
-`$80-$FF`; the column is the normalized minor mantissa `$00-$FF`.
-
-The normal library build generates this table automatically in
-`tools/assemble_sources.py`, so it consumes **no additional REU bank** in V3.
-
-### Minimal integration pattern
+Required symbols: `MATH_IO`, `ZP_MAIN`, `REG_LOW`, `REG_TABLE`, `REG_GAME_API`, `REU_SCRATCH`, `REU_TURBO16_BANK`. Region bases must retain their documented page alignment and avoid overlaps. The source sets the code/table origins itself and restores the assembly PC to `REG_GAME_API+$003C` after inclusion.
 
 ```asm
-MATH_IO          = $C000
-ZP_MAIN          = $02
-REG_TABLE        = $6000
-REU_SCRATCH      = $C020
+MATH_IO = $C000
+ZP_MAIN = $02
+REG_LOW = $1000
+REG_TABLE = $6000
+REG_GAME_API = $5E00
+REU_SCRATCH = $C020
 REU_TURBO16_BANK = $04
 
-* = $5E39
+* = REG_GAME_API+$0039
 !source "vec2_normalize_q8_8.asm"
 ```
 
-An external user must also populate `$8000-$FFFF` of the selected REU bank with
-the direct ratio-index table. The canonical generator in `tools/assemble_sources.py`
-documents the exact formula used to construct it.
+Run `make normalize` to check generated tables, isolated/integrated source parity, all five profile benchmarks, reduced-plane coverage, mixed calls, ZP confinement, cold stock loads, and the full-domain certificates.

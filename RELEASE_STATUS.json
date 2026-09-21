@@ -10,11 +10,11 @@
     "current_checks": 8
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "8a85b84faa55ae4c767c4228caf8104541ced530a82b4a010ac7a5d8e36c83a5",
-    "v2_pareto_fast": "78cd4318d952b2c7547f8799403c0403a7aa3e9da8118388c4a793d4129de3d9",
-    "v3_reu_512k": "094f8c2711576e1ff62e576af8fc08b1c5348f4750170a2a83c57dbf47ba6098",
-    "v4_reu_16m": "e1f4acab4c0d3bfeba1f6fa9d962a07557cb41ac121882e8ce6ce4f22e944326",
-    "v5_hybrid_lowzp": "9b354748f63f731d182c31fa27914503f7eaccc7ab0a82890c5bea3bfa8dad42"
+    "v1_balanced": "5d37660a50aa42491ff8e5ae22ab29417d2f7eeb16ae38f56d0b49c73c7632b6",
+    "v2_pareto_fast": "61379c55ce6957d4b5b056752877acfd3d14d9e3090e0141dbcd91028d1475bc",
+    "v3_reu_512k": "a1a6f3e755f3004e8f3d2965432ac7c08a93ad83c602bdd79f4b494654286409",
+    "v4_reu_16m": "19715564c4c3aa679868b6635abea8ba42137b85149fefdc4b892476217d2240",
+    "v5_hybrid_lowzp": "876b5dcd946e9c806143e6ab37f22ad634b6c71590c41c42ec1ed09345fdfafc"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "da767488080d83bc692c4a9b41ecbbe19ac331652170c4f47faccab53a96483d",
@@ -109,7 +109,7 @@
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-09-20",
+  "date": "2026-09-21",
   "deterministic_builds_checked": 8,
   "division_refresh": {
     "date": "2026-09-20",
@@ -234,11 +234,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "acae8921cbc938ad9ca821f682578e3c09cd0969d1dfdce78c09b78456672f8a",
-    "v2_pareto_fast": "f28a900b2274c7f09290df93d81ec34a16de5c9e6e8a46c1b84b5e5e1dd4d994",
-    "v3_reu_512k": "84e85bafa6fbfd33c543f42dec8604e0b2d2fc20e2f878513b21f583d36c1b3e",
-    "v4_reu_16m": "ae9b2d6c4b34bbbd135ac4a01c729eb84b65f3564bb5b73093eb1ae17c70df76",
-    "v5_hybrid_lowzp": "7b340cf2dd33eb950f02dde864b9a64f55a109ed45e1db26a4f2f5ef780a7071"
+    "v1_balanced": "2e7a9e16c46d2a9ad8f5713481ed39ddfaa101210a2300c5666d5d472f034ba6",
+    "v2_pareto_fast": "0fe9d39bd1be588ea17c30a9051d763af943f020b9922c1b2199da930b988ff9",
+    "v3_reu_512k": "34c1af9d31883f356fd6bff985a4cf1e5dd7b46ce46ae98cd99e713f52e41bb5",
+    "v4_reu_16m": "0481b8a6b1efe46aabd178e97da305690b33165b1c43f94790581b1665a61ca9",
+    "v5_hybrid_lowzp": "4d720909805130529ddb0ecaf92382368a731e1c91dccdd9e530100d84944ae1"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "66a3feab7d1a18356291c2aac9f404627ca13004d1032d6c6efb4cd1e4f1acf5",
@@ -248,8 +248,8 @@
     "turbo16": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
     "turbo32": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a"
   },
-  "release": "c64_math_library_v1-v5_MULTIPLY_DIVISION_REFRESH_46ENTRY_2026-09-20",
-  "release_audit_checks": 236,
+  "release": "c64_math_library_v1-v5_NORMALIZE_REFRESH_46ENTRY_2026-09-21",
+  "release_audit_checks": 249,
   "release_audit_status": "PASS",
   "reu_turbo_lifecycle_entries": 6,
   "signed_implementation_taxonomy": {
@@ -321,15 +321,14 @@
       "max_component_lsb": 200
     },
     "mean_cycles": {
-      "v1_balanced": 198.770271,
-      "v2_pareto_fast": 189.260317,
-      "v3_reu_512k": 170.058633,
-      "v4_reu_16m": 170.058633,
-      "v5_hybrid_lowzp": 198.770271
+      "v1_balanced": 161.3322563223956,
+      "v2_pareto_fast": 161.3322563223956,
+      "v3_reu_512k": 157.5526835263883,
+      "v4_reu_16m": 157.5526835263883,
+      "v5_hybrid_lowzp": 161.3322563223956
     },
     "native_sources": {
       "fixed_profiles_include_native_source_directly": true,
-      "machine_code_changed_by_breakout": false,
       "status": "PASS",
       "v1_balanced": "v1_balanced/resident/vector/native/vec2_normalize_q8_8.asm",
       "v1_v5_identical": true,
@@ -340,7 +339,8 @@
       "v5_hybrid_lowzp": "v5_hybrid_lowzp/resident/vector/native/vec2_normalize_q8_8.asm",
       "v5_inherited_backend_drift_guard": true,
       "validation": "validation/normalize/NATIVE_SOURCE_VALIDATION.json",
-      "validation_checks": 16
+      "validation_checks": 16,
+      "machine_code_changed_by_optimization": true
     },
     "precision_contract": {
       "max_angle_deg": 0.3621,
@@ -349,7 +349,38 @@
     "public_entry": "MATH_VEC2_NORMALIZE_Q8_8",
     "reference_address": "$5E39",
     "stable_api_entries": 46,
-    "status": "PASS"
+    "status": "PASS",
+    "full_domain_certificates": {
+      "stock_log": {
+        "profiles": [
+          "v1_balanced",
+          "v2_pareto_fast",
+          "v5_hybrid_lowzp"
+        ],
+        "cells": 723073,
+        "max_angle_deg": 0.35615227415791395,
+        "max_component_ceil": 200,
+        "file": "validation/normalize/LOG_RATIO_FULL_DOMAIN_PRECISION_CERTIFICATE.json"
+      },
+      "reu_ratio": {
+        "profiles": [
+          "v3_reu_512k",
+          "v4_reu_16m"
+        ],
+        "cells": 723073,
+        "max_angle_deg": 0.36085638159979183,
+        "max_component_ceil": 199,
+        "file": "validation/normalize/EXACT_RATIO_FULL_DOMAIN_PRECISION_CERTIFICATE.json"
+      }
+    },
+    "scratch_bytes": 4,
+    "scratch_offsets": "ZP_MAIN+$18..+$1B",
+    "stock_outputs_changed": true,
+    "reu_outputs_preserved": true,
+    "stock_reference_prg_load": "$1000",
+    "stock_prg_span_growth_bytes": 4096,
+    "optimized_validation": "validation/normalize/OPTIMIZED_VALIDATION.json",
+    "binary_delta_validation": "validation/normalize/BINARY_DELTA_VALIDATION.json"
   },
   "standalone_source_publication": {
     "status": "PASS",
@@ -366,6 +397,6 @@
     "total_callable_profile_entries": 245,
     "canonical_naming": "docs/NAMING_STANDARD.md",
     "legacy_math_api_compatible": true,
-    "benchmark_values_changed": false
+    "benchmark_values_changed": true
   }
 }

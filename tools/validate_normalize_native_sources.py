@@ -7,15 +7,15 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 
 from mini6502 import Assembler
-from assemble_sources import parse_config
+from assemble_sources import parse_config, expand_source_file
 
 ENTRY_OFFSET=0x39
 ROUTINE_BYTES={
- 'v1_balanced':392,
- 'v2_pareto_fast':383,
- 'v3_reu_512k':346,
- 'v4_reu_16m':346,
- 'v5_hybrid_lowzp':392,
+ 'v1_balanced':915,
+ 'v2_pareto_fast':915,
+ 'v3_reu_512k':867,
+ 'v4_reu_16m':867,
+ 'v5_hybrid_lowzp':915,
 }
 FIXED=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m')
 ALL=FIXED+('v5_hybrid_lowzp',)
@@ -68,21 +68,27 @@ def main():
    cfg=config_path(p,kind)
    vals=parse_config(cfg)
    entry=vals['REG_GAME_API']+ENTRY_OFFSET
-   src=native_path(p).read_text()
+   src=expand_source_file(native_path(p))
    text=cfg.read_text().rstrip()+f'\n* = REG_GAME_API+${ENTRY_OFFSET:04X}\n'+strip_cpu(src)
    mem,labels,const=Assembler().assemble(text)
    n=ROUTINE_BYTES[p]
-   isolated=bytes(mem.get(a,0) for a in range(entry,entry+n))
+   body=vals['REG_LOW']+(0x200 if p in FIXED[2:] else 0x600)
+   tables=1024 if p in FIXED[2:] else 2816
+   assert len(mem)-tables==n
+   assert mem[entry]==0x4c and mem[entry+1]|mem[entry+2]<<8==body
+   addresses=sorted(mem)
+   isolated=bytes(mem[a] for a in addresses)
    bdir=build_dir(p,kind)
    man=json.loads((bdir/'source_build_manifest.json').read_text())
    integrated=load_prg(bdir/man['output_prg'])
-   actual=bytes(integrated[entry:entry+n])
+   actual=bytes(integrated[a] for a in addresses)
    ck(f'{p}_{kind}_isolated_equals_integrated',isolated==actual,
-      {'bytes':n,'entry':f'${entry:04X}','isolated_sha256':hashlib.sha256(isolated).hexdigest(),
+      {'code_bytes':n,'table_bytes':len(mem)-n,'entry':f'${entry:04X}','body':f'${body:04X}','isolated_sha256':hashlib.sha256(isolated).hexdigest(),
        'integrated_sha256':hashlib.sha256(actual).hexdigest()})
    prof=out['profiles'].setdefault(p,{'native_source':str(native_path(p).relative_to(ROOT)),
-                                      'native_sha256':sha(native_path(p)),'maps':{}})
-   prof['maps'][kind]={'entry':f'${entry:04X}','bytes':n,
+                                      'native_sha256':sha(native_path(p)),
+                                      'tables_sha256':sha(native_path(p).with_name('vec2_normalize_tables.asm')),'maps':{}})
+   prof['maps'][kind]={'entry':f'${entry:04X}','body':f'${body:04X}','code_bytes':n,'table_bytes':len(mem)-n,
                        'routine_sha256':hashlib.sha256(isolated).hexdigest()}
  outpath=ROOT/'validation/normalize/NATIVE_SOURCE_VALIDATION.json'
  outpath.parent.mkdir(parents=True,exist_ok=True)

@@ -1,5 +1,5 @@
 profile,resident_prg_load,resident_prg_end_exclusive,resident_prg_payload_span_bytes,base_unsigned_shared_zp_bytes,signed_div_zp_bytes,native_smul16_exec_zp_bytes,game_math_zp_bytes,game_math_ram_scratch_bytes,reu_image_bytes,resident_end_exclusive,resident_payload_bytes
-v1_balanced,$2000,$CB21,43809,31,0,0,0,24,0,$CBA4,43940
-v2_pareto_fast,$2000,$CC74,44148,60,21,116,24,0,0,,
-v3_reu_512k,$1000,$CC74,48244,55,21,116,24,0,524288,,
-v4_reu_16m,$1000,$CC74,48244,55,21,116,24,0,16777216,,
+v1_balanced,$1000,$CF97,49047,31,0,0,0,24,0,$CF97,49047
+v2_pareto_fast,$1000,$CF97,49047,60,21,116,24,0,0,,
+v3_reu_512k,$1000,$CF97,49047,55,21,116,24,0,524288,,
+v4_reu_16m,$1000,$CF97,49047,55,21,116,24,0,16777216,,

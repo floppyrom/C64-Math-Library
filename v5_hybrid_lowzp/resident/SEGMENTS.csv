@@ -1,10 +1,19 @@
 segment,load_address,bytes,file,purpose
-v1_base,multiple,integrated PRG,integrated PRG,"V1 Balanced implementation for unchanged stable API entries"
-hybrid_v2_division,$A000,4096,integrated PRG,"relocated V2 UDIV16/UDIV24/UDIV32_16 kernels; wider UMOD aliases use these entries"
-hybrid_v2_umod8,$B000,128,integrated PRG,"relocated V2 UMOD8 kernel"
-hybrid_v2_trig,$B080,33,integrated PRG,"relocated V2 COS8 and SINCOS8 implementations"
-hybrid_v2_cos_table,$B100,256,integrated PRG,"private V2 cosine table"
+v1_base,multiple,integrated PRG,integrated PRG,V1 Balanced implementation for unchanged stable API entries
+hybrid_v2_division,$A000,4096,integrated PRG,relocated V2 UDIV16/UDIV24/UDIV32_16 kernels; wider UMOD aliases use these entries
+hybrid_v2_umod8,$B000,128,integrated PRG,relocated V2 UMOD8 kernel
+hybrid_v2_trig,$B080,33,integrated PRG,relocated V2 COS8 and SINCOS8 implementations
+hybrid_v2_cos_table,$B100,256,integrated PRG,private V2 cosine table
 atan2_fast_logx,$6D00,256,integrated PRG,sum-fast ATAN2 absolute-X logarithm table in V1-free REG_TABLE page
 atan2_fast_logy,$6E00,256,integrated PRG,sum-fast ATAN2 biased absolute-Y logarithm table in V1-free REG_TABLE page
 atan2_fast_qpos,$6F00,256,integrated PRG,sum-fast ATAN2 positive-angle table in V1-free REG_TABLE page
 atan2_fast_qneg,$7000,256,integrated PRG,sum-fast ATAN2 negative-angle table in V1-free REG_TABLE page
+normalize_entry,$5E39,3,integrated PRG,stable vector-normalize JMP
+normalize_code,$1600,912,integrated PRG,sign-specific logarithmic-ratio normalize code
+normalize_ratio_index,$1000,1280,integrated PRG,five logarithmic ratio-to-component-index pages
+normalize_log_low,$1500,256,integrated PRG,low bytes of L(v)=round(160*log2(v))-1120
+normalize_log_high,$6400,256,integrated PRG,high bytes of L(v)
+normalize_component_0,$6000,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
+normalize_component_1,$6100,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
+normalize_component_2,$6200,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
+normalize_component_3,$6300,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane

@@ -18,7 +18,7 @@ MATH_SMOD24:
 ; ---- executable island $8178 ----
 * = $8178
 L8178:
-    !byte $A7, $16    ; LAX zp         ; @8178 AF 16 C0
+    !byte $AF, $16, $C0    ; LAX abs   ; @8178 AF 16 C0
     beq L818E                          ; @817B F0 11
     bmi L81A8                          ; @817D 30 29
     lda $C014                          ; @817F AD 14 C0
@@ -51,7 +51,7 @@ L81A8:
     sbc $C016                          ; @81B9 ED 16 C0
     sta $15                            ; @81BC 85 15
 L81BE:
-    !byte $A7, $12    ; LAX zp         ; @81BE AF 12 C0
+    !byte $AF, $12, $C0    ; LAX abs   ; @81BE AF 12 C0
     bmi L81D2                          ; @81C1 30 0F
     lda $C010                          ; @81C3 AD 10 C0
     sta $10                            ; @81C6 85 10

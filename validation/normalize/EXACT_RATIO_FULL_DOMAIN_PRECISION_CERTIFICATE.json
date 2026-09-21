@@ -1,10 +1,8 @@
 {
   "mapping": "idx=(1+minor+floor(minor*reciprocal[major]/256)) mod 256",
   "profiles": [
-    "v1_balanced",
     "v3_reu_512k",
-    "v4_reu_16m",
-    "v5_hybrid_lowzp"
+    "v4_reu_16m"
   ],
   "max_angle_deg": 0.36085638159979183,
   "max_component_float": 198.6126447432748,

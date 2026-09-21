@@ -43,19 +43,27 @@ ck('turbo_api_profiles',all(r['profiles']=='V3/V4' for r in turbo_rows))
 # Vector-normalization certification and cross-profile parity.
 norm=json.loads((ROOT/'validation/normalize/NORMALIZE_PROFILE_PARITY_107396.json').read_text())
 ck('normalize_profile_parity',norm.get('status')=='PASS' and norm.get('corpus_vectors')==107396 and len(norm.get('profiles',[]))==5,{'profiles':len(norm.get('profiles',[])),'corpus':norm.get('corpus_vectors')})
-expected_norm={'v1_balanced':198.77027077358562,'v2_pareto_fast':189.26031695780102,'v3_reu_512k':170.05863346865806,'v4_reu_16m':170.05863346865806,'v5_hybrid_lowzp':198.77027077358562}
+expected_norm={'v1_balanced':161.3322563223956,'v2_pareto_fast':161.3322563223956,'v3_reu_512k':157.5526835263883,'v4_reu_16m':157.5526835263883,'v5_hybrid_lowzp':161.3322563223956}
 for row in norm['profiles']:
     prof=row['profile']; rr=row['reference']; aa=row['alternate']
     ok=(prof in expected_norm and rr['entry']=='$5E39' and rr['cases']==107396 and aa['cases']==107396 and
-        row['cycle_vector_mismatches']==0 and rr['output_errors']==rr['carry_errors']==rr['input_preserve_errors']==0 and
+        row['cycle_vector_mismatches']==row['output_vector_mismatches']==0 and rr['output_errors']==rr['carry_errors']==rr['input_preserve_errors']==0 and
         aa['output_errors']==aa['carry_errors']==aa['input_preserve_errors']==0 and abs(rr['mean_cycles']-expected_norm[prof])<1e-12 and
         abs(aa['mean_cycles']-expected_norm[prof])<1e-12 and rr['max_angle_deg']<=0.3621 and aa['max_angle_deg']<=0.3621 and
         rr['max_component_lsb']<=202 and aa['max_component_lsb']<=202)
     ck(f'normalize_{prof}_107396',ok,{'mean':rr['mean_cycles'],'max_angle':rr['max_angle_deg'],'max_component':rr['max_component_lsb']})
+    for kind,v in [('reference',rr),('alternate',aa)]:
+        tree='build_hybrid' if prof==HYBRID else 'build_source'
+        current=json.loads((ROOT/tree/kind/prof/'source_build_manifest.json').read_text())
+        ck(f'normalize_{prof}_{kind}_current_hash',v['prg_sha256']==current['output_sha256'])
+    if prof in ('v3_reu_512k','v4_reu_16m'):
+        ck(f'normalize_{prof}_baseline_output_parity',row['outputs_identical_to_baseline'] is True)
 exact=json.loads((ROOT/'validation/normalize/EXACT_RATIO_FULL_DOMAIN_PRECISION_CERTIFICATE.json').read_text())
 ck('normalize_exact_ratio_certificate',exact.get('status')=='PASS' and exact.get('cells')==723073 and exact.get('max_angle_deg')<=0.3621 and exact.get('max_component_ceil')<=202,{'angle':exact.get('max_angle_deg'),'component':exact.get('max_component_ceil')})
-v2cert=json.loads((ROOT/'validation/normalize/V2_FULL_DOMAIN_PRECISION_CERTIFICATE.json').read_text())
-ck('normalize_v2_full_domain_certificate',v2cert.get('cells')==723073 and v2cert.get('max_angle_deg')<=0.3621 and v2cert.get('max_component_ceil')<=202,{'angle':v2cert.get('max_angle_deg'),'component':v2cert.get('max_component_ceil')})
+logcert=json.loads((ROOT/'validation/normalize/LOG_RATIO_FULL_DOMAIN_PRECISION_CERTIFICATE.json').read_text())
+ck('normalize_log_full_domain_certificate',logcert.get('status')=='PASS' and logcert.get('cells')==723073 and logcert.get('max_angle_deg')<=0.3621 and logcert.get('max_component_ceil')<=202 and logcert.get('table_design_sha256')==sha(ROOT/'validation/normalize/LOG_RATIO_TABLE_DESIGN.json'),{'angle':logcert.get('max_angle_deg'),'component':logcert.get('max_component_ceil')})
+nv=json.loads((ROOT/'validation/normalize/OPTIMIZED_VALIDATION.json').read_text())
+ck('normalize_reduced_plane_and_mixed_calls',nv.get('status')=='PASS' and len(nv['mixed_calls'])==10 and all(x['cases']==271926 and x['errors']==0 for x in nv['reduced_plane'].values()) and all(x['normalize_calls']==1000 and x['errors']==0 and x['zp_bytes_allowed']==4 for x in nv['mixed_calls'].values()))
 native_norm=json.loads((ROOT/'validation/normalize/NATIVE_SOURCE_VALIDATION.json').read_text())
 ck('normalize_native_sources',native_norm.get('status')=='PASS' and len(native_norm.get('profiles',{}))==5 and len(native_norm.get('checks',[]))==16,{'profiles':len(native_norm.get('profiles',{})),'checks':len(native_norm.get('checks',[]))})
 

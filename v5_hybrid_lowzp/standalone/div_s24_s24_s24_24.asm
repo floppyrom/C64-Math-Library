@@ -17,7 +17,7 @@ MATH_SDIV24:
 ; ---- executable island $7678 ----
 * = $7678
 L7678:
-    !byte $A7, $16    ; LAX zp         ; @7678 AF 16 C0
+    !byte $AF, $16, $C0    ; LAX abs   ; @7678 AF 16 C0
     beq L768E                          ; @767B F0 11
     bmi L76A8                          ; @767D 30 29
     lda $C014                          ; @767F AD 14 C0
@@ -50,7 +50,7 @@ L76A8:
     sbc $C016                          ; @76B9 ED 16 C0
     sta $15                            ; @76BC 85 15
 L76BE:
-    !byte $A7, $12    ; LAX zp         ; @76BE AF 12 C0
+    !byte $AF, $12, $C0    ; LAX abs   ; @76BE AF 12 C0
     bmi L76D2                          ; @76C1 30 0F
     lda $C010                          ; @76C3 AD 10 C0
     sta $10                            ; @76C6 85 10

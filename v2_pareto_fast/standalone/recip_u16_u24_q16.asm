@@ -26,7 +26,7 @@ L4800:
     sec                                ; @4814 38
     rts                                ; @4815 60
 L4816:
-    !byte $A7, $12    ; LAX zp         ; @4816 AF 12 C0
+    !byte $AF, $12, $C0    ; LAX abs   ; @4816 AF 12 C0
     cmp $C016                          ; @4819 CD 16 C0
     bcs L4821                          ; @481C B0 03
     jmp L48AF                          ; @481E 4C AF 48

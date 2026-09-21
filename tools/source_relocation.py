@@ -13,11 +13,11 @@ PUBCSV=ROOT/'docs/PUBLIC_API_COMPLETE.csv'
 MATH_INIT_OLD=0x3280
 NORMALIZE_ENTRY_OLD=0x5e39
 NORMALIZE_END_OLD={
- 'v1_balanced':0x5fc0,
- 'v2_pareto_fast':0x5fb7,
- 'v3_reu_512k':0x5f92,
- 'v4_reu_16m':0x5f92,
+ p:0x5e3b for p in PROFILES
 }
+# Canonical native include owns these code islands. Emit their reference bytes
+# as provenance, then let the include assemble them at the selected REG_LOW map.
+NORMALIZE_CODE_RANGES={p:(((0x1200,0x13ff),(0x1720,0x17ff),(0x1b00,0x1bff)) if p in REU else ((0x1600,0x19ff),)) for p in PROFILES}
 NORMALIZE_NATIVE_REL={
  p:f'../../{p}/resident/vector/native/vec2_normalize_q8_8.asm'
  for p in PROFILES
@@ -356,7 +356,8 @@ def emit_core_image(profile,tm):
 def generate_source(profile,outpath:Path):
  raw,tm=load_reference(profile);seen=trace(profile,tm)
  b=PRG[profile].read_bytes();prg_load=b[0]|b[1]<<8;prg_end=prg_load+len(b)-3
- main_seen={pc for pc in seen if pc>=0x100 and not in_multiply_refresh(profile,pc) and not in_division_refresh(profile,pc)}
+ norm_ranges=NORMALIZE_CODE_RANGES[profile]
+ main_seen={pc for pc in seen if pc>=0x100 and not any(ns<=pc<=ne for ns,ne in norm_ranges) and not in_multiply_refresh(profile,pc) and not in_division_refresh(profile,pc)}
  # Turbo32's 135-ZP overlay calls two ordinary-RAM helper blocks that are not
  # reachable while the normal ZP image is installed. Decode them explicitly so
  # relocation rewrites their ZP and REG_LOW references symbolically rather than
@@ -439,6 +440,11 @@ def generate_source(profile,outpath:Path):
   lines += ['', '; BEGIN DIVISION REFRESH 2026-09-20']
   lines += [f'!source "{name}"' for name in DIVISION_REFRESH_INCLUDES[profile]]
   lines += ['; END DIVISION REFRESH 2026-09-20']
+ # The native include also serves standalone consumers. Re-apply its generated
+ # tables last so raw provenance bytes emitted later in the monolith cannot
+ # override a future table regeneration.
+ lines += ['', '; Canonical generated normalization tables (final ownership).',
+           f'!source "../../{profile}/resident/vector/native/vec2_normalize_tables.asm"']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 

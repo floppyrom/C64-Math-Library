@@ -9,4 +9,4 @@ MATH_UMOD32_16,mod_u32_u16_u16,971.613651,789.508693,18.742528,2026-09-20 final 
 MATH_COS8,cos_u8_s8,29,23,20.6897,V2 direct import; exhaustive phase/cycle parity
 MATH_SINCOS8,sincos_u8_s8_s8,39,31,20.5128,V2 direct import; exhaustive phase/cycle parity
 MATH_ATAN2_8,atan2_s8_s8_u8,48.447189,44.962814,7.1911,"V2 sum-fast signed-log import; exhaustive 65,536-vector result/cycle parity; <=1 phase-unit error"
-MATH_VEC2_NORMALIZE_Q8_8,normalize_s16_s16_s16_s16_q8_8_to_q1_15,198.770271,198.770271,0.0000,V1-compatible 31-ZP normalization backend; common 46-entry API
+MATH_VEC2_NORMALIZE_Q8_8,normalize_s16_s16_s16_s16_q8_8_to_q1_15,161.332256,161.332256,0,2026-09-21 normalization profile-parity corpus; shared logarithmic-ratio backend

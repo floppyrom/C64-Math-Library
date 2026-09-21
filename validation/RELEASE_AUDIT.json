@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "41 files"
+      "detail": "44 files"
     },
     {
       "check": "signed_layout_validation",
@@ -139,46 +139,106 @@
       "check": "normalize_v1_balanced_107396",
       "status": "PASS",
       "detail": {
-        "mean": 198.77027077358562,
-        "max_angle": 0.35157368676214956,
-        "max_component": 196
+        "mean": 161.3322563223956,
+        "max_angle": 0.34797411759951596,
+        "max_component": 199
       }
+    },
+    {
+      "check": "normalize_v1_balanced_reference_current_hash",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "normalize_v1_balanced_alternate_current_hash",
+      "status": "PASS",
+      "detail": null
     },
     {
       "check": "normalize_v2_pareto_fast_107396",
       "status": "PASS",
       "detail": {
-        "mean": 189.26031695780102,
-        "max_angle": 0.35157368676214956,
-        "max_component": 196
+        "mean": 161.3322563223956,
+        "max_angle": 0.34797411759951596,
+        "max_component": 199
       }
+    },
+    {
+      "check": "normalize_v2_pareto_fast_reference_current_hash",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "normalize_v2_pareto_fast_alternate_current_hash",
+      "status": "PASS",
+      "detail": null
     },
     {
       "check": "normalize_v3_reu_512k_107396",
       "status": "PASS",
       "detail": {
-        "mean": 170.05863346865806,
+        "mean": 157.5526835263883,
         "max_angle": 0.35157368676214956,
         "max_component": 196
       }
+    },
+    {
+      "check": "normalize_v3_reu_512k_reference_current_hash",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "normalize_v3_reu_512k_alternate_current_hash",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "normalize_v3_reu_512k_baseline_output_parity",
+      "status": "PASS",
+      "detail": null
     },
     {
       "check": "normalize_v4_reu_16m_107396",
       "status": "PASS",
       "detail": {
-        "mean": 170.05863346865806,
+        "mean": 157.5526835263883,
         "max_angle": 0.35157368676214956,
         "max_component": 196
       }
     },
     {
+      "check": "normalize_v4_reu_16m_reference_current_hash",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "normalize_v4_reu_16m_alternate_current_hash",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "normalize_v4_reu_16m_baseline_output_parity",
+      "status": "PASS",
+      "detail": null
+    },
+    {
       "check": "normalize_v5_hybrid_lowzp_107396",
       "status": "PASS",
       "detail": {
-        "mean": 198.77027077358562,
-        "max_angle": 0.35157368676214956,
-        "max_component": 196
+        "mean": 161.3322563223956,
+        "max_angle": 0.34797411759951596,
+        "max_component": 199
       }
+    },
+    {
+      "check": "normalize_v5_hybrid_lowzp_reference_current_hash",
+      "status": "PASS",
+      "detail": null
+    },
+    {
+      "check": "normalize_v5_hybrid_lowzp_alternate_current_hash",
+      "status": "PASS",
+      "detail": null
     },
     {
       "check": "normalize_exact_ratio_certificate",
@@ -189,12 +249,17 @@
       }
     },
     {
-      "check": "normalize_v2_full_domain_certificate",
+      "check": "normalize_log_full_domain_certificate",
       "status": "PASS",
       "detail": {
-        "angle": 0.36085638159979183,
+        "angle": 0.35615227415791395,
         "component": 200
       }
+    },
+    {
+      "check": "normalize_reduced_plane_and_mixed_calls",
+      "status": "PASS",
+      "detail": null
     },
     {
       "check": "normalize_native_sources",
@@ -717,7 +782,7 @@
     {
       "check": "v1_balanced_reference_prg_exact",
       "status": "PASS",
-      "detail": "acae8921cbc938ad9ca821f682578e3c09cd0969d1dfdce78c09b78456672f8a"
+      "detail": "2e7a9e16c46d2a9ad8f5713481ed39ddfaa101210a2300c5666d5d472f034ba6"
     },
     {
       "check": "v2_pareto_fast_manifest_46",
@@ -727,7 +792,7 @@
     {
       "check": "v2_pareto_fast_reference_prg_exact",
       "status": "PASS",
-      "detail": "f28a900b2274c7f09290df93d81ec34a16de5c9e6e8a46c1b84b5e5e1dd4d994"
+      "detail": "0fe9d39bd1be588ea17c30a9051d763af943f020b9922c1b2199da930b988ff9"
     },
     {
       "check": "v3_reu_512k_manifest_46",
@@ -747,7 +812,7 @@
     {
       "check": "v3_reu_512k_reference_prg_exact",
       "status": "PASS",
-      "detail": "84e85bafa6fbfd33c543f42dec8604e0b2d2fc20e2f878513b21f583d36c1b3e"
+      "detail": "34c1af9d31883f356fd6bff985a4cf1e5dd7b46ce46ae98cd99e713f52e41bb5"
     },
     {
       "check": "v3_reu_512k_reference_reu_exact",
@@ -772,7 +837,7 @@
     {
       "check": "v4_reu_16m_reference_prg_exact",
       "status": "PASS",
-      "detail": "ae9b2d6c4b34bbbd135ac4a01c729eb84b65f3564bb5b73093eb1ae17c70df76"
+      "detail": "0481b8a6b1efe46aabd178e97da305690b33165b1c43f94790581b1665a61ca9"
     },
     {
       "check": "v4_reu_16m_reference_reu_exact",
@@ -923,7 +988,7 @@
     {
       "check": "hybrid_reference_prg_exact",
       "status": "PASS",
-      "detail": "7b340cf2dd33eb950f02dde864b9a64f55a109ed45e1db26a4f2f5ef780a7071"
+      "detail": "4d720909805130529ddb0ecaf92382368a731e1c91dccdd9e530100d84944ae1"
     },
     {
       "check": "hybrid_docs_present",
@@ -1383,7 +1448,7 @@
   ],
   "summary": {
     "acme_current_status": "PASS",
-    "checks_passed": 236,
+    "checks_passed": 249,
     "public_entries": 46,
     "alternate_entry_executions": 184,
     "alternate_machine_calls": 18356,

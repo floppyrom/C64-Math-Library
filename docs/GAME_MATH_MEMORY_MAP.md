@@ -31,3 +31,7 @@ V4 game image:
 - game-image signature is at bank 5 offset `$FF00`.
 
 The former V4 documentation statement that the entire first 512 KiB is byte-for-byte identical to V3 is **not applicable to the game-math image**, because previously reserved banks 6–7 now have defined content.
+
+## Current vector-normalization placement
+
+The 2026-09-21 normalization refresh adds stock code/tables below $2000 and moves V1/V2/V5 PRG loads to $1000. The historic game-extension spans above are only part of the resident image. Current normalizer code, tables and scratch are listed in `VEC2_NORMALIZE_Q8_8.md` and each profile's `resident/SEGMENTS.csv`; `CONSOLIDATED_ROUTINE_TABLE.csv` gives current PRG spans. V3/V4 use the existing REU ratio bank without enlarging either REU image.

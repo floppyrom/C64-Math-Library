@@ -18,7 +18,7 @@ MATH_SMOD16:
 ; ---- executable island $5200 ----
 * = $5200
 L5200:
-    !byte $A7, $15    ; LAX zp         ; @5200 AF 15 C0
+    !byte $AF, $15, $C0    ; LAX abs   ; @5200 AF 15 C0
     beq L5211                          ; @5203 F0 0C
     bmi L5220                          ; @5205 30 19
     lda $C014                          ; @5207 AD 14 C0
@@ -42,7 +42,7 @@ L5220:
     sbc $C015                          ; @522A ED 15 C0
     sta $13                            ; @522D 85 13
 L522F:
-    !byte $A7, $11    ; LAX zp         ; @522F AF 11 C0
+    !byte $AF, $11, $C0    ; LAX abs   ; @522F AF 11 C0
     bmi L523E                          ; @5232 30 0A
     lda $C010                          ; @5234 AD 10 C0
     sta $10                            ; @5237 85 10

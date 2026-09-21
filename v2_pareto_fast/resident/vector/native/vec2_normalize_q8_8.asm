@@ -1,229 +1,551 @@
-; MATH_VEC2_NORMALIZE_Q8_8 — standalone native implementation
-; Backend: stock-C64 Pareto-fast backend (V2)
+; MATH_VEC2_NORMALIZE_Q8_8: signed Q8.8 X/Y -> signed Q1.15 unit vector.
+; Input: MATH_IO+$00..$01 (X), MATH_IO+$04..$05 (Y), preserved.
+; Output: MATH_IO+$08..$0B; A/X/Y volatile; D=0 required.
+; C=0 for nonzero vectors; (0,0) returns four zero bytes and C=1.
+; Scratch: ZP_MAIN+$18..+$1B, inside the existing 31-byte union.
+; Accuracy: <=0.3621 degrees and <=202 component LSB over the full domain.
 ;
-; Canonical build: this file is included directly by math_relocatable.asm.
-; To reuse independently, define the symbols listed below, set the assembly
-; PC to the desired entry address, and include/assemble this file.
+; Sign dispatch selects a quadrant once. Each path computes magnitudes and
+; writes signed results directly, avoiding repeated input-sign tests.
+; Negative magnitudes use one's complement; the small-vector paths correct
+; this to saturated absolute bytes, exactly as in the original reduction.
 ;
-; Contract:
-;   input  MATH_IO+$00..$01 = signed Q8.8 X
-;          MATH_IO+$04..$05 = signed Q8.8 Y
-;   output MATH_IO+$08..$09 = signed Q1.15 normalized X
-;          MATH_IO+$0A..$0B = signed Q1.15 normalized Y
-;   input operands are preserved
-;   C=0 for non-zero vectors; C=1 and zero output for (0,0)
-;   A/X/Y volatile
-;
-; Required map symbols: MATH_IO, ZP_MAIN, REG_TABLE, REG_LOW, REG_KERNEL.
-; Shared immutable lookup tables are not duplicated here; see README.md.
+; Stock backend: log-ratio index with a full-domain interval certificate.
+; Code body: REG_LOW+$0600; five ratio pages + log-low page at REG_LOW.
+; Component/log-high planes retain their profile-specific locations.
+; This source owns its code/table islands and restores PC to the end of
+; the stable public JMP slot. See README.md for the complete memory map.
 !cpu 6510
 
 VEC2_NORMALIZE_Q8_8_NATIVE:
-VEC2N_0000:
-    !byte $AF, <MATH_IO+$01, >MATH_IO+$01    ; LAX abs
-    bmi VEC2N_000D
-    lda MATH_IO
-    sta ZP_MAIN+$10
-    jmp VEC2N_0017
-VEC2N_000D:
-    eor #$FF
-    tax
-    lda MATH_IO
-    eor #$FF
-    sta ZP_MAIN+$10
-VEC2N_0017:
+
+    jmp norm_entry
+* = REG_LOW+$0600
+norm_entry:
+    !byte $AF, <MATH_IO+$01, >MATH_IO+$01
+    bmi sign_x_negative
     lda MATH_IO+$05
-    bmi VEC2N_0026
-    sta ZP_MAIN+$13
-    lda MATH_IO+$04
-    sta ZP_MAIN+$12
-    jmp VEC2N_0031
-VEC2N_0026:
+    bmi sign_y_negative
+    jmp pp_entry
+sign_y_negative:
     eor #$FF
-    sta ZP_MAIN+$13
-    lda MATH_IO+$04
+    jmp pn_entry
+sign_x_negative:
     eor #$FF
-    sta ZP_MAIN+$12
-VEC2N_0031:
-    cpx ZP_MAIN+$13
-    bcc VEC2N_0074
-    bne VEC2N_0081
+    tax
+    lda MATH_IO+$05
+    bmi sign_both_negative
+    jmp np_entry
+sign_both_negative:
+    eor #$FF
+    jmp nn_entry
+; Quadrant: X positive, Y positive.
+pp_entry:
+    sta ZP_MAIN+$1B
+    lda MATH_IO
+    sta ZP_MAIN+$18
+    lda MATH_IO+$04
+    sta ZP_MAIN+$1A
+    cpx ZP_MAIN+$1B
+    bcc pp_to_y_major
+    bne pp_x_major
     txa
-    bne VEC2N_0050
-    bit MATH_IO+$01
-    bpl VEC2N_0045
-    inc ZP_MAIN+$10
-    bne VEC2N_0045
-    dec ZP_MAIN+$10
-VEC2N_0045:
-    bit MATH_IO+$05
-    bpl VEC2N_0050
-    inc ZP_MAIN+$12
-    bne VEC2N_0050
-    dec ZP_MAIN+$12
-VEC2N_0050:
-    lda ZP_MAIN+$10
-    cmp ZP_MAIN+$12
-    bcc VEC2N_0074
+    bne pp_compare_low
+pp_compare_low:
+    lda ZP_MAIN+$18
+    cmp ZP_MAIN+$1A
+    bcc pp_to_y_major
     txa
-    bne VEC2N_0082
-    lda ZP_MAIN+$10
-    bmi VEC2N_0064
-    beq VEC2N_006B
-VEC2N_005F:
-    asl ZP_MAIN+$12
+    bne pp_x_shift
+    lda ZP_MAIN+$18
+    bmi pp_x_low_done
+    beq pp_zero
+pp_x_low_loop:
+    asl ZP_MAIN+$1A
     asl
-    bpl VEC2N_005F
-VEC2N_0064:
-    ldx ZP_MAIN+$12
-    stx ZP_MAIN+$13
+    bpl pp_x_low_loop
+pp_x_low_done:
+    ldx ZP_MAIN+$1A
+    stx ZP_MAIN+$1B
     tay
-    bmi VEC2N_008C
-VEC2N_006B:
-    ldy #$03
-VEC2N_006D:
-    sta MATH_IO+$08,y
-    dey
-    bpl VEC2N_006D
-    rts
-VEC2N_0074:
-    jmp VEC2N_00F0
-VEC2N_0077:
-    sbc REG_TABLE+$0800,x
-    lda (ZP_MAIN+$39),y
-    sbc REG_TABLE+$0A00,x
-    bpl VEC2N_00A5
-VEC2N_0081:
-    txa
-VEC2N_0082:
-    asl ZP_MAIN+$12
-    rol ZP_MAIN+$13
-    asl ZP_MAIN+$10
-    rol
-    bpl VEC2N_0082
-    tay
-VEC2N_008C:
-    !byte $BF, <REG_TABLE+$3300, >REG_TABLE+$3300    ; LAX abs,Y
-    ldy ZP_MAIN+$13
+    bmi pp_x_ratio
+pp_zero:
+    sta MATH_IO+$08
+    sta MATH_IO+$09
+    sta MATH_IO+$0A
+    sta MATH_IO+$0B
     sec
-    stx ZP_MAIN+$37
-    stx ZP_MAIN+$39
-    sbc ZP_MAIN+$13
-    tax
-    lda (ZP_MAIN+$37),y
-    bcs VEC2N_0077
-    sbc REG_TABLE+$0C00,x
-    lda (ZP_MAIN+$39),y
-    sbc REG_TABLE+$0D00,x
-VEC2N_00A5:
-    adc ZP_MAIN+$13
-    tax
-    bit MATH_IO+$01
-    bmi VEC2N_00BB
+    rts
+pp_to_y_major:
+    jmp pp_y_major
+pp_x_major:
+    txa
+pp_x_shift:
+    asl ZP_MAIN+$1A
+    rol ZP_MAIN+$1B
+    asl ZP_MAIN+$18
+    rol
+    bpl pp_x_shift
+    tay
+pp_x_ratio:
+    ldx ZP_MAIN+$1B
+    bne pp_x_log
+    ldx #0
+    beq pp_x_output
+pp_x_log:
+    lda REG_LOW+$0500,y
+    sec
+    sbc REG_LOW+$0500,x
+    tay
+    lda #>REG_LOW
+    sbc REG_LOW+$0A00,x
+    sta pp_x_lookup+2
+pp_x_lookup:
+    ldx REG_LOW,y
+pp_x_output:
     lda REG_LOW+$1400,x
     sta MATH_IO+$08
     lda REG_LOW+$1700,x
     sta MATH_IO+$09
-    bpl VEC2N_00CC
-VEC2N_00BB:
+    lda REG_KERNEL+$0700,x
+    sta MATH_IO+$0A
+    lda REG_KERNEL+$0D00,x
+    sta MATH_IO+$0B
+    clc
+    rts
+pp_y_major:
+    lda ZP_MAIN+$1B
+    beq pp_y_low
+    stx ZP_MAIN+$19
+pp_y_shift:
+    asl ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    asl ZP_MAIN+$1A
+    rol
+    bpl pp_y_shift
+    tay
+pp_y_ratio:
+    ldx ZP_MAIN+$19
+    bne pp_y_log
+    ldx #0
+    beq pp_y_output
+pp_y_log:
+    lda REG_LOW+$0500,y
     sec
-    lda #$00
+    sbc REG_LOW+$0500,x
+    tay
+    lda #>REG_LOW
+    sbc REG_LOW+$0A00,x
+    sta pp_y_lookup+2
+pp_y_lookup:
+    ldx REG_LOW,y
+pp_y_output:
+    lda REG_KERNEL+$0700,x
+    sta MATH_IO+$08
+    lda REG_KERNEL+$0D00,x
+    sta MATH_IO+$09
+    lda REG_LOW+$1400,x
+    sta MATH_IO+$0A
+    lda REG_LOW+$1700,x
+    sta MATH_IO+$0B
+    clc
+    rts
+pp_y_low:
+    lda ZP_MAIN+$1A
+    bmi pp_y_low_done
+pp_y_low_loop:
+    asl ZP_MAIN+$18
+    asl
+    bpl pp_y_low_loop
+pp_y_low_done:
+    tay
+    lda ZP_MAIN+$18
+    sta ZP_MAIN+$19
+    jmp pp_y_ratio
+; Quadrant: X positive, Y negative.
+pn_entry:
+    sta ZP_MAIN+$1B
+    lda MATH_IO
+    sta ZP_MAIN+$18
+    lda MATH_IO+$04
+    eor #$FF
+    sta ZP_MAIN+$1A
+    cpx ZP_MAIN+$1B
+    bcc pn_to_y_major
+    bne pn_x_major
+    txa
+    bne pn_compare_low
+    inc ZP_MAIN+$1A
+    bne pn_low_fix1_done
+    dec ZP_MAIN+$1A
+pn_low_fix1_done:
+pn_compare_low:
+    lda ZP_MAIN+$18
+    cmp ZP_MAIN+$1A
+    bcc pn_to_y_major
+    txa
+    bne pn_x_shift
+    lda ZP_MAIN+$18
+    bmi pn_x_low_done
+pn_x_low_loop:
+    asl ZP_MAIN+$1A
+    asl
+    bpl pn_x_low_loop
+pn_x_low_done:
+    ldx ZP_MAIN+$1A
+    stx ZP_MAIN+$1B
+    tay
+    bmi pn_x_ratio
+pn_to_y_major:
+    jmp pn_y_major
+pn_x_major:
+    txa
+pn_x_shift:
+    asl ZP_MAIN+$1A
+    rol ZP_MAIN+$1B
+    asl ZP_MAIN+$18
+    rol
+    bpl pn_x_shift
+    tay
+pn_x_ratio:
+    ldx ZP_MAIN+$1B
+    bne pn_x_log
+    ldx #0
+    beq pn_x_output
+pn_x_log:
+    lda REG_LOW+$0500,y
+    sec
+    sbc REG_LOW+$0500,x
+    tay
+    lda #>REG_LOW
+    sbc REG_LOW+$0A00,x
+    sta pn_x_lookup+2
+pn_x_lookup:
+    ldx REG_LOW,y
+pn_x_output:
+    lda REG_LOW+$1400,x
+    sta MATH_IO+$08
+    lda REG_LOW+$1700,x
+    sta MATH_IO+$09
+    sec
+    lda #0
+    sbc REG_KERNEL+$0700,x
+    sta MATH_IO+$0A
+    lda #0
+    sbc REG_KERNEL+$0D00,x
+    sta MATH_IO+$0B
+    rts
+pn_y_major:
+    lda ZP_MAIN+$1B
+    beq pn_y_low
+    stx ZP_MAIN+$19
+pn_y_shift:
+    asl ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    asl ZP_MAIN+$1A
+    rol
+    bpl pn_y_shift
+    tay
+pn_y_ratio:
+    ldx ZP_MAIN+$19
+    bne pn_y_log
+    ldx #0
+    beq pn_y_output
+pn_y_log:
+    lda REG_LOW+$0500,y
+    sec
+    sbc REG_LOW+$0500,x
+    tay
+    lda #>REG_LOW
+    sbc REG_LOW+$0A00,x
+    sta pn_y_lookup+2
+pn_y_lookup:
+    ldx REG_LOW,y
+pn_y_output:
+    lda REG_KERNEL+$0700,x
+    sta MATH_IO+$08
+    lda REG_KERNEL+$0D00,x
+    sta MATH_IO+$09
+    sec
+    lda #0
+    sbc REG_LOW+$1400,x
+    sta MATH_IO+$0A
+    lda #0
+    sbc REG_LOW+$1700,x
+    sta MATH_IO+$0B
+    rts
+pn_y_low:
+    lda ZP_MAIN+$1A
+    bmi pn_y_low_done
+pn_y_low_loop:
+    asl ZP_MAIN+$18
+    asl
+    bpl pn_y_low_loop
+pn_y_low_done:
+    tay
+    lda ZP_MAIN+$18
+    sta ZP_MAIN+$19
+    jmp pn_y_ratio
+; Quadrant: X negative, Y positive.
+np_entry:
+    sta ZP_MAIN+$1B
+    lda MATH_IO
+    eor #$FF
+    sta ZP_MAIN+$18
+    lda MATH_IO+$04
+    sta ZP_MAIN+$1A
+    cpx ZP_MAIN+$1B
+    bcc np_to_y_major
+    bne np_x_major
+    txa
+    bne np_compare_low
+    inc ZP_MAIN+$18
+    bne np_low_fix0_done
+    dec ZP_MAIN+$18
+np_low_fix0_done:
+np_compare_low:
+    lda ZP_MAIN+$18
+    cmp ZP_MAIN+$1A
+    bcc np_to_y_major
+    txa
+    bne np_x_shift
+    lda ZP_MAIN+$18
+    bmi np_x_low_done
+np_x_low_loop:
+    asl ZP_MAIN+$1A
+    asl
+    bpl np_x_low_loop
+np_x_low_done:
+    ldx ZP_MAIN+$1A
+    stx ZP_MAIN+$1B
+    tay
+    bmi np_x_ratio
+np_to_y_major:
+    jmp np_y_major
+np_x_major:
+    txa
+np_x_shift:
+    asl ZP_MAIN+$1A
+    rol ZP_MAIN+$1B
+    asl ZP_MAIN+$18
+    rol
+    bpl np_x_shift
+    tay
+np_x_ratio:
+    ldx ZP_MAIN+$1B
+    bne np_x_log
+    ldx #0
+    beq np_x_output
+np_x_log:
+    lda REG_LOW+$0500,y
+    sec
+    sbc REG_LOW+$0500,x
+    tay
+    lda #>REG_LOW
+    sbc REG_LOW+$0A00,x
+    sta np_x_lookup+2
+np_x_lookup:
+    ldx REG_LOW,y
+np_x_output:
+    sec
+    lda #0
     sbc REG_LOW+$1400,x
     sta MATH_IO+$08
-    lda #$00
+    lda #0
     sbc REG_LOW+$1700,x
     sta MATH_IO+$09
-VEC2N_00CC:
-    lda MATH_IO+$05
-    asl
-    bcs VEC2N_00DF
     lda REG_KERNEL+$0700,x
     sta MATH_IO+$0A
     lda REG_KERNEL+$0D00,x
     sta MATH_IO+$0B
     rts
-VEC2N_00DF:
-    lda #$00
-    sbc REG_KERNEL+$0700,x
-    sta MATH_IO+$0A
-    lda #$00
-    sbc REG_KERNEL+$0D00,x
-    sta MATH_IO+$0B
-    rts
-VEC2N_00F0:
-    lda ZP_MAIN+$13
-    beq VEC2N_016E
-    stx ZP_MAIN+$11
-VEC2N_00F6:
-    asl ZP_MAIN+$10
-    rol ZP_MAIN+$11
-    asl ZP_MAIN+$12
+np_y_major:
+    lda ZP_MAIN+$1B
+    beq np_y_low
+    stx ZP_MAIN+$19
+np_y_shift:
+    asl ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    asl ZP_MAIN+$1A
     rol
-    bpl VEC2N_00F6
+    bpl np_y_shift
     tay
-VEC2N_0100:
-    !byte $BF, <REG_TABLE+$3300, >REG_TABLE+$3300    ; LAX abs,Y
-    ldy ZP_MAIN+$11
+np_y_ratio:
+    ldx ZP_MAIN+$19
+    bne np_y_log
+    ldx #0
+    beq np_y_output
+np_y_log:
+    lda REG_LOW+$0500,y
     sec
-    stx ZP_MAIN+$37
-    stx ZP_MAIN+$39
-    sbc ZP_MAIN+$11
-    tax
-    lda (ZP_MAIN+$37),y
-    bcs VEC2N_0164
-    sbc REG_TABLE+$0C00,x
-    lda (ZP_MAIN+$39),y
-    sbc REG_TABLE+$0D00,x
-VEC2N_0119:
-    adc ZP_MAIN+$11
-    tax
-    bit MATH_IO+$01
-    bmi VEC2N_012F
-    lda REG_KERNEL+$0700,x
-    sta MATH_IO+$08
-    lda REG_KERNEL+$0D00,x
-    sta MATH_IO+$09
-    bpl VEC2N_0140
-VEC2N_012F:
+    sbc REG_LOW+$0500,x
+    tay
+    lda #>REG_LOW
+    sbc REG_LOW+$0A00,x
+    sta np_y_lookup+2
+np_y_lookup:
+    ldx REG_LOW,y
+np_y_output:
     sec
-    lda #$00
+    lda #0
     sbc REG_KERNEL+$0700,x
     sta MATH_IO+$08
-    lda #$00
+    lda #0
     sbc REG_KERNEL+$0D00,x
     sta MATH_IO+$09
-VEC2N_0140:
-    lda MATH_IO+$05
-    asl
-    bcs VEC2N_0153
     lda REG_LOW+$1400,x
     sta MATH_IO+$0A
     lda REG_LOW+$1700,x
     sta MATH_IO+$0B
     rts
-VEC2N_0153:
-    lda #$00
+np_y_low:
+    lda ZP_MAIN+$1A
+    bmi np_y_low_done
+np_y_low_loop:
+    asl ZP_MAIN+$18
+    asl
+    bpl np_y_low_loop
+np_y_low_done:
+    tay
+    lda ZP_MAIN+$18
+    sta ZP_MAIN+$19
+    jmp np_y_ratio
+; Quadrant: X negative, Y negative.
+nn_entry:
+    sta ZP_MAIN+$1B
+    lda MATH_IO
+    eor #$FF
+    sta ZP_MAIN+$18
+    lda MATH_IO+$04
+    eor #$FF
+    sta ZP_MAIN+$1A
+    cpx ZP_MAIN+$1B
+    bcc nn_to_y_major
+    bne nn_x_major
+    txa
+    bne nn_compare_low
+    inc ZP_MAIN+$18
+    bne nn_low_fix0_done
+    dec ZP_MAIN+$18
+nn_low_fix0_done:
+    inc ZP_MAIN+$1A
+    bne nn_low_fix1_done
+    dec ZP_MAIN+$1A
+nn_low_fix1_done:
+nn_compare_low:
+    lda ZP_MAIN+$18
+    cmp ZP_MAIN+$1A
+    bcc nn_to_y_major
+    txa
+    bne nn_x_shift
+    lda ZP_MAIN+$18
+    bmi nn_x_low_done
+nn_x_low_loop:
+    asl ZP_MAIN+$1A
+    asl
+    bpl nn_x_low_loop
+nn_x_low_done:
+    ldx ZP_MAIN+$1A
+    stx ZP_MAIN+$1B
+    tay
+    bmi nn_x_ratio
+nn_to_y_major:
+    jmp nn_y_major
+nn_x_major:
+    txa
+nn_x_shift:
+    asl ZP_MAIN+$1A
+    rol ZP_MAIN+$1B
+    asl ZP_MAIN+$18
+    rol
+    bpl nn_x_shift
+    tay
+nn_x_ratio:
+    ldx ZP_MAIN+$1B
+    bne nn_x_log
+    ldx #0
+    beq nn_x_output
+nn_x_log:
+    lda REG_LOW+$0500,y
+    sec
+    sbc REG_LOW+$0500,x
+    tay
+    lda #>REG_LOW
+    sbc REG_LOW+$0A00,x
+    sta nn_x_lookup+2
+nn_x_lookup:
+    ldx REG_LOW,y
+nn_x_output:
+    sec
+    lda #0
+    sbc REG_LOW+$1400,x
+    sta MATH_IO+$08
+    lda #0
+    sbc REG_LOW+$1700,x
+    sta MATH_IO+$09
+    sec
+    lda #0
+    sbc REG_KERNEL+$0700,x
+    sta MATH_IO+$0A
+    lda #0
+    sbc REG_KERNEL+$0D00,x
+    sta MATH_IO+$0B
+    rts
+nn_y_major:
+    lda ZP_MAIN+$1B
+    beq nn_y_low
+    stx ZP_MAIN+$19
+nn_y_shift:
+    asl ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    asl ZP_MAIN+$1A
+    rol
+    bpl nn_y_shift
+    tay
+nn_y_ratio:
+    ldx ZP_MAIN+$19
+    bne nn_y_log
+    ldx #0
+    beq nn_y_output
+nn_y_log:
+    lda REG_LOW+$0500,y
+    sec
+    sbc REG_LOW+$0500,x
+    tay
+    lda #>REG_LOW
+    sbc REG_LOW+$0A00,x
+    sta nn_y_lookup+2
+nn_y_lookup:
+    ldx REG_LOW,y
+nn_y_output:
+    sec
+    lda #0
+    sbc REG_KERNEL+$0700,x
+    sta MATH_IO+$08
+    lda #0
+    sbc REG_KERNEL+$0D00,x
+    sta MATH_IO+$09
+    sec
+    lda #0
     sbc REG_LOW+$1400,x
     sta MATH_IO+$0A
-    lda #$00
+    lda #0
     sbc REG_LOW+$1700,x
     sta MATH_IO+$0B
     rts
-VEC2N_0164:
-    sbc REG_TABLE+$0800,x
-    lda (ZP_MAIN+$39),y
-    sbc REG_TABLE+$0A00,x
-    bpl VEC2N_0119
-VEC2N_016E:
-    lda ZP_MAIN+$12
-    bmi VEC2N_0177
-VEC2N_0172:
-    asl ZP_MAIN+$10
+nn_y_low:
+    lda ZP_MAIN+$1A
+    bmi nn_y_low_done
+nn_y_low_loop:
+    asl ZP_MAIN+$18
     asl
-    bpl VEC2N_0172
-VEC2N_0177:
+    bpl nn_y_low_loop
+nn_y_low_done:
     tay
-    lda ZP_MAIN+$10
-    sta ZP_MAIN+$11
-    bcc VEC2N_0100
-    brk
+    lda ZP_MAIN+$18
+    sta ZP_MAIN+$19
+    jmp nn_y_ratio
+
+VEC2_NORMALIZE_CODE_END:
+!source "vec2_normalize_tables.asm"
+* = REG_GAME_API+$003C

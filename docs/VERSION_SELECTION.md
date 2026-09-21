@@ -44,4 +44,4 @@ All fixed resident profiles and all generated Pareto builds expose the same 46-e
 
 ## Normalization
 
-All choices expose `MATH_VEC2_NORMALIZE_Q8_8`. V1/V5 average 198.770271 cycles, V2 189.260317 cycles, and V3/V4 170.058633 cycles. The REU profiles store the 32 KiB direct ratio-index table in the upper half of `REU_TURBO16_BANK`, so V3 needs no additional REU bank.
+All choices expose `MATH_VEC2_NORMALIZE_Q8_8`. V1/V5 average 161.332256 cycles, V2 161.332256 cycles, and V3/V4 157.552684 cycles. The REU profiles store the 32 KiB direct ratio-index table in the upper half of `REU_TURBO16_BANK`, so V3 needs no additional REU bank.

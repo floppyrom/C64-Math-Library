@@ -523,6 +523,9 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
     v5_norm = ROOT/'v5_hybrid_lowzp/resident/vector/native/vec2_normalize_q8_8.asm'
     if v1_norm.read_bytes() != v5_norm.read_bytes():
         raise RuntimeError('V5 normalize native source drifted from inherited V1 backend')
+    v5_tables = v5_norm.with_name('vec2_normalize_tables.asm')
+    if v1_norm.with_name('vec2_normalize_tables.asm').read_bytes() != v5_tables.read_bytes():
+        raise RuntimeError('V5 normalize tables drifted from inherited V1 backend')
     vals = asm.parse_config(config)
     if 'HYBRID_CODE' not in vals:
         raise ValueError('hybrid config is missing HYBRID_CODE')
@@ -645,6 +648,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'v1_source_sha256': hashlib.sha256((ROOT/'relocatable_source/v1_balanced/math_relocatable.asm').read_bytes()).hexdigest(),
                 'v2_source_sha256': hashlib.sha256((ROOT/'relocatable_source/v2_pareto_fast/math_relocatable.asm').read_bytes()).hexdigest(),
                 'normalize_native_sha256': hashlib.sha256(v5_norm.read_bytes()).hexdigest(),
+                'normalize_tables_sha256': hashlib.sha256(v5_tables.read_bytes()).hexdigest(),
                 'builder_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             },
         }

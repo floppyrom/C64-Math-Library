@@ -146,7 +146,7 @@ def cycles_catalog():
     # Q8.8 vector normalize profile-parity benchmark (107,396-vector deterministic corpus).
     norm=json.loads((ROOT/'validation/normalize/NORMALIZE_PROFILE_PARITY_107396.json').read_text())
     for row in norm['profiles']:
-        v=row['reference']; add_cycle(cat,row['profile'],'MATH_VEC2_NORMALIZE_Q8_8',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-18 normalize profile-parity deterministic corpus','Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB')
+        v=row['reference']; add_cycle(cat,row['profile'],'MATH_VEC2_NORMALIZE_Q8_8',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-21 normalize profile-parity deterministic corpus','Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB; quadrant-specific paths')
     # V5 is V1 plus documented V2 imports; current signed/changed rows above override these inheritance rows.
     for n in API:
         if n in cat['v5_hybrid_lowzp']: continue
@@ -169,6 +169,9 @@ def declared_zp(profile):
 
 
 def provenance(profile,n):
+    if n=='MATH_VEC2_NORMALIZE_Q8_8':
+        return ('quadrant-specific paths; existing REU ratio-index lookup' if profile in ('v3_reu_512k','v4_reu_16m') else
+                'quadrant-specific paths; certified logarithmic ratio tables')
     if n=='MATH_ATAN2_8':
         if profile=='v1_balanced':
             return 'compact_opt signed-log kernel; two table pages; exact parity with prior compact outputs'

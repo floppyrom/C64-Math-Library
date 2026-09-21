@@ -10,11 +10,11 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 
 | Profile | PRG payload span B | REU image B | Declared shared ZP B | Stable API ZP union touched B | Stack-page reserved B |
 |---|---:|---:|---:|---:|---:|
-| `v1_balanced` | 44951 | 0 |  | 31 | 0 |
-| `v2_pareto_fast` | 44951 | 0 |  | 207 | 0 |
+| `v1_balanced` | 49047 | 0 |  | 31 | 0 |
+| `v2_pareto_fast` | 49047 | 0 |  | 207 | 0 |
 | `v3_reu_512k` | 49047 | 524288 |  | 196 | 0 |
 | `v4_reu_16m` | 49047 | 16777216 |  | 195 | 0 |
-| `v5_hybrid_lowzp` | 44951 | 0 | 31 | 31 | 0 |
+| `v5_hybrid_lowzp` | 49047 | 0 | 31 | 31 | 0 |
 
 ## v1_balanced
 
@@ -65,7 +65,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 198.770271 | 129 | 333 | 392 | 5 | $14;$1A-$1D | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 161.332256 | 90 | 302 | 915 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
 
 ## v2_pareto_fast
 
@@ -116,7 +116,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1198.619613 | 1052 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.570038 | 64 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.570038 | 70 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 189.260317 | 127 | 323 | 383 | 8 | $12-$15;$39-$3C | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 161.332256 | 90 | 302 | 915 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
 
 ## v3_reu_512k
 
@@ -167,7 +167,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1197.859322 | 1051 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 170.058633 | 133 | 306 | 346 | 4 | $12-$15 | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 157.552684 | 90 | 298 | 867 | 4 | $1A-$1D | 0 | quadrant-specific paths; existing REU ratio-index lookup | 2026-09-21 normalize profile-parity deterministic corpus |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
@@ -224,7 +224,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1046.622518 | 899 | 1237 | 219 | 9 | $54-$5C | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 170.058633 | 133 | 306 | 346 | 4 | $12-$15 | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 157.552684 | 90 | 298 | 867 | 4 | $1A-$1D | 0 | quadrant-specific paths; existing REU ratio-index lookup | 2026-09-21 normalize profile-parity deterministic corpus |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
@@ -284,7 +284,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
-| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 198.770271 | 129 | 333 | 392 | 5 | $14;$1A-$1D | 0 | profile-selected resident implementation | 2026-09-18 normalize profile-parity deterministic corpus |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 161.332256 | 90 | 302 | 915 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
 
 ## Interpretation notes
 

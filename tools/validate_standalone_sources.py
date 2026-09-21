@@ -3,6 +3,7 @@ from pathlib import Path
 import csv,json,re,sys,importlib.util
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('pub',ROOT/'tools/publish_standalone_sources.py'); pub=importlib.util.module_from_spec(spec); spec.loader.exec_module(pub)
+from mini6502 import Assembler
 checks=[]; errors=[]
 def ok(name,cond,detail=''):
  checks.append({'check':name,'pass':bool(cond),'detail':detail})
@@ -32,7 +33,10 @@ for p in pub.PROFILES:
   for m in ann.finditer(fp.read_text()):
    a=int(m.group(1),16); bs=bytes(int(x,16) for x in m.group(2).split()); count+=1
    if bytes(mem[a:a+len(bs)])!=bs: same=False; break
-  ok(f'{p}:{r["legacy_api"]}: executable bytes',same and count>0,f'{count} annotated instructions')
+  source='\n'.join(line for line in fp.read_text().splitlines() if not line.strip().lower().startswith('!cpu'))
+  emitted,_,_=Assembler().assemble(source)
+  same=same and all(mem[a]==v for a,v in emitted.items())
+  ok(f'{p}:{r["legacy_api"]}: executable bytes',same and count>0,f'{count} assembled and annotated instructions')
 # stable public table mapping
 api=list(csv.DictReader((ROOT/'docs/PUBLIC_API_COMPLETE.csv').open()))
 ok('PUBLIC_API_COMPLETE stable count',len(api)==46,str(len(api)))

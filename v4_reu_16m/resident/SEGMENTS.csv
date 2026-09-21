@@ -31,3 +31,9 @@ umul32_neg_lo,$7400,511,resident/bin/umul32_neg_lo.bin,shared resident/turbo $CA
 umul32_neg_hi,$7600,511,resident/bin/umul32_neg_hi.bin,shared resident/turbo $CA table
 signed_math_api,$3B80,1036,segments/signed_math_api.bin,signed SMUL/SDIV/SMOD public extension; sparse fixed-address image spans $3B80-$3FE5
 umul16,$53EC,133,resident/math_v4_reu_16m_game_math.prg,qualified 17-ZP fused quarter-square UMUL16 record kernel (resident adapted); integrated in V4 PRG
+normalize_entry,$5E39,3,integrated PRG,stable vector-normalize JMP
+normalize_dispatch_pp,$1200,237,integrated PRG,sign-specific REU normalize code
+normalize_pn,$1300,203,integrated PRG,sign-specific REU normalize code
+normalize_nn,$1720,221,integrated PRG,sign-specific REU normalize code
+normalize_np,$1B00,203,integrated PRG,sign-specific REU normalize code
+normalize_components,$6800,1024,integrated PRG,unchanged Q1.15 component planes; REU ratio table remains bank 4:$8000-$FFFF

@@ -28,7 +28,7 @@ LA600:
     sec                                ; @A614 38
     rts                                ; @A615 60
 LA616:
-    !byte $A7, $12    ; LAX zp         ; @A616 AF 12 C0
+    !byte $AF, $12, $C0    ; LAX abs   ; @A616 AF 12 C0
     cmp $C016                          ; @A619 CD 16 C0
     bcs LA621                          ; @A61C B0 03
     jmp LA6AF                          ; @A61E 4C AF A6

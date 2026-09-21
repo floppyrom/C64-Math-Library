@@ -2,8 +2,8 @@
 import math,json
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-B=ROOT/'certification'
-D=json.load(open(B/'component_table_design.json')); comps=D['comps']; recip=D['recip']
+B=ROOT/'validation/normalize'
+D=json.load(open(B/'COMPONENT_TABLE_DESIGN.json')); comps=D['comps']; recip=D['recip']
 def ceildiv(a,b): return -((-a)//b)
 def cell_range(s,m):
  den=1<<s; lo=ceildiv(m*256,den); hi=((m+1)*256-1)//den
@@ -54,5 +54,5 @@ for idx in range(256):
   if ae>maxa:maxa=ae;wa=[idx,lo[idx],hi[idx],oa,aa,om,oni]
   r=math.radians(aa);im=32767*math.cos(r);ii=32767*math.sin(r);ce=max(abs(om-im),abs(oni-ii))
   if ce>maxc:maxc=ce;wc=[idx,lo[idx],hi[idx],aa,om,oni,im,ii]
-R={'mapping':'idx=(1+minor+floor(minor*reciprocal[major]/256)) mod 256','profiles':['v1_balanced','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'],'max_angle_deg':maxa,'max_component_float':maxc,'max_component_ceil':math.ceil(maxc),'angular_contract_deg':0.3621,'component_contract_lsb':202,'status':'PASS' if maxa<=0.3621 and math.ceil(maxc)<=202 else 'FAIL','worst_angle':wa,'worst_component':wc,'used_indices':used,'cells':cells}
-print(json.dumps(R,indent=2));json.dump(R,open(B/'exact_ratio_full_domain_precision_certificate.json','w'),indent=2)
+R={'mapping':'idx=(1+minor+floor(minor*reciprocal[major]/256)) mod 256','profiles':['v3_reu_512k','v4_reu_16m'],'max_angle_deg':maxa,'max_component_float':maxc,'max_component_ceil':math.ceil(maxc),'angular_contract_deg':0.3621,'component_contract_lsb':202,'status':'PASS' if maxa<=0.3621 and math.ceil(maxc)<=202 else 'FAIL','worst_angle':wa,'worst_component':wc,'used_indices':used,'cells':cells}
+print(json.dumps(R,indent=2));json.dump(R,open(B/'EXACT_RATIO_FULL_DOMAIN_PRECISION_CERTIFICATE.json','w'),indent=2)

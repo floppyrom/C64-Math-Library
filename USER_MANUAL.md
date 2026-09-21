@@ -1366,7 +1366,7 @@ The exact benchmark CSV files in `docs/` remain authoritative. A few useful head
 | ATAN2_8 | **50.44** | **46.95** | **46.95** | **48.00** |
 | ISQRT16 | 219.74 | 205.76 | 204.99 | 54.00 |
 | ISQRT32 | 1378.90 | 1198.62 | 1197.86 | 1046.62 |
-| VEC2_NORMALIZE_Q8_8 | **198.77** | **189.26** | **170.06** | **170.06** |
+| VEC2_NORMALIZE_Q8_8 | **161.33** | **161.33** | **157.55** | **157.55** |
 
 These are CPU-model benchmark figures for the release's documented corpus/timing model. REU DMA interacts with real VIC-II bus activity, so raster-critical software should remeasure on its target configuration.
 
@@ -1385,7 +1385,7 @@ V5 is intentionally V1-based, so unchanged routines retain V1 behavior/timing. I
 | SINCOS8 | 39 | **31** | 20.51% |
 | ATAN2_8 | 50.441345 | **46.953064** | 6.92% |
 
-`MATH_VEC2_NORMALIZE_Q8_8` is also available in V5 at **198.770271 cycles mean**, using the V1-compatible 31-ZP backend.
+`MATH_VEC2_NORMALIZE_Q8_8` is also available in V5 at **161.332256 cycles mean**, using the V1-compatible 31-ZP backend.
 
 These direct paths were validated against V2 with cycle-vector equality. `ATAN2_8` is exhaustive across all 65,536 signed-byte vectors and independently checked for a maximum one-phase-unit approximation error; UMOD8 uses exhaustive correctness plus sampled cycle parity. `UDIV16_SHL8` and `URECIP16_Q16` benefit indirectly through imported division but retain V1 outer code. See `docs/HYBRID_PROFILE.md`.
 

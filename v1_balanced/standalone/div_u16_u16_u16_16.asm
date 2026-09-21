@@ -17,7 +17,7 @@ MATH_UDIV16:
 ; ---- executable island $4200 ----
 * = $4200
 L4200:
-    !byte $A7, $11    ; LAX zp         ; @4200 AF 11 C0
+    !byte $AF, $11, $C0    ; LAX abs   ; @4200 AF 11 C0
     cmp $C015                          ; @4203 CD 15 C0
     bcs L421A                          ; @4206 B0 12
 L4208:

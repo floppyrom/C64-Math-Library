@@ -27,7 +27,7 @@ L7A00:
     bne L7A15                          ; @7A10 D0 03
     jmp L7C1B                          ; @7A12 4C 1B 7C
 L7A15:
-    !byte $A7, $11    ; LAX zp         ; @7A15 AF 11 C0
+    !byte $AF, $11, $C0    ; LAX abs   ; @7A15 AF 11 C0
     cmp $C015                          ; @7A18 CD 15 C0
     bcs L7A20                          ; @7A1B B0 03
     jmp L7BCE                          ; @7A1D 4C CE 7B
@@ -54,7 +54,7 @@ L7A41:
     lda #$00                           ; @7A49 A9 00
     sbc $C015                          ; @7A4B ED 15 C0
     sta $13                            ; @7A4E 85 13
-    !byte $A7, $11    ; LAX zp         ; @7A50 AF 11 C0
+    !byte $AF, $11, $C0    ; LAX abs   ; @7A50 AF 11 C0
     cmp $13                            ; @7A53 C5 13
     bcs L7A5A                          ; @7A55 B0 03
     jmp L7BCE                          ; @7A57 4C CE 7B
@@ -101,7 +101,7 @@ L7AA5:
     sta $13                            ; @7AAD 85 13
     jmp L7B4C                          ; @7AAF 4C 4C 7B
 L7AB2:
-    !byte $A7, $11    ; LAX zp         ; @7AB2 AF 11 C0
+    !byte $AF, $11, $C0    ; LAX abs   ; @7AB2 AF 11 C0
     cmp $C015                          ; @7AB5 CD 15 C0
     bcc L7ACC                          ; @7AB8 90 12
     beq L7ABF                          ; @7ABA F0 03

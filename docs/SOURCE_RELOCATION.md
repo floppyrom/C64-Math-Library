@@ -53,3 +53,7 @@ For V5, see `docs/HYBRID_PROFILE.md`, `validation/hybrid/HYBRID_VALIDATION.json`
 For budget-generated stock-C64 builds, see `docs/PARETO_BUILDER.md` and `validation/pareto/`. The release matrix validates six ZP breakpoints on both maps (12 builds / 55,068 common-API calls), plus exact V2 cycle parity, exhaustive UMOD8, deterministic rebuilds, ZP confinement and invalid resource maps.
 
 For V1–V4, see `validation/source_relocation/ALTERNATE_MAP_VALIDATION.json`, `validation/turbo_relocation/TURBO_RELOCATION_VALIDATION.json`, `DETERMINISTIC_REBUILD.json`, and `../CONFIG_VALIDATION.json`. Also see `TURBO_RELOCATION.md`.
+
+## Normalization refresh (2026-09-21)
+
+V1/V2/V5 now use REG_LOW from offset $0000 for logarithmic normalization tables; reference PRG load is $1000. The normalizer owns its code/table islands through the profile-native source and adjacent generated table include. V3/V4 code occupies REG_LOW+$0200..+$02EC, +$0300..+$03CA, +$0720..+$07FC and +$0B00..+$0BCA, avoiding the fixed $9C00–$9FFF signed-sum planes on the alternate map. See `VEC2_NORMALIZE_Q8_8.md` and profile `resident/SEGMENTS.csv` for complete current placement.
