@@ -120,3 +120,50 @@ class Seek:
         m = self.cpu.mem
         x = m[self.c('POS_XL') + slot] | (m[self.c('POS_XH') + slot] << 8)
         return x, m[self.c('POS_Y') + slot]
+
+
+class Seek8(Seek):
+    """Loader for seek_u8_u8_dda.asm (x and y unsigned bytes)."""
+
+    source = HERE / 'seek_u8_u8_dda.asm'
+
+    def __init__(self, org=0x8000, io=0x00F0, st=0x9000):
+        text = self.source.read_text(encoding='utf-8')
+        text = text.replace('ORG = $8000', f'ORG = ${org:04X}')
+        text = text.replace('IO  = $00F0', f'IO  = ${io:04X}')
+        text = text.replace('ST  = $9000', f'ST  = ${st:04X}')
+        code, self.labels, self.const = Assembler().assemble(text)
+        self.code = code
+        self.code_bytes = len(code)
+        mem = bytearray(65536)
+        for a, b in code.items():
+            mem[a] = b
+        self.cpu = CPU(mem)
+        self.cpu.d = 0
+        self.io = io
+        self.st = st
+
+    def set_pos(self, slot, x, y):
+        self.cpu.mem[self.c('POS_X') + slot] = x
+        self.cpu.mem[self.c('POS_Y') + slot] = y
+
+    def init(self, slot, x0, y0, x1, y1, speed_q8, euclid=False):
+        self.set_pos(slot, x0, y0)
+        io = self.io
+        self.cpu.mem[io:io + 4] = bytes((x1, y1, speed_q8 & 255, speed_q8 >> 8))
+        self.cpu.x = slot
+        cyc = self.cpu.call(self.labels['seek8_init_euclid' if euclid else 'seek8_init'])
+        assert self.cpu.x == slot
+        return cyc, self.cpu.c
+
+    def step(self, slot, integer=False):
+        self.cpu.x = slot
+        name = ('seek8_step1' if integer == 'one' else
+                'seek8_step_int' if integer else 'seek8_step')
+        cyc = self.cpu.call(self.labels[name])
+        assert self.cpu.x == slot
+        return cyc, self.cpu.c
+
+    def pos(self, slot):
+        m = self.cpu.mem
+        return m[self.c('POS_X') + slot], m[self.c('POS_Y') + slot]

@@ -21,8 +21,9 @@ This prevents source-less benchmark claims and makes every published number trac
 
 ## Game movement
 
-[`movement/`](movement/README.md) contains `seek_u16_u8_dda`, an exact
-Bresenham/DDA "move toward target" stepper. It is the recommended alternative
+[`movement/`](movement/README.md) contains `seek_u8_u8_dda` (8-bit
+coordinates, fastest) and `seek_u16_u8_dda` (16-bit x), exact Bresenham/DDA
+"move toward target" steppers. It is the recommended alternative
 to building target seeking on `MATH_VEC2_NORMALIZE_Q8_8`.
 
 ## Finding a routine

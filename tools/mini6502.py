@@ -41,6 +41,24 @@ OPS = {
 'inc':{'zp':0xE6,'abs':0xEE,'zpx':0xF6,'absx':0xFE},
 'inx':{'imp':0xE8}, 'nop':{'imp':0xEA}, 'beq':{'rel':0xF0}, 'sed':{'imp':0xF8},
 }
+# Stable NMOS unintended opcodes (names as in ACME's !cpu 6510; ALR is also
+# accepted as ASR). Timings/semantics follow "No More Secrets" (NMOS 6510
+# Unintended Opcodes). The unstable SHA/SHX/SHY/TAS/ANE/LAX#imm are omitted.
+ILLEGAL = {
+'slo':{'zp':0x07,'zpx':0x17,'indx':0x03,'indy':0x13,'abs':0x0F,'absx':0x1F,'absy':0x1B},
+'rla':{'zp':0x27,'zpx':0x37,'indx':0x23,'indy':0x33,'abs':0x2F,'absx':0x3F,'absy':0x3B},
+'sre':{'zp':0x47,'zpx':0x57,'indx':0x43,'indy':0x53,'abs':0x4F,'absx':0x5F,'absy':0x5B},
+'rra':{'zp':0x67,'zpx':0x77,'indx':0x63,'indy':0x73,'abs':0x6F,'absx':0x7F,'absy':0x7B},
+'sax':{'zp':0x87,'zpy':0x97,'indx':0x83,'abs':0x8F},
+'lax':{'zp':0xA7,'zpy':0xB7,'indx':0xA3,'indy':0xB3,'abs':0xAF,'absy':0xBF},
+'dcp':{'zp':0xC7,'zpx':0xD7,'indx':0xC3,'indy':0xD3,'abs':0xCF,'absx':0xDF,'absy':0xDB},
+'isc':{'zp':0xE7,'zpx':0xF7,'indx':0xE3,'indy':0xF3,'abs':0xEF,'absx':0xFF,'absy':0xFB},
+'anc':{'imm':0x0B},
+'alr':{'imm':0x4B}, 'asr':{'imm':0x4B},
+'arr':{'imm':0x6B},
+'sbx':{'imm':0xCB},
+}
+OPS.update(ILLEGAL)
 BR={'bpl','bmi','bvc','bvs','bcc','bcs','bne','beq'}
 SIZE={'imp':1,'acc':1,'imm':2,'zp':2,'zpx':2,'zpy':2,'indx':2,'indy':2,'rel':2,'abs':3,'absx':3,'absy':3,'ind':3}
 
@@ -52,6 +70,9 @@ REV[0xA7]=('lax','zp')   # LAX zp: A=X=M, 3 cycles
 REV[0xAF]=('lax','abs')  # LAX abs: A=X=M, 4 cycles
 REV[0xBF]=('lax','absy') # LAX abs,Y: A=X=M, 4 cycles (+ page cross)
 REV[0x0B]=('anc','imm')  # ANC #imm: A&=imm, C=N, 2 cycles
+REV[0x2B]=('anc','imm')
+REV[0x4B]=('alr','imm')
+REV[0xEB]=('sbc','imm')  # SBC #imm duplicate
 
 BASE_CYCLES={
 'imp':2,'acc':2,'imm':2,'zp':3,'zpx':4,'zpy':4,'abs':4,'absx':4,'absy':4,'indx':6,'indy':5,'ind':5,'rel':2
@@ -61,6 +82,8 @@ FIXED={0x00:7,0x08:3,0x20:6,0x28:4,0x40:6,0x48:3,0x4C:3,0x60:6,0x68:4,0x6C:5}
 RMW=set([0x06,0x0E,0x16,0x1E,0x26,0x2E,0x36,0x3E,0x46,0x4E,0x56,0x5E,0x66,0x6E,0x76,0x7E,
          0xC6,0xCE,0xD6,0xDE,0xE6,0xEE,0xF6,0xFE])
 STORE=set([0x81,0x85,0x8D,0x91,0x95,0x99,0x9D,0x84,0x8C,0x94,0x86,0x8E,0x96])
+for _op in ('slo','rla','sre','rra','dcp','isc'): RMW.update(ILLEGAL[_op].values())
+STORE.update(ILLEGAL['sax'].values())
 
 class Assembler:
     def __init__(self): self.const={}; self.labels={}; self.items=[]
@@ -68,6 +91,7 @@ class Assembler:
         out=[]
         for raw in text.splitlines():
             s=raw.split(';',1)[0].strip()
+            if s.lower().startswith('!cpu'): continue  # ACME CPU selection
             if s: out.append(s)
         return out
     def expr(self,s,labels=None):
@@ -233,7 +257,7 @@ class CPU:
         op,mode=REV[oc]; extra=0
         if oc in FIXED: cyc=FIXED[oc]
         elif oc in RMW:
-            cyc={'zp':5,'zpx':6,'abs':6,'absx':7,'acc':2}[mode]
+            cyc={'zp':5,'zpx':6,'abs':6,'absx':7,'absy':7,'indx':8,'indy':8,'acc':2}[mode]
         elif oc in STORE:
             cyc={'zp':3,'zpx':4,'zpy':4,'abs':4,'absx':5,'absy':5,'indx':6,'indy':6}[mode]
         else: cyc=BASE_CYCLES[mode]
@@ -304,6 +328,21 @@ class CPU:
                 else:self.wr(addr,r)
             elif op=='inc': self.wr(addr,self.nz(val+1))
             elif op=='dec': self.wr(addr,self.nz(val-1))
+            elif op=='sax': self.wr(addr,self.a&self.x)
+            elif op=='slo': self.c=(val>>7)&1; r=(val<<1)&255; self.wr(addr,r); self.a=self.nz(self.a|r)
+            elif op=='rla': c=self.c; self.c=(val>>7)&1; r=((val<<1)|c)&255; self.wr(addr,r); self.a=self.nz(self.a&r)
+            elif op=='sre': self.c=val&1; r=val>>1; self.wr(addr,r); self.a=self.nz(self.a^r)
+            elif op=='rra': c=self.c; self.c=val&1; r=(val>>1)|(c<<7); self.wr(addr,r); self._adc(r)
+            elif op=='dcp':
+                r=(val-1)&255; self.wr(addr,r); t=(self.a-r)&0x1ff; self.c=int(self.a>=r); self.z=int((t&255)==0); self.n=(t>>7)&1
+            elif op=='isc': r=(val+1)&255; self.wr(addr,r); self._sbc(r)
+            elif op=='alr': t=self.a&val; self.c=t&1; self.a=self.nz(t>>1)
+            elif op=='arr':
+                t=self.a&val; r=((t>>1)|(self.c<<7))&255; self.a=self.nz(r)
+                if self.d: raise RuntimeError('ARR in decimal mode is not modelled')
+                self.c=(r>>6)&1; self.v=((r>>6)^(r>>5))&1
+            elif op=='sbx':
+                t=self.a&self.x; self.c=int(t>=val); self.x=self.nz(t-val)
             else: raise RuntimeError((op,mode,hex(pc0)))
         self.cycles+=cyc; return oc
     def call(self,addr,max_steps=100000):

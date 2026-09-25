@@ -23,6 +23,8 @@ jobs:
         run: |
           python3 tools/package_audit.py
           git diff --exit-code -- validation/PACKAGE_AUDIT.json
+      - name: Emulator unintended-opcode semantics
+        run: python3 tools/test_mini6502_illegal.py
       - name: Public source and benchmark contract
         run: |
           python3 tools/generate_public_indexes.py

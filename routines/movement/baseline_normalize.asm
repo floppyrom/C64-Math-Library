@@ -19,8 +19,8 @@
 ; Library entries/IO come from the V1 reference build (see benchmark.py).
 
 ORG = $0800
-IO  = $0B00
-ST  = $0A00
+IO  = $0B80
+ST  = $0C00
 MX = $C000
 MY = $C004
 MZ = $C008
@@ -250,6 +250,44 @@ bsa_snap:
         sta PXL,x
         lda TXH,x
         sta PXH,x
+        lda TY,x
+        sta PY,x
+        sec
+        rts
+
+; 8-bit-x variants for the 8-bit corpus: x is Q8.8, the high byte is unused.
+b8_step:
+        lda PXF,x
+        clc
+        adc VXL,x
+        sta PXF,x
+        lda PXL,x
+        adc VXH,x
+        sta PXL,x
+        lda PYF,x
+        clc
+        adc VYL,x
+        sta PYF,x
+        lda PY,x
+        adc VYH,x
+        sta PY,x
+        clc
+        rts
+
+b8_step_arrive:
+        lda FRL,x
+        bne b8a_lo
+        lda FRH,x
+        beq b8a_snap
+        dec FRH,x
+b8a_lo:
+        dec FRL,x
+        bne b8_step
+        lda FRH,x
+        bne b8_step
+b8a_snap:
+        lda TXL,x
+        sta PXL,x
         lda TY,x
         sta PY,x
         sec

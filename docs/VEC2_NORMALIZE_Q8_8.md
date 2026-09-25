@@ -4,13 +4,13 @@
 
 ## Moving an object toward a target? Use `seek` instead
 
-To move an object to a target pixel at a given speed, use
-[`routines/movement/seek_u16_u8_dda.asm`](../routines/movement/README.md). It is an
-exact Bresenham/DDA stepper. Measured on 408 screen moves, its setup is 4.6x
-cheaper than normalize + scale + arrival bookkeeping. It stays within 0.5 px of
-the line and lands exactly on the target. The normalize pipeline drifts up to
-3.2 px and misses by up to 4 px. The seek code and table take 754 bytes; the
-normalizer alone takes 3,441. Keep this routine for real direction vectors:
+To move an object to a target pixel at a given speed, use the exact
+Bresenham/DDA steppers in [`routines/movement/`](../routines/movement/README.md).
+With 8-bit coordinates, setup is 6-12x cheaper than normalize + scale + arrival
+bookkeeping, and the whole move is 1.4-2x cheaper. With 16-bit x, setup is 4.6x
+cheaper. Both stay within 0.5 px of the line and land exactly on the target.
+The normalize pipeline drifts up to 3.6 px and misses by up to 4 px. The seek
+code and table take 674-754 bytes; the normalizer alone takes 3,441. Keep this routine for real direction vectors:
 thrust, reflections, physics, lighting.
 
 **Input range.** The Q8.8 label does not limit the usable range to +/-128.

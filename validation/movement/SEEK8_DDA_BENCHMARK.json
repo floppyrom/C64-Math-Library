@@ -1,0 +1,222 @@
+{
+ "corpus": {
+  "moves": 408,
+  "speeds_q8_8": [
+   "$0080",
+   "$0100",
+   "$0180",
+   "$0200",
+   "$0300",
+   "$0400"
+  ],
+  "cases": 2448,
+  "screen": "x 0..255, y 0..199"
+ },
+ "source": "routines/movement/seek_u8_u8_dda.asm",
+ "source_sha256": "e40fb51e15442d0203a3f519c85c62954b1ae971764bb7c15472b8762b368cc7",
+ "dda": {
+  "code_bytes": 642,
+  "table_bytes": 32,
+  "state_bytes_per_slot": 20,
+  "io_bytes": 16,
+  "interleaved_slot_frames_checked": 103600,
+  "major_axis_speed": {
+   "entry": "seek8_init + seek8_step",
+   "cases": 2448,
+   "init": {
+    "mean": 392.2013888888889,
+    "min": 134,
+    "max": 492
+   },
+   "step": {
+    "mean": 84.29211567476166,
+    "min": 74,
+    "max": 88
+   },
+   "total_per_move": {
+    "mean": 7763.732843137255,
+    "min": 134,
+    "max": 43391
+   },
+   "frames_per_move": {
+    "mean": 87.45220588235294,
+    "min": 0,
+    "max": 510
+   },
+   "max_line_dev_px": 0.49998374168793364,
+   "exact_arrival": true,
+   "frame_position_mismatches": 0
+  },
+  "major_axis_speed_integer_step": {
+   "entry": "seek8_init + seek8_step_int",
+   "cases": 1632,
+   "init": {
+    "mean": 405.78063725490193,
+    "min": 134,
+    "max": 492
+   },
+   "step": {
+    "mean": 67.99276964954066,
+    "min": 58,
+    "max": 71
+   },
+   "total_per_move": {
+    "mean": 4324.030637254902,
+    "min": 134,
+    "max": 18165
+   },
+   "frames_per_move": {
+    "mean": 57.627450980392155,
+    "min": 0,
+    "max": 255
+   },
+   "max_line_dev_px": 0.49998374168793364,
+   "exact_arrival": true,
+   "frame_position_mismatches": 0
+  },
+  "one_pixel_per_frame": {
+   "entry": "seek8_init + seek8_step1",
+   "cases": 408,
+   "init": {
+    "mean": 374.5514705882353,
+    "min": 134,
+    "max": 417
+   },
+   "step": {
+    "mean": 62.9539590747331,
+    "min": 51,
+    "max": 66
+   },
+   "total_per_move": {
+    "mean": 7311.830882352941,
+    "min": 134,
+    "max": 16888
+   },
+   "frames_per_move": {
+    "mean": 110.19607843137256,
+    "min": 0,
+    "max": 255
+   },
+   "max_line_dev_px": 0.49998374168793364,
+   "exact_arrival": true,
+   "frame_position_mismatches": 0
+  },
+  "euclidean_speed": {
+   "entry": "seek8_init_euclid + seek8_step",
+   "cases": 2448,
+   "init": {
+    "mean": 713.125408496732,
+    "min": 134,
+    "max": 852
+   },
+   "step": {
+    "mean": 83.9970912834764,
+    "min": 74,
+    "max": 88
+   },
+   "total_per_move": {
+    "mean": 8911.660130718954,
+    "min": 134,
+    "max": 54534
+   },
+   "frames_per_move": {
+    "mean": 97.60498366013071,
+    "min": 0,
+    "max": 640
+   },
+   "max_line_dev_px": 0.49998374168793364,
+   "exact_arrival": true,
+   "frame_position_mismatches": 0
+  }
+ },
+ "baseline_v1_normalize_8bit_x": {
+  "glue_code_bytes": 558,
+  "init_bare": {
+   "mean": 1116.7244062244063,
+   "min": 1024,
+   "max": 1204
+  },
+  "init_with_arrival": {
+   "mean": 4411.6015561015565,
+   "min": 4006,
+   "max": 5400
+  },
+  "step_bare": {
+   "mean": 64.0,
+   "min": 64,
+   "max": 64
+  },
+  "step_with_arrival": {
+   "mean": 81.66407091864224,
+   "min": 48,
+   "max": 94
+  },
+  "total_per_move_bare": {
+   "mean": 7342.912776412776,
+   "min": 1174,
+   "max": 42507
+  },
+  "total_per_move_with_arrival": {
+   "mean": 12356.224815724816,
+   "min": 4069,
+   "max": 58147
+  },
+  "frames_per_move": {
+   "mean": 97.28419328419328,
+   "min": 1,
+   "max": 646
+  },
+  "miss_before_snap_px": {
+   "mean": 0.8510811469033169,
+   "min": 0.0,
+   "max": 3.4311375778486353
+  },
+  "max_line_dev_px": 3.597097556440859,
+  "frames_outside_coordinate_range": 78
+ },
+ "baseline_v1_normalize_8bit_x_speed_1": {
+  "glue_code_bytes": 558,
+  "init_bare": {
+   "mean": 1112.943488943489,
+   "min": 1024,
+   "max": 1193
+  },
+  "init_with_arrival": {
+   "mean": 4285.791154791154,
+   "min": 4006,
+   "max": 4576
+  },
+  "step_bare": {
+   "mean": 64.0,
+   "min": 64,
+   "max": 64
+  },
+  "step_with_arrival": {
+   "mean": 81.72449449910823,
+   "min": 48,
+   "max": 94
+  },
+  "total_per_move_bare": {
+   "mean": 8959.783783783783,
+   "min": 1238,
+   "max": 21827
+  },
+  "total_per_move_with_arrival": {
+   "mean": 14305.776412776413,
+   "min": 4170,
+   "max": 30797
+  },
+  "frames_per_move": {
+   "mean": 122.6068796068796,
+   "min": 2,
+   "max": 323
+  },
+  "miss_before_snap_px": {
+   "mean": 0.6685545539663723,
+   "min": 0.01171875,
+   "max": 1.982898072424551
+  },
+  "max_line_dev_px": 2.233852791839306,
+  "frames_outside_coordinate_range": 10
+ }
+}

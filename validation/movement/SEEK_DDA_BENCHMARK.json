@@ -103,7 +103,7 @@
   }
  },
  "baseline_v1_normalize": {
-  "glue_code_bytes": 481,
+  "glue_code_bytes": 558,
   "init_bare": {
    "mean": 1122.2416052416052,
    "min": 1024,
@@ -144,6 +144,7 @@
    "min": 0.0,
    "max": 4.031128874149275
   },
-  "max_line_dev_px": 3.207566138641687
+  "max_line_dev_px": 3.207566138641687,
+  "frames_outside_coordinate_range": 0
  }
 }

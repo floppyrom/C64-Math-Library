@@ -1,3 +1,15 @@
+## 2026-09-25 — 8-bit seek DDA and unintended opcodes in the emulator
+
+- Add `routines/movement/seek_u8_u8_dda.asm` for 8-bit game coordinates (x, y 0..255), following Repose's point that screen coordinates are small. The error term, distance counter and positions are single bytes. The fraction accumulator and distance countdown share one 16-bit counter. Carries are pre-biased into the stored deltas, and the per-frame paths index only with X.
+- Add `seek8_step1`, which uses NMOS `DCP` to count down and test arrival in one instruction at 1 px/frame.
+- On 408 moves on a 256x200 screen at 0.5-4 px/frame, compared with the normalize mover with arrival bookkeeping (8-bit x):
+  - setup takes 375-713 cycles instead of 4,412;
+  - per frame is 63.0 (1 px/frame), 68.0 (integer speed) or 84.3 (fractional speed) cycles, vs 81.7;
+  - end to end is 1.4x cheaper at the same Euclidean speed and 2x at 1 px/frame;
+  - the path stays within 0.5 px and arrival is exact, vs up to 3.6 px drift and edge wrap-around.
+  - The routine takes 674 bytes of code and table.
+- `tools/mini6502.py` now assembles and emulates the stable NMOS unintended opcodes (SLO, RLA, SRE, RRA, SAX, LAX, DCP, ISC, ANC, ALR/ASR, ARR, SBX, SBC $EB) and ignores `!cpu` lines. Existing builds and validations are unchanged. `tools/test_mini6502_illegal.py` checks them against *No More Secrets* and runs in CI.
+
 ## 2026-09-25 — exact DDA "seek" for moving objects toward a target
 
 - Add `routines/movement/seek_u16_u8_dda.asm`, a standalone Bresenham/DDA stepper for "move object to (tx,ty) at speed", following Repose's review on CSDb. Each frame's position is on the Bresenham line (within 0.5 px of the true line), and the object lands exactly on the target. Speed is Q8.8 px/frame along the major axis (`seek_init`) or along the path (`seek_init_euclid`, within 0.7%). Up to 8 objects are supported, with no scratch in the per-frame stepper.
