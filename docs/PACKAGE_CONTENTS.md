@@ -7,7 +7,7 @@ This replacement package is intended to be copied over a clean local checkout an
 - all five validated fixed profiles (`v1_balanced` ... `v5_hybrid_lowzp`), including deployable PRGs and the V3/V4 REU images;
 - `relocatable_source/` and the build/validation tools needed to reproduce the profiles;
 - all profile-local typed standalone sources (46 / 46 / 52 / 55 / 46 callable entries);
-- `routines/`, including public standalone record/Pareto sources and the optimized ATAN2 family;
+- `routines/`, including public standalone record/Pareto sources, the optimized ATAN2 family and the `movement/` seek DDA;
 - `benchmarks/`, with the full profile table, a fastest-shipped-per-routine index, standalone alternatives, direct source paths and SHA-256 for every published row;
 - current validation/certification evidence;
 - integration, naming, profile and performance documentation.

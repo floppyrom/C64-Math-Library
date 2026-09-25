@@ -2,6 +2,25 @@
 
 `MATH_VEC2_NORMALIZE_Q8_8` is the 46th stable C64 Math Library entry. It normalizes an arbitrary signed two-dimensional Q8.8 vector and returns a signed Q1.15 unit direction.
 
+## Moving an object toward a target? Use `seek` instead
+
+To move an object to a target pixel at a given speed, use
+[`routines/movement/seek_u16_u8_dda.asm`](../routines/movement/README.md). It is an
+exact Bresenham/DDA stepper. Measured on 408 screen moves, its setup is 4.6x
+cheaper than normalize + scale + arrival bookkeeping. It stays within 0.5 px of
+the line and lands exactly on the target. The normalize pipeline drifts up to
+3.2 px and misses by up to 4 px. The seek code and table take 754 bytes; the
+normalizer alone takes 3,441. Keep this routine for real direction vectors:
+thrust, reflections, physics, lighting.
+
+**Input range.** The Q8.8 label does not limit the usable range to +/-128.
+Normalization is scale-invariant, so a raw signed 16-bit pixel delta (for
+example `dx = x1 - x0`, up to +/-32767) can be passed as `MATH_X`/`MATH_Y`
+directly. The precision contract below covers the full signed 16-bit domain.
+However, the 0.36-degree bound is not pixel-exact over a full screen:
+319 px x tan(0.36 degrees) is about 2 px. Staying under one pixel at 255 px
+needs about 0.22 degrees.
+
 ## Public contract
 
 ```text

@@ -8,6 +8,7 @@ The library keeps the historical `MATH_*` ABI for compatibility, but the canonic
 - Division without a returned remainder: `div_<N>_<D>_<Q>`.
 - Division with a returned remainder: `div_<N>_<D>_<Q>_<R bits>`. For example, `div_u8_u8_u8_8` means unsigned 8-bit numerator, unsigned 8-bit divisor, unsigned 8-bit quotient, and 8-bit remainder.
 - Modulo-only entry points use `mod_<N>_<D>_<R>`. Legacy modulo aliases that also happen to return a quotient retain `mod_...` canonical aliases because the requested operation is modulo; their extra quotient is documented, not hidden.
+- Movement steppers use `seek_<x type><x bits>_<y type><y bits>_<method>`; for example `seek_u16_u8_dda` works on unsigned 16-bit x and unsigned 8-bit y coordinates.
 - `_ready`, `_shr8`, `_shr16`, and `_shl8` are explicit operational/precondition suffixes and do not replace the A/B/result geometry.
 
 `u` means unsigned and `s` means two’s-complement signed. Widths are decimal bit counts. The result type is explicit even where it is implied by the operands.

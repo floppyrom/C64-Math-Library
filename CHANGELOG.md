@@ -1,3 +1,10 @@
+## 2026-09-25 — exact DDA "seek" for moving objects toward a target
+
+- Add `routines/movement/seek_u16_u8_dda.asm`, a standalone Bresenham/DDA stepper for "move object to (tx,ty) at speed", following Repose's review on CSDb. Each frame's position is on the Bresenham line (within 0.5 px of the true line), and the object lands exactly on the target. Speed is Q8.8 px/frame along the major axis (`seek_init`) or along the path (`seek_init_euclid`, within 0.7%). Up to 8 objects are supported, with no scratch in the per-frame stepper.
+- On 408 random screen moves at 0.5-4 px/frame, compared with normalize + `SMUL16_SHR8` velocity + ISQRT/divide arrival bookkeeping on V1: setup takes 967 cycles instead of 4,412; per-frame cost is 126.6 cycles vs 93.7 (109.3 for integer-speed `seek_step_int`); total per move is about even. Path error is <=0.5 px vs up to 3.2 px, with no target miss vs up to 4 px. The routine takes 754 code + table bytes, vs 3,441 for the stock normalizer alone.
+- Document in `docs/VEC2_NORMALIZE_Q8_8.md` that raw 16-bit pixel deltas are valid normalize input (normalization is scale-invariant), and that the 0.36-degree bound is up to about 2 px over a full screen.
+- Register the source in `benchmarks/STANDALONE_RESULTS.csv` and `routines/SOURCE_CATALOG.csv`. Evidence: `validation/movement/SEEK_DDA_BENCHMARK.json`.
+
 ## 2026-09-21 — smaller normalize and ATAN2 without timing regressions
 
 - Reduce normalize to 881 code + 2,560 table bytes in V1/V2/V5, saving **290 bytes**. V3/V4 use 849 code + 1,024 C64 table bytes, saving **18 bytes**.

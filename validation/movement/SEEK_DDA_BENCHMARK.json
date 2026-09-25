@@ -1,0 +1,149 @@
+{
+ "corpus": {
+  "moves": 408,
+  "speeds_q8_8": [
+   "$0080",
+   "$0100",
+   "$0180",
+   "$0200",
+   "$0300",
+   "$0400"
+  ],
+  "cases": 2448,
+  "screen": "x 0..319, y 0..199"
+ },
+ "source": "routines/movement/seek_u16_u8_dda.asm",
+ "source_sha256": "d9c4010eff7f342aae228afc6b4deed925a9e15db37a6149863b75227aa265d1",
+ "dda": {
+  "code_bytes": 722,
+  "table_bytes": 32,
+  "state_bytes_per_slot": 32,
+  "io_bytes": 16,
+  "interleaved_slot_frames_checked": 129440,
+  "major_axis_speed": {
+   "entry": "seek_init + seek_step",
+   "cases": 2448,
+   "init": {
+    "mean": 630.1192810457517,
+    "min": 192,
+    "max": 813
+   },
+   "step": {
+    "mean": 125.67496346869359,
+    "min": 109,
+    "max": 165
+   },
+   "total_per_move": {
+    "mean": 13172.511437908497,
+    "min": 192,
+    "max": 81366
+   },
+   "frames_per_move": {
+    "mean": 99.80024509803921,
+    "min": 0,
+    "max": 638
+   },
+   "max_line_dev_px": 0.49999618534638957,
+   "exact_arrival": true,
+   "frame_position_mismatches": 0
+  },
+  "major_axis_speed_integer_step": {
+   "entry": "seek_init + seek_step_int",
+   "cases": 1632,
+   "init": {
+    "mean": 650.8265931372549,
+    "min": 192,
+    "max": 813
+   },
+   "step": {
+    "mean": 109.31331947926083,
+    "min": 91,
+    "max": 143
+   },
+   "total_per_move": {
+    "mean": 7838.512254901961,
+    "min": 192,
+    "max": 37699
+   },
+   "frames_per_move": {
+    "mean": 65.7530637254902,
+    "min": 0,
+    "max": 319
+   },
+   "max_line_dev_px": 0.49999618534638957,
+   "exact_arrival": true,
+   "frame_position_mismatches": 0
+  },
+  "euclidean_speed": {
+   "entry": "seek_init_euclid + seek_step",
+   "cases": 2448,
+   "init": {
+    "mean": 966.8766339869281,
+    "min": 192,
+    "max": 1161
+   },
+   "step": {
+    "mean": 126.58132677043146,
+    "min": 109,
+    "max": 165
+   },
+   "total_per_move": {
+    "mean": 14959.697712418301,
+    "min": 192,
+    "max": 93824
+   },
+   "frames_per_move": {
+    "mean": 110.54411764705883,
+    "min": 0,
+    "max": 743
+   },
+   "max_line_dev_px": 0.49999618534638957,
+   "exact_arrival": true,
+   "frame_position_mismatches": 0
+  }
+ },
+ "baseline_v1_normalize": {
+  "glue_code_bytes": 481,
+  "init_bare": {
+   "mean": 1122.2416052416052,
+   "min": 1024,
+   "max": 1267
+  },
+  "init_with_arrival": {
+   "mean": 4412.359950859951,
+   "min": 4000,
+   "max": 5430
+  },
+  "step_bare": {
+   "mean": 77.0,
+   "min": 77,
+   "max": 77
+  },
+  "step_with_arrival": {
+   "mean": 93.6831290394473,
+   "min": 57,
+   "max": 106
+  },
+  "total_per_move_bare": {
+   "mean": 9611.160524160525,
+   "min": 1173,
+   "max": 59014
+  },
+  "total_per_move_with_arrival": {
+   "mean": 14740.522113022113,
+   "min": 4078,
+   "max": 75929
+  },
+  "frames_per_move": {
+   "mean": 110.24570024570025,
+   "min": 1,
+   "max": 750
+  },
+  "miss_before_snap_px": {
+   "mean": 0.8591116654721944,
+   "min": 0.0,
+   "max": 4.031128874149275
+  },
+  "max_line_dev_px": 3.207566138641687
+ }
+}

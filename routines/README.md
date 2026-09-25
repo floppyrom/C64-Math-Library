@@ -19,6 +19,12 @@ A performance number is considered publishable in this repository only when:
 
 This prevents source-less benchmark claims and makes every published number traceable to code.
 
+## Game movement
+
+[`movement/`](movement/README.md) contains `seek_u16_u8_dda`, an exact
+Bresenham/DDA "move toward target" stepper. It is the recommended alternative
+to building target seeking on `MATH_VEC2_NORMALIZE_Q8_8`.
+
 ## Finding a routine
 
 For the fastest overview, start with [`../PERFORMANCE.md`](../PERFORMANCE.md). For every shipped profile row, use [`../benchmarks/PUBLIC_PROFILE_RESULTS.csv`](../benchmarks/PUBLIC_PROFILE_RESULTS.csv). For standalone alternatives, use [`../benchmarks/STANDALONE_RESULTS.csv`](../benchmarks/STANDALONE_RESULTS.csv).

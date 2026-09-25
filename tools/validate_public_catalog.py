@@ -30,6 +30,7 @@ NAME_PATTERNS = [
     re.compile(r"^isqrt_[us]\d+_[us]\d+$"),
     re.compile(r"^dist_[us]\d+_[us]\d+_[us]\d+_(?:fast|accurate)$"),
     re.compile(r"^normalize_[us]\d+_[us]\d+_[us]\d+_[us]\d+_q\d+_\d+_to_q\d+_\d+$"),
+    re.compile(r"^seek_[us]\d+_[us]\d+_dda$"),
 ]
 
 def digest(path: Path) -> str:

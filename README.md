@@ -12,6 +12,7 @@ The library exposes one stable **46-entry public API** across five fixed profile
 - **Calling/integration manual:** [`USER_MANUAL.md`](USER_MANUAL.md)
 - **Naming convention:** [`docs/NAMING_STANDARD.md`](docs/NAMING_STANDARD.md)
 - **Repository layout:** [`docs/STRUCTURE.md`](docs/STRUCTURE.md)
+- **Moving an object toward a target:** use the exact DDA stepper in [`routines/movement/`](routines/movement/README.md), not vector normalization
 
 Every published benchmark row now points to a public source file and SHA-256. Run `python3 tools/validate_public_catalog.py` to verify that contract.
 
