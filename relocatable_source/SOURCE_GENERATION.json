@@ -4,26 +4,26 @@
     {
       "profile": "v1_balanced",
       "source": "relocatable_source/v1_balanced/math_relocatable.asm",
-      "reachable_instructions": 5137,
-      "source_sha256": "099498c60cb6b65c9993c104b20be88553e3825f9a521929220ef225016f9929"
+      "reachable_instructions": 5713,
+      "source_sha256": "313abe6b290be23e74418ed783009ed5318bb5101ca38aa90436741171d40ed9"
     },
     {
       "profile": "v2_pareto_fast",
       "source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
-      "reachable_instructions": 8626,
-      "source_sha256": "e1f49e1bda06c0adc1bb9fd11826e6e079a3b8592b742bc05b694d4910849c0b"
+      "reachable_instructions": 9202,
+      "source_sha256": "39c0f60d9622a0f990a23384de14a1166656bf51e93c5c2f53c2f4da3b01f60a"
     },
     {
       "profile": "v3_reu_512k",
       "source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
-      "reachable_instructions": 8673,
-      "source_sha256": "010ac628ed78d24d1bfaa6e001cea864efc60bda43c1ca0b18dbd54886c63954"
+      "reachable_instructions": 9249,
+      "source_sha256": "62f93fbd2e3b489b496bd8b05233487c8b001f700d1f244553213782d72efafd"
     },
     {
       "profile": "v4_reu_16m",
       "source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
-      "reachable_instructions": 8548,
-      "source_sha256": "ef05d6cb039ef087d4cfa721fe056cb7e4ed675419f8e99ef67d66bf6392b191"
+      "reachable_instructions": 9124,
+      "source_sha256": "d9a747fa4764ed8a448bb44892339a461b897060257432b116782c6d30eac6a6"
     }
   ]
 }

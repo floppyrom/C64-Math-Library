@@ -37,3 +37,13 @@ normalize_pn,$1300,200,integrated PRG,sign-specific normalize code; branches sta
 normalize_nn,$1720,218,integrated PRG,sign-specific normalize code; branches stay within page
 normalize_np,$1B00,200,integrated PRG,sign-specific normalize code; branches stay within page
 normalize_components,$6800,1024,integrated PRG,unchanged Q1.15 component planes; REU ratio table remains bank 4:$8000-$FFFF
+seek_entries,$5E3C,24,integrated PRG,eight stable MATH_SEEK8_*/MATH_SEEK16_* JMP slots
+seek8_step,$4124,180,integrated PRG,"SEEK8 per-frame steppers (STEP/STEP_INT/STEP1); one page, no page-crossing branches"
+seek8_init,$3711,205,integrated PRG,SEEK8 init: geometry and bulk-Bresenham rates
+seek8_planes,$5EDD,95,integrated PRG,SEEK8 per-frame delta plane writer
+seek16_step,$4000,291,integrated PRG,SEEK16 per-frame steppers (STEP/STEP_INT/STEP1)
+seek16_init,$3600,271,integrated PRG,SEEK16 init: geometry and bulk-Bresenham rates
+seek16_helpers,$5E54,137,integrated PRG,SEEK16 rate/plane helpers
+seek_shared,$3D23,109,integrated PRG,shared Euclidean speed correction + 32-byte cos table
+seek8_state,$9308,160,integrated PRG,"SEEK8 per-slot state, 8 slots (POS_X/POS_Y public); runtime RAM"
+seek16_state,$90E8,248,integrated PRG,"SEEK16 per-slot state, 8 slots (POS_XL/XH/Y public); runtime RAM"

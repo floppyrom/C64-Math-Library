@@ -45,3 +45,11 @@ unsigned,integer square root,32 -> 16,MATH_ISQRT32,isqrt_u32_u16,$5E30,exact ISQ
 signed,distance approximation,"s8,s8 -> u8",MATH_DIST8_FAST,dist_s8_s8_u8_fast,$5E33,max + min/2,dist_s8_s8_u8_fast.asm
 signed,distance approximation,"s8,s8 -> u8",MATH_DIST8_ACCURATE,dist_s8_s8_u8_accurate,$5E36,exhaustively selected 243/107 coefficients,dist_s8_s8_u8_accurate.asm
 signed,vector normalize,2xs16 Q8.8 -> 2xs16 Q1.15,MATH_VEC2_NORMALIZE_Q8_8,normalize_s16_s16_s16_s16_q8_8_to_q1_15,$5E39,profile-selected normalized direction; C=1 only for zero vector,normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm
+unsigned,move toward target,"u8 x,u8 y target; Q8.8 speed",MATH_SEEK8_INIT,seek_u8_u8_init,$5E3C,exact Bresenham/DDA move setup; C=1 if already on target,seek_u8_u8_init.asm
+unsigned,move toward target,"u8 x,u8 y per slot",MATH_SEEK8_STEP,seek_u8_u8_step,$5E3F,one frame at Q8.8 speed; C=1 on arrival,seek_u8_u8_step.asm
+unsigned,move toward target,"u8 x,u8 y per slot",MATH_SEEK8_STEP_INT,seek_u8_u8_step_int,$5E42,one frame at integer speed; C=1 on arrival,seek_u8_u8_step_int.asm
+unsigned,move toward target,"u8 x,u8 y per slot",MATH_SEEK8_STEP1,seek_u8_u8_step1,$5E45,one frame at 1 px/frame (NMOS DCP); C=1 on arrival,seek_u8_u8_step1.asm
+unsigned,move toward target,"u16 x,u8 y target; Q8.8 speed",MATH_SEEK16_INIT,seek_u16_u8_init,$5E48,exact Bresenham/DDA move setup; C=1 if already on target,seek_u16_u8_init.asm
+unsigned,move toward target,"u16 x,u8 y per slot",MATH_SEEK16_STEP,seek_u16_u8_step,$5E4B,one frame at Q8.8 speed; C=1 on arrival,seek_u16_u8_step.asm
+unsigned,move toward target,"u16 x,u8 y per slot",MATH_SEEK16_STEP_INT,seek_u16_u8_step_int,$5E4E,one frame at integer speed; C=1 on arrival,seek_u16_u8_step_int.asm
+unsigned,move toward target,"u16 x,u8 y per slot",MATH_SEEK16_STEP1,seek_u16_u8_step1,$5E51,one frame at 1 px/frame (NMOS DCP); C=1 on arrival,seek_u16_u8_step1.asm

@@ -39,7 +39,7 @@ for p in pub.PROFILES:
   ok(f'{p}:{r["legacy_api"]}: executable bytes',same and count>0,f'{count} assembled and annotated instructions')
 # stable public table mapping
 api=list(csv.DictReader((ROOT/'docs/PUBLIC_API_COMPLETE.csv').open()))
-ok('PUBLIC_API_COMPLETE stable count',len(api)==46,str(len(api)))
+ok('PUBLIC_API_COMPLETE stable count',len(api)==54,str(len(api)))
 for r in api: ok(f'public table {r["entry"]}',r['canonical_name']==pub.CANONICAL[r['entry']])
 # No measured value was changed in tables that existed in incoming refresh overlay: only canonical_name may be added.
 BASE=Path('/mnt/data/c64audit/base')

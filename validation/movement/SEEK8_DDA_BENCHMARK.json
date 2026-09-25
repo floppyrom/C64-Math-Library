@@ -13,20 +13,20 @@
   "screen": "x 0..255, y 0..199"
  },
  "source": "routines/movement/seek_u8_u8_dda.asm",
- "source_sha256": "e40fb51e15442d0203a3f519c85c62954b1ae971764bb7c15472b8762b368cc7",
+ "source_sha256": "4a94cb656a5893183cee9416828e5e97d3f5118d6799d2678d7983d22299f6f0",
  "dda": {
-  "code_bytes": 642,
+  "code_bytes": 582,
   "table_bytes": 32,
   "state_bytes_per_slot": 20,
-  "io_bytes": 16,
-  "interleaved_slot_frames_checked": 103600,
+  "io_bytes": 24,
+  "interleaved_slot_frames_checked": 102376,
   "major_axis_speed": {
    "entry": "seek8_init + seek8_step",
    "cases": 2448,
    "init": {
-    "mean": 392.2013888888889,
-    "min": 134,
-    "max": 492
+    "mean": 329.96650326797385,
+    "min": 132,
+    "max": 423
    },
    "step": {
     "mean": 84.29211567476166,
@@ -34,9 +34,9 @@
     "max": 88
    },
    "total_per_move": {
-    "mean": 7763.732843137255,
-    "min": 134,
-    "max": 43391
+    "mean": 7701.49795751634,
+    "min": 132,
+    "max": 43416
    },
    "frames_per_move": {
     "mean": 87.45220588235294,
@@ -47,13 +47,40 @@
    "exact_arrival": true,
    "frame_position_mismatches": 0
   },
-  "major_axis_speed_integer_step": {
+  "euclidean_speed": {
+   "entry": "seek8_init (speed bit 15 set) + seek8_step",
+   "cases": 2448,
+   "init": {
+    "mean": 741.405637254902,
+    "min": 132,
+    "max": 876
+   },
+   "step": {
+    "mean": 83.9970912834764,
+    "min": 74,
+    "max": 88
+   },
+   "total_per_move": {
+    "mean": 8939.940359477125,
+    "min": 132,
+    "max": 54577
+   },
+   "frames_per_move": {
+    "mean": 97.60498366013071,
+    "min": 0,
+    "max": 640
+   },
+   "max_line_dev_px": 0.49998374168793364,
+   "exact_arrival": true,
+   "frame_position_mismatches": 0
+  },
+  "integer_speed": {
    "entry": "seek8_init + seek8_step_int",
    "cases": 1632,
    "init": {
-    "mean": 405.78063725490193,
-    "min": 134,
-    "max": 492
+    "mean": 304.01286764705884,
+    "min": 132,
+    "max": 366
    },
    "step": {
     "mean": 67.99276964954066,
@@ -61,9 +88,9 @@
     "max": 71
    },
    "total_per_move": {
-    "mean": 4324.030637254902,
-    "min": 134,
-    "max": 18165
+    "mean": 4222.262867647059,
+    "min": 132,
+    "max": 18079
    },
    "frames_per_move": {
     "mean": 57.627450980392155,
@@ -78,9 +105,9 @@
    "entry": "seek8_init + seek8_step1",
    "cases": 408,
    "init": {
-    "mean": 374.5514705882353,
-    "min": 134,
-    "max": 417
+    "mean": 272.87745098039215,
+    "min": 132,
+    "max": 291
    },
    "step": {
     "mean": 62.9539590747331,
@@ -88,41 +115,14 @@
     "max": 66
    },
    "total_per_move": {
-    "mean": 7311.830882352941,
-    "min": 134,
-    "max": 16888
+    "mean": 7210.156862745098,
+    "min": 132,
+    "max": 16802
    },
    "frames_per_move": {
     "mean": 110.19607843137256,
     "min": 0,
     "max": 255
-   },
-   "max_line_dev_px": 0.49998374168793364,
-   "exact_arrival": true,
-   "frame_position_mismatches": 0
-  },
-  "euclidean_speed": {
-   "entry": "seek8_init_euclid + seek8_step",
-   "cases": 2448,
-   "init": {
-    "mean": 713.125408496732,
-    "min": 134,
-    "max": 852
-   },
-   "step": {
-    "mean": 83.9970912834764,
-    "min": 74,
-    "max": 88
-   },
-   "total_per_move": {
-    "mean": 8911.660130718954,
-    "min": 134,
-    "max": 54534
-   },
-   "frames_per_move": {
-    "mean": 97.60498366013071,
-    "min": 0,
-    "max": 640
    },
    "max_line_dev_px": 0.49998374168793364,
    "exact_arrival": true,

@@ -18,6 +18,17 @@ NORMALIZE_END_OLD={
 # Canonical native include owns these code islands. Emit their reference bytes
 # as provenance, then let the include assemble them at the selected REG_LOW map.
 NORMALIZE_CODE_RANGES={p:(((0x1200,0x13ff),(0x1720,0x17ff),(0x1b00,0x1bff)) if p in REU else ((0x1500,0x18ff),)) for p in PROFILES}
+# Canonical seek movement kernels (MATH_SEEK8_*/MATH_SEEK16_*). The native
+# include owns its JMP slots and code islands; like the refresh modules it is
+# re-applied after the generated body, so reference bytes at those addresses
+# are only provenance and are not decoded as stable main code.
+SEEK_NATIVE_REL={p:f'../../{p}/resident/movement/native/seek_dda.asm' for p in PROFILES}
+def seek_code_addresses(profile):
+ from mini6502 import Assembler
+ cfg=(ROOT/'relocatable_source'/profile/'math_config_reference.inc').read_text()
+ src=(ROOT/profile/'resident/movement/native/seek_dda.asm').read_text()
+ mem,_,_=Assembler().assemble(cfg+'\n'+src)
+ return set(mem)
 NORMALIZE_NATIVE_REL={
  p:f'../../{p}/resident/vector/native/vec2_normalize_q8_8.asm'
  for p in PROFILES
@@ -357,7 +368,8 @@ def generate_source(profile,outpath:Path):
  raw,tm=load_reference(profile);seen=trace(profile,tm)
  b=PRG[profile].read_bytes();prg_load=b[0]|b[1]<<8;prg_end=prg_load+len(b)-3
  norm_ranges=NORMALIZE_CODE_RANGES[profile]
- main_seen={pc for pc in seen if pc>=0x100 and not any(ns<=pc<=ne for ns,ne in norm_ranges) and not in_multiply_refresh(profile,pc) and not in_division_refresh(profile,pc)}
+ seek_bytes=seek_code_addresses(profile)
+ main_seen={pc for pc in seen if pc>=0x100 and pc not in seek_bytes and not any(ns<=pc<=ne for ns,ne in norm_ranges) and not in_multiply_refresh(profile,pc) and not in_division_refresh(profile,pc)}
  # Turbo32's 135-ZP overlay calls two ordinary-RAM helper blocks that are not
  # reachable while the normal ZP image is installed. Decode them explicitly so
  # relocation rewrites their ZP and REG_LOW references symbolically rather than
@@ -379,7 +391,7 @@ def generate_source(profile,outpath:Path):
   if mode=='rel':
    d=raw[pc+1];d=d-256 if d>=128 else d;btargets.add((pc+2+d)&0xffff)
  lines=[
-  '; GENERATED CANONICAL SOURCE. Builds the stable 46-entry API from symbolic assembly source.',
+  '; GENERATED CANONICAL SOURCE. Builds the stable 54-entry API from symbolic assembly source.',
   '; The fixed FINAL PRG is provenance/reference only. This file is the relocatable build input.',
   '; Compatible with the included source assembler; syntax is intentionally ACME-style.',
   '!cpu 6510','!source "math_config.inc"',''
@@ -440,6 +452,9 @@ def generate_source(profile,outpath:Path):
   lines += ['', '; BEGIN DIVISION REFRESH 2026-09-20']
   lines += [f'!source "{name}"' for name in DIVISION_REFRESH_INCLUDES[profile]]
   lines += ['; END DIVISION REFRESH 2026-09-20']
+ lines += ['', '; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,',
+           '; code islands and object state (final ownership of those bytes).',
+           f'!source "{SEEK_NATIVE_REL[profile]}"']
  # The native include also serves standalone consumers. Re-apply its generated
  # tables last so raw provenance bytes emitted later in the monolith cannot
  # override a future table regeneration.

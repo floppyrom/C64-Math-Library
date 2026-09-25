@@ -1,16 +1,16 @@
 # `MATH_VEC2_NORMALIZE_Q8_8`
 
-`MATH_VEC2_NORMALIZE_Q8_8` is the 46th stable C64 Math Library entry. It normalizes an arbitrary signed two-dimensional Q8.8 vector and returns a signed Q1.15 unit direction.
+`MATH_VEC2_NORMALIZE_Q8_8` is the 46th stable C64 Math Library entry (the seek movement entries 47–54 followed it). It normalizes an arbitrary signed two-dimensional Q8.8 vector and returns a signed Q1.15 unit direction.
 
 ## Moving an object toward a target? Use `seek` instead
 
-To move an object to a target pixel at a given speed, use the exact
-Bresenham/DDA steppers in [`routines/movement/`](../routines/movement/README.md).
-With 8-bit coordinates, setup is 6-12x cheaper than normalize + scale + arrival
-bookkeeping, and the whole move is 1.4-2x cheaper. With 16-bit x, setup is 4.6x
-cheaper. Both stay within 0.5 px of the line and land exactly on the target.
-The normalize pipeline drifts up to 3.6 px and misses by up to 4 px. The seek
-code and table take 674-754 bytes; the normalizer alone takes 3,441. Keep this routine for real direction vectors:
+To move an object to a target pixel at a given speed, use `MATH_SEEK8_*` or
+`MATH_SEEK16_*`, the exact Bresenham/DDA steppers ([`SEEK_DDA.md`](SEEK_DDA.md)).
+With 8-bit coordinates, setup is 6–16x cheaper than normalize + scale + arrival
+bookkeeping, and the whole move is 1.4–2x cheaper. Both families stay within
+0.5 px of the line and land exactly on the target. The normalize pipeline drifts
+up to 3.6 px and misses by up to 4 px. Both seek families together take 1,288
+code bytes; the normalizer alone takes 3,441. Keep this routine for real direction vectors:
 thrust, reflections, physics, lighting.
 
 **Input range.** The Q8.8 label does not limit the usable range to +/-128.
@@ -165,6 +165,6 @@ The principal files are:
 - `tools/normalize_model.py`
 - `tools/validate_normalize_optimized.py`
 
-The common source validator executes the normalizer as part of the 46-entry suite. A complete profile validation now executes **4,589 machine calls** per map.
+The common source validator executes the normalizer as part of the stable-entry suite (54 entries and 21,422 machine calls per map since the seek entries were added).
 
 `V2_FULL_DOMAIN_PRECISION_CERTIFICATE.json` and the older `certification/` artifacts are historical evidence for the superseded reciprocal backends. Active stock builds use the logarithmic-ratio certificate above.

@@ -526,6 +526,12 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
     v5_tables = v5_norm.with_name('vec2_normalize_tables.asm')
     if v1_norm.with_name('vec2_normalize_tables.asm').read_bytes() != v5_tables.read_bytes():
         raise RuntimeError('V5 normalize tables drifted from inherited V1 backend')
+    # Likewise V5 inherits the V1 seek kernels (MATH_SEEK8_*/MATH_SEEK16_*).
+    # The V5 copy differs from V1 only in its one-line profile banner.
+    v1_seek = ROOT/'v1_balanced/resident/movement/native/seek_dda.asm'
+    v5_seek = ROOT/'v5_hybrid_lowzp/resident/movement/native/seek_dda.asm'
+    if v1_seek.read_text().replace('for v1_balanced.', 'for v5_hybrid_lowzp (identical to V1).') != v5_seek.read_text():
+        raise RuntimeError('V5 seek native source drifted from inherited V1 backend')
     vals = asm.parse_config(config)
     if 'HYBRID_CODE' not in vals:
         raise ValueError('hybrid config is missing HYBRID_CODE')
@@ -598,7 +604,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         prg = outdir / 'math_v5_hybrid_lowzp_game_math.prg'
         write_prg(dst, lo, new_hi, prg)
 
-        # Reuse the stable 46-entry caller include generated from the same map.
+        # Reuse the stable 54-entry caller include generated from the same map.
         inc_src = v1out / 'math_api.inc'
         inc = outdir / 'math_api.inc'
         inc_text = inc_src.read_text().rstrip() + '\n'
@@ -634,7 +640,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'MATH_URECIP16_Q16',
             ],
             'notes': [
-                'All 46 stable API addresses and semantics remain V1-compatible.',
+                'All 54 stable API addresses and semantics remain V1-compatible.',
                 'MATH_INIT remains optional exactly as in V1.',
                 'The imported certified V2 kernels use only the existing V1 normal ZP window.',
                 'Fast ATAN2, when enabled, adds no ZP and occupies four formerly empty V1 table pages (1024 bytes).',
@@ -649,6 +655,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'v2_source_sha256': hashlib.sha256((ROOT/'relocatable_source/v2_pareto_fast/math_relocatable.asm').read_bytes()).hexdigest(),
                 'normalize_native_sha256': hashlib.sha256(v5_norm.read_bytes()).hexdigest(),
                 'normalize_tables_sha256': hashlib.sha256(v5_tables.read_bytes()).hexdigest(),
+                'seek_native_sha256': hashlib.sha256(v5_seek.read_bytes()).hexdigest(),
                 'builder_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             },
         }

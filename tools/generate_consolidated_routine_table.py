@@ -147,6 +147,15 @@ def cycles_catalog():
     norm=json.loads((ROOT/'validation/normalize/NORMALIZE_PROFILE_PARITY_107396.json').read_text())
     for row in norm['profiles']:
         v=row['reference']; add_cycle(cat,row['profile'],'MATH_VEC2_NORMALIZE_Q8_8',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-21 normalize profile-parity deterministic corpus','Q8.8 -> Q1.15; certified <=0.3621 deg / <=202 LSB; quadrant-specific paths')
+    # Seek movement kernels: every shipped profile measured directly (incl. V5).
+    sk=json.loads((ROOT/'validation/movement/SEEK_PROFILE_BENCHMARK.json').read_text())
+    for p,rr in sk['profiles'].items():
+        for n,v in rr.items():
+            note=''
+            if n.endswith('_INIT'):
+                note=(f"major-axis speed {v['major_axis_speed']['mean_cycles']:.2f}, Euclidean {v['euclidean_speed']['mean_cycles']:.2f}, "
+                      f"integer {v['integer_speed']['mean_cycles']:.2f}, 1 px/frame {v['one_pixel']['mean_cycles']:.2f}")
+            add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified)',note)
     # V5 is V1 plus documented V2 imports; current signed/changed rows above override these inheritance rows.
     for n in API:
         if n in cat['v5_hybrid_lowzp']: continue
@@ -172,6 +181,13 @@ def provenance(profile,n):
     if n=='MATH_VEC2_NORMALIZE_Q8_8':
         return ('quadrant-specific paths; existing REU ratio-index lookup' if profile in ('v3_reu_512k','v4_reu_16m') else
                 'quadrant-specific paths; certified logarithmic ratio tables')
+    if n.startswith('MATH_SEEK'):
+        scratch='V1_SCRATCH RAM' if profile in ('v1_balanced','v5_hybrid_lowzp') else 'game-scratch ZP'
+        if n.endswith('_INIT'):
+            return f'exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in {scratch}'
+        if n.endswith('STEP1'):
+            return 'NMOS DCP distance countdown; X-indexed per-slot state; exact arrival'
+        return 'X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival'
     if n=='MATH_ATAN2_8':
         if profile=='v1_balanced':
             return 'compact_opt signed-log kernel; two table pages; exact parity with prior compact outputs'

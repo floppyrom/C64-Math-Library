@@ -70,6 +70,23 @@ The five fixed profiles use different memory/ZP trade-offs, so the fastest numbe
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 85.570038 | 85.070038 | 85.070038 | 92.085602 |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 160.150080 | 156.661198 | 156.661198 | 160.150080 |
 
+### Movement (seek)
+
+Exact Bresenham/DDA "move toward target" steppers ([`docs/SEEK_DDA.md`](docs/SEEK_DDA.md)). `*_INIT` is once per move; `*_STEP*` is once per object per frame. Every frame of every benchmark move is verified against the Bresenham model.
+
+| Routine | Typed name | V1 | V2 | V3 | V4 | V5 |
+|---|---|---:|---:|---:|---:|---:|
+| `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 601.746936 | 543.965482 | 544.686887 | 544.686887 | 601.746936 |
+| `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 87.136511 | 87.136511 | 87.136511 | 87.136511 |
+| `MATH_SEEK8_STEP_INT` | `seek_u8_u8_step_int` | 70.992770 | 70.992770 | 70.992770 | 70.992770 | 70.992770 |
+| `MATH_SEEK8_STEP1` | `seek_u8_u8_step1` | 65.953959 | 65.953959 | 65.953959 | 65.953959 | 65.953959 |
+| `MATH_SEEK16_INIT` | `seek_u16_u8_init` | 783.201389 | 702.713848 | 701.543505 | 701.543505 | 783.201389 |
+| `MATH_SEEK16_STEP` | `seek_u16_u8_step` | 118.277360 | 118.688882 | 118.277360 | 118.277360 | 118.277360 |
+| `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 103.654782 | 103.654782 | 103.654782 | 103.654782 |
+| `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 98.183384 | 98.183384 | 98.183384 | 98.183384 |
+
+`*_INIT` means mix major-axis and Euclidean speeds. By speed mode, V2 cost is: SEEK8 336.5 major-axis, 310.6 integer, 279.4 at 1 px/frame, 751.4 Euclidean; SEEK16 479.6 / 458.1 / 382.7 / 925.8. V1/V5 run init about 10% slower because their init scratch is RAM (V1 low-ZP contract).
+
 ## Source-backed standalone / Pareto alternatives
 
 These are independently useful kernels or record/Pareto points. They are **not all benchmarked on the same corpus as the shipped public API**, so compare means only when the basis is compatible. Every number in this table has a public source file and evidence path in this repository.

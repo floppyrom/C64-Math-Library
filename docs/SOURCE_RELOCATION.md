@@ -2,7 +2,7 @@
 
 ## Contract
 
-For V1–V4, the stable 46-entry API is built from `relocatable_source/<profile>/math_relocatable.asm`; `math_config.inc` supplies the selected map at assembly time. V5 is built by `tools/build_hybrid.py`, which source-builds V1 and V2 and deterministically relocates the certified donor kernels into a single V1-based image. The **Custom Pareto Builder** extends that same source-derived approach: `tools/build_pareto.py` selects certified compatible V1/V2 packs from a ZP/RAM/workload budget and links one generated image. The shipped reference PRGs are reproducibility/provenance outputs, not donor inputs. Selection and relocation happen at build time; there is no runtime profile dispatcher.
+For V1–V4, the stable 54-entry API is built from `relocatable_source/<profile>/math_relocatable.asm`; `math_config.inc` supplies the selected map at assembly time. V5 is built by `tools/build_hybrid.py`, which source-builds V1 and V2 and deterministically relocates the certified donor kernels into a single V1-based image. The **Custom Pareto Builder** extends that same source-derived approach: `tools/build_pareto.py` selects certified compatible V1/V2 packs from a ZP/RAM/workload budget and links one generated image. The shipped reference PRGs are reproducibility/provenance outputs, not donor inputs. Selection and relocation happen at build time; there is no runtime profile dispatcher.
 
 ### Configurable C64 symbols
 
@@ -11,7 +11,7 @@ For V1–V4, the stable 46-entry API is built from `relocatable_source/<profile>
 | `REG_LOW` | low resident region | `$1000` | `$9000` |
 | `REG_API` | integer API/core region | `$3000` | `$B000` |
 | `REG_KERNEL` | resident kernel region | `$4000` | `$2000` |
-| `REG_GAME_API` | independent 57-byte game API JMP block | `$5E00` | `$7C00` |
+| `REG_GAME_API` | independent 84-byte game API JMP block (28 slots) | `$5E00` | `$7C00` |
 | `REG_TABLE` | C64 table region | `$6000` | `$4000` |
 | `REG_GAME` | game-math code/data region | `$C100` | `$8000` |
 | `MATH_IO` | 32-byte public operand/result block | `$C000` | `$C800` |
@@ -42,7 +42,7 @@ Before assembly, the build rejects:
 - V5 `HYBRID_CODE` misalignment, 16-bit overflow, `$D000-$DFFF` overlap, or collision with selected resident/table/API/kernel regions;
 - custom-Pareto `PARETO_AUX` overflow/I/O/collision, selected-pack ZP overflow, and overlap between the V1 base ZP, multiplier islands and native SMUL16 executable-ZP range.
 
-`REG_GAME_API` is deliberately not page-alignment constrained; it is a 57-byte JMP block and may move independently.
+`REG_GAME_API` is deliberately not page-alignment constrained; it is an 84-byte JMP block (`+$0000..+$0053`) and may move independently. The seek kernels also place code islands later in the same claimed `$5E00-$5FFF` interval.
 
 ## Proof
 

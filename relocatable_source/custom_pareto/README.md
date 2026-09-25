@@ -8,7 +8,7 @@ For interactive use:
 python3 tools/pareto_wizard.py
 ```
 
-The generated build retains the common 46-entry API. `selection_manifest.json` records every selected pack, exact ZP ranges, exact private RAM bytes/ranges, whether `MATH_INIT` is mandatory, public addresses and the resulting binary hash.
+The generated build retains the common 54-entry API. `selection_manifest.json` records every selected pack, exact ZP ranges, exact private RAM bytes/ranges, whether `MATH_INIT` is mandatory, public addresses and the resulting binary hash.
 
 Reference custom-Pareto private regions use RAM under BASIC ROM (`HYBRID_CODE=$A000`, `PARETO_AUX=$B200`). Bank BASIC out while selected private code/data are accessed, or relocate these symbols in a custom map.
 

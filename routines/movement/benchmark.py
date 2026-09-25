@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
-"""Validate seek_u16_u8_dda.asm and benchmark it against the normalize pipeline.
+"""Validate the standalone seek kernels and benchmark them against normalize.
 
-The DDA source runs in its own image. The baseline runs on the V1 reference
+`--variant u8` runs seek_u8_u8_dda.asm on a 256x200 screen, `--variant u16`
+(default) runs seek_u16_u8_dda.asm on a 320x200 screen. Each DDA source runs in
+its own image; every frame of every move is checked against the Bresenham model. The baseline runs on the V1 reference
 PRG (build it first with `make reference`), calling the shipped
 MATH_VEC2_NORMALIZE_Q8_8, MATH_SMUL16_SHR8, MATH_SMUL16, MATH_ISQRT32 and
 MATH_UDIV16_SHL8 entries. Cycle counts exclude the caller's JSR, as elsewhere
@@ -23,7 +25,7 @@ ROOT = HERE.parents[1]
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(ROOT / 'tools'))
 from mini6502 import Assembler  # noqa: E402
-from seek_model import Seek, Seek8, bresenham, expected_frames, NSLOT  # noqa: E402
+from seek_model import Seek, expected_frames, NSLOT, EUCLID  # noqa: E402
 
 SPEEDS = (0x0080, 0x0100, 0x0180, 0x0200, 0x0300, 0x0400)  # Q8.8 px/frame
 
@@ -45,17 +47,18 @@ def line_dev(x0, y0, x1, y1, px, py):
     return 0.0 if h == 0 else abs(dy * (px - x0) - dx * (py - y0)) / h
 
 
-def run_dda(cases, euclid=False, integer=False, cls=Seek):
-    s = cls()
+def run_dda(width, cases, stepper='step', flag=0):
+    s = Seek(width)
     inits, steps, totals, frames_list = [], [], [], []
     maxdev = 0.0
     errors = 0
     for i, ((x0, y0, x1, y1), sp) in enumerate(cases):
+        sp |= flag
         slot = i % NSLOT
-        cyc, c = s.init(slot, x0, y0, x1, y1, sp, euclid)
+        cyc, c = s.init(slot, x0, y0, x1, y1, sp)
         inits.append(cyc)
         total = cyc
-        exp = expected_frames(x0, y0, x1, y1, sp, euclid, integer)
+        exp = expected_frames(x0, y0, x1, y1, sp, stepper)
         if not exp:
             errors += int(c != 1 or s.pos(slot) != (x1, y1))
             totals.append(total)
@@ -63,7 +66,7 @@ def run_dda(cases, euclid=False, integer=False, cls=Seek):
             continue
         errors += int(c != 0)
         for pos, arrived in exp:
-            cyc, c = s.step(slot, integer)
+            cyc, c = s.step(slot, stepper)
             steps.append(cyc)
             total += cyc
             errors += int(s.pos(slot) != pos or c != arrived)
@@ -71,24 +74,23 @@ def run_dda(cases, euclid=False, integer=False, cls=Seek):
         totals.append(total)
         frames_list.append(len(exp))
         errors += int(s.pos(slot) != (x1, y1))
-    return dict(code_bytes=s.code_bytes, state_bytes_per_slot=32,
-                io_bytes=16, init=inits, step=steps, total=totals,
+    return dict(code_bytes=s.code_bytes, init=inits, step=steps, total=totals,
                 frames=frames_list, max_line_dev_px=maxdev, errors=errors)
 
 
-def run_interleaved(rounds: int = 60, seed: int = 0x5EE, cls=Seek, width: int = 320):
+def run_interleaved(width, rounds: int = 60, seed: int = 0x5EE):
     """Eight slots moving at once, stepped round-robin every frame."""
-    s = cls()
+    s = Seek(width)
     r = random.Random(seed)
+    xw = 256 if width == 8 else 320
     checked = 0
     for _ in range(rounds):
-        euclid = r.random() < 0.5
         jobs = []
         for slot in range(NSLOT):
-            m = (r.randrange(width), r.randrange(200), r.randrange(width), r.randrange(200))
-            sp = r.randrange(0x40, 0x500)
-            _, c = s.init(slot, *m, sp, euclid)
-            exp = expected_frames(*m, sp, euclid)
+            m = (r.randrange(xw), r.randrange(200), r.randrange(xw), r.randrange(200))
+            sp = r.randrange(0x40, 0x500) | (EUCLID if r.random() < 0.5 else 0)
+            _, c = s.init(slot, *m, sp)
+            exp = expected_frames(*m, sp)
             assert c == (not exp)
             jobs.append((slot, m, exp))
         for f in range(max(len(e) for _, _, e in jobs) + 2):
@@ -209,33 +211,34 @@ def dda_summary(d, entry, cases):
                 frame_position_mismatches=d['errors'])
 
 
-def main_u8(args):
-    """seek_u8_u8_dda on a 256x200 screen vs the normalize pipeline (8-bit-x steps)."""
-    cases = corpus(args.moves, width=256)
+def run(width, moves):
+    cases = corpus(moves, width=256 if width == 8 else 320)
     int_cases = [c for c in cases if c[1] & 0xFF == 0]
     one_cases = [c for c in cases if c[1] == 0x0100]
+    p = 'seek8' if width == 8 else 'seek16'
     dda = {}
-    for name, entry, euclid, integer, cs in (
-            ('major_axis_speed', 'seek8_init + seek8_step', False, False, cases),
-            ('major_axis_speed_integer_step', 'seek8_init + seek8_step_int', False, True, int_cases),
-            ('one_pixel_per_frame', 'seek8_init + seek8_step1', False, 'one', one_cases),
-            ('euclidean_speed', 'seek8_init_euclid + seek8_step', True, False, cases)):
-        d = run_dda(cs, euclid, integer, cls=Seek8)
+    for name, entry, stepper, flag, cs in (
+            ('major_axis_speed', f'{p}_init + {p}_step', 'step', 0, cases),
+            ('euclidean_speed', f'{p}_init (speed bit 15 set) + {p}_step', 'step', EUCLID, cases),
+            ('integer_speed', f'{p}_init + {p}_step_int', 'int', 0, int_cases),
+            ('one_pixel_per_frame', f'{p}_init + {p}_step1', 'one', 0, one_cases)):
+        d = run_dda(width, cs, stepper, flag)
         assert d['errors'] == 0, (name, d['errors'])
         dda[name] = dda_summary(d, entry, cs)
-    interleaved = run_interleaved(cls=Seek8, width=256)
-    b = run_baseline(cases, x8=True)
-    b1 = run_baseline(one_cases, x8=True)
-    src = HERE / 'seek_u8_u8_dda.asm'
+    interleaved = run_interleaved(width)
+    b = run_baseline(cases, x8=(width == 8))
+    b1 = run_baseline(one_cases, x8=(width == 8))
+    src = HERE / ('seek_u8_u8_dda.asm' if width == 8 else 'seek_u16_u8_dda.asm')
     return {
-        'corpus': dict(moves=args.moves + 8, speeds_q8_8=[f'${s:04X}' for s in SPEEDS],
-                       cases=len(cases), screen='x 0..255, y 0..199'),
-        'source': 'routines/movement/seek_u8_u8_dda.asm',
+        'corpus': dict(moves=moves + 8, speeds_q8_8=[f'${s:04X}' for s in SPEEDS], cases=len(cases),
+                       screen='x 0..255, y 0..199' if width == 8 else 'x 0..319, y 0..199'),
+        'source': f'routines/movement/{src.name}',
         'source_sha256': hashlib.sha256(src.read_bytes()).hexdigest(),
-        'dda': dict(code_bytes=d['code_bytes'], table_bytes=32, state_bytes_per_slot=20,
-                    io_bytes=16, interleaved_slot_frames_checked=interleaved, **dda),
-        'baseline_v1_normalize_8bit_x': baseline_summary(b),
-        'baseline_v1_normalize_8bit_x_speed_1': baseline_summary(b1),
+        'dda': dict(code_bytes=d['code_bytes'], table_bytes=32,
+                    state_bytes_per_slot=20 if width == 8 else 31, io_bytes=24,
+                    interleaved_slot_frames_checked=interleaved, **dda),
+        'baseline_v1_normalize' + ('_8bit_x' if width == 8 else ''): baseline_summary(b),
+        'baseline_v1_normalize' + ('_8bit_x' if width == 8 else '') + '_speed_1': baseline_summary(b1),
     }
 
 
@@ -245,43 +248,11 @@ def main():
     ap.add_argument('--variant', choices=('u16', 'u8'), default='u16')
     ap.add_argument('--out', type=Path)
     args = ap.parse_args()
-    if args.variant == 'u8':
-        res = main_u8(args)
-        out = args.out or ROOT / 'validation/movement/SEEK8_DDA_BENCHMARK.json'
-        out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(json.dumps(res, indent=1) + '\n', encoding='utf-8')
-        print(json.dumps(res, indent=1))
-        return
-    args.out = args.out or ROOT / 'validation/movement/SEEK_DDA_BENCHMARK.json'
-    cases = corpus(args.moves)
-    dda = {}
-    int_cases = [c for c in cases if c[1] & 0xFF == 0]
-    for name, euclid, integer, cs in (('major_axis_speed', False, False, cases),
-                                      ('major_axis_speed_integer_step', False, True, int_cases),
-                                      ('euclidean_speed', True, False, cases)):
-        d = run_dda(cs, euclid, integer)
-        assert d['errors'] == 0, (name, d['errors'])
-        dda[name] = dict(entry=('seek_init_euclid' if euclid else 'seek_init') + ' + ' +
-                         ('seek_step_int' if integer else 'seek_step'), cases=len(cs),
-                         init=summary(d['init']), step=summary(d['step']),
-                         total_per_move=summary(d['total']),
-                         frames_per_move=summary(d['frames']),
-                         max_line_dev_px=d['max_line_dev_px'], exact_arrival=True,
-                         frame_position_mismatches=d['errors'])
-    interleaved = run_interleaved()
-    b = run_baseline(cases)
-    res = {
-        'corpus': dict(moves=args.moves + 8, speeds_q8_8=[f'${s:04X}' for s in SPEEDS],
-                       cases=len(cases), screen='x 0..319, y 0..199'),
-        'source': 'routines/movement/seek_u16_u8_dda.asm',
-        'source_sha256': hashlib.sha256((HERE / 'seek_u16_u8_dda.asm').read_bytes()).hexdigest(),
-        'dda': dict(code_bytes=d['code_bytes'], table_bytes=32,
-                    state_bytes_per_slot=d['state_bytes_per_slot'], io_bytes=d['io_bytes'],
-                    interleaved_slot_frames_checked=interleaved, **dda),
-        'baseline_v1_normalize': baseline_summary(b),
-    }
-    args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(res, indent=1) + '\n', encoding='utf-8')
+    width = 8 if args.variant == 'u8' else 16
+    res = run(width, args.moves)
+    out = args.out or ROOT / 'validation/movement' / ('SEEK8_DDA_BENCHMARK.json' if width == 8 else 'SEEK_DDA_BENCHMARK.json')
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(res, indent=1) + '\n', encoding='utf-8')
     print(json.dumps(res, indent=1))
 
 

@@ -1,3 +1,23 @@
+## 2026-09-25 — stable entries 47–54: seek movement (`MATH_SEEK8_*`, `MATH_SEEK16_*`)
+
+- Add eight stable API entries in every fixed profile and every generated Custom Pareto build, at `REG_GAME_API+$3C..+$51` (reference `$5E3C-$5E51`). `MATH_SEEK8_INIT/STEP/STEP_INT/STEP1` handle 8-bit x/y; `MATH_SEEK16_*` handle 16-bit x with 8-bit y. The API grows from 46 to **54 entries**; no existing address, output or timing changes.
+- Each family moves eight objects to a target pixel along the exact Bresenham line and lands exactly on it. Speed is Q8.8, along the major axis or (speed bit 15) along the path.
+- Per frame (every profile, public entry incl. JMP): SEEK8 **87.1 / 71.0 / 66.0** cycles for STEP / STEP_INT / STEP1; SEEK16 **118.3 / 103.7 / 98.2**. Init (V2–V4 / V1–V5): SEEK8 337 / 368 at a major-axis speed, 752 / 835 at a Euclidean speed; SEEK16 478 / 530.
+- Re-optimized kernels versus the 2026-09-25 standalone versions:
+  - SEEK8 init −15%, code 642 → 582 bytes;
+  - SEEK16 per frame −11%, init −25%;
+  - one 16-bit counter for speed fraction and distance in both families;
+  - Euclidean speed selected by a flag instead of a separate entry;
+  - `DCP`-based 1 px/frame steppers for both families;
+  - integer speeds skip the k0+1 precomputation.
+- One template (`tools/seek_kernel.py`) emits the five profile installs and both standalone sources (`tools/generate_seek_sources.py --check` in CI). The SEEK8 steppers sit inside one page in every profile. V1/V5 use `V1_SCRATCH` RAM for init scratch (31-byte ZP contract kept); V2–V4 use the game-scratch ZP. No new ZP, no REU use, no `MATH_INIT` dependency.
+- Placement:
+  - 1,288 code bytes (1,423 in V1/V5) plus 408 bytes of object state, in islands inside existing claimed regions;
+  - proven untouched by every other routine, `MATH_INIT`, Turbo overlays and REU DMA on both maps (`validation/movement/SEEK_PLACEMENT.json`);
+  - only seek-owned bytes changed in the images (`SEEK_BINARY_DELTA.json`); PRG spans and REU images are unchanged.
+- The common validator now checks every seek frame, interleaved with other library calls, in V1–V5 and all Pareto builds: 54/54 entries and 21,422 calls per map. The standalone mirrors add 40 files; `docs/SEEK_DDA.md` documents the API.
+- The standalone-mirror publisher emits NMOS unintended opcodes as annotated `!byte` lines, like `LAX`/`ANC`. The Makefile gets a `seek` target and an `ACME ?= acme` default; `make acme` works without setting `ACME`.
+
 ## 2026-09-25 — 8-bit seek DDA and unintended opcodes in the emulator
 
 - Add `routines/movement/seek_u8_u8_dda.asm` for 8-bit game coordinates (x, y 0..255), following Repose's point that screen coordinates are small. The error term, distance counter and positions are single bytes. The fraction accumulator and distance countdown share one 16-bit counter. Carries are pre-biased into the stored deltas, and the per-frame paths index only with X.

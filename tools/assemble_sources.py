@@ -230,6 +230,9 @@ def build(profile,config,outdir):
  if profile in REU:
   lines += [f'TURBO16_ZP_BASE          = {hx(vals["TURBO16_ZP_BASE"],2)}',f'TURBO32_ZP_BASE          = {hx(vals["TURBO32_ZP_BASE"],2)}',f'REU_TURBO16_BANK         = {hx(vals["REU_TURBO16_BANK"],2)}',f'REU_TURBO32_BANK         = {hx(vals["REU_TURBO32_BANK"],2)}']
  for n,off in [('MATH_X',0),('MATH_Y',4),('MATH_Z',8),('MATH_N',0x10),('MATH_D',0x14),('MATH_Q',0x18),('MATH_R',0x1c)]:lines.append(f'{n:<24} = {hx(vals["MATH_IO"]+off)}')
+ # Seek object state (per-slot position arrays, 8 slots each).
+ for n,c in (('MATH_SEEK8_POS_X','S8_POS_X'),('MATH_SEEK8_POS_Y','S8_POS_Y'),('MATH_SEEK16_POS_XL','S16_POS_XL'),('MATH_SEEK16_POS_XH','S16_POS_XH'),('MATH_SEEK16_POS_Y','S16_POS_Y')):
+  if c in const: lines.append(f'{n:<24} = {hx(const[c])}')
  lines += ['', '; Canonical typed aliases (source-facing names).', '; Legacy MATH_* names and addresses remain stable.']
  for r in manifest_rows:
   n=r['legacy_api']; c=r.get('canonical_name','')

@@ -58,7 +58,7 @@ def main():
     ap=argparse.ArgumentParser();ap.add_argument('--random-per-family',type=int,default=3000);ap.add_argument('--mixed',type=int,default=3000);a=ap.parse_args()
     t0=time.time(); out={'profile':PROFILE,'status':'PASS','tests':{}}
 
-    # Full 46-entry public validation on both maps.
+    # Full 54-entry public validation on both maps.
     for kind in ('reference','alternate'):
         r=common.validate(PROFILE,ROOT/'build_hybrid'/kind)
         out['tests'][f'common_{kind}']={'status':'PASS','public_entries':r['public_entries_executed'],'machine_calls':r['machine_calls']}

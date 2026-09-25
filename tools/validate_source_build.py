@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 from pathlib import Path
-import argparse,json,math,random,hashlib,sys,time
+import argparse,json,math,random,hashlib,re,sys,time
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU,REV
@@ -35,6 +35,58 @@ def cases(bits,seed,count=24):
  e=[x&m for x in e];r=random.Random(seed);return list(dict.fromkeys(e+[r.randrange(m+1) for _ in range(count)]))
 def pairs(bits,seed,count=32):
  a=cases(bits,seed,10);r=random.Random(seed^0xA5A5A5A5);return [(x,y) for x in a[:9] for y in a[:9]]+[(r.randrange(1<<bits),r.randrange(1<<bits)) for _ in range(count)]
+
+def seek_symbols(build_profile_dir):
+ out={}
+ for line in (Path(build_profile_dir)/'math_api.inc').read_text().splitlines():
+  m=re.match(r'\s*(MATH_SEEK\w+)\s*=\s*\$([0-9A-Fa-f]+)',line)
+  if m:out[m.group(1)]=int(m.group(2),16)
+ return out
+
+def seek_cases():
+ r=random.Random(0x5EEC)
+ base=[(10,10,10,10,0x100),(0,0,255,0,0x100),(255,199,0,0,0x100),(0,0,199,199,0x180),(40,50,41,52,0x080),
+       (200,10,20,190,0x8100),(5,190,250,5,0x8280),(128,100,0,100,0x0300),(0,0,255,255,0x7E80),(90,90,91,90,0x0040)]
+ moves=base+[(r.randrange(256),r.randrange(200),r.randrange(256),r.randrange(200),r.choice((0x080,0x100,0x180,0x200,0x8100,0x8180,0x0340))) for _ in range(6)]
+ wide=[(0,0,319,199,0x100),(319,5,0,190,0x8180),(300,100,40,100,0x0200),(1000,20,1300,21,0x0280),(60000,0,59000,255,0x0300),(7,7,7,7,0x100)]
+ wide+=[(r.randrange(320),r.randrange(200),r.randrange(320),r.randrange(200),r.choice((0x080,0x100,0x180,0x8100,0x8200))) for _ in range(4)]
+ return moves,wide
+
+def validate_seek(c,P,I,build_profile_dir,call):
+ sys.path.insert(0,str(ROOT/'routines/movement'))
+ from seek_model import expected_frames
+ S=seek_symbols(build_profile_dir);X=I;Y=I+4;N=I+0x10;rng=random.Random(0x5EE1);frames=0;moves=0
+ def interleave():
+  wr(c,X,rng.randrange(65536),2);wr(c,Y,rng.randrange(65536),2);call('MATH_SMUL16')
+  wr(c,X,rng.randrange(65536),2);wr(c,Y,rng.randrange(65536),2);call('MATH_VEC2_NORMALIZE_Q8_8')
+  wr(c,N,rng.randrange(1<<32),4);call('MATH_ISQRT32')
+ m8,m16=seek_cases()
+ for width,moves_list in ((8,m8),(16,m16)):
+  for i,(x0,y0,x1,y1,sp) in enumerate(moves_list):
+   for stepper in ('step','int','one'):
+    s=sp
+    if stepper=='int':s=max(sp&0x7F00,0x100)  # integer major-axis speed
+    if stepper=='one':s=0x100
+    slot=(i*3+len(stepper))&7
+    if width==8:
+     c.mem[S['MATH_SEEK8_POS_X']+slot]=x0;c.mem[S['MATH_SEEK8_POS_Y']+slot]=y0
+    else:
+     c.mem[S['MATH_SEEK16_POS_XL']+slot]=x0&255;c.mem[S['MATH_SEEK16_POS_XH']+slot]=x0>>8;c.mem[S['MATH_SEEK16_POS_Y']+slot]=y0
+    def pos():
+     if width==8:return c.mem[S['MATH_SEEK8_POS_X']+slot],c.mem[S['MATH_SEEK8_POS_Y']+slot]
+     return c.mem[S['MATH_SEEK16_POS_XL']+slot]|c.mem[S['MATH_SEEK16_POS_XH']+slot]<<8,c.mem[S['MATH_SEEK16_POS_Y']+slot]
+    pre='MATH_SEEK8_' if width==8 else 'MATH_SEEK16_'
+    wr(c,X,x1,2);wr(c,Y,y1,1);wr(c,N,s,2);before=snap(c,I,0x20)
+    c.x=slot;call(pre+'INIT');exp=expected_frames(x0,y0,x1,y1,s,stepper)
+    assert c.x==slot and snap(c,I,0x20)==before,(pre,'init preserve',x0,y0,x1,y1,hex(s))
+    assert c.c==int(not exp),(pre,'init carry',x0,y0,x1,y1,hex(s),c.c)
+    name={'step':'STEP','int':'STEP_INT','one':'STEP1'}[stepper]
+    for f,(want,arr) in enumerate(exp+[((x1,y1),True)]):
+     if f%7==3:interleave()
+     c.x=slot;call(pre+name);frames+=1
+     assert c.x==slot and pos()==want and c.c==int(arr),(pre+name,x0,y0,x1,y1,hex(s),f,pos(),want,c.c)
+    moves+=1
+ return {'moves':moves,'step_calls':frames}
 
 def validate(profile,build):
  t=time.time();c,P,I,M,initcy=load(profile,build);X=I;Y=I+4;Z=I+8;N=I+0x10;D=I+0x14;Q=I+0x18;R=I+0x1c
@@ -142,6 +194,10 @@ def validate(profile,build):
    ce=max(abs(ox-ex),abs(oy-ey));assert ce<=202,(profile,'normalize component',sx,sy,ox,oy,ex,ey,ce)
    ae=abs((math.atan2(oy,ox)-math.atan2(sy,sx)+math.pi)%(2*math.pi)-math.pi)*180/math.pi
    assert ae<=0.3621+1e-12,(profile,'normalize angle',sx,sy,ae)
+ # Seek movement kernels: every frame on the exact Bresenham path, exact arrival,
+ # inputs and X preserved; other library calls are interleaved between frames to
+ # prove the persistent object state is private.
+ seek_detail=validate_seek(c,P,I,build/profile,call)
  # Every stable entry must have executed literally at its generated address.
  missing=[n for n,v in hits.items() if v==0];assert not missing,(profile,'unexecuted entries',missing)
  # REU transport must point at relocated C64-side buffer after MATH_INIT/normal calls restore lookup mode.
@@ -149,7 +205,7 @@ def validate(profile,build):
  if profile in REU:
   # Explicitly rerun MATH_INIT, then inspect programmed one-byte C64 address.
   c.call(unhx(M['math_init']),1_000_000);dest=c.mem[0xDF02]|c.mem[0xDF03]<<8;expected=unhx(M['reu_scratch'].split('-')[0]);assert dest==expected,(profile,'REU C64 destination',hex(dest),hex(expected));rp=Path(M['_resolved_reu_path']);reu_detail={'programmed_c64_destination':f'${dest:04X}','expected':f'${expected:04X}','reu_image_sha256':hashlib.sha256(rp.read_bytes()).hexdigest(),'reu_banks':M.get('reu_banks',{})}
- return {'profile':profile,'status':'PASS','math_init_cycles':initcy,'public_entries_executed':len(hits),'machine_calls':sum(hits.values()),'assertion_groups':checks,'entry_hits':hits,'reu_transport':reu_detail}
+ return {'profile':profile,'status':'PASS','seek':seek_detail,'math_init_cycles':initcy,'public_entries_executed':len(hits),'machine_calls':sum(hits.values()),'assertion_groups':checks,'entry_hits':hits,'reu_transport':reu_detail}
 
 def main():
  ap=argparse.ArgumentParser();ap.add_argument('profile',choices=PROFILES+['all']);ap.add_argument('--build',type=Path,default=ROOT/'build/alternate');ap.add_argument('--out',type=Path,default=ROOT/'validation/relocation');a=ap.parse_args();a.out.mkdir(parents=True,exist_ok=True);ps=PROFILES if a.profile=='all' else [a.profile];res=[]

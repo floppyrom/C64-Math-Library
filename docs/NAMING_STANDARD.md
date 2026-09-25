@@ -8,7 +8,7 @@ The library keeps the historical `MATH_*` ABI for compatibility, but the canonic
 - Division without a returned remainder: `div_<N>_<D>_<Q>`.
 - Division with a returned remainder: `div_<N>_<D>_<Q>_<R bits>`. For example, `div_u8_u8_u8_8` means unsigned 8-bit numerator, unsigned 8-bit divisor, unsigned 8-bit quotient, and 8-bit remainder.
 - Modulo-only entry points use `mod_<N>_<D>_<R>`. Legacy modulo aliases that also happen to return a quotient retain `mod_...` canonical aliases because the requested operation is modulo; their extra quotient is documented, not hidden.
-- Movement steppers use `seek_<x type><x bits>_<y type><y bits>_<method>`; for example `seek_u16_u8_dda` works on unsigned 16-bit x and unsigned 8-bit y coordinates.
+- Movement steppers use `seek_<x type><x bits>_<y type><y bits>_<operation>`: `seek_u8_u8_init`/`_step`/`_step_int`/`_step1` work on unsigned 8-bit x and y, `seek_u16_u8_*` on unsigned 16-bit x and unsigned 8-bit y. The standalone kernel sources carry the method suffix instead (`seek_u8_u8_dda.asm`).
 - `_ready`, `_shr8`, `_shr16`, and `_shl8` are explicit operational/precondition suffixes and do not replace the A/B/result geometry.
 
 `u` means unsigned and `s` means two’s-complement signed. Widths are decimal bit counts. The result type is explicit even where it is implied by the operands.
@@ -67,6 +67,14 @@ Every canonical name is an alias of the existing fixed-address `MATH_*` symbol i
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | `$5E33` | `dist_s8_s8_u8_fast.asm` |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | `$5E36` | `dist_s8_s8_u8_accurate.asm` |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | `$5E39` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm` |
+| `MATH_SEEK8_INIT` | `seek_u8_u8_init` | `$5E3C` | `seek_u8_u8_init.asm` |
+| `MATH_SEEK8_STEP` | `seek_u8_u8_step` | `$5E3F` | `seek_u8_u8_step.asm` |
+| `MATH_SEEK8_STEP_INT` | `seek_u8_u8_step_int` | `$5E42` | `seek_u8_u8_step_int.asm` |
+| `MATH_SEEK8_STEP1` | `seek_u8_u8_step1` | `$5E45` | `seek_u8_u8_step1.asm` |
+| `MATH_SEEK16_INIT` | `seek_u16_u8_init` | `$5E48` | `seek_u16_u8_init.asm` |
+| `MATH_SEEK16_STEP` | `seek_u16_u8_step` | `$5E4B` | `seek_u16_u8_step.asm` |
+| `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | `$5E4E` | `seek_u16_u8_step_int.asm` |
+| `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | `$5E51` | `seek_u16_u8_step1.asm` |
 
 The same mapping is machine-readable in `docs/PUBLIC_API_COMPLETE.csv`.
 

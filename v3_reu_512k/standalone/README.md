@@ -55,6 +55,14 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | `dist_s8_s8_u8_fast.asm` |  | 30 |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | `dist_s8_s8_u8_accurate.asm` |  | 31 |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm` |  | 389 |
+| `MATH_SEEK8_INIT` | `seek_u8_u8_init` | `seek_u8_u8_init.asm` |  | 197 |
+| `MATH_SEEK8_STEP` | `seek_u8_u8_step` | `seek_u8_u8_step.asm` |  | 69 |
+| `MATH_SEEK8_STEP_INT` | `seek_u8_u8_step_int` | `seek_u8_u8_step_int.asm` |  | 38 |
+| `MATH_SEEK8_STEP1` | `seek_u8_u8_step1` | `seek_u8_u8_step1.asm` |  | 36 |
+| `MATH_SEEK16_INIT` | `seek_u16_u8_init` | `seek_u16_u8_init.asm` |  | 244 |
+| `MATH_SEEK16_STEP` | `seek_u16_u8_step` | `seek_u16_u8_step.asm` |  | 109 |
+| `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | `seek_u16_u8_step_int.asm` |  | 59 |
+| `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | `seek_u16_u8_step1.asm` |  | 55 |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | `mul_u16_u16_u32_turbo_begin.asm` |  | 17 |
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | `mul_u16_u16_u32_turbo.asm` |  | 17 |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | `mul_u16_u16_u32_turbo_end.asm` |  | 30 |

@@ -1,6 +1,7 @@
 PYTHON ?= python3
+ACME ?= acme
 
-.PHONY: sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress normalize audit acme clean package-audit all
+.PHONY: sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress normalize seek audit acme clean package-audit all
 
 all: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
 
@@ -63,6 +64,12 @@ normalize: reference alternate hybrid
 	$(PYTHON) tools/benchmark_normalize_profile_parity.py
 	$(PYTHON) tools/validate_normalize_optimized.py
 	$(PYTHON) tools/certify_normalize_exact_ratio.py
+
+seek: reference alternate hybrid
+	$(PYTHON) tools/generate_seek_sources.py --check
+	$(PYTHON) tools/test_mini6502_illegal.py
+	$(PYTHON) tools/validate_seek_placement.py
+	$(PYTHON) tools/benchmark_seek_profiles.py
 
 pareto-config:
 	$(PYTHON) tools/test_pareto_config.py

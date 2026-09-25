@@ -1,0 +1,523 @@
+{
+ "status": "PASS",
+ "basis": "public entry (JMP slot) through RTS after MATH_INIT; caller JSR/input stores excluded; every frame checked against the Bresenham model",
+ "corpus": {
+  "moves": 408,
+  "screen_seek8": "256x200",
+  "screen_seek16": "320x200",
+  "speeds_q8_8": [
+   "$0080",
+   "$0100",
+   "$0180",
+   "$0200",
+   "$0300",
+   "$0400"
+  ],
+  "euclidean_flag": "same speeds with bit 15 set",
+  "integer_speeds": [
+   "$0100",
+   "$0200",
+   "$0300",
+   "$0400"
+  ]
+ },
+ "profiles": {
+  "v1_balanced": {
+   "MATH_SEEK8_INIT": {
+    "mean_cycles": 601.7469362745098,
+    "min_cycles": 147,
+    "max_cycles": 995,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 368.26756535947715,
+     "min_cycles": 147,
+     "max_cycles": 473,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 835.2263071895425,
+     "min_cycles": 147,
+     "max_cycles": 995,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 339.4779411764706,
+     "min_cycles": 147,
+     "max_cycles": 411,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 304.16911764705884,
+     "min_cycles": 147,
+     "max_cycles": 324,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK8_STEP": {
+    "mean_cycles": 87.13651052933645,
+    "min_cycles": 77,
+    "max_cycles": 91,
+    "cases": 453020
+   },
+   "MATH_SEEK8_STEP_INT": {
+    "mean_cycles": 70.99276964954066,
+    "min_cycles": 61,
+    "max_cycles": 74,
+    "cases": 94048
+   },
+   "MATH_SEEK8_STEP1": {
+    "mean_cycles": 65.95395907473309,
+    "min_cycles": 54,
+    "max_cycles": 69,
+    "cases": 44960
+   },
+   "MATH_SEEK16_INIT": {
+    "mean_cycles": 783.2013888888889,
+    "min_cycles": 202,
+    "max_cycles": 1305,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 529.9403594771242,
+     "min_cycles": 202,
+     "max_cycles": 683,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 1036.4624183006536,
+     "min_cycles": 202,
+     "max_cycles": 1305,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 506.77389705882354,
+     "min_cycles": 202,
+     "max_cycles": 683,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 420.12254901960785,
+     "min_cycles": 202,
+     "max_cycles": 458,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK16_STEP": {
+    "mean_cycles": 118.2773599159486,
+    "min_cycles": 102,
+    "max_cycles": 150,
+    "cases": 514923
+   },
+   "MATH_SEEK16_STEP_INT": {
+    "mean_cycles": 103.65478198473566,
+    "min_cycles": 85,
+    "max_cycles": 132,
+    "cases": 107309
+   },
+   "MATH_SEEK16_STEP1": {
+    "mean_cycles": 98.18338399189463,
+    "min_cycles": 77,
+    "max_cycles": 121,
+    "cases": 51324
+   }
+  },
+  "v2_pareto_fast": {
+   "MATH_SEEK8_INIT": {
+    "mean_cycles": 543.9654820261438,
+    "min_cycles": 137,
+    "max_cycles": 888,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 336.5204248366013,
+     "min_cycles": 137,
+     "max_cycles": 429,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 751.4105392156863,
+     "min_cycles": 137,
+     "max_cycles": 888,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 310.5667892156863,
+     "min_cycles": 137,
+     "max_cycles": 372,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 279.4313725490196,
+     "min_cycles": 137,
+     "max_cycles": 297,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK8_STEP": {
+    "mean_cycles": 87.13651052933645,
+    "min_cycles": 77,
+    "max_cycles": 91,
+    "cases": 453020
+   },
+   "MATH_SEEK8_STEP_INT": {
+    "mean_cycles": 70.99276964954066,
+    "min_cycles": 61,
+    "max_cycles": 74,
+    "cases": 94048
+   },
+   "MATH_SEEK8_STEP1": {
+    "mean_cycles": 65.95395907473309,
+    "min_cycles": 54,
+    "max_cycles": 69,
+    "cases": 44960
+   },
+   "MATH_SEEK16_INIT": {
+    "mean_cycles": 702.7138480392157,
+    "min_cycles": 187,
+    "max_cycles": 1150,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 479.62214052287584,
+     "min_cycles": 187,
+     "max_cycles": 603,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 925.8055555555555,
+     "min_cycles": 187,
+     "max_cycles": 1150,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 458.0723039215686,
+     "min_cycles": 187,
+     "max_cycles": 603,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 382.65686274509807,
+     "min_cycles": 187,
+     "max_cycles": 414,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK16_STEP": {
+    "mean_cycles": 118.68888163861394,
+    "min_cycles": 102,
+    "max_cycles": 150,
+    "cases": 514923
+   },
+   "MATH_SEEK16_STEP_INT": {
+    "mean_cycles": 103.65478198473566,
+    "min_cycles": 85,
+    "max_cycles": 132,
+    "cases": 107309
+   },
+   "MATH_SEEK16_STEP1": {
+    "mean_cycles": 98.18338399189463,
+    "min_cycles": 77,
+    "max_cycles": 121,
+    "cases": 51324
+   }
+  },
+  "v3_reu_512k": {
+   "MATH_SEEK8_INIT": {
+    "mean_cycles": 544.686887254902,
+    "min_cycles": 137,
+    "max_cycles": 890,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 337.10866013071893,
+     "min_cycles": 137,
+     "max_cycles": 431,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 752.2651143790849,
+     "min_cycles": 137,
+     "max_cycles": 890,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 311.00796568627453,
+     "min_cycles": 137,
+     "max_cycles": 373,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 279.87254901960785,
+     "min_cycles": 137,
+     "max_cycles": 298,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK8_STEP": {
+    "mean_cycles": 87.13651052933645,
+    "min_cycles": 77,
+    "max_cycles": 91,
+    "cases": 453020
+   },
+   "MATH_SEEK8_STEP_INT": {
+    "mean_cycles": 70.99276964954066,
+    "min_cycles": 61,
+    "max_cycles": 74,
+    "cases": 94048
+   },
+   "MATH_SEEK8_STEP1": {
+    "mean_cycles": 65.95395907473309,
+    "min_cycles": 54,
+    "max_cycles": 69,
+    "cases": 44960
+   },
+   "MATH_SEEK16_INIT": {
+    "mean_cycles": 701.5435049019608,
+    "min_cycles": 187,
+    "max_cycles": 1150,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 477.953022875817,
+     "min_cycles": 187,
+     "max_cycles": 602,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 925.1339869281046,
+     "min_cycles": 187,
+     "max_cycles": 1150,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 456.2083333333333,
+     "min_cycles": 187,
+     "max_cycles": 602,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 381.6764705882353,
+     "min_cycles": 187,
+     "max_cycles": 413,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK16_STEP": {
+    "mean_cycles": 118.2773599159486,
+    "min_cycles": 102,
+    "max_cycles": 150,
+    "cases": 514923
+   },
+   "MATH_SEEK16_STEP_INT": {
+    "mean_cycles": 103.65478198473566,
+    "min_cycles": 85,
+    "max_cycles": 132,
+    "cases": 107309
+   },
+   "MATH_SEEK16_STEP1": {
+    "mean_cycles": 98.18338399189463,
+    "min_cycles": 77,
+    "max_cycles": 121,
+    "cases": 51324
+   }
+  },
+  "v4_reu_16m": {
+   "MATH_SEEK8_INIT": {
+    "mean_cycles": 544.686887254902,
+    "min_cycles": 137,
+    "max_cycles": 890,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 337.10866013071893,
+     "min_cycles": 137,
+     "max_cycles": 431,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 752.2651143790849,
+     "min_cycles": 137,
+     "max_cycles": 890,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 311.00796568627453,
+     "min_cycles": 137,
+     "max_cycles": 373,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 279.87254901960785,
+     "min_cycles": 137,
+     "max_cycles": 298,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK8_STEP": {
+    "mean_cycles": 87.13651052933645,
+    "min_cycles": 77,
+    "max_cycles": 91,
+    "cases": 453020
+   },
+   "MATH_SEEK8_STEP_INT": {
+    "mean_cycles": 70.99276964954066,
+    "min_cycles": 61,
+    "max_cycles": 74,
+    "cases": 94048
+   },
+   "MATH_SEEK8_STEP1": {
+    "mean_cycles": 65.95395907473309,
+    "min_cycles": 54,
+    "max_cycles": 69,
+    "cases": 44960
+   },
+   "MATH_SEEK16_INIT": {
+    "mean_cycles": 701.5435049019608,
+    "min_cycles": 187,
+    "max_cycles": 1150,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 477.953022875817,
+     "min_cycles": 187,
+     "max_cycles": 602,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 925.1339869281046,
+     "min_cycles": 187,
+     "max_cycles": 1150,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 456.2083333333333,
+     "min_cycles": 187,
+     "max_cycles": 602,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 381.6764705882353,
+     "min_cycles": 187,
+     "max_cycles": 413,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK16_STEP": {
+    "mean_cycles": 118.2773599159486,
+    "min_cycles": 102,
+    "max_cycles": 150,
+    "cases": 514923
+   },
+   "MATH_SEEK16_STEP_INT": {
+    "mean_cycles": 103.65478198473566,
+    "min_cycles": 85,
+    "max_cycles": 132,
+    "cases": 107309
+   },
+   "MATH_SEEK16_STEP1": {
+    "mean_cycles": 98.18338399189463,
+    "min_cycles": 77,
+    "max_cycles": 121,
+    "cases": 51324
+   }
+  },
+  "v5_hybrid_lowzp": {
+   "MATH_SEEK8_INIT": {
+    "mean_cycles": 601.7469362745098,
+    "min_cycles": 147,
+    "max_cycles": 995,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 368.26756535947715,
+     "min_cycles": 147,
+     "max_cycles": 473,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 835.2263071895425,
+     "min_cycles": 147,
+     "max_cycles": 995,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 339.4779411764706,
+     "min_cycles": 147,
+     "max_cycles": 411,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 304.16911764705884,
+     "min_cycles": 147,
+     "max_cycles": 324,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK8_STEP": {
+    "mean_cycles": 87.13651052933645,
+    "min_cycles": 77,
+    "max_cycles": 91,
+    "cases": 453020
+   },
+   "MATH_SEEK8_STEP_INT": {
+    "mean_cycles": 70.99276964954066,
+    "min_cycles": 61,
+    "max_cycles": 74,
+    "cases": 94048
+   },
+   "MATH_SEEK8_STEP1": {
+    "mean_cycles": 65.95395907473309,
+    "min_cycles": 54,
+    "max_cycles": 69,
+    "cases": 44960
+   },
+   "MATH_SEEK16_INIT": {
+    "mean_cycles": 783.2013888888889,
+    "min_cycles": 202,
+    "max_cycles": 1305,
+    "cases": 4896,
+    "major_axis_speed": {
+     "mean_cycles": 529.9403594771242,
+     "min_cycles": 202,
+     "max_cycles": 683,
+     "cases": 2448
+    },
+    "euclidean_speed": {
+     "mean_cycles": 1036.4624183006536,
+     "min_cycles": 202,
+     "max_cycles": 1305,
+     "cases": 2448
+    },
+    "integer_speed": {
+     "mean_cycles": 506.77389705882354,
+     "min_cycles": 202,
+     "max_cycles": 683,
+     "cases": 1632
+    },
+    "one_pixel": {
+     "mean_cycles": 420.12254901960785,
+     "min_cycles": 202,
+     "max_cycles": 458,
+     "cases": 408
+    }
+   },
+   "MATH_SEEK16_STEP": {
+    "mean_cycles": 118.2773599159486,
+    "min_cycles": 102,
+    "max_cycles": 150,
+    "cases": 514923
+   },
+   "MATH_SEEK16_STEP_INT": {
+    "mean_cycles": 103.65478198473566,
+    "min_cycles": 85,
+    "max_cycles": 132,
+    "cases": 107309
+   },
+   "MATH_SEEK16_STEP1": {
+    "mean_cycles": 98.18338399189463,
+    "min_cycles": 77,
+    "max_cycles": 121,
+    "cases": 51324
+   }
+  }
+ },
+ "prg_sha256": {
+  "v1_balanced": "86c2784f67784e01ed4f87f17a9e1f1612f63c42b20e564af3b240bd0092e4cb",
+  "v2_pareto_fast": "0e1818b86d7b4d463a2af6b0424fdee728b79331a277726f72d5d4e7236e1bb9",
+  "v3_reu_512k": "cede0fedc07c447ed2d94372b21cb1e6ae869d7dd13250076c6556f21e508ac7",
+  "v4_reu_16m": "a3e6b9d4667e84ba2405f751cf5230a904fc2e78ea470c0aa6ee48556cf02904",
+  "v5_hybrid_lowzp": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729"
+ }
+}

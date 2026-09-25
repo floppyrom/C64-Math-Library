@@ -2,7 +2,7 @@
 
 High-performance integer, fixed-point and game math for the Commodore 64 / NMOS 6502/6510.
 
-The library exposes one stable **46-entry public API** across five fixed profiles. V3/V4 add stateful Turbo16/Turbo32 calls; V4 also adds QS16. A Custom Pareto Builder can generate a stock-C64 mix for a chosen ZP/RAM budget.
+The library exposes one stable **54-entry public API** across five fixed profiles. V3/V4 add stateful Turbo16/Turbo32 calls; V4 also adds QS16. A Custom Pareto Builder can generate a stock-C64 mix for a chosen ZP/RAM budget.
 
 ## Start here
 
@@ -12,7 +12,7 @@ The library exposes one stable **46-entry public API** across five fixed profile
 - **Calling/integration manual:** [`USER_MANUAL.md`](USER_MANUAL.md)
 - **Naming convention:** [`docs/NAMING_STANDARD.md`](docs/NAMING_STANDARD.md)
 - **Repository layout:** [`docs/STRUCTURE.md`](docs/STRUCTURE.md)
-- **Moving an object toward a target:** use the exact DDA stepper in [`routines/movement/`](routines/movement/README.md), not vector normalization
+- **Moving an object toward a target:** use `MATH_SEEK8_*`/`MATH_SEEK16_*`, the exact Bresenham/DDA steppers ([`docs/SEEK_DDA.md`](docs/SEEK_DDA.md)), not vector normalization
 
 Every published benchmark row now points to a public source file and SHA-256. Run `python3 tools/validate_public_catalog.py` to verify that contract.
 
@@ -39,6 +39,8 @@ These are current public-entry means, through `RTS`; caller `JSR` and input stor
 | `div_u16_u16_u16_16` | 132.726 | 127.774 | 125.424 | 125.626 | 126.386 |
 | `div_s24_s24_s24_24` | 313.583 | 248.344 | 236.810 | 237.569 | 253.487 |
 | `atan2_s8_s8_u8` | 48.447 | 44.963 | 44.963 | 48.000 | 44.963 |
+| `seek_u8_u8_step` (per object per frame) | 87.137 | 87.137 | 87.137 | 87.137 | 87.137 |
+| `seek_u8_u8_step1` (1 px/frame) | 65.954 | 65.954 | 65.954 | 65.954 | 65.954 |
 
 For the complete table, resource use, min/max, corpora and source links, see [`PERFORMANCE.md`](PERFORMANCE.md).
 

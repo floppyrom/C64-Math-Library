@@ -37,6 +37,8 @@ CANONICAL={
 'MATH_URECIP16_Q16':'recip_u16_u24_q16','MATH_SIN8':'sin_u8_s8','MATH_COS8':'cos_u8_s8','MATH_SINCOS8':'sincos_u8_s8_s8',
 'MATH_ATAN2_8':'atan2_s8_s8_u8','MATH_ISQRT16':'isqrt_u16_u16','MATH_ISQRT32':'isqrt_u32_u16','MATH_DIST8_FAST':'dist_s8_s8_u8_fast','MATH_DIST8_ACCURATE':'dist_s8_s8_u8_accurate',
 'MATH_VEC2_NORMALIZE_Q8_8':'normalize_s16_s16_s16_s16_q8_8_to_q1_15',
+'MATH_SEEK8_INIT':'seek_u8_u8_init','MATH_SEEK8_STEP':'seek_u8_u8_step','MATH_SEEK8_STEP_INT':'seek_u8_u8_step_int','MATH_SEEK8_STEP1':'seek_u8_u8_step1',
+'MATH_SEEK16_INIT':'seek_u16_u8_init','MATH_SEEK16_STEP':'seek_u16_u8_step','MATH_SEEK16_STEP_INT':'seek_u16_u8_step_int','MATH_SEEK16_STEP1':'seek_u16_u8_step1',
 }
 ALIAS_OF={
 'MATH_UMOD16':'MATH_UDIV16','MATH_UMOD24':'MATH_UDIV24','MATH_UMOD32_16':'MATH_UDIV32_16',
@@ -142,6 +144,8 @@ def render(profile,name,mem,vals,prg_name):
   if op=='lax':
    text='    !byte '+', '.join(f'${mem[pc+i]:02X}' for i in range(sz))+f'    ; LAX {mode}'
   elif op=='anc': text=f'    !byte $0B, ${mem[pc+1]:02X}    ; ANC #imm'
+  elif op in ('dcp','isc','slo','rla','sre','rra','sax','alr','arr','sbx'):
+   text='    !byte '+', '.join(f'${mem[pc+i]:02X}' for i in range(sz))+f'    ; {op.upper()} {mode}'
   else: text=f'    {op}{operand(mem,pc,op,mode,code)}'
   lines.append(f'{text:<38} ; @{pc:04X} {bs}')
   prev=pc+sz

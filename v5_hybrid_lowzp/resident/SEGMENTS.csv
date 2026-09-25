@@ -20,3 +20,13 @@ normalize_component_0,$6000,256,integrated PRG,certified logarithmic-ratio Q1.15
 normalize_component_1,$6100,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
 normalize_component_2,$6200,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
 normalize_component_3,$6300,256,integrated PRG,certified logarithmic-ratio Q1.15 component plane
+seek_entries,$5E3C,24,integrated PRG,eight stable MATH_SEEK8_*/MATH_SEEK16_* JMP slots
+seek8_step,$3400,180,integrated PRG,"SEEK8 per-frame steppers (STEP/STEP_INT/STEP1); one page, no page-crossing branches"
+seek8_init,$34B4,229,integrated PRG,SEEK8 init: geometry and bulk-Bresenham rates
+seek8_planes,$385B,115,integrated PRG,SEEK8 per-frame delta plane writer
+seek16_step,$3600,291,integrated PRG,SEEK16 per-frame steppers (STEP/STEP_INT/STEP1)
+seek16_init,$3723,312,integrated PRG,SEEK16 init: geometry and bulk-Bresenham rates
+seek16_helpers,$38CE,169,integrated PRG,SEEK16 rate/plane helpers
+seek_shared,$3977,127,integrated PRG,shared Euclidean speed correction + 32-byte cos table
+seek8_state,$18E8,160,integrated PRG,"SEEK8 per-slot state, 8 slots (POS_X/POS_Y public); runtime RAM"
+seek16_state,$1988,248,integrated PRG,"SEEK16 per-slot state, 8 slots (POS_XL/XH/Y public); runtime RAM"

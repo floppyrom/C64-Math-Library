@@ -7,7 +7,7 @@
   "output_prg": "math_v5_hybrid_lowzp_game_math.prg",
   "output_load": "$1000",
   "output_end": "$CF96",
-  "output_sha256": "52697af71bab5a6586536d9d3b8abc0165fe0e9260c0353ed1a4f638e4a9ee0b",
+  "output_sha256": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729",
   "public_entries": {
     "MATH_UMUL8": "$3000",
     "MATH_UMUL16": "$3020",
@@ -54,7 +54,15 @@
     "MATH_ISQRT32": "$5E30",
     "MATH_DIST8_FAST": "$5E33",
     "MATH_DIST8_ACCURATE": "$5E36",
-    "MATH_VEC2_NORMALIZE_Q8_8": "$5E39"
+    "MATH_VEC2_NORMALIZE_Q8_8": "$5E39",
+    "MATH_SEEK8_INIT": "$5E3C",
+    "MATH_SEEK8_STEP": "$5E3F",
+    "MATH_SEEK8_STEP_INT": "$5E42",
+    "MATH_SEEK8_STEP1": "$5E45",
+    "MATH_SEEK16_INIT": "$5E48",
+    "MATH_SEEK16_STEP": "$5E4B",
+    "MATH_SEEK16_STEP_INT": "$5E4E",
+    "MATH_SEEK16_STEP1": "$5E51"
   },
   "math_init": "$3280",
   "public_io": "$C000-$C01F",
@@ -122,7 +130,7 @@
     "MATH_URECIP16_Q16"
   ],
   "notes": [
-    "All 46 stable API addresses and semantics remain V1-compatible.",
+    "All 54 stable API addresses and semantics remain V1-compatible.",
     "MATH_INIT remains optional exactly as in V1.",
     "The imported certified V2 kernels use only the existing V1 normal ZP window.",
     "Fast ATAN2, when enabled, adds no ZP and occupies four formerly empty V1 table pages (1024 bytes).",
@@ -133,10 +141,11 @@
     "Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines."
   ],
   "source_inputs": {
-    "v1_source_sha256": "099498c60cb6b65c9993c104b20be88553e3825f9a521929220ef225016f9929",
-    "v2_source_sha256": "e1f49e1bda06c0adc1bb9fd11826e6e079a3b8592b742bc05b694d4910849c0b",
+    "v1_source_sha256": "313abe6b290be23e74418ed783009ed5318bb5101ca38aa90436741171d40ed9",
+    "v2_source_sha256": "39c0f60d9622a0f990a23384de14a1166656bf51e93c5c2f53c2f4da3b01f60a",
     "normalize_native_sha256": "02c62b29908cb367195eb9f8ac3f80c715532f2442369f5181769f3dc468dd58",
     "normalize_tables_sha256": "59092b96cebca7715f98f1fe7a8264a0169e535fc48946ac4f4b596358b1f0ab",
-    "builder_sha256": "78b3a7ddf0f324acc788a79fba0fb78db384497140788410d83168ed03eb1d0d"
+    "seek_native_sha256": "96d9d6d33e4f0d05b5acef61aa67990a8dcc041d9008196f2bb6c167c7970d9f",
+    "builder_sha256": "9e477e23f41d9e8fe37e3330917dadd8da9d4991b4ea99a5af460a8be4c26f92"
   }
 }

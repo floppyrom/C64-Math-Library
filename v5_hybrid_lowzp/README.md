@@ -2,7 +2,7 @@
 
 V5 keeps the **V1 31-byte normal zero-page footprint** while selectively importing V2 implementations that are faster without requiring additional ZP.
 
-The stable **46-entry public API is unchanged**. `MATH_INIT` remains optional, as in V1.
+The stable **54-entry public API is unchanged** (V1-compatible, including the seek movement entries). `MATH_INIT` remains optional, as in V1.
 
 ## Refreshed selected paths
 
@@ -46,8 +46,8 @@ For a custom map, copy `relocatable_source/v5_hybrid_lowzp/math_config_reference
 
 The shipped validation includes:
 
-- 46/46 stable entries on the reference map: 4,589 machine calls;
-- 46/46 stable entries on the alternate map: 4,589 machine calls;
+- 54/54 stable entries on the reference map: 21,422 machine calls;
+- 54/54 stable entries on the alternate map: 21,422 machine calls;
 - **144,246 direct-import correctness/parity cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity and <=1 phase-unit error;
 - exhaustive 65,536-case `UMOD8` correctness;
 - exhaustive 256-phase `COS8` and `SINCOS8` checks;

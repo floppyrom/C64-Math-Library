@@ -1,0 +1,69 @@
+{
+ "status": "PASS",
+ "profiles": {
+  "v1_balanced/reference": {
+   "code_bytes_incl_jmp_slots": 1447,
+   "state_bytes": 408,
+   "scratch": "$C040-$C052",
+   "seek8_state": "$18E8",
+   "seek16_state": "$1988",
+   "foreign_accesses": 0
+  },
+  "v2_pareto_fast/reference": {
+   "code_bytes_incl_jmp_slots": 1312,
+   "state_bytes": 408,
+   "scratch": "$0053-$0065",
+   "seek8_state": "$3A90",
+   "seek16_state": "$90E8",
+   "foreign_accesses": 0
+  },
+  "v3_reu_512k/reference": {
+   "code_bytes_incl_jmp_slots": 1312,
+   "state_bytes": 408,
+   "scratch": "$0053-$0065",
+   "seek8_state": "$9308",
+   "seek16_state": "$90E8",
+   "foreign_accesses": 0
+  },
+  "v4_reu_16m/reference": {
+   "code_bytes_incl_jmp_slots": 1312,
+   "state_bytes": 408,
+   "scratch": "$0053-$0065",
+   "seek8_state": "$9308",
+   "seek16_state": "$90E8",
+   "foreign_accesses": 0
+  },
+  "v1_balanced/alternate": {
+   "code_bytes_incl_jmp_slots": 1447,
+   "state_bytes": 408,
+   "scratch": "$C840-$C852",
+   "seek8_state": "$98E8",
+   "seek16_state": "$9988",
+   "foreign_accesses": 0
+  },
+  "v2_pareto_fast/alternate": {
+   "code_bytes_incl_jmp_slots": 1312,
+   "state_bytes": 408,
+   "scratch": "$0058-$006A",
+   "seek8_state": "$BA90",
+   "seek16_state": "$70E8",
+   "foreign_accesses": 0
+  },
+  "v3_reu_512k/alternate": {
+   "code_bytes_incl_jmp_slots": 1312,
+   "state_bytes": 408,
+   "scratch": "$0058-$006A",
+   "seek8_state": "$7308",
+   "seek16_state": "$70E8",
+   "foreign_accesses": 0
+  },
+  "v4_reu_16m/alternate": {
+   "code_bytes_incl_jmp_slots": 1312,
+   "state_bytes": 408,
+   "scratch": "$0058-$006A",
+   "seek8_state": "$7308",
+   "seek16_state": "$70E8",
+   "foreign_accesses": 0
+  }
+ }
+}

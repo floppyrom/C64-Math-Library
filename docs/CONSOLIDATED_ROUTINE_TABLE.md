@@ -11,9 +11,9 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | Profile | PRG payload span B | REU image B | Declared shared ZP B | Stable API ZP union touched B | Stack-page reserved B |
 |---|---:|---:|---:|---:|---:|
 | `v1_balanced` | 49047 | 0 |  | 31 | 0 |
-| `v2_pareto_fast` | 49047 | 0 |  | 207 | 0 |
-| `v3_reu_512k` | 49047 | 524288 |  | 196 | 0 |
-| `v4_reu_16m` | 49047 | 16777216 |  | 195 | 0 |
+| `v2_pareto_fast` | 49047 | 0 |  | 210 | 0 |
+| `v3_reu_512k` | 49047 | 524288 |  | 203 | 0 |
+| `v4_reu_16m` | 49047 | 16777216 |  | 202 | 0 |
 | `v5_hybrid_lowzp` | 49047 | 0 | 31 | 31 | 0 |
 
 ## v1_balanced
@@ -66,6 +66,14 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 84 | 302 | 881 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
+| `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 601.746936 | 147 | 995 | 454 | 0 | — | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in V1_SCRATCH RAM | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP_INT` | `seek_u8_u8_step_int` | 70.992770 | 61 | 74 | 96 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP1` | `seek_u8_u8_step1` | 65.953959 | 54 | 69 | 91 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_INIT` | `seek_u16_u8_init` | 783.201389 | 202 | 1305 | 594 | 0 | — | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in V1_SCRATCH RAM | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP` | `seek_u16_u8_step` | 118.277360 | 102 | 150 | 282 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 85 | 132 | 152 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 77 | 121 | 143 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 
 ## v2_pareto_fast
 
@@ -117,6 +125,14 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.570038 | 64 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.570038 | 70 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 84 | 302 | 881 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
+| `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 543.965482 | 137 | 888 | 392 | 14 | $53-$5F;$65 | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in game-scratch ZP | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP_INT` | `seek_u8_u8_step_int` | 70.992770 | 61 | 74 | 96 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP1` | `seek_u8_u8_step1` | 65.953959 | 54 | 69 | 91 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_INIT` | `seek_u16_u8_init` | 702.713848 | 187 | 1150 | 503 | 18 | $53-$64 | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in game-scratch ZP | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP` | `seek_u16_u8_step` | 118.688882 | 102 | 150 | 282 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 85 | 132 | 152 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 77 | 121 | 143 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 
 ## v3_reu_512k
 
@@ -168,6 +184,14 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 156.661198 | 84 | 298 | 849 | 4 | $1A-$1D | 0 | quadrant-specific paths; existing REU ratio-index lookup | 2026-09-21 normalize profile-parity deterministic corpus |
+| `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 544.686887 | 137 | 890 | 392 | 14 | $53-$5F;$65 | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in game-scratch ZP | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP_INT` | `seek_u8_u8_step_int` | 70.992770 | 61 | 74 | 96 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP1` | `seek_u8_u8_step1` | 65.953959 | 54 | 69 | 91 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_INIT` | `seek_u16_u8_init` | 701.543505 | 187 | 1150 | 503 | 18 | $53-$64 | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in game-scratch ZP | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP` | `seek_u16_u8_step` | 118.277360 | 102 | 150 | 282 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 85 | 132 | 152 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 77 | 121 | 143 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
@@ -225,6 +249,14 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 156.661198 | 84 | 298 | 849 | 4 | $1A-$1D | 0 | quadrant-specific paths; existing REU ratio-index lookup | 2026-09-21 normalize profile-parity deterministic corpus |
+| `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 544.686887 | 137 | 890 | 392 | 14 | $53-$5F;$65 | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in game-scratch ZP | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP_INT` | `seek_u8_u8_step_int` | 70.992770 | 61 | 74 | 96 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP1` | `seek_u8_u8_step1` | 65.953959 | 54 | 69 | 91 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_INIT` | `seek_u16_u8_init` | 701.543505 | 187 | 1150 | 503 | 18 | $53-$64 | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in game-scratch ZP | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP` | `seek_u16_u8_step` | 118.277360 | 102 | 150 | 282 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 85 | 132 | 152 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 77 | 121 | 143 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
@@ -285,6 +317,14 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 84 | 302 | 881 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
+| `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 601.746936 | 147 | 995 | 454 | 0 | — | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in V1_SCRATCH RAM | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP_INT` | `seek_u8_u8_step_int` | 70.992770 | 61 | 74 | 96 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK8_STEP1` | `seek_u8_u8_step1` | 65.953959 | 54 | 69 | 91 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_INIT` | `seek_u16_u8_init` | 783.201389 | 202 | 1305 | 594 | 0 | — | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in V1_SCRATCH RAM | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP` | `seek_u16_u8_step` | 118.277360 | 102 | 150 | 282 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 85 | 132 | 152 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
+| `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 77 | 121 | 143 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 
 ## Interpretation notes
 

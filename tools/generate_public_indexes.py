@@ -17,7 +17,7 @@ def sha(p:Path)->str: return hashlib.sha256(p.read_bytes()).hexdigest()
 def read_csv(p:Path):
     with p.open(newline='') as f: return list(csv.DictReader(f))
 def category(name:str)->str:
-    for prefix,cat in [('mul_','multiply'),('div_','divide'),('mod_','modulo'),('recip_','fixed'),('sin_','trig'),('cos_','trig'),('sincos_','trig'),('atan2_','trig'),('isqrt_','root'),('normalize_','vector'),('dist_','game')]:
+    for prefix,cat in [('mul_','multiply'),('div_','divide'),('mod_','modulo'),('recip_','fixed'),('sin_','trig'),('cos_','trig'),('sincos_','trig'),('atan2_','trig'),('isqrt_','root'),('normalize_','vector'),('dist_','game'),('seek_','movement')]:
         if name.startswith(prefix): return cat
     return 'other'
 

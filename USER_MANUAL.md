@@ -5,7 +5,7 @@
 **Target CPU:** NMOS 6502/6510, Commodore 64  
 **Profiles:** V1 Balanced, V2 Pareto-Fast, V3 REU 512K, V4 REU 16M, V5 Hybrid Low-ZP
 
-This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 46-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 small-batch mode.
+This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 54-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 small-batch mode.
 
 The short version is:
 
@@ -57,7 +57,7 @@ Recommended default choices:
 - Stock C64, V1-sized ZP budget but faster division/modulo/COS/SINCOS: **V5**.
 - New stock-C64 game/demo where you know your available ZP/RAM: **Custom Pareto Builder** (recommended flexible path).
 
-All five resident profiles and generated Pareto profiles expose the same **46-entry stable API**. V3/V4 additionally expose six stateful Turbo lifecycle entries. V4 also contains the specialized QS16 small-batch mode. V5 and custom Pareto builds add no new public calls.
+All five resident profiles and generated Pareto profiles expose the same **54-entry stable API**. V3/V4 additionally expose six stateful Turbo lifecycle entries. V4 also contains the specialized QS16 small-batch mode. V5 and custom Pareto builds add no new public calls.
 
 ---
 
@@ -348,7 +348,7 @@ The output will be under the selected output directory. For V3/V4, the build aut
 | `REG_LOW` | low resident code/data region | `$1000` |
 | `REG_API` | integer API and associated code | `$3000` |
 | `REG_KERNEL` | resident kernels | `$4000` |
-| `REG_GAME_API` | independent 57-byte game-math JMP block | `$5E00` |
+| `REG_GAME_API` | independent 84-byte game-math JMP block | `$5E00` |
 | `REG_TABLE` | resident tables | `$6000` |
 | `REG_GAME` | game/fixed-point code/data | `$C100` |
 | `MATH_IO` | 32-byte caller I/O block | `$C000` |
@@ -458,7 +458,7 @@ For multiply entries, Carry returns clear.
 
 ---
 
-# Part II — Stable 46-entry API reference
+# Part II — Stable 54-entry API reference
 
 ## 9. Unsigned multiplication
 
@@ -851,6 +851,33 @@ These are executable build inputs, not pseudocode or post-build listings. The ad
 README in each directory lists the scratch/table/REU dependencies needed when lifting
 the routine out of the full library.
 
+## 20B. Moving an object toward a target (seek)
+
+```text
+MATH_SEEK8_INIT / MATH_SEEK16_INIT            once per move
+input:   X register = slot 0..7 (preserved)
+         MATH_X+0 (and +1 for SEEK16) = target x, MATH_Y+0 = target y
+         MATH_N+0 = speed fraction, MATH_N+1 = speed integer 0..126
+         MATH_N+1 bit 7: 0 = speed along the major axis, 1 = along the path
+start:   the slot's current MATH_SEEK8_POS_X/Y (MATH_SEEK16_POS_XL/XH/Y)
+status:  C=1 if already on the target, else C=0
+
+MATH_SEEK8_STEP / _STEP_INT / _STEP1           once per object per frame
+MATH_SEEK16_STEP / _STEP_INT / _STEP1
+input:   X register = slot (preserved)
+output:  updated position arrays; C=1 on the arrival frame and after
+```
+
+The object follows the exact Bresenham line (within 0.5 px of the true line)
+and lands exactly on the target. `STEP` handles any speed, including the
+Euclidean mode. `STEP_INT` is for whole-pixel major-axis speeds. `STEP1` is for
+speed `$0100` and uses the NMOS `DCP` opcode. Inputs and `X` are preserved,
+A/Y are volatile. The kernels add no zero page and need no `MATH_INIT`. Init
+borrows the game scratch. Typical V2 costs: SEEK8 init 337 cycles (752 with
+Euclidean speed); per frame 87.1 / 71.0 / 66.0 cycles for STEP / STEP_INT /
+STEP1. See `docs/SEEK_DDA.md` for all profiles and the comparison with
+normalize.
+
 ---
 
 # Part III — REU profiles
@@ -1214,7 +1241,7 @@ Do not mix QS16 and Turbo lifecycles.
 
 ## 30. Reference compatibility helper entries
 
-The historical/reference includes also expose several convenience helpers that are not counted among the common 46 stable API entries:
+The historical/reference includes also expose several convenience helpers that are not counted among the common 54 stable API entries:
 
 ```text
 MATH_Z16_TO_N32
@@ -1248,7 +1275,7 @@ MATH_Z16_TO_N32 = MATH_UMUL8+$0230
 ; etc.
 ```
 
-These helpers are useful for zero-host-marshalling composition, but the compatibility guarantee of the release is centered on the 46 stable API entries plus the explicitly documented V3/V4 Turbo lifecycle surface.
+These helpers are useful for zero-host-marshalling composition, but the compatibility guarantee of the release is centered on the 54 stable API entries plus the explicitly documented V3/V4 Turbo lifecycle surface.
 
 ---
 
@@ -1562,12 +1589,12 @@ python3 tools/verify_with_acme.py --acme /path/to/acme --kind all
 
 The frozen Turbo FINAL release records:
 
-- 46 stable entries in all four original V1–V4 profiles, plus the same 46-entry surface in V5;
-- V1–V4 alternate proof: 184/184 relocated stable entry executions and 18,356 machine calls;
-- V5 reference + alternate: 46/46 entries and 4,589 machine calls per map;
+- 54 stable entries in all four original V1–V4 profiles, plus the same 54-entry surface in V5 (the 2026-09-25 seek entries 47–54 are included in every count below);
+- V1–V4 alternate proof: 216/216 relocated stable entry executions and 85,688 machine calls;
+- V5 reference + alternate: 54/54 entries and 21,422 machine calls per map;
 - V5 hybrid direct-import validation: **144,246 cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity, plus 2,000 cold-load calls without `MATH_INIT`;
 - V5 ZP confinement: 31-byte normal window, all 225 outside page-zero bytes unchanged in stress on both maps;
-- Custom Pareto matrix: six ZP breakpoints on reference + alternate maps, 12 generated builds, 46/46 entries and 4,589 calls each (**55,068 common-API calls**);
+- Custom Pareto matrix: six ZP breakpoints on reference + alternate maps, 12 generated builds, 54/54 entries and 21,422 calls each (**257,064 common-API calls**);
 - Custom Pareto direct V2 cycle parity: **75,644 cases**, including exhaustive 65,536-vector `ATAN2_8`, plus exhaustive 65,536-case UMOD8;
 - Custom Pareto stress: 50,144 SMUL16 cycle-parity cases, 25,000 mixed-workload iterations and 10,000 ZP-guard iterations;
 - Custom Pareto endpoint identity: 31 ZP + zero extra RAM is byte-identical to V1; 31 ZP + optional-init policy is byte-identical to V5;
@@ -1581,9 +1608,10 @@ The frozen Turbo FINAL release records:
 - second-batch Turbo overlay reuse;
 - 20,388 fast-ISQRT32 correctness executions;
 - 27/27 configuration validation cases;
-- 204/204 consolidated release-audit checks in the current environment;
+- 268/268 consolidated release-audit checks in the current environment;
 - deterministic source rebuild identity;
-- current release audit status `PASS_WITH_ACME_NOT_RUN` because ACME is not installed in this execution environment; historical ACME 0.97 identity evidence is retained for the earlier source baseline.
+- frame-exact seek DDA validation against the Bresenham model, with a memory-access placement proof on both maps;
+- current release audit status `PASS`, including a current ACME 0.97 byte-identity rerun of all V1–V4 reference/alternate PRGs and Turbo overlays.
 
 These tests are extensive, but they do not replace application-level testing of your particular memory banking, IRQ design, raster timing, REU hardware, and surrounding code.
 
@@ -1591,7 +1619,7 @@ These tests are extensive, but they do not replace application-level testing of 
 
 # Part XII — Complete stable API cheat sheet
 
-## 48. All 46 entries at a glance
+## 48. All 54 entries at a glance
 
 | Entry | Inputs | Outputs | Status / note |
 |---|---|---|---|
@@ -1641,6 +1669,14 @@ These tests are extensive, but they do not replace application-level testing of 
 | `MATH_DIST8_FAST` | signed dx=X8,dy=Y8 | unsigned Z8 | fast approximation |
 | `MATH_DIST8_ACCURATE` | signed dx=X8,dy=Y8 | unsigned Z8 | lower-error approximation |
 | `MATH_VEC2_NORMALIZE_Q8_8` | signed X16,Y16 Q8.8 | signed Z16,Z16 Q1.15 | C=1 only for zero vector |
+| `MATH_SEEK8_INIT` | X=slot; target X8,Y8; speed N16 (bit 15 = Euclidean) | slot state | C=1 if already on target |
+| `MATH_SEEK8_STEP` | X=slot | `MATH_SEEK8_POS_X/Y` | one frame; C=1 on arrival |
+| `MATH_SEEK8_STEP_INT` | X=slot | `MATH_SEEK8_POS_X/Y` | integer major-axis speed; C=1 on arrival |
+| `MATH_SEEK8_STEP1` | X=slot | `MATH_SEEK8_POS_X/Y` | exactly 1 px/frame (NMOS DCP); C=1 on arrival |
+| `MATH_SEEK16_INIT` | X=slot; target X16,Y8; speed N16 | slot state | C=1 if already on target |
+| `MATH_SEEK16_STEP` | X=slot | `MATH_SEEK16_POS_XL/XH/Y` | one frame; C=1 on arrival |
+| `MATH_SEEK16_STEP_INT` | X=slot | `MATH_SEEK16_POS_XL/XH/Y` | integer major-axis speed; C=1 on arrival |
+| `MATH_SEEK16_STEP1` | X=slot | `MATH_SEEK16_POS_XL/XH/Y` | exactly 1 px/frame (NMOS DCP); C=1 on arrival |
 
 ## 48A. Reference-map entry addresses
 
@@ -1694,6 +1730,14 @@ These addresses are provided for diagnostics and fixed-reference builds. **Reloc
 | `MATH_DIST8_FAST` | `$5E33` |
 | `MATH_DIST8_ACCURATE` | `$5E36` |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `$5E39` |
+| `MATH_SEEK8_INIT` | `$5E3C` |
+| `MATH_SEEK8_STEP` | `$5E3F` |
+| `MATH_SEEK8_STEP_INT` | `$5E42` |
+| `MATH_SEEK8_STEP1` | `$5E45` |
+| `MATH_SEEK16_INIT` | `$5E48` |
+| `MATH_SEEK16_STEP` | `$5E4B` |
+| `MATH_SEEK16_STEP_INT` | `$5E4E` |
+| `MATH_SEEK16_STEP1` | `$5E51` |
 
 ---
 
@@ -1707,7 +1751,7 @@ These addresses are provided for diagnostics and fixed-reference builds. **Reloc
 | `QUICK_START.md` | minimal build commands |
 | `docs/VERSION_SELECTION.md` | fixed profile vs custom-builder choice |
 | `docs/PARETO_BUILDER.md` | ZP/RAM budget-driven stock-C64 profile generation |
-| `docs/PUBLIC_API_COMPLETE.csv` | authoritative 46-entry stable surface |
+| `docs/PUBLIC_API_COMPLETE.csv` | authoritative 54-entry stable surface |
 | `docs/PERFORMANCE_COMPARISON.csv` | common arithmetic performance |
 | `docs/PERFORMANCE_GAME_MATH_FINAL.csv` | game/fixed-point performance |
 | `docs/SOURCE_RELOCATION.md` | memory-map relocation contract |

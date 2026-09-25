@@ -46,6 +46,14 @@ MATH_ISQRT32             = $5E30
 MATH_DIST8_FAST          = $5E33
 MATH_DIST8_ACCURATE      = $5E36
 MATH_VEC2_NORMALIZE_Q8_8 = $5E39
+MATH_SEEK8_INIT          = $5E3C
+MATH_SEEK8_STEP          = $5E3F
+MATH_SEEK8_STEP_INT      = $5E42
+MATH_SEEK8_STEP1         = $5E45
+MATH_SEEK16_INIT         = $5E48
+MATH_SEEK16_STEP         = $5E4B
+MATH_SEEK16_STEP_INT     = $5E4E
+MATH_SEEK16_STEP1        = $5E51
 MATH_X                   = $C000
 MATH_Y                   = $C004
 MATH_Z                   = $C008
@@ -53,6 +61,11 @@ MATH_N                   = $C010
 MATH_D                   = $C014
 MATH_Q                   = $C018
 MATH_R                   = $C01C
+MATH_SEEK8_POS_X         = $18E8
+MATH_SEEK8_POS_Y         = $18F0
+MATH_SEEK16_POS_XL       = $1988
+MATH_SEEK16_POS_XH       = $1990
+MATH_SEEK16_POS_Y        = $1998
 
 ; Canonical typed aliases (source-facing names).
 ; Legacy MATH_* names and addresses remain stable.
@@ -102,6 +115,14 @@ isqrt_u32_u16                                    = MATH_ISQRT32
 dist_s8_s8_u8_fast                               = MATH_DIST8_FAST
 dist_s8_s8_u8_accurate                           = MATH_DIST8_ACCURATE
 normalize_s16_s16_s16_s16_q8_8_to_q1_15          = MATH_VEC2_NORMALIZE_Q8_8
+seek_u8_u8_init                                  = MATH_SEEK8_INIT
+seek_u8_u8_step                                  = MATH_SEEK8_STEP
+seek_u8_u8_step_int                              = MATH_SEEK8_STEP_INT
+seek_u8_u8_step1                                 = MATH_SEEK8_STEP1
+seek_u16_u8_init                                 = MATH_SEEK16_INIT
+seek_u16_u8_step                                 = MATH_SEEK16_STEP
+seek_u16_u8_step_int                             = MATH_SEEK16_STEP_INT
+seek_u16_u8_step1                                = MATH_SEEK16_STEP1
 
 ; Hybrid profile metadata (not additional API entries)
 HYBRID_CODE_BASE         = $A000

@@ -32,9 +32,11 @@ ck('signed_division_call_volume',sd['summary']['machine_calls']>=364533,sd['summ
 rows=list(csv.DictReader((ROOT/'docs/PUBLIC_API_COMPLETE.csv').open()))
 names=[r['entry'] for r in rows]
 API_COUNT=len(rows)
-ck('public_api_count',API_COUNT==46,API_COUNT);ck('public_api_unique',len(set(names))==API_COUNT)
+COMMON_CALLS=21422  # machine calls of one common-API validation run (incl. seek frames)
+ck('public_api_count',API_COUNT==54,API_COUNT);ck('public_api_unique',len(set(names))==API_COUNT)
 game=rows[26:]
-ck('game_api_slots',len(game)==20 and all(int(r['address'][1:],16)==0x5e00+i*3 for i,r in enumerate(game[:19])) and int(game[19]['address'][1:],16)==0x5e39,[r['address'] for r in game])
+ck('game_api_slots',len(game)==28 and all(int(r['address'][1:],16)==0x5e00+i*3 for i,r in enumerate(game[:19])) and int(game[19]['address'][1:],16)==0x5e39 and all(int(r['address'][1:],16)==0x5e3c+i*3 for i,r in enumerate(game[20:])),[r['address'] for r in game])
+ck('seek_api_slots',[r['entry'] for r in game[20:]]==['MATH_SEEK8_INIT','MATH_SEEK8_STEP','MATH_SEEK8_STEP_INT','MATH_SEEK8_STEP1','MATH_SEEK16_INIT','MATH_SEEK16_STEP','MATH_SEEK16_STEP_INT','MATH_SEEK16_STEP1'])
 turbo_rows=list(csv.DictReader((ROOT/'docs/TURBO_API.csv').open()))
 turbo_names=[r['entry'] for r in turbo_rows]
 ck('turbo_api_count',len(turbo_rows)==6,len(turbo_rows));ck('turbo_api_unique',len(set(turbo_names))==6)
@@ -67,14 +69,20 @@ ck('normalize_reduced_plane_and_mixed_calls',nv.get('status')=='PASS' and len(nv
 native_norm=json.loads((ROOT/'validation/normalize/NATIVE_SOURCE_VALIDATION.json').read_text())
 ck('normalize_native_sources',native_norm.get('status')=='PASS' and len(native_norm.get('profiles',{}))==5 and len(native_norm.get('checks',[]))==16,{'profiles':len(native_norm.get('profiles',{})),'checks':len(native_norm.get('checks',[]))})
 
+seek_delta=json.loads((ROOT/'validation/movement/SEEK_BINARY_DELTA.json').read_text())
+ck('seek_binary_delta_confined',seek_delta['status']=='PASS' and len(seek_delta['profiles'])==5 and all(r['changed_outside_seek']==0 for r in seek_delta['profiles'].values()))
 size_refresh=json.loads((ROOT/'validation/SIZE_OPTIMIZATION_VALIDATION.json').read_text())
 ck('size_refresh_per_call_comparison',size_refresh.get('status')=='PASS' and len(size_refresh['normalize'])==5 and len(size_refresh['atan2'])==3)
 for family in ('normalize','atan2'):
     for row in size_refresh[family]:
         p=row['profile']; current=ROOT/p/'resident'/f'math_{p}_game_math.prg'
         expected_cases=107396 if family=='normalize' else 65536
+        # The seek installation changed only seek-owned bytes (SEEK_BINARY_DELTA),
+        # so the size-refresh evidence recorded on the pre-seek image still holds.
+        delta=seek_delta['profiles'][p]
         ok=(row['cases']==expected_cases and row['slower_calls']==0 and row['ram_bytes_saved']>0
-            and row['current_prg_sha256']==sha(current))
+            and row['current_prg_sha256']==delta['pre_seek_prg_sha256'] and delta['changed_outside_seek']==0
+            and delta['current_prg_sha256']==sha(current))
         if family=='atan2':ok=ok and row['changed_outputs']==row['faster_calls']==0
         else:
             sizes=native_norm['profiles'][p]['maps']['reference']
@@ -85,8 +93,8 @@ for family in ('normalize','atan2'):
 source_val=json.loads((ROOT/'validation/source_relocation/ALTERNATE_MAP_VALIDATION.json').read_text())
 ck('alternate_validation_status',source_val['status']=='PASS')
 ck('alternate_all_profiles',len(source_val['profiles'])==4)
-ck('alternate_entries_184',sum(x['public_entries_executed'] for x in source_val['profiles'])==API_COUNT*4)
-ck('alternate_calls_18356',sum(x['machine_calls'] for x in source_val['profiles'])==4589*4)
+ck(f'alternate_entries_{API_COUNT*4}',sum(x['public_entries_executed'] for x in source_val['profiles'])==API_COUNT*4)
+ck(f'alternate_calls_{COMMON_CALLS*4}',sum(x['machine_calls'] for x in source_val['profiles'])==COMMON_CALLS*4)
 for x in source_val['profiles']:
     ck(f'{x["profile"]}_{API_COUNT}_entries',x['public_entries_executed']==API_COUNT)
     ck(f'{x["profile"]}_all_named_entries_hit',set(x['entry_hits'])==set(names))
@@ -178,7 +186,7 @@ hv=json.loads((ROOT/'validation/hybrid/HYBRID_VALIDATION.json').read_text())
 ck('hybrid_validation_status',hv['status']=='PASS')
 for kind in ('reference','alternate'):
     c=hv['tests'][f'common_{kind}']
-    ck(f'hybrid_{kind}_{API_COUNT}_entries',c['public_entries']==API_COUNT and c['machine_calls']==4589,c)
+    ck(f'hybrid_{kind}_{API_COUNT}_entries',c['public_entries']==API_COUNT and c['machine_calls']==COMMON_CALLS,c)
     z=hv['tests']['zp_confinement'][kind]
     ck(f'hybrid_{kind}_31_zp',z['bytes']==31 and z['outside_bytes_unchanged']==225,z)
     ni=hv['tests']['optional_init_cold_load'][kind]
@@ -206,11 +214,11 @@ pv=json.loads((ROOT/'validation/pareto/PARETO_SELECTOR_VALIDATION.json').read_te
 ck('pareto_selector_status',pv['status']=='PASS')
 matrix_builds=sum(len(points) for points in pv['standard_points'].values())
 ck('pareto_matrix_12_builds',pv['status']=='PASS' and matrix_builds==12,matrix_builds)
-ck('pareto_matrix_55068_calls',pv['common_api_machine_calls']==55068,pv['common_api_machine_calls'])
+ck(f'pareto_matrix_{COMMON_CALLS*12}_calls',pv['common_api_machine_calls']==COMMON_CALLS*12,pv['common_api_machine_calls'])
 for kind in ('reference','alternate'):
     ck(f'pareto_{kind}_six_breakpoints',set(pv['standard_points'][kind])=={'31','36','60','147','176','221'})
     for z,x in pv['standard_points'][kind].items():
-        ck(f'pareto_{kind}_{z}_{API_COUNT}_entries',x['common_api']['entries']==API_COUNT and x['common_api']['calls']==4589)
+        ck(f'pareto_{kind}_{z}_{API_COUNT}_entries',x['common_api']['entries']==API_COUNT and x['common_api']['calls']==COMMON_CALLS)
 ck('pareto_31_exact_ram',pv['standard_points']['reference']['31']['extra_private_ram_bytes']==9633)
 ck('pareto_36_exact_ram',pv['standard_points']['reference']['36']['extra_private_ram_bytes']==10206)
 ck('pareto_60_exact_ram',pv['standard_points']['reference']['60']['extra_private_ram_bytes']==11149)
@@ -254,11 +262,20 @@ for prof,mean,maxerr in (('v1_balanced',48.44718933105469,1),('v2_pareto_fast',4
     a=at['profiles'][prof]
     ck(f'atan2_{prof}_exhaustive',a['cases']==65536 and a['failures_gt_1']==0 and a['max_phase_error']<=maxerr and abs(a['mean_cycles']-mean)<1e-9,a)
 
+# Seek movement kernels: placement proof and per-profile benchmark on the current images.
+sk=json.loads((ROOT/'validation/movement/SEEK_PLACEMENT.json').read_text())
+ck('seek_placement',sk['status']=='PASS' and len(sk['profiles'])==8 and all(v['foreign_accesses']==0 for v in sk['profiles'].values()))
+sb=json.loads((ROOT/'validation/movement/SEEK_PROFILE_BENCHMARK.json').read_text())
+ck('seek_profile_benchmark',sb['status']=='PASS' and set(sb['profiles'])==set(PROFILES+[HYBRID]) and all(len(v)==8 for v in sb['profiles'].values()))
+for p in PROFILES+[HYBRID]:
+    ck(f'seek_benchmark_current_{p}',sb['prg_sha256'][p]==sha(ROOT/p/'resident'/f'math_{p}_game_math.prg'))
+ck('seek_native_sources',all((ROOT/p/'resident/movement/native/seek_dda.asm').exists() for p in PROFILES+[HYBRID]))
+
 # Consolidated routine/resource index.
 ct=json.loads((ROOT/'validation/CONSOLIDATED_ROUTINE_TABLE.json').read_text())
 ck('consolidated_table_status',ct['status']=='PASS')
-ck('consolidated_table_rows_245',len(ct['rows'])==245,len(ct['rows']))
-ck('consolidated_stable_rows_230',sum(r['api_class']=='stable' for r in ct['rows'])==API_COUNT*5)
+ck(f'consolidated_table_rows_{API_COUNT*5+15}',len(ct['rows'])==API_COUNT*5+15,len(ct['rows']))
+ck(f'consolidated_stable_rows_{API_COUNT*5}',sum(r['api_class']=='stable' for r in ct['rows'])==API_COUNT*5)
 ck('consolidated_profile_coverage',all(sum(r['profile']==p and r['api_class']=='stable' for r in ct['rows'])==API_COUNT for p in PROFILES+[HYBRID]))
 ck('consolidated_zero_stack_reservation',all(int(r['stack_page_reserved_bytes'])==0 for r in ct['rows']))
 ck('consolidated_turbo32_135_zp',all(int(r['zp_bytes'])==135 for r in ct['rows'] if r['routine'].startswith('MATH_REU_UMUL32')))
@@ -282,6 +299,6 @@ v4=(ROOT/'v4_reu_16m/resident/math_v4_reu_16m_game_math.prg').read_bytes();ld=v4
 def vb(a): return v4[2+a-ld]
 ck('v4_isqrt32_square_planes',all(vb(0x9800+x)==((x*x)&255) and vb(0x9900+x)==(((x*x)>>8)&255) for x in range(256)))
 
-out={'status':('PASS' if acme_current else 'PASS_WITH_ACME_NOT_RUN'),'checks':checks,'summary':{'acme_current_status':acme.get('status'),'checks_passed':len(checks),'public_entries':API_COUNT,'alternate_entry_executions':API_COUNT*4,'alternate_machine_calls':4589*4,'config_cases':27,'turbo_product_calls':17164,'turbo_lifecycle_calls':32,'turbo_api_calls':17196,'turbo_boundary_product_calls':3556,'reu_profiles_turbo_entries':6,'isqrt32_cases_per_profile':5097,'hybrid_public_entries':API_COUNT,'hybrid_common_machine_calls_per_map':4589,'hybrid_direct_import_cases':144246,'hybrid_optional_init_cases':2000,'hybrid_zp_bytes':31,'pareto_matrix_builds':12,'pareto_common_machine_calls':55068,'pareto_direct_cycle_parity_cases':75644,'pareto_smul16_stress_cases':50144,'pareto_mixed_workload_iterations':25000,'pareto_config_cases':12,'pareto_default_breakpoints':[31,36,60,147,176,221]}}
+out={'status':('PASS' if acme_current else 'PASS_WITH_ACME_NOT_RUN'),'checks':checks,'summary':{'acme_current_status':acme.get('status'),'checks_passed':len(checks),'public_entries':API_COUNT,'alternate_entry_executions':API_COUNT*4,'alternate_machine_calls':COMMON_CALLS*4,'config_cases':27,'turbo_product_calls':17164,'turbo_lifecycle_calls':32,'turbo_api_calls':17196,'turbo_boundary_product_calls':3556,'reu_profiles_turbo_entries':6,'isqrt32_cases_per_profile':5097,'hybrid_public_entries':API_COUNT,'hybrid_common_machine_calls_per_map':COMMON_CALLS,'hybrid_direct_import_cases':144246,'hybrid_optional_init_cases':2000,'hybrid_zp_bytes':31,'pareto_matrix_builds':12,'pareto_common_machine_calls':COMMON_CALLS*12,'pareto_direct_cycle_parity_cases':75644,'pareto_smul16_stress_cases':50144,'pareto_mixed_workload_iterations':25000,'pareto_config_cases':12,'pareto_default_breakpoints':[31,36,60,147,176,221]}}
 (ROOT/'validation/RELEASE_AUDIT.json').write_text(json.dumps(out,indent=2)+'\n')
 print('RELEASE AUDIT',out['status'],len(checks),'checks')

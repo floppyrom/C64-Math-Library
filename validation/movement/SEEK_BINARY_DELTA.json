@@ -1,0 +1,48 @@
+{
+ "status": "PASS",
+ "pre_seek_commit": "cfc89cfc2f0208a2ea4f21b10de02974b9ee65bb",
+ "profiles": {
+  "v1_balanced": {
+   "pre_seek_prg_sha256": "2780f653e0236a0ca0a6c5cc13966dad053710a7dbbceab309b3a7f7007af534",
+   "current_prg_sha256": "86c2784f67784e01ed4f87f17a9e1f1612f63c42b20e564af3b240bd0092e4cb",
+   "prg_span_bytes": 49047,
+   "changed_bytes": 1416,
+   "changed_outside_seek": 0,
+   "seek_code_bytes_incl_jmp_slots": 1447
+  },
+  "v2_pareto_fast": {
+   "pre_seek_prg_sha256": "507715294f2c7e72ea895b009dde62244f091fdbd8fcd9733668648632a64eb6",
+   "current_prg_sha256": "0e1818b86d7b4d463a2af6b0424fdee728b79331a277726f72d5d4e7236e1bb9",
+   "prg_span_bytes": 49047,
+   "changed_bytes": 1280,
+   "changed_outside_seek": 0,
+   "seek_code_bytes_incl_jmp_slots": 1312
+  },
+  "v3_reu_512k": {
+   "pre_seek_prg_sha256": "e29fa4245ac9b15e1048bbe16f4126bfc20b39bd95f063d211870f179a776341",
+   "current_prg_sha256": "cede0fedc07c447ed2d94372b21cb1e6ae869d7dd13250076c6556f21e508ac7",
+   "prg_span_bytes": 49047,
+   "changed_bytes": 1283,
+   "changed_outside_seek": 0,
+   "seek_code_bytes_incl_jmp_slots": 1312,
+   "reu_image_unchanged": true
+  },
+  "v4_reu_16m": {
+   "pre_seek_prg_sha256": "5036aef397fe973eec665aaae600d115ae9680338749d945bfe9440541d66e2f",
+   "current_prg_sha256": "a3e6b9d4667e84ba2405f751cf5230a904fc2e78ea470c0aa6ee48556cf02904",
+   "prg_span_bytes": 49047,
+   "changed_bytes": 1283,
+   "changed_outside_seek": 0,
+   "seek_code_bytes_incl_jmp_slots": 1312,
+   "reu_image_unchanged": true
+  },
+  "v5_hybrid_lowzp": {
+   "pre_seek_prg_sha256": "52697af71bab5a6586536d9d3b8abc0165fe0e9260c0353ed1a4f638e4a9ee0b",
+   "current_prg_sha256": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729",
+   "prg_span_bytes": 49047,
+   "changed_bytes": 1416,
+   "changed_outside_seek": 0,
+   "seek_code_bytes_incl_jmp_slots": 1447
+  }
+ }
+}

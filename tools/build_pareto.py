@@ -506,7 +506,7 @@ def build_hybrid_custom(config: Path, outdir: Path, selection: dict) -> dict:
             'notes':[
                 'Selection occurs at build time; there is no runtime dispatcher.',
                 'Only certified dependency-compatible packs are considered.',
-                'All callers retain the common 46-entry ABI.',
+                'All callers retain the common 54-entry ABI.',
                 'If math_init_required is true, call MATH_INIT once before any math routine.',
                 'The RAM budget is enforced against the exact selected private payload; it is not a requirement for one contiguous block. Inspect private_main_ram_ranges for placement/ownership.',
             ],

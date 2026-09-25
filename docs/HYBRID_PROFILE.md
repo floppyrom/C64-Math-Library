@@ -4,7 +4,7 @@
 
 V1 and V2 are alternative complete profiles, but their individual algorithms can be mixed safely **at build time** when their scratch and code dependencies are understood. V5 is the first certified hybrid: it keeps V1's low integration pressure while importing V2 routines that can run inside the same 31-byte normal ZP contract.
 
-This is not two complete libraries loaded side-by-side. V5 produces **one resident library, one public I/O block and one 46-entry API**.
+This is not two complete libraries loaded side-by-side. V5 produces **one resident library, one public I/O block and one 54-entry API**.
 
 ## Selection policy
 
@@ -54,7 +54,7 @@ This design means:
 
 `validation/hybrid/HYBRID_VALIDATION.json` records:
 
-- common 46-entry validation on reference and alternate maps, 4,589 calls each;
+- common 54-entry validation on reference and alternate maps, 21,422 calls each;
 - **144,246 direct-import test cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity and an independent <=1 phase-unit error check;
 - exhaustive `UMOD8` correctness over all 65,536 input pairs;
 - exhaustive `COS8/SINCOS8` phase-domain checks;
@@ -67,7 +67,7 @@ Additional files:
 
 - `HYBRID_DETERMINISTIC_REBUILD.json` — reference and alternate builds reproduce byte-identically;
 - `HYBRID_CONFIG_VALIDATION.json` — valid maps accepted and unsafe overlap/I/O/alignment/overflow maps rejected;
-- `v5_hybrid_lowzp_reference_validation.json` / `...alternate...` — complete 46-entry validation records.
+- `v5_hybrid_lowzp_reference_validation.json` / `...alternate...` — complete 54-entry validation records.
 
 ## Current scope
 
@@ -75,4 +75,4 @@ V5 is a stock-C64 profile. It does not use the REU and does not expose Turbo16/T
 
 ## Q8.8 vector normalization
 
-V5 exposes `MATH_VEC2_NORMALIZE_Q8_8` as part of the common 46-entry API. It uses the same four-byte-scratch logarithmic-ratio backend as V1 and V2, inside V5's existing 31-byte ZP window: **160.150080 cycles mean**, 84–302 cycles on the deterministic corpus, with the common <=0.3621 degree / <=202-LSB precision contract.
+V5 exposes `MATH_VEC2_NORMALIZE_Q8_8` as part of the common 54-entry API. It uses the same four-byte-scratch logarithmic-ratio backend as V1 and V2, inside V5's existing 31-byte ZP window: **160.150080 cycles mean**, 84–302 cycles on the deterministic corpus, with the common <=0.3621 degree / <=202-LSB precision contract.

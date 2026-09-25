@@ -2,7 +2,7 @@
 
 The **Custom Pareto Builder** generates one stock-C64 C64 Math Library build from certified V1/V2 implementation packs. It is intended for games and demos that know how much zero page and ordinary RAM they can dedicate to math.
 
-There is **no runtime dispatcher**. Selection happens at build time and the generated library keeps the same 46-entry public API.
+There is **no runtime dispatcher**. Selection happens at build time and the generated library keeps the same 54-entry public API.
 
 ## Easiest way: interactive wizard
 
@@ -188,7 +188,7 @@ python3 tools/test_pareto_config.py
 python3 tools/stress_pareto.py
 ```
 
-The release validation covers representative budget points on both reference and alternate maps, all 46 public entries, V2 result/cycle parity for imported paths, exhaustive UMOD8, deterministic rebuilds, V1/V5 endpoint identity, ZP confinement, invalid resource maps, signed-multiply stress and mixed workloads.
+The release validation covers representative budget points on both reference and alternate maps, all 54 public entries, V2 result/cycle parity for imported paths, exhaustive UMOD8, deterministic rebuilds, V1/V5 endpoint identity, ZP confinement, invalid resource maps, signed-multiply stress and mixed workloads.
 
 ## Validation headline
 

@@ -40,7 +40,7 @@ The optimizer maximizes weighted cycle savings, so RAM usage need not increase m
 
 `MATH_INIT` is mandatory on V2–V4 and on generated Pareto profiles whose manifest says `math_init_required: true`. It remains optional on V1/V5 and on generated profiles selected with `--init-policy optional`.
 
-All fixed resident profiles and all generated Pareto builds expose the same 46-entry stable API. V3/V4 additionally expose Turbo16/Turbo32 lifecycle entries; V4 also exposes QS16.
+All fixed resident profiles and all generated Pareto builds expose the same 54-entry stable API. V3/V4 additionally expose Turbo16/Turbo32 lifecycle entries; V4 also exposes QS16.
 
 ## Normalization
 

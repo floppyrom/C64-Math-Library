@@ -5,16 +5,19 @@
     "historical_overlay_boundary_checks": 4,
     "historical_overlay_checks": 8,
     "historical_status": "PASS",
-    "note": "ACME 0.97 independently reproduced all current V1-V4 reference/alternate PRGs and Turbo overlay/boundary builds.",
+    "note": "ACME 0.97 independently reproduces all current V1-V4 reference/alternate PRGs (including the seek include) and Turbo overlay/boundary builds; the standalone seek sources assemble byte-identically.",
     "status": "PASS_CURRENT",
-    "current_checks": 8
+    "current_checks": 8,
+    "current_overlay_checks": 8,
+    "current_overlay_boundary_checks": 4,
+    "current_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "ea7e3fea3425e8ab5e9c622c9f81516b8bdf80c41d2eb752062ee292d53c1ede",
-    "v2_pareto_fast": "e116b9f37666498a63e350b5e6070d92aec16603decf83074b247c012713eda7",
-    "v3_reu_512k": "7765c035d588d4f1d3d44557006fafe5120a74a7da7d5693db836e7b0d669356",
-    "v4_reu_16m": "4adb57b5fa3210c74e1a07e117b6f6104567f3cc0ce46089422b2f796e261055",
-    "v5_hybrid_lowzp": "99ec092ebf5b8bee8d3dfe745e9728d58023516fc159ad393e8126735ff09302"
+    "v1_balanced": "bdbc1858dd6af93f95563877cb2c331eae5ea51ef0d87be0166f07ae14fbf5d5",
+    "v2_pareto_fast": "ec1d63ee9bd88e25c663f5f8cb56d995e0208d138a72d8d4445e124c6a58dad8",
+    "v3_reu_512k": "07a0d77cc70eb33d03eb999b53671f0a3079b97c1a34bd85714511f1836953c1",
+    "v4_reu_16m": "4c5cc035e50e5c091c1c15de2922eea184010163ad3864afe79278f7809ee987",
+    "v5_hybrid_lowzp": "3abbacc805a490db5c0ee90498957f9c2c8501a99a3ce7e3b3b54b0eb8fb163b"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "da767488080d83bc692c4a9b41ecbbe19ac331652170c4f47faccab53a96483d",
@@ -29,14 +32,14 @@
     "csv": "docs/CONSOLIDATED_ROUTINE_TABLE.csv",
     "machine_evidence": "validation/CONSOLIDATED_ROUTINE_TABLE.json",
     "markdown": "docs/CONSOLIDATED_ROUTINE_TABLE.md",
-    "rows": 245,
-    "stable_rows": 230,
+    "rows": 285,
+    "stable_rows": 270,
     "stack_page_reserved_bytes_all_shipped_rows": 0,
     "status": "PASS"
   },
   "custom_pareto": {
     "builder": "tools/build_pareto.py",
-    "common_api_machine_calls": 55068,
+    "common_api_machine_calls": 257064,
     "config_validation_cases": 12,
     "default_reference_points": {
       "147": {
@@ -103,13 +106,13 @@
     "optional31_v5_endpoint_byte_identical": true,
     "pure_v1_endpoint_byte_identical": true,
     "smul16_stress_cycle_parity_cases": 50144,
-    "stable_api_entries": 46,
+    "stable_api_entries": 54,
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-09-21",
+  "date": "2026-09-25",
   "deterministic_builds_checked": 8,
   "division_refresh": {
     "date": "2026-09-20",
@@ -132,18 +135,18 @@
     "consolidated_routine_table": "docs/CONSOLIDATED_ROUTINE_TABLE.md",
     "custom_pareto_builder_doc": "docs/PARETO_BUILDER.md",
     "division_refresh_doc": "docs/DIVISION_REFRESH_2026-09-20.md",
-    "manual_scope": "V1-V5 fixed profiles; 46-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; integration/troubleshooting",
+    "manual_scope": "V1-V5 fixed profiles; 54-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 57966,
-    "user_manual_lines": 1787,
-    "user_manual_sha256": "25c9f8e03161a1afe70ef304699db1cead550058969bb55f028c2716d8c23b75"
+    "user_manual_bytes": 60517,
+    "user_manual_lines": 1831,
+    "user_manual_sha256": "f9f6137942495141b9401ac9f815656dec2056ec791e07de446311b1b14ba4fb"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "9b354748f63f731d182c31fa27914503f7eaccc7ab0a82890c5bea3bfa8dad42",
-    "common_machine_calls_per_map": 4589,
-    "common_public_entries_per_map": 46,
+    "alternate_prg_sha256": "3abbacc805a490db5c0ee90498957f9c2c8501a99a3ce7e3b3b54b0eb8fb163b",
+    "common_machine_calls_per_map": 21422,
+    "common_public_entries_per_map": 54,
     "config_validation_cases": 8,
     "deterministic_maps": 2,
     "direct_import_cases": 144246,
@@ -154,7 +157,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "7b340cf2dd33eb950f02dde864b9a64f55a109ed45e1db26a4f2f5ef780a7071",
+    "reference_prg_sha256": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "atan2_tables_bytes": 1024
@@ -179,30 +182,31 @@
     "umul32_mean_cycles_all_profiles": 712.2353673723537
   },
   "notes": [
+    "Seek DDA adds eight MATH_SEEK8_*/MATH_SEEK16_* entries (47-54): exact Bresenham movement toward a target for up to eight objects; identical per-frame steppers in V1-V5, no new ZP, no REU; every changed PRG byte is seek-owned (SEEK_BINARY_DELTA.json).",
     "Division refresh integrates Repose-derived UDIV24, profile-specific UDIV8/16/24 selection and native direct-output signed division; 822,050 unsigned + 364,533 signed validation calls pass with zero errors.",
     "UMUL16/UMUL24 resident record upgrades are active; V1/V5 preserve the 31-byte normal-ZP and UMUL32_READY state contracts.",
     "V3/V4 Turbo32 uses the stack-free 135-ZP ram135 record-family compromise; reference range $0A-$90, legal origins $02-$79; BEGIN/CALL/END = 326 / 728.947080 mean / 371 cycles on the canonical corpus.",
     "Current ACME 0.97 independently reproduces all V1-V4 reference/alternate PRGs and Turbo overlay/boundary builds byte-for-byte.",
-    "A 245-row consolidated routine table covers every stable API in V1-V5 plus V3/V4 Turbo and V4 QS16, including cycles, reachable code bytes, ZP and persistent stack-page reservation.",
+    "A 285-row consolidated routine table covers every stable API in V1-V5 plus V3/V4 Turbo and V4 QS16, including cycles, reachable code bytes, ZP and persistent stack-page reservation.",
     "All shipped SMUL*/SDIV* public paths own signed-specific executable paths; corresponding unsigned executable engines are not entered.",
     "Signed ownership validator: 279 checks and 65/65 zero-overlap signed/unsigned executable comparisons across V1-V5.",
     "Signed arithmetic regression: 264,999 multiply calls and 364,533 divide/modulo calls, zero errors.",
     "Same-corpus division-family audit covers 23 public paths per profile and reports zero timing regressions in V1-V5.",
     "V2-V4 retain the executable-ZP native SMUL16 kernel; V1/V5 keep the 31-byte normal-ZP contract using private signed arithmetic paths in already-reserved resident holes.",
     "Custom Pareto Builder added for stock-C64 games/demos: total ZP budget, optional exact extra-RAM budget, init policy and routine weights select the fastest certified compatible V1/V2 implementation set at build time.",
-    "Custom Pareto selection has no runtime dispatcher and retains the same 46-entry public API.",
+    "Custom Pareto selection has no runtime dispatcher and retains the same 54-entry public API.",
     "Default equal-weight Pareto breakpoints are 31/36/60/147/176/221 ZP bytes.",
     "31 ZP + zero extra RAM reproduces V1 byte-for-byte; 31 ZP + optional-init policy reproduces V5 byte-for-byte; 221 ZP selects complete V2.",
     "RAM budgeting is exact for generated private payload, including the exact emitted MATH_INIT helper; generated manifests list every private RAM and ZP range.",
-    "Pareto validation covers 12 reference/alternate builds and 55,068 common-API calls, 75,644 direct V2 cycle-parity cases, exhaustive UMOD8, 50,144 SMUL16 parity cases, 25,000 mixed iterations, 10,000 ZP-guard iterations, deterministic rebuilds and 12 resource/config cases.",
-    "V5 Hybrid Low-ZP adds a fifth stock-C64 profile while preserving the common 46-entry API.",
+    "Pareto validation covers 12 reference/alternate builds and 257,064 common-API calls, 75,644 direct V2 cycle-parity cases, exhaustive UMOD8, 50,144 SMUL16 parity cases, 25,000 mixed iterations, 10,000 ZP-guard iterations, deterministic rebuilds and 12 resource/config cases.",
+    "V5 Hybrid Low-ZP adds a fifth stock-C64 profile while preserving the common 54-entry API.",
     "V5 keeps V1 normal ZP at 31 bytes and imports certified V2 division/modulo/COS/SINCOS paths with no runtime dispatcher tax.",
     "V5 ordinary safe entries retain V1-style optional MATH_INIT; 2,000 cold-load calls across reference/alternate maps validate this.",
     "Sequential calls, including repeated calls inside game/demo loops, are supported; the library remains non-reentrant.",
     "V5 reference private code uses RAM under BASIC ROM at $A000-$BDFF; bank BASIC out or relocate HYBRID_CODE.",
     "DOCUMENTED LEAN FINAL adds a plain-English Turbo explanation and removes reproducible/superseded packaging waste; code, ABI, overlays and deployable REU data are unchanged.",
     "DOCUMENTED LEAN FINAL includes the complete user/integration manual; resident code, overlays, REU arithmetic data, ABI and performance are unchanged from Turbo FINAL.",
-    "The common 46-entry stable API is unchanged across V1-V4.",
+    "The common 54-entry stable API is unchanged across V1-V4.",
     "V3/V4 additionally expose six stateful Turbo16/Turbo32 BEGIN/CALL/END entries.",
     "Turbo executable-ZP origins and REU storage banks are selected at build time; overlay code is assembled from canonical source with no runtime relocation pass.",
     "Reference and alternate Turbo cycle vectors are identical; relocation adds zero runtime cycles.",
@@ -211,19 +215,19 @@
   ],
   "package_audit_checks": 30,
   "package_cleanup": {
-    "consolidated_routine_table_rows": 245,
+    "consolidated_routine_table_rows": 285,
     "csdb_changelog": "CSDB_CHANGELOG.txt",
     "current_acme_validation": true,
     "generated_build_hybrid_shipped": false,
     "generated_build_pareto_shipped": false,
     "generated_build_source_shipped": false,
-    "lean_file_count_excluding_checksum": 889,
+    "lean_file_count_excluding_checksum": 974,
     "legacy_native_signed_tree_removed": true,
     "obsolete_development_validators_removed": 2,
     "package_contents_doc": "docs/PACKAGE_CONTENTS.md",
     "prior_exhaustive_baseline_retained": true,
     "superseded_slow_isqrt32_baseline_shipped": false,
-    "uncompressed_bytes_excluding_checksum": 28305602,
+    "uncompressed_bytes_excluding_checksum": 29299143,
     "unreferenced_legacy_bin_label_artifacts_removed": 27
   },
   "profiles": [
@@ -234,11 +238,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "2780f653e0236a0ca0a6c5cc13966dad053710a7dbbceab309b3a7f7007af534",
-    "v2_pareto_fast": "507715294f2c7e72ea895b009dde62244f091fdbd8fcd9733668648632a64eb6",
-    "v3_reu_512k": "e29fa4245ac9b15e1048bbe16f4126bfc20b39bd95f063d211870f179a776341",
-    "v4_reu_16m": "5036aef397fe973eec665aaae600d115ae9680338749d945bfe9440541d66e2f",
-    "v5_hybrid_lowzp": "52697af71bab5a6586536d9d3b8abc0165fe0e9260c0353ed1a4f638e4a9ee0b"
+    "v1_balanced": "86c2784f67784e01ed4f87f17a9e1f1612f63c42b20e564af3b240bd0092e4cb",
+    "v2_pareto_fast": "0e1818b86d7b4d463a2af6b0424fdee728b79331a277726f72d5d4e7236e1bb9",
+    "v3_reu_512k": "cede0fedc07c447ed2d94372b21cb1e6ae869d7dd13250076c6556f21e508ac7",
+    "v4_reu_16m": "a3e6b9d4667e84ba2405f751cf5230a904fc2e78ea470c0aa6ee48556cf02904",
+    "v5_hybrid_lowzp": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "66a3feab7d1a18356291c2aac9f404627ca13004d1032d6c6efb4cd1e4f1acf5",
@@ -248,8 +252,8 @@
     "turbo16": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
     "turbo32": "bbe1d11f5106d9b1efb919de660469cd54bdf7711853165e9b696b1a8e8f5a1a"
   },
-  "release": "c64_math_library_v1-v5_NORMALIZE_ATAN2_SIZE_REFRESH_46ENTRY_2026-09-21",
-  "release_audit_checks": 258,
+  "release": "c64_math_library_v1-v5_SEEK_DDA_54ENTRY_2026-09-25",
+  "release_audit_checks": 268,
   "release_audit_status": "PASS",
   "reu_turbo_lifecycle_entries": 6,
   "signed_implementation_taxonomy": {
@@ -271,11 +275,11 @@
     "zero_overlap_comparisons": 65
   },
   "source_relocation": {
-    "entries_executed": 184,
-    "machine_calls": 18356,
+    "entries_executed": 216,
+    "machine_calls": 85688,
     "status": "PASS"
   },
-  "stable_api_entries": 46,
+  "stable_api_entries": 54,
   "status": "PASS",
   "turbo_boundary_sweep": {
     "product_calls": 3556,
@@ -348,7 +352,7 @@
     },
     "public_entry": "MATH_VEC2_NORMALIZE_Q8_8",
     "reference_address": "$5E39",
-    "stable_api_entries": 46,
+    "stable_api_entries": 54,
     "status": "PASS",
     "full_domain_certificates": {
       "stock_log": {
@@ -385,16 +389,16 @@
   "standalone_source_publication": {
     "status": "PASS",
     "audit": "validation/STANDALONE_API_CONSISTENCY_AUDIT.json",
-    "audit_checks": 1357,
+    "audit_checks": 1565,
     "failed_checks": 0,
     "profile_routine_counts": {
-      "v1_balanced": 46,
-      "v2_pareto_fast": 46,
-      "v3_reu_512k": 52,
-      "v4_reu_16m": 55,
-      "v5_hybrid_lowzp": 46
+      "v1_balanced": 54,
+      "v2_pareto_fast": 54,
+      "v3_reu_512k": 60,
+      "v4_reu_16m": 63,
+      "v5_hybrid_lowzp": 54
     },
-    "total_callable_profile_entries": 245,
+    "total_callable_profile_entries": 285,
     "canonical_naming": "docs/NAMING_STANDARD.md",
     "legacy_math_api_compatible": true,
     "benchmark_values_changed": true
@@ -422,5 +426,51 @@
     },
     "prg_file_spans_changed": false,
     "slower_benchmark_calls": 0
+  },
+  "seek_dda": {
+    "status": "PASS",
+    "documentation": "docs/SEEK_DDA.md",
+    "public_entries": [
+      "MATH_SEEK8_INIT",
+      "MATH_SEEK8_STEP",
+      "MATH_SEEK8_STEP_INT",
+      "MATH_SEEK8_STEP1",
+      "MATH_SEEK16_INIT",
+      "MATH_SEEK16_STEP",
+      "MATH_SEEK16_STEP_INT",
+      "MATH_SEEK16_STEP1"
+    ],
+    "reference_jmp_slots": "$5E3C-$5E53",
+    "kernel_source": "tools/seek_kernel.py",
+    "native_sources": "<profile>/resident/movement/native/seek_dda.asm",
+    "slots": 8,
+    "code_bytes": {
+      "v1_balanced": 1423,
+      "v2_pareto_fast": 1288,
+      "v3_reu_512k": 1288,
+      "v4_reu_16m": 1288,
+      "v5_hybrid_lowzp": 1423
+    },
+    "jmp_slot_bytes": 24,
+    "state_bytes": 408,
+    "new_zp_bytes": 0,
+    "reu_bytes": 0,
+    "step_mean_cycles": {
+      "seek8_step": 87.137,
+      "seek8_step_int": 70.99,
+      "seek8_step1": 65.954,
+      "seek16_step": 118.28,
+      "seek16_step_int": 103.65,
+      "seek16_step1": 98.18
+    },
+    "v2_seek16_step_mean_cycles": 118.69,
+    "profile_benchmark": "validation/movement/SEEK_PROFILE_BENCHMARK.json",
+    "placement_proof": "validation/movement/SEEK_PLACEMENT.json",
+    "binary_delta": "validation/movement/SEEK_BINARY_DELTA.json",
+    "standalone_benchmarks": [
+      "validation/movement/SEEK8_DDA_BENCHMARK.json",
+      "validation/movement/SEEK_DDA_BENCHMARK.json"
+    ],
+    "illegal_opcodes": "STEP1 uses stable NMOS DCP"
   }
 }
