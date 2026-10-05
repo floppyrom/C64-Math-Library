@@ -16,12 +16,15 @@ S32V28_neg_sqr_lo  = REG_TABLE+$1400
 S32V28_neg_sqr_hi  = REG_TABLE+$1600
 
 ; Exact existing 31-byte ZP_MAIN window.
-S32V28_neg_lo_1 = ZP_MAIN+$00
-S32V28_sqr_hi_1 = ZP_MAIN+$02
-S32V28_neg_lo_2 = ZP_MAIN+$04
-S32V28_sqr_hi_2 = ZP_MAIN+$06
-S32V28_neg_lo_3 = ZP_MAIN+$08
-S32V28_sqr_hi_3 = ZP_MAIN+$0A
+; Five pointer pairs live in already-owned but otherwise untouched V2-family ZP
+; holes.  The sixth stays in ZP_MAIN so V2 remains within its 221-byte
+; commitment while ordinary mixed calls need to restore only one high byte.
+S32V28_neg_lo_1 = ZP_MAIN+$3C   ; ref $3E-$3F
+S32V28_sqr_hi_1 = ZP_MAIN+$3E   ; ref $40-$41
+S32V28_neg_lo_2 = ZP_MAIN+$40   ; ref $42-$43
+S32V28_sqr_hi_2 = ZP_MAIN+$4E   ; ref $50-$51
+S32V28_neg_lo_3 = ZP_MAIN+$67   ; ref $69-$6A
+S32V28_sqr_hi_3 = ZP_MAIN+$0A   ; ref $0C-$0D; mixed-call rebound pair
 S32V28_z00 = ZP_MAIN+$0C
 S32V28_z10 = ZP_MAIN+$0D
 S32V28_z20 = ZP_MAIN+$0E
@@ -229,7 +232,7 @@ S32V28_c4b_overflow_done:
         clc
         jmp S32V28_c4b_done
 S32V28_cg_code_end:
-; Existing V2 MATH_INIT already installs the six pointer high bytes used by FAST31.
+; MATH_INIT installs all six pointer high bytes; five now persist in profile-owned ZP holes.
 *= REG_KERNEL+$1500
 S32V28_q2_fast_core_start:
 S32V28_q2_umult32x32_same_x:
@@ -881,13 +884,9 @@ S32V28_api_s31_v25_bind_q1:
 ; state contract.
 *= REG_GAME_API+$01C8
 S32V29_safe_entry:
-        lda #>S32V28_neg_sqr_lo
-        sta S32V28_neg_lo_1+1
-        sta S32V28_neg_lo_2+1
-        sta S32V28_neg_lo_3+1
+        ; Five pointer highs are persistent in profile-owned ZP holes.
+        ; Only sqr_hi_3 remains in shared ZP_MAIN and needs mixed-call repair.
         lda #>S32V28_sqr_hi
-        sta S32V28_sqr_hi_1+1
-        sta S32V28_sqr_hi_2+1
         sta S32V28_sqr_hi_3+1
         jmp S32V28_api_smul32_speed31_v26
 
