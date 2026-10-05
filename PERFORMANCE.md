@@ -102,10 +102,15 @@ These are independently useful kernels or record/Pareto points. They are **not a
 | `mul_u32_u32_u64` | `bounded133_compact` | 606.864799 | 543 | 733 | 133 | 162 | [mul_u32_u32_u64_bounded133_compact.asm](routines/multiply/mul_u32_u32_u64_bounded133_compact.asm) | [UMUL32_BOUNDED133_COMPACT_GMEC.json](validation/records/UMUL32_BOUNDED133_COMPACT_GMEC.json); gmec uniform profile/validation corpus |
 | `mul_s24_s24_s48` | `fast24` | 400.301600 | 339 | 461 | 24 | 0 | [mul_s24_s24_s48_fast24.asm](routines/multiply/mul_s24_s24_s48_fast24.asm) | [SMUL24_FAST24_2026-09-20.json](validation/records/SMUL24_FAST24_2026-09-20.json); deterministic C0FFEE paired-style corpus; native entry through RTS |
 | `mul_s32_s32_s64` | `turbo135` | 665.877260 | 560 | 805 | 135 | 0 | [mul_s32_s32_s64_turbo135.asm](routines/multiply/mul_s32_s32_s64_turbo135.asm) | [SMUL32_TURBO135_100K.json](validation/records/SMUL32_TURBO135_100K.json); deterministic 100,000-call native corpus |
+| `mul_s32_s32_s64` | `compact126` | **646.354530** | 548 | 757 | 136 | **126** | [mul_s32_s32_s64_compact126.asm](routines/multiply/mul_s32_s32_s64_compact126.asm) | [SMUL32_COMPACT126_2026-10-05.json](validation/records/SMUL32_COMPACT126_2026-10-05.json); 100,000-call C0FFEE + independent 100,000-call seed + 1,849 structured edges |
 | `mul_s32_s32_s64` | `fast31_native` | 697.259440 | 594 | 834 | 31 | 0 | [mul_s32_s32_s64_fast31_native.asm](routines/multiply/mul_s32_s32_s64_fast31_native.asm) | [SMUL32_FAST31_NATIVE_100K.json](validation/records/SMUL32_FAST31_NATIVE_100K.json); deterministic 100,000-call native corpus |
 | `atan2_s8_s8_u8` | `compact_opt` | 48.447189 | 29 | 50 | 0 | 0 | [atan2_s8_s8_u8_compact_opt.asm](routines/atan2/standalone/atan2_s8_s8_u8_compact_opt.asm) | [ATAN2_OPTIMIZATION_VALIDATION.json](validation/ATAN2_OPTIMIZATION_VALIDATION.json); exhaustive signed-byte vectors; public JMP+RTS |
 | `atan2_s8_s8_u8` | `sum_small` | 45.958908 | 29 | 48 | 0 | 0 | [atan2_s8_s8_u8_sum_small.asm](routines/atan2/standalone/atan2_s8_s8_u8_sum_small.asm) | [ATAN2_OPTIMIZATION_VALIDATION.json](validation/ATAN2_OPTIMIZATION_VALIDATION.json); exhaustive signed-byte vectors; public JMP+RTS |
 | `atan2_s8_s8_u8` | `sum_fast` | 44.962814 | 29 | 47 | 0 | 0 | [atan2_s8_s8_u8_sum_fast.asm](routines/atan2/standalone/atan2_s8_s8_u8_sum_fast.asm) | [ATAN2_OPTIMIZATION_VALIDATION.json](validation/ATAN2_OPTIMIZATION_VALIDATION.json); exhaustive signed-byte vectors; public JMP+RTS |
+
+### SMUL32 compact126 integration note
+
+`compact126` is an **exclusive overlay record point**, not a silent replacement for the fixed resident `MATH_SMUL32`. V1/V5 do not have the required ZP budget. V2-V4 already dedicate `$80-$F3` to the selected native SMUL16 executable-ZP image, so a permanent install there would break that path. V3/V4 expose the record source under their `optional/smul32_compact126/` trees because their Turbo ownership model is the natural integration environment. See [`docs/SMUL32_COMPACT126.md`](docs/SMUL32_COMPACT126.md).
 
 ## How to find the exact source
 
