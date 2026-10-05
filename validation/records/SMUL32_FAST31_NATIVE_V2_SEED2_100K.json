@@ -1,0 +1,21 @@
+{
+  "cases": 100000,
+  "errors": 0,
+  "mean": 692.67852,
+  "min": 590,
+  "max": 815,
+  "seed": "0x5EED1234",
+  "quad_counts": [
+    25041,
+    25232,
+    24911,
+    24816
+  ],
+  "quad_means": [
+    649.0848608282416,
+    703.7218611287254,
+    716.8390269358918,
+    701.1859687298517
+  ],
+  "basis": "independent deterministic native signed corpus; entry through RTS; caller input stores excluded"
+}
