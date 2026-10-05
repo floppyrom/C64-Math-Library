@@ -15,16 +15,17 @@ S32V28_sqr_hi      = REG_TABLE+$1200
 S32V28_neg_sqr_lo  = REG_TABLE+$1400
 S32V28_neg_sqr_hi  = REG_TABLE+$1600
 
-; Exact existing 31-byte ZP_MAIN window.
-; Five pointer pairs live in already-owned but otherwise untouched V2-family ZP
-; holes.  The sixth stays in ZP_MAIN so V2 remains within its 221-byte
-; commitment while ordinary mixed calls need to restore only one high byte.
-S32V28_neg_lo_1 = ZP_MAIN+$3C   ; ref $3E-$3F
-S32V28_sqr_hi_1 = ZP_MAIN+$3E   ; ref $40-$41
-S32V28_neg_lo_2 = ZP_MAIN+$40   ; ref $42-$43
-S32V28_sqr_hi_2 = ZP_MAIN+$4E   ; ref $50-$51
-S32V28_neg_lo_3 = ZP_MAIN+$67   ; ref $69-$6A
-S32V28_sqr_hi_3 = ZP_MAIN+$0A   ; ref $0C-$0D; mixed-call rebound pair
+; Exact 31-byte FAST31 footprint, split across the profile-owned ZP map.
+; Every pointer LOW byte is rebound from the operand on every call.  Only the
+; six HIGH bytes must persist across mixed calls, so the pairs deliberately
+; straddle already-owned bytes and otherwise-unused high-byte holes.
+; Reference map highs: $3E,$40,$42,$50,$52,$69 (all outside other stable paths).
+S32V28_neg_lo_1 = ZP_MAIN+$3B   ; ref $3D-$3E
+S32V28_sqr_hi_1 = ZP_MAIN+$3D   ; ref $3F-$40
+S32V28_neg_lo_2 = ZP_MAIN+$3F   ; ref $41-$42
+S32V28_sqr_hi_2 = ZP_MAIN+$4D   ; ref $4F-$50
+S32V28_neg_lo_3 = ZP_MAIN+$4F   ; ref $51-$52
+S32V28_sqr_hi_3 = ZP_MAIN+$66   ; ref $68-$69
 S32V28_z00 = ZP_MAIN+$0C
 S32V28_z10 = ZP_MAIN+$0D
 S32V28_z20 = ZP_MAIN+$0E
@@ -878,21 +879,15 @@ S32V28_api_s31_v25_bind_q1:
         sta S32V28_neg_lo_2
         sta S32V28_q1__neg_hi_2+1
         jmp S32V28_q1_kernel
-; Ordinary MATH_SMUL32 is a cold/mixed-call safe entry.  Reinstall the
-; six persistent pointer high bytes because other public routines may reuse
-; ZP_MAIN.  READY skips this binder and retains the documented initialized-
-; state contract.
+; Compatibility label retained in the old binder island.  All six pointer
+; high bytes now persist in profile-owned ZP, so no mixed-call repair remains.
 *= REG_GAME_API+$01C8
 S32V29_safe_entry:
-        ; Five pointer highs are persistent in profile-owned ZP holes.
-        ; Only sqr_hi_3 remains in shared ZP_MAIN and needs mixed-call repair.
-        lda #>S32V28_sqr_hi
-        sta S32V28_sqr_hi_3+1
         jmp S32V28_api_smul32_speed31_v26
 
 *= REG_API+$0C40
 SMUL32_FAST31_V29_ENTRY:
-        jmp S32V29_safe_entry
+        jmp S32V28_api_smul32_speed31_v26
 S32V28_api_smul32_speed31_v26:
         lda MATH_IO+$03
         bpl S32V28_api_s31_v26_xpos
