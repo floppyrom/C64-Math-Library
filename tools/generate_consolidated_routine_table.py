@@ -30,11 +30,12 @@ API_ROWS=list(csv.DictReader((ROOT/'docs/PUBLIC_API_COMPLETE.csv').open()))
 API={r['entry']:int(r['address'][1:],16) for r in API_ROWS}
 
 
-def load_profile(profile):
+def load_profile(profile,begin=None):
     b=PRG[profile].read_bytes(); load=b[0]|(b[1]<<8)
     mem=bytearray(65536); mem[load:load+len(b)-2]=b[2:]
     reu=bytearray(REU[profile].read_bytes()) if profile in REU else None
     cpu=CPU(mem,reu=reu); cpu.d=0; cpu.call(0x3280,2_000_000)
+    if begin is not None: cpu.call(begin,2_000_000)
     return cpu.mem
 
 
@@ -301,13 +302,16 @@ def main():
     taddr={'MATH_REU_UMUL16_BEGIN':0x3800,'MATH_REU_UMUL16':0x3840,'MATH_REU_UMUL16_END':0x3880,'MATH_REU_UMUL32_BEGIN':0x38c0,'MATH_REU_UMUL32':0x3900,'MATH_REU_UMUL32_END':0x3960}
     for p in ['v3_reu_512k','v4_reu_16m']:
         for bits,owned in [(16,113),(32,135)]:
+            begin_addr=taddr[f'MATH_REU_UMUL{bits}_BEGIN']
+            active_mem=load_profile(p,begin_addr)
             d=tv['profiles'][p]['reference'][f'turbo{bits}']
             entries=[(f'MATH_REU_UMUL{bits}_BEGIN',d['begin_cycles'],d['begin_cycles'],d['begin_cycles'],1),
                      (f'MATH_REU_UMUL{bits}',d['call_mean_cycles'],d['call_min_cycles'],d['call_max_cycles'],d['cases']),
                      (f'MATH_REU_UMUL{bits}_END',d['end_cycles'],d['end_cycles'],d['end_cycles'],1)]
             base=int(d['zp_base'][1:],16); zps=set(range(base,base+owned))
             for n,mean,mn,mx,cases in entries:
-                code,_,stack=trace(mems[p],taddr[n])
+                callmem=active_mem if n==f'MATH_REU_UMUL{bits}' else mems[p]
+                code,_,stack=trace(callmem,taddr[n])
                 rows.append({'profile':p,'routine':n,'canonical_name':PROFILE_EXTRAS[p][n],'api_class':'reu_turbo','signedness':'unsigned','operation':f'turbo multiply {bits}','width':str(bits),
                   'mean_cycles':f'{float(mean):.6f}','min_cycles':mn,'max_cycles':mx,'cases':cases,'cycle_basis':'Turbo relocation canonical reference corpus',
                   'reachable_code_bytes':len(code),'zp_bytes':owned,'zp_ranges':fmt_ranges(zps),'stack_page_reserved_bytes':len(stack),
@@ -318,8 +322,10 @@ def main():
     qaddr={'MATH_REU_QS16_BEGIN':0x3a80,'MATH_REU_QS16':0x3a8b,'MATH_REU_QS16_END':0x3b5c}
     qcycles={'MATH_REU_QS16_BEGIN':(18,18,18,1),'MATH_REU_QS16':(281.541031,279,293,65536),'MATH_REU_QS16_END':(18,18,18,1)}
     qzp=set(range(0x10,0x20));p='v4_reu_16m'
+    qs_active_mem=load_profile(p,qaddr['MATH_REU_QS16_BEGIN'])
     for n,a in qaddr.items():
-        code,_,stack=trace(mems[p],a);mean,mn,mx,cases=qcycles[n]
+        callmem=qs_active_mem if n=='MATH_REU_QS16' else mems[p]
+        code,_,stack=trace(callmem,a);mean,mn,mx,cases=qcycles[n]
         rows.append({'profile':p,'routine':n,'canonical_name':PROFILE_EXTRAS[p][n],'api_class':'reu_qs16','signedness':'unsigned','operation':'V4 QS16 multiply mode','width':'16',
           'mean_cycles':f'{float(mean):.6f}','min_cycles':mn,'max_cycles':mx,'cases':cases,'cycle_basis':'V4 QS16 source/exact timing classes',
           'reachable_code_bytes':len(code),'zp_bytes':16,'zp_ranges':fmt_ranges(qzp),'stack_page_reserved_bytes':len(stack),
