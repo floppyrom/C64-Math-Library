@@ -1,5 +1,5 @@
 name: Promote FAST31 persistent-ZP integration
-# lifecycle-correct publication rerun
+# lifecycle-correct publication/source-recovery rerun
 on:
   push:
     branches: [smul32-fast31-v3-profile-integration]
