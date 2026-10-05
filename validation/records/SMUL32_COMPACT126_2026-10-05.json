@@ -1,0 +1,55 @@
+{
+  "routine": "mul_s32_s32_s64",
+  "variant": "compact126",
+  "date": "2026-10-05",
+  "cpu": "NMOS 6502/6510",
+  "operation": "signed 32x32 -> 64",
+  "benchmark_basis": "entry through RTS; caller JSR/input stores excluded",
+  "resources": {
+    "zp_bytes": 136,
+    "zp_ranges": [
+      "$0A-$1F",
+      "$8E-$FF"
+    ],
+    "stack_page_reserved_bytes": 126,
+    "stack_page_range": "$0100-$017D",
+    "ordinary_ram_code_bytes": 302,
+    "executable_code_outside_zp_bytes": 428,
+    "data_bytes": 2044
+  },
+  "validation": [
+    {
+      "corpus": "Random(0xC0FFEE)",
+      "cases": 100000,
+      "errors": 0,
+      "mean_cycles": 646.35453,
+      "min_cycles": 548,
+      "max_cycles": 757
+    },
+    {
+      "corpus": "Random(0x5EED1234)",
+      "cases": 100000,
+      "errors": 0,
+      "mean_cycles": 646.2811,
+      "min_cycles": 548,
+      "max_cycles": 767
+    },
+    {
+      "corpus": "structured edge suite",
+      "cases": 1849,
+      "errors": 0,
+      "mean_cycles": 614.9096809085993,
+      "min_cycles": 548,
+      "max_cycles": 769
+    }
+  ],
+  "comparison": {
+    "reported_repose_mean_cycles": 646.37,
+    "primary_delta_cycles": -0.01547,
+    "qualification": "narrow measured win; independent corpus gives -0.088900 cycles"
+  },
+  "integration": {
+    "fixed_resident_selection": false,
+    "reason": "The kernel is an exclusive overlay. V1/V5 do not have the ZP budget; V2-V4 already use the $80-$F3 executable-ZP window for the selected native SMUL16 kernel. V3/V4 are the natural optional homes because they already expose explicit Turbo ownership modes."
+  }
+}
