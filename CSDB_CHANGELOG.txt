@@ -1,8 +1,8 @@
 2026-10-05 FAST31 V2/V3/V4 PERSISTENT-POINTER REFRESH
-- V2/V3/V4 keep five FAST31 table-pointer pairs in already-owned normal-profile ZP holes and rebind only one shared pair.
-- Ordinary SMUL32/UMUL32 and both 32-bit SHR16 derivatives save exactly 17 cycles; READY timings are unchanged.
-- SMUL32 canonical means: V2 726.605230, V3 727.033209, V4 727.090079 cycles.
-- V2 remains inside the documented 221-byte total ZP commitment; no persistent stack-page reservation is added.
+- All six FAST31 table-pointer pairs persist in already-owned normal-profile ZP holes; ordinary calls need no pointer-high rebind.
+- Signed SMUL32/SMUL32_SHR16 save exactly 25 cycles; unsigned UMUL32/UMUL32_SHR16 save 22 cycles; READY timings are unchanged.
+- SMUL32 canonical means: V2 718.605230, V3 719.033209, V4 719.090079 cycles.
+- Stable-API ZP unions are V2 207, V3 202, V4 201 bytes; no persistent stack-page reservation is added.
 - 264,999 signed multiply calls + 415,078 multiply-refresh calls + 17,196 Turbo relocation/lifecycle calls pass.
 
 2026-10-05: SMUL32 FAST31 native v2 improves the 31-ZP / zero-stack record from 697.259440 to 692.825100 cycles; independent 100k seed 692.678520, 1,849 structured edge cases all correct. The gain transfers compact126's NN x0-borrow common/rare split and CPY #$00 carry seeding into the low-resource kernel. A 31-ZP public-ABI candidate also measures 736.188510 cycles but remains research-only pending the full fixed-profile source-build/relocation/release gates. compact126 metadata/accounting was aligned with the record-source convention: 428 executable code bytes (including 126 page-$01 bytes) and 2,608 occupied bytes including ZP.\n\n2026-10-05: Added the SMUL32 compact126 native record/Pareto point: 646.354530 cycles on the primary 100,000-pair corpus, 646.281100 on an independent 100,000-pair corpus, and zero errors on 1,849 structured edge cases. Resource contract is 136 ZP + 126 persistent page-$01 bytes + 302 ordinary-RAM code + 2,044 table bytes. This is published as an opt-in native record kernel rather than replacing fixed-profile MATH_SMUL32: V1/V5 do not fit the ZP contract, V2-V4 use the same executable-ZP window for SMUL16, and normal MATH_X/MATH_Y marshalling removes the speed advantage. See docs/SMUL32_COMPACT126.md.
