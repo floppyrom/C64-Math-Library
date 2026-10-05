@@ -36,7 +36,7 @@ These are current public-entry means, through `RTS`; caller `JSR` and input stor
 |---|---:|---:|---:|---:|---:|
 | `mul_u16_u16_u32` | 273.837 | 225.837 | 225.837 | 225.837 | 273.837 |
 | `mul_s24_s24_s48` | 531.496 | 487.182 | 486.816 | 487.220 | 530.874 |
-| `mul_s32_s32_s64` | 744.570 | **726.605** | **727.033** | **727.090** | 743.913 |
+| `mul_s32_s32_s64` | 744.570 | **718.605** | **719.033** | **719.090** | 743.913 |
 | `div_u16_u16_u16_16` | 132.726 | 127.774 | 125.424 | 125.626 | 126.386 |
 | `div_s24_s24_s24_24` | 313.583 | 248.344 | 236.810 | 237.569 | 253.487 |
 | `atan2_s8_s8_u8` | 48.447 | 44.963 | 44.963 | 48.000 | 44.963 |
@@ -47,7 +47,7 @@ For the complete table, resource use, min/max, corpora and source links, see [`P
 
 The repository also publishes standalone record/Pareto alternatives, including the current 24-ZP signed 24x24 FAST24 point at **400.301600 cycles**, the SMUL32 `compact126` absolute native record at **646.354530 cycles** (**136 ZP + 126 persistent stack-page bytes**), and the new **31-ZP / stack-free** `fast31_native_v2` point at **692.825100 cycles**. The older `turbo135` point remains the faster high-ZP stack-free alternative at **665.877260 cycles**. These use their own documented benchmark bases and should not be compared blindly with public-profile means; see [`docs/SMUL32_COMPACT126.md`](docs/SMUL32_COMPACT126.md) and [`docs/SMUL32_FAST31_V2.md`](docs/SMUL32_FAST31_V2.md).
 
-For the shipped API, V2/V3/V4 use a persistent-pointer FAST31/V29 layout that removes **17 cycles** from ordinary 32-bit multiply calls without adding stack-page use or exceeding V2's 221-byte ZP commitment.
+For the shipped API, V2/V3/V4 keep all six FAST31 pointer pairs in already-owned persistent ZP holes. This removes the ordinary pointer repair entirely: signed 32-bit multiply paths save **25 cycles**, unsigned paths save **22 cycles**, with no added stack-page use and V2 still inside its 221-byte ZP commitment.
 
 ## Source layout and naming
 
