@@ -1,42 +1,81 @@
-name: SMUL32 FAST31 persistent-ZP evaluation
-# rerun after persistent-init generator fix
+name: Promote FAST31 persistent-ZP integration
 on:
   push:
     branches: [smul32-fast31-v3-profile-integration]
 permissions:
-  contents: read
+  contents: write
 jobs:
-  evaluate:
+  promote:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
           ref: smul32-fast31-persistent-zp-integration
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Build reference and alternate maps
+      - name: Build canonical reference images
+        run: make reference
+      - name: Promote V2-V4 resident PRGs
         run: |
-          make reference
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+      - name: Rebuild multiply evidence and source mirrors
+        run: |
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_signed_multiply.py
+          python3 tools/benchmark_multiply_refresh.py
+          python3 tools/publish_standalone_sources.py
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/validate_published_signed_sources.py
+      - name: Regenerate performance/source indexes
+        run: |
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Validate relocation and Turbo lifecycle
+        run: |
           make alternate
-      - name: Validate alternate public API and mixed calls
-        run: python3 tools/validate_source_build.py all --build build_source/alternate --out validation/fast31_persistent_eval
-      - name: Validate Turbo ZP restore
-        run: python3 tools/validate_turbo_relocation.py
-      - name: Benchmark affected multiply entries
-        run: python3 tools/evaluate_smul32_fast31_persistent.py
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: fast31-persistent-zp-eval
-          path: |
-            validation/review/SMUL32_FAST31_PERSISTENT_ZP_EVAL.json
-            validation/fast31_persistent_eval/
-            validation/turbo_relocation/
-            build_source/reference/v2_pareto_fast/*.prg
-            build_source/reference/v3_reu_512k/*.prg
-            build_source/reference/v4_reu_16m/*.prg
-            relocatable_source/v2_pareto_fast/math_relocatable.asm
-            relocatable_source/v3_reu_512k/math_relocatable.asm
-            relocatable_source/v4_reu_16m/math_relocatable.asm
+          python3 tools/validate_source_build.py all --build build_source/alternate --out validation/source_relocation
+          python3 tools/validate_turbo_relocation.py
+      - name: Refresh package checksums
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, subprocess
+          root=Path('.')
+          files=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          def write():
+              rows=[]
+              for p in files:
+                  if p=='SHA256SUMS.txt': continue
+                  q=root/p
+                  if q.is_file(): rows.append(f"{hashlib.sha256(q.read_bytes()).hexdigest()}  {p}")
+              Path('SHA256SUMS.txt').write_text('\n'.join(sorted(rows))+'\n')
+          write()
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, subprocess
+          files=subprocess.check_output(['git','ls-files'],text=True).splitlines()
+          rows=[]
+          for p in files:
+              if p=='SHA256SUMS.txt': continue
+              q=Path(p)
+              if q.is_file(): rows.append(f"{hashlib.sha256(q.read_bytes()).hexdigest()}  {p}")
+          Path('SHA256SUMS.txt').write_text('\n'.join(sorted(rows))+'\n')
+          PY
+          python3 tools/package_audit.py
+      - name: Commit generated promotion
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status --short
+          git commit -m "Promote FAST31 persistent-pointer integration"
+          git push origin HEAD:smul32-fast31-persistent-zp-integration
