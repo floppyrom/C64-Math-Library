@@ -95,6 +95,8 @@ The current SMUL32 native record is `compact126` at **646.354530 cycles** with 1
 
 For the practical low-resource class, `fast31_native_v2` is the new **31-ZP / stack-free SMUL32 record** at **692.825100 cycles**, improving the previous 697.259440 point by 4.434340 cycles. See [`docs/SMUL32_FAST31_V2.md`](docs/SMUL32_FAST31_V2.md).
 
+For the shipped public API, V2/V3/V4 now use a persistent-pointer FAST31/V29 layout: five table-pointer pairs occupy holes already inside each profile's normal ZP ownership and one shared pair is rebound per ordinary call. This saves **17 cycles** without changing arithmetic or stack usage. Canonical `MATH_SMUL32` means are **726.605230 / 727.033209 / 727.090079 cycles** in V2/V3/V4; V1/V5 retain the original low-ZP binder. Ordinary `MATH_UMUL32` and both 32-bit SHR16 derivatives receive the same 17-cycle reduction; READY timings are unchanged.
+
 | Typed routine | Variant | Mean | Min | Max | ZP B | Stack-page B | Source | Evidence / basis |
 |---|---|---:|---:|---:|---:|---:|---|---|
 | `mul_u16_u16_u32` | `shifted99` | 155.646069283 | — | — | 99 | 0 | [mul_u16_u16_u32_shifted99.asm](routines/multiply/mul_u16_u16_u32_shifted99.asm) | [UMUL16_SHIFTED_EXACT.json](validation/records/UMUL16_SHIFTED_EXACT.json); exact full-domain event count |
