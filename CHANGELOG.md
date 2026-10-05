@@ -1,3 +1,11 @@
+## 2026-10-05 — SMUL32 compact126 record and REU-profile overlay exposure
+
+- Add `routines/multiply/mul_s32_s32_s64_compact126.asm`, a validated native signed 32x32 -> 64 record point at **646.354530 cycles** on the 100,000-call C0FFEE corpus (548–757), with a second 100,000-call seed at 646.281100 and 1,849 structured edges; all three suites report zero errors.
+- Resource contract: **136 ZP bytes**, **126 persistent stack-page bytes** (`$0100-$017D`), 302 bytes ordinary-RAM code and the existing 2,044-byte quarter-square data geometry.
+- The fixed resident `MATH_SMUL32` implementations remain unchanged. V1/V5 cannot meet the ZP contract; V2–V4 already use `$80-$F3` for the selected MATH_INIT-installed native SMUL16 executable-ZP image, so a permanent compact126 install would break that routine.
+- Expose compact126 under the V3/V4 `optional/smul32_compact126/` trees as an **exclusive overlay source**, matching their Turbo ownership model. An integrator must preserve/restore both the compact126 ZP ranges and `$0100-$017D`; the existing unsigned Turbo32 BEGIN/END does not claim to do that.
+- Register the result in `PERFORMANCE.md`, `benchmarks/STANDALONE_RESULTS.csv`, `routines/SOURCE_CATALOG.csv`, and `validation/records/SMUL32_COMPACT126_2026-10-05.json`. See `docs/SMUL32_COMPACT126.md`.
+
 ## 2026-09-25 — stable entries 47–54: seek movement (`MATH_SEEK8_*`, `MATH_SEEK16_*`)
 
 - Add eight stable API entries in every fixed profile and every generated Custom Pareto build, at `REG_GAME_API+$3C..+$51` (reference `$5E3C-$5E51`). `MATH_SEEK8_INIT/STEP/STEP_INT/STEP1` handle 8-bit x/y; `MATH_SEEK16_*` handle 16-bit x with 8-bit y. The API grows from 46 to **54 entries**; no existing address, output or timing changes.
