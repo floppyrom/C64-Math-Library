@@ -1,3 +1,12 @@
+## 2026-10-05 — FAST31 V2–V4 persistent-pointer profile integration
+
+- Integrated the 31-ZP FAST31/V29 32-bit multiply family more deeply into V2/V3/V4 without expanding V2 beyond its documented **221-byte ZP commitment**.
+- Five of the six FAST31 table-pointer pairs now persist in holes already owned by the V2-family normal ZP map; only one shared pair is rebound on ordinary calls. The per-routine footprint remains 31 touched ZP bytes and persistent stack-page reservation remains zero.
+- Ordinary `MATH_SMUL32`, `MATH_UMUL32`, `MATH_SMUL32_SHR16`, and `MATH_UMUL32_SHR16` improve by an exact **17 cycles/call** in V2/V3/V4. READY entries are unchanged.
+- Canonical signed-corpus SMUL32 means become **726.605230 / 727.033209 / 727.090079 cycles** for V2/V3/V4.
+- Validation passes **264,999 signed multiply calls**, **415,078 multiply-refresh calls**, reference/alternate mixed-call validation, and **17,196 Turbo lifecycle calls**. Turbo END restores the persistent pointer bytes exactly.
+- Fixed the standalone/consolidated/source-recovery tooling to treat active Turbo executable-ZP code as a BEGIN-installed overlay rather than decoding normal-profile ZP contents.
+
 ## 2026-10-05 — SMUL32 FAST31 v2 and record-metadata alignment
 
 - Added `mul_s32_s32_s64_fast31_native_v2.asm`: **692.825100 cycles**, 31 ZP, zero persistent stack-page bytes, 0 errors on the primary 100,000-pair corpus; **692.678520** on an independent 100,000-pair seed; 0 errors on 1,849 structured edge cases.
