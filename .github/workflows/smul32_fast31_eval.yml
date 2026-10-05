@@ -1,0 +1,29 @@
+name: SMUL32 FAST31 V30 evaluation
+on:
+  push:
+    branches: [smul32-fast31-v3-profile-integration]
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build reference and alternate maps
+        run: |
+          make reference
+          make alternate
+      - name: Validate alternate public API and mixed calls
+        run: python3 tools/validate_source_build.py all --build build_source/alternate --out validation/smul32_v30_eval
+      - name: Benchmark reference SMUL32 and READY
+        run: python3 tools/evaluate_smul32_fast31_candidate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: smul32-fast31-v30-eval
+          path: |
+            validation/review/SMUL32_FAST31_V30_EVAL.json
+            validation/smul32_v30_eval/
