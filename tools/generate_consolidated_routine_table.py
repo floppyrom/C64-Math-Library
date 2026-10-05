@@ -205,9 +205,14 @@ def provenance(profile,n):
             return 'FAST24 private 24-ZP carry producer with stable public adapter'
         return '24-ZP reverse_24zp_carry certified resident kernel (retained; refresh candidate did not win)'
     if n in ('MATH_UMUL32','MATH_UMUL32_READY'):
+        if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            return ('FAST31/V29-derived private q0 unsigned producer; five pointer pairs persist in '
+                    'profile-owned ZP holes and one shared pair is rebound on ordinary calls')
         return 'FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder'
     if n=='MATH_UMUL32_SHR16':
-        return 'FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction'
+        return ('FAST31/V29 persistent-pointer UMUL32 producer plus existing SHR16 extraction'
+                if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+                else 'FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction')
     if n=='MATH_SMUL8':
         return 'direct signed-domain quarter-square kernel with private signed-sum planes'
     if n=='MATH_SMUL16':
@@ -220,9 +225,14 @@ def provenance(profile,n):
     if n=='MATH_SMUL24':
         return 'FAST24 four-quadrant native signed composition; immutable quarter-square tables shared'
     if n in ('MATH_SMUL32','MATH_SMUL32_READY'):
+        if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            return ('FAST31/V29 native signed quadrant composition; five pointer pairs persist in '
+                    'profile-owned ZP holes and one shared pair is rebound on ordinary calls')
         return 'FAST31/V29 native signed quadrant composition; mixed-call-safe public path'
     if n=='MATH_SMUL32_SHR16':
-        return 'FAST31/V29 SMUL32 producer plus existing SHR16 extraction'
+        return ('FAST31/V29 persistent-pointer SMUL32 producer plus existing SHR16 extraction'
+                if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+                else 'FAST31/V29 SMUL32 producer plus existing SHR16 extraction')
     if n in ('MATH_UDIV8','MATH_UMOD8'):
         if profile in ('v3_reu_512k','v4_reu_16m') and n=='MATH_UMOD8':
             return 'REU direct remainder plane retained; direct-public UDIV8 selected separately'
