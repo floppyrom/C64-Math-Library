@@ -1055,13 +1055,15 @@ L1ADA:
     !byte $10, $F7, $60, $00, $00, $00, $00, $A2, $03, $BD, $18, $C0, $9D, $00, $C0, $CA
     !byte $10, $F7, $60, $00, $00, $00, $00, $AD, $1C, $C0, $8D, $00, $C0, $AD, $1D, $C0
     !byte $8D, $01, $C0, $60, $00, $00, $00
+    ; FAST31 V30 persistent pointer highs.  Five pairs occupy holes already
+    ; inside the V2-family ZP ownership map; sqr_hi_3 remains in ZP_MAIN.
     lda #>REG_TABLE+$1400
-    sta ZP_MAIN+$01
-    sta ZP_MAIN+$05
-    sta ZP_MAIN+$09
+    sta ZP_MAIN+$3D
+    sta ZP_MAIN+$41
+    sta ZP_MAIN+$68
     lda #>REG_TABLE+$1200
-    sta ZP_MAIN+$03
-    sta ZP_MAIN+$07
+    sta ZP_MAIN+$3F
+    sta ZP_MAIN+$4F
     sta ZP_MAIN+$0B
     lda #>REG_TABLE
     sta ZP_MAIN+$20
