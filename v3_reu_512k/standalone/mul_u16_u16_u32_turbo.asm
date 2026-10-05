@@ -6,13 +6,75 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 17.
+; Reachable instructions: 74.
 !cpu 6510
 
 ; ---- executable island $0040 ----
 * = $0040
 L0040:
-    brk                                ; @0040 00
+    sta $86                            ; @0040 85 86
+    eor #$FF                           ; @0042 49 FF
+    sta $67                            ; @0044 85 67
+    sta $6D                            ; @0046 85 6D
+    lda $54                            ; @0048 A5 54
+    sta $5C                            ; @004A 85 5C
+    eor #$FF                           ; @004C 49 FF
+    sta $57                            ; @004E 85 57
+    sta $5F                            ; @0050 85 5F
+    sec                                ; @0052 38
+    lda $7000,y                        ; @0053 B9 00 70
+    adc $7400,y                        ; @0056 79 00 74
+    sta $AE                            ; @0059 85 AE
+    lda $7200,y                        ; @005B B9 00 72
+    adc $7600,y                        ; @005E 79 00 76
+    adc $7000,y                        ; @0061 79 00 70
+    bcs L0099                          ; @0064 B0 33
+    adc $7400,y                        ; @0066 79 00 74
+    tax                                ; @0069 AA
+    lda ($86),y                        ; @006A B1 86
+L006C:
+    adc $7600,y                        ; @006C 79 00 76
+    sta $91                            ; @006F 85 91
+    ldy #$00                           ; @0071 A0 00
+    lda ($54),y                        ; @0073 B1 54
+    adc ($57),y                        ; @0075 71 57
+    sta $8E                            ; @0077 85 8E
+    lda ($5C),y                        ; @0079 B1 5C
+    adc ($5F),y                        ; @007B 71 5F
+    adc ($62),y                        ; @007D 71 62
+    bcs L00A3                          ; @007F B0 22
+    adc ($67),y                        ; @0081 71 67
+    sta $93                            ; @0083 85 93
+    lda $7200,y                        ; @0085 B9 00 72
+L0088:
+    adc ($6D),y                        ; @0088 71 6D
+    tay                                ; @008A A8
+    clc                                ; @008B 18
+    txa                                ; @008C 8A
+    adc #$00                           ; @008D 69 00
+    tax                                ; @008F AA
+    lda #$00                           ; @0090 A9 00
+    adc #$00                           ; @0092 69 00
+    bcs L0097                          ; @0094 B0 01
+    rts                                ; @0096 60
+L0097:
+    iny                                ; @0097 C8
+    rts                                ; @0098 60
+L0099:
+    clc                                ; @0099 18
+    adc ($67),y                        ; @009A 71 67
+    tax                                ; @009C AA
+    lda #$01                           ; @009D A9 01
+    adc ($86),y                        ; @009F 71 86
+    bcc L006C                          ; @00A1 90 C9
+L00A3:
+    clc                                ; @00A3 18
+    adc ($67),y                        ; @00A4 71 67
+    sta $93                            ; @00A6 85 93
+    lda #$01                           ; @00A8 A9 01
+    adc ($86),y                        ; @00AA 71 86
+    bcc L0088                          ; @00AC 90 DA
+    brk                                ; @00AE 00
 ; ---- executable island $3840 ----
 * = $3840
 mul_u16_u16_u32_turbo:

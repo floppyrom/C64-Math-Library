@@ -1,10 +1,10 @@
 {
   "status": "PASS",
-  "catalog_rows": 308,
+  "catalog_rows": 310,
   "shipped_profile_rows": 285,
-  "standalone_alternative_rows": 23,
+  "standalone_alternative_rows": 25,
   "public_profile_results": 285,
-  "standalone_results": 23,
+  "standalone_results": 25,
   "best_profile_results": 63,
   "profiles": {
     "v1_balanced": 54,

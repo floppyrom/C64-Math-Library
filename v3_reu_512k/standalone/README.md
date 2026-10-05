@@ -12,12 +12,12 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_UMUL8` | `mul_u8_u8_u16` | `mul_u8_u8_u16.asm` |  | 19 |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | `mul_u16_u16_u32.asm` |  | 86 |
 | `MATH_UMUL24` | `mul_u24_u24_u48` | `mul_u24_u24_u48.asm` |  | 179 |
-| `MATH_UMUL32` | `mul_u32_u32_u64` | `mul_u32_u32_u64.asm` |  | 159 |
+| `MATH_UMUL32` | `mul_u32_u32_u64` | `mul_u32_u32_u64.asm` |  | 151 |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | `mul_u32_u32_u64_ready.asm` |  | 151 |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | `mul_s8_s8_s16.asm` |  | 19 |
 | `MATH_SMUL16` | `mul_s16_s16_s32` | `mul_s16_s16_s32.asm` |  | 115 |
 | `MATH_SMUL24` | `mul_s24_s24_s48` | `mul_s24_s24_s48.asm` |  | 232 |
-| `MATH_SMUL32` | `mul_s32_s32_s64` | `mul_s32_s32_s64.asm` |  | 669 |
+| `MATH_SMUL32` | `mul_s32_s32_s64` | `mul_s32_s32_s64.asm` |  | 660 |
 | `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | `mul_s32_s32_s64_ready.asm` |  | 660 |
 | `MATH_UDIV8` | `div_u8_u8_u8_8` | `div_u8_u8_u8_8.asm` |  | 25 |
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | `div_u16_u16_u16_16.asm` |  | 626 |
@@ -41,8 +41,8 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | `mod_s32_s32_s32__math_smod32_32.asm` | `MATH_SDIV32_32` | 380 |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | `mul_u16_u16_u24_shr8.asm` |  | 96 |
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | `mul_s16_s16_s24_shr8.asm` |  | 125 |
-| `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | `mul_u32_u32_u48_shr16.asm` |  | 175 |
-| `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | `mul_s32_s32_s48_shr16.asm` |  | 685 |
+| `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | `mul_u32_u32_u48_shr16.asm` |  | 167 |
+| `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | `mul_s32_s32_s48_shr16.asm` |  | 676 |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | `div_u16_u16_u24_16_shl8.asm` |  | 1070 |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | `div_s16_s16_s24_16_shl8.asm` |  | 1184 |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | `recip_u16_u24_q16.asm` |  | 183 |
@@ -64,10 +64,10 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | `seek_u16_u8_step_int.asm` |  | 59 |
 | `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | `seek_u16_u8_step1.asm` |  | 55 |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | `mul_u16_u16_u32_turbo_begin.asm` |  | 17 |
-| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | `mul_u16_u16_u32_turbo.asm` |  | 17 |
+| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | `mul_u16_u16_u32_turbo.asm` |  | 74 |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | `mul_u16_u16_u32_turbo_end.asm` |  | 30 |
 | `MATH_REU_UMUL32_BEGIN` | `mul_u32_u32_u64_turbo_begin` | `mul_u32_u32_u64_turbo_begin.asm` |  | 17 |
-| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | `mul_u32_u32_u64_turbo.asm` |  | 55 |
+| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | `mul_u32_u32_u64_turbo.asm` |  | 185 |
 | `MATH_REU_UMUL32_END` | `mul_u32_u32_u64_turbo_end` | `mul_u32_u32_u64_turbo_end.asm` |  | 30 |
 
 The machine-readable version of this table is `MANIFEST.csv`.
