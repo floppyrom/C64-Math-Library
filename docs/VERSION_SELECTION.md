@@ -42,6 +42,8 @@ The optimizer maximizes weighted cycle savings, so RAM usage need not increase m
 
 All fixed resident profiles and all generated Pareto builds expose the same 54-entry stable API. V3/V4 additionally expose Turbo16/Turbo32 lifecycle entries; V4 also exposes QS16.
 
+For signed 32x32 research/high-throughput integrations, V3/V4 also publish the optional `compact126` source overlay (646.354530-cycle record basis). It is not part of the fixed API selection because it reserves 136 ZP bytes plus `$0100-$017D`; see `docs/SMUL32_COMPACT126.md`. V2's aggregate ZP budget is large enough numerically, but its selected SMUL16 already occupies the executable-ZP window required by compact126.
+
 ## Normalization
 
 All choices expose `MATH_VEC2_NORMALIZE_Q8_8`. V1/V5 average 160.150080 cycles, V2 160.150080 cycles, and V3/V4 156.661198 cycles. The REU profiles store the 32 KiB direct ratio-index table in the upper half of `REU_TURBO16_BANK`, so V3 needs no additional REU bank.
