@@ -19,3 +19,6 @@ This streamlined distribution intentionally excludes superseded PRGs, generated 
 
 For new integrations, prefer `../relocatable_source/v3_reu_512k/math_relocatable.asm` plus its `math_config.inc` rather than relocating the fixed resident PRG. The bundled fixed-map PRG remains the byte-exact reference output. See `../docs/SOURCE_RELOCATION.md`.
 
+## Optional SMUL32 compact126 overlay
+
+V3 also exposes the validated signed 32x32 compact126 record source under `optional/smul32_compact126/`. It is an **exclusive overlay**, not the fixed resident `MATH_SMUL32`: it owns 136 ZP bytes and `$0100-$017D` while installed. The ordinary profile remains unchanged and keeps the native SMUL16 executable-ZP image. See `../docs/SMUL32_COMPACT126.md` for the exact lifecycle/compatibility constraints.
