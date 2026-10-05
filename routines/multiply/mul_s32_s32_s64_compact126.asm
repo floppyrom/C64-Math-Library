@@ -8,6 +8,36 @@
 ; Native benchmark ABI: x0..x3 are prebound SMC bytes, y0..y2 are memory bytes,
 ; CPU Y=y3 and A=x0 on entry; result is r0..r3,Y,X,A,r7.
 ; Caller input stores are excluded from the published timing, as with the other native record points.
+;ABI
+;Entry: smul32_turbo_composed
+;CPU: mos6502
+;Operation: smul
+;Input x: int32 = x0, x1, x2, x3 (SMC/native binding; A=x0)
+;Input y: int32 = y0, y1, y2, reg:Y
+;Output z: int64 = r0, r1, r2, r3, reg:Y, reg:X, reg:A, r7
+;Region ZP: $0a-$1f and $8e-$ff
+;Region Code: signed wrapper/cold helpers plus $0100-$017d stack-page executable block
+;Region Data: sqr_lo..neg_hi
+;End ABI
+;Results
+;Status: validated research standalone
+;Validation cases: 100000
+;Validation errors: 0
+;Independent cases: 100000
+;Independent errors: 0
+;Edge cases: 1849
+;Edge errors: 0
+;Min cycles: 548
+;Max cycles: 757
+;Avg cycles: 646.354530
+;Independent avg cycles: 646.281100
+;ZP bytes: 136
+;Stack-page reserved bytes: 126
+;Code bytes: 428
+;Data bytes: 2044
+;Total bytes: 2472
+;Occupied bytes incl ZP: 2608
+;End Results
 !cpu 6510
 TABLE_BIAS_AFTER_DIV = 0
 RESULT_YX = 1
