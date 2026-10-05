@@ -25,6 +25,8 @@ python3 tools/build_pareto.py --zp-budget N
 
 V1, V2 and V5 remain useful as simple, reproducible presets and validation anchors. The builder naturally reproduces them at resource endpoints: 31 ZP + zero extra RAM gives byte-identical V1; 31 ZP + `--init-policy optional` gives byte-identical V5; 221 ZP selects complete V2 when its resident budget fits.
 
+**SMUL32 compact126 note.** The native `compact126` record kernel is published as an opt-in standalone/Pareto point rather than a fixed-profile substitution. It needs 136 ZP bytes plus 126 persistent stack-page bytes; V1/V5 do not fit that contract, and V2–V4 already dedicate the relevant executable-ZP window to SMUL16. Its standard public-ABI transplant is slower than the current shipped SMUL32, so fixed-profile selection remains unchanged. See [`SMUL32_COMPACT126.md`](SMUL32_COMPACT126.md).
+
 ## Default equal-weight Pareto breakpoints
 
 | ZP | Default result | Exact extra RAM vs V1 |
