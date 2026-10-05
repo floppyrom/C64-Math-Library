@@ -20,6 +20,10 @@ For source transparency, every signed API also has an exact per-routine executab
 
 The V1/V5 low-ZP routines preserve the 31-byte normal-ZP contract. V2–V4 retain the validated executable-ZP `SMUL16` kernel. Wider signed multipliers use private copies of the proven fast arithmetic cores placed in existing reserved holes; their signed finalizers are compacted where safe. The public API addresses remain unchanged. The private refreshed multiply cores extend the resident payload end to `$CF96` while preserving each profile's load address and ABI.
 
+### Compact126 SMUL32 overlay
+
+The source-backed `compact126` SMUL32 point is intentionally **not** substituted for the resident SMUL32 rows above. It measures **646.354530 cycles** on the primary 100,000-call record corpus with 136 ZP bytes and 126 bytes of persistent page-$01 code. V1/V5 cannot meet its ZP contract. V2–V4 have enough aggregate ZP, but `$80-$F3` is already the MATH_INIT-installed executable-ZP image for the selected native SMUL16 kernel, so a permanent compact126 install would invalidate that routine. V3/V4 therefore expose compact126 only as an optional exclusive overlay source, matching their existing Turbo ownership model. See `docs/SMUL32_COMPACT126.md`.
+
 ## Division
 
 `SDIV8`, `SDIV16`, `SDIV24`, `SDIV32_16`, `SDIV32_32`, and `SDIV16_SHL8` all own signed executable paths. Most resident signed dividers were already executable-independent; `SDIV32_32` was explicitly split from the unsigned 32/32 engine in this release. Signed modulo entries remain aliases of the corresponding signed dividers and therefore inherit the same native implementation.
