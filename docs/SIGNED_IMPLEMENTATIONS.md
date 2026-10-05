@@ -24,6 +24,8 @@ The V1/V5 low-ZP routines preserve the 31-byte normal-ZP contract. V2–V4 retai
 
 The repository also publishes [`mul_s32_s32_s64_compact126.asm`](../routines/multiply/mul_s32_s32_s64_compact126.asm), a native benchmark-ABI SMUL32 record point at **646.354530 cycles**, using **136 ZP bytes** and **126 persistent page-$01 bytes**. It is intentionally not substituted for the fixed-profile public `MATH_SMUL32`: V1/V5 cannot accept the ZP footprint, while V2–V4 already use the same executable-ZP window for their native SMUL16 kernel. A direct standard-ABI transplant was measured at about 757.7 cycles and would regress the shipped ~743–744-cycle public path. See [`SMUL32_COMPACT126.md`](SMUL32_COMPACT126.md) for the compatibility matrix and validation evidence.
 
+The new [`fast31_native_v2`](SMUL32_FAST31_V2.md) point applies the compact126 NN borrow shortcut and carry-seeding dispatch to the 31-ZP stack-free family, reducing the native mean from 697.259440 to **692.825100 cycles** without changing the low-ZP resource class. A 31-ZP standard-ABI research candidate from the same work measures **736.188510 cycles** and remains pending canonical fixed-profile integration validation.
+
 ## Division
 
 `SDIV8`, `SDIV16`, `SDIV24`, `SDIV32_16`, `SDIV32_32`, and `SDIV16_SHL8` all own signed executable paths. Most resident signed dividers were already executable-independent; `SDIV32_32` was explicitly split from the unsigned 32/32 engine in this release. Signed modulo entries remain aliases of the corresponding signed dividers and therefore inherit the same native implementation.

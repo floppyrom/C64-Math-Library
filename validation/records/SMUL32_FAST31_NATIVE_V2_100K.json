@@ -1,0 +1,26 @@
+{
+  "cases": 100000,
+  "errors": 0,
+  "mean": 692.8251,
+  "min": 590,
+  "max": 808,
+  "seed": "0xC0FFEE",
+  "quad_counts": [
+    24889,
+    24867,
+    25231,
+    25013
+  ],
+  "quad_means": [
+    649.1007272288963,
+    703.5858366509832,
+    717.2571439895366,
+    700.9898053012433
+  ],
+  "basis": "deterministic native signed corpus; entry through RTS; caller input stores excluded",
+  "zp_bytes": 31,
+  "stack_page_reserved_bytes": 0,
+  "code_bytes": 1133,
+  "data_bytes": 2044,
+  "occupied_bytes": 3208
+}
