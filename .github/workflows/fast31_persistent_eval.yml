@@ -1,0 +1,35 @@
+name: FAST31 persistent-ZP integration evaluation
+on:
+  push:
+    branches: [smul32-fast31-persistent-zp-integration]
+concurrency:
+  group: fast31-persistent-zp-eval
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build reference and alternate maps
+        run: |
+          make reference
+          make alternate
+      - name: Validate alternate public API and mixed calls
+        run: python3 tools/validate_source_build.py all --build build_source/alternate --out validation/fast31_persistent_eval
+      - name: Validate Turbo ZP restore
+        run: python3 tools/validate_turbo_relocation.py
+      - name: Benchmark affected multiply entries
+        run: python3 tools/evaluate_smul32_fast31_persistent.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fast31-persistent-zp-eval
+          path: |
+            validation/review/SMUL32_FAST31_PERSISTENT_ZP_EVAL.json
+            validation/fast31_persistent_eval/
+            validation/turbo_relocation/
