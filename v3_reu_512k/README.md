@@ -14,6 +14,8 @@ REU image: `reu/c64_math_v3_512k_game_math.reu`
 
 The common API, current validation, memory map, profile selection guide and technical assessment are in the top-level `docs/` and `validation/` directories.
 
+SMUL32 note: the repository's `compact126` native record kernel is compatible only as an **opt-in alternate ownership mode**, because its executable-ZP requirement conflicts with this profile's resident SMUL16 kernel. The fixed public `MATH_SMUL32` therefore remains unchanged. See `../docs/SMUL32_COMPACT126.md`.
+
 This streamlined distribution intentionally excludes superseded PRGs, generated harness builds, historical provenance and duplicated reference bundles. The full archival package retains those materials.
 ## Reviewed source-relocatable build
 
