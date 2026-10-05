@@ -331,5 +331,6 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 - V1/V5 keep the 31-byte resident ZP contract. Their upgraded UMUL16/UMUL24 reuse that window and preserve `UMUL32_READY` state.
 - V2-V4 use larger profile-selected ZP regions for some native signed/division kernels; per-routine ZP rows show the actual touched/owned set.
 - V3/V4 Turbo16 owns 113 ZP bytes while active. Turbo32 now owns 135 ZP bytes (stack-free `ram135` compromise), down from the old 241-byte overlay.
+- The source-backed signed SMUL32 `compact126` record (**646.354530 cycles, 136 ZP, 126 stack-page bytes**) is intentionally outside the fixed rows: V3/V4 expose it as an optional exclusive overlay; see `docs/SMUL32_COMPACT126.md`.
 - V4 QS16 owns `$10-$1F` (16 ZP bytes) while active.
 - The PRG payload span includes address gaps in the load image and is not “occupied code bytes”. Use `SEGMENTS.csv` for physical segment placement and this table for per-entry reachable executable size.
