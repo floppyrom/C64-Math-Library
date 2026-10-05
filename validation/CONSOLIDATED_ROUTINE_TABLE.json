@@ -1396,7 +1396,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29-derived private q0 unsigned producer; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -1419,7 +1419,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29-derived private q0 unsigned producer; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -1511,7 +1511,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29 native signed quadrant composition; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -1534,7 +1534,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 0,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29 native signed quadrant composition; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -2638,7 +2638,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29-derived private q0 unsigned producer; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -2661,7 +2661,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29-derived private q0 unsigned producer; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -2753,7 +2753,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29 native signed quadrant composition; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -2776,7 +2776,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29 native signed quadrant composition; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -3880,7 +3880,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29-derived private q0 unsigned producer; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -3903,7 +3903,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29-derived private q0 unsigned producer; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -3995,7 +3995,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29 native signed quadrant composition; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
@@ -4018,7 +4018,7 @@
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "FAST31/V29 native signed quadrant composition; five pointer pairs persist in profile-owned ZP holes and one shared pair is rebound on ordinary calls",
+      "implementation": "FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind",
       "notes": ""
     },
     {
