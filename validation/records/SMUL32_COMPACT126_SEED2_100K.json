@@ -1,0 +1,9 @@
+{
+  "cases": 100000,
+  "errors": 0,
+  "mean": 646.2811,
+  "min": 548,
+  "max": 767,
+  "seed": "0x5EED1234",
+  "basis": "independent deterministic native signed corpus; entry through RTS; caller input stores excluded"
+}
