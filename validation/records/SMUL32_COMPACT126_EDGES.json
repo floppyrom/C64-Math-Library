@@ -1,0 +1,8 @@
+{
+  "cases": 1849,
+  "errors": 0,
+  "mean": 614.9096809085993,
+  "min": 548,
+  "max": 769,
+  "basis": "structured signed32 edge suite"
+}

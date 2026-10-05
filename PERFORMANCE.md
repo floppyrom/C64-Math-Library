@@ -91,6 +91,8 @@ Exact Bresenham/DDA "move toward target" steppers ([`docs/SEEK_DDA.md`](docs/SEE
 
 These are independently useful kernels or record/Pareto points. They are **not all benchmarked on the same corpus as the shipped public API**, so compare means only when the basis is compatible. Every number in this table has a public source file and evidence path in this repository.
 
+The current SMUL32 native record is `compact126` at **646.354530 cycles** with 136 ZP bytes and a 126-byte persistent stack-page reservation. It is not selected into the fixed public profiles because its executable-ZP window conflicts with V2–V4 SMUL16 and standard-ABI marshalling removes the speed advantage; see [`docs/SMUL32_COMPACT126.md`](docs/SMUL32_COMPACT126.md).
+
 | Typed routine | Variant | Mean | Min | Max | ZP B | Stack-page B | Source | Evidence / basis |
 |---|---|---:|---:|---:|---:|---:|---|---|
 | `mul_u16_u16_u32` | `shifted99` | 155.646069283 | — | — | 99 | 0 | [mul_u16_u16_u32_shifted99.asm](routines/multiply/mul_u16_u16_u32_shifted99.asm) | [UMUL16_SHIFTED_EXACT.json](validation/records/UMUL16_SHIFTED_EXACT.json); exact full-domain event count |
@@ -101,6 +103,7 @@ These are independently useful kernels or record/Pareto points. They are **not a
 | `mul_u32_u32_u64` | `bounded133` | 606.337632 | 542 | 729 | 133 | 177 | [mul_u32_u32_u64_bounded133.asm](routines/multiply/mul_u32_u32_u64_bounded133.asm) | [UMUL32_BOUNDED133_GMEC.json](validation/records/UMUL32_BOUNDED133_GMEC.json); gmec uniform profile/validation corpus |
 | `mul_u32_u32_u64` | `bounded133_compact` | 606.864799 | 543 | 733 | 133 | 162 | [mul_u32_u32_u64_bounded133_compact.asm](routines/multiply/mul_u32_u32_u64_bounded133_compact.asm) | [UMUL32_BOUNDED133_COMPACT_GMEC.json](validation/records/UMUL32_BOUNDED133_COMPACT_GMEC.json); gmec uniform profile/validation corpus |
 | `mul_s24_s24_s48` | `fast24` | 400.301600 | 339 | 461 | 24 | 0 | [mul_s24_s24_s48_fast24.asm](routines/multiply/mul_s24_s24_s48_fast24.asm) | [SMUL24_FAST24_2026-09-20.json](validation/records/SMUL24_FAST24_2026-09-20.json); deterministic C0FFEE paired-style corpus; native entry through RTS |
+| `mul_s32_s32_s64` | `compact126` | **646.354530** | 548 | 757 | 136 | 126 | [mul_s32_s32_s64_compact126.asm](routines/multiply/mul_s32_s32_s64_compact126.asm) | [SMUL32_COMPACT126_100K.json](validation/records/SMUL32_COMPACT126_100K.json); 100,000-call native corpus; independent seed + edge suite also zero-error; see [profile-fit note](docs/SMUL32_COMPACT126.md) |
 | `mul_s32_s32_s64` | `turbo135` | 665.877260 | 560 | 805 | 135 | 0 | [mul_s32_s32_s64_turbo135.asm](routines/multiply/mul_s32_s32_s64_turbo135.asm) | [SMUL32_TURBO135_100K.json](validation/records/SMUL32_TURBO135_100K.json); deterministic 100,000-call native corpus |
 | `mul_s32_s32_s64` | `fast31_native` | 697.259440 | 594 | 834 | 31 | 0 | [mul_s32_s32_s64_fast31_native.asm](routines/multiply/mul_s32_s32_s64_fast31_native.asm) | [SMUL32_FAST31_NATIVE_100K.json](validation/records/SMUL32_FAST31_NATIVE_100K.json); deterministic 100,000-call native corpus |
 | `atan2_s8_s8_u8` | `compact_opt` | 48.447189 | 29 | 50 | 0 | 0 | [atan2_s8_s8_u8_compact_opt.asm](routines/atan2/standalone/atan2_s8_s8_u8_compact_opt.asm) | [ATAN2_OPTIMIZATION_VALIDATION.json](validation/ATAN2_OPTIMIZATION_VALIDATION.json); exhaustive signed-byte vectors; public JMP+RTS |

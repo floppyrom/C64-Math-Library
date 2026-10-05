@@ -1,3 +1,10 @@
+## 2026-10-05 — SMUL32 compact126 native record
+
+- Added `routines/multiply/mul_s32_s32_s64_compact126.asm`, validated at **646.354530 cycles** on the primary 100,000-pair C0FFEE native corpus, **646.281100** on an independent 100,000-pair seed, and 0 errors on a 1,849-case structured edge suite.
+- Resource point: **136 ZP bytes**, **126 persistent hardware-stack-page bytes**, **302 ordinary-RAM code bytes**, and the existing **2,044-byte** quarter-square table family.
+- The fixed V1–V5 public `MATH_SMUL32` implementations are deliberately unchanged. V1/V5 cannot accept the ZP footprint; V2–V4 already use the relevant executable-ZP window for native SMUL16, and a standard-ABI compact126 transplant measures about **757.7 cycles**, slower than the shipped ~743–744-cycle public path.
+- Updated `PERFORMANCE.md`, `benchmarks/STANDALONE_RESULTS.csv`, `routines/SOURCE_CATALOG.csv`, signed/profile-selection documentation, and profile README compatibility notes. See `docs/SMUL32_COMPACT126.md`.
+
 ## 2026-09-25 — stable entries 47–54: seek movement (`MATH_SEEK8_*`, `MATH_SEEK16_*`)
 
 - Add eight stable API entries in every fixed profile and every generated Custom Pareto build, at `REG_GAME_API+$3C..+$51` (reference `$5E3C-$5E51`). `MATH_SEEK8_INIT/STEP/STEP_INT/STEP1` handle 8-bit x/y; `MATH_SEEK16_*` handle 16-bit x with 8-bit y. The API grows from 46 to **54 entries**; no existing address, output or timing changes.
