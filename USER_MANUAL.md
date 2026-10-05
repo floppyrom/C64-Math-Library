@@ -495,6 +495,8 @@ The signed API is uniform and all shipped `MATH_SMUL*`/`MATH_SDIV*` paths now ow
 
 See `docs/SIGNED_IMPLEMENTATIONS.md` for the exact per-profile taxonomy and resource trade-offs.
 
+A separate source-backed `compact126` SMUL32 record is also published at 646.354530 cycles. It is **not** the ordinary `MATH_SMUL32` implementation: it owns 136 ZP bytes and `$0100-$017D` of the hardware stack page. V3/V4 expose it as an optional exclusive overlay source; V1/V5 do not have the ZP budget, and V2's executable-ZP window is already occupied by the selected SMUL16 kernel. See `docs/SMUL32_COMPACT126.md` before integrating it.
+
 ---
 
 
@@ -1140,6 +1142,8 @@ The safest and officially supported rule is simple:
 > **Do not call any normal, signed, game-math, QS16, or other Turbo mode between a Turbo BEGIN and its matching END.**
 
 During the active interval, the overlay owns its complete configured ZP range. Turbo32 is still an exclusive mode, but the stack-free 135-byte overlay is substantially less invasive than the former 241-byte overlay.
+
+The optional signed `compact126` research overlay follows an even stricter ownership model because it also reserves `$0100-$017D`. It is published as profile-local V3/V4 source, not as an alias of the unsigned Turbo32 lifecycle. Do not assume the existing Turbo32 BEGIN/END saves that stack-page interval; an integrator that installs compact126 must preserve/restore it explicitly.
 
 Also do not:
 
