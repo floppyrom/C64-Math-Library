@@ -14,7 +14,7 @@ The common API, current validation, memory map, profile selection guide and tech
 
 SMUL32 note: the repository's `compact126` native record kernel is compatible only as an **opt-in alternate ownership mode**, because its executable-ZP requirement conflicts with this profile's resident SMUL16 kernel. The fixed public `MATH_SMUL32` therefore remains unchanged. See `../docs/SMUL32_COMPACT126.md`.
 
-FAST31 public path: this profile now keeps five 32-bit multiply table-pointer pairs in already-owned persistent ZP holes and rebinds only one shared pair on ordinary calls. This saves **17 cycles/call** for ordinary SMUL32/UMUL32 and their SHR16 derivatives; READY timing is unchanged. The canonical SMUL32 mean is **726.605230 cycles**. The current stable API union touches 220 bytes, remaining inside V2's documented 221-byte ZP commitment. See `../docs/SMUL32_FAST31_V2.md`.
+FAST31 public path: this profile now keeps **all six** 32-bit multiply table-pointer pairs in already-owned persistent ZP holes, eliminating the ordinary mixed-call pointer repair. Signed SMUL32/SMUL32_SHR16 save **25 cycles** and unsigned UMUL32/UMUL32_SHR16 save **22 cycles**; READY timings are unchanged. The canonical SMUL32 mean is **718.605230 cycles** and the regenerated stable-API ZP union touches **207 bytes**. This remains inside V2's documented 221-byte ZP commitment. See `../docs/SMUL32_FAST31_V2.md`.
 
 This streamlined distribution intentionally excludes superseded PRGs, generated harness builds, historical provenance and duplicated reference bundles. The full archival package retains those materials.
 ## Reviewed source-relocatable build
