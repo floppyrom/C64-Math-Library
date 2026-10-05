@@ -14,7 +14,7 @@ The primary mean is a narrow measured improvement over the reported Repose 646.3
 
 ## Resource contract
 
-The standalone kernel owns **136 ZP bytes**, reserves **126 bytes of page $01** (`$0100-$017d`) as persistent executable storage, uses **302 bytes of ordinary RAM code**, and shares **2,044 bytes of quarter-square tables**. Its native ABI prebinds the four X bytes into SMC operands and passes Y as three memory bytes plus CPU Y; caller input stores are excluded from the published timing.
+The standalone kernel owns **136 ZP bytes**, reserves **126 bytes of page $01** (`$0100-$017d`) as persistent executable storage, uses **302 bytes of ordinary RAM code**, and shares **2,044 bytes of quarter-square tables**. Under the repository's standalone accounting convention, `code_bytes` is **428** (302 ordinary-RAM executable bytes + 126 page-$01 executable bytes), while executable ZP remains counted inside the 136-byte ZP claim; total occupied bytes are therefore **2,608**. Its native ABI prebinds the four X bytes into SMC operands and passes Y as three memory bytes plus CPU Y; caller input stores are excluded from the published timing.
 
 ## Fixed-profile applicability
 
@@ -35,3 +35,7 @@ A direct standard-ABI transplant was also tested: marshalling ordinary `MATH_X/M
 The compact summation uses X to encode the first deferred column-2 carry, reducing page-$01 code. The timing lost to that compact encoding is recovered in the NN quadrant: after negating x0, the common x0≠0 case has already propagated the borrow, so the upper bytes of -X are simply `~x1`, `~x2`, and `~x3`. Only the rare x0=0 case uses the cold SBC propagation helper.
 
 The two independent 100,000-pair records and the edge record are under `validation/records/`.
+
+## Low-resource counterpart
+
+For applications that cannot reserve page $01 or 136 ZP bytes, [`fast31_native_v2`](SMUL32_FAST31_V2.md) is the current **31-ZP / stack-free** signed 32×32 record at **692.825100 cycles**.
