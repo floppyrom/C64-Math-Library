@@ -1,5 +1,5 @@
-; SMUL32 FAST31 V29 — canonical compact-placement integration of V28 arithmetic
-; 31 ZP, 0 persistent stack. Speed-first signed 32x32 -> 64.
+; SMUL32 FAST31 V30 — mixed-call-safe neg-low SMC integration of V29 arithmetic
+; 31-ZP profile contract, 0 persistent stack. Speed-first signed 32x32 -> 64.
 ; Canonical overlay: leaves the shared resident UMUL32 producer at $3800 intact.
 ; MATH_SMUL32_READY is redirected to FAST31 below; MATH_SMUL32_SHR16 already
 ; calls MATH_SMUL32 and therefore inherits FAST31 automatically.
@@ -62,21 +62,24 @@ S32V28_umult32x32_same_x:
 
 S32V28_H10:
         clc
-        adc (S32V28_neg_lo_1),y
+S32V30_base_neglo1_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
         lda #1
         adc (S32V28_sqr_hi_1),y
         bcc S32V28_p10_tail
 S32V28_H20:
         clc
-        adc (S32V28_neg_lo_2),y
+S32V30_base_neglo2_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
         lda #1
         adc (S32V28_sqr_hi_2),y
         bcc S32V28_p20_tail
 S32V28_H30:
         clc
-        adc (S32V28_neg_lo_3),y
+S32V30_base_neglo3_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
         lda #1
         adc (S32V28_sqr_hi_3),y
@@ -100,7 +103,8 @@ S32V28__neg_hi_0:
 S32V28__sqr_lo_1:
         adc S32V28_sqr_lo,y
         bcs S32V28_H10
-        adc (S32V28_neg_lo_1),y
+S32V30_base_neglo1_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
         lda (S32V28_sqr_hi_1),y
 S32V28_p10_tail:
@@ -110,7 +114,8 @@ S32V28__neg_hi_1:
 S32V28__sqr_lo_2:
         adc S32V28_sqr_lo,y
         bcs S32V28_H20
-        adc (S32V28_neg_lo_2),y
+S32V30_base_neglo2_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
         lda (S32V28_sqr_hi_2),y
 S32V28_p20_tail:
@@ -120,7 +125,8 @@ S32V28__neg_hi_2:
 S32V28__sqr_lo_3:
         adc S32V28_sqr_lo,y
         bcs S32V28_H30
-        adc (S32V28_neg_lo_3),y
+S32V30_base_neglo3_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
         lda (S32V28_sqr_hi_3),y
 S32V28_p30_tail:
@@ -239,21 +245,24 @@ S32V28_q2_umult32x32_same_x:
 
 S32V28_q2_H10:
         clc
-        adc (S32V28_neg_lo_1),y
+S32V30_q2_neglo1_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
         lda #1
         adc (S32V28_sqr_hi_1),y
         bcc S32V28_q2_p10_tail
 S32V28_q2_H20:
         clc
-        adc (S32V28_neg_lo_2),y
+S32V30_q2_neglo2_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
         lda #1
         adc (S32V28_sqr_hi_2),y
         bcc S32V28_q2_p20_tail
 S32V28_q2_H30:
         clc
-        adc (S32V28_neg_lo_3),y
+S32V30_q2_neglo3_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
         lda #1
         adc (S32V28_sqr_hi_3),y
@@ -277,7 +286,8 @@ S32V28_q2__neg_hi_0:
 S32V28_q2__sqr_lo_1:
         adc S32V28_sqr_lo,y
         bcs S32V28_q2_H10
-        adc (S32V28_neg_lo_1),y
+S32V30_q2_neglo1_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
         lda (S32V28_sqr_hi_1),y
 S32V28_q2_p10_tail:
@@ -287,7 +297,8 @@ S32V28_q2__neg_hi_1:
 S32V28_q2__sqr_lo_2:
         adc S32V28_sqr_lo,y
         bcs S32V28_q2_H20
-        adc (S32V28_neg_lo_2),y
+S32V30_q2_neglo2_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
         lda (S32V28_sqr_hi_2),y
 S32V28_q2_p20_tail:
@@ -297,7 +308,8 @@ S32V28_q2__neg_hi_2:
 S32V28_q2__sqr_lo_3:
         adc S32V28_sqr_lo,y
         bcs S32V28_q2_H30
-        adc (S32V28_neg_lo_3),y
+S32V30_q2_neglo3_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
         lda (S32V28_sqr_hi_3),y
 S32V28_q2_p30_tail:
@@ -429,21 +441,24 @@ S32V28_q0_umult32x32_same_x:
 
 S32V28_q0_H10:
         clc
-        adc (S32V28_neg_lo_1),y
+S32V30_q0_neglo1_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
         lda #1
         adc (S32V28_sqr_hi_1),y
         bcc S32V28_q0_p10_tail
 S32V28_q0_H20:
         clc
-        adc (S32V28_neg_lo_2),y
+S32V30_q0_neglo2_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
         lda #1
         adc (S32V28_sqr_hi_2),y
         bcc S32V28_q0_p20_tail
 S32V28_q0_H30:
         clc
-        adc (S32V28_neg_lo_3),y
+S32V30_q0_neglo3_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
         lda #1
         adc (S32V28_sqr_hi_3),y
@@ -467,7 +482,8 @@ S32V28_q0__neg_hi_0:
 S32V28_q0__sqr_lo_1:
         adc S32V28_sqr_lo,y
         bcs S32V28_q0_H10
-        adc (S32V28_neg_lo_1),y
+S32V30_q0_neglo1_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
         lda (S32V28_sqr_hi_1),y
 S32V28_q0_p10_tail:
@@ -477,7 +493,8 @@ S32V28_q0__neg_hi_1:
 S32V28_q0__sqr_lo_2:
         adc S32V28_sqr_lo,y
         bcs S32V28_q0_H20
-        adc (S32V28_neg_lo_2),y
+S32V30_q0_neglo2_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
         lda (S32V28_sqr_hi_2),y
 S32V28_q0_p20_tail:
@@ -487,7 +504,8 @@ S32V28_q0__neg_hi_2:
 S32V28_q0__sqr_lo_3:
         adc S32V28_sqr_lo,y
         bcs S32V28_q0_H30
-        adc (S32V28_neg_lo_3),y
+S32V30_q0_neglo3_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
         lda (S32V28_sqr_hi_3),y
 S32V28_q0_p30_tail:
@@ -599,7 +617,7 @@ S32V28_q0_c4b_overflow_done:
         clc
         jmp S32V28_q0_c4b_done
 S32V28_q0_cg_code_end:
-*= REG_TABLE+$0A41
+*= REG_TABLE+$0A50
 S32V28_api_s31_v25_xcarry:
         ; Rare x0==0 path. Branches here preserve C=1 from the low-byte negate.
         lda #0
@@ -607,21 +625,24 @@ S32V28_api_s31_v25_xcarry:
         sta S32V28_x1
         sta S32V28__sqr_lo_1+1
         eor #$ff
-        sta S32V28_neg_lo_1
+        sta S32V30_base_neglo1_1+1
+        sta S32V30_base_neglo1_2+1
         sta S32V28__neg_hi_1+1
         lda #0
         sbc MATH_IO+$02
         sta S32V28_x2
         sta S32V28__sqr_lo_2+1
         eor #$ff
-        sta S32V28_neg_lo_2
+        sta S32V30_base_neglo2_1+1
+        sta S32V30_base_neglo2_2+1
         sta S32V28__neg_hi_2+1
         lda #0
         sbc MATH_IO+$03
         sta S32V28_x3
         sta S32V28__sqr_lo_3+1
         eor #$ff
-        sta S32V28_neg_lo_3
+        sta S32V30_base_neglo3_1+1
+        sta S32V30_base_neglo3_2+1
         sta S32V28__neg_hi_3+1
         jmp S32V28_api_s31_v25_xdone
 
@@ -635,21 +656,24 @@ S32V28_q1_umult32x32_same_x:
 
 S32V28_q1_H10:
         clc
-        adc (S32V28_neg_lo_1),y
+S32V30_q1_neglo1_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
         lda #1
         adc (S32V28_sqr_hi_1),y
         bcc S32V28_q1_p10_tail
 S32V28_q1_H20:
         clc
-        adc (S32V28_neg_lo_2),y
+S32V30_q1_neglo2_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
         lda #1
         adc (S32V28_sqr_hi_2),y
         bcc S32V28_q1_p20_tail
 S32V28_q1_H30:
         clc
-        adc (S32V28_neg_lo_3),y
+S32V30_q1_neglo3_1:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
         lda #1
         adc (S32V28_sqr_hi_3),y
@@ -673,7 +697,8 @@ S32V28_q1__neg_hi_0:
 S32V28_q1__sqr_lo_1:
         adc S32V28_sqr_lo,y
         bcs S32V28_q1_H10
-        adc (S32V28_neg_lo_1),y
+S32V30_q1_neglo1_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
         lda (S32V28_sqr_hi_1),y
 S32V28_q1_p10_tail:
@@ -683,7 +708,8 @@ S32V28_q1__neg_hi_1:
 S32V28_q1__sqr_lo_2:
         adc S32V28_sqr_lo,y
         bcs S32V28_q1_H20
-        adc (S32V28_neg_lo_2),y
+S32V30_q1_neglo2_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
         lda (S32V28_sqr_hi_2),y
 S32V28_q1_p20_tail:
@@ -693,7 +719,8 @@ S32V28_q1__neg_hi_2:
 S32V28_q1__sqr_lo_3:
         adc S32V28_sqr_lo,y
         bcs S32V28_q1_H30
-        adc (S32V28_neg_lo_3),y
+S32V30_q1_neglo3_2:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
         lda (S32V28_sqr_hi_3),y
 S32V28_q1_p30_tail:
@@ -825,7 +852,8 @@ S32V28_api_s31_v25_bind_q2:
         sta S32V28_x3
         sta S32V28_q2__sqr_lo_3+1
         eor #$ff
-        sta S32V28_neg_lo_3
+        sta S32V30_q2_neglo3_1+1
+        sta S32V30_q2_neglo3_2+1
         sta S32V28_q2__neg_hi_3+1
         lda MATH_IO
         sta S32V28_q2__sqr_lo_0+1
@@ -837,13 +865,15 @@ S32V28_api_s31_v25_bind_q2:
         sta S32V28_x1
         sta S32V28_q2__sqr_lo_1+1
         eor #$ff
-        sta S32V28_neg_lo_1
+        sta S32V30_q2_neglo1_1+1
+        sta S32V30_q2_neglo1_2+1
         sta S32V28_q2__neg_hi_1+1
         lda MATH_IO+$02
         sta S32V28_x2
         sta S32V28_q2__sqr_lo_2+1
         eor #$ff
-        sta S32V28_neg_lo_2
+        sta S32V30_q2_neglo2_1+1
+        sta S32V30_q2_neglo2_2+1
         sta S32V28_q2__neg_hi_2+1
         ldx #3
         sec
@@ -854,7 +884,8 @@ S32V28_api_s31_v25_bind_q1:
         sta S32V28_x3
         sta S32V28_q1__sqr_lo_3+1
         eor #$ff
-        sta S32V28_neg_lo_3
+        sta S32V30_q1_neglo3_1+1
+        sta S32V30_q1_neglo3_2+1
         sta S32V28_q1__neg_hi_3+1
         lda MATH_IO
         sta S32V28_q1__sqr_lo_0+1
@@ -866,25 +897,29 @@ S32V28_api_s31_v25_bind_q1:
         sta S32V28_x1
         sta S32V28_q1__sqr_lo_1+1
         eor #$ff
-        sta S32V28_neg_lo_1
+        sta S32V30_q1_neglo1_1+1
+        sta S32V30_q1_neglo1_2+1
         sta S32V28_q1__neg_hi_1+1
+        jmp S32V30_q1_bind_tail
+
+; q1 byte-2 binder tail.  This lives in the former mixed-call-safe
+; binder island so the expanded q1 binder cannot cross the fixed $3C40 entry.
+*= REG_GAME_API+$01C8
+S32V30_q1_bind_tail:
         lda MATH_IO+$02
         sta S32V28_x2
         sta S32V28_q1__sqr_lo_2+1
         eor #$ff
-        sta S32V28_neg_lo_2
+        sta S32V30_q1_neglo2_1+1
+        sta S32V30_q1_neglo2_2+1
         sta S32V28_q1__neg_hi_2+1
         jmp S32V28_q1_kernel
-; Ordinary MATH_SMUL32 is a cold/mixed-call safe entry.  Reinstall the
-; six persistent pointer high bytes because other public routines may reuse
-; ZP_MAIN.  READY skips this binder and retains the documented initialized-
-; state contract.
-*= REG_GAME_API+$01C8
+
+; Ordinary MATH_SMUL32 is a cold/mixed-call-safe entry.  The V30 neg-low
+; operands are absolute,Y SMC, so only the three sqr_hi pointer high bytes
+; must be restored after unrelated public calls reuse ZP_MAIN.
+*= REG_API+$0D15
 S32V29_safe_entry:
-        lda #>S32V28_neg_sqr_lo
-        sta S32V28_neg_lo_1+1
-        sta S32V28_neg_lo_2+1
-        sta S32V28_neg_lo_3+1
         lda #>S32V28_sqr_hi
         sta S32V28_sqr_hi_1+1
         sta S32V28_sqr_hi_2+1
@@ -910,7 +945,8 @@ S32V28_api_s31_v25_bind_q0:
         sta S32V28_x3
         sta S32V28_q0__sqr_lo_3+1
         eor #$ff
-        sta S32V28_neg_lo_3
+        sta S32V30_q0_neglo3_1+1
+        sta S32V30_q0_neglo3_2+1
         sta S32V28_q0__neg_hi_3+1
         lda MATH_IO
         sta S32V28_q0__sqr_lo_0+1
@@ -922,13 +958,15 @@ S32V28_api_s31_v25_bind_q0:
         sta S32V28_x1
         sta S32V28_q0__sqr_lo_1+1
         eor #$ff
-        sta S32V28_neg_lo_1
+        sta S32V30_q0_neglo1_1+1
+        sta S32V30_q0_neglo1_2+1
         sta S32V28_q0__neg_hi_1+1
         lda MATH_IO+$02
         sta S32V28_x2
         sta S32V28_q0__sqr_lo_2+1
         eor #$ff
-        sta S32V28_neg_lo_2
+        sta S32V30_q0_neglo2_1+1
+        sta S32V30_q0_neglo2_2+1
         sta S32V28_q0__neg_hi_2+1
         jmp S32V28_q0_kernel
 
@@ -951,19 +989,22 @@ S32V28_api_s31_v25_nn:
         ; just ~X and their negative bindings are the original X bytes.
         bcs S32V28_api_s31_v25_nn_xcarry_tramp
         lda MATH_IO+$01
-        sta S32V28_neg_lo_1
+        sta S32V30_base_neglo1_1+1
+        sta S32V30_base_neglo1_2+1
         sta S32V28__neg_hi_1+1
         eor #$ff
         sta S32V28_x1
         sta S32V28__sqr_lo_1+1
         lda MATH_IO+$02
-        sta S32V28_neg_lo_2
+        sta S32V30_base_neglo2_1+1
+        sta S32V30_base_neglo2_2+1
         sta S32V28__neg_hi_2+1
         eor #$ff
         sta S32V28_x2
         sta S32V28__sqr_lo_2+1
         lda MATH_IO+$03
-        sta S32V28_neg_lo_3
+        sta S32V30_base_neglo3_1+1
+        sta S32V30_base_neglo3_2+1
         sta S32V28__neg_hi_3+1
         eor #$ff
         sta S32V28_x3
