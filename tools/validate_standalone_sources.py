@@ -27,15 +27,19 @@ for p in pub.PROFILES:
 # exact source annotations against initialized executable image
 ann=re.compile(r'; @([0-9A-F]{4}) ((?:[0-9A-F]{2}(?: |$))+)',re.I)
 for p in pub.PROFILES:
- mem,vals,prg=pub.initialized(p)
+ mem,vals,prg=pub.initialized(p); active_cache={}
  for r in csv.DictReader((ROOT/p/'standalone/MANIFEST.csv').open()):
+  callmem=mem
+  if r['legacy_api'] in pub.ACTIVE_BEGIN:
+   if r['legacy_api'] not in active_cache: active_cache[r['legacy_api']]=pub.initialized(p,r['legacy_api'])[0]
+   callmem=active_cache[r['legacy_api']]
   fp=ROOT/p/'standalone'/r['file']; count=0; same=True
   for m in ann.finditer(fp.read_text()):
    a=int(m.group(1),16); bs=bytes(int(x,16) for x in m.group(2).split()); count+=1
-   if bytes(mem[a:a+len(bs)])!=bs: same=False; break
+   if bytes(callmem[a:a+len(bs)])!=bs: same=False; break
   source='\n'.join(line for line in fp.read_text().splitlines() if not line.strip().lower().startswith('!cpu'))
   emitted,_,_=Assembler().assemble(source)
-  same=same and all(mem[a]==v for a,v in emitted.items())
+  same=same and all(callmem[a]==v for a,v in emitted.items())
   ok(f'{p}:{r["legacy_api"]}: executable bytes',same and count>0,f'{count} assembled and annotated instructions')
 # stable public table mapping
 api=list(csv.DictReader((ROOT/'docs/PUBLIC_API_COMPLETE.csv').open()))
