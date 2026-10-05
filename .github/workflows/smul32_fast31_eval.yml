@@ -1,4 +1,5 @@
 name: SMUL32 FAST31 persistent-ZP evaluation
+# rerun after persistent-init generator fix
 on:
   push:
     branches: [smul32-fast31-v3-profile-integration]
