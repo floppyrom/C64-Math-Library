@@ -93,6 +93,8 @@ These are independently useful kernels or record/Pareto points. They are **not a
 
 The current SMUL32 native record is `compact126` at **646.354530 cycles** with 136 ZP bytes and a 126-byte persistent stack-page reservation. It is not selected into the fixed public profiles because its executable-ZP window conflicts with V2–V4 SMUL16 and standard-ABI marshalling removes the speed advantage; see [`docs/SMUL32_COMPACT126.md`](docs/SMUL32_COMPACT126.md).
 
+For the practical low-resource class, `fast31_native_v2` is the new **31-ZP / stack-free SMUL32 record** at **692.825100 cycles**, improving the previous 697.259440 point by 4.434340 cycles. See [`docs/SMUL32_FAST31_V2.md`](docs/SMUL32_FAST31_V2.md).
+
 | Typed routine | Variant | Mean | Min | Max | ZP B | Stack-page B | Source | Evidence / basis |
 |---|---|---:|---:|---:|---:|---:|---|---|
 | `mul_u16_u16_u32` | `shifted99` | 155.646069283 | — | — | 99 | 0 | [mul_u16_u16_u32_shifted99.asm](routines/multiply/mul_u16_u16_u32_shifted99.asm) | [UMUL16_SHIFTED_EXACT.json](validation/records/UMUL16_SHIFTED_EXACT.json); exact full-domain event count |
@@ -105,6 +107,7 @@ The current SMUL32 native record is `compact126` at **646.354530 cycles** with 1
 | `mul_s24_s24_s48` | `fast24` | 400.301600 | 339 | 461 | 24 | 0 | [mul_s24_s24_s48_fast24.asm](routines/multiply/mul_s24_s24_s48_fast24.asm) | [SMUL24_FAST24_2026-09-20.json](validation/records/SMUL24_FAST24_2026-09-20.json); deterministic C0FFEE paired-style corpus; native entry through RTS |
 | `mul_s32_s32_s64` | `compact126` | **646.354530** | 548 | 757 | 136 | 126 | [mul_s32_s32_s64_compact126.asm](routines/multiply/mul_s32_s32_s64_compact126.asm) | [SMUL32_COMPACT126_100K.json](validation/records/SMUL32_COMPACT126_100K.json); 100,000-call native corpus; independent seed + edge suite also zero-error; see [profile-fit note](docs/SMUL32_COMPACT126.md) |
 | `mul_s32_s32_s64` | `turbo135` | 665.877260 | 560 | 805 | 135 | 0 | [mul_s32_s32_s64_turbo135.asm](routines/multiply/mul_s32_s32_s64_turbo135.asm) | [SMUL32_TURBO135_100K.json](validation/records/SMUL32_TURBO135_100K.json); deterministic 100,000-call native corpus |
+| `mul_s32_s32_s64` | `fast31_native_v2` | **692.825100** | 590 | 808 | 31 | 0 | [mul_s32_s32_s64_fast31_native_v2.asm](routines/multiply/mul_s32_s32_s64_fast31_native_v2.asm) | [SMUL32_FAST31_NATIVE_V2_100K.json](validation/records/SMUL32_FAST31_NATIVE_V2_100K.json); independent seed + 1,849-edge suite also zero-error |
 | `mul_s32_s32_s64` | `fast31_native` | 697.259440 | 594 | 834 | 31 | 0 | [mul_s32_s32_s64_fast31_native.asm](routines/multiply/mul_s32_s32_s64_fast31_native.asm) | [SMUL32_FAST31_NATIVE_100K.json](validation/records/SMUL32_FAST31_NATIVE_100K.json); deterministic 100,000-call native corpus |
 | `atan2_s8_s8_u8` | `compact_opt` | 48.447189 | 29 | 50 | 0 | 0 | [atan2_s8_s8_u8_compact_opt.asm](routines/atan2/standalone/atan2_s8_s8_u8_compact_opt.asm) | [ATAN2_OPTIMIZATION_VALIDATION.json](validation/ATAN2_OPTIMIZATION_VALIDATION.json); exhaustive signed-byte vectors; public JMP+RTS |
 | `atan2_s8_s8_u8` | `sum_small` | 45.958908 | 29 | 48 | 0 | 0 | [atan2_s8_s8_u8_sum_small.asm](routines/atan2/standalone/atan2_s8_s8_u8_sum_small.asm) | [ATAN2_OPTIMIZATION_VALIDATION.json](validation/ATAN2_OPTIMIZATION_VALIDATION.json); exhaustive signed-byte vectors; public JMP+RTS |
