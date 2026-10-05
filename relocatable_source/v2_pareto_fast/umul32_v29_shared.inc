@@ -185,13 +185,9 @@ U32V29_q0_cg_code_end:
 
 *= REG_KERNEL+$1900
 U32V29_safe_entry:
-        lda #>S32V28_neg_sqr_lo
-        sta S32V28_neg_lo_1+1
-        sta S32V28_neg_lo_2+1
-        sta S32V28_neg_lo_3+1
+        ; Five shared FAST31 pointer highs are persistent in profile-owned ZP.
+        ; Repair only the one pair that remains in shared ZP_MAIN.
         lda #>S32V28_sqr_hi
-        sta S32V28_sqr_hi_1+1
-        sta S32V28_sqr_hi_2+1
         sta S32V28_sqr_hi_3+1
 U32V29_ready_body:
         lda MATH_IO+$03
