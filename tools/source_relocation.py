@@ -212,6 +212,14 @@ DIVISION_KNOWN_NO_FALLTHROUGH={
  'v4_reu_16m':{0x41ac},
 }
 
+# Active Turbo wrappers transfer control into executable ZP installed only by
+# BEGIN.  The monolith owns the wrapper/helper; relocatable_source/turbo/*.asm
+# owns the overlay.  Do not decode normal-profile data at those overlay targets.
+TURBO_EXTERNAL_EDGE_PCS={
+ 'v3_reu_512k':{0x3855,0x102b},
+ 'v4_reu_16m':{0x3855,0x102b},
+}
+
 def trace(profile,mem):
  todo=[a for _,a in public_entries()]+[MATH_INIT_OLD];seen=set();unknown=[]
  if profile in REU: todo += list(TURBO_PUBLIC_OLD)
@@ -232,10 +240,15 @@ def trace(profile,mem):
    else: todo.extend((nxt,target))
    continue
   if op=='jmp':
-   if mode=='abs':todo.append(mem[pc+1]|mem[pc+2]<<8)
+   if mode=='abs':
+    if pc not in TURBO_EXTERNAL_EDGE_PCS.get(profile,set()):
+     todo.append(mem[pc+1]|mem[pc+2]<<8)
    else:unknown.append((pc,oc))
    continue
-  if op=='jsr':todo.extend((mem[pc+1]|mem[pc+2]<<8,nxt));continue
+  if op=='jsr':
+   if pc in TURBO_EXTERNAL_EDGE_PCS.get(profile,set()):todo.append(nxt)
+   else:todo.extend((mem[pc+1]|mem[pc+2]<<8,nxt))
+   continue
   todo.append(nxt)
  if unknown:raise RuntimeError(f'{profile}: untraceable stable code: {unknown[:8]}')
  return seen
