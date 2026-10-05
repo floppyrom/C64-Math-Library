@@ -499,7 +499,7 @@ For SMUL32-specific record work, the repository also includes `mul_s32_s32_s64_c
 
 For a stack-free low-resource alternative, `mul_s32_s32_s64_fast31_native_v2` is the current **31-ZP native record at 692.825100 cycles**, improving the previous FAST31 native point without changing its ZP/stack class. See `docs/SMUL32_FAST31_V2.md`.
 
-In the shipped V2/V3/V4 profiles, `MATH_INIT` also establishes five persistent FAST31 table-pointer pairs in otherwise unused bytes already covered by the profile's normal ZP ownership. Ordinary `MATH_SMUL32`/`MATH_UMUL32` therefore repairs only one shared pointer pair, saving **17 cycles per call**. V3/V4 Turbo BEGIN/END may temporarily overlay these addresses; END restores the pre-overlay bytes exactly. V1/V5 keep the original 31-byte normal-ZP implementation.
+In the shipped V2/V3/V4 profiles, `MATH_INIT` establishes **all six** FAST31 table-pointer pairs in otherwise unused bytes already covered by the profile's normal ZP ownership. Ordinary `MATH_SMUL32`/`MATH_UMUL32` therefore requires no pointer-high repair. This saves **25 cycles** on signed ordinary/SHR16 calls and **22 cycles** on unsigned ordinary/SHR16 calls. V3/V4 Turbo BEGIN/END may temporarily overlay these addresses; END restores the pre-overlay bytes exactly. V1/V5 keep the original 31-byte normal-ZP implementation.
 
 ---
 
