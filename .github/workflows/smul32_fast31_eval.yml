@@ -1,14 +1,13 @@
-name: Promote FAST31 persistent-ZP integration
-# lifecycle-correct publication/source-recovery rerun
+name: Finalize FAST31 persistent-ZP metadata
 on:
   push:
     branches: [smul32-fast31-v3-profile-integration]
 permissions:
   contents: write
 jobs:
-  promote:
+  finalize:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,69 +16,45 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Build canonical reference images
-        run: make reference
-      - name: Promote V2-V4 resident PRGs
-        run: |
-          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
-          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
-          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
-      - name: Rebuild multiply evidence and source mirrors
-        run: |
-          python3 tools/validate_signed_layout.py
-          python3 tools/validate_signed_multiply.py
-          python3 tools/benchmark_multiply_refresh.py
-          python3 tools/publish_standalone_sources.py
-          python3 tools/publish_native_signed_sources.py
-          python3 tools/validate_published_signed_sources.py
-      - name: Regenerate performance/source indexes
+      - name: Regenerate public indexes
         run: |
           python3 tools/generate_consolidated_routine_table.py
           python3 tools/generate_public_indexes.py
           python3 tools/validate_public_catalog.py
           python3 tools/validate_standalone_sources.py
-      - name: Validate relocation and Turbo lifecycle
+      - name: Refresh package metadata and checksums
         run: |
-          make alternate
-          python3 tools/validate_source_build.py all --build build_source/alternate --out validation/source_relocation
-          python3 tools/validate_turbo_relocation.py
-      - name: Refresh package checksums
-        run: |
-          rm -rf build_source
           find . -type d -name __pycache__ -prune -exec rm -rf {} +
           find . -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
           python3 - <<'PY'
           from pathlib import Path
           import hashlib, subprocess
-          root=Path('.')
-          files=subprocess.check_output(['git','ls-files'],text=True).splitlines()
-          def write():
+          def rewrite():
               rows=[]
-              for p in files:
+              for p in subprocess.check_output(['git','ls-files'],text=True).splitlines():
                   if p=='SHA256SUMS.txt': continue
-                  q=root/p
+                  q=Path(p)
                   if q.is_file(): rows.append(f"{hashlib.sha256(q.read_bytes()).hexdigest()}  {p}")
               Path('SHA256SUMS.txt').write_text('\n'.join(sorted(rows))+'\n')
-          write()
+          rewrite()
           PY
           python3 tools/package_audit.py
           python3 - <<'PY'
           from pathlib import Path
           import hashlib, subprocess
-          files=subprocess.check_output(['git','ls-files'],text=True).splitlines()
           rows=[]
-          for p in files:
+          for p in subprocess.check_output(['git','ls-files'],text=True).splitlines():
               if p=='SHA256SUMS.txt': continue
               q=Path(p)
               if q.is_file(): rows.append(f"{hashlib.sha256(q.read_bytes()).hexdigest()}  {p}")
           Path('SHA256SUMS.txt').write_text('\n'.join(sorted(rows))+'\n')
           PY
           python3 tools/package_audit.py
-      - name: Commit generated promotion
+      - name: Commit final metadata
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git status --short
-          git commit -m "Promote FAST31 persistent-pointer integration"
+          git commit -m "Finalize FAST31 persistent-pointer metadata"
           git push origin HEAD:smul32-fast31-persistent-zp-integration
