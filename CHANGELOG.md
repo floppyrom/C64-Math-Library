@@ -1,3 +1,10 @@
+## 2026-10-05 — SMUL32 FAST31 v2 and record-metadata alignment
+
+- Added `mul_s32_s32_s64_fast31_native_v2.asm`: **692.825100 cycles**, 31 ZP, zero persistent stack-page bytes, 0 errors on the primary 100,000-pair corpus; **692.678520** on an independent 100,000-pair seed; 0 errors on 1,849 structured edge cases.
+- FAST31 v2 transfers two compact126 ideas into the low-resource kernel: the NN common/rare x0-borrow split and `CPY #$00` carry-seeding sign dispatch. This improves the previous 697.259440 31-ZP native point by **4.434340 cycles/call**.
+- A separate 31-ZP public-ABI research candidate measures **736.188510 cycles** (independent seed 736.128620), but is not selected into V1–V5 until the canonical build/relocation/mixed-call/release-audit gates are rerun.
+- Aligned compact126 with the standalone record metadata/accounting convention: executable code is **428 bytes** (302 ordinary RAM + 126 page-$01), and total occupied bytes including its 136-ZP claim are **2,608**. Added standardized `;ABI` / `;Results` metadata.
+
 ## 2026-10-05 — SMUL32 compact126 native record
 
 - Added `routines/multiply/mul_s32_s32_s64_compact126.asm`, validated at **646.354530 cycles** on the primary 100,000-pair C0FFEE native corpus, **646.281100** on an independent 100,000-pair seed, and 0 errors on a 1,849-case structured edge suite.
