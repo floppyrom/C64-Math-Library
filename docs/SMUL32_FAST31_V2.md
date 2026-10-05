@@ -38,15 +38,15 @@ Together these changes account for the measured reduction from 697.259440 to 692
 
 ## Public-profile integration
 
-The low-resource work is now integrated into V2–V4 using a profile-native mixed-call-safe pointer layout. Five FAST31 table-pointer pairs live in holes already covered by the normal profile ZP ownership map; one shared pair remains in ZP_MAIN and is rebound on an ordinary call. `MATH_INIT` installs the persistent high bytes.
+The low-resource work is now integrated into V2–V4 using a profile-native mixed-call-safe pointer layout. **All six** FAST31 table-pointer pairs live in holes already covered by the normal profile ZP ownership map, so ordinary calls no longer need the old pointer-high repair at all. `MATH_INIT` installs the persistent high bytes.
 
-This removes a constant **17 cycles** from ordinary `MATH_SMUL32`, `MATH_UMUL32`, and both 32-bit SHR16 derivatives while leaving READY timings unchanged. The canonical 2,409-case signed-corpus means are:
+Measured canonical effects are **−25 cycles** for ordinary signed `MATH_SMUL32` and `MATH_SMUL32_SHR16`, and **−22 cycles** for ordinary unsigned `MATH_UMUL32` and `MATH_UMUL32_SHR16`. READY timings are unchanged. The canonical 2,409-case signed-corpus means are:
 
-- **V2: 726.605230 cycles**
-- **V3: 727.033209 cycles**
-- **V4: 727.090079 cycles**
+- **V2: 718.605230 cycles**
+- **V3: 719.033209 cycles**
+- **V4: 719.090079 cycles**
 
-V2 remains inside its documented **221-byte total ZP commitment**; the current stable API union touches 220 bytes. V3/V4 Turbo BEGIN may temporarily overlay the persistent bytes, and END restores their previous values exactly. V1/V5 retain the original all-in-`$02-$20` 31-ZP public layout because those profiles promise a 31-byte normal-ZP contract.
+V2 remains comfortably inside its documented **221-byte total ZP commitment**; the regenerated stable-API union touches **207 bytes**. V3/V4 touch 202/201 bytes respectively. V3/V4 Turbo BEGIN may temporarily overlay the persistent bytes, and END restores their previous values exactly. V1/V5 retain the original all-in-`$02-$20` 31-ZP public layout because those profiles promise a 31-byte normal-ZP contract.
 
 The earlier 736.188510 public-path research point remains useful historical evidence, but it is superseded for V2–V4 by this faster profile-integrated form.
 
