@@ -27,9 +27,16 @@ jobs:
       - name: Benchmark affected multiply entries
         run: python3 tools/evaluate_smul32_fast31_persistent.py
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: fast31-persistent-zp-eval
           path: |
             validation/review/SMUL32_FAST31_PERSISTENT_ZP_EVAL.json
             validation/fast31_persistent_eval/
             validation/turbo_relocation/
+            build_source/reference/v2_pareto_fast/*.prg
+            build_source/reference/v3_reu_512k/*.prg
+            build_source/reference/v4_reu_16m/*.prg
+            relocatable_source/v2_pareto_fast/math_relocatable.asm
+            relocatable_source/v3_reu_512k/math_relocatable.asm
+            relocatable_source/v4_reu_16m/math_relocatable.asm
