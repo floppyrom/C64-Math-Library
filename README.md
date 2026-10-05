@@ -44,7 +44,7 @@ These are current public-entry means, through `RTS`; caller `JSR` and input stor
 
 For the complete table, resource use, min/max, corpora and source links, see [`PERFORMANCE.md`](PERFORMANCE.md).
 
-The repository also publishes standalone record/Pareto alternatives, including the current 24-ZP signed 24x24 FAST24 point at **400.301600 cycles** and the stack-free 135-ZP signed 32x32 point at **665.877260 cycles**. These use their own documented benchmark bases and should not be compared blindly with public-profile means.
+The repository also publishes standalone record/Pareto alternatives, including the current 24-ZP signed 24x24 FAST24 point at **400.301600 cycles**, the stack-free 135-ZP signed 32x32 point at **665.877260 cycles**, and the new **compact126** signed 32x32 record at **646.354530 cycles / 136 ZP / 126 stack-page bytes**. Compact126 is an exclusive overlay point, exposed as an optional V3/V4 integration source rather than silently replacing the fixed resident API; see [`docs/SMUL32_COMPACT126.md`](docs/SMUL32_COMPACT126.md). These use their own documented benchmark bases and should not be compared blindly with public-profile means.
 
 ## Source layout and naming
 
