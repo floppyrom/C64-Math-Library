@@ -1,0 +1,111 @@
+{
+  "status": "PASS",
+  "date": "2026-10-06",
+  "purpose": "Evaluate remaining FAST31 v2 arithmetic ideas against the V2-V4 persistent-pointer public SMUL32 core.",
+  "baseline_after_persistent_pointer": {
+    "v2_pareto_fast": {
+      "mean_cycles": 718.6052303860523,
+      "min_cycles": 635,
+      "max_cycles": 848
+    },
+    "v3_reu_512k": {
+      "mean_cycles": 719.0332088003321,
+      "min_cycles": 635,
+      "max_cycles": 848
+    },
+    "v4_reu_16m": {
+      "mean_cycles": 719.0900788709008,
+      "min_cycles": 635,
+      "max_cycles": 848
+    }
+  },
+  "experiments": {
+    "direct_stable_entry_fallthrough": {
+      "retained": true,
+      "description": "Remove the redundant 3-cycle JMP at the fixed MATH_SMUL32 entry and fall directly into the dispatcher.",
+      "v2_pareto_fast": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 715.6052303860523,
+        "min_cycles": 632,
+        "max_cycles": 845
+      },
+      "v3_reu_512k": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 716.0332088003321,
+        "min_cycles": 632,
+        "max_cycles": 845
+      },
+      "v4_reu_16m": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 716.0900788709008,
+        "min_cycles": 632,
+        "max_cycles": 845
+      },
+      "delta_cycles": -3
+    },
+    "cpy_zero_carry_seeded_dispatch": {
+      "retained": false,
+      "description": "Transplant FAST31 v2 CPY #$00 Y-sign dispatch and remove matching SEC instructions on q0/q1/q2/NN entry.",
+      "result": "exactly timing-neutral under the public memory ABI",
+      "v2_pareto_fast": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 715.6052303860523,
+        "min_cycles": 632,
+        "max_cycles": 845
+      },
+      "v3_reu_512k": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 716.0332088003321,
+        "min_cycles": 632,
+        "max_cycles": 845
+      },
+      "v4_reu_16m": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 716.0900788709008,
+        "min_cycles": 632,
+        "max_cycles": 845
+      },
+      "explanation": "The public path must load Y from memory; the extra two-cycle CPY only replaces a two-cycle SEC. Native v2 receives Y live in a register, so the same transformation is profitable there."
+    }
+  },
+  "shifted_derivative": {
+    "routine": "MATH_SMUL32_SHR16",
+    "v2_pareto_fast": {
+      "cases": 4361,
+      "errors": 0,
+      "mean_cycles": 784.9988534739739,
+      "min_cycles": 697,
+      "max_cycles": 910
+    },
+    "v3_reu_512k": {
+      "cases": 4361,
+      "errors": 0,
+      "mean_cycles": 784.9988534739739,
+      "min_cycles": 697,
+      "max_cycles": 910
+    },
+    "v4_reu_16m": {
+      "cases": 4361,
+      "errors": 0,
+      "mean_cycles": 784.9988534739739,
+      "min_cycles": 697,
+      "max_cycles": 910
+    },
+    "delta_cycles": -3
+  },
+  "validation": {
+    "signed_multiply_calls": 264999,
+    "multiply_refresh_calls": 415078,
+    "alternate_public_entries_per_profile": 54,
+    "alternate_public_calls_per_profile": 21422,
+    "turbo_lifecycle_calls": 17196,
+    "result": "PASS"
+  },
+  "conclusion": "The NN x0 common/rare optimization was already present in the shipped core. Carry-seeded sign dispatch does not improve the public memory ABI. Retain only the direct fixed-entry fallthrough."
+}
