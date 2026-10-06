@@ -62,6 +62,12 @@ def patch_candidate(prg):
     new.extend(b"\x00"*3)
     mem[SRC:SRC+116]=new
 
+    # Public adapter SMC stores also target operand bytes inside the shifted core:
+    # x0 $99->$96, x1 $A7->$A4, y1 $B7->$B4.
+    for pc,oldv,newv in ((0x2104,0x99,0x96),(0x2109,0xA7,0xA4),(0x210E,0xB7,0xB4)):
+        if mem[pc] != oldv: raise RuntimeError(f"adapter SMC drift at {pc:04x}: {mem[pc]:02x}")
+        mem[pc]=newv
+
     # The core's final low result bytes move $F2/$F3 -> $EF/$F0.
     if mem[0x211B:0x211D] != bytes((0xA5,0xF2)): raise RuntimeError("adapter z0 load drift")
     if mem[0x2120:0x2122] != bytes((0xA5,0xF3)): raise RuntimeError("adapter z1 load drift")
@@ -73,16 +79,16 @@ def patch_candidate(prg):
     tail=r"""
 .org $5a00
 tail:
-    bit $a7
+    bit $a4
     bmi xneg
-    bit $b7
+    bit $b4
     bmi subx
     tax
     tya
     adc #$00
     rts
 xneg:
-    bit $b7
+    bit $b4
     bmi both
     bcc yready
     iny
@@ -91,17 +97,17 @@ yready:
     sbc $c004
     tax
     tya
-    sbc $b7
+    sbc $b4
     rts
 subx:
     bcc xready
     iny
 xready:
     sec
-    sbc $99
+    sbc $96
     tax
     tya
-    sbc $a7
+    sbc $a4
     rts
 both:
     bcc bready
@@ -111,14 +117,14 @@ bready:
     sbc $c004
     tax
     tya
-    sbc $b7
+    sbc $b4
     tay
     txa
     sec
-    sbc $99
+    sbc $96
     tax
     tya
-    sbc $a7
+    sbc $a4
     rts
 """
     td,labels,const=Assembler().assemble(tail)
