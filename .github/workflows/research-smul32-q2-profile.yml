@@ -22,3 +22,5 @@ jobs:
           python-version: '3.12'
       - name: Profile q2 branch paths
         run: python3 tools/profile_smul32_q2.py
+      - name: Sweep q2 core phase
+        run: python3 tools/sweep_smul32_q2_phase.py
