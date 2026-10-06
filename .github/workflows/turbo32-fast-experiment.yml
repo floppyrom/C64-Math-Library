@@ -1,0 +1,31 @@
+name: Turbo32 fast experiment
+
+on:
+  push:
+    branches:
+      - turbo32-public-fast-2026-10-06
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run Turbo32 fast public experiment
+        run: python3 tools/experiment_turbo32_public_fast.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: turbo32-fast-experiment
+          path: validation/turbo_relocation/TURBO32_PUBLIC_FAST_EXPERIMENT.json
+          retention-days: 3
