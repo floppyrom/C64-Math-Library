@@ -1,0 +1,111 @@
+name: Promote Turbo16 optimization
+
+on:
+  push:
+    branches:
+      - optimize-turbo16-directio
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  promote:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: optimize-turbo16-directio
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Remove one-shot workflow
+        run: rm .github/workflows/promote-turbo16.yml
+      - name: Build optimized reference and alternate artifacts
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+      - name: Promote V3/V4 resident artifacts
+        run: |
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg \
+             v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg \
+             v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu \
+             v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu \
+             v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+      - name: Regenerate evidence and publication indexes
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/publish_standalone_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/verify_deterministic_rebuild.py
+      - name: Refresh release hashes and manual metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          root=Path('.')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v3_reu_512k','v4_reu_16m'):
+              s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+              s['reference_reu_sha256'][p]=sha(root/'build_source/reference'/p/f'c64_math_{p}_source_built.reu')
+              s['alternate_reu_sha256'][p]=sha(root/'build_source/alternate'/p/f'c64_math_{p}_source_built.reu')
+          tv=json.loads((root/'validation/turbo_relocation/TURBO_RELOCATION_VALIDATION.json').read_text())
+          ref=tv['profiles']['v3_reu_512k']['reference']
+          alt=tv['profiles']['v3_reu_512k']['alternate']
+          s['reference_turbo_overlay_sha256']['turbo16']=ref['turbo16']['installed_overlay_sha256']
+          s['reference_turbo_overlay_sha256']['turbo32']=ref['turbo32']['installed_overlay_sha256']
+          s['alternate_turbo_overlay_sha256']['turbo16']=alt['turbo16']['installed_overlay_sha256']
+          s['alternate_turbo_overlay_sha256']['turbo32']=alt['turbo32']['installed_overlay_sha256']
+          manual=(root/'USER_MANUAL.md')
+          s['documentation']['user_manual_bytes']=manual.stat().st_size
+          s['documentation']['user_manual_lines']=len(manual.read_text().splitlines())
+          s['documentation']['user_manual_sha256']=sha(manual)
+          s['date']='2026-10-06'
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+      - name: Reverify promoted binaries and Turbo boundaries
+        run: |
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+      - name: Refresh package contract
+        run: |
+          rm -rf build_source
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+      - name: Commit promoted Turbo16 release
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Promote optimized V3/V4 Turbo16 runtime"
+          git push origin HEAD:optimize-turbo16-directio
