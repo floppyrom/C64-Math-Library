@@ -206,7 +206,8 @@ S24_smul24_composed:
 S24_smul24_xneg:
         tya
         bmi S24_smul24_nn
-        sty S24_smul24_saved_y2+1
+        ; Public inputs remain stable in MATH_IO. Re-read original Y2 after
+        ; the producer instead of saving it into a self-modified immediate.
         jsr S24_umult
         sta S24_smul24_xneg_orig_a+1
         tya
@@ -218,8 +219,7 @@ S24_smul24_xneg_orig_a:
         sbc S24_y1
         sta S24_smul24_xneg_restore_a+1
         txa
-S24_smul24_saved_y2:
-        sbc #0
+        sbc MATH_IO+$06
         tax
 S24_smul24_xneg_restore_a:
         lda #0
