@@ -495,7 +495,7 @@ The signed API is uniform and all shipped `MATH_SMUL*`/`MATH_SDIV*` paths now ow
 
 See `docs/SIGNED_IMPLEMENTATIONS.md` for the exact per-profile taxonomy and resource trade-offs.
 
-For SMUL32-specific record work, the repository also includes `mul_s32_s32_s64_compact126`: **646.354530 cycles** on its native benchmark ABI, with 136 ZP bytes and 126 persistent stack-page bytes. It is an opt-in standalone/Pareto kernel, not the stable fixed-profile `MATH_SMUL32`; standard-ABI marshalling removes its timing advantage. See `docs/SMUL32_COMPACT126.md`.
+For SMUL32-specific record work, the repository also includes `mul_s32_s32_s64_compact126`: **646.354530 cycles** on its native benchmark ABI, with 136 ZP bytes and 126 persistent stack-page bytes. It is an opt-in standalone/Pareto kernel, not the stable fixed-profile `MATH_SMUL32`; standard-ABI marshalling removes its timing advantage. See `docs/SMUL32_COMPACT126.md`. V2/V3/V4 additionally expose profile-local optional overlay aliases; V3/V4 are natural Turbo-style hosts, while V2 requires manual save/restore. The compatibility matrix is `docs/SMUL32_COMPACT126_PROFILE_FIT.csv`.
 
 For a stack-free low-resource alternative, `mul_s32_s32_s64_fast31_native_v2` is the current **31-ZP native record at 692.825100 cycles**, improving the previous FAST31 native point without changing its ZP/stack class. See `docs/SMUL32_FAST31_V2.md`.
 
