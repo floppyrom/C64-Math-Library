@@ -1,3 +1,9 @@
+2026-10-06 SMUL32 Q1 BOUNDED-CARRY + CORRECTION TAIL
+- V2/V3/V4 replace q1 late-column accumulation with the bounded-carry state machine and tail-place its signed correction.
+- Canonical SMUL32 means: 712.403902 / 712.856787 / 712.948941; min 630, max 838.
+- Shared 6,361-case mean: 717.448043 in all three profiles (-0.332495 versus PR #18).
+- SMUL32_SHR16: 781.620041 (695–903); 31 ZP, zero persistent stack.
+
 2026-10-06 SMUL32 Q2 CORRECTION TAIL-PLACEMENT
 - V2/V3/V4 move the q2 signed upper-half correction behind the alternate bounded-carry continuation, removing its hot-path jump.
 - Canonical SMUL32 means: 712.623495 / 713.107929 / 713.133250; min 630, max 838.

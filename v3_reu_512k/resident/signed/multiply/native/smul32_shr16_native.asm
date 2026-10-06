@@ -4,7 +4,7 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UMUL32_SHR16. Executable overlap: 0 instructions.
-; Public entry: $5E15. Reachable signed instructions: 649.
+; Public entry: $5E15. Reachable signed instructions: 670.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
@@ -308,99 +308,119 @@ L46DC:
     adc $7600,y                        ; @46DC 79 00 76
     dex                                ; @46DF CA
     bpl L46A2                          ; @46E0 10 C0
-    tax                                ; @46E2 AA
-    ldy $1A                            ; @46E3 A4 1A
-    clc                                ; @46E5 18
-    lda $1D                            ; @46E6 A5 1D
-    adc $0F                            ; @46E8 65 0F
-    sta $C009                          ; @46EA 8D 09 C0
-    lda $1E                            ; @46ED A5 1E
-    adc $10                            ; @46EF 65 10
-    bcc L46F8                          ; @46F1 90 05
-    inc $11                            ; @46F3 E6 11
-    beq L4761                          ; @46F5 F0 6A
-    clc                                ; @46F7 18
-L46F8:
-    adc $12                            ; @46F8 65 12
-    sta $C00A                          ; @46FA 8D 0A C0
-    lda $13                            ; @46FD A5 13
-    adc $16                            ; @46FF 65 16
-    bcc L4705                          ; @4701 90 02
-    inx                                ; @4703 E8
-    clc                                ; @4704 18
-L4705:
-    adc $11                            ; @4705 65 11
-    bcc L470B                          ; @4707 90 02
-    inx                                ; @4709 E8
-    clc                                ; @470A 18
-L470B:
-    adc $1F                            ; @470B 65 1F
-    sta $C00B                          ; @470D 8D 0B C0
-    txa                                ; @4710 8A
-    adc $17                            ; @4711 65 17
-    bcs L4751                          ; @4713 B0 3C
-L4715:
-    adc $20                            ; @4715 65 20
-    bcc L471B                          ; @4717 90 02
-    iny                                ; @4719 C8
-    clc                                ; @471A 18
-L471B:
-    adc $14                            ; @471B 65 14
-    tax                                ; @471D AA
-    tya                                ; @471E 98
-    adc $15                            ; @471F 65 15
-    bcs L4756                          ; @4721 B0 33
-L4723:
-    adc $18                            ; @4723 65 18
-    tay                                ; @4725 A8
-    lda $19                            ; @4726 A5 19
-    adc $1B                            ; @4728 65 1B
-    bcs L475C                          ; @472A B0 30
-L472C:
-    sta $19                            ; @472C 85 19
-    txa                                ; @472E 8A
-    sec                                ; @472F 38
-    sbc $C000                          ; @4730 ED 00 C0
-    sta $C00C                          ; @4733 8D 0C C0
-    tya                                ; @4736 98
-    sbc $3F                            ; @4737 E5 3F
-    sta $C00D                          ; @4739 8D 0D C0
-    lda $19                            ; @473C A5 19
-    sbc $4F                            ; @473E E5 4F
-    sta $C00E                          ; @4740 8D 0E C0
-    lda $1C                            ; @4743 A5 1C
-    sbc $68                            ; @4745 E5 68
-    sta $C00F                          ; @4747 8D 0F C0
-    lda $0E                            ; @474A A5 0E
-    sta $C008                          ; @474C 8D 08 C0
-    clc                                ; @474F 18
-    rts                                ; @4750 60
-L4751:
-    iny                                ; @4751 C8
-    clc                                ; @4752 18
-    jmp L4715                          ; @4753 4C 15 47
-L4756:
-    inc $1B                            ; @4756 E6 1B
-    clc                                ; @4758 18
-    jmp L4723                          ; @4759 4C 23 47
-L475C:
-    inc $1C                            ; @475C E6 1C
-    jmp L472C                          ; @475E 4C 2C 47
-L4761:
-    jmp L4767                          ; @4761 4C 67 47
-; ---- executable island $4767 ----
-* = $4767
+    inx                                ; @46E2 E8
+    tay                                ; @46E3 A8
+    clc                                ; @46E4 18
+    lda $1D                            ; @46E5 A5 1D
+    adc $0F                            ; @46E7 65 0F
+    sta $C009                          ; @46E9 8D 09 C0
+    lda $10                            ; @46EC A5 10
+    adc $1E                            ; @46EE 65 1E
+    bcc L46F4                          ; @46F0 90 02
+    inx                                ; @46F2 E8
+    clc                                ; @46F3 18
+L46F4:
+    adc $12                            ; @46F4 65 12
+    sta $C00A                          ; @46F6 8D 0A C0
+    lda $16                            ; @46F9 A5 16
+    adc $13                            ; @46FB 65 13
+    bcc L470D                          ; @46FD 90 0E
+    iny                                ; @46FF C8
+    cpx #$01                           ; @4700 E0 01
+    adc $11                            ; @4702 65 11
+    bcc L4714                          ; @4704 90 0E
+    clc                                ; @4706 18
+    iny                                ; @4707 C8
+    bne L4714                          ; @4708 D0 0A
+    jmp L478E                          ; @470A 4C 8E 47
+L470D:
+    adc $11                            ; @470D 65 11
+    bcc L4712                          ; @470F 90 01
+    iny                                ; @4711 C8
+L4712:
+    cpx #$01                           ; @4712 E0 01
+L4714:
+    adc $1F                            ; @4714 65 1F
+    sta $C00B                          ; @4716 8D 0B C0
+    tya                                ; @4719 98
+    adc $14                            ; @471A 65 14
+    bcs L474C                          ; @471C B0 2E
+    adc $20                            ; @471E 65 20
+    bcs L4753                          ; @4720 B0 31
+    adc $17                            ; @4722 65 17
+    tay                                ; @4724 A8
+    lda $1A                            ; @4725 A5 1A
+    adc $15                            ; @4727 65 15
+    bcs L4737                          ; @4729 B0 0C
+    adc $18                            ; @472B 65 18
+    tax                                ; @472D AA
+    lda $1B                            ; @472E A5 1B
+    adc $19                            ; @4730 65 19
+    bcc L4769                          ; @4732 90 35
+    jmp L4767                          ; @4734 4C 67 47
+L4737:
+    clc                                ; @4737 18
+L4738:
+    adc $18                            ; @4738 65 18
+    tax                                ; @473A AA
+    lda $1B                            ; @473B A5 1B
+    adc $19                            ; @473D 65 19
+    bcs L4747                          ; @473F B0 06
+    adc #$01                           ; @4741 69 01
+    bcs L4767                          ; @4743 B0 22
+    bcc L4769                          ; @4745 90 22
+L4747:
+    adc #$00                           ; @4747 69 00
+    jmp L4767                          ; @4749 4C 67 47
+L474C:
+    clc                                ; @474C 18
+    adc $20                            ; @474D 65 20
+    bcc L4754                          ; @474F 90 03
+    inc $1A                            ; @4751 E6 1A
+L4753:
+    clc                                ; @4753 18
+L4754:
+    adc $17                            ; @4754 65 17
+    tay                                ; @4756 A8
+    lda $1A                            ; @4757 A5 1A
+    adc $15                            ; @4759 65 15
+    bcs L4738                          ; @475B B0 DB
+    sec                                ; @475D 38
+    adc $18                            ; @475E 65 18
+    tax                                ; @4760 AA
+    lda $1B                            ; @4761 A5 1B
+    adc $19                            ; @4763 65 19
+    bcc L4769                          ; @4765 90 02
 L4767:
-    inc $20                            ; @4767 E6 20
-    bne L4775                          ; @4769 D0 0A
-    inc $15                            ; @476B E6 15
-    bne L4775                          ; @476D D0 06
-    inc $19                            ; @476F E6 19
-    bne L4775                          ; @4771 D0 02
-    inc $1C                            ; @4773 E6 1C
-L4775:
-    clc                                ; @4775 18
-    jmp L46F8                          ; @4776 4C F8 46
+    inc $1C                            ; @4767 E6 1C
+L4769:
+    sta $19                            ; @4769 85 19
+    tya                                ; @476B 98
+    sec                                ; @476C 38
+    sbc $C000                          ; @476D ED 00 C0
+    sta $C00C                          ; @4770 8D 0C C0
+    txa                                ; @4773 8A
+    sbc $3F                            ; @4774 E5 3F
+    sta $C00D                          ; @4776 8D 0D C0
+    lda $19                            ; @4779 A5 19
+    sbc $4F                            ; @477B E5 4F
+    sta $C00E                          ; @477D 8D 0E C0
+    lda $1C                            ; @4780 A5 1C
+    sbc $68                            ; @4782 E5 68
+    sta $C00F                          ; @4784 8D 0F C0
+    lda $0E                            ; @4787 A5 0E
+    sta $C008                          ; @4789 8D 08 C0
+    clc                                ; @478C 18
+    rts                                ; @478D 60
+L478E:
+    inc $15                            ; @478E E6 15
+    bne L4798                          ; @4790 D0 06
+    inc $19                            ; @4792 E6 19
+    bne L4798                          ; @4794 D0 02
+    inc $1C                            ; @4796 E6 1C
+L4798:
+    clc                                ; @4798 18
+    jmp L4714                          ; @4799 4C 14 47
 ; ---- executable island $5137 ----
 * = $5137
 L5137:
