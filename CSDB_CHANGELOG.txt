@@ -1,3 +1,9 @@
+2026-10-06 SMUL32 NN X3 PREBIND
+- V2/V3/V4 pre-bind NN X3 operands from the dispatcher A lifetime, saving 4 cycles on the common x0!=0 path.
+- Canonical SMUL32 means: 711.586966 / 711.941885 / 712.136986; min 630, max 838.
+- Shared 6,361-case mean: 716.802547; focused NN: 730.807690, max 833.
+- SMUL32_SHR16: 780.756936 (695–903); 31 ZP, zero persistent stack.
+
 2026-10-06 SMUL32 Q1 BOUNDED-CARRY + CORRECTION TAIL
 - V2/V3/V4 replace q1 late-column accumulation with the bounded-carry state machine and tail-place its signed correction.
 - Canonical SMUL32 means: 712.403902 / 712.856787 / 712.948941; min 630, max 838.

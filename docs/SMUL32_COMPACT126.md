@@ -28,7 +28,7 @@ This kernel is intentionally **not selected as the stable `MATH_SMUL32` implemen
 | V4 REU 16M | opt-in / overlay only | same executable-ZP conflict as V2/V3 |
 | V5 Hybrid Low-ZP | no | preserves the V1 31-byte normal-ZP contract |
 
-A direct standard-ABI transplant was also tested: marshalling ordinary `MATH_X/MATH_Y` inputs into the compact kernel removes the native-ABI advantage and measures about **757.7 cycles** on the 10,000-pair probe. It remains slower than every fixed-profile public SMUL32 path; current V2/V3/V4 means are **712.403902 / 712.856787 / 712.948941 cycles**, while V1/V5 retain their low-ZP public implementations. Compact126 therefore remains an opt-in ownership mode rather than a fixed-profile substitution.
+A direct standard-ABI transplant was also tested: marshalling ordinary `MATH_X/MATH_Y` inputs into the compact kernel removes the native-ABI advantage and measures about **757.7 cycles** on the 10,000-pair probe. It remains slower than every fixed-profile public SMUL32 path; current V2/V3/V4 means are **711.586966 / 711.941885 / 712.136986 cycles**, while V1/V5 retain their low-ZP public implementations. Compact126 therefore remains an opt-in ownership mode rather than a fixed-profile substitution.
 
 ## Profile-local exposure
 

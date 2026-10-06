@@ -1,0 +1,111 @@
+{
+  "status": "PASS",
+  "date": "2026-10-06",
+  "optimization": "Pre-bind original X3 table operands on NN dispatcher entry while X3 is already live in A. The common x0!=0 path avoids a later absolute reload; the rare x0==0 carry path overwrites the speculative bindings. Producer, summation, ABI and resource footprint are unchanged.",
+  "resource_contract": {
+    "zp_bytes": 31,
+    "persistent_stack_page_bytes": 0,
+    "producer_changed": false,
+    "summation_changed": false,
+    "public_abi_changed": false
+  },
+  "canonical": {
+    "v2_pareto_fast": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 711.5869655458697,
+      "min_cycles": 630,
+      "max_cycles": 838
+    },
+    "v3_reu_512k": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 711.9418845994188,
+      "min_cycles": 630,
+      "max_cycles": 838
+    },
+    "v4_reu_16m": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 712.1369863013699,
+      "min_cycles": 630,
+      "max_cycles": 838
+    }
+  },
+  "shared_6361_case_corpus": {
+    "description": "361 signed edge pairs plus 6,000 deterministic random pairs, identical across V2/V3/V4.",
+    "baseline_mean_cycles": 717.7351045433109,
+    "candidate_mean_cycles": 716.8025467693759,
+    "delta_cycles": -0.9325577739349159,
+    "min_cycles": 630,
+    "max_cycles": 838,
+    "errors": 0,
+    "cycle_vectors_identical_across_v2_v3_v4": true
+  },
+  "nn_profile_20025": {
+    "baseline_mean_cycles": 734.7148064918852,
+    "candidate_mean_cycles": 730.8076903870162,
+    "delta_cycles": -3.907116104868914,
+    "baseline_min_cycles": 679,
+    "candidate_min_cycles": 675,
+    "baseline_max_cycles": 837,
+    "candidate_max_cycles": 833,
+    "errors": 0
+  },
+  "rare_x0_zero_tradeoff": {
+    "common_delta_cycles": -4,
+    "rare_path_delta_cycles": 16
+  },
+  "shifted_derivative": {
+    "v2_pareto_fast": {
+      "mean_cycles": 780.7569364824582,
+      "min_cycles": 695,
+      "max_cycles": 903,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v3_reu_512k": {
+      "mean_cycles": 780.7569364824582,
+      "min_cycles": 695,
+      "max_cycles": 903,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v4_reu_16m": {
+      "mean_cycles": 780.7569364824582,
+      "min_cycles": 695,
+      "max_cycles": 903,
+      "cases": 4361,
+      "errors": 0
+    }
+  },
+  "ready": {
+    "v2_pareto_fast": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 723.5830078125,
+      "min_cycles": 641,
+      "max_cycles": 798
+    },
+    "v3_reu_512k": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 723.9931640625,
+      "min_cycles": 644,
+      "max_cycles": 812
+    },
+    "v4_reu_16m": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 721.9404296875,
+      "min_cycles": 641,
+      "max_cycles": 816
+    }
+  },
+  "validation": {
+    "signed_multiply_calls": 264999,
+    "multiply_refresh_calls": 415078,
+    "turbo_relocation": "PASS",
+    "turbo_boundary_sweep": "PASS"
+  }
+}
