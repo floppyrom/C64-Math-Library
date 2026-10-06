@@ -1,6 +1,7 @@
 {
   "status": "PASS",
   "seed": "0x16160016",
+  "basis": "2026-10-06 UMUL16 direct-output deterministic edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores",
   "results": {
     "v2_pareto_fast": {
       "reference": {
@@ -62,6 +63,5 @@
         "shr8_max_cycles": 281
       }
     }
-  },
-  "basis": "2026-10-06 UMUL16 direct-output deterministic edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores"
+  }
 }
