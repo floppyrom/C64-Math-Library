@@ -1,0 +1,54 @@
+name: Repair build artifact
+
+on:
+  push:
+    branches:
+      - audit-fixes-2026-10-06
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate seek source and source builds
+        run: |
+          python3 tools/generate_seek_sources.py
+          make reference
+          make alternate
+          python3 tools/validate_seek_placement.py
+          python3 tools/benchmark_seek_profiles.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/package_audit.py
+      - name: Validate regenerated tree
+        run: |
+          python3 tools/test_mini6502_illegal.py
+          python3 tools/generate_seek_sources.py --check
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Package generated delta
+        shell: bash
+        run: |
+          git status --short
+          git diff --name-only > repair_changed_files.txt
+          git diff --binary > repair.patch
+          tar -czf repair_generated_tree.tar.gz --exclude=.git .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repair-generated-tree
+          path: |
+            repair_generated_tree.tar.gz
+            repair.patch
+            repair_changed_files.txt
+          retention-days: 3
