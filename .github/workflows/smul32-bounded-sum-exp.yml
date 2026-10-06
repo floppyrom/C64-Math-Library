@@ -76,6 +76,145 @@ jobs:
           run_profile('Q0','S32V28_q0_fast_core_start','S32V28_q0_cg_code_end',pp)
           run_profile('NN','S32V28_fast_base_core_start','S32V28_cg_code_end',nn)
           PY
+      - name: Sweep remaining summation carry sites
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import random, re, shutil, subprocess
+          from tools.validate_signed_multiply import load_profile, test_entry
+
+          src=Path('relocatable_source/v2_pareto_fast/smul32_fast31_v29.inc')
+          base=src.read_text()
+          rng=random.Random(0x53333243)
+          corpora={
+              'base':[(rng.randrange(0x80000000,1<<32),rng.randrange(0x80000000,1<<32)) for _ in range(6000)],
+              'q0':[(rng.randrange(0x80000000),rng.randrange(0x80000000)) for _ in range(6000)],
+              'q1':[(rng.randrange(0x80000000),rng.randrange(0x80000000,1<<32)) for _ in range(6000)],
+              'q2':[(rng.randrange(0x80000000,1<<32),rng.randrange(0x80000000)) for _ in range(6000)],
+          }
+          blocks={
+              'base':('S32V28_summation:','S32V28_cg_code_end:','S32V28_'),
+              'q0':('S32V28_q0_summation:','S32V28_q0_cg_code_end:','S32V28_q0_'),
+              'q1':('S32V28_q1_summation:','S32V28_q1_cg_code_end:','S32V28_q1_'),
+              'q2':('S32V28_q2_summation:','S32V28_q2_cg_code_end:','S32V28_q2_'),
+          }
+
+          def coldify(text, group, site):
+              start,end,p=blocks[group]
+              a=text.index(start); b=text.index(end,a)
+              q=text[a:b]
+              handler=''
+              if site=='c2a':
+                  pat=(r'(        adc S32V28_z20\n)'
+                       r'        bcc '+re.escape(p)+r'c2a_done\n'
+                       r'        inc S32V28_z30\n'
+                       r'        beq ('+re.escape(p)+r'c2a_overflow(?:_tramp)?)\n'
+                       r'        clc\n'
+                       +re.escape(p)+r'c2a_done:\n')
+                  m=re.search(pat,q)
+                  if not m: return None
+                  ov=m.group(2)
+                  repl=(m.group(1)+f'        bcs {p}test_c2a_carry\n'
+                        +f'{p}c2a_done:\n')
+                  q=q[:m.start()]+repl+q[m.end():]
+                  handler=(f'{p}test_c2a_carry:\n'
+                           '        inc S32V28_z30\n'
+                           f'        beq {ov}\n'
+                           '        clc\n'
+                           f'        jmp {p}c2a_done\n\n')
+              elif site=='c3a':
+                  pat=(r'(        adc S32V28_z03\n)'
+                       r'        bcc '+re.escape(p)+r'c3a_done\n'
+                       r'        inx\n'
+                       r'        clc\n'
+                       +re.escape(p)+r'c3a_done:\n')
+                  m=re.search(pat,q)
+                  if not m: return None
+                  repl=(m.group(1)+f'        bcs {p}test_c3a_carry\n'
+                        +f'{p}c3a_done:\n')
+                  q=q[:m.start()]+repl+q[m.end():]
+                  handler=(f'{p}test_c3a_carry:\n'
+                           '        inx\n'
+                           '        clc\n'
+                           f'        jmp {p}c3a_done\n\n')
+              elif site=='c3b':
+                  pat=(r'(        adc S32V28_z30\n)'
+                       r'        bcc '+re.escape(p)+r'c3b_done\n'
+                       r'        inx\n'
+                       r'        beq ('+re.escape(p)+r'c3b_overflow(?:_tramp)?)\n'
+                       r'        clc\n'
+                       +re.escape(p)+r'c3b_done:\n')
+                  m=re.search(pat,q)
+                  if not m: return None
+                  ov=m.group(2)
+                  repl=(m.group(1)+f'        bcs {p}test_c3b_carry\n'
+                        +f'{p}c3b_done:\n')
+                  q=q[:m.start()]+repl+q[m.end():]
+                  handler=(f'{p}test_c3b_carry:\n'
+                           '        inx\n'
+                           f'        beq {ov}\n'
+                           '        clc\n'
+                           f'        jmp {p}c3b_done\n\n')
+              elif site=='c4b':
+                  pat=(r'(        adc S32V28_z31\n)'
+                       r'        bcc '+re.escape(p)+r'c4b_done\n'
+                       r'        iny\n'
+                       r'        beq ('+re.escape(p)+r'c4b_overflow)\n'
+                       r'        clc\n'
+                       +re.escape(p)+r'c4b_done:\n')
+                  m=re.search(pat,q)
+                  if not m: return None
+                  ov=m.group(2)
+                  repl=(m.group(1)+f'        bcs {p}test_c4b_carry\n'
+                        +f'{p}c4b_done:\n')
+                  q=q[:m.start()]+repl+q[m.end():]
+                  handler=(f'{p}test_c4b_carry:\n'
+                           '        iny\n'
+                           f'        beq {ov}\n'
+                           '        clc\n'
+                           f'        jmp {p}c4b_done\n\n')
+              else:
+                  raise ValueError(site)
+              # Put the cold handler immediately after the hot-path RTS block
+              # and before the existing helper island, preserving branch reach.
+              ins=q.find(p+'c4a_carry:')
+              if ins < 0:
+                  ins=q.find(p+'c2a_overflow')
+              q=q[:ins]+handler+q[ins:]
+              return text[:a]+q+text[b:]
+
+          def run_candidate(name,text,pairs):
+              src.write_text(text)
+              shutil.rmtree('build_sweep',ignore_errors=True)
+              p=subprocess.run(['python3','tools/assemble_sources.py','--profile','v2_pareto_fast',
+                                '--config-kind','reference','--out','build_sweep'],
+                               text=True,capture_output=True)
+              if p.returncode:
+                  tail=(p.stderr.strip().splitlines()[-1] if p.stderr.strip() else '')
+                  print('SWEEP',name,'ASSEMBLY_FAIL',tail)
+                  return
+              shutil.copy2('build_sweep/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
+                           'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg')
+              cpu,api=load_profile('v2_pareto_fast')
+              r=test_entry(cpu,api['MATH_SMUL32'],32,pairs)
+              print(f'SWEEP {name} mean={r["mean_cycles"]:.6f} min={r["min_cycles"]} max={r["max_cycles"]} errors={r["errors"]}')
+
+          for group,pairs in corpora.items():
+              run_candidate(group+'-baseline',base,pairs)
+              for site in ('c2a','c3a','c3b','c4b'):
+                  cand=coldify(base,group,site)
+                  if cand is None:
+                      print('SWEEP',group+'-'+site,'PATCH_MISS')
+                  else:
+                      run_candidate(group+'-'+site,cand,pairs)
+
+          src.write_text(base)
+          shutil.rmtree('build_sweep',ignore_errors=True)
+          subprocess.run(['python3','tools/assemble_sources.py','--profile','v2_pareto_fast',
+                          '--config-kind','reference','--out','build_sweep'],check=True)
+          shutil.copy2('build_sweep/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
+                       'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg')
+          PY
       - name: Validate and print signed multiply timing
         run: |
           python3 tools/validate_signed_multiply.py --profile v2_pareto_fast
