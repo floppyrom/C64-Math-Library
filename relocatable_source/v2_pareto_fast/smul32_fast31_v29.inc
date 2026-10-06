@@ -627,39 +627,6 @@ S32V28_q0_bc_c3_overflow_done:
         clc
         jmp S32V28_q0_bc_c3_done
 
-S32V28_q0_c2a_overflow_tramp:
-        jmp S32V28_q0_c2a_overflow
-S32V28_q0_c3b_overflow_tramp:
-        jmp S32V28_q0_c3b_overflow
-
-S32V28_q0_c2a_overflow:
-        inc S32V28_z31
-        bne S32V28_q0_c2a_overflow_done
-        inc S32V28_z32
-        bne S32V28_q0_c2a_overflow_done
-        inc S32V28_z33
-        bne S32V28_q0_c2a_overflow_done
-        inc S32V28_z34
-S32V28_q0_c2a_overflow_done:
-        clc
-        jmp S32V28_q0_c2a_done
-
-S32V28_q0_c3b_overflow:
-        inc S32V28_z32
-        bne S32V28_q0_c3b_overflow_done
-        inc S32V28_z33
-        bne S32V28_q0_c3b_overflow_done
-        inc S32V28_z34
-S32V28_q0_c3b_overflow_done:
-        clc
-        jmp S32V28_q0_c3b_done
-S32V28_q0_c4b_overflow:
-        inc S32V28_z33
-        bne S32V28_q0_c4b_overflow_done
-        inc S32V28_z34
-S32V28_q0_c4b_overflow_done:
-        clc
-        jmp S32V28_q0_c4b_done
 S32V28_q0_cg_code_end:
 *= REG_LOW+$1341
 S32V28_api_s31_v25_xcarry:
