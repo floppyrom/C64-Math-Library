@@ -193,7 +193,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 85 | 132 | 152 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 77 | 121 | 143 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 151 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 211.544111 | 199 | 236 | 148 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_BEGIN` | `mul_u32_u32_u64_turbo_begin` | 326.000000 | 326 | 326 | 41 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 684.185219 | 621 | 796 | 352 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
@@ -258,7 +258,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 85 | 132 | 152 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 77 | 121 | 143 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 151 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 211.544111 | 199 | 236 | 148 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_BEGIN` | `mul_u32_u32_u64_turbo_begin` | 326.000000 | 326 | 326 | 41 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 684.185219 | 621 | 796 | 352 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |

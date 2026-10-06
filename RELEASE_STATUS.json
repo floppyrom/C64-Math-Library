@@ -15,8 +15,8 @@
   "alternate_prg_sha256": {
     "v1_balanced": "bdbc1858dd6af93f95563877cb2c331eae5ea51ef0d87be0166f07ae14fbf5d5",
     "v2_pareto_fast": "ec1d63ee9bd88e25c663f5f8cb56d995e0208d138a72d8d4445e124c6a58dad8",
-    "v3_reu_512k": "6fdf6c296bd5618c77e451c53887f7d00cb8db91684882d072417364c5a5e1a2",
-    "v4_reu_16m": "d5f60aa7dd18770605c01b801a50ccaf1d87bd082981db56ca5c2d36189e3c63",
+    "v3_reu_512k": "3dd1c4236ef0c79c8b9b1d1f911e834ee1f5cd45e44e2e2107a7ff3205010033",
+    "v4_reu_16m": "a4619496f74ee54e026a501b280db93ae48fb9e425fa1c311f1b86c1764160f5",
     "v5_hybrid_lowzp": "3abbacc805a490db5c0ee90498957f9c2c8501a99a3ce7e3b3b54b0eb8fb163b"
   },
   "alternate_reu_sha256": {
@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 54-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 60517,
-    "user_manual_lines": 1831,
-    "user_manual_sha256": "f9f6137942495141b9401ac9f815656dec2056ec791e07de446311b1b14ba4fb"
+    "user_manual_bytes": 62535,
+    "user_manual_lines": 1840,
+    "user_manual_sha256": "24b5587c7d9e5d9b67c5e08c50011033c4ac352c6e7669fbb3fbb59a2b7b7ab3"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -241,8 +241,8 @@
   "reference_prg_sha256": {
     "v1_balanced": "86c2784f67784e01ed4f87f17a9e1f1612f63c42b20e564af3b240bd0092e4cb",
     "v2_pareto_fast": "0e1818b86d7b4d463a2af6b0424fdee728b79331a277726f72d5d4e7236e1bb9",
-    "v3_reu_512k": "4a6e9f71cc4396c8d1f1c79990c75825272735199b3700a8064314da916a186d",
-    "v4_reu_16m": "f22e3f2bff174fd3563ed76951507bee4234e34e46a2f3c811604b701e11f948",
+    "v3_reu_512k": "f2905783c6dcaf91d5e36196eb406990080c005d33ec741f4c9421f6bb525bb2",
+    "v4_reu_16m": "bebf80610e19c216eec23c92433623c66aca088a42261bc3c3d51edc4a94e0b6",
     "v5_hybrid_lowzp": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729"
   },
   "reference_reu_sha256": {

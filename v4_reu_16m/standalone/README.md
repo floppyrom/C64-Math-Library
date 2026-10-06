@@ -64,7 +64,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | `seek_u16_u8_step_int.asm` |  | 59 |
 | `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | `seek_u16_u8_step1.asm` |  | 55 |
 | `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | `mul_u16_u16_u32_turbo_begin.asm` |  | 17 |
-| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | `mul_u16_u16_u32_turbo.asm` |  | 74 |
+| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | `mul_u16_u16_u32_turbo.asm` |  | 73 |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | `mul_u16_u16_u32_turbo_end.asm` |  | 30 |
 | `MATH_REU_UMUL32_BEGIN` | `mul_u32_u32_u64_turbo_begin` | `mul_u32_u32_u64_turbo_begin.asm` |  | 17 |
 | `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | `mul_u32_u32_u64_turbo.asm` |  | 168 |
