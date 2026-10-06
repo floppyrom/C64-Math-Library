@@ -122,6 +122,18 @@ def cycles_catalog():
         add_cycle(cat,p,'MATH_UMUL16_SHR8',v['shr8_mean_cycles'],v['shr8_min_cycles'],v['shr8_max_cycles'],v['cases'],
                   '2026-10-06 UMUL16 SHR8 register-return validation')
 
+    # All-profile fixed-point register-return validation is authoritative for
+    # both changed SHR8 adapters. Base UMUL16/SMUL16 rows keep their existing
+    # producer-specific benchmark corpora.
+    sh16=json.loads((ROOT/'validation/multiply_refresh/MUL16_SHR8_REGISTER_VALIDATION.json').read_text())
+    for p,rr in sh16['results'].items():
+        v=rr['reference']
+        u=v['umul16_shr8']; s=v['smul16_shr8']
+        add_cycle(cat,p,'MATH_UMUL16_SHR8',u['mean_cycles'],u['min_cycles'],u['max_cycles'],v['cases'],
+                  '2026-10-06 MUL16 SHR8 register-return validation')
+        add_cycle(cat,p,'MATH_SMUL16_SHR8',s['mean_cycles'],s['min_cycles'],s['max_cycles'],v['cases'],
+                  '2026-10-06 MUL16 SHR8 register-return validation')
+
     # Current native signed multiply evidence.
     sm=json.loads((ROOT/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
     for p,rr in sm['profiles'].items():
