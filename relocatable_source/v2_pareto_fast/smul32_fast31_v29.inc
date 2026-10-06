@@ -162,7 +162,6 @@ S32V28_c3a_done:
         adc S32V28_z30
         bcc S32V28_c3b_done
         inx
-        beq S32V28_c3b_overflow
         clc
 S32V28_c3b_done:
         adc S32V28_z21
