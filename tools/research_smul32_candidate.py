@@ -102,16 +102,16 @@ class TraceCPU(CPU):
                     rec[1]+=int(cond)
         return super().step()
 
-def branch_profile(pairs):
+def branch_profile(pairs,start_label,end_label):
     cfg=ROOT/'relocatable_source/v2_pareto_fast/math_config_reference.inc'
     src=ROOT/'relocatable_source/v2_pareto_fast/math_relocatable.asm'
     memdict,labels,const=Assembler().assemble(preprocess(src,cfg))
-    api=parse_api(ROOT/'v2_pareto_fast/resident/math_api.inc')
-    b=(ROOT/'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg').read_bytes()
+    api=parse_api(ROOT/'build_source/reference/v2_pareto_fast/math_api.inc')
+    b=(ROOT/'build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg').read_bytes()
     load=b[0]|b[1]<<8
     mem=bytearray(65536);mem[load:load+len(b)-2]=b[2:]
     cpu=TraceCPU(mem);cpu.d=0;cpu.branch_counts={}
-    cpu.trace_lo=labels['S32V28_q0_summation'];cpu.trace_hi=labels['S32V28_q0_cg_code_end']
+    cpu.trace_lo=labels[start_label];cpu.trace_hi=labels[end_label]
     cpu.call(api['MATH_INIT'],2_000_000)
     for x,y in pairs:
         wr(cpu.mem,IO,x);wr(cpu.mem,IO+4,y)
@@ -119,9 +119,19 @@ def branch_profile(pairs):
     revlabels={v:k for k,v in labels.items()}
     out=[]
     for (pc,op,target),(n,taken) in sorted(cpu.branch_counts.items()):
+        if n < max(10,len(pairs)//100):
+            continue
         out.append({'pc':f'${pc:04X}','op':op,'target':revlabels.get(target,f'${target:04X}'),
                     'executions':n,'taken':taken,'taken_rate':taken/n})
     return out
+
+def quadrant_stress(kind,n=5000):
+    rng=random.Random(0x51A3200 + sum(map(ord,kind)))
+    lo=lambda: rng.randrange(1<<31)
+    hi=lambda: rng.randrange(1<<31,1<<32)
+    fs={'PP':(lo,lo),'PN':(lo,hi),'NP':(hi,lo),'NN':(hi,hi)}
+    fx,fy=fs[kind]
+    return [(fx(),fy()) for _ in range(n)]
 
 def main():
     base=load(ROOT/'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg',
@@ -129,7 +139,12 @@ def main():
     cand=load(ROOT/'build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
               ROOT/'build_source/reference/v2_pareto_fast/math_api.inc')
     stress=pp_stress()
-    out={'canonical':compare(corpus(),base,cand),'pp_stress':compare(stress,base,cand),'q0_branch_profile':branch_profile(stress)}
+    out={'canonical':compare(corpus(),base,cand),'pp_stress':compare(stress,base,cand),
+         'branch_profiles':{
+           'PP':branch_profile(quadrant_stress('PP'),'S32V28_q0_summation','S32V28_q0_cg_code_end'),
+           'PN':branch_profile(quadrant_stress('PN'),'S32V28_q1_summation','S32V28_q1_cg_code_end'),
+           'NP':branch_profile(quadrant_stress('NP'),'S32V28_q2_summation','S32V28_q2_cg_code_end'),
+           'NN':branch_profile(quadrant_stress('NN'),'S32V28_summation','S32V28_cg_code_end')}}
     errors=out['canonical']['candidate']['errors']+out['pp_stress']['candidate']['errors']
     out['status']='PASS' if errors==0 else 'FAIL'
     print('SMUL32_RESEARCH_RESULT '+json.dumps(out,sort_keys=True))
