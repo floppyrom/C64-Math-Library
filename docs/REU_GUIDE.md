@@ -47,11 +47,11 @@ Current UMUL16 speed guidance:
 
 ```text
 small/medium batches   public MATH_UMUL16
-~60+ products          Turbo16 BEGIN / repeated CALL / END
+31+ products           Turbo16 BEGIN / repeated CALL / END
 QS16                    supported specialized mode; not selected for speed
 ```
 
-Current measured means are about 225.84 cycles for public UMUL16, 215.54 cycles for a Turbo16 CALL (plus 609 cycles per BEGIN/END lifecycle), and 281.54 cycles for a QS16 CALL (plus 36 cycles per lifecycle). QS16 therefore has no speed crossover in the current release.
+Current measured means are about 225.84 cycles for public UMUL16, **205.54 cycles** for a Turbo16 CALL (plus 609 cycles per BEGIN/END lifecycle), and 281.54 cycles for a QS16 CALL (plus 36 cycles per lifecycle). Turbo16 crosses normal UMUL16 at **31 products**; QS16 has no speed crossover in the current release.
 
 ## VICE examples
 
