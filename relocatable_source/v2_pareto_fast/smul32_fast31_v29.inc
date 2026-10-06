@@ -502,131 +502,106 @@ S32V28_q0__neg_hi_3:
         bpl S32V28_q0_row_loop
 
 S32V28_q0_summation:
-        ; Experiment: compact126-style bounded-carry column summation.
-        ; Producer exits with X=$FF and A holding the final high partial.
-        ; Normalize X to the compact state (0) and keep that high partial in Y.
-        inx
-        tay
+        tax
+        ldy S32V28_z14
         clc
 
         lda S32V28_z01
         adc S32V28_z10
         sta MATH_IO+$09
 
-        ; X=1 records the first possible column-2 carry while C carries the
-        ; second addition directly into column 3.
-        lda S32V28_z20
-        adc S32V28_z11
-        bcc S32V28_q0_bc_c2_first_done
-        inx
+        lda S32V28_z11
+        adc S32V28_z20
+        bcc S32V28_q0_c2a_done
+        inc S32V28_z30
+        beq S32V28_q0_c2a_overflow_tramp
         clc
-S32V28_q0_bc_c2_first_done:
+S32V28_q0_c2a_done:
         adc S32V28_z02
         sta MATH_IO+$0A
 
-        lda S32V28_z03
-        adc S32V28_z12
-        bcc S32V28_q0_bc_c3_path0
-        iny
-        cpx #1
-        adc S32V28_z30
-        bcc S32V28_q0_bc_c3_done
+        lda S32V28_z12
+        adc S32V28_z03
+        bcc S32V28_q0_c3a_done
+        inx
         clc
-        iny
-        bne S32V28_q0_bc_c3_done
-        jmp S32V28_q0_bc_c3_overflow
-S32V28_q0_bc_c3_path0:
+S32V28_q0_c3a_done:
         adc S32V28_z30
-        bcc S32V28_q0_bc_c3_path0_noinc
-        iny
-S32V28_q0_bc_c3_path0_noinc:
-        cpx #1
-S32V28_q0_bc_c3_done:
+        bcc S32V28_q0_c3b_done
+        inx
+        beq S32V28_q0_c3b_overflow_tramp
+        clc
+S32V28_q0_c3b_done:
         adc S32V28_z21
         sta MATH_IO+$0B
 
-        ; Bounded late-column machinery from compact126, adapted to direct
-        ; public-output stores. STY/STX preserve C, so the carry chain is exact.
-        tya
-        adc S32V28_z22
-        bcs S32V28_q0_bc_c4a_k1
-        adc S32V28_z31
-        bcs S32V28_q0_bc_c4b_k1
-S32V28_q0_bc_c4_k0_common:
+        txa
         adc S32V28_z13
-        tay
-        sty MATH_IO+$0C
-        lda S32V28_z14
+        bcc S32V28_q0_c4a_done
+        iny
+        clc
+S32V28_q0_c4a_done:
+        adc S32V28_z31
+        bcc S32V28_q0_c4b_done
+        iny
+        beq S32V28_q0_c4b_overflow
+        clc
+S32V28_q0_c4b_done:
+        adc S32V28_z22
+        sta MATH_IO+$0C
+
+        tya
         adc S32V28_z32
-        bcs S32V28_q0_bc_c5b_k1_m0
+        bcc S32V28_q0_c5a_done
+        inc S32V28_z24
+        clc
+S32V28_q0_c5a_done:
         adc S32V28_z23
-        tax
-        stx MATH_IO+$0D
-        lda S32V28_z24
-        adc S32V28_z33
-        bcs S32V28_q0_bc_final_carry
-S32V28_q0_bc_finish:
+        sta MATH_IO+$0D
+
+        lda S32V28_z33
+        adc S32V28_z24
         sta MATH_IO+$0E
         lda S32V28_r7
+        adc #0
         sta MATH_IO+$0F
         lda S32V28_r0
         sta MATH_IO+$08
-        clc
         rts
 
-S32V28_q0_bc_c5b_k1_m0:
-        clc
-S32V28_q0_bc_c5b_k1_m1:
-        adc S32V28_z23
-        tax
-        stx MATH_IO+$0D
-        lda S32V28_z24
-        adc S32V28_z33
-        bcs S32V28_q0_bc_c6_done
-        adc #1
-        bcc S32V28_q0_bc_finish
-S32V28_q0_bc_final_carry:
-        inc S32V28_r7
-        jmp S32V28_q0_bc_finish
-S32V28_q0_bc_c6_done:
-        adc #0
-        inc S32V28_r7
-        jmp S32V28_q0_bc_finish
+S32V28_q0_c2a_overflow_tramp:
+        jmp S32V28_q0_c2a_overflow
+S32V28_q0_c3b_overflow_tramp:
+        jmp S32V28_q0_c3b_overflow
 
-S32V28_q0_bc_c4a_k1:
-        clc
-        adc S32V28_z31
-        bcc S32V28_q0_bc_c4b_one_clear
-        inc S32V28_z14
-S32V28_q0_bc_c4b_k1:
-        clc
-S32V28_q0_bc_c4b_one_clear:
-        adc S32V28_z13
-        tay
-        sty MATH_IO+$0C
-        lda S32V28_z14
-        adc S32V28_z32
-        bcs S32V28_q0_bc_c5b_k1_m1
-        sec
-        adc S32V28_z23
-        tax
-        stx MATH_IO+$0D
-        lda S32V28_z24
-        adc S32V28_z33
-        bcc S32V28_q0_bc_finish
-        inc S32V28_r7
-        jmp S32V28_q0_bc_finish
-
-S32V28_q0_bc_c3_overflow:
+S32V28_q0_c2a_overflow:
+        inc S32V28_z31
+        bne S32V28_q0_c2a_overflow_done
         inc S32V28_z32
-        bne S32V28_q0_bc_c3_overflow_done
+        bne S32V28_q0_c2a_overflow_done
         inc S32V28_z33
-        bne S32V28_q0_bc_c3_overflow_done
-        inc S32V28_r7
-S32V28_q0_bc_c3_overflow_done:
+        bne S32V28_q0_c2a_overflow_done
+        inc S32V28_z34
+S32V28_q0_c2a_overflow_done:
         clc
-        jmp S32V28_q0_bc_c3_done
+        jmp S32V28_q0_c2a_done
 
+S32V28_q0_c3b_overflow:
+        inc S32V28_z32
+        bne S32V28_q0_c3b_overflow_done
+        inc S32V28_z33
+        bne S32V28_q0_c3b_overflow_done
+        inc S32V28_z34
+S32V28_q0_c3b_overflow_done:
+        clc
+        jmp S32V28_q0_c3b_done
+S32V28_q0_c4b_overflow:
+        inc S32V28_z33
+        bne S32V28_q0_c4b_overflow_done
+        inc S32V28_z34
+S32V28_q0_c4b_overflow_done:
+        clc
+        jmp S32V28_q0_c4b_done
 S32V28_q0_cg_code_end:
 *= REG_LOW+$1341
 S32V28_api_s31_v25_xcarry:
