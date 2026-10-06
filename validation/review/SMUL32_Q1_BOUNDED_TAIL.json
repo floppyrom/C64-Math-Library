@@ -1,0 +1,107 @@
+{
+  "status": "PASS",
+  "date": "2026-10-06",
+  "optimization": "Replace the q1 (X>=0,Y<0) FAST31 late-column summation with the validated compact126/UMUL32 bounded-carry state machine and tail-place its signed upper-half correction. q0, q2, NN and the four-row producer are unchanged.",
+  "resource_contract": {
+    "zp_bytes": 31,
+    "persistent_stack_page_bytes": 0,
+    "producer_changed": false,
+    "public_abi_changed": false
+  },
+  "canonical": {
+    "v2_pareto_fast": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 712.403902034039,
+      "min_cycles": 630,
+      "max_cycles": 838
+    },
+    "v3_reu_512k": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 712.8567870485679,
+      "min_cycles": 630,
+      "max_cycles": 838
+    },
+    "v4_reu_16m": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 712.9489414694895,
+      "min_cycles": 630,
+      "max_cycles": 838
+    }
+  },
+  "shared_6361_case_corpus": {
+    "description": "361 signed edge pairs plus 6,000 deterministic random pairs, identical across V2/V3/V4.",
+    "baseline_mean_cycles": 717.7805376513127,
+    "candidate_mean_cycles": 717.4480427605722,
+    "delta_cycles": -0.33249489074044963,
+    "min_cycles": 630,
+    "max_cycles": 838,
+    "errors": 0,
+    "cycle_vectors_identical_across_v2_v3_v4": true
+  },
+  "q1_profile_20070": {
+    "description": "70 structured q1 edge pairs plus 20,000 deterministic random X>=0,Y<0 pairs.",
+    "baseline_mean_cycles": 734.2680119581465,
+    "candidate_mean_cycles": 732.7857997010464,
+    "delta_cycles": -1.4822122571001495,
+    "baseline_min_cycles": 670,
+    "candidate_min_cycles": 673,
+    "baseline_max_cycles": 839,
+    "candidate_max_cycles": 830,
+    "errors": 0
+  },
+  "shifted_derivative": {
+    "v2_pareto_fast": {
+      "mean_cycles": 781.620041274937,
+      "min_cycles": 695,
+      "max_cycles": 903,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v3_reu_512k": {
+      "mean_cycles": 781.620041274937,
+      "min_cycles": 695,
+      "max_cycles": 903,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v4_reu_16m": {
+      "mean_cycles": 781.620041274937,
+      "min_cycles": 695,
+      "max_cycles": 903,
+      "cases": 4361,
+      "errors": 0
+    }
+  },
+  "ready": {
+    "v2_pareto_fast": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 724.5478515625,
+      "min_cycles": 641,
+      "max_cycles": 798
+    },
+    "v3_reu_512k": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 724.9111328125,
+      "min_cycles": 644,
+      "max_cycles": 812
+    },
+    "v4_reu_16m": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 722.9326171875,
+      "min_cycles": 641,
+      "max_cycles": 816
+    }
+  },
+  "validation": {
+    "signed_multiply_calls": 264999,
+    "multiply_refresh_calls": 415078,
+    "turbo_relocation": "PASS",
+    "turbo_boundary_sweep": "PASS"
+  }
+}

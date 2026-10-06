@@ -1,3 +1,12 @@
+## 2026-10-06 — SMUL32 q1 bounded-carry + correction tail
+
+- Replaced only the FAST31 q1 (X>=0, Y<0) late-column summation in V2/V3/V4 with the validated bounded-carry state machine and tail-placed its signed correction; q0/q2/NN and the four-row producer are unchanged.
+- Canonical SMUL32 means improve to **712.403902 / 712.856787 / 712.948941 cycles**; min remains **630** and max remains **838**.
+- On an identical 6,361-case corpus all three profiles are cycle-identical at **717.448043 cycles**, improving the PR #18 baseline by **0.332495 cycles/call**.
+- Focused q1 mean improves **734.268012 → 732.785800** and worst case **839 → 830**.
+- MATH_SMUL32_SHR16 is **781.620041 cycles mean (695–903)**; the 31-ZP / zero-persistent-stack contract is unchanged.
+- Full signed-multiply, multiply-refresh, published-source, deterministic rebuild, Turbo relocation/boundary and package gates pass.
+
 ## 2026-10-06 — SMUL32 q2 correction tail-placement
 
 - Tail-placed the shared FAST31 q2 signed correction after the alternate bounded-carry continuation in V2/V3/V4; the four-row producer and q0/q1/NN paths are unchanged.

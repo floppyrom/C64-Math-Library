@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 649.
+; Reachable instructions: 670.
 !cpu 6510
 
 ; ---- executable island $2300 ----
@@ -248,99 +248,119 @@ L39DC:
     adc $7600,y                        ; @39DC 79 00 76
     dex                                ; @39DF CA
     bpl L39A2                          ; @39E0 10 C0
-    tax                                ; @39E2 AA
-    ldy $1A                            ; @39E3 A4 1A
-    clc                                ; @39E5 18
-    lda $1D                            ; @39E6 A5 1D
-    adc $0F                            ; @39E8 65 0F
-    sta $C009                          ; @39EA 8D 09 C0
-    lda $1E                            ; @39ED A5 1E
-    adc $10                            ; @39EF 65 10
-    bcc L39F8                          ; @39F1 90 05
-    inc $11                            ; @39F3 E6 11
-    beq L3A61                          ; @39F5 F0 6A
-    clc                                ; @39F7 18
-L39F8:
-    adc $12                            ; @39F8 65 12
-    sta $C00A                          ; @39FA 8D 0A C0
-    lda $13                            ; @39FD A5 13
-    adc $16                            ; @39FF 65 16
-    bcc L3A05                          ; @3A01 90 02
-    inx                                ; @3A03 E8
-    clc                                ; @3A04 18
-L3A05:
-    adc $11                            ; @3A05 65 11
-    bcc L3A0B                          ; @3A07 90 02
-    inx                                ; @3A09 E8
-    clc                                ; @3A0A 18
-L3A0B:
-    adc $1F                            ; @3A0B 65 1F
-    sta $C00B                          ; @3A0D 8D 0B C0
-    txa                                ; @3A10 8A
-    adc $17                            ; @3A11 65 17
-    bcs L3A51                          ; @3A13 B0 3C
-L3A15:
-    adc $20                            ; @3A15 65 20
-    bcc L3A1B                          ; @3A17 90 02
-    iny                                ; @3A19 C8
-    clc                                ; @3A1A 18
-L3A1B:
-    adc $14                            ; @3A1B 65 14
-    tax                                ; @3A1D AA
-    tya                                ; @3A1E 98
-    adc $15                            ; @3A1F 65 15
-    bcs L3A56                          ; @3A21 B0 33
-L3A23:
-    adc $18                            ; @3A23 65 18
-    tay                                ; @3A25 A8
-    lda $19                            ; @3A26 A5 19
-    adc $1B                            ; @3A28 65 1B
-    bcs L3A5C                          ; @3A2A B0 30
-L3A2C:
-    sta $19                            ; @3A2C 85 19
-    txa                                ; @3A2E 8A
-    sec                                ; @3A2F 38
-    sbc $C000                          ; @3A30 ED 00 C0
-    sta $C00C                          ; @3A33 8D 0C C0
-    tya                                ; @3A36 98
-    sbc $3F                            ; @3A37 E5 3F
-    sta $C00D                          ; @3A39 8D 0D C0
-    lda $19                            ; @3A3C A5 19
-    sbc $4F                            ; @3A3E E5 4F
-    sta $C00E                          ; @3A40 8D 0E C0
-    lda $1C                            ; @3A43 A5 1C
-    sbc $68                            ; @3A45 E5 68
-    sta $C00F                          ; @3A47 8D 0F C0
-    lda $0E                            ; @3A4A A5 0E
-    sta $C008                          ; @3A4C 8D 08 C0
-    clc                                ; @3A4F 18
-    rts                                ; @3A50 60
-L3A51:
-    iny                                ; @3A51 C8
-    clc                                ; @3A52 18
-    jmp L3A15                          ; @3A53 4C 15 3A
-L3A56:
-    inc $1B                            ; @3A56 E6 1B
-    clc                                ; @3A58 18
-    jmp L3A23                          ; @3A59 4C 23 3A
-L3A5C:
-    inc $1C                            ; @3A5C E6 1C
-    jmp L3A2C                          ; @3A5E 4C 2C 3A
-L3A61:
-    jmp L3A67                          ; @3A61 4C 67 3A
-; ---- executable island $3A67 ----
-* = $3A67
+    inx                                ; @39E2 E8
+    tay                                ; @39E3 A8
+    clc                                ; @39E4 18
+    lda $1D                            ; @39E5 A5 1D
+    adc $0F                            ; @39E7 65 0F
+    sta $C009                          ; @39E9 8D 09 C0
+    lda $10                            ; @39EC A5 10
+    adc $1E                            ; @39EE 65 1E
+    bcc L39F4                          ; @39F0 90 02
+    inx                                ; @39F2 E8
+    clc                                ; @39F3 18
+L39F4:
+    adc $12                            ; @39F4 65 12
+    sta $C00A                          ; @39F6 8D 0A C0
+    lda $16                            ; @39F9 A5 16
+    adc $13                            ; @39FB 65 13
+    bcc L3A0D                          ; @39FD 90 0E
+    iny                                ; @39FF C8
+    cpx #$01                           ; @3A00 E0 01
+    adc $11                            ; @3A02 65 11
+    bcc L3A14                          ; @3A04 90 0E
+    clc                                ; @3A06 18
+    iny                                ; @3A07 C8
+    bne L3A14                          ; @3A08 D0 0A
+    jmp L3A8E                          ; @3A0A 4C 8E 3A
+L3A0D:
+    adc $11                            ; @3A0D 65 11
+    bcc L3A12                          ; @3A0F 90 01
+    iny                                ; @3A11 C8
+L3A12:
+    cpx #$01                           ; @3A12 E0 01
+L3A14:
+    adc $1F                            ; @3A14 65 1F
+    sta $C00B                          ; @3A16 8D 0B C0
+    tya                                ; @3A19 98
+    adc $14                            ; @3A1A 65 14
+    bcs L3A4C                          ; @3A1C B0 2E
+    adc $20                            ; @3A1E 65 20
+    bcs L3A53                          ; @3A20 B0 31
+    adc $17                            ; @3A22 65 17
+    tay                                ; @3A24 A8
+    lda $1A                            ; @3A25 A5 1A
+    adc $15                            ; @3A27 65 15
+    bcs L3A37                          ; @3A29 B0 0C
+    adc $18                            ; @3A2B 65 18
+    tax                                ; @3A2D AA
+    lda $1B                            ; @3A2E A5 1B
+    adc $19                            ; @3A30 65 19
+    bcc L3A69                          ; @3A32 90 35
+    jmp L3A67                          ; @3A34 4C 67 3A
+L3A37:
+    clc                                ; @3A37 18
+L3A38:
+    adc $18                            ; @3A38 65 18
+    tax                                ; @3A3A AA
+    lda $1B                            ; @3A3B A5 1B
+    adc $19                            ; @3A3D 65 19
+    bcs L3A47                          ; @3A3F B0 06
+    adc #$01                           ; @3A41 69 01
+    bcs L3A67                          ; @3A43 B0 22
+    bcc L3A69                          ; @3A45 90 22
+L3A47:
+    adc #$00                           ; @3A47 69 00
+    jmp L3A67                          ; @3A49 4C 67 3A
+L3A4C:
+    clc                                ; @3A4C 18
+    adc $20                            ; @3A4D 65 20
+    bcc L3A54                          ; @3A4F 90 03
+    inc $1A                            ; @3A51 E6 1A
+L3A53:
+    clc                                ; @3A53 18
+L3A54:
+    adc $17                            ; @3A54 65 17
+    tay                                ; @3A56 A8
+    lda $1A                            ; @3A57 A5 1A
+    adc $15                            ; @3A59 65 15
+    bcs L3A38                          ; @3A5B B0 DB
+    sec                                ; @3A5D 38
+    adc $18                            ; @3A5E 65 18
+    tax                                ; @3A60 AA
+    lda $1B                            ; @3A61 A5 1B
+    adc $19                            ; @3A63 65 19
+    bcc L3A69                          ; @3A65 90 02
 L3A67:
-    inc $20                            ; @3A67 E6 20
-    bne L3A75                          ; @3A69 D0 0A
-    inc $15                            ; @3A6B E6 15
-    bne L3A75                          ; @3A6D D0 06
-    inc $19                            ; @3A6F E6 19
-    bne L3A75                          ; @3A71 D0 02
-    inc $1C                            ; @3A73 E6 1C
-L3A75:
-    clc                                ; @3A75 18
-    jmp L39F8                          ; @3A76 4C F8 39
+    inc $1C                            ; @3A67 E6 1C
+L3A69:
+    sta $19                            ; @3A69 85 19
+    tya                                ; @3A6B 98
+    sec                                ; @3A6C 38
+    sbc $C000                          ; @3A6D ED 00 C0
+    sta $C00C                          ; @3A70 8D 0C C0
+    txa                                ; @3A73 8A
+    sbc $3F                            ; @3A74 E5 3F
+    sta $C00D                          ; @3A76 8D 0D C0
+    lda $19                            ; @3A79 A5 19
+    sbc $4F                            ; @3A7B E5 4F
+    sta $C00E                          ; @3A7D 8D 0E C0
+    lda $1C                            ; @3A80 A5 1C
+    sbc $68                            ; @3A82 E5 68
+    sta $C00F                          ; @3A84 8D 0F C0
+    lda $0E                            ; @3A87 A5 0E
+    sta $C008                          ; @3A89 8D 08 C0
+    clc                                ; @3A8C 18
+    rts                                ; @3A8D 60
+L3A8E:
+    inc $15                            ; @3A8E E6 15
+    bne L3A98                          ; @3A90 D0 06
+    inc $19                            ; @3A92 E6 19
+    bne L3A98                          ; @3A94 D0 02
+    inc $1C                            ; @3A96 E6 1C
+L3A98:
+    clc                                ; @3A98 18
+    jmp L3A14                          ; @3A99 4C 14 3A
 ; ---- executable island $3C00 ----
 * = $3C00
 L3C00:

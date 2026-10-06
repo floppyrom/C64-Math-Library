@@ -7,8 +7,8 @@ MATH_UMUL32_READY,mul_u32_u32_u64_ready,mul_u32_u32_u64_ready.asm,,$30C0,151
 MATH_SMUL8,mul_s8_s8_s16,mul_s8_s8_s16.asm,,$3B80,19
 MATH_SMUL16,mul_s16_s16_s32,mul_s16_s16_s32.asm,,$3BB0,115
 MATH_SMUL24,mul_s24_s24_s48,mul_s24_s24_s48.asm,,$3BF0,226
-MATH_SMUL32,mul_s32_s32_s64,mul_s32_s32_s64.asm,,$3C40,633
-MATH_SMUL32_READY,mul_s32_s32_s64_ready,mul_s32_s32_s64_ready.asm,,$3FE0,634
+MATH_SMUL32,mul_s32_s32_s64,mul_s32_s32_s64.asm,,$3C40,654
+MATH_SMUL32_READY,mul_s32_s32_s64_ready,mul_s32_s32_s64_ready.asm,,$3FE0,655
 MATH_UDIV8,div_u8_u8_u8_8,div_u8_u8_u8_8.asm,,$3120,182
 MATH_UDIV16,div_u16_u16_u16_16,div_u16_u16_u16_16.asm,,$3140,626
 MATH_UDIV24,div_u24_u24_u24_24,div_u24_u24_u24_24.asm,,$3170,583
@@ -32,7 +32,7 @@ MATH_SMOD32_32,mod_s32_s32_s32,mod_s32_s32_s32__math_smod32_32.asm,MATH_SDIV32_3
 MATH_UMUL16_SHR8,mul_u16_u16_u24_shr8,mul_u16_u16_u24_shr8.asm,,$5E0C,89
 MATH_SMUL16_SHR8,mul_s16_s16_s24_shr8,mul_s16_s16_s24_shr8.asm,,$5E0F,122
 MATH_UMUL32_SHR16,mul_u32_u32_u48_shr16,mul_u32_u32_u48_shr16.asm,,$5E12,167
-MATH_SMUL32_SHR16,mul_s32_s32_s48_shr16,mul_s32_s32_s48_shr16.asm,,$5E15,649
+MATH_SMUL32_SHR16,mul_s32_s32_s48_shr16,mul_s32_s32_s48_shr16.asm,,$5E15,670
 MATH_UDIV16_SHL8,div_u16_u16_u24_16_shl8,div_u16_u16_u24_16_shl8.asm,,$5E18,1070
 MATH_SDIV16_SHL8,div_s16_s16_s24_16_shl8,div_s16_s16_s24_16_shl8.asm,,$5E1B,1184
 MATH_URECIP16_Q16,recip_u16_u24_q16,recip_u16_u24_q16.asm,,$5E1E,760
