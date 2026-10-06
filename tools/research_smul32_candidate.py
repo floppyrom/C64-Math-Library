@@ -4,7 +4,8 @@ import random,re,sys,json
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
-from mini6502 import CPU
+from mini6502 import CPU,Assembler,REV
+from assemble_sources import preprocess
 
 IO=0xC000
 MASK=(1<<64)-1
@@ -80,12 +81,55 @@ def compare(pairs,base,cand):
             'delta_min':min(deltas),'delta_max':max(deltas),
             'quadrant_delta_mean':qd}
 
+class TraceCPU(CPU):
+    trace_lo=0
+    trace_hi=0
+    branch_counts=None
+    def step(self):
+        pc=self.pc
+        if self.trace_lo <= pc < self.trace_hi:
+            oc=self.mem[pc]
+            if oc in REV:
+                op,mode=REV[oc]
+                if mode=='rel':
+                    off=self.mem[(pc+1)&0xffff]; off=off-256 if off&128 else off
+                    target=(pc+2+off)&0xffff
+                    cond={'bpl':not self.n,'bmi':self.n,'bvc':not self.v,'bvs':self.v,
+                          'bcc':not self.c,'bcs':self.c,'bne':not self.z,'beq':self.z}[op]
+                    k=(pc,op,target)
+                    rec=self.branch_counts.setdefault(k,[0,0])
+                    rec[0]+=1
+                    rec[1]+=int(cond)
+        return super().step()
+
+def branch_profile(pairs):
+    cfg=ROOT/'relocatable_source/v2_pareto_fast/math_config_reference.inc'
+    src=ROOT/'relocatable_source/v2_pareto_fast/math_relocatable.asm'
+    memdict,labels,const=Assembler().assemble(preprocess(src,cfg))
+    api=parse_api(ROOT/'v2_pareto_fast/resident/math_api.inc')
+    b=(ROOT/'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg').read_bytes()
+    load=b[0]|b[1]<<8
+    mem=bytearray(65536);mem[load:load+len(b)-2]=b[2:]
+    cpu=TraceCPU(mem);cpu.d=0;cpu.branch_counts={}
+    cpu.trace_lo=labels['S32V28_q0_summation'];cpu.trace_hi=labels['S32V28_q0_cg_code_end']
+    cpu.call(api['MATH_INIT'],2_000_000)
+    for x,y in pairs:
+        wr(cpu.mem,IO,x);wr(cpu.mem,IO+4,y)
+        cpu.call(api['MATH_SMUL32'],2_000_000)
+    revlabels={v:k for k,v in labels.items()}
+    out=[]
+    for (pc,op,target),(n,taken) in sorted(cpu.branch_counts.items()):
+        out.append({'pc':f'${pc:04X}','op':op,'target':revlabels.get(target,f'${target:04X}'),
+                    'executions':n,'taken':taken,'taken_rate':taken/n})
+    return out
+
 def main():
     base=load(ROOT/'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg',
               ROOT/'v2_pareto_fast/resident/math_api.inc')
     cand=load(ROOT/'build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
               ROOT/'build_source/reference/v2_pareto_fast/math_api.inc')
-    out={'canonical':compare(corpus(),base,cand),'pp_stress':compare(pp_stress(),base,cand)}
+    stress=pp_stress()
+    out={'canonical':compare(corpus(),base,cand),'pp_stress':compare(stress,base,cand),'q0_branch_profile':branch_profile(stress)}
     errors=out['canonical']['candidate']['errors']+out['pp_stress']['candidate']['errors']
     out['status']='PASS' if errors==0 else 'FAIL'
     print('SMUL32_RESEARCH_RESULT '+json.dumps(out,sort_keys=True))
