@@ -11,10 +11,10 @@
 ; ---- executable island $2300 ----
 * = $2300
 L2300:
-    sta $0C                            ; @2300 85 0C
+    sta $68                            ; @2300 85 68
     sta $5556                          ; @2302 8D 56 55
     eor #$FF                           ; @2305 49 FF
-    sta $0A                            ; @2307 85 0A
+    sta $51                            ; @2307 85 51
     sta $5561                          ; @2309 8D 61 55
     lda $C000                          ; @230C AD 00 C0
     sta $552C                          ; @230F 8D 2C 55
@@ -23,16 +23,16 @@ L2300:
     sta $552F                          ; @2317 8D 2F 55
     sta $5537                          ; @231A 8D 37 55
     lda $C001                          ; @231D AD 01 C0
-    sta $04                            ; @2320 85 04
+    sta $3F                            ; @2320 85 3F
     sta $553A                          ; @2322 8D 3A 55
     eor #$FF                           ; @2325 49 FF
-    sta $02                            ; @2327 85 02
+    sta $3D                            ; @2327 85 3D
     sta $5545                          ; @2329 8D 45 55
     lda $C002                          ; @232C AD 02 C0
-    sta $08                            ; @232F 85 08
+    sta $4F                            ; @232F 85 4F
     sta $5548                          ; @2331 8D 48 55
     eor #$FF                           ; @2334 49 FF
-    sta $06                            ; @2336 85 06
+    sta $41                            ; @2336 85 41
     sta $5553                          ; @2338 8D 53 55
     ldx #$03                           ; @233B A2 03
     sec                                ; @233D 38
@@ -40,48 +40,48 @@ L2300:
 L2341:
     lda #$00                           ; @2341 A9 00
     sbc $C001                          ; @2343 ED 01 C0
-    sta $04                            ; @2346 85 04
+    sta $3F                            ; @2346 85 3F
     sta $CA6B                          ; @2348 8D 6B CA
     eor #$FF                           ; @234B 49 FF
-    sta $02                            ; @234D 85 02
+    sta $3D                            ; @234D 85 3D
     sta $CA76                          ; @234F 8D 76 CA
     lda #$00                           ; @2352 A9 00
     sbc $C002                          ; @2354 ED 02 C0
-    sta $08                            ; @2357 85 08
+    sta $4F                            ; @2357 85 4F
     sta $CA79                          ; @2359 8D 79 CA
     eor #$FF                           ; @235C 49 FF
-    sta $06                            ; @235E 85 06
+    sta $41                            ; @235E 85 41
     sta $CA84                          ; @2360 8D 84 CA
     lda #$00                           ; @2363 A9 00
     sbc $C003                          ; @2365 ED 03 C0
-    sta $0C                            ; @2368 85 0C
+    sta $68                            ; @2368 85 68
     sta $CA87                          ; @236A 8D 87 CA
     eor #$FF                           ; @236D 49 FF
-    sta $0A                            ; @236F 85 0A
+    sta $51                            ; @236F 85 51
     sta $CA92                          ; @2371 8D 92 CA
     jmp L3CE9                          ; @2374 4C E9 3C
 ; ---- executable island $3505 ----
 * = $3505
 L3505:
     clc                                ; @3505 18
-    adc ($02),y                        ; @3506 71 02
+    adc ($3D),y                        ; @3506 71 3D
     sta $1D,x                          ; @3508 95 1D
     lda #$01                           ; @350A A9 01
-    adc ($04),y                        ; @350C 71 04
+    adc ($3F),y                        ; @350C 71 3F
     bcc L3544                          ; @350E 90 34
 L3510:
     clc                                ; @3510 18
-    adc ($06),y                        ; @3511 71 06
+    adc ($41),y                        ; @3511 71 41
     sta $12,x                          ; @3513 95 12
     lda #$01                           ; @3515 A9 01
-    adc ($08),y                        ; @3517 71 08
+    adc ($4F),y                        ; @3517 71 4F
     bcc L3552                          ; @3519 90 37
 L351B:
     clc                                ; @351B 18
-    adc ($0A),y                        ; @351C 71 0A
+    adc ($51),y                        ; @351C 71 51
     sta $16,x                          ; @351E 95 16
     lda #$01                           ; @3520 A9 01
-    adc ($0C),y                        ; @3522 71 0C
+    adc ($68),y                        ; @3522 71 68
     bcc L3560                          ; @3524 90 3A
 L3526:
     sta $1A,x                          ; @3526 95 1A
@@ -94,23 +94,23 @@ L352B:
     adc $7600,y                        ; @3536 79 00 76
     adc $7000,y                        ; @3539 79 00 70
     bcs L3505                          ; @353C B0 C7
-    adc ($02),y                        ; @353E 71 02
+    adc ($3D),y                        ; @353E 71 3D
     sta $1D,x                          ; @3540 95 1D
-    lda ($04),y                        ; @3542 B1 04
+    lda ($3F),y                        ; @3542 B1 3F
 L3544:
     adc $7600,y                        ; @3544 79 00 76
     adc $7000,y                        ; @3547 79 00 70
     bcs L3510                          ; @354A B0 C4
-    adc ($06),y                        ; @354C 71 06
+    adc ($41),y                        ; @354C 71 41
     sta $12,x                          ; @354E 95 12
-    lda ($08),y                        ; @3550 B1 08
+    lda ($4F),y                        ; @3550 B1 4F
 L3552:
     adc $7600,y                        ; @3552 79 00 76
     adc $7000,y                        ; @3555 79 00 70
     bcs L351B                          ; @3558 B0 C1
-    adc ($0A),y                        ; @355A 71 0A
+    adc ($51),y                        ; @355A 71 51
     sta $16,x                          ; @355C 95 16
-    lda ($0C),y                        ; @355E B1 0C
+    lda ($68),y                        ; @355E B1 68
 L3560:
     adc $7600,y                        ; @3560 79 00 76
     dex                                ; @3563 CA
@@ -210,24 +210,24 @@ L35F7:
 * = $3981
 L3981:
     clc                                ; @3981 18
-    adc ($02),y                        ; @3982 71 02
+    adc ($3D),y                        ; @3982 71 3D
     sta $1D,x                          ; @3984 95 1D
     lda #$01                           ; @3986 A9 01
-    adc ($04),y                        ; @3988 71 04
+    adc ($3F),y                        ; @3988 71 3F
     bcc L39C0                          ; @398A 90 34
 L398C:
     clc                                ; @398C 18
-    adc ($06),y                        ; @398D 71 06
+    adc ($41),y                        ; @398D 71 41
     sta $12,x                          ; @398F 95 12
     lda #$01                           ; @3991 A9 01
-    adc ($08),y                        ; @3993 71 08
+    adc ($4F),y                        ; @3993 71 4F
     bcc L39CE                          ; @3995 90 37
 L3997:
     clc                                ; @3997 18
-    adc ($0A),y                        ; @3998 71 0A
+    adc ($51),y                        ; @3998 71 51
     sta $16,x                          ; @399A 95 16
     lda #$01                           ; @399C A9 01
-    adc ($0C),y                        ; @399E 71 0C
+    adc ($68),y                        ; @399E 71 68
     bcc L39DC                          ; @39A0 90 3A
 L39A2:
     sta $1A,x                          ; @39A2 95 1A
@@ -240,23 +240,23 @@ L39A7:
     adc $7600,y                        ; @39B2 79 00 76
     adc $7000,y                        ; @39B5 79 00 70
     bcs L3981                          ; @39B8 B0 C7
-    adc ($02),y                        ; @39BA 71 02
+    adc ($3D),y                        ; @39BA 71 3D
     sta $1D,x                          ; @39BC 95 1D
-    lda ($04),y                        ; @39BE B1 04
+    lda ($3F),y                        ; @39BE B1 3F
 L39C0:
     adc $7600,y                        ; @39C0 79 00 76
     adc $7000,y                        ; @39C3 79 00 70
     bcs L398C                          ; @39C6 B0 C4
-    adc ($06),y                        ; @39C8 71 06
+    adc ($41),y                        ; @39C8 71 41
     sta $12,x                          ; @39CA 95 12
-    lda ($08),y                        ; @39CC B1 08
+    lda ($4F),y                        ; @39CC B1 4F
 L39CE:
     adc $7600,y                        ; @39CE 79 00 76
     adc $7000,y                        ; @39D1 79 00 70
     bcs L3997                          ; @39D4 B0 C1
-    adc ($0A),y                        ; @39D6 71 0A
+    adc ($51),y                        ; @39D6 71 51
     sta $16,x                          ; @39D8 95 16
-    lda ($0C),y                        ; @39DA B1 0C
+    lda ($68),y                        ; @39DA B1 68
 L39DC:
     adc $7600,y                        ; @39DC 79 00 76
     dex                                ; @39DF CA
@@ -323,13 +323,13 @@ L3A37:
     sbc $C000                          ; @3A3B ED 00 C0
     sta $C00C                          ; @3A3E 8D 0C C0
     tya                                ; @3A41 98
-    sbc $04                            ; @3A42 E5 04
+    sbc $3F                            ; @3A42 E5 3F
     sta $C00D                          ; @3A44 8D 0D C0
     lda $19                            ; @3A47 A5 19
-    sbc $08                            ; @3A49 E5 08
+    sbc $4F                            ; @3A49 E5 4F
     sta $C00E                          ; @3A4B 8D 0E C0
     lda $1C                            ; @3A4E A5 1C
-    sbc $0C                            ; @3A50 E5 0C
+    sbc $68                            ; @3A50 E5 68
     sta $C00F                          ; @3A52 8D 0F C0
     lda $0E                            ; @3A55 A5 0E
     sta $C008                          ; @3A57 8D 08 C0
@@ -369,10 +369,10 @@ L3A88:
 ; ---- executable island $3C00 ----
 * = $3C00
 L3C00:
-    sta $0C                            ; @3C00 85 0C
+    sta $68                            ; @3C00 85 68
     sta $39D2                          ; @3C02 8D D2 39
     eor #$FF                           ; @3C05 49 FF
-    sta $0A                            ; @3C07 85 0A
+    sta $51                            ; @3C07 85 51
     sta $39DD                          ; @3C09 8D DD 39
     lda $C000                          ; @3C0C AD 00 C0
     sta $39A8                          ; @3C0F 8D A8 39
@@ -381,16 +381,16 @@ L3C00:
     sta $39AB                          ; @3C17 8D AB 39
     sta $39B3                          ; @3C1A 8D B3 39
     lda $C001                          ; @3C1D AD 01 C0
-    sta $04                            ; @3C20 85 04
+    sta $3F                            ; @3C20 85 3F
     sta $39B6                          ; @3C22 8D B6 39
     eor #$FF                           ; @3C25 49 FF
-    sta $02                            ; @3C27 85 02
+    sta $3D                            ; @3C27 85 3D
     sta $39C1                          ; @3C29 8D C1 39
     lda $C002                          ; @3C2C AD 02 C0
-    sta $08                            ; @3C2F 85 08
+    sta $4F                            ; @3C2F 85 4F
     sta $39C4                          ; @3C31 8D C4 39
     eor #$FF                           ; @3C34 49 FF
-    sta $06                            ; @3C36 85 06
+    sta $41                            ; @3C36 85 41
     sta $39CF                          ; @3C38 8D CF 39
     jmp L39A7                          ; @3C3B 4C A7 39
 ; ---- executable island $3C43 ----
@@ -406,10 +406,10 @@ L3C50:
     sec                                ; @3C52 38
     ldy $C007                          ; @3C53 AC 07 C0
     bmi L3C00                          ; @3C56 30 A8
-    sta $0C                            ; @3C58 85 0C
+    sta $68                            ; @3C58 85 68
     sta $3556                          ; @3C5A 8D 56 35
     eor #$FF                           ; @3C5D 49 FF
-    sta $0A                            ; @3C5F 85 0A
+    sta $51                            ; @3C5F 85 51
     sta $3561                          ; @3C61 8D 61 35
     lda $C000                          ; @3C64 AD 00 C0
     sta $352C                          ; @3C67 8D 2C 35
@@ -418,16 +418,16 @@ L3C50:
     sta $352F                          ; @3C6F 8D 2F 35
     sta $3537                          ; @3C72 8D 37 35
     lda $C001                          ; @3C75 AD 01 C0
-    sta $04                            ; @3C78 85 04
+    sta $3F                            ; @3C78 85 3F
     sta $353A                          ; @3C7A 8D 3A 35
     eor #$FF                           ; @3C7D 49 FF
-    sta $02                            ; @3C7F 85 02
+    sta $3D                            ; @3C7F 85 3D
     sta $3545                          ; @3C81 8D 45 35
     lda $C002                          ; @3C84 AD 02 C0
-    sta $08                            ; @3C87 85 08
+    sta $4F                            ; @3C87 85 4F
     sta $3548                          ; @3C89 8D 48 35
     eor #$FF                           ; @3C8C 49 FF
-    sta $06                            ; @3C8E 85 06
+    sta $41                            ; @3C8E 85 41
     sta $3553                          ; @3C90 8D 53 35
     jmp L352B                          ; @3C93 4C 2B 35
 ; ---- executable island $3CA3 ----
@@ -445,22 +445,22 @@ L3CA6:
     sta $CA68                          ; @3CB7 8D 68 CA
     bcs L3CA3                          ; @3CBA B0 E7
     lda $C001                          ; @3CBC AD 01 C0
-    sta $02                            ; @3CBF 85 02
+    sta $3D                            ; @3CBF 85 3D
     sta $CA76                          ; @3CC1 8D 76 CA
     eor #$FF                           ; @3CC4 49 FF
-    sta $04                            ; @3CC6 85 04
+    sta $3F                            ; @3CC6 85 3F
     sta $CA6B                          ; @3CC8 8D 6B CA
     lda $C002                          ; @3CCB AD 02 C0
-    sta $06                            ; @3CCE 85 06
+    sta $41                            ; @3CCE 85 41
     sta $CA84                          ; @3CD0 8D 84 CA
     eor #$FF                           ; @3CD3 49 FF
-    sta $08                            ; @3CD5 85 08
+    sta $4F                            ; @3CD5 85 4F
     sta $CA79                          ; @3CD7 8D 79 CA
     lda $C003                          ; @3CDA AD 03 C0
-    sta $0A                            ; @3CDD 85 0A
+    sta $51                            ; @3CDD 85 51
     sta $CA92                          ; @3CDF 8D 92 CA
     eor #$FF                           ; @3CE2 49 FF
-    sta $0C                            ; @3CE4 85 0C
+    sta $68                            ; @3CE4 85 68
     sta $CA87                          ; @3CE6 8D 87 CA
 L3CE9:
     sec                                ; @3CE9 38
@@ -487,24 +487,24 @@ L3FE0:
 * = $5505
 L5505:
     clc                                ; @5505 18
-    adc ($02),y                        ; @5506 71 02
+    adc ($3D),y                        ; @5506 71 3D
     sta $1D,x                          ; @5508 95 1D
     lda #$01                           ; @550A A9 01
-    adc ($04),y                        ; @550C 71 04
+    adc ($3F),y                        ; @550C 71 3F
     bcc L5544                          ; @550E 90 34
 L5510:
     clc                                ; @5510 18
-    adc ($06),y                        ; @5511 71 06
+    adc ($41),y                        ; @5511 71 41
     sta $12,x                          ; @5513 95 12
     lda #$01                           ; @5515 A9 01
-    adc ($08),y                        ; @5517 71 08
+    adc ($4F),y                        ; @5517 71 4F
     bcc L5552                          ; @5519 90 37
 L551B:
     clc                                ; @551B 18
-    adc ($0A),y                        ; @551C 71 0A
+    adc ($51),y                        ; @551C 71 51
     sta $16,x                          ; @551E 95 16
     lda #$01                           ; @5520 A9 01
-    adc ($0C),y                        ; @5522 71 0C
+    adc ($68),y                        ; @5522 71 68
     bcc L5560                          ; @5524 90 3A
 L5526:
     sta $1A,x                          ; @5526 95 1A
@@ -517,23 +517,23 @@ L552B:
     adc $7600,y                        ; @5536 79 00 76
     adc $7000,y                        ; @5539 79 00 70
     bcs L5505                          ; @553C B0 C7
-    adc ($02),y                        ; @553E 71 02
+    adc ($3D),y                        ; @553E 71 3D
     sta $1D,x                          ; @5540 95 1D
-    lda ($04),y                        ; @5542 B1 04
+    lda ($3F),y                        ; @5542 B1 3F
 L5544:
     adc $7600,y                        ; @5544 79 00 76
     adc $7000,y                        ; @5547 79 00 70
     bcs L5510                          ; @554A B0 C4
-    adc ($06),y                        ; @554C 71 06
+    adc ($41),y                        ; @554C 71 41
     sta $12,x                          ; @554E 95 12
-    lda ($08),y                        ; @5550 B1 08
+    lda ($4F),y                        ; @5550 B1 4F
 L5552:
     adc $7600,y                        ; @5552 79 00 76
     adc $7000,y                        ; @5555 79 00 70
     bcs L551B                          ; @5558 B0 C1
-    adc ($0A),y                        ; @555A 71 0A
+    adc ($51),y                        ; @555A 71 51
     sta $16,x                          ; @555C 95 16
-    lda ($0C),y                        ; @555E B1 0C
+    lda ($68),y                        ; @555E B1 68
 L5560:
     adc $7600,y                        ; @5560 79 00 76
     dex                                ; @5563 CA
@@ -643,24 +643,24 @@ L5609:
 * = $CA37
 LCA37:
     clc                                ; @CA37 18
-    adc ($02),y                        ; @CA38 71 02
+    adc ($3D),y                        ; @CA38 71 3D
     sta $1D,x                          ; @CA3A 95 1D
     lda #$01                           ; @CA3C A9 01
-    adc ($04),y                        ; @CA3E 71 04
+    adc ($3F),y                        ; @CA3E 71 3F
     bcc LCA75                          ; @CA40 90 33
 LCA42:
     clc                                ; @CA42 18
-    adc ($06),y                        ; @CA43 71 06
+    adc ($41),y                        ; @CA43 71 41
     sta $12,x                          ; @CA45 95 12
     lda #$01                           ; @CA47 A9 01
-    adc ($08),y                        ; @CA49 71 08
+    adc ($4F),y                        ; @CA49 71 4F
     bcc LCA83                          ; @CA4B 90 36
 LCA4D:
     clc                                ; @CA4D 18
-    adc ($0A),y                        ; @CA4E 71 0A
+    adc ($51),y                        ; @CA4E 71 51
     sta $16,x                          ; @CA50 95 16
     lda #$01                           ; @CA52 A9 01
-    adc ($0C),y                        ; @CA54 71 0C
+    adc ($68),y                        ; @CA54 71 68
     bcc LCA91                          ; @CA56 90 39
 LCA58:
     sta $1A,x                          ; @CA58 95 1A
@@ -673,23 +673,23 @@ LCA5C:
     adc $7600,y                        ; @CA67 79 00 76
     adc $7000,y                        ; @CA6A 79 00 70
     bcs LCA37                          ; @CA6D B0 C8
-    adc ($02),y                        ; @CA6F 71 02
+    adc ($3D),y                        ; @CA6F 71 3D
     sta $1D,x                          ; @CA71 95 1D
-    lda ($04),y                        ; @CA73 B1 04
+    lda ($3F),y                        ; @CA73 B1 3F
 LCA75:
     adc $7600,y                        ; @CA75 79 00 76
     adc $7000,y                        ; @CA78 79 00 70
     bcs LCA42                          ; @CA7B B0 C5
-    adc ($06),y                        ; @CA7D 71 06
+    adc ($41),y                        ; @CA7D 71 41
     sta $12,x                          ; @CA7F 95 12
-    lda ($08),y                        ; @CA81 B1 08
+    lda ($4F),y                        ; @CA81 B1 4F
 LCA83:
     adc $7600,y                        ; @CA83 79 00 76
     adc $7000,y                        ; @CA86 79 00 70
     bcs LCA4D                          ; @CA89 B0 C2
-    adc ($0A),y                        ; @CA8B 71 0A
+    adc ($51),y                        ; @CA8B 71 51
     sta $16,x                          ; @CA8D 95 16
-    lda ($0C),y                        ; @CA8F B1 0C
+    lda ($68),y                        ; @CA8F B1 68
 LCA91:
     adc $7600,y                        ; @CA91 79 00 76
     dex                                ; @CA94 CA

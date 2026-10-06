@@ -41,6 +41,17 @@ IMM_ADDR={
  'v4_reu_16m':{0x30D0:0x7400,0x30D8:0x7200,0x3280:0x7400,0x3288:0x7200,0x3290:0x6000,0x3298:0x6400,0x32A0:0x6200,0x32A8:0x6600,0x39A0:0xC020,0x39A5:0xC020},
 }
 IMM_LOW_PCS={0x39A0}
+
+# FAST31 V30 persistent pointer-high layout.  V2-V4 own the complete
+# $02-$6A ZP_MAIN envelope, but ordinary public calls only bind the pointer
+# LOW bytes.  MATH_INIT installs the six HIGH bytes into holes not touched by
+# any other stable API path, so mixed calls no longer need a per-call rebind.
+# Keys are reference-map MATH_INIT STA instruction PCs; values are ZP_MAIN
+# offsets of the persistent high-byte targets.
+FAST31_INIT_ZP_OFFSETS={
+ 0x3282:0x3C, 0x3284:0x40, 0x3286:0x50,
+ 0x328A:0x3E, 0x328C:0x4E, 0x328E:0x67,
+}
 # Source-address regions. GAME_API is intentionally independently configurable.
 REGIONS=[
  ('REG_LOW',0x1000,0x2fff),
@@ -201,6 +212,14 @@ DIVISION_KNOWN_NO_FALLTHROUGH={
  'v4_reu_16m':{0x41ac},
 }
 
+# Active Turbo wrappers transfer control into executable ZP installed only by
+# BEGIN.  The monolith owns the wrapper/helper; relocatable_source/turbo/*.asm
+# owns the overlay.  Do not decode normal-profile data at those overlay targets.
+TURBO_EXTERNAL_EDGE_PCS={
+ 'v3_reu_512k':{0x3855,0x102b},
+ 'v4_reu_16m':{0x3855,0x102b},
+}
+
 def trace(profile,mem):
  todo=[a for _,a in public_entries()]+[MATH_INIT_OLD];seen=set();unknown=[]
  if profile in REU: todo += list(TURBO_PUBLIC_OLD)
@@ -221,10 +240,15 @@ def trace(profile,mem):
    else: todo.extend((nxt,target))
    continue
   if op=='jmp':
-   if mode=='abs':todo.append(mem[pc+1]|mem[pc+2]<<8)
+   if mode=='abs':
+    if pc not in TURBO_EXTERNAL_EDGE_PCS.get(profile,set()):
+     todo.append(mem[pc+1]|mem[pc+2]<<8)
    else:unknown.append((pc,oc))
    continue
-  if op=='jsr':todo.extend((mem[pc+1]|mem[pc+2]<<8,nxt));continue
+  if op=='jsr':
+   if pc in TURBO_EXTERNAL_EDGE_PCS.get(profile,set()):todo.append(nxt)
+   else:todo.extend((mem[pc+1]|mem[pc+2]<<8,nxt))
+   continue
   todo.append(nxt)
  if unknown:raise RuntimeError(f'{profile}: untraceable stable code: {unknown[:8]}')
  return seen
@@ -275,6 +299,9 @@ def turbo_zp_expr(profile,pc,a:int)->str|None:
 def operand_text(profile,pc,op,mode,raw,branch_prefix='L'):
  if mode=='imp':return ''
  if mode=='acc':return ''
+ if profile!='v1_balanced' and mode=='zp' and pc in FAST31_INIT_ZP_OFFSETS:
+  off=FAST31_INIT_ZP_OFFSETS[pc]
+  return f' ZP_MAIN+{hx(off,2)}'
  if mode=='imm':
   if profile in REU:
    if pc==0x3800:return ' #<TURBO16_ZP_BASE'

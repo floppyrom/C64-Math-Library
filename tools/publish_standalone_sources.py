@@ -63,7 +63,13 @@ def api(profile):
   if m: out[m.group(1)]=int(m.group(2),16)
  return out
 
-def initialized(profile):
+ACTIVE_BEGIN={
+ 'MATH_REU_UMUL16':'MATH_REU_UMUL16_BEGIN',
+ 'MATH_REU_UMUL32':'MATH_REU_UMUL32_BEGIN',
+ 'MATH_REU_QS16':'MATH_REU_QS16_BEGIN',
+}
+
+def initialized(profile,active=None):
  p=next((ROOT/profile/'resident').glob('math_*_game_math.prg'))
  b=p.read_bytes(); load=b[0]|b[1]<<8
  mem=bytearray(65536); mem[load:load+len(b)-2]=b[2:]
@@ -72,6 +78,10 @@ def initialized(profile):
  elif profile in REU_SIZE: r=bytearray(REU_SIZE[profile])
  else: r=None
  vals=api(profile); c=CPU(mem,reu=r); c.d=0; c.call(vals['MATH_INIT'],2_000_000)
+ begin=ACTIVE_BEGIN.get(active)
+ if begin:
+  if begin not in vals: raise RuntimeError(f'{profile}: missing lifecycle entry {begin} for {active}')
+  c.call(vals[begin],2_000_000)
  return c.mem,vals,p
 
 def trace(mem,start):
@@ -177,8 +187,13 @@ def main():
   mem,vals,prg=initialized(p); missing=sorted(expected-set(vals))
   if missing: raise RuntimeError(f'{p}: missing API symbols {missing}')
   out=ROOT/p/'standalone'; out.mkdir(parents=True,exist_ok=True); rows=[]
+  active_cache={}
   for name in names:
-   text,n=render(p,name,mem,vals,prg.name); fn=filename(name,p); (out/fn).write_text(text)
+   callmem=mem
+   if name in ACTIVE_BEGIN:
+    if name not in active_cache: active_cache[name]=initialized(p,name)[0]
+    callmem=active_cache[name]
+   text,n=render(p,name,callmem,vals,prg.name); fn=filename(name,p); (out/fn).write_text(text)
    rows.append({'legacy_api':name,'canonical_name':names[name],'file':fn,'alias_of':ALIAS_OF.get(name,''),'entry_address':f'${vals[name]:04X}','reachable_instructions':n})
   with (out/'MANIFEST.csv').open('w',newline='') as f:
    w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n'); w.writeheader(); w.writerows(rows)

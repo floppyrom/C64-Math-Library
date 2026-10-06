@@ -15,13 +15,17 @@ S32V28_sqr_hi      = REG_TABLE+$1200
 S32V28_neg_sqr_lo  = REG_TABLE+$1400
 S32V28_neg_sqr_hi  = REG_TABLE+$1600
 
-; Exact existing 31-byte ZP_MAIN window.
-S32V28_neg_lo_1 = ZP_MAIN+$00
-S32V28_sqr_hi_1 = ZP_MAIN+$02
-S32V28_neg_lo_2 = ZP_MAIN+$04
-S32V28_sqr_hi_2 = ZP_MAIN+$06
-S32V28_neg_lo_3 = ZP_MAIN+$08
-S32V28_sqr_hi_3 = ZP_MAIN+$0A
+; Exact 31-byte FAST31 footprint, split across the profile-owned ZP map.
+; Every pointer LOW byte is rebound from the operand on every call.  Only the
+; six HIGH bytes must persist across mixed calls, so the pairs deliberately
+; straddle already-owned bytes and otherwise-unused high-byte holes.
+; Reference map highs: $3E,$40,$42,$50,$52,$69 (all outside other stable paths).
+S32V28_neg_lo_1 = ZP_MAIN+$3B   ; ref $3D-$3E
+S32V28_sqr_hi_1 = ZP_MAIN+$3D   ; ref $3F-$40
+S32V28_neg_lo_2 = ZP_MAIN+$3F   ; ref $41-$42
+S32V28_sqr_hi_2 = ZP_MAIN+$4D   ; ref $4F-$50
+S32V28_neg_lo_3 = ZP_MAIN+$4F   ; ref $51-$52
+S32V28_sqr_hi_3 = ZP_MAIN+$66   ; ref $68-$69
 S32V28_z00 = ZP_MAIN+$0C
 S32V28_z10 = ZP_MAIN+$0D
 S32V28_z20 = ZP_MAIN+$0E
@@ -229,7 +233,7 @@ S32V28_c4b_overflow_done:
         clc
         jmp S32V28_c4b_done
 S32V28_cg_code_end:
-; Existing V2 MATH_INIT already installs the six pointer high bytes used by FAST31.
+; MATH_INIT installs all six pointer high bytes; five now persist in profile-owned ZP holes.
 *= REG_KERNEL+$1500
 S32V28_q2_fast_core_start:
 S32V28_q2_umult32x32_same_x:
@@ -875,25 +879,15 @@ S32V28_api_s31_v25_bind_q1:
         sta S32V28_neg_lo_2
         sta S32V28_q1__neg_hi_2+1
         jmp S32V28_q1_kernel
-; Ordinary MATH_SMUL32 is a cold/mixed-call safe entry.  Reinstall the
-; six persistent pointer high bytes because other public routines may reuse
-; ZP_MAIN.  READY skips this binder and retains the documented initialized-
-; state contract.
+; Compatibility label retained in the old binder island.  All six pointer
+; high bytes now persist in profile-owned ZP, so no mixed-call repair remains.
 *= REG_GAME_API+$01C8
 S32V29_safe_entry:
-        lda #>S32V28_neg_sqr_lo
-        sta S32V28_neg_lo_1+1
-        sta S32V28_neg_lo_2+1
-        sta S32V28_neg_lo_3+1
-        lda #>S32V28_sqr_hi
-        sta S32V28_sqr_hi_1+1
-        sta S32V28_sqr_hi_2+1
-        sta S32V28_sqr_hi_3+1
         jmp S32V28_api_smul32_speed31_v26
 
 *= REG_API+$0C40
 SMUL32_FAST31_V29_ENTRY:
-        jmp S32V29_safe_entry
+        jmp S32V28_api_smul32_speed31_v26
 S32V28_api_smul32_speed31_v26:
         lda MATH_IO+$03
         bpl S32V28_api_s31_v26_xpos

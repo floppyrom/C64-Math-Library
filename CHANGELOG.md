@@ -1,8 +1,17 @@
+## 2026-10-05 — FAST31 V2–V4 persistent-pointer profile integration
+
+- Integrated the 31-ZP FAST31/V29 32-bit multiply family more deeply into V2/V3/V4 without expanding V2 beyond its documented **221-byte ZP commitment**.
+- All six FAST31 table-pointer pairs now persist in holes already owned by the V2-family normal ZP map, eliminating the ordinary mixed-call pointer repair. The per-routine footprint remains 31 touched ZP bytes and persistent stack-page reservation remains zero.
+- Ordinary signed `MATH_SMUL32` and `MATH_SMUL32_SHR16` improve by exactly **25 cycles/call** in V2/V3/V4; ordinary unsigned `MATH_UMUL32` and `MATH_UMUL32_SHR16` improve by **22 cycles/call**. READY entries are unchanged.
+- Canonical signed-corpus SMUL32 means become **718.605230 / 719.033209 / 719.090079 cycles** for V2/V3/V4. The regenerated stable-API ZP unions are **207 / 202 / 201 bytes** respectively.
+- Validation passes **264,999 signed multiply calls**, **415,078 multiply-refresh calls**, reference/alternate mixed-call validation, and **17,196 Turbo lifecycle calls**. Turbo END restores the persistent pointer bytes exactly.
+- Fixed the standalone/consolidated/source-recovery tooling to treat active Turbo executable-ZP code as a BEGIN-installed overlay rather than decoding normal-profile ZP contents.
+
 ## 2026-10-05 — SMUL32 FAST31 v2 and record-metadata alignment
 
 - Added `mul_s32_s32_s64_fast31_native_v2.asm`: **692.825100 cycles**, 31 ZP, zero persistent stack-page bytes, 0 errors on the primary 100,000-pair corpus; **692.678520** on an independent 100,000-pair seed; 0 errors on 1,849 structured edge cases.
 - FAST31 v2 transfers two compact126 ideas into the low-resource kernel: the NN common/rare x0-borrow split and `CPY #$00` carry-seeding sign dispatch. This improves the previous 697.259440 31-ZP native point by **4.434340 cycles/call**.
-- A separate 31-ZP public-ABI research candidate measures **736.188510 cycles** (independent seed 736.128620), but is not selected into V1–V5 until the canonical build/relocation/mixed-call/release-audit gates are rerun.
+- A separate 31-ZP public-ABI research candidate measured **736.188510 cycles** (independent seed 736.128620). It is retained as historical evidence; the later same-day V2–V4 persistent-pointer integration supersedes it with **718.605230 / 719.033209 / 719.090079-cycle** canonical public SMUL32 means.
 - Aligned compact126 with the standalone record metadata/accounting convention: executable code is **428 bytes** (302 ordinary RAM + 126 page-$01), and total occupied bytes including its 136-ZP claim are **2,608**. Added standardized `;ABI` / `;Results` metadata.
 
 ## 2026-10-05 — SMUL32 compact126 native record
