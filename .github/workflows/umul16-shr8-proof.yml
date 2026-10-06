@@ -25,5 +25,7 @@ jobs:
           python3 tools/generate_sources.py
           python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
           python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
       - name: Validate UMUL16 and SHR8 composition
         run: python3 tools/validate_umul16_directout.py
