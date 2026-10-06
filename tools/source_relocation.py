@@ -216,8 +216,8 @@ DIVISION_KNOWN_NO_FALLTHROUGH={
 # BEGIN.  The monolith owns the wrapper/helper; relocatable_source/turbo/*.asm
 # owns the overlay.  Do not decode normal-profile data at those overlay targets.
 TURBO_EXTERNAL_EDGE_PCS={
- 'v3_reu_512k':{0x3855,0x102b},
- 'v4_reu_16m':{0x3855,0x102b},
+ 'v3_reu_512k':{0x3852,0x102b},
+ 'v4_reu_16m':{0x3852,0x102b},
 }
 
 def trace(profile,mem):
