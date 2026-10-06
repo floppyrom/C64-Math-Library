@@ -7,7 +7,8 @@ sys.path.insert(0,str(ROOT/"tools"))
 from mini6502 import CPU
 from assemble_sources import build
 
-PROFILE="v2_pareto_fast"
+PROFILES=["v2_pareto_fast","v3_reu_512k","v4_reu_16m"]
+PROFILE_INDEX={"v2_pareto_fast":1,"v3_reu_512k":2,"v4_reu_16m":3}
 MASK64=(1<<64)-1
 
 def signed32(v): return v-(1<<32) if v&0x80000000 else v
@@ -48,9 +49,9 @@ def bench(pair,pairs):
 def edges():
     s=1<<31; m=(1<<32)-1
     return list(dict.fromkeys([0,1,2,3,7,15,16,31,63,127,128,255,s-2,s-1,s,s+1,m-2,m-1,m]))
-def canonical():
+def canonical(pi):
     e=edges(); pairs=[(x,y) for x in e for y in e]
-    rng=random.Random(0x5A17_0000+1*0x100+32)
+    rng=random.Random(0x5A17_0000+pi*0x100+32)
     pairs += [(rng.randrange(1<<32),rng.randrange(1<<32)) for _ in range(2048)]
     return pairs
 def nn_focus():
@@ -60,32 +61,52 @@ def nn_focus():
     pairs += [(rng.randrange(0x80000000,1<<32),rng.randrange(0x80000000,1<<32))
               for _ in range(20000)]
     return pairs
+def shared(n=6000):
+    e=edges(); pairs=[(x,y) for x in e for y in e]
+    rng=random.Random(0x51A33B7)
+    pairs += [(rng.randrange(1<<32),rng.randrange(1<<32)) for _ in range(n)]
+    return pairs
 def compare(base,cand,pairs):
     b=bench(base,pairs); c=bench(cand,pairs)
     deltas=[y-x for x,y in zip(b["cycles"],c["cycles"])]
-    b.pop("cycles"); c.pop("cycles")
+    bcy=b.pop("cycles"); ccy=c.pop("cycles")
     return {"baseline":b,"candidate":c,"delta_mean_cycles":sum(deltas)/len(deltas),
-            "delta_min":min(deltas),"delta_max":max(deltas)}
+            "delta_min":min(deltas),"delta_max":max(deltas),
+            "_baseline_cycles":bcy,"_candidate_cycles":ccy}
+def clean(c):
+    c=dict(c); c.pop("_baseline_cycles",None); c.pop("_candidate_cycles",None); return c
 
 def main():
-    base=load_prg(ROOT/PROFILE/"resident"/f"math_{PROFILE}_game_math.prg",
-                  ROOT/PROFILE/"resident"/"math_api.inc")
     out=Path(tempfile.mkdtemp(prefix="smul32-nn-x3-"))
+    result={"canonical":{},"shared":{}}
     try:
-        build(PROFILE,ROOT/"relocatable_source"/PROFILE/"math_config_reference.inc",out)
-        cand=load_prg(out/f"math_{PROFILE}_source_built.prg",out/"math_api.inc")
-        result={"canonical":compare(base,cand,canonical())}
-        base2=load_prg(ROOT/PROFILE/"resident"/f"math_{PROFILE}_game_math.prg",
-                       ROOT/PROFILE/"resident"/"math_api.inc")
-        cand2=load_prg(out/f"math_{PROFILE}_source_built.prg",out/"math_api.inc")
-        result["nn_focus"]=compare(base2,cand2,nn_focus())
+        built={}
+        for p in PROFILES:
+            d=out/p; d.mkdir(parents=True)
+            build(p,ROOT/"relocatable_source"/p/"math_config_reference.inc",d)
+            built[p]=d
+        for p in PROFILES:
+            base=load_prg(ROOT/p/"resident"/f"math_{p}_game_math.prg",ROOT/p/"resident"/"math_api.inc")
+            cand=load_prg(built[p]/f"math_{p}_source_built.prg",built[p]/"math_api.inc")
+            result["canonical"][p]=clean(compare(base,cand,canonical(PROFILE_INDEX[p])))
+        p="v2_pareto_fast"
+        base=load_prg(ROOT/p/"resident"/f"math_{p}_game_math.prg",ROOT/p/"resident"/"math_api.inc")
+        cand=load_prg(built[p]/f"math_{p}_source_built.prg",built[p]/"math_api.inc")
+        result["nn_focus"]=clean(compare(base,cand,nn_focus()))
+        sp=shared()
+        vectors=[]
+        for p in PROFILES:
+            base=load_prg(ROOT/p/"resident"/f"math_{p}_game_math.prg",ROOT/p/"resident"/"math_api.inc")
+            cand=load_prg(built[p]/f"math_{p}_source_built.prg",built[p]/"math_api.inc")
+            c=compare(base,cand,sp); vectors.append(c["_candidate_cycles"])
+            result["shared"][p]=clean(c)
+        result["shared_cycle_vectors_identical"]=all(v==vectors[0] for v in vectors[1:])
     finally:
         shutil.rmtree(out,ignore_errors=True)
-    result["status"]="PASS"
+    errors=sum(v["candidate"]["errors"] for v in result["canonical"].values())+result["nn_focus"]["candidate"]["errors"]+sum(v["candidate"]["errors"] for v in result["shared"].values())
+    wins=[v["delta_mean_cycles"]<0 for v in result["canonical"].values()]
+    result["status"]="PASS" if errors==0 and all(wins) and result["shared_cycle_vectors_identical"] else "FAIL"
     print(json.dumps(result,indent=2))
-    if result["canonical"]["candidate"]["errors"] or result["nn_focus"]["candidate"]["errors"]:
-        raise SystemExit("correctness failure")
-    if result["canonical"]["delta_mean_cycles"] >= 0:
-        raise SystemExit("no public mean win")
-    print("SMUL32 NN X3 PREBIND PASS")
+    if result["status"]!="PASS": raise SystemExit("NN X3 multi-profile gate failed")
+    print("SMUL32 NN X3 PREBIND MULTI-PROFILE PASS")
 if __name__=="__main__": main()
