@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "seed": "0x24240024",
+  "basis": "2026-10-06 UMUL24 direct-output deterministic edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores",
+  "results": {
+    "v1_balanced": {
+      "reference": {
+        "cases": 10324,
+        "mean_cycles": 474.0423285548237,
+        "min_cycles": 444,
+        "max_cycles": 530
+      },
+      "alternate": {
+        "cases": 10324,
+        "mean_cycles": 474.0423285548237,
+        "min_cycles": 444,
+        "max_cycles": 530
+      }
+    },
+    "v2_pareto_fast": {
+      "reference": {
+        "cases": 10324,
+        "mean_cycles": 429.55550174351026,
+        "min_cycles": 400,
+        "max_cycles": 485
+      },
+      "alternate": {
+        "cases": 10324,
+        "mean_cycles": 429.55550174351026,
+        "min_cycles": 400,
+        "max_cycles": 485
+      }
+    },
+    "v3_reu_512k": {
+      "reference": {
+        "cases": 10324,
+        "mean_cycles": 429.55550174351026,
+        "min_cycles": 400,
+        "max_cycles": 485
+      },
+      "alternate": {
+        "cases": 10324,
+        "mean_cycles": 429.55550174351026,
+        "min_cycles": 400,
+        "max_cycles": 485
+      }
+    },
+    "v4_reu_16m": {
+      "reference": {
+        "cases": 10324,
+        "mean_cycles": 429.55550174351026,
+        "min_cycles": 400,
+        "max_cycles": 485
+      },
+      "alternate": {
+        "cases": 10324,
+        "mean_cycles": 429.55550174351026,
+        "min_cycles": 400,
+        "max_cycles": 485
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "reference": {
+        "cases": 10324,
+        "mean_cycles": 474.0423285548237,
+        "min_cycles": 444,
+        "max_cycles": 530
+      },
+      "alternate": {
+        "cases": 10324,
+        "mean_cycles": 474.0423285548237,
+        "min_cycles": 444,
+        "max_cycles": 530
+      }
+    }
+  }
+}
