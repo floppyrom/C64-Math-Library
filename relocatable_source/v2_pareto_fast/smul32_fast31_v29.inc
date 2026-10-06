@@ -664,9 +664,8 @@ S32V28_api_s31_v25_xcarry:
 *= REG_API+$097C
 S32V28_q1_fast_core_start:
 S32V28_q1_umult32x32_same_x:
-        ; Swapped q1 orientation. The public q1 dispatcher already has X=3,C=1.
-        ; Reload original positive X3 as the first streamed producer row.
-        ldy MATH_IO+$03
+        ldx #3
+        sec
         bcs S32V28_q1_kernel
 
 S32V28_q1_H10:
@@ -908,12 +907,14 @@ S32V28_api_s31_v25_bind_q2:
         sec
         jmp S32V28_q2_kernel
 
-*= REG_API+$0C00
+*= REG_API+$0BF3
 S32V28_api_s31_v25_bind_q1:
-        ; q1 X>=0,Y<0: bind original negative Y as quarter-square X and
-        ; stream original positive X as producer Y.
-        tya
-        sta S32V28_x3
+        ; q1 X>=0,Y<0. Dispatcher state is A=X3, Y=Y3, X=3, C=1.
+        ; Save Y3 directly into the existing pointer-low byte, preserve X3
+        ; in Y for the first producer row, then reload Y3 for table binding.
+        sty S32V28_x3
+        tay
+        lda S32V28_x3
         sta S32V28_q1__sqr_lo_3+1
         eor #$ff
         sta S32V28_neg_lo_3
@@ -936,7 +937,7 @@ S32V28_api_s31_v25_bind_q1:
         eor #$ff
         sta S32V28_neg_lo_2
         sta S32V28_q1__neg_hi_2+1
-        jmp S32V28_q1_umult32x32_same_x
+        jmp S32V28_q1_kernel
 ; Compatibility label retained in the old binder island.  All six pointer
 ; high bytes now persist in profile-owned ZP, so no mixed-call repair remains.
 *= REG_GAME_API+$01C8
