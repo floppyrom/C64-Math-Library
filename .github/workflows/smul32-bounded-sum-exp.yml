@@ -28,6 +28,37 @@ jobs:
           python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
           cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg \
              v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+      - name: Sweep q1 placement
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, random, shutil, subprocess
+          from tools.validate_signed_multiply import load_profile, test_entry
+
+          src=Path('relocatable_source/v2_pareto_fast/smul32_fast31_v29.inc')
+          base=src.read_text()
+          old='*= REG_API+$097C'
+          assert old in base
+          rng=random.Random(0x5131504E)
+          pairs=[(rng.randrange(0x80000000),rng.randrange(0x80000000,1<<32)) for _ in range(5000)]
+          offsets=[0x097C,0x0980,0x0990,0x09A0,0x09B0,0x09C0,0x09D0,0x09E0,0x09F0,
+                   0x0A00,0x0A10,0x0A20,0x0A30,0x0A40,0x0A50,0x0A60,0x0A70,0x0A80]
+          for off in offsets:
+              src.write_text(base.replace(old,f'*= REG_API+${off:04X}'))
+              shutil.rmtree('build_q1',ignore_errors=True)
+              p=subprocess.run(['python3','tools/assemble_sources.py','--profile','v2_pareto_fast',
+                                '--config-kind','reference','--out','build_q1'],
+                               text=True,capture_output=True)
+              if p.returncode:
+                  print(f'Q1SWEEP {off:04X} ASSEMBLY_FAIL {p.stderr.strip().splitlines()[-1] if p.stderr.strip() else ""}')
+                  continue
+              shutil.copy2('build_q1/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
+                           'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg')
+              cpu,api=load_profile('v2_pareto_fast')
+              r=test_entry(cpu,api['MATH_SMUL32'],32,pairs)
+              print(f'Q1SWEEP {off:04X} mean={r["mean_cycles"]:.6f} min={r["min_cycles"]} max={r["max_cycles"]} errors={r["errors"]}')
+          src.write_text(base)
+          PY
       - name: Validate and print signed multiply timing
         run: |
           python3 tools/validate_signed_multiply.py --profile v2_pareto_fast
