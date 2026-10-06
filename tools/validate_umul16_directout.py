@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the optimized V2/V3/V4 public UMUL16 producer and SHR8 composition."""
+"""Validate public UMUL16 plus all-profile register-return SHR8 composition."""
 from pathlib import Path
 import json, random, re, sys
 
@@ -7,9 +7,11 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
 
-PROFILES=('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+PROFILES=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
 KINDS=('reference','alternate')
 BUILD=ROOT/'build_source'
+HYBRID=ROOT/'build_hybrid'
+SHR8_DELTA={'v1_balanced':31,'v2_pareto_fast':27,'v3_reu_512k':27,'v4_reu_16m':27,'v5_hybrid_lowzp':31}
 SEED=0x16160016
 
 def parse_inc(path):
@@ -20,7 +22,7 @@ def parse_inc(path):
     return out
 
 def load(profile,kind):
-    d=BUILD/kind/profile
+    d=(HYBRID if profile=='v5_hybrid_lowzp' else BUILD)/kind/profile
     man=json.loads((d/'source_build_manifest.json').read_text())
     prg=(d/man['output_prg']).read_bytes()
     lo=prg[0]|(prg[1]<<8)
@@ -65,7 +67,7 @@ def run(profile,kind,cases):
         if sgot!=sexp or cpu.c!=0:
             errors+=1
             if errors<=8: print('SHR8 ERROR',profile,kind,hex(x),hex(y),hex(sgot),hex(sexp),cpu.c)
-        if scy!=cy+27:
+        if scy!=cy+SHR8_DELTA[profile]:
             errors+=1
             if errors<=8: print('CYCLE COMPOSE ERROR',profile,kind,x,y,cy,scy)
         shr_vec.append(scy)
@@ -91,10 +93,15 @@ def main():
             raise AssertionError(f'{p}: reference/alternate UMUL16 cycle vectors differ')
         if results[p]['reference']['shr8_cycles']!=results[p]['alternate']['shr8_cycles']:
             raise AssertionError(f'{p}: reference/alternate SHR8 cycle vectors differ')
-    base=results[PROFILES[0]]['reference']['cycles']
-    for p in PROFILES[1:]:
-        if results[p]['reference']['cycles']!=base:
-            raise AssertionError(f'{p}: fixed-profile UMUL16 cycle vector differs from V2')
+    fast=results['v2_pareto_fast']['reference']['cycles']
+    for p in ('v3_reu_512k','v4_reu_16m'):
+        if results[p]['reference']['cycles']!=fast:
+            raise AssertionError(f'{p}: UMUL16 cycle vector differs from V2')
+    low=results['v1_balanced']['reference']['cycles']
+    if results['v5_hybrid_lowzp']['reference']['cycles']!=low:
+        raise AssertionError('V5 UMUL16 cycle vector differs from inherited V1 path')
+    if results['v5_hybrid_lowzp']['reference']['shr8_cycles']!=results['v1_balanced']['reference']['shr8_cycles']:
+        raise AssertionError('V5 SHR8 cycle vector differs from inherited V1 path')
     mean=results['v2_pareto_fast']['reference']['mean_cycles']
     if not mean < 218:
         raise AssertionError(f'optimized UMUL16 unexpectedly slow: {mean}')
@@ -107,6 +114,6 @@ def main():
             clean[p][k]={x:r[x] for x in ('cases','mean_cycles','min_cycles','max_cycles','shr8_mean_cycles','shr8_min_cycles','shr8_max_cycles')}
     out=ROOT/'validation/multiply_refresh/UMUL16_DIRECTOUT_VALIDATION.json'
     out.parent.mkdir(parents=True,exist_ok=True)
-    out.write_text(json.dumps({'status':'PASS','seed':hex(SEED),'basis':'2026-10-06 UMUL16 direct-output + V2-V4 SHR8 register-return deterministic edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores','results':clean},indent=2)+'\n')
+    out.write_text(json.dumps({'status':'PASS','seed':hex(SEED),'basis':'2026-10-06 all-profile UMUL16 + SHR8 register-return deterministic edge+random corpus; V1/V5 SHR8 delta +31, V2/V3/V4 delta +27; public entry cycles include RTS and exclude caller JSR/input stores','results':clean},indent=2)+'\n')
 
 if __name__=='__main__': main()
