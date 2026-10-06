@@ -25,10 +25,9 @@ umult_ax1:
         sta+1 _neg_lo_0+1
         sta+1 _neg_hi_0+1
 
-; Repeated-X entry. Caller supplies Y=y0; main entry falls through.
+; Repeated-X / fully-ready entries. The resident public wrapper supplies C=1.
+; Internal callers entering here directly must also supply C=1.
 umult_same_x:
-        sec
-; Fully ready entry. Caller additionally supplies C=1.
 umult_same_x_ready:
 
 x0 = *+1
@@ -105,3 +104,5 @@ _p11_carry:
         adc (_sqr_hi_1+1),y
         bcc _p11_tail              ; provably taken; one byte below JMP
 
+; Non-executed tail pad preserves the exact 113-byte swap contract.
+!byte $00
