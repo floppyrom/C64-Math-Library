@@ -1432,13 +1432,13 @@ These direct paths were validated against V2 with cycle-vector equality. `ATAN2_
 Validated Turbo call means are approximately:
 
 ```text
-Turbo16 CALL: 215.54 cycles
-Turbo32 CALL: 731.41 cycles
+Turbo16 CALL: 211.54 cycles
+Turbo32 CALL: 684.19 cycles
 ```
 
 But batch selection must include BEGIN/END overhead. Do not compare only the steady-state CALL number against a normal one-shot routine.
 
-For V4 16-bit batches, follow the 1 / 2–8 / 9+ dispatch rule unless your own workload measurements indicate otherwise.
+For 16-bit batches, use normal `MATH_UMUL16` below 43 products and Turbo16 at 43+ products under the release timing model. QS16 remains a supported specialized mode but is not currently selected for speed.
 
 ---
 
