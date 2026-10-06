@@ -17,8 +17,8 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_SMUL8` | `mul_s8_s8_s16` | `mul_s8_s8_s16.asm` |  | 19 |
 | `MATH_SMUL16` | `mul_s16_s16_s32` | `mul_s16_s16_s32.asm` |  | 115 |
 | `MATH_SMUL24` | `mul_s24_s24_s48` | `mul_s24_s24_s48.asm` |  | 226 |
-| `MATH_SMUL32` | `mul_s32_s32_s64` | `mul_s32_s32_s64.asm` |  | 654 |
-| `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | `mul_s32_s32_s64_ready.asm` |  | 655 |
+| `MATH_SMUL32` | `mul_s32_s32_s64` | `mul_s32_s32_s64.asm` |  | 653 |
+| `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | `mul_s32_s32_s64_ready.asm` |  | 654 |
 | `MATH_UDIV8` | `div_u8_u8_u8_8` | `div_u8_u8_u8_8.asm` |  | 182 |
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | `div_u16_u16_u16_16.asm` |  | 626 |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | `div_u24_u24_u24_24.asm` |  | 583 |
@@ -42,7 +42,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | `mul_u16_u16_u24_shr8.asm` |  | 89 |
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | `mul_s16_s16_s24_shr8.asm` |  | 122 |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | `mul_u32_u32_u48_shr16.asm` |  | 167 |
-| `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | `mul_s32_s32_s48_shr16.asm` |  | 670 |
+| `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | `mul_s32_s32_s48_shr16.asm` |  | 669 |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | `div_u16_u16_u24_16_shl8.asm` |  | 1070 |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | `div_s16_s16_s24_16_shl8.asm` |  | 1184 |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | `recip_u16_u24_q16.asm` |  | 760 |

@@ -1,3 +1,11 @@
+## 2026-10-06 — SMUL32 NN X3 prebind
+
+- Pre-bound original X3 table operands on the X<0,Y<0 dispatcher path while X3 is already live in A; common x0!=0 calls avoid a later absolute reload, while the rare carry path overwrites the speculative bindings.
+- Canonical SMUL32 means improve to **711.586966 / 711.941885 / 712.136986 cycles**; min/max remain **630–838**.
+- Shared 6,361-case mean improves **717.735105 → 716.802547** in all V2/V3/V4 profiles; focused NN improves **734.714806 → 730.807690**, max **837 → 833**.
+- MATH_SMUL32_SHR16 is **780.756936 cycles mean (695–903)**; producer, summation, 31-ZP and zero-persistent-stack contracts are unchanged.
+- Full signed-multiply, multiply-refresh, deterministic rebuild, published-source, Turbo relocation/boundary and package gates pass.
+
 ## 2026-10-06 — SMUL32 q1 bounded-carry + correction tail
 
 - Replaced only the FAST31 q1 (X>=0, Y<0) late-column summation in V2/V3/V4 with the validated bounded-carry state machine and tail-placed its signed correction; q0/q2/NN and the four-row producer are unchanged.

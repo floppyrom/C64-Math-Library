@@ -976,6 +976,14 @@ S32V28_api_s31_v25_nn_xcarry_tramp:
 
 *= REG_API+$0CA6
 S32V28_api_s31_v25_nn:
+        ; Dispatcher enters NN with original X3 still in A. Pre-bind the common
+        ; x0!=0 high-byte table operands now, before low-byte magnitude formation.
+        ; The rare x0==0 carry path overwrites these bindings below.
+        sta S32V28_neg_lo_3
+        sta S32V28__neg_hi_3+1
+        eor #$ff
+        sta S32V28_x3
+        sta S32V28__sqr_lo_3+1
         ; BMI does not set carry; seed the two's-complement chain explicitly.
         sec
         lda #0
@@ -1000,12 +1008,6 @@ S32V28_api_s31_v25_nn:
         eor #$ff
         sta S32V28_x2
         sta S32V28__sqr_lo_2+1
-        lda MATH_IO+$03
-        sta S32V28_neg_lo_3
-        sta S32V28__neg_hi_3+1
-        eor #$ff
-        sta S32V28_x3
-        sta S32V28__sqr_lo_3+1
 S32V28_api_s31_v25_xdone:
         sec
         lda #0

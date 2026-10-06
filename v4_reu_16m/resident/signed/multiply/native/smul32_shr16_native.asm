@@ -4,7 +4,7 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UMUL32_SHR16. Executable overlap: 0 instructions.
-; Public entry: $5E15. Reachable signed instructions: 670.
+; Public entry: $5E15. Reachable signed instructions: 669.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
@@ -209,50 +209,49 @@ L3C4D:
 L3CA3:
     jmp L6C41                          ; @3CA3 4C 41 6C
 L3CA6:
-    sec                                ; @3CA6 38
-    lda #$00                           ; @3CA7 A9 00
-    sbc $C000                          ; @3CA9 ED 00 C0
-    sta $515D                          ; @3CAC 8D 5D 51
-    sta $5165                          ; @3CAF 8D 65 51
-    eor #$FF                           ; @3CB2 49 FF
-    sta $5160                          ; @3CB4 8D 60 51
-    sta $5168                          ; @3CB7 8D 68 51
-    bcs L3CA3                          ; @3CBA B0 E7
-    lda $C001                          ; @3CBC AD 01 C0
-    sta $3D                            ; @3CBF 85 3D
-    sta $5176                          ; @3CC1 8D 76 51
-    eor #$FF                           ; @3CC4 49 FF
-    sta $3F                            ; @3CC6 85 3F
-    sta $516B                          ; @3CC8 8D 6B 51
-    lda $C002                          ; @3CCB AD 02 C0
-    sta $41                            ; @3CCE 85 41
-    sta $5184                          ; @3CD0 8D 84 51
-    eor #$FF                           ; @3CD3 49 FF
-    sta $4F                            ; @3CD5 85 4F
-    sta $5179                          ; @3CD7 8D 79 51
-    lda $C003                          ; @3CDA AD 03 C0
-    sta $51                            ; @3CDD 85 51
-    sta $5192                          ; @3CDF 8D 92 51
-    eor #$FF                           ; @3CE2 49 FF
-    sta $68                            ; @3CE4 85 68
-    sta $5187                          ; @3CE6 8D 87 51
-L3CE9:
-    sec                                ; @3CE9 38
-    lda #$00                           ; @3CEA A9 00
-    sbc $C004                          ; @3CEC ED 04 C0
-    sta $0E                            ; @3CEF 85 0E
-    lda #$00                           ; @3CF1 A9 00
-    sbc $C005                          ; @3CF3 ED 05 C0
-    sta $0F                            ; @3CF6 85 0F
-    lda #$00                           ; @3CF8 A9 00
-    sbc $C006                          ; @3CFA ED 06 C0
-    sta $10                            ; @3CFD 85 10
-    lda #$00                           ; @3CFF A9 00
-    sbc $C007                          ; @3D01 ED 07 C0
-    tay                                ; @3D04 A8
-    ldx #$03                           ; @3D05 A2 03
-    sec                                ; @3D07 38
-    jmp L515C                          ; @3D08 4C 5C 51
+    sta $51                            ; @3CA6 85 51
+    sta $5192                          ; @3CA8 8D 92 51
+    eor #$FF                           ; @3CAB 49 FF
+    sta $68                            ; @3CAD 85 68
+    sta $5187                          ; @3CAF 8D 87 51
+    sec                                ; @3CB2 38
+    lda #$00                           ; @3CB3 A9 00
+    sbc $C000                          ; @3CB5 ED 00 C0
+    sta $515D                          ; @3CB8 8D 5D 51
+    sta $5165                          ; @3CBB 8D 65 51
+    eor #$FF                           ; @3CBE 49 FF
+    sta $5160                          ; @3CC0 8D 60 51
+    sta $5168                          ; @3CC3 8D 68 51
+    bcs L3CA3                          ; @3CC6 B0 DB
+    lda $C001                          ; @3CC8 AD 01 C0
+    sta $3D                            ; @3CCB 85 3D
+    sta $5176                          ; @3CCD 8D 76 51
+    eor #$FF                           ; @3CD0 49 FF
+    sta $3F                            ; @3CD2 85 3F
+    sta $516B                          ; @3CD4 8D 6B 51
+    lda $C002                          ; @3CD7 AD 02 C0
+    sta $41                            ; @3CDA 85 41
+    sta $5184                          ; @3CDC 8D 84 51
+    eor #$FF                           ; @3CDF 49 FF
+    sta $4F                            ; @3CE1 85 4F
+    sta $5179                          ; @3CE3 8D 79 51
+L3CE6:
+    sec                                ; @3CE6 38
+    lda #$00                           ; @3CE7 A9 00
+    sbc $C004                          ; @3CE9 ED 04 C0
+    sta $0E                            ; @3CEC 85 0E
+    lda #$00                           ; @3CEE A9 00
+    sbc $C005                          ; @3CF0 ED 05 C0
+    sta $0F                            ; @3CF3 85 0F
+    lda #$00                           ; @3CF5 A9 00
+    sbc $C006                          ; @3CF7 ED 06 C0
+    sta $10                            ; @3CFA 85 10
+    lda #$00                           ; @3CFC A9 00
+    sbc $C007                          ; @3CFE ED 07 C0
+    tay                                ; @3D01 A8
+    ldx #$03                           ; @3D02 A2 03
+    sec                                ; @3D04 38
+    jmp L515C                          ; @3D05 4C 5C 51
 ; ---- executable island $4681 ----
 * = $4681
 L4681:
@@ -772,7 +771,7 @@ L6C41:
     eor #$FF                           ; @6C6D 49 FF
     sta $51                            ; @6C6F 85 51
     sta $5192                          ; @6C71 8D 92 51
-    jmp L3CE9                          ; @6C74 4C E9 3C
+    jmp L3CE6                          ; @6C74 4C E6 3C
 ; ---- executable island $C50C ----
 * = $C50C
 LC50C:
