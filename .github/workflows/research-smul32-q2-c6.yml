@@ -1,0 +1,24 @@
+name: Research SMUL32 q2 c6
+
+on:
+  push:
+    branches:
+      - research/smul32-q2-c6-fallthrough
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  q2-c6:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Profile q2 c6 fallthrough
+        run: python3 tools/profile_smul32_q2_c6.py
