@@ -1026,7 +1026,7 @@ one or a few products  -> normal API call
 many products in a row -> BEGIN, repeated Turbo CALL, END
 ```
 
-For V4 16-bit multiplication there is also the QS16 middle tier documented in Part V, so the measured default rule is 1 product = normal `MATH_UMUL16`, 2–8 products = QS16, 9+ products = Turbo16.
+For V4 16-bit multiplication, QS16 remains available as an exact specialized mode but is not currently a performance tier. The measured speed rule is normal `MATH_UMUL16` for batches below 31 products and Turbo16 for sustained batches of 31 or more products.
 
 The important ownership rule follows directly from the workbench analogy: **between `BEGIN` and `END`, the configured Turbo ZP range belongs to the overlay, not to the rest of your program.** Do not let normal math calls, another Turbo mode, or an IRQ/NMI overwrite it during that interval.
 
@@ -1092,11 +1092,11 @@ Reference benchmark model:
 
 ```text
 BEGIN ≈ 282 cycles
-CALL  ≈ 215.54 cycles mean
+CALL  ≈ 205.54 cycles mean
 END   ≈ 327 cycles
 ```
 
-Against the current 225.84-cycle normal UMUL16, Turbo16's 282-cycle BEGIN, 215.54-cycle mean CALL and 327-cycle END cross over at roughly 60 products per batch. Smaller batches should use the normal public entry.
+Against the current 225.84-cycle normal UMUL16, Turbo16's 282-cycle BEGIN, 205.54-cycle mean CALL and 327-cycle END cross over at **31 products per batch**. At 30 products Turbo16 is still about 0.21 cycles behind overall; at 31 products it is about 20.09 cycles ahead.
 
 ---
 
@@ -1205,7 +1205,7 @@ Current measured speed guidance:
 
 ```text
 small/medium batches   MATH_UMUL16
-~60+ products          Turbo16 BEGIN / repeated CALL / END
+31+ products           Turbo16 BEGIN / repeated CALL / END
 QS16                    supported specialized mode; not selected for speed
 ```
 
@@ -1432,13 +1432,13 @@ These direct paths were validated against V2 with cycle-vector equality. `ATAN2_
 Validated Turbo call means are approximately:
 
 ```text
-Turbo16 CALL: 215.54 cycles
-Turbo32 CALL: 731.41 cycles
+Turbo16 CALL: 205.54 cycles
+Turbo32 CALL: 684.19 cycles
 ```
 
 But batch selection must include BEGIN/END overhead. Do not compare only the steady-state CALL number against a normal one-shot routine.
 
-For V4 16-bit batches, follow the 1 / 2–8 / 9+ dispatch rule unless your own workload measurements indicate otherwise.
+For 16-bit batches, use normal `MATH_UMUL16` below 31 products and Turbo16 from 31 products upward under the release timing model. QS16 remains supported but has no current speed crossover. Turbo32 crosses normal UMUL32 at 116 products.
 
 ---
 
