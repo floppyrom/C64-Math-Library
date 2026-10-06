@@ -1,3 +1,10 @@
+## 2026-10-06 — Turbo16 public-wrapper optimization
+
+- Kept the 113-byte Turbo16 executable-ZP overlay **byte-for-byte unchanged** and removed one redundant 4-cycle absolute reload from the public CALL adapter by keeping `x1` live in A for the existing `umult_ax1` entry.
+- Canonical Turbo16 CALL improves from **215.544111** to **211.544111 cycles mean**; the unchanged corpus range shifts from **203–240** to **199–236**.
+- All **17,196 Turbo API calls** pass in reference/alternate V3/V4 builds, and the **3,556-product** minimum/maximum-origin boundary sweep remains cycle-identical.
+- BEGIN/END remain **282 / 327 cycles**; versus 225.837200-cycle normal UMUL16, Turbo16 now crosses over at **43 products** per batch.
+
 ## 2026-10-06 — Turbo32 direct-I/O runtime optimization
 
 - Reworked the V3/V4 Turbo32 resident adapter while preserving the exact 135-byte stack-free executable-ZP overlay and its legal $02-$79 origins.
@@ -5,7 +12,7 @@
 - Canonical Turbo relocation corpus: **2,193 calls, 684.185219 cycles mean, 621–796**, down from **728.947080**; zero arithmetic errors.
 - Reference/alternate maps are cycle-identical, and minimum/maximum legal ZP-origin boundary sweeps pass in both V3 and V4.
 - Turbo32 now beats normal UMUL32 (690.235367) per active CALL; with 326-cycle BEGIN and 371-cycle END, the batch crossover is **116 products**.
-- Corrected stale Turbo16/QS16 guidance: Turbo16 crosses normal UMUL16 at roughly 60 products; QS16 remains supported but has no current speed crossover.
+- Corrected stale Turbo16/QS16 guidance: Turbo16 previously crossed normal UMUL16 at roughly 60 products; QS16 remains supported but has no current speed crossover.
 
 ## 2026-10-06 — V3/V4 REU UDIV8 hybrid fast path
 
