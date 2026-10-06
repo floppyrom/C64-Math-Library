@@ -22,3 +22,5 @@ jobs:
           python-version: '3.12'
       - name: Profile swapped bounded q1
         run: python3 tools/profile_smul32_q1_bounded.py
+      - name: Compare exact public SMUL32 corpus
+        run: python3 tools/bench_smul32_q1_bounded_public.py
