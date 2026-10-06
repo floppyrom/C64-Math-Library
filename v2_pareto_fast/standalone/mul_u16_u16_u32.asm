@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 86.
+; Reachable instructions: 83.
 !cpu 6510
 
 ; ---- executable island $3020 ----
@@ -15,95 +15,92 @@ mul_u16_u16_u32:
 MATH_UMUL16:
     lda $C000                          ; @3020 AD 00 C0
     sta $21                            ; @3023 85 21
-    lda $C001                          ; @3025 AD 01 C0
-    sta $29                            ; @3028 85 29
-    lda $C005                          ; @302A AD 05 C0
-    sta $541A                          ; @302D 8D 1A 54
-    ldy $C004                          ; @3030 AC 04 C0
-    jsr L53EC                          ; @3033 20 EC 53
+    lda $C005                          ; @3025 AD 05 C0
+    sta $541B                          ; @3028 8D 1B 54
+    ldy $C004                          ; @302B AC 04 C0
+    lda $C001                          ; @302E AD 01 C0
+    sta $29                            ; @3031 85 29
+    jsr L53EE                          ; @3033 20 EE 53
     sta $C00A                          ; @3036 8D 0A C0
     stx $C009                          ; @3039 8E 09 C0
     sty $C00B                          ; @303C 8C 0B C0
-    lda $31                            ; @303F A5 31
-    sta $C008                          ; @3041 8D 08 C0
-    clc                                ; @3044 18
-    rts                                ; @3045 60
-; ---- executable island $53EC ----
-* = $53EC
-L53EC:
-    lda $21                            ; @53EC A5 21
-    sta $25                            ; @53EE 85 25
+    clc                                ; @303F 18
+    rts                                ; @3040 60
+; ---- executable island $53EE ----
+* = $53EE
+L53EE:
+    sta $2D                            ; @53EE 85 2D
     eor #$FF                           ; @53F0 49 FF
-    sta $23                            ; @53F2 85 23
-    sta $27                            ; @53F4 85 27
-    lda $29                            ; @53F6 A5 29
-    sta $2D                            ; @53F8 85 2D
+    sta $2B                            ; @53F2 85 2B
+    sta $2F                            ; @53F4 85 2F
+    lda $21                            ; @53F6 A5 21
+    sta $25                            ; @53F8 85 25
     eor #$FF                           ; @53FA 49 FF
-    sta $2B                            ; @53FC 85 2B
-    sta $2F                            ; @53FE 85 2F
+    sta $23                            ; @53FC 85 23
+    sta $27                            ; @53FE 85 27
     sec                                ; @5400 38
     lda ($21),y                        ; @5401 B1 21
     adc ($23),y                        ; @5403 71 23
-    sta $31                            ; @5405 85 31
-    lda ($25),y                        ; @5407 B1 25
-    adc ($27),y                        ; @5409 71 27
-    adc ($29),y                        ; @540B 71 29
-    bcs L5442                          ; @540D B0 33
-    adc ($2B),y                        ; @540F 71 2B
-    tax                                ; @5411 AA
-    lda ($2D),y                        ; @5412 B1 2D
-L5414:
-    adc ($2F),y                        ; @5414 71 2F
-    sta $543A                          ; @5416 8D 3A 54
-    ldy #$00                           ; @5419 A0 00
-    lda ($21),y                        ; @541B B1 21
-    adc ($23),y                        ; @541D 71 23
-    sta $5437                          ; @541F 8D 37 54
-    lda ($25),y                        ; @5422 B1 25
-    adc ($27),y                        ; @5424 71 27
-    adc ($29),y                        ; @5426 71 29
-    bcs L544C                          ; @5428 B0 22
-    adc ($2B),y                        ; @542A 71 2B
-    sta $543C                          ; @542C 8D 3C 54
-    lda ($2D),y                        ; @542F B1 2D
-L5431:
-    adc ($2F),y                        ; @5431 71 2F
-    tay                                ; @5433 A8
-    clc                                ; @5434 18
-    txa                                ; @5435 8A
-    adc #$00                           ; @5436 69 00
-    tax                                ; @5438 AA
-    lda #$00                           ; @5439 A9 00
-    adc #$00                           ; @543B 69 00
-    bcs L5440                          ; @543D B0 01
-    rts                                ; @543F 60
-L5440:
-    iny                                ; @5440 C8
-    rts                                ; @5441 60
-L5442:
-    clc                                ; @5442 18
-    adc ($2B),y                        ; @5443 71 2B
-    tax                                ; @5445 AA
-    lda #$01                           ; @5446 A9 01
-    adc ($2D),y                        ; @5448 71 2D
-    bcc L5414                          ; @544A 90 C8
-L544C:
-    clc                                ; @544C 18
-    adc ($2B),y                        ; @544D 71 2B
-    sta $543C                          ; @544F 8D 3C 54
-    lda #$01                           ; @5452 A9 01
-    adc ($2D),y                        ; @5454 71 2D
-    bcc L5431                          ; @5456 90 D9
-    lda #$60                           ; @5458 A9 60
-    sta $22                            ; @545A 85 22
-    sta $2A                            ; @545C 85 2A
-    lda #$64                           ; @545E A9 64
-    sta $24                            ; @5460 85 24
-    sta $2C                            ; @5462 85 2C
-    lda #$62                           ; @5464 A9 62
-    sta $26                            ; @5466 85 26
-    sta $2E                            ; @5468 85 2E
-    lda #$66                           ; @546A A9 66
-    sta $28                            ; @546C 85 28
-    sta $30                            ; @546E 85 30
-    rts                                ; @5470 60
+    sta $C008                          ; @5405 8D 08 C0
+    lda ($25),y                        ; @5408 B1 25
+    adc ($27),y                        ; @540A 71 27
+    adc ($29),y                        ; @540C 71 29
+    bcs L5443                          ; @540E B0 33
+    adc ($2B),y                        ; @5410 71 2B
+    tax                                ; @5412 AA
+    lda ($2D),y                        ; @5413 B1 2D
+L5415:
+    adc ($2F),y                        ; @5415 71 2F
+    sta $543B                          ; @5417 8D 3B 54
+    ldy #$00                           ; @541A A0 00
+    lda ($21),y                        ; @541C B1 21
+    adc ($23),y                        ; @541E 71 23
+    sta $5438                          ; @5420 8D 38 54
+    lda ($25),y                        ; @5423 B1 25
+    adc ($27),y                        ; @5425 71 27
+    adc ($29),y                        ; @5427 71 29
+    bcs L544D                          ; @5429 B0 22
+    adc ($2B),y                        ; @542B 71 2B
+    sta $543D                          ; @542D 8D 3D 54
+    lda ($2D),y                        ; @5430 B1 2D
+L5432:
+    adc ($2F),y                        ; @5432 71 2F
+    tay                                ; @5434 A8
+    clc                                ; @5435 18
+    txa                                ; @5436 8A
+    adc #$00                           ; @5437 69 00
+    tax                                ; @5439 AA
+    lda #$00                           ; @543A A9 00
+    adc #$00                           ; @543C 69 00
+    bcs L5441                          ; @543E B0 01
+    rts                                ; @5440 60
+L5441:
+    iny                                ; @5441 C8
+    rts                                ; @5442 60
+L5443:
+    clc                                ; @5443 18
+    adc ($2B),y                        ; @5444 71 2B
+    tax                                ; @5446 AA
+    lda #$01                           ; @5447 A9 01
+    adc ($2D),y                        ; @5449 71 2D
+    bcc L5415                          ; @544B 90 C8
+L544D:
+    clc                                ; @544D 18
+    adc ($2B),y                        ; @544E 71 2B
+    sta $543D                          ; @5450 8D 3D 54
+    lda #$01                           ; @5453 A9 01
+    adc ($2D),y                        ; @5455 71 2D
+    bcc L5432                          ; @5457 90 D9
+    lda #$60                           ; @5459 A9 60
+    sta $22                            ; @545B 85 22
+    sta $2A                            ; @545D 85 2A
+    lda #$64                           ; @545F A9 64
+    sta $24                            ; @5461 85 24
+    sta $2C                            ; @5463 85 2C
+    lda #$62                           ; @5465 A9 62
+    sta $26                            ; @5467 85 26
+    sta $2E                            ; @5469 85 2E
+    lda #$66                           ; @546B A9 66
+    sta $28                            ; @546D 85 28
+    sta $30                            ; @546F 85 30
+    rts                                ; @5471 60

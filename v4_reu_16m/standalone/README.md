@@ -10,7 +10,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | Legacy API | Canonical name | File | Alias of | Reachable instructions |
 |---|---|---|---|---:|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | `mul_u8_u8_u16.asm` |  | 19 |
-| `MATH_UMUL16` | `mul_u16_u16_u32` | `mul_u16_u16_u32.asm` |  | 86 |
+| `MATH_UMUL16` | `mul_u16_u16_u32` | `mul_u16_u16_u32.asm` |  | 83 |
 | `MATH_UMUL24` | `mul_u24_u24_u48` | `mul_u24_u24_u48.asm` |  | 179 |
 | `MATH_UMUL32` | `mul_u32_u32_u64` | `mul_u32_u32_u64.asm` |  | 151 |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | `mul_u32_u32_u64_ready.asm` |  | 151 |
@@ -39,7 +39,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | `mod_u32_u32_u32__math_umod32_32.asm` | `MATH_UDIV32_32` | 362 |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | `div_s32_s32_s32_32.asm` |  | 380 |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | `mod_s32_s32_s32__math_smod32_32.asm` | `MATH_SDIV32_32` | 380 |
-| `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | `mul_u16_u16_u24_shr8.asm` |  | 96 |
+| `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | `mul_u16_u16_u24_shr8.asm` |  | 93 |
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | `mul_s16_s16_s24_shr8.asm` |  | 125 |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | `mul_u32_u32_u48_shr16.asm` |  | 167 |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | `mul_s32_s32_s48_shr16.asm` |  | 675 |

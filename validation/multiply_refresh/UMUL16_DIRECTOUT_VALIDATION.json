@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "seed": "0x16160016",
+  "basis": "2026-10-06 UMUL16 direct-output deterministic edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores",
+  "results": {
+    "v2_pareto_fast": {
+      "reference": {
+        "cases": 10169,
+        "mean_cycles": 216.9800373684728,
+        "min_cycles": 205,
+        "max_cycles": 240,
+        "shr8_mean_cycles": 257.98003736847284,
+        "shr8_min_cycles": 246,
+        "shr8_max_cycles": 281
+      },
+      "alternate": {
+        "cases": 10169,
+        "mean_cycles": 216.9800373684728,
+        "min_cycles": 205,
+        "max_cycles": 240,
+        "shr8_mean_cycles": 257.98003736847284,
+        "shr8_min_cycles": 246,
+        "shr8_max_cycles": 281
+      }
+    },
+    "v3_reu_512k": {
+      "reference": {
+        "cases": 10169,
+        "mean_cycles": 216.9800373684728,
+        "min_cycles": 205,
+        "max_cycles": 240,
+        "shr8_mean_cycles": 257.98003736847284,
+        "shr8_min_cycles": 246,
+        "shr8_max_cycles": 281
+      },
+      "alternate": {
+        "cases": 10169,
+        "mean_cycles": 216.9800373684728,
+        "min_cycles": 205,
+        "max_cycles": 240,
+        "shr8_mean_cycles": 257.98003736847284,
+        "shr8_min_cycles": 246,
+        "shr8_max_cycles": 281
+      }
+    },
+    "v4_reu_16m": {
+      "reference": {
+        "cases": 10169,
+        "mean_cycles": 216.9800373684728,
+        "min_cycles": 205,
+        "max_cycles": 240,
+        "shr8_mean_cycles": 257.98003736847284,
+        "shr8_min_cycles": 246,
+        "shr8_max_cycles": 281
+      },
+      "alternate": {
+        "cases": 10169,
+        "mean_cycles": 216.9800373684728,
+        "min_cycles": 205,
+        "max_cycles": 240,
+        "shr8_mean_cycles": 257.98003736847284,
+        "shr8_min_cycles": 246,
+        "shr8_max_cycles": 281
+      }
+    }
+  }
+}

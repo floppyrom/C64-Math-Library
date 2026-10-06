@@ -9,7 +9,7 @@ udiv24,$4800,1191,bin/udiv24_code.bin,UDIV24 Size-Fast kernel
 udiv32_16_outer,$4E00,737,bin/udiv32_16_outer.bin,UDIV32/16 continuation; reuses UDIV16 core
 umod8,$5200,114,bin/umod8_code.bin,table-free UMOD8 Size-Fast kernel
 umul8,$5300,35,bin/umul8_code.bin,UMUL8 Practical kernel
-umul16,$53EC,133,bin/umul16_code.bin,qualified 17-ZP fused quarter-square UMUL16 record kernel (resident adapted)
+umul16,$53EC,134,bin/umul16_code.bin,optimized 16-ZP fused quarter-square UMUL16; A=x1 public entry + direct Z0 output
 umul24,$5649,307,bin/umul24_code.bin,qualified 24-ZP reverse/carry UMUL24 record kernel (includes retained init)
 umul32,$5800,277,bin/umul32_code.bin,UMUL32 31-ZP practical-fast kernel
 umul24_sqr_lo,$6000,511,bin/umul24_sqr_lo.bin,quarter-square table

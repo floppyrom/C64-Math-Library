@@ -1,6 +1,6 @@
 legacy_api,canonical_name,file,alias_of,entry_address,reachable_instructions
 MATH_UMUL8,mul_u8_u8_u16,mul_u8_u8_u16.asm,,$3000,26
-MATH_UMUL16,mul_u16_u16_u32,mul_u16_u16_u32.asm,,$3020,86
+MATH_UMUL16,mul_u16_u16_u32,mul_u16_u16_u32.asm,,$3020,83
 MATH_UMUL24,mul_u24_u24_u48,mul_u24_u24_u48.asm,,$3060,179
 MATH_UMUL32,mul_u32_u32_u64,mul_u32_u32_u64.asm,,$30B0,151
 MATH_UMUL32_READY,mul_u32_u32_u64_ready,mul_u32_u32_u64_ready.asm,,$30C0,151
@@ -29,7 +29,7 @@ MATH_UDIV32_32,div_u32_u32_u32_32,div_u32_u32_u32_32.asm,,$5E00,362
 MATH_UMOD32_32,mod_u32_u32_u32,mod_u32_u32_u32__math_umod32_32.asm,MATH_UDIV32_32,$5E03,362
 MATH_SDIV32_32,div_s32_s32_s32_32,div_s32_s32_s32_32.asm,,$5E06,380
 MATH_SMOD32_32,mod_s32_s32_s32,mod_s32_s32_s32__math_smod32_32.asm,MATH_SDIV32_32,$5E09,380
-MATH_UMUL16_SHR8,mul_u16_u16_u24_shr8,mul_u16_u16_u24_shr8.asm,,$5E0C,96
+MATH_UMUL16_SHR8,mul_u16_u16_u24_shr8,mul_u16_u16_u24_shr8.asm,,$5E0C,93
 MATH_SMUL16_SHR8,mul_s16_s16_s24_shr8,mul_s16_s16_s24_shr8.asm,,$5E0F,125
 MATH_UMUL32_SHR16,mul_u32_u32_u48_shr16,mul_u32_u32_u48_shr16.asm,,$5E12,167
 MATH_SMUL32_SHR16,mul_s32_s32_s48_shr16,mul_s32_s32_s48_shr16.asm,,$5E15,675

@@ -976,24 +976,11 @@ L1ADA:
 * = REG_API
     jmp REG_API+$09C0
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $AD, $00, $C0
+    !byte $85, $21, $AD, $05, $C0, $8D, $1B, $54, $AC, $04, $C0, $AD, $01, $C0, $85, $29
+    !byte $20, $EE, $53, $8D, $0A, $C0, $8E, $09, $C0, $8C, $0B, $C0, $18, $60, $8D, $08
+    !byte $C0, $18, $60, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    lda MATH_IO
-    sta ZP_MAIN+$1F
-    lda MATH_IO+$01
-    sta ZP_MAIN+$27
-    lda MATH_IO+$05
-    sta REG_KERNEL+$141A
-    ldy MATH_IO+$04
-    jsr REG_KERNEL+$13EC
-    sta MATH_IO+$0A
-    stx MATH_IO+$09
-    sty MATH_IO+$0B
-    lda ZP_MAIN+$2F
-    sta MATH_IO+$08
-    clc
-    rts
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     jmp REG_API+$04C0
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -2839,84 +2826,16 @@ L50D2:
     !byte $03, $EE, $1A, $C0, $18, $60, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    lda ZP_MAIN+$1F
-    sta ZP_MAIN+$23
-    eor #$FF
-    sta ZP_MAIN+$21
-    sta ZP_MAIN+$25
-    lda ZP_MAIN+$27
-    sta ZP_MAIN+$2B
-    eor #$FF
-    sta ZP_MAIN+$29
-    sta ZP_MAIN+$2D
-    sec
-    lda (ZP_MAIN+$1F),y
-    adc (ZP_MAIN+$21),y
-    sta ZP_MAIN+$2F
-    lda (ZP_MAIN+$23),y
-    adc (ZP_MAIN+$25),y
-    adc (ZP_MAIN+$27),y
-    bcs L5442
-    adc (ZP_MAIN+$29),y
-    tax
-    lda (ZP_MAIN+$2B),y
-L5414:
-    adc (ZP_MAIN+$2D),y
-    sta REG_KERNEL+$143A
-    ldy #$00
-    lda (ZP_MAIN+$1F),y
-    adc (ZP_MAIN+$21),y
-    sta REG_KERNEL+$1437
-    lda (ZP_MAIN+$23),y
-    adc (ZP_MAIN+$25),y
-    adc (ZP_MAIN+$27),y
-    bcs L544C
-    adc (ZP_MAIN+$29),y
-    sta REG_KERNEL+$143C
-    lda (ZP_MAIN+$2B),y
-L5431:
-    adc (ZP_MAIN+$2D),y
-    tay
-    clc
-    txa
-    adc #$00
-    tax
-    lda #$00
-    adc #$00
-    bcs L5440
-    rts
-L5440:
-    iny
-    rts
-L5442:
-    clc
-    adc (ZP_MAIN+$29),y
-    tax
-    lda #$01
-    adc (ZP_MAIN+$2B),y
-    bcc L5414
-L544C:
-    clc
-    adc (ZP_MAIN+$29),y
-    sta REG_KERNEL+$143C
-    lda #$01
-    adc (ZP_MAIN+$2B),y
-    bcc L5431
-    lda #$60
-    sta ZP_MAIN+$20
-    sta ZP_MAIN+$28
-    lda #$64
-    sta ZP_MAIN+$22
-    sta ZP_MAIN+$2A
-    lda #$62
-    sta ZP_MAIN+$24
-    sta ZP_MAIN+$2C
-    lda #$66
-    sta ZP_MAIN+$26
-    sta ZP_MAIN+$2E
-    rts
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $A5, $29, $85, $2D, $49
+    !byte $FF, $85, $2B, $85, $2F, $A5, $21, $85, $25, $49, $FF, $85, $23, $85, $27, $38
+    !byte $B1, $21, $71, $23, $8D, $08, $C0, $B1, $25, $71, $27, $71, $29, $B0, $33, $71
+    !byte $2B, $AA, $B1, $2D, $71, $2F, $8D, $3B, $54, $A0, $00, $B1, $21, $71, $23, $8D
+    !byte $38, $54, $B1, $25, $71, $27, $71, $29, $B0, $22, $71, $2B, $8D, $3D, $54, $B1
+    !byte $2D, $71, $2F, $A8, $18, $8A, $69, $00, $AA, $A9, $00, $69, $00, $B0, $01, $60
+    !byte $C8, $60, $18, $71, $2B, $AA, $A9, $01, $71, $2D, $90, $C8, $18, $71, $2B, $8D
+    !byte $3D, $54, $A9, $01, $71, $2D, $90, $D9, $A9, $60, $85, $22, $85, $2A, $A9, $64
+    !byte $85, $24, $85, $2C, $A9, $62, $85, $26, $85, $2E, $A9, $66, $85, $28, $85, $30
+    !byte $60, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -6484,6 +6403,7 @@ ZCE7:
     brk
 
 ; BEGIN MULTIPLY REFRESH 2026-09-20
+!source "../multiply/umul16_directout.asm"
 !source "smul8_direct_signed.inc"
 !source "smul32_fast31_v29.inc"
 !source "umul32_v29_shared.inc"
