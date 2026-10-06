@@ -1,3 +1,4 @@
+- SMUL32 compact126 optional overlays are now exposed in V2/V3/V4; fixed public SMUL32 remains unchanged. The profile-fit table documents the exact ZP, page-$01 and ordinary-RAM ownership ranges.
 2026-10-06 V3/V4 REU UDIV8 HYBRID FAST PATH
 - q=0..3 now returns directly on the CPU; q>=4 falls back to the exact existing REU quotient/remainder planes.
 - Exhaustive 65,536-case mean is 52.852264 cycles (28-115) in both V3 and V4, down from 70.863281.

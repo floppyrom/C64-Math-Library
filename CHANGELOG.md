@@ -43,6 +43,7 @@
 - Added `routines/multiply/mul_s32_s32_s64_compact126.asm`, validated at **646.354530 cycles** on the primary 100,000-pair C0FFEE native corpus, **646.281100** on an independent 100,000-pair seed, and 0 errors on a 1,849-case structured edge suite.
 - Resource point: **136 ZP bytes**, **126 persistent hardware-stack-page bytes**, **302 ordinary-RAM code bytes**, and the existing **2,044-byte** quarter-square table family.
 - The fixed V1–V5 public `MATH_SMUL32` implementations are deliberately unchanged. V1/V5 cannot accept the ZP footprint; V2–V4 already use the relevant executable-ZP window for native SMUL16, and a standard-ABI compact126 transplant measures about **757.7 cycles**, slower than the shipped ~743–744-cycle public path.
+- Added profile-local `optional/smul32_compact126/` source aliases for V2/V3/V4. They are explicit exclusive-overlay packages only; fixed public `MATH_SMUL32` remains unchanged. Added `docs/SMUL32_COMPACT126_PROFILE_FIT.csv` with the exact ownership ranges.
 - Updated `PERFORMANCE.md`, `benchmarks/STANDALONE_RESULTS.csv`, `routines/SOURCE_CATALOG.csv`, signed/profile-selection documentation, and profile README compatibility notes. See `docs/SMUL32_COMPACT126.md`.
 
 ## 2026-09-25 — stable entries 47–54: seek movement (`MATH_SEEK8_*`, `MATH_SEEK16_*`)
