@@ -244,9 +244,8 @@ S32V28_cg_code_end:
 *= REG_KERNEL+$1500
 S32V28_q2_fast_core_start:
 S32V28_q2_umult32x32_same_x:
-        ; Private carry-seeded entry: callers must enter with C=1.
-        ; The public q2 binder jumps directly to q2_kernel after SEC.
         ldx #3
+        sec
         bcs S32V28_q2_kernel
 
 S32V28_q2_H10:
@@ -410,7 +409,8 @@ S32V28_q2_bc_c5b_k1_m1:
         bcs S32V28_q2_bc_c6_done
         adc #1
         bcs S32V28_q2_bc_final_carry
-        jmp S32V28_q2_signed_correction_ready
+        ; BCS fallthrough guarantees C=0: same 3 cycles as JMP, one byte shorter.
+        bcc S32V28_q2_signed_correction_ready
 S32V28_q2_bc_c6_done:
         adc #0
         jmp S32V28_q2_bc_final_carry
