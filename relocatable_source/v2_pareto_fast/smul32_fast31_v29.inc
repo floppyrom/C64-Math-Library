@@ -319,75 +319,73 @@ S32V28_q2__neg_hi_3:
         bpl S32V28_q2_row_loop
 
 S32V28_q2_summation:
-        tax
-        ldy S32V28_z14
+        ; Bounded-carry transplant from the validated compact126/UMUL32 family.
+        ; FAST31 exits the descending producer with X=$FF and the row-0 top byte
+        ; in A; INX/TAY converts that to the compact summation invariant X=0,Y=A.
+        inx
+        tay
         clc
 
         lda S32V28_z01
         adc S32V28_z10
         sta MATH_IO+$09
 
-        lda S32V28_z11
-        adc S32V28_z20
-        bcc S32V28_q2_c2a_done
-        inc S32V28_z30
-        beq S32V28_q2_c2a_overflow
+        lda S32V28_z20
+        adc S32V28_z11
+        bcc S32V28_q2_hy_c2_first_done
+        inx
         clc
-S32V28_q2_c2a_done:
+S32V28_q2_hy_c2_first_done:
         adc S32V28_z02
         sta MATH_IO+$0A
 
-        lda S32V28_z12
-        adc S32V28_z03
-        bcc S32V28_q2_c3a_done
-        inx
-        clc
-S32V28_q2_c3a_done:
+        lda S32V28_z03
+        adc S32V28_z12
+        bcc S32V28_q2_hy_c3_path0
+        iny
+        cpx #1
         adc S32V28_z30
-        bcc S32V28_q2_c3b_done
-        inx
-        beq S32V28_q2_c3b_overflow
+        bcc S32V28_q2_hy_c3_done
         clc
-S32V28_q2_c3b_done:
+        iny
+        bne S32V28_q2_hy_c3_done
+        jmp S32V28_q2_hy_c3_over_imp
+S32V28_q2_hy_c3_path0:
+        adc S32V28_z30
+        bcc S32V28_q2_hy_c3_path0_noinc
+        iny
+S32V28_q2_hy_c3_path0_noinc:
+        cpx #1
+S32V28_q2_hy_c3_done:
         adc S32V28_z21
         sta MATH_IO+$0B
 
-        txa
-        adc S32V28_z13
-        bcc S32V28_q2_c4a_done
-        iny
-        clc
-S32V28_q2_c4a_done:
-        adc S32V28_z31
-        bcc S32V28_q2_c4b_done
-        iny
-        beq S32V28_q2_c4b_overflow
-        clc
-S32V28_q2_c4b_done:
-        adc S32V28_z22
-        tax
-
         tya
-        adc S32V28_z32
-        bcc S32V28_q2_c5a_done
-        inc S32V28_z24
-        clc
-S32V28_q2_c5a_done:
-        adc S32V28_z23
+        adc S32V28_z22
+        bcs S32V28_q2_bc_c4a_k1
+        adc S32V28_z31
+        bcs S32V28_q2_bc_c4b_k1
+S32V28_q2_bc_c4_k0_common:
+        adc S32V28_z13
         tay
-
-        lda S32V28_z33
-        adc S32V28_z24
-        bcc S32V28_q2_signed_correction
+        lda S32V28_z14
+        adc S32V28_z32
+        bcs S32V28_q2_bc_c5b_k1_m0
+        adc S32V28_z23
+        tax
+        lda S32V28_z24
+        adc S32V28_z33
+        bcc S32V28_q2_signed_correction_ready
+S32V28_q2_bc_final_carry:
         inc S32V28_r7
-S32V28_q2_signed_correction:
-        ; S32V28_z33 is dead after the final column: use it as the byte6 temporary.
+S32V28_q2_signed_correction_ready:
+        ; Bounded summation returns raw upper bytes as Y,X,A,r7.
         sta S32V28_z33
-        txa
+        tya
         sec
         sbc MATH_IO+$04
         sta MATH_IO+$0C
-        tya
+        txa
         sbc MATH_IO+$05
         sta MATH_IO+$0D
         lda S32V28_z33
@@ -401,34 +399,53 @@ S32V28_q2_signed_correction:
         clc
         rts
 
-S32V28_q2_c2a_overflow:
-        inc S32V28_z31
-        bne S32V28_q2_c2a_overflow_done
-        inc S32V28_z32
-        bne S32V28_q2_c2a_overflow_done
-        inc S32V28_z33
-        bne S32V28_q2_c2a_overflow_done
-        inc S32V28_z34
-S32V28_q2_c2a_overflow_done:
+S32V28_q2_bc_c5b_k1_m0:
         clc
-        jmp S32V28_q2_c2a_done
+S32V28_q2_bc_c5b_k1_m1:
+        adc S32V28_z23
+        tax
+        lda S32V28_z24
+        adc S32V28_z33
+        bcs S32V28_q2_bc_c6_done
+        adc #1
+        bcs S32V28_q2_bc_final_carry
+        jmp S32V28_q2_signed_correction_ready
+S32V28_q2_bc_c6_done:
+        adc #0
+        jmp S32V28_q2_bc_final_carry
+S32V28_q2_bc_c4a_k1:
+        clc
+        adc S32V28_z31
+        bcc S32V28_q2_bc_c4b_one_clear
+S32V28_q2_bc_c4b_k2:
+        inc S32V28_z14
+S32V28_q2_bc_c4b_k1:
+        clc
+S32V28_q2_bc_c4b_one_clear:
+        adc S32V28_z13
+        tay
+        lda S32V28_z14
+        adc S32V28_z32
+        bcs S32V28_q2_bc_c5b_k1_m1
+S32V28_q2_bc_c5b_k0_m1_alt:
+        sec
+S32V28_q2_bc_c5b_k0_m0_alt:
+        adc S32V28_z23
+        tax
+        lda S32V28_z24
+        adc S32V28_z33
+        bcs S32V28_q2_bc_final_carry
+        jmp S32V28_q2_signed_correction_ready
 
-S32V28_q2_c3b_overflow:
+S32V28_q2_hy_c3_over_imp:
         inc S32V28_z32
-        bne S32V28_q2_c3b_overflow_done
+        bne S32V28_q2_hy_c3_over_done
         inc S32V28_z33
-        bne S32V28_q2_c3b_overflow_done
-        inc S32V28_z34
-S32V28_q2_c3b_overflow_done:
+        bne S32V28_q2_hy_c3_over_done
+        inc S32V28_r7
+S32V28_q2_hy_c3_over_done:
         clc
-        jmp S32V28_q2_c3b_done
-S32V28_q2_c4b_overflow:
-        inc S32V28_z33
-        bne S32V28_q2_c4b_overflow_done
-        inc S32V28_z34
-S32V28_q2_c4b_overflow_done:
-        clc
-        jmp S32V28_q2_c4b_done
+        jmp S32V28_q2_hy_c3_done
 S32V28_q2_cg_code_end:
 
 *= REG_API+$0500
