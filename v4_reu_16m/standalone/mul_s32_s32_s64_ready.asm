@@ -182,43 +182,43 @@ L3C00:
     sta $41                            ; @3C36 85 41
     sta $46CF                          ; @3C38 8D CF 46
     jmp L46A7                          ; @3C3B 4C A7 46
-; ---- executable island $3C43 ----
-* = $3C43
-L3C43:
-    lda $C003                          ; @3C43 AD 03 C0
-    bpl L3C50                          ; @3C46 10 08
-    ldy $C007                          ; @3C48 AC 07 C0
-    bmi L3CA6                          ; @3C4B 30 59
-    jmp L6C00                          ; @3C4D 4C 00 6C
-L3C50:
-    ldx #$03                           ; @3C50 A2 03
-    sec                                ; @3C52 38
-    ldy $C007                          ; @3C53 AC 07 C0
-    bmi L3C00                          ; @3C56 30 A8
-    sta $68                            ; @3C58 85 68
-    sta $3556                          ; @3C5A 8D 56 35
-    eor #$FF                           ; @3C5D 49 FF
-    sta $51                            ; @3C5F 85 51
-    sta $3561                          ; @3C61 8D 61 35
-    lda $C000                          ; @3C64 AD 00 C0
-    sta $352C                          ; @3C67 8D 2C 35
-    sta $3534                          ; @3C6A 8D 34 35
-    eor #$FF                           ; @3C6D 49 FF
-    sta $352F                          ; @3C6F 8D 2F 35
-    sta $3537                          ; @3C72 8D 37 35
-    lda $C001                          ; @3C75 AD 01 C0
-    sta $3F                            ; @3C78 85 3F
-    sta $353A                          ; @3C7A 8D 3A 35
-    eor #$FF                           ; @3C7D 49 FF
-    sta $3D                            ; @3C7F 85 3D
-    sta $3545                          ; @3C81 8D 45 35
-    lda $C002                          ; @3C84 AD 02 C0
-    sta $4F                            ; @3C87 85 4F
-    sta $3548                          ; @3C89 8D 48 35
-    eor #$FF                           ; @3C8C 49 FF
-    sta $41                            ; @3C8E 85 41
-    sta $3553                          ; @3C90 8D 53 35
-    jmp L352B                          ; @3C93 4C 2B 35
+; ---- executable island $3C40 ----
+* = $3C40
+L3C40:
+    lda $C003                          ; @3C40 AD 03 C0
+    bpl L3C4D                          ; @3C43 10 08
+    ldy $C007                          ; @3C45 AC 07 C0
+    bmi L3CA6                          ; @3C48 30 5C
+    jmp L6C00                          ; @3C4A 4C 00 6C
+L3C4D:
+    ldx #$03                           ; @3C4D A2 03
+    sec                                ; @3C4F 38
+    ldy $C007                          ; @3C50 AC 07 C0
+    bmi L3C00                          ; @3C53 30 AB
+    sta $68                            ; @3C55 85 68
+    sta $3556                          ; @3C57 8D 56 35
+    eor #$FF                           ; @3C5A 49 FF
+    sta $51                            ; @3C5C 85 51
+    sta $3561                          ; @3C5E 8D 61 35
+    lda $C000                          ; @3C61 AD 00 C0
+    sta $352C                          ; @3C64 8D 2C 35
+    sta $3534                          ; @3C67 8D 34 35
+    eor #$FF                           ; @3C6A 49 FF
+    sta $352F                          ; @3C6C 8D 2F 35
+    sta $3537                          ; @3C6F 8D 37 35
+    lda $C001                          ; @3C72 AD 01 C0
+    sta $3F                            ; @3C75 85 3F
+    sta $353A                          ; @3C77 8D 3A 35
+    eor #$FF                           ; @3C7A 49 FF
+    sta $3D                            ; @3C7C 85 3D
+    sta $3545                          ; @3C7E 8D 45 35
+    lda $C002                          ; @3C81 AD 02 C0
+    sta $4F                            ; @3C84 85 4F
+    sta $3548                          ; @3C86 8D 48 35
+    eor #$FF                           ; @3C89 49 FF
+    sta $41                            ; @3C8B 85 41
+    sta $3553                          ; @3C8D 8D 53 35
+    jmp L352B                          ; @3C90 4C 2B 35
 ; ---- executable island $3CA3 ----
 * = $3CA3
 L3CA3:
@@ -272,7 +272,7 @@ L3CE9:
 * = $3FE0
 mul_s32_s32_s64_ready:
 MATH_SMUL32_READY:
-    jmp L3C43                          ; @3FE0 4C 43 3C
+    jmp L3C40                          ; @3FE0 4C 40 3C
 ; ---- executable island $4681 ----
 * = $4681
 L4681:
