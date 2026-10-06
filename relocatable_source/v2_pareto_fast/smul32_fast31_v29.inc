@@ -768,7 +768,7 @@ S32V28_q1_c3a_done:
         adc S32V28_z30
         bcc S32V28_q1_c3b_done
         inx
-        ; q1 also has X < $80000000; row0 byte4 <= $7f, so no wrap is possible.
+        beq S32V28_q1_c3b_overflow_tramp
         clc
 S32V28_q1_c3b_done:
         adc S32V28_z21
@@ -781,7 +781,7 @@ S32V28_q1_c4a_done:
         adc S32V28_z31
         bcc S32V28_q1_c4b_done
         iny
-        ; z14 is row1 byte4 <= $7f for q1, so no wrap is possible.
+        beq S32V28_q1_c4b_overflow_tramp
         clc
 S32V28_q1_c4b_done:
         adc S32V28_z22
@@ -835,6 +835,8 @@ S32V28_q1_c2a_overflow_tramp:
         jmp S32V28_q1_c2a_overflow
 S32V28_q1_c3b_overflow_tramp:
         jmp S32V28_q1_c3b_overflow
+S32V28_q1_c4b_overflow_tramp:
+        jmp S32V28_q1_c4b_overflow
 
 S32V28_q1_c2a_overflow:
         inc S32V28_z31
@@ -847,7 +849,12 @@ S32V28_q1_c2a_overflow:
 S32V28_q1_c2a_overflow_done:
         clc
         jmp S32V28_q1_c2a_done
+S32V28_q1_cg_code_end:
 
+; Research-only cold carry island. This address is deliberately outside the
+; shipped relocatable contract and exists only to measure the swapped q1
+; producer orientation before solving production packing.
+*=$0200
 S32V28_q1_c3b_overflow:
         inc S32V28_z32
         bne S32V28_q1_c3b_overflow_done
@@ -857,6 +864,7 @@ S32V28_q1_c3b_overflow:
 S32V28_q1_c3b_overflow_done:
         clc
         jmp S32V28_q1_c3b_done
+
 S32V28_q1_c4b_overflow:
         inc S32V28_z33
         bne S32V28_q1_c4b_overflow_done
@@ -864,7 +872,6 @@ S32V28_q1_c4b_overflow:
 S32V28_q1_c4b_overflow_done:
         clc
         jmp S32V28_q1_c4b_done
-S32V28_q1_cg_code_end:
 
 *= REG_LOW+$1300
 S32V28_api_s31_v25_bind_q2:
