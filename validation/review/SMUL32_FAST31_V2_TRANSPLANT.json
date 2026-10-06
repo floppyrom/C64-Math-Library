@@ -143,5 +143,37 @@
       }
     },
     "conclusion": "The V2/V3/V4 SMUL32 implementations are cycle-identical for identical inputs under the reference map. The small differences in the canonical per-profile means come from validate_signed_multiply.py intentionally using a different random seed for each profile, not from a V3/V4 execution penalty."
+  },
+  "cross_profile_shared_corpus": {
+    "purpose": "Separate true profile timing from profile-specific random-corpus noise.",
+    "corpus": "Same 361 structured edge pairs + same 2,048 random pairs from seed 0x5A170020 for V2, V3 and V4.",
+    "v2_pareto_fast": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 716.5699460356994,
+      "min_cycles": 632,
+      "max_cycles": 845
+    },
+    "v3_reu_512k": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 716.5699460356994,
+      "min_cycles": 632,
+      "max_cycles": 845,
+      "delta_vs_v2": 0
+    },
+    "v4_reu_16m": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 716.5699460356994,
+      "min_cycles": 632,
+      "max_cycles": 845,
+      "delta_vs_v2": 0
+    },
+    "cycle_vector_identity": {
+      "v3_vs_v2": "2409/2409 calls identical",
+      "v4_vs_v2": "2409/2409 calls identical"
+    },
+    "explanation": "The canonical validator historically uses a profile-dependent random seed (0x5A170000 + profile_index*0x100 + bits). Therefore the published per-profile means are not directly comparable at sub-cycle precision. On identical inputs the V2/V3/V4 SMUL32 implementations are cycle-for-cycle identical despite relocated code islands."
   }
 }
