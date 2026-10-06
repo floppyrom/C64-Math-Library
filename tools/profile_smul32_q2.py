@@ -5,7 +5,7 @@ import random, sys
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"tools"))
-from mini6502 import Assembler, CPU
+from mini6502 import Assembler, CPU, REV
 from assemble_sources import preprocess, parse_config
 
 PROFILE="v2_pareto_fast"
@@ -17,8 +17,19 @@ class TraceCPU(CPU):
     def __post_init__(self):
         super().__post_init__()
         self.hits=Counter()
+        self.branches=Counter()
     def step(self):
-        self.hits[self.pc]+=1
+        pc=self.pc
+        self.hits[pc]+=1
+        oc=self.rd(pc)
+        if oc in REV:
+            op,mode=REV[oc]
+            if mode=="rel":
+                cond={"bpl":not self.n,"bmi":self.n,"bvc":not self.v,"bvs":self.v,"bcc":not self.c,"bcs":self.c,"bne":not self.z,"beq":self.z}[op]
+                off=self.rd((pc+1)&0xffff)
+                off=off-256 if off&128 else off
+                target=(pc+2+off)&0xffff
+                self.branches[(pc,op,target,1 if cond else 0)]+=1
         return super().step()
 
 def wr(mem,addr,v,n=4):
@@ -75,7 +86,26 @@ def main():
     print(f"Q2 PROFILE PASS cases={len(pairs)} mean={total/len(pairs):.6f} min={lo} max={hi}")
     print("label_hits_per_call:")
     for per,h,name,addr in rows:
-        print(f"{per:10.6f}  {h:9d}  ${addr:04x}  {name}")
+        print(f"{per:10.6f}  {h:9d}  0x{addr:04x}  {name}")
+
+    revlabels={}
+    for name,addr in labels.items():
+        revlabels.setdefault(addr,[]).append(name)
+    qlo=labels["S32V28_q2_summation"]
+    qhi=labels["S32V28_q2_cg_code_end"]
+    agg={}
+    for (pc,op,target,taken),count in cpu.branches.items():
+        if qlo <= pc < qhi:
+            k=(pc,op,target)
+            if k not in agg:
+                agg[k]=[0,0]
+            agg[k][0]+=count
+            if taken:
+                agg[k][1]+=count
+    print("branch_profile:")
+    for (pc,op,target),(ex,tak) in sorted(agg.items()):
+        labs="|".join(revlabels.get(target,[]))
+        print(f"0x{pc:04x} {op:3s} -> 0x{target:04x} {labs:36s} exec={ex:7d} taken={tak:7d} pct={100*tak/ex:7.3f}")
 
 if __name__=="__main__":
     main()
