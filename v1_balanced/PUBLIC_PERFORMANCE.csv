@@ -1,6 +1,6 @@
 operation,canonical_name,avg_cycles,min_cycles,max_cycles,cases,edge_cases,errors,evidence,notes
 math_umul8,mul_u8_u8_u16,90.494644,88,93,65536,65536,0,canonical harness,exhaustive 8-bit
-math_umul16,mul_u16_u16_u32,273.8372,262,297,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus,current public-entry record-upgrade measurement
+math_umul16,mul_u16_u16_u32,264.909922,253,288,10169,,0,2026-10-06 V1/V5 UMUL16 low-ZP direct-output validation,16-ZP low-resource A=x0/direct-Z0 path; mixed-call repair retained
 math_umul24,mul_u24_u24_u48,474.042329,444,530,10324,,0,2026-10-06 UMUL24 direct-output validation,FAST24 private 24-ZP carry producer; direct z0-z2 public output
 math_umul32,mul_u32_u32_u64,712.235367,652,831,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29-derived private q0 producer; mixed-call-safe public binder
 math_udiv8,div_u8_u8_u8_8,59.571976,26,554,65536,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
