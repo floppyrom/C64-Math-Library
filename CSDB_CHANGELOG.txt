@@ -1,3 +1,9 @@
+2026-10-06 FAST31 DIRECT-ENTRY FOLLOW-UP
+- V2/V3/V4 MATH_SMUL32 now falls directly into the FAST31 dispatcher instead of paying the legacy 3-cycle entry JMP.
+- Canonical SMUL32 means: 715.605230 / 716.033209 / 716.090079 cycles; SMUL32_SHR16: 784.998853 cycles.
+- Literal FAST31 v2 CPY #$00 carry seeding was tested in the public memory ABI and measured exactly neutral, so it was not retained.
+- Full signed/multiply-refresh, alternate-map public API and Turbo lifecycle validation passed.
+
 2026-10-05 FAST31 V2/V3/V4 PERSISTENT-POINTER REFRESH
 - All six FAST31 table-pointer pairs persist in already-owned normal-profile ZP holes; ordinary calls need no pointer-high rebind.
 - Signed SMUL32/SMUL32_SHR16 save exactly 25 cycles; unsigned UMUL32/UMUL32_SHR16 save 22 cycles; READY timings are unchanged.
