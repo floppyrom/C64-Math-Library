@@ -3018,8 +3018,7 @@ L5A2A:
     !byte $4C, $57, $59, $4C, $57, $59
     jmp REG_GAME+$002C
     jmp REG_GAME+$002C
-    jmp REG_GAME+$03B5
-    !byte $4C, $80, $CF
+    !byte $4C, $B5, $C4, $4C, $80, $CF
     jmp REG_GAME+$03E3
     jmp REG_GAME+$040C
     jmp REG_GAME+$0435
@@ -5497,17 +5496,9 @@ LC4B0:
     bne LC456
     clc
     rts
-    jsr REG_API+$0020
-    lda MATH_IO+$09
-    sta MATH_IO+$08
-    lda MATH_IO+$0A
-    sta MATH_IO+$09
-    lda MATH_IO+$0B
-    sta MATH_IO+$0A
-    clc
-    rts
-    !byte $20, $B0, $3B, $AD, $09, $C0, $8D, $08, $C0, $AD, $0A, $C0, $8D, $09, $C0, $AD
-    !byte $0B, $C0, $8D, $0A, $C0, $18, $60
+    !byte $20, $20, $30, $8E, $08, $C0, $8D, $09, $C0, $8C, $0A, $C0, $60, $09, $C0, $AD
+    !byte $0B, $C0, $8D, $0A, $C0, $18, $60, $20, $B0, $3B, $AD, $09, $C0, $8D, $08, $C0
+    !byte $AD, $0A, $C0, $8D, $09, $C0, $AD, $0B, $C0, $8D, $0A, $C0, $18, $60
     jsr REG_API+$00B0
     lda MATH_IO+$0A
     sta MATH_IO+$08
@@ -6232,6 +6223,7 @@ ZCE7:
 
 ; BEGIN MULTIPLY REFRESH 2026-09-20
 !source "../multiply/umul16_directout.asm"
+!source "../multiply/umul16_shr8_reg_return.asm"
 !source "../multiply/umul24_directout.asm"
 !source "smul8_direct_signed.inc"
 !source "smul32_fast31_v29.inc"

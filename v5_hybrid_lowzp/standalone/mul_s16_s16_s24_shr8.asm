@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 146.
+; Reachable instructions: 143.
 !cpu 6510
 
 ; ---- executable island $3BB0 ----
@@ -172,11 +172,8 @@ LCF4C:
 * = $CF80
 LCF80:
     jsr L3BB0                          ; @CF80 20 B0 3B
-    lda $C009                          ; @CF83 AD 09 C0
-    sta $C008                          ; @CF86 8D 08 C0
-    lda $C00A                          ; @CF89 AD 0A C0
-    sta $C009                          ; @CF8C 8D 09 C0
-    lda $C00B                          ; @CF8F AD 0B C0
-    sta $C00A                          ; @CF92 8D 0A C0
-    clc                                ; @CF95 18
-    rts                                ; @CF96 60
+    stx $C008                          ; @CF83 8E 08 C0
+    lda $C00A                          ; @CF86 AD 0A C0
+    sta $C009                          ; @CF89 8D 09 C0
+    sty $C00A                          ; @CF8C 8C 0A C0
+    rts                                ; @CF8F 60

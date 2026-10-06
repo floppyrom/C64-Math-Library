@@ -1,26 +1,46 @@
 {
   "status": "PASS",
   "seed": "0x16160016",
-  "basis": "2026-10-06 UMUL16 direct-output deterministic edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores",
+  "basis": "2026-10-06 all-profile UMUL16 + SHR8 register-return deterministic edge+random corpus; V1/V5 SHR8 delta +31, V2/V3/V4 delta +27; public entry cycles include RTS and exclude caller JSR/input stores",
   "results": {
+    "v1_balanced": {
+      "reference": {
+        "cases": 10169,
+        "mean_cycles": 273.98003736847284,
+        "min_cycles": 262,
+        "max_cycles": 297,
+        "shr8_mean_cycles": 304.98003736847284,
+        "shr8_min_cycles": 293,
+        "shr8_max_cycles": 328
+      },
+      "alternate": {
+        "cases": 10169,
+        "mean_cycles": 273.98003736847284,
+        "min_cycles": 262,
+        "max_cycles": 297,
+        "shr8_mean_cycles": 304.98003736847284,
+        "shr8_min_cycles": 293,
+        "shr8_max_cycles": 328
+      }
+    },
     "v2_pareto_fast": {
       "reference": {
         "cases": 10169,
         "mean_cycles": 216.9800373684728,
         "min_cycles": 205,
         "max_cycles": 240,
-        "shr8_mean_cycles": 257.98003736847284,
-        "shr8_min_cycles": 246,
-        "shr8_max_cycles": 281
+        "shr8_mean_cycles": 243.9800373684728,
+        "shr8_min_cycles": 232,
+        "shr8_max_cycles": 267
       },
       "alternate": {
         "cases": 10169,
         "mean_cycles": 216.9800373684728,
         "min_cycles": 205,
         "max_cycles": 240,
-        "shr8_mean_cycles": 257.98003736847284,
-        "shr8_min_cycles": 246,
-        "shr8_max_cycles": 281
+        "shr8_mean_cycles": 243.9800373684728,
+        "shr8_min_cycles": 232,
+        "shr8_max_cycles": 267
       }
     },
     "v3_reu_512k": {
@@ -29,18 +49,18 @@
         "mean_cycles": 216.9800373684728,
         "min_cycles": 205,
         "max_cycles": 240,
-        "shr8_mean_cycles": 257.98003736847284,
-        "shr8_min_cycles": 246,
-        "shr8_max_cycles": 281
+        "shr8_mean_cycles": 243.9800373684728,
+        "shr8_min_cycles": 232,
+        "shr8_max_cycles": 267
       },
       "alternate": {
         "cases": 10169,
         "mean_cycles": 216.9800373684728,
         "min_cycles": 205,
         "max_cycles": 240,
-        "shr8_mean_cycles": 257.98003736847284,
-        "shr8_min_cycles": 246,
-        "shr8_max_cycles": 281
+        "shr8_mean_cycles": 243.9800373684728,
+        "shr8_min_cycles": 232,
+        "shr8_max_cycles": 267
       }
     },
     "v4_reu_16m": {
@@ -49,18 +69,38 @@
         "mean_cycles": 216.9800373684728,
         "min_cycles": 205,
         "max_cycles": 240,
-        "shr8_mean_cycles": 257.98003736847284,
-        "shr8_min_cycles": 246,
-        "shr8_max_cycles": 281
+        "shr8_mean_cycles": 243.9800373684728,
+        "shr8_min_cycles": 232,
+        "shr8_max_cycles": 267
       },
       "alternate": {
         "cases": 10169,
         "mean_cycles": 216.9800373684728,
         "min_cycles": 205,
         "max_cycles": 240,
-        "shr8_mean_cycles": 257.98003736847284,
-        "shr8_min_cycles": 246,
-        "shr8_max_cycles": 281
+        "shr8_mean_cycles": 243.9800373684728,
+        "shr8_min_cycles": 232,
+        "shr8_max_cycles": 267
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "reference": {
+        "cases": 10169,
+        "mean_cycles": 273.98003736847284,
+        "min_cycles": 262,
+        "max_cycles": 297,
+        "shr8_mean_cycles": 304.98003736847284,
+        "shr8_min_cycles": 293,
+        "shr8_max_cycles": 328
+      },
+      "alternate": {
+        "cases": 10169,
+        "mean_cycles": 273.98003736847284,
+        "min_cycles": 262,
+        "max_cycles": 297,
+        "shr8_mean_cycles": 304.98003736847284,
+        "shr8_min_cycles": 293,
+        "shr8_max_cycles": 328
       }
     }
   }

@@ -4,7 +4,7 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UMUL16_SHR8. Executable overlap: 0 instructions.
-; Public entry: $5E0F. Reachable signed instructions: 125.
+; Public entry: $5E0F. Reachable signed instructions: 122.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
@@ -153,11 +153,8 @@ L5E0F:
 * = $CF80
 LCF80:
     jsr L3BB0                          ; @CF80 20 B0 3B
-    lda $C009                          ; @CF83 AD 09 C0
-    sta $C008                          ; @CF86 8D 08 C0
-    lda $C00A                          ; @CF89 AD 0A C0
-    sta $C009                          ; @CF8C 8D 09 C0
-    lda $C00B                          ; @CF8F AD 0B C0
-    sta $C00A                          ; @CF92 8D 0A C0
-    clc                                ; @CF95 18
-    rts                                ; @CF96 60
+    sta $C008                          ; @CF83 8D 08 C0
+    stx $C009                          ; @CF86 8E 09 C0
+    lda $C00B                          ; @CF89 AD 0B C0
+    sta $C00A                          ; @CF8C 8D 0A C0
+    rts                                ; @CF8F 60

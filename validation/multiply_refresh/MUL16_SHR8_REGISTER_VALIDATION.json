@@ -1,0 +1,247 @@
+{
+  "status": "PASS",
+  "seed": "0x16f80016",
+  "basis": "2026-10-06 all-profile 16-bit fixed-point register-return corpus; unsigned deltas +31 V1/V5 and +27 V2-V4; signed delta +31 all profiles; public entry cycles include RTS and exclude caller JSR/input stores",
+  "results": {
+    "v1_balanced": {
+      "reference": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 273.80413887799136,
+          "min_cycles": 262,
+          "max_cycles": 297
+        },
+        "umul16_shr8": {
+          "mean_cycles": 304.80413887799136,
+          "min_cycles": 293,
+          "max_cycles": 328
+        },
+        "smul16": {
+          "mean_cycles": 294.0172616712436,
+          "min_cycles": 260,
+          "max_cycles": 327
+        },
+        "smul16_shr8": {
+          "mean_cycles": 325.0172616712436,
+          "min_cycles": 291,
+          "max_cycles": 358
+        }
+      },
+      "alternate": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 273.80413887799136,
+          "min_cycles": 262,
+          "max_cycles": 297
+        },
+        "umul16_shr8": {
+          "mean_cycles": 304.80413887799136,
+          "min_cycles": 293,
+          "max_cycles": 328
+        },
+        "smul16": {
+          "mean_cycles": 294.0172616712436,
+          "min_cycles": 260,
+          "max_cycles": 327
+        },
+        "smul16_shr8": {
+          "mean_cycles": 325.0172616712436,
+          "min_cycles": 291,
+          "max_cycles": 358
+        }
+      }
+    },
+    "v2_pareto_fast": {
+      "reference": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 216.80413887799136,
+          "min_cycles": 205,
+          "max_cycles": 240
+        },
+        "umul16_shr8": {
+          "mean_cycles": 243.80413887799136,
+          "min_cycles": 232,
+          "max_cycles": 267
+        },
+        "smul16": {
+          "mean_cycles": 253.32601020007846,
+          "min_cycles": 230,
+          "max_cycles": 293
+        },
+        "smul16_shr8": {
+          "mean_cycles": 284.3260102000785,
+          "min_cycles": 261,
+          "max_cycles": 324
+        }
+      },
+      "alternate": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 216.80413887799136,
+          "min_cycles": 205,
+          "max_cycles": 240
+        },
+        "umul16_shr8": {
+          "mean_cycles": 243.80413887799136,
+          "min_cycles": 232,
+          "max_cycles": 267
+        },
+        "smul16": {
+          "mean_cycles": 253.32601020007846,
+          "min_cycles": 230,
+          "max_cycles": 293
+        },
+        "smul16_shr8": {
+          "mean_cycles": 284.3260102000785,
+          "min_cycles": 261,
+          "max_cycles": 324
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "reference": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 216.80413887799136,
+          "min_cycles": 205,
+          "max_cycles": 240
+        },
+        "umul16_shr8": {
+          "mean_cycles": 243.80413887799136,
+          "min_cycles": 232,
+          "max_cycles": 267
+        },
+        "smul16": {
+          "mean_cycles": 253.32601020007846,
+          "min_cycles": 230,
+          "max_cycles": 293
+        },
+        "smul16_shr8": {
+          "mean_cycles": 284.3260102000785,
+          "min_cycles": 261,
+          "max_cycles": 324
+        }
+      },
+      "alternate": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 216.80413887799136,
+          "min_cycles": 205,
+          "max_cycles": 240
+        },
+        "umul16_shr8": {
+          "mean_cycles": 243.80413887799136,
+          "min_cycles": 232,
+          "max_cycles": 267
+        },
+        "smul16": {
+          "mean_cycles": 253.32601020007846,
+          "min_cycles": 230,
+          "max_cycles": 293
+        },
+        "smul16_shr8": {
+          "mean_cycles": 284.3260102000785,
+          "min_cycles": 261,
+          "max_cycles": 324
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "reference": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 216.80413887799136,
+          "min_cycles": 205,
+          "max_cycles": 240
+        },
+        "umul16_shr8": {
+          "mean_cycles": 243.80413887799136,
+          "min_cycles": 232,
+          "max_cycles": 267
+        },
+        "smul16": {
+          "mean_cycles": 253.32601020007846,
+          "min_cycles": 230,
+          "max_cycles": 293
+        },
+        "smul16_shr8": {
+          "mean_cycles": 284.3260102000785,
+          "min_cycles": 261,
+          "max_cycles": 324
+        }
+      },
+      "alternate": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 216.80413887799136,
+          "min_cycles": 205,
+          "max_cycles": 240
+        },
+        "umul16_shr8": {
+          "mean_cycles": 243.80413887799136,
+          "min_cycles": 232,
+          "max_cycles": 267
+        },
+        "smul16": {
+          "mean_cycles": 253.32601020007846,
+          "min_cycles": 230,
+          "max_cycles": 293
+        },
+        "smul16_shr8": {
+          "mean_cycles": 284.3260102000785,
+          "min_cycles": 261,
+          "max_cycles": 324
+        }
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "reference": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 273.80413887799136,
+          "min_cycles": 262,
+          "max_cycles": 297
+        },
+        "umul16_shr8": {
+          "mean_cycles": 304.80413887799136,
+          "min_cycles": 293,
+          "max_cycles": 328
+        },
+        "smul16": {
+          "mean_cycles": 294.0172616712436,
+          "min_cycles": 260,
+          "max_cycles": 327
+        },
+        "smul16_shr8": {
+          "mean_cycles": 325.0172616712436,
+          "min_cycles": 291,
+          "max_cycles": 358
+        }
+      },
+      "alternate": {
+        "cases": 10196,
+        "umul16": {
+          "mean_cycles": 273.80413887799136,
+          "min_cycles": 262,
+          "max_cycles": 297
+        },
+        "umul16_shr8": {
+          "mean_cycles": 304.80413887799136,
+          "min_cycles": 293,
+          "max_cycles": 328
+        },
+        "smul16": {
+          "mean_cycles": 294.0172616712436,
+          "min_cycles": 260,
+          "max_cycles": 327
+        },
+        "smul16_shr8": {
+          "mean_cycles": 325.0172616712436,
+          "min_cycles": 291,
+          "max_cycles": 358
+        }
+      }
+    }
+  }
+}

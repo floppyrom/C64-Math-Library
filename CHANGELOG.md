@@ -1,3 +1,10 @@
+## 2026-10-06 — all-profile 16-bit fixed-point register-return adapters
+
+- Replaced the byte-copy tails in `MATH_UMUL16_SHR8` and `MATH_SMUL16_SHR8` with register-return adapters while preserving the stable public entries and base multiply implementations.
+- Unsigned SHR8 is now exactly **UMUL16 +31 cycles** in V1/V5 and **UMUL16 +27 cycles** in V2/V3/V4, saving **10 / 14 cycles** respectively on every call.
+- Signed SHR8 is now exactly **SMUL16 +31 cycles** in all five profiles, saving **10 cycles** on every call.
+- Reference/alternate maps are cycle-identical; V5 matches the inherited V1 unsigned path and all inputs/results/carry contracts pass the all-profile deterministic proof.
+
 ## 2026-10-06 — all-profile SMUL24 direct-output optimization
 
 - Applied the same low-result lifetime optimization used by UMUL24 to the private FAST24 four-quadrant signed composition in all five fixed profiles.

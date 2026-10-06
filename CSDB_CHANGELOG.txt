@@ -1,3 +1,6 @@
+2026-10-06 MUL16 SHR8 REGISTER-RETURN
+- UMUL16_SHR8: -10 cycles V1/V5, -14 cycles V2/V3/V4. SMUL16_SHR8: -10 cycles all profiles. Stable entries/resource contracts unchanged.
+
 2026-10-06 SMUL24 DIRECT-OUTPUT
 - All five profiles save exactly 18 cycles/call. V1 513.496472, V2/V3/V4 469.181818/468.816106/469.220008, V5 512.874222. 24-ZP/table and signed quadrant contracts unchanged.
 

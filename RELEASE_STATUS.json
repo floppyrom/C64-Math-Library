@@ -13,11 +13,11 @@
     "current_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "c2d521d6248156219a554f6a5b7b7673b6c8251095da0c0934ead6526a99c185",
-    "v2_pareto_fast": "4ca89ca55a633bfc5ee6a3bcbd5f1fb2f86597802a30a45b77feefa2bce0be5f",
-    "v3_reu_512k": "551917b0fef432d871fc28ce2e90009f25bb689cb96a5831e1a63b1232757aa3",
-    "v4_reu_16m": "94a7f28c069be627b6d7a7f9bdd1817ef9c8949944b577c361b009c96d8e062a",
-    "v5_hybrid_lowzp": "55558f36aa1e71c1755028a5fdcf6e23316b07293e34d68854e1109a1a8c965a"
+    "v1_balanced": "7c52f2b87933c78af4e829c1f65105cc0452de9895113fdb8cc111ba17788d21",
+    "v2_pareto_fast": "42fc03d6be0e549096467626c085ef50be616a706082368517286a1de5f0fe20",
+    "v3_reu_512k": "b361c73bda82e62a27dd57954e72824071cb6859b73f58a2e8b36d036fc8b05f",
+    "v4_reu_16m": "580c855a44a8dfce1f44a5a9d259b624992ca487be9571d97a8ab8dcb92db8e4",
+    "v5_hybrid_lowzp": "de7f875a2887a16185bb51be99e55f8244002f034653909db264002e630f0808"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "4ba6ece174d54042d51736f3bb0ee3a8c0506c8fcdd9ac4c0163bfb5197a3fda",
@@ -215,7 +215,8 @@
     "Turbo16 public CALL keeps the exact 113-byte overlay but removes a redundant x1 reload: 211.544111 mean cycles (199-236), BEGIN/END 282/327, 43-product crossover versus normal UMUL16; relocation and boundary cycle vectors remain identical.",
     "V2/V3/V4 public UMUL16 uses the resource-neutral A=x1/direct-Z0 adaptation: 216.980037 mean cycles (205-240), 16 ZP bytes; UMUL16_SHR8 is 257.980037 mean and remains exactly +41 cycles.",
     "All-profile public UMUL24 direct-output update: V1/V5 474.042329 mean (444-530), V2/V3/V4 429.555502 mean (400-485), exactly 18 cycles saved on every call in the 10,324-case old-vs-new comparison; 24-ZP/table contracts unchanged.",
-    "All-profile public SMUL24 direct-output update: V1/V5 513.496472/512.874222, V2/V3/V4 469.181818/468.816106/469.220008; exactly 18 cycles removed from every call, with 24-ZP/table/quadrant contracts unchanged."
+    "All-profile public SMUL24 direct-output update: V1/V5 513.496472/512.874222, V2/V3/V4 469.181818/468.816106/469.220008; exactly 18 cycles removed from every call, with 24-ZP/table/quadrant contracts unchanged.",
+    "All-profile 16-bit fixed-point register-return update: UMUL16_SHR8 is base+31 cycles in V1/V5 and base+27 in V2/V3/V4; SMUL16_SHR8 is base+31 in all profiles. This removes 10/14 unsigned cycles and 10 signed cycles per call with no resource-contract change."
   ],
   "package_audit_checks": 30,
   "package_cleanup": {
@@ -242,11 +243,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "c5e3b96ac1ed6b9906269baf4770a277ddb4d02dfcf3b259fbd542c3e84a471c",
-    "v2_pareto_fast": "b8fd61e1f1bcc554cdffe0fd9cd42fd30466687b6bcd9d5eca49f89d11a529ec",
-    "v3_reu_512k": "af294c30269bffcecee6dc308ed9da78480737dd80492145464889c746586692",
-    "v4_reu_16m": "c01d6af38c96532b475b91d46f03bff09fcf91daf0c01e5c0b19048c5fe0e0a7",
-    "v5_hybrid_lowzp": "e3f4e5ea4e2dcc1b177e6c950eb5c77928c1a3c571f5d7f5986f82b4f84cc1ba"
+    "v1_balanced": "3c3ebe18659a92a0ba3940506b14364d16d351146ef7b9d58f6d25a02b580e39",
+    "v2_pareto_fast": "c32c2641cdc2517ca277f59f371883eb26bd1628e39c29ea0da04ed96be2187c",
+    "v3_reu_512k": "227bb223d79cb80b7327694cb1f1276332327a08abf1b910a967b00cafc39d63",
+    "v4_reu_16m": "ecd305120ecee6d67ba6e88634c89151e656f753327ee5f51c3a411f70e2018a",
+    "v5_hybrid_lowzp": "8dd0835c86bec82a06bc5211149711a5805e1a86249258c2edebaa507f19b1a2"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "674418328ebd210d161790c0a6d42be9d1ca08315c17fdc13d04bea4d0999b61",
