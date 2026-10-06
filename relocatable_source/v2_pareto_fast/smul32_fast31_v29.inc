@@ -692,7 +692,8 @@ S32V28_q1_H30:
 
 S32V28_q1_row_loop:
         sta S32V28_z14,x
-        ldy MATH_IO+$04,x
+        ; Swapped q1 orientation: stream original positive X as producer Y.
+        ldy MATH_IO,x
 
 S32V28_q1_kernel:
 S32V28_q1__sqr_lo_0:
@@ -802,13 +803,13 @@ S32V28_q1_signed_correction_ready:
         sbc MATH_IO
         sta MATH_IO+$0C
         tya
-        sbc S32V28_x1
+        sbc MATH_IO+$01
         sta MATH_IO+$0D
         lda S32V28_z33
-        sbc S32V28_x2
+        sbc MATH_IO+$02
         sta MATH_IO+$0E
         lda S32V28_r7
-        sbc S32V28_x3
+        sbc MATH_IO+$03
         sta MATH_IO+$0F
         lda S32V28_r0
         sta MATH_IO+$08
@@ -895,29 +896,34 @@ S32V28_api_s31_v25_bind_q2:
 
 *= REG_API+$0C00
 S32V28_api_s31_v25_bind_q1:
+        ; q1 is X>=0,Y<0. Exploit commutativity and bind original Y as the
+        ; quarter-square X operand, while original X is streamed as row Y.
+        ; This gives q1 the lower-carry producer orientation already proven by q2.
+        tya
         sta S32V28_x3
         sta S32V28_q1__sqr_lo_3+1
         eor #$ff
         sta S32V28_neg_lo_3
         sta S32V28_q1__neg_hi_3+1
-        lda MATH_IO
+        lda MATH_IO+$04
         sta S32V28_q1__sqr_lo_0+1
         sta S32V28_q1__sqr_hi_0+1
         eor #$ff
         sta S32V28_q1__neg_lo_0+1
         sta S32V28_q1__neg_hi_0+1
-        lda MATH_IO+$01
+        lda MATH_IO+$05
         sta S32V28_x1
         sta S32V28_q1__sqr_lo_1+1
         eor #$ff
         sta S32V28_neg_lo_1
         sta S32V28_q1__neg_hi_1+1
-        lda MATH_IO+$02
+        lda MATH_IO+$06
         sta S32V28_x2
         sta S32V28_q1__sqr_lo_2+1
         eor #$ff
         sta S32V28_neg_lo_2
         sta S32V28_q1__neg_hi_2+1
+        ldy MATH_IO+$03
         jmp S32V28_q1_kernel
 ; Compatibility label retained in the old binder island.  All six pointer
 ; high bytes now persist in profile-owned ZP, so no mixed-call repair remains.
