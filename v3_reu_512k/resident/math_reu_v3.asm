@@ -446,7 +446,7 @@ math_reu_umul32_begin:
         sta REU_REU_HI
         lda #5
         sta REU_BANK
-        lda #241
+        lda #135
         sta REU_LEN_LO
         lda #0
         sta REU_LEN_HI

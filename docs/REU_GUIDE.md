@@ -43,13 +43,15 @@ xy = Q(x+y) - Q(abs(x-y))
 
 is exact because both indices have the same parity. Two four-byte REU record fetches plus subtraction replace four 8x8 partial products.
 
-Recommended UMUL16 mode:
+Current UMUL16 speed guidance:
 
 ```text
-1 call   public MATH_UMUL16
-2-8      QS16 BEGIN / repeated CALL / END
-9+       Turbo16 BEGIN / repeated CALL / END
+small/medium batches   public MATH_UMUL16
+~60+ products          Turbo16 BEGIN / repeated CALL / END
+QS16                    supported specialized mode; not selected for speed
 ```
+
+Current measured means are about 225.84 cycles for public UMUL16, 215.54 cycles for a Turbo16 CALL (plus 609 cycles per BEGIN/END lifecycle), and 281.54 cycles for a QS16 CALL (plus 36 cycles per lifecycle). QS16 therefore has no speed crossover in the current release.
 
 ## VICE examples
 
