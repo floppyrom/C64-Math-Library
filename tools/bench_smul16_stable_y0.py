@@ -45,7 +45,11 @@ def bench(cpu,entry,pairs,shr=False):
     for x,y in pairs:
         wr(cpu.mem,IO,x); wr(cpu.mem,IO+4,y)
         bx=bytes(cpu.mem[IO:IO+2]); by=bytes(cpu.mem[IO+4:IO+6])
-        c=cpu.call(entry,2_000_000)
+        try:
+            c=cpu.call(entry,2_000_000)
+        except RuntimeError as e:
+            print("STEP_LIMIT",hex(x),hex(y),"entry",hex(entry),"pc",hex(cpu.pc),"cycles",cpu.cycles)
+            raise
         prod=(si(x)*si(y))&MASK32
         if shr:
             exp=(prod>>8)&0xffffff; got=rd(cpu.mem,IO+8,3)
