@@ -1,5 +1,7 @@
 name: Promote SMUL32 q1 bounded tail
 
+# promotion trigger marker
+
 on:
   push:
     branches:
