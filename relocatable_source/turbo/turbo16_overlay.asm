@@ -36,7 +36,7 @@ _sqr_lo_0:
         lda sqr_lo,y
 _neg_lo_0:
         adc neg_sqr_lo,y
-        sta+1 z0
+        sta MATH_IO+$08
 _sqr_hi_0:
         lda sqr_hi,y
 _neg_hi_0:
@@ -105,4 +105,3 @@ _p11_carry:
         adc (_sqr_hi_1+1),y
         bcc _p11_tail              ; provably taken; one byte below JMP
 
-z0:    !byte 0
