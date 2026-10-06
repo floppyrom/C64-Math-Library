@@ -1,55 +1,38 @@
-name: Finalize FAST31 documentation metadata
+name: Evaluate FAST31 v2 arithmetic transplant
 on:
   push:
     branches: [smul32-fast31-v3-profile-integration]
 permissions:
-  contents: write
+  contents: read
 jobs:
-  finalize:
+  evaluate:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: smul32-fast31-persistent-zp-integration
-          fetch-depth: 0
+          ref: smul32-fast31-v2-arithmetic-transplant
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Refresh checksum and package audit
+      - name: Build candidate
+        run: make reference
+      - name: Promote candidate PRGs in workspace
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import hashlib, subprocess
-          def refresh():
-              rows=[]
-              for p in subprocess.check_output(['git','ls-files'],text=True).splitlines():
-                  if p=='SHA256SUMS.txt': continue
-                  q=Path(p)
-                  if q.is_file(): rows.append(f"{hashlib.sha256(q.read_bytes()).hexdigest()}  {p}")
-              Path('SHA256SUMS.txt').write_text('\n'.join(sorted(rows))+'\n')
-          refresh()
-          PY
-          python3 tools/package_audit.py
-          python3 - <<'PY'
-          from pathlib import Path
-          import hashlib, subprocess
-          rows=[]
-          for p in subprocess.check_output(['git','ls-files'],text=True).splitlines():
-              if p=='SHA256SUMS.txt': continue
-              q=Path(p)
-              if q.is_file(): rows.append(f"{hashlib.sha256(q.read_bytes()).hexdigest()}  {p}")
-          Path('SHA256SUMS.txt').write_text('\n'.join(sorted(rows))+'\n')
-          PY
-          python3 tools/package_audit.py
-      - name: Commit metadata
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+      - name: Benchmark signed multiply candidate
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json
-          if git diff --cached --quiet; then
-            echo "No metadata changes needed"
-          else
-            git commit -m "Refresh FAST31 documentation metadata"
-            git push origin HEAD:smul32-fast31-persistent-zp-integration
-          fi
+          python3 tools/validate_signed_multiply.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('validation/review/SIGNED_MULTIPLY_VALIDATION.json'))
+          for prof in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              print(prof, p['profiles'][prof]['SMUL32'])
+          PY
+      - name: Build alternate and validate public calls
+        run: |
+          make alternate
+          python3 tools/validate_source_build.py all --build build_source/alternate --out validation/fast31_v2_transplant
+          python3 tools/validate_turbo_relocation.py
