@@ -40,16 +40,22 @@ Together these changes account for the measured reduction from 697.259440 to 692
 
 The low-resource work is now integrated into V2–V4 using a profile-native mixed-call-safe pointer layout. **All six** FAST31 table-pointer pairs live in holes already covered by the normal profile ZP ownership map, so ordinary calls no longer need the old pointer-high repair at all. `MATH_INIT` installs the persistent high bytes.
 
-Measured canonical effects are **−25 cycles** for ordinary signed `MATH_SMUL32` and `MATH_SMUL32_SHR16`, and **−22 cycles** for ordinary unsigned `MATH_UMUL32` and `MATH_UMUL32_SHR16`. READY timings are unchanged. The canonical 2,409-case signed-corpus means are:
+The persistent-pointer integration first removed 25 cycles from ordinary signed `MATH_SMUL32`/`MATH_SMUL32_SHR16`. A follow-up then removed the redundant 3-cycle stable-entry self-redirect, for a total **−28 cycles** versus the pre-integration signed public path. Unsigned `MATH_UMUL32`/`MATH_UMUL32_SHR16` remain **−22 cycles** from the persistent-pointer change. READY timings are unchanged. The canonical 2,409-case signed-corpus means are:
 
-- **V2: 718.605230 cycles**
-- **V3: 719.033209 cycles**
-- **V4: 719.090079 cycles**
+- **V2: 715.605230 cycles**
+- **V3: 716.033209 cycles**
+- **V4: 716.090079 cycles**
 
 V2 remains comfortably inside its documented **221-byte total ZP commitment**; the regenerated stable-API union touches **207 bytes**. V3/V4 touch 202/201 bytes respectively. V3/V4 Turbo BEGIN may temporarily overlay the persistent bytes, and END restores their previous values exactly. V1/V5 retain the original all-in-`$02-$20` 31-ZP public layout because those profiles promise a 31-byte normal-ZP contract.
 
 The earlier 736.188510 public-path research point remains useful historical evidence, but it is superseded for V2–V4 by this faster profile-integrated form.
 
 ## Relation to compact126
+
+### Public-ABI v2 arithmetic transplant check
+
+The remaining FAST31 v2 arithmetic ideas were tested against the persistent-pointer public core. The NN common/rare `x0` borrow optimization was already present. The literal `CPY #$00` carry-seeded sign dispatch assembled and passed the full signed/public/Turbo gates, but measured **exactly the same** 2,409-case means as the non-carry-seeded form: the public ABI must load Y from memory, so the added 2-cycle compare only replaces an existing 2-cycle `SEC`. It was therefore discarded. The retained follow-up optimization is the fixed-entry fallthrough, which saves a constant 3 cycles without changing the arithmetic or resource contract.
+
+Evidence: `validation/review/SMUL32_FAST31_V2_TRANSPLANT.json`.
 
 `compact126` remains the absolute native speed point at 646.354530 cycles, trading 136 ZP and 126 persistent page-$01 bytes for speed. FAST31 v2 is the low-resource record point: substantially slower, but it preserves the library's 31-ZP / stack-free practical contract.
