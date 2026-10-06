@@ -41,6 +41,10 @@ jobs:
         run: |
           python3 tools/build_hybrid.py --config-kind reference
           python3 tools/build_hybrid.py --config-kind alternate
+      - name: V1/V5 UMUL16 low-ZP direct-output validation
+        run: |
+          python3 tools/validate_umul16_lowzp_directout.py
+          git diff --exit-code -- validation/multiply_refresh/UMUL16_LOWZP_DIRECTOUT_VALIDATION.json
       - name: V2-V4 UMUL16 direct-output validation
         run: |
           python3 tools/validate_umul16_directout.py
