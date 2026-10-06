@@ -1,3 +1,11 @@
+## 2026-10-06 — FAST31 direct public-entry follow-up
+
+- Removed the redundant 3-cycle self-redirect at the stable V2/V3/V4 `MATH_SMUL32` entry; the fixed address now falls directly into the FAST31 dispatcher.
+- Canonical SMUL32 means improve to **715.605230 / 716.033209 / 716.090079 cycles** for V2/V3/V4, with min/max **632/845** on the 2,409-case signed corpus.
+- `MATH_SMUL32_SHR16` inherits the same constant reduction and now measures **784.998853 cycles** (697–910) in V2/V3/V4 on the 4,361-case refresh corpus.
+- The literal FAST31 v2 `CPY #$00` carry-seeded dispatcher was transplanted and measured **exactly neutral** under the public memory ABI; it merely exchanges a 2-cycle `SEC` for a 2-cycle compare and was discarded.
+- Validation passed 264,999 signed multiply calls, 415,078 multiply-refresh calls, alternate-map 54-entry public validation, and 17,196 Turbo lifecycle calls.
+
 ## 2026-10-05 — FAST31 V2–V4 persistent-pointer profile integration
 
 - Integrated the 31-ZP FAST31/V29 32-bit multiply family more deeply into V2/V3/V4 without expanding V2 beyond its documented **221-byte ZP commitment**.
