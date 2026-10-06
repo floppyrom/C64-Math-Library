@@ -459,7 +459,7 @@
           "file": "mul_u16_u16_u32.asm",
           "alias_of": "",
           "entry_address": "$3020",
-          "reachable_instructions": 86
+          "reachable_instructions": 83
         },
         {
           "legacy_api": "MATH_UMUL24",
@@ -691,7 +691,7 @@
           "file": "mul_u16_u16_u24_shr8.asm",
           "alias_of": "",
           "entry_address": "$5E0C",
-          "reachable_instructions": 96
+          "reachable_instructions": 93
         },
         {
           "legacy_api": "MATH_SMUL16_SHR8",
@@ -898,7 +898,7 @@
           "file": "mul_u16_u16_u32.asm",
           "alias_of": "",
           "entry_address": "$3020",
-          "reachable_instructions": 86
+          "reachable_instructions": 83
         },
         {
           "legacy_api": "MATH_UMUL24",
@@ -1130,7 +1130,7 @@
           "file": "mul_u16_u16_u24_shr8.asm",
           "alias_of": "",
           "entry_address": "$5E0C",
-          "reachable_instructions": 96
+          "reachable_instructions": 93
         },
         {
           "legacy_api": "MATH_SMUL16_SHR8",
@@ -1385,7 +1385,7 @@
           "file": "mul_u16_u16_u32.asm",
           "alias_of": "",
           "entry_address": "$3020",
-          "reachable_instructions": 86
+          "reachable_instructions": 83
         },
         {
           "legacy_api": "MATH_UMUL24",
@@ -1617,7 +1617,7 @@
           "file": "mul_u16_u16_u24_shr8.asm",
           "alias_of": "",
           "entry_address": "$5E0C",
-          "reachable_instructions": 96
+          "reachable_instructions": 93
         },
         {
           "legacy_api": "MATH_SMUL16_SHR8",

@@ -50,7 +50,7 @@ The new knowledge was applied to the unsigned routines as well; retention is an 
 
 The fastest standalone `UMUL8` research point reaches about 41.99 cycles by spending executable/persistent ZP and a 2,044-byte table set. That is attractive as a standalone specialty kernel, but it does not improve the fixed profiles cleanly: V1/V5 must preserve the 31-byte profile contract, V3/V4 already have their REU path, and adopting the high-resource point in V2 changes the resource contract and coexistence geometry. The existing public `UMUL8` paths are therefore retained.
 
-`UMUL16` was already upgraded to the record-derived 17-ZP resident core in the September 14 work. Faster high-ZP standalone points exist, but they collide with the resource role of V1/V5 and with V2–V4's persistent 116-ZP native `SMUL16` region. The current 17-ZP public `UMUL16` is retained in all five profiles.
+`UMUL16` was upgraded to the record-derived 17-ZP resident core in the September 14 work. On 2026-10-06, V2–V4 were tightened further without adopting any high-ZP standalone point: the public adapter keeps `x1` live in A and the existing fused core writes Z0 directly to the public result. That reduces the active pointer footprint to 16 ZP bytes and measures **216.980037 cycles mean (205–240)** on the current 10,169-case reference/alternate corpus. V1/V5 retain the 17-ZP low-resource path; the faster high-ZP research variants remain excluded because they collide with the fixed-profile resource roles.
 
 ## SMUL16: one algorithm does not fit every profile
 

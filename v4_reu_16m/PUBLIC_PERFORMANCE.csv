@@ -1,6 +1,6 @@
 operation,canonical_name,v3_reu_512k_cycles,v4_reu_16m_cycles,v4_evidence
 umul8,mul_u8_u8_u16,69.0,69.0,unchanged V3 path/evidence
-umul16,mul_u16_u16_u32,339.0,225.8372,2026-09-14 record-upgrade deterministic comparison corpus
+umul16,mul_u16_u16_u32,216.980037,216.980037,2026-10-06 UMUL16 direct-output validation
 umul24,mul_u24_u24_u48,475.784575,448.2918,2026-09-14 record-upgrade deterministic comparison corpus
 umul32,mul_u32_u32_u64,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
 udiv8,div_u8_u8_u8_8,52.852264,52.852264,2026-10-06 exhaustive REU UDIV8 hybrid validation
