@@ -1,0 +1,213 @@
+name: Promote UMUL16 direct-output
+
+on:
+  push:
+    branches:
+      - optimize-umul16-public
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  promote:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: optimize-umul16-public
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Remove temporary workflows
+        run: |
+          rm -f .github/workflows/umul16-proof.yml
+          rm -f .github/workflows/promote-umul16.yml
+
+      - name: Build optimized reference and alternate artifacts
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/validate_umul16_directout.py
+
+      - name: Promote V2 V3 V4 resident PRGs and UMUL16 slices
+        run: |
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg \
+             v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg \
+             v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg \
+             v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv, io
+          profiles=('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+          for p in profiles:
+              prg=next((Path(p)/'resident').glob('*game_math.prg'))
+              b=prg.read_bytes(); load=b[0]|(b[1]<<8); payload=b[2:]
+              start,end=0x53ec,0x5471
+              chunk=payload[start-load:end-load+1]
+              assert len(chunk)==134,(p,len(chunk))
+              out=Path(p)/'resident/bin/umul16_code.bin'
+              out.parent.mkdir(parents=True,exist_ok=True)
+              out.write_bytes(chunk)
+
+              sp=Path(p)/'resident/SEGMENTS.csv'
+              rows=list(csv.DictReader(sp.open(newline='')))
+              fields=list(rows[0].keys())
+              found=False
+              for r in rows:
+                  if r['segment']=='umul16':
+                      r['bytes']='134'
+                      r['purpose']='optimized 16-ZP fused quarter-square UMUL16; A=x1 public entry + direct Z0 output'
+                      found=True
+              assert found,p
+              with sp.open('w',newline='') as f:
+                  w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
+          PY
+
+      - name: Update profile performance and release notes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv, json
+
+          mean='216.980037'; mn='205'; mx='240'; cases='10169'
+          shrmean='257.980037'; shrmn='246'; shrmx='281'
+          evidence='2026-10-06 UMUL16 direct-output validation'
+
+          # V2 profile CSV.
+          p=Path('v2_pareto_fast/PUBLIC_PERFORMANCE.csv')
+          rows=list(csv.DictReader(p.open(newline=''))); fields=list(rows[0].keys())
+          for r in rows:
+              if r['operation']=='math_umul16':
+                  r.update(avg_cycles=mean,min_cycles=mn,max_cycles=mx,cases=cases,evidence=evidence)
+          with p.open('w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
+
+          # V3 comparison CSV.
+          p=Path('v3_reu_512k/PUBLIC_PERFORMANCE.csv')
+          rows=list(csv.DictReader(p.open(newline=''))); fields=list(rows[0].keys())
+          for r in rows:
+              if r['operation']=='umul16':
+                  r['v1_balanced_cycles']='273.8372'
+                  r['v2_pareto_fast_cycles']=mean
+                  r['v3_reu_default_cycles']=mean
+                  r['v3_evidence']=evidence
+          with p.open('w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
+
+          # V4 comparison CSV.
+          p=Path('v4_reu_16m/PUBLIC_PERFORMANCE.csv')
+          rows=list(csv.DictReader(p.open(newline=''))); fields=list(rows[0].keys())
+          for r in rows:
+              if r['operation']=='umul16':
+                  r['v3_reu_512k_cycles']=mean
+                  r['v4_reu_16m_cycles']=mean
+                  r['v4_evidence']=evidence
+          with p.open('w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
+
+          perf=Path('PERFORMANCE.md')
+          t=perf.read_text()
+          old='| `MATH_UMUL16` | `mul_u16_u16_u32` | 273.837200 | 225.837200 | 225.837200 | 225.837200 | 273.837200 |'
+          new='| `MATH_UMUL16` | `mul_u16_u16_u32` | 273.837200 | 216.980037 | 216.980037 | 216.980037 | 273.837200 |'
+          assert old in t
+          t=t.replace(old,new)
+          old='| `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 314.965600 | 266.965600 | 266.965600 | 266.965600 | 314.965600 |'
+          new='| `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 314.965600 | 257.980037 | 257.980037 | 257.980037 | 314.965600 |'
+          assert old in t
+          perf.write_text(t.replace(old,new))
+
+          doc=Path('docs/MULTIPLY_REFRESH_2026-09-20.md')
+          t=doc.read_text()
+          old="`UMUL16` was already upgraded to the record-derived 17-ZP resident core in the September 14 work. Faster high-ZP standalone points exist, but they collide with the resource role of V1/V5 and with V2–V4's persistent 116-ZP native `SMUL16` region. The current 17-ZP public `UMUL16` is retained in all five profiles."
+          new="`UMUL16` was upgraded to the record-derived 17-ZP resident core in the September 14 work. On 2026-10-06, V2–V4 were tightened further without adopting any high-ZP standalone point: the public adapter keeps `x1` live in A and the existing fused core writes Z0 directly to the public result. That reduces the active pointer footprint to 16 ZP bytes and measures **216.980037 cycles mean (205–240)** on the current 10,169-case reference/alternate corpus. V1/V5 retain the 17-ZP low-resource path; the faster high-ZP research variants remain excluded because they collide with the fixed-profile resource roles."
+          assert old in t
+          doc.write_text(t.replace(old,new))
+
+          ch=Path('CHANGELOG.md')
+          entry="""## 2026-10-06 — V2–V4 UMUL16 direct-output optimization
+
+- Optimized the existing fixed-profile 17-ZP UMUL16 family without importing a high-ZP research kernel: the public adapter now enters with **A=x1**, removing a redundant reload, and the fused quarter-square core writes **Z0 directly to MATH_Z**.
+- V2/V3/V4 `MATH_UMUL16` measures **216.980037 cycles mean, 205–240** on the 10,169-case deterministic edge+random corpus, with identical reference/alternate cycle vectors.
+- The private pointer footprint drops from **17 to 16 ZP bytes**; table geometry and persistent stack usage are unchanged.
+- `MATH_UMUL16_SHR8` inherits the producer win and remains an exact **+41-cycle** composition: **257.980037 mean, 246–281** on the same corpus.
+- Promoted V2/V3/V4 PRGs, exact standalone mirrors, resident UMUL16 binary slices, segment metadata, consolidated/public indexes, and package hashes are regenerated from canonical source.
+
+"""
+          ch.write_text(entry+ch.read_text())
+
+          cs=Path('CSDB_CHANGELOG.txt')
+          cs.write_text("2026-10-06 UMUL16 DIRECT-OUTPUT\n- V2/V3/V4 public UMUL16: 216.980037 cycles mean (205-240), 16 ZP bytes; A=x1 entry plus direct Z0 output. UMUL16_SHR8: 257.980037 mean. Reference/alternate cycle vectors identical.\n\n"+cs.read_text())
+
+          rs=Path('RELEASE_STATUS.json'); o=json.loads(rs.read_text())
+          o['date']='2026-10-06'
+          note='V2/V3/V4 public UMUL16 uses the resource-neutral A=x1/direct-Z0 adaptation: 216.980037 mean cycles (205-240), 16 ZP bytes; UMUL16_SHR8 is 257.980037 mean and remains exactly +41 cycles.'
+          if note not in o.get('notes',[]): o.setdefault('notes',[]).append(note)
+          rs.write_text(json.dumps(o,indent=2)+'\n')
+          PY
+
+      - name: Regenerate canonical source evidence and public indexes
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/validate_umul16_directout.py
+          python3 tools/publish_standalone_sources.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+          python3 tools/verify_deterministic_rebuild.py
+
+      - name: Refresh release hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          root=Path('.')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+          python3 tools/verify_deterministic_rebuild.py
+
+      - name: Refresh package contract
+        run: |
+          rm -rf build_source
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+
+      - name: Commit promoted UMUL16 release
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Promote optimized V2-V4 UMUL16 public path"
+          git push origin HEAD:optimize-umul16-public
