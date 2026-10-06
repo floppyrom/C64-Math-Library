@@ -13,10 +13,10 @@ sqr_hi=REG_TABLE+$1200
 neg_lo=REG_TABLE+$1400
 neg_hi=REG_TABLE+$1600
 summation=REG_LOW+$0100
-z00=TURBO32_ZP_BASE+$00
-z10=TURBO32_ZP_BASE+$01
-z20=TURBO32_ZP_BASE+$02
-z30=TURBO32_ZP_BASE+$03
+z00=MATH_IO+$08
+z10=MATH_IO+$09
+z20=MATH_IO+$0a
+z30=MATH_IO+$0b
 z01=TURBO32_ZP_BASE+$04
 z11=TURBO32_ZP_BASE+$05
 z21=TURBO32_ZP_BASE+$06
@@ -29,9 +29,9 @@ z03=TURBO32_ZP_BASE+$0c
 z13=TURBO32_ZP_BASE+$0d
 z23=TURBO32_ZP_BASE+$0e
 z33=TURBO32_ZP_BASE+$0f
-z14=TURBO32_ZP_BASE+$10
-z24=TURBO32_ZP_BASE+$11
-z34=TURBO32_ZP_BASE+$12
+z14=MATH_IO+$0d
+z24=MATH_IO+$0e
+z34=MATH_IO+$0f
 y0=TURBO32_ZP_BASE+$00
 y1=TURBO32_ZP_BASE+$01
 y2=TURBO32_ZP_BASE+$02
@@ -39,11 +39,11 @@ r0=TURBO32_ZP_BASE+$00
 r1=TURBO32_ZP_BASE+$01
 r2=TURBO32_ZP_BASE+$02
 r3=TURBO32_ZP_BASE+$03
-r7=TURBO32_ZP_BASE+$12
+r7=MATH_IO+$0f
 
 * = TURBO32_ZP_BASE
-!byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
-* = TURBO32_ZP_BASE+$13
+!byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+* = TURBO32_ZP_BASE+$10
 cg_zp_code_start
 p1_carry:
         clc
@@ -74,14 +74,14 @@ p3_carry:
                 beq sum_trampoline
 loop:
         sta+1 z14-1,x
-                ldy+1 y0-1,x
+                ldy MATH_IO+$03,x
 
 umult32x8_same_x
 x0=*+1
         lda sqr_lo,y
 NL0=*+1
         adc neg_lo,y
-                sta+1 z00-1,x
+                sta MATH_IO+$07,x
 SH0=*+1
         lda sqr_hi,y
 NH0=*+1
