@@ -10,7 +10,7 @@ The public ABI is unchanged. All selected implementations remain relocatable thr
 |---|---|---|---|---|---|
 | `UMUL8` | retained | retained | retained REU path | retained REU path | retained |
 | `SMUL8` | direct signed QS | direct signed QS | direct signed QS | direct signed QS | direct signed QS |
-| `UMUL16` | retained 17-ZP record core | retained 17-ZP record core | retained 17-ZP record core | retained 17-ZP record core | retained 17-ZP record core |
+| `UMUL16` | **16-ZP low-resource direct output** | **16-ZP direct output** | **16-ZP direct output** | **16-ZP direct output** | **16-ZP low-resource direct output** |
 | `SMUL16` | **FAST17 low-ZP native** | retained 116-ZP practical native | retained 116-ZP practical native | retained 116-ZP practical native | **FAST17 low-ZP native** |
 | `UMUL24` | **FAST24 private + direct output** | **record core + direct output** | **record core + direct output** | **record core + direct output** | **FAST24 private + direct output** |
 | `SMUL24` | **FAST24 signed composition** | **FAST24 signed composition** | **FAST24 signed composition** | **FAST24 signed composition** | **FAST24 signed composition** |
@@ -45,13 +45,13 @@ The consolidated table is authoritative for per-profile resource accounting and 
 
 See `docs/CONSOLIDATED_ROUTINE_TABLE.csv` and `docs/CONSOLIDATED_ROUTINE_TABLE.md` for the complete 245-row measurement/resource table.
 
-## Why UMUL8 and UMUL16 did not change
+## UMUL8 retention and UMUL16 direct-output tightening
 
 The new knowledge was applied to the unsigned routines as well; retention is an explicit selection result rather than an omission.
 
 The fastest standalone `UMUL8` research point reaches about 41.99 cycles by spending executable/persistent ZP and a 2,044-byte table set. That is attractive as a standalone specialty kernel, but it does not improve the fixed profiles cleanly: V1/V5 must preserve the 31-byte profile contract, V3/V4 already have their REU path, and adopting the high-resource point in V2 changes the resource contract and coexistence geometry. The existing public `UMUL8` paths are therefore retained.
 
-`UMUL16` was upgraded to the record-derived 17-ZP resident core in the September 14 work. On 2026-10-06, V2–V4 were tightened further without adopting any high-ZP standalone point: the public adapter keeps `x1` live in A and the existing fused core writes Z0 directly to the public result. That reduces the active pointer footprint to 16 ZP bytes and measures **216.980037 cycles mean (205–240)** on the current 10,169-case reference/alternate corpus. V1/V5 retain the 17-ZP low-resource path; the faster high-ZP research variants remain excluded because they collide with the fixed-profile resource roles.
+`UMUL16` was upgraded to the record-derived 17-ZP resident core in the September 14 work. On 2026-10-06, V2–V4 were tightened without adopting any high-ZP standalone point: the public adapter keeps `x1` live in A and the fused core writes Z0 directly to the public result, giving **216.980037 cycles mean (205–240)** on the 10,169-case reference/alternate corpus. V1/V5 now apply the same lifetime idea within their mixed-call-safe low-resource contract: the adapter keeps `x0` live in A, Z0 is written directly to public RAM, and the existing per-call pointer-high setup/post-call repair is retained. Their active footprint falls from 17 to **16 ZP bytes** and measures **264.909922 cycles mean (253–288)** on the same-size deterministic corpus, with V1/V5 and reference/alternate cycle vectors identical. The faster high-ZP research variants remain excluded because they change the fixed-profile coexistence contracts.
 
 ## SMUL16: one algorithm does not fit every profile
 
