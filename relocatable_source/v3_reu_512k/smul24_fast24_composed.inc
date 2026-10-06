@@ -128,7 +128,7 @@ S24_y0=*+1
 S24_row2:
         lda (S24_p0),y
         adc (S24_p1),y
-        sta S24_r0
+        sta MATH_IO+$08
         lda (S24_p2),y
         adc (S24_p3),y
         adc (S24_p4),y
@@ -152,7 +152,7 @@ S24_summation:
         clc
 S24_v01:    lda #0
 S24_v10:    adc #0
-        sta S24_r1
+        sta MATH_IO+$09
 S24_v02:    lda #0
 S24_v11:    adc #0
         bcc S24_column2
@@ -160,7 +160,7 @@ S24_v11:    adc #0
         clc
 S24_column2:
 S24_v20:    adc #0
-        sta S24_r2
+        sta MATH_IO+$0A
         tya
 S24_v12:    adc #0
         bcc S24_column3
@@ -302,12 +302,6 @@ S24_public_impl:
         sta MATH_IO+$0C
         stx MATH_IO+$0D
         sty MATH_IO+$0B
-        lda S24_r0
-        sta MATH_IO+$08
-        lda S24_r1
-        sta MATH_IO+$09
-        lda S24_r2
-        sta MATH_IO+$0A
         clc
         rts
 
