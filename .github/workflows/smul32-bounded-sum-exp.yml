@@ -28,36 +28,65 @@ jobs:
           python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
           cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg \
              v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
-      - name: Sweep q1 placement
+      - name: Profile q1 carry branches
         run: |
           python3 - <<'PY'
-          from pathlib import Path
-          import json, random, shutil, subprocess
-          from tools.validate_signed_multiply import load_profile, test_entry
+          from collections import defaultdict
+          import random
+          from tools.validate_signed_multiply import load_profile, wr
+          from tools.assemble_sources import ROOT, preprocess
+          from tools.mini6502 import Assembler, REV
 
-          src=Path('relocatable_source/v2_pareto_fast/smul32_fast31_v29.inc')
-          base=src.read_text()
-          old='*= REG_API+$097C'
-          assert old in base
-          rng=random.Random(0x5131504E)
-          pairs=[(rng.randrange(0x80000000),rng.randrange(0x80000000,1<<32)) for _ in range(5000)]
-          offsets=[0x097C,0x0980,0x0990,0x09A0,0x09B0,0x09C0,0x09D0,0x09E0,0x09F0,
-                   0x0A00,0x0A10,0x0A20,0x0A30,0x0A40,0x0A50,0x0A60,0x0A70,0x0A80]
-          for off in offsets:
-              src.write_text(base.replace(old,f'*= REG_API+${off:04X}'))
-              shutil.rmtree('build_q1',ignore_errors=True)
-              p=subprocess.run(['python3','tools/assemble_sources.py','--profile','v2_pareto_fast',
-                                '--config-kind','reference','--out','build_q1'],
-                               text=True,capture_output=True)
-              if p.returncode:
-                  print(f'Q1SWEEP {off:04X} ASSEMBLY_FAIL {p.stderr.strip().splitlines()[-1] if p.stderr.strip() else ""}')
-                  continue
-              shutil.copy2('build_q1/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
-                           'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg')
-              cpu,api=load_profile('v2_pareto_fast')
-              r=test_entry(cpu,api['MATH_SMUL32'],32,pairs)
-              print(f'Q1SWEEP {off:04X} mean={r["mean_cycles"]:.6f} min={r["min_cycles"]} max={r["max_cycles"]} errors={r["errors"]}')
-          src.write_text(base)
+          src=ROOT/'relocatable_source/v2_pareto_fast/math_relocatable.asm'
+          cfg=ROOT/'relocatable_source/v2_pareto_fast/math_config_reference.inc'
+          mem,labels,const=Assembler().assemble(preprocess(src,cfg))
+          lo=labels['S32V28_q1_fast_core_start']; hi=labels['S32V28_q1_cg_code_end']
+          branch_pcs=[]
+          pc=lo
+          # Walk reachable address span linearly; all bytes in this core are code.
+          while pc < hi:
+              oc=mem.get(pc,0)
+              if oc not in REV:
+                  pc+=1; continue
+              op,mode=REV[oc]
+              if mode=='rel': branch_pcs.append(pc)
+              # Derive instruction size from mode/opcode family.
+              if mode in ('imp','acc'): sz=1
+              elif mode in ('imm','zp','zpx','zpy','indx','indy','rel'): sz=2
+              else: sz=3
+              pc+=sz
+
+          cpu,api=load_profile('v2_pareto_fast')
+          stat=defaultdict(lambda:[0,0])
+          orig=cpu.step
+          def step():
+              pc0=cpu.pc; c0=cpu.cycles
+              oc=orig()
+              if pc0 in branch_pcs:
+                  stat[pc0][0]+=1; stat[pc0][1]+=cpu.cycles-c0
+              return oc
+          cpu.step=step
+          rng=random.Random(0x51314252)
+          for _ in range(10000):
+              x=rng.randrange(0x80000000)
+              y=rng.randrange(0x80000000,1<<32)
+              wr(cpu.mem,0xC000,x,4); wr(cpu.mem,0xC004,y,4)
+              cpu.call(api['MATH_SMUL32'],2_000_000)
+
+          exact={v:k for k,v in labels.items() if k.startswith('S32V28_q1_')}
+          labs=sorted((v,k) for k,v in labels.items() if k.startswith('S32V28_q1_'))
+          for pc in branch_pcs:
+              n,cy=stat.get(pc,(0,0))
+              if not n: continue
+              oc=mem[pc]; op,mode=REV[oc]
+              off=mem[pc+1]; off=off-256 if off&128 else off
+              target=(pc+2+off)&0xffff
+              cross=int(((pc+2)&0xff00)!=(target&0xff00))
+              avg=cy/n
+              taken=(avg-2)/(1+cross)
+              prev=[(a,nm) for a,nm in labs if a<=pc]
+              nm=prev[-1][1] if prev else ''
+              print(f'Q1BR {pc:04X} {op.upper()} -> {target:04X} label={nm} n={n} avgcy={avg:.6f} taken={taken:.6f} cross={cross}')
           PY
       - name: Validate and print signed multiply timing
         run: |
