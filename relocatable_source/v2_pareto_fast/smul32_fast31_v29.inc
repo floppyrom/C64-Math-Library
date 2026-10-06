@@ -169,9 +169,7 @@ S32V28_c3b_done:
 
         txa
         adc S32V28_z13
-        bcc S32V28_c4a_done
-        iny
-        clc
+        bcs S32V28_c4a_carry_cold
 S32V28_c4a_done:
         adc S32V28_z31
         bcc S32V28_c4b_done
@@ -183,9 +181,7 @@ S32V28_c4b_done:
 
         tya
         adc S32V28_z32
-        bcc S32V28_c5a_done
-        inc S32V28_z24
-        clc
+        bcs S32V28_c5a_carry_cold
 S32V28_c5a_done:
         adc S32V28_z23
         sta MATH_IO+$0D
@@ -201,6 +197,15 @@ S32V28_c5a_done:
         lda S32V28_r0
         sta MATH_IO+$08
         rts
+
+S32V28_c4a_carry_cold:
+        iny
+        clc
+        jmp S32V28_c4a_done
+S32V28_c5a_carry_cold:
+        inc S32V28_z24
+        clc
+        jmp S32V28_c5a_done
 
 S32V28_c2a_overflow:
         inc S32V28_z31
@@ -534,9 +539,7 @@ S32V28_q0_c3b_done:
 
         txa
         adc S32V28_z13
-        bcc S32V28_q0_c4a_done
-        iny
-        clc
+        bcs S32V28_q0_c4a_carry_cold
 S32V28_q0_c4a_done:
         adc S32V28_z31
         bcc S32V28_q0_c4b_done
@@ -548,9 +551,7 @@ S32V28_q0_c4b_done:
 
         tya
         adc S32V28_z32
-        bcc S32V28_q0_c5a_done
-        inc S32V28_z24
-        clc
+        bcs S32V28_q0_c5a_carry_cold
 S32V28_q0_c5a_done:
         adc S32V28_z23
         sta MATH_IO+$0D
@@ -564,6 +565,15 @@ S32V28_q0_c5a_done:
         lda S32V28_r0
         sta MATH_IO+$08
         rts
+
+S32V28_q0_c4a_carry_cold:
+        iny
+        clc
+        jmp S32V28_q0_c4a_done
+S32V28_q0_c5a_carry_cold:
+        inc S32V28_z24
+        clc
+        jmp S32V28_q0_c5a_done
 
 S32V28_q0_c2a_overflow_tramp:
         jmp S32V28_q0_c2a_overflow
@@ -738,9 +748,7 @@ S32V28_q1_c3b_done:
 
         txa
         adc S32V28_z13
-        bcc S32V28_q1_c4a_done
-        iny
-        clc
+        bcs S32V28_q1_c4a_carry_cold
 S32V28_q1_c4a_done:
         adc S32V28_z31
         bcc S32V28_q1_c4b_done
@@ -752,17 +760,14 @@ S32V28_q1_c4b_done:
 
         tya
         adc S32V28_z32
-        bcc S32V28_q1_c5a_done
-        inc S32V28_z24
-        clc
+        bcs S32V28_q1_c5a_carry_cold
 S32V28_q1_c5a_done:
         adc S32V28_z23
         tay
 
         lda S32V28_z33
         adc S32V28_z24
-        bcc S32V28_q1_signed_correction_ready
-        inc S32V28_r7
+        bcs S32V28_q1_c6_carry_cold
 S32V28_q1_signed_correction_ready:
         sta S32V28_z33
         txa
@@ -782,6 +787,18 @@ S32V28_q1_signed_correction_ready:
         sta MATH_IO+$08
         clc
         rts
+
+S32V28_q1_c4a_carry_cold:
+        iny
+        clc
+        jmp S32V28_q1_c4a_done
+S32V28_q1_c5a_carry_cold:
+        inc S32V28_z24
+        clc
+        jmp S32V28_q1_c5a_done
+S32V28_q1_c6_carry_cold:
+        inc S32V28_r7
+        jmp S32V28_q1_signed_correction_ready
 
 S32V28_q1_c2a_overflow_tramp:
         jmp S32V28_q1_c2a_overflow
