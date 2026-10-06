@@ -353,7 +353,9 @@ S32V28_q2_c3b_done:
 
         txa
         adc S32V28_z13
-        bcs S32V28_q2_c4a_carry
+        bcc S32V28_q2_c4a_done
+        iny
+        clc
 S32V28_q2_c4a_done:
         adc S32V28_z31
         bcc S32V28_q2_c4b_done
@@ -366,14 +368,17 @@ S32V28_q2_c4b_done:
 
         tya
         adc S32V28_z32
-        bcs S32V28_q2_c5a_carry
+        bcc S32V28_q2_c5a_done
+        inc S32V28_z24
+        clc
 S32V28_q2_c5a_done:
         adc S32V28_z23
         tay
 
         lda S32V28_z33
         adc S32V28_z24
-        bcs S32V28_q2_final_carry
+        bcc S32V28_q2_signed_correction
+        inc S32V28_r7
 S32V28_q2_signed_correction:
         ; S32V28_z33 is dead after the final column: use it as the byte6 temporary.
         sta S32V28_z33
@@ -394,20 +399,6 @@ S32V28_q2_signed_correction:
         sta MATH_IO+$08
         clc
         rts
-
-S32V28_q2_c4a_carry:
-        iny
-        clc
-        jmp S32V28_q2_c4a_done
-
-S32V28_q2_c5a_carry:
-        inc S32V28_z24
-        clc
-        jmp S32V28_q2_c5a_done
-
-S32V28_q2_final_carry:
-        inc S32V28_r7
-        jmp S32V28_q2_signed_correction
 
 S32V28_q2_c2a_overflow:
         inc S32V28_z31
