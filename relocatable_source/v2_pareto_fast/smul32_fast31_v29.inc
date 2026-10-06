@@ -135,123 +135,110 @@ S32V28__neg_hi_3:
         bpl S32V28_row_loop
 
 S32V28_summation:
-        ; Bounded-carry column summation. FAST31 exits with X=$FF and row-0
-        ; top byte in A; INX/TAY maps that state to the validated compact core.
-        inx
-        tay
+        tax
+        ldy S32V28_z14
         clc
 
         lda S32V28_z01
         adc S32V28_z10
         sta MATH_IO+$09
 
-        lda S32V28_z20
-        adc S32V28_z11
-        bcc S32V28_hy_c2_first_done
-        inx
+        lda S32V28_z11
+        adc S32V28_z20
+        bcc S32V28_c2a_done
+        inc S32V28_z30
+        beq S32V28_c2a_overflow
         clc
-S32V28_hy_c2_first_done:
+S32V28_c2a_done:
         adc S32V28_z02
         sta MATH_IO+$0A
 
-        lda S32V28_z03
-        adc S32V28_z12
-        bcc S32V28_hy_c3_path0
-        iny
-        cpx #1
-        adc S32V28_z30
-        bcc S32V28_hy_c3_done
+        lda S32V28_z12
+        adc S32V28_z03
+        bcc S32V28_c3a_done
+        inx
         clc
-        iny
-        bne S32V28_hy_c3_done
-        jmp S32V28_hy_c3_over_imp
-S32V28_hy_c3_path0:
+S32V28_c3a_done:
         adc S32V28_z30
-        bcc S32V28_hy_c3_path0_noinc
-        iny
-S32V28_hy_c3_path0_noinc:
-        cpx #1
-S32V28_hy_c3_done:
+        bcc S32V28_c3b_done
+        inx
+        ; NN feeds |X| <= $80000000 to the producer. X entered summation as
+        ; row0 byte4=floor(|X|*y0/2^32) <= $7f; two increments cannot wrap.
+        clc
+S32V28_c3b_done:
         adc S32V28_z21
         sta MATH_IO+$0B
 
-        tya
-        adc S32V28_z22
-        bcs S32V28_bc_c4a_k1
-        adc S32V28_z31
-        bcs S32V28_bc_c4b_k1
-S32V28_bc_c4_k0_common:
+        txa
         adc S32V28_z13
-        tay
-        lda S32V28_z14
+        bcs S32V28_c4a_carry
+S32V28_c4a_done:
+        adc S32V28_z31
+        bcc S32V28_c4b_done
+        iny
+        ; z14 is row1 byte4 with the same <= $7f bound; no wrap is possible.
+        clc
+S32V28_c4b_done:
+        adc S32V28_z22
+        sta MATH_IO+$0C
+
+        tya
         adc S32V28_z32
-        bcs S32V28_bc_c5b_k1_m0
+        bcs S32V28_c5a_carry
+S32V28_c5a_done:
         adc S32V28_z23
-        tax
-        lda S32V28_z24
-        adc S32V28_z33
-        bcs S32V28_bc_final_carry
-S32V28_bc_output:
-        sty MATH_IO+$0C
-        stx MATH_IO+$0D
+        sta MATH_IO+$0D
+
+        lda S32V28_z33
+        adc S32V28_z24
+        ; FAST31 base producer is private to NN. Materialize the byte6 carry
+        ; directly into result byte7, avoiding BCC/INC and the later reload.
         sta MATH_IO+$0E
         lda S32V28_r7
+        adc #0
         sta MATH_IO+$0F
         lda S32V28_r0
         sta MATH_IO+$08
         rts
 
-S32V28_bc_c5b_k1_m0:
+S32V28_c4a_carry:
+        iny
         clc
-S32V28_bc_c5b_k1_m1:
-        adc S32V28_z23
-        tax
-        lda S32V28_z24
-        adc S32V28_z33
-        bcs S32V28_bc_c6_done
-        adc #1
-        bcs S32V28_bc_final_carry
-        jmp S32V28_bc_output
-S32V28_bc_c6_done:
-        adc #0
-        jmp S32V28_bc_final_carry
-S32V28_bc_final_carry:
-        inc S32V28_r7
-        clc
-        jmp S32V28_bc_output
-S32V28_bc_c4a_k1:
-        clc
-        adc S32V28_z31
-        bcc S32V28_bc_c4b_one_clear
-S32V28_bc_c4b_k2:
-        inc S32V28_z14
-S32V28_bc_c4b_k1:
-        clc
-S32V28_bc_c4b_one_clear:
-        adc S32V28_z13
-        tay
-        lda S32V28_z14
-        adc S32V28_z32
-        bcs S32V28_bc_c5b_k1_m1
-S32V28_bc_c5b_k0_m1_alt:
-        sec
-S32V28_bc_c5b_k0_m0_alt:
-        adc S32V28_z23
-        tax
-        lda S32V28_z24
-        adc S32V28_z33
-        bcs S32V28_bc_final_carry
-        jmp S32V28_bc_output
+        jmp S32V28_c4a_done
 
-S32V28_hy_c3_over_imp:
-        inc S32V28_z32
-        bne S32V28_hy_c3_over_done
-        inc S32V28_z33
-        bne S32V28_hy_c3_over_done
-        inc S32V28_r7
-S32V28_hy_c3_over_done:
+S32V28_c5a_carry:
+        inc S32V28_z24
         clc
-        jmp S32V28_hy_c3_done
+        jmp S32V28_c5a_done
+
+S32V28_c2a_overflow:
+        inc S32V28_z31
+        bne S32V28_c2a_overflow_done
+        inc S32V28_z32
+        bne S32V28_c2a_overflow_done
+        inc S32V28_z33
+        bne S32V28_c2a_overflow_done
+        inc S32V28_z34
+S32V28_c2a_overflow_done:
+        clc
+        jmp S32V28_c2a_done
+
+S32V28_c3b_overflow:
+        inc S32V28_z32
+        bne S32V28_c3b_overflow_done
+        inc S32V28_z33
+        bne S32V28_c3b_overflow_done
+        inc S32V28_z34
+S32V28_c3b_overflow_done:
+        clc
+        jmp S32V28_c3b_done
+S32V28_c4b_overflow:
+        inc S32V28_z33
+        bne S32V28_c4b_overflow_done
+        inc S32V28_z34
+S32V28_c4b_overflow_done:
+        clc
+        jmp S32V28_c4b_done
 S32V28_cg_code_end:
 ; MATH_INIT installs all six pointer high bytes; five now persist in profile-owned ZP holes.
 *= REG_KERNEL+$1500
@@ -539,16 +526,12 @@ S32V28_q0__neg_hi_3:
         bpl S32V28_q0_row_loop
 
 S32V28_q0_summation:
-        ; Bounded-carry column summation. FAST31 exits with X=$FF and row-0
-        ; top byte in A; INX/TAY maps that state to the validated compact core.
         inx
         tay
         clc
-
         lda S32V28_z01
         adc S32V28_z10
         sta MATH_IO+$09
-
         lda S32V28_z20
         adc S32V28_z11
         bcc S32V28_q0_hy_c2_first_done
@@ -557,7 +540,6 @@ S32V28_q0_summation:
 S32V28_q0_hy_c2_first_done:
         adc S32V28_z02
         sta MATH_IO+$0A
-
         lda S32V28_z03
         adc S32V28_z12
         bcc S32V28_q0_hy_c3_path0
@@ -578,7 +560,6 @@ S32V28_q0_hy_c3_path0_noinc:
 S32V28_q0_hy_c3_done:
         adc S32V28_z21
         sta MATH_IO+$0B
-
         tya
         adc S32V28_z22
         bcs S32V28_q0_bc_c4a_k1
@@ -604,7 +585,6 @@ S32V28_q0_bc_output:
         lda S32V28_r0
         sta MATH_IO+$08
         rts
-
 S32V28_q0_bc_c5b_k1_m0:
         clc
 S32V28_q0_bc_c5b_k1_m1:
@@ -646,7 +626,6 @@ S32V28_q0_bc_c5b_k0_m0_alt:
         adc S32V28_z33
         bcs S32V28_q0_bc_final_carry
         jmp S32V28_q0_bc_output
-
 S32V28_q0_hy_c3_over_imp:
         inc S32V28_z32
         bne S32V28_q0_hy_c3_over_done
