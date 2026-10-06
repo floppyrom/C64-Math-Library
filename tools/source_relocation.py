@@ -87,13 +87,13 @@ MULTIPLY_REFRESH_INCLUDES={
   'smul24_fast24_composed.inc','umul24_fast24_shared.inc',
   'smul16_fast17_composed.inc','smul16_shr8_selected.inc'),
  'v2_pareto_fast':(
-  'smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
+  '../multiply/umul16_directout.asm','smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
   'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
  'v3_reu_512k':(
-  'smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
+  '../multiply/umul16_directout.asm','smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
   'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
  'v4_reu_16m':(
-  'smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
+  '../multiply/umul16_directout.asm','smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
   'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
 }
 
@@ -108,12 +108,15 @@ MULTIPLY_REFRESH_DECODE_EXCLUDE={
   (0x6900,0x69fa),(0x6a41,0x6a76),(0x6b7c,0x6c8b),(0x7100,0x7140),
   (0xcc00,0xcc73)),
  'v2_pareto_fast':_REFRESH_COMMON+(
+  (0x3020,0x3045),(0x53ec,0x5471),
   (0x2300,0x2376),(0x3500,0x35fa),(0x397c,0x3a8b),(0x5500,0x560c),
   (0x5800,0x58fa),(0x5900,0x5956),(0xca32,0xcb25)),
  'v3_reu_512k':_REFRESH_COMMON+(
+  (0x3020,0x3045),(0x53ec,0x5471),
   (0x3500,0x35fa),(0x467c,0x478b),(0x5132,0x5225),(0x5500,0x560c),
   (0x5800,0x58fa),(0x5900,0x5956),(0x6c00,0x6c76)),
  'v4_reu_16m':_REFRESH_COMMON+(
+  (0x3020,0x3045),(0x53ec,0x5471),
   (0x3500,0x35fa),(0x467c,0x478b),(0x5132,0x5225),(0x5500,0x560c),
   (0x5800,0x58fa),(0x5900,0x5956),(0x6c00,0x6c76)),
 }
