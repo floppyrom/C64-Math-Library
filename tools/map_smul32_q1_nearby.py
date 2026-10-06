@@ -34,3 +34,13 @@ while a<=hi:
     if not used or b-a+1>=16:
         print(("USED" if used else "FREE"),f"0x{a:04x}-0x{b:04x}",b-a+1)
     a=b+1
+
+print("relocatable_free_runs_ge16")
+for lo,hi,label in [(0x1000,0x2fff,"REG_LOW"),(0x3000,0x3fff,"REG_API"),(0x4000,0x5dff,"REG_KERNEL")]:
+    a=lo
+    while a<=hi:
+        used=a in mem; b=a
+        while b+1<=hi and ((b+1 in mem)==used): b+=1
+        if not used and b-a+1>=16:
+            print(label,f"0x{a:04x}-0x{b:04x}",b-a+1)
+        a=b+1
