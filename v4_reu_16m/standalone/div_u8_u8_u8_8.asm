@@ -6,39 +6,76 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 25.
+; Reachable instructions: 58.
 !cpu 6510
 
 ; ---- executable island $3120 ----
 * = $3120
 div_u8_u8_u8_8:
 MATH_UDIV8:
-    jmp L3A00                          ; @3120 4C 00 3A
-; ---- executable island $3A00 ----
-* = $3A00
-L3A00:
-    lda $C010                          ; @3A00 AD 10 C0
-    sta $DF04                          ; @3A03 8D 04 DF
-    lda $C014                          ; @3A06 AD 14 C0
-    beq L3A30                          ; @3A09 F0 25
-    sta $DF05                          ; @3A0B 8D 05 DF
-    lda #$02                           ; @3A0E A9 02
-    sta $DF06                          ; @3A10 8D 06 DF
-    lda #$81                           ; @3A13 A9 81
-    sta $DF01                          ; @3A15 8D 01 DF
-    lda $C020                          ; @3A18 AD 20 C0
-    sta $C018                          ; @3A1B 8D 18 C0
-    lda #$03                           ; @3A1E A9 03
-    sta $DF06                          ; @3A20 8D 06 DF
-    lda #$81                           ; @3A23 A9 81
-    sta $DF01                          ; @3A25 8D 01 DF
-    lda $C020                          ; @3A28 AD 20 C0
-    sta $C01C                          ; @3A2B 8D 1C C0
-    clc                                ; @3A2E 18
-    rts                                ; @3A2F 60
-L3A30:
-    lda #$00                           ; @3A30 A9 00
-    sta $C018                          ; @3A32 8D 18 C0
-    sta $C01C                          ; @3A35 8D 1C C0
-    sec                                ; @3A38 38
-    rts                                ; @3A39 60
+    jmp L4D00                          ; @3120 4C 00 4D
+; ---- executable island $4D00 ----
+* = $4D00
+L4D00:
+    lda $C014                          ; @4D00 AD 14 C0
+    beq L4D7B                          ; @4D03 F0 76
+    lda $C010                          ; @4D05 AD 10 C0
+    cmp $C014                          ; @4D08 CD 14 C0
+    bcc L4D53                          ; @4D0B 90 46
+    sbc $C014                          ; @4D0D ED 14 C0
+    cmp $C014                          ; @4D10 CD 14 C0
+    bcc L4D5D                          ; @4D13 90 48
+    sbc $C014                          ; @4D15 ED 14 C0
+    cmp $C014                          ; @4D18 CD 14 C0
+    bcc L4D67                          ; @4D1B 90 4A
+    sbc $C014                          ; @4D1D ED 14 C0
+    cmp $C014                          ; @4D20 CD 14 C0
+    bcc L4D71                          ; @4D23 90 4C
+    lda $C010                          ; @4D25 AD 10 C0
+    sta $DF04                          ; @4D28 8D 04 DF
+    lda $C014                          ; @4D2B AD 14 C0
+    sta $DF05                          ; @4D2E 8D 05 DF
+    lda #$02                           ; @4D31 A9 02
+    sta $DF06                          ; @4D33 8D 06 DF
+    lda #$81                           ; @4D36 A9 81
+    sta $DF01                          ; @4D38 8D 01 DF
+    lda $C020                          ; @4D3B AD 20 C0
+    sta $C018                          ; @4D3E 8D 18 C0
+    lda #$03                           ; @4D41 A9 03
+    sta $DF06                          ; @4D43 8D 06 DF
+    lda #$81                           ; @4D46 A9 81
+    sta $DF01                          ; @4D48 8D 01 DF
+    lda $C020                          ; @4D4B AD 20 C0
+    sta $C01C                          ; @4D4E 8D 1C C0
+    clc                                ; @4D51 18
+    rts                                ; @4D52 60
+L4D53:
+    sta $C01C                          ; @4D53 8D 1C C0
+    lda #$00                           ; @4D56 A9 00
+    sta $C018                          ; @4D58 8D 18 C0
+    clc                                ; @4D5B 18
+    rts                                ; @4D5C 60
+L4D5D:
+    sta $C01C                          ; @4D5D 8D 1C C0
+    lda #$01                           ; @4D60 A9 01
+    sta $C018                          ; @4D62 8D 18 C0
+    clc                                ; @4D65 18
+    rts                                ; @4D66 60
+L4D67:
+    sta $C01C                          ; @4D67 8D 1C C0
+    lda #$02                           ; @4D6A A9 02
+    sta $C018                          ; @4D6C 8D 18 C0
+    clc                                ; @4D6F 18
+    rts                                ; @4D70 60
+L4D71:
+    sta $C01C                          ; @4D71 8D 1C C0
+    lda #$03                           ; @4D74 A9 03
+    sta $C018                          ; @4D76 8D 18 C0
+    clc                                ; @4D79 18
+    rts                                ; @4D7A 60
+L4D7B:
+    lda #$00                           ; @4D7B A9 00
+    sta $C018                          ; @4D7D 8D 18 C0
+    sta $C01C                          ; @4D80 8D 1C C0
+    sec                                ; @4D83 38
+    rts                                ; @4D84 60
