@@ -1,3 +1,10 @@
+2026-10-06 V3/V4 TURBO16 DIRECT-RESULT OPTIMIZATION
+- Turbo16 CALL: 215.544111 -> 205.544111 cycles mean; min/max 203-240 -> 193-230.
+- Exact 113-byte ZP overlay preserved; legal origins remain $02-$8F.
+- 2,098-case reference/alternate corpus and endpoint cycle-vector sweeps pass.
+- BEGIN/END remain 282/327 cycles; crossover versus normal UMUL16 is now 31 products.
+- QS16 remains supported but is not a speed tier.
+
 2026-10-06 V3/V4 REU UDIV8 HYBRID FAST PATH
 - q=0..3 now returns directly on the CPU; q>=4 falls back to the exact existing REU quotient/remainder planes.
 - Exhaustive 65,536-case mean is 52.852264 cycles (28-115) in both V3 and V4, down from 70.863281.
