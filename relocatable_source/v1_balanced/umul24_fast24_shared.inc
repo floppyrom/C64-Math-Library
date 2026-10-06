@@ -130,7 +130,7 @@ U24_y0=*+1
 U24_row2:
         lda (U24_p0),y
         adc (U24_p1),y
-        sta U24_r0
+        sta MATH_IO+$08
         lda (U24_p2),y
         adc (U24_p3),y
         adc (U24_p4),y
@@ -154,7 +154,7 @@ U24_summation:
         clc
 U24_v01:    lda #0
 U24_v10:    adc #0
-        sta U24_r1
+        sta MATH_IO+$09
 U24_v02:    lda #0
 U24_v11:    adc #0
         bcc U24_column2
@@ -162,7 +162,7 @@ U24_v11:    adc #0
         clc
 U24_column2:
 U24_v20:    adc #0
-        sta U24_r2
+        sta MATH_IO+$0A
         tya
 U24_v12:    adc #0
         bcc U24_column3
@@ -229,12 +229,6 @@ U24_FAST24_public_impl:
         sta MATH_IO+$0C
         stx MATH_IO+$0D
         sty MATH_IO+$0B
-        lda U24_r0
-        sta MATH_IO+$08
-        lda U24_r1
-        sta MATH_IO+$09
-        lda U24_r2
-        sta MATH_IO+$0A
         clc
         rts
 
