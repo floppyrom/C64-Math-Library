@@ -1,0 +1,24 @@
+name: Research SMUL32 q1 bounded
+
+on:
+  push:
+    branches:
+      - research/smul32-q1-bounded-swapped-v1
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  q1-bounded:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Profile swapped bounded q1
+        run: python3 tools/profile_smul32_q1_bounded.py
