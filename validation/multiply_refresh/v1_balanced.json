@@ -10,9 +10,9 @@
       "errors": 0
     },
     "MATH_UMUL24": {
-      "mean_cycles": 489.9887920298879,
-      "min_cycles": 462,
-      "max_cycles": 542,
+      "mean_cycles": 471.9887920298879,
+      "min_cycles": 444,
+      "max_cycles": 524,
       "cases": 2409,
       "errors": 0
     },
@@ -38,9 +38,9 @@
       "errors": 0
     },
     "MATH_SMUL16_SHR8": {
-      "mean_cycles": 333.8672322861729,
-      "min_cycles": 301,
-      "max_cycles": 366,
+      "mean_cycles": 323.8672322861729,
+      "min_cycles": 291,
+      "max_cycles": 356,
       "cases": 4361,
       "errors": 0
     },

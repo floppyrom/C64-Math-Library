@@ -1,3 +1,9 @@
+2026-10-06 SMUL32 FAST31 SUMMATION FOLLOW-UP
+- V2/V3/V4 keep the 31-ZP persistent-pointer FAST31 core but reorder late-column carry paths and remove wrap checks proven unreachable by signed positive-magnitude bounds.
+- Exact 20,324-case V2 A/B: 722.867792 -> 720.762498 mean (-2.105294), min 632 -> 630, max 845 unchanged; zero errors.
+- Canonical SMUL32 means: 713.643005 / 714.019095 / 714.095475. Shared-corpus V2/V3/V4 timing is identical. SMUL32_SHR16: 782.934189 (695-910).
+- Public ABI, four-row producer, 31-ZP footprint and zero persistent stack-page reservation are unchanged.
+
 2026-10-06 MUL16 SHR8 REGISTER-RETURN
 - UMUL16_SHR8: -10 cycles V1/V5, -14 cycles V2/V3/V4. SMUL16_SHR8: -10 cycles all profiles. Stable entries/resource contracts unchanged.
 

@@ -1,3 +1,11 @@
+## 2026-10-06 — V2–V4 SMUL32 bounded-carry summation follow-up
+
+- Tightened the existing FAST31/V29 signed 32×32 summation without changing the four-row quarter-square producer, 31-byte ZP contract, persistent-pointer layout, public ABI, or stack usage.
+- Reordered measured carry sites so the common no-carry cases fall through, and removed late-column wrap checks that are unreachable under the positive-magnitude bounds already guaranteed by the signed quadrant dispatcher.
+- Exact 20,324-case V2 A/B comparison: **722.867792 → 720.762498 cycles mean** (**−2.105294**), minimum **632 → 630**, maximum unchanged at **845**, with zero errors.
+- Canonical 2,409-case public `MATH_SMUL32` means are now **713.643005 / 714.019095 / 714.095475** cycles in V2/V3/V4; a shared 20,324-case corpus is cycle-identical at **720.762498** in all three profiles.
+- `MATH_SMUL32_SHR16` improves to **782.934189 cycles mean (695–910)** in V2/V3/V4. Resident PRGs, standalone/native signed mirrors, consolidated tables, validation evidence, release hashes and package checksums were regenerated from canonical source.
+
 ## 2026-10-06 — all-profile 16-bit fixed-point register-return adapters
 
 - Replaced the byte-copy tails in `MATH_UMUL16_SHR8` and `MATH_SMUL16_SHR8` with register-return adapters while preserving the stable public entries and base multiply implementations.

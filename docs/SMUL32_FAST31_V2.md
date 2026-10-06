@@ -40,11 +40,17 @@ Together these changes account for the measured reduction from 697.259440 to 692
 
 The low-resource work is now integrated into V2–V4 using a profile-native mixed-call-safe pointer layout. **All six** FAST31 table-pointer pairs live in holes already covered by the normal profile ZP ownership map, so ordinary calls no longer need the old pointer-high repair at all. `MATH_INIT` installs the persistent high bytes.
 
-The persistent-pointer integration first removed 25 cycles from ordinary signed `MATH_SMUL32`/`MATH_SMUL32_SHR16`. A follow-up then removed the redundant 3-cycle stable-entry self-redirect, for a total **−28 cycles** versus the pre-integration signed public path. Unsigned `MATH_UMUL32`/`MATH_UMUL32_SHR16` remain **−22 cycles** from the persistent-pointer change. READY timings are unchanged. The canonical 2,409-case signed-corpus means are:
+The persistent-pointer integration first removed 25 cycles from ordinary signed `MATH_SMUL32`/`MATH_SMUL32_SHR16`. A follow-up then removed the redundant 3-cycle stable-entry self-redirect, for a total **−28 cycles** versus the pre-integration signed public path. Unsigned `MATH_UMUL32`/`MATH_UMUL32_SHR16` remain **−22 cycles** from the persistent-pointer change.
 
-- **V2: 715.605230 cycles**
-- **V3: 716.033209 cycles**
-- **V4: 716.090079 cycles**
+A further summation pass now exploits bounds that are already guaranteed by the signed quadrant dispatcher. In the NN/q0/q1 positive-magnitude producers, the relevant row-top bytes cannot wrap at several late-column carry sites. The hot no-carry paths were therefore made fall-through and the impossible wrap checks removed, while the actual carry work moved to cold helpers. The four-row quarter-square producer, the 31-byte ZP contract, the public ABI and the persistent-pointer layout are unchanged.
+
+On an exact 20,324-case A/B corpus, shipped V2 improves from **722.867792** to **720.762498 cycles mean** (**−2.105294 cycles/call**), with the minimum improving **632 → 630** and the maximum remaining **845**. The canonical 2,409-case signed-corpus means are now:
+
+- **V2: 713.643005 cycles**
+- **V3: 714.019095 cycles**
+- **V4: 714.095475 cycles**
+
+The fixed-point derivative `MATH_SMUL32_SHR16` is now **782.934189 cycles mean (695–910)** in V2/V3/V4. Current READY means are **726.013672 / 726.623047 / 724.298828** on their profile-specific 1,024-case corpora.
 
 V2 remains comfortably inside its documented **221-byte total ZP commitment**; the regenerated stable-API union touches **207 bytes**. V3/V4 touch 202/201 bytes respectively. V3/V4 Turbo BEGIN may temporarily overlay the persistent bytes, and END restores their previous values exactly. V1/V5 retain the original all-in-`$02-$20` 31-ZP public layout because those profiles promise a 31-byte normal-ZP contract.
 
@@ -60,11 +66,6 @@ Evidence: `validation/review/SMUL32_FAST31_V2_TRANSPLANT.json`.
 
 ### V2/V3/V4 timing comparability
 
-The small difference between the profile-specific canonical means above is **benchmark-corpus noise, not a real V3/V4 slowdown**. The signed validator historically uses a different deterministic random seed for each profile. Re-running V2, V3 and V4 on the **same 2,409 input pairs** gives **716.569946 cycles in all three profiles**, with all **2,409 per-call cycle counts identical** for V3 vs V2 and V4 vs V2. The relocated V2 islands therefore have no runtime timing advantage on the reference map.
-
-
-### Why the V2/V3/V4 published means differ slightly
-
-The canonical signed validator intentionally uses a different deterministic random seed for each profile, so its published means (**715.605230 / 716.033209 / 716.090079**) are not measured on identical random inputs. A dedicated same-input check ran all three profiles on one shared 2,409-case corpus and obtained **716.569946 cycles in V2, V3 and V4**, with **zero per-call cycle differences across all 2,409 cases**. The small canonical spread is therefore corpus variation, not an intrinsic V3/V4 slowdown or a relocation/page-cross penalty.
+The small difference between the profile-specific canonical means above is **benchmark-corpus noise, not a real V3/V4 slowdown**. The signed validator intentionally uses a different deterministic random seed for each profile. A dedicated same-input check now runs all three optimized profiles on one shared **20,324-case** edge+random corpus and obtains **720.762498 cycles in V2, V3 and V4**, with zero errors. The relocated implementations therefore remain cycle-identical when the inputs are identical; the canonical spread (**713.643005 / 714.019095 / 714.095475**) comes from corpus variation, not a relocation or page-cross penalty.
 
 `compact126` remains the absolute native speed point at 646.354530 cycles, trading 136 ZP and 126 persistent page-$01 bytes for speed. FAST31 v2 is the low-resource record point: substantially slower, but it preserves the library's 31-ZP / stack-free practical contract.
