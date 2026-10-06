@@ -26,3 +26,5 @@ jobs:
         run: python3 tools/sweep_smul32_q2_phase.py
       - name: Benchmark quadrant asymmetry
         run: python3 tools/bench_smul32_quadrants.py
+      - name: Map q2 nearby executable space
+        run: python3 tools/map_smul32_q2_nearby.py
