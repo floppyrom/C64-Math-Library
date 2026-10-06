@@ -40,6 +40,16 @@ jobs:
             cp validation/review/SIGNED_MULTIPLY_VALIDATION.json "/tmp/${p}_signed.json"
           done
 
+      - name: Measure multiply-refresh derivatives
+        run: |
+          python3 tools/benchmark_multiply_refresh.py
+          python3 - <<'PY'
+          import json
+          d=json.load(open('validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json'))
+          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              print('SHR16',p,d['profiles'][p]['MATH_SMUL32_SHR16'])
+          PY
+
       - name: Published and shared-corpus SMUL32 timings
         run: |
           python3 - <<'PY'
