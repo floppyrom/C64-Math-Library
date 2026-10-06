@@ -1,3 +1,11 @@
+## 2026-10-06 — SMUL32 q2 correction tail-placement
+
+- Tail-placed the shared FAST31 q2 signed correction after the alternate bounded-carry continuation in V2/V3/V4; the four-row producer and q0/q1/NN paths are unchanged.
+- Canonical SMUL32 means improve to **712.623495 / 713.107929 / 713.133250 cycles**; min remains **630** and max improves **841 → 838**.
+- On the identical 20,324-case corpus all three profiles remain cycle-identical at **720.223332 cycles**, another **0.343043 cycles/call** below the previous q2-bounded release.
+- MATH_SMUL32_SHR16 is **781.884889 cycles mean (695–903)**; the 31-ZP / zero-persistent-stack contract and 291-byte q2 block are unchanged.
+- Full signed-multiply, multiply-refresh, published-source, deterministic rebuild, Turbo relocation/boundary and package gates pass.
+
 ## 2026-10-06 — SMUL32 q2 bounded-carry follow-up
 
 - Replaced only the FAST31 q2 (X<0, Y>=0) late-column summation in V2/V3/V4 with the validated bounded-carry state machine; q0/q1/NN and the four-row producer are unchanged.

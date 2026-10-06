@@ -92,12 +92,12 @@
         "MATH_SMUL32": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul32_native.asm",
           "instructions": 633,
-          "bytes_verified": 1338
+          "bytes_verified": 1337
         },
         "MATH_SMUL32_READY": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul32_ready_native.asm",
           "instructions": 634,
-          "bytes_verified": 1341
+          "bytes_verified": 1340
         },
         "MATH_SMUL16_SHR8": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul16_shr8_native.asm",
@@ -107,7 +107,7 @@
         "MATH_SMUL32_SHR16": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul32_shr16_native.asm",
           "instructions": 649,
-          "bytes_verified": 1382
+          "bytes_verified": 1381
         }
       },
       "division": {
@@ -163,12 +163,12 @@
         "MATH_SMUL32": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul32_native.asm",
           "instructions": 633,
-          "bytes_verified": 1338
+          "bytes_verified": 1337
         },
         "MATH_SMUL32_READY": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul32_ready_native.asm",
           "instructions": 634,
-          "bytes_verified": 1341
+          "bytes_verified": 1340
         },
         "MATH_SMUL16_SHR8": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul16_shr8_native.asm",
@@ -178,7 +178,7 @@
         "MATH_SMUL32_SHR16": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul32_shr16_native.asm",
           "instructions": 649,
-          "bytes_verified": 1382
+          "bytes_verified": 1381
         }
       },
       "division": {
@@ -234,12 +234,12 @@
         "MATH_SMUL32": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul32_native.asm",
           "instructions": 633,
-          "bytes_verified": 1338
+          "bytes_verified": 1337
         },
         "MATH_SMUL32_READY": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul32_ready_native.asm",
           "instructions": 634,
-          "bytes_verified": 1341
+          "bytes_verified": 1340
         },
         "MATH_SMUL16_SHR8": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul16_shr8_native.asm",
@@ -249,7 +249,7 @@
         "MATH_SMUL32_SHR16": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul32_shr16_native.asm",
           "instructions": 649,
-          "bytes_verified": 1382
+          "bytes_verified": 1381
         }
       },
       "division": {

@@ -1,0 +1,108 @@
+{
+  "status": "PASS",
+  "date": "2026-10-06",
+  "optimization": "Tail-place the shared q2 signed upper-half correction after the alternate bounded-carry continuation, so the hot no-final-carry q2 path branches directly into correction and the carry path falls through. The four-row producer, q0/q1/NN arithmetic, public ABI and resource contract are unchanged.",
+  "resource_contract": {
+    "zp_bytes": 31,
+    "persistent_stack_page_bytes": 0,
+    "producer_changed": false,
+    "public_abi_changed": false,
+    "q2_block_bytes": 291
+  },
+  "canonical": {
+    "v2_pareto_fast": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 712.6234952262349,
+      "min_cycles": 630,
+      "max_cycles": 838
+    },
+    "v3_reu_512k": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 713.1079286010793,
+      "min_cycles": 630,
+      "max_cycles": 838
+    },
+    "v4_reu_16m": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 713.1332503113325,
+      "min_cycles": 630,
+      "max_cycles": 838
+    }
+  },
+  "shared_20324_case_corpus": {
+    "description": "361 signed edge pairs plus 19,963 deterministic random pairs, identical across V2/V3/V4.",
+    "baseline_mean_cycles": 720.5663747293839,
+    "candidate_mean_cycles": 720.2233320212557,
+    "delta_cycles": -0.34304270812822324,
+    "min_cycles": 630,
+    "baseline_max_cycles": 841,
+    "candidate_max_cycles": 838,
+    "errors": 0,
+    "cycle_vectors_identical_across_v2_v3_v4": true
+  },
+  "q2_profile_20070": {
+    "description": "70 structured q2 edge pairs plus 20,000 deterministic random X<0,Y>=0 pairs.",
+    "baseline_mean_cycles": 727.560538,
+    "candidate_mean_cycles": 726.469507,
+    "delta_cycles": -1.091031,
+    "min_cycles": 668,
+    "baseline_max_cycles": 840,
+    "candidate_max_cycles": 838,
+    "errors": 0
+  },
+  "shifted_derivative": {
+    "v2_pareto_fast": {
+      "mean_cycles": 781.8848887869755,
+      "min_cycles": 695,
+      "max_cycles": 903,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v3_reu_512k": {
+      "mean_cycles": 781.8848887869755,
+      "min_cycles": 695,
+      "max_cycles": 903,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v4_reu_16m": {
+      "mean_cycles": 781.8848887869755,
+      "min_cycles": 695,
+      "max_cycles": 903,
+      "cases": 4361,
+      "errors": 0
+    }
+  },
+  "ready": {
+    "v2_pareto_fast": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 724.873046875,
+      "min_cycles": 641,
+      "max_cycles": 798
+    },
+    "v3_reu_512k": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 725.296875,
+      "min_cycles": 644,
+      "max_cycles": 810
+    },
+    "v4_reu_16m": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 723.177734375,
+      "min_cycles": 641,
+      "max_cycles": 820
+    }
+  },
+  "validation": {
+    "signed_multiply_calls": 264999,
+    "multiply_refresh_calls": 415078,
+    "turbo_relocation": "PASS",
+    "turbo_boundary_sweep": "PASS"
+  }
+}

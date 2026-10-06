@@ -92,9 +92,9 @@
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 782.2196743866086,
+        "mean_cycles": 781.8848887869755,
         "min_cycles": 695,
-        "max_cycles": 906,
+        "max_cycles": 903,
         "cases": 4361,
         "errors": 0
       }
@@ -136,9 +136,9 @@
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 782.2196743866086,
+        "mean_cycles": 781.8848887869755,
         "min_cycles": 695,
-        "max_cycles": 906,
+        "max_cycles": 903,
         "cases": 4361,
         "errors": 0
       }
@@ -180,9 +180,9 @@
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 782.2196743866086,
+        "mean_cycles": 781.8848887869755,
         "min_cycles": 695,
-        "max_cycles": 906,
+        "max_cycles": 903,
         "cases": 4361,
         "errors": 0
       }
