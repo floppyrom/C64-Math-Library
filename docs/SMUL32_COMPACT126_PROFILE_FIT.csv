@@ -1,0 +1,6 @@
+profile,fixed_public_selected,optional_exposure,ownership_model,zp_overlay,stack_page_overlay,ordinary_ram_overlay,table_geometry,reason
+v1_balanced,no,no,not-compatible,"$0A-$1F;$8E-$FF","$0100-$017D","$1200-$12F2;$1300-$133A","$7000;$7200;$7400;$7600","31-byte normal-ZP contract cannot host compact126"
+v2_pareto_fast,no,yes,manual-exclusive,"$0A-$1F;$8E-$FF","$0100-$017D","$1200-$12F2;$1300-$133A","$7000;$7200;$7400;$7600","aggregate resources fit only as an exclusive overlay; integrator must save/restore resident state"
+v3_reu_512k,no,yes,turbo-style-exclusive,"$0A-$1F;$8E-$FF","$0100-$017D","$1200-$12F2;$1300-$133A","$7000;$7200;$7400;$7600","REU/Turbo lifecycle makes an exclusive host natural; state still must be preserved/restored"
+v4_reu_16m,no,yes,turbo-style-exclusive,"$0A-$1F;$8E-$FF","$0100-$017D","$1200-$12F2;$1300-$133A","$7000;$7200;$7400;$7600","REU/Turbo lifecycle makes an exclusive host natural; state still must be preserved/restored"
+v5_hybrid_lowzp,no,no,not-compatible,"$0A-$1F;$8E-$FF","$0100-$017D","$1200-$12F2;$1300-$133A","$7000;$7200;$7400;$7600","31-byte normal-ZP contract cannot host compact126"
