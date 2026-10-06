@@ -1,0 +1,27 @@
+name: Research SMUL32 bounded candidate
+
+on:
+  push:
+    branches:
+      - research/smul32-bounded-sum-v1
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  bounded-smul32:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build and benchmark V2 candidate
+        run: python3 tools/bench_smul32_bounded_candidate.py
