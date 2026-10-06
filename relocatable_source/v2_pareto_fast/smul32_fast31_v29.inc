@@ -390,9 +390,6 @@ S32V28_q2_bc_c5b_k1_m1:
         bcs S32V28_q2_bc_final_carry
         ; BCS fallthrough guarantees C=0: same 3 cycles as JMP, one byte shorter.
         bcc S32V28_q2_signed_correction_ready
-S32V28_q2_bc_c6_done:
-        adc #0
-        jmp S32V28_q2_bc_final_carry
 S32V28_q2_bc_c4a_k1:
         clc
         adc S32V28_z31
@@ -415,6 +412,8 @@ S32V28_q2_bc_c5b_k0_m0_alt:
         lda S32V28_z24
         adc S32V28_z33
         bcc S32V28_q2_signed_correction_ready
+S32V28_q2_bc_c6_done:
+        adc #0
 S32V28_q2_bc_final_carry:
         inc S32V28_r7
 S32V28_q2_signed_correction_ready:
