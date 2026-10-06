@@ -1,0 +1,49 @@
+name: Turbo32 integration proof
+
+on:
+  push:
+    branches:
+      - fix-turbo32-runtime
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate and build reference/alternate sources
+        run: |
+          python3 tools/generate_sources.py
+          make reference
+          make alternate
+      - name: Validate Turbo relocation and boundaries
+        run: |
+          python3 tools/test_mini6502_illegal.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+      - name: Capture generated delta
+        shell: bash
+        run: |
+          git diff --binary > turbo32_generated.patch
+          git status --short > turbo32_status.txt
+          mkdir -p turbo32_artifact/relocatable_source/v3_reu_512k turbo32_artifact/relocatable_source/v4_reu_16m turbo32_artifact/validation/turbo_relocation
+          cp relocatable_source/v3_reu_512k/math_relocatable.asm turbo32_artifact/relocatable_source/v3_reu_512k/
+          cp relocatable_source/v4_reu_16m/math_relocatable.asm turbo32_artifact/relocatable_source/v4_reu_16m/
+          cp validation/turbo_relocation/TURBO_RELOCATION_VALIDATION.json turbo32_artifact/validation/turbo_relocation/
+          cp validation/turbo_relocation/TURBO_BOUNDARY_SWEEP.json turbo32_artifact/validation/turbo_relocation/
+          cp turbo32_generated.patch turbo32_status.txt turbo32_artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: turbo32-integration-proof
+          path: turbo32_artifact
+          retention-days: 3
