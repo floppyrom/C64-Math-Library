@@ -1,4 +1,4 @@
-name: SMUL32 bounded-sum experiment
+name: SMUL32 FAST31 summation experiment
 
 on:
   push:
@@ -15,98 +15,59 @@ env:
   PYTHONDONTWRITEBYTECODE: '1'
 
 jobs:
-  v2-smul32:
+  smul32-fast31:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Assemble V2 reference source
+
+      - name: Assemble V2-V4 reference sources
         run: |
-          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
-          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg \
-             v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
-      - name: Sweep late-column addition order
+          for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
+            python3 tools/assemble_sources.py --profile "$p" --config-kind reference --out build_source
+            cp "build_source/reference/$p/math_${p}_source_built.prg"                "$p/resident/math_${p}_game_math.prg"
+          done
+          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu              v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu              v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+
+      - name: Full signed multiply validation V2-V4
+        run: |
+          for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
+            python3 tools/validate_signed_multiply.py --profile "$p"
+            cp validation/review/SIGNED_MULTIPLY_VALIDATION.json "/tmp/${p}_signed.json"
+          done
+
+      - name: Published and shared-corpus SMUL32 timings
         run: |
           python3 - <<'PY'
-          from pathlib import Path
-          from itertools import permutations
-          import random, shutil, subprocess
+          import json, random
           from tools.validate_signed_multiply import load_profile, test_entry
 
-          src=Path('relocatable_source/v2_pareto_fast/smul32_fast31_v29.inc')
-          base=src.read_text()
-          specs=[
-              ('Q0','S32V28_q0_summation:','S32V28_q0_cg_code_end:','S32V28_q0_',
-               lambda r:[(r.randrange(0x80000000),r.randrange(0x80000000)) for _ in range(3000)]),
-              ('Q1','S32V28_q1_summation:','S32V28_q1_cg_code_end:','S32V28_q1_',
-               lambda r:[(r.randrange(0x80000000),r.randrange(0x80000000,1<<32)) for _ in range(3000)]),
-              ('NN','S32V28_summation:','S32V28_cg_code_end:','S32V28_',
-               lambda r:[(r.randrange(0x80000000,1<<32),r.randrange(0x80000000,1<<32)) for _ in range(3000)]),
-          ]
+          profiles=['v2_pareto_fast','v3_reu_512k','v4_reu_16m']
+          for p in profiles:
+              d=json.load(open('/tmp/'+p+'_signed.json'))
+              r=d['profiles'][p]
+              print('PUBLISHED',p,'SMUL32',r['SMUL32'])
+              print('PUBLISHED',p,'SMUL32_READY',r['SMUL32_READY'])
 
-          def reorder(text,start,end,prefix,c4,c5):
-              a=text.index(start); b=text.index(end,a); q=text[a:b]
-              old4=[f'adc S32V28_z13',f'adc S32V28_z31',f'adc S32V28_z22']
-              old5=[f'adc S32V28_z32',f'adc S32V28_z23']
-              # These five forms occur exactly once in each summation block.
-              for i,x in enumerate(old4):
-                  if q.count(x)!=1: raise RuntimeError((prefix,x,q.count(x)))
-                  q=q.replace(x,f'ADC4_{i}')
-              for i,x in enumerate(old5):
-                  if q.count(x)!=1: raise RuntimeError((prefix,x,q.count(x)))
-                  q=q.replace(x,f'ADC5_{i}')
-              vals4=['S32V28_z13','S32V28_z31','S32V28_z22']
-              vals5=['S32V28_z32','S32V28_z23']
-              for i,v in enumerate(c4): q=q.replace(f'ADC4_{i}',f'adc {v}')
-              for i,v in enumerate(c5): q=q.replace(f'ADC5_{i}',f'adc {v}')
-              return text[:a]+q+text[b:]
-
-          for si,(tag,start,end,prefix,mkpairs) in enumerate(specs):
-              rng=random.Random(0x4F524400+si)
-              pairs=mkpairs(rng)
-              for p4 in permutations(['S32V28_z13','S32V28_z31','S32V28_z22']):
-                  for p5 in permutations(['S32V28_z32','S32V28_z23']):
-                      cand=reorder(base,start,end,prefix,p4,p5)
-                      src.write_text(cand)
-                      shutil.rmtree('build_order',ignore_errors=True)
-                      p=subprocess.run(['python3','tools/assemble_sources.py','--profile','v2_pareto_fast',
-                                        '--config-kind','reference','--out','build_order'],
-                                       text=True,capture_output=True)
-                      name='/'.join(x[-3:] for x in p4)+'+'+'/'.join(x[-3:] for x in p5)
-                      if p.returncode:
-                          print('ORD',tag,name,'ASSEMBLY_FAIL')
-                          continue
-                      shutil.copy2('build_order/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
-                                   'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg')
-                      cpu,api=load_profile('v2_pareto_fast')
-                      r=test_entry(cpu,api['MATH_SMUL32'],32,pairs)
-                      print(f'ORD {tag} {name} mean={r["mean_cycles"]:.6f} errors={r["errors"]}')
-          src.write_text(base)
-          PY
-      - name: Validate and print signed multiply timing
-        run: |
-          python3 tools/validate_signed_multiply.py --profile v2_pareto_fast
-          python3 - <<'PY'
-          import json
-          p=json.load(open('validation/review/SIGNED_MULTIPLY_VALIDATION.json'))
-          print(json.dumps(p['profiles']['v2_pareto_fast']['SMUL32'], indent=2))
-          print(json.dumps(p['profiles']['v2_pareto_fast']['SMUL32_READY'], indent=2))
-          PY
-          python3 - <<'PY'
-          import random
-          from tools.validate_signed_multiply import load_profile, test_entry
-          cpu,api=load_profile('v2_pareto_fast')
-          rng=random.Random(0x534D554C)
-          quadrants={
-              'PP':[(rng.randrange(0x80000000),rng.randrange(0x80000000)) for _ in range(10000)],
-              'PN':[(rng.randrange(0x80000000),rng.randrange(0x80000000,1<<32)) for _ in range(10000)],
-              'NP':[(rng.randrange(0x80000000,1<<32),rng.randrange(0x80000000)) for _ in range(10000)],
-              'NN':[(rng.randrange(0x80000000,1<<32),rng.randrange(0x80000000,1<<32)) for _ in range(10000)],
-          }
-          for name,pairs in quadrants.items():
+          rng=random.Random(0x534D3334)
+          edge=[0,1,2,3,7,15,16,31,63,127,128,255,
+                0x7ffffffe,0x7fffffff,0x80000000,0x80000001,
+                0xfffffffe,0xffffffff]
+          pairs=[(x,y) for x in edge for y in edge]
+          pairs += [(rng.randrange(1<<32),rng.randrange(1<<32)) for _ in range(20000)]
+          seen={}
+          for p in profiles:
+              cpu,api=load_profile(p)
               r=test_entry(cpu,api['MATH_SMUL32'],32,pairs)
-              print('QUADRANT',name,r)
+              print('SHARED',p,r)
+              seen[p]=r
+          means={p:seen[p]['mean_cycles'] for p in profiles}
+          if len(set(means.values())) != 1:
+              raise SystemExit('shared-corpus SMUL32 means differ: '+repr(means))
+          if any(seen[p]['errors'] for p in profiles):
+              raise SystemExit('shared-corpus errors')
           PY
