@@ -28,11 +28,10 @@ S16_composed:
 S16_xneg:
         bit S16_y1
         bmi S16_nn
-        sty S16_saved_y0+1
         jsr S16_umult
         sec
 S16_saved_y0:
-        sbc #$00
+        sbc MATH_IO+$04
         sta S16_restore_a1+1
         tya
         sbc S16_y1
@@ -52,11 +51,10 @@ S16_restore_a2:
         lda #$00
         rts
 S16_nn:
-        sty S16_nn_y0+1
         sec
         lda #$00
 S16_nn_y0:
-        sbc #$00
+        sbc MATH_IO+$04
         tay
         lda #$00
         sbc S16_y1
