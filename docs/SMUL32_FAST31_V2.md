@@ -46,14 +46,16 @@ A further summation pass now exploits bounds that are already guaranteed by the 
 
 On an exact 20,324-case A/B corpus, shipped V2 improves from **722.867792** to **720.762498 cycles mean** (**−2.105294 cycles/call**), with the minimum improving **632 → 630** and the maximum remaining **845**. The canonical 2,409-case signed-corpus means are now:
 
-- **V2: 712.935243 cycles**
-- **V3: 713.365297 cycles**
-- **V4: 713.431714 cycles**
+- **V2: 712.623495 cycles**
+- **V3: 713.107929 cycles**
+- **V4: 713.133250 cycles**
 
 
 A subsequent **q2-only bounded-carry pass** replaces the late-column summation only for the X<0, Y>=0 quadrant. It reuses the compact126/validated UMUL32 bounded carry-state encoding after the existing four-row producer. The q0, q1 and NN paths remain on the previous optimized summation. On the shared 20,324-case corpus this reduces the overall mean from **721.297825 to 720.566375 cycles** (−0.731451), while q2 itself falls from **730.300079 to 727.363295 cycles**. The worst case improves from **845 to 841 cycles** with no change to the 31-ZP, stack-free resource contract.
 
-The fixed-point derivative `MATH_SMUL32_SHR16` is now **782.219674 cycles mean (695–906)** in V2/V3/V4. Current READY means are **725.257812 / 725.672852 / 723.503906** on their profile-specific 1,024-case corpora.
+A further **q2 tail-placement follow-up** moves the shared signed upper-half correction after the alternate bounded-carry continuation. This removes the hot alternate-path jump and converts its final carry test into a same-page fall-through without changing the producer or correction arithmetic. On the same shared 20,324-case corpus the mean falls from **720.566375 to 720.223332 cycles** (−0.343043), with identical cycle vectors in V2/V3/V4 and worst case **841 → 838**. A focused 20,070-case q2 corpus improves from **727.560538 to 726.469507 cycles** (−1.091031). The block remains 291 bytes and the 31-ZP / zero-persistent-stack contract is unchanged.
+
+The fixed-point derivative `MATH_SMUL32_SHR16` is now **781.884889 cycles mean (695–903)** in V2/V3/V4. Current READY means are **724.873047 / 725.296875 / 723.177734** on their profile-specific 1,024-case corpora.
 
 V2 remains comfortably inside its documented **221-byte total ZP commitment**; the regenerated stable-API union touches **207 bytes**. V3/V4 touch 202/201 bytes respectively. V3/V4 Turbo BEGIN may temporarily overlay the persistent bytes, and END restores their previous values exactly. V1/V5 retain the original all-in-`$02-$20` 31-ZP public layout because those profiles promise a 31-byte normal-ZP contract.
 
@@ -69,6 +71,6 @@ Evidence: `validation/review/SMUL32_FAST31_V2_TRANSPLANT.json`.
 
 ### V2/V3/V4 timing comparability
 
-The small difference between the profile-specific canonical means above is **benchmark-corpus noise, not a real V3/V4 slowdown**. The signed validator intentionally uses a different deterministic random seed for each profile. A dedicated same-input check now runs all three optimized profiles on one shared **20,324-case** edge+random corpus and obtains **720.566375 cycles in V2, V3 and V4**, with zero errors. The relocated implementations therefore remain cycle-identical when the inputs are identical; the canonical spread (**712.935243 / 713.365297 / 713.431714**) comes from corpus variation, not a relocation or page-cross penalty.
+The small difference between the profile-specific canonical means above is **benchmark-corpus noise, not a real V3/V4 slowdown**. The signed validator intentionally uses a different deterministic random seed for each profile. A dedicated same-input check now runs all three optimized profiles on one shared **20,324-case** edge+random corpus and obtains **720.223332 cycles in V2, V3 and V4**, with zero errors. The relocated implementations therefore remain cycle-identical when the inputs are identical; the canonical spread (**712.623495 / 713.107929 / 713.133250**) comes from corpus variation, not a relocation or page-cross penalty.
 
 `compact126` remains the absolute native speed point at 646.354530 cycles, trading 136 ZP and 126 persistent page-$01 bytes for speed. FAST31 v2 is the low-resource record point: substantially slower, but it preserves the library's 31-ZP / stack-free practical contract.

@@ -532,7 +532,7 @@ L5578:
     clc                                ; @558A 18
     iny                                ; @558B C8
     bne L5598                          ; @558C D0 0A
-    jmp L5616                          ; @558E 4C 16 56
+    jmp L5615                          ; @558E 4C 15 56
 L5591:
     adc $11                            ; @5591 65 11
     bcc L5596                          ; @5593 90 01
@@ -544,83 +544,83 @@ L5598:
     sta $C00B                          ; @559A 8D 0B C0
     tya                                ; @559D 98
     adc $14                            ; @559E 65 14
-    bcs L55F8                          ; @55A0 B0 56
+    bcs L55D0                          ; @55A0 B0 2E
     adc $20                            ; @55A2 65 20
-    bcs L55FF                          ; @55A4 B0 59
+    bcs L55D7                          ; @55A4 B0 31
     adc $17                            ; @55A6 65 17
     tay                                ; @55A8 A8
     lda $1A                            ; @55A9 A5 1A
     adc $15                            ; @55AB 65 15
-    bcs L55E2                          ; @55AD B0 33
+    bcs L55BB                          ; @55AD B0 0C
     adc $18                            ; @55AF 65 18
     tax                                ; @55B1 AA
     lda $1B                            ; @55B2 A5 1B
     adc $19                            ; @55B4 65 19
-    bcc L55BA                          ; @55B6 90 02
-L55B8:
-    inc $1C                            ; @55B8 E6 1C
-L55BA:
-    sta $19                            ; @55BA 85 19
-    tya                                ; @55BC 98
-    sec                                ; @55BD 38
-    sbc $C004                          ; @55BE ED 04 C0
-    sta $C00C                          ; @55C1 8D 0C C0
-    txa                                ; @55C4 8A
-    sbc $C005                          ; @55C5 ED 05 C0
-    sta $C00D                          ; @55C8 8D 0D C0
-    lda $19                            ; @55CB A5 19
-    sbc $C006                          ; @55CD ED 06 C0
-    sta $C00E                          ; @55D0 8D 0E C0
-    lda $1C                            ; @55D3 A5 1C
-    sbc $C007                          ; @55D5 ED 07 C0
-    sta $C00F                          ; @55D8 8D 0F C0
-    lda $0E                            ; @55DB A5 0E
-    sta $C008                          ; @55DD 8D 08 C0
-    clc                                ; @55E0 18
-    rts                                ; @55E1 60
-L55E2:
-    clc                                ; @55E2 18
-L55E3:
-    adc $18                            ; @55E3 65 18
-    tax                                ; @55E5 AA
-    lda $1B                            ; @55E6 A5 1B
-    adc $19                            ; @55E8 65 19
-    bcs L55F3                          ; @55EA B0 07
-    adc #$01                           ; @55EC 69 01
-    bcs L55B8                          ; @55EE B0 C8
-    jmp L55BA                          ; @55F0 4C BA 55
-L55F3:
-    adc #$00                           ; @55F3 69 00
-    jmp L55B8                          ; @55F5 4C B8 55
-L55F8:
-    clc                                ; @55F8 18
-    adc $20                            ; @55F9 65 20
-    bcc L5600                          ; @55FB 90 03
-    inc $1A                            ; @55FD E6 1A
-L55FF:
-    clc                                ; @55FF 18
-L5600:
-    adc $17                            ; @5600 65 17
-    tay                                ; @5602 A8
-    lda $1A                            ; @5603 A5 1A
-    adc $15                            ; @5605 65 15
-    bcs L55E3                          ; @5607 B0 DA
-    sec                                ; @5609 38
-    adc $18                            ; @560A 65 18
-    tax                                ; @560C AA
-    lda $1B                            ; @560D A5 1B
-    adc $19                            ; @560F 65 19
-    bcs L55B8                          ; @5611 B0 A5
-    jmp L55BA                          ; @5613 4C BA 55
-L5616:
-    inc $15                            ; @5616 E6 15
-    bne L5620                          ; @5618 D0 06
-    inc $19                            ; @561A E6 19
-    bne L5620                          ; @561C D0 02
-    inc $1C                            ; @561E E6 1C
-L5620:
-    clc                                ; @5620 18
-    jmp L5598                          ; @5621 4C 98 55
+    bcc L55ED                          ; @55B6 90 35
+    jmp L55EB                          ; @55B8 4C EB 55
+L55BB:
+    clc                                ; @55BB 18
+L55BC:
+    adc $18                            ; @55BC 65 18
+    tax                                ; @55BE AA
+    lda $1B                            ; @55BF A5 1B
+    adc $19                            ; @55C1 65 19
+    bcs L55CB                          ; @55C3 B0 06
+    adc #$01                           ; @55C5 69 01
+    bcs L55EB                          ; @55C7 B0 22
+    bcc L55ED                          ; @55C9 90 22
+L55CB:
+    adc #$00                           ; @55CB 69 00
+    jmp L55EB                          ; @55CD 4C EB 55
+L55D0:
+    clc                                ; @55D0 18
+    adc $20                            ; @55D1 65 20
+    bcc L55D8                          ; @55D3 90 03
+    inc $1A                            ; @55D5 E6 1A
+L55D7:
+    clc                                ; @55D7 18
+L55D8:
+    adc $17                            ; @55D8 65 17
+    tay                                ; @55DA A8
+    lda $1A                            ; @55DB A5 1A
+    adc $15                            ; @55DD 65 15
+    bcs L55BC                          ; @55DF B0 DB
+    sec                                ; @55E1 38
+    adc $18                            ; @55E2 65 18
+    tax                                ; @55E4 AA
+    lda $1B                            ; @55E5 A5 1B
+    adc $19                            ; @55E7 65 19
+    bcc L55ED                          ; @55E9 90 02
+L55EB:
+    inc $1C                            ; @55EB E6 1C
+L55ED:
+    sta $19                            ; @55ED 85 19
+    tya                                ; @55EF 98
+    sec                                ; @55F0 38
+    sbc $C004                          ; @55F1 ED 04 C0
+    sta $C00C                          ; @55F4 8D 0C C0
+    txa                                ; @55F7 8A
+    sbc $C005                          ; @55F8 ED 05 C0
+    sta $C00D                          ; @55FB 8D 0D C0
+    lda $19                            ; @55FE A5 19
+    sbc $C006                          ; @5600 ED 06 C0
+    sta $C00E                          ; @5603 8D 0E C0
+    lda $1C                            ; @5606 A5 1C
+    sbc $C007                          ; @5608 ED 07 C0
+    sta $C00F                          ; @560B 8D 0F C0
+    lda $0E                            ; @560E A5 0E
+    sta $C008                          ; @5610 8D 08 C0
+    clc                                ; @5613 18
+    rts                                ; @5614 60
+L5615:
+    inc $15                            ; @5615 E6 15
+    bne L561F                          ; @5617 D0 06
+    inc $19                            ; @5619 E6 19
+    bne L561F                          ; @561B D0 02
+    inc $1C                            ; @561D E6 1C
+L561F:
+    clc                                ; @561F 18
+    jmp L5598                          ; @5620 4C 98 55
 ; ---- executable island $5E15 ----
 * = $5E15
 L5E15:

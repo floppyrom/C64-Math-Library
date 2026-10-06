@@ -1,3 +1,9 @@
+2026-10-06 SMUL32 Q2 CORRECTION TAIL-PLACEMENT
+- V2/V3/V4 move the q2 signed upper-half correction behind the alternate bounded-carry continuation, removing its hot-path jump.
+- Canonical SMUL32 means: 712.623495 / 713.107929 / 713.133250; min 630, max 838.
+- Shared 20,324-case mean: 720.223332 in all three profiles (-0.343043 versus the previous q2-bounded release).
+- SMUL32_SHR16: 781.884889 (695–903); q2 remains 291 bytes, 31 ZP, zero persistent stack.
+
 2026-10-06 SMUL32 Q2 BOUNDED-CARRY FOLLOW-UP
 - V2/V3/V4 replace only the negative-X/positive-Y FAST31 late-column summation with the validated bounded-carry state machine.
 - Canonical SMUL32 means: 712.935243 / 713.365297 / 713.431714; min 630, max 841.
