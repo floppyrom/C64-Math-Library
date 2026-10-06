@@ -24,6 +24,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Save shipped V2 baseline
+        run: |
+          mkdir -p /tmp/smul32-baseline
+          cp v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg /tmp/smul32-baseline/v2.prg
+
       - name: Assemble V2-V4 reference sources
         run: |
           for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
@@ -80,4 +85,38 @@ jobs:
               raise SystemExit('shared-corpus SMUL32 means differ: '+repr(means))
           if any(seen[p]['errors'] for p in profiles):
               raise SystemExit('shared-corpus errors')
+          PY
+
+      - name: Exact-corpus A/B against shipped V2 baseline
+        run: |
+          cp v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg /tmp/smul32-baseline/v2-candidate.prg
+          python3 - <<'PY'
+          import random, shutil
+          from tools.validate_signed_multiply import load_profile, test_entry
+
+          profile='v2_pareto_fast'
+          resident='v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg'
+          rng=random.Random(0x534D3334)
+          edge=[0,1,2,3,7,15,16,31,63,127,128,255,
+                0x7ffffffe,0x7fffffff,0x80000000,0x80000001,
+                0xfffffffe,0xffffffff]
+          pairs=[(x,y) for x in edge for y in edge]
+          pairs += [(rng.randrange(1<<32),rng.randrange(1<<32)) for _ in range(20000)]
+
+          def measure(label, src):
+              shutil.copyfile(src,resident)
+              cpu,api=load_profile(profile)
+              r=test_entry(cpu,api['MATH_SMUL32'],32,pairs)
+              print('AB',label,r)
+              if r['errors']:
+                  raise SystemExit(label+' errors')
+              return r
+
+          cand=measure('CANDIDATE','/tmp/smul32-baseline/v2-candidate.prg')
+          base=measure('BASELINE','/tmp/smul32-baseline/v2.prg')
+          print('AB DELTA mean',cand['mean_cycles']-base['mean_cycles'],
+                'min',cand['min_cycles']-base['min_cycles'],
+                'max',cand['max_cycles']-base['max_cycles'])
+          if cand['mean_cycles'] >= base['mean_cycles']:
+              raise SystemExit('candidate is not faster on exact shared corpus')
           PY
