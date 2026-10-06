@@ -1,4 +1,4 @@
-name: Evaluate FAST31 v2 carry-seeded transplant
+name: Confirm FAST31 direct-entry shifted timing
 on:
   push:
     branches: [smul32-fast31-v3-profile-integration]
@@ -30,6 +30,15 @@ jobs:
           p=json.load(open('validation/review/SIGNED_MULTIPLY_VALIDATION.json'))
           for prof in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
               print(prof, p['profiles'][prof]['SMUL32'])
+          PY
+      - name: Benchmark shifted multiply propagation
+        run: |
+          python3 tools/benchmark_multiply_refresh.py
+          python3 - <<'PY'
+          import json
+          p=json.load(open('validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json'))
+          for prof in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              print(prof, 'SMUL32_SHR16', p['profiles'][prof]['MATH_SMUL32_SHR16'])
           PY
       - name: Build alternate and validate public calls
         run: |
