@@ -1,3 +1,10 @@
+## 2026-10-06 — SMUL32 q2 page-layout micro-optimization
+
+- Replaced a carry-known three-byte JMP in the V2/V3/V4 q2 bounded tail with an always-taken two-byte BCC; execution cost is unchanged at that site, while the one-byte shrink pulls the hot c4b continuation back onto page $55.
+- Canonical SMUL32 means are **712.866750 / 713.307181 / 713.365297 cycles**; min remains **630**, max improves **841 → 840**.
+- Shared 20,324-case mean improves **720.566375 → 720.496900** (-0.069475); q2-focused mean improves **727.832586 → 727.560538**.
+- MATH_SMUL32_SHR16 is **782.152488 cycles mean (695–905)**. The 31-ZP / zero-persistent-stack contract, producer and ABI are unchanged.
+
 ## 2026-10-06 — SMUL32 q2 bounded-carry follow-up
 
 - Replaced only the FAST31 q2 (X<0, Y>=0) late-column summation in V2/V3/V4 with the validated bounded-carry state machine; q0/q1/NN and the four-row producer are unchanged.

@@ -1,0 +1,174 @@
+{
+  "status": "PASS",
+  "date": "2026-10-06",
+  "optimization": "Replace the carry-known q2 bounded-tail JMP with an always-taken BCC, shrinking the q2 island by one byte so the hot c4b continuation remains on page $55.",
+  "resource_contract": {
+    "zp_bytes": 31,
+    "persistent_stack_page_bytes": 0,
+    "producer_changed": false,
+    "public_abi_changed": false,
+    "q2_bytes_saved": 1
+  },
+  "results": {
+    "canonical": {
+      "v2_pareto_fast": {
+        "baseline": {
+          "cases": 2409,
+          "errors": 0,
+          "mean": 712.9352428393524,
+          "min": 630,
+          "max": 841
+        },
+        "candidate": {
+          "cases": 2409,
+          "errors": 0,
+          "mean": 712.8667496886675,
+          "min": 630,
+          "max": 840
+        },
+        "delta": -0.06849315068495798
+      },
+      "v3_reu_512k": {
+        "baseline": {
+          "cases": 2409,
+          "errors": 0,
+          "mean": 713.365296803653,
+          "min": 630,
+          "max": 841
+        },
+        "candidate": {
+          "cases": 2409,
+          "errors": 0,
+          "mean": 713.3071814030718,
+          "min": 630,
+          "max": 840
+        },
+        "delta": -0.058115400581186805
+      },
+      "v4_reu_16m": {
+        "baseline": {
+          "cases": 2409,
+          "errors": 0,
+          "mean": 713.4317144043172,
+          "min": 630,
+          "max": 841
+        },
+        "candidate": {
+          "cases": 2409,
+          "errors": 0,
+          "mean": 713.365296803653,
+          "min": 630,
+          "max": 840
+        },
+        "delta": -0.06641760066418101
+      }
+    },
+    "shared": {
+      "v2_pareto_fast": {
+        "baseline": {
+          "cases": 20324,
+          "errors": 0,
+          "mean": 720.5663747293839,
+          "min": 630,
+          "max": 841
+        },
+        "candidate": {
+          "cases": 20324,
+          "errors": 0,
+          "mean": 720.4969002164928,
+          "min": 630,
+          "max": 840
+        },
+        "delta": -0.0694745128911336
+      },
+      "v3_reu_512k": {
+        "baseline": {
+          "cases": 20324,
+          "errors": 0,
+          "mean": 720.5663747293839,
+          "min": 630,
+          "max": 841
+        },
+        "candidate": {
+          "cases": 20324,
+          "errors": 0,
+          "mean": 720.4969002164928,
+          "min": 630,
+          "max": 840
+        },
+        "delta": -0.0694745128911336
+      },
+      "v4_reu_16m": {
+        "baseline": {
+          "cases": 20324,
+          "errors": 0,
+          "mean": 720.5663747293839,
+          "min": 630,
+          "max": 841
+        },
+        "candidate": {
+          "cases": 20324,
+          "errors": 0,
+          "mean": 720.4969002164928,
+          "min": 630,
+          "max": 840
+        },
+        "delta": -0.0694745128911336
+      }
+    },
+    "q2": {
+      "v2_pareto_fast": {
+        "baseline": {
+          "cases": 20070,
+          "errors": 0,
+          "mean": 727.8325859491779,
+          "min": 668,
+          "max": 841
+        },
+        "candidate": {
+          "cases": 20070,
+          "errors": 0,
+          "mean": 727.5605381165919,
+          "min": 668,
+          "max": 840
+        },
+        "delta": -0.27204783258594034
+      },
+      "v3_reu_512k": {
+        "baseline": {
+          "cases": 20070,
+          "errors": 0,
+          "mean": 727.8325859491779,
+          "min": 668,
+          "max": 841
+        },
+        "candidate": {
+          "cases": 20070,
+          "errors": 0,
+          "mean": 727.5605381165919,
+          "min": 668,
+          "max": 840
+        },
+        "delta": -0.27204783258594034
+      },
+      "v4_reu_16m": {
+        "baseline": {
+          "cases": 20070,
+          "errors": 0,
+          "mean": 727.8325859491779,
+          "min": 668,
+          "max": 841
+        },
+        "candidate": {
+          "cases": 20070,
+          "errors": 0,
+          "mean": 727.5605381165919,
+          "min": 668,
+          "max": 840
+        },
+        "delta": -0.27204783258594034
+      }
+    },
+    "shared_vectors_identical": true
+  }
+}

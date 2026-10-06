@@ -1,3 +1,9 @@
+2026-10-06 SMUL32 Q2 PAGE-LAYOUT MICRO-OPTIMIZATION
+- V2/V3/V4 shorten one carry-known q2 bounded-tail transfer from JMP to BCC, keeping the hot continuation on one page.
+- Canonical means: 712.866750 / 713.307181 / 713.365297; min 630, max 840.
+- Shared 20,324-case mean: 720.496900; q2-focused mean: 727.560538.
+- 31-ZP, zero persistent stack, producer and public ABI unchanged.
+
 2026-10-06 SMUL32 Q2 BOUNDED-CARRY FOLLOW-UP
 - V2/V3/V4 replace only the negative-X/positive-Y FAST31 late-column summation with the validated bounded-carry state machine.
 - Canonical SMUL32 means: 712.935243 / 713.365297 / 713.431714; min 630, max 841.
