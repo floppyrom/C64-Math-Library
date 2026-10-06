@@ -13,9 +13,9 @@
         "errors": 0
       },
       "MATH_UMUL24": {
-        "mean_cycles": 489.9887920298879,
-        "min_cycles": 462,
-        "max_cycles": 542,
+        "mean_cycles": 471.9887920298879,
+        "min_cycles": 444,
+        "max_cycles": 524,
         "cases": 2409,
         "errors": 0
       },
@@ -41,9 +41,9 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 333.8672322861729,
-        "min_cycles": 301,
-        "max_cycles": 366,
+        "mean_cycles": 323.8672322861729,
+        "min_cycles": 291,
+        "max_cycles": 356,
         "cases": 4361,
         "errors": 0
       },
@@ -85,15 +85,15 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 293.4113735381793,
-        "min_cycles": 271,
-        "max_cycles": 334,
+        "mean_cycles": 283.4113735381793,
+        "min_cycles": 261,
+        "max_cycles": 324,
         "cases": 4361,
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 784.9988534739739,
-        "min_cycles": 697,
+        "mean_cycles": 782.9341894060996,
+        "min_cycles": 695,
         "max_cycles": 910,
         "cases": 4361,
         "errors": 0
@@ -129,15 +129,15 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 293.4113735381793,
-        "min_cycles": 271,
-        "max_cycles": 334,
+        "mean_cycles": 283.4113735381793,
+        "min_cycles": 261,
+        "max_cycles": 324,
         "cases": 4361,
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 784.9988534739739,
-        "min_cycles": 697,
+        "mean_cycles": 782.9341894060996,
+        "min_cycles": 695,
         "max_cycles": 910,
         "cases": 4361,
         "errors": 0
@@ -173,15 +173,15 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 293.4113735381793,
-        "min_cycles": 271,
-        "max_cycles": 334,
+        "mean_cycles": 283.4113735381793,
+        "min_cycles": 261,
+        "max_cycles": 324,
         "cases": 4361,
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 784.9988534739739,
-        "min_cycles": 697,
+        "mean_cycles": 782.9341894060996,
+        "min_cycles": 695,
         "max_cycles": 910,
         "cases": 4361,
         "errors": 0
@@ -196,9 +196,9 @@
         "errors": 0
       },
       "MATH_UMUL24": {
-        "mean_cycles": 489.9887920298879,
-        "min_cycles": 462,
-        "max_cycles": 542,
+        "mean_cycles": 471.9887920298879,
+        "min_cycles": 444,
+        "max_cycles": 524,
         "cases": 2409,
         "errors": 0
       },
@@ -224,9 +224,9 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 333.8672322861729,
-        "min_cycles": 301,
-        "max_cycles": 366,
+        "mean_cycles": 323.8672322861729,
+        "min_cycles": 291,
+        "max_cycles": 356,
         "cases": 4361,
         "errors": 0
       },
@@ -242,6 +242,6 @@
   "summary": {
     "profiles": 5,
     "machine_calls": 415078,
-    "elapsed_seconds": 23.6
+    "elapsed_seconds": 39.39
   }
 }
