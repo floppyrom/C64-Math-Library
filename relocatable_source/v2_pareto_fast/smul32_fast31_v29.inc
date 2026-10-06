@@ -850,7 +850,7 @@ S32V28_api_s31_v25_bind_q2:
         sta S32V28_neg_lo_2
         sta S32V28_q2__neg_hi_2+1
         ldx #3
-        sec
+        ; C=1 is inherited from dispatcher CPY #$00.
         jmp S32V28_q2_kernel
 
 *= REG_API+$0C00
@@ -893,13 +893,16 @@ S32V28_api_smul32_speed31_v26:
         lda MATH_IO+$03
         bpl S32V28_api_s31_v26_xpos
         ldy MATH_IO+$07
+        ; FAST31 v2 carry-seeded Y-sign test: CPY #0 always leaves C=1.
+        cpy #$00
         bmi S32V28_api_s31_v25_nn
         jmp S32V28_api_s31_v25_bind_q2
 
 S32V28_api_s31_v26_xpos:
         ldx #3
-        sec
         ldy MATH_IO+$07
+        ; Replaces the old SEC while preserving the Y sign in N.
+        cpy #$00
         bmi S32V28_api_s31_v25_bind_q1
 S32V28_api_s31_v25_bind_q0:
         sta S32V28_x3
@@ -933,8 +936,7 @@ S32V28_api_s31_v25_nn_xcarry_tramp:
 
 *= REG_API+$0CA6
 S32V28_api_s31_v25_nn:
-        ; BMI does not set carry; seed the two's-complement chain explicitly.
-        sec
+        ; C=1 is inherited from dispatcher CPY #$00.
         lda #0
         sbc MATH_IO
         sta S32V28__sqr_lo_0+1
