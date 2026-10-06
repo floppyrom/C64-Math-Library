@@ -506,7 +506,7 @@ In the shipped V2/V3/V4 profiles, `MATH_INIT` establishes **all six** FAST31 tab
 
 ### Division refresh 2026-09-20
 
-The current fixed profiles apply Repose-derived UDIV24 and follow-on direct-output optimizations profile-by-profile. V1/V2/V5 use the refreshed CPU UDIV8 path; V3/V4 retain their faster REU UDIV8/UMOD8 planes. Native signed division owns signed-specific executable paths, and the same-corpus pre/post audit reports zero timing regressions across 23 measured public division-family entries in every profile. See `docs/DIVISION_REFRESH_2026-09-20.md`.
+The current fixed profiles apply Repose-derived UDIV24 and follow-on direct-output optimizations profile-by-profile. V1/V2/V5 use the refreshed CPU UDIV8 path; V3/V4 use a hybrid UDIV8 that resolves quotient 0..3 on the CPU and falls back to the exact REU quotient/remainder planes for quotient 4+, while `UMOD8` retains its direct REU remainder lookup. Native signed division owns signed-specific executable paths. See `docs/DIVISION_REFRESH_2026-09-20.md`.
 
 ## 11. Unsigned division and modulo
 
@@ -1392,7 +1392,7 @@ The exact benchmark CSV files in `docs/` remain authoritative. A few useful head
 | UMUL16 | 273.84 | 225.84 | 225.84 | 225.84 |
 | UMUL24 | 489.99 | 448.29 | 448.29 | 448.29 |
 | UMUL32 | 712.24 | 712.24 | 712.24 | 712.24 |
-| UDIV8 | 87.45 | 87.45 | 70.86 | 70.86 |
+| UDIV8 | 59.57 | 59.38 | **52.85** | **52.85** |
 | UDIV16 | 160.06 | 137.28 | 137.28 | 137.28 |
 | UDIV32/16 | 857.37 | 759.73 | 759.73 | 759.73 |
 | URECIP16_Q16 | 126.18 | 119.58 | 66.23 | 66.23 |

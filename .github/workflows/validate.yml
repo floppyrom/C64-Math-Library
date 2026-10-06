@@ -37,3 +37,5 @@ jobs:
         run: |
           make reference
           make alternate
+      - name: Exhaustive REU UDIV8 hybrid validation
+        run: python3 tools/validate_reu_udiv8_hybrid.py

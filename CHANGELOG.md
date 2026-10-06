@@ -1,3 +1,10 @@
+## 2026-10-06 — V3/V4 REU UDIV8 hybrid fast path
+
+- Replaced the V3/V4 two-DMA UDIV8 public path with a hybrid quotient ladder: q=0..3 returns on the CPU; q>=4 uses the exact existing REU quotient/remainder planes.
+- Exhaustive 65,536-case validation passes with **52.852264 cycles mean (28–115)** in both profiles, down from **70.863281** and faster than V2's 59.383011-cycle current public mean.
+- `UMOD8` remains the direct single-plane REU remainder lookup; REU image layout and public ABI are unchanged.
+- Rechecked UDIV24: V2/V3/V4 use the same Repose q0-counter arithmetic and are identical on the existing same-corpus gate; no REU-specific UDIV24 replacement was warranted.
+
 ## 2026-10-06 — FAST31 direct public-entry follow-up
 
 - Removed the redundant 3-cycle self-redirect at the stable V2/V3/V4 `MATH_SMUL32` entry; the fixed address now falls directly into the FAST31 dispatcher.

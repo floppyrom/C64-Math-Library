@@ -12,11 +12,16 @@ The strongest supplied standalone source, `udiv24-q0counter-t13-k13.a`, uses 15 
 
 For V2/V3/V4 the resulting module is `udiv24_direct_repose.inc`; V1 uses the low-pressure `udiv24_direct_repose_balanced.inc`; V5 repacks the selected V2-style core through the hybrid builder. The signed 24-bit paths use private signed-owned magnitude engines, so `SDIV24` never executes the public unsigned divider.
 
+### V3/V4 UDIV24 follow-up (2026-10-06)
+
+The V3/V4 review found no profile-specific UDIV24 slowdown to repair. V2, V3 and V4 use the same Repose q0-counter arithmetic; their profile-local sources differ only in placement of the second code island. On the existing 200-case same-corpus candidate gate, all three measure **264.37 cycles mean (56–3188)**. The larger headline spread in the final resident table (183.661 / 191.745 / 187.307) comes from profile-specific random seeds in that validator, not from different UDIV24 algorithms. No REU-specific UDIV24 replacement is selected by this follow-up.
+
+
 ## Final profile selection
 
 | Family | V1 | V2 | V3 | V4 | V5 |
 |---|---|---|---|---|---|
-| UDIV8 | direct CPU | direct CPU | **REU retained** | **REU retained** | direct CPU |
+| UDIV8 | direct CPU | direct CPU | **CPU q=0..3 + REU fallback** | **CPU q=0..3 + REU fallback** | direct CPU |
 | UMOD8 | prior compatible path retained | prior compatible path retained | **REU remainder retained** | **REU remainder retained** | compatible V2/V5 path retained |
 | UDIV16 | balanced direct-public | fast direct-public | fast direct-public | fast direct-public | fast core repacked |
 | UDIV24 | Repose-derived balanced | **Repose q0-counter** | **Repose q0-counter** | **Repose q0-counter** | Repose core repacked |
@@ -28,7 +33,7 @@ For V2/V3/V4 the resulting module is `udiv24_direct_repose.inc`; V1 uses the low
 | SDIV32/16 | direct-output native signed | fast direct-output | fast direct-output | fast direct-output | refreshed low-ZP native signed |
 | SDIV32/32 | redundant-zero test removed | same | same | same | same |
 
-V3/V4 deliberately **do not** take the new CPU UDIV8 core: their REU quotient/remainder planes remain faster for the fixed REU profiles. This is a profile-selection result, not an incomplete port.
+V3/V4 now use a **hybrid UDIV8**: quotient 0..3 is resolved directly on the CPU, while quotient 4+ falls back to the exact REU quotient/remainder planes. `UMOD8` remains on the single-plane REU remainder lookup. Exhaustive validation over all 65,536 `(n,d)` pairs gives **52.852264 cycles mean**, **28–115 cycles**, zero errors in both profiles; the previous two-DMA UDIV8 path measured 70.863281 cycles.
 
 ## Final resident measurements
 
@@ -36,7 +41,7 @@ The table below uses the final resident validators. The corpora are identical wi
 
 | Entry | V1 | V2 | V3 | V4 | V5 |
 |---|---:|---:|---:|---:|---:|
-| `MATH_UDIV8` | 59.572 | 59.383 | 70.863 | 70.863 | 59.383 |
+| `MATH_UDIV8` | 59.572 | 59.383 | **52.852** | **52.852** | 59.383 |
 | `MATH_UDIV16` | 132.726 | 127.774 | 125.424 | 125.626 | 126.386 |
 | `MATH_UDIV24` | 194.156 | 183.661 | 191.745 | 187.307 | 187.122 |
 | `MATH_UDIV32_16` | 870.340 | 753.995 | 755.944 | 757.480 | 756.639 |

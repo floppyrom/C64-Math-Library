@@ -123,7 +123,11 @@ def cycles_catalog():
     # rows so current shipped direct-public paths are authoritative.
     ud=json.loads((ROOT/'validation/review/UNSIGNED_DIVISION_VALIDATION.json').read_text())
     for p,rr in ud['profiles'].items():
-        for n,v in rr.items(): add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-20 unsigned division-family validation',v.get('mode',''))
+        for n,v in rr.items():
+            basis=('2026-10-06 exhaustive REU UDIV8 hybrid validation'
+                   if p in ('v3_reu_512k','v4_reu_16m') and n=='MATH_UDIV8'
+                   else '2026-09-20 unsigned division-family validation')
+            add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],basis,v.get('mode',''))
     # Game math published measurements for unaffected entries.
     game={p:{} for p in PROFILES[:4]}
     for p in PROFILES[:4]:
@@ -235,8 +239,10 @@ def provenance(profile,n):
                 if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
                 else 'FAST31/V29 SMUL32 producer plus existing SHR16 extraction')
     if n in ('MATH_UDIV8','MATH_UMOD8'):
+        if profile in ('v3_reu_512k','v4_reu_16m') and n=='MATH_UDIV8':
+            return 'hybrid q=0..3 CPU fast path with exact REU quotient/remainder fallback'
         if profile in ('v3_reu_512k','v4_reu_16m') and n=='MATH_UMOD8':
-            return 'REU direct remainder plane retained; direct-public UDIV8 selected separately'
+            return 'REU direct remainder plane retained; hybrid UDIV8 selected separately'
         return 'direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling'
     if n in ('MATH_UDIV16','MATH_UMOD16'):
         return ('balanced direct-public 16-bit divider' if profile=='v1_balanced' else

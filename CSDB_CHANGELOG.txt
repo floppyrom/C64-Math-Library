@@ -1,3 +1,9 @@
+2026-10-06 V3/V4 REU UDIV8 HYBRID FAST PATH
+- q=0..3 now returns directly on the CPU; q>=4 falls back to the exact existing REU quotient/remainder planes.
+- Exhaustive 65,536-case mean is 52.852264 cycles (28-115) in both V3 and V4, down from 70.863281.
+- UMOD8 keeps the direct REU remainder plane; REU image layout and public ABI are unchanged.
+- UDIV24 review confirms V2/V3/V4 share the same Repose arithmetic and same-corpus timing; no REU-specific replacement selected.
+
 2026-10-06 FAST31 DIRECT-ENTRY FOLLOW-UP
 - V2/V3/V4 MATH_SMUL32 now falls directly into the FAST31 dispatcher instead of paying the legacy 3-cycle entry JMP.
 - Canonical SMUL32 means: 715.605230 / 716.033209 / 716.090079 cycles; SMUL32_SHR16: 784.998853 cycles.

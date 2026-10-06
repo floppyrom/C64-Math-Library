@@ -970,7 +970,7 @@
           "file": "div_u8_u8_u8_8.asm",
           "alias_of": "",
           "entry_address": "$3120",
-          "reachable_instructions": 25
+          "reachable_instructions": 58
         },
         {
           "legacy_api": "MATH_UDIV16",
@@ -1457,7 +1457,7 @@
           "file": "div_u8_u8_u8_8.asm",
           "alias_of": "",
           "entry_address": "$3120",
-          "reachable_instructions": 25
+          "reachable_instructions": 58
         },
         {
           "legacy_api": "MATH_UDIV16",

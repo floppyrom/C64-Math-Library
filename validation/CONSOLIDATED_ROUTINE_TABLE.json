@@ -39,7 +39,7 @@
       "stable_api_zp_union_touched_bytes": 202,
       "stable_api_zp_union_ranges": "$0E-$38;$3D-$42;$44-$66;$68-$69;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 19570
+      "stable_api_reachable_code_union_bytes": 19645
     },
     {
       "profile": "v4_reu_16m",
@@ -50,7 +50,7 @@
       "stable_api_zp_union_touched_bytes": 201,
       "stable_api_zp_union_ranges": "$0E-$38;$3D-$42;$44-$65;$68-$69;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 19294
+      "stable_api_reachable_code_union_bytes": 19369
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -2787,20 +2787,20 @@
       "signedness": "unsigned",
       "operation": "divide",
       "width": "8",
-      "mean_cycles": "70.863281",
-      "min_cycles": 36,
-      "max_cycles": 71,
+      "mean_cycles": "52.852264",
+      "min_cycles": 28,
+      "max_cycles": 115,
       "cases": 65536,
-      "cycle_basis": "2026-09-20 unsigned division-family validation",
-      "reachable_code_bytes": 61,
+      "cycle_basis": "2026-10-06 exhaustive REU UDIV8 hybrid validation",
+      "reachable_code_bytes": 136,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 524288,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive"
+      "implementation": "hybrid q=0..3 CPU fast path with exact REU quotient/remainder fallback",
+      "notes": "exhaustive hybrid q0..3 CPU + REU fallback"
     },
     {
       "profile": "v3_reu_512k",
@@ -4029,20 +4029,20 @@
       "signedness": "unsigned",
       "operation": "divide",
       "width": "8",
-      "mean_cycles": "70.863281",
-      "min_cycles": 36,
-      "max_cycles": 71,
+      "mean_cycles": "52.852264",
+      "min_cycles": 28,
+      "max_cycles": 115,
       "cases": 65536,
-      "cycle_basis": "2026-09-20 unsigned division-family validation",
-      "reachable_code_bytes": 61,
+      "cycle_basis": "2026-10-06 exhaustive REU UDIV8 hybrid validation",
+      "reachable_code_bytes": 136,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
       "profile_prg_payload_span_bytes": 49047,
       "profile_reu_image_bytes": 16777216,
       "profile_declared_shared_zp_bytes": "",
-      "implementation": "direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling",
-      "notes": "exhaustive"
+      "implementation": "hybrid q=0..3 CPU fast path with exact REU quotient/remainder fallback",
+      "notes": "exhaustive hybrid q0..3 CPU + REU fallback"
     },
     {
       "profile": "v4_reu_16m",

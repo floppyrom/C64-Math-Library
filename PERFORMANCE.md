@@ -23,7 +23,7 @@ The five fixed profiles use different memory/ZP trade-offs, so the fastest numbe
 
 | Routine | Typed name | V1 | V2 | V3 | V4 | V5 |
 |---|---|---:|---:|---:|---:|---:|
-| `MATH_UDIV8` | `div_u8_u8_u8_8` | 59.571976 | 59.383011 | 70.863281 | 70.863281 | 59.383011 |
+| `MATH_UDIV8` | `div_u8_u8_u8_8` | 59.571976 | 59.383011 | **52.852264** | **52.852264** | 59.383011 |
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 132.725857 | 127.773827 | 125.423943 | 125.625710 | 126.385862 |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 194.156322 | 183.660846 | 191.745424 | 187.307174 | 187.122028 |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 870.340206 | 753.994530 | 755.944246 | 757.480328 | 756.638544 |
@@ -33,6 +33,8 @@ The five fixed profiles use different memory/ZP trade-offs, so the fastest numbe
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | 313.583206 | 248.344384 | 236.810251 | 237.569466 | 253.487023 |
 | `MATH_SDIV32_16` | `div_s32_s16_s32_16` | 955.051690 | 833.995638 | 833.572737 | 829.631189 | 958.522137 |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 586.396050 | 553.098146 | 552.481381 | 552.840042 | 591.562641 |
+
+V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the exact REU quotient/remainder planes only for quotient 4+. The exhaustive 65,536-input mean is **52.852264 cycles** (28–115), with zero errors.
 
 ### Modulo / fixed-point
 
