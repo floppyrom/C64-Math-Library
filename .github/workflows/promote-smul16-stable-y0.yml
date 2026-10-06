@@ -47,6 +47,8 @@ jobs:
           rm -rf build_source
           python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
           python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
           cmp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
           cmp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
           cmp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
