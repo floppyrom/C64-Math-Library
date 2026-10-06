@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 74.
+; Reachable instructions: 71.
 !cpu 6510
 
 ; ---- executable island $0040 ----
@@ -16,15 +16,14 @@ L0040:
     eor #$FF                           ; @0042 49 FF
     sta $67                            ; @0044 85 67
     sta $6D                            ; @0046 85 6D
-    lda $54                            ; @0048 A5 54
+    lda $53                            ; @0048 A5 53
     sta $5C                            ; @004A 85 5C
     eor #$FF                           ; @004C 49 FF
-    sta $57                            ; @004E 85 57
+    sta $56                            ; @004E 85 56
     sta $5F                            ; @0050 85 5F
-    sec                                ; @0052 38
-    lda $7000,y                        ; @0053 B9 00 70
-    adc $7400,y                        ; @0056 79 00 74
-    sta $AE                            ; @0059 85 AE
+    lda $7000,y                        ; @0052 B9 00 70
+    adc $7400,y                        ; @0055 79 00 74
+    sta $C008                          ; @0058 8D 08 C0
     lda $7200,y                        ; @005B B9 00 72
     adc $7600,y                        ; @005E 79 00 76
     adc $7000,y                        ; @0061 79 00 70
@@ -36,8 +35,8 @@ L006C:
     adc $7600,y                        ; @006C 79 00 76
     sta $91                            ; @006F 85 91
     ldy #$00                           ; @0071 A0 00
-    lda ($54),y                        ; @0073 B1 54
-    adc ($57),y                        ; @0075 71 57
+    lda ($53),y                        ; @0073 B1 53
+    adc ($56),y                        ; @0075 71 56
     sta $8E                            ; @0077 85 8E
     lda ($5C),y                        ; @0079 B1 5C
     adc ($5F),y                        ; @007B 71 5F
@@ -80,18 +79,16 @@ L00A3:
 mul_u16_u16_u32_turbo:
 MATH_REU_UMUL16:
     lda $C000                          ; @3840 AD 00 C0
-    sta $54                            ; @3843 85 54
-    lda $C001                          ; @3845 AD 01 C0
-    sta $62                            ; @3848 85 62
-    lda $C005                          ; @384A AD 05 C0
-    sta $72                            ; @384D 85 72
-    ldy $C004                          ; @384F AC 04 C0
-    lda $C001                          ; @3852 AD 01 C0
-    jsr L0040                          ; @3855 20 40 00
-    sta $C00A                          ; @3858 8D 0A C0
-    stx $C009                          ; @385B 8E 09 C0
-    sty $C00B                          ; @385E 8C 0B C0
-    lda $AE                            ; @3861 A5 AE
-    sta $C008                          ; @3863 8D 08 C0
-    clc                                ; @3866 18
-    rts                                ; @3867 60
+    sta $53                            ; @3843 85 53
+    lda $C005                          ; @3845 AD 05 C0
+    sta $72                            ; @3848 85 72
+    ldy $C004                          ; @384A AC 04 C0
+    lda $C001                          ; @384D AD 01 C0
+    sta $62                            ; @3850 85 62
+    sec                                ; @3852 38
+    jsr L0040                          ; @3853 20 40 00
+    sta $C00A                          ; @3856 8D 0A C0
+    stx $C009                          ; @3859 8E 09 C0
+    sty $C00B                          ; @385C 8C 0B C0
+    clc                                ; @385F 18
+    rts                                ; @3860 60

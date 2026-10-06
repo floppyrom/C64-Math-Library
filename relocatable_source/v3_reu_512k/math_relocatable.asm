@@ -1214,23 +1214,21 @@ L32C5:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00
     lda MATH_IO
-    sta+1 TURBO16_ZP_BASE+$16
-    lda MATH_IO+$01
-    sta+1 TURBO16_ZP_BASE+$24
+    sta+1 TURBO16_ZP_BASE+$15
     lda MATH_IO+$05
     sta+1 TURBO16_ZP_BASE+$34
     ldy MATH_IO+$04
     lda MATH_IO+$01
+    sta+1 TURBO16_ZP_BASE+$24
+    sec
     jsr TURBO16_ZP_BASE+$02
     sta MATH_IO+$0A
     stx MATH_IO+$09
     sty MATH_IO+$0B
-    lda+1 TURBO16_ZP_BASE+$70
-    sta MATH_IO+$08
     clc
     rts
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $A5, $AE, $8D, $08, $C0, $18, $60, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     jsr REG_API+$0800
     jmp REG_API+$09A0
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -6503,6 +6501,9 @@ ZCE7:
 !source "udiv32_32_early_gate.inc"
 !source "sdiv32_32_skip_redundant_zero.inc"
 ; END DIVISION REFRESH 2026-09-20
+
+; Canonical optimized Turbo16 public CALL wrapper.
+!source "../turbo/turbo16_runtime.asm"
 
 ; Canonical optimized Turbo32 resident runtime: binder, summation and CALL wrapper.
 !source "../turbo/turbo32_runtime.asm"
