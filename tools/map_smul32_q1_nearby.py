@@ -24,3 +24,13 @@ print("q1_labels")
 for name,addr in sorted(labels.items(),key=lambda kv:kv[1]):
     if lo<=addr<=hi and name.startswith("S32V28_q1_"):
         print(f"0x{addr:04x}",name)
+
+print("game_api_free_runs")
+lo,hi=0x5e00,0x5fff
+a=lo
+while a<=hi:
+    used=a in mem; b=a
+    while b+1<=hi and ((b+1 in mem)==used): b+=1
+    if not used or b-a+1>=16:
+        print(("USED" if used else "FREE"),f"0x{a:04x}-0x{b:04x}",b-a+1)
+    a=b+1
