@@ -110,14 +110,17 @@ def cycles_catalog():
     for p,rr in ch['profiles'].items():
         for n,v in rr.items(): add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-14 post-upgrade deterministic comparison corpus')
     # Current V2-V4 direct-output UMUL16 producer supersedes the September
-    # record-upgrade rows for the producer and its fixed-point SHR8 composition.
+    # record-upgrade rows. The same all-profile validation also publishes the
+    # register-return SHR8 adapters; V1/V5 producer rows keep their canonical
+    # September corpus because their integer UMUL16 implementation is unchanged.
     u16=json.loads((ROOT/'validation/multiply_refresh/UMUL16_DIRECTOUT_VALIDATION.json').read_text())
     for p,rr in u16['results'].items():
         v=rr['reference']
-        add_cycle(cat,p,'MATH_UMUL16',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
-                  '2026-10-06 UMUL16 direct-output validation')
+        if p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            add_cycle(cat,p,'MATH_UMUL16',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
+                      '2026-10-06 UMUL16 direct-output validation')
         add_cycle(cat,p,'MATH_UMUL16_SHR8',v['shr8_mean_cycles'],v['shr8_min_cycles'],v['shr8_max_cycles'],v['cases'],
-                  '2026-10-06 UMUL16 direct-output validation')
+                  '2026-10-06 UMUL16 SHR8 register-return validation')
 
     # Current native signed multiply evidence.
     sm=json.loads((ROOT/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
