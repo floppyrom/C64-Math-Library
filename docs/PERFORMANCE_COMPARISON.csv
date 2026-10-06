@@ -1,6 +1,6 @@
 operation,canonical_name,v1_balanced,v2_pareto_fast,v3_reu_512k,v4_reu_16m,notes
 umul8,mul_u8_u8_u16,90.494644,78.494614,69.0,69.0,V3/V4 REU transport model
-umul16,mul_u16_u16_u32,273.8372,216.980037,216.980037,216.980037,2026-10-06 V2-V4 direct-output UMUL16 validation; V1 retained low-resource path
+umul16,mul_u16_u16_u32,264.909922,216.980037,216.980037,216.980037,2026-10-06 all-profile direct-output UMUL16 validation
 umul24,mul_u24_u24_u48,474.042329,429.555502,429.555502,429.555502,2026-10-06 all-profile direct-output UMUL24 validation
 umul32,mul_u32_u32_u64,712.235367,712.235367,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
 udiv8,div_u8_u8_u8_8,87.445969,87.445969,52.852264404296875,52.852264404296875,2026-10-06 exhaustive hybrid q0..3 CPU + exact REU fallback
