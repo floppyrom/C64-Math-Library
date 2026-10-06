@@ -130,9 +130,8 @@ bready:
     td,labels,const=Assembler().assemble(tail)
     end=max(td)+1
     for a,v in td.items(): mem[a]=v
-    # Clear a small trailing area so stale old tail bytes can never be reached.
-    for a in range(end,0x5A50): mem[a]=0
-
+    # The new tail is one byte longer and consumes the first byte of the
+    # pre-existing zero-filled gap. Do not touch any subsequent ownership.
     save_prg(mem,lo,n,prg)
     return {"core_bytes":113,"reserved_core_bytes":116,"tail_bytes":end-0x5A00,
             "z0":0xEF,"z1":0xF0}
