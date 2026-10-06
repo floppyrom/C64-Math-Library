@@ -107,6 +107,6 @@ def main():
             clean[p][k]={x:r[x] for x in ('cases','mean_cycles','min_cycles','max_cycles','shr8_mean_cycles','shr8_min_cycles','shr8_max_cycles')}
     out=ROOT/'validation/multiply_refresh/UMUL16_DIRECTOUT_VALIDATION.json'
     out.parent.mkdir(parents=True,exist_ok=True)
-    out.write_text(json.dumps({'status':'PASS','seed':hex(SEED),'results':clean},indent=2)+'\n')
+    out.write_text(json.dumps({'status':'PASS','seed':hex(SEED),'basis':'2026-10-06 UMUL16 direct-output deterministic edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores','results':clean},indent=2)+'\n')
 
 if __name__=='__main__': main()
