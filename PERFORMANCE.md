@@ -93,7 +93,7 @@ Exact Bresenham/DDA "move toward target" steppers ([`docs/SEEK_DDA.md`](docs/SEE
 
 These are independently useful kernels or record/Pareto points. They are **not all benchmarked on the same corpus as the shipped public API**, so compare means only when the basis is compatible. Every number in this table has a public source file and evidence path in this repository.
 
-The current SMUL32 native record is `compact126` at **646.354530 cycles** with 136 ZP bytes and a 126-byte persistent stack-page reservation. It is not selected into the fixed public profiles because its executable-ZP window conflicts with V2–V4 SMUL16 and standard-ABI marshalling removes the speed advantage; see [`docs/SMUL32_COMPACT126.md`](docs/SMUL32_COMPACT126.md).
+The current SMUL32 native record is `compact126` at **646.354530 cycles** with 136 ZP bytes and a 126-byte persistent stack-page reservation. It is not selected into the fixed public profiles because its executable-ZP window conflicts with V2–V4 SMUL16 and standard-ABI marshalling removes the speed advantage; see [`docs/SMUL32_COMPACT126.md`](docs/SMUL32_COMPACT126.md). V2/V3/V4 also expose the exact record source under `optional/smul32_compact126/` for explicit exclusive-overlay use; those aliases do not change the shipped public timing rows.
 
 For the practical low-resource class, `fast31_native_v2` is the new **31-ZP / stack-free SMUL32 record** at **692.825100 cycles**, improving the previous 697.259440 point by 4.434340 cycles. See [`docs/SMUL32_FAST31_V2.md`](docs/SMUL32_FAST31_V2.md).
 
