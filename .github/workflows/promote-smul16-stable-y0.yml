@@ -1,5 +1,6 @@
 name: Promote SMUL16 stable Y0
 # promotion trigger
+# rerun with V5 hybrid
 
 on:
   push:
