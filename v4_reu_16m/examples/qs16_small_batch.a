@@ -1,6 +1,7 @@
 ; Firemonger C64 Math API v4 — QS16 small-batch example
 ; ------------------------------------------------------
-; Use this pattern for 2-8 adjacent unsigned 16x16 multiplies.
+; This demonstrates the supported QS16 lifecycle. Current QS16 timing is slower
+; than normal MATH_UMUL16, so do not select it as a speed tier.
 ; MATH_INIT must have been called once earlier.
 ; Inputs are preserved; A/X/Y are volatile; output is math_z0..math_z3.
 ;
