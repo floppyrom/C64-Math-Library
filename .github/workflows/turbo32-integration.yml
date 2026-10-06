@@ -1,0 +1,159 @@
+name: Turbo32 integration proof
+
+on:
+  push:
+    paths:
+      - '.github/workflows/turbo32-integration.yml'
+      - 'relocatable_source/turbo/**'
+      - 'relocatable_source/v3_reu_512k/**'
+      - 'relocatable_source/v4_reu_16m/**'
+      - 'tools/assemble_sources.py'
+      - 'tools/source_relocation.py'
+      - 'tools/validate_turbo_relocation.py'
+      - 'tools/validate_turbo_boundary_sweep.py'
+      - 'v3_reu_512k/resident/**'
+      - 'v4_reu_16m/resident/**'
+      - 'v3_reu_512k/reu/**'
+      - 'v4_reu_16m/reu/**'
+  pull_request:
+    paths:
+      - 'relocatable_source/turbo/**'
+      - 'relocatable_source/v3_reu_512k/**'
+      - 'relocatable_source/v4_reu_16m/**'
+      - 'tools/assemble_sources.py'
+      - 'tools/source_relocation.py'
+      - 'tools/validate_turbo_relocation.py'
+      - 'tools/validate_turbo_boundary_sweep.py'
+      - 'v3_reu_512k/resident/**'
+      - 'v4_reu_16m/resident/**'
+      - 'v3_reu_512k/reu/**'
+      - 'v4_reu_16m/reu/**'
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate and build reference/alternate sources
+        run: |
+          python3 tools/generate_sources.py
+          make reference
+          make alternate
+      - name: Validate Turbo relocation and boundaries
+        run: |
+          python3 tools/test_mini6502_illegal.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+
+  promote:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/fix-turbo32-runtime'
+    needs: prove
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix-turbo32-runtime
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build optimized reference and alternate artifacts
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+      - name: Promote V3/V4 reference PRGs and REU images
+        run: |
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg \
+             v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg \
+             v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu \
+             v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu \
+             v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+      - name: Regenerate canonical sources and publication evidence
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/publish_standalone_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/verify_deterministic_rebuild.py
+      - name: Refresh release artifact hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          root=Path('.')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v3_reu_512k','v4_reu_16m'):
+              s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+              s['reference_reu_sha256'][p]=sha(root/'build_source/reference'/p/f'c64_math_{p}_source_built.reu')
+              s['alternate_reu_sha256'][p]=sha(root/'build_source/alternate'/p/f'c64_math_{p}_source_built.reu')
+          tv=json.loads((root/'validation/turbo_relocation/TURBO_RELOCATION_VALIDATION.json').read_text())
+          ref=tv['profiles']['v3_reu_512k']['reference']
+          alt=tv['profiles']['v3_reu_512k']['alternate']
+          s['reference_turbo_overlay_sha256']['turbo16']=ref['turbo16']['installed_overlay_sha256']
+          s['reference_turbo_overlay_sha256']['turbo32']=ref['turbo32']['installed_overlay_sha256']
+          s['alternate_turbo_overlay_sha256']['turbo16']=alt['turbo16']['installed_overlay_sha256']
+          s['alternate_turbo_overlay_sha256']['turbo32']=alt['turbo32']['installed_overlay_sha256']
+          s['date']='2026-10-06'
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+      - name: Verify promoted binaries reproduce exactly
+        run: |
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+      - name: Refresh lean-package manifest
+        run: |
+          rm -rf build_source
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          def files():
+              return sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          def sums():
+              lines=[f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in files()]
+              (root/'SHA256SUMS.txt').write_text('\n'.join(lines)+'\n')
+          sums()
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+      - name: Commit promoted Turbo32 release artifacts
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No promotion changes to commit"
+          else
+            git commit -m "Promote optimized V3/V4 Turbo32 runtime"
+            git push origin HEAD:fix-turbo32-runtime
+          fi

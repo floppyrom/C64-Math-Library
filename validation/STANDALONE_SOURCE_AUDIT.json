@@ -1354,7 +1354,7 @@
           "file": "mul_u32_u32_u64_turbo.asm",
           "alias_of": "",
           "entry_address": "$3900",
-          "reachable_instructions": 185
+          "reachable_instructions": 168
         },
         {
           "legacy_api": "MATH_REU_UMUL32_END",
@@ -1841,7 +1841,7 @@
           "file": "mul_u32_u32_u64_turbo.asm",
           "alias_of": "",
           "entry_address": "$3900",
-          "reachable_instructions": 185
+          "reachable_instructions": 168
         },
         {
           "legacy_api": "MATH_REU_UMUL32_END",

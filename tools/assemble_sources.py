@@ -90,7 +90,7 @@ def _assemble_overlay(name,v):
  basekey='TURBO16_ZP_BASE' if name=='turbo16' else 'TURBO32_ZP_BASE'
  base=v[basekey]; refbase=0x3e if name=='turbo16' else 0x0a; length=113 if name=='turbo16' else 135
  def cfg_for(b):
-  vals={'REG_LOW':v['REG_LOW'],'REG_TABLE':v['REG_TABLE'],'TURBO16_ZP_BASE':v['TURBO16_ZP_BASE'],'TURBO32_ZP_BASE':v['TURBO32_ZP_BASE']};vals[basekey]=b
+  vals={'REG_LOW':v['REG_LOW'],'REG_TABLE':v['REG_TABLE'],'MATH_IO':v['MATH_IO'],'TURBO16_ZP_BASE':v['TURBO16_ZP_BASE'],'TURBO32_ZP_BASE':v['TURBO32_ZP_BASE']};vals[basekey]=b
   return '\n'.join(f'{k} = {hx(val,2 if k.endswith("ZP_BASE") else 4)}' for k,val in vals.items())+'\n'
  def exact(mem):
   return bool(mem) and min(mem)==base and max(mem)==base+length-1 and not any(a<base or a>=base+length for a in mem)

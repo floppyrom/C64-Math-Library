@@ -1,3 +1,12 @@
+## 2026-10-06 — Turbo32 direct-I/O runtime optimization
+
+- Reworked the V3/V4 Turbo32 resident adapter while preserving the exact 135-byte stack-free executable-ZP overlay and its legal $02-$79 origins.
+- Removed Y-byte marshalling into ZP, moved high-column temporaries into public result RAM, and write final product bytes directly into MATH_Z where lifetime analysis permits.
+- Canonical Turbo relocation corpus: **2,193 calls, 684.185219 cycles mean, 621–796**, down from **728.947080**; zero arithmetic errors.
+- Reference/alternate maps are cycle-identical, and minimum/maximum legal ZP-origin boundary sweeps pass in both V3 and V4.
+- Turbo32 now beats normal UMUL32 (690.235367) per active CALL; with 326-cycle BEGIN and 371-cycle END, the batch crossover is **116 products**.
+- Corrected stale Turbo16/QS16 guidance: Turbo16 crosses normal UMUL16 at roughly 60 products; QS16 remains supported but has no current speed crossover.
+
 ## 2026-10-06 — V3/V4 REU UDIV8 hybrid fast path
 
 - Replaced the V3/V4 two-DMA UDIV8 public path with a hybrid quotient ladder: q=0..3 returns on the CPU; q>=4 uses the exact existing REU quotient/remainder planes.

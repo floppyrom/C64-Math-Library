@@ -402,7 +402,7 @@ def generate_source(profile,outpath:Path):
  # relocation rewrites their ZP and REG_LOW references symbolically rather than
  # publishing them as opaque reference-map bytes.
  if profile in REU:
-  for _s,_e in ((0x1000,0x1045),(0x1100,0x1174)):
+  for _s,_e in ((0x1000,0x1047),(0x1100,0x117f)):
    _pc=_s
    while _pc<_e:
     _oc=raw[_pc]
@@ -479,6 +479,9 @@ def generate_source(profile,outpath:Path):
   lines += ['', '; BEGIN DIVISION REFRESH 2026-09-20']
   lines += [f'!source "{name}"' for name in DIVISION_REFRESH_INCLUDES[profile]]
   lines += ['; END DIVISION REFRESH 2026-09-20']
+ if profile in REU:
+  lines += ['', '; Canonical optimized Turbo32 resident runtime: binder, summation and CALL wrapper.',
+            '!source "../turbo/turbo32_runtime.asm"']
  lines += ['', '; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,',
            '; code islands and object state (final ownership of those bytes).',
            f'!source "{SEEK_NATIVE_REL[profile]}"']

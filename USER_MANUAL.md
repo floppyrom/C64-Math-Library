@@ -1,11 +1,11 @@
 # C64 Math Library V1–V5 + Custom Pareto Builder — Complete User Manual
 
 **Release:** Consolidated source-backed V1–V5  
-**Manual revision:** 2026-09-20  
+**Manual revision:** 2026-10-06  
 **Target CPU:** NMOS 6502/6510, Commodore 64  
 **Profiles:** V1 Balanced, V2 Pareto-Fast, V3 REU 512K, V4 REU 16M, V5 Hybrid Low-ZP
 
-This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 54-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 small-batch mode.
+This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 54-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 specialized mode.
 
 The short version is:
 
@@ -1096,7 +1096,7 @@ CALL  ≈ 215.54 cycles mean
 END   ≈ 327 cycles
 ```
 
-For V3, the measured break-even versus ordinary UMUL16 is around five products per batch. On V4, use the dispatch guidance below because QS16 gives a better middle tier.
+Against the current 225.84-cycle normal UMUL16, Turbo16's 282-cycle BEGIN, 215.54-cycle mean CALL and 327-cycle END cross over at roughly 60 products per batch. Smaller batches should use the normal public entry.
 
 ---
 
@@ -1130,12 +1130,13 @@ Legal source-configurable origins are `$02-$79`.
 Reference benchmark model:
 
 ```text
-BEGIN ≈ 538 cycles
-CALL  ≈ 731.41 cycles mean
-END   ≈ 583 cycles
+BEGIN ≈ 326 cycles
+CALL  ≈ 684.19 cycles mean
+END   ≈ 371 cycles
+normal MATH_UMUL32 ≈ 690.24 cycles mean
 ```
 
-The measured break-even is approximately 43 products per batch versus the normal 32-bit multiplication path under the release timing model.
+The optimized Turbo32 CALL now beats the normal public UMUL32 by about 6.05 cycles per product on the canonical corpus. BEGIN+END cost 697 cycles, so the measured batch crossover is **116 products**: use normal `MATH_UMUL32` below that point and Turbo32 for sustained larger batches.
 
 ---
 
@@ -1194,19 +1195,21 @@ You must use the generated PRG, generated `math_api.inc`, and generated REU imag
 
 ---
 
-# Part V — V4 QS16 small-batch mode
+# Part V — V4 QS16 specialized mode
 
 ## 29. What QS16 is for
 
-V4 has an additional unsigned 16×16 multiplication tier using its 16 MiB quarter-square table.
+V4 has an additional exact unsigned 16×16 multiplication surface using its 16 MiB quarter-square table. It remains supported, but the current implementation is not the fastest UMUL16 path.
 
-Recommended V4 dispatch under the measured model:
+Current measured speed guidance:
 
 ```text
-1 product     MATH_UMUL16
-2-8 products QS16 BEGIN / repeated QS16 CALL / END
-9+ products  Turbo16 BEGIN / repeated Turbo16 CALL / END
+small/medium batches   MATH_UMUL16
+~60+ products          Turbo16 BEGIN / repeated CALL / END
+QS16                    supported specialized mode; not selected for speed
 ```
+
+The current QS16 CALL is about 281.54 cycles versus about 225.84 cycles for normal `MATH_UMUL16`; BEGIN+END adds another 36 cycles per batch. Consequently QS16 has no speed crossover in the current release.
 
 Reference-map symbols in `v4_reu_16m/resident/math_api.inc` are:
 

@@ -16,14 +16,14 @@
     {
       "profile": "v3_reu_512k",
       "source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
-      "reachable_instructions": 9229,
-      "source_sha256": "385ccd809ce4886a31148ee985cdadcd2a8dbea678dc08291c1fd89fbf1f6eca"
+      "reachable_instructions": 9245,
+      "source_sha256": "48fb5b6c3d0caf92f9b15922944122c659487c66c13b7e859cf5bf16412542fc"
     },
     {
       "profile": "v4_reu_16m",
       "source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
-      "reachable_instructions": 9104,
-      "source_sha256": "80283c86346bb930f5a719d15020b6dfbe6b6571032b37224292dbb3d43767af"
+      "reachable_instructions": 9120,
+      "source_sha256": "a444e6a2b1d66f1fba38f0aaff72daa42451b052a329a6a1764e895e639da162"
     }
   ]
 }
