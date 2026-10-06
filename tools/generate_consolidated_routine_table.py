@@ -109,6 +109,16 @@ def cycles_catalog():
     ch=json.loads((ROOT/'validation/record_upgrade_changed_entries_benchmark.json').read_text())
     for p,rr in ch['profiles'].items():
         for n,v in rr.items(): add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-14 post-upgrade deterministic comparison corpus')
+    # Current V2-V4 direct-output UMUL16 producer supersedes the September
+    # record-upgrade rows for the producer and its fixed-point SHR8 composition.
+    u16=json.loads((ROOT/'validation/multiply_refresh/UMUL16_DIRECTOUT_VALIDATION.json').read_text())
+    for p,rr in u16['results'].items():
+        v=rr['reference']
+        add_cycle(cat,p,'MATH_UMUL16',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
+                  '2026-10-06 UMUL16 direct-output validation')
+        add_cycle(cat,p,'MATH_UMUL16_SHR8',v['shr8_mean_cycles'],v['shr8_min_cycles'],v['shr8_max_cycles'],v['cases'],
+                  '2026-10-06 UMUL16 direct-output validation')
+
     # Current native signed multiply evidence.
     sm=json.loads((ROOT/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
     for p,rr in sm['profiles'].items():
@@ -204,7 +214,9 @@ def provenance(profile,n):
     if n=='MATH_UMUL8':
         return 'profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract'
     if n=='MATH_UMUL16':
-        return '17-ZP qualified record-derived fused quarter-square resident kernel (retained after refresh sweep)'
+        if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            return '16-ZP record-derived fused quarter-square core; A=x1 public entry and direct Z0 output'
+        return '17-ZP qualified record-derived fused quarter-square resident kernel'
     if n=='MATH_UMUL24':
         if profile in ('v1_balanced','v5_hybrid_lowzp'):
             return 'FAST24 private 24-ZP carry producer with stable public adapter'
