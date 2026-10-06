@@ -7,7 +7,7 @@ sys.path.insert(0,str(ROOT/"tools"))
 from mini6502 import CPU
 from assemble_sources import build
 
-PROFILE="v2_pareto_fast"; IO=0xC000; MASK48=(1<<48)-1
+PROFILES=["v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m"]; IO=0xC000; MASK48=(1<<48)-1
 
 def parse_api(path):
     out={}
@@ -30,9 +30,9 @@ def si(v): return v-(1<<24) if v&0x800000 else v
 def edges():
     s=1<<23; m=(1<<24)-1
     return list(dict.fromkeys([0,1,2,3,7,15,16,31,63,127,128,255,s-2,s-1,s,s+1,m-2,m-1,m]))
-def canonical():
+def canonical(pi):
     e=edges(); pairs=[(x,y) for x in e for y in e]
-    rng=random.Random(0x5A17_0000+1*0x100+24)
+    rng=random.Random(0x5A17_0000+pi*0x100+24)
     pairs += [(rng.randrange(1<<24),rng.randrange(1<<24)) for _ in range(2048)]
     return pairs
 def q2():
@@ -60,17 +60,21 @@ def comp(base,cand,pairs):
     b.pop("cycles"); c.pop("cycles")
     return {"baseline":b,"candidate":c,"delta_mean_cycles":sum(ds)/len(ds),"delta_min":min(ds),"delta_max":max(ds)}
 def main():
-    tmp=Path(tempfile.mkdtemp(prefix="smul24-q2-"))
-    try:
-        build(PROFILE,ROOT/"relocatable_source"/PROFILE/"math_config_reference.inc",tmp)
-        base=load(ROOT/PROFILE/"resident"/f"math_{PROFILE}_game_math.prg",ROOT/PROFILE/"resident"/"math_api.inc")
-        cand=load(tmp/f"math_{PROFILE}_source_built.prg",tmp/"math_api.inc")
-        out={"canonical":comp(base,cand,canonical())}
-        base=load(ROOT/PROFILE/"resident"/f"math_{PROFILE}_game_math.prg",ROOT/PROFILE/"resident"/"math_api.inc")
-        cand=load(tmp/f"math_{PROFILE}_source_built.prg",tmp/"math_api.inc")
-        out["q2_focus"]=comp(base,cand,q2())
-        out["status"]="PASS" if not out["canonical"]["candidate"]["errors"] and not out["q2_focus"]["candidate"]["errors"] else "FAIL"
-        print(json.dumps(out,indent=2))
-        if out["status"]!="PASS" or out["canonical"]["delta_mean_cycles"]>=0: raise SystemExit(1)
-    finally: shutil.rmtree(tmp,ignore_errors=True)
+    results={}
+    for pi,profile in enumerate(PROFILES):
+        tmp=Path(tempfile.mkdtemp(prefix="smul24-q2-"+profile+"-"))
+        try:
+            build(profile,ROOT/"relocatable_source"/profile/"math_config_reference.inc",tmp)
+            base=load(ROOT/profile/"resident"/f"math_{profile}_game_math.prg",ROOT/profile/"resident"/"math_api.inc")
+            cand=load(tmp/f"math_{profile}_source_built.prg",tmp/"math_api.inc")
+            out={"canonical":comp(base,cand,canonical(pi))}
+            base=load(ROOT/profile/"resident"/f"math_{profile}_game_math.prg",ROOT/profile/"resident"/"math_api.inc")
+            cand=load(tmp/f"math_{profile}_source_built.prg",tmp/"math_api.inc")
+            out["q2_focus"]=comp(base,cand,q2())
+            out["status"]="PASS" if not out["canonical"]["candidate"]["errors"] and not out["q2_focus"]["candidate"]["errors"] else "FAIL"
+            results[profile]=out
+            if out["status"]!="PASS" or out["canonical"]["delta_mean_cycles"]>=0: raise SystemExit(1)
+        finally:
+            shutil.rmtree(tmp,ignore_errors=True)
+    print(json.dumps({"status":"PASS","profiles":results},indent=2))
 if __name__=="__main__": main()
