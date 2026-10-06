@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Profile V2 q1 path
-        run: python3 tools/profile_smul32_q1.py
       - name: Map q1 nearby executable space
         run: python3 tools/map_smul32_q1_nearby.py
+      - name: Profile V2 q1 path
+        run: python3 tools/profile_smul32_q1.py
