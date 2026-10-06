@@ -44,6 +44,7 @@ jobs:
           python3 tools/validate_turbo_relocation.py
       - name: Refresh checksums and package audit
         run: |
+          rm -rf build_source
           python3 - <<'PY'
           from pathlib import Path
           import hashlib, subprocess
