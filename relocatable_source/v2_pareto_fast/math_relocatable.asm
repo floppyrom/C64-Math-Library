@@ -2490,7 +2490,7 @@ L5A0D:
     iny
 L5A14:
     sec
-    sbc #$00
+    sbc MATH_IO+$04
     tax
     tya
     sbc ZP_SMUL+$37
@@ -2510,7 +2510,7 @@ L5A27:
     iny
 L5A2A:
     sec
-    sbc REG_KERNEL+$1A16
+    sbc MATH_IO+$04
     tax
     tya
     sbc ZP_SMUL+$37
@@ -5985,7 +5985,8 @@ LCA10:
     !byte $00, $00, $00, $00, $00, $00, $00
 ; MATH_INIT-installed native SMUL16 executable-ZP image, assembled symbolically.
 * = REG_GAME+$0B00
-    sty REG_KERNEL+$1A16
+    ; Public Y0 remains stable in MATH_IO+$04; avoid saving it into the
+    ; signed-tail immediate operand on every call.
     lda ZP_SMUL+$27
     sta ZP_SMUL+$4B
     eor #$FF
