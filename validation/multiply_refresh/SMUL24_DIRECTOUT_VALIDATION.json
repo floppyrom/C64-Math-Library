@@ -1,0 +1,197 @@
+{
+  "status": "PASS",
+  "seed": "0x52424d18",
+  "basis": "2026-10-06 SMUL24 direct-output deterministic signed edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores",
+  "results": {
+    "v1_balanced": {
+      "reference": {
+        "cases": 10676,
+        "mean_cycles": 516.5907643312102,
+        "min_cycles": 456,
+        "max_cycles": 575,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 479.6265544989027,
+          "pn": 530.0895802098951,
+          "np": 528.7971233913702,
+          "nn": 529.0512917933131
+        }
+      },
+      "alternate": {
+        "cases": 10676,
+        "mean_cycles": 516.5907643312102,
+        "min_cycles": 456,
+        "max_cycles": 575,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 479.6265544989027,
+          "pn": 530.0895802098951,
+          "np": 528.7971233913702,
+          "nn": 529.0512917933131
+        }
+      }
+    },
+    "v2_pareto_fast": {
+      "reference": {
+        "cases": 10676,
+        "mean_cycles": 472.5907643312102,
+        "min_cycles": 412,
+        "max_cycles": 531,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 435.6265544989027,
+          "pn": 486.0895802098951,
+          "np": 484.7971233913702,
+          "nn": 485.05129179331306
+        }
+      },
+      "alternate": {
+        "cases": 10676,
+        "mean_cycles": 472.5907643312102,
+        "min_cycles": 412,
+        "max_cycles": 531,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 435.6265544989027,
+          "pn": 486.0895802098951,
+          "np": 484.7971233913702,
+          "nn": 485.05129179331306
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "reference": {
+        "cases": 10676,
+        "mean_cycles": 472.5907643312102,
+        "min_cycles": 412,
+        "max_cycles": 531,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 435.6265544989027,
+          "pn": 486.0895802098951,
+          "np": 484.7971233913702,
+          "nn": 485.05129179331306
+        }
+      },
+      "alternate": {
+        "cases": 10676,
+        "mean_cycles": 472.5907643312102,
+        "min_cycles": 412,
+        "max_cycles": 531,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 435.6265544989027,
+          "pn": 486.0895802098951,
+          "np": 484.7971233913702,
+          "nn": 485.05129179331306
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "reference": {
+        "cases": 10676,
+        "mean_cycles": 472.5907643312102,
+        "min_cycles": 412,
+        "max_cycles": 531,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 435.6265544989027,
+          "pn": 486.0895802098951,
+          "np": 484.7971233913702,
+          "nn": 485.05129179331306
+        }
+      },
+      "alternate": {
+        "cases": 10676,
+        "mean_cycles": 472.5907643312102,
+        "min_cycles": 412,
+        "max_cycles": 531,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 435.6265544989027,
+          "pn": 486.0895802098951,
+          "np": 484.7971233913702,
+          "nn": 485.05129179331306
+        }
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "reference": {
+        "cases": 10676,
+        "mean_cycles": 516.5907643312102,
+        "min_cycles": 456,
+        "max_cycles": 575,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 479.6265544989027,
+          "pn": 530.0895802098951,
+          "np": 528.7971233913702,
+          "nn": 529.0512917933131
+        }
+      },
+      "alternate": {
+        "cases": 10676,
+        "mean_cycles": 516.5907643312102,
+        "min_cycles": 456,
+        "max_cycles": 575,
+        "quadrant_counts": {
+          "pp": 2734,
+          "pn": 2668,
+          "np": 2642,
+          "nn": 2632
+        },
+        "quadrant_means": {
+          "pp": 479.6265544989027,
+          "pn": 530.0895802098951,
+          "np": 528.7971233913702,
+          "nn": 529.0512917933131
+        }
+      }
+    }
+  }
+}

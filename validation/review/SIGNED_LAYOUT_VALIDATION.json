@@ -21,8 +21,8 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 248,
-          "unsigned_instructions": 179,
+          "signed_instructions": 242,
+          "unsigned_instructions": 173,
           "overlap": 0
         },
         {
@@ -110,14 +110,14 @@
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
           "signed_instructions": 115,
-          "unsigned_instructions": 86,
+          "unsigned_instructions": 83,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 232,
-          "unsigned_instructions": 179,
+          "signed_instructions": 226,
+          "unsigned_instructions": 173,
           "overlap": 0
         },
         {
@@ -173,7 +173,7 @@
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
           "signed_instructions": 125,
-          "unsigned_instructions": 96,
+          "unsigned_instructions": 93,
           "overlap": 0
         },
         {
@@ -205,14 +205,14 @@
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
           "signed_instructions": 115,
-          "unsigned_instructions": 86,
+          "unsigned_instructions": 83,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 232,
-          "unsigned_instructions": 179,
+          "signed_instructions": 226,
+          "unsigned_instructions": 173,
           "overlap": 0
         },
         {
@@ -233,7 +233,7 @@
           "signed": "MATH_SDIV8",
           "unsigned": "MATH_UDIV8",
           "signed_instructions": 235,
-          "unsigned_instructions": 25,
+          "unsigned_instructions": 58,
           "overlap": 0
         },
         {
@@ -268,7 +268,7 @@
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
           "signed_instructions": 125,
-          "unsigned_instructions": 96,
+          "unsigned_instructions": 93,
           "overlap": 0
         },
         {
@@ -300,14 +300,14 @@
           "signed": "MATH_SMUL16",
           "unsigned": "MATH_UMUL16",
           "signed_instructions": 115,
-          "unsigned_instructions": 86,
+          "unsigned_instructions": 83,
           "overlap": 0
         },
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 232,
-          "unsigned_instructions": 179,
+          "signed_instructions": 226,
+          "unsigned_instructions": 173,
           "overlap": 0
         },
         {
@@ -328,7 +328,7 @@
           "signed": "MATH_SDIV8",
           "unsigned": "MATH_UDIV8",
           "signed_instructions": 235,
-          "unsigned_instructions": 25,
+          "unsigned_instructions": 58,
           "overlap": 0
         },
         {
@@ -363,7 +363,7 @@
           "signed": "MATH_SMUL16_SHR8",
           "unsigned": "MATH_UMUL16_SHR8",
           "signed_instructions": 125,
-          "unsigned_instructions": 96,
+          "unsigned_instructions": 93,
           "overlap": 0
         },
         {
@@ -401,8 +401,8 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 248,
-          "unsigned_instructions": 179,
+          "signed_instructions": 242,
+          "unsigned_instructions": 173,
           "overlap": 0
         },
         {
@@ -765,8 +765,8 @@
       "check": "v1_balanced_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 248,
-        "unsigned_instructions": 179,
+        "signed_instructions": 242,
+        "unsigned_instructions": 173,
         "overlap": []
       }
     },
@@ -1224,7 +1224,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 115,
-        "unsigned_instructions": 86,
+        "unsigned_instructions": 83,
         "overlap": []
       }
     },
@@ -1242,8 +1242,8 @@
       "check": "v2_pareto_fast_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 232,
-        "unsigned_instructions": 179,
+        "signed_instructions": 226,
+        "unsigned_instructions": 173,
         "overlap": []
       }
     },
@@ -1395,7 +1395,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 125,
-        "unsigned_instructions": 96,
+        "unsigned_instructions": 93,
         "overlap": []
       }
     },
@@ -1701,7 +1701,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 115,
-        "unsigned_instructions": 86,
+        "unsigned_instructions": 83,
         "overlap": []
       }
     },
@@ -1719,8 +1719,8 @@
       "check": "v3_reu_512k_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 232,
-        "unsigned_instructions": 179,
+        "signed_instructions": 226,
+        "unsigned_instructions": 173,
         "overlap": []
       }
     },
@@ -1777,7 +1777,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 235,
-        "unsigned_instructions": 25,
+        "unsigned_instructions": 58,
         "overlap": []
       }
     },
@@ -1872,7 +1872,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 125,
-        "unsigned_instructions": 96,
+        "unsigned_instructions": 93,
         "overlap": []
       }
     },
@@ -2178,7 +2178,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 115,
-        "unsigned_instructions": 86,
+        "unsigned_instructions": 83,
         "overlap": []
       }
     },
@@ -2196,8 +2196,8 @@
       "check": "v4_reu_16m_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 232,
-        "unsigned_instructions": 179,
+        "signed_instructions": 226,
+        "unsigned_instructions": 173,
         "overlap": []
       }
     },
@@ -2254,7 +2254,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 235,
-        "unsigned_instructions": 25,
+        "unsigned_instructions": 58,
         "overlap": []
       }
     },
@@ -2349,7 +2349,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 125,
-        "unsigned_instructions": 96,
+        "unsigned_instructions": 93,
         "overlap": []
       }
     },
@@ -2591,8 +2591,8 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 248,
-        "unsigned_instructions": 179,
+        "signed_instructions": 242,
+        "unsigned_instructions": 173,
         "overlap": []
       }
     },

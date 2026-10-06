@@ -13,11 +13,11 @@
     "current_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "fe348687ede0e81abfa78b5ef2be84524b4df82dea801770a064e593483f3e80",
-    "v2_pareto_fast": "23e8c22c9b6a8d5e54636cb014b476892a55c6fc00098cdba81b743c3099fc0a",
-    "v3_reu_512k": "d3558f767750ac95b2cb4bc224324704795003828235be2f44f37b34de20731f",
-    "v4_reu_16m": "5b1c1124fc695840d4cd234f7bdffd717a89afd6f77692449a5c3bee4c40d7c2",
-    "v5_hybrid_lowzp": "33bfa92198cf78aee4f99ef82c76ed4599153618863bfd9c155e747445b85ec4"
+    "v1_balanced": "c2d521d6248156219a554f6a5b7b7673b6c8251095da0c0934ead6526a99c185",
+    "v2_pareto_fast": "4ca89ca55a633bfc5ee6a3bcbd5f1fb2f86597802a30a45b77feefa2bce0be5f",
+    "v3_reu_512k": "551917b0fef432d871fc28ce2e90009f25bb689cb96a5831e1a63b1232757aa3",
+    "v4_reu_16m": "94a7f28c069be627b6d7a7f9bdd1817ef9c8949944b577c361b009c96d8e062a",
+    "v5_hybrid_lowzp": "55558f36aa1e71c1755028a5fdcf6e23316b07293e34d68854e1109a1a8c965a"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "4ba6ece174d54042d51736f3bb0ee3a8c0506c8fcdd9ac4c0163bfb5197a3fda",
@@ -214,7 +214,8 @@
     "ATAN2 profile integration: V1 uses compact_opt (48.447189 mean, 512 B tables); V2/V3/V5 use sum_fast (44.962814 mean, 1024 B tables); V4 retains exact REU ATAN2.",
     "Turbo16 public CALL keeps the exact 113-byte overlay but removes a redundant x1 reload: 211.544111 mean cycles (199-236), BEGIN/END 282/327, 43-product crossover versus normal UMUL16; relocation and boundary cycle vectors remain identical.",
     "V2/V3/V4 public UMUL16 uses the resource-neutral A=x1/direct-Z0 adaptation: 216.980037 mean cycles (205-240), 16 ZP bytes; UMUL16_SHR8 is 257.980037 mean and remains exactly +41 cycles.",
-    "All-profile public UMUL24 direct-output update: V1/V5 474.042329 mean (444-530), V2/V3/V4 429.555502 mean (400-485), exactly 18 cycles saved on every call in the 10,324-case old-vs-new comparison; 24-ZP/table contracts unchanged."
+    "All-profile public UMUL24 direct-output update: V1/V5 474.042329 mean (444-530), V2/V3/V4 429.555502 mean (400-485), exactly 18 cycles saved on every call in the 10,324-case old-vs-new comparison; 24-ZP/table contracts unchanged.",
+    "All-profile public SMUL24 direct-output update: V1/V5 513.496472/512.874222, V2/V3/V4 469.181818/468.816106/469.220008; exactly 18 cycles removed from every call, with 24-ZP/table/quadrant contracts unchanged."
   ],
   "package_audit_checks": 30,
   "package_cleanup": {
@@ -241,11 +242,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "2cf449acd3a524928fa86030dd8484f319385df5ba894c65f6cfa44b24fbe410",
-    "v2_pareto_fast": "111da5499f29b52afcfbd09fa896c2e08723d981435e3305fab399911d85383f",
-    "v3_reu_512k": "e7555a7198ed2f862f22d4e44348267ec80f7b709bd711d55944a722b8a29bd5",
-    "v4_reu_16m": "3cacbfeef29235f5766fe9acf4bb41b4a801c7cfd04d23e31e834563f10eb547",
-    "v5_hybrid_lowzp": "40ede96d8bc24a8322df87a0d4b1b25e1c2a8943b18b1f2d0d459581d30bdcf0"
+    "v1_balanced": "c5e3b96ac1ed6b9906269baf4770a277ddb4d02dfcf3b259fbd542c3e84a471c",
+    "v2_pareto_fast": "b8fd61e1f1bcc554cdffe0fd9cd42fd30466687b6bcd9d5eca49f89d11a529ec",
+    "v3_reu_512k": "af294c30269bffcecee6dc308ed9da78480737dd80492145464889c746586692",
+    "v4_reu_16m": "c01d6af38c96532b475b91d46f03bff09fcf91daf0c01e5c0b19048c5fe0e0a7",
+    "v5_hybrid_lowzp": "e3f4e5ea4e2dcc1b177e6c950eb5c77928c1a3c571f5d7f5986f82b4f84cc1ba"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "674418328ebd210d161790c0a6d42be9d1ca08315c17fdc13d04bea4d0999b61",

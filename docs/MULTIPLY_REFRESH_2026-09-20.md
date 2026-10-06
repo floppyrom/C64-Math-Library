@@ -33,8 +33,8 @@ The consolidated table is authoritative for per-profile resource accounting and 
 | `MATH_SMUL16` | V4 | 252.662553 | 230–293 | 4,457 |
 | `MATH_UMUL24` | V1/V5 | **474.042329** | 444–530 | 10,324 |
 | `MATH_UMUL24` | V2/V3/V4 | **429.555502** | 400–485 | 10,324 each |
-| `MATH_SMUL24` | V1 | **531.496472** | 474–591 | 2,409 |
-| `MATH_SMUL24` | V2/V3/V4 | **487.181818 / 486.816106 / 487.220008** | 430–550 overall | 2,409 each |
+| `MATH_SMUL24` | V1 | **513.496472** | 456–573 | 2,409 |
+| `MATH_SMUL24` | V2/V3/V4 | **469.181818 / 468.816106 / 469.220008** | 412–532 overall | 2,409 each |
 | `MATH_UMUL32` | all five | **712.235367** | 652–831 | 2,409 |
 | `MATH_UMUL32_READY` | all five | **697.175781** | 642–784 | 1,024 |
 | `MATH_SMUL32` | V1/V2/V3/V4/V5 | **744.569946 / 743.605230 / 744.033209 / 744.090079 / 743.913242** | 660–873 | 2,409 each |
@@ -67,7 +67,7 @@ The refreshed signed 24-bit path uses four-quadrant dispatch:
 - one-negative quadrants use one upper-half two's-complement correction;
 - negative/negative negates both operands and fuses the X transformation into the binding phase before entering the installed-X magnitude producer.
 
-The selected C64ML form uses the 24-ZP carry-optimized magnitude geometry. It is selected in every profile. V1/V5 retain the private unsigned FAST24 producer and V2/V3/V4 retain the resident reverse/carry record arithmetic. On 2026-10-06 both unsigned families were tightened without changing their resource contracts: once the low-result pointer bytes are dead, z0-z2 are written directly to public result RAM instead of staged in ZP and copied by the wrapper. On the shared 10,324-case comparison this removes exactly **18 cycles on every call** in both representative implementation families.
+The selected C64ML form uses the 24-ZP carry-optimized magnitude geometry. It is selected in every profile. V1/V5 retain the private unsigned FAST24 producer and V2/V3/V4 retain the resident reverse/carry record arithmetic. On 2026-10-06 both unsigned families were tightened without changing their resource contracts: once the low-result pointer bytes are dead, z0-z2 are written directly to public result RAM instead of staged in ZP and copied by the wrapper. On the shared 10,324-case comparison this removes exactly **18 cycles on every call** in both representative implementation families. On 2026-10-06 the same direct-output lifetime optimization was applied to the signed FAST24 composition: the low three product bytes are final before any signed upper-half correction, so they now land directly in public result RAM. The all-profile signed proof covers 10,676 cases per map and preserves every four-quadrant result/cycle vector across relocation. The change removes exactly **18 cycles from every SMUL24 call** without changing the 24-ZP/table contract.
 
 ## 32-bit: FAST31/V29 for signed and unsigned
 

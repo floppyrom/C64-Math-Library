@@ -1,3 +1,11 @@
+## 2026-10-06 — all-profile SMUL24 direct-output optimization
+
+- Applied the same low-result lifetime optimization used by UMUL24 to the private FAST24 four-quadrant signed composition in all five fixed profiles.
+- Product bytes Z0-Z2 are written directly to public result RAM once their pointer-low aliases are dead; mixed-sign correction still operates only on the upper 24 bits in Y/A/X.
+- V1/V5 signed validation means become **513.496472 / 512.874222** cycles; V2/V3/V4 become **469.181818 / 468.816106 / 469.220008**.
+- The transformation is a constant **-18 cycles per call**: three ZP stores become absolute public stores (+3 cycles total), while three 7-cycle ZP-to-public copy pairs disappear (-21).
+- 24-ZP ownership, table geometry, signed quadrant logic, ABI, and persistent stack usage are unchanged. Reference/alternate vectors and V1/V5 inheritance remain identical.
+
 ## 2026-10-06 — all-profile UMUL24 direct-output optimization
 
 - V1/V5 private FAST24 and V2/V3/V4 resident reverse/carry UMUL24 keep their existing 24-ZP/table geometry but now write z0-z2 directly to public result RAM after the corresponding pointer-low lifetimes end.
