@@ -1092,11 +1092,11 @@ Reference benchmark model:
 
 ```text
 BEGIN ≈ 282 cycles
-CALL  ≈ 215.54 cycles mean
+CALL  ≈ 211.54 cycles mean
 END   ≈ 327 cycles
 ```
 
-Against the current 225.84-cycle normal UMUL16, Turbo16's 282-cycle BEGIN, 215.54-cycle mean CALL and 327-cycle END cross over at roughly 60 products per batch. Smaller batches should use the normal public entry.
+Against the current 225.84-cycle normal UMUL16, Turbo16's 282-cycle BEGIN, 211.54-cycle mean CALL and 327-cycle END cross over at **43 products per batch**. Smaller batches should use the normal public entry.
 
 ---
 
@@ -1205,7 +1205,7 @@ Current measured speed guidance:
 
 ```text
 small/medium batches   MATH_UMUL16
-~60+ products          Turbo16 BEGIN / repeated CALL / END
+43+ products           Turbo16 BEGIN / repeated CALL / END
 QS16                    supported specialized mode; not selected for speed
 ```
 
