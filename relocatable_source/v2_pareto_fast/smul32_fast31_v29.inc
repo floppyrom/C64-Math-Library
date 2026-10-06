@@ -162,6 +162,8 @@ S32V28_c3a_done:
         adc S32V28_z30
         bcc S32V28_c3b_done
         inx
+        ; NN feeds |X| <= $80000000 to the producer. X entered summation as
+        ; row0 byte4=floor(|X|*y0/2^32) <= $7f; two increments cannot wrap.
         clc
 S32V28_c3b_done:
         adc S32V28_z21
@@ -174,6 +176,7 @@ S32V28_c4a_done:
         adc S32V28_z31
         bcc S32V28_c4b_done
         iny
+        ; z14 is row1 byte4 with the same <= $7f bound; no wrap is possible.
         clc
 S32V28_c4b_done:
         adc S32V28_z22
@@ -533,6 +536,7 @@ S32V28_q0_c3a_done:
         adc S32V28_z30
         bcc S32V28_q0_c3b_done
         inx
+        ; q0 has X < $80000000, so row0 byte4 <= $7f and cannot wrap here.
         clc
 S32V28_q0_c3b_done:
         adc S32V28_z21
@@ -545,6 +549,7 @@ S32V28_q0_c4a_done:
         adc S32V28_z31
         bcc S32V28_q0_c4b_done
         iny
+        ; z14 is row1 byte4 <= $7f for q0, so no wrap is possible.
         clc
 S32V28_q0_c4b_done:
         adc S32V28_z22
@@ -743,6 +748,7 @@ S32V28_q1_c3a_done:
         adc S32V28_z30
         bcc S32V28_q1_c3b_done
         inx
+        ; q1 also has X < $80000000; row0 byte4 <= $7f, so no wrap is possible.
         clc
 S32V28_q1_c3b_done:
         adc S32V28_z21
@@ -755,6 +761,7 @@ S32V28_q1_c4a_done:
         adc S32V28_z31
         bcc S32V28_q1_c4b_done
         iny
+        ; z14 is row1 byte4 <= $7f for q1, so no wrap is possible.
         clc
 S32V28_q1_c4b_done:
         adc S32V28_z22
