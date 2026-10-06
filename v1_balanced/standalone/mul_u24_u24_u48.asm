@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 179.
+; Reachable instructions: 173.
 !cpu 6510
 
 ; ---- executable island $2700 ----
@@ -43,20 +43,14 @@ L2700:
     sta $C00C                          ; @2741 8D 0C C0
     stx $C00D                          ; @2744 8E 0D C0
     sty $C00B                          ; @2747 8C 0B C0
-    lda $0B                            ; @274A A5 0B
-    sta $C008                          ; @274C 8D 08 C0
-    lda $0F                            ; @274F A5 0F
-    sta $C009                          ; @2751 8D 09 C0
-    lda $17                            ; @2754 A5 17
-    sta $C00A                          ; @2756 8D 0A C0
-    clc                                ; @2759 18
-    rts                                ; @275A 60
+    clc                                ; @274A 18
+    rts                                ; @274B 60
 ; ---- executable island $2D00 ----
 * = $2D00
 L2D00:
     clc                                ; @2D00 18
     adc ($13),y                        ; @2D01 71 13
-    sta $2DEB                          ; @2D03 8D EB 2D
+    sta $2DEE                          ; @2D03 8D EE 2D
     lda #$01                           ; @2D06 A9 01
     adc ($15),y                        ; @2D08 71 15
     adc ($17),y                        ; @2D0A 71 17
@@ -65,14 +59,14 @@ L2D00:
 L2D10:
     clc                                ; @2D10 18
     adc ($1B),y                        ; @2D11 71 1B
-    sta $2DF0                          ; @2D13 8D F0 2D
+    sta $2DF3                          ; @2D13 8D F3 2D
     lda #$01                           ; @2D16 A9 01
     adc ($1D),y                        ; @2D18 71 1D
     bcc L2D7A                          ; @2D1A 90 5E
 L2D1C:
     clc                                ; @2D1C 18
     adc ($13),y                        ; @2D1D 71 13
-    sta $2DD8                          ; @2D1F 8D D8 2D
+    sta $2DDA                          ; @2D1F 8D DA 2D
     lda #$01                           ; @2D22 A9 01
     adc ($15),y                        ; @2D24 71 15
     adc ($17),y                        ; @2D26 71 17
@@ -81,7 +75,7 @@ L2D1C:
 L2D2C:
     clc                                ; @2D2C 18
     adc ($1B),y                        ; @2D2D 71 1B
-    sta $2DE3                          ; @2D2F 8D E3 2D
+    sta $2DE6                          ; @2D2F 8D E6 2D
     lda #$01                           ; @2D32 A9 01
     adc ($1D),y                        ; @2D34 71 1D
     bcc L2DA2                          ; @2D36 90 6A
@@ -104,20 +98,20 @@ L2D38:
     sec                                ; @2D56 38
     lda ($09),y                        ; @2D57 B1 09
     adc ($0B),y                        ; @2D59 71 0B
-    sta $2DDE                          ; @2D5B 8D DE 2D
+    sta $2DE0                          ; @2D5B 8D E0 2D
     lda ($0D),y                        ; @2D5E B1 0D
     adc ($0F),y                        ; @2D60 71 0F
     adc ($11),y                        ; @2D62 71 11
     bcs L2D00                          ; @2D64 B0 9A
     adc ($13),y                        ; @2D66 71 13
-    sta $2DEB                          ; @2D68 8D EB 2D
+    sta $2DEE                          ; @2D68 8D EE 2D
     lda ($15),y                        ; @2D6B B1 15
     adc ($17),y                        ; @2D6D 71 17
     adc ($19),y                        ; @2D6F 71 19
     bcs L2D10                          ; @2D71 B0 9D
 L2D73:
     adc ($1B),y                        ; @2D73 71 1B
-    sta $2DF0                          ; @2D75 8D F0 2D
+    sta $2DF3                          ; @2D75 8D F3 2D
     lda ($1D),y                        ; @2D78 B1 1D
 L2D7A:
     adc ($1F),y                        ; @2D7A 71 1F
@@ -125,89 +119,89 @@ L2D7A:
     ldy #$00                           ; @2D7D A0 00
     lda ($09),y                        ; @2D7F B1 09
     adc ($0B),y                        ; @2D81 71 0B
-    sta $2DD2                          ; @2D83 8D D2 2D
+    sta $2DD3                          ; @2D83 8D D3 2D
     lda ($0D),y                        ; @2D86 B1 0D
     adc ($0F),y                        ; @2D88 71 0F
     adc ($11),y                        ; @2D8A 71 11
     bcs L2D1C                          ; @2D8C B0 8E
     adc ($13),y                        ; @2D8E 71 13
-    sta $2DD8                          ; @2D90 8D D8 2D
+    sta $2DDA                          ; @2D90 8D DA 2D
     lda ($15),y                        ; @2D93 B1 15
     adc ($17),y                        ; @2D95 71 17
     adc ($19),y                        ; @2D97 71 19
     bcs L2D2C                          ; @2D99 B0 91
 L2D9B:
     adc ($1B),y                        ; @2D9B 71 1B
-    sta $2DE3                          ; @2D9D 8D E3 2D
+    sta $2DE6                          ; @2D9D 8D E6 2D
     lda ($1D),y                        ; @2DA0 B1 1D
 L2DA2:
     adc ($1F),y                        ; @2DA2 71 1F
-    sta $2DEE                          ; @2DA4 8D EE 2D
+    sta $2DF1                          ; @2DA4 8D F1 2D
     ldy #$00                           ; @2DA7 A0 00
     lda ($09),y                        ; @2DA9 B1 09
     adc ($0B),y                        ; @2DAB 71 0B
-    sta $0B                            ; @2DAD 85 0B
-    lda ($0D),y                        ; @2DAF B1 0D
-    adc ($0F),y                        ; @2DB1 71 0F
-    adc ($11),y                        ; @2DB3 71 11
-    bcs L2DF6                          ; @2DB5 B0 3F
-    adc ($13),y                        ; @2DB7 71 13
-    sta $2DD0                          ; @2DB9 8D D0 2D
-    lda ($15),y                        ; @2DBC B1 15
-    adc ($17),y                        ; @2DBE 71 17
-    adc ($19),y                        ; @2DC0 71 19
-    bcs L2E06                          ; @2DC2 B0 42
-L2DC4:
-    adc ($1B),y                        ; @2DC4 71 1B
-    sta $2DD6                          ; @2DC6 8D D6 2D
-    lda ($1D),y                        ; @2DC9 B1 1D
-L2DCB:
-    adc ($1F),y                        ; @2DCB 71 1F
-    tay                                ; @2DCD A8
-    clc                                ; @2DCE 18
-    lda #$00                           ; @2DCF A9 00
-    adc #$00                           ; @2DD1 69 00
-    sta $0F                            ; @2DD3 85 0F
-    lda #$00                           ; @2DD5 A9 00
-    adc #$00                           ; @2DD7 69 00
-    bcc L2DDD                          ; @2DD9 90 02
-    iny                                ; @2DDB C8
-    clc                                ; @2DDC 18
-L2DDD:
-    adc #$00                           ; @2DDD 69 00
-    sta $17                            ; @2DDF 85 17
-    tya                                ; @2DE1 98
-    adc #$00                           ; @2DE2 69 00
-    bcc L2DEA                          ; @2DE4 90 04
-    clc                                ; @2DE6 18
-    inc $2DEE                          ; @2DE7 EE EE 2D
-L2DEA:
-    adc #$00                           ; @2DEA 69 00
-    tay                                ; @2DEC A8
-    lda #$00                           ; @2DED A9 00
-    adc #$00                           ; @2DEF 69 00
-    bcs L2DF4                          ; @2DF1 B0 01
-    rts                                ; @2DF3 60
-L2DF4:
-    inx                                ; @2DF4 E8
-    rts                                ; @2DF5 60
-L2DF6:
-    clc                                ; @2DF6 18
-    adc ($13),y                        ; @2DF7 71 13
-    sta $2DD0                          ; @2DF9 8D D0 2D
-    lda #$01                           ; @2DFC A9 01
-    adc ($15),y                        ; @2DFE 71 15
-    adc ($17),y                        ; @2E00 71 17
-    adc ($19),y                        ; @2E02 71 19
-    bcc L2DC4                          ; @2E04 90 BE
-L2E06:
-    clc                                ; @2E06 18
-    adc ($1B),y                        ; @2E07 71 1B
-    sta $2DD6                          ; @2E09 8D D6 2D
-    lda #$01                           ; @2E0C A9 01
-    adc ($1D),y                        ; @2E0E 71 1D
-    bcc L2DCB                          ; @2E10 90 B9
-    brk                                ; @2E12 00
+    sta $C008                          ; @2DAD 8D 08 C0
+    lda ($0D),y                        ; @2DB0 B1 0D
+    adc ($0F),y                        ; @2DB2 71 0F
+    adc ($11),y                        ; @2DB4 71 11
+    bcs L2DF9                          ; @2DB6 B0 41
+    adc ($13),y                        ; @2DB8 71 13
+    sta $2DD1                          ; @2DBA 8D D1 2D
+    lda ($15),y                        ; @2DBD B1 15
+    adc ($17),y                        ; @2DBF 71 17
+    adc ($19),y                        ; @2DC1 71 19
+    bcs L2E09                          ; @2DC3 B0 44
+L2DC5:
+    adc ($1B),y                        ; @2DC5 71 1B
+    sta $2DD8                          ; @2DC7 8D D8 2D
+    lda ($1D),y                        ; @2DCA B1 1D
+L2DCC:
+    adc ($1F),y                        ; @2DCC 71 1F
+    tay                                ; @2DCE A8
+    clc                                ; @2DCF 18
+    lda #$00                           ; @2DD0 A9 00
+    adc #$00                           ; @2DD2 69 00
+    sta $C009                          ; @2DD4 8D 09 C0
+    lda #$00                           ; @2DD7 A9 00
+    adc #$00                           ; @2DD9 69 00
+    bcc L2DDF                          ; @2DDB 90 02
+    iny                                ; @2DDD C8
+    clc                                ; @2DDE 18
+L2DDF:
+    adc #$00                           ; @2DDF 69 00
+    sta $C00A                          ; @2DE1 8D 0A C0
+    tya                                ; @2DE4 98
+    adc #$00                           ; @2DE5 69 00
+    bcc L2DED                          ; @2DE7 90 04
+    clc                                ; @2DE9 18
+    inc $2DF1                          ; @2DEA EE F1 2D
+L2DED:
+    adc #$00                           ; @2DED 69 00
+    tay                                ; @2DEF A8
+    lda #$00                           ; @2DF0 A9 00
+    adc #$00                           ; @2DF2 69 00
+    bcs L2DF7                          ; @2DF4 B0 01
+    rts                                ; @2DF6 60
+L2DF7:
+    inx                                ; @2DF7 E8
+    rts                                ; @2DF8 60
+L2DF9:
+    clc                                ; @2DF9 18
+    adc ($13),y                        ; @2DFA 71 13
+    sta $2DD1                          ; @2DFC 8D D1 2D
+    lda #$01                           ; @2DFF A9 01
+    adc ($15),y                        ; @2E01 71 15
+    adc ($17),y                        ; @2E03 71 17
+    adc ($19),y                        ; @2E05 71 19
+    bcc L2DC5                          ; @2E07 90 BC
+L2E09:
+    clc                                ; @2E09 18
+    adc ($1B),y                        ; @2E0A 71 1B
+    sta $2DD8                          ; @2E0C 8D D8 2D
+    lda #$01                           ; @2E0F A9 01
+    adc ($1D),y                        ; @2E11 71 1D
+    bcc L2DCC                          ; @2E13 90 B7
+    brk                                ; @2E15 00
 ; ---- executable island $3060 ----
 * = $3060
 mul_u24_u24_u48:

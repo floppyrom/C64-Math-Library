@@ -1,7 +1,7 @@
 legacy_api,canonical_name,file,alias_of,entry_address,reachable_instructions
 MATH_UMUL8,mul_u8_u8_u16,mul_u8_u8_u16.asm,,$3000,26
 MATH_UMUL16,mul_u16_u16_u32,mul_u16_u16_u32.asm,,$3020,83
-MATH_UMUL24,mul_u24_u24_u48,mul_u24_u24_u48.asm,,$3060,179
+MATH_UMUL24,mul_u24_u24_u48,mul_u24_u24_u48.asm,,$3060,173
 MATH_UMUL32,mul_u32_u32_u64,mul_u32_u32_u64.asm,,$30B0,151
 MATH_UMUL32_READY,mul_u32_u32_u64_ready,mul_u32_u32_u64_ready.asm,,$30C0,151
 MATH_SMUL8,mul_s8_s8_s16,mul_s8_s8_s16.asm,,$3B80,19

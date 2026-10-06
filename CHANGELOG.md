@@ -1,3 +1,11 @@
+## 2026-10-06 — all-profile UMUL24 direct-output optimization
+
+- V1/V5 private FAST24 and V2/V3/V4 resident reverse/carry UMUL24 keep their existing 24-ZP/table geometry but now write z0-z2 directly to public result RAM after the corresponding pointer-low lifetimes end.
+- Same-corpus old-vs-new comparison: **exactly 18 cycles saved on all 10,324 calls** in both representative implementation families.
+- Current means: **474.042329 cycles (444–530)** in V1/V5 and **429.555502 cycles (400–485)** in V2/V3/V4; reference/alternate vectors are identical and V5 matches V1 exactly.
+- Signed SMUL24 executable code is unchanged; only the unsigned producers changed.
+- Added permanent all-profile UMUL24 validation and regenerated V1–V5 resident/standalone/publication artifacts.
+
 ## 2026-10-06 — V2–V4 UMUL16 direct-output optimization\n\n- Optimized the existing fixed-profile 17-ZP UMUL16 family without importing a high-ZP research kernel: the public adapter now enters with **A=x1**, removing a redundant reload, and the fused quarter-square core writes **Z0 directly to MATH_Z**.\n- V2/V3/V4 `MATH_UMUL16` measures **216.980037 cycles mean, 205–240** on the 10,169-case deterministic edge+random corpus, with identical reference/alternate cycle vectors.\n- The private pointer footprint drops from **17 to 16 ZP bytes**; table geometry and persistent stack usage are unchanged.\n- `MATH_UMUL16_SHR8` inherits the producer win and remains an exact **+41-cycle** composition: **257.980037 mean, 246–281** on the same corpus.\n- Promoted V2/V3/V4 PRGs, exact standalone mirrors, resident UMUL16 binary slices, segment metadata, consolidated/public indexes, and package hashes are regenerated from canonical source.\n\n## 2026-10-06 — Turbo16 public-wrapper optimization
 
 - Kept the 113-byte Turbo16 executable-ZP overlay **byte-for-byte unchanged** and removed one redundant 4-cycle absolute reload from the public CALL adapter by keeping `x1` live in A for the existing `umult_ax1` entry.

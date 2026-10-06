@@ -7,7 +7,7 @@
   "output_prg": "math_v5_hybrid_lowzp_game_math.prg",
   "output_load": "$1000",
   "output_end": "$CF96",
-  "output_sha256": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729",
+  "output_sha256": "40ede96d8bc24a8322df87a0d4b1b25e1c2a8943b18b1f2d0d459581d30bdcf0",
   "public_entries": {
     "MATH_UMUL8": "$3000",
     "MATH_UMUL16": "$3020",
@@ -141,8 +141,8 @@
     "Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines."
   ],
   "source_inputs": {
-    "v1_source_sha256": "313abe6b290be23e74418ed783009ed5318bb5101ca38aa90436741171d40ed9",
-    "v2_source_sha256": "39c0f60d9622a0f990a23384de14a1166656bf51e93c5c2f53c2f4da3b01f60a",
+    "v1_source_sha256": "e07f8048653a858cd89bd54b816fd0dfcffe1441a1ddb63f9318867c5a72cf2c",
+    "v2_source_sha256": "e6eb5e2f351fe349396b6cd67a071345ac06bf68a15504db80528d37a4ae85ed",
     "normalize_native_sha256": "02c62b29908cb367195eb9f8ac3f80c715532f2442369f5181769f3dc468dd58",
     "normalize_tables_sha256": "59092b96cebca7715f98f1fe7a8264a0169e535fc48946ac4f4b596358b1f0ab",
     "seek_native_sha256": "96d9d6d33e4f0d05b5acef61aa67990a8dcc041d9008196f2bb6c167c7970d9f",

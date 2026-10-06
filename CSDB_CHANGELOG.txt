@@ -1,3 +1,6 @@
+2026-10-06 UMUL24 DIRECT-OUTPUT
+- All five profiles save exactly 18 cycles/call on the shared 10,324-case old-vs-new comparison. V1/V5: 474.042329 mean; V2/V3/V4: 429.555502 mean. 24-ZP/table contracts unchanged; signed SMUL24 unchanged.
+
 2026-10-06 UMUL16 DIRECT-OUTPUT
 - V2/V3/V4 public UMUL16: 216.980037 cycles mean (205-240), 16 ZP bytes; A=x1 entry plus direct Z0 output. UMUL16_SHR8: 257.980037 mean. Reference/alternate cycle vectors identical.
 

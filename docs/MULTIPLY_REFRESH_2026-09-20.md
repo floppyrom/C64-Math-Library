@@ -12,7 +12,7 @@ The public ABI is unchanged. All selected implementations remain relocatable thr
 | `SMUL8` | direct signed QS | direct signed QS | direct signed QS | direct signed QS | direct signed QS |
 | `UMUL16` | retained 17-ZP record core | retained 17-ZP record core | retained 17-ZP record core | retained 17-ZP record core | retained 17-ZP record core |
 | `SMUL16` | **FAST17 low-ZP native** | retained 116-ZP practical native | retained 116-ZP practical native | retained 116-ZP practical native | **FAST17 low-ZP native** |
-| `UMUL24` | **FAST24 private** | retained record kernel | retained record kernel | retained record kernel | **FAST24 private** |
+| `UMUL24` | **FAST24 private + direct output** | **record core + direct output** | **record core + direct output** | **record core + direct output** | **FAST24 private + direct output** |
 | `SMUL24` | **FAST24 signed composition** | **FAST24 signed composition** | **FAST24 signed composition** | **FAST24 signed composition** | **FAST24 signed composition** |
 | `UMUL32` | **FAST31/V29 q0** | **FAST31/V29 q0** | **FAST31/V29 q0** | **FAST31/V29 q0** | **FAST31/V29 q0** |
 | `SMUL32` | **FAST31/V29 signed** | **FAST31/V29 signed** | **FAST31/V29 signed** | **FAST31/V29 signed** | **FAST31/V29 signed** |
@@ -31,7 +31,8 @@ The consolidated table is authoritative for per-profile resource accounting and 
 | `MATH_SMUL16` | V2 | 252.324882 | 230–293 | 4,457 |
 | `MATH_SMUL16` | V3 | 252.623962 | 230–293 | 4,457 |
 | `MATH_SMUL16` | V4 | 252.662553 | 230–293 | 4,457 |
-| `MATH_UMUL24` | V1/V5 | **489.988792** | 462–542 | 2,409 |
+| `MATH_UMUL24` | V1/V5 | **474.042329** | 444–530 | 10,324 |
+| `MATH_UMUL24` | V2/V3/V4 | **429.555502** | 400–485 | 10,324 each |
 | `MATH_SMUL24` | V1 | **531.496472** | 474–591 | 2,409 |
 | `MATH_SMUL24` | V2/V3/V4 | **487.181818 / 486.816106 / 487.220008** | 430–550 overall | 2,409 each |
 | `MATH_UMUL32` | all five | **712.235367** | 652–831 | 2,409 |
@@ -66,7 +67,7 @@ The refreshed signed 24-bit path uses four-quadrant dispatch:
 - one-negative quadrants use one upper-half two's-complement correction;
 - negative/negative negates both operands and fuses the X transformation into the binding phase before entering the installed-X magnitude producer.
 
-The selected C64ML form uses the 24-ZP carry-optimized magnitude geometry. It is selected in every profile. V1/V5 also adopt the corresponding private unsigned FAST24 producer; V2/V3/V4 retain their existing record `UMUL24` because the replacement candidate was slightly slower on the controlled comparison corpus.
+The selected C64ML form uses the 24-ZP carry-optimized magnitude geometry. It is selected in every profile. V1/V5 retain the private unsigned FAST24 producer and V2/V3/V4 retain the resident reverse/carry record arithmetic. On 2026-10-06 both unsigned families were tightened without changing their resource contracts: once the low-result pointer bytes are dead, z0-z2 are written directly to public result RAM instead of staged in ZP and copied by the wrapper. On the shared 10,324-case comparison this removes exactly **18 cycles on every call** in both representative implementation families.
 
 ## 32-bit: FAST31/V29 for signed and unsigned
 
