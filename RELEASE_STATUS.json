@@ -42,30 +42,6 @@
     "common_api_machine_calls": 257064,
     "config_validation_cases": 12,
     "default_reference_points": {
-      "147": {
-        "extra_private_ram_bytes": 9837,
-        "packs": [
-          "atan2_fast",
-          "smul16_exec",
-          "zero_zp_v5"
-        ]
-      },
-      "176": {
-        "extra_private_ram_bytes": 11335,
-        "packs": [
-          "atan2_fast",
-          "smul16_exec",
-          "umul24",
-          "umul8_16",
-          "zero_zp_v5"
-        ]
-      },
-      "221": {
-        "extra_private_ram_bytes": 208,
-        "packs": [
-          "v2_full"
-        ]
-      },
       "31": {
         "extra_private_ram_bytes": 9633,
         "packs": [
@@ -88,6 +64,30 @@
           "umul24",
           "umul8_16",
           "zero_zp_v5"
+        ]
+      },
+      "147": {
+        "extra_private_ram_bytes": 9837,
+        "packs": [
+          "atan2_fast",
+          "smul16_exec",
+          "zero_zp_v5"
+        ]
+      },
+      "176": {
+        "extra_private_ram_bytes": 11335,
+        "packs": [
+          "atan2_fast",
+          "smul16_exec",
+          "umul24",
+          "umul8_16",
+          "zero_zp_v5"
+        ]
+      },
+      "221": {
+        "extra_private_ram_bytes": 208,
+        "packs": [
+          "v2_full"
         ]
       }
     },
@@ -185,7 +185,7 @@
     "Seek DDA adds eight MATH_SEEK8_*/MATH_SEEK16_* entries (47-54): exact Bresenham movement toward a target for up to eight objects; identical per-frame steppers in V1-V5, no new ZP, no REU; every changed PRG byte is seek-owned (SEEK_BINARY_DELTA.json).",
     "Division refresh integrates Repose-derived UDIV24, profile-specific UDIV8/16/24 selection and native direct-output signed division; 822,050 unsigned + 364,533 signed validation calls pass with zero errors.",
     "UMUL16/UMUL24 resident record upgrades are active; V1/V5 preserve the 31-byte normal-ZP and UMUL32_READY state contracts.",
-    "V3/V4 Turbo32 uses the stack-free 135-ZP ram135 record-family compromise; reference range $0A-$90, legal origins $02-$79; BEGIN/CALL/END = 326 / 728.947080 mean / 371 cycles on the canonical corpus.",
+    "V3/V4 Turbo32 keeps the stack-free 135-ZP overlay but uses a direct-I/O resident adapter; reference range $0A-$90, legal origins $02-$79; BEGIN/CALL/END = 326 / 684.185219 mean / 371 cycles on the canonical corpus, with a 116-product crossover versus normal UMUL32.",
     "Current ACME 0.97 independently reproduces all V1-V4 reference/alternate PRGs and Turbo overlay/boundary builds byte-for-byte.",
     "A 285-row consolidated routine table covers every stable API in V1-V5 plus V3/V4 Turbo and V4 QS16, including cycles, reachable code bytes, ZP and persistent stack-page reservation.",
     "All shipped SMUL*/SDIV* public paths own signed-specific executable paths; corresponding unsigned executable engines are not entered.",
