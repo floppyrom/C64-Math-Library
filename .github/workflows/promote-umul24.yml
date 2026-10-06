@@ -1,0 +1,233 @@
+name: Promote UMUL24 direct-output
+
+on:
+  push:
+    branches:
+      - optimize-umul24-directout
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  promote:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: optimize-umul24-directout
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Remove temporary UMUL24 workflows
+        run: |
+          rm -f .github/workflows/umul24-proof.yml
+          rm -f .github/workflows/umul24-compare.yml
+          rm -f .github/workflows/promote-umul24.yml
+
+      - name: Build all reference and alternate maps
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+          python3 tools/validate_umul24_directout.py
+
+      - name: Promote V1-V5 reference PRGs and V5 manifest
+        run: |
+          cp build_source/reference/v1_balanced/math_v1_balanced_source_built.prg              v1_balanced/resident/math_v1_balanced_game_math.prg
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg              v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg              v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg              v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg              v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+          cp build_hybrid/reference/v5_hybrid_lowzp/source_build_manifest.json              v5_hybrid_lowzp/resident/HYBRID_BUILD_MANIFEST.json
+
+      - name: Update current profile performance metadata
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv, json
+
+          ev=json.loads(Path('validation/multiply_refresh/UMUL24_DIRECTOUT_VALIDATION.json').read_text())
+          def val(profile):
+              v=ev['results'][profile]['reference']
+              return f"{v['mean_cycles']:.6f}",str(v['min_cycles']),str(v['max_cycles']),str(v['cases'])
+          basis='2026-10-06 UMUL24 direct-output validation'
+
+          # V1
+          p=Path('v1_balanced/PUBLIC_PERFORMANCE.csv')
+          rows=list(csv.DictReader(p.open(newline=''))); fields=list(rows[0].keys())
+          m,mn,mx,cases=val('v1_balanced')
+          for r in rows:
+              if r['operation']=='math_umul24':
+                  r.update(avg_cycles=m,min_cycles=mn,max_cycles=mx,cases=cases,evidence=basis,
+                           notes='FAST24 private 24-ZP carry producer; direct z0-z2 public output')
+          with p.open('w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
+
+          # V2
+          p=Path('v2_pareto_fast/PUBLIC_PERFORMANCE.csv')
+          rows=list(csv.DictReader(p.open(newline=''))); fields=list(rows[0].keys())
+          m,mn,mx,cases=val('v2_pareto_fast')
+          for r in rows:
+              if r['operation']=='math_umul24':
+                  r.update(avg_cycles=m,min_cycles=mn,max_cycles=mx,cases=cases,evidence=basis)
+          with p.open('w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
+
+          # V3
+          p=Path('v3_reu_512k/PUBLIC_PERFORMANCE.csv')
+          rows=list(csv.DictReader(p.open(newline=''))); fields=list(rows[0].keys())
+          v1=val('v1_balanced')[0]; v2=val('v2_pareto_fast')[0]; v3=val('v3_reu_512k')[0]
+          for r in rows:
+              if r['operation']=='umul24':
+                  r['v1_balanced_cycles']=v1
+                  r['v2_pareto_fast_cycles']=v2
+                  r['v3_reu_default_cycles']=v3
+                  r['v3_evidence']=basis
+          with p.open('w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
+
+          # V4
+          p=Path('v4_reu_16m/PUBLIC_PERFORMANCE.csv')
+          rows=list(csv.DictReader(p.open(newline=''))); fields=list(rows[0].keys())
+          v3=val('v3_reu_512k')[0]; v4=val('v4_reu_16m')[0]
+          for r in rows:
+              if r['operation']=='umul24':
+                  r['v3_reu_512k_cycles']=v3
+                  r['v4_reu_16m_cycles']=v4
+                  r['v4_evidence']=basis
+          with p.open('w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
+
+          # Front-door PERFORMANCE.md.
+          p=Path('PERFORMANCE.md'); t=p.read_text()
+          old='| `MATH_UMUL24` | `mul_u24_u24_u48` | 489.988792 | 448.291800 | 448.291800 | 448.291800 | 489.988792 |'
+          new='| `MATH_UMUL24` | `mul_u24_u24_u48` | 474.042329 | 429.555502 | 429.555502 | 429.555502 | 474.042329 |'
+          if old not in t: raise SystemExit('PERFORMANCE UMUL24 row not found')
+          p.write_text(t.replace(old,new))
+
+          # Comparison CSV: also repair the already-merged UMUL16 row if stale.
+          p=Path('docs/PERFORMANCE_COMPARISON.csv')
+          rows=list(csv.DictReader(p.open(newline=''))); fields=list(rows[0].keys())
+          for r in rows:
+              if r['operation']=='umul16':
+                  r.update(v1_balanced='273.8372',v2_pareto_fast='216.980037',
+                           v3_reu_512k='216.980037',v4_reu_16m='216.980037',
+                           notes='2026-10-06 V2-V4 direct-output UMUL16 validation; V1 retained low-resource path')
+              elif r['operation']=='umul24':
+                  r.update(v1_balanced='474.042329',v2_pareto_fast='429.555502',
+                           v3_reu_512k='429.555502',v4_reu_16m='429.555502',
+                           notes='2026-10-06 all-profile direct-output UMUL24 validation')
+          with p.open('w',newline='') as f:
+              w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
+
+          # Multiplication refresh narrative.
+          p=Path('docs/MULTIPLY_REFRESH_2026-09-20.md'); t=p.read_text()
+          t=t.replace(
+              '| `UMUL24` | **FAST24 private** | retained record kernel | retained record kernel | retained record kernel | **FAST24 private** |',
+              '| `UMUL24` | **FAST24 private + direct output** | **record core + direct output** | **record core + direct output** | **record core + direct output** | **FAST24 private + direct output** |')
+          t=t.replace(
+              '| `MATH_UMUL24` | V1/V5 | **489.988792** | 462–542 | 2,409 |',
+              '| `MATH_UMUL24` | V1/V5 | **474.042329** | 444–530 | 10,324 |\n| `MATH_UMUL24` | V2/V3/V4 | **429.555502** | 400–485 | 10,324 each |')
+          oldpara='The selected C64ML form uses the 24-ZP carry-optimized magnitude geometry. It is selected in every profile. V1/V5 also adopt the corresponding private unsigned FAST24 producer; V2/V3/V4 retain their existing record `UMUL24` because the replacement candidate was slightly slower on the controlled comparison corpus.'
+          newpara='The selected C64ML form uses the 24-ZP carry-optimized magnitude geometry. It is selected in every profile. V1/V5 retain the private unsigned FAST24 producer and V2/V3/V4 retain the resident reverse/carry record arithmetic. On 2026-10-06 both unsigned families were tightened without changing their resource contracts: once the low-result pointer bytes are dead, z0-z2 are written directly to public result RAM instead of staged in ZP and copied by the wrapper. On the shared 10,324-case comparison this removes exactly **18 cycles on every call** in both representative implementation families.'
+          if oldpara not in t: raise SystemExit('MULTIPLY_REFRESH UMUL24 paragraph not found')
+          p.write_text(t.replace(oldpara,newpara))
+
+          # Changelogs.
+          p=Path('CHANGELOG.md')
+          entry='\n'.join([
+              '## 2026-10-06 — all-profile UMUL24 direct-output optimization',
+              '',
+              '- V1/V5 private FAST24 and V2/V3/V4 resident reverse/carry UMUL24 keep their existing 24-ZP/table geometry but now write z0-z2 directly to public result RAM after the corresponding pointer-low lifetimes end.',
+              '- Same-corpus old-vs-new comparison: **exactly 18 cycles saved on all 10,324 calls** in both representative implementation families.',
+              '- Current means: **474.042329 cycles (444–530)** in V1/V5 and **429.555502 cycles (400–485)** in V2/V3/V4; reference/alternate vectors are identical and V5 matches V1 exactly.',
+              '- Signed SMUL24 executable code is unchanged; only the unsigned producers changed.',
+              '- Added permanent all-profile UMUL24 validation and regenerated V1–V5 resident/standalone/publication artifacts.',
+              '',
+              ''
+          ])
+          p.write_text(entry+p.read_text())
+
+          p=Path('CSDB_CHANGELOG.txt')
+          p.write_text('2026-10-06 UMUL24 DIRECT-OUTPUT\n- All five profiles save exactly 18 cycles/call on the shared 10,324-case old-vs-new comparison. V1/V5: 474.042329 mean; V2/V3/V4: 429.555502 mean. 24-ZP/table contracts unchanged; signed SMUL24 unchanged.\n\n'+p.read_text())
+
+          # Release status note.
+          p=Path('RELEASE_STATUS.json'); s=json.loads(p.read_text())
+          s['date']='2026-10-06'
+          note='All-profile public UMUL24 direct-output update: V1/V5 474.042329 mean (444-530), V2/V3/V4 429.555502 mean (400-485), exactly 18 cycles saved on every call in the 10,324-case old-vs-new comparison; 24-ZP/table contracts unchanged.'
+          if note not in s.get('notes',[]): s.setdefault('notes',[]).append(note)
+          p.write_text(json.dumps(s,indent=2)+'\n')
+          PY
+
+      - name: Regenerate source mirrors, public indexes, and hybrid evidence
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+          python3 tools/validate_umul24_directout.py
+          python3 tools/validate_hybrid.py
+          python3 tools/publish_standalone_sources.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/verify_hybrid_deterministic.py
+
+      - name: Refresh release build hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          root=Path('.')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+          s['reference_prg_sha256']['v5_hybrid_lowzp']=sha(root/'build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg')
+          s['alternate_prg_sha256']['v5_hybrid_lowzp']=sha(root/'build_hybrid/alternate/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg')
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/verify_hybrid_deterministic.py
+
+      - name: Refresh package contract
+        run: |
+          rm -rf build_source build_hybrid
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+
+      - name: Commit promoted UMUL24 release
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Promote all-profile UMUL24 direct-output path"
+          git push origin HEAD:optimize-umul24-directout
