@@ -158,6 +158,16 @@ def cycles_catalog():
             add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
                       '2026-09-20 multiply-refresh deterministic cross-profile corpus')
 
+    # Current all-profile UMUL24 direct-output producer supersedes the September
+    # multiply-refresh rows. V1/V5 retain their private FAST24 family while
+    # V2/V3/V4 retain the resident reverse/carry family; both now emit z0-z2
+    # directly to public result RAM once their pointer-low lifetimes end.
+    u24=json.loads((ROOT/'validation/multiply_refresh/UMUL24_DIRECTOUT_VALIDATION.json').read_text())
+    for p,rr in u24['results'].items():
+        v=rr['reference']
+        add_cycle(cat,p,'MATH_UMUL24',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
+                  '2026-10-06 UMUL24 direct-output validation')
+
     # Q8.8 vector normalize profile-parity benchmark (107,396-vector deterministic corpus).
     norm=json.loads((ROOT/'validation/normalize/NORMALIZE_PROFILE_PARITY_107396.json').read_text())
     for row in norm['profiles']:
@@ -219,8 +229,8 @@ def provenance(profile,n):
         return '17-ZP qualified record-derived fused quarter-square resident kernel'
     if n=='MATH_UMUL24':
         if profile in ('v1_balanced','v5_hybrid_lowzp'):
-            return 'FAST24 private 24-ZP carry producer with stable public adapter'
-        return '24-ZP reverse_24zp_carry certified resident kernel (retained; refresh candidate did not win)'
+            return 'FAST24 private 24-ZP carry producer; direct z0-z2 public output'
+        return '24-ZP reverse_24zp_carry resident kernel; direct z0-z2 public output'
     if n in ('MATH_UMUL32','MATH_UMUL32_READY'):
         if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
             return ('FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist '
