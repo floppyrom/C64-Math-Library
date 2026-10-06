@@ -1,3 +1,12 @@
+## 2026-10-06 — Turbo16 direct-result runtime optimization
+
+- Optimized the V3/V4 Turbo16 public CALL while preserving the exact **113-byte** executable-ZP overlay and legal `$02-$8F` origins.
+- The overlay writes `Z0` directly to `MATH_Z`; the wrapper keeps `x1` live in A, seeds carry before the fast entry, and avoids the old result-copy overhead.
+- Canonical Turbo relocation corpus: **2,098 calls, 205.544111 cycles mean, 193–230**, down from **215.544111 (203–240)**; zero arithmetic errors.
+- Reference/alternate maps and minimum/maximum legal ZP-origin boundary sweeps retain identical cycle vectors.
+- BEGIN/END remain **282 / 327 cycles**. Against normal UMUL16 at 225.837200 cycles, the integer batch crossover moves from about 60 products to **31 products**.
+- QS16 remains an exact supported V4 mode but still has no speed crossover versus normal UMUL16.
+
 ## 2026-10-06 — Turbo32 direct-I/O runtime optimization
 
 - Reworked the V3/V4 Turbo32 resident adapter while preserving the exact 135-byte stack-free executable-ZP overlay and its legal $02-$79 origins.
