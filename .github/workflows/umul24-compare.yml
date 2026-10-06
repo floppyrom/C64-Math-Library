@@ -23,6 +23,7 @@ jobs:
       - name: Build optimized reference
         run: |
           python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile v1_balanced --config-kind reference --out build_source
           python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
       - name: Compare shipped and optimized V2 on identical corpus
         run: |
@@ -50,9 +51,12 @@ jobs:
           rng=random.Random(0x24240024)
           cases.extend((rng.randrange(1<<24),rng.randrange(1<<24)) for _ in range(10_000))
 
-          old,oa=cpu_from_prg('v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg','v2_pareto_fast/resident/math_api.inc')
-          man=json.loads(Path('build_source/reference/v2_pareto_fast/source_build_manifest.json').read_text())
-          new,na=cpu_from_prg(Path('build_source/reference/v2_pareto_fast')/man['output_prg'],'build_source/reference/v2_pareto_fast/math_api.inc')
+          def pair(profile):
+              old,oa=cpu_from_prg(next((Path(profile)/'resident').glob('*game_math.prg')),Path(profile)/'resident/math_api.inc')
+              d=Path('build_source/reference')/profile
+              man=json.loads((d/'source_build_manifest.json').read_text())
+              new,na=cpu_from_prg(d/man['output_prg'],d/'math_api.inc')
+              return old,oa,new,na
 
           def run(cpu,api):
               X=api['MATH_X'];Y=api['MATH_Y'];Z=api['MATH_Z'];v=[]
@@ -64,11 +68,14 @@ jobs:
                   assert got==x*y and cpu.c==0
                   v.append(cy)
               return v
-          ov=run(old,oa);nv=run(new,na)
-          dif=[a-b for a,b in zip(ov,nv)]
-          print(f'OLD mean={sum(ov)/len(ov):.6f} min={min(ov)} max={max(ov)}')
-          print(f'NEW mean={sum(nv)/len(nv):.6f} min={min(nv)} max={max(nv)}')
-          print(f'DELTA mean={sum(dif)/len(dif):.6f} min={min(dif)} max={max(dif)}')
           from collections import Counter
-          print('DELTA_CLASSES',sorted(Counter(dif).items()))
+          for profile in ('v1_balanced','v2_pareto_fast'):
+              old,oa,new,na=pair(profile)
+              ov=run(old,oa);nv=run(new,na)
+              dif=[a-b for a,b in zip(ov,nv)]
+              print(profile)
+              print(f'OLD mean={sum(ov)/len(ov):.6f} min={min(ov)} max={max(ov)}')
+              print(f'NEW mean={sum(nv)/len(nv):.6f} min={min(nv)} max={max(nv)}')
+              print(f'DELTA mean={sum(dif)/len(dif):.6f} min={min(dif)} max={max(dif)}')
+              print('DELTA_CLASSES',sorted(Counter(dif).items()))
           PY
