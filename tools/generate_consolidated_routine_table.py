@@ -228,10 +228,10 @@ def provenance(profile,n):
     if n in ('MATH_SMUL32','MATH_SMUL32_READY'):
         if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
             return ('FAST31/V29 native signed quadrant composition; all six pointer pairs persist '
-                    'in profile-owned ZP holes, eliminating the ordinary mixed-call rebind')
+                    'in profile-owned ZP holes; direct stable entry eliminates the legacy self-redirect')
         return 'FAST31/V29 native signed quadrant composition; mixed-call-safe public path'
     if n=='MATH_SMUL32_SHR16':
-        return ('FAST31/V29 persistent-pointer SMUL32 producer plus existing SHR16 extraction'
+        return ('FAST31/V29 persistent-pointer direct-entry SMUL32 producer plus existing SHR16 extraction'
                 if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
                 else 'FAST31/V29 SMUL32 producer plus existing SHR16 extraction')
     if n in ('MATH_UDIV8','MATH_UMOD8'):
