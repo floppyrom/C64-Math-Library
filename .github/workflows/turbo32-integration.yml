@@ -1,4 +1,4 @@
-name: Turbo32 integration proof
+name: Turbo integration proof
 
 on:
   push:
@@ -56,7 +56,7 @@ jobs:
           python3 tools/validate_turbo_boundary_sweep.py
 
   promote:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/fix-turbo32-runtime'
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/fix-turbo')
     needs: prove
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -65,7 +65,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: fix-turbo32-runtime
+          ref: ${{ github.ref_name }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -146,7 +146,7 @@ jobs:
           (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
           PY
           python3 tools/package_audit.py
-      - name: Commit promoted Turbo32 release artifacts
+      - name: Commit promoted Turbo release artifacts
         run: |
           git config user.name "c64-math-release-bot"
           git config user.email "actions@users.noreply.github.com"
@@ -154,6 +154,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No promotion changes to commit"
           else
-            git commit -m "Promote optimized V3/V4 Turbo32 runtime"
-            git push origin HEAD:fix-turbo32-runtime
+            git commit -m "Promote optimized V3/V4 Turbo runtime"
+            git push origin HEAD:${{ github.ref_name }}
           fi
