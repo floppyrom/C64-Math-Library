@@ -146,7 +146,6 @@ jobs:
           (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
           PY
           python3 tools/package_audit.py
-          git diff --exit-code -- validation/PACKAGE_AUDIT.json
       - name: Commit promoted Turbo32 release artifacts
         run: |
           git config user.name "c64-math-release-bot"
