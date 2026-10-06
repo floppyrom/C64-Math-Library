@@ -886,8 +886,9 @@ S32V29_safe_entry:
         jmp S32V28_api_smul32_speed31_v26
 
 *= REG_API+$0C40
+; Stable public entry now falls directly into the dispatcher.  The old
+; self-JMP cost 3 cycles on every ordinary SMUL32/SHR16 call.
 SMUL32_FAST31_V29_ENTRY:
-        jmp S32V28_api_smul32_speed31_v26
 S32V28_api_smul32_speed31_v26:
         lda MATH_IO+$03
         bpl S32V28_api_s31_v26_xpos
