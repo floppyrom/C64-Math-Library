@@ -10,20 +10,20 @@
     {
       "profile": "v2_pareto_fast",
       "source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
-      "reachable_instructions": 9125,
-      "source_sha256": "0c9241d67888f50364c8735f476913add3651219e1dae07b59a4a8fe414ca6df"
+      "reachable_instructions": 9136,
+      "source_sha256": "63738af42c2457cc202d4870d606ebddc6b5a74db4e1832f6fe603c68d9d4695"
     },
     {
       "profile": "v3_reu_512k",
       "source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
-      "reachable_instructions": 9185,
-      "source_sha256": "e93885254d97c84584a62e43196cdded748b07f1faabd2f45fee120948e81316"
+      "reachable_instructions": 9196,
+      "source_sha256": "ef731d06bc2da774b7c7e4e949db1d629657a187a7bc0b7d2a96da2c65cf2b9a"
     },
     {
       "profile": "v4_reu_16m",
       "source": "relocatable_source/v4_reu_16m/math_relocatable.asm",
-      "reachable_instructions": 9060,
-      "source_sha256": "0b4670e7208c33b2ef7d35578d9f919286041e21bde845e014313bad3f753c5d"
+      "reachable_instructions": 9071,
+      "source_sha256": "f0b4d48edef3dc1e00800ecdac20674b3743f4498d9a5624da252d84c4efd77b"
     }
   ]
 }

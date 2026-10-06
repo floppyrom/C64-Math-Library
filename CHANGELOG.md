@@ -1,3 +1,11 @@
+## 2026-10-06 — SMUL32 q2 bounded-carry follow-up
+
+- Replaced only the FAST31 q2 (X<0, Y>=0) late-column summation in V2/V3/V4 with the validated bounded-carry state machine; q0/q1/NN and the four-row producer are unchanged.
+- Canonical SMUL32 means improve to **712.935243 / 713.365297 / 713.431714 cycles**; min remains **630** and max improves **845 → 841**.
+- On one identical 20,324-case corpus all three profiles remain cycle-identical at **720.566375 cycles**, improving the current baseline by **0.731451 cycles/call**.
+- MATH_SMUL32_SHR16 is **782.219674 cycles mean (695–906)**; the 31-ZP / zero-persistent-stack contract is unchanged.
+- Validation passes 264,999 signed-multiply calls, 415,078 multiply-refresh calls, published-source checks, deterministic rebuild, and Turbo relocation/boundary proofs.
+
 ## 2026-10-06 — V2–V4 SMUL32 bounded-carry summation follow-up
 
 - Tightened the existing FAST31/V29 signed 32×32 summation without changing the four-row quarter-square producer, 31-byte ZP contract, persistent-pointer layout, public ABI, or stack usage.

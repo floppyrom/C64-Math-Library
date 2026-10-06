@@ -75,11 +75,11 @@
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
-          "instructions": 622
+          "instructions": 633
         },
         "MATH_SMUL32_READY": {
           "file": "smul32_ready_native.asm",
-          "instructions": 623
+          "instructions": 634
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
@@ -87,7 +87,7 @@
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
-          "instructions": 638
+          "instructions": 649
         }
       },
       "division": {
@@ -133,11 +133,11 @@
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
-          "instructions": 622
+          "instructions": 633
         },
         "MATH_SMUL32_READY": {
           "file": "smul32_ready_native.asm",
-          "instructions": 623
+          "instructions": 634
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
@@ -145,7 +145,7 @@
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
-          "instructions": 638
+          "instructions": 649
         }
       },
       "division": {
@@ -191,11 +191,11 @@
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
-          "instructions": 622
+          "instructions": 633
         },
         "MATH_SMUL32_READY": {
           "file": "smul32_ready_native.asm",
-          "instructions": 623
+          "instructions": 634
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
@@ -203,7 +203,7 @@
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
-          "instructions": 638
+          "instructions": 649
         }
       },
       "division": {

@@ -1,0 +1,108 @@
+{
+  "status": "PASS",
+  "date": "2026-10-06",
+  "optimization": "Replace only the q2 (X<0,Y>=0) FAST31 late-column summation with the validated bounded-carry state machine derived from the compact126/UMUL32 family; q0, q1 and NN retain the existing optimized summation.",
+  "resource_contract": {
+    "zp_bytes": 31,
+    "persistent_stack_page_bytes": 0,
+    "producer_changed": false,
+    "public_abi_changed": false
+  },
+  "canonical": {
+    "v2_pareto_fast": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 712.9352428393524,
+      "min_cycles": 630,
+      "max_cycles": 841
+    },
+    "v3_reu_512k": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 713.365296803653,
+      "min_cycles": 630,
+      "max_cycles": 841
+    },
+    "v4_reu_16m": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 713.4317144043172,
+      "min_cycles": 630,
+      "max_cycles": 841
+    }
+  },
+  "shared_20324_case_corpus": {
+    "description": "361 signed edge pairs plus 19,963 deterministic random pairs, identical across V2/V3/V4.",
+    "baseline_mean_cycles": 721.2978252312537,
+    "candidate_mean_cycles": 720.5663747293839,
+    "delta_cycles": -0.7314505018697446,
+    "min_cycles": 630,
+    "max_cycles": 841,
+    "errors": 0,
+    "cycle_vectors_identical_across_v2_v3_v4": true
+  },
+  "variant_split_shared": {
+    "baseline": 721.2978252312537,
+    "q1_only": 721.1611395394607,
+    "q2_only": 720.5663747293839,
+    "q1_and_q2": 720.4296890375911,
+    "decision": "Retain q2 only: it supplies the material gain while avoiding the extra q1 code churn for a small additional benefit."
+  },
+  "q2_quadrant_shared": {
+    "baseline_mean_cycles": 730.3000790201502,
+    "candidate_mean_cycles": 727.3632951402608,
+    "delta_cycles": -2.9367838798894
+  },
+  "shifted_derivative": {
+    "v2_pareto_fast": {
+      "mean_cycles": 782.2196743866086,
+      "min_cycles": 695,
+      "max_cycles": 906,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v3_reu_512k": {
+      "mean_cycles": 782.2196743866086,
+      "min_cycles": 695,
+      "max_cycles": 906,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v4_reu_16m": {
+      "mean_cycles": 782.2196743866086,
+      "min_cycles": 695,
+      "max_cycles": 906,
+      "cases": 4361,
+      "errors": 0
+    }
+  },
+  "ready": {
+    "v2_pareto_fast": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 725.2578125,
+      "min_cycles": 641,
+      "max_cycles": 799
+    },
+    "v3_reu_512k": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 725.6728515625,
+      "min_cycles": 644,
+      "max_cycles": 810
+    },
+    "v4_reu_16m": {
+      "cases": 1024,
+      "errors": 0,
+      "mean_cycles": 723.50390625,
+      "min_cycles": 641,
+      "max_cycles": 820
+    }
+  },
+  "validation": {
+    "signed_multiply_calls": 264999,
+    "multiply_refresh_calls": 415078,
+    "turbo_relocation": "PASS",
+    "turbo_boundary_sweep": "PASS"
+  }
+}

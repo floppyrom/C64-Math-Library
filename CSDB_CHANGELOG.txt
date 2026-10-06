@@ -1,3 +1,9 @@
+2026-10-06 SMUL32 Q2 BOUNDED-CARRY FOLLOW-UP
+- V2/V3/V4 replace only the negative-X/positive-Y FAST31 late-column summation with the validated bounded-carry state machine.
+- Canonical SMUL32 means: 712.935243 / 713.365297 / 713.431714; min 630, max 841.
+- Shared 20,324-case mean: 720.566375 in all three profiles; q2 itself improves by about 2.94 cycles.
+- SMUL32_SHR16: 782.219674 (695–906); 31-ZP and zero persistent stack unchanged.
+
 2026-10-06 SMUL32 FAST31 SUMMATION FOLLOW-UP
 - V2/V3/V4 keep the 31-ZP persistent-pointer FAST31 core but reorder late-column carry paths and remove wrap checks proven unreachable by signed positive-magnitude bounds.
 - Exact 20,324-case V2 A/B: 722.867792 -> 720.762498 mean (-2.105294), min 632 -> 630, max 845 unchanged; zero errors.
