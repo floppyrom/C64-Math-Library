@@ -1,7 +1,7 @@
 operation,canonical_name,avg_cycles,min_cycles,max_cycles,cases,edge_cases,errors,evidence
 math_umul8,mul_u8_u8_u16,78.494614,77,80,65536,65536,0,canonical harness
 math_umul16,mul_u16_u16_u32,216.980037,205,240,10169,,0,2026-10-06 UMUL16 direct-output validation
-math_umul24,mul_u24_u24_u48,448.2918,418,503,5000,,0,2026-09-14 record-upgrade deterministic comparison corpus
+math_umul24,mul_u24_u24_u48,429.555502,400,485,10324,,0,2026-10-06 UMUL24 direct-output validation
 math_umul32,mul_u32_u32_u64,712.235367,652,831,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus
 math_udiv8,div_u8_u8_u8_8,59.383011,26,634,65536,,0,2026-09-20 unsigned division-family validation
 math_udiv16,div_u16_u16_u16_16,127.773827,41,1076,4753,,0,2026-09-20 unsigned division-family validation

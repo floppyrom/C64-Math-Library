@@ -28,7 +28,7 @@
           "file": "mul_u24_u24_u48.asm",
           "alias_of": "",
           "entry_address": "$3060",
-          "reachable_instructions": 179
+          "reachable_instructions": 173
         },
         {
           "legacy_api": "MATH_UMUL32",
@@ -467,7 +467,7 @@
           "file": "mul_u24_u24_u48.asm",
           "alias_of": "",
           "entry_address": "$3060",
-          "reachable_instructions": 179
+          "reachable_instructions": 173
         },
         {
           "legacy_api": "MATH_UMUL32",
@@ -906,7 +906,7 @@
           "file": "mul_u24_u24_u48.asm",
           "alias_of": "",
           "entry_address": "$3060",
-          "reachable_instructions": 179
+          "reachable_instructions": 173
         },
         {
           "legacy_api": "MATH_UMUL32",
@@ -1393,7 +1393,7 @@
           "file": "mul_u24_u24_u48.asm",
           "alias_of": "",
           "entry_address": "$3060",
-          "reachable_instructions": 179
+          "reachable_instructions": 173
         },
         {
           "legacy_api": "MATH_UMUL32",
@@ -1904,7 +1904,7 @@
           "file": "mul_u24_u24_u48.asm",
           "alias_of": "",
           "entry_address": "$3060",
-          "reachable_instructions": 179
+          "reachable_instructions": 173
         },
         {
           "legacy_api": "MATH_UMUL32",

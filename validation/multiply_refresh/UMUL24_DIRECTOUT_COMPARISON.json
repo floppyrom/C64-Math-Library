@@ -1,0 +1,50 @@
+{
+  "status": "PASS",
+  "corpus": {
+    "cases": 10324,
+    "seed": "0x24240024"
+  },
+  "representative_families": {
+    "v1_balanced": {
+      "old": {
+        "mean_cycles": 492.0423285548237,
+        "min_cycles": 462,
+        "max_cycles": 548
+      },
+      "direct_output": {
+        "mean_cycles": 474.0423285548237,
+        "min_cycles": 444,
+        "max_cycles": 530
+      },
+      "delta_cycles": {
+        "mean": 18,
+        "min": 18,
+        "max": 18,
+        "classes": {
+          "18": 10324
+        }
+      }
+    },
+    "v2_pareto_fast": {
+      "old": {
+        "mean_cycles": 447.55550174351026,
+        "min_cycles": 418,
+        "max_cycles": 503
+      },
+      "direct_output": {
+        "mean_cycles": 429.55550174351026,
+        "min_cycles": 400,
+        "max_cycles": 485
+      },
+      "delta_cycles": {
+        "mean": 18,
+        "min": 18,
+        "max": 18,
+        "classes": {
+          "18": 10324
+        }
+      }
+    }
+  },
+  "note": "V1 represents the V1/V5 private FAST24 family; V2 represents the identical V2/V3/V4 resident record family. Old and new binaries were executed on the same deterministic corpus before promotion."
+}

@@ -37,9 +37,17 @@ jobs:
         run: |
           make reference
           make alternate
+      - name: Build V5 hybrid reference/alternate maps
+        run: |
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
       - name: V2-V4 UMUL16 direct-output validation
         run: |
           python3 tools/validate_umul16_directout.py
           git diff --exit-code -- validation/multiply_refresh/UMUL16_DIRECTOUT_VALIDATION.json
+      - name: All-profile UMUL24 direct-output validation
+        run: |
+          python3 tools/validate_umul24_directout.py
+          git diff --exit-code -- validation/multiply_refresh/UMUL24_DIRECTOUT_VALIDATION.json
       - name: Exhaustive REU UDIV8 hybrid validation
         run: python3 tools/validate_reu_udiv8_hybrid.py
