@@ -211,7 +211,8 @@
     "Turbo executable-ZP origins and REU storage banks are selected at build time; overlay code is assembled from canonical source with no runtime relocation pass.",
     "Reference and alternate Turbo cycle vectors are identical; relocation adds zero runtime cycles.",
     "Fast exact independently derived ISQRT32 remains active; V4 uses 512 resident square-table bytes at $9800-$99FF.",
-    "ATAN2 profile integration: V1 uses compact_opt (48.447189 mean, 512 B tables); V2/V3/V5 use sum_fast (44.962814 mean, 1024 B tables); V4 retains exact REU ATAN2."
+    "ATAN2 profile integration: V1 uses compact_opt (48.447189 mean, 512 B tables); V2/V3/V5 use sum_fast (44.962814 mean, 1024 B tables); V4 retains exact REU ATAN2.",
+    "Turbo16 public CALL keeps the exact 113-byte overlay but removes a redundant x1 reload: 211.544111 mean cycles (199-236), BEGIN/END 282/327, 43-product crossover versus normal UMUL16; relocation and boundary cycle vectors remain identical."
   ],
   "package_audit_checks": 30,
   "package_cleanup": {
