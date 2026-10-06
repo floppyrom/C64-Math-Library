@@ -1,0 +1,171 @@
+name: Promote MUL16 SHR8 register-return
+
+on:
+  push:
+    branches:
+      - optimize-umul16-shr8-direct
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  promote:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: optimize-umul16-shr8-direct
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Remove temporary workflows
+        run: |
+          rm -f .github/workflows/umul16-shr8-proof.yml
+          rm -f .github/workflows/promote-mul16-shr8.yml
+
+      - name: Build all profile maps and validate adapters
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+          python3 tools/validate_umul16_directout.py
+          python3 tools/validate_mul16_shr8_register.py
+
+      - name: Promote V1-V5 resident PRGs
+        run: |
+          cp build_source/reference/v1_balanced/math_v1_balanced_source_built.prg \
+             v1_balanced/resident/math_v1_balanced_game_math.prg
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg \
+             v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg \
+             v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg \
+             v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg \
+             v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+
+      - name: Regenerate exact public source mirrors
+        run: |
+          python3 tools/publish_standalone_sources.py
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_umul16_directout.py
+          python3 tools/validate_mul16_shr8_register.py
+
+      - name: Update fixed-point performance front door
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('.')
+          v=json.loads((root/'validation/multiply_refresh/MUL16_SHR8_REGISTER_VALIDATION.json').read_text())
+          ps=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
+          u=[v['results'][p]['reference']['umul16_shr8']['mean_cycles'] for p in ps]
+          s=[v['results'][p]['reference']['smul16_shr8']['mean_cycles'] for p in ps]
+          perf=root/'PERFORMANCE.md'; t=perf.read_text()
+          old='| `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 314.965600 | 257.980037 | 257.980037 | 257.980037 | 314.965600 |'
+          new='| `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | '+' | '.join(f'{x:.6f}' for x in u)+' |'
+          assert old in t,(old,new)
+          t=t.replace(old,new)
+          old='| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 333.867232 | 293.411374 | 293.411374 | 293.411374 | 333.867232 |'
+          new='| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | '+' | '.join(f'{x:.6f}' for x in s)+' |'
+          assert old in t,(old,new)
+          perf.write_text(t.replace(old,new))
+
+          ch=root/'CHANGELOG.md'
+          entry='\n'.join([
+            '## 2026-10-06 — all-profile 16-bit fixed-point register-return adapters',
+            '',
+            '- Replaced the byte-copy tails in `MATH_UMUL16_SHR8` and `MATH_SMUL16_SHR8` with register-return adapters while preserving the stable public entries and base multiply implementations.',
+            '- Unsigned SHR8 is now exactly **UMUL16 +31 cycles** in V1/V5 and **UMUL16 +27 cycles** in V2/V3/V4, saving **10 / 14 cycles** respectively on every call.',
+            '- Signed SHR8 is now exactly **SMUL16 +31 cycles** in all five profiles, saving **10 cycles** on every call.',
+            '- Reference/alternate maps are cycle-identical; V5 matches the inherited V1 unsigned path and all inputs/results/carry contracts pass the all-profile deterministic proof.',
+            '',
+            ''
+          ])
+          ch.write_text(entry+ch.read_text())
+
+          cs=root/'CSDB_CHANGELOG.txt'
+          cs.write_text('2026-10-06 MUL16 SHR8 REGISTER-RETURN\n- UMUL16_SHR8: -10 cycles V1/V5, -14 cycles V2/V3/V4. SMUL16_SHR8: -10 cycles all profiles. Stable entries/resource contracts unchanged.\n\n'+cs.read_text())
+
+          rs=root/'RELEASE_STATUS.json'; o=json.loads(rs.read_text()); o['date']='2026-10-06'
+          note='All-profile 16-bit fixed-point register-return update: UMUL16_SHR8 is base+31 cycles in V1/V5 and base+27 in V2/V3/V4; SMUL16_SHR8 is base+31 in all profiles. This removes 10/14 unsigned cycles and 10 signed cycles per call with no resource-contract change.'
+          if note not in o.get('notes',[]): o.setdefault('notes',[]).append(note)
+          rs.write_text(json.dumps(o,indent=2)+'\n')
+          PY
+
+      - name: Regenerate performance and public indexes
+        run: |
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+
+      - name: Rebuild and verify resident images
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+          python3 tools/validate_umul16_directout.py
+          python3 tools/validate_mul16_shr8_register.py
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/verify_hybrid_deterministic.py
+
+      - name: Refresh release PRG hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('.')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+          p='v5_hybrid_lowzp'
+          s['reference_prg_sha256'][p]=sha(root/'build_hybrid/reference'/p/'math_v5_hybrid_lowzp_game_math.prg')
+          s['alternate_prg_sha256'][p]=sha(root/'build_hybrid/alternate'/p/'math_v5_hybrid_lowzp_game_math.prg')
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+
+      - name: Refresh package contract
+        run: |
+          rm -rf build_source build_hybrid
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+
+      - name: Commit promoted fixed-point release
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Promote all-profile 16-bit SHR8 register-return adapters"
+          git push origin HEAD:optimize-umul16-shr8-direct
