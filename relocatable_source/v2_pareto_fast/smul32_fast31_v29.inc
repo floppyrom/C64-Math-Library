@@ -162,7 +162,6 @@ S32V28_c3a_done:
         adc S32V28_z30
         bcc S32V28_c3b_done
         inx
-        beq S32V28_c3b_overflow
         clc
 S32V28_c3b_done:
         adc S32V28_z21
@@ -175,7 +174,6 @@ S32V28_c4a_done:
         adc S32V28_z31
         bcc S32V28_c4b_done
         iny
-        beq S32V28_c4b_overflow
         clc
 S32V28_c4b_done:
         adc S32V28_z22
@@ -535,7 +533,6 @@ S32V28_q0_c3a_done:
         adc S32V28_z30
         bcc S32V28_q0_c3b_done
         inx
-        beq S32V28_q0_c3b_overflow_tramp
         clc
 S32V28_q0_c3b_done:
         adc S32V28_z21
@@ -548,7 +545,6 @@ S32V28_q0_c4a_done:
         adc S32V28_z31
         bcc S32V28_q0_c4b_done
         iny
-        beq S32V28_q0_c4b_overflow
         clc
 S32V28_q0_c4b_done:
         adc S32V28_z22
@@ -747,7 +743,6 @@ S32V28_q1_c3a_done:
         adc S32V28_z30
         bcc S32V28_q1_c3b_done
         inx
-        beq S32V28_q1_c3b_overflow_tramp
         clc
 S32V28_q1_c3b_done:
         adc S32V28_z21
@@ -760,7 +755,6 @@ S32V28_q1_c4a_done:
         adc S32V28_z31
         bcc S32V28_q1_c4b_done
         iny
-        beq S32V28_q1_c4b_overflow
         clc
 S32V28_q1_c4b_done:
         adc S32V28_z22
