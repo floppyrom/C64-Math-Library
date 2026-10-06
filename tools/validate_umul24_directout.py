@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the V2/V3/V4 direct-output public UMUL24 producer."""
+"""Validate direct-output public UMUL24 across all five fixed profiles."""
 from pathlib import Path
 import json, random, re, sys
 
@@ -7,9 +7,10 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
 
-PROFILES=('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+PROFILES=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
 KINDS=('reference','alternate')
 BUILD=ROOT/'build_source'
+HYBRID=ROOT/'build_hybrid'
 SEED=0x24240024
 
 def parse_inc(path):
@@ -20,7 +21,7 @@ def parse_inc(path):
     return out
 
 def load(profile,kind):
-    d=BUILD/kind/profile
+    d=(HYBRID if profile=='v5_hybrid_lowzp' else BUILD)/kind/profile
     man=json.loads((d/'source_build_manifest.json').read_text())
     prg=(d/man['output_prg']).read_bytes()
     lo=prg[0]|(prg[1]<<8)
@@ -66,13 +67,18 @@ def main():
             print(f"{p} {k} PASS {r['cases']} {r['mean_cycles']:.6f} {r['min_cycles']}-{r['max_cycles']}")
         if results[p]['reference']['cycles']!=results[p]['alternate']['cycles']:
             raise AssertionError(f'{p}: reference/alternate cycle vectors differ')
-    base=results[PROFILES[0]]['reference']['cycles']
-    for p in PROFILES[1:]:
-        if results[p]['reference']['cycles']!=base:
+    v2=results['v2_pareto_fast']['reference']['cycles']
+    for p in ('v3_reu_512k','v4_reu_16m'):
+        if results[p]['reference']['cycles']!=v2:
             raise AssertionError(f'{p}: cycle vector differs from V2')
-    mean=results['v2_pareto_fast']['reference']['mean_cycles']
-    if not mean < 442:
-        raise AssertionError(f'optimized UMUL24 unexpectedly slow: {mean}')
+    if results['v5_hybrid_lowzp']['reference']['cycles']!=results['v1_balanced']['reference']['cycles']:
+        raise AssertionError('V5 UMUL24 cycle vector differs from inherited V1 path')
+    fast=results['v2_pareto_fast']['reference']['mean_cycles']
+    low=results['v1_balanced']['reference']['mean_cycles']
+    if not fast < 442:
+        raise AssertionError(f'optimized V2-V4 UMUL24 unexpectedly slow: {fast}')
+    if not low < 485:
+        raise AssertionError(f'optimized V1/V5 UMUL24 unexpectedly slow: {low}')
     clean={}
     for p in PROFILES:
         clean[p]={}
