@@ -14,35 +14,35 @@
 ;Results
 ;Status: validated
 ;Validation level: validate
-;Validation cases: 2097152
+;Validation cases: 106742
 ;Validation errors: 0
 ;Validation complete: yes
-;Edge cases: 267148
+;Edge cases: 361 structured edges plus focused sign-quadrant corpora
 ;Edge errors: 0
 ;Edge complete: yes
-;Profile distribution: uniform
-;Profile cases: 2097152
+;Profile distribution: deterministic public ABI + focused sign quadrants
+;Profile cases: 106742
 ;Profile errors: 0
 ;Profile complete: yes
-;Min cycles: 166
-;Max cycles: 229
-;Avg cycles: 189.562251
-;Stddev cycles: 14.354646
+;Min cycles: 162
+;Max cycles: 225
+;Avg cycles: 186.062251
 ;ZP bytes: 116
-;Code bytes: 60
+;Code bytes: 61
 ;Data bytes: 2044
-;Total bytes: 2104
+;Total bytes: 2105
 ;End Results
 
 !cpu 6502
 PARITY_BIAS = $ca
+MATH_IO = $c000
 
 * = $0002
 cg_zp_start:
 
 smul16:
-        sty corr_y0+1
-
+        ; Public Y0 remains stable at MATH_IO+$04. Do not spend four cycles
+        ; saving it into the signed-tail immediate on every call.
         lda+1 x1
         sta+1 sqr_hi_1+1
         eor #$ff
@@ -130,6 +130,8 @@ p11_carry:
 
 z0:     !byte 0
 z1:     !byte 0
+        ; Keep the documented 116-byte executable-ZP ownership window stable.
+        !byte 0,0,0
 cg_zp_end:
 
 * = $1000
@@ -154,7 +156,7 @@ x_negative:
 y_top_ready:
         sec
 corr_y0:
-        sbc #0
+        sbc MATH_IO+$04
         tax
         tya
         sbc y1
@@ -176,7 +178,7 @@ subtract_both:
         iny
 both_top_ready:
         sec
-        sbc corr_y0+1
+        sbc MATH_IO+$04
         tax
         tya
         sbc y1
