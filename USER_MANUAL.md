@@ -1026,7 +1026,7 @@ one or a few products  -> normal API call
 many products in a row -> BEGIN, repeated Turbo CALL, END
 ```
 
-For V4 16-bit multiplication there is also the QS16 middle tier documented in Part V, so the measured default rule is 1 product = normal `MATH_UMUL16`, 2–8 products = QS16, 9+ products = Turbo16.
+For V4 16-bit multiplication there is also the QS16 middle tier documented in Part V, so the measured default rule is normal `MATH_UMUL16` for small/medium batches; Turbo16 only for sustained batches of roughly 113+ products. QS16 remains a specialized, non-speed-selected mode.
 
 The important ownership rule follows directly from the workbench analogy: **between `BEGIN` and `END`, the configured Turbo ZP range belongs to the overlay, not to the rest of your program.** Do not let normal math calls, another Turbo mode, or an IRQ/NMI overwrite it during that interval.
 
@@ -1096,7 +1096,7 @@ CALL  ≈ 211.54 cycles mean
 END   ≈ 327 cycles
 ```
 
-Against the current 225.84-cycle normal UMUL16, Turbo16's 282-cycle BEGIN, 211.54-cycle mean CALL and 327-cycle END cross over at **43 products per batch**. Smaller batches should use the normal public entry.
+Against the current 216.98-cycle normal UMUL16, Turbo16's 282-cycle BEGIN, 211.54-cycle mean CALL and 327-cycle END cross over at **113 products per batch**. Smaller batches should use the normal public entry.
 
 ---
 
@@ -1205,11 +1205,11 @@ Current measured speed guidance:
 
 ```text
 small/medium batches   MATH_UMUL16
-43+ products           Turbo16 BEGIN / repeated CALL / END
+113+ products          Turbo16 BEGIN / repeated CALL / END
 QS16                    supported specialized mode; not selected for speed
 ```
 
-The current QS16 CALL is about 281.54 cycles versus about 225.84 cycles for normal `MATH_UMUL16`; BEGIN+END adds another 36 cycles per batch. Consequently QS16 has no speed crossover in the current release.
+The current QS16 CALL is about 281.54 cycles versus about 216.98 cycles for normal `MATH_UMUL16`; BEGIN+END adds another 36 cycles per batch. Consequently QS16 has no speed crossover in the current release.
 
 Reference-map symbols in `v4_reu_16m/resident/math_api.inc` are:
 
@@ -1392,8 +1392,8 @@ The exact benchmark CSV files in `docs/` remain authoritative. A few useful head
 | Routine | V1 | V2 | V3 | V4 |
 |---|---:|---:|---:|---:|
 | UMUL8 | 90.49 | 78.49 | 69.00 | 69.00 |
-| UMUL16 | 273.84 | 225.84 | 225.84 | 225.84 |
-| UMUL24 | 489.99 | 448.29 | 448.29 | 448.29 |
+| UMUL16 | **264.91** | **216.98** | **216.98** | **216.98** |
+| UMUL24 | **474.04** | **429.56** | **429.56** | **429.56** |
 | UMUL32 | 712.24 | 712.24 | 712.24 | 712.24 |
 | UDIV8 | 59.57 | 59.38 | **52.85** | **52.85** |
 | UDIV16 | 160.06 | 137.28 | 137.28 | 137.28 |
@@ -1438,7 +1438,7 @@ Turbo32 CALL: 684.19 cycles
 
 But batch selection must include BEGIN/END overhead. Do not compare only the steady-state CALL number against a normal one-shot routine.
 
-For 16-bit batches, use normal `MATH_UMUL16` below 43 products and Turbo16 at 43+ products under the release timing model. QS16 remains a supported specialized mode but is not currently selected for speed.
+For 16-bit batches, use normal `MATH_UMUL16` below 113 products and Turbo16 at 113+ products under the release timing model. QS16 remains a supported specialized mode but is not currently selected for speed.
 
 ---
 
