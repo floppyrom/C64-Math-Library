@@ -37,6 +37,8 @@ jobs:
         run: |
           make reference
           make alternate
+      - name: Research SMUL32 bounded-carry candidate
+        run: python3 tools/bench_smul32_bounded_candidate.py
       - name: Build V5 hybrid reference/alternate maps
         run: |
           python3 tools/build_hybrid.py --config-kind reference
