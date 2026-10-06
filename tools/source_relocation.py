@@ -480,7 +480,9 @@ def generate_source(profile,outpath:Path):
   lines += [f'!source "{name}"' for name in DIVISION_REFRESH_INCLUDES[profile]]
   lines += ['; END DIVISION REFRESH 2026-09-20']
  if profile in REU:
-  lines += ['', '; Canonical optimized Turbo32 resident runtime: binder, summation and CALL wrapper.',
+  lines += ['', '; Canonical optimized Turbo16 public CALL wrapper.',
+            '!source "../turbo/turbo16_runtime.asm"',
+            '', '; Canonical optimized Turbo32 resident runtime: binder, summation and CALL wrapper.',
             '!source "../turbo/turbo32_runtime.asm"']
  lines += ['', '; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,',
            '; code islands and object state (final ownership of those bytes).',
