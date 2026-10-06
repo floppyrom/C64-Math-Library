@@ -733,19 +733,23 @@ S32V28_q1_c2a_done:
         clc
 S32V28_q1_c3a_done:
         adc S32V28_z30
-        bcs S32V28_q1_c3b_carry
+        bcc S32V28_q1_c3b_done
+        inx
+        beq S32V28_q1_c3b_overflow_tramp
+        clc
 S32V28_q1_c3b_done:
         adc S32V28_z21
         sta MATH_IO+$0B
 
         txa
         adc S32V28_z13
-        bcc S32V28_q1_c4a_done
-        iny
-        clc
+        bcs S32V28_q1_c4a_carry
 S32V28_q1_c4a_done:
         adc S32V28_z31
-        bcs S32V28_q1_c4b_carry
+        bcc S32V28_q1_c4b_done
+        iny
+        beq S32V28_q1_c4b_overflow
+        clc
 S32V28_q1_c4b_done:
         adc S32V28_z22
         tax
@@ -759,8 +763,7 @@ S32V28_q1_c5a_done:
 
         lda S32V28_z33
         adc S32V28_z24
-        bcc S32V28_q1_signed_correction_ready
-        inc S32V28_r7
+        bcs S32V28_q1_final_carry
 S32V28_q1_signed_correction_ready:
         sta S32V28_z33
         txa
@@ -781,22 +784,19 @@ S32V28_q1_signed_correction_ready:
         clc
         rts
 
-S32V28_q1_c3b_carry:
-        inx
-        beq S32V28_q1_c3b_overflow_tramp
-        clc
-        jmp S32V28_q1_c3b_done
-
-S32V28_q1_c4b_carry:
+S32V28_q1_c4a_carry:
         iny
-        beq S32V28_q1_c4b_overflow
         clc
-        jmp S32V28_q1_c4b_done
+        jmp S32V28_q1_c4a_done
 
 S32V28_q1_c5a_carry:
         inc S32V28_z24
         clc
         jmp S32V28_q1_c5a_done
+
+S32V28_q1_final_carry:
+        inc S32V28_r7
+        jmp S32V28_q1_signed_correction_ready
 
 S32V28_q1_c2a_overflow_tramp:
         jmp S32V28_q1_c2a_overflow
