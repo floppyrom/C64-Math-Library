@@ -410,7 +410,9 @@ S32V28_q2_bc_c5b_k1_m1:
         bcs S32V28_q2_bc_c6_done
         adc #1
         bcs S32V28_q2_bc_final_carry
-        jmp S32V28_q2_signed_correction_ready
+        ; Carry is clear on BCS fallthrough: same 3 cycles as JMP, one byte shorter.
+        ; Pulling the later helper back by one byte removes a hot page-cross branch.
+        bcc S32V28_q2_signed_correction_ready
 S32V28_q2_bc_c6_done:
         adc #0
         jmp S32V28_q2_bc_final_carry
