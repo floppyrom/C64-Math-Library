@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - smul32-bounded-sum-exp
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
