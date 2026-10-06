@@ -1,8 +1,8 @@
 ; UMUL16 turbo batch example.
 ; Reference map: 113-byte executable-ZP overlay at $003E-$00AE.
 ; Relocatable source builds use TURBO16_ZP_BASE from the generated math_api.inc.
-; Break-even versus the default v3 UMUL16 is 5 multiplies per batch
-; under the documented REU timing model.
+; Optimized CALL is ~211.54 cycles versus ~225.84 for normal UMUL16.
+; BEGIN+END cost 609 cycles, so the throughput crossover is 43 products.
 ; For a relocated build, include build_source/<map>/v3_reu_512k/math_api.inc instead.
 !source "../resident/math_api.inc"
 
