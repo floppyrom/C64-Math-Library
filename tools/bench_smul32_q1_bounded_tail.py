@@ -59,7 +59,8 @@ def q1_focus():
     pairs += [(rng.randrange(0,0x80000000),rng.randrange(0x80000000,1<<32)) for _ in range(20000)]
     return pairs
 def compare(base,cand,pairs):
-    b=bench(*base,pairs); c=bench(*cand,pairs)
+    b=bench(base[0],base[1]["MATH_SMUL32"],pairs)
+    c=bench(cand[0],cand[1]["MATH_SMUL32"],pairs)
     deltas=[y-x for x,y in zip(b["cycles"],c["cycles"])]
     for r in (b,c): r.pop("cycles")
     return {"baseline":b,"candidate":c,"delta_mean_cycles":sum(deltas)/len(deltas),
