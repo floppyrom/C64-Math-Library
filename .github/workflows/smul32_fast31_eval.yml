@@ -1,4 +1,4 @@
-name: Evaluate FAST31 v2 arithmetic transplant
+name: Evaluate FAST31 v2 carry-seeded transplant
 on:
   push:
     branches: [smul32-fast31-v3-profile-integration]
