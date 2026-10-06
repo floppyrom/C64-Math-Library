@@ -17,7 +17,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 13001
+      "stable_api_reachable_code_union_bytes": 12999
     },
     {
       "profile": "v2_pareto_fast",
@@ -28,7 +28,7 @@
       "stable_api_zp_union_touched_bytes": 207,
       "stable_api_zp_union_ranges": "$0E-$42;$44-$69;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 19674
+      "stable_api_reachable_code_union_bytes": 19672
     },
     {
       "profile": "v3_reu_512k",
@@ -39,7 +39,7 @@
       "stable_api_zp_union_touched_bytes": 202,
       "stable_api_zp_union_ranges": "$0E-$38;$3D-$42;$44-$66;$68-$69;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 19586
+      "stable_api_reachable_code_union_bytes": 19584
     },
     {
       "profile": "v4_reu_16m",
@@ -50,7 +50,7 @@
       "stable_api_zp_union_touched_bytes": 201,
       "stable_api_zp_union_ranges": "$0E-$38;$3D-$42;$44-$65;$68-$69;$80-$F3",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 19310
+      "stable_api_reachable_code_union_bytes": 19308
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -61,7 +61,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 18683
+      "stable_api_reachable_code_union_bytes": 18681
     }
   ],
   "rows": [
@@ -234,12 +234,12 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "24",
-      "mean_cycles": "513.496472",
+      "mean_cycles": "512.981735",
       "min_cycles": 456,
-      "max_cycles": 573,
+      "max_cycles": 571,
       "cases": 2409,
       "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 493,
+      "reachable_code_bytes": 491,
       "zp_bytes": 24,
       "zp_ranges": "$09-$20",
       "stack_page_reserved_bytes": 0,
@@ -1476,12 +1476,12 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "24",
-      "mean_cycles": "469.181818",
+      "mean_cycles": "468.662931",
       "min_cycles": 412,
-      "max_cycles": 526,
+      "max_cycles": 525,
       "cases": 2409,
       "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 461,
+      "reachable_code_bytes": 459,
       "zp_bytes": 24,
       "zp_ranges": "$21-$38",
       "stack_page_reserved_bytes": 0,
@@ -2718,12 +2718,12 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "24",
-      "mean_cycles": "468.816106",
+      "mean_cycles": "468.354504",
       "min_cycles": 412,
-      "max_cycles": 528,
+      "max_cycles": 527,
       "cases": 2409,
       "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 461,
+      "reachable_code_bytes": 459,
       "zp_bytes": 24,
       "zp_ranges": "$21-$38",
       "stack_page_reserved_bytes": 0,
@@ -3960,12 +3960,12 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "24",
-      "mean_cycles": "469.220008",
+      "mean_cycles": "468.731839",
       "min_cycles": 412,
       "max_cycles": 532,
       "cases": 2409,
       "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 461,
+      "reachable_code_bytes": 459,
       "zp_bytes": 24,
       "zp_ranges": "$21-$38",
       "stack_page_reserved_bytes": 0,
@@ -5202,12 +5202,12 @@
       "signedness": "signed",
       "operation": "multiply",
       "width": "24",
-      "mean_cycles": "512.874222",
+      "mean_cycles": "512.416770",
       "min_cycles": 456,
       "max_cycles": 570,
       "cases": 2409,
       "cycle_basis": "current native-signed multiply validation",
-      "reachable_code_bytes": 493,
+      "reachable_code_bytes": 491,
       "zp_bytes": 24,
       "zp_ranges": "$09-$20",
       "stack_page_reserved_bytes": 0,

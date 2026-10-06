@@ -21,7 +21,7 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 242,
+          "signed_instructions": 241,
           "unsigned_instructions": 173,
           "overlap": 0
         },
@@ -116,7 +116,7 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 226,
+          "signed_instructions": 225,
           "unsigned_instructions": 173,
           "overlap": 0
         },
@@ -211,7 +211,7 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 226,
+          "signed_instructions": 225,
           "unsigned_instructions": 173,
           "overlap": 0
         },
@@ -306,7 +306,7 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 226,
+          "signed_instructions": 225,
           "unsigned_instructions": 173,
           "overlap": 0
         },
@@ -401,7 +401,7 @@
         {
           "signed": "MATH_SMUL24",
           "unsigned": "MATH_UMUL24",
-          "signed_instructions": 242,
+          "signed_instructions": 241,
           "unsigned_instructions": 173,
           "overlap": 0
         },
@@ -765,7 +765,7 @@
       "check": "v1_balanced_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 242,
+        "signed_instructions": 241,
         "unsigned_instructions": 173,
         "overlap": []
       }
@@ -1242,7 +1242,7 @@
       "check": "v2_pareto_fast_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 226,
+        "signed_instructions": 225,
         "unsigned_instructions": 173,
         "overlap": []
       }
@@ -1719,7 +1719,7 @@
       "check": "v3_reu_512k_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 226,
+        "signed_instructions": 225,
         "unsigned_instructions": 173,
         "overlap": []
       }
@@ -2196,7 +2196,7 @@
       "check": "v4_reu_16m_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 226,
+        "signed_instructions": 225,
         "unsigned_instructions": 173,
         "overlap": []
       }
@@ -2591,7 +2591,7 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL24_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 242,
+        "signed_instructions": 241,
         "unsigned_instructions": 173,
         "overlap": []
       }

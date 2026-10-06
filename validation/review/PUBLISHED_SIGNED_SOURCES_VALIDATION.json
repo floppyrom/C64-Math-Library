@@ -15,8 +15,8 @@
         },
         "MATH_SMUL24": {
           "file": "v1_balanced/resident/signed/multiply/native/smul24_native.asm",
-          "instructions": 242,
-          "bytes_verified": 493
+          "instructions": 241,
+          "bytes_verified": 491
         },
         "MATH_SMUL32": {
           "file": "v1_balanced/resident/signed/multiply/native/smul32_native.asm",
@@ -86,8 +86,8 @@
         },
         "MATH_SMUL24": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul24_native.asm",
-          "instructions": 226,
-          "bytes_verified": 461
+          "instructions": 225,
+          "bytes_verified": 459
         },
         "MATH_SMUL32": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul32_native.asm",
@@ -157,8 +157,8 @@
         },
         "MATH_SMUL24": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul24_native.asm",
-          "instructions": 226,
-          "bytes_verified": 461
+          "instructions": 225,
+          "bytes_verified": 459
         },
         "MATH_SMUL32": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul32_native.asm",
@@ -228,8 +228,8 @@
         },
         "MATH_SMUL24": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul24_native.asm",
-          "instructions": 226,
-          "bytes_verified": 461
+          "instructions": 225,
+          "bytes_verified": 459
         },
         "MATH_SMUL32": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul32_native.asm",
@@ -299,8 +299,8 @@
         },
         "MATH_SMUL24": {
           "file": "v5_hybrid_lowzp/resident/signed/multiply/native/smul24_native.asm",
-          "instructions": 242,
-          "bytes_verified": 493
+          "instructions": 241,
+          "bytes_verified": 491
         },
         "MATH_SMUL32": {
           "file": "v5_hybrid_lowzp/resident/signed/multiply/native/smul32_native.asm",
@@ -432,8 +432,8 @@
       "check": "v1_balanced_MATH_SMUL24_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 242,
-        "runtime": 242,
+        "published": 241,
+        "runtime": 241,
         "missing": 0,
         "extra": 0
       }
@@ -767,8 +767,8 @@
       "check": "v2_pareto_fast_MATH_SMUL24_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 226,
-        "runtime": 226,
+        "published": 225,
+        "runtime": 225,
         "missing": 0,
         "extra": 0
       }
@@ -1102,8 +1102,8 @@
       "check": "v3_reu_512k_MATH_SMUL24_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 226,
-        "runtime": 226,
+        "published": 225,
+        "runtime": 225,
         "missing": 0,
         "extra": 0
       }
@@ -1437,8 +1437,8 @@
       "check": "v4_reu_16m_MATH_SMUL24_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 226,
-        "runtime": 226,
+        "published": 225,
+        "runtime": 225,
         "missing": 0,
         "extra": 0
       }
@@ -1772,8 +1772,8 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL24_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 242,
-        "runtime": 242,
+        "published": 241,
+        "runtime": 241,
         "missing": 0,
         "extra": 0
       }
