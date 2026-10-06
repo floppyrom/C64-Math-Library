@@ -39,3 +39,11 @@ jobs:
           make alternate
       - name: Exhaustive REU UDIV8 hybrid validation
         run: python3 tools/validate_reu_udiv8_hybrid.py
+      - name: Upload reference source builds
+        uses: actions/upload-artifact@v4
+        with:
+          name: reu-udiv8-reference-builds
+          path: |
+            build_source/reference/v3_reu_512k
+            build_source/reference/v4_reu_16m
+          retention-days: 1
