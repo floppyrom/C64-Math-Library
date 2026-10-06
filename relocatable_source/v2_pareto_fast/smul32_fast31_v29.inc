@@ -376,28 +376,7 @@ S32V28_q2_bc_c4_k0_common:
         lda S32V28_z24
         adc S32V28_z33
         bcc S32V28_q2_signed_correction_ready
-S32V28_q2_bc_final_carry:
-        inc S32V28_r7
-S32V28_q2_signed_correction_ready:
-        ; Bounded summation returns raw upper bytes as Y,X,A,r7.
-        sta S32V28_z33
-        tya
-        sec
-        sbc MATH_IO+$04
-        sta MATH_IO+$0C
-        txa
-        sbc MATH_IO+$05
-        sta MATH_IO+$0D
-        lda S32V28_z33
-        sbc MATH_IO+$06
-        sta MATH_IO+$0E
-        lda S32V28_r7
-        sbc MATH_IO+$07
-        sta MATH_IO+$0F
-        lda S32V28_r0
-        sta MATH_IO+$08
-        clc
-        rts
+        jmp S32V28_q2_bc_final_carry
 
 S32V28_q2_bc_c5b_k1_m0:
         clc
@@ -409,7 +388,8 @@ S32V28_q2_bc_c5b_k1_m1:
         bcs S32V28_q2_bc_c6_done
         adc #1
         bcs S32V28_q2_bc_final_carry
-        jmp S32V28_q2_signed_correction_ready
+        ; BCS fallthrough guarantees C=0: same 3 cycles as JMP, one byte shorter.
+        bcc S32V28_q2_signed_correction_ready
 S32V28_q2_bc_c6_done:
         adc #0
         jmp S32V28_q2_bc_final_carry
@@ -434,8 +414,29 @@ S32V28_q2_bc_c5b_k0_m0_alt:
         tax
         lda S32V28_z24
         adc S32V28_z33
-        bcs S32V28_q2_bc_final_carry
-        jmp S32V28_q2_signed_correction_ready
+        bcc S32V28_q2_signed_correction_ready
+S32V28_q2_bc_final_carry:
+        inc S32V28_r7
+S32V28_q2_signed_correction_ready:
+        ; Bounded summation returns raw upper bytes as Y,X,A,r7.
+        sta S32V28_z33
+        tya
+        sec
+        sbc MATH_IO+$04
+        sta MATH_IO+$0C
+        txa
+        sbc MATH_IO+$05
+        sta MATH_IO+$0D
+        lda S32V28_z33
+        sbc MATH_IO+$06
+        sta MATH_IO+$0E
+        lda S32V28_r7
+        sbc MATH_IO+$07
+        sta MATH_IO+$0F
+        lda S32V28_r0
+        sta MATH_IO+$08
+        clc
+        rts
 
 S32V28_q2_hy_c3_over_imp:
         inc S32V28_z32
