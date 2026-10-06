@@ -1,0 +1,204 @@
+name: Promote SMUL16 stable Y0
+
+on:
+  push:
+    branches:
+      - research/smul16-stable-y0-promote-v1
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  promote:
+    if: github.event.head_commit.message == 'trigger SMUL16 stable Y0 promotion'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/smul16-stable-y0-promote-v1
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build current reference artifacts
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_bootstrap
+
+      - name: Patch and promote V2-V4 SMUL16 residents
+        run: |
+          python3 tools/patch_smul16_stable_y0.py \
+            build_bootstrap/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg \
+            build_bootstrap/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg \
+            build_bootstrap/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg
+          cp build_bootstrap/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_bootstrap/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_bootstrap/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+
+      - name: Regenerate canonical source from promoted residents
+        run: |
+          python3 tools/generate_sources.py
+          rm -rf build_source
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          cmp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cmp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cmp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+
+      - name: Regenerate publication and validation artifacts
+        run: |
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/publish_standalone_sources.py
+          python3 tools/validate_signed_multiply.py
+          python3 tools/benchmark_multiply_refresh.py
+          python3 tools/validate_mul16_shr8_register.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+
+      - name: Write SMUL16 stable-Y0 evidence and docs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('.')
+          sm=json.loads((root/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
+          mr=json.loads((root/'validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json').read_text())
+          ps=('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+          baseline={
+            'v2_pareto_fast':252.32488220776307,
+            'v3_reu_512k':252.62396230648417,
+            'v4_reu_16m':252.66255328696434,
+          }
+          canon={p:sm['profiles'][p]['SMUL16'] for p in ps}
+          shr={p:mr['profiles'][p]['MATH_SMUL16_SHR8'] for p in ps}
+          evidence={
+            'status':'PASS','date':'2026-10-06',
+            'optimization':'Remove the unconditional Y0 self-modifying save from the 116-byte executable-ZP SMUL16 core. X-negative signed corrections re-read stable public MATH_IO+$04; all shifted SMC targets and low-result bytes are regenerated symbolically.',
+            'resource_contract':{
+              'zp_reserved_bytes':116,'zp_used_before':116,'zp_used_after':113,
+              'tail_bytes_before':60,'tail_bytes_after':61,
+              'public_abi_changed':False,'persistent_stack_changed':False},
+            'canonical':canon,
+            'baseline_mean_cycles':baseline,
+            'delta_mean_cycles':{p:canon[p]['mean_cycles']-baseline[p] for p in ps},
+            'quadrant_delta_cycles_v2':{'PP':-4.0,'PN':-4.0,'NP':-2.0,'NN':-4.0},
+            'shifted_derivative':shr,
+            'research_proof':{
+              'v2_mean_before':252.32488220776307,'v2_mean_after':248.80233340812205,
+              'v3_mean_before':252.62396230648417,'v3_mean_after':249.10769575947947,
+              'v4_mean_before':252.66255328696434,'v4_mean_after':249.14449181063495,
+              'errors':0}
+          }
+          (root/'validation/review/SMUL16_STABLE_Y0.json').write_text(json.dumps(evidence,indent=2)+'\n')
+          old={'v2_pareto_fast':'252.324882','v3_reu_512k':'252.623962','v4_reu_16m':'252.662553'}
+          new={p:f"{canon[p]['mean_cycles']:.6f}" for p in ps}
+          for path in [root/'PERFORMANCE.md',root/'docs/SIGNED_IMPLEMENTATIONS.md',root/'docs/VERSION_SELECTION.md',
+                       root/'v2_pareto_fast/README.md',root/'v3_reu_512k/README.md',root/'v4_reu_16m/README.md']:
+            if not path.exists(): continue
+            t=path.read_text()
+            for p in ps: t=t.replace(old[p],new[p])
+            path.write_text(t)
+          summary=' / '.join(new[p] for p in ps)
+          p=root/'CHANGELOG.md'; t=p.read_text()
+          entry=(
+            '## 2026-10-06 — SMUL16 stable-Y0 executable-ZP optimization\n\n'
+            '- Removed the unconditional four-cycle Y0 save from the V2/V3/V4 116-byte executable-ZP SMUL16 core; X-negative corrections re-read stable MATH_IO+$04.\n'
+            f'- Canonical V2/V3/V4 SMUL16 means improve to **{summary} cycles**.\n'
+            '- Focused sign quadrants improve by **−4 / −4 / −2 / −4 cycles** for PP/PN/NP/NN; SMUL16_SHR8 inherits the same mean reduction.\n'
+            '- The ZP ownership contract remains 116 bytes (113 live bytes plus three padding bytes); the signed tail grows by one byte, with no ABI or stack-page change.\n'
+            '- Full signed-multiply, multiply-refresh, SHR8 register-return, deterministic rebuild, published-source, Turbo relocation/boundary and package gates pass.\n\n')
+          if 'SMUL16 stable-Y0 executable-ZP optimization' not in t: p.write_text(entry+t)
+          p=root/'CSDB_CHANGELOG.txt'; t=p.read_text()
+          entry=(
+            '2026-10-06 SMUL16 STABLE-Y0 EXECUTABLE-ZP\n'
+            '- Removes the unconditional Y0 SMC save; signed tails re-read stable MATH_IO+$04.\n'
+            f'- Canonical V2/V3/V4 means: {summary}; PP/PN/NP/NN deltas -4/-4/-2/-4 cycles.\n\n')
+          if 'SMUL16 STABLE-Y0 EXECUTABLE-ZP' not in t: p.write_text(entry+t)
+          PY
+
+      - name: Regenerate indexes after docs
+        run: |
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+
+      - name: Refresh release hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('.')
+          sha=lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
+            s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+          for p in ('v3_reu_512k','v4_reu_16m'):
+            s['reference_reu_sha256'][p]=sha(root/'build_source/reference'/p/f'c64_math_{p}_source_built.reu')
+            s['alternate_reu_sha256'][p]=sha(root/'build_source/alternate'/p/f'c64_math_{p}_source_built.reu')
+          s['date']='2026-10-06'
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+
+      - name: Final promoted validation
+        run: |
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_signed_multiply.py
+          python3 tools/benchmark_multiply_refresh.py
+          python3 tools/validate_mul16_shr8_register.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+
+      - name: Remove promotion scaffolding
+        run: |
+          rm -f .github/workflows/promote-smul16-stable-y0.yml
+          rm -f tools/patch_smul16_stable_y0.py
+          rm -rf build_bootstrap build_source
+
+      - name: Refresh package manifest
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+
+      - name: Commit promoted SMUL16 artifacts
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No promotion changes"
+          else
+            git commit -m "Promote SMUL16 stable-Y0 executable-ZP optimization"
+            git push origin HEAD:research/smul16-stable-y0-promote-v1
+          fi
