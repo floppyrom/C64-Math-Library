@@ -7,7 +7,7 @@ sys.path.insert(0,str(ROOT/"tools"))
 from mini6502 import CPU, Assembler, REV, SIZE
 from assemble_sources import build
 
-PROFILE="v2_pareto_fast"; IO=0xC000; MASK32=(1<<32)-1
+PROFILES=("v2_pareto_fast","v3_reu_512k","v4_reu_16m"); IO=0xC000; MASK32=(1<<32)-1
 
 def parse_api(path):
     out={}
@@ -151,9 +151,9 @@ def edges():
     s=1<<15; m=(1<<16)-1
     return list(dict.fromkeys([0,1,2,3,7,15,16,31,63,127,128,255,s-2,s-1,s,s+1,m-2,m-1,m]))
 
-def canonical():
+def canonical(pi=1):
     e=edges(); pairs=[(x,y) for x in e for y in e]
-    rng=random.Random(0x5A17_0000+1*0x100+16)
+    rng=random.Random(0x5A17_0000+pi*0x100+16)
     pairs += [(rng.randrange(1<<16),rng.randrange(1<<16)) for _ in range(4096)]
     return pairs
 
@@ -187,26 +187,29 @@ def compare(base,cand,entry,pairs,shr=False):
     b.pop("cycles"); c.pop("cycles")
     return {"baseline":b,"candidate":c,"delta_mean_cycles":sum(ds)/len(ds),"delta_min":min(ds),"delta_max":max(ds)}
 
-def pair(tmp):
-    return (load(ROOT/PROFILE/"resident"/f"math_{PROFILE}_game_math.prg",ROOT/PROFILE/"resident"/"math_api.inc"),
-            load(tmp/f"math_{PROFILE}_source_built.prg",tmp/"math_api.inc"))
+def pair(profile,tmp):
+    return (load(ROOT/profile/"resident"/f"math_{profile}_game_math.prg",ROOT/profile/"resident"/"math_api.inc"),
+            load(tmp/f"math_{profile}_source_built.prg",tmp/"math_api.inc"))
 
 def main():
-    tmp=Path(tempfile.mkdtemp(prefix="smul16-reloc-"))
-    try:
-        build(PROFILE,ROOT/"relocatable_source"/PROFILE/"math_config_reference.inc",tmp)
-        candprg=tmp/f"math_{PROFILE}_source_built.prg"
-        patch=patch_candidate(candprg)
-        results={}
-        b,c=pair(tmp); results["canonical"]=compare(b,c,"MATH_SMUL16",canonical())
-        for k in ("PP","PN","NP","NN"):
-            b,c=pair(tmp); results[k]=compare(b,c,"MATH_SMUL16",focus(k))
-        b,c=pair(tmp); results["shr8"]=compare(b,c,"MATH_SMUL16_SHR8",canonical(),True)
-        ok=all(v["candidate"]["errors"]==0 for v in results.values()) and results["canonical"]["delta_mean_cycles"]<0
-        out={"status":"PASS" if ok else "FAIL","patch":patch,"results":results}
-        print(json.dumps(out,indent=2))
-        if not ok: raise SystemExit(1)
-    finally:
-        shutil.rmtree(tmp,ignore_errors=True)
+    allres={}
+    for pi,profile in enumerate(PROFILES, start=1):
+        tmp=Path(tempfile.mkdtemp(prefix="smul16-reloc-"+profile+"-"))
+        try:
+            build(profile,ROOT/"relocatable_source"/profile/"math_config_reference.inc",tmp)
+            candprg=tmp/f"math_{profile}_source_built.prg"
+            patch=patch_candidate(candprg)
+            results={}
+            b,c=pair(profile,tmp); results["canonical"]=compare(b,c,"MATH_SMUL16",canonical(pi))
+            b,c=pair(profile,tmp); results["shr8"]=compare(b,c,"MATH_SMUL16_SHR8",canonical(pi),True)
+            if profile=="v2_pareto_fast":
+                for k in ("PP","PN","NP","NN"):
+                    b,c=pair(profile,tmp); results[k]=compare(b,c,"MATH_SMUL16",focus(k))
+            ok=all(v["candidate"]["errors"]==0 for v in results.values()) and results["canonical"]["delta_mean_cycles"]<0
+            allres[profile]={"status":"PASS" if ok else "FAIL","patch":patch,"results":results}
+            if not ok: raise SystemExit(1)
+        finally:
+            shutil.rmtree(tmp,ignore_errors=True)
+    print(json.dumps({"status":"PASS","profiles":allres},indent=2))
 
 if __name__=="__main__": main()
