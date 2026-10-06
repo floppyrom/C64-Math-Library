@@ -23,11 +23,11 @@
           "reu_bank": "$01",
           "begin_cycles": 326,
           "end_cycles": 371,
-          "mean_cycles": 710.724609375,
-          "min_cycles": 666,
-          "max_cycles": 840,
-          "cycle_vector_sha256": "005ca19a5940919ce1496a05a63955d2d50340c736ab1244d505e4db55174ca6",
-          "overlay_sha256": "768750f3a6a306ed1dc9bbf78096bc0610c856a207d178ecfe1509139c397e05"
+          "mean_cycles": 665.8359375,
+          "min_cycles": 621,
+          "max_cycles": 796,
+          "cycle_vector_sha256": "14bbd3af73aa7ae5da09c33e3785dc6c8c6033c4d88504801bf24b152350aea1",
+          "overlay_sha256": "9cda760f36119c1f091f016908f8ce60ec9ae2e1dd95422e68d88d400d137397"
         }
       },
       "maximum_origins": {
@@ -51,11 +51,11 @@
           "reu_bank": "$07",
           "begin_cycles": 326,
           "end_cycles": 371,
-          "mean_cycles": 710.724609375,
-          "min_cycles": 666,
-          "max_cycles": 840,
-          "cycle_vector_sha256": "005ca19a5940919ce1496a05a63955d2d50340c736ab1244d505e4db55174ca6",
-          "overlay_sha256": "a4c3ee849cbef01ec3c312936e3e770aebf14bf696c9d9a5ce6dc19737b1d73f"
+          "mean_cycles": 665.8359375,
+          "min_cycles": 621,
+          "max_cycles": 796,
+          "cycle_vector_sha256": "14bbd3af73aa7ae5da09c33e3785dc6c8c6033c4d88504801bf24b152350aea1",
+          "overlay_sha256": "7d8bfc950cfad165ee02de92af08c7a80444fe91908f1988c5a3367382d68744"
         }
       }
     },
@@ -81,11 +81,11 @@
           "reu_bank": "$29",
           "begin_cycles": 326,
           "end_cycles": 371,
-          "mean_cycles": 710.724609375,
-          "min_cycles": 666,
-          "max_cycles": 840,
-          "cycle_vector_sha256": "005ca19a5940919ce1496a05a63955d2d50340c736ab1244d505e4db55174ca6",
-          "overlay_sha256": "768750f3a6a306ed1dc9bbf78096bc0610c856a207d178ecfe1509139c397e05"
+          "mean_cycles": 665.8359375,
+          "min_cycles": 621,
+          "max_cycles": 796,
+          "cycle_vector_sha256": "14bbd3af73aa7ae5da09c33e3785dc6c8c6033c4d88504801bf24b152350aea1",
+          "overlay_sha256": "9cda760f36119c1f091f016908f8ce60ec9ae2e1dd95422e68d88d400d137397"
         }
       },
       "maximum_origins": {
@@ -109,11 +109,11 @@
           "reu_bank": "$FF",
           "begin_cycles": 326,
           "end_cycles": 371,
-          "mean_cycles": 710.724609375,
-          "min_cycles": 666,
-          "max_cycles": 840,
-          "cycle_vector_sha256": "005ca19a5940919ce1496a05a63955d2d50340c736ab1244d505e4db55174ca6",
-          "overlay_sha256": "a4c3ee849cbef01ec3c312936e3e770aebf14bf696c9d9a5ce6dc19737b1d73f"
+          "mean_cycles": 665.8359375,
+          "min_cycles": 621,
+          "max_cycles": 796,
+          "cycle_vector_sha256": "14bbd3af73aa7ae5da09c33e3785dc6c8c6033c4d88504801bf24b152350aea1",
+          "overlay_sha256": "7d8bfc950cfad165ee02de92af08c7a80444fe91908f1988c5a3367382d68744"
         }
       }
     }

@@ -67,7 +67,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | `mul_u16_u16_u32_turbo.asm` |  | 74 |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | `mul_u16_u16_u32_turbo_end.asm` |  | 30 |
 | `MATH_REU_UMUL32_BEGIN` | `mul_u32_u32_u64_turbo_begin` | `mul_u32_u32_u64_turbo_begin.asm` |  | 17 |
-| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | `mul_u32_u32_u64_turbo.asm` |  | 185 |
+| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | `mul_u32_u32_u64_turbo.asm` |  | 168 |
 | `MATH_REU_UMUL32_END` | `mul_u32_u32_u64_turbo_end` | `mul_u32_u32_u64_turbo_end.asm` |  | 30 |
 
 The machine-readable version of this table is `MANIFEST.csv`.

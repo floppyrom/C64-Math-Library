@@ -152,7 +152,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 125.423943 | 41 | 1076 | 1469 | 0 | — | 0 | fast direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 191.745424 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 755.944246 | 175 | 1880 | 1890 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD8` | `mod_u8_u8_u8` | 49.712110 | 32 | 50 | 42 | 0 | — | 0 | REU direct remainder plane retained; direct-public UDIV8 selected separately | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD8` | `mod_u8_u8_u8` | 49.712110 | 32 | 50 | 42 | 0 | — | 0 | REU direct remainder plane retained; hybrid UDIV8 selected separately | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD16` | `mod_u16_u16_u16` | 203.396008 | 41 | 1076 | 1469 | 0 | — | 0 | fast direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 302.914359 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 789.650998 | 178 | 1883 | 1893 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
@@ -196,7 +196,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 151 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_BEGIN` | `mul_u32_u32_u64_turbo_begin` | 326.000000 | 326 | 326 | 41 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 728.947080 | 666 | 840 | 379 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 684.185219 | 621 | 796 | 352 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_END` | `mul_u32_u32_u64_turbo_end` | 371.000000 | 371 | 371 | 73 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 
 ## v4_reu_16m
@@ -217,7 +217,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 125.625710 | 41 | 1076 | 1469 | 0 | — | 0 | fast direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 187.307174 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 757.480328 | 175 | 1880 | 1890 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD8` | `mod_u8_u8_u8` | 49.725819 | 32 | 50 | 42 | 0 | — | 0 | REU direct remainder plane retained; direct-public UDIV8 selected separately | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD8` | `mod_u8_u8_u8` | 49.725819 | 32 | 50 | 42 | 0 | — | 0 | REU direct remainder plane retained; hybrid UDIV8 selected separately | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD16` | `mod_u16_u16_u16` | 202.557630 | 41 | 1076 | 1469 | 0 | — | 0 | fast direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 301.613007 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 789.841597 | 178 | 1883 | 1893 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
@@ -261,7 +261,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 215.544111 | 203 | 240 | 151 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_BEGIN` | `mul_u32_u32_u64_turbo_begin` | 326.000000 | 326 | 326 | 41 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 728.947080 | 666 | 840 | 379 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 684.185219 | 621 | 796 | 352 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_END` | `mul_u32_u32_u64_turbo_end` | 371.000000 | 371 | 371 | 73 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 | `MATH_REU_QS16_BEGIN` | `mul_u16_u16_u32_qs16_begin` | 18.000000 | 18 | 18 | 11 | 16 | $10-$1F | 0 | V4 16MiB QS16 mode | V4 QS16 source/exact timing classes |
 | `MATH_REU_QS16` | `mul_u16_u16_u32_qs16` | 281.541031 | 279 | 293 | 209 | 16 | $10-$1F | 0 | V4 16MiB QS16 mode | V4 QS16 source/exact timing classes |

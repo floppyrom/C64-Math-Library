@@ -57,7 +57,7 @@ MATH_REU_UMUL16_BEGIN,mul_u16_u16_u32_turbo_begin,mul_u16_u16_u32_turbo_begin.as
 MATH_REU_UMUL16,mul_u16_u16_u32_turbo,mul_u16_u16_u32_turbo.asm,,$3840,74
 MATH_REU_UMUL16_END,mul_u16_u16_u32_turbo_end,mul_u16_u16_u32_turbo_end.asm,,$3880,30
 MATH_REU_UMUL32_BEGIN,mul_u32_u32_u64_turbo_begin,mul_u32_u32_u64_turbo_begin.asm,,$38C0,17
-MATH_REU_UMUL32,mul_u32_u32_u64_turbo,mul_u32_u32_u64_turbo.asm,,$3900,185
+MATH_REU_UMUL32,mul_u32_u32_u64_turbo,mul_u32_u32_u64_turbo.asm,,$3900,168
 MATH_REU_UMUL32_END,mul_u32_u32_u64_turbo_end,mul_u32_u32_u64_turbo_end.asm,,$3960,30
 MATH_REU_QS16_BEGIN,mul_u16_u16_u32_qs16_begin,mul_u16_u16_u32_qs16_begin.asm,,$3A80,5
 MATH_REU_QS16,mul_u16_u16_u32_qs16,mul_u16_u16_u32_qs16.asm,,$3A8B,89
