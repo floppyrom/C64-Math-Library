@@ -1,0 +1,36 @@
+name: SMUL32 bounded-sum experiment
+
+on:
+  push:
+    branches:
+      - smul32-bounded-sum-exp
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  v2-smul32:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble V2 reference source
+        run: |
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg \
+             v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+      - name: Validate and print signed multiply timing
+        run: |
+          python3 tools/validate_signed_multiply.py --profile v2_pareto_fast
+          python3 - <<'PY'
+          import json
+          p=json.load(open('validation/review/SIGNED_MULTIPLY_VALIDATION.json'))
+          print(json.dumps(p['profiles']['v2_pareto_fast']['SMUL32'], indent=2))
+          print(json.dumps(p['profiles']['v2_pareto_fast']['SMUL32_READY'], indent=2))
+          PY
