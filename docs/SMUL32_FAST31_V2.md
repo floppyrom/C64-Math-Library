@@ -58,6 +58,11 @@ The remaining FAST31 v2 arithmetic ideas were tested against the persistent-poin
 
 Evidence: `validation/review/SMUL32_FAST31_V2_TRANSPLANT.json`.
 
+### V2/V3/V4 timing comparability
+
+The small difference between the profile-specific canonical means above is **benchmark-corpus noise, not a real V3/V4 slowdown**. The signed validator historically uses a different deterministic random seed for each profile. Re-running V2, V3 and V4 on the **same 2,409 input pairs** gives **716.569946 cycles in all three profiles**, with all **2,409 per-call cycle counts identical** for V3 vs V2 and V4 vs V2. The relocated V2 islands therefore have no runtime timing advantage on the reference map.
+
+
 ### Why the V2/V3/V4 published means differ slightly
 
 The canonical signed validator intentionally uses a different deterministic random seed for each profile, so its published means (**715.605230 / 716.033209 / 716.090079**) are not measured on identical random inputs. A dedicated same-input check ran all three profiles on one shared 2,409-case corpus and obtained **716.569946 cycles in V2, V3 and V4**, with **zero per-call cycle differences across all 2,409 cases**. The small canonical spread is therefore corpus variation, not an intrinsic V3/V4 slowdown or a relocation/page-cross penalty.
