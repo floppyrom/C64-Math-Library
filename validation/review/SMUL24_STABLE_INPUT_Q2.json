@@ -1,0 +1,66 @@
+{
+  "status": "PASS",
+  "date": "2026-10-06",
+  "optimization": "Reuse stable public Y2 (MATH_IO+$06) in the X<0,Y>=0 signed correction instead of saving it into a self-modified immediate before the producer.",
+  "resource_contract": {
+    "public_abi_changed": false,
+    "zp_changed": false,
+    "persistent_stack_changed": false
+  },
+  "canonical": {
+    "v1_balanced": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 512.9817351598174,
+      "min_cycles": 456,
+      "max_cycles": 571
+    },
+    "v2_pareto_fast": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 468.6629306766293,
+      "min_cycles": 412,
+      "max_cycles": 525
+    },
+    "v3_reu_512k": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 468.354503943545,
+      "min_cycles": 412,
+      "max_cycles": 527
+    },
+    "v4_reu_16m": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 468.7318389373184,
+      "min_cycles": 412,
+      "max_cycles": 532
+    },
+    "v5_hybrid_lowzp": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 512.4167704441677,
+      "min_cycles": 456,
+      "max_cycles": 570
+    }
+  },
+  "baseline_mean_cycles": {
+    "v1_balanced": 513.4964715649647,
+    "v2_pareto_fast": 469.1818181818182,
+    "v3_reu_512k": 468.81610626816104,
+    "v4_reu_16m": 469.2200083022001,
+    "v5_hybrid_lowzp": 512.8742216687422
+  },
+  "delta_mean_cycles": {
+    "v1_balanced": -0.514736405147346,
+    "v2_pareto_fast": -0.5188875051888999,
+    "v3_reu_512k": -0.4616023246160239,
+    "v4_reu_16m": -0.48816936488168494,
+    "v5_hybrid_lowzp": -0.45745122457446996
+  },
+  "focused_q2": {
+    "delta_cycles": -2.0,
+    "description": "20,070-ish edge+random X<0,Y>=0 focused corpus; every tested q2 call is exactly two cycles faster in V1-V4.",
+    "errors": 0
+  }
+}

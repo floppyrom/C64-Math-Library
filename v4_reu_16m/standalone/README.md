@@ -16,7 +16,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | `mul_u32_u32_u64_ready.asm` |  | 151 |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | `mul_s8_s8_s16.asm` |  | 19 |
 | `MATH_SMUL16` | `mul_s16_s16_s32` | `mul_s16_s16_s32.asm` |  | 115 |
-| `MATH_SMUL24` | `mul_s24_s24_s48` | `mul_s24_s24_s48.asm` |  | 226 |
+| `MATH_SMUL24` | `mul_s24_s24_s48` | `mul_s24_s24_s48.asm` |  | 225 |
 | `MATH_SMUL32` | `mul_s32_s32_s64` | `mul_s32_s32_s64.asm` |  | 653 |
 | `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | `mul_s32_s32_s64_ready.asm` |  | 654 |
 | `MATH_UDIV8` | `div_u8_u8_u8_8` | `div_u8_u8_u8_8.asm` |  | 58 |

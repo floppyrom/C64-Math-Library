@@ -1,3 +1,10 @@
+## 2026-10-06 — SMUL24 stable-input q2 correction
+
+- Removed the mixed-sign X<0,Y>=0 Y2 self-modifying save; the signed correction now re-reads stable public input MATH_IO+$06.
+- Canonical V1/V2/V3/V4/V5 SMUL24 means are **512.981735 / 468.662931 / 468.354504 / 468.731839 / 512.416770 cycles**.
+- The focused q2 path is exactly **2 cycles faster** with no ABI, ZP, stack-page, or table changes.
+- Signed-multiply, multiply-refresh, direct-output, deterministic rebuild, published-source, Turbo relocation/boundary, and package gates pass.
+
 ## 2026-10-06 — SMUL32 NN X3 prebind
 
 - Pre-bound original X3 table operands on the X<0,Y<0 dispatcher path while X3 is already live in A; common x0!=0 calls avoid a later absolute reload, while the rare carry path overwrites the speculative bindings.
