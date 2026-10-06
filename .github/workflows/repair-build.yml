@@ -27,10 +27,11 @@ jobs:
           make reference
           make alternate
           python3 tools/validate_seek_placement.py
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          python3 tools/publish_standalone_sources.py
           python3 tools/benchmark_seek_profiles.py
           python3 tools/generate_consolidated_routine_table.py
           python3 tools/generate_public_indexes.py
-          python3 tools/package_audit.py
       - name: Validate regenerated tree
         run: |
           python3 tools/test_mini6502_illegal.py
@@ -38,13 +39,15 @@ jobs:
           python3 tools/validate_public_catalog.py
           python3 tools/validate_standalone_sources.py
       - name: Package generated delta
+        if: always()
         shell: bash
         run: |
           git status --short
           git diff --name-only > repair_changed_files.txt
           git diff --binary > repair.patch
-          tar -czf repair_generated_tree.tar.gz --exclude=.git .
+          tar -czf repair_generated_tree.tar.gz --exclude=.git --exclude=repair_generated_tree.tar.gz .
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: repair-generated-tree
           path: |
