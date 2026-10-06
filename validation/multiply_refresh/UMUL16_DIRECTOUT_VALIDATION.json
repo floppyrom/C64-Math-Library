@@ -62,5 +62,6 @@
         "shr8_max_cycles": 281
       }
     }
-  }
+  },
+  "basis": "2026-10-06 UMUL16 direct-output deterministic edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores"
 }
