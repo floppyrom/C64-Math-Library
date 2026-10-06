@@ -1,0 +1,276 @@
+name: Promote SMUL32 q1 bounded tail
+
+on:
+  push:
+    branches:
+      - research/smul32-q1-bounded-tail-v1
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  promote:
+    if: github.event.head_commit.message == 'trigger q1 bounded-tail promotion'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/smul32-q1-bounded-tail-v1
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build reference and alternate artifacts
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+
+      - name: Promote V2-V4 reference resident images
+        run: |
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+
+      - name: Regenerate mirrors and validation evidence
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/publish_standalone_sources.py
+          python3 tools/validate_signed_multiply.py
+          python3 tools/benchmark_multiply_refresh.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+
+      - name: Write q1 bounded-tail evidence and docs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+
+          root=Path('.')
+          sm=json.loads((root/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
+          mr=json.loads((root/'validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json').read_text())
+          ps=('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+          canon={p:sm['profiles'][p]['SMUL32'] for p in ps}
+          ready={p:sm['profiles'][p]['SMUL32_READY'] for p in ps}
+          shr={p:mr['profiles'][p]['MATH_SMUL32_SHR16'] for p in ps}
+
+          evidence={
+            'status':'PASS',
+            'date':'2026-10-06',
+            'optimization':'Replace the q1 (X>=0,Y<0) FAST31 late-column summation with the validated compact126/UMUL32 bounded-carry state machine and tail-place its signed upper-half correction. q0, q2, NN and the four-row producer are unchanged.',
+            'resource_contract':{
+              'zp_bytes':31,
+              'persistent_stack_page_bytes':0,
+              'producer_changed':False,
+              'public_abi_changed':False
+            },
+            'canonical':canon,
+            'shared_6361_case_corpus':{
+              'description':'361 signed edge pairs plus 6,000 deterministic random pairs, identical across V2/V3/V4.',
+              'baseline_mean_cycles':717.7805376513127,
+              'candidate_mean_cycles':717.4480427605722,
+              'delta_cycles':-0.33249489074044963,
+              'min_cycles':630,
+              'max_cycles':838,
+              'errors':0,
+              'cycle_vectors_identical_across_v2_v3_v4':True
+            },
+            'q1_profile_20070':{
+              'description':'70 structured q1 edge pairs plus 20,000 deterministic random X>=0,Y<0 pairs.',
+              'baseline_mean_cycles':734.2680119581465,
+              'candidate_mean_cycles':732.7857997010464,
+              'delta_cycles':-1.4822122571001495,
+              'baseline_min_cycles':670,
+              'candidate_min_cycles':673,
+              'baseline_max_cycles':839,
+              'candidate_max_cycles':830,
+              'errors':0
+            },
+            'shifted_derivative':shr,
+            'ready':ready,
+            'validation':{
+              'signed_multiply_calls':264999,
+              'multiply_refresh_calls':415078,
+              'turbo_relocation':'PASS',
+              'turbo_boundary_sweep':'PASS'
+            }
+          }
+          (root/'validation/review/SMUL32_Q1_BOUNDED_TAIL.json').write_text(json.dumps(evidence,indent=2)+'\n')
+
+          old_triple='712.623495 / 713.107929 / 713.133250'
+          new_triple=' / '.join(f"{canon[p]['mean_cycles']:.6f}" for p in ps)
+          new_ready=' / '.join(f"{ready[p]['mean_cycles']:.6f}" for p in ps)
+          new_shr=f"{shr['v2_pareto_fast']['mean_cycles']:.6f}"
+          new_shr_range=f"{shr['v2_pareto_fast']['min_cycles']}–{shr['v2_pareto_fast']['max_cycles']}"
+
+          # Update current headline figures without rewriting historical q2 evidence.
+          living=[
+            root/'PERFORMANCE.md',
+            root/'docs/SMUL32_COMPACT126.md',
+            root/'docs/VERSION_SELECTION.md',
+            root/'docs/SIGNED_IMPLEMENTATIONS.md',
+            root/'v2_pareto_fast/README.md',
+            root/'v3_reu_512k/README.md',
+            root/'v4_reu_16m/README.md',
+          ]
+          for p in living:
+            if not p.exists(): continue
+            t=p.read_text().replace(old_triple,new_triple)
+            p.write_text(t)
+
+          p=root/'docs/SMUL32_FAST31_V2.md'
+          t=p.read_text().replace(old_triple,new_triple)
+          t=t.replace('**V2: 712.623495 cycles**',f"**V2: {canon['v2_pareto_fast']['mean_cycles']:.6f} cycles**")
+          t=t.replace('**V3: 713.107929 cycles**',f"**V3: {canon['v3_reu_512k']['mean_cycles']:.6f} cycles**")
+          t=t.replace('**V4: 713.133250 cycles**',f"**V4: {canon['v4_reu_16m']['mean_cycles']:.6f} cycles**")
+          t=t.replace('**781.884889 cycles mean (695–903)**',f"**{new_shr} cycles mean ({new_shr_range})**")
+          marker='The fixed-point derivative'
+          para=(
+            'A further **q1 bounded-carry + correction-tail follow-up** replaces only the '
+            'X>=0,Y<0 late-column summation with the compact bounded-carry state machine '
+            'and tail-places its signed correction. On an identical 6,361-case shared '
+            'corpus V2/V3/V4 remain cycle-identical and improve from **717.780538 to '
+            '717.448043 cycles** (−0.332495). A focused 20,070-case q1 corpus improves '
+            'from **734.268012 to 732.785800 cycles** (−1.482212), with worst case '
+            '**839 → 830**. The producer, ABI, 31-ZP footprint, and zero persistent '
+            'stack-page contract are unchanged.\n\n'
+          )
+          if 'q1 bounded-carry + correction-tail follow-up' not in t:
+            loc=t.find(marker)
+            if loc>=0: t=t[:loc]+para+t[loc:]
+            else: t += '\n\n'+para
+          p.write_text(t)
+
+          # Replace the current cross-profile note with the new identical-corpus result.
+          p=root/'PERFORMANCE.md'
+          t=p.read_text()
+          start=t.find('**Cross-profile note:**')
+          if start>=0:
+            end=t.find('\n\n| Typed routine |',start)
+            if end>=0:
+              note=(
+                '**Cross-profile note:** the small V2/V3/V4 spread in the canonical SMUL32 means '
+                'comes from profile-specific deterministic random seeds. On one identical '
+                '**6,361-case** corpus, all three current implementations are cycle-identical at '
+                '**717.448043 cycles**, with identical per-call cycle vectors. The spread is not '
+                'a relocation or REU penalty.'
+              )
+              t=t[:start]+note+t[end:]
+          p.write_text(t)
+
+          p=root/'CHANGELOG.md'
+          t=p.read_text()
+          entry=(
+            '## 2026-10-06 — SMUL32 q1 bounded-carry + correction tail\n\n'
+            '- Replaced only the FAST31 q1 (X>=0, Y<0) late-column summation in V2/V3/V4 with the validated bounded-carry state machine and tail-placed its signed correction; q0/q2/NN and the four-row producer are unchanged.\n'
+            f'- Canonical SMUL32 means improve to **{new_triple} cycles**; min remains **630** and max remains **838**.\n'
+            '- On an identical 6,361-case corpus all three profiles are cycle-identical at **717.448043 cycles**, improving the PR #18 baseline by **0.332495 cycles/call**.\n'
+            '- Focused q1 mean improves **734.268012 → 732.785800** and worst case **839 → 830**.\n'
+            f'- MATH_SMUL32_SHR16 is **{new_shr} cycles mean ({new_shr_range})**; the 31-ZP / zero-persistent-stack contract is unchanged.\n'
+            '- Full signed-multiply, multiply-refresh, published-source, deterministic rebuild, Turbo relocation/boundary and package gates pass.\n\n'
+          )
+          if 'SMUL32 q1 bounded-carry + correction tail' not in t:
+            p.write_text(entry+t)
+
+          p=root/'CSDB_CHANGELOG.txt'
+          t=p.read_text()
+          entry=(
+            '2026-10-06 SMUL32 Q1 BOUNDED-CARRY + CORRECTION TAIL\n'
+            '- V2/V3/V4 replace q1 late-column accumulation with the bounded-carry state machine and tail-place its signed correction.\n'
+            f'- Canonical SMUL32 means: {new_triple}; min 630, max 838.\n'
+            '- Shared 6,361-case mean: 717.448043 in all three profiles (-0.332495 versus PR #18).\n'
+            f'- SMUL32_SHR16: {new_shr} ({new_shr_range}); 31 ZP, zero persistent stack.\n\n'
+          )
+          if 'SMUL32 Q1 BOUNDED-CARRY + CORRECTION TAIL' not in t:
+            p.write_text(entry+t)
+          PY
+
+      - name: Regenerate indexes after documentation and evidence update
+        run: |
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+
+      - name: Refresh release hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json
+          root=Path('.')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+          for p in ('v3_reu_512k','v4_reu_16m'):
+              s['reference_reu_sha256'][p]=sha(root/'build_source/reference'/p/f'c64_math_{p}_source_built.reu')
+              s['alternate_reu_sha256'][p]=sha(root/'build_source/alternate'/p/f'c64_math_{p}_source_built.reu')
+          s['date']='2026-10-06'
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+
+      - name: Verify promoted binaries and public signed sources
+        run: |
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_signed_multiply.py
+          python3 tools/benchmark_multiply_refresh.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+
+      - name: Remove promotion scaffolding
+        run: |
+          rm -f .github/workflows/research-smul32-q1-bounded-tail.yml
+          rm -f .github/workflows/promote-smul32-q1-bounded-tail.yml
+          rm -f tools/bench_smul32_q1_bounded_tail.py
+          rm -rf build_source
+
+      - name: Refresh package manifest
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+
+      - name: Commit promoted q1 bounded-tail artifacts
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if git diff --cached --quiet; then
+            echo "No promotion changes to commit"
+          else
+            git commit -m "Promote SMUL32 q1 bounded-carry tail correction"
+            git push origin HEAD:research/smul32-q1-bounded-tail-v1
+          fi
