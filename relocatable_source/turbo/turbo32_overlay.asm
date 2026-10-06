@@ -1,12 +1,13 @@
-; Turbo32 stack-free 135-byte ZP overlay.
+; Turbo32 stack-free 136-byte ZP overlay (direct public-Y variant).
 ; Derived from the fully-qualified umul32_ram135 record-family implementation.
 ; Qualification source: UMUL16_UMUL32_LOW_ZP_IMPROVEMENTS (2026-09-10).
 ; Native candidate result: 614.275858 measured mean cycles on 67,108,864 pairs.
 ; This library adaptation keeps the candidate's executable/data ZP geometry but
 ; relocates its two ordinary-RAM helper blocks to REG_LOW and REG_LOW+$0100 and
 ; reuses the resident quarter-square planes at REG_TABLE+$1000/$1200/$1400/$1600.
-; It reserves no hardware-stack-page bytes. BEGIN/END swap exactly 135 ZP bytes.
-; TURBO32_ZP_BASE may be $02..$79; $00-$01 remain reserved for the 6510 port.
+; It reserves no hardware-stack-page bytes. BEGIN/END swap exactly 136 ZP bytes.
+; The loop reads y2/y1/y0 directly from MATH_IO+$04..+$06, eliminating the
+; old public-wrapper staging stores. TURBO32_ZP_BASE may be $02..$78.
 
 sqr_lo=REG_TABLE+$1000
 sqr_hi=REG_TABLE+$1200
@@ -74,7 +75,7 @@ p3_carry:
                 beq sum_trampoline
 loop:
         sta+1 z14-1,x
-                ldy+1 y0-1,x
+                ldy MATH_IO+$03,x
 
 umult32x8_same_x
 x0=*+1
