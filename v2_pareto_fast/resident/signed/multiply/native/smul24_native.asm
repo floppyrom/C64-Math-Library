@@ -4,20 +4,20 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UMUL24. Executable overlap: 0 instructions.
-; Public entry: $3BF0. Reachable signed instructions: 232.
+; Public entry: $3BF0. Reachable signed instructions: 226.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
 ; ---- executable island $3BF0 ----
 * = $3BF0
 L3BF0:
-    jmp LCE9B                          ; @3BF0 4C 9B CE
+    jmp LCE9E                          ; @3BF0 4C 9E CE
 ; ---- executable island $CD00 ----
 * = $CD00
 LCD00:
     clc                                ; @CD00 18
     adc ($2B),y                        ; @CD01 71 2B
-    sta $CDEB                          ; @CD03 8D EB CD
+    sta $CDEE                          ; @CD03 8D EE CD
     lda #$01                           ; @CD06 A9 01
     adc ($2D),y                        ; @CD08 71 2D
     adc ($2F),y                        ; @CD0A 71 2F
@@ -26,14 +26,14 @@ LCD00:
 LCD10:
     clc                                ; @CD10 18
     adc ($33),y                        ; @CD11 71 33
-    sta $CDF0                          ; @CD13 8D F0 CD
+    sta $CDF3                          ; @CD13 8D F3 CD
     lda #$01                           ; @CD16 A9 01
     adc ($35),y                        ; @CD18 71 35
     bcc LCD7A                          ; @CD1A 90 5E
 LCD1C:
     clc                                ; @CD1C 18
     adc ($2B),y                        ; @CD1D 71 2B
-    sta $CDD8                          ; @CD1F 8D D8 CD
+    sta $CDDA                          ; @CD1F 8D DA CD
     lda #$01                           ; @CD22 A9 01
     adc ($2D),y                        ; @CD24 71 2D
     adc ($2F),y                        ; @CD26 71 2F
@@ -42,7 +42,7 @@ LCD1C:
 LCD2C:
     clc                                ; @CD2C 18
     adc ($33),y                        ; @CD2D 71 33
-    sta $CDE3                          ; @CD2F 8D E3 CD
+    sta $CDE6                          ; @CD2F 8D E6 CD
     lda #$01                           ; @CD32 A9 01
     adc ($35),y                        ; @CD34 71 35
     bcc LCDA2                          ; @CD36 90 6A
@@ -66,20 +66,20 @@ LCD56:
     sec                                ; @CD56 38
     lda ($21),y                        ; @CD57 B1 21
     adc ($23),y                        ; @CD59 71 23
-    sta $CDDE                          ; @CD5B 8D DE CD
+    sta $CDE0                          ; @CD5B 8D E0 CD
     lda ($25),y                        ; @CD5E B1 25
     adc ($27),y                        ; @CD60 71 27
     adc ($29),y                        ; @CD62 71 29
     bcs LCD00                          ; @CD64 B0 9A
     adc ($2B),y                        ; @CD66 71 2B
-    sta $CDEB                          ; @CD68 8D EB CD
+    sta $CDEE                          ; @CD68 8D EE CD
     lda ($2D),y                        ; @CD6B B1 2D
     adc ($2F),y                        ; @CD6D 71 2F
     adc ($31),y                        ; @CD6F 71 31
     bcs LCD10                          ; @CD71 B0 9D
 LCD73:
     adc ($33),y                        ; @CD73 71 33
-    sta $CDF0                          ; @CD75 8D F0 CD
+    sta $CDF3                          ; @CD75 8D F3 CD
     lda ($35),y                        ; @CD78 B1 35
 LCD7A:
     adc ($37),y                        ; @CD7A 71 37
@@ -87,183 +87,177 @@ LCD7A:
     ldy #$00                           ; @CD7D A0 00
     lda ($21),y                        ; @CD7F B1 21
     adc ($23),y                        ; @CD81 71 23
-    sta $CDD2                          ; @CD83 8D D2 CD
+    sta $CDD3                          ; @CD83 8D D3 CD
     lda ($25),y                        ; @CD86 B1 25
     adc ($27),y                        ; @CD88 71 27
     adc ($29),y                        ; @CD8A 71 29
     bcs LCD1C                          ; @CD8C B0 8E
     adc ($2B),y                        ; @CD8E 71 2B
-    sta $CDD8                          ; @CD90 8D D8 CD
+    sta $CDDA                          ; @CD90 8D DA CD
     lda ($2D),y                        ; @CD93 B1 2D
     adc ($2F),y                        ; @CD95 71 2F
     adc ($31),y                        ; @CD97 71 31
     bcs LCD2C                          ; @CD99 B0 91
 LCD9B:
     adc ($33),y                        ; @CD9B 71 33
-    sta $CDE3                          ; @CD9D 8D E3 CD
+    sta $CDE6                          ; @CD9D 8D E6 CD
     lda ($35),y                        ; @CDA0 B1 35
 LCDA2:
     adc ($37),y                        ; @CDA2 71 37
-    sta $CDEE                          ; @CDA4 8D EE CD
+    sta $CDF1                          ; @CDA4 8D F1 CD
     ldy #$00                           ; @CDA7 A0 00
     lda ($21),y                        ; @CDA9 B1 21
     adc ($23),y                        ; @CDAB 71 23
-    sta $23                            ; @CDAD 85 23
-    lda ($25),y                        ; @CDAF B1 25
-    adc ($27),y                        ; @CDB1 71 27
-    adc ($29),y                        ; @CDB3 71 29
-    bcs LCDF6                          ; @CDB5 B0 3F
-    adc ($2B),y                        ; @CDB7 71 2B
-    sta $CDD0                          ; @CDB9 8D D0 CD
-    lda ($2D),y                        ; @CDBC B1 2D
-    adc ($2F),y                        ; @CDBE 71 2F
-    adc ($31),y                        ; @CDC0 71 31
-    bcs LCE06                          ; @CDC2 B0 42
-LCDC4:
-    adc ($33),y                        ; @CDC4 71 33
-    sta $CDD6                          ; @CDC6 8D D6 CD
-    lda ($35),y                        ; @CDC9 B1 35
-LCDCB:
-    adc ($37),y                        ; @CDCB 71 37
-    tay                                ; @CDCD A8
-    clc                                ; @CDCE 18
-    lda #$00                           ; @CDCF A9 00
-    adc #$00                           ; @CDD1 69 00
-    sta $27                            ; @CDD3 85 27
-    lda #$00                           ; @CDD5 A9 00
-    adc #$00                           ; @CDD7 69 00
-    bcc LCDDD                          ; @CDD9 90 02
-    iny                                ; @CDDB C8
-    clc                                ; @CDDC 18
-LCDDD:
-    adc #$00                           ; @CDDD 69 00
-    sta $2F                            ; @CDDF 85 2F
-    tya                                ; @CDE1 98
-    adc #$00                           ; @CDE2 69 00
-    bcc LCDEA                          ; @CDE4 90 04
-    clc                                ; @CDE6 18
-    inc $CDEE                          ; @CDE7 EE EE CD
-LCDEA:
-    adc #$00                           ; @CDEA 69 00
-    tay                                ; @CDEC A8
-    lda #$00                           ; @CDED A9 00
-    adc #$00                           ; @CDEF 69 00
-    bcs LCDF4                          ; @CDF1 B0 01
-    rts                                ; @CDF3 60
-LCDF4:
-    inx                                ; @CDF4 E8
-    rts                                ; @CDF5 60
-LCDF6:
-    clc                                ; @CDF6 18
-    adc ($2B),y                        ; @CDF7 71 2B
-    sta $CDD0                          ; @CDF9 8D D0 CD
-    lda #$01                           ; @CDFC A9 01
-    adc ($2D),y                        ; @CDFE 71 2D
-    adc ($2F),y                        ; @CE00 71 2F
-    adc ($31),y                        ; @CE02 71 31
-    bcc LCDC4                          ; @CE04 90 BE
-LCE06:
-    clc                                ; @CE06 18
-    adc ($33),y                        ; @CE07 71 33
-    sta $CDD6                          ; @CE09 8D D6 CD
-    lda #$01                           ; @CE0C A9 01
-    adc ($35),y                        ; @CE0E 71 35
-    bcc LCDCB                          ; @CE10 90 B9
-LCE12:
-    lda $31                            ; @CE12 A5 31
-    bmi LCE1C                          ; @CE14 30 06
-    tya                                ; @CE16 98
-    bmi LCE3D                          ; @CE17 30 24
-    jmp LCD38                          ; @CE19 4C 38 CD
-LCE1C:
-    tya                                ; @CE1C 98
-    bmi LCE56                          ; @CE1D 30 37
-    sty $CE38                          ; @CE1F 8C 38 CE
-    jsr LCD38                          ; @CE22 20 38 CD
-    sta $CE2F                          ; @CE25 8D 2F CE
-    tya                                ; @CE28 98
-    sec                                ; @CE29 38
-    sbc $CDA8                          ; @CE2A ED A8 CD
-    tay                                ; @CE2D A8
-    lda #$00                           ; @CE2E A9 00
-    sbc $CD7E                          ; @CE30 ED 7E CD
-    sta $CE3B                          ; @CE33 8D 3B CE
-    txa                                ; @CE36 8A
-    sbc #$00                           ; @CE37 E9 00
-    tax                                ; @CE39 AA
-    lda #$00                           ; @CE3A A9 00
-    rts                                ; @CE3C 60
-LCE3D:
-    jsr LCD38                          ; @CE3D 20 38 CD
-    sta $CE49                          ; @CE40 8D 49 CE
-    tya                                ; @CE43 98
-    sec                                ; @CE44 38
-    sbc $21                            ; @CE45 E5 21
-    tay                                ; @CE47 A8
-    lda #$00                           ; @CE48 A9 00
-    sbc $29                            ; @CE4A E5 29
-    sta $CE54                          ; @CE4C 8D 54 CE
-    txa                                ; @CE4F 8A
-    sbc $31                            ; @CE50 E5 31
-    tax                                ; @CE52 AA
-    lda #$00                           ; @CE53 A9 00
-    rts                                ; @CE55 60
-LCE56:
-    sec                                ; @CE56 38
-    lda #$00                           ; @CE57 A9 00
-    sbc $CDA8                          ; @CE59 ED A8 CD
-    sta $CDA8                          ; @CE5C 8D A8 CD
-    lda #$00                           ; @CE5F A9 00
-    sbc $CD7E                          ; @CE61 ED 7E CD
-    sta $CD7E                          ; @CE64 8D 7E CD
-    tya                                ; @CE67 98
-    eor #$FF                           ; @CE68 49 FF
-    adc #$00                           ; @CE6A 69 00
-    tay                                ; @CE6C A8
-    sec                                ; @CE6D 38
-    lda #$00                           ; @CE6E A9 00
-    sbc $21                            ; @CE70 E5 21
-    sta $21                            ; @CE72 85 21
-    sta $25                            ; @CE74 85 25
-    eor #$FF                           ; @CE76 49 FF
-    sta $23                            ; @CE78 85 23
-    sta $27                            ; @CE7A 85 27
-    lda #$00                           ; @CE7C A9 00
-    sbc $29                            ; @CE7E E5 29
-    sta $29                            ; @CE80 85 29
-    sta $2D                            ; @CE82 85 2D
-    eor #$FF                           ; @CE84 49 FF
-    sta $2B                            ; @CE86 85 2B
-    sta $2F                            ; @CE88 85 2F
-    lda #$00                           ; @CE8A A9 00
-    sbc $31                            ; @CE8C E5 31
-    sta $31                            ; @CE8E 85 31
-    sta $35                            ; @CE90 85 35
-    eor #$FF                           ; @CE92 49 FF
-    sta $33                            ; @CE94 85 33
-    sta $37                            ; @CE96 85 37
-    jmp LCD56                          ; @CE98 4C 56 CD
-LCE9B:
-    lda $C000                          ; @CE9B AD 00 C0
-    sta $21                            ; @CE9E 85 21
-    lda $C001                          ; @CEA0 AD 01 C0
-    sta $29                            ; @CEA3 85 29
-    lda $C002                          ; @CEA5 AD 02 C0
-    sta $31                            ; @CEA8 85 31
-    lda $C004                          ; @CEAA AD 04 C0
-    sta $CDA8                          ; @CEAD 8D A8 CD
-    lda $C005                          ; @CEB0 AD 05 C0
-    sta $CD7E                          ; @CEB3 8D 7E CD
-    ldy $C006                          ; @CEB6 AC 06 C0
-    jsr LCE12                          ; @CEB9 20 12 CE
-    sta $C00C                          ; @CEBC 8D 0C C0
-    stx $C00D                          ; @CEBF 8E 0D C0
-    sty $C00B                          ; @CEC2 8C 0B C0
-    lda $23                            ; @CEC5 A5 23
-    sta $C008                          ; @CEC7 8D 08 C0
-    lda $27                            ; @CECA A5 27
-    sta $C009                          ; @CECC 8D 09 C0
-    lda $2F                            ; @CECF A5 2F
-    sta $C00A                          ; @CED1 8D 0A C0
-    clc                                ; @CED4 18
-    rts                                ; @CED5 60
+    sta $C008                          ; @CDAD 8D 08 C0
+    lda ($25),y                        ; @CDB0 B1 25
+    adc ($27),y                        ; @CDB2 71 27
+    adc ($29),y                        ; @CDB4 71 29
+    bcs LCDF9                          ; @CDB6 B0 41
+    adc ($2B),y                        ; @CDB8 71 2B
+    sta $CDD1                          ; @CDBA 8D D1 CD
+    lda ($2D),y                        ; @CDBD B1 2D
+    adc ($2F),y                        ; @CDBF 71 2F
+    adc ($31),y                        ; @CDC1 71 31
+    bcs LCE09                          ; @CDC3 B0 44
+LCDC5:
+    adc ($33),y                        ; @CDC5 71 33
+    sta $CDD8                          ; @CDC7 8D D8 CD
+    lda ($35),y                        ; @CDCA B1 35
+LCDCC:
+    adc ($37),y                        ; @CDCC 71 37
+    tay                                ; @CDCE A8
+    clc                                ; @CDCF 18
+    lda #$00                           ; @CDD0 A9 00
+    adc #$00                           ; @CDD2 69 00
+    sta $C009                          ; @CDD4 8D 09 C0
+    lda #$00                           ; @CDD7 A9 00
+    adc #$00                           ; @CDD9 69 00
+    bcc LCDDF                          ; @CDDB 90 02
+    iny                                ; @CDDD C8
+    clc                                ; @CDDE 18
+LCDDF:
+    adc #$00                           ; @CDDF 69 00
+    sta $C00A                          ; @CDE1 8D 0A C0
+    tya                                ; @CDE4 98
+    adc #$00                           ; @CDE5 69 00
+    bcc LCDED                          ; @CDE7 90 04
+    clc                                ; @CDE9 18
+    inc $CDF1                          ; @CDEA EE F1 CD
+LCDED:
+    adc #$00                           ; @CDED 69 00
+    tay                                ; @CDEF A8
+    lda #$00                           ; @CDF0 A9 00
+    adc #$00                           ; @CDF2 69 00
+    bcs LCDF7                          ; @CDF4 B0 01
+    rts                                ; @CDF6 60
+LCDF7:
+    inx                                ; @CDF7 E8
+    rts                                ; @CDF8 60
+LCDF9:
+    clc                                ; @CDF9 18
+    adc ($2B),y                        ; @CDFA 71 2B
+    sta $CDD1                          ; @CDFC 8D D1 CD
+    lda #$01                           ; @CDFF A9 01
+    adc ($2D),y                        ; @CE01 71 2D
+    adc ($2F),y                        ; @CE03 71 2F
+    adc ($31),y                        ; @CE05 71 31
+    bcc LCDC5                          ; @CE07 90 BC
+LCE09:
+    clc                                ; @CE09 18
+    adc ($33),y                        ; @CE0A 71 33
+    sta $CDD8                          ; @CE0C 8D D8 CD
+    lda #$01                           ; @CE0F A9 01
+    adc ($35),y                        ; @CE11 71 35
+    bcc LCDCC                          ; @CE13 90 B7
+LCE15:
+    lda $31                            ; @CE15 A5 31
+    bmi LCE1F                          ; @CE17 30 06
+    tya                                ; @CE19 98
+    bmi LCE40                          ; @CE1A 30 24
+    jmp LCD38                          ; @CE1C 4C 38 CD
+LCE1F:
+    tya                                ; @CE1F 98
+    bmi LCE59                          ; @CE20 30 37
+    sty $CE3B                          ; @CE22 8C 3B CE
+    jsr LCD38                          ; @CE25 20 38 CD
+    sta $CE32                          ; @CE28 8D 32 CE
+    tya                                ; @CE2B 98
+    sec                                ; @CE2C 38
+    sbc $CDA8                          ; @CE2D ED A8 CD
+    tay                                ; @CE30 A8
+    lda #$00                           ; @CE31 A9 00
+    sbc $CD7E                          ; @CE33 ED 7E CD
+    sta $CE3E                          ; @CE36 8D 3E CE
+    txa                                ; @CE39 8A
+    sbc #$00                           ; @CE3A E9 00
+    tax                                ; @CE3C AA
+    lda #$00                           ; @CE3D A9 00
+    rts                                ; @CE3F 60
+LCE40:
+    jsr LCD38                          ; @CE40 20 38 CD
+    sta $CE4C                          ; @CE43 8D 4C CE
+    tya                                ; @CE46 98
+    sec                                ; @CE47 38
+    sbc $21                            ; @CE48 E5 21
+    tay                                ; @CE4A A8
+    lda #$00                           ; @CE4B A9 00
+    sbc $29                            ; @CE4D E5 29
+    sta $CE57                          ; @CE4F 8D 57 CE
+    txa                                ; @CE52 8A
+    sbc $31                            ; @CE53 E5 31
+    tax                                ; @CE55 AA
+    lda #$00                           ; @CE56 A9 00
+    rts                                ; @CE58 60
+LCE59:
+    sec                                ; @CE59 38
+    lda #$00                           ; @CE5A A9 00
+    sbc $CDA8                          ; @CE5C ED A8 CD
+    sta $CDA8                          ; @CE5F 8D A8 CD
+    lda #$00                           ; @CE62 A9 00
+    sbc $CD7E                          ; @CE64 ED 7E CD
+    sta $CD7E                          ; @CE67 8D 7E CD
+    tya                                ; @CE6A 98
+    eor #$FF                           ; @CE6B 49 FF
+    adc #$00                           ; @CE6D 69 00
+    tay                                ; @CE6F A8
+    sec                                ; @CE70 38
+    lda #$00                           ; @CE71 A9 00
+    sbc $21                            ; @CE73 E5 21
+    sta $21                            ; @CE75 85 21
+    sta $25                            ; @CE77 85 25
+    eor #$FF                           ; @CE79 49 FF
+    sta $23                            ; @CE7B 85 23
+    sta $27                            ; @CE7D 85 27
+    lda #$00                           ; @CE7F A9 00
+    sbc $29                            ; @CE81 E5 29
+    sta $29                            ; @CE83 85 29
+    sta $2D                            ; @CE85 85 2D
+    eor #$FF                           ; @CE87 49 FF
+    sta $2B                            ; @CE89 85 2B
+    sta $2F                            ; @CE8B 85 2F
+    lda #$00                           ; @CE8D A9 00
+    sbc $31                            ; @CE8F E5 31
+    sta $31                            ; @CE91 85 31
+    sta $35                            ; @CE93 85 35
+    eor #$FF                           ; @CE95 49 FF
+    sta $33                            ; @CE97 85 33
+    sta $37                            ; @CE99 85 37
+    jmp LCD56                          ; @CE9B 4C 56 CD
+LCE9E:
+    lda $C000                          ; @CE9E AD 00 C0
+    sta $21                            ; @CEA1 85 21
+    lda $C001                          ; @CEA3 AD 01 C0
+    sta $29                            ; @CEA6 85 29
+    lda $C002                          ; @CEA8 AD 02 C0
+    sta $31                            ; @CEAB 85 31
+    lda $C004                          ; @CEAD AD 04 C0
+    sta $CDA8                          ; @CEB0 8D A8 CD
+    lda $C005                          ; @CEB3 AD 05 C0
+    sta $CD7E                          ; @CEB6 8D 7E CD
+    ldy $C006                          ; @CEB9 AC 06 C0
+    jsr LCE15                          ; @CEBC 20 15 CE
+    sta $C00C                          ; @CEBF 8D 0C C0
+    stx $C00D                          ; @CEC2 8E 0D C0
+    sty $C00B                          ; @CEC5 8C 0B C0
+    clc                                ; @CEC8 18
+    rts                                ; @CEC9 60
