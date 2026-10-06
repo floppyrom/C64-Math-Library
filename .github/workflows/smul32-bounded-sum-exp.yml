@@ -37,3 +37,18 @@ jobs:
           print(json.dumps(p['profiles']['v2_pareto_fast']['SMUL32'], indent=2))
           print(json.dumps(p['profiles']['v2_pareto_fast']['SMUL32_READY'], indent=2))
           PY
+          python3 - <<'PY'
+          import random
+          from tools.validate_signed_multiply import load_profile, test_entry
+          cpu,api=load_profile('v2_pareto_fast')
+          rng=random.Random(0x534D554C)
+          quadrants={
+              'PP':[(rng.randrange(0x80000000),rng.randrange(0x80000000)) for _ in range(10000)],
+              'PN':[(rng.randrange(0x80000000),rng.randrange(0x80000000,1<<32)) for _ in range(10000)],
+              'NP':[(rng.randrange(0x80000000,1<<32),rng.randrange(0x80000000)) for _ in range(10000)],
+              'NN':[(rng.randrange(0x80000000,1<<32),rng.randrange(0x80000000,1<<32)) for _ in range(10000)],
+          }
+          for name,pairs in quadrants.items():
+              r=test_entry(cpu,api['MATH_SMUL32'],32,pairs)
+              print('QUADRANT',name,r)
+          PY
