@@ -215,6 +215,159 @@ jobs:
           shutil.copy2('build_sweep/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
                        'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg')
           PY
+      - name: Prototype q1 fused signed correction
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import random, shutil, subprocess
+          from tools.validate_signed_multiply import load_profile, test_entry
+
+          src=Path('relocatable_source/v2_pareto_fast/smul32_fast31_v29.inc')
+          base=src.read_text()
+          old='''        txa
+                  adc S32V28_z13
+                  bcs S32V28_q1_c4a_carry
+          S32V28_q1_c4a_done:
+                  adc S32V28_z31
+                  bcc S32V28_q1_c4b_done
+                  iny
+                  beq S32V28_q1_c4b_overflow
+                  clc
+          S32V28_q1_c4b_done:
+                  adc S32V28_z22
+                  tax
+
+                  tya
+                  adc S32V28_z32
+                  bcs S32V28_q1_c5a_carry
+          S32V28_q1_c5a_done:
+                  adc S32V28_z23
+                  tay
+
+                  lda S32V28_z33
+                  adc S32V28_z24
+                  bcs S32V28_q1_final_carry
+          S32V28_q1_signed_correction_ready:
+                  sta S32V28_z33
+                  txa
+                  sec
+                  sbc MATH_IO
+                  sta MATH_IO+$0C
+                  tya
+                  sbc S32V28_x1
+                  sta MATH_IO+$0D
+                  lda S32V28_z33
+                  sbc S32V28_x2
+                  sta MATH_IO+$0E
+                  lda S32V28_r7
+                  sbc S32V28_x3
+                  sta MATH_IO+$0F
+          '''
+          new='''        ; Fuse -(X<<32) into the high-column summation.  The binder
+                  ; already holds ~x0 in the q1 neg-low SMC operand and ~x1..~x3
+                  ; in the persistent pointer lows, so the signed correction is
+                  ; just a fifth high-column addend plus the two's-complement +1.
+                  txa
+                  adc S32V28_z13
+                  bcs S32V28_q1_c4a_carry
+          S32V28_q1_c4a_done:
+                  adc S32V28_z31
+                  bcc S32V28_q1_c4b_done
+                  iny
+                  beq S32V28_q1_c4b_overflow
+                  clc
+          S32V28_q1_c4b_done:
+                  adc S32V28_z22
+                  bcc S32V28_q1_f_c4c_done
+                  iny
+                  bne S32V28_q1_f_c4c_clc
+                  inc S32V28_z33
+                  bne S32V28_q1_f_c4c_clc
+                  inc S32V28_r7
+          S32V28_q1_f_c4c_clc:
+                  clc
+          S32V28_q1_f_c4c_done:
+                  adc S32V28_q1__neg_lo_0+1
+                  bcc S32V28_q1_f_c4d_done
+                  iny
+                  bne S32V28_q1_f_c4d_clc
+                  inc S32V28_z33
+                  bne S32V28_q1_f_c4d_clc
+                  inc S32V28_r7
+          S32V28_q1_f_c4d_clc:
+                  clc
+          S32V28_q1_f_c4d_done:
+                  adc #1
+                  bcc S32V28_q1_f_c4e_done
+                  iny
+                  bne S32V28_q1_f_c4e_clc
+                  inc S32V28_z33
+                  bne S32V28_q1_f_c4e_clc
+                  inc S32V28_r7
+          S32V28_q1_f_c4e_clc:
+                  clc
+          S32V28_q1_f_c4e_done:
+                  sta MATH_IO+$0C
+
+                  tya
+                  adc S32V28_z32
+                  bcs S32V28_q1_c5a_carry
+          S32V28_q1_c5a_done:
+                  adc S32V28_z23
+                  bcc S32V28_q1_f_c5b_done
+                  inc S32V28_z24
+                  bne S32V28_q1_f_c5b_clc
+                  inc S32V28_r7
+          S32V28_q1_f_c5b_clc:
+                  clc
+          S32V28_q1_f_c5b_done:
+                  adc S32V28_neg_lo_1
+                  sta MATH_IO+$0D
+
+                  lda S32V28_z33
+                  adc S32V28_z24
+                  bcc S32V28_q1_f_c6a_done
+                  inc S32V28_r7
+                  clc
+          S32V28_q1_f_c6a_done:
+                  adc S32V28_neg_lo_2
+                  sta MATH_IO+$0E
+                  lda S32V28_r7
+                  adc S32V28_neg_lo_3
+                  sta MATH_IO+$0F
+          '''
+          if old not in base:
+              raise SystemExit('q1 fusion patch anchor not found')
+          cand=base.replace(old,new,1)
+          src.write_text(cand)
+          shutil.rmtree('build_fused',ignore_errors=True)
+          p=subprocess.run(['python3','tools/assemble_sources.py','--profile','v2_pareto_fast',
+                            '--config-kind','reference','--out','build_fused'],
+                           text=True,capture_output=True)
+          if p.returncode:
+              print('FUSEDQ1 ASSEMBLY_FAIL')
+              print(p.stderr)
+          else:
+              shutil.copy2('build_fused/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
+                           'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg')
+              cpu,api=load_profile('v2_pareto_fast')
+              rng=random.Random(0x46555345)
+              pairs=[(rng.randrange(0x80000000),rng.randrange(0x80000000,1<<32)) for _ in range(20000)]
+              r=test_entry(cpu,api['MATH_SMUL32'],32,pairs)
+              print('FUSEDQ1 PN',r)
+              if not r['errors']:
+                  e=[0,1,2,3,0x7ffffffe,0x7fffffff]
+                  n=[0x80000000,0x80000001,0xfffffffe,0xffffffff]
+                  edge=[(x,y) for x in e for y in n]
+                  cpu,api=load_profile('v2_pareto_fast')
+                  print('FUSEDQ1 EDGE',test_entry(cpu,api['MATH_SMUL32'],32,edge))
+          src.write_text(base)
+          shutil.rmtree('build_fused',ignore_errors=True)
+          subprocess.run(['python3','tools/assemble_sources.py','--profile','v2_pareto_fast',
+                          '--config-kind','reference','--out','build_fused'],check=True)
+          shutil.copy2('build_fused/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg',
+                       'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg')
+          PY
       - name: Validate and print signed multiply timing
         run: |
           python3 tools/validate_signed_multiply.py --profile v2_pareto_fast
