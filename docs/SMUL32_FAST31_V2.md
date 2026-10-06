@@ -58,4 +58,8 @@ The remaining FAST31 v2 arithmetic ideas were tested against the persistent-poin
 
 Evidence: `validation/review/SMUL32_FAST31_V2_TRANSPLANT.json`.
 
+### Why the V2/V3/V4 published means differ slightly
+
+The canonical signed validator intentionally uses a different deterministic random seed for each profile, so its published means (**715.605230 / 716.033209 / 716.090079**) are not measured on identical random inputs. A dedicated same-input check ran all three profiles on one shared 2,409-case corpus and obtained **716.569946 cycles in V2, V3 and V4**, with **zero per-call cycle differences across all 2,409 cases**. The small canonical spread is therefore corpus variation, not an intrinsic V3/V4 slowdown or a relocation/page-cross penalty.
+
 `compact126` remains the absolute native speed point at 646.354530 cycles, trading 136 ZP and 126 persistent page-$01 bytes for speed. FAST31 v2 is the low-resource record point: substantially slower, but it preserves the library's 31-ZP / stack-free practical contract.
