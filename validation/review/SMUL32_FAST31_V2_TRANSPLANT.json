@@ -107,5 +107,41 @@
     "turbo_lifecycle_calls": 17196,
     "result": "PASS"
   },
-  "conclusion": "The NN x0 common/rare optimization was already present in the shipped core. Carry-seeded sign dispatch does not improve the public memory ABI. Retain only the direct fixed-entry fallthrough."
+  "conclusion": "The NN x0 common/rare optimization was already present in the shipped core. Carry-seeded sign dispatch does not improve the public memory ABI. Retain only the direct fixed-entry fallthrough.",
+  "shared_corpus_profile_comparison": {
+    "purpose": "Separate true profile timing differences from profile-specific benchmark-corpus variation.",
+    "corpus": "Same 2,409 SMUL32 inputs for V2/V3/V4: 361 structured edge pairs plus 2,048 random pairs from seed 0x5A170020.",
+    "v2_pareto_fast": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 716.5699460356994,
+      "min_cycles": 632,
+      "max_cycles": 845
+    },
+    "v3_reu_512k": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 716.5699460356994,
+      "min_cycles": 632,
+      "max_cycles": 845
+    },
+    "v4_reu_16m": {
+      "cases": 2409,
+      "errors": 0,
+      "mean_cycles": 716.5699460356994,
+      "min_cycles": 632,
+      "max_cycles": 845
+    },
+    "per_call_cycle_differences": {
+      "v3_minus_v2": {
+        "0_cycles": 2409,
+        "nonzero": 0
+      },
+      "v4_minus_v2": {
+        "0_cycles": 2409,
+        "nonzero": 0
+      }
+    },
+    "conclusion": "The V2/V3/V4 SMUL32 implementations are cycle-identical for identical inputs under the reference map. The small differences in the canonical per-profile means come from validate_signed_multiply.py intentionally using a different random seed for each profile, not from a V3/V4 execution penalty."
+  }
 }
