@@ -1,0 +1,30 @@
+name: UMUL16 direct-output proof
+
+on:
+  push:
+    branches:
+      - optimize-umul16-public
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  prove:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build reference and alternate profiles
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+      - name: Validate optimized UMUL16 producer
+        run: |
+          python3 tools/validate_umul16_directout.py
