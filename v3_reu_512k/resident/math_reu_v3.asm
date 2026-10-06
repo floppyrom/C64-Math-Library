@@ -446,7 +446,7 @@ math_reu_umul32_begin:
         sta REU_REU_HI
         lda #5
         sta REU_BANK
-        lda #241
+        lda #135
         sta REU_LEN_LO
         lda #0
         sta REU_LEN_HI
@@ -459,8 +459,9 @@ math_reu_umul32_begin_end:
 
 *=$3900
 math_reu_umul32:
-        ; Valid only between BEGIN/END. Feed all SMC input bytes explicitly,
-        ; use the validated A=x3 launch at $1002, then normalize to public z0..z7.
+        ; Historical flattened reference. The canonical optimized Turbo32
+        ; adapter is relocatable_source/turbo/turbo32_runtime.asm; it preserves
+        ; this public entry/lifecycle while avoiding the old marshalling cost.
         lda math_x0
         sta $1b
         lda math_x1
