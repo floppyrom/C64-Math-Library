@@ -125,10 +125,10 @@ L16_CARRY1:
 
 ; Restore the low-byte state expected by other V1/V5 resident users.
 L16_REPAIR:
-        lda #<(REG_TABLE+$2E00)
+        lda #$8E
         sta L16_P0
         sta L16_P2
-        lda #<(REG_TABLE+$3000)
+        lda #$90
         sta L16_P1
         clc
         rts
