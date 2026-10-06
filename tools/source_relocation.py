@@ -29,6 +29,42 @@ def seek_code_addresses(profile):
  src=(ROOT/profile/'resident/movement/native/seek_dda.asm').read_text()
  mem,_,_=Assembler().assemble(cfg+'\n'+src)
  return set(mem)
+
+SEEK_PUBLIC_NAMES=(
+ 'MATH_SEEK8_INIT','MATH_SEEK8_STEP','MATH_SEEK8_STEP_INT','MATH_SEEK8_STEP1',
+ 'MATH_SEEK16_INIT','MATH_SEEK16_STEP','MATH_SEEK16_STEP_INT','MATH_SEEK16_STEP1',
+)
+
+def seek_reference_code_addresses(profile,mem):
+ """Trace SEEK executable ownership in the shipped reference image.
+
+ The canonical native source is allowed to move its private islands.  Source
+ regeneration therefore has to suppress both the old reference executable
+ graph and the bytes emitted by the new native source; otherwise moved SEEK
+ code is decoded twice and stale reference labels leak into the monolith.
+ """
+ entries=dict(public_entries())
+ todo=[entries[n] for n in SEEK_PUBLIC_NAMES];seen=set();unknown=[]
+ while todo:
+  pc=todo.pop()&0xffff
+  if pc in seen:continue
+  oc=mem[pc]
+  if oc not in REV:
+   unknown.append((pc,oc));continue
+  seen.add(pc);op,mode=REV[oc];sz=SIZE[mode];nxt=(pc+sz)&0xffff
+  if op in ('rts','rti','brk'):continue
+  if mode=='rel':
+   d=mem[pc+1];d=d-256 if d>=128 else d
+   todo.extend((nxt,(nxt+d)&0xffff));continue
+  if op=='jmp':
+   if mode=='abs':todo.append(mem[pc+1]|mem[pc+2]<<8)
+   else:unknown.append((pc,oc))
+   continue
+  if op=='jsr':
+   todo.extend((mem[pc+1]|mem[pc+2]<<8,nxt));continue
+  todo.append(nxt)
+ if unknown:raise RuntimeError(f'{profile}: untraceable reference SEEK code: {unknown[:8]}')
+ return seen
 NORMALIZE_NATIVE_REL={
  p:f'../../{p}/resident/vector/native/vec2_normalize_q8_8.asm'
  for p in PROFILES
@@ -396,7 +432,8 @@ def generate_source(profile,outpath:Path):
  b=PRG[profile].read_bytes();prg_load=b[0]|b[1]<<8;prg_end=prg_load+len(b)-3
  norm_ranges=NORMALIZE_CODE_RANGES[profile]
  seek_bytes=seek_code_addresses(profile)
- main_seen={pc for pc in seen if pc>=0x100 and pc not in seek_bytes and not any(ns<=pc<=ne for ns,ne in norm_ranges) and not in_multiply_refresh(profile,pc) and not in_division_refresh(profile,pc)}
+ reference_seek_code=seek_reference_code_addresses(profile,tm)
+ main_seen={pc for pc in seen if pc>=0x100 and pc not in seek_bytes and pc not in reference_seek_code and not any(ns<=pc<=ne for ns,ne in norm_ranges) and not in_multiply_refresh(profile,pc) and not in_division_refresh(profile,pc)}
  # Turbo32's 135-ZP overlay calls two ordinary-RAM helper blocks that are not
  # reachable while the normal ZP image is installed. Decode them explicitly so
  # relocation rewrites their ZP and REG_LOW references symbolically rather than
