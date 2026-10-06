@@ -41,10 +41,11 @@ jobs:
         run: |
           python3 tools/build_hybrid.py --config-kind reference
           python3 tools/build_hybrid.py --config-kind alternate
-      - name: V2-V4 UMUL16 direct-output validation
+      - name: All-profile UMUL16 and SHR8 register-return validation
         run: |
           python3 tools/validate_umul16_directout.py
-          git diff --exit-code -- validation/multiply_refresh/UMUL16_DIRECTOUT_VALIDATION.json
+          python3 tools/validate_mul16_shr8_register.py
+          git diff --exit-code -- validation/multiply_refresh/UMUL16_DIRECTOUT_VALIDATION.json validation/multiply_refresh/MUL16_SHR8_REGISTER_VALIDATION.json
       - name: All-profile UMUL24 direct-output validation
         run: |
           python3 tools/validate_umul24_directout.py

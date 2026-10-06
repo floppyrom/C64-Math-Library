@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 114.
+; Reachable instructions: 111.
 !cpu 6510
 
 ; ---- executable island $3020 ----
@@ -134,11 +134,8 @@ MATH_UMUL16_SHR8:
 * = $C51E
 LC51E:
     jsr L3020                          ; @C51E 20 20 30
-    lda $C009                          ; @C521 AD 09 C0
-    sta $C008                          ; @C524 8D 08 C0
-    lda $C00A                          ; @C527 AD 0A C0
-    sta $C009                          ; @C52A 8D 09 C0
-    lda $C00B                          ; @C52D AD 0B C0
-    sta $C00A                          ; @C530 8D 0A C0
-    clc                                ; @C533 18
-    rts                                ; @C534 60
+    stx $C008                          ; @C521 8E 08 C0
+    lda $C00A                          ; @C524 AD 0A C0
+    sta $C009                          ; @C527 8D 09 C0
+    sty $C00A                          ; @C52A 8C 0A C0
+    rts                                ; @C52D 60

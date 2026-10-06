@@ -2078,8 +2078,7 @@ L5B70:
     !byte $4C, $57, $59, $4C, $57, $59
     jmp REG_GAME+$0034
     jmp REG_GAME+$0034
-    jmp REG_GAME+$041E
-    !byte $4C, $80, $CF
+    !byte $4C, $1E, $C5, $4C, $80, $CF
     jmp REG_GAME+$044C
     jmp REG_GAME+$0475
     jmp REG_GAME+$049E
@@ -3816,17 +3815,9 @@ LC519:
     bne LC4B7
     clc
     rts
-    jsr REG_API+$0020
-    lda MATH_IO+$09
-    sta MATH_IO+$08
-    lda MATH_IO+$0A
-    sta MATH_IO+$09
-    lda MATH_IO+$0B
-    sta MATH_IO+$0A
-    clc
-    rts
-    !byte $20, $B0, $3B, $AD, $09, $C0, $8D, $08, $C0, $AD, $0A, $C0, $8D, $09, $C0, $AD
-    !byte $0B, $C0, $8D, $0A, $C0, $18, $60
+    !byte $20, $20, $30, $8E, $08, $C0, $AD, $0A, $C0, $8D, $09, $C0, $8C, $0A, $C0, $60
+    !byte $0B, $C0, $8D, $0A, $C0, $18, $60, $20, $B0, $3B, $AD, $09, $C0, $8D, $08, $C0
+    !byte $AD, $0A, $C0, $8D, $09, $C0, $AD, $0B, $C0, $8D, $0A, $C0, $18, $60
     jsr REG_API+$00B0
     lda MATH_IO+$0A
     sta MATH_IO+$08
@@ -4494,6 +4485,7 @@ LCAFB:
 !source "umul24_fast24_shared.inc"
 !source "smul16_fast17_composed.inc"
 !source "smul16_shr8_selected.inc"
+!source "umul16_shr8_reg_return.inc"
 ; END MULTIPLY REFRESH 2026-09-20
 
 ; BEGIN DIVISION REFRESH 2026-09-20
