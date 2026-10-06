@@ -125,6 +125,10 @@ def branch_profile(pairs,start_label,end_label):
                     'executions':n,'taken':taken,'taken_rate':taken/n})
     return out
 
+def mixed_stress(n=50000):
+    rng=random.Random(0x5A32F00D)
+    return [(rng.randrange(1<<32),rng.randrange(1<<32)) for _ in range(n)]
+
 def quadrant_stress(kind,n=5000):
     rng=random.Random(0x51A3200 + sum(map(ord,kind)))
     lo=lambda: rng.randrange(1<<31)
@@ -140,12 +144,13 @@ def main():
               ROOT/'build_source/reference/v2_pareto_fast/math_api.inc')
     stress=pp_stress()
     out={'canonical':compare(corpus(),base,cand),'pp_stress':compare(stress,base,cand),
+         'mixed_stress':compare(mixed_stress(),base,cand),
          'branch_profiles':{
-           'PP':branch_profile(quadrant_stress('PP'),'S32V28_q0_summation','S32V28_q0_cg_code_end'),
-           'PN':branch_profile(quadrant_stress('PN'),'S32V28_q1_summation','S32V28_q1_cg_code_end'),
-           'NP':branch_profile(quadrant_stress('NP'),'S32V28_q2_summation','S32V28_q2_cg_code_end'),
-           'NN':branch_profile(quadrant_stress('NN'),'S32V28_summation','S32V28_cg_code_end')}}
-    errors=out['canonical']['candidate']['errors']+out['pp_stress']['candidate']['errors']
+           'PP':branch_profile(quadrant_stress('PP'),'S32V28_q0_H10','S32V28_q0_cg_code_end'),
+           'PN':branch_profile(quadrant_stress('PN'),'S32V28_q1_H10','S32V28_q1_cg_code_end'),
+           'NP':branch_profile(quadrant_stress('NP'),'S32V28_q2_H10','S32V28_q2_cg_code_end'),
+           'NN':branch_profile(quadrant_stress('NN'),'S32V28_H10','S32V28_cg_code_end')}}
+    errors=out['canonical']['candidate']['errors']+out['pp_stress']['candidate']['errors']+out['mixed_stress']['candidate']['errors']
     out['status']='PASS' if errors==0 else 'FAIL'
     print('SMUL32_RESEARCH_RESULT '+json.dumps(out,sort_keys=True))
     if errors: raise SystemExit(1)
