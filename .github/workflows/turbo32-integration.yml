@@ -15,6 +15,13 @@ on:
       - 'v4_reu_16m/resident/**'
       - 'v3_reu_512k/reu/**'
       - 'v4_reu_16m/reu/**'
+      - 'USER_MANUAL.md'
+      - 'CHANGELOG.md'
+      - 'CSDB_CHANGELOG.txt'
+      - 'RELEASE_STATUS.json'
+      - 'docs/REU_GUIDE.md'
+      - 'v3_reu_512k/examples/turbo16_batch.a'
+      - 'v4_reu_16m/examples/turbo16_batch.a'
   pull_request:
     paths:
       - 'relocatable_source/turbo/**'
@@ -28,6 +35,13 @@ on:
       - 'v4_reu_16m/resident/**'
       - 'v3_reu_512k/reu/**'
       - 'v4_reu_16m/reu/**'
+      - 'USER_MANUAL.md'
+      - 'CHANGELOG.md'
+      - 'CSDB_CHANGELOG.txt'
+      - 'RELEASE_STATUS.json'
+      - 'docs/REU_GUIDE.md'
+      - 'v3_reu_512k/examples/turbo16_batch.a'
+      - 'v4_reu_16m/examples/turbo16_batch.a'
 
 permissions:
   contents: read
