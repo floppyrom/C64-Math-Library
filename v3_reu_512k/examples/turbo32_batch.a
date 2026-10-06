@@ -1,7 +1,9 @@
 ; UMUL32 turbo batch example.
 ; This is an exclusive overlay because the 135-byte stack-free hot kernel occupies
 ; reference map $000A-$0090. Relocatable source builds use TURBO32_ZP_BASE
-; from the generated math_api.inc. The measured break-even is 43 products per batch.
+; from the generated math_api.inc. The optimized CALL is ~684.19 cycles versus
+; ~690.24 for normal UMUL32; BEGIN+END cost 697 cycles, so the measured
+; throughput crossover is 116 products per batch.
 ; For a relocated build, include build_source/<map>/v3_reu_512k/math_api.inc instead.
 !source "../resident/math_api.inc"
 
