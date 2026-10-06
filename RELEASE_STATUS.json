@@ -15,8 +15,8 @@
   "alternate_prg_sha256": {
     "v1_balanced": "bdbc1858dd6af93f95563877cb2c331eae5ea51ef0d87be0166f07ae14fbf5d5",
     "v2_pareto_fast": "ec1d63ee9bd88e25c663f5f8cb56d995e0208d138a72d8d4445e124c6a58dad8",
-    "v3_reu_512k": "07e312317288724018c7583b977cafb3cdaeef86c2e46e95f850d0ab3b7fd97e",
-    "v4_reu_16m": "3af0ee3dea1b54face0cd1d3aeeef9cb1ed9b1b67e7502dcb2b4b2b095ef50bc",
+    "v3_reu_512k": "bd5b1a9e2f144227713bd4ace7d6019231143f576f7442ac21a6a63e477d64fd",
+    "v4_reu_16m": "ddeb209bda2a5899e762111ed70e25e692ce4a3897f914fb5b9f4901f182c534",
     "v5_hybrid_lowzp": "3abbacc805a490db5c0ee90498957f9c2c8501a99a3ce7e3b3b54b0eb8fb163b"
   },
   "alternate_reu_sha256": {
