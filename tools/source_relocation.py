@@ -216,8 +216,8 @@ DIVISION_KNOWN_NO_FALLTHROUGH={
 # BEGIN.  The monolith owns the wrapper/helper; relocatable_source/turbo/*.asm
 # owns the overlay.  Do not decode normal-profile data at those overlay targets.
 TURBO_EXTERNAL_EDGE_PCS={
- 'v3_reu_512k':{0x3855,0x102b},
- 'v4_reu_16m':{0x3855,0x102b},
+ 'v3_reu_512k':{0x3852,0x3855,0x102b},
+ 'v4_reu_16m':{0x3852,0x3855,0x102b},
 }
 
 def trace(profile,mem):
@@ -480,7 +480,9 @@ def generate_source(profile,outpath:Path):
   lines += [f'!source "{name}"' for name in DIVISION_REFRESH_INCLUDES[profile]]
   lines += ['; END DIVISION REFRESH 2026-09-20']
  if profile in REU:
-  lines += ['', '; Canonical optimized Turbo32 resident runtime: binder, summation and CALL wrapper.',
+  lines += ['', '; Canonical optimized Turbo16 public CALL wrapper.',
+            '!source "../turbo/turbo16_runtime.asm"',
+            '', '; Canonical optimized Turbo32 resident runtime: binder, summation and CALL wrapper.',
             '!source "../turbo/turbo32_runtime.asm"']
  lines += ['', '; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,',
            '; code islands and object state (final ownership of those bytes).',

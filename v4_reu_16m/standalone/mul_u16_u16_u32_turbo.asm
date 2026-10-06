@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 74.
+; Reachable instructions: 73.
 !cpu 6510
 
 ; ---- executable island $0040 ----
@@ -79,19 +79,18 @@ L00A3:
 * = $3840
 mul_u16_u16_u32_turbo:
 MATH_REU_UMUL16:
-    lda $C000                          ; @3840 AD 00 C0
-    sta $54                            ; @3843 85 54
-    lda $C001                          ; @3845 AD 01 C0
-    sta $62                            ; @3848 85 62
-    lda $C005                          ; @384A AD 05 C0
-    sta $72                            ; @384D 85 72
+    ldx $C005                          ; @3840 AE 05 C0
+    lda $C000                          ; @3843 AD 00 C0
+    sta $54                            ; @3846 85 54
+    lda $C001                          ; @3848 AD 01 C0
+    sta $62                            ; @384B 85 62
+    stx $72                            ; @384D 86 72
     ldy $C004                          ; @384F AC 04 C0
-    lda $C001                          ; @3852 AD 01 C0
-    jsr L0040                          ; @3855 20 40 00
-    sta $C00A                          ; @3858 8D 0A C0
-    stx $C009                          ; @385B 8E 09 C0
-    sty $C00B                          ; @385E 8C 0B C0
-    lda $AE                            ; @3861 A5 AE
-    sta $C008                          ; @3863 8D 08 C0
-    clc                                ; @3866 18
-    rts                                ; @3867 60
+    jsr L0040                          ; @3852 20 40 00
+    sta $C00A                          ; @3855 8D 0A C0
+    stx $C009                          ; @3858 8E 09 C0
+    sty $C00B                          ; @385B 8C 0B C0
+    lda $AE                            ; @385E A5 AE
+    sta $C008                          ; @3860 8D 08 C0
+    clc                                ; @3863 18
+    rts                                ; @3864 60

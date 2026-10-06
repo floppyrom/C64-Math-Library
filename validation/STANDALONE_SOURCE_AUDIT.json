@@ -1330,7 +1330,7 @@
           "file": "mul_u16_u16_u32_turbo.asm",
           "alias_of": "",
           "entry_address": "$3840",
-          "reachable_instructions": 74
+          "reachable_instructions": 73
         },
         {
           "legacy_api": "MATH_REU_UMUL16_END",
@@ -1817,7 +1817,7 @@
           "file": "mul_u16_u16_u32_turbo.asm",
           "alias_of": "",
           "entry_address": "$3840",
-          "reachable_instructions": 74
+          "reachable_instructions": 73
         },
         {
           "legacy_api": "MATH_REU_UMUL16_END",
