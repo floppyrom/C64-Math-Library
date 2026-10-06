@@ -37,5 +37,9 @@ jobs:
         run: |
           make reference
           make alternate
+      - name: V2-V4 UMUL16 direct-output validation
+        run: |
+          python3 tools/validate_umul16_directout.py
+          git diff --exit-code -- validation/multiply_refresh/UMUL16_DIRECTOUT_VALIDATION.json
       - name: Exhaustive REU UDIV8 hybrid validation
         run: python3 tools/validate_reu_udiv8_hybrid.py
