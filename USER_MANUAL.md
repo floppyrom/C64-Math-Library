@@ -5,7 +5,7 @@
 **Target CPU:** NMOS 6502/6510, Commodore 64  
 **Profiles:** V1 Balanced, V2 Pareto-Fast, V3 REU 512K, V4 REU 16M, V5 Hybrid Low-ZP
 
-This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 54-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 small-batch mode.
+This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 54-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 specialized mode.
 
 The short version is:
 
