@@ -216,8 +216,8 @@ DIVISION_KNOWN_NO_FALLTHROUGH={
 # BEGIN.  The monolith owns the wrapper/helper; relocatable_source/turbo/*.asm
 # owns the overlay.  Do not decode normal-profile data at those overlay targets.
 TURBO_EXTERNAL_EDGE_PCS={
- 'v3_reu_512k':{0x3855,0x102b},
- 'v4_reu_16m':{0x3855,0x102b},
+ 'v3_reu_512k':{0x3852,0x102b},
+ 'v4_reu_16m':{0x3852,0x102b},
 }
 
 def trace(profile,mem):
@@ -288,7 +288,7 @@ def turbo_zp_expr(profile,pc,a:int)->str|None:
  if ((0x1000<=pc<0x1174) or (0x3900<=pc<0x3950)) and 0x0a<=a<=0x90:
   off=a-0x0a;return 'TURBO32_ZP_BASE' if off==0 else f'TURBO32_ZP_BASE+{hx(off,2)}'
  if 0x3840<=pc<0x3880:
-  mapping={0x54:0x16,0x62:0x24,0x72:0x34,0x40:0x02,0xae:0x70}
+  mapping={0x54:0x16,0x63:0x25,0x73:0x35,0x40:0x02}
   if a in mapping:return 'TURBO16_ZP_BASE' if mapping[a]==0 else f'TURBO16_ZP_BASE+{hx(mapping[a],2)}'
  if 0x3900<=pc<0x3960:
   mapping={0x1b:0x11,0x29:0x1f,0x39:0x2f,0x49:0x3f,0x60:0x56,0x0d:0x03,0x15:0x0b,
@@ -480,7 +480,9 @@ def generate_source(profile,outpath:Path):
   lines += [f'!source "{name}"' for name in DIVISION_REFRESH_INCLUDES[profile]]
   lines += ['; END DIVISION REFRESH 2026-09-20']
  if profile in REU:
-  lines += ['', '; Canonical optimized Turbo32 resident runtime: binder, summation and CALL wrapper.',
+  lines += ['', '; Canonical optimized Turbo16 public CALL wrapper.',
+            '!source "../turbo/turbo16_runtime.asm"',
+            '', '; Canonical optimized Turbo32 resident runtime: binder, summation and CALL wrapper.',
             '!source "../turbo/turbo32_runtime.asm"']
  lines += ['', '; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,',
            '; code islands and object state (final ownership of those bytes).',
