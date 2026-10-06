@@ -402,7 +402,7 @@ def generate_source(profile,outpath:Path):
  # relocation rewrites their ZP and REG_LOW references symbolically rather than
  # publishing them as opaque reference-map bytes.
  if profile in REU:
-  for _s,_e in ((0x1000,0x1047),(0x1100,0x1174)):
+  for _s,_e in ((0x1000,0x1047),(0x1100,0x117f)):
    _pc=_s
    while _pc<_e:
     _oc=raw[_pc]
