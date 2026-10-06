@@ -28,7 +28,19 @@ This kernel is intentionally **not selected as the stable `MATH_SMUL32` implemen
 | V4 REU 16M | opt-in / overlay only | same executable-ZP conflict as V2/V3 |
 | V5 Hybrid Low-ZP | no | preserves the V1 31-byte normal-ZP contract |
 
-A direct standard-ABI transplant was also tested: marshalling ordinary `MATH_X/MATH_Y` inputs into the compact kernel removes the native-ABI advantage and measures about **757.7 cycles** on the 10,000-pair probe. It remains slower than every fixed-profile public SMUL32 path; after the FAST31 persistent-pointer integration V2/V3/V4 are approximately **718.6–719.1 cycles**, while V1/V5 retain their low-ZP public implementations. Compact126 therefore remains an opt-in ownership mode rather than a fixed-profile substitution.
+A direct standard-ABI transplant was also tested: marshalling ordinary `MATH_X/MATH_Y` inputs into the compact kernel removes the native-ABI advantage and measures about **757.7 cycles** on the 10,000-pair probe. It remains slower than every fixed-profile public SMUL32 path; current V2/V3/V4 means are **715.605230 / 716.033209 / 716.090079 cycles**, while V1/V5 retain their low-ZP public implementations. Compact126 therefore remains an opt-in ownership mode rather than a fixed-profile substitution.
+
+## Profile-local exposure
+
+The exact record source is also exposed in the fixed-profile trees where an **exclusive overlay** is technically viable:
+
+- **V2:** [`v2_pareto_fast/optional/smul32_compact126/`](../v2_pareto_fast/optional/smul32_compact126/) — manual save/restore mode.
+- **V3:** [`v3_reu_512k/optional/smul32_compact126/`](../v3_reu_512k/optional/smul32_compact126/) — Turbo-style exclusive host.
+- **V4:** [`v4_reu_16m/optional/smul32_compact126/`](../v4_reu_16m/optional/smul32_compact126/) — Turbo-style exclusive host.
+
+These aliases include the exact validated canonical source; they do **not** replace the resident `MATH_SMUL32`. The overlay owns ZP `$0A-$1F` and `$8E-$FF`, page $01 `$0100-$017D`, and ordinary RAM `$1200-$12F2` plus `$1300-$133A`. V2–V4 must preserve and restore those ranges around the exclusive interval. The quarter-square data at `$7000/$7200/$7400/$7600` can be shared.
+
+See [`SMUL32_COMPACT126_PROFILE_FIT.csv`](SMUL32_COMPACT126_PROFILE_FIT.csv) for the machine-readable compatibility matrix.
 
 ## What made 126 stack bytes viable
 
