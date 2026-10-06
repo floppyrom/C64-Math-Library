@@ -102,6 +102,10 @@ def main():
             agg[k][0]+=count
             if taken:
                 agg[k][1]+=count
+    print("q1_label_map:")
+    for name,addr in sorted(((n,a) for n,a in labels.items() if n.startswith("S32V28_q1_")), key=lambda x:x[1]):
+        if name in ("S32V28_q1_summation","S32V28_q1_final_carry","S32V28_q1_signed_correction_ready","S32V28_q1_cg_code_end","S32V28_q1_c4a_carry","S32V28_q1_c5a_carry"):
+            print(f"0x{addr:04x} {name}")
     print("branch_profile:")
     for (pc,op,target),(ex,tak) in sorted(agg.items()):
         labs="|".join(revlabels.get(target,[]))
