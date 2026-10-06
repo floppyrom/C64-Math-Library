@@ -1,0 +1,21 @@
+name: Research SMUL24 stable q2 input
+
+on:
+  push:
+    branches:
+      - research/smul24-stable-input-q2-v1
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Benchmark SMUL24 stable-input q2 candidate
+        run: python3 tools/bench_smul24_stable_q2.py
