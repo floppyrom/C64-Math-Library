@@ -49,5 +49,9 @@ jobs:
         run: |
           python3 tools/validate_umul24_directout.py
           git diff --exit-code -- validation/multiply_refresh/UMUL24_DIRECTOUT_VALIDATION.json
+      - name: All-profile SMUL24 direct-output validation
+        run: |
+          python3 tools/validate_smul24_directout.py
+          git diff --exit-code -- validation/multiply_refresh/SMUL24_DIRECTOUT_VALIDATION.json
       - name: Exhaustive REU UDIV8 hybrid validation
         run: python3 tools/validate_reu_udiv8_hybrid.py
