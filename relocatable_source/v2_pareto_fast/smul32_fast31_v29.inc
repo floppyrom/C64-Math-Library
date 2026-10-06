@@ -436,24 +436,30 @@ S32V28_q0_umult32x32_same_x:
 
 S32V28_q0_H10:
         clc
-        adc (S32V28_neg_lo_1),y
+S32V28_q0_H10_neg_lo:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
         lda #1
-        adc (S32V28_sqr_hi_1),y
+S32V28_q0_H10_sqr_hi:
+        adc S32V28_sqr_hi,y
         bcc S32V28_q0_p10_tail
 S32V28_q0_H20:
         clc
-        adc (S32V28_neg_lo_2),y
+S32V28_q0_H20_neg_lo:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
         lda #1
-        adc (S32V28_sqr_hi_2),y
+S32V28_q0_H20_sqr_hi:
+        adc S32V28_sqr_hi,y
         bcc S32V28_q0_p20_tail
 S32V28_q0_H30:
         clc
-        adc (S32V28_neg_lo_3),y
+S32V28_q0_H30_neg_lo:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
         lda #1
-        adc (S32V28_sqr_hi_3),y
+S32V28_q0_H30_sqr_hi:
+        adc S32V28_sqr_hi,y
         bcc S32V28_q0_p30_tail
 
 S32V28_q0_row_loop:
@@ -474,9 +480,11 @@ S32V28_q0__neg_hi_0:
 S32V28_q0__sqr_lo_1:
         adc S32V28_sqr_lo,y
         bcs S32V28_q0_H10
-        adc (S32V28_neg_lo_1),y
+S32V28_q0_N10_neg_lo:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z01,x
-        lda (S32V28_sqr_hi_1),y
+S32V28_q0_N10_sqr_hi:
+        lda S32V28_sqr_hi,y
 S32V28_q0_p10_tail:
 S32V28_q0__neg_hi_1:
         adc S32V28_neg_sqr_hi,y
@@ -484,9 +492,11 @@ S32V28_q0__neg_hi_1:
 S32V28_q0__sqr_lo_2:
         adc S32V28_sqr_lo,y
         bcs S32V28_q0_H20
-        adc (S32V28_neg_lo_2),y
+S32V28_q0_N20_neg_lo:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z02,x
-        lda (S32V28_sqr_hi_2),y
+S32V28_q0_N20_sqr_hi:
+        lda S32V28_sqr_hi,y
 S32V28_q0_p20_tail:
 S32V28_q0__neg_hi_2:
         adc S32V28_neg_sqr_hi,y
@@ -494,9 +504,11 @@ S32V28_q0__neg_hi_2:
 S32V28_q0__sqr_lo_3:
         adc S32V28_sqr_lo,y
         bcs S32V28_q0_H30
-        adc (S32V28_neg_lo_3),y
+S32V28_q0_N30_neg_lo:
+        adc S32V28_neg_sqr_lo,y
         sta S32V28_z03,x
-        lda (S32V28_sqr_hi_3),y
+S32V28_q0_N30_sqr_hi:
+        lda S32V28_sqr_hi,y
 S32V28_q0_p30_tail:
 S32V28_q0__neg_hi_3:
         adc S32V28_neg_sqr_hi,y
@@ -913,10 +925,12 @@ S32V28_api_s31_v26_xpos:
         ldy MATH_IO+$07
         bmi S32V28_api_s31_v25_bind_q1
 S32V28_api_s31_v25_bind_q0:
-        sta S32V28_x3
+        sta S32V28_q0_H30_sqr_hi+1
+        sta S32V28_q0_N30_sqr_hi+1
         sta S32V28_q0__sqr_lo_3+1
         eor #$ff
-        sta S32V28_neg_lo_3
+        sta S32V28_q0_H30_neg_lo+1
+        sta S32V28_q0_N30_neg_lo+1
         sta S32V28_q0__neg_hi_3+1
         lda MATH_IO
         sta S32V28_q0__sqr_lo_0+1
@@ -925,16 +939,20 @@ S32V28_api_s31_v25_bind_q0:
         sta S32V28_q0__neg_lo_0+1
         sta S32V28_q0__neg_hi_0+1
         lda MATH_IO+$01
-        sta S32V28_x1
+        sta S32V28_q0_H10_sqr_hi+1
+        sta S32V28_q0_N10_sqr_hi+1
         sta S32V28_q0__sqr_lo_1+1
         eor #$ff
-        sta S32V28_neg_lo_1
+        sta S32V28_q0_H10_neg_lo+1
+        sta S32V28_q0_N10_neg_lo+1
         sta S32V28_q0__neg_hi_1+1
         lda MATH_IO+$02
-        sta S32V28_x2
+        sta S32V28_q0_H20_sqr_hi+1
+        sta S32V28_q0_N20_sqr_hi+1
         sta S32V28_q0__sqr_lo_2+1
         eor #$ff
-        sta S32V28_neg_lo_2
+        sta S32V28_q0_H20_neg_lo+1
+        sta S32V28_q0_N20_neg_lo+1
         sta S32V28_q0__neg_hi_2+1
         jmp S32V28_q0_kernel
 
