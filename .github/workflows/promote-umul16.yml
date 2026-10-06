@@ -133,15 +133,17 @@ jobs:
           doc.write_text(t.replace(old,new))
 
           ch=Path('CHANGELOG.md')
-          entry="""## 2026-10-06 — V2–V4 UMUL16 direct-output optimization
-
-- Optimized the existing fixed-profile 17-ZP UMUL16 family without importing a high-ZP research kernel: the public adapter now enters with **A=x1**, removing a redundant reload, and the fused quarter-square core writes **Z0 directly to MATH_Z**.
-- V2/V3/V4 `MATH_UMUL16` measures **216.980037 cycles mean, 205–240** on the 10,169-case deterministic edge+random corpus, with identical reference/alternate cycle vectors.
-- The private pointer footprint drops from **17 to 16 ZP bytes**; table geometry and persistent stack usage are unchanged.
-- `MATH_UMUL16_SHR8` inherits the producer win and remains an exact **+41-cycle** composition: **257.980037 mean, 246–281** on the same corpus.
-- Promoted V2/V3/V4 PRGs, exact standalone mirrors, resident UMUL16 binary slices, segment metadata, consolidated/public indexes, and package hashes are regenerated from canonical source.
-
-"""
+          entry='\\n'.join([
+              '## 2026-10-06 — V2–V4 UMUL16 direct-output optimization',
+              '',
+              '- Optimized the existing fixed-profile 17-ZP UMUL16 family without importing a high-ZP research kernel: the public adapter now enters with **A=x1**, removing a redundant reload, and the fused quarter-square core writes **Z0 directly to MATH_Z**.',
+              '- V2/V3/V4 `MATH_UMUL16` measures **216.980037 cycles mean, 205–240** on the 10,169-case deterministic edge+random corpus, with identical reference/alternate cycle vectors.',
+              '- The private pointer footprint drops from **17 to 16 ZP bytes**; table geometry and persistent stack usage are unchanged.',
+              '- `MATH_UMUL16_SHR8` inherits the producer win and remains an exact **+41-cycle** composition: **257.980037 mean, 246–281** on the same corpus.',
+              '- Promoted V2/V3/V4 PRGs, exact standalone mirrors, resident UMUL16 binary slices, segment metadata, consolidated/public indexes, and package hashes are regenerated from canonical source.',
+              '',
+              ''
+          ])
           ch.write_text(entry+ch.read_text())
 
           cs=Path('CSDB_CHANGELOG.txt')
