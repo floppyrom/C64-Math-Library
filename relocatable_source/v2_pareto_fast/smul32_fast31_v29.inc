@@ -244,8 +244,9 @@ S32V28_cg_code_end:
 *= REG_KERNEL+$1500
 S32V28_q2_fast_core_start:
 S32V28_q2_umult32x32_same_x:
+        ; Private carry-seeded entry: callers must enter with C=1.
+        ; The public q2 binder jumps directly to q2_kernel after SEC.
         ldx #3
-        sec
         bcs S32V28_q2_kernel
 
 S32V28_q2_H10:
