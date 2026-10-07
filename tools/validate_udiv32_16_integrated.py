@@ -82,11 +82,14 @@ def run():
         if errs: raise AssertionError((p,errs))
         delta=[a-b for a,b in zip(oc,nc)]
         d8delta=[a-b for a,b in zip(d8o,d8n)]
+        slower_examples=[{'n':hex(n),'d':hex(d),'old_cycles':a,'new_cycles':b,'regression':b-a}
+                         for (n,d),a,b in zip(vec,oc,nc) if b>a][:16]
         result['profiles'][p]={
             'old':stats(oc),'new':stats(nc),
             'saved_mean_cycles':sum(delta)/len(delta),
             'min_saved_cycles':min(delta),'max_saved_cycles':max(delta),
             'slower_cases':sum(x<0 for x in delta),'equal_cases':sum(x==0 for x in delta),
+            'slower_examples':slower_examples,
             'd8':{
               'old':stats(d8o),'new':stats(d8n),
               'saved_mean_cycles':sum(d8delta)/len(d8delta),
