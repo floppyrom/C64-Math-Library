@@ -603,7 +603,7 @@
           "file": "div_s16_s16_s16_16.asm",
           "alias_of": "",
           "entry_address": "$3D20",
-          "reachable_instructions": 804
+          "reachable_instructions": 802
         },
         {
           "legacy_api": "MATH_SDIV24",
@@ -635,7 +635,7 @@
           "file": "mod_s16_s16_s16__math_smod16.asm",
           "alias_of": "MATH_SDIV16",
           "entry_address": "$3FD7",
-          "reachable_instructions": 804
+          "reachable_instructions": 802
         },
         {
           "legacy_api": "MATH_SMOD24",
@@ -675,7 +675,7 @@
           "file": "div_s32_s32_s32_32.asm",
           "alias_of": "",
           "entry_address": "$5E06",
-          "reachable_instructions": 95
+          "reachable_instructions": 380
         },
         {
           "legacy_api": "MATH_SMOD32_32",
@@ -683,7 +683,7 @@
           "file": "mod_s32_s32_s32__math_smod32_32.asm",
           "alias_of": "MATH_SDIV32_32",
           "entry_address": "$5E09",
-          "reachable_instructions": 95
+          "reachable_instructions": 380
         },
         {
           "legacy_api": "MATH_UMUL16_SHR8",
@@ -1042,7 +1042,7 @@
           "file": "div_s16_s16_s16_16.asm",
           "alias_of": "",
           "entry_address": "$3D20",
-          "reachable_instructions": 804
+          "reachable_instructions": 802
         },
         {
           "legacy_api": "MATH_SDIV24",
@@ -1074,7 +1074,7 @@
           "file": "mod_s16_s16_s16__math_smod16.asm",
           "alias_of": "MATH_SDIV16",
           "entry_address": "$3FD7",
-          "reachable_instructions": 804
+          "reachable_instructions": 802
         },
         {
           "legacy_api": "MATH_SMOD24",
@@ -1529,7 +1529,7 @@
           "file": "div_s16_s16_s16_16.asm",
           "alias_of": "",
           "entry_address": "$3D20",
-          "reachable_instructions": 804
+          "reachable_instructions": 802
         },
         {
           "legacy_api": "MATH_SDIV24",
@@ -1561,7 +1561,7 @@
           "file": "mod_s16_s16_s16__math_smod16.asm",
           "alias_of": "MATH_SDIV16",
           "entry_address": "$3FD7",
-          "reachable_instructions": 804
+          "reachable_instructions": 802
         },
         {
           "legacy_api": "MATH_SMOD24",

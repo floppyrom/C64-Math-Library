@@ -118,7 +118,7 @@
         },
         "MATH_SDIV16": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv16_native.asm",
-          "instructions": 804,
+          "instructions": 802,
           "bytes_verified": 1771
         },
         "MATH_SDIV24": {
@@ -133,8 +133,8 @@
         },
         "MATH_SDIV32_32": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 95,
-          "bytes_verified": 215
+          "instructions": 380,
+          "bytes_verified": 894
         },
         "MATH_SDIV16_SHL8": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv16_shl8_native.asm",
@@ -189,7 +189,7 @@
         },
         "MATH_SDIV16": {
           "file": "v3_reu_512k/resident/signed/division/native/sdiv16_native.asm",
-          "instructions": 804,
+          "instructions": 802,
           "bytes_verified": 1771
         },
         "MATH_SDIV24": {
@@ -260,7 +260,7 @@
         },
         "MATH_SDIV16": {
           "file": "v4_reu_16m/resident/signed/division/native/sdiv16_native.asm",
-          "instructions": 804,
+          "instructions": 802,
           "bytes_verified": 1771
         },
         "MATH_SDIV24": {
@@ -922,8 +922,8 @@
       "check": "v2_pareto_fast_MATH_SDIV16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 804,
-        "runtime": 804,
+        "published": 802,
+        "runtime": 802,
         "missing": 0,
         "extra": 0
       }
@@ -997,8 +997,8 @@
       "check": "v2_pareto_fast_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 95,
-        "runtime": 95,
+        "published": 380,
+        "runtime": 380,
         "missing": 0,
         "extra": 0
       }
@@ -1257,8 +1257,8 @@
       "check": "v3_reu_512k_MATH_SDIV16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 804,
-        "runtime": 804,
+        "published": 802,
+        "runtime": 802,
         "missing": 0,
         "extra": 0
       }
@@ -1592,8 +1592,8 @@
       "check": "v4_reu_16m_MATH_SDIV16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 804,
-        "runtime": 804,
+        "published": 802,
+        "runtime": 802,
         "missing": 0,
         "extra": 0
       }

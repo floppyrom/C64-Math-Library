@@ -144,7 +144,7 @@
         {
           "signed": "MATH_SDIV16",
           "unsigned": "MATH_UDIV16",
-          "signed_instructions": 804,
+          "signed_instructions": 802,
           "unsigned_instructions": 626,
           "overlap": 0
         },
@@ -165,7 +165,7 @@
         {
           "signed": "MATH_SDIV32_32",
           "unsigned": "MATH_UDIV32_32",
-          "signed_instructions": 95,
+          "signed_instructions": 380,
           "unsigned_instructions": 362,
           "overlap": 0
         },
@@ -239,7 +239,7 @@
         {
           "signed": "MATH_SDIV16",
           "unsigned": "MATH_UDIV16",
-          "signed_instructions": 804,
+          "signed_instructions": 802,
           "unsigned_instructions": 626,
           "overlap": 0
         },
@@ -334,7 +334,7 @@
         {
           "signed": "MATH_SDIV16",
           "unsigned": "MATH_UDIV16",
-          "signed_instructions": 804,
+          "signed_instructions": 802,
           "unsigned_instructions": 626,
           "overlap": 0
         },
@@ -1318,7 +1318,7 @@
       "check": "v2_pareto_fast_MATH_SDIV16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 804,
+        "signed_instructions": 802,
         "unsigned_instructions": 626,
         "overlap": []
       }
@@ -1375,7 +1375,7 @@
       "check": "v2_pareto_fast_MATH_SDIV32_32_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 95,
+        "signed_instructions": 380,
         "unsigned_instructions": 362,
         "overlap": []
       }
@@ -1795,7 +1795,7 @@
       "check": "v3_reu_512k_MATH_SDIV16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 804,
+        "signed_instructions": 802,
         "unsigned_instructions": 626,
         "overlap": []
       }
@@ -2272,7 +2272,7 @@
       "check": "v4_reu_16m_MATH_SDIV16_zero_unsigned_exec_overlap",
       "status": "PASS",
       "detail": {
-        "signed_instructions": 804,
+        "signed_instructions": 802,
         "unsigned_instructions": 626,
         "overlap": []
       }

@@ -1,3 +1,12 @@
+## 2026-10-07 — SDIV16 deferred q>=2 magnitude copy
+
+- Generalized the stable-input optimization to the fast signed 16-bit divider in V2-V4.
+- Positive/positive q=1 cases now subtract directly from preserved public inputs and avoid materializing four private magnitude bytes; q>=2 pays the copy only when needed.
+- Canonical V1/V2/V3/V4/V5 SDIV16 means are **187.131298 / 168.393021 / 170.582116 / 168.745038 / 171.905344 cycles**.
+- Research PP-focused corpora improve by about 4.7-4.8 cycles; V2 remains exactly packed against the unsigned engine with no overlap.
+- Restored the V2 SDIV32_32 helper islands accidentally collapsed during the prior source-regeneration cycle; the repair is taken instruction-for-instruction from the last known-good pre-PR-22 native mirror.
+- ABI, ZP use, persistent stack and tables are unchanged; signed-division, layout, publication, deterministic-rebuild and Turbo gates pass.
+
 ## 2026-10-07 — SMUL16 stable-input Y0 optimization
 
 - Generalized the stable-input optimization used by SMUL24/SMUL32 to signed 16x16 multiplication.

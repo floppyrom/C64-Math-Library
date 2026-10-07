@@ -1,0 +1,98 @@
+{
+  "status": "PASS",
+  "date": "2026-10-07",
+  "optimization": "Defer positive/positive SDIV16 private magnitude materialization until q>=2 is proven. The q=1 path subtracts directly from stable public inputs; q>=2 materializes the private magnitude only when the unsigned continuation requires it. Size-neutral q=1 encodings keep the V2 signed front-end exactly against its fixed unsigned-engine boundary.",
+  "profiles_changed": [
+    "v2_pareto_fast",
+    "v3_reu_512k",
+    "v4_reu_16m"
+  ],
+  "resource_contract": {
+    "public_abi_changed": false,
+    "zp_bytes_changed": false,
+    "persistent_stack_changed": false,
+    "tables_changed": false,
+    "v2_signed_unsigned_gap_bytes": 0
+  },
+  "canonical": {
+    "v1_balanced": {
+      "cases": 4585,
+      "errors": 0,
+      "mean_cycles": 187.13129770992367,
+      "min_cycles": 45,
+      "max_cycles": 1604,
+      "mode": "structured_random"
+    },
+    "v2_pareto_fast": {
+      "cases": 4585,
+      "errors": 0,
+      "mean_cycles": 168.39302071973827,
+      "min_cycles": 54,
+      "max_cycles": 1159,
+      "mode": "structured_random"
+    },
+    "v3_reu_512k": {
+      "cases": 4585,
+      "errors": 0,
+      "mean_cycles": 170.58211559432934,
+      "min_cycles": 54,
+      "max_cycles": 1159,
+      "mode": "structured_random"
+    },
+    "v4_reu_16m": {
+      "cases": 4585,
+      "errors": 0,
+      "mean_cycles": 168.74503816793893,
+      "min_cycles": 54,
+      "max_cycles": 1159,
+      "mode": "structured_random"
+    },
+    "v5_hybrid_lowzp": {
+      "cases": 4585,
+      "errors": 0,
+      "mean_cycles": 171.90534351145038,
+      "min_cycles": 54,
+      "max_cycles": 1159,
+      "mode": "structured_random"
+    }
+  },
+  "baseline_mean_cycles": {
+    "v1_balanced": 187.13129770992367,
+    "v2_pareto_fast": 169.42813522355507,
+    "v3_reu_512k": 171.80632497273717,
+    "v4_reu_16m": 169.75419847328243,
+    "v5_hybrid_lowzp": 171.90534351145038
+  },
+  "delta_mean_cycles": {
+    "v1_balanced": 0.0,
+    "v2_pareto_fast": -1.0351145038168,
+    "v3_reu_512k": -1.224209378407835,
+    "v4_reu_16m": -1.0091603053434994,
+    "v5_hybrid_lowzp": 0.0
+  },
+  "research": {
+    "v2_pp_focus_delta_mean_cycles": -4.722618340265399,
+    "v3_pp_focus_delta_mean_cycles": -4.820360467419291,
+    "v4_pp_focus_delta_mean_cycles": -4.676718162012279,
+    "research_delta_range_cycles": [
+      -23,
+      5
+    ],
+    "research_errors": 0
+  },
+  "collateral_repair": {
+    "profile": "v2_pareto_fast",
+    "routine": "MATH_SDIV32_32",
+    "issue": "PR #22 source regeneration had collapsed the divide-by-zero and unsigned magnitude helper islands to BRK/RTS stubs.",
+    "repair_source_commit": "480d679f0a57d502246803f806f8f01fde35f6e9",
+    "repair_method": "restore only instruction bytes annotated by the known-good published native source before regenerating canonical source"
+  },
+  "validation": {
+    "signed_division_calls": 364533,
+    "deterministic_rebuild": "PASS",
+    "published_sources": "PASS",
+    "signed_layout": "PASS",
+    "turbo_relocation": "PASS",
+    "turbo_boundary_sweep": "PASS"
+  }
+}
