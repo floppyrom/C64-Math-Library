@@ -548,6 +548,7 @@ U3216_ZERO:
         sec
         rts
 
+U3216_MAIN_END:
 * = U3216_D8_BASE
 ; Compact exact 32/8 path. Each byte is both source and quotient storage.
 U3216_D8:
