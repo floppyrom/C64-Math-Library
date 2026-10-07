@@ -218,3 +218,4 @@ jobs:
             git commit -m "Promote SDIV16 q1 late-copy optimization"
             git push origin HEAD:research/sdiv16-pp-late-copy-v1
           fi
+# promotion trigger
