@@ -156,6 +156,11 @@ dmem,dlabels,dconst=Assembler().assemble(cfg+base_src+direct_wrapper)
 dzp=[a for a in dmem if BASE <= a <= 0xff]
 dsize=max(dzp)-min(dzp)+1
 print('directout_zp_bytes',dsize)
+print('directout_labels',
+      'entry',hex(dlabels['umult_ax1']),
+      'x0',hex(dlabels['x0']),
+      'x1',hex(dlabels['x1']),
+      'y1',hex(dlabels['y1']))
 m2=load_prg(PRG); c2=CPU(m2,reu=bytearray(REU.read_bytes())); c2.d=0;c2.call(MATH_INIT,2_000_000)
 for a,v in dmem.items(): c2.mem[a]=v
 d_tot=0;d_mn=10**9;d_mx=0
