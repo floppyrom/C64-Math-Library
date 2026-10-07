@@ -1,0 +1,14 @@
+name: Research SMUL32 dispatch map
+on:
+  push:
+    branches: [research/smul32-q2-fallthrough-v1]
+permissions:
+  contents: read
+jobs:
+  map:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python3 tools/map_smul32_dispatch.py
