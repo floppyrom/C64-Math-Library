@@ -13,12 +13,18 @@ MATH_SMULDIV16_CANDIDATE = REG_API+$02E3
 ; Existing cross-profile composition helpers in the historical API support
 ; area. These remain non-stable implementation details.
 MULDIV16_Z32_TO_N32 = REG_API+$0250
-MULDIV16_U_COMPOSED = REG_API+$0300
-
 * = MATH_UMULDIV16_CANDIDATE
     jmp MULDIV16_U_COMPOSED
 * = MATH_SMULDIV16_CANDIDATE
     jmp MULDIV16_S_COMPOSED
+
+; Relocation-safe V1/V5 unsigned baseline. The older helper at +$0300 is
+; retained for provenance but is not source-relocation-safe on every map.
+* = REG_API+$03D0
+MULDIV16_U_COMPOSED:
+    jsr MATH_UMUL16
+    jsr MULDIV16_Z32_TO_N32
+    jmp MATH_UDIV32_16
 
 ; V1/V5 signed baseline. V2/V3/V4 overlay this address with the optimized
 ; signed producer handoff while preserving the same candidate entry.
