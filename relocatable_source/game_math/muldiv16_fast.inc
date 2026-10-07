@@ -125,18 +125,10 @@ MULDIV16_S_PNEG_DPOS:
     sta U3216_D0
     lda MATH_D+$01
     sta U3216_D1
-    jsr U3216_ENTRY
-    jsr MULDIV16_S_NEG_Q
-    jmp MULDIV16_S_NEG_R
+    jmp MULDIV16_S_DIV_QR
 
 MULDIV16_S_DIV_Q:
     jsr U3216_ENTRY
-    jmp MULDIV16_S_NEG_Q
-
-MULDIV16_S_DIV_R:
-    jsr U3216_ENTRY
-    jmp MULDIV16_S_NEG_R
-
 MULDIV16_S_NEG_Q:
     lda #$00
     sec
@@ -154,6 +146,13 @@ MULDIV16_S_NEG_Q:
     clc
     rts
 
+MULDIV16_S_DIV_R:
+    jsr U3216_ENTRY
+    jmp MULDIV16_S_NEG_R
+
+MULDIV16_S_DIV_QR:
+    jsr U3216_ENTRY
+    jsr MULDIV16_S_NEG_Q
 MULDIV16_S_NEG_R:
     lda #$00
     sec
