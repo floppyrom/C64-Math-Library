@@ -6051,3 +6051,6 @@ ZCE4:
 
 ; Canonical generated normalization tables (final ownership).
 !source "../../v4_reu_16m/resident/vector/native/vec2_normalize_tables.asm"
+
+; Candidate wide-intermediate multiply/divide primitives.
+!source "../game_math/muldiv16_candidate.inc"
