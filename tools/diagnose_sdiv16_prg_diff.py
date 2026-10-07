@@ -2,7 +2,8 @@
 from pathlib import Path
 import shutil,sys,tempfile
 ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT/"tools"))
-from assemble_sources import build\nfrom mini6502 import CPU
+from assemble_sources import build
+from mini6502 import CPU
 P="v2_pareto_fast"
 def load(path):
  b=path.read_bytes();a=b[0]|b[1]<<8
