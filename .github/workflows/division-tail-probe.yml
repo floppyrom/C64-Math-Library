@@ -23,7 +23,13 @@ jobs:
           c,P,I=load_source('v2_pareto_fast','reference',root=Path('build_probe')) if False else (None,None,None)
           # local loader because research loader is fixed to build_u3216
           import json
-          from mini6502 import CPU
+          from mini6502 import CPU,Assembler
+          import assemble_sources as AS
+          src=Path('relocatable_source/v2_pareto_fast/math_relocatable.asm')
+          cfg=Path('relocatable_source/v2_pareto_fast/math_config_reference.inc')
+          _,lab,_=Assembler().assemble(AS.preprocess(src,cfg))
+          for k in ('UD32_OLD_C28A','UD32_MAIN_END','UD32_OLD_C23D','UD32_OLD_C289','DIVLAT_END'):
+              print('LABEL',k,hex(lab[k]))
           d=Path('build_probe/reference/v2_pareto_fast')
           m=json.loads((d/'source_build_manifest.json').read_text())
           b=(d/m['output_prg']).read_bytes();lo=b[0]|b[1]<<8
