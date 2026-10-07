@@ -20,43 +20,43 @@
     "v2_pareto_fast": {
       "reference": {
         "cases": 10324,
-        "mean_cycles": 429.55550174351026,
-        "min_cycles": 400,
-        "max_cycles": 485
+        "mean_cycles": 421.55550174351026,
+        "min_cycles": 392,
+        "max_cycles": 477
       },
       "alternate": {
         "cases": 10324,
-        "mean_cycles": 429.55550174351026,
-        "min_cycles": 400,
-        "max_cycles": 485
+        "mean_cycles": 421.55550174351026,
+        "min_cycles": 392,
+        "max_cycles": 477
       }
     },
     "v3_reu_512k": {
       "reference": {
         "cases": 10324,
-        "mean_cycles": 429.55550174351026,
-        "min_cycles": 400,
-        "max_cycles": 485
+        "mean_cycles": 421.55550174351026,
+        "min_cycles": 392,
+        "max_cycles": 477
       },
       "alternate": {
         "cases": 10324,
-        "mean_cycles": 429.55550174351026,
-        "min_cycles": 400,
-        "max_cycles": 485
+        "mean_cycles": 421.55550174351026,
+        "min_cycles": 392,
+        "max_cycles": 477
       }
     },
     "v4_reu_16m": {
       "reference": {
         "cases": 10324,
-        "mean_cycles": 429.55550174351026,
-        "min_cycles": 400,
-        "max_cycles": 485
+        "mean_cycles": 421.55550174351026,
+        "min_cycles": 392,
+        "max_cycles": 477
       },
       "alternate": {
         "cases": 10324,
-        "mean_cycles": 429.55550174351026,
-        "min_cycles": 400,
-        "max_cycles": 485
+        "mean_cycles": 421.55550174351026,
+        "min_cycles": 392,
+        "max_cycles": 477
       }
     },
     "v5_hybrid_lowzp": {
