@@ -262,12 +262,20 @@ def build(profile,config,outdir):
  for r in publish_rows:
   n=r['legacy_api']; val=const.get(n,labels.get(n))
   # Some profile-only lifecycle entries (currently V4 QS16) live in source-backed
-  # resident bytes but do not have a monolith label.  Their standalone manifest
+  # resident bytes but do not have a monolith label. Their standalone manifest
   # records the reference entry address; relocate that address through the same
   # configured region map instead of dropping the symbol from math_api.inc.
   if val is None and n not in stable_names:
    raw=r.get('entry_address','')
-   if raw.startswith(' # Keep configured Turbo geometry visible to callers.
+   if raw.startswith('$'):
+    ref=int(raw[1:],16)
+    for region_name,os,oe in REGIONS:
+     if os <= ref <= oe:
+      val=vals[region_name] + (ref-REGION_DEFAULT[region_name])
+      break
+  if val is not None:
+   lines.append(f'{n:<24} = {hx(val)}'); emitted.add(n)
+ # Keep configured Turbo geometry visible to callers.
  if profile in REU:
   lines += [f'TURBO16_ZP_BASE          = {hx(vals["TURBO16_ZP_BASE"],2)}',f'TURBO32_ZP_BASE          = {hx(vals["TURBO32_ZP_BASE"],2)}',f'REU_TURBO16_BANK         = {hx(vals["REU_TURBO16_BANK"],2)}',f'REU_TURBO32_BANK         = {hx(vals["REU_TURBO32_BANK"],2)}']
  for n,off in [('MATH_X',0),('MATH_Y',4),('MATH_Z',8),('MATH_N',0x10),('MATH_D',0x14),('MATH_Q',0x18),('MATH_R',0x1c)]:lines.append(f'{n:<24} = {hx(vals["MATH_IO"]+off)}')
