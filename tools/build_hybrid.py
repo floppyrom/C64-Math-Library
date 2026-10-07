@@ -534,7 +534,7 @@ def _public_addr(man: dict, name: str) -> int:
     return int(v[1:], 16) if isinstance(v, str) and v.startswith('$') else int(v)
 
 
-def apply_muldiv16_lowzp_unsigned(dst: bytearray, vals: dict[str, int],
+def apply_muldiv16_lowzp_fusion(dst: bytearray, vals: dict[str, int],
                                     base_man: dict, hbase: int) -> dict:
     # OptiSearch-style low-ZP producer/consumer fusion for both V5 MULDIV16
     # variants.  Reuse the qualified V1 17-ZP UMUL16 record producer directly,
@@ -766,7 +766,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         udiv16_detail = apply_udiv16_direct(dst, src, vals, v1man, entries, hbase)
         sdiv16_detail = apply_sdiv16_direct(dst, src, vals, v1man, entries, hbase)
         sdiv24_detail = apply_sdiv24_direct(dst, src, vals, v1man, entries)
-        muldiv16_lowzp_detail = apply_muldiv16_lowzp_unsigned(dst, vals, v1man, hbase)
+        muldiv16_lowzp_detail = apply_muldiv16_lowzp_fusion(dst, vals, v1man, hbase)
         selected_trace: set[int] = set()
         for name in ('MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8'):
             selected_trace |= trace(src, entries[name])
