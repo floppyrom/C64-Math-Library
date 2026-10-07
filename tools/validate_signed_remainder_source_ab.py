@@ -7,8 +7,6 @@ from mini6502 import CPU
 
 PROFILES=['v2_pareto_fast','v3_reu_512k','v4_reu_16m']
 ROUTINES=[('MATH_SMOD16',16,2),('MATH_SMOD24',24,3)]
-N=0xC010;D=0xC014;R=0xC01C
-
 def api(path):
  out={}
  for line in path.read_text().splitlines():
@@ -66,7 +64,8 @@ def expected(n,d):
  if d==0:return 0,1
  mag=abs(n)%abs(d);return (-mag if n<0 else mag),0
 
-def run(c,entry,cs,bits,nbytes):
+def run(c,A,entry,cs,bits,nbytes):
+ N=A['MATH_N'];D=A['MATH_D'];R=A['MATH_R']
  tot=0;mn=10**9;mx=0;err=0
  for n,d in cs:
   un=enc(n,bits);ud=enc(d,bits);wr(c.mem,N,un,nbytes);wr(c.mem,D,ud,nbytes)
@@ -83,7 +82,7 @@ for pi,p in enumerate(PROFILES):
  base,BA=cpu_for(p,'baseline');ref,RA=cpu_for(p,'reference');alt,AA=cpu_for(p,'alternate');pr={}
  for ri,(name,bits,nbytes) in enumerate(ROUTINES):
   cs=cases(bits,0x534D0000+pi*0x1000+ri)
-  b=run(base,BA[name],cs,bits,nbytes);n=run(ref,RA[name],cs,bits,nbytes);a=run(alt,AA[name],cs,bits,nbytes)
+  b=run(base,BA,BA[name],cs,bits,nbytes);n=run(ref,RA,RA[name],cs,bits,nbytes);a=run(alt,AA,AA[name],cs,bits,nbytes)
   if b['errors'] or n['errors'] or a['errors']:raise AssertionError((p,name,b,n,a))
   n['delta_vs_baseline']=n['mean_cycles']-b['mean_cycles'];a['delta_vs_baseline']=a['mean_cycles']-b['mean_cycles']
   pr[name]={'baseline':b,'reference':n,'alternate':a}
