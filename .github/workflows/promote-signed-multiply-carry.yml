@@ -1,0 +1,279 @@
+name: Promote signed multiply carry/register reuse
+
+on:
+  push:
+    branches:
+      - opt/signed-multiply-carry-prime-v1
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  promote:
+    if: github.event.head_commit.message == 'trigger signed multiply promotion'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: opt/signed-multiply-carry-prime-v1
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build V1-V4 reference and alternate
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+
+      - name: Build V5 hybrid reference and alternate
+        run: |
+          python3 tools/build_hybrid.py --config-kind reference --out build_hybrid
+          python3 tools/build_hybrid.py --config-kind alternate --out build_hybrid
+
+      - name: Promote resident images
+        run: |
+          cp build_source/reference/v1_balanced/math_v1_balanced_source_built.prg v1_balanced/resident/math_v1_balanced_game_math.prg
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+          cp build_hybrid/reference/v5_hybrid_lowzp/HYBRID_BUILD_MANIFEST.json v5_hybrid_lowzp/resident/HYBRID_BUILD_MANIFEST.json
+
+      - name: Regenerate canonical and published sources
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/publish_standalone_sources.py
+
+      - name: Rebuild from regenerated sources
+        run: |
+          rm -rf build_source build_hybrid
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/build_hybrid.py --config-kind reference --out build_hybrid
+          python3 tools/build_hybrid.py --config-kind alternate --out build_hybrid
+
+      - name: Validate signed multiply and refresh timings
+        run: |
+          python3 tools/validate_signed_multiply.py
+          python3 tools/benchmark_multiply_refresh.py
+          python3 tools/validate_smul24_directout.py
+          python3 tools/validate_umul16_directout.py
+          python3 tools/validate_mul16_shr8_register.py
+          python3 tools/validate_umul24_directout.py
+
+      - name: Validate source, hybrid, layout and relocation
+        run: |
+          python3 tools/validate_source_build.py all --build build_source/alternate --out validation/source_relocation
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_hybrid.py
+          python3 tools/test_hybrid_config.py
+          python3 tools/verify_hybrid_deterministic.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+          python3 tools/validate_atan2_dispatch.py
+
+      - name: Regenerate public indexes
+        run: |
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+
+      - name: Write signed-multiply review and update narrative docs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('.')
+          p=root/'validation/review/SIGNED_MULTIPLY_VALIDATION.json'
+          v=json.loads(p.read_text())
+          ps=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp']
+          old16={
+            'v1_balanced':292.3497868521427,
+            'v2_pareto_fast':248.80233340812205,
+            'v3_reu_512k':249.10769575947947,
+            'v4_reu_16m':249.14449181063495,
+            'v5_hybrid_lowzp':292.02669957370426,
+          }
+          old32={
+            'v1_balanced':744.5699460356994,
+            'v2_pareto_fast':711.5869655458697,
+            'v3_reu_512k':711.9418845994188,
+            'v4_reu_16m':712.1369863013699,
+            'v5_hybrid_lowzp':743.9132420091324,
+          }
+          now16={q:v['profiles'][q]['SMUL16'] for q in ps}
+          now32={q:v['profiles'][q]['SMUL32'] for q in ps}
+          review={
+            'status':'PASS',
+            'date':'2026-10-07',
+            'source':'PR #24 SMUL24 carry/register reuse generalized to other signed multiply widths',
+            'smul8':{
+              'decision':'UNCHANGED',
+              'reason':'The shipped 8x8 kernel is already direct signed-domain quarter-square code. It has no sign-dispatch correction wrapper, high-byte binder reload, or dead correction pointer to eliminate; replacing its SEC with a compare would be cycle-neutral.',
+              'mean_cycles':v['profiles']['v1_balanced']['SMUL8']['mean_cycles'],
+            },
+            'smul16':{
+              'techniques':[
+                'enter producer/dispatcher with X1 already live in A and skip redundant reload',
+                'V1/V5 CPX #0 sign test simultaneously primes C=1 for the producer',
+                'V1/V5 reuse known C=0 between NN magnitude negations with LDA #1/SBC',
+                'V1/V5 bind live X1 before X0 and reuse dead pointer-low scratch instead of correction SMC',
+              ],
+              'baseline_mean_cycles':old16,
+              'candidate':now16,
+              'delta_mean_cycles':{q:now16[q]['mean_cycles']-old16[q] for q in ps},
+              'research_delta_distribution':{
+                'v1_v5':'-10 cycles on non-NN, -9 cycles on NN',
+                'v2_v4':'-3 cycles on every call',
+              },
+            },
+            'smul32':{
+              'technique':'NN X magnitude is known to leave C=0; begin -Y with LDA #1/SBC instead of SEC/LDA #0/SBC.',
+              'baseline_mean_cycles':old32,
+              'candidate':now32,
+              'delta_mean_cycles':{q:now32[q]['mean_cycles']-old32[q] for q in ps},
+              'research_delta_distribution':'-2 cycles on NN, 0 on all other quadrants',
+            },
+            'resources':{
+              'public_api_changed':False,
+              'zp_contract_changed':False,
+              'persistent_stack_changed':False,
+              'table_bytes_changed':False,
+            },
+            'validation':{
+              'signed_multiply_calls':v['summary']['machine_calls'],
+              'smul24_directout':'PASS',
+              'multiply_refresh':'PASS',
+              'hybrid':'PASS',
+              'deterministic_rebuild':'PASS',
+              'signed_layout':'PASS',
+              'published_signed_sources':'PASS',
+              'turbo_relocation':'PASS',
+              'turbo_boundary':'PASS',
+              'atan2_dispatch_regression':'PASS',
+            },
+          }
+          (root/'validation/review/SMUL_PR24_GENERALIZATION.json').write_text(json.dumps(review,indent=2)+'\n')
+
+          # Update exact old timing strings wherever they appear in human-facing
+          # overview docs. Generated CSV/JSON indexes are handled by their tools.
+          doc_paths=[
+            root/'PERFORMANCE.md',root/'README.md',root/'docs/SIGNED_IMPLEMENTATIONS.md',
+            root/'docs/MULTIPLY_REFRESH_2026-09-20.md',
+            root/'v1_balanced/README.md',root/'v2_pareto_fast/README.md',
+            root/'v3_reu_512k/README.md',root/'v4_reu_16m/README.md',root/'v5_hybrid_lowzp/README.md',
+          ]
+          repl={}
+          for q in ps:
+              repl[f"{old16[q]:.6f}"]=f"{now16[q]['mean_cycles']:.6f}"
+              repl[f"{old32[q]:.6f}"]=f"{now32[q]['mean_cycles']:.6f}"
+          for dp in doc_paths:
+              if not dp.exists(): continue
+              t=dp.read_text()
+              for a,b in repl.items(): t=t.replace(a,b)
+              dp.write_text(t)
+
+          s16=' / '.join(f"{now16[q]['mean_cycles']:.6f}" for q in ps)
+          s32=' / '.join(f"{now32[q]['mean_cycles']:.6f}" for q in ps)
+          ch=root/'CHANGELOG.md'; t=ch.read_text()
+          entry=(
+            '## 2026-10-07 — PR #24 carry/register ideas generalized to SMUL16 and SMUL32\n\n'
+            '- Generalized the carry-priming, live-high-byte binding, known-carry reuse and dead-scratch ideas from the optimized SMUL24 path.\n'
+            '- SMUL8 is unchanged: its direct signed-domain kernel has no analogous wrapper/binder overhead to remove.\n'
+            f'- Canonical V1/V2/V3/V4/V5 SMUL16 means are **{s16} cycles**; V1/V5 save about 9-10 cycles per call and V2-V4 save exactly 3 cycles per call in matched research corpora.\n'
+            f'- Canonical V1/V2/V3/V4/V5 SMUL32 means are **{s32} cycles**; NN calls save exactly 2 cycles, other quadrants are unchanged.\n'
+            '- SMUL16_SHR8 and SMUL32_SHR16 inherit the corresponding producer gains. ABI, ZP, persistent-stack and table contracts are unchanged.\n\n'
+          )
+          if 'PR #24 carry/register ideas generalized to SMUL16 and SMUL32' not in t:
+              ch.write_text(entry+t)
+          cs=root/'CSDB_CHANGELOG.txt'; t=cs.read_text()
+          entry=(
+            '2026-10-07 SIGNED MULTIPLY CARRY/REGISTER GENERALIZATION\n'
+            '- Applied the optimized SMUL24 carry/register strategy to SMUL16 and the NN carry chain in SMUL32.\n'
+            f'- SMUL16 V1/V2/V3/V4/V5: {s16} cycles.\n'
+            f'- SMUL32 V1/V2/V3/V4/V5: {s32} cycles.\n'
+            '- SMUL8 remains unchanged because its direct signed-domain implementation has no equivalent correction/binder overhead.\n\n'
+          )
+          if 'SIGNED MULTIPLY CARRY/REGISTER GENERALIZATION' not in t:
+              cs.write_text(entry+t)
+          PY
+
+      - name: Regenerate indexes after documentation
+        run: |
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+
+      - name: Refresh release hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('.')
+          sha=lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+          for p in ('v3_reu_512k','v4_reu_16m'):
+              s['reference_reu_sha256'][p]=sha(root/'build_source/reference'/p/f'c64_math_{p}_source_built.reu')
+              s['alternate_reu_sha256'][p]=sha(root/'build_source/alternate'/p/f'c64_math_{p}_source_built.reu')
+          s['date']='2026-10-07'
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+
+      - name: Final release validation
+        run: |
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/verify_hybrid_deterministic.py
+          python3 tools/validate_signed_multiply.py
+          python3 tools/validate_smul24_directout.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+          python3 tools/validate_atan2_dispatch.py
+
+      - name: Remove promotion workflow and build trees
+        run: |
+          rm -f .github/workflows/promote-signed-multiply-carry.yml
+          rm -rf build_source build_hybrid build_hybrid_repeat
+
+      - name: Refresh package manifest
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+
+      - name: Commit promoted artifacts
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Promote SMUL16/SMUL32 carry-register optimizations"
+          git push origin HEAD:opt/signed-multiply-carry-prime-v1
