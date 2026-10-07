@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 653.
+; Reachable instructions: 652.
 !cpu 6510
 
 ; ---- executable island $2300 ----
@@ -458,22 +458,21 @@ L3CA6:
     sta $4F                            ; @3CE1 85 4F
     sta $CA79                          ; @3CE3 8D 79 CA
 L3CE6:
-    sec                                ; @3CE6 38
-    lda #$00                           ; @3CE7 A9 00
-    sbc $C004                          ; @3CE9 ED 04 C0
-    sta $0E                            ; @3CEC 85 0E
-    lda #$00                           ; @3CEE A9 00
-    sbc $C005                          ; @3CF0 ED 05 C0
-    sta $0F                            ; @3CF3 85 0F
-    lda #$00                           ; @3CF5 A9 00
-    sbc $C006                          ; @3CF7 ED 06 C0
-    sta $10                            ; @3CFA 85 10
-    lda #$00                           ; @3CFC A9 00
-    sbc $C007                          ; @3CFE ED 07 C0
-    tay                                ; @3D01 A8
-    ldx #$03                           ; @3D02 A2 03
-    sec                                ; @3D04 38
-    jmp LCA5C                          ; @3D05 4C 5C CA
+    lda #$01                           ; @3CE6 A9 01
+    sbc $C004                          ; @3CE8 ED 04 C0
+    sta $0E                            ; @3CEB 85 0E
+    lda #$00                           ; @3CED A9 00
+    sbc $C005                          ; @3CEF ED 05 C0
+    sta $0F                            ; @3CF2 85 0F
+    lda #$00                           ; @3CF4 A9 00
+    sbc $C006                          ; @3CF6 ED 06 C0
+    sta $10                            ; @3CF9 85 10
+    lda #$00                           ; @3CFB A9 00
+    sbc $C007                          ; @3CFD ED 07 C0
+    tay                                ; @3D00 A8
+    ldx #$03                           ; @3D01 A2 03
+    sec                                ; @3D03 38
+    jmp LCA5C                          ; @3D04 4C 5C CA
 ; ---- executable island $5505 ----
 * = $5505
 L5505:

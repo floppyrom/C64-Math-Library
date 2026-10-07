@@ -1,3 +1,11 @@
+## 2026-10-07 — Repose carry-state generalization to SMUL16/SMUL32
+
+- Generalized the carry-primed/live-state ideas from PR #24 SMUL24 to SMUL16 and the remaining useful SMUL32 NN carry chain.
+- Canonical V1/V2/V3/V4/V5 SMUL16 means are **282.588064 / 245.802333 / 246.107696 / 246.144492 / 282.262957 cycles**.
+- Canonical V1/V2/V3/V4/V5 SMUL32 means are **744.128269 / 711.153591 / 711.447073 / 711.706102 / 743.477377 cycles**.
+- SMUL16_SHR8 and SMUL32_SHR16 inherit the producer reductions. No new ZP, persistent stack, table or public-ABI cost.
+- SMUL8 remains unchanged because its direct signed-domain table kernel has no quadrant binder to prime.
+
 ## 2026-10-07 — Repose OptiSearchV2 SMUL24 and ATAN2 refinements
 
 - Adapted Repose's carry-primed signed dispatch and dead pointer-low scratch with one shared binder. Public SMUL24 saves 4–5 cycles per measured call and six code bytes, preserving 24 ZP bytes, tables, public inputs and zero persistent stack usage.

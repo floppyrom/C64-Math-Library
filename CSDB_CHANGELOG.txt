@@ -1,3 +1,8 @@
+2026-10-07: Repose carry-state generalization
+- SMUL16: carry/live-register/dead-scratch adaptation of PR #24 SMUL24.
+- SMUL32: reuse NN magnitude borrow, saving 2 cycles on every NN call.
+- SMUL8 unchanged: direct signed-domain kernel has no applicable binder/dispatch overhead.
+
 2026-10-07: Repose OptiSearchV2 follow-up
 - SMUL24: carry-primed dispatch saves 4-5 cycles/call and 6 code bytes.
 - ATAN2: about 1 cycle lower full-domain mean, same results/resources.

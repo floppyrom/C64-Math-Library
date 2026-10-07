@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "date": "2026-10-07",
+  "provenance": "Generalization of Repose OptiSearchV2 SMUL24 ideas integrated by PR #24.",
+  "smul8": {
+    "changed": false,
+    "reason": "Direct signed-domain lookup kernel has no quadrant dispatcher/binder; an analogous carry-prime compare is not faster than its required SEC."
+  },
+  "smul16": {
+    "before_mean_cycles": {
+      "v1_balanced": 292.349787,
+      "v2_pareto_fast": 248.802333,
+      "v3_reu_512k": 249.107696,
+      "v4_reu_16m": 249.144492,
+      "v5_hybrid_lowzp": 292.0267
+    },
+    "after_mean_cycles": {
+      "v1_balanced": 282.588063719991,
+      "v2_pareto_fast": 245.80233340812205,
+      "v3_reu_512k": 246.10769575947947,
+      "v4_reu_16m": 246.14449181063495,
+      "v5_hybrid_lowzp": 282.2629571460624
+    },
+    "delta_mean_cycles": {
+      "v1_balanced": -9.761723280008994,
+      "v2_pareto_fast": -2.999999591877952,
+      "v3_reu_512k": -3.000000240520535,
+      "v4_reu_16m": -3.0000001893650676,
+      "v5_hybrid_lowzp": -9.763742853937629
+    },
+    "shr8_mean_cycles": {
+      "v1_balanced": 313.15409309791335,
+      "v2_pareto_fast": 276.88878697546437,
+      "v3_reu_512k": 276.88878697546437,
+      "v4_reu_16m": 276.88878697546437,
+      "v5_hybrid_lowzp": 313.15409309791335
+    },
+    "technique": "V1/V5 carry-primed sign dispatch, live Y1/X1 register state, dead pointer-low correction scratch and NN borrow reuse; V2-V4 live-X1 entry skips a redundant core reload."
+  },
+  "smul32": {
+    "before_mean_cycles": {
+      "v1_balanced": 744.569946,
+      "v2_pareto_fast": 711.586966,
+      "v3_reu_512k": 711.941885,
+      "v4_reu_16m": 712.136986,
+      "v5_hybrid_lowzp": 743.913242
+    },
+    "after_mean_cycles": {
+      "v1_balanced": 744.1282689912827,
+      "v2_pareto_fast": 711.1535907015359,
+      "v3_reu_512k": 711.4470734744707,
+      "v4_reu_16m": 711.706102117061,
+      "v5_hybrid_lowzp": 743.4773765047738
+    },
+    "delta_mean_cycles": {
+      "v1_balanced": -0.4416770087173063,
+      "v2_pareto_fast": -0.43337529846405687,
+      "v3_reu_512k": -0.4948115255292578,
+      "v4_reu_16m": -0.43088388293892876,
+      "v5_hybrid_lowzp": -0.43586549522615314
+    },
+    "shr16_mean_cycles": {
+      "v1_balanced": 812.5443705572117,
+      "v2_pareto_fast": 780.3024535656959,
+      "v3_reu_512k": 780.3024535656959,
+      "v4_reu_16m": 780.3024535656959,
+      "v5_hybrid_lowzp": 812.5443705572117
+    },
+    "technique": "NN X-magnitude formation guarantees C=0, reused as LDA #1 / SBC Y0 to remove redundant SEC / LDA #0."
+  },
+  "resource_contract": {
+    "new_zp_bytes": 0,
+    "new_persistent_stack_bytes": 0,
+    "new_table_bytes": 0,
+    "public_abi_changed": false
+  },
+  "validation": {
+    "signed_multiply_calls": 264999,
+    "multiply_refresh_calls": 415078,
+    "signed_layout": "PASS",
+    "published_sources": "PASS",
+    "signed_division_regression": "PASS",
+    "deterministic_rebuild": "PASS",
+    "hybrid": "PASS",
+    "turbo_relocation": "PASS",
+    "turbo_boundary": "PASS"
+  }
+}

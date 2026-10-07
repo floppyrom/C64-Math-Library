@@ -4,7 +4,7 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UMUL32_SHR16. Executable overlap: 0 instructions.
-; Public entry: $5E15. Reachable signed instructions: 685.
+; Public entry: $5E15. Reachable signed instructions: 684.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
@@ -107,22 +107,21 @@ L3CA6:
     sta $0C                            ; @3CE4 85 0C
     sta $6587                          ; @3CE6 8D 87 65
 L3CE9:
-    sec                                ; @3CE9 38
-    lda #$00                           ; @3CEA A9 00
-    sbc $C004                          ; @3CEC ED 04 C0
-    sta $0E                            ; @3CEF 85 0E
-    lda #$00                           ; @3CF1 A9 00
-    sbc $C005                          ; @3CF3 ED 05 C0
-    sta $0F                            ; @3CF6 85 0F
-    lda #$00                           ; @3CF8 A9 00
-    sbc $C006                          ; @3CFA ED 06 C0
-    sta $10                            ; @3CFD 85 10
-    lda #$00                           ; @3CFF A9 00
-    sbc $C007                          ; @3D01 ED 07 C0
-    tay                                ; @3D04 A8
-    ldx #$03                           ; @3D05 A2 03
-    sec                                ; @3D07 38
-    jmp L655C                          ; @3D08 4C 5C 65
+    lda #$01                           ; @3CE9 A9 01
+    sbc $C004                          ; @3CEB ED 04 C0
+    sta $0E                            ; @3CEE 85 0E
+    lda #$00                           ; @3CF0 A9 00
+    sbc $C005                          ; @3CF2 ED 05 C0
+    sta $0F                            ; @3CF5 85 0F
+    lda #$00                           ; @3CF7 A9 00
+    sbc $C006                          ; @3CF9 ED 06 C0
+    sta $10                            ; @3CFC 85 10
+    lda #$00                           ; @3CFE A9 00
+    sbc $C007                          ; @3D00 ED 07 C0
+    tay                                ; @3D03 A8
+    ldx #$03                           ; @3D04 A2 03
+    sec                                ; @3D06 38
+    jmp L655C                          ; @3D07 4C 5C 65
 ; ---- executable island $5E15 ----
 * = $5E15
 L5E15:

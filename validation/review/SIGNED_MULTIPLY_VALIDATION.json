@@ -13,28 +13,28 @@
       "SMUL16": {
         "cases": 4457,
         "errors": 0,
-        "mean_cycles": 292.3497868521427,
-        "min_cycles": 260,
-        "max_cycles": 325
+        "mean_cycles": 282.588063719991,
+        "min_cycles": 250,
+        "max_cycles": 316
       },
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 512.9817351598174,
-        "min_cycles": 456,
-        "max_cycles": 571
+        "mean_cycles": 508.1967621419676,
+        "min_cycles": 451,
+        "max_cycles": 566
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 744.5699460356994,
+        "mean_cycles": 744.1282689912827,
         "min_cycles": 660,
         "max_cycles": 873
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 726.388671875,
+        "mean_cycles": 725.80859375,
         "min_cycles": 645,
         "max_cycles": 813
       }
@@ -51,28 +51,28 @@
       "SMUL16": {
         "cases": 4457,
         "errors": 0,
-        "mean_cycles": 248.80233340812205,
-        "min_cycles": 226,
-        "max_cycles": 289
+        "mean_cycles": 245.80233340812205,
+        "min_cycles": 223,
+        "max_cycles": 286
       },
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 468.6629306766293,
-        "min_cycles": 412,
-        "max_cycles": 525
+        "mean_cycles": 463.8787878787879,
+        "min_cycles": 407,
+        "max_cycles": 520
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 711.5869655458697,
+        "mean_cycles": 711.1535907015359,
         "min_cycles": 630,
         "max_cycles": 838
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 723.5830078125,
+        "mean_cycles": 723.1005859375,
         "min_cycles": 641,
         "max_cycles": 798
       }
@@ -89,28 +89,28 @@
       "SMUL16": {
         "cases": 4457,
         "errors": 0,
-        "mean_cycles": 249.10769575947947,
-        "min_cycles": 226,
-        "max_cycles": 289
+        "mean_cycles": 246.10769575947947,
+        "min_cycles": 223,
+        "max_cycles": 286
       },
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 468.354503943545,
-        "min_cycles": 412,
-        "max_cycles": 527
+        "mean_cycles": 463.5811540058115,
+        "min_cycles": 407,
+        "max_cycles": 522
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 711.9418845994188,
+        "mean_cycles": 711.4470734744707,
         "min_cycles": 630,
         "max_cycles": 838
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 723.9931640625,
+        "mean_cycles": 723.5341796875,
         "min_cycles": 644,
         "max_cycles": 812
       }
@@ -127,28 +127,28 @@
       "SMUL16": {
         "cases": 4457,
         "errors": 0,
-        "mean_cycles": 249.14449181063495,
-        "min_cycles": 226,
-        "max_cycles": 289
+        "mean_cycles": 246.14449181063495,
+        "min_cycles": 223,
+        "max_cycles": 286
       },
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 468.7318389373184,
-        "min_cycles": 412,
-        "max_cycles": 532
+        "mean_cycles": 463.9584889995849,
+        "min_cycles": 407,
+        "max_cycles": 527
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 712.1369863013699,
+        "mean_cycles": 711.706102117061,
         "min_cycles": 630,
         "max_cycles": 838
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 721.9404296875,
+        "mean_cycles": 721.4443359375,
         "min_cycles": 641,
         "max_cycles": 816
       }
@@ -165,28 +165,28 @@
       "SMUL16": {
         "cases": 4457,
         "errors": 0,
-        "mean_cycles": 292.02669957370426,
-        "min_cycles": 260,
-        "max_cycles": 323
+        "mean_cycles": 282.2629571460624,
+        "min_cycles": 250,
+        "max_cycles": 314
       },
       "SMUL24": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 512.4167704441677,
-        "min_cycles": 456,
-        "max_cycles": 570
+        "mean_cycles": 507.64508094645083,
+        "min_cycles": 451,
+        "max_cycles": 565
       },
       "SMUL32": {
         "cases": 2409,
         "errors": 0,
-        "mean_cycles": 743.9132420091324,
+        "mean_cycles": 743.4773765047738,
         "min_cycles": 660,
         "max_cycles": 873
       },
       "SMUL32_READY": {
         "cases": 1024,
         "errors": 0,
-        "mean_cycles": 726.7392578125,
+        "mean_cycles": 726.2607421875,
         "min_cycles": 640,
         "max_cycles": 807
       }
@@ -195,6 +195,6 @@
   "summary": {
     "profiles": 5,
     "machine_calls": 264999,
-    "elapsed_seconds": 14.48
+    "elapsed_seconds": 17.53
   }
 }

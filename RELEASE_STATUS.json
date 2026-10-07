@@ -13,11 +13,11 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "0c29395fe3259a5b4ed6c811b6f4b907f2eaa7d4bf9aa8d89f1e5ef3d7722d70",
-    "v2_pareto_fast": "ff5663429a4e71f19af1bc701f4de088d021f0cdcb118196faa19dab53f4c1ca",
-    "v3_reu_512k": "b313b36805c80243193f4e062184b6b6931b7c04c0c41c4c65a1ac2cdc4b19f3",
-    "v4_reu_16m": "6fd71639067541431526e1f3e6c46219f314e6d0d2ac1da084fb90ac7f1f8bcd",
-    "v5_hybrid_lowzp": "dac33d17d8f85fff7e840eee1b9dd34349d6aade9ba0c814941ab7440578c3d5"
+    "v1_balanced": "af9398439c99960c96948b36ee649a3eaff49e78a2a4c7cdc43bef8219c0bbe6",
+    "v2_pareto_fast": "f6b689481f8d4e782392b63ca0e7094780e9bdfb5f62a69babe5025f82124d12",
+    "v3_reu_512k": "1c337837155427f5ad8897bc5a197027b7646b34f13ff6cee74727ebeeb997c1",
+    "v4_reu_16m": "99dad934adc5709fbb3ecb38b6700d75aeddd885467ccb0bea062bacad627d51",
+    "v5_hybrid_lowzp": "5bead2dfac31fd74318fbace19cf6e8b8591598f65319d637bddd17a6a62fc98"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "4ba6ece174d54042d51736f3bb0ee3a8c0506c8fcdd9ac4c0163bfb5197a3fda",
@@ -243,11 +243,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "2e5c2f93a41f1564181e4ccb26133ef8d878e7a4e07c3ad3a1a719c0a4ac6ff9",
-    "v2_pareto_fast": "f2aadd2eacd9dd6dfd7af26b09a1b90356da1c2203026aaa23a24f92048d055f",
-    "v3_reu_512k": "02117677cb35bff3e70930eb6721e5b113701cd56d2b7f16c116dc100b88517e",
-    "v4_reu_16m": "bc3b8b088fff142fad0d7bb25272d22382565ace95e1ab3c584ee26e723b38c2",
-    "v5_hybrid_lowzp": "74445a3d590cad45aa74fb8546d0704670516b801ca6f9f400d551dcb812e38f"
+    "v1_balanced": "677902adb0ad1d540b864fdad87609e0272fee413ce6d58888fe95673ee8fe5d",
+    "v2_pareto_fast": "40da0d940cda3e86d7976e46ebd3ce9c99aeba5122025dbde50a2a7d2f6d1984",
+    "v3_reu_512k": "e2601d63f3e9dd08b845601658c9f242c69b54caf90685a72394f7c51727d945",
+    "v4_reu_16m": "33edb5481446d3e8e808413fbcad47ae7f4022a24564f7eaa10710a837357a03",
+    "v5_hybrid_lowzp": "9c343ce3b8de0375cb9d622a4c8460ed385652e19a6b032106addf65bdb5d794"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "674418328ebd210d161790c0a6d42be9d1ca08315c17fdc13d04bea4d0999b61",
@@ -504,5 +504,14 @@
     "new_persistent_stack_bytes": 0,
     "new_table_bytes": 0,
     "scope": "Selected candidates screened and measured; no exhaustive benchmark of the entire frontier."
+  },
+  "repose_carry_generalization": {
+    "status": "PASS",
+    "evidence": "validation/review/REPOSE_CARRY_GENERALIZATION.json",
+    "smul8_changed": false,
+    "smul16_changed": true,
+    "smul32_changed": true,
+    "new_zp_bytes": 0,
+    "new_persistent_stack_bytes": 0
   }
 }

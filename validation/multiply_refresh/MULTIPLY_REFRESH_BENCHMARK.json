@@ -41,14 +41,14 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 322.9183673469388,
-        "min_cycles": 291,
-        "max_cycles": 354,
+        "mean_cycles": 313.15409309791335,
+        "min_cycles": 281,
+        "max_cycles": 345,
         "cases": 4361,
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 812.9988534739739,
+        "mean_cycles": 812.5443705572117,
         "min_cycles": 725,
         "max_cycles": 938,
         "cases": 4361,
@@ -85,14 +85,14 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 279.88878697546437,
-        "min_cycles": 257,
-        "max_cycles": 320,
+        "mean_cycles": 276.88878697546437,
+        "min_cycles": 254,
+        "max_cycles": 317,
         "cases": 4361,
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 780.7569364824582,
+        "mean_cycles": 780.3024535656959,
         "min_cycles": 695,
         "max_cycles": 903,
         "cases": 4361,
@@ -129,14 +129,14 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 279.88878697546437,
-        "min_cycles": 257,
-        "max_cycles": 320,
+        "mean_cycles": 276.88878697546437,
+        "min_cycles": 254,
+        "max_cycles": 317,
         "cases": 4361,
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 780.7569364824582,
+        "mean_cycles": 780.3024535656959,
         "min_cycles": 695,
         "max_cycles": 903,
         "cases": 4361,
@@ -173,14 +173,14 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 279.88878697546437,
-        "min_cycles": 257,
-        "max_cycles": 320,
+        "mean_cycles": 276.88878697546437,
+        "min_cycles": 254,
+        "max_cycles": 317,
         "cases": 4361,
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 780.7569364824582,
+        "mean_cycles": 780.3024535656959,
         "min_cycles": 695,
         "max_cycles": 903,
         "cases": 4361,
@@ -224,14 +224,14 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 322.9183673469388,
-        "min_cycles": 291,
-        "max_cycles": 354,
+        "mean_cycles": 313.15409309791335,
+        "min_cycles": 281,
+        "max_cycles": 345,
         "cases": 4361,
         "errors": 0
       },
       "MATH_SMUL32_SHR16": {
-        "mean_cycles": 812.9988534739739,
+        "mean_cycles": 812.5443705572117,
         "min_cycles": 725,
         "max_cycles": 938,
         "cases": 4361,
@@ -242,6 +242,6 @@
   "summary": {
     "profiles": 5,
     "machine_calls": 415078,
-    "elapsed_seconds": 28.06
+    "elapsed_seconds": 34.34
   }
 }
