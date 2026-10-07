@@ -97,9 +97,7 @@ MULDIV16_S_PPOS_DPOS:
     sta U3216_D0
     lda MATH_D+$01
     sta U3216_D1
-    jsr U3216_ENTRY
-    clc
-    rts
+    jmp U3216_ENTRY
 
 ; Product-negative path: remainder is negative; quotient sign is !sign(D).
 MULDIV16_S_MUL_PNEG:
@@ -133,9 +131,7 @@ MULDIV16_S_PNEG_DPOS:
 
 MULDIV16_S_DIV_Q:
     jsr U3216_ENTRY
-    jsr MULDIV16_S_NEG_Q
-    clc
-    rts
+    jmp MULDIV16_S_NEG_Q
 
 MULDIV16_S_DIV_R:
     jsr U3216_ENTRY
@@ -155,6 +151,7 @@ MULDIV16_S_NEG_Q:
     lda #$00
     sbc MATH_Q+$03
     sta MATH_Q+$03
+    clc
     rts
 
 MULDIV16_S_NEG_R:
