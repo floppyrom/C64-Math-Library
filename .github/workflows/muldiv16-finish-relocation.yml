@@ -44,7 +44,33 @@ jobs:
                   import re
                   s=re.sub(r'^SMUL8_SUM_BASE\s*=.*$',line,s,flags=re.M)
               else:
-                  s=s.replace('TURBO32_ZP_BASE = $000A','TURBO32_ZP_BASE = $000A\n'+line) if val=='$9C00' else s.replace('TURBO32_ZP_BASE = $0006','TURBO32_ZP_BASE = $0006\n'+line)
+                  import re
+                  s,n=re.subn(r'^(TURBO32_ZP_BASE\s*=.*)
+          PY
+      - name: Build reference and alternate maps
+        run: |
+          rm -rf build_source build_hybrid
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+      - name: Validate both maps and MULDIV16
+        run: |
+          python3 tools/validate_source_build.py all --build build_source/reference --out /tmp/ref
+          python3 tools/validate_source_build.py all --build build_source/alternate --out /tmp/alt
+          python3 tools/validate_muldiv16.py
+          python3 tools/validate_hybrid.py --random-per-family 500 --mixed 500
+      - name: Commit relocation-safe generated state
+        run: |
+          rm -rf build_source build_hybrid build_hybrid_repeat build_pareto
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Finish relocation-safe MULDIV16 and SMUL8 mapping"
+          git push origin HEAD:promote/muldiv16-stable-20261007
+,r'\1\n'+line,s,count=1,flags=re.M)
+                  if n != 1:
+                      raise RuntimeError(f'could not place SMUL8_SUM_BASE in {p}')
               p.write_text(s)
           PY
       - name: Build reference and alternate maps
