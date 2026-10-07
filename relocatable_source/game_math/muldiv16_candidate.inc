@@ -10,26 +10,34 @@
 MATH_UMULDIV16_CANDIDATE = REG_API+$02E0
 MATH_SMULDIV16_CANDIDATE = REG_API+$02E3
 
-; Existing cross-profile composition helpers in the historical API support
-; area. These remain non-stable implementation details.
-MULDIV16_Z32_TO_N32 = REG_API+$0250
 * = MATH_UMULDIV16_CANDIDATE
     jmp MULDIV16_U_COMPOSED
 * = MATH_SMULDIV16_CANDIDATE
     jmp MULDIV16_S_COMPOSED
 
-; Relocation-safe V1/V5 unsigned baseline. The older helper at +$0300 is
-; retained for provenance but is not source-relocation-safe on every map.
-* = REG_API+$03D0
+; The historical fixed-image chain helpers are not relocation-safe source
+; primitives, so the V1/V5 baselines inline the symbolic four-byte handoff.
+; The unsigned core begins immediately after the old +$03A0 chain block.
+* = REG_API+$03C9
 MULDIV16_U_COMPOSED:
     jsr MATH_UMUL16
-    jsr MULDIV16_Z32_TO_N32
+    ldx #$03
+MULDIV16_U_COPY:
+    lda MATH_Z,x
+    sta MATH_N,x
+    dex
+    bpl MULDIV16_U_COPY
     jmp MATH_UDIV32_16
 
-; V1/V5 signed baseline. V2/V3/V4 overlay this address with the optimized
-; signed producer handoff while preserving the same candidate entry.
+; V1/V5 signed baseline. V2/V3/V4 overlay +$03E0..+$03F7 with their
+; optimized signed producer handoff while preserving the public candidate.
 * = REG_API+$03E0
 MULDIV16_S_COMPOSED:
     jsr MATH_SMUL16
-    jsr MULDIV16_Z32_TO_N32
+    ldx #$03
+MULDIV16_S_COPY:
+    lda MATH_Z,x
+    sta MATH_N,x
+    dex
+    bpl MULDIV16_S_COPY
     jmp MATH_SDIV32_16
