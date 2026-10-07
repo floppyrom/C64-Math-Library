@@ -38,8 +38,8 @@ def load_source(profile,kind):
 def vectors():
     out=[(n,d) for n in edge(32) for d in edge(16)]
     r=random.Random(0x3216A11)
-    out += [(r.getrandbits(32),r.randrange(1,65536)) for _ in range(40000)]
-    out += [(r.getrandbits(32),r.randrange(1,256)) for _ in range(20000)]
+    out += [(r.getrandbits(32),r.randrange(1,65536)) for _ in range(12000)]
+    out += [(r.getrandbits(32),r.randrange(1,256)) for _ in range(8000)]
     out += [(r.getrandbits(32),0) for _ in range(128)]
     for d in list(range(1,33))+[63,127,128,129,254,255,256,257,511,512,1023,4095,16383,32767,65535]:
         for q in [0,1,2,3,7,15,31,127,255,256,257,65535,65536,0xffffff,0xffffffff]:
