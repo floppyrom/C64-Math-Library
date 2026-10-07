@@ -44,4 +44,4 @@ jobs:
         run: |
           python3 tools/validate_udiv32_16_integrated.py
           python3 tools/validate_division_latency_escape.py
-# D17 rerun after bounded wide-dispatch gate
+# D17 rerun after N3 large-quotient gate
