@@ -29,8 +29,8 @@ jobs:
         run: |
           python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
           python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
-          python3 tools/build_hybrid.py --config-kind reference --out build_hybrid_new
-          python3 tools/build_hybrid.py --config-kind alternate --out build_hybrid_new
+          python3 tools/build_hybrid.py --config-kind reference --out build_hybrid
+          python3 tools/build_hybrid.py --config-kind alternate --out build_hybrid
 
       - name: Promote resident images
         run: |
@@ -40,7 +40,7 @@ jobs:
           cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
           cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
           cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
-          cp build_hybrid_new/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
 
       - name: Regenerate published sources
         run: |
@@ -234,7 +234,7 @@ jobs:
           rm -f tools/bench_smul16_live_x1.py
           rm -f tools/bench_smul16_v5_hybrid.py
           rm -f tools/bench_smul32_nn_carry_reuse.py
-          rm -rf build_source build_hybrid_new build_final build_hybrid_final build_hybrid build_hybrid_repeat
+          rm -rf build_source build_hybrid build_final build_hybrid_final build_hybrid_repeat
 
       - name: Refresh package manifest
         run: |
