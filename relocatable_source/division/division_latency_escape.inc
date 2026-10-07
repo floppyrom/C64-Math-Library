@@ -67,13 +67,17 @@ DIVLAT_UD32_NARROW:
     rts
 
 DIVLAT_UD32_D17_PREP:
-    ; D17 emits a 16-bit quotient.  Clear its upper quotient and top remainder
-    ; bytes here and enter with Y=0 as the 17th remainder bit.
-    lda #0
+    ; Only use the 16-step D17 engine once N>=2^24.  For D17 this implies a
+    ; quotient >=128; smaller quotients stay on the existing live-high q1/q2
+    ; path.  A is already zero here: D2 was exactly 1 and LSR produced 0.
+    ; LDX preserves that zero for the output clears.
+    ldx MATH_N+3
+    bne DIVLAT_UD32_D17_USE
+    jmp UD32_L0662
+DIVLAT_UD32_D17_USE:
     sta MATH_Q+2
     sta MATH_Q+3
     sta MATH_R+3
-    tay
     jmp DIVLAT_UD32_D17
 
 ; Exact original UDIV24 low-tail setup, used when quotient <256.
@@ -101,6 +105,9 @@ DIVLAT_END:
 ; X is the 16-step loop counter. Inputs N/D remain untouched.
 * = UD32_OLD_C28A
 DIVLAT_UD32_D17:
+    ; A=0 from the width classifier / helper; use the island's final spare byte
+    ; to establish the 17th remainder bit in Y.
+    tay
     lda MATH_N+0
     sta MATH_Q+0
     lda MATH_N+1
