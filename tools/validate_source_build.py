@@ -139,6 +139,25 @@ def validate(profile,build):
     if sd==0:assert c.c==1 and q==0 and r==0,(profile,ent,'div0',q,r)
     else:
      eq,er=truncdiv(sa,sd);assert c.c==0 and q==(eq&MASK(nb)) and r==(er&MASK(db)),(profile,ent,sa,sd,hex(q),hex(r),eq,er)
+ # Stable wide-intermediate MULDIV16 pair: full 32-bit product, then / D16.
+ md_e=cases(16,0x4D16,16);mdr=random.Random(0x4D554C44)
+ md_cases=[(md_e[i%len(md_e)],md_e[(i*5+3)%len(md_e)],md_e[(i*7+1)%len(md_e)]) for i in range(32)]
+ md_cases += [(mdr.randrange(1<<16),mdr.randrange(1<<16),mdr.randrange(1<<16)) for _ in range(96)]
+ for x,y,d in md_cases:
+  wr(c,X,x,2);wr(c,Y,y,2);wr(c,D,d,2);xs=snap(c,X,2);ys=snap(c,Y,2);ds=snap(c,D,2)
+  call('MATH_UMULDIV16');q=rd(c,Q,4);r=rd(c,R,2)
+  if d==0: assert c.c==1 and q==0 and r==0,(profile,'MATH_UMULDIV16','div0',x,y,q,r)
+  else: assert c.c==0 and (q,r)==divmod(x*y,d),(profile,'MATH_UMULDIV16',x,y,d,q,r,divmod(x*y,d))
+  assert snap(c,X,2)==xs and snap(c,Y,2)==ys and snap(c,D,2)==ds,(profile,'MATH_UMULDIV16','input preserve')
+ for xb,yb,db in md_cases:
+  sx,sy,sd=si(xb,16),si(yb,16),si(db,16)
+  wr(c,X,xb,2);wr(c,Y,yb,2);wr(c,D,db,2);xs=snap(c,X,2);ys=snap(c,Y,2);ds=snap(c,D,2)
+  call('MATH_SMULDIV16');q=rd(c,Q,4);r=rd(c,R,2)
+  if sd==0: assert c.c==1 and q==0 and r==0,(profile,'MATH_SMULDIV16','div0',sx,sy,q,r)
+  else:
+   eq,er=truncdiv(sx*sy,sd)
+   assert c.c==0 and q==(eq&MASK(32)) and r==(er&MASK(16)),(profile,'MATH_SMULDIV16',sx,sy,sd,hex(q),hex(r),eq,er)
+  assert snap(c,X,2)==xs and snap(c,Y,2)==ys and snap(c,D,2)==ds,(profile,'MATH_SMULDIV16','input preserve')
  # Game 32/32 divmod, both aliases, unsigned+signed.
  for a,d in pairs(32,0x323232,32)[:100]:
   wr(c,N,a,4);wr(c,D,d,4);call('MATH_UDIV32_32');q=rd(c,Q,4);r=rd(c,R,4)
