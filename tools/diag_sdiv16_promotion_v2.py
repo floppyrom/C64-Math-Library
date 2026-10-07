@@ -57,7 +57,18 @@ def main():
     tmp=Path(tempfile.mkdtemp(prefix="diag-div-"))
     try:
         build(P,ROOT/"relocatable_source"/P/"math_config_reference.inc",tmp)
-        cpu,api=load(tmp/f"math_{P}_source_built.prg",tmp/"math_api.inc")
+        # Production promotion is surgical: preserve the known-good resident
+        # image and overlay only the SDIV16 signed front-end $7A00-$7C2A.
+        base_path=ROOT/P/"resident"/f"math_{P}_game_math.prg"
+        cand_path=tmp/f"math_{P}_source_built.prg"
+        bb=bytearray(base_path.read_bytes()); cb=cand_path.read_bytes()
+        blo=bb[0]|bb[1]<<8; clo=cb[0]|cb[1]<<8
+        assert blo==clo
+        for addr in range(0x7A00,0x7C2B):
+            bb[2+addr-blo]=cb[2+addr-clo]
+        patched=tmp/f"math_{P}_patched_resident.prg"
+        patched.write_bytes(bb)
+        cpu,api=load(patched,tmp/"math_api.inc")
         pi=1
         defs=[('MATH_SDIV8',8,8,8,8,0),('MATH_SDIV16',16,16,16,16,0),
               ('MATH_SDIV24',24,24,24,24,0),('MATH_SDIV32_16',32,16,32,16,0),
