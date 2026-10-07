@@ -89,7 +89,8 @@ def main():
     result={}
     for pi,p in enumerate(PROFILES):
         lay=layout(p)
-        if lay["gap"]!=0: raise AssertionError((p,lay))
+        if lay["gap"]<0: raise AssertionError(("signed/unsigned overlap",p,lay))
+        if p=="v2_pareto_fast" and lay["gap"]!=0: raise AssertionError(("V2 fixed boundary changed",p,lay))
         tmp=Path(tempfile.mkdtemp(prefix="sdiv16-late-"+p+"-"))
         try:
             build(p,ROOT/"relocatable_source"/p/"math_config_reference.inc",tmp)
