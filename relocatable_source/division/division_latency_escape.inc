@@ -22,10 +22,10 @@
     bne UD32_L0662
     jmp DIVLAT_UD32_NARROW
 
-; Place both helpers immediately after the compact UDIV32/8 subpath. The profile
-; placement wrapper guarantees this hole is source-owned and does not overlap
-; the next resident region.
-* = U3216_D8_END
+; The narrow dispatch above makes the legacy internal 32/8 block unreachable.
+; Reuse the beginning of that already-owned block for both helpers, avoiding
+; any new resident allocation.
+* = UD32_OLD_C23D
 DIVLAT_DU24_NARROW:
     ; UDIV24 owns N[0..2]; preserve the adjacent N[3] byte while zero-extending.
     lda MATH_N+3
