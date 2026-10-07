@@ -15,3 +15,5 @@ jobs:
         run: python3 tools/research_udiv32_16_split_tail.py
       - name: In-place/direct-public candidates
         run: python3 tools/research_udiv32_16_split_tail_v2.py
+      - name: D8 bounded fast path
+        run: python3 tools/research_udiv32_16_d8_fast.py
