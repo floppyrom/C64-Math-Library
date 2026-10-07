@@ -969,8 +969,10 @@ S32V28_api_s31_v25_nn:
         sta S32V28_x3
         sta S32V28__sqr_lo_3+1
 S32V28_api_s31_v25_xdone:
-        sec
-        lda #0
+        ; X is negative, so its completed two's-complement magnitude leaves
+        ; C=0 on both the common and propagated-borrow routes. Reuse that
+        ; borrow: 1-Y0-(1-C) == -Y0, avoiding a redundant SEC.
+        lda #1
         sbc MATH_IO+$04
         sta S32V28_y0
         lda #0
