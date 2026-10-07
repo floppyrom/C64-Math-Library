@@ -13,7 +13,13 @@ import source_relocation as sr
 PROFILE = 'v5_hybrid_lowzp'
 HYBRID_BYTES = 0x1E00
 DIV_SRC = (0x4200, 0x51FF)
-UMOD8_SRC = (0x5200, 0x527F)
+# V2 UDIV32/16 now has a compact byte-divisor island immediately after the
+# true UMOD8 body, plus a narrow-tail helper reused from dead UDIV32/32 code.
+UMOD8_SRC = (0x5200, 0x5271)
+UDIV32_16_D8_SRC = (0x5272, 0x52ED)
+DIVLAT_HELPER_SRC = (0x5957, 0x5978)
+UDIV32_16_D8_DST_OFF = 0x1772
+DIVLAT_HELPER_DST_OFF = 0x10B0
 COS_SRC = (0xC766, 0xC770)
 SINCOS_SRC = (0xC771, 0xC781)
 COS_TABLE_SRC = (0x9500, 0x95FF)
@@ -121,9 +127,16 @@ def map_abs(target: int, vals: dict[str, int], hbase: int) -> int:
     # Private V2 division block: old $4200-$51FF -> HYBRID_CODE+$0000-$0FFF.
     if DIV_SRC[0] <= target <= DIV_SRC[1]:
         return hbase + (target - DIV_SRC[0])
-    # Private V2 UMOD8 block: old $5200-$527F -> HYBRID_CODE+$1000-$107F.
+    # Private V2 UMOD8 block: actual body ends immediately before the new D8 island.
     if UMOD8_SRC[0] <= target <= UMOD8_SRC[1]:
         return hbase + 0x1000 + (target - UMOD8_SRC[0])
+    # Preserve the D8 island's low-byte phase in the small gap between the
+    # private signed-division core and the high-end UDIV16 engine.
+    if UDIV32_16_D8_SRC[0] <= target <= UDIV32_16_D8_SRC[1]:
+        return hbase + UDIV32_16_D8_DST_OFF + (target - UDIV32_16_D8_SRC[0])
+    # The UDIV24 latency escape helper is only 34 bytes and fits after SINCOS.
+    if DIVLAT_HELPER_SRC[0] <= target <= DIVLAT_HELPER_SRC[1]:
+        return hbase + DIVLAT_HELPER_DST_OFF + (target - DIVLAT_HELPER_SRC[0])
     # Public I/O follows the selected V1-style map.
     if V2_REF_MATH_IO <= target <= V2_REF_MATH_IO + 0x1F:
         return vals['MATH_IO'] + (target - V2_REF_MATH_IO)
@@ -574,6 +587,18 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                              selected_trace, vals, hbase)
         copy_relocated_block(dst, src, UMOD8_SRC[0], UMOD8_SRC[1], hbase + 0x1000,
                              selected_trace, vals, hbase)
+        # Newly reachable UDIV32/16 and UDIV24 latency islands live outside the
+        # historical contiguous division block. Keep them in private V5 holes
+        # and relocate all absolute references through map_abs().
+        d8_dst=hbase+UDIV32_16_D8_DST_OFF
+        lat_dst=hbase+DIVLAT_HELPER_DST_OFF
+        for ss,se,ds,label in (
+            (*UDIV32_16_D8_SRC,d8_dst,'UDIV32/16 D8'),
+            (*DIVLAT_HELPER_SRC,lat_dst,'division latency helper')):
+            n=se-ss+1
+            if any(dst[ds:ds+n]):
+                raise RuntimeError(f'V5 {label} destination {hx(ds)}-{hx(ds+n-1)} is not free')
+            copy_relocated_block(dst,src,ss,se,ds,selected_trace,vals,hbase)
         # The current V2 UDIV24 is a direct-ABI JMP into the copied $4800 island.
         # Patch both quotient and modulo public entries to that relocated core.
         u24_target=hbase+(0x4816-DIV_SRC[0])
@@ -646,7 +671,8 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'Fast ATAN2, when enabled, adds no ZP and occupies four formerly empty V1 table pages (1024 bytes).',
                 'V2 direct UDIV8 replaces the V1 256-class core in place; V2 direct UDIV16 is repacked into private hybrid RAM; UDIV24 uses the copied Repose direct core.',
                 'V2 direct-output SDIV16 and SDIV24 are repacked into V1-free code/table windows and stay wholly inside the normal 31-byte ZP contract.',
-                'SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 retains the faster V2 hybrid import.',
+                'SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 imports the split-tail V2 core including its compact D8 island.',
+                'UDIV24 narrow-divisor tail calls the same relocated UDIV32/16 engine through the V2 latency helper; no additional ZP is required.',
                 'HYBRID_CODE is private implementation storage and may be relocated at build time.',
                 'Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines.',
             ],
