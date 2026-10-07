@@ -1,3 +1,11 @@
+## 2026-10-07 — PR #24 carry/register ideas generalized to SMUL16 and SMUL32
+
+- Generalized the carry-priming, live-high-byte binding, known-carry reuse and dead-scratch ideas from the optimized SMUL24 path.
+- SMUL8 is unchanged: its direct signed-domain kernel has no analogous wrapper/binder overhead to remove.
+- Canonical V1/V2/V3/V4/V5 SMUL16 means are **282.588064 / 245.802333 / 246.107696 / 246.144492 / 282.262957 cycles**; V1/V5 save about 9-10 cycles per call and V2-V4 save exactly 3 cycles per call in matched research corpora.
+- Canonical V1/V2/V3/V4/V5 SMUL32 means are **744.128269 / 711.153591 / 711.447073 / 711.706102 / 743.477377 cycles**; NN calls save exactly 2 cycles, other quadrants are unchanged.
+- SMUL16_SHR8 and SMUL32_SHR16 inherit the corresponding producer gains. ABI, ZP, persistent-stack and table contracts are unchanged.
+
 ## 2026-10-07 — Repose OptiSearchV2 SMUL24 and ATAN2 refinements
 
 - Adapted Repose's carry-primed signed dispatch and dead pointer-low scratch with one shared binder. Public SMUL24 saves 4–5 cycles per measured call and six code bytes, preserving 24 ZP bytes, tables, public inputs and zero persistent stack usage.

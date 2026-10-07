@@ -1,3 +1,9 @@
+2026-10-07 SIGNED MULTIPLY CARRY/REGISTER GENERALIZATION
+- Applied the optimized SMUL24 carry/register strategy to SMUL16 and the NN carry chain in SMUL32.
+- SMUL16 V1/V2/V3/V4/V5: 282.588064 / 245.802333 / 246.107696 / 246.144492 / 282.262957 cycles.
+- SMUL32 V1/V2/V3/V4/V5: 744.128269 / 711.153591 / 711.447073 / 711.706102 / 743.477377 cycles.
+- SMUL8 remains unchanged because its direct signed-domain implementation has no equivalent correction/binder overhead.
+
 2026-10-07: Repose OptiSearchV2 follow-up
 - SMUL24: carry-primed dispatch saves 4-5 cycles/call and 6 code bytes.
 - ATAN2: about 1 cycle lower full-domain mean, same results/resources.

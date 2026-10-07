@@ -15,9 +15,9 @@ The five fixed profiles use different memory/ZP trade-offs, so the fastest numbe
 | `MATH_UMUL24` | `mul_u24_u24_u48` | 474.042329 | 429.555502 | 429.555502 | 429.555502 | 474.042329 |
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 712.235367 | 690.235367 | 690.235367 | 690.235367 | 712.235367 |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 67.992188 | 67.992188 | 67.992188 | 67.992188 |
-| `MATH_SMUL16` | `mul_s16_s16_s32` | 292.349787 | 248.802333 | 249.107696 | 249.144492 | 292.026700 |
+| `MATH_SMUL16` | `mul_s16_s16_s32` | 282.588064 | 245.802333 | 246.107696 | 246.144492 | 282.262957 |
 | `MATH_SMUL24` | `mul_s24_s24_s48` | 511.342357 | 467.342357 | 467.342357 | 467.342357 | 511.342357 |
-| `MATH_SMUL32` | `mul_s32_s32_s64` | 744.569946 | 711.586966 | 711.941885 | 712.136986 | 743.913242 |
+| `MATH_SMUL32` | `mul_s32_s32_s64` | 744.128269 | 711.153591 | 711.447073 | 711.706102 | 743.477377 |
 
 ### Divide
 
@@ -99,7 +99,7 @@ The current SMUL32 native record is `compact126` at **646.354530 cycles** with 1
 
 For the practical low-resource class, `fast31_native_v2` is the new **31-ZP / stack-free SMUL32 record** at **692.825100 cycles**, improving the previous 697.259440 point by 4.434340 cycles. See [`docs/SMUL32_FAST31_V2.md`](docs/SMUL32_FAST31_V2.md).
 
-For the shipped public API, V2/V3/V4 use a persistent-pointer FAST31/V29 layout: **all six** table-pointer pairs occupy holes already inside each profile's normal ZP ownership, eliminating the ordinary mixed-call pointer repair completely. The stable `MATH_SMUL32` entry now falls directly into the dispatcher instead of paying the legacy self-redirect. Canonical `MATH_SMUL32` means are **711.586966 / 711.941885 / 712.136986 cycles** in V2/V3/V4. Relative to the pre-persistent-pointer path, signed ordinary calls and signed SHR16 now save **28 cycles**; unsigned ordinary calls and unsigned SHR16 save **22 cycles**. READY timings are unchanged. V1/V5 retain the original low-ZP binder. The literal FAST31 v2 `CPY #$00` carry-seeding dispatch was also tested in the public memory ABI and measured exactly neutral, so it was not retained.
+For the shipped public API, V2/V3/V4 use a persistent-pointer FAST31/V29 layout: **all six** table-pointer pairs occupy holes already inside each profile's normal ZP ownership, eliminating the ordinary mixed-call pointer repair completely. The stable `MATH_SMUL32` entry now falls directly into the dispatcher instead of paying the legacy self-redirect. Canonical `MATH_SMUL32` means are **711.153591 / 711.447073 / 711.706102 cycles** in V2/V3/V4. Relative to the pre-persistent-pointer path, signed ordinary calls and signed SHR16 now save **28 cycles**; unsigned ordinary calls and unsigned SHR16 save **22 cycles**. READY timings are unchanged. V1/V5 retain the original low-ZP binder. The literal FAST31 v2 `CPY #$00` carry-seeding dispatch was also tested in the public memory ABI and measured exactly neutral, so it was not retained.
 
 **Cross-profile note:** the small V2/V3/V4 spread in the canonical SMUL32 means comes from profile-specific deterministic random seeds. On one identical **6,361-case** corpus, all three current implementations are cycle-identical at **716.802547 cycles**, with identical per-call cycle vectors. The spread is not a relocation or REU penalty.
 

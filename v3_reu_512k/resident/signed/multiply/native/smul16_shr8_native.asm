@@ -4,14 +4,13 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UMUL16_SHR8. Executable overlap: 0 instructions.
-; Public entry: $5E0F. Reachable signed instructions: 121.
+; Public entry: $5E0F. Reachable signed instructions: 120.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
-; ---- executable island $0080 ----
-* = $0080
-L0080:
-    lda $A4                            ; @0080 A5 A4
+; ---- executable island $0082 ----
+* = $0082
+L0082:
     sta $C8                            ; @0082 85 C8
     eor #$FF                           ; @0084 49 FF
     sta $A9                            ; @0086 85 A9
@@ -74,14 +73,14 @@ L00E4:
 ; ---- executable island $2100 ----
 * = $2100
 L2100:
-    lda $C000                          ; @2100 AD 00 C0
-    sta $96                            ; @2103 85 96
-    lda $C001                          ; @2105 AD 01 C0
-    sta $A4                            ; @2108 85 A4
-    lda $C005                          ; @210A AD 05 C0
-    sta $B4                            ; @210D 85 B4
+    lda $C005                          ; @2100 AD 05 C0
+    sta $B4                            ; @2103 85 B4
+    lda $C000                          ; @2105 AD 00 C0
+    sta $96                            ; @2108 85 96
+    lda $C001                          ; @210A AD 01 C0
+    sta $A4                            ; @210D 85 A4
     ldy $C004                          ; @210F AC 04 C0
-    jsr L0080                          ; @2112 20 80 00
+    jsr L0082                          ; @2112 20 82 00
     stx $C00A                          ; @2115 8E 0A C0
     sta $C00B                          ; @2118 8D 0B C0
     lda $EF                            ; @211B A5 EF
