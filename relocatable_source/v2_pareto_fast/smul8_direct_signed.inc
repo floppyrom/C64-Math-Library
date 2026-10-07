@@ -1,10 +1,10 @@
 ; Direct signed-domain SMUL8: Q(a+b)-Q(a-b), exhaustive 65,536-case qualified.
 ; 46-byte public kernel, 0 ZP, 0 persistent stack-page bytes.
-; Private signed-sum planes use the common reserved $9C00/$9E00 pages.
+; Private signed-sum planes use the configured SMUL8_SUM_BASE block.
 ; Complemented difference planes are shared with the profile's quarter-square tables.
 !cpu 6510
-SMUL8_SUM_LO = $9C00
-SMUL8_SUM_HI = $9E00
+SMUL8_SUM_LO = SMUL8_SUM_BASE
+SMUL8_SUM_HI = SMUL8_SUM_BASE+$0200
 SMUL8_NEG_LO = REG_TABLE+$0400
 SMUL8_NEG_HI = REG_TABLE+$0600
 
