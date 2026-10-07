@@ -1,7 +1,7 @@
 name: MULDIV16 stable proof
 on:
   push:
-    branches: [ promote/muldiv16-stable-20261007, experiment/muldiv16-v5-lowzp-fusion-20261007 ]
+    branches: [ promote/muldiv16-stable-20261007 ]
 jobs:
   validate:
     runs-on: ubuntu-latest
