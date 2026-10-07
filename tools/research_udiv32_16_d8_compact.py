@@ -50,7 +50,9 @@ candidate:
     lda $13
     bne general
     lda $12
-    bne d8
+    beq d8_zero_stub
+    jmp d8
+d8_zero_stub:
     jmp zero
 general:
     jsr $420C
