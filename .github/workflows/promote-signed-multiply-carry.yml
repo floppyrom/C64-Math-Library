@@ -277,3 +277,4 @@ jobs:
           git add -A
           git commit -m "Promote SMUL16/SMUL32 carry-register optimizations"
           git push origin HEAD:opt/signed-multiply-carry-prime-v1
+# promotion trigger
