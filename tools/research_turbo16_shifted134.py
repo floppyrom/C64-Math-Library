@@ -46,11 +46,19 @@ m=load_prg(PRG); c=CPU(m); c.d=0; c.call(MATH_INIT,2_000_000)
 for a,v in mem.items(): c.mem[a]=v
 
 BIAS=202
+# The resident library's four common multiply planes use complemented negative
+# rows for ADC. shifted134 was qualified against the publication form with
+# plain negative-square rows and SBC, so install all six exact candidate planes
+# for this isolated A/B benchmark rather than accidentally mixing conventions.
 for i in range(511):
     q=(i*i)//4 + BIAS*(i&1)
-    c.mem[REG_TABLE+0x0800+i]=((q+256)>>8)&255
     j=255-i
     nq=(j*j)//4 + BIAS*(j&1)
+    c.mem[REG_TABLE+0x1000+i]=q&255
+    c.mem[REG_TABLE+0x1200+i]=(q>>8)&255
+    c.mem[REG_TABLE+0x1400+i]=nq&255
+    c.mem[REG_TABLE+0x1600+i]=(nq>>8)&255
+    c.mem[REG_TABLE+0x0800+i]=((q+256)>>8)&255
     c.mem[REG_TABLE+0x0A00+i]=(nq+1)&255
 
 def wr16(a,v):
