@@ -33,6 +33,21 @@ jobs:
           m=json.loads(p.read_text())
           print('V5_MULDIV_LAYOUT',json.dumps(m['muldiv16_lowzp_fusion'],sort_keys=True))
           PY
+      - name: Scan V5 zero holes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg')
+          b=p.read_bytes(); load=b[0]|(b[1]<<8); mem=bytearray(65536); mem[load:load+len(b)-2]=b[2:]
+          for lo,hi,name in [(0x1000,0x2fff,'REG_LOW'),(0x3000,0x3fff,'REG_API'),(0x4000,0x5fff,'REG_KERNEL'),(0x6000,0x9fff,'REG_TABLE')]:
+              runs=[]; a=lo
+              while a<=hi:
+                  if mem[a]!=0: a+=1; continue
+                  st=a
+                  while a<=hi and mem[a]==0: a+=1
+                  if a-st>=128:runs.append((a-st,st,a-1))
+              print('ZERO_HOLES',name,[(hex(n),hex(st),hex(en)) for n,st,en in sorted(runs,reverse=True)[:20]])
+          PY
       - name: Validate MULDIV16 full corpus
         run: python3 tools/validate_muldiv16.py
       - name: Validate V5 hybrid
