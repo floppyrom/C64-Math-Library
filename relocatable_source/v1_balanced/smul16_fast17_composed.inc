@@ -33,23 +33,21 @@ S16_xneg:
         jsr S16_umult
         sec
         sbc MATH_IO+$04
-        sta S16_restore_a1+1
+        sta S16_p2
         tya
         sbc S16_y1
         tay
-S16_restore_a1:
-        lda #$00
+        lda S16_p2
         rts
 S16_yneg_only:
         jsr S16_umult
         sec
         sbc S16_x0
-        sta S16_restore_a2+1
+        sta S16_p2
         tya
         sbc S16_x1
         tay
-S16_restore_a2:
-        lda #$00
+        lda S16_p2
         rts
 S16_nn:
         ; CPX #0 entered with C=1, so start -Y directly.
@@ -80,16 +78,17 @@ S16_nn:
 
 * = REG_GAME+$0DEC
 S16_umult:
+        ; Non-NN dispatch leaves original X1 live in A. Bind the high byte
+        ; first, then X0, avoiding a redundant reload exactly as FAST24 does.
+        sta S16_p6
+        eor #$ff
+        sta S16_p5
+        sta S16_p7
         lda S16_x0
         sta S16_p2
         eor #$ff
         sta S16_p1
         sta S16_p3
-        lda S16_x1
-        sta S16_p6
-        eor #$ff
-        sta S16_p5
-        sta S16_p7
         ; All non-NN paths arrive with C=1 from CPX #0.
 S16_primed_entry:
         lda (S16_p0),y
