@@ -242,21 +242,24 @@ def build(profile,config,outdir):
  prg=outdir/f'math_{profile}_source_built.prg';lo,hi=write_prg(mem,prg)
  reu_info=build_reu_image(profile,vals,outdir/f'c64_math_{profile}_source_built.reu')
  # Public include is source-level expressions resolved to concrete selected map for callers.
- pubnames=[]
  import csv
  with (ROOT/'docs/PUBLIC_API_COMPLETE.csv').open() as f:
-  for r in csv.DictReader(f):pubnames.append(r['entry'])
+  public_rows=list(csv.DictReader(f))
+ pubnames=[r['entry'] for r in public_rows]
  inc=outdir/'math_api.inc';lines=['; GENERATED from source-level assembly configuration',f'MATH_INIT = {hx(labels.get("MATH_INIT",const.get("MATH_INIT")))}']
- # Publish every callable legacy entry listed by the profile standalone manifest.
- # This includes stable API entries plus V3/V4 Turbo and V4 QS16 lifecycle calls.
+ # The authoritative stable surface comes from PUBLIC_API_COMPLETE.csv.  The
+ # standalone manifest may lag while a new stable entry is being promoted, so
+ # use it only for profile-specific extras (Turbo/QS16), never to suppress a
+ # stable API symbol from the generated caller include.
  manifest_rows=[]
  manifest_path=ROOT/profile/'standalone/MANIFEST.csv'
  if manifest_path.exists():
   with manifest_path.open() as f: manifest_rows=list(csv.DictReader(f))
- else:
-  manifest_rows=[{'legacy_api':n,'canonical_name':''} for n in pubnames]
+ stable_names=set(pubnames)
+ publish_rows=[{'legacy_api':r['entry'],'canonical_name':r.get('canonical_name','')} for r in public_rows]
+ publish_rows += [r for r in manifest_rows if r['legacy_api'] not in stable_names]
  emitted=set()
- for r in manifest_rows:
+ for r in publish_rows:
   n=r['legacy_api']; val=const.get(n,labels.get(n))
   if val is not None:
    lines.append(f'{n:<24} = {hx(val)}'); emitted.add(n)
@@ -268,7 +271,7 @@ def build(profile,config,outdir):
  for n,c in (('MATH_SEEK8_POS_X','S8_POS_X'),('MATH_SEEK8_POS_Y','S8_POS_Y'),('MATH_SEEK16_POS_XL','S16_POS_XL'),('MATH_SEEK16_POS_XH','S16_POS_XH'),('MATH_SEEK16_POS_Y','S16_POS_Y')):
   if c in const: lines.append(f'{n:<24} = {hx(const[c])}')
  lines += ['', '; Canonical typed aliases (source-facing names).', '; Legacy MATH_* names and addresses remain stable.']
- for r in manifest_rows:
+ for r in publish_rows:
   n=r['legacy_api']; c=r.get('canonical_name','')
   if c and n in emitted: lines.append(f'{c:<48} = {n}')
  inc.write_text('\n'.join(lines)+'\n')
