@@ -7,7 +7,9 @@ from mini6502 import Assembler,CPU
 
 CAND=ROOT/'relocatable_source/turbo/turbo16_shifted134_candidate.asm'
 PRG=ROOT/'v3_reu_512k/resident/math_v3_reu_512k_game_math.prg'
+REU=ROOT/'v3_reu_512k/reu/c64_math_v3_512k_game_math.reu'
 MATH_IO=0xC000; MATH_INIT=0x3280
+T16_BEGIN=0x3800; T16_CALL=0x3840; T16_END=0x3880
 BASE=0x3E; REG_TABLE=0x6000
 cfg=f'''REG_TABLE = $6000
 MATH_IO = $C000
@@ -42,7 +44,32 @@ def load_prg(path):
     b=path.read_bytes(); ld=b[0]|b[1]<<8
     m=bytearray(65536);m[ld:ld+len(b)-2]=b[2:];return m
 
-m=load_prg(PRG); c=CPU(m); c.d=0; c.call(MATH_INIT,2_000_000)
+m=load_prg(PRG); c=CPU(m,reu=bytearray(REU.read_bytes())); c.d=0; c.call(MATH_INIT,2_000_000)
+
+def wr16(a,v):
+    c.mem[a]=v&255;c.mem[a+1]=(v>>8)&255
+def rd32(a):
+    return sum(c.mem[a+i]<<(8*i) for i in range(4))
+
+edge=[0,1,2,3,0xff,0x100,0x101,0x7fff,0x8000,0xfffe,0xffff]
+pairs=[(a,b) for a in edge for b in edge]
+rng=random.Random(0x54313658)
+pairs += [(rng.randrange(65536),rng.randrange(65536)) for _ in range(20000)]
+
+# Measure the shipped Turbo16 public API on exactly the same corpus before
+# installing the research candidate or changing any resident table bytes.
+c.call(T16_BEGIN,2_000_000)
+base_tot=0;base_mn=10**9;base_mx=0
+for x,y in pairs:
+    wr16(MATH_IO,x);wr16(MATH_IO+4,y)
+    cy=c.call(T16_CALL,100000)
+    got=rd32(MATH_IO+8)
+    if got != x*y: raise AssertionError(('baseline',hex(x),hex(y),hex(got),hex(x*y)))
+    base_tot+=cy;base_mn=min(base_mn,cy);base_mx=max(base_mx,cy)
+c.call(T16_END,2_000_000)
+base_mean=base_tot/len(pairs)
+print('BASELINE',len(pairs),'public_mean',f'{base_mean:.6f}','min',base_mn,'max',base_mx)
+
 for a,v in mem.items(): c.mem[a]=v
 
 BIAS=202
@@ -61,15 +88,6 @@ for i in range(511):
     c.mem[REG_TABLE+0x0800+i]=((q+256)>>8)&255
     c.mem[REG_TABLE+0x0A00+i]=(nq+1)&255
 
-def wr16(a,v):
-    c.mem[a]=v&255;c.mem[a+1]=(v>>8)&255
-def rd32(a):
-    return sum(c.mem[a+i]<<(8*i) for i in range(4))
-
-edge=[0,1,2,3,0xff,0x100,0x101,0x7fff,0x8000,0xfffe,0xffff]
-pairs=[(a,b) for a in edge for b in edge]
-rng=random.Random(0x54313658)
-pairs += [(rng.randrange(65536),rng.randrange(65536)) for _ in range(20000)]
 tot=0;mn=10**9;mx=0
 for x,y in pairs:
     wr16(MATH_IO,x);wr16(MATH_IO+4,y)
@@ -77,4 +95,6 @@ for x,y in pairs:
     got=rd32(MATH_IO+8)
     if got != x*y: raise AssertionError((hex(x),hex(y),hex(got),hex(x*y)))
     tot+=cy;mn=min(mn,cy);mx=max(mx,cy)
-print('PASS',len(pairs),'public_mean',f'{tot/len(pairs):.6f}','min',mn,'max',mx)
+cand_mean=tot/len(pairs)
+print('PASS',len(pairs),'public_mean',f'{cand_mean:.6f}','min',mn,'max',mx,
+      'delta_vs_baseline',f'{cand_mean-base_mean:.6f}')
