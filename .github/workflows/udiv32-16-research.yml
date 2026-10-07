@@ -11,5 +11,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Compact D8 bounded fast path
-        run: python3 tools/research_udiv32_16_d8_compact.py
+      - name: Compile integrated reference and alternate maps
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,'tools')
+          import assemble_sources as A
+          from mini6502 import Assembler
+          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            for kind in ('reference','alternate'):
+              cfg=Path('relocatable_source')/p/f'math_config_{kind}.inc'
+              src=Path('relocatable_source')/p/'math_relocatable.asm'
+              mem,lab,const=Assembler().assemble(A.preprocess(src,cfg))
+              print(p,kind,'ENTRY',hex(lab['U3216_ENTRY']),'D8',hex(lab['U3216_D8']),'D8_END',hex(lab['U3216_D8_END']),'bytes',lab['U3216_D8_END']-lab['U3216_D8'])
+              if p=='v2_pareto_fast':
+                assert lab['U3216_D8_END'] <= (const['REG_KERNEL']+0x13ec)
+              else:
+                assert lab['U3216_D8_END'] <= (const['REG_KERNEL']+0x12de)
+          PY
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_u3216
+          python3 tools/assemble_sources.py --profile v3_reu_512k --config-kind reference --out build_u3216
+          python3 tools/assemble_sources.py --profile v4_reu_16m --config-kind reference --out build_u3216
