@@ -58,7 +58,7 @@ def load(profile,kind):
     reg_api=init-0x280
     u=reg_api+0x2e0
     s=u+3
-    baseline_u=reg_api+0x300
+    baseline_u=reg_api+0x3d0
     return cpu,api,io,u,s,baseline_u
 
 def edge16_signed_bits():
