@@ -75,6 +75,9 @@ def main():
             a=out['profiles'][p]['minimum_origins'];b=out['profiles'][p]['maximum_origins']
             for t in ('turbo16','turbo32'):
                 if a[t]['cycle_vector_sha256']!=b[t]['cycle_vector_sha256'] or a[t]['begin_cycles']!=b[t]['begin_cycles'] or a[t]['end_cycles']!=b[t]['end_cycles']:
+                    print('BOUNDARY TIMING DIFF',p,t,
+                          'low',a[t]['mean_cycles'],a[t]['min_cycles'],a[t]['max_cycles'],a[t]['begin_cycles'],a[t]['end_cycles'],a[t]['cycle_vector_sha256'],
+                          'high',b[t]['mean_cycles'],b[t]['min_cycles'],b[t]['max_cycles'],b[t]['begin_cycles'],b[t]['end_cycles'],b[t]['cycle_vector_sha256'])
                     raise AssertionError(f'{p}/{t}: boundary origin changed cycle vector')
     out['total_product_calls']=sum(x['cases'] for p in out['profiles'].values() for m in p.values() for x in m.values())
     path=ROOT/'validation/turbo_relocation/TURBO_BOUNDARY_SWEEP.json';path.write_text(json.dumps(out,indent=2)+'\n');print('TURBO BOUNDARY SWEEP PASS',out['total_product_calls'],'products')
