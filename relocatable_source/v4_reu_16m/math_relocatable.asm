@@ -1,4 +1,4 @@
-; GENERATED CANONICAL SOURCE. Builds the stable 54-entry API from symbolic assembly source.
+; GENERATED CANONICAL SOURCE. Builds the stable 56-entry API from symbolic assembly source.
 ; The fixed FINAL PRG is provenance/reference only. This file is the relocatable build input.
 ; Compatible with the included source assembler; syntax is intentionally ACME-style.
 !cpu 6510
@@ -31,6 +31,8 @@ MATH_SMOD8 = REG_API+$0FD4
 MATH_SMOD16 = REG_API+$0FD7
 MATH_SMOD24 = REG_API+$0FDA
 MATH_SMOD32_16 = REG_API+$0FDD
+MATH_UMULDIV16 = REG_API+$02E0
+MATH_SMULDIV16 = REG_API+$02E3
 MATH_UDIV32_32 = REG_GAME_API
 MATH_UMOD32_32 = REG_GAME_API+$0003
 MATH_SDIV32_32 = REG_GAME_API+$0006
@@ -6052,6 +6054,6 @@ ZCE4:
 ; Canonical generated normalization tables (final ownership).
 !source "../../v4_reu_16m/resident/vector/native/vec2_normalize_tables.asm"
 
-; Candidate wide-intermediate multiply/divide primitives.
-!source "../game_math/muldiv16_candidate.inc"
-!source "../game_math/muldiv16_u_fast_candidate.inc"
+; Stable wide-intermediate multiply/divide primitives.
+!source "../game_math/muldiv16.inc"
+!source "../game_math/muldiv16_fast.inc"
