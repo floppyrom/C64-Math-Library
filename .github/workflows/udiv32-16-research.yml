@@ -27,5 +27,23 @@ jobs:
           done
       - name: Focused UDIV32-16 alias gate
         run: python3 tools/debug_udiv32_16_source.py
+      - name: Check latency-helper placement
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,'tools')
+          import assemble_sources as A
+          from mini6502 import Assembler
+          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            cfg=Path('relocatable_source')/p/'math_config_reference.inc'
+            src=Path('relocatable_source')/p/'math_relocatable.asm'
+            mem,lab,const=Assembler().assemble(A.preprocess(src,cfg))
+            bound=const['REG_KERNEL']+(0x13ec if p=='v2_pareto_fast' else 0x12de)
+            print(p,'U3216_D8_END',hex(lab['U3216_D8_END']),'DIVLAT_END',hex(lab['DIVLAT_END']),'bound',hex(bound))
+            assert lab['DIVLAT_END'] <= bound
+          PY
       - name: Paired UDIV32-16 performance and exactness
         run: python3 tools/validate_udiv32_16_integrated.py
+      - name: Paired division tail-latency validation
+        run: python3 tools/validate_division_latency_escape.py
