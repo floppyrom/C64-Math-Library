@@ -38,6 +38,36 @@ jobs:
               hits=[a for a in range(0x577e,0x5785) if a in dm]
               if hits:
                   print('WRITER',dep.as_posix(),[(hex(a),hex(dm[a])) for a in hits])
+          # Show every expanded-source line whose assembled bytes overlap $5780.
+          import re
+          from mini6502 import OPS,SIZE
+          asm=Assembler(); full=preprocess(src,cfg); fm,fl,fc=asm.assemble(full)
+          pc=0
+          for s0 in asm._clean(full):
+              s=s0
+              if re.fullmatch(r'([A-Za-z_.][\\w.]*)\\s*=\\s*(.+)',s) and not s.startswith('*='):
+                  continue
+              meq=re.fullmatch(r'([A-Za-z_.][\\w.]*)\\s*=\\s*\\*\\s*([+-])\\s*(\\d+|\\$[0-9A-Fa-f]+)',s)
+              if meq: continue
+              mo=re.fullmatch(r'(?:\\*|\\.org)\\s*=*\\s*(.+)',s,re.I)
+              if mo:
+                  pc=asm.expr(mo.group(1),fl); continue
+              if ':' in s:
+                  left,right=s.split(':',1)
+                  if re.fullmatch(r'[A-Za-z_.][\\w.]*',left.strip()):
+                      s=right.strip()
+                      if not s: continue
+              elif re.fullmatch(r'[A-Za-z_.][\\w.]*',s) and s.lower() not in OPS:
+                  continue
+              start=pc
+              if s.lower().startswith(('!byte','.byte')):
+                  vals=s.split(None,1)[1].split(','); pc+=len(vals)
+              else:
+                  parts=s.split(None,1); op=parts[0].lower(); op=op[:-2] if op.endswith('+1') else op
+                  arg=parts[1].strip() if len(parts)>1 else None
+                  mode,_=asm._mode(op,arg,fl); pc+=SIZE[mode]
+              if start <= 0x5780 < pc:
+                  print('OVERLAP5780',hex(start),hex(pc),s0)
           PY
           python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
           python3 - <<'PY'
