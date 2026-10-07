@@ -28,6 +28,8 @@ jobs:
           cfg=Path('relocatable_source/v2_pareto_fast/math_config_reference.inc')
           mem,labels,const=Assembler().assemble(preprocess(src,cfg))
           print('AFTER_GENERATE_MEM',hex(mem.get(0x5780,0)),hex(mem.get(0x5784,0)),'MIN',hex(min(mem)),'MAX',hex(max(mem)))
+          for k in ('R24_c0_1','R24_umult','R24_init','R24_public_impl','R24_public_tail'):
+              print('FINAL_LABEL',k,hex(labels.get(k,-1)))
           from assemble_sources import source_dependencies
           cfgtext=cfg.read_text()
           for dep in source_dependencies(src):
