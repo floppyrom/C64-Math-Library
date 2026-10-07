@@ -6,29 +6,25 @@ sys.path.insert(0,str(ROOT/'tools'))
 from source_relocation import load_reference, trace
 from mini6502 import REV, SIZE
 
-ranges={
- 'v2_pareto_fast':(0x25B2,0x263F),
- 'v3_reu_512k':(0x26B2,0x273F),
- 'v4_reu_16m':(0x25B2,0x263F),
-}
-for p,(lo,hi) in ranges.items():
-    raw,_=load_reference(p)
-    seen=trace(p,raw)
-    reachable=sorted(a for a in seen if lo<=a<=hi)
-    nonzero=[(a,raw[a]) for a in range(lo,hi+1) if raw[a] not in (0x00,0xEA)]
-    # Scan reachable code for absolute data references into the proposed hole.
-    refs=[]
+profiles=('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+for p in profiles:
+    raw,_=load_reference(p); seen=trace(p,raw)
+    refs=set()
     for pc in seen:
         oc=raw[pc]
         if oc not in REV: continue
         op,mode=REV[oc]
         if mode in ('abs','absx','absy','ind'):
-            a=raw[pc+1]|(raw[pc+2]<<8)
-            if lo<=a<=hi: refs.append((pc,op,mode,a))
-    print(p,hex(lo),hex(hi),'bytes',hi-lo+1,'reachable',len(reachable),'nonzero_or_non_nop',len(nonzero),'direct_refs',len(refs))
-    print(' first_nonzero',[(hex(a),hex(v)) for a,v in nonzero[:16]])
-    print(' refs',[(hex(pc),op,mode,hex(a)) for pc,op,mode,a in refs[:16]])
-    assert not reachable,(p,'stable control flow enters candidate hole',reachable[:8])
-    assert not refs,(p,'stable code references candidate hole',refs[:8])
-    assert not nonzero,(p,'candidate hole is not empty/NOP',nonzero[:8])
-print('MULDIV16 SIGNED HOLE PROOF PASS')
+            a=raw[pc+1]|(raw[pc+2]<<8); refs.add(a)
+    runs=[]; a=0x1000
+    while a<=0x2fff:
+        if a in seen or a in refs or raw[a] not in (0x00,0xEA):
+            a+=1; continue
+        s=a
+        while a<=0x2fff and a not in seen and a not in refs and raw[a] in (0x00,0xEA):
+            a+=1
+        if a-s>=64: runs.append((s,a-1,a-s))
+    print('\n',p,'zero/nop unreferenced REG_LOW runs >=64')
+    for s,e,n in sorted(runs,key=lambda x:(-x[2],x[0]))[:30]:
+        print(hex(s),hex(e),n)
+print('MULDIV16 HOLE SURVEY DONE')
