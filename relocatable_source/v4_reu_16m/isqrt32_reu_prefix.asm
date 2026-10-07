@@ -11,6 +11,7 @@ IS32_ROOT0  = ZP_MAIN+$55
 IS32_ROOT1  = ZP_MAIN+$56
 IS32_TRIAL0 = ZP_MAIN+$57
 IS32_TRIAL1 = ZP_MAIN+$58
+IS32_TRIAL2 = ZP_MAIN+$59
 
 * = MATH_ISQRT32
     jmp IS32P_ENTRY
@@ -130,18 +131,17 @@ IS32P_LOOP:
     lda IS32_ROOT1
     rol a
     sta IS32_TRIAL1
+    lda #$00
+    rol a
+    sta IS32_TRIAL2
 
-    bcc IS32P_TRIAL16
+    ; Compare the full 17-bit trial against the 17-bit residual.  The top
+    ; trial bit becomes live on the final large-root steps, so it must also
+    ; participate in the subtraction (not merely in the comparison).
     lda IS32_RES2
-    beq IS32P_SKIP
-    cmp #$01
+    cmp IS32_TRIAL2
+    bcc IS32P_SKIP
     bne IS32P_TAKE
-    beq IS32P_COMPARE16
-
-IS32P_TRIAL16:
-    lda IS32_RES2
-    bne IS32P_TAKE
-IS32P_COMPARE16:
     lda IS32_RES1
     cmp IS32_TRIAL1
     bcc IS32P_SKIP
@@ -159,7 +159,7 @@ IS32P_TAKE:
     sbc IS32_TRIAL1
     sta IS32_RES1
     lda IS32_RES2
-    sbc #$00
+    sbc IS32_TRIAL2
     sta IS32_RES2
     inc IS32_ROOT0
 
