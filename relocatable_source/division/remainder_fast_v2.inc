@@ -56,7 +56,7 @@ RM16U_QZERO:
 ; Unsigned 32/32 remainder.
 ; Same early compare as D3232, but q=0/q=1 never touch MATH_Q.
 ; ---------------------------------------------------------------------------
-* = REG_KERNEL+$177F
+* = REG_KERNEL+$1472
 RM3232U_ENTRY:
     lda MATH_D+0
     ora MATH_D+1
@@ -103,6 +103,7 @@ RM3232U_QZERO:
 
 RM3232U_LEGACY:
     jmp REG_GAME
+RM3232U_END:
 
 ; ---------------------------------------------------------------------------
 ; Unsigned 24-bit remainder.
