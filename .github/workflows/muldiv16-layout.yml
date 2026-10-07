@@ -1,0 +1,13 @@
+name: MULDIV16 layout proof
+on:
+  push:
+    branches: [ experiment/muldiv16-optisearch-fusion-20261007 ]
+jobs:
+  layout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 tools/check_muldiv16_signed_hole.py
