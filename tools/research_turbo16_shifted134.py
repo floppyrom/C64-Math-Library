@@ -100,46 +100,10 @@ print('PASS',len(pairs),'public_mean',f'{cand_mean:.6f}','min',mn,'max',mx,
       'delta_vs_baseline',f'{cand_mean-base_mean:.6f}')
 
 
-# Control experiment: keep the current Turbo16 arithmetic/table convention,
-# but make the private overlay public-output aware so the wrapper can tail-jump.
-# This tests whether ABI traffic, rather than arithmetic, is the larger target.
+# Control / production experiment: canonical Turbo16 is now the direct-output
+# overlay. Assemble it as-is and compare it with both the checked-in pre-upgrade
+# Turbo16 public API and the rejected shifted134 candidate on the identical corpus.
 base_src=(ROOT/'relocatable_source/turbo/turbo16_overlay.asm').read_text()
-base_src=base_src.replace('        sta+1 z0\n','        sta MATH_IO+$08\n')
-old_tail='''        clc
-        txa
-_z1_part2:
-        adc #0
-        tax
-_z2_part1:
-        lda #0
-_z2_part2:
-        adc #0
-        bcs _final_carry
-        rts
-_final_carry:
-        iny
-        rts
-'''
-new_tail='''        clc
-        txa
-_z1_part2:
-        adc #0
-        tax
-        stx MATH_IO+$09
-_z2_part1:
-        lda #0
-_z2_part2:
-        adc #0
-        sta MATH_IO+$0A
-        bcc _direct_no_carry
-        iny
-_direct_no_carry:
-        sty MATH_IO+$0B
-        clc
-        rts
-'''
-if old_tail not in base_src: raise AssertionError('Turbo16 tail pattern changed')
-base_src=base_src.replace(old_tail,new_tail).replace('\nz0:    !byte 0\n','\n')
 direct_wrapper=r'''
 * = $4100
 T16D_PUBLIC_TEST:
@@ -175,3 +139,4 @@ d_mean=d_tot/len(pairs)
 print('DIRECTOUT',len(pairs),'public_mean',f'{d_mean:.6f}','min',d_mn,'max',d_mx,
       'delta_vs_baseline',f'{d_mean-base_mean:.6f}',
       'delta_vs_shifted134',f'{d_mean-cand_mean:.6f}')
+
