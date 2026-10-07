@@ -193,8 +193,12 @@ for kind in ('reference','alternate'):
     ck(f'hybrid_{kind}_cold_no_init',ni['status']=='PASS' and ni['cold_load_without_math_init'] is True and ni['cases']==1000,ni)
 par=hv['tests']['direct_v2_parity']
 ck('hybrid_direct_cases_144246',sum(x['cases'] for x in par.values())==144246,sum(x['cases'] for x in par.values()))
-for n in ('MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8'):
+for n in ('MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8'):
     ck(f'hybrid_v2_cycle_parity_{n}',par[n].get('cycle_vector_equal_to_v2') is True)
+for n in ('MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16'):
+    ck(f'hybrid_v2_semantics_{n}',
+       par[n].get('correctness_against_v2') is True and par[n].get('cycle_parity_required') is False,
+       par[n])
 ck('hybrid_umod8_exhaustive',par['MATH_UMOD8']['cases']==65536 and par['MATH_UMOD8']['exhaustive_correctness'] is True and par['MATH_UMOD8']['cycle_vector_equal_to_v2_sampled'] is True)
 hcfg=json.loads((ROOT/'validation/hybrid/HYBRID_CONFIG_VALIDATION.json').read_text())
 ck('hybrid_config_8_of_8',hcfg['status']=='PASS' and hcfg['tests']==8,hcfg.get('tests'))
