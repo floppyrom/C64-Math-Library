@@ -1,3 +1,13 @@
+## 2026-10-07 — remainder-only MOD, V4 ISQRT32, FAST24 and Turbo integration pass
+
+- Added dedicated V2/V3/V4 unsigned remainder front ends for `MATH_UMOD16`, `MATH_UMOD24` and `MATH_UMOD32_32`. The common q=0/q=1/equality cases return the remainder without quotient materialization; harder cases rejoin the exact existing division engines. Canonical 1,553-case means are now **195.951706 / 196.414681 / 195.529942** for UMOD16, **293.183516 / 294.880876 / 293.535093** for UMOD24, and **515.783001 / 509.623310 / 507.496458** for UMOD32_32 in V2/V3/V4.
+- The analogous signed remainder front end was measured and rejected: it was correct but 29–41 cycles slower on the research corpus. Shipped SMOD16/SMOD24 arithmetic is unchanged.
+- V4 `MATH_ISQRT32` now uses an exact **4 MiB REU prefix accelerator** plus restoring refinement. On the unchanged 4,130-case deterministic corpus it improves **1046.622518 → 917.317433 cycles** (899–1237 → 806–1067), with identical reference/alternate results.
+- V2/V3/V4 public `MATH_UMUL24` now writes z3 directly and tail-exits through the public result path, improving **429.555502 → 421.555502 cycles** on the unchanged 10,324-case corpus. V1/V5 remain 474.042329.
+- Turbo16 now uses a **122-byte direct-output executable-ZP overlay**: canonical CALL mean **197.046257 cycles (185–220)**, BEGIN/END **300/345**, with zero-penalty ZP origins **$02-$85**. The 134-ZP shifted134 transplant was rejected because its stable-ABI mean was only 209.218776.
+- Turbo32 keeps its 135-byte stack-free overlay and writes z4 directly before a shared public tail, improving the canonical CALL mean **684.185219 → 676.185219 cycles (613–788)**. BEGIN/END remain 326/371.
+- Turbo validation passes **17,196 lifecycle/API calls** and the **3,556-product** minimum/maximum-origin sweep, including V4 REU banks $FE/$FF. Source regeneration now derives Turbo32 helper extents from canonical source, preventing stale range metadata after tail changes.
+
 ## 2026-10-07 — PR #24 carry/register ideas generalized to SMUL16 and SMUL32
 
 - Generalized the carry-priming, live-high-byte binding, known-carry reuse and dead-scratch ideas from the optimized SMUL24 path.
