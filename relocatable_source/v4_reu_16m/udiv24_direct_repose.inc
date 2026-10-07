@@ -626,13 +626,7 @@ DU24F_align:
 DU24F_align_take:
  inx
  bne DU24F_align
-; X is floor(log2(quotient)) here.  Divert q>=256 to the bounded 32/16
-; engine only after Repose's alignment has already classified the tail.
-DU24F_latency_escape_stub:
- jmp DIVLAT_DU24_NARROW
 DU24F_overshoot:
- cpx #8
- bcs DU24F_latency_escape_stub
  ror ZP_MAIN+$10
  ror ZP_MAIN+$0F
  ror ZP_MAIN+$0E
