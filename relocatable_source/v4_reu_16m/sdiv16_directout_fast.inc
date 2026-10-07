@@ -118,13 +118,8 @@ D16F_s_pp_high_ge:
         bcs D16F_s_pp_ge
         jmp D16F_s_qzero
 D16F_s_pp_ge:
-        lda D16F_sn0
-        sta D16F_n0
-        stx D16F_n1
-        lda D16F_sdin0
-        sta D16F_d0
-        lda D16F_sdin1
-        sta D16F_d1
+        ; Defer private magnitude copies until q>=2. The stable public inputs
+        ; are sufficient for the q=1 subtraction/test.
         jmp D16F_s_mag_pp
 
 D16F_s_case_pn:
@@ -219,26 +214,36 @@ D16F_s_nn_ge:
 
 D16F_s_mag_pp:
         sec
-        lda D16F_n0
-        sbc D16F_d0
+        lda D16F_sn0
+        sbc D16F_sdin0
         sta D16F_r0
-        lda D16F_n1
-        sbc D16F_d1
+        txa
+        sbc D16F_sdin1
         sta D16F_r1
-        cmp D16F_d1
+        cmp D16F_sdin1
         bcc D16F_s_qone_pp
         bne D16F_s_qge2_pp
         lda D16F_r0
-        cmp D16F_d0
+        cmp D16F_sdin0
         bcs D16F_s_qge2_pp
 D16F_s_qone_pp:
-        lda #1
-        sta D16F_q0
-        lda #0
-        sta D16F_q1
-        clc
+        ; Both q=1 entry routes establish C=0. Build 0:1 through Y without
+        ; disturbing carry, saving one byte over the A/LSR form.
+        ldy #0
+        sty D16F_q1
+        iny
+        sty D16F_q0
         rts
 D16F_s_qge2_pp:
+        ; The q>=2 engine may use the original magnitude for low divisors.
+        ; Materialize the private magnitude only on this slower path.
+        lda D16F_sn0
+        sta D16F_n0
+        stx D16F_n1
+        lda D16F_sdin0
+        sta D16F_d0
+        lda D16F_sdin1
+        sta D16F_d1
         lda D16F_r1
         jsr D16F_quotient_ge_two
         clc
@@ -259,10 +264,10 @@ D16F_s_mag_pn:
         cmp D16F_d0
         bcs D16F_s_qge2_pn
 D16F_s_qone_pn:
+        ; q=1 fall-through guarantees C=0; stores do not change carry.
         lda #$ff
         sta D16F_q0
         sta D16F_q1
-        clc
         rts
 D16F_s_qge2_pn:
         lda D16F_r1
@@ -325,7 +330,7 @@ D16F_s_qone_nn:
         sta D16F_r1
         lda #1
         sta D16F_q0
-        lda #0
+        lsr
         sta D16F_q1
         clc
         rts
