@@ -6054,3 +6054,4 @@ ZCE4:
 
 ; Candidate wide-intermediate multiply/divide primitives.
 !source "../game_math/muldiv16_candidate.inc"
+!source "../game_math/muldiv16_u_fast_candidate.inc"
