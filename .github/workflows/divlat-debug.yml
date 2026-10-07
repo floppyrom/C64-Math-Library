@@ -16,4 +16,5 @@ jobs:
           python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_u3216
           python3 tools/debug_divlat_trace.py
           python3 tools/find_division_common_holes.py
+          python3 tools/debug_divlat_quick.py
 # trace workflow active
