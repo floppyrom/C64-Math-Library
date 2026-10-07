@@ -7,6 +7,7 @@ sys.path.insert(0,str(ROOT/"tools"))
 from mini6502 import CPU, Assembler
 from assemble_sources import build, preprocess
 
+ALL_PROFILES=["v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m","v5_hybrid_lowzp"]
 PROFILES=["v2_pareto_fast","v3_reu_512k","v4_reu_16m"]
 N=0xC010; D=0xC014; Q=0xC018; R=0xC01C
 
@@ -62,7 +63,11 @@ def bench(cpu,entry,cases):
     for n,d in cases:
         wr(cpu.mem,N,n); wr(cpu.mem,D,d)
         bn=bytes(cpu.mem[N:N+2]); bd=bytes(cpu.mem[D:D+2])
-        c=cpu.call(entry,4_000_000)
+        try:
+            c=cpu.call(entry,4_000_000)
+        except RuntimeError as e:
+            print("STEP_LIMIT",hex(n),hex(d),str(e))
+            raise
         eq,er,ec=expected(n,d); gq=rd(cpu.mem,Q); gr=rd(cpu.mem,R)
         if (gq,gr,cpu.c)!=(eq,er,ec) or bytes(cpu.mem[N:N+2])!=bn or bytes(cpu.mem[D:D+2])!=bd:
             errs+=1
@@ -87,7 +92,8 @@ def layout(profile):
 
 def main():
     result={}
-    for pi,p in enumerate(PROFILES):
+    for p in PROFILES:
+        pi=ALL_PROFILES.index(p)
         lay=layout(p)
         if lay["gap"]<0: raise AssertionError(("signed/unsigned overlap",p,lay))
         if p=="v2_pareto_fast" and lay["gap"]!=0: raise AssertionError(("V2 fixed boundary changed",p,lay))
