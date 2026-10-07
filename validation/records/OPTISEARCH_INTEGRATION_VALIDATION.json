@@ -1,0 +1,95 @@
+{
+  "status": "PASS",
+  "baseline_commit": "ff1b602f9ecff43724ca507f692beaa2aed89651",
+  "public_suite_commands": [
+    "python3 tools/validate_source_build.py all --build build_source/reference --out /tmp/reference-proof",
+    "python3 tools/validate_source_build.py all --build build_source/alternate --out /tmp/alternate-proof"
+  ],
+  "all_entry_suites": {
+    "reference": {
+      "status": "PASS",
+      "profiles": [
+        {
+          "profile": "v1_balanced",
+          "status": "PASS",
+          "public_entries_executed": 54,
+          "machine_calls": 21422
+        },
+        {
+          "profile": "v2_pareto_fast",
+          "status": "PASS",
+          "public_entries_executed": 54,
+          "machine_calls": 21422
+        },
+        {
+          "profile": "v3_reu_512k",
+          "status": "PASS",
+          "public_entries_executed": 54,
+          "machine_calls": 21422
+        },
+        {
+          "profile": "v4_reu_16m",
+          "status": "PASS",
+          "public_entries_executed": 54,
+          "machine_calls": 21422
+        }
+      ]
+    },
+    "alternate": {
+      "status": "PASS",
+      "profiles": [
+        {
+          "profile": "v1_balanced",
+          "status": "PASS",
+          "public_entries_executed": 54,
+          "machine_calls": 21422
+        },
+        {
+          "profile": "v2_pareto_fast",
+          "status": "PASS",
+          "public_entries_executed": 54,
+          "machine_calls": 21422
+        },
+        {
+          "profile": "v3_reu_512k",
+          "status": "PASS",
+          "public_entries_executed": 54,
+          "machine_calls": 21422
+        },
+        {
+          "profile": "v4_reu_16m",
+          "status": "PASS",
+          "public_entries_executed": 54,
+          "machine_calls": 21422
+        }
+      ]
+    }
+  },
+  "public_suite_total_calls": 171376,
+  "current_prg_sha256": {
+    "reference": {
+      "v1_balanced": "2e5c2f93a41f1564181e4ccb26133ef8d878e7a4e07c3ad3a1a719c0a4ac6ff9",
+      "v2_pareto_fast": "f2aadd2eacd9dd6dfd7af26b09a1b90356da1c2203026aaa23a24f92048d055f",
+      "v3_reu_512k": "02117677cb35bff3e70930eb6721e5b113701cd56d2b7f16c116dc100b88517e",
+      "v4_reu_16m": "bc3b8b088fff142fad0d7bb25272d22382565ace95e1ab3c584ee26e723b38c2",
+      "v5_hybrid_lowzp": "74445a3d590cad45aa74fb8546d0704670516b801ca6f9f400d551dcb812e38f"
+    },
+    "alternate": {
+      "v1_balanced": "0c29395fe3259a5b4ed6c811b6f4b907f2eaa7d4bf9aa8d89f1e5ef3d7722d70",
+      "v2_pareto_fast": "ff5663429a4e71f19af1bc701f4de088d021f0cdcb118196faa19dab53f4c1ca",
+      "v3_reu_512k": "b313b36805c80243193f4e062184b6b6931b7c04c0c41c4c65a1ac2cdc4b19f3",
+      "v4_reu_16m": "6fd71639067541431526e1f3e6c46219f314e6d0d2ac1da084fb90ac7f1f8bcd",
+      "v5_hybrid_lowzp": "dac33d17d8f85fff7e840eee1b9dd34349d6aade9ba0c814941ab7440578c3d5"
+    }
+  },
+  "additional_evidence": [
+    "validation/review/SIGNED_LAYOUT_VALIDATION.json",
+    "validation/review/PUBLISHED_SIGNED_SOURCES_VALIDATION.json",
+    "validation/review/SIGNED_DIVISION_VALIDATION.json",
+    "validation/source_relocation/DETERMINISTIC_REBUILD.json",
+    "validation/hybrid/HYBRID_VALIDATION.json",
+    "validation/hybrid/HYBRID_DETERMINISTIC_REBUILD.json",
+    "validation/STANDALONE_API_CONSISTENCY_AUDIT.json"
+  ],
+  "note": "V5 regenerated from current donors also incorporates the upstream SDIV16 late-copy update that was absent from its previously bundled PRG. The paired code-delta proof compares against a rebuilt ff1b602 baseline."
+}

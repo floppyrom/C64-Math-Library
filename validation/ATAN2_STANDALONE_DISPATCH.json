@@ -1,0 +1,125 @@
+{
+  "status": "PASS",
+  "date": "2026-10-06",
+  "basis": "standalone public JMP plus RTS; all 65536 vectors; incoming carry 0 and 1",
+  "checks": [
+    {
+      "kernel": "compact_opt",
+      "cases": 65536,
+      "initial_carry": 0,
+      "origin": "$8000",
+      "code_bytes": 94,
+      "table_bytes": 512,
+      "occupied_bytes_excluding_public_jmp": 606,
+      "zp_bytes": 0,
+      "cycles_include": "public JMP (3), kernel, RTS (6); exclude caller JSR (6)",
+      "mean_cycles": 47.46281433105469,
+      "min_cycles": 33,
+      "max_cycles": 50,
+      "max_phase_error": 1,
+      "failures_gt_1": 0,
+      "abi_failures": 0,
+      "cycle_distribution": {
+        "33": 1,
+        "38": 255,
+        "45": 16256,
+        "47": 16384,
+        "48": 16384,
+        "50": 16256
+      },
+      "error_distribution": {
+        "0": 43136,
+        "1": 22400
+      },
+      "status": "PASS"
+    },
+    {
+      "kernel": "compact_opt",
+      "cases": 65536,
+      "initial_carry": 1,
+      "origin": "$8000",
+      "code_bytes": 94,
+      "table_bytes": 512,
+      "occupied_bytes_excluding_public_jmp": 606,
+      "zp_bytes": 0,
+      "cycles_include": "public JMP (3), kernel, RTS (6); exclude caller JSR (6)",
+      "mean_cycles": 47.46281433105469,
+      "min_cycles": 33,
+      "max_cycles": 50,
+      "max_phase_error": 1,
+      "failures_gt_1": 0,
+      "abi_failures": 0,
+      "cycle_distribution": {
+        "33": 1,
+        "38": 255,
+        "45": 16256,
+        "47": 16384,
+        "48": 16384,
+        "50": 16256
+      },
+      "error_distribution": {
+        "0": 43136,
+        "1": 22400
+      },
+      "status": "PASS"
+    },
+    {
+      "kernel": "sum_fast",
+      "cases": 65536,
+      "initial_carry": 0,
+      "origin": "$8000",
+      "code_bytes": 85,
+      "table_bytes": 1024,
+      "occupied_bytes_excluding_public_jmp": 1109,
+      "zp_bytes": 0,
+      "cycles_include": "public JMP (3), kernel, RTS (6); exclude caller JSR (6)",
+      "mean_cycles": 43.97062683105469,
+      "min_cycles": 31,
+      "max_cycles": 45,
+      "max_phase_error": 1,
+      "failures_gt_1": 0,
+      "abi_failures": 0,
+      "cycle_distribution": {
+        "31": 1,
+        "36": 255,
+        "43": 16256,
+        "44": 32640,
+        "45": 16384
+      },
+      "error_distribution": {
+        "0": 43136,
+        "1": 22400
+      },
+      "status": "PASS"
+    },
+    {
+      "kernel": "sum_fast",
+      "cases": 65536,
+      "initial_carry": 1,
+      "origin": "$8000",
+      "code_bytes": 85,
+      "table_bytes": 1024,
+      "occupied_bytes_excluding_public_jmp": 1109,
+      "zp_bytes": 0,
+      "cycles_include": "public JMP (3), kernel, RTS (6); exclude caller JSR (6)",
+      "mean_cycles": 43.97062683105469,
+      "min_cycles": 31,
+      "max_cycles": 45,
+      "max_phase_error": 1,
+      "failures_gt_1": 0,
+      "abi_failures": 0,
+      "cycle_distribution": {
+        "31": 1,
+        "36": 255,
+        "43": 16256,
+        "44": 32640,
+        "45": 16384
+      },
+      "error_distribution": {
+        "0": 43136,
+        "1": 22400
+      },
+      "status": "PASS"
+    }
+  ]
+}

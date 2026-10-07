@@ -23,6 +23,7 @@ atan2_s8_s8_u8:
 ; CLC/ADC therefore produces an index <=255 and *clears carry on every path*.
 ; The negative-x paths use an XOR half-turn instead of two additional pages.
 ; Carry is cleared once at entry; loads and sign branches preserve it until ADC.
+; Test the dense negative half before the single zero input (OptiSearchV2 order).
 X0=$C000
 Y0=$C004
 Z0=$C008
@@ -34,8 +35,8 @@ QNEG=$9700
 atan2:
     clc
     ldx X0
-    beq axis
     bmi xneg
+    beq axis
     lda LOGX,x
     ldx Y0
     bmi xpyn

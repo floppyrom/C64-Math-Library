@@ -1,0 +1,560 @@
+{
+  "status": "PASS",
+  "date": "2026-10-07",
+  "baseline_commit": "ff1b602f9ecff43724ca507f692beaa2aed89651",
+  "basis": "identical deterministic SMUL24 corpus; public entry through RTS; rebuilt baseline and current profiles",
+  "machine_calls": 213520,
+  "seed": "0x52424d18",
+  "results": {
+    "v1_balanced": {
+      "reference": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 516.0958224053953,
+          "min_cycles": 456,
+          "max_cycles": 573,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 479.6265544989027,
+            "pn": 530.0895802098951,
+            "np": 526.7971233913702,
+            "nn": 529.0512917933131
+          },
+          "code_bytes": 491,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 511.3423566878981,
+          "min_cycles": 451,
+          "max_cycles": 568,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 474.6265544989027,
+            "pn": 525.0895802098951,
+            "np": 521.7971233913702,
+            "nn": 525.0512917933131
+          },
+          "code_bytes": 485,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 425,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "344a81c6bf9e62159c677f0c182e1677ac58a732c67e2d6e8538f4ced52e4db1",
+          "c9eda8e5f5b2187fc0361e871a87886a7e84a2b9efb4a1abc476f7ac2e92d074"
+        ]
+      },
+      "alternate": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 516.0958224053953,
+          "min_cycles": 456,
+          "max_cycles": 573,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 479.6265544989027,
+            "pn": 530.0895802098951,
+            "np": 526.7971233913702,
+            "nn": 529.0512917933131
+          },
+          "code_bytes": 491,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 511.3423566878981,
+          "min_cycles": 451,
+          "max_cycles": 568,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 474.6265544989027,
+            "pn": 525.0895802098951,
+            "np": 521.7971233913702,
+            "nn": 525.0512917933131
+          },
+          "code_bytes": 485,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 425,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "53fc182db2f641dc9a3fd8d6dc0701d6170fff89378eeac678e1e6d36a87f7a3",
+          "eb707fb1c155fe22b35e5b5279543621461a5bc4d3aab37e38a4d682b1391026"
+        ]
+      }
+    },
+    "v2_pareto_fast": {
+      "reference": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 472.09582240539527,
+          "min_cycles": 412,
+          "max_cycles": 529,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 435.6265544989027,
+            "pn": 486.0895802098951,
+            "np": 482.7971233913702,
+            "nn": 485.05129179331306
+          },
+          "code_bytes": 459,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 467.3423566878981,
+          "min_cycles": 407,
+          "max_cycles": 524,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 430.6265544989027,
+            "pn": 481.0895802098951,
+            "np": 477.7971233913702,
+            "nn": 481.05129179331306
+          },
+          "code_bytes": 453,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 398,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "2fa7ce091568a255c973d814fa2c43ed39c291befe965f0791a1aaf606e09411",
+          "daade91be3f331f1a372575bb06c93c176b52391669a48874acf4dbf32714ceb"
+        ]
+      },
+      "alternate": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 472.09582240539527,
+          "min_cycles": 412,
+          "max_cycles": 529,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 435.6265544989027,
+            "pn": 486.0895802098951,
+            "np": 482.7971233913702,
+            "nn": 485.05129179331306
+          },
+          "code_bytes": 459,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 467.3423566878981,
+          "min_cycles": 407,
+          "max_cycles": 524,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 430.6265544989027,
+            "pn": 481.0895802098951,
+            "np": 477.7971233913702,
+            "nn": 481.05129179331306
+          },
+          "code_bytes": 453,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 398,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "e89b7edd099597cf653b6b7893602b54c504d248a27d16d469275758493ce1af",
+          "05ec90dbf1c561a4924fb7b62cf395b135cbea2152a1ff34ea856cdd2ec0175d"
+        ]
+      }
+    },
+    "v3_reu_512k": {
+      "reference": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 472.09582240539527,
+          "min_cycles": 412,
+          "max_cycles": 529,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 435.6265544989027,
+            "pn": 486.0895802098951,
+            "np": 482.7971233913702,
+            "nn": 485.05129179331306
+          },
+          "code_bytes": 459,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 467.3423566878981,
+          "min_cycles": 407,
+          "max_cycles": 524,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 430.6265544989027,
+            "pn": 481.0895802098951,
+            "np": 477.7971233913702,
+            "nn": 481.05129179331306
+          },
+          "code_bytes": 453,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 398,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "b9b1191a6dc33a5e2cf58793e6582808cd9a2965bc8341e8888efc3f3441f5dc",
+          "b48ac746e8edf730a0c290f12f9b906e5a49ab91babe2e3b306ff50660b09c32"
+        ]
+      },
+      "alternate": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 472.09582240539527,
+          "min_cycles": 412,
+          "max_cycles": 529,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 435.6265544989027,
+            "pn": 486.0895802098951,
+            "np": 482.7971233913702,
+            "nn": 485.05129179331306
+          },
+          "code_bytes": 459,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 467.3423566878981,
+          "min_cycles": 407,
+          "max_cycles": 524,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 430.6265544989027,
+            "pn": 481.0895802098951,
+            "np": 477.7971233913702,
+            "nn": 481.05129179331306
+          },
+          "code_bytes": 453,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 398,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "7855e3dad10db6fdd01d182804ad14fb5a5718a25d40d2b2b0021572b60db356",
+          "780db7f4cb503489550fcd0c09d766106df61896abb942b00185621d4f673184"
+        ]
+      }
+    },
+    "v4_reu_16m": {
+      "reference": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 472.09582240539527,
+          "min_cycles": 412,
+          "max_cycles": 529,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 435.6265544989027,
+            "pn": 486.0895802098951,
+            "np": 482.7971233913702,
+            "nn": 485.05129179331306
+          },
+          "code_bytes": 459,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 467.3423566878981,
+          "min_cycles": 407,
+          "max_cycles": 524,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 430.6265544989027,
+            "pn": 481.0895802098951,
+            "np": 477.7971233913702,
+            "nn": 481.05129179331306
+          },
+          "code_bytes": 453,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 394,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "8d548f6de912ada361a51dad6c110a65d5ed4ffe8ca7adb3afe1656c2219454f",
+          "c9bcfeac3eef5a05aee09564a9947eb1b61d25c1474aaa18e1f55e57117b9f5c"
+        ]
+      },
+      "alternate": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 472.09582240539527,
+          "min_cycles": 412,
+          "max_cycles": 529,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 435.6265544989027,
+            "pn": 486.0895802098951,
+            "np": 482.7971233913702,
+            "nn": 485.05129179331306
+          },
+          "code_bytes": 459,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 467.3423566878981,
+          "min_cycles": 407,
+          "max_cycles": 524,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 430.6265544989027,
+            "pn": 481.0895802098951,
+            "np": 477.7971233913702,
+            "nn": 481.05129179331306
+          },
+          "code_bytes": 453,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 394,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "7e436ea3ae5c318aa2b3fcfcf32d92e4f0f954c3c84162ea9bc5eb66a60ff25b",
+          "ac21930554bd7d22ec8e04a131292edf9ff7d5f1e28cd1d556abd7a102f4a4bb"
+        ]
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "reference": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 516.0958224053953,
+          "min_cycles": 456,
+          "max_cycles": 573,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 479.6265544989027,
+            "pn": 530.0895802098951,
+            "np": 526.7971233913702,
+            "nn": 529.0512917933131
+          },
+          "code_bytes": 491,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 511.3423566878981,
+          "min_cycles": 451,
+          "max_cycles": 568,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 474.6265544989027,
+            "pn": 525.0895802098951,
+            "np": 521.7971233913702,
+            "nn": 525.0512917933131
+          },
+          "code_bytes": 485,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 424,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "fa420b0d485095dfce570a762c9b6e1db44cd5b3708d5613884c607c5d9807a0",
+          "635b0289d4d1a25abe0acf1a026dd1a08b68bad323f33bdfc3dff288b896510a"
+        ]
+      },
+      "alternate": {
+        "before": {
+          "cases": 10676,
+          "mean_cycles": 516.0958224053953,
+          "min_cycles": 456,
+          "max_cycles": 573,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 479.6265544989027,
+            "pn": 530.0895802098951,
+            "np": 526.7971233913702,
+            "nn": 529.0512917933131
+          },
+          "code_bytes": 491,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "after": {
+          "cases": 10676,
+          "mean_cycles": 511.3423566878981,
+          "min_cycles": 451,
+          "max_cycles": 568,
+          "quadrant_counts": {
+            "pp": 2734,
+            "pn": 2668,
+            "np": 2642,
+            "nn": 2632
+          },
+          "quadrant_means": {
+            "pp": 474.6265544989027,
+            "pn": 525.0895802098951,
+            "np": 521.7971233913702,
+            "nn": 525.0512917933131
+          },
+          "code_bytes": 485,
+          "zp_bytes": 24,
+          "persistent_stack_bytes": 0
+        },
+        "saved_cycles_distribution": {
+          "4": 2632,
+          "5": 8044
+        },
+        "changed_initialized_image_bytes": 424,
+        "changes_outside_SMUL24_ATAN2_code": 0,
+        "initialized_image_sha256": [
+          "28e9ec5670e321959c5f543c5447ecd855f3c4bc99360f94e67851c19fe71494",
+          "feee3b6211b48a1924d4ec0547d0504ec727cc472f5c2c584f9f1340d307eb8a"
+        ]
+      }
+    }
+  }
+}

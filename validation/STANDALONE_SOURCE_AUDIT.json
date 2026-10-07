@@ -68,7 +68,7 @@
           "file": "mul_s24_s24_s48.asm",
           "alias_of": "",
           "entry_address": "$3BF0",
-          "reachable_instructions": 241
+          "reachable_instructions": 238
         },
         {
           "legacy_api": "MATH_SMUL32",
@@ -507,7 +507,7 @@
           "file": "mul_s24_s24_s48.asm",
           "alias_of": "",
           "entry_address": "$3BF0",
-          "reachable_instructions": 225
+          "reachable_instructions": 222
         },
         {
           "legacy_api": "MATH_SMUL32",
@@ -946,7 +946,7 @@
           "file": "mul_s24_s24_s48.asm",
           "alias_of": "",
           "entry_address": "$3BF0",
-          "reachable_instructions": 225
+          "reachable_instructions": 222
         },
         {
           "legacy_api": "MATH_SMUL32",
@@ -1433,7 +1433,7 @@
           "file": "mul_s24_s24_s48.asm",
           "alias_of": "",
           "entry_address": "$3BF0",
-          "reachable_instructions": 225
+          "reachable_instructions": 222
         },
         {
           "legacy_api": "MATH_SMUL32",
@@ -1944,7 +1944,7 @@
           "file": "mul_s24_s24_s48.asm",
           "alias_of": "",
           "entry_address": "$3BF0",
-          "reachable_instructions": 241
+          "reachable_instructions": 238
         },
         {
           "legacy_api": "MATH_SMUL32",
@@ -2040,7 +2040,7 @@
           "file": "div_s16_s16_s16_16.asm",
           "alias_of": "",
           "entry_address": "$3D20",
-          "reachable_instructions": 804
+          "reachable_instructions": 802
         },
         {
           "legacy_api": "MATH_SDIV24",
@@ -2072,7 +2072,7 @@
           "file": "mod_s16_s16_s16__math_smod16.asm",
           "alias_of": "MATH_SDIV16",
           "entry_address": "$3FD7",
-          "reachable_instructions": 804
+          "reachable_instructions": 802
         },
         {
           "legacy_api": "MATH_SMOD24",

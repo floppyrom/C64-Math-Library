@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "source": "routines/multiply/mul_s24_s24_s48_fast24.asm",
+  "source_sha256": "62eb4c1ae785905ba17fd7da26a0764e568211f8addd05c9b60a4ff3c9d174cf",
+  "uniform_cases": 30000,
+  "uniform_seed": "0xC0FFEE",
+  "mean_cycles": 395.7566,
+  "min_cycles": 334,
+  "max_cycles": 456,
+  "code_bytes": 405,
+  "init_bytes": 33,
+  "zp_bytes": 24,
+  "occupied_total_bytes": 2506,
+  "independent_oracle": "OptiSearchV2 Reduced6502 with C64 RAM banking; comparison to library mini6502 and Python signed product",
+  "independent_cases": 4265,
+  "independent_seed": 1234,
+  "independent_cycle_or_result_mismatches": 0,
+  "before_mean": 400.3016,
+  "min_saved": 3,
+  "max_saved": 5
+}

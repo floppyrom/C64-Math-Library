@@ -19,8 +19,8 @@ MATH_ATAN2_8:
 LC78D:
     clc                                ; @C78D 18
     ldx $C000                          ; @C78E AE 00 C0
-    beq LC7D5                          ; @C791 F0 42
-    bmi LC7B3                          ; @C793 30 1E
+    bmi LC7B3                          ; @C791 30 20
+    beq LC7D5                          ; @C793 F0 40
     lda $9600,x                        ; @C795 BD 00 96
     ldx $C004                          ; @C798 AE 04 C0
     bmi LC7A8                          ; @C79B 30 0B

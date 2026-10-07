@@ -1,14 +1,15 @@
 {
   "status": "PASS",
   "seed": "0x52424d18",
-  "basis": "2026-10-06 SMUL24 direct-output deterministic signed edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores",
+  "basis": "2026-10-07 SMUL24 carry-prime/direct-output deterministic signed edge+random corpus; public entry cycles include RTS and exclude caller JSR/input stores",
+  "abi_checks": "input preservation, incoming carry alternation, C=0 result, balanced stack, guarded writes within existing code/24-ZP/result/transient stack, interleaved signed/unsigned multiplies",
   "results": {
     "v1_balanced": {
       "reference": {
         "cases": 10676,
-        "mean_cycles": 516.0958224053953,
-        "min_cycles": 456,
-        "max_cycles": 573,
+        "mean_cycles": 511.3423566878981,
+        "min_cycles": 451,
+        "max_cycles": 568,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -16,17 +17,18 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 479.6265544989027,
-          "pn": 530.0895802098951,
-          "np": 526.7971233913702,
-          "nn": 529.0512917933131
-        }
+          "pp": 474.6265544989027,
+          "pn": 525.0895802098951,
+          "np": 521.7971233913702,
+          "nn": 525.0512917933131
+        },
+        "mixed_calls": 2560
       },
       "alternate": {
         "cases": 10676,
-        "mean_cycles": 516.0958224053953,
-        "min_cycles": 456,
-        "max_cycles": 573,
+        "mean_cycles": 511.3423566878981,
+        "min_cycles": 451,
+        "max_cycles": 568,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -34,19 +36,20 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 479.6265544989027,
-          "pn": 530.0895802098951,
-          "np": 526.7971233913702,
-          "nn": 529.0512917933131
-        }
+          "pp": 474.6265544989027,
+          "pn": 525.0895802098951,
+          "np": 521.7971233913702,
+          "nn": 525.0512917933131
+        },
+        "mixed_calls": 2560
       }
     },
     "v2_pareto_fast": {
       "reference": {
         "cases": 10676,
-        "mean_cycles": 472.09582240539527,
-        "min_cycles": 412,
-        "max_cycles": 529,
+        "mean_cycles": 467.3423566878981,
+        "min_cycles": 407,
+        "max_cycles": 524,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -54,17 +57,18 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 435.6265544989027,
-          "pn": 486.0895802098951,
-          "np": 482.7971233913702,
-          "nn": 485.05129179331306
-        }
+          "pp": 430.6265544989027,
+          "pn": 481.0895802098951,
+          "np": 477.7971233913702,
+          "nn": 481.05129179331306
+        },
+        "mixed_calls": 2560
       },
       "alternate": {
         "cases": 10676,
-        "mean_cycles": 472.09582240539527,
-        "min_cycles": 412,
-        "max_cycles": 529,
+        "mean_cycles": 467.3423566878981,
+        "min_cycles": 407,
+        "max_cycles": 524,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -72,19 +76,20 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 435.6265544989027,
-          "pn": 486.0895802098951,
-          "np": 482.7971233913702,
-          "nn": 485.05129179331306
-        }
+          "pp": 430.6265544989027,
+          "pn": 481.0895802098951,
+          "np": 477.7971233913702,
+          "nn": 481.05129179331306
+        },
+        "mixed_calls": 2560
       }
     },
     "v3_reu_512k": {
       "reference": {
         "cases": 10676,
-        "mean_cycles": 472.09582240539527,
-        "min_cycles": 412,
-        "max_cycles": 529,
+        "mean_cycles": 467.3423566878981,
+        "min_cycles": 407,
+        "max_cycles": 524,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -92,17 +97,18 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 435.6265544989027,
-          "pn": 486.0895802098951,
-          "np": 482.7971233913702,
-          "nn": 485.05129179331306
-        }
+          "pp": 430.6265544989027,
+          "pn": 481.0895802098951,
+          "np": 477.7971233913702,
+          "nn": 481.05129179331306
+        },
+        "mixed_calls": 2560
       },
       "alternate": {
         "cases": 10676,
-        "mean_cycles": 472.09582240539527,
-        "min_cycles": 412,
-        "max_cycles": 529,
+        "mean_cycles": 467.3423566878981,
+        "min_cycles": 407,
+        "max_cycles": 524,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -110,19 +116,20 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 435.6265544989027,
-          "pn": 486.0895802098951,
-          "np": 482.7971233913702,
-          "nn": 485.05129179331306
-        }
+          "pp": 430.6265544989027,
+          "pn": 481.0895802098951,
+          "np": 477.7971233913702,
+          "nn": 481.05129179331306
+        },
+        "mixed_calls": 2560
       }
     },
     "v4_reu_16m": {
       "reference": {
         "cases": 10676,
-        "mean_cycles": 472.09582240539527,
-        "min_cycles": 412,
-        "max_cycles": 529,
+        "mean_cycles": 467.3423566878981,
+        "min_cycles": 407,
+        "max_cycles": 524,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -130,17 +137,18 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 435.6265544989027,
-          "pn": 486.0895802098951,
-          "np": 482.7971233913702,
-          "nn": 485.05129179331306
-        }
+          "pp": 430.6265544989027,
+          "pn": 481.0895802098951,
+          "np": 477.7971233913702,
+          "nn": 481.05129179331306
+        },
+        "mixed_calls": 2560
       },
       "alternate": {
         "cases": 10676,
-        "mean_cycles": 472.09582240539527,
-        "min_cycles": 412,
-        "max_cycles": 529,
+        "mean_cycles": 467.3423566878981,
+        "min_cycles": 407,
+        "max_cycles": 524,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -148,19 +156,20 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 435.6265544989027,
-          "pn": 486.0895802098951,
-          "np": 482.7971233913702,
-          "nn": 485.05129179331306
-        }
+          "pp": 430.6265544989027,
+          "pn": 481.0895802098951,
+          "np": 477.7971233913702,
+          "nn": 481.05129179331306
+        },
+        "mixed_calls": 2560
       }
     },
     "v5_hybrid_lowzp": {
       "reference": {
         "cases": 10676,
-        "mean_cycles": 516.0958224053953,
-        "min_cycles": 456,
-        "max_cycles": 573,
+        "mean_cycles": 511.3423566878981,
+        "min_cycles": 451,
+        "max_cycles": 568,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -168,17 +177,18 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 479.6265544989027,
-          "pn": 530.0895802098951,
-          "np": 526.7971233913702,
-          "nn": 529.0512917933131
-        }
+          "pp": 474.6265544989027,
+          "pn": 525.0895802098951,
+          "np": 521.7971233913702,
+          "nn": 525.0512917933131
+        },
+        "mixed_calls": 2560
       },
       "alternate": {
         "cases": 10676,
-        "mean_cycles": 516.0958224053953,
-        "min_cycles": 456,
-        "max_cycles": 573,
+        "mean_cycles": 511.3423566878981,
+        "min_cycles": 451,
+        "max_cycles": 568,
         "quadrant_counts": {
           "pp": 2734,
           "pn": 2668,
@@ -186,11 +196,12 @@
           "nn": 2632
         },
         "quadrant_means": {
-          "pp": 479.6265544989027,
-          "pn": 530.0895802098951,
-          "np": 526.7971233913702,
-          "nn": 529.0512917933131
-        }
+          "pp": 474.6265544989027,
+          "pn": 525.0895802098951,
+          "np": 521.7971233913702,
+          "nn": 525.0512917933131
+        },
+        "mixed_calls": 2560
       }
     }
   }

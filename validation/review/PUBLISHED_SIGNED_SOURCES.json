@@ -13,7 +13,7 @@
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 241
+          "instructions": 238
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
@@ -71,7 +71,7 @@
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 225
+          "instructions": 222
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
@@ -129,7 +129,7 @@
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 225
+          "instructions": 222
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
@@ -187,7 +187,7 @@
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 225
+          "instructions": 222
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
@@ -245,7 +245,7 @@
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
-          "instructions": 241
+          "instructions": 238
         },
         "MATH_SMUL32": {
           "file": "smul32_native.asm",
@@ -271,7 +271,7 @@
         },
         "MATH_SDIV16": {
           "file": "sdiv16_native.asm",
-          "instructions": 804
+          "instructions": 802
         },
         "MATH_SDIV24": {
           "file": "sdiv24_native.asm",

@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-06",
+  "archive_sha256": "f5a6a9f0e8728186f91a95c1112a70488cf943fc99b2380c52272424e44455eb",
+  "public_comparison_commit": "2e2f396",
+  "frontier_active_count": 3245,
+  "scope": "frontier metadata screen; eleven leading candidate sources inspected; four native candidates measured here; not an exhaustive frontier benchmark",
+  "multiplier_corpus": "9x9 edge pairs plus 10000 getrandbits pairs, Random(0x0C70626+bits)",
+  "division_corpus": "42 edge pairs plus 10000 random nonzero-divisor pairs, Random(0xD1F+bits); zero-divisor contract not tested",
+  "results": {
+    "sweep-00292b82583455fd6ad3": {
+      "cases": 10081,
+      "native_mean": 166.7185795060014,
+      "native_min": 156,
+      "native_max": 184,
+      "occupied_bytes": 2202,
+      "initialized_zp_bytes": 21,
+      "current_v2_public_mean": 216.82958039876996,
+      "non_zp_occupied_bytes": 2181,
+      "status": "sampled correctness PASS; not a public-ABI comparison"
+    },
+    "mul141-umul24-17caf38763dbd90c": {
+      "cases": 10081,
+      "native_mean": 360.8729292728896,
+      "native_min": 331,
+      "native_max": 413,
+      "occupied_bytes": 2382,
+      "initialized_zp_bytes": 27,
+      "current_v2_public_mean": 429.8729292728896,
+      "non_zp_occupied_bytes": 2355,
+      "status": "sampled correctness PASS; not a public-ABI comparison"
+    },
+    "div-promotion-r55": {
+      "cases": 10042,
+      "native_mean": 64.2042421828321,
+      "native_min": 31,
+      "native_max": 676,
+      "occupied_bytes": 13469,
+      "initialized_zp_bytes": 9,
+      "non_zp_occupied_bytes": 13460,
+      "status": "sampled correctness PASS; not a public-ABI comparison"
+    },
+    "div-promotion-r48": {
+      "cases": 10042,
+      "native_mean": 100.6171081457877,
+      "native_min": 41,
+      "native_max": 2878,
+      "occupied_bytes": 15248,
+      "initialized_zp_bytes": 24,
+      "non_zp_occupied_bytes": 15224,
+      "status": "sampled correctness PASS; not a public-ABI comparison"
+    }
+  }
+}

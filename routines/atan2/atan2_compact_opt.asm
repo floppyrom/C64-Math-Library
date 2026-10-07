@@ -2,6 +2,7 @@
 ; Inputs X0/Y0 are preserved; Z0 and A return phase; D=0 required, C=0 returned.
 ; No ZP, scratch, self-modification, or undocumented instructions.
 ; @ORG@ is replaced by the standalone benchmark/exporter.
+; Test the dense negative half before the single zero input (OptiSearchV2 order).
 X0=$C000
 Y0=$C004
 Z0=$C008
@@ -10,9 +11,9 @@ ATANTAB=$9700
 .org @ORG@
 atan2:
     ldx X0
-    beq axis
     sec
     bmi xneg
+    beq axis
     lda LOGTAB,x
     ldx Y0
     bmi xpyn
