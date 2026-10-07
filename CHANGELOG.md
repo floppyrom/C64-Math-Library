@@ -1,10 +1,11 @@
-## 2026-10-07 — V5 low-ZP MULDIV16 producer/divider fusion
+## 2026-10-07 — Final MULDIV16 producer/divider and signed sign-flow fusion
 
 - Specialized V5 `MATH_UMULDIV16` and `MATH_SMULDIV16` without increasing its **31-byte normal-ZP contract**. The hybrid builder reuses the qualified V1 17-ZP UMUL16 record producer and feeds its register/ZP product directly into the relocated private V2 UDIV32/16 state.
 - V5 UMULDIV16 improves **956.646373 -> 834.646373 cycles mean**, with min/max **456-2078 -> 334-1956** on the unchanged 9,001-case corpus.
-- V5 SMULDIV16 now uses one signed-magnitude normalization, one unsigned multiply/divide, and final quotient/remainder sign fixup. Mean latency improves **1378.300411 -> 916.200755 cycles**, with min/max **490-2271 -> 83-1920**.
-- Reference and alternate V5 maps are cycle-vector identical. The focused MULDIV proof passes **9,001 unsigned + 9,001 signed cases per map**, and the V5 hybrid regression passes exhaustive UMOD8 plus randomized/mixed cross-API coverage.
-- The divisor is deliberately bound into private divider state only after UMUL16 returns because V5's divider D bytes overlap the low-ZP quarter-square pointer image. Public X/Y/D preservation, divide-by-zero semantics, zero persistent stack use, and existing table classes are unchanged.
+- V5 SMULDIV16 improves **1378.300411 -> 888.154427 cycles mean**, with min/max **490-2271 -> 83-1899**. The signed path preserves product-sign state in control flow and uses specialized no-fix, quotient-only, remainder-only, and quotient+remainder tails.
+- The same signed sign-flow/tail specialization improves V2/V3/V4 SMULDIV16 from **889.395956 -> 860.152761 cycles mean**, with maximum latency **1893 -> 1870**. Against the composed baseline, mean saving is **272.886013 cycles**, with **90-1027 cycles saved per call** and zero slower cases.
+- The final code-for-cycles pass uses otherwise free implementation space; it adds **no ZP, no persistent stack reservation, and no profile PRG-span growth**. The divisor is deliberately bound only after multiplication on V5 because its divider D bytes overlap the low-ZP quarter-square pointer image.
+- Reference and alternate maps are cycle-vector identical. The focused proof passes **9,001 unsigned + 9,001 signed cases per profile/map**, and the V5 hybrid regression passes exhaustive UMOD8 plus randomized/mixed cross-API coverage.
 
 ## 2026-10-07 — UDIV32/16 optimization and bounded unsigned-division latency (PR #33)
 
