@@ -6049,6 +6049,7 @@ ZCE4:
 !source "sdiv8_direct_public.inc"
 !source "udiv16_direct_fast.inc"
 !source "udiv24_direct_repose.inc"
+!source "udiv32_16_split_direct.inc"
 !source "sdiv16_directout_fast.inc"
 !source "sdiv24_directout_repose.inc"
 !source "sdiv32_16_direct_fast.inc"
