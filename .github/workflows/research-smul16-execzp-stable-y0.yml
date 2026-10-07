@@ -1,0 +1,20 @@
+name: Research SMUL16 exec-ZP stable Y0
+on:
+  push:
+    branches:
+      - research/smul16-execzp-stable-y0-v2
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Benchmark exec-ZP stable-Y0 candidate
+        run: python3 tools/bench_smul16_execzp_stable_y0.py
