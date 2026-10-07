@@ -25,6 +25,8 @@ jobs:
             python3 tools/assemble_sources.py --profile v3_reu_512k --config-kind "$kind" --out build_u3216
             python3 tools/assemble_sources.py --profile v4_reu_16m --config-kind "$kind" --out build_u3216
           done
+      - name: Trace UDIV24 latency overlay divergence
+        run: python3 tools/debug_divlat_trace.py
       - name: Focused UDIV32-16 alias gate
         run: python3 tools/debug_udiv32_16_source.py
       - name: Check latency-helper placement
