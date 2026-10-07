@@ -31,6 +31,7 @@ CANONICAL={
 'MATH_UMOD8':'mod_u8_u8_u8','MATH_UMOD16':'mod_u16_u16_u16','MATH_UMOD24':'mod_u24_u24_u24','MATH_UMOD32_16':'mod_u32_u16_u16',
 'MATH_SDIV8':'div_s8_s8_s8_8','MATH_SDIV16':'div_s16_s16_s16_16','MATH_SDIV24':'div_s24_s24_s24_24','MATH_SDIV32_16':'div_s32_s16_s32_16',
 'MATH_SMOD8':'mod_s8_s8_s8','MATH_SMOD16':'mod_s16_s16_s16','MATH_SMOD24':'mod_s24_s24_s24','MATH_SMOD32_16':'mod_s32_s16_s16',
+'MATH_UMULDIV16':'muldiv_u16_u16_u16_u32_16','MATH_SMULDIV16':'muldiv_s16_s16_s16_s32_16',
 'MATH_UDIV32_32':'div_u32_u32_u32_32','MATH_UMOD32_32':'mod_u32_u32_u32','MATH_SDIV32_32':'div_s32_s32_s32_32','MATH_SMOD32_32':'mod_s32_s32_s32',
 'MATH_UMUL16_SHR8':'mul_u16_u16_u24_shr8','MATH_SMUL16_SHR8':'mul_s16_s16_s24_shr8','MATH_UMUL32_SHR16':'mul_u32_u32_u48_shr16','MATH_SMUL32_SHR16':'mul_s32_s32_s48_shr16',
 'MATH_UDIV16_SHL8':'div_u16_u16_u24_16_shl8','MATH_SDIV16_SHL8':'div_s16_s16_s24_16_shl8',
