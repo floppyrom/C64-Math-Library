@@ -153,7 +153,8 @@ T16D_PUBLIC_TEST:
     jmp umult_ax1
 '''
 dmem,dlabels,dconst=Assembler().assemble(cfg+base_src+direct_wrapper)
-dsize=dlabels['cg_zp_end']-dlabels['cg_zp_start']
+dzp=[a for a in dmem if BASE <= a <= 0xff]
+dsize=max(dzp)-min(dzp)+1
 print('directout_zp_bytes',dsize)
 m2=load_prg(PRG); c2=CPU(m2,reu=bytearray(REU.read_bytes())); c2.d=0;c2.call(MATH_INIT,2_000_000)
 for a,v in dmem.items(): c2.mem[a]=v
