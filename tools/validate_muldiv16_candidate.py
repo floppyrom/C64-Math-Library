@@ -55,9 +55,11 @@ def load(profile,kind):
     api={k:unhx(v) for k,v in man['public_entries'].items()}
     io=unhx(man['public_io'].split('-')[0])
     # Candidate slots occupy the common free hole after MATH_INIT.
-    u=init+0x60
+    reg_api=init-0x280
+    u=reg_api+0x2e0
     s=u+3
-    return cpu,api,io,u,s
+    baseline_u=reg_api+0x3e0
+    return cpu,api,io,u,s,baseline_u
 
 def edge16_signed_bits():
     vals=[0,1,2,3,7,15,16,31,127,128,255,256,257,0x7fff,0x8000,0x8001,0xff00,0xfffe,0xffff]
@@ -121,17 +123,25 @@ def run():
         per={}
         ref_vectors={}
         for kind in ('reference','alternate'):
-            cpu,api,io,uent,sent=load(p,kind)
+            cpu,api,io,uent,sent,baseline_u=load(p,kind)
             # Stubs must be JMPs and the signed helper must sit below the seek island.
             assert cpu.mem[uent]==0x4c,(p,kind,'unsigned candidate stub',hex(uent),hex(cpu.mem[uent]))
             assert cpu.mem[sent]==0x4c,(p,kind,'signed candidate stub',hex(sent),hex(cpu.mem[sent]))
-            uc=[];sc=[];errs=[]
+            uc=[];sc=[];base_uc=[];errs=[]
             for x,y,d in uv:
                 cy,ok,got,exp=call_unsigned(cpu,uent,io,x,y,d)
                 if not ok:
                     errs.append({'kind':'unsigned','x':hex(x),'y':hex(y),'d':hex(d),'got':got,'exp':exp})
                     if len(errs)>=8: break
                 uc.append(cy)
+                if p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+                    bcy,bok,bgot,bexp=call_unsigned(cpu,baseline_u,io,x,y,d)
+                    if not bok or bgot!=exp:
+                        errs.append({'kind':'unsigned-baseline','x':hex(x),'y':hex(y),'d':hex(d),'got':bgot,'exp':bexp})
+                        if len(errs)>=8: break
+                    # Direct call to the baseline core omits the three-cycle JMP
+                    # paid by the old public candidate slot.
+                    base_uc.append(bcy+3)
             if not errs:
                 for x,y,d in sv:
                     cy,ok,got,exp=call_signed(cpu,sent,io,x,y,d)
@@ -141,6 +151,16 @@ def run():
                     sc.append(cy)
             if errs: raise AssertionError((p,kind,errs))
             per[kind]={'unsigned':stats(uc),'signed':stats(sc)}
+            if base_uc:
+                delta=[b-n for b,n in zip(base_uc,uc)]
+                per[kind]['unsigned_composed_baseline']=stats(base_uc)
+                per[kind]['unsigned_fusion']={
+                    'saved_mean_cycles':sum(delta)/len(delta),
+                    'min_saved_cycles':min(delta),
+                    'max_saved_cycles':max(delta),
+                    'slower_cases':sum(x<0 for x in delta),
+                    'equal_cases':sum(x==0 for x in delta),
+                }
             if kind=='reference': ref_vectors={'unsigned':uc,'signed':sc}
             else:
                 assert uc==ref_vectors['unsigned'],(p,'unsigned relocation cycle mismatch')
