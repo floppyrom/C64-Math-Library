@@ -227,11 +227,12 @@ D16F_s_mag_pp:
         cmp D16F_sdin0
         bcs D16F_s_qge2_pp
 D16F_s_qone_pp:
-        lda #1
-        sta D16F_q0
-        lsr
-        sta D16F_q1
-        clc
+        ; Both q=1 entry routes establish C=0. Build 0:1 through Y without
+        ; disturbing carry, saving one byte over the A/LSR form.
+        ldy #0
+        sty D16F_q1
+        iny
+        sty D16F_q0
         rts
 D16F_s_qge2_pp:
         ; The q>=2 engine may use the original magnitude for low divisors.
@@ -263,10 +264,10 @@ D16F_s_mag_pn:
         cmp D16F_d0
         bcs D16F_s_qge2_pn
 D16F_s_qone_pn:
+        ; q=1 fall-through guarantees C=0; stores do not change carry.
         lda #$ff
         sta D16F_q0
         sta D16F_q1
-        clc
         rts
 D16F_s_qge2_pn:
         lda D16F_r1
