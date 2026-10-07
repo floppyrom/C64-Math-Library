@@ -1,9 +1,9 @@
 ; V2/V3/V4 MULDIV16 stable fast handoffs.
-; The common source keeps V1/V5 on composition. Here the 64-byte hole
-; REG_API+$03E0..+$041F is packed exactly:
-;   +$03E0..+$03F7  signed handoff (24 bytes)
-;   +$03F8..+$041F  unsigned handoff (40 bytes)
-; The existing UMUL32 adapter begins at REG_API+$0420.
+; The common source keeps V1/V5 on composition. V2/V3/V4 overwrite the
+; now-dead composed baseline area and pack both fast handoffs below the
+; existing UMUL32 adapter at REG_API+$0420:
+;   +$03C9... unsigned fused handoff
+;   +$03F8... signed fused handoff.
 
 * = MATH_SMULDIV16
     jmp MULDIV16_S_FAST
@@ -13,7 +13,7 @@
 ; Public V2-V4 SMUL16 returns A=product byte1 and X=byte2 while Z0/Z3 are
 ; already materialized. Copy those four bytes directly into N and enter the
 ; signed 32/16 divider, avoiding the generic four-byte Z->N loop.
-* = REG_API+$03E0
+* = REG_API+$03F8
 MULDIV16_S_FAST:
     jsr MATH_SMUL16
     sta MATH_N+$01
@@ -26,7 +26,7 @@ MULDIV16_S_FAST:
 
 ; Inline the V2-V4 public UMUL16 binder, but send its returned product bytes
 ; straight to N instead of materializing Z1/Z2/Z3 and then copying Z->N.
-* = REG_API+$03F8
+* = REG_API+$03C9
 MULDIV16_U_FAST:
     lda MATH_X
     sta U16_X0
