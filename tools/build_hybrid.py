@@ -17,7 +17,7 @@ DIV_SRC = (0x4200, 0x51FF)
 # true UMOD8 body, plus a narrow-tail helper reused from dead UDIV32/32 code.
 UMOD8_SRC = (0x5200, 0x5271)
 UDIV32_16_D8_SRC = (0x5272, 0x52ED)
-DIVLAT_HELPER_SRC = (0x5957, 0x599D)
+DIVLAT_HELPER_SRC = (0x5957, 0x59A6)
 UDIV32_16_D8_DST_OFF = 0x1772
 DIVLAT_HELPER_DST_OFF = 0x10B0
 COS_SRC = (0xC766, 0xC770)
@@ -134,7 +134,7 @@ def map_abs(target: int, vals: dict[str, int], hbase: int) -> int:
     # private signed-division core and the high-end UDIV16 engine.
     if UDIV32_16_D8_SRC[0] <= target <= UDIV32_16_D8_SRC[1]:
         return hbase + UDIV32_16_D8_DST_OFF + (target - UDIV32_16_D8_SRC[0])
-    # The UDIV24 latency escape helper is only 34 bytes and fits after SINCOS.
+    # The division latency helper ends at $59A6 and fits exactly before the private cosine table.
     if DIVLAT_HELPER_SRC[0] <= target <= DIVLAT_HELPER_SRC[1]:
         return hbase + DIVLAT_HELPER_DST_OFF + (target - DIVLAT_HELPER_SRC[0])
     # Stable public API references follow the selected V1-style map.  This is
