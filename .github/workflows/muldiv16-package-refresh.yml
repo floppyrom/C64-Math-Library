@@ -1,0 +1,54 @@
+name: MULDIV16 package refresh
+
+on:
+  push:
+    branches: [ promote/muldiv16-stable-20261007 ]
+    paths:
+      - '.github/workflows/muldiv16-package-refresh.yml'
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: promote/muldiv16-stable-20261007
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Remove temporary helper and refresh package metadata
+        run: |
+          rm .github/workflows/muldiv16-package-refresh.yml
+          rm -rf build_source build_hybrid build_hybrid_repeat build_pareto
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          def sums():
+              fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+              (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          sums()
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+      - name: Commit refreshed package metadata
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Refresh MULDIV16 package metadata"
+          git push origin HEAD:promote/muldiv16-stable-20261007
