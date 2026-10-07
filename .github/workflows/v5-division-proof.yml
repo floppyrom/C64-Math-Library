@@ -18,6 +18,10 @@ jobs:
         run: |
           python3 tools/build_hybrid.py --config-kind reference
           python3 tools/build_hybrid.py --config-kind alternate
+      - name: Build V2 parity donor
+        run: python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_v5trace
+      - name: Trace narrow UDIV24 parity case
+        run: python3 tools/debug_v5_udiv24_trace.py
       - name: Validate V5 hybrid
         run: python3 tools/validate_hybrid.py
       - name: Check optimized division calls directly
