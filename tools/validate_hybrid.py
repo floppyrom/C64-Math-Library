@@ -47,10 +47,17 @@ def call_div(c,P,I,name,nbits,dbits,n,d):
     nn=nbits//8;dn=dbits//8;d &= MASK(dbits)
     wr(c,N,n,nn);wr(c,D,d,dn); beforeN=bytes(c.mem[N:N+nn]);beforeD=bytes(c.mem[D:D+dn])
     cy=c.call(P[name],2_000_000);q=rd(c,Q,nn);r=rd(c,R,dn)
+    remainder_only=name.startswith('MATH_UMOD')
     if d==0:
-        assert c.c==1 and q==0 and r==0,(name,n,d,q,r,c.c)
+        if remainder_only:
+            assert c.c==1 and r==0,(name,n,d,q,r,c.c)
+        else:
+            assert c.c==1 and q==0 and r==0,(name,n,d,q,r,c.c)
     else:
-        assert c.c==0 and (q,r)==divmod(n,d),(name,n,d,q,r,divmod(n,d),c.c)
+        if remainder_only:
+            assert c.c==0 and r==n%d,(name,n,d,q,r,n%d,c.c)
+        else:
+            assert c.c==0 and (q,r)==divmod(n,d),(name,n,d,q,r,divmod(n,d),c.c)
     assert bytes(c.mem[N:N+nn])==beforeN and bytes(c.mem[D:D+dn])==beforeD
     return cy
 
