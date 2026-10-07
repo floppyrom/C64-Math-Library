@@ -113,7 +113,7 @@ RM3232U_LEGACY:
 ; Unsigned 24-bit remainder.
 ; Delay q1/q2 zeroing until q>=2 so the two dominant exits are remainder-only.
 ; ---------------------------------------------------------------------------
-* = REG_KERNEL+$1D74
+* = REG_LOW+$0F00
 RM24U_ENTRY:
     !byte $AF,<MATH_N+2,>MATH_N+2
     cmp MATH_D+2
