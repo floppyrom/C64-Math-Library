@@ -1,0 +1,229 @@
+{
+  "status": "PASS",
+  "seed": "0x32D1F",
+  "basis": "public entry through RTS; both incoming carry states; UMOD independently exercised; equal relocation cycle vectors",
+  "results": {
+    "v2_pareto_fast": {
+      "reference": {
+        "code_bytes": 793,
+        "zp_bytes": 4,
+        "groups": {
+          "edges": {
+            "cases": 529,
+            "mean_cycles": 747.1814744801512,
+            "min_cycles": 72,
+            "max_cycles": 2194
+          },
+          "uniform32": {
+            "cases": 30000,
+            "mean_cycles": 191.16906666666668,
+            "min_cycles": 72,
+            "max_cycles": 2412
+          },
+          "divisor16": {
+            "cases": 2000,
+            "mean_cycles": 1485.3295,
+            "min_cycles": 1310,
+            "max_cycles": 1957
+          },
+          "divisor8": {
+            "cases": 2000,
+            "mean_cycles": 1814.827,
+            "min_cycles": 1671,
+            "max_cycles": 2083
+          },
+          "quotient_boundaries": {
+            "cases": 178,
+            "mean_cycles": 978.0955056179776,
+            "min_cycles": 72,
+            "max_cycles": 2532
+          }
+        }
+      },
+      "alternate": {
+        "code_bytes": 793,
+        "zp_bytes": 4,
+        "groups": {
+          "edges": {
+            "cases": 529,
+            "mean_cycles": 747.1814744801512,
+            "min_cycles": 72,
+            "max_cycles": 2194
+          },
+          "uniform32": {
+            "cases": 30000,
+            "mean_cycles": 191.16906666666668,
+            "min_cycles": 72,
+            "max_cycles": 2412
+          },
+          "divisor16": {
+            "cases": 2000,
+            "mean_cycles": 1485.3295,
+            "min_cycles": 1310,
+            "max_cycles": 1957
+          },
+          "divisor8": {
+            "cases": 2000,
+            "mean_cycles": 1814.827,
+            "min_cycles": 1671,
+            "max_cycles": 2083
+          },
+          "quotient_boundaries": {
+            "cases": 178,
+            "mean_cycles": 978.0955056179776,
+            "min_cycles": 72,
+            "max_cycles": 2532
+          }
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "reference": {
+        "code_bytes": 793,
+        "zp_bytes": 4,
+        "groups": {
+          "edges": {
+            "cases": 529,
+            "mean_cycles": 747.1814744801512,
+            "min_cycles": 72,
+            "max_cycles": 2194
+          },
+          "uniform32": {
+            "cases": 30000,
+            "mean_cycles": 191.16906666666668,
+            "min_cycles": 72,
+            "max_cycles": 2412
+          },
+          "divisor16": {
+            "cases": 2000,
+            "mean_cycles": 1485.3295,
+            "min_cycles": 1310,
+            "max_cycles": 1957
+          },
+          "divisor8": {
+            "cases": 2000,
+            "mean_cycles": 1814.827,
+            "min_cycles": 1671,
+            "max_cycles": 2083
+          },
+          "quotient_boundaries": {
+            "cases": 178,
+            "mean_cycles": 978.0955056179776,
+            "min_cycles": 72,
+            "max_cycles": 2532
+          }
+        }
+      },
+      "alternate": {
+        "code_bytes": 793,
+        "zp_bytes": 4,
+        "groups": {
+          "edges": {
+            "cases": 529,
+            "mean_cycles": 747.1814744801512,
+            "min_cycles": 72,
+            "max_cycles": 2194
+          },
+          "uniform32": {
+            "cases": 30000,
+            "mean_cycles": 191.16906666666668,
+            "min_cycles": 72,
+            "max_cycles": 2412
+          },
+          "divisor16": {
+            "cases": 2000,
+            "mean_cycles": 1485.3295,
+            "min_cycles": 1310,
+            "max_cycles": 1957
+          },
+          "divisor8": {
+            "cases": 2000,
+            "mean_cycles": 1814.827,
+            "min_cycles": 1671,
+            "max_cycles": 2083
+          },
+          "quotient_boundaries": {
+            "cases": 178,
+            "mean_cycles": 978.0955056179776,
+            "min_cycles": 72,
+            "max_cycles": 2532
+          }
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "reference": {
+        "code_bytes": 793,
+        "zp_bytes": 4,
+        "groups": {
+          "edges": {
+            "cases": 529,
+            "mean_cycles": 747.1814744801512,
+            "min_cycles": 72,
+            "max_cycles": 2194
+          },
+          "uniform32": {
+            "cases": 30000,
+            "mean_cycles": 191.16906666666668,
+            "min_cycles": 72,
+            "max_cycles": 2412
+          },
+          "divisor16": {
+            "cases": 2000,
+            "mean_cycles": 1485.3295,
+            "min_cycles": 1310,
+            "max_cycles": 1957
+          },
+          "divisor8": {
+            "cases": 2000,
+            "mean_cycles": 1814.827,
+            "min_cycles": 1671,
+            "max_cycles": 2083
+          },
+          "quotient_boundaries": {
+            "cases": 178,
+            "mean_cycles": 978.0955056179776,
+            "min_cycles": 72,
+            "max_cycles": 2532
+          }
+        }
+      },
+      "alternate": {
+        "code_bytes": 793,
+        "zp_bytes": 4,
+        "groups": {
+          "edges": {
+            "cases": 529,
+            "mean_cycles": 747.1814744801512,
+            "min_cycles": 72,
+            "max_cycles": 2194
+          },
+          "uniform32": {
+            "cases": 30000,
+            "mean_cycles": 191.16906666666668,
+            "min_cycles": 72,
+            "max_cycles": 2412
+          },
+          "divisor16": {
+            "cases": 2000,
+            "mean_cycles": 1485.3295,
+            "min_cycles": 1310,
+            "max_cycles": 1957
+          },
+          "divisor8": {
+            "cases": 2000,
+            "mean_cycles": 1814.827,
+            "min_cycles": 1671,
+            "max_cycles": 2083
+          },
+          "quotient_boundaries": {
+            "cases": 178,
+            "mean_cycles": 978.0955056179776,
+            "min_cycles": 72,
+            "max_cycles": 2532
+          }
+        }
+      }
+    }
+  }
+}

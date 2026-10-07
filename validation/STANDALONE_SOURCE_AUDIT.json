@@ -659,7 +659,7 @@
           "file": "div_u32_u32_u32_32.asm",
           "alias_of": "",
           "entry_address": "$5E00",
-          "reachable_instructions": 362
+          "reachable_instructions": 319
         },
         {
           "legacy_api": "MATH_UMOD32_32",
@@ -667,7 +667,7 @@
           "file": "mod_u32_u32_u32__math_umod32_32.asm",
           "alias_of": "MATH_UDIV32_32",
           "entry_address": "$5E03",
-          "reachable_instructions": 352
+          "reachable_instructions": 359
         },
         {
           "legacy_api": "MATH_SDIV32_32",
@@ -1098,7 +1098,7 @@
           "file": "div_u32_u32_u32_32.asm",
           "alias_of": "",
           "entry_address": "$5E00",
-          "reachable_instructions": 362
+          "reachable_instructions": 319
         },
         {
           "legacy_api": "MATH_UMOD32_32",
@@ -1106,7 +1106,7 @@
           "file": "mod_u32_u32_u32__math_umod32_32.asm",
           "alias_of": "MATH_UDIV32_32",
           "entry_address": "$5E03",
-          "reachable_instructions": 352
+          "reachable_instructions": 359
         },
         {
           "legacy_api": "MATH_SDIV32_32",
@@ -1585,7 +1585,7 @@
           "file": "div_u32_u32_u32_32.asm",
           "alias_of": "",
           "entry_address": "$5E00",
-          "reachable_instructions": 362
+          "reachable_instructions": 319
         },
         {
           "legacy_api": "MATH_UMOD32_32",
@@ -1593,7 +1593,7 @@
           "file": "mod_u32_u32_u32__math_umod32_32.asm",
           "alias_of": "MATH_UDIV32_32",
           "entry_address": "$5E03",
-          "reachable_instructions": 352
+          "reachable_instructions": 359
         },
         {
           "legacy_api": "MATH_SDIV32_32",
