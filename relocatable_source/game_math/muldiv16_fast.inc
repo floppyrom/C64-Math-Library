@@ -1,8 +1,9 @@
 ; V2/V3/V4 MULDIV16 stable fast handoffs.
 ; The common source keeps V1/V5 on composition. V2/V3/V4 overwrite the
 ; now-dead unsigned composed baseline area for the direct unsigned handoff.
-; The larger signed-quadrant fusion lives in the certified free REG_LOW+$0BCD island;
-; the existing UMUL32 adapter at REG_API+$0420 remains untouched.
+; The larger signed-quadrant fusion is split across three certified common holes
+; that remain collision-free under both reference and alternate maps; the existing
+; UMUL32 adapter at REG_API+$0420 remains untouched.
 
 * = MATH_SMULDIV16
     jmp MULDIV16_S_FUSED
@@ -11,9 +12,13 @@
 
 ; OptiSearch-style signed-quadrant fusion. Normalize X/Y/D once, run the
 ; unsigned quarter-square producer and the private unsigned 32/16 divider, then
-; apply quotient/remainder signs once. This removes the signed-product
-; correction + signed-divider magnitude reconstruction pair.
-* = REG_LOW+$0BCD
+; apply quotient/remainder signs once. The 327-byte body is split across three
+; certified common holes so the alternate map stays clear of the fixed
+; $9C00-$9FFF SMUL8 signed-sum planes.
+
+; Island A: sign normalization/control-flow prefix.
+; Reference $2288-$22F6; alternate $A288-$A2F6.
+* = REG_LOW+$1288
 MULDIV16_S_FUSED:
     ; Divisor zero can return before paying for the multiply.
     lda MATH_D+$01
@@ -70,6 +75,11 @@ MULDIV16_S_XPOS_YPOS:
     ldy MATH_Y
     lda MATH_Y+$01
     sta U16_Y1
+    jmp MULDIV16_S_MUL_PPOS
+
+; Island B: product-positive/product-negative divider setup.
+; Reference $5785-$57EC; alternate $3785-$37EC.
+* = REG_KERNEL+$1785
 
 ; Product-positive path: quotient sign follows D, remainder stays positive.
 MULDIV16_S_MUL_PPOS:
@@ -126,6 +136,10 @@ MULDIV16_S_PNEG_DPOS:
     lda MATH_D+$01
     sta U3216_D1
     jmp MULDIV16_S_DIV_QR
+
+; Island C: signed result tails.
+; Reference $5D74-$5DE6; alternate $3D74-$3DE6.
+* = REG_KERNEL+$1D74
 
 MULDIV16_S_DIV_Q:
     jsr U3216_ENTRY
