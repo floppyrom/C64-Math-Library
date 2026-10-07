@@ -1,0 +1,45 @@
+name: V5 MULDIV16 fusion experiment
+on:
+  push:
+    branches: [ experiment/muldiv16-v5-lowzp-fusion-20261007 ]
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate canonical sources
+        run: python3 tools/generate_sources.py
+      - name: Build V5 reference and alternate
+        run: |
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+      - name: Benchmark V5 MULDIV16
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          sys.path.insert(0,'tools')
+          import validate_muldiv16 as v
+          uv,sv=v.vectors()
+          ref=None
+          for kind in ('reference','alternate'):
+              cpu,api,io=v.load('v5_hybrid_lowzp',kind)
+              uc=[]; errs=[]
+              for x,y,d in uv:
+                  cy,ok,got,exp=v.call_unsigned(cpu,api['MATH_UMULDIV16'],io,x,y,d)
+                  if not ok:
+                      errs.append((x,y,d,got,exp))
+                      if len(errs)>=8: break
+                  uc.append(cy)
+              if errs: raise SystemExit(('V5_UNSIGNED_FAIL',kind,errs))
+              st=v.stats(uc)
+              print('V5_UMULDIV16',kind,json.dumps(st,sort_keys=True),flush=True)
+              if ref is None: ref=uc
+              elif uc!=ref: raise SystemExit('V5 unsigned relocation cycle mismatch')
+          print('V5_UMULDIV16_EXPERIMENT_PASS',len(uv),flush=True)
+          PY
