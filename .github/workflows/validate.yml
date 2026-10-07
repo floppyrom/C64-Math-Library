@@ -60,3 +60,11 @@ jobs:
           git diff --exit-code -- validation/ATAN2_DISPATCH_VALIDATION.json
       - name: Exhaustive REU UDIV8 hybrid validation
         run: python3 tools/validate_reu_udiv8_hybrid.py
+      - name: Unsigned division and modulo family validation
+        run: |
+          python3 tools/validate_unsigned_division.py
+          git diff --exit-code -- validation/review/UNSIGNED_DIVISION_VALIDATION.json
+      - name: ISQRT32 deterministic correctness and performance
+        run: |
+          python3 tools/benchmark_isqrt32_fast.py
+          git diff --exit-code -- validation/review/ISQRT32_FAST_PERFORMANCE_4130.json
