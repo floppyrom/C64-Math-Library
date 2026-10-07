@@ -41,9 +41,12 @@ jobs:
             cfg=Path('relocatable_source')/p/'math_config_reference.inc'
             src=Path('relocatable_source')/p/'math_relocatable.asm'
             mem,lab,const=Assembler().assemble(A.preprocess(src,cfg))
-            bound=const['REG_KERNEL']+(0x13ec if p=='v2_pareto_fast' else 0x12de)
-            print(p,'U3216_D8_END',hex(lab['U3216_D8_END']),'DIVLAT_END',hex(lab['DIVLAT_END']),'bound',hex(bound))
-            assert lab['DIVLAT_END'] <= bound
+            main_bound=const['REG_KERNEL']+(0x10e1 if p=='v2_pareto_fast' else 0x12de)
+            print(p,'PUBLIC_END',hex(lab['U3216_PUBLIC_END']),'MAIN_END',hex(lab['U3216_MAIN_END']),'main_bound',hex(main_bound),'DIVLAT',hex(lab['DIVLAT_DU24_NARROW']),hex(lab['DIVLAT_END']),'dead_end',hex(lab['UD32_OLD_C289']))
+            assert lab['U3216_PUBLIC_END'] <= const['MATH_UMOD8']
+            assert lab['U3216_MAIN_END'] <= main_bound
+            assert lab['DIVLAT_DU24_NARROW'] == lab['UD32_OLD_C23D']
+            assert lab['DIVLAT_END'] <= lab['UD32_OLD_C289']
           PY
       - name: Paired UDIV32-16 performance and exactness
         run: python3 tools/validate_udiv32_16_integrated.py
