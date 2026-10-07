@@ -18,29 +18,11 @@ MULDIV16_S_FUSED:
     ; Divisor zero can return before paying for the multiply.
     lda MATH_D+$01
     ora MATH_D
-    bne MULDIV16_S_DNZ
+    bne MULDIV16_S_X
     jmp U3216_ZERO
 
-MULDIV16_S_DNZ:
-    ; |D| -> private divider state. Public D remains untouched.
-    lda MATH_D+$01
-    bpl MULDIV16_S_DPOS
-    lda #$00
-    sec
-    sbc MATH_D
-    sta U3216_D0
-    lda #$00
-    sbc MATH_D+$01
-    sta U3216_D1
-    jmp MULDIV16_S_X
-MULDIV16_S_DPOS:
-    lda MATH_D
-    sta U3216_D0
-    lda MATH_D+$01
-    sta U3216_D1
-
 MULDIV16_S_X:
-    ; |X| -> unsigned producer X state.
+    ; Normalize X/Y while preserving the product-sign quadrant in control flow.
     lda MATH_X+$01
     bpl MULDIV16_S_XPOS
     lda #$00
@@ -50,17 +32,9 @@ MULDIV16_S_X:
     lda #$00
     sbc MATH_X+$01
     sta U16_X1
-    jmp MULDIV16_S_Y
-MULDIV16_S_XPOS:
-    lda MATH_X
-    sta U16_X0
-    lda MATH_X+$01
-    sta U16_X1
 
-MULDIV16_S_Y:
-    ; |Y|; low byte stays in Y as required by U16_UMULT_AX1.
     lda MATH_Y+$01
-    bpl MULDIV16_S_YPOS
+    bpl MULDIV16_S_XNEG_YPOS
     lda #$00
     sec
     sbc MATH_Y
@@ -68,29 +42,106 @@ MULDIV16_S_Y:
     lda #$00
     sbc MATH_Y+$01
     sta U16_Y1
-    jmp MULDIV16_S_MUL
-MULDIV16_S_YPOS:
+    jmp MULDIV16_S_MUL_PPOS
+
+MULDIV16_S_XNEG_YPOS:
+    ldy MATH_Y
+    lda MATH_Y+$01
+    sta U16_Y1
+    jmp MULDIV16_S_MUL_PNEG
+
+MULDIV16_S_XPOS:
+    lda MATH_X
+    sta U16_X0
+    lda MATH_X+$01
+    sta U16_X1
+    lda MATH_Y+$01
+    bpl MULDIV16_S_XPOS_YPOS
+    lda #$00
+    sec
+    sbc MATH_Y
+    tay
+    lda #$00
+    sbc MATH_Y+$01
+    sta U16_Y1
+    jmp MULDIV16_S_MUL_PNEG
+
+MULDIV16_S_XPOS_YPOS:
     ldy MATH_Y
     lda MATH_Y+$01
     sta U16_Y1
 
-MULDIV16_S_MUL:
+; Product-positive path: quotient sign follows D, remainder stays positive.
+MULDIV16_S_MUL_PPOS:
     lda U16_X1
     jsr U16_UMULT_AX1
-    ; Magnitude product -> private 32/16 divider state, no MATH_N round-trip.
     sta U3216_N0
     stx U3216_LN1
     sty U3216_N1
     lda MATH_Z
     sta U3216_LN0
-    jsr U3216_ENTRY
-    bcs MULDIV16_S_RET
 
-    ; Quotient sign = sign(X) xor sign(Y) xor sign(D).
-    lda MATH_X+$01
-    eor MATH_Y+$01
-    eor MATH_D+$01
-    bpl MULDIV16_S_RSIGN
+    lda MATH_D+$01
+    bpl MULDIV16_S_PPOS_DPOS
+    lda #$00
+    sec
+    sbc MATH_D
+    sta U3216_D0
+    lda #$00
+    sbc MATH_D+$01
+    sta U3216_D1
+    jmp MULDIV16_S_DIV_Q
+
+MULDIV16_S_PPOS_DPOS:
+    lda MATH_D
+    sta U3216_D0
+    lda MATH_D+$01
+    sta U3216_D1
+    jsr U3216_ENTRY
+    clc
+    rts
+
+; Product-negative path: remainder is negative; quotient sign is !sign(D).
+MULDIV16_S_MUL_PNEG:
+    lda U16_X1
+    jsr U16_UMULT_AX1
+    sta U3216_N0
+    stx U3216_LN1
+    sty U3216_N1
+    lda MATH_Z
+    sta U3216_LN0
+
+    lda MATH_D+$01
+    bpl MULDIV16_S_PNEG_DPOS
+    lda #$00
+    sec
+    sbc MATH_D
+    sta U3216_D0
+    lda #$00
+    sbc MATH_D+$01
+    sta U3216_D1
+    jmp MULDIV16_S_DIV_R
+
+MULDIV16_S_PNEG_DPOS:
+    lda MATH_D
+    sta U3216_D0
+    lda MATH_D+$01
+    sta U3216_D1
+    jsr U3216_ENTRY
+    jsr MULDIV16_S_NEG_Q
+    jmp MULDIV16_S_NEG_R
+
+MULDIV16_S_DIV_Q:
+    jsr U3216_ENTRY
+    jsr MULDIV16_S_NEG_Q
+    clc
+    rts
+
+MULDIV16_S_DIV_R:
+    jsr U3216_ENTRY
+    jmp MULDIV16_S_NEG_R
+
+MULDIV16_S_NEG_Q:
     lda #$00
     sec
     sbc MATH_Q
@@ -104,12 +155,9 @@ MULDIV16_S_MUL:
     lda #$00
     sbc MATH_Q+$03
     sta MATH_Q+$03
+    rts
 
-MULDIV16_S_RSIGN:
-    ; Remainder sign follows the signed product.
-    lda MATH_X+$01
-    eor MATH_Y+$01
-    bpl MULDIV16_S_OK
+MULDIV16_S_NEG_R:
     lda #$00
     sec
     sbc MATH_R
@@ -117,9 +165,7 @@ MULDIV16_S_RSIGN:
     lda #$00
     sbc MATH_R+$01
     sta MATH_R+$01
-MULDIV16_S_OK:
     clc
-MULDIV16_S_RET:
     rts
 
 ; Inline the V2-V4 public UMUL16 binder, then feed its returned product bytes
