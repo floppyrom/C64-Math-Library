@@ -209,7 +209,9 @@ RM24U_QZERO:
 RM16S_ENTRY:
     lda MATH_D+0
     ora MATH_D+1
-    beq RM16S_ZERO
+    bne RM16S_DNZ
+    jmp RM16S_ZERO
+RM16S_DNZ:
 
     ; |n| -> private magnitude scratch.
     lda MATH_N+1
@@ -300,7 +302,9 @@ RM24S_ENTRY:
     lda MATH_D+0
     ora MATH_D+1
     ora MATH_D+2
-    beq RM24S_ZERO
+    bne RM24S_DNZ
+    jmp RM24S_ZERO
+RM24S_DNZ:
 
     lda MATH_N+2
     bmi RM24S_NNEG
