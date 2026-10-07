@@ -344,18 +344,18 @@ MATH_R = MATH_IO+$1C
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     lda MATH_IO
-    sta ZP_SMUL+$19
+    sta ZP_SMUL+$16
     lda MATH_IO+$01
-    sta ZP_SMUL+$27
+    sta ZP_SMUL+$24
     lda MATH_IO+$05
-    sta ZP_SMUL+$37
+    sta ZP_SMUL+$34
     ldy MATH_IO+$04
     jsr ZP_SMUL
     stx MATH_IO+$0A
     sta MATH_IO+$0B
-    lda ZP_SMUL+$72
+    lda ZP_SMUL+$6F
     sta MATH_IO+$08
-    lda ZP_SMUL+$73
+    lda ZP_SMUL+$70
     sta MATH_IO+$09
     clc
     rts
@@ -2475,52 +2475,52 @@ L5318:
     !byte $4C, $00, $C1, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    bit ZP_SMUL+$27
+    bit ZP_SMUL+$24
     bmi L5A0D
-    bit ZP_SMUL+$37
+    bit ZP_SMUL+$34
     bmi L5A1C
     tax
     tya
     adc #$00
     rts
 L5A0D:
-    bit ZP_SMUL+$37
+    bit ZP_SMUL+$34
     bmi L5A27
     bcc L5A14
     iny
 L5A14:
     sec
-    sbc #$00
+    sbc MATH_IO+$04
     tax
     tya
-    sbc ZP_SMUL+$37
+    sbc ZP_SMUL+$34
     rts
 L5A1C:
     bcc L5A1F
     iny
 L5A1F:
     sec
-    sbc ZP_SMUL+$19
+    sbc ZP_SMUL+$16
     tax
     tya
-    sbc ZP_SMUL+$27
+    sbc ZP_SMUL+$24
     rts
 L5A27:
     bcc L5A2A
     iny
 L5A2A:
     sec
-    sbc REG_KERNEL+$1A16
+    sbc MATH_IO+$04
     tax
     tya
-    sbc ZP_SMUL+$37
+    sbc ZP_SMUL+$34
     tay
     txa
     sec
-    sbc ZP_SMUL+$19
+    sbc ZP_SMUL+$16
     tax
     tya
-    sbc ZP_SMUL+$27
+    sbc ZP_SMUL+$24
     rts
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -5985,68 +5985,68 @@ LCA10:
     !byte $00, $00, $00, $00, $00, $00, $00
 ; MATH_INIT-installed native SMUL16 executable-ZP image, assembled symbolically.
 * = REG_GAME+$0B00
-    sty REG_KERNEL+$1A16
-    lda ZP_SMUL+$27
-    sta ZP_SMUL+$4B
+    lda ZP_SMUL+$24
+    sta ZP_SMUL+$48
     eor #$FF
-    sta ZP_SMUL+$2C
-    sta ZP_SMUL+$32
-    lda ZP_SMUL+$19
+    sta ZP_SMUL+$29
+    sta ZP_SMUL+$2F
+    lda ZP_SMUL+$16
+    sta ZP_SMUL+$1E
+    eor #$FF
+    sta ZP_SMUL+$19
     sta ZP_SMUL+$21
-    eor #$FF
-    sta ZP_SMUL+$1C
-    sta ZP_SMUL+$24
     sec
     lda REG_LOW+$1800,y
     adc REG_LOW+$1C00,y
-    sta ZP_SMUL+$72
+    sta ZP_SMUL+$6F
     lda REG_LOW+$1A00,y
     adc REG_LOW+$1E00,y
     adc REG_LOW+$1800,y
     bcs ZCDD
     adc REG_LOW+$1C00,y
     tax
-    lda (ZP_SMUL+$4B),y
+    lda (ZP_SMUL+$48),y
 ZCB1:
     adc REG_LOW+$1E00,y
-    sta ZP_SMUL+$57
+    sta ZP_SMUL+$54
     ldy #$00
-    lda (ZP_SMUL+$19),y
-    adc (ZP_SMUL+$1C),y
-    sta ZP_SMUL+$53
-    lda (ZP_SMUL+$21),y
+    lda (ZP_SMUL+$16),y
+    adc (ZP_SMUL+$19),y
+    sta ZP_SMUL+$50
+    lda (ZP_SMUL+$1E),y
+    adc (ZP_SMUL+$21),y
     adc (ZP_SMUL+$24),y
-    adc (ZP_SMUL+$27),y
     bcs ZCE7
-    adc (ZP_SMUL+$2C),y
-    sta ZP_SMUL+$59
+    adc (ZP_SMUL+$29),y
+    sta ZP_SMUL+$56
     lda REG_LOW+$1A00,y
 ZCCD:
-    adc (ZP_SMUL+$32),y
+    adc (ZP_SMUL+$2F),y
     tay
     clc
     txa
     adc #$00
-    sta ZP_SMUL+$73
+    sta ZP_SMUL+$70
     lda #$00
     adc #$00
     jmp REG_KERNEL+$1A00
 ZCDD:
     clc
-    adc (ZP_SMUL+$2C),y
+    adc (ZP_SMUL+$29),y
     tax
     lda #$01
-    adc (ZP_SMUL+$4B),y
+    adc (ZP_SMUL+$48),y
     bcc ZCB1
 ZCE7:
     clc
-    adc (ZP_SMUL+$2C),y
-    sta ZP_SMUL+$59
+    adc (ZP_SMUL+$29),y
+    sta ZP_SMUL+$56
     lda #$01
-    adc (ZP_SMUL+$4B),y
+    adc (ZP_SMUL+$48),y
     bcc ZCCD
     brk
     brk
+    !byte $00, $00, $00
 
 ; BEGIN MULTIPLY REFRESH 2026-09-20
 !source "../multiply/umul16_directout.asm"
