@@ -743,10 +743,11 @@ L2087:
     sta ZP_MAIN+$10
     lda MATH_IO+$15
     sta ZP_MAIN+$11
-    jsr REG_KERNEL+$0E00
-    lda ZP_MAIN+$18
+    jmp REG_KERNEL+$0E00
+    sta MATH_IO+$1D
+    lda ZP_MAIN+$16
     sta MATH_IO+$18
-    lda ZP_MAIN+$19
+    lda ZP_MAIN+$17
     sta MATH_IO+$19
     lda ZP_MAIN+$12
     sta MATH_IO+$1A
@@ -754,11 +755,16 @@ L2087:
     sta MATH_IO+$1B
     lda ZP_MAIN+$14
     sta MATH_IO+$1C
-    lda ZP_MAIN+$15
-    sta MATH_IO+$1D
     rts
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $AD, $10, $C0
+    lda #$00
+    sta ZP_MAIN+$16
+    sta ZP_MAIN+$17
+    sta ZP_MAIN+$12
+    sta ZP_MAIN+$13
+    sta ZP_MAIN+$14
+    sec
+    jmp REG_API+$01D1
+    !byte $00, $00, $AD, $10, $C0
     sta ZP_MAIN+$0E
     lda MATH_IO+$14
     sta ZP_MAIN+$0F
@@ -1792,8 +1798,8 @@ L4643:
     !byte $0B, $00, $8D, $19, $C0, $8D, $1A, $C0, $A9, $01, $8D, $18, $C0, $60, $AD, $14
     !byte $C0, $0D, $15, $C0, $D0, $03, $4C, $00, $48, $AD, $11, $C0, $CD, $15, $C0, $90
     !byte $31, $D0, $15, $AD, $10, $C0, $CD, $14, $C0, $90, $27, $B0, $0B, $AD, $14, $C0
-    !byte $0D, $15, $C0, $D0, $03, $4C, $00, $48, $AD, $10, $C0, $8D, $1C, $C0, $AD, $11
-    !byte $C0, $8D, $1D, $C0, $AD, $12, $C0, $8D, $1E, $C0, $A9, $00, $8D, $AA, $51, $4C
+    !byte $0D, $15, $C0, $D0, $03, $4C, $00, $48, $AD, $12, $C0, $CD, $15, $C0, $90, $0D
+    !byte $D0, $08, $AD, $11, $C0, $CD, $14, $C0, $90, $03, $4C, $57, $59, $4C, $8D, $59
     !byte $1E, $51, $A9, $00, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $AD, $10, $C0
     !byte $8D, $1C, $C0, $AD, $11, $C0, $8D, $1D, $C0, $8E, $1E, $C0, $60, $AD, $10, $C0
     !byte $38, $ED, $14, $C0, $8D, $1C, $C0, $AD, $11, $C0, $ED, $15, $C0, $8D, $1D, $C0
@@ -1880,35 +1886,54 @@ L4643:
     !byte $51, $51, $52, $52, $52, $52, $53, $53, $53, $53, $54, $54, $54, $54, $55, $55
     !byte $55, $55, $56, $56, $56, $56, $57, $57, $57, $58, $58, $58, $58, $59, $59, $59
     !byte $59, $59, $5A
-    jsr REG_KERNEL+$020C
-    bcc L4E08
-    jmp REG_KERNEL+$10DA
-L4E08:
-    lda ZP_MAIN+$16
-    sta ZP_MAIN+$18
+    lda ZP_MAIN+$11
+    bne L4E31
+    lda ZP_MAIN+$10
+    bne L4E0B
+    jmp REG_API+$01EE
+L4E0B:
+    lda ZP_MAIN+$0F
+    ora ZP_MAIN+$0E
+    bne L4E1E
     lda ZP_MAIN+$17
-    sta ZP_MAIN+$19
+    bne L4E31
+    lda ZP_MAIN+$16
+    cmp ZP_MAIN+$10
+    bcc L4E21
+    jmp REG_KERNEL+$0E31
+L4E1E:
+    jmp REG_KERNEL+$1272
+L4E21:
+    lda ZP_MAIN+$16
+    sta ZP_MAIN+$14
+    lda #$00
+    sta ZP_MAIN+$16
+    sta ZP_MAIN+$12
+    sta ZP_MAIN+$13
+    clc
+    jmp REG_API+$01D1
+L4E31:
+    jsr REG_KERNEL+$020C
     lda ZP_MAIN+$15
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+    rol ZP_MAIN+$17
     rol ZP_MAIN+$14
     rol
-    bcs L4E33
+    bcs L4E55
     cmp ZP_MAIN+$11
-    bcc L4E3E
-    bne L4E27
+    bcc L4E60
+    bne L4E49
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4E3E
-L4E27:
+    bcc L4E60
+L4E49:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4E3E
-L4E33:
+    bcs L4E60
+L4E55:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -1916,46 +1941,25 @@ L4E33:
     txa
     sbc ZP_MAIN+$11
     sec
-L4E3E:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L4E60:
+    rol ZP_MAIN+$17
     rol ZP_MAIN+$14
     rol
-    bcs L4E5F
+    bcs L4E7F
     cmp ZP_MAIN+$11
-    bcc L4E6A
-    bne L4E53
+    bcc L4E8A
+    bne L4E73
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4E6A
-L4E53:
+    bcc L4E8A
+L4E73:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4E6A
-L4E5F:
-    tax
-    lda ZP_MAIN+$14
-    sbc ZP_MAIN+$10
-    sta ZP_MAIN+$14
-    txa
-    sbc ZP_MAIN+$11
-    sec
-L4E6A:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
-    rol ZP_MAIN+$14
-    rol
-    bcs L4E8B
-    cmp ZP_MAIN+$11
-    bcc L4E96
-    bne L4E7F
-    ldx ZP_MAIN+$14
-    cpx ZP_MAIN+$10
-    bcc L4E96
+    bcs L4E8A
 L4E7F:
     tax
     lda ZP_MAIN+$14
@@ -1963,8 +1967,27 @@ L4E7F:
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4E96
-L4E8B:
+    sec
+L4E8A:
+    rol ZP_MAIN+$17
+    rol ZP_MAIN+$14
+    rol
+    bcs L4EA9
+    cmp ZP_MAIN+$11
+    bcc L4EB4
+    bne L4E9D
+    ldx ZP_MAIN+$14
+    cpx ZP_MAIN+$10
+    bcc L4EB4
+L4E9D:
+    tax
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    txa
+    sbc ZP_MAIN+$11
+    bcs L4EB4
+L4EA9:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -1972,27 +1995,26 @@ L4E8B:
     txa
     sbc ZP_MAIN+$11
     sec
-L4E96:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L4EB4:
+    rol ZP_MAIN+$17
     rol ZP_MAIN+$14
     rol
-    bcs L4EB7
+    bcs L4ED3
     cmp ZP_MAIN+$11
-    bcc L4EC2
-    bne L4EAB
+    bcc L4EDE
+    bne L4EC7
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4EC2
-L4EAB:
+    bcc L4EDE
+L4EC7:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4EC2
-L4EB7:
+    bcs L4EDE
+L4ED3:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2000,27 +2022,26 @@ L4EB7:
     txa
     sbc ZP_MAIN+$11
     sec
-L4EC2:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L4EDE:
+    rol ZP_MAIN+$17
     rol ZP_MAIN+$14
     rol
-    bcs L4EE3
+    bcs L4EFD
     cmp ZP_MAIN+$11
-    bcc L4EEE
-    bne L4ED7
+    bcc L4F08
+    bne L4EF1
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4EEE
-L4ED7:
+    bcc L4F08
+L4EF1:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4EEE
-L4EE3:
+    bcs L4F08
+L4EFD:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2028,27 +2049,26 @@ L4EE3:
     txa
     sbc ZP_MAIN+$11
     sec
-L4EEE:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L4F08:
+    rol ZP_MAIN+$17
     rol ZP_MAIN+$14
     rol
-    bcs L4F0F
+    bcs L4F27
     cmp ZP_MAIN+$11
-    bcc L4F1A
-    bne L4F03
+    bcc L4F32
+    bne L4F1B
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4F1A
-L4F03:
+    bcc L4F32
+L4F1B:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4F1A
-L4F0F:
+    bcs L4F32
+L4F27:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2056,27 +2076,26 @@ L4F0F:
     txa
     sbc ZP_MAIN+$11
     sec
-L4F1A:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L4F32:
+    rol ZP_MAIN+$17
     rol ZP_MAIN+$14
     rol
-    bcs L4F3B
+    bcs L4F51
     cmp ZP_MAIN+$11
-    bcc L4F46
-    bne L4F2F
+    bcc L4F5C
+    bne L4F45
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4F46
-L4F2F:
+    bcc L4F5C
+L4F45:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4F46
-L4F3B:
+    bcs L4F5C
+L4F51:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2084,27 +2103,26 @@ L4F3B:
     txa
     sbc ZP_MAIN+$11
     sec
-L4F46:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L4F5C:
+    rol ZP_MAIN+$17
     rol ZP_MAIN+$14
     rol
-    bcs L4F67
+    bcs L4F7B
     cmp ZP_MAIN+$11
-    bcc L4F72
-    bne L4F5B
+    bcc L4F86
+    bne L4F6F
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4F72
-L4F5B:
+    bcc L4F86
+L4F6F:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4F72
-L4F67:
+    bcs L4F86
+L4F7B:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2112,27 +2130,27 @@ L4F67:
     txa
     sbc ZP_MAIN+$11
     sec
-L4F72:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L4F86:
+    rol ZP_MAIN+$17
+    rol ZP_MAIN+$16
     rol ZP_MAIN+$14
     rol
-    bcs L4F93
+    bcs L4FA7
     cmp ZP_MAIN+$11
-    bcc L4F9E
-    bne L4F87
+    bcc L4FB2
+    bne L4F9B
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4F9E
-L4F87:
+    bcc L4FB2
+L4F9B:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4F9E
-L4F93:
+    bcs L4FB2
+L4FA7:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2140,27 +2158,26 @@ L4F93:
     txa
     sbc ZP_MAIN+$11
     sec
-L4F9E:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L4FB2:
+    rol ZP_MAIN+$16
     rol ZP_MAIN+$14
     rol
-    bcs L4FBF
+    bcs L4FD1
     cmp ZP_MAIN+$11
-    bcc L4FCA
-    bne L4FB3
+    bcc L4FDC
+    bne L4FC5
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4FCA
-L4FB3:
+    bcc L4FDC
+L4FC5:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4FCA
-L4FBF:
+    bcs L4FDC
+L4FD1:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2168,27 +2185,26 @@ L4FBF:
     txa
     sbc ZP_MAIN+$11
     sec
-L4FCA:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L4FDC:
+    rol ZP_MAIN+$16
     rol ZP_MAIN+$14
     rol
-    bcs L4FEB
+    bcs L4FFB
     cmp ZP_MAIN+$11
-    bcc L4FF6
-    bne L4FDF
+    bcc L5006
+    bne L4FEF
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L4FF6
-L4FDF:
+    bcc L5006
+L4FEF:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L4FF6
-L4FEB:
+    bcs L5006
+L4FFB:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2196,27 +2212,26 @@ L4FEB:
     txa
     sbc ZP_MAIN+$11
     sec
-L4FF6:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L5006:
+    rol ZP_MAIN+$16
     rol ZP_MAIN+$14
     rol
-    bcs L5017
+    bcs L5025
     cmp ZP_MAIN+$11
-    bcc L5022
-    bne L500B
+    bcc L5030
+    bne L5019
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L5022
-L500B:
+    bcc L5030
+L5019:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L5022
-L5017:
+    bcs L5030
+L5025:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2224,26 +2239,17 @@ L5017:
     txa
     sbc ZP_MAIN+$11
     sec
-L5022:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L5030:
+    rol ZP_MAIN+$16
     rol ZP_MAIN+$14
     rol
-    bcs L5043
+    bcs L504F
     cmp ZP_MAIN+$11
-    bcc L504E
-    bne L5037
+    bcc L505A
+    bne L5043
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L504E
-L5037:
-    tax
-    lda ZP_MAIN+$14
-    sbc ZP_MAIN+$10
-    sta ZP_MAIN+$14
-    txa
-    sbc ZP_MAIN+$11
-    bcs L504E
+    bcc L505A
 L5043:
     tax
     lda ZP_MAIN+$14
@@ -2251,28 +2257,35 @@ L5043:
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
+    bcs L505A
+L504F:
+    tax
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    txa
+    sbc ZP_MAIN+$11
     sec
-L504E:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L505A:
+    rol ZP_MAIN+$16
     rol ZP_MAIN+$14
     rol
-    bcs L506F
+    bcs L5079
     cmp ZP_MAIN+$11
-    bcc L507A
-    bne L5063
+    bcc L5084
+    bne L506D
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L507A
-L5063:
+    bcc L5084
+L506D:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L507A
-L506F:
+    bcs L5084
+L5079:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2280,27 +2293,26 @@ L506F:
     txa
     sbc ZP_MAIN+$11
     sec
-L507A:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L5084:
+    rol ZP_MAIN+$16
     rol ZP_MAIN+$14
     rol
-    bcs L509B
+    bcs L50A3
     cmp ZP_MAIN+$11
-    bcc L50A6
-    bne L508F
+    bcc L50AE
+    bne L5097
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L50A6
-L508F:
+    bcc L50AE
+L5097:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L50A6
-L509B:
+    bcs L50AE
+L50A3:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2308,27 +2320,26 @@ L509B:
     txa
     sbc ZP_MAIN+$11
     sec
-L50A6:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
+L50AE:
+    rol ZP_MAIN+$16
     rol ZP_MAIN+$14
     rol
-    bcs L50C7
+    bcs L50CD
     cmp ZP_MAIN+$11
-    bcc L50D2
-    bne L50BB
+    bcc L50D8
+    bne L50C1
     ldx ZP_MAIN+$14
     cpx ZP_MAIN+$10
-    bcc L50D2
-L50BB:
+    bcc L50D8
+L50C1:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     txa
     sbc ZP_MAIN+$11
-    bcs L50D2
-L50C7:
+    bcs L50D8
+L50CD:
     tax
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -2336,34 +2347,29 @@ L50C7:
     txa
     sbc ZP_MAIN+$11
     sec
-L50D2:
-    rol ZP_MAIN+$18
-    rol ZP_MAIN+$19
-    sta ZP_MAIN+$15
+L50D8:
+    rol ZP_MAIN+$16
     clc
-    rts
-    lda #$00
-    sta ZP_MAIN+$18
-    sta ZP_MAIN+$19
-    rts
-    !byte $8D, $1E, $C0, $CD, $16, $C0, $90, $14, $D0, $13, $AD, $1D, $C0, $CD, $15, $C0
-    !byte $90, $0A, $D0, $09, $AD, $1C, $C0, $CD, $14, $C0, $B0, $01, $60, $AD, $1C, $C0
-    !byte $ED, $14, $C0, $8D, $1C, $C0, $AD, $1D, $C0, $ED, $15, $C0, $8D, $1D, $C0, $AD
-    !byte $1E, $C0, $ED, $16, $C0, $EE, $18, $C0, $8D, $1E, $C0, $18, $60, $AD, $14, $C0
-    !byte $85, $10, $AD, $15, $C0, $85, $11, $AD, $16, $C0, $85, $12, $A2, $00, $8E, $18
-    !byte $C0, $8E, $19, $C0, $8E, $1A, $C0, $06, $10, $26, $11, $26, $12, $B0, $1C, $AD
-    !byte $1E, $C0, $C5, $12, $90, $15, $D0, $10, $AD, $1D, $C0, $C5, $11, $90, $0C, $D0
-    !byte $07, $AD, $1C, $C0, $C5, $10, $90, $03, $E8, $D0, $DC, $66, $12, $66, $11, $66
-    !byte $10, $AD, $1E, $C0, $C5, $12, $90, $2A, $D0, $10, $AD, $1D, $C0, $C5, $11, $90
-    !byte $21, $D0, $07, $AD, $1C, $C0, $C5, $10, $90, $18, $AD, $1C, $C0, $E5, $10, $8D
-    !byte $1C, $C0, $AD, $1D, $C0, $E5, $11, $8D, $1D, $C0, $AD, $1E, $C0, $E5, $12, $8D
-    !byte $1E, $C0, $2E, $18, $C0, $2E, $19, $C0, $2E, $1A, $C0, $46, $12, $66, $11, $66
-    !byte $10, $CA, $10, $BD, $AD, $18, $C0, $18, $69, $00, $8D, $18, $C0, $90, $09, $EE
-    !byte $19, $C0, $D0, $03, $EE, $1A, $C0, $18, $60, $00, $00, $00, $00, $00, $00, $00
+    jmp REG_API+$01D1
+    !byte $85, $1B, $60, $8D, $1E, $C0, $CD, $16, $C0, $90, $14, $D0, $13, $AD, $1D, $C0
+    !byte $CD, $15, $C0, $90, $0A, $D0, $09, $AD, $1C, $C0, $CD, $14, $C0, $B0, $01, $60
+    !byte $AD, $1C, $C0, $ED, $14, $C0, $8D, $1C, $C0, $AD, $1D, $C0, $ED, $15, $C0, $8D
+    !byte $1D, $C0, $AD, $1E, $C0, $ED, $16, $C0, $EE, $18, $C0, $8D, $1E, $C0, $18, $60
+    !byte $AD, $14, $C0, $85, $10, $AD, $15, $C0, $85, $11, $AD, $16, $C0, $85, $12, $A2
+    !byte $00, $8E, $18, $C0, $8E, $19, $C0, $8E, $1A, $C0, $06, $10, $26, $11, $26, $12
+    !byte $B0, $1C, $AD, $1E, $C0, $C5, $12, $90, $15, $D0, $10, $AD, $1D, $C0, $C5, $11
+    !byte $90, $0C, $D0, $07, $AD, $1C, $C0, $C5, $10, $90, $03, $E8, $D0, $DC, $66, $12
+    !byte $66, $11, $66, $10, $AD, $1E, $C0, $C5, $12, $90, $2A, $D0, $10, $AD, $1D, $C0
+    !byte $C5, $11, $90, $21, $D0, $07, $AD, $1C, $C0, $C5, $10, $90, $18, $AD, $1C, $C0
+    !byte $E5, $10, $8D, $1C, $C0, $AD, $1D, $C0, $E5, $11, $8D, $1D, $C0, $AD, $1E, $C0
+    !byte $E5, $12, $8D, $1E, $C0, $2E, $18, $C0, $2E, $19, $C0, $2E, $1A, $C0, $46, $12
+    !byte $66, $11, $66, $10, $CA, $10, $BD, $AD, $18, $C0, $18, $69, $00, $8D, $18, $C0
+    !byte $90, $09, $EE, $19, $C0, $D0, $03, $EE, $1A, $C0, $18, $60, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00
 L5200:
     cpx #$01
     bcc L520E
@@ -2433,15 +2439,86 @@ L526E:
     adc ZP_MAIN+$0F
     clc
     rts
+    lda #$00
+    ldx #$08
+L5276:
+    rol ZP_MAIN+$0F
+    rol
+    bcs L5283
+    cmp ZP_MAIN+$10
+    bcc L5286
+    sbc ZP_MAIN+$10
+    bcs L5286
+L5283:
+    sbc ZP_MAIN+$10
+    sec
+L5286:
+    dex
+    bne L5276
+    rol ZP_MAIN+$0F
+    ldx #$08
+L528D:
+    rol ZP_MAIN+$0E
+    rol
+    bcs L529A
+    cmp ZP_MAIN+$10
+    bcc L529D
+    sbc ZP_MAIN+$10
+    bcs L529D
+L529A:
+    sbc ZP_MAIN+$10
+    sec
+L529D:
+    dex
+    bne L528D
+    rol ZP_MAIN+$0E
+    ldx #$08
+L52A4:
+    rol ZP_MAIN+$17
+    rol
+    bcs L52B1
+    cmp ZP_MAIN+$10
+    bcc L52B4
+    sbc ZP_MAIN+$10
+    bcs L52B4
+L52B1:
+    sbc ZP_MAIN+$10
+    sec
+L52B4:
+    dex
+    bne L52A4
+    rol ZP_MAIN+$17
+    ldx #$08
+L52BB:
+    rol ZP_MAIN+$16
+    rol
+    bcs L52C8
+    cmp ZP_MAIN+$10
+    bcc L52CB
+    sbc ZP_MAIN+$10
+    bcs L52CB
+L52C8:
+    sbc ZP_MAIN+$10
+    sec
+L52CB:
+    dex
+    bne L52BB
+    rol ZP_MAIN+$16
+    sta MATH_IO+$1C
+    lda #$00
+    sta MATH_IO+$1D
+    lda ZP_MAIN+$16
+    sta MATH_IO+$18
+    lda ZP_MAIN+$17
+    sta MATH_IO+$19
+    lda ZP_MAIN+$0E
+    sta MATH_IO+$1A
+    lda ZP_MAIN+$0F
+    sta MATH_IO+$1B
+    clc
+    rts
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00
     sec
     stx ZP_MAIN+$37
     stx ZP_MAIN+$39
@@ -2560,12 +2637,12 @@ L5318:
     !byte $8D, $2F, $58, $8D, $37, $58, $AD, $01, $C0, $85, $3F, $8D, $3A, $58, $49, $FF
     !byte $85, $3D, $8D, $45, $58, $AD, $02, $C0, $85, $4F, $8D, $48, $58, $49, $FF, $85
     !byte $41, $8D, $53, $58, $4C, $2B, $58, $8D, $48, $58, $49, $FF, $85, $06, $8D, $53
-    !byte $58, $4C, $2B, $58, $AD, $10, $C0, $8D, $18, $C0, $AD, $11, $C0, $8D, $19, $C0
-    !byte $AD, $12, $C0, $8D, $1A, $C0, $AD, $13, $C0, $8D, $1B, $C0, $A9, $00, $8D, $1C
-    !byte $C0, $8D, $1D, $C0, $8D, $1E, $C0, $8D, $1F, $C0, $A2, $20, $0E, $18, $C0, $2E
-    !byte $19, $C0, $2E, $1A, $C0, $2E, $1B, $C0, $2E, $1C, $C0, $B0, $07, $AD, $1C, $C0
-    !byte $C5, $53, $90, $0C, $38, $AD, $1C, $C0, $E5, $53, $8D, $1C, $C0, $EE, $18, $C0
-    !byte $CA, $D0, $D9, $18, $60, $0D, $15, $C0, $0D, $16, $C0, $0D, $17, $C0, $F0, $1E
+    !byte $58, $4C, $2B, $58, $AD, $13, $C0, $48, $A9, $00, $8D, $13, $C0, $20, $B0, $31
+    !byte $68, $8D, $13, $C0, $A9, $00, $8D, $1E, $C0, $60, $20, $B0, $31, $A9, $00, $8D
+    !byte $1E, $C0, $8D, $1F, $C0, $60, $AE, $13, $C0, $D0, $03, $4C, $72, $C2, $8D, $1A
+    !byte $C0, $8D, $1B, $C0, $8D, $1F, $C0, $4C, $33, $C4, $AD, $10, $C0, $8D, $1C, $C0
+    !byte $AD, $11, $C0, $8D, $1D, $C0, $AD, $12, $C0, $8D, $1E, $C0, $A9, $00, $8D, $AA
+    !byte $51, $4C, $1E, $51, $60, $0D, $15, $C0, $0D, $16, $C0, $0D, $17, $C0, $F0, $1E
     !byte $A2, $00, $A9, $01, $8D, $18, $C0, $8E, $19, $C0, $8E, $1A, $C0, $8E, $1B, $C0
     !byte $8E, $1C, $C0, $8E, $1D, $C0, $8E, $1E, $C0, $8E, $1F, $C0, $18, $60, $4C, $3C
     !byte $C3, $00, $C1, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -5103,8 +5180,8 @@ LC1FD:
     !byte $C0, $CD, $14, $C0, $90, $05, $D0, $2B, $4C, $A8, $59, $A9, $00, $8D, $18, $C0
     !byte $8D, $19, $C0, $8D, $1A, $C0, $8D, $1B, $C0, $AD, $10, $C0, $8D, $1C, $C0, $AD
     !byte $11, $C0, $8D, $1D, $C0, $AD, $12, $C0, $8D, $1E, $C0, $AD, $13, $C0, $8D, $1F
-    !byte $C0, $18, $60, $AD, $17, $C0, $0D, $16, $C0, $D0, $19, $AD, $14, $C0, $85, $53
-    !byte $AD, $15, $C0, $85, $54, $F0, $03, $4C, $33, $C4, $A5, $53, $D0, $03, $4C, $3C
+    !byte $C0, $18, $60, $AD, $17, $C0, $D0, $1C, $AD, $16, $C0, $F0, $06, $4A, $D0, $14
+    !byte $4C, $79, $59, $4C, $6D, $59, $03, $4C, $33, $C4, $A5, $53, $D0, $03, $4C, $3C
     !byte $C3, $4C, $57, $59, $38, $AD, $10, $C0, $ED, $14, $C0, $8D, $1C, $C0, $AD, $11
     !byte $C0, $ED, $15, $C0, $8D, $1D, $C0, $AD, $12, $C0, $ED, $16, $C0, $8D, $1E, $C0
     !byte $AD, $13, $C0, $ED, $17, $C0, $CD, $17, $C0, $90, $65, $F0, $23, $A8, $AD, $1C
@@ -5133,13 +5210,13 @@ LC1FD:
     !byte $1D, $C0, $E5, $54, $8D, $1D, $C0, $AD, $1E, $C0, $E5, $55, $8D, $1E, $C0, $98
     !byte $E5, $56, $A8, $4C, $15, $C4, $18, $2E, $18, $C0, $2E, $19, $C0, $2E, $1A, $C0
     !byte $2E, $1B, $C0, $CA, $F0, $0B, $46, $56, $66, $55, $66, $54, $66, $53, $4C, $B9
-    !byte $C3, $8C, $1F, $C0, $60, $AD, $10, $C0, $8D, $18, $C0, $AD, $11, $C0, $8D, $19
-    !byte $C0, $AD, $12, $C0, $8D, $1A, $C0, $A9, $00, $8D, $1B, $C0, $AD, $13, $C0, $8D
-    !byte $1C, $C0, $A9, $00, $8D, $1D, $C0, $8D, $1E, $C0, $8D, $1F, $C0, $A2, $18, $0E
-    !byte $18, $C0, $2E, $19, $C0, $2E, $1A, $C0, $2E, $1C, $C0, $2E, $1D, $C0, $B0, $10
-    !byte $AD, $1D, $C0, $C5, $54, $90, $1D, $D0, $07, $AD, $1C, $C0, $C5, $53, $90, $14
-    !byte $38, $AD, $1C, $C0, $E5, $53, $8D, $1C, $C0, $AD, $1D, $C0, $E5, $54, $8D, $1D
-    !byte $C0, $EE, $18, $C0, $CA, $D0, $C8, $18, $60, $C0, $E5, $58, $8D, $1D, $C0, $AD
+    !byte $C3, $8C, $1F, $C0, $60, $A8, $AD, $10, $C0, $8D, $18, $C0, $AD, $11, $C0, $8D
+    !byte $19, $C0, $AD, $12, $C0, $85, $53, $AD, $13, $C0, $85, $54, $A2, $10, $0E, $18
+    !byte $C0, $2E, $19, $C0, $26, $53, $26, $54, $98, $2A, $A8, $C0, $01, $90, $28, $D0
+    !byte $10, $A5, $54, $CD, $15, $C0, $90, $1F, $D0, $07, $A5, $53, $CD, $14, $C0, $90
+    !byte $16, $38, $A5, $53, $ED, $14, $C0, $85, $53, $A5, $54, $ED, $15, $C0, $85, $54
+    !byte $98, $E9, $01, $A8, $EE, $18, $C0, $CA, $D0, $C4, $A5, $53, $8D, $1C, $C0, $A5
+    !byte $54, $8D, $1D, $C0, $8C, $1E, $C0, $18, $60, $C0, $E5, $58, $8D, $1D, $C0, $AD
     !byte $1E, $C0, $E5, $59, $8D, $1E, $C0, $AD, $1F, $C0, $E5, $5A, $8D, $1F, $C0, $EE
     !byte $18, $C0, $CA, $D0, $A3, $18, $60, $20, $20, $30, $8E, $08, $C0, $8D, $09, $C0
     !byte $8C, $0A, $C0, $60, $09, $C0, $AD, $0B, $C0, $8D, $0A, $C0, $18, $60, $20, $B0
@@ -5883,6 +5960,7 @@ ZCE4:
 !source "sdiv24_directout_fast.inc"
 !source "sdiv32_16_direct_fast.inc"
 !source "../division/udiv32_live_high4.inc"
+!source "../division/division_latency_escape.inc"
 !source "sdiv32_32_skip_redundant_zero.inc"
 !source "../division/remainder_fast_v2.inc"
 ; END DIVISION REFRESH 2026-09-20

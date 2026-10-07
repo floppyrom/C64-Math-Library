@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 1044.
+; Reachable instructions: 1113.
 ; NOTE: legacy alias entry; semantic producer is MATH_UDIV32_16.
 !cpu 6510
 
@@ -25,20 +25,29 @@ L31B0:
     sta $12                            ; @31C7 85 12
     lda $C015                          ; @31C9 AD 15 C0
     sta $13                            ; @31CC 85 13
-    jsr L4E00                          ; @31CE 20 00 4E
-    lda $1A                            ; @31D1 A5 1A
-    sta $C018                          ; @31D3 8D 18 C0
-    lda $1B                            ; @31D6 A5 1B
-    sta $C019                          ; @31D8 8D 19 C0
-    lda $14                            ; @31DB A5 14
-    sta $C01A                          ; @31DD 8D 1A C0
-    lda $15                            ; @31E0 A5 15
-    sta $C01B                          ; @31E2 8D 1B C0
-    lda $16                            ; @31E5 A5 16
-    sta $C01C                          ; @31E7 8D 1C C0
-    lda $17                            ; @31EA A5 17
-    sta $C01D                          ; @31EC 8D 1D C0
-    rts                                ; @31EF 60
+    jmp L4E00                          ; @31CE 4C 00 4E
+L31D1:
+    sta $C01D                          ; @31D1 8D 1D C0
+    lda $18                            ; @31D4 A5 18
+    sta $C018                          ; @31D6 8D 18 C0
+    lda $19                            ; @31D9 A5 19
+    sta $C019                          ; @31DB 8D 19 C0
+    lda $14                            ; @31DE A5 14
+    sta $C01A                          ; @31E0 8D 1A C0
+    lda $15                            ; @31E3 A5 15
+    sta $C01B                          ; @31E5 8D 1B C0
+    lda $16                            ; @31E8 A5 16
+    sta $C01C                          ; @31EA 8D 1C C0
+    rts                                ; @31ED 60
+L31EE:
+    lda #$00                           ; @31EE A9 00
+    sta $18                            ; @31F0 85 18
+    sta $19                            ; @31F2 85 19
+    sta $14                            ; @31F4 85 14
+    sta $15                            ; @31F6 85 15
+    sta $16                            ; @31F8 85 16
+    sec                                ; @31FA 38
+    jmp L31D1                          ; @31FB 4C D1 31
 ; ---- executable island $3226 ----
 * = $3226
 mod_u32_u16_u16:
@@ -738,82 +747,80 @@ L4643:
 ; ---- executable island $4E00 ----
 * = $4E00
 L4E00:
-    jsr L420C                          ; @4E00 20 0C 42
-    bcc L4E08                          ; @4E03 90 03
-    jmp L50DA                          ; @4E05 4C DA 50
-L4E08:
-    lda $18                            ; @4E08 A5 18
-    sta $1A                            ; @4E0A 85 1A
-    lda $19                            ; @4E0C A5 19
-    sta $1B                            ; @4E0E 85 1B
-    lda $17                            ; @4E10 A5 17
-    rol $1A                            ; @4E12 26 1A
-    rol $1B                            ; @4E14 26 1B
-    rol $16                            ; @4E16 26 16
-    rol a                              ; @4E18 2A
-    bcs L4E33                          ; @4E19 B0 18
-    cmp $13                            ; @4E1B C5 13
-    bcc L4E3E                          ; @4E1D 90 1F
-    bne L4E27                          ; @4E1F D0 06
-    ldx $16                            ; @4E21 A6 16
-    cpx $12                            ; @4E23 E4 12
-    bcc L4E3E                          ; @4E25 90 17
-L4E27:
-    tax                                ; @4E27 AA
-    lda $16                            ; @4E28 A5 16
-    sbc $12                            ; @4E2A E5 12
-    sta $16                            ; @4E2C 85 16
-    txa                                ; @4E2E 8A
-    sbc $13                            ; @4E2F E5 13
-    bcs L4E3E                          ; @4E31 B0 0B
-L4E33:
-    tax                                ; @4E33 AA
-    lda $16                            ; @4E34 A5 16
-    sbc $12                            ; @4E36 E5 12
-    sta $16                            ; @4E38 85 16
-    txa                                ; @4E3A 8A
-    sbc $13                            ; @4E3B E5 13
-    sec                                ; @4E3D 38
-L4E3E:
-    rol $1A                            ; @4E3E 26 1A
-    rol $1B                            ; @4E40 26 1B
-    rol $16                            ; @4E42 26 16
-    rol a                              ; @4E44 2A
-    bcs L4E5F                          ; @4E45 B0 18
-    cmp $13                            ; @4E47 C5 13
-    bcc L4E6A                          ; @4E49 90 1F
-    bne L4E53                          ; @4E4B D0 06
-    ldx $16                            ; @4E4D A6 16
-    cpx $12                            ; @4E4F E4 12
-    bcc L4E6A                          ; @4E51 90 17
-L4E53:
-    tax                                ; @4E53 AA
-    lda $16                            ; @4E54 A5 16
-    sbc $12                            ; @4E56 E5 12
-    sta $16                            ; @4E58 85 16
-    txa                                ; @4E5A 8A
-    sbc $13                            ; @4E5B E5 13
-    bcs L4E6A                          ; @4E5D B0 0B
-L4E5F:
-    tax                                ; @4E5F AA
-    lda $16                            ; @4E60 A5 16
-    sbc $12                            ; @4E62 E5 12
-    sta $16                            ; @4E64 85 16
-    txa                                ; @4E66 8A
-    sbc $13                            ; @4E67 E5 13
-    sec                                ; @4E69 38
-L4E6A:
-    rol $1A                            ; @4E6A 26 1A
-    rol $1B                            ; @4E6C 26 1B
-    rol $16                            ; @4E6E 26 16
-    rol a                              ; @4E70 2A
-    bcs L4E8B                          ; @4E71 B0 18
-    cmp $13                            ; @4E73 C5 13
-    bcc L4E96                          ; @4E75 90 1F
-    bne L4E7F                          ; @4E77 D0 06
-    ldx $16                            ; @4E79 A6 16
-    cpx $12                            ; @4E7B E4 12
-    bcc L4E96                          ; @4E7D 90 17
+    lda $13                            ; @4E00 A5 13
+    bne L4E31                          ; @4E02 D0 2D
+    lda $12                            ; @4E04 A5 12
+    bne L4E0B                          ; @4E06 D0 03
+    jmp L31EE                          ; @4E08 4C EE 31
+L4E0B:
+    lda $11                            ; @4E0B A5 11
+    ora $10                            ; @4E0D 05 10
+    bne L4E1E                          ; @4E0F D0 0D
+    lda $19                            ; @4E11 A5 19
+    bne L4E31                          ; @4E13 D0 1C
+    lda $18                            ; @4E15 A5 18
+    cmp $12                            ; @4E17 C5 12
+    bcc L4E21                          ; @4E19 90 06
+    jmp L4E31                          ; @4E1B 4C 31 4E
+L4E1E:
+    jmp L5272                          ; @4E1E 4C 72 52
+L4E21:
+    lda $18                            ; @4E21 A5 18
+    sta $16                            ; @4E23 85 16
+    lda #$00                           ; @4E25 A9 00
+    sta $18                            ; @4E27 85 18
+    sta $14                            ; @4E29 85 14
+    sta $15                            ; @4E2B 85 15
+    clc                                ; @4E2D 18
+    jmp L31D1                          ; @4E2E 4C D1 31
+L4E31:
+    jsr L420C                          ; @4E31 20 0C 42
+    lda $17                            ; @4E34 A5 17
+    rol $19                            ; @4E36 26 19
+    rol $16                            ; @4E38 26 16
+    rol a                              ; @4E3A 2A
+    bcs L4E55                          ; @4E3B B0 18
+    cmp $13                            ; @4E3D C5 13
+    bcc L4E60                          ; @4E3F 90 1F
+    bne L4E49                          ; @4E41 D0 06
+    ldx $16                            ; @4E43 A6 16
+    cpx $12                            ; @4E45 E4 12
+    bcc L4E60                          ; @4E47 90 17
+L4E49:
+    tax                                ; @4E49 AA
+    lda $16                            ; @4E4A A5 16
+    sbc $12                            ; @4E4C E5 12
+    sta $16                            ; @4E4E 85 16
+    txa                                ; @4E50 8A
+    sbc $13                            ; @4E51 E5 13
+    bcs L4E60                          ; @4E53 B0 0B
+L4E55:
+    tax                                ; @4E55 AA
+    lda $16                            ; @4E56 A5 16
+    sbc $12                            ; @4E58 E5 12
+    sta $16                            ; @4E5A 85 16
+    txa                                ; @4E5C 8A
+    sbc $13                            ; @4E5D E5 13
+    sec                                ; @4E5F 38
+L4E60:
+    rol $19                            ; @4E60 26 19
+    rol $16                            ; @4E62 26 16
+    rol a                              ; @4E64 2A
+    bcs L4E7F                          ; @4E65 B0 18
+    cmp $13                            ; @4E67 C5 13
+    bcc L4E8A                          ; @4E69 90 1F
+    bne L4E73                          ; @4E6B D0 06
+    ldx $16                            ; @4E6D A6 16
+    cpx $12                            ; @4E6F E4 12
+    bcc L4E8A                          ; @4E71 90 17
+L4E73:
+    tax                                ; @4E73 AA
+    lda $16                            ; @4E74 A5 16
+    sbc $12                            ; @4E76 E5 12
+    sta $16                            ; @4E78 85 16
+    txa                                ; @4E7A 8A
+    sbc $13                            ; @4E7B E5 13
+    bcs L4E8A                          ; @4E7D B0 0B
 L4E7F:
     tax                                ; @4E7F AA
     lda $16                            ; @4E80 A5 16
@@ -821,287 +828,289 @@ L4E7F:
     sta $16                            ; @4E84 85 16
     txa                                ; @4E86 8A
     sbc $13                            ; @4E87 E5 13
-    bcs L4E96                          ; @4E89 B0 0B
-L4E8B:
-    tax                                ; @4E8B AA
-    lda $16                            ; @4E8C A5 16
-    sbc $12                            ; @4E8E E5 12
-    sta $16                            ; @4E90 85 16
-    txa                                ; @4E92 8A
-    sbc $13                            ; @4E93 E5 13
-    sec                                ; @4E95 38
-L4E96:
-    rol $1A                            ; @4E96 26 1A
-    rol $1B                            ; @4E98 26 1B
-    rol $16                            ; @4E9A 26 16
-    rol a                              ; @4E9C 2A
-    bcs L4EB7                          ; @4E9D B0 18
-    cmp $13                            ; @4E9F C5 13
-    bcc L4EC2                          ; @4EA1 90 1F
-    bne L4EAB                          ; @4EA3 D0 06
-    ldx $16                            ; @4EA5 A6 16
-    cpx $12                            ; @4EA7 E4 12
-    bcc L4EC2                          ; @4EA9 90 17
-L4EAB:
-    tax                                ; @4EAB AA
-    lda $16                            ; @4EAC A5 16
-    sbc $12                            ; @4EAE E5 12
-    sta $16                            ; @4EB0 85 16
-    txa                                ; @4EB2 8A
-    sbc $13                            ; @4EB3 E5 13
-    bcs L4EC2                          ; @4EB5 B0 0B
-L4EB7:
-    tax                                ; @4EB7 AA
-    lda $16                            ; @4EB8 A5 16
-    sbc $12                            ; @4EBA E5 12
-    sta $16                            ; @4EBC 85 16
-    txa                                ; @4EBE 8A
-    sbc $13                            ; @4EBF E5 13
-    sec                                ; @4EC1 38
-L4EC2:
-    rol $1A                            ; @4EC2 26 1A
-    rol $1B                            ; @4EC4 26 1B
-    rol $16                            ; @4EC6 26 16
-    rol a                              ; @4EC8 2A
-    bcs L4EE3                          ; @4EC9 B0 18
-    cmp $13                            ; @4ECB C5 13
-    bcc L4EEE                          ; @4ECD 90 1F
-    bne L4ED7                          ; @4ECF D0 06
-    ldx $16                            ; @4ED1 A6 16
-    cpx $12                            ; @4ED3 E4 12
-    bcc L4EEE                          ; @4ED5 90 17
-L4ED7:
-    tax                                ; @4ED7 AA
-    lda $16                            ; @4ED8 A5 16
-    sbc $12                            ; @4EDA E5 12
-    sta $16                            ; @4EDC 85 16
-    txa                                ; @4EDE 8A
-    sbc $13                            ; @4EDF E5 13
-    bcs L4EEE                          ; @4EE1 B0 0B
-L4EE3:
-    tax                                ; @4EE3 AA
-    lda $16                            ; @4EE4 A5 16
-    sbc $12                            ; @4EE6 E5 12
-    sta $16                            ; @4EE8 85 16
-    txa                                ; @4EEA 8A
-    sbc $13                            ; @4EEB E5 13
-    sec                                ; @4EED 38
-L4EEE:
-    rol $1A                            ; @4EEE 26 1A
-    rol $1B                            ; @4EF0 26 1B
-    rol $16                            ; @4EF2 26 16
-    rol a                              ; @4EF4 2A
-    bcs L4F0F                          ; @4EF5 B0 18
-    cmp $13                            ; @4EF7 C5 13
-    bcc L4F1A                          ; @4EF9 90 1F
-    bne L4F03                          ; @4EFB D0 06
-    ldx $16                            ; @4EFD A6 16
-    cpx $12                            ; @4EFF E4 12
-    bcc L4F1A                          ; @4F01 90 17
-L4F03:
-    tax                                ; @4F03 AA
-    lda $16                            ; @4F04 A5 16
-    sbc $12                            ; @4F06 E5 12
-    sta $16                            ; @4F08 85 16
-    txa                                ; @4F0A 8A
-    sbc $13                            ; @4F0B E5 13
-    bcs L4F1A                          ; @4F0D B0 0B
-L4F0F:
-    tax                                ; @4F0F AA
-    lda $16                            ; @4F10 A5 16
-    sbc $12                            ; @4F12 E5 12
-    sta $16                            ; @4F14 85 16
-    txa                                ; @4F16 8A
-    sbc $13                            ; @4F17 E5 13
-    sec                                ; @4F19 38
-L4F1A:
-    rol $1A                            ; @4F1A 26 1A
-    rol $1B                            ; @4F1C 26 1B
-    rol $16                            ; @4F1E 26 16
-    rol a                              ; @4F20 2A
-    bcs L4F3B                          ; @4F21 B0 18
-    cmp $13                            ; @4F23 C5 13
-    bcc L4F46                          ; @4F25 90 1F
-    bne L4F2F                          ; @4F27 D0 06
-    ldx $16                            ; @4F29 A6 16
-    cpx $12                            ; @4F2B E4 12
-    bcc L4F46                          ; @4F2D 90 17
-L4F2F:
-    tax                                ; @4F2F AA
-    lda $16                            ; @4F30 A5 16
-    sbc $12                            ; @4F32 E5 12
-    sta $16                            ; @4F34 85 16
-    txa                                ; @4F36 8A
-    sbc $13                            ; @4F37 E5 13
-    bcs L4F46                          ; @4F39 B0 0B
-L4F3B:
-    tax                                ; @4F3B AA
-    lda $16                            ; @4F3C A5 16
-    sbc $12                            ; @4F3E E5 12
-    sta $16                            ; @4F40 85 16
-    txa                                ; @4F42 8A
-    sbc $13                            ; @4F43 E5 13
-    sec                                ; @4F45 38
-L4F46:
-    rol $1A                            ; @4F46 26 1A
-    rol $1B                            ; @4F48 26 1B
-    rol $16                            ; @4F4A 26 16
-    rol a                              ; @4F4C 2A
-    bcs L4F67                          ; @4F4D B0 18
-    cmp $13                            ; @4F4F C5 13
-    bcc L4F72                          ; @4F51 90 1F
-    bne L4F5B                          ; @4F53 D0 06
-    ldx $16                            ; @4F55 A6 16
-    cpx $12                            ; @4F57 E4 12
-    bcc L4F72                          ; @4F59 90 17
-L4F5B:
-    tax                                ; @4F5B AA
-    lda $16                            ; @4F5C A5 16
-    sbc $12                            ; @4F5E E5 12
-    sta $16                            ; @4F60 85 16
-    txa                                ; @4F62 8A
-    sbc $13                            ; @4F63 E5 13
-    bcs L4F72                          ; @4F65 B0 0B
-L4F67:
-    tax                                ; @4F67 AA
-    lda $16                            ; @4F68 A5 16
-    sbc $12                            ; @4F6A E5 12
-    sta $16                            ; @4F6C 85 16
-    txa                                ; @4F6E 8A
-    sbc $13                            ; @4F6F E5 13
-    sec                                ; @4F71 38
-L4F72:
-    rol $1A                            ; @4F72 26 1A
-    rol $1B                            ; @4F74 26 1B
-    rol $16                            ; @4F76 26 16
-    rol a                              ; @4F78 2A
-    bcs L4F93                          ; @4F79 B0 18
-    cmp $13                            ; @4F7B C5 13
-    bcc L4F9E                          ; @4F7D 90 1F
-    bne L4F87                          ; @4F7F D0 06
-    ldx $16                            ; @4F81 A6 16
-    cpx $12                            ; @4F83 E4 12
-    bcc L4F9E                          ; @4F85 90 17
-L4F87:
-    tax                                ; @4F87 AA
-    lda $16                            ; @4F88 A5 16
-    sbc $12                            ; @4F8A E5 12
-    sta $16                            ; @4F8C 85 16
-    txa                                ; @4F8E 8A
-    sbc $13                            ; @4F8F E5 13
-    bcs L4F9E                          ; @4F91 B0 0B
-L4F93:
-    tax                                ; @4F93 AA
-    lda $16                            ; @4F94 A5 16
-    sbc $12                            ; @4F96 E5 12
-    sta $16                            ; @4F98 85 16
-    txa                                ; @4F9A 8A
-    sbc $13                            ; @4F9B E5 13
-    sec                                ; @4F9D 38
-L4F9E:
-    rol $1A                            ; @4F9E 26 1A
-    rol $1B                            ; @4FA0 26 1B
-    rol $16                            ; @4FA2 26 16
-    rol a                              ; @4FA4 2A
-    bcs L4FBF                          ; @4FA5 B0 18
-    cmp $13                            ; @4FA7 C5 13
-    bcc L4FCA                          ; @4FA9 90 1F
-    bne L4FB3                          ; @4FAB D0 06
-    ldx $16                            ; @4FAD A6 16
-    cpx $12                            ; @4FAF E4 12
-    bcc L4FCA                          ; @4FB1 90 17
-L4FB3:
-    tax                                ; @4FB3 AA
-    lda $16                            ; @4FB4 A5 16
-    sbc $12                            ; @4FB6 E5 12
-    sta $16                            ; @4FB8 85 16
-    txa                                ; @4FBA 8A
-    sbc $13                            ; @4FBB E5 13
-    bcs L4FCA                          ; @4FBD B0 0B
-L4FBF:
-    tax                                ; @4FBF AA
-    lda $16                            ; @4FC0 A5 16
-    sbc $12                            ; @4FC2 E5 12
-    sta $16                            ; @4FC4 85 16
-    txa                                ; @4FC6 8A
-    sbc $13                            ; @4FC7 E5 13
-    sec                                ; @4FC9 38
-L4FCA:
-    rol $1A                            ; @4FCA 26 1A
-    rol $1B                            ; @4FCC 26 1B
-    rol $16                            ; @4FCE 26 16
-    rol a                              ; @4FD0 2A
-    bcs L4FEB                          ; @4FD1 B0 18
-    cmp $13                            ; @4FD3 C5 13
-    bcc L4FF6                          ; @4FD5 90 1F
-    bne L4FDF                          ; @4FD7 D0 06
-    ldx $16                            ; @4FD9 A6 16
-    cpx $12                            ; @4FDB E4 12
-    bcc L4FF6                          ; @4FDD 90 17
-L4FDF:
-    tax                                ; @4FDF AA
-    lda $16                            ; @4FE0 A5 16
-    sbc $12                            ; @4FE2 E5 12
-    sta $16                            ; @4FE4 85 16
-    txa                                ; @4FE6 8A
-    sbc $13                            ; @4FE7 E5 13
-    bcs L4FF6                          ; @4FE9 B0 0B
-L4FEB:
-    tax                                ; @4FEB AA
-    lda $16                            ; @4FEC A5 16
-    sbc $12                            ; @4FEE E5 12
-    sta $16                            ; @4FF0 85 16
-    txa                                ; @4FF2 8A
-    sbc $13                            ; @4FF3 E5 13
-    sec                                ; @4FF5 38
-L4FF6:
-    rol $1A                            ; @4FF6 26 1A
-    rol $1B                            ; @4FF8 26 1B
-    rol $16                            ; @4FFA 26 16
-    rol a                              ; @4FFC 2A
-    bcs L5017                          ; @4FFD B0 18
-    cmp $13                            ; @4FFF C5 13
-    bcc L5022                          ; @5001 90 1F
-    bne L500B                          ; @5003 D0 06
-    ldx $16                            ; @5005 A6 16
-    cpx $12                            ; @5007 E4 12
-    bcc L5022                          ; @5009 90 17
-L500B:
-    tax                                ; @500B AA
-    lda $16                            ; @500C A5 16
-    sbc $12                            ; @500E E5 12
-    sta $16                            ; @5010 85 16
-    txa                                ; @5012 8A
-    sbc $13                            ; @5013 E5 13
-    bcs L5022                          ; @5015 B0 0B
-L5017:
-    tax                                ; @5017 AA
-    lda $16                            ; @5018 A5 16
-    sbc $12                            ; @501A E5 12
-    sta $16                            ; @501C 85 16
-    txa                                ; @501E 8A
-    sbc $13                            ; @501F E5 13
-    sec                                ; @5021 38
-L5022:
-    rol $1A                            ; @5022 26 1A
-    rol $1B                            ; @5024 26 1B
-    rol $16                            ; @5026 26 16
-    rol a                              ; @5028 2A
-    bcs L5043                          ; @5029 B0 18
-    cmp $13                            ; @502B C5 13
-    bcc L504E                          ; @502D 90 1F
-    bne L5037                          ; @502F D0 06
-    ldx $16                            ; @5031 A6 16
-    cpx $12                            ; @5033 E4 12
-    bcc L504E                          ; @5035 90 17
-L5037:
-    tax                                ; @5037 AA
-    lda $16                            ; @5038 A5 16
-    sbc $12                            ; @503A E5 12
-    sta $16                            ; @503C 85 16
-    txa                                ; @503E 8A
-    sbc $13                            ; @503F E5 13
-    bcs L504E                          ; @5041 B0 0B
+    sec                                ; @4E89 38
+L4E8A:
+    rol $19                            ; @4E8A 26 19
+    rol $16                            ; @4E8C 26 16
+    rol a                              ; @4E8E 2A
+    bcs L4EA9                          ; @4E8F B0 18
+    cmp $13                            ; @4E91 C5 13
+    bcc L4EB4                          ; @4E93 90 1F
+    bne L4E9D                          ; @4E95 D0 06
+    ldx $16                            ; @4E97 A6 16
+    cpx $12                            ; @4E99 E4 12
+    bcc L4EB4                          ; @4E9B 90 17
+L4E9D:
+    tax                                ; @4E9D AA
+    lda $16                            ; @4E9E A5 16
+    sbc $12                            ; @4EA0 E5 12
+    sta $16                            ; @4EA2 85 16
+    txa                                ; @4EA4 8A
+    sbc $13                            ; @4EA5 E5 13
+    bcs L4EB4                          ; @4EA7 B0 0B
+L4EA9:
+    tax                                ; @4EA9 AA
+    lda $16                            ; @4EAA A5 16
+    sbc $12                            ; @4EAC E5 12
+    sta $16                            ; @4EAE 85 16
+    txa                                ; @4EB0 8A
+    sbc $13                            ; @4EB1 E5 13
+    sec                                ; @4EB3 38
+L4EB4:
+    rol $19                            ; @4EB4 26 19
+    rol $16                            ; @4EB6 26 16
+    rol a                              ; @4EB8 2A
+    bcs L4ED3                          ; @4EB9 B0 18
+    cmp $13                            ; @4EBB C5 13
+    bcc L4EDE                          ; @4EBD 90 1F
+    bne L4EC7                          ; @4EBF D0 06
+    ldx $16                            ; @4EC1 A6 16
+    cpx $12                            ; @4EC3 E4 12
+    bcc L4EDE                          ; @4EC5 90 17
+L4EC7:
+    tax                                ; @4EC7 AA
+    lda $16                            ; @4EC8 A5 16
+    sbc $12                            ; @4ECA E5 12
+    sta $16                            ; @4ECC 85 16
+    txa                                ; @4ECE 8A
+    sbc $13                            ; @4ECF E5 13
+    bcs L4EDE                          ; @4ED1 B0 0B
+L4ED3:
+    tax                                ; @4ED3 AA
+    lda $16                            ; @4ED4 A5 16
+    sbc $12                            ; @4ED6 E5 12
+    sta $16                            ; @4ED8 85 16
+    txa                                ; @4EDA 8A
+    sbc $13                            ; @4EDB E5 13
+    sec                                ; @4EDD 38
+L4EDE:
+    rol $19                            ; @4EDE 26 19
+    rol $16                            ; @4EE0 26 16
+    rol a                              ; @4EE2 2A
+    bcs L4EFD                          ; @4EE3 B0 18
+    cmp $13                            ; @4EE5 C5 13
+    bcc L4F08                          ; @4EE7 90 1F
+    bne L4EF1                          ; @4EE9 D0 06
+    ldx $16                            ; @4EEB A6 16
+    cpx $12                            ; @4EED E4 12
+    bcc L4F08                          ; @4EEF 90 17
+L4EF1:
+    tax                                ; @4EF1 AA
+    lda $16                            ; @4EF2 A5 16
+    sbc $12                            ; @4EF4 E5 12
+    sta $16                            ; @4EF6 85 16
+    txa                                ; @4EF8 8A
+    sbc $13                            ; @4EF9 E5 13
+    bcs L4F08                          ; @4EFB B0 0B
+L4EFD:
+    tax                                ; @4EFD AA
+    lda $16                            ; @4EFE A5 16
+    sbc $12                            ; @4F00 E5 12
+    sta $16                            ; @4F02 85 16
+    txa                                ; @4F04 8A
+    sbc $13                            ; @4F05 E5 13
+    sec                                ; @4F07 38
+L4F08:
+    rol $19                            ; @4F08 26 19
+    rol $16                            ; @4F0A 26 16
+    rol a                              ; @4F0C 2A
+    bcs L4F27                          ; @4F0D B0 18
+    cmp $13                            ; @4F0F C5 13
+    bcc L4F32                          ; @4F11 90 1F
+    bne L4F1B                          ; @4F13 D0 06
+    ldx $16                            ; @4F15 A6 16
+    cpx $12                            ; @4F17 E4 12
+    bcc L4F32                          ; @4F19 90 17
+L4F1B:
+    tax                                ; @4F1B AA
+    lda $16                            ; @4F1C A5 16
+    sbc $12                            ; @4F1E E5 12
+    sta $16                            ; @4F20 85 16
+    txa                                ; @4F22 8A
+    sbc $13                            ; @4F23 E5 13
+    bcs L4F32                          ; @4F25 B0 0B
+L4F27:
+    tax                                ; @4F27 AA
+    lda $16                            ; @4F28 A5 16
+    sbc $12                            ; @4F2A E5 12
+    sta $16                            ; @4F2C 85 16
+    txa                                ; @4F2E 8A
+    sbc $13                            ; @4F2F E5 13
+    sec                                ; @4F31 38
+L4F32:
+    rol $19                            ; @4F32 26 19
+    rol $16                            ; @4F34 26 16
+    rol a                              ; @4F36 2A
+    bcs L4F51                          ; @4F37 B0 18
+    cmp $13                            ; @4F39 C5 13
+    bcc L4F5C                          ; @4F3B 90 1F
+    bne L4F45                          ; @4F3D D0 06
+    ldx $16                            ; @4F3F A6 16
+    cpx $12                            ; @4F41 E4 12
+    bcc L4F5C                          ; @4F43 90 17
+L4F45:
+    tax                                ; @4F45 AA
+    lda $16                            ; @4F46 A5 16
+    sbc $12                            ; @4F48 E5 12
+    sta $16                            ; @4F4A 85 16
+    txa                                ; @4F4C 8A
+    sbc $13                            ; @4F4D E5 13
+    bcs L4F5C                          ; @4F4F B0 0B
+L4F51:
+    tax                                ; @4F51 AA
+    lda $16                            ; @4F52 A5 16
+    sbc $12                            ; @4F54 E5 12
+    sta $16                            ; @4F56 85 16
+    txa                                ; @4F58 8A
+    sbc $13                            ; @4F59 E5 13
+    sec                                ; @4F5B 38
+L4F5C:
+    rol $19                            ; @4F5C 26 19
+    rol $16                            ; @4F5E 26 16
+    rol a                              ; @4F60 2A
+    bcs L4F7B                          ; @4F61 B0 18
+    cmp $13                            ; @4F63 C5 13
+    bcc L4F86                          ; @4F65 90 1F
+    bne L4F6F                          ; @4F67 D0 06
+    ldx $16                            ; @4F69 A6 16
+    cpx $12                            ; @4F6B E4 12
+    bcc L4F86                          ; @4F6D 90 17
+L4F6F:
+    tax                                ; @4F6F AA
+    lda $16                            ; @4F70 A5 16
+    sbc $12                            ; @4F72 E5 12
+    sta $16                            ; @4F74 85 16
+    txa                                ; @4F76 8A
+    sbc $13                            ; @4F77 E5 13
+    bcs L4F86                          ; @4F79 B0 0B
+L4F7B:
+    tax                                ; @4F7B AA
+    lda $16                            ; @4F7C A5 16
+    sbc $12                            ; @4F7E E5 12
+    sta $16                            ; @4F80 85 16
+    txa                                ; @4F82 8A
+    sbc $13                            ; @4F83 E5 13
+    sec                                ; @4F85 38
+L4F86:
+    rol $19                            ; @4F86 26 19
+    rol $18                            ; @4F88 26 18
+    rol $16                            ; @4F8A 26 16
+    rol a                              ; @4F8C 2A
+    bcs L4FA7                          ; @4F8D B0 18
+    cmp $13                            ; @4F8F C5 13
+    bcc L4FB2                          ; @4F91 90 1F
+    bne L4F9B                          ; @4F93 D0 06
+    ldx $16                            ; @4F95 A6 16
+    cpx $12                            ; @4F97 E4 12
+    bcc L4FB2                          ; @4F99 90 17
+L4F9B:
+    tax                                ; @4F9B AA
+    lda $16                            ; @4F9C A5 16
+    sbc $12                            ; @4F9E E5 12
+    sta $16                            ; @4FA0 85 16
+    txa                                ; @4FA2 8A
+    sbc $13                            ; @4FA3 E5 13
+    bcs L4FB2                          ; @4FA5 B0 0B
+L4FA7:
+    tax                                ; @4FA7 AA
+    lda $16                            ; @4FA8 A5 16
+    sbc $12                            ; @4FAA E5 12
+    sta $16                            ; @4FAC 85 16
+    txa                                ; @4FAE 8A
+    sbc $13                            ; @4FAF E5 13
+    sec                                ; @4FB1 38
+L4FB2:
+    rol $18                            ; @4FB2 26 18
+    rol $16                            ; @4FB4 26 16
+    rol a                              ; @4FB6 2A
+    bcs L4FD1                          ; @4FB7 B0 18
+    cmp $13                            ; @4FB9 C5 13
+    bcc L4FDC                          ; @4FBB 90 1F
+    bne L4FC5                          ; @4FBD D0 06
+    ldx $16                            ; @4FBF A6 16
+    cpx $12                            ; @4FC1 E4 12
+    bcc L4FDC                          ; @4FC3 90 17
+L4FC5:
+    tax                                ; @4FC5 AA
+    lda $16                            ; @4FC6 A5 16
+    sbc $12                            ; @4FC8 E5 12
+    sta $16                            ; @4FCA 85 16
+    txa                                ; @4FCC 8A
+    sbc $13                            ; @4FCD E5 13
+    bcs L4FDC                          ; @4FCF B0 0B
+L4FD1:
+    tax                                ; @4FD1 AA
+    lda $16                            ; @4FD2 A5 16
+    sbc $12                            ; @4FD4 E5 12
+    sta $16                            ; @4FD6 85 16
+    txa                                ; @4FD8 8A
+    sbc $13                            ; @4FD9 E5 13
+    sec                                ; @4FDB 38
+L4FDC:
+    rol $18                            ; @4FDC 26 18
+    rol $16                            ; @4FDE 26 16
+    rol a                              ; @4FE0 2A
+    bcs L4FFB                          ; @4FE1 B0 18
+    cmp $13                            ; @4FE3 C5 13
+    bcc L5006                          ; @4FE5 90 1F
+    bne L4FEF                          ; @4FE7 D0 06
+    ldx $16                            ; @4FE9 A6 16
+    cpx $12                            ; @4FEB E4 12
+    bcc L5006                          ; @4FED 90 17
+L4FEF:
+    tax                                ; @4FEF AA
+    lda $16                            ; @4FF0 A5 16
+    sbc $12                            ; @4FF2 E5 12
+    sta $16                            ; @4FF4 85 16
+    txa                                ; @4FF6 8A
+    sbc $13                            ; @4FF7 E5 13
+    bcs L5006                          ; @4FF9 B0 0B
+L4FFB:
+    tax                                ; @4FFB AA
+    lda $16                            ; @4FFC A5 16
+    sbc $12                            ; @4FFE E5 12
+    sta $16                            ; @5000 85 16
+    txa                                ; @5002 8A
+    sbc $13                            ; @5003 E5 13
+    sec                                ; @5005 38
+L5006:
+    rol $18                            ; @5006 26 18
+    rol $16                            ; @5008 26 16
+    rol a                              ; @500A 2A
+    bcs L5025                          ; @500B B0 18
+    cmp $13                            ; @500D C5 13
+    bcc L5030                          ; @500F 90 1F
+    bne L5019                          ; @5011 D0 06
+    ldx $16                            ; @5013 A6 16
+    cpx $12                            ; @5015 E4 12
+    bcc L5030                          ; @5017 90 17
+L5019:
+    tax                                ; @5019 AA
+    lda $16                            ; @501A A5 16
+    sbc $12                            ; @501C E5 12
+    sta $16                            ; @501E 85 16
+    txa                                ; @5020 8A
+    sbc $13                            ; @5021 E5 13
+    bcs L5030                          ; @5023 B0 0B
+L5025:
+    tax                                ; @5025 AA
+    lda $16                            ; @5026 A5 16
+    sbc $12                            ; @5028 E5 12
+    sta $16                            ; @502A 85 16
+    txa                                ; @502C 8A
+    sbc $13                            ; @502D E5 13
+    sec                                ; @502F 38
+L5030:
+    rol $18                            ; @5030 26 18
+    rol $16                            ; @5032 26 16
+    rol a                              ; @5034 2A
+    bcs L504F                          ; @5035 B0 18
+    cmp $13                            ; @5037 C5 13
+    bcc L505A                          ; @5039 90 1F
+    bne L5043                          ; @503B D0 06
+    ldx $16                            ; @503D A6 16
+    cpx $12                            ; @503F E4 12
+    bcc L505A                          ; @5041 90 17
 L5043:
     tax                                ; @5043 AA
     lda $16                            ; @5044 A5 16
@@ -1109,99 +1118,178 @@ L5043:
     sta $16                            ; @5048 85 16
     txa                                ; @504A 8A
     sbc $13                            ; @504B E5 13
-    sec                                ; @504D 38
-L504E:
-    rol $1A                            ; @504E 26 1A
-    rol $1B                            ; @5050 26 1B
-    rol $16                            ; @5052 26 16
-    rol a                              ; @5054 2A
-    bcs L506F                          ; @5055 B0 18
-    cmp $13                            ; @5057 C5 13
-    bcc L507A                          ; @5059 90 1F
-    bne L5063                          ; @505B D0 06
-    ldx $16                            ; @505D A6 16
-    cpx $12                            ; @505F E4 12
-    bcc L507A                          ; @5061 90 17
-L5063:
-    tax                                ; @5063 AA
-    lda $16                            ; @5064 A5 16
-    sbc $12                            ; @5066 E5 12
-    sta $16                            ; @5068 85 16
-    txa                                ; @506A 8A
-    sbc $13                            ; @506B E5 13
-    bcs L507A                          ; @506D B0 0B
-L506F:
-    tax                                ; @506F AA
-    lda $16                            ; @5070 A5 16
-    sbc $12                            ; @5072 E5 12
-    sta $16                            ; @5074 85 16
-    txa                                ; @5076 8A
-    sbc $13                            ; @5077 E5 13
-    sec                                ; @5079 38
-L507A:
-    rol $1A                            ; @507A 26 1A
-    rol $1B                            ; @507C 26 1B
-    rol $16                            ; @507E 26 16
-    rol a                              ; @5080 2A
-    bcs L509B                          ; @5081 B0 18
-    cmp $13                            ; @5083 C5 13
-    bcc L50A6                          ; @5085 90 1F
-    bne L508F                          ; @5087 D0 06
-    ldx $16                            ; @5089 A6 16
-    cpx $12                            ; @508B E4 12
-    bcc L50A6                          ; @508D 90 17
-L508F:
-    tax                                ; @508F AA
-    lda $16                            ; @5090 A5 16
-    sbc $12                            ; @5092 E5 12
-    sta $16                            ; @5094 85 16
-    txa                                ; @5096 8A
-    sbc $13                            ; @5097 E5 13
-    bcs L50A6                          ; @5099 B0 0B
-L509B:
-    tax                                ; @509B AA
-    lda $16                            ; @509C A5 16
-    sbc $12                            ; @509E E5 12
-    sta $16                            ; @50A0 85 16
-    txa                                ; @50A2 8A
-    sbc $13                            ; @50A3 E5 13
-    sec                                ; @50A5 38
-L50A6:
-    rol $1A                            ; @50A6 26 1A
-    rol $1B                            ; @50A8 26 1B
-    rol $16                            ; @50AA 26 16
-    rol a                              ; @50AC 2A
-    bcs L50C7                          ; @50AD B0 18
-    cmp $13                            ; @50AF C5 13
-    bcc L50D2                          ; @50B1 90 1F
-    bne L50BB                          ; @50B3 D0 06
-    ldx $16                            ; @50B5 A6 16
-    cpx $12                            ; @50B7 E4 12
-    bcc L50D2                          ; @50B9 90 17
-L50BB:
-    tax                                ; @50BB AA
-    lda $16                            ; @50BC A5 16
-    sbc $12                            ; @50BE E5 12
-    sta $16                            ; @50C0 85 16
-    txa                                ; @50C2 8A
-    sbc $13                            ; @50C3 E5 13
-    bcs L50D2                          ; @50C5 B0 0B
-L50C7:
-    tax                                ; @50C7 AA
-    lda $16                            ; @50C8 A5 16
-    sbc $12                            ; @50CA E5 12
-    sta $16                            ; @50CC 85 16
-    txa                                ; @50CE 8A
-    sbc $13                            ; @50CF E5 13
-    sec                                ; @50D1 38
-L50D2:
-    rol $1A                            ; @50D2 26 1A
-    rol $1B                            ; @50D4 26 1B
-    sta $17                            ; @50D6 85 17
-    clc                                ; @50D8 18
-    rts                                ; @50D9 60
-L50DA:
-    lda #$00                           ; @50DA A9 00
-    sta $1A                            ; @50DC 85 1A
-    sta $1B                            ; @50DE 85 1B
-    rts                                ; @50E0 60
+    bcs L505A                          ; @504D B0 0B
+L504F:
+    tax                                ; @504F AA
+    lda $16                            ; @5050 A5 16
+    sbc $12                            ; @5052 E5 12
+    sta $16                            ; @5054 85 16
+    txa                                ; @5056 8A
+    sbc $13                            ; @5057 E5 13
+    sec                                ; @5059 38
+L505A:
+    rol $18                            ; @505A 26 18
+    rol $16                            ; @505C 26 16
+    rol a                              ; @505E 2A
+    bcs L5079                          ; @505F B0 18
+    cmp $13                            ; @5061 C5 13
+    bcc L5084                          ; @5063 90 1F
+    bne L506D                          ; @5065 D0 06
+    ldx $16                            ; @5067 A6 16
+    cpx $12                            ; @5069 E4 12
+    bcc L5084                          ; @506B 90 17
+L506D:
+    tax                                ; @506D AA
+    lda $16                            ; @506E A5 16
+    sbc $12                            ; @5070 E5 12
+    sta $16                            ; @5072 85 16
+    txa                                ; @5074 8A
+    sbc $13                            ; @5075 E5 13
+    bcs L5084                          ; @5077 B0 0B
+L5079:
+    tax                                ; @5079 AA
+    lda $16                            ; @507A A5 16
+    sbc $12                            ; @507C E5 12
+    sta $16                            ; @507E 85 16
+    txa                                ; @5080 8A
+    sbc $13                            ; @5081 E5 13
+    sec                                ; @5083 38
+L5084:
+    rol $18                            ; @5084 26 18
+    rol $16                            ; @5086 26 16
+    rol a                              ; @5088 2A
+    bcs L50A3                          ; @5089 B0 18
+    cmp $13                            ; @508B C5 13
+    bcc L50AE                          ; @508D 90 1F
+    bne L5097                          ; @508F D0 06
+    ldx $16                            ; @5091 A6 16
+    cpx $12                            ; @5093 E4 12
+    bcc L50AE                          ; @5095 90 17
+L5097:
+    tax                                ; @5097 AA
+    lda $16                            ; @5098 A5 16
+    sbc $12                            ; @509A E5 12
+    sta $16                            ; @509C 85 16
+    txa                                ; @509E 8A
+    sbc $13                            ; @509F E5 13
+    bcs L50AE                          ; @50A1 B0 0B
+L50A3:
+    tax                                ; @50A3 AA
+    lda $16                            ; @50A4 A5 16
+    sbc $12                            ; @50A6 E5 12
+    sta $16                            ; @50A8 85 16
+    txa                                ; @50AA 8A
+    sbc $13                            ; @50AB E5 13
+    sec                                ; @50AD 38
+L50AE:
+    rol $18                            ; @50AE 26 18
+    rol $16                            ; @50B0 26 16
+    rol a                              ; @50B2 2A
+    bcs L50CD                          ; @50B3 B0 18
+    cmp $13                            ; @50B5 C5 13
+    bcc L50D8                          ; @50B7 90 1F
+    bne L50C1                          ; @50B9 D0 06
+    ldx $16                            ; @50BB A6 16
+    cpx $12                            ; @50BD E4 12
+    bcc L50D8                          ; @50BF 90 17
+L50C1:
+    tax                                ; @50C1 AA
+    lda $16                            ; @50C2 A5 16
+    sbc $12                            ; @50C4 E5 12
+    sta $16                            ; @50C6 85 16
+    txa                                ; @50C8 8A
+    sbc $13                            ; @50C9 E5 13
+    bcs L50D8                          ; @50CB B0 0B
+L50CD:
+    tax                                ; @50CD AA
+    lda $16                            ; @50CE A5 16
+    sbc $12                            ; @50D0 E5 12
+    sta $16                            ; @50D2 85 16
+    txa                                ; @50D4 8A
+    sbc $13                            ; @50D5 E5 13
+    sec                                ; @50D7 38
+L50D8:
+    rol $18                            ; @50D8 26 18
+    clc                                ; @50DA 18
+    jmp L31D1                          ; @50DB 4C D1 31
+; ---- executable island $5272 ----
+* = $5272
+L5272:
+    lda #$00                           ; @5272 A9 00
+    ldx #$08                           ; @5274 A2 08
+L5276:
+    rol $11                            ; @5276 26 11
+    rol a                              ; @5278 2A
+    bcs L5283                          ; @5279 B0 08
+    cmp $12                            ; @527B C5 12
+    bcc L5286                          ; @527D 90 07
+    sbc $12                            ; @527F E5 12
+    bcs L5286                          ; @5281 B0 03
+L5283:
+    sbc $12                            ; @5283 E5 12
+    sec                                ; @5285 38
+L5286:
+    dex                                ; @5286 CA
+    bne L5276                          ; @5287 D0 ED
+    rol $11                            ; @5289 26 11
+    ldx #$08                           ; @528B A2 08
+L528D:
+    rol $10                            ; @528D 26 10
+    rol a                              ; @528F 2A
+    bcs L529A                          ; @5290 B0 08
+    cmp $12                            ; @5292 C5 12
+    bcc L529D                          ; @5294 90 07
+    sbc $12                            ; @5296 E5 12
+    bcs L529D                          ; @5298 B0 03
+L529A:
+    sbc $12                            ; @529A E5 12
+    sec                                ; @529C 38
+L529D:
+    dex                                ; @529D CA
+    bne L528D                          ; @529E D0 ED
+    rol $10                            ; @52A0 26 10
+    ldx #$08                           ; @52A2 A2 08
+L52A4:
+    rol $19                            ; @52A4 26 19
+    rol a                              ; @52A6 2A
+    bcs L52B1                          ; @52A7 B0 08
+    cmp $12                            ; @52A9 C5 12
+    bcc L52B4                          ; @52AB 90 07
+    sbc $12                            ; @52AD E5 12
+    bcs L52B4                          ; @52AF B0 03
+L52B1:
+    sbc $12                            ; @52B1 E5 12
+    sec                                ; @52B3 38
+L52B4:
+    dex                                ; @52B4 CA
+    bne L52A4                          ; @52B5 D0 ED
+    rol $19                            ; @52B7 26 19
+    ldx #$08                           ; @52B9 A2 08
+L52BB:
+    rol $18                            ; @52BB 26 18
+    rol a                              ; @52BD 2A
+    bcs L52C8                          ; @52BE B0 08
+    cmp $12                            ; @52C0 C5 12
+    bcc L52CB                          ; @52C2 90 07
+    sbc $12                            ; @52C4 E5 12
+    bcs L52CB                          ; @52C6 B0 03
+L52C8:
+    sbc $12                            ; @52C8 E5 12
+    sec                                ; @52CA 38
+L52CB:
+    dex                                ; @52CB CA
+    bne L52BB                          ; @52CC D0 ED
+    rol $18                            ; @52CE 26 18
+    sta $C01C                          ; @52D0 8D 1C C0
+    lda #$00                           ; @52D3 A9 00
+    sta $C01D                          ; @52D5 8D 1D C0
+    lda $18                            ; @52D8 A5 18
+    sta $C018                          ; @52DA 8D 18 C0
+    lda $19                            ; @52DD A5 19
+    sta $C019                          ; @52DF 8D 19 C0
+    lda $10                            ; @52E2 A5 10
+    sta $C01A                          ; @52E4 8D 1A C0
+    lda $11                            ; @52E7 A5 11
+    sta $C01B                          ; @52E9 8D 1B C0
+    clc                                ; @52EC 18
+    rts                                ; @52ED 60

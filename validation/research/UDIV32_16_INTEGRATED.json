@@ -1,0 +1,141 @@
+{
+  "status": "PASS",
+  "cases": 22641,
+  "profiles": {
+    "v2_pareto_fast": {
+      "old": {
+        "mean_cycles": 1092.27666622499,
+        "min_cycles": 175,
+        "max_cycles": 1880,
+        "cases": 22641
+      },
+      "new": {
+        "mean_cycles": 715.3583322291419,
+        "min_cycles": 125,
+        "max_cycles": 1738,
+        "cases": 22641
+      },
+      "saved_mean_cycles": 376.91833399584823,
+      "min_saved_cycles": -13,
+      "max_saved_cycles": 963,
+      "slower_cases": 1,
+      "equal_cases": 0,
+      "slower_examples": [
+        {
+          "n": "0x10000",
+          "d": "0xff",
+          "old_cycles": 767,
+          "new_cycles": 780,
+          "regression": 13
+        }
+      ],
+      "d8": {
+        "old": {
+          "mean_cycles": 1533.778637459807,
+          "min_cycles": 745,
+          "max_cycles": 1880,
+          "cases": 9952
+        },
+        "new": {
+          "mean_cycles": 804.0404943729903,
+          "min_cycles": 145,
+          "max_cycles": 953,
+          "cases": 9952
+        },
+        "saved_mean_cycles": 729.7381430868168,
+        "slower_cases": 1
+      },
+      "alternate_map_exact": true
+    },
+    "v3_reu_512k": {
+      "old": {
+        "mean_cycles": 1092.27666622499,
+        "min_cycles": 175,
+        "max_cycles": 1880,
+        "cases": 22641
+      },
+      "new": {
+        "mean_cycles": 715.3583322291419,
+        "min_cycles": 125,
+        "max_cycles": 1738,
+        "cases": 22641
+      },
+      "saved_mean_cycles": 376.91833399584823,
+      "min_saved_cycles": -13,
+      "max_saved_cycles": 963,
+      "slower_cases": 1,
+      "equal_cases": 0,
+      "slower_examples": [
+        {
+          "n": "0x10000",
+          "d": "0xff",
+          "old_cycles": 767,
+          "new_cycles": 780,
+          "regression": 13
+        }
+      ],
+      "d8": {
+        "old": {
+          "mean_cycles": 1533.778637459807,
+          "min_cycles": 745,
+          "max_cycles": 1880,
+          "cases": 9952
+        },
+        "new": {
+          "mean_cycles": 804.0404943729903,
+          "min_cycles": 145,
+          "max_cycles": 953,
+          "cases": 9952
+        },
+        "saved_mean_cycles": 729.7381430868168,
+        "slower_cases": 1
+      },
+      "alternate_map_exact": true
+    },
+    "v4_reu_16m": {
+      "old": {
+        "mean_cycles": 1092.27666622499,
+        "min_cycles": 175,
+        "max_cycles": 1880,
+        "cases": 22641
+      },
+      "new": {
+        "mean_cycles": 715.3583322291419,
+        "min_cycles": 125,
+        "max_cycles": 1738,
+        "cases": 22641
+      },
+      "saved_mean_cycles": 376.91833399584823,
+      "min_saved_cycles": -13,
+      "max_saved_cycles": 963,
+      "slower_cases": 1,
+      "equal_cases": 0,
+      "slower_examples": [
+        {
+          "n": "0x10000",
+          "d": "0xff",
+          "old_cycles": 767,
+          "new_cycles": 780,
+          "regression": 13
+        }
+      ],
+      "d8": {
+        "old": {
+          "mean_cycles": 1533.778637459807,
+          "min_cycles": 745,
+          "max_cycles": 1880,
+          "cases": 9952
+        },
+        "new": {
+          "mean_cycles": 804.0404943729903,
+          "min_cycles": 145,
+          "max_cycles": 953,
+          "cases": 9952
+        },
+        "saved_mean_cycles": 729.7381430868168,
+        "slower_cases": 1
+      },
+      "alternate_map_exact": true
+    }
+  }
+}
