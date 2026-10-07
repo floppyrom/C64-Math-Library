@@ -539,6 +539,8 @@ def generate_source(profile,outpath:Path):
            f'!source "../../{profile}/resident/vector/native/vec2_normalize_tables.asm"']
  lines += ['', '; Candidate wide-intermediate multiply/divide primitives.',
            '!source "../game_math/muldiv16_candidate.inc"']
+ if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+  lines += ['!source "../game_math/muldiv16_u_fast_candidate.inc"']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 
