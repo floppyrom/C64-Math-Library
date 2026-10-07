@@ -1,0 +1,15 @@
+name: UDIV32-16 research
+on:
+  push:
+    branches: [ opt/udiv32-16-latency-20261007 ]
+  workflow_dispatch:
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Split-tail candidate
+        run: python3 tools/research_udiv32_16_split_tail.py
