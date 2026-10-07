@@ -536,27 +536,50 @@ def _public_addr(man: dict, name: str) -> int:
 
 def apply_muldiv16_lowzp_unsigned(dst: bytearray, vals: dict[str, int],
                                     base_man: dict, hbase: int) -> dict:
-    # Keep V5's existing 17-ZP UMUL16 producer; eliminate only the public
-    # product-copy + UDIV32/16 marshalling boundary in this first checkpoint.
+    # OptiSearch-style low-ZP producer/consumer fusion for V5. Bind the
+    # existing qualified V1 17-ZP UMUL16 record producer directly, keep its
+    # product in z0/X/A/Y, and feed those bytes straight into private UDIV32/16.
     mbase = vals['REG_TABLE'] + 0x1800
     mend = vals['REG_TABLE'] + 0x19ED
     z = vals['ZP_MAIN']
     io = vals['MATH_IO']
-    umul = _public_addr(base_man, 'MATH_UMUL16')
+    producer = vals['REG_KERNEL'] + 0x07EC
+    producer_y1 = vals['REG_KERNEL'] + 0x081A
     uentry = hbase + 0x0C00
+
+    sl = (vals['REG_TABLE'] + 0x2400) >> 8
+    nl = (vals['REG_TABLE'] + 0x2800) >> 8
+    sh = (vals['REG_TABLE'] + 0x2600) >> 8
+    nh = (vals['REG_TABLE'] + 0x2A00) >> 8
 
     src_text = '\n'.join((
         f'* = {hx(mbase)}',
         'V5_MULDIV16_U:',
-        f'    jsr {hx(umul)}',
-        f'    lda {hx(io + 0x08)}',
-        f'    sta {hx(z + 0x16, 2)}',
-        f'    lda {hx(io + 0x09)}',
-        f'    sta {hx(z + 0x17, 2)}',
-        f'    lda {hx(io + 0x0A)}',
+        f'    lda #{hx(sl, 2)}',
+        f'    sta {hx(z + 0x08, 2)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        f'    lda #{hx(nl, 2)}',
+        f'    sta {hx(z + 0x0A, 2)}',
+        f'    sta {hx(z + 0x12, 2)}',
+        f'    lda #{hx(sh, 2)}',
+        f'    sta {hx(z + 0x0C, 2)}',
+        f'    sta {hx(z + 0x14, 2)}',
+        f'    lda #{hx(nh, 2)}',
         f'    sta {hx(z + 0x0E, 2)}',
-        f'    lda {hx(io + 0x0B)}',
+        f'    sta {hx(z + 0x16, 2)}',
+        f'    lda {hx(io + 0x00)}',
+        f'    sta {hx(z + 0x07, 2)}',
+        f'    lda {hx(io + 0x01)}',
         f'    sta {hx(z + 0x0F, 2)}',
+        f'    lda {hx(io + 0x05)}',
+        f'    sta {hx(producer_y1)}',
+        f'    ldy {hx(io + 0x04)}',
+        f'    jsr {hx(producer)}',
+        f'    sta {hx(z + 0x0E, 2)}',
+        f'    sty {hx(z + 0x0F, 2)}',
+        f'    lda {hx(z + 0x17, 2)}',
+        f'    sta {hx(z + 0x16, 2)}',
+        f'    stx {hx(z + 0x17, 2)}',
         f'    lda {hx(io + 0x14)}',
         f'    sta {hx(z + 0x10, 2)}',
         f'    lda {hx(io + 0x15)}',
@@ -572,8 +595,8 @@ def apply_muldiv16_lowzp_unsigned(dst: bytearray, vals: dict[str, int],
         raise RuntimeError(f'V5 UMULDIV16 fusion does not fit certified table hole: {hx(lo)}-{hx(hi)}')
     if any(dst[lo:hi + 1]):
         raise RuntimeError(f'V5 UMULDIV16 fusion destination {hx(lo)}-{hx(hi)} is not free')
-    for a, byte in mem.items():
-        dst[a] = byte
+    for addr, byte in mem.items():
+        dst[addr] = byte
     pub = _public_addr(base_man, 'MATH_UMULDIV16')
     dst[pub:pub + 3] = bytes((0x4C, mbase & 0xFF, mbase >> 8))
     return {
@@ -581,8 +604,9 @@ def apply_muldiv16_lowzp_unsigned(dst: bytearray, vals: dict[str, int],
         'end': hx(hi),
         'code_bytes': hi - lo + 1,
         'normal_zp_bytes': 31,
-        'producer': 'existing V1 low-ZP MATH_UMUL16',
+        'producer': 'qualified V1 17-ZP UMUL16 private record producer',
         'consumer': 'relocated private V2 UDIV32/16 entry',
+        'materializes_public_product': False,
     }
 
 def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
