@@ -1,0 +1,44 @@
+name: Division tail probe
+on:
+  push:
+    branches: [ opt/udiv32-16-latency-20261007 ]
+jobs:
+  probe:
+    if: contains(github.event.head_commit.message, '[tail-probe]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_probe
+          python3 - <<'PY'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,'tools')
+          from validate_udiv32_16_integrated import load_source
+          from validate_division_latency_escape import one
+          c,P,I=load_source('v2_pareto_fast','reference',root=Path('build_probe')) if False else (None,None,None)
+          # local loader because research loader is fixed to build_u3216
+          import json
+          from mini6502 import CPU
+          d=Path('build_probe/reference/v2_pareto_fast')
+          m=json.loads((d/'source_build_manifest.json').read_text())
+          b=(d/m['output_prg']).read_bytes();lo=b[0]|b[1]<<8
+          mem=bytearray(65536);mem[lo:lo+len(b)-2]=b[2:]
+          c=CPU(mem);c.d=0;c.call(int(m['math_init'][1:],16),2000000)
+          P={k:int(v[1:],16) for k,v in m['public_entries'].items()};I=int(m['public_io'].split('-')[0][1:],16)
+          ds=[1,2,3,7,15,255,256,257,511,1023,4095,65535,65536,65537,0x7fffffff,0xffffffff]
+          rows=[]
+          for div in ds:
+            ns=[0,1,max(0,div-1),div,min(0xffffffff,div+1),0xffff,0x10000,0xffffff,0x7fffffff,0xffffffff]
+            for n in ns:
+              cy,ok,g,e=one(c,P['MATH_UDIV32_32'],I,n,div,32,32)
+              assert ok,(hex(n),hex(div),g,e)
+              rows.append((cy,n,div,g))
+          rows.sort(reverse=True)
+          for cy,n,d,g in rows[:30]:
+            print('TAIL',cy,hex(n),hex(d),g)
+          PY
