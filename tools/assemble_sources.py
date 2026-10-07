@@ -261,6 +261,42 @@ def build(profile,config,outdir):
  emitted=set()
  for r in publish_rows:
   n=r['legacy_api']; val=const.get(n,labels.get(n))
+  # Some profile-only lifecycle entries (currently V4 QS16) live in source-backed
+  # resident bytes but do not have a monolith label.  Their standalone manifest
+  # records the reference entry address; relocate that address through the same
+  # configured region map instead of dropping the symbol from math_api.inc.
+  if val is None and n not in stable_names:
+   raw=r.get('entry_address','')
+   if raw.startswith(' # Keep configured Turbo geometry visible to callers.
+ if profile in REU:
+  lines += [f'TURBO16_ZP_BASE          = {hx(vals["TURBO16_ZP_BASE"],2)}',f'TURBO32_ZP_BASE          = {hx(vals["TURBO32_ZP_BASE"],2)}',f'REU_TURBO16_BANK         = {hx(vals["REU_TURBO16_BANK"],2)}',f'REU_TURBO32_BANK         = {hx(vals["REU_TURBO32_BANK"],2)}']
+ for n,off in [('MATH_X',0),('MATH_Y',4),('MATH_Z',8),('MATH_N',0x10),('MATH_D',0x14),('MATH_Q',0x18),('MATH_R',0x1c)]:lines.append(f'{n:<24} = {hx(vals["MATH_IO"]+off)}')
+ # Seek object state (per-slot position arrays, 8 slots each).
+ for n,c in (('MATH_SEEK8_POS_X','S8_POS_X'),('MATH_SEEK8_POS_Y','S8_POS_Y'),('MATH_SEEK16_POS_XL','S16_POS_XL'),('MATH_SEEK16_POS_XH','S16_POS_XH'),('MATH_SEEK16_POS_Y','S16_POS_Y')):
+  if c in const: lines.append(f'{n:<24} = {hx(const[c])}')
+ lines += ['', '; Canonical typed aliases (source-facing names).', '; Legacy MATH_* names and addresses remain stable.']
+ for r in publish_rows:
+  n=r['legacy_api']; c=r.get('canonical_name','')
+  if c and n in emitted: lines.append(f'{c:<48} = {n}')
+ inc.write_text('\n'.join(lines)+'\n')
+ deps=source_dependencies(src)
+ expanded_source=expand_source_file(src,preserve_config_include=False).encode()
+ man={'profile':profile,'status':'BUILT_FROM_SOURCE','config':str(Path(config).relative_to(ROOT)) if Path(config).is_relative_to(ROOT) else str(config),'output_prg':prg.name,'output_load':hx(lo),'output_end':hx(hi),'output_sha256':hashlib.sha256(prg.read_bytes()).hexdigest(),'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),'expanded_source_sha256':hashlib.sha256(expanded_source).hexdigest(),'included_sources':{str(x.relative_to(ROOT)):hashlib.sha256(x.read_bytes()).hexdigest() for x in deps},'public_entries':{n:hx(const.get(n,labels.get(n))) for n in pubnames},'math_init':hx(const.get('MATH_INIT',labels.get('MATH_INIT'))),'public_io':f'{hx(vals["MATH_IO"])}-{hx(vals["MATH_IO"]+0x1f)}','reu_scratch':f'{hx(vals["REU_SCRATCH"])}-{hx(vals["REU_SCRATCH"]+3)}','reu_banks':{k:hx(vals[k],2) for k in REU_BANK_KEYS},'turbo_config':({'turbo16_zp':f'{hx(vals["TURBO16_ZP_BASE"],2)}-{hx(vals["TURBO16_ZP_BASE"]+121,2)}','turbo32_zp':f'{hx(vals["TURBO32_ZP_BASE"],2)}-{hx(vals["TURBO32_ZP_BASE"]+134,2)}'} if profile in REU else None),'reu_image':reu_info,'claims':[(n,hx(s),hx(e),sp) for n,s,e,sp in claims]}
+ (outdir/'source_build_manifest.json').write_text(json.dumps(man,indent=2)+'\n');return man
+
+def main():
+ ap=argparse.ArgumentParser();ap.add_argument('--profile',choices=PROFILES+['all'],default='all');ap.add_argument('--config-kind',choices=['reference','alternate'],default='reference');ap.add_argument('--config',type=Path);ap.add_argument('--out',type=Path,default=ROOT/'build_source');a=ap.parse_args();ps=PROFILES if a.profile=='all' else [a.profile];res=[]
+ for p in ps:
+  cfg=a.config or ROOT/'relocatable_source'/p/f'math_config_{a.config_kind}.inc'
+  m=build(p,cfg,a.out/a.config_kind/p);res.append(m);print(p,a.config_kind,'BUILT',m['output_sha256'])
+ (a.out/a.config_kind/'BUILD_SUMMARY.json').write_text(json.dumps({'status':'PASS','config_kind':a.config_kind,'profiles':res},indent=2)+'\n')
+if __name__=='__main__':main()
+):
+    ref=int(raw[1:],16)
+    for region_name,os,oe in REGIONS:
+     if os <= ref <= oe:
+      val=vals[region_name] + (ref-REGION_DEFAULT[region_name])
+      break
   if val is not None:
    lines.append(f'{n:<24} = {hx(val)}'); emitted.add(n)
  # Keep configured Turbo geometry visible to callers.
