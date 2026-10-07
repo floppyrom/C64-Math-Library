@@ -117,7 +117,10 @@ RM3232U_LEGACY:
 RM24U_ENTRY:
     !byte $AF,<MATH_N+2,>MATH_N+2
     cmp MATH_D+2
-    bcc RM24U_QZERO
+    bcs RM24U_TOP_GE
+RM24U_QZERO_STUB:
+    jmp RM24U_QZERO
+RM24U_TOP_GE:
     beq RM24U_HIGH_EQUAL
     lda MATH_D+2
     beq RM24U_LOW_D2
@@ -164,11 +167,11 @@ RM24U_HIGH_EQUAL:
     beq RM24U_LOW_D2_EQUAL
     lda MATH_N+1
     cmp MATH_D+1
-    bcc RM24U_QZERO
+    bcc RM24U_QZERO_STUB
     bne RM24U_EQUAL_GE
     lda MATH_N+0
     cmp MATH_D+0
-    bcc RM24U_QZERO
+    bcc RM24U_QZERO_STUB
 RM24U_EQUAL_GE:
     lda MATH_N+0
     sbc MATH_D+0
