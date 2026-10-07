@@ -1,157 +1,50 @@
-name: MULDIV16 relocation hole survey
+name: MULDIV16 relocation smoke
+
 on:
   push:
     branches: [ promote/muldiv16-stable-20261007 ]
-    paths: [ '.github/workflows/muldiv16-reloc-survey.yml' ]
+    paths:
+      - '.github/workflows/muldiv16-reloc-survey.yml'
+      - 'relocatable_source/v2_pareto_fast/**'
+      - 'relocatable_source/game_math/muldiv16_fast.inc'
+      - 'tools/source_relocation.py'
+      - 'tools/assemble_sources.py'
+
 permissions:
   contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
 jobs:
-  survey:
+  validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Survey common relocatable holes
+      - name: Regenerate canonical sources
+        run: python3 tools/generate_sources.py
+      - name: Build reference and alternate source maps
         run: |
-          python3 - <<'PY'
-          from tools.source_relocation import load_reference, trace
-          from tools.mini6502 import REV, SIZE
-          profiles=('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
-          regions={'REG_LOW':(0x1000,0x2fff),'REG_API':(0x3000,0x3fff),'REG_KERNEL':(0x4000,0x5fff)}
-          allruns={}
-          for p in profiles:
-              raw,_=load_reference(p); seen=trace(p,raw)
-              refs=set()
-              for pc in seen:
-                  oc=raw[pc]
-                  if oc not in REV: continue
-                  op,mode=REV[oc]
-                  if mode in ('abs','absx','absy','ind'):
-                      refs.add(raw[pc+1]|(raw[pc+2]<<8))
-              print('\nPROFILE',p)
-              allruns[p]={}
-              for rn,(lo,hi) in regions.items():
-                  runs=[];a=lo
-                  while a<=hi:
-                      if a in seen or a in refs or raw[a] not in (0x00,0xea):
-                          a+=1;continue
-                      s=a
-                      while a<=hi and a not in seen and a not in refs and raw[a] in (0x00,0xea):
-                          a+=1
-                      if a-s>=64:runs.append((s,a-1,a-s))
-                  allruns[p][rn]=runs
-                  print(rn)
-                  for s,e,n in sorted(runs,key=lambda x:(-x[2],x[0]))[:25]:
-                      print(f'  {s:04X}-{e:04X} {n}')
-          print('\nCOMMON OFFSETS >= 256')
-          bases={'REG_LOW':0x1000,'REG_API':0x3000,'REG_KERNEL':0x4000}
-          for rn in regions:
-              # brute-force every offset; require 256 consecutive bytes contained in a run for all profiles
-              good=[]
-              for off in range(regions[rn][1]-regions[rn][0]+1-256+1):
-                  ok=True
-                  for p in profiles:
-                      a=bases[rn]+off
-                      if not any(s<=a and a+255<=e for s,e,n in allruns[p][rn]):
-                          ok=False;break
-                  if ok:good.append(off)
-              if good:
-                  # collapse offsets
-                  s=prev=good[0]
-                  for x in good[1:]+[None]:
-                      if x is not None and x==prev+1:
-                          prev=x;continue
-                      print(rn,f'offset {s:04X}-{prev:04X} gives 256-byte common window starts')
-                      if x is not None:s=prev=x
-              else: print(rn,'none')
-          PY
-      - name: Measure generated MULDIV16 labels
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          from tools.assemble_sources import preprocess
-          from tools.mini6502 import Assembler, REV, SIZE
-          root=Path('.')
-          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
-              src=root/'relocatable_source'/p/'math_relocatable.asm'
-              cfg=root/'relocatable_source'/p/'math_config_reference.inc'
-              mem,labels,const=Assembler().assemble(preprocess(src,cfg))
-              names=[n for n in labels if n.startswith('MULDIV16_S_')]
-              vals=sorted((labels[n],n) for n in names)
-              print('\n',p)
-              for a,n in vals: print(f'{a:04X} {n}')
-              start=labels['MULDIV16_S_FUSED']
-              # Trace only the signed fused routine until RTS exits.
-              todo=[start]; seen=set()
-              while todo:
-                  pc=todo.pop()&0xffff
-                  if pc in seen: continue
-                  oc=mem.get(pc,0)
-                  if oc not in REV: raise RuntimeError((p,hex(pc),hex(oc)))
-                  seen.add(pc);op,mode=REV[oc];nxt=pc+SIZE[mode]
-                  if op in ('rts','rti','brk'): continue
-                  if mode=='rel':
-                      d=mem.get(pc+1,0); d=d-256 if d>=128 else d
-                      todo += [nxt,(nxt+d)&0xffff]; continue
-                  if op=='jmp':
-                      if mode!='abs': raise RuntimeError('indirect jmp')
-                      todo.append(mem.get(pc+1,0)|(mem.get(pc+2,0)<<8)); continue
-                  if op=='jsr':
-                      todo += [mem.get(pc+1,0)|(mem.get(pc+2,0)<<8),nxt]; continue
-                  todo.append(nxt)
-              local=[pc for pc in seen if 0x1000<=pc<=0x2fff]
-              end=max(pc+SIZE[REV[mem[pc]][1]]-1 for pc in local)
-              print(f'LOCAL_RANGE {start:04X}-{end:04X} span={end-start+1} reachable_starts={len(local)}')
-          PY
-      - name: Inspect alternate SMUL8 fixed planes
-        run: |
-          python3 tools/generate_sources.py
-          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out /tmp/smul8
-          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind alternate --out /tmp/smul8
-          python3 - <<'PY'
-          from pathlib import Path
-          def load(path):
-              b=Path(path).read_bytes(); lo=b[0]|b[1]<<8
-              return lo,b[2:]
-          def byte(lo,b,a): return b[a-lo] if lo<=a<lo+len(b) else None
-          rp='/tmp/smul8/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg'
-          ap='/tmp/smul8/alternate/v2_pareto_fast/math_v2_pareto_fast_source_built.prg'
-          rl,rb=load(rp); al,ab=load(ap)
-          for a in (0x9c00,0x9c7f,0x9c80,0x9cff,0x9e00,0x9e7f,0x9e80,0x9eff):
-              print(f'{a:04X} ref={byte(rl,rb,a):02X} alt={byte(al,ab,a):02X}')
-          diffs=[]
-          for a in range(0x9c00,0xa000):
-              if byte(rl,rb,a)!=byte(al,ab,a): diffs.append((a,byte(rl,rb,a),byte(al,ab,a)))
-          print('fixed-plane diffs',len(diffs))
-          print('first diffs',[(f'{a:04X}',f'{r:02X}',f'{v:02X}') for a,r,v in diffs[:40]])
-          PY
-      - name: Inspect SMUL8 code and relocated difference tables
-        run: |
-          python3 tools/generate_sources.py
-          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out /tmp/smul8x
-          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind alternate --out /tmp/smul8x
-          python3 - <<'PY'
-          from pathlib import Path
-          def load(path):
-              b=Path(path).read_bytes();lo=b[0]|b[1]<<8
-              return lo,b[2:]
-          def get(lo,b,a,n=1): return b[a-lo:a-lo+n]
-          rl,rb=load('/tmp/smul8x/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg')
-          al,ab=load('/tmp/smul8x/alternate/v2_pareto_fast/math_v2_pareto_fast_source_built.prg')
-          for a,n in [(0x3b80,46),(0xbb80,46),(0x64ff,1),(0x66ff,1),(0x44ff,1),(0x46ff,1),(0x9c80,1),(0x9e80,1)]:
-              lo,b=(rl,rb) if (a<0x9000 and a not in (0x44ff,0x46ff)) else (al,ab)
-              print(f'{a:04X}',get(lo,b,a,n).hex())
-          # Cross-map table equivalence for relocated NEG planes.
-          for rs,as_ in ((0x6400,0x4400),(0x6600,0x4600)):
-              diffs=[i for i in range(0x200) if get(rl,rb,rs+i)[0]!=get(al,ab,as_+i)[0]]
-              print(f'{rs:04X}->{as_:04X} diffs',len(diffs),'first',diffs[:16])
-          PY
-      - name: Validate reference and alternate source maps after relocation
-        run: |
-          python3 tools/generate_sources.py
           python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
           python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+      - name: Validate all 56-entry source maps
+        run: |
           python3 tools/validate_source_build.py all --build build_source/reference --out /tmp/ref
           python3 tools/validate_source_build.py all --build build_source/alternate --out /tmp/alt
+      - name: Verify V2 SMUL8 sum-plane geometry
+        run: |
+          python3 - <<'PY'
+          from tools.assemble_sources import parse_config, validate_config
+          from pathlib import Path
+          for kind,expected in [('reference',0x9c00),('alternate',0x8c00)]:
+              p=Path('relocatable_source/v2_pareto_fast')/f'math_config_{kind}.inc'
+              v=parse_config(p); claims=validate_config('v2_pareto_fast',v)
+              assert v['SMUL8_SUM_BASE']==expected,(kind,v['SMUL8_SUM_BASE'])
+              claim=[x for x in claims if x[0]=='SMUL8_SUM']
+              assert claim==[('SMUL8_SUM',expected,expected+0x3fe,'main')],claim
+              print(kind,hex(expected),hex(expected+0x3fe),'PASS')
+          PY
