@@ -18,13 +18,26 @@ MULDIV16_S_FUSED:
     ; Divisor zero can return before paying for the multiply.
     lda MATH_D+$01
     ora MATH_D
-    bne MULDIV16_S_X
+    bne MULDIV16_S_Y
     jmp U3216_ZERO
 
-MULDIV16_S_X:
-    ; Normalize X/Y while preserving the product-sign quadrant in control flow.
+MULDIV16_S_Y:
+    ; Normalize Y first, then X.  Finishing with X leaves |X| high in A, which
+    ; is exactly the private UMUL16 producer's entry ABI and avoids reloading
+    ; U16_X1 on every signed call.
+    lda MATH_Y+$01
+    bpl MULDIV16_S_YPOS
+    lda #$00
+    sec
+    sbc MATH_Y
+    tay
+    lda #$00
+    sbc MATH_Y+$01
+    sta U16_Y1
+
+    ; Y negative: X<0 gives a positive product, X>=0 a negative product.
     lda MATH_X+$01
-    bpl MULDIV16_S_XPOS
+    bpl MULDIV16_S_YNEG_XPOS
     lda #$00
     sec
     sbc MATH_X
@@ -32,48 +45,40 @@ MULDIV16_S_X:
     lda #$00
     sbc MATH_X+$01
     sta U16_X1
-
-    lda MATH_Y+$01
-    bpl MULDIV16_S_XNEG_YPOS
-    lda #$00
-    sec
-    sbc MATH_Y
-    tay
-    lda #$00
-    sbc MATH_Y+$01
-    sta U16_Y1
     jmp MULDIV16_S_MUL_PPOS
 
-MULDIV16_S_XNEG_YPOS:
-    ldy MATH_Y
-    lda MATH_Y+$01
-    sta U16_Y1
-    jmp MULDIV16_S_MUL_PNEG
-
-MULDIV16_S_XPOS:
+MULDIV16_S_YNEG_XPOS:
     lda MATH_X
     sta U16_X0
     lda MATH_X+$01
     sta U16_X1
-    lda MATH_Y+$01
-    bpl MULDIV16_S_XPOS_YPOS
-    lda #$00
-    sec
-    sbc MATH_Y
-    tay
-    lda #$00
-    sbc MATH_Y+$01
-    sta U16_Y1
     jmp MULDIV16_S_MUL_PNEG
 
-MULDIV16_S_XPOS_YPOS:
+MULDIV16_S_YPOS:
     ldy MATH_Y
     lda MATH_Y+$01
     sta U16_Y1
 
+    ; Y positive: X<0 gives a negative product, X>=0 a positive product.
+    lda MATH_X+$01
+    bpl MULDIV16_S_YPOS_XPOS
+    lda #$00
+    sec
+    sbc MATH_X
+    sta U16_X0
+    lda #$00
+    sbc MATH_X+$01
+    sta U16_X1
+    jmp MULDIV16_S_MUL_PNEG
+
+MULDIV16_S_YPOS_XPOS:
+    lda MATH_X
+    sta U16_X0
+    lda MATH_X+$01
+    sta U16_X1
+
 ; Product-positive path: quotient sign follows D, remainder stays positive.
 MULDIV16_S_MUL_PPOS:
-    lda U16_X1
     jsr U16_UMULT_AX1
     sta U3216_N0
     stx U3216_LN1
@@ -101,7 +106,6 @@ MULDIV16_S_PPOS_DPOS:
 
 ; Product-negative path: remainder is negative; quotient sign is !sign(D).
 MULDIV16_S_MUL_PNEG:
-    lda U16_X1
     jsr U16_UMULT_AX1
     sta U3216_N0
     stx U3216_LN1
