@@ -1,5 +1,5 @@
 name: Finalize MULDIV16 release state
-# publication rerun 5
+# publication rerun 6
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Syntax-check release tools
         run: |
-          python3 -m py_compile tools/assemble_sources.py tools/source_relocation.py tools/build_hybrid.py tools/publish_standalone_sources.py
+          python3 -m py_compile tools/assemble_sources.py tools/source_relocation.py tools/build_hybrid.py tools/publish_standalone_sources.py tools/validate_public_catalog.py tools/generate_consolidated_routine_table.py
 
       - name: Remove helper and regenerate canonical source
         run: |
