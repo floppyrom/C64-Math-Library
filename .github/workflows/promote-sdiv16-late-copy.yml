@@ -259,4 +259,4 @@ jobs:
             git commit -m "Promote SDIV16 deferred q>=2 magnitude copy"
             git push origin HEAD:opt/sdiv16-late-copy-v1
           fi
-# promotion trigger
+# promotion trigger 2
