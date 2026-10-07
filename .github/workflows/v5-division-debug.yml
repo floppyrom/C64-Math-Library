@@ -5,19 +5,24 @@ on:
 jobs:
   debug:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Build finalized V5
+      - name: Build optimized V2 donor and finalized V5 maps
         run: |
           python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_v5debug
+          cp build_v5debug/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
           python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
           cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
       - name: Validate V5 unsigned division
         run: python3 tools/validate_unsigned_division.py --profile v5_hybrid_lowzp --out /tmp/v5_unsigned.json
+      - name: Validate V5 donor parity and ABI
+        run: python3 tools/validate_hybrid.py
       - name: Measure finalized UDIV32 graph
         run: |
           python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
