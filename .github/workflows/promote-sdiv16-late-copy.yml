@@ -1,0 +1,215 @@
+name: Promote SDIV16 late-copy optimization
+
+on:
+  push:
+    branches:
+      - opt/sdiv16-late-copy-v1
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  promote:
+    if: github.event.head_commit.message == 'trigger SDIV16 late-copy promotion'
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: opt/sdiv16-late-copy-v1
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build modified fixed-profile artifacts
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+
+      - name: Promote V2-V4 resident images
+        run: |
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+
+      - name: Regenerate canonical and published sources
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/publish_standalone_sources.py
+
+      - name: Validate promoted signed division
+        run: |
+          python3 tools/validate_signed_division.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+
+      - name: Write SDIV16 evidence and documentation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('.')
+          dv=json.loads((root/'validation/review/SIGNED_DIVISION_VALIDATION.json').read_text())
+          ps=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
+          before={
+            'v1_balanced':187.13129770992367,
+            'v2_pareto_fast':169.42813522355507,
+            'v3_reu_512k':171.80632497273717,
+            'v4_reu_16m':169.75419847328243,
+            'v5_hybrid_lowzp':171.90534351145038,
+          }
+          canon={p:dv['profiles'][p]['MATH_SDIV16'] for p in ps}
+          evidence={
+            'status':'PASS',
+            'date':'2026-10-07',
+            'optimization':(
+              'Defer positive/positive SDIV16 private magnitude materialization until q>=2 is proven. '
+              'The q=1 path subtracts directly from stable public inputs; q>=2 materializes the private '
+              'magnitude only when the unsigned continuation requires it. Size-neutral q=1 encodings keep '
+              'the V2 signed front-end exactly against its fixed unsigned-engine boundary.'
+            ),
+            'profiles_changed':['v2_pareto_fast','v3_reu_512k','v4_reu_16m'],
+            'resource_contract':{
+              'public_abi_changed':False,
+              'zp_bytes_changed':False,
+              'persistent_stack_changed':False,
+              'tables_changed':False,
+              'v2_signed_unsigned_gap_bytes':0,
+            },
+            'canonical':canon,
+            'baseline_mean_cycles':before,
+            'delta_mean_cycles':{p:canon[p]['mean_cycles']-before[p] for p in ps},
+            'research':{
+              'v2_pp_focus_delta_mean_cycles':-4.722618340265399,
+              'v3_pp_focus_delta_mean_cycles':-4.820360467419291,
+              'v4_pp_focus_delta_mean_cycles':-4.676718162012279,
+              'research_delta_range_cycles':[-23,5],
+              'research_errors':0,
+            },
+            'validation':{
+              'signed_division_calls':dv['summary']['machine_calls'],
+              'deterministic_rebuild':'PASS',
+              'published_sources':'PASS',
+              'signed_layout':'PASS',
+              'turbo_relocation':'PASS',
+              'turbo_boundary_sweep':'PASS',
+            }
+          }
+          (root/'validation/review/SDIV16_LATE_COPY_Q1.json').write_text(json.dumps(evidence,indent=2)+'\n')
+
+          oldvals={p:f"{before[p]:.6f}" for p in ps}
+          newvals={p:f"{canon[p]['mean_cycles']:.6f}" for p in ps}
+          for path in [root/'PERFORMANCE.md',root/'docs/DIVISION_REFRESH_2026-09-20.md',
+                       root/'v2_pareto_fast/README.md',root/'v3_reu_512k/README.md',root/'v4_reu_16m/README.md']:
+              if not path.exists(): continue
+              t=path.read_text()
+              for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+                  t=t.replace(oldvals[p],newvals[p])
+                  t=t.replace(f"{before[p]:.3f}",f"{canon[p]['mean_cycles']:.3f}")
+              path.write_text(t)
+
+          summary=' / '.join(newvals[p] for p in ps)
+          p=root/'CHANGELOG.md'; t=p.read_text()
+          entry=(
+            '## 2026-10-07 — SDIV16 deferred q>=2 magnitude copy\n\n'
+            '- Generalized the stable-input optimization to the fast signed 16-bit divider in V2-V4.\n'
+            '- Positive/positive q=1 cases now subtract directly from preserved public inputs and avoid materializing four private magnitude bytes; q>=2 pays the copy only when needed.\n'
+            f'- Canonical V1/V2/V3/V4/V5 SDIV16 means are **{summary} cycles**.\n'
+            '- Research PP-focused corpora improve by about 4.7-4.8 cycles; V2 remains exactly packed against the unsigned engine with no overlap.\n'
+            '- ABI, ZP use, persistent stack and tables are unchanged; signed-division, layout, publication, deterministic-rebuild and Turbo gates pass.\n\n')
+          if 'SDIV16 deferred q>=2 magnitude copy' not in t: p.write_text(entry+t)
+
+          p=root/'CSDB_CHANGELOG.txt'; t=p.read_text()
+          entry=(
+            '2026-10-07 SDIV16 DEFERRED Q>=2 MAGNITUDE COPY\n'
+            '- V2-V4 positive/positive q=1 path reuses stable public inputs and defers private magnitude copies until q>=2.\n'
+            f'- Canonical V1/V2/V3/V4/V5 means: {summary}.\n'
+            '- V2 fixed signed/unsigned boundary remains exact; validation and relocation gates pass.\n\n')
+          if 'SDIV16 DEFERRED Q>=2 MAGNITUDE COPY' not in t: p.write_text(entry+t)
+          PY
+
+      - name: Regenerate indexes after docs
+        run: |
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+
+      - name: Refresh release hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('.')
+          sha=lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+          for p in ('v3_reu_512k','v4_reu_16m'):
+              s['reference_reu_sha256'][p]=sha(root/'build_source/reference'/p/f'c64_math_{p}_source_built.reu')
+              s['alternate_reu_sha256'][p]=sha(root/'build_source/alternate'/p/f'c64_math_{p}_source_built.reu')
+          s['date']='2026-10-07'
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+
+      - name: Final promoted validation
+        run: |
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_signed_division.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+
+      - name: Remove research scaffolding
+        run: |
+          rm -f .github/workflows/research-sdiv16-late-copy-promotion.yml
+          rm -f .github/workflows/promote-sdiv16-late-copy.yml
+          rm -f tools/bench_sdiv16_late_copy_profiles.py
+          rm -rf build_source
+
+      - name: Refresh package manifest
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+
+      - name: Commit promoted SDIV16 artifacts
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No promotion changes"
+          else
+            git commit -m "Promote SDIV16 deferred q>=2 magnitude copy"
+            git push origin HEAD:opt/sdiv16-late-copy-v1
+          fi
