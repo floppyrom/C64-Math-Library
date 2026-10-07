@@ -156,14 +156,15 @@ S16_public:
         lda #>S16_nh
         sta S16_p3+1
         sta S16_p7+1
-        lda MATH_IO+$00
-        sta S16_x0
-        lda MATH_IO+$01
-        sta S16_x1
         lda MATH_IO+$05
         sta S16_y1
+        lda MATH_IO+$00
+        sta S16_x0
         ldy MATH_IO+$04
-        jsr S16_composed
+        lda MATH_IO+$01
+        sta S16_x1
+        ; A/N already hold X1: skip the dispatcher's redundant LDA S16_x1.
+        jsr S16_composed+2
         sta MATH_IO+$0A
         stx MATH_IO+$09
         sty MATH_IO+$0B
