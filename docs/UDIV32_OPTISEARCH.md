@@ -35,10 +35,7 @@ one sequential stream after the 23-by-23 edge cross product.
 | 16-bit nonzero D | 2,000 | 1576.294 | 1485.330 | 0 |
 | 8-bit nonzero D | 2,000 | 1896.827 | 1814.827 | 0 |
 
-Reachable public code falls from **869 to 793 bytes**; ZP falls from **8 to 4**.
-The private UMOD fallback JMP adds three shared bytes. The resident PRG load span
-is unchanged: unused legacy bytes remain provenance data in their old slots.
-No tables, initialization, self-modification, or persistent stack reservation are added.
+The PR #27 live-high replacement by itself reduced the reachable public graph from **869 to 793 bytes** and its live-high workspace from **8 to 4 ZP bytes**. Item-6 latency bounding now deliberately makes the shared UDIV32/16 narrow-divisor engine and the dedicated 17-bit-divisor tail reachable from the public UDIV32/32 entry. The finalized whole-call graph therefore measures **2,755 reachable code bytes and 14 ZP bytes**, with **0 persistent stack-page bytes**. Wide divisors still execute the four-ZP live-high core; the larger static footprint reflects the newly reachable bounded fallbacks, not extra hot-path scratch. The resident PRG load span is unchanged.
 
 This is an average-speed/resource improvement, not an all-input speed guarantee.
 The worst sampled uniform regression is 882 cycles (N=2711414585, D=88257).
