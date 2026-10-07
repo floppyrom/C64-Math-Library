@@ -552,7 +552,7 @@ def config_values(profile,alternate=False):
            REU_RECIP_LO_BANK=6,REU_RECIP_HI_BANK=7,REU_ATAN2_BANK=8,REU_ISQRT16_BANK=9,REU_QS16_BASE_BANK=0x10,REU_ISQRT32_PREFIX_BASE_BANK=0x40)
  else:
   d={'REG_LOW':0x9000,'REG_API':0xb000,'REG_KERNEL':0x2000,'REG_GAME_API':0x7c00,'REG_TABLE':0x4000,'REG_GAME':0x8000,'MATH_IO':0xc800,'REU_SCRATCH':0xc820,'V1_SCRATCH':0xc840,'ZP_MAIN':0x07,'ZP_SMUL':0x70,'TURBO16_ZP_BASE':0x40,'TURBO32_ZP_BASE':0x06}
-  if profile=='v2_pareto_fast': d['SMUL8_SUM_BASE']=0x8c00
+  if profile=='v2_pareto_fast': d['SMUL8_SUM_BASE']=0x1000
   if profile=='v3_reu_512k':
    # Strong proof within 512 KiB: permute every operational bank, including
    # relocating the Turbo overlay banks from 4/5 to 0/1.
