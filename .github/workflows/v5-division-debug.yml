@@ -18,3 +18,15 @@ jobs:
           cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
       - name: Validate V5 unsigned division
         run: python3 tools/validate_unsigned_division.py --profile v5_hybrid_lowzp --out /tmp/v5_unsigned.json
+      - name: Measure finalized UDIV32 graph
+        run: |
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
+          python3 - <<'PY'
+          import sys
+          sys.path.insert(0,'tools')
+          from validate_smul24_directout import load
+          from generate_consolidated_routine_table import trace
+          cpu,api=load('v2_pareto_fast','reference')
+          code,zp,stack=trace(cpu.mem,api['MATH_UDIV32_32'])
+          print('UDIV32_RESOURCE',len(code),len(zp),sorted(zp),len(stack))
+          PY
