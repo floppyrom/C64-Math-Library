@@ -246,20 +246,20 @@ S24_smul24_xneg:
         tya
         bmi S24_smul24_nn
         jsr S24_umult
-        sta S24_smul24_xneg_orig_a+1
+        ; Producer pointers are dead after return; reuse p11 low as an A scratch.
+        ; This is cycle-neutral versus the former SMC save/restore and saves 2 bytes.
+        sta S24_p11
         tya
         sec
         sbc S24_y0
         tay
-S24_smul24_xneg_orig_a:
-        lda #0
+        lda S24_p11
         sbc S24_y1
-        sta S24_smul24_xneg_restore_a+1
+        sta S24_p11
         txa
         sbc MATH_IO+$06
         tax
-S24_smul24_xneg_restore_a:
-        lda #0
+        lda S24_p11
         sta MATH_IO+$0C
         stx MATH_IO+$0D
         sty MATH_IO+$0B
@@ -269,20 +269,19 @@ S24_smul24_xneg_restore_a:
 ; x>=0, y<0: unsigned product then subtract x from upper 24 bits.
 S24_smul24_yneg_only:
         jsr S24_umult
-        sta S24_smul24_yneg_orig_a+1
+        ; Reuse dead p11 low as a cycle-neutral correction scratch.
+        sta S24_p11
         tya
         sec
         sbc S24_x0
         tay
-S24_smul24_yneg_orig_a:
-        lda #0
+        lda S24_p11
         sbc S24_x1
-        sta S24_smul24_yneg_restore_a+1
+        sta S24_p11
         txa
         sbc S24_x2
         tax
-S24_smul24_yneg_restore_a:
-        lda #0
+        lda S24_p11
         sta MATH_IO+$0C
         stx MATH_IO+$0D
         sty MATH_IO+$0B
