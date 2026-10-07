@@ -69,7 +69,9 @@ candidate:
     lda $13
     bne general
     lda $12
-    beq zero
+    bne d8_dispatch
+    jmp zero
+d8_dispatch:
     jmp d8
 general:
     jsr $420C
