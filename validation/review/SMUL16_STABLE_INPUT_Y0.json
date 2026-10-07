@@ -1,0 +1,117 @@
+{
+  "status": "PASS",
+  "date": "2026-10-07",
+  "optimization": "Eliminate redundant Y0 preservation in signed 16x16 multiply. V1/V5 FAST17 mixed-negative paths reread stable MATH_IO+$04. V2-V4 remove the unconditional executable-ZP STY, relocate every internal core symbol by -3 while retaining the fixed 116-byte copied image with padding, and reread stable MATH_IO+$04 in signed correction.",
+  "resource_contract": {
+    "public_abi_changed": false,
+    "exec_zp_bytes_v2_v4": 116,
+    "exec_zp_bytes_changed": false,
+    "persistent_stack_changed": false,
+    "tables_changed": false
+  },
+  "canonical": {
+    "v1_balanced": {
+      "cases": 4457,
+      "errors": 0,
+      "mean_cycles": 292.3497868521427,
+      "min_cycles": 260,
+      "max_cycles": 325
+    },
+    "v2_pareto_fast": {
+      "cases": 4457,
+      "errors": 0,
+      "mean_cycles": 248.80233340812205,
+      "min_cycles": 226,
+      "max_cycles": 289
+    },
+    "v3_reu_512k": {
+      "cases": 4457,
+      "errors": 0,
+      "mean_cycles": 249.10769575947947,
+      "min_cycles": 226,
+      "max_cycles": 289
+    },
+    "v4_reu_16m": {
+      "cases": 4457,
+      "errors": 0,
+      "mean_cycles": 249.14449181063495,
+      "min_cycles": 226,
+      "max_cycles": 289
+    },
+    "v5_hybrid_lowzp": {
+      "cases": 4457,
+      "errors": 0,
+      "mean_cycles": 292.02669957370426,
+      "min_cycles": 260,
+      "max_cycles": 323
+    }
+  },
+  "baseline_mean_cycles": {
+    "v1_balanced": 293.29840700022436,
+    "v2_pareto_fast": 252.32488220776307,
+    "v3_reu_512k": 252.62396230648417,
+    "v4_reu_16m": 252.66255328696434,
+    "v5_hybrid_lowzp": 292.9748709894548
+  },
+  "delta_mean_cycles": {
+    "v1_balanced": -0.948620148081659,
+    "v2_pareto_fast": -3.522548799641015,
+    "v3_reu_512k": -3.5162665470047045,
+    "v4_reu_16m": -3.518061476329393,
+    "v5_hybrid_lowzp": -0.9481714157505508
+  },
+  "derivative_smul16_shr8": {
+    "v1_balanced": {
+      "mean_cycles": 322.9183673469388,
+      "min_cycles": 291,
+      "max_cycles": 354,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v2_pareto_fast": {
+      "mean_cycles": 279.88878697546437,
+      "min_cycles": 257,
+      "max_cycles": 320,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v3_reu_512k": {
+      "mean_cycles": 279.88878697546437,
+      "min_cycles": 257,
+      "max_cycles": 320,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v4_reu_16m": {
+      "mean_cycles": 279.88878697546437,
+      "min_cycles": 257,
+      "max_cycles": 320,
+      "cases": 4361,
+      "errors": 0
+    },
+    "v5_hybrid_lowzp": {
+      "mean_cycles": 322.9183673469388,
+      "min_cycles": 291,
+      "max_cycles": 354,
+      "cases": 4361,
+      "errors": 0
+    }
+  },
+  "research_proofs": {
+    "fast17_x_negative_delta_cycles": -2,
+    "exec_zp_delta_range_cycles": [
+      -4,
+      -2
+    ],
+    "exec_zp_v2_large_corpus_delta_mean_cycles": -3.50552526889642,
+    "exec_zp_v2_large_corpus_candidate_mean_cycles": 249.84573449241196,
+    "exec_zp_v2_large_corpus_errors": 0
+  },
+  "validation": {
+    "signed_multiply_calls": 264999,
+    "deterministic_rebuild": "PASS",
+    "published_sources": "PASS",
+    "turbo_relocation": "PASS",
+    "turbo_boundary_sweep": "PASS"
+  }
+}

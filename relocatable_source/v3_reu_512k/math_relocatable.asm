@@ -718,18 +718,18 @@ L1ADA:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00
     lda MATH_IO
-    sta ZP_SMUL+$19
+    sta ZP_SMUL+$16
     lda MATH_IO+$01
-    sta ZP_SMUL+$27
+    sta ZP_SMUL+$24
     lda MATH_IO+$05
-    sta ZP_SMUL+$37
+    sta ZP_SMUL+$34
     ldy MATH_IO+$04
     jsr ZP_SMUL
     stx MATH_IO+$0A
     sta MATH_IO+$0B
-    lda ZP_SMUL+$72
+    lda ZP_SMUL+$6F
     sta MATH_IO+$08
-    lda ZP_SMUL+$73
+    lda ZP_SMUL+$70
     sta MATH_IO+$09
     clc
     rts
@@ -2913,105 +2913,105 @@ L50D2:
     !byte $18, $60, $4C, $00, $C1, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    bit ZP_SMUL+$27
+    bit ZP_SMUL+$24
     bmi L5A0D
-    bit ZP_SMUL+$37
-    bmi L5A1C
+    bit ZP_SMUL+$34
+    bmi L5A1D
     tax
     tya
     adc #$00
     rts
 L5A0D:
-    bit ZP_SMUL+$37
-    bmi L5A27
+    bit ZP_SMUL+$34
+    bmi L5A28
     bcc L5A14
     iny
 L5A14:
     sec
-    sbc #$00
+    sbc MATH_IO+$04
     tax
     tya
-    sbc ZP_SMUL+$37
+    sbc ZP_SMUL+$34
     rts
-L5A1C:
-    bcc L5A1F
+L5A1D:
+    bcc L5A20
     iny
-L5A1F:
+L5A20:
     sec
-    sbc ZP_SMUL+$19
+    sbc ZP_SMUL+$16
     tax
     tya
-    sbc ZP_SMUL+$27
+    sbc ZP_SMUL+$24
     rts
-L5A27:
-    bcc L5A2A
+L5A28:
+    bcc L5A2B
     iny
-L5A2A:
+L5A2B:
     sec
-    sbc REG_KERNEL+$1A16
+    sbc MATH_IO+$04
     tax
     tya
-    sbc ZP_SMUL+$37
+    sbc ZP_SMUL+$34
     tay
     txa
     sec
-    sbc ZP_SMUL+$19
+    sbc ZP_SMUL+$16
     tax
     tya
-    sbc ZP_SMUL+$27
+    sbc ZP_SMUL+$24
     rts
-    !byte $00, $00, $00, $00, $AD, $12, $C0, $10, $03, $4C, $E8, $5A, $AD, $16, $C0, $10
-    !byte $03, $4C, $A1, $5A, $AD, $14, $C0, $0D, $15, $C0, $0D, $16, $C0, $D0, $03, $4C
-    !byte $5D, $5D, $AF, $12, $C0, $CD, $16, $C0, $B0, $03, $4C, $ED, $5C, $D0, $18, $AD
-    !byte $11, $C0, $CD, $15, $C0, $B0, $03, $4C, $ED, $5C, $D0, $0B, $AD, $10, $C0, $CD
-    !byte $14, $C0, $B0, $03, $4C, $ED, $5C, $AD, $10, $C0, $85, $10, $AD, $11, $C0, $85
-    !byte $11, $86, $12, $AD, $14, $C0, $85, $13, $AD, $15, $C0, $85, $14, $AD, $16, $C0
-    !byte $85, $15, $4C, $9B, $5B, $A9, $00, $38, $ED, $14, $C0, $85, $13, $A9, $00, $ED
-    !byte $15, $C0, $85, $14, $A9, $00, $ED, $16, $C0, $85, $15, $AF, $12, $C0, $C5, $15
-    !byte $B0, $03, $4C, $ED, $5C, $D0, $16, $AD, $11, $C0, $C5, $14, $B0, $03, $4C, $ED
-    !byte $5C, $D0, $0A, $AD, $10, $C0, $C5, $13, $B0, $03, $4C, $ED, $5C, $AD, $10, $C0
-    !byte $85, $10, $AD, $11, $C0, $85, $11, $86, $12, $4C, $E4, $5B, $AD, $16, $C0, $30
-    !byte $58, $AD, $14, $C0, $0D, $15, $C0, $0D, $16, $C0, $D0, $03, $4C, $5D, $5D, $A9
+    !byte $00, $00, $00, $AD, $12, $C0, $10, $03, $4C, $E8, $5A, $AD, $16, $C0, $10, $03
+    !byte $4C, $A1, $5A, $AD, $14, $C0, $0D, $15, $C0, $0D, $16, $C0, $D0, $03, $4C, $5D
+    !byte $5D, $AF, $12, $C0, $CD, $16, $C0, $B0, $03, $4C, $ED, $5C, $D0, $18, $AD, $11
+    !byte $C0, $CD, $15, $C0, $B0, $03, $4C, $ED, $5C, $D0, $0B, $AD, $10, $C0, $CD, $14
+    !byte $C0, $B0, $03, $4C, $ED, $5C, $AD, $10, $C0, $85, $10, $AD, $11, $C0, $85, $11
+    !byte $86, $12, $AD, $14, $C0, $85, $13, $AD, $15, $C0, $85, $14, $AD, $16, $C0, $85
+    !byte $15, $4C, $9B, $5B, $A9, $00, $38, $ED, $14, $C0, $85, $13, $A9, $00, $ED, $15
+    !byte $C0, $85, $14, $A9, $00, $ED, $16, $C0, $85, $15, $AF, $12, $C0, $C5, $15, $B0
+    !byte $03, $4C, $ED, $5C, $D0, $16, $AD, $11, $C0, $C5, $14, $B0, $03, $4C, $ED, $5C
+    !byte $D0, $0A, $AD, $10, $C0, $C5, $13, $B0, $03, $4C, $ED, $5C, $AD, $10, $C0, $85
+    !byte $10, $AD, $11, $C0, $85, $11, $86, $12, $4C, $E4, $5B, $AD, $16, $C0, $30, $58
+    !byte $AD, $14, $C0, $0D, $15, $C0, $0D, $16, $C0, $D0, $03, $4C, $5D, $5D, $A9, $00
+    !byte $38, $ED, $10, $C0, $85, $10, $A9, $00, $ED, $11, $C0, $85, $11, $A9, $00, $ED
+    !byte $12, $C0, $85, $12, $A7, $12, $CD, $16, $C0, $B0, $03, $4C, $ED, $5C, $D0, $16
+    !byte $A5, $11, $CD, $15, $C0, $B0, $03, $4C, $ED, $5C, $D0, $0A, $A5, $10, $CD, $14
+    !byte $C0, $B0, $03, $4C, $ED, $5C, $AD, $14, $C0, $85, $13, $AD, $15, $C0, $85, $14
+    !byte $AD, $16, $C0, $85, $15, $4C, $2B, $5C, $AF, $12, $C0, $CD, $16, $C0, $90, $1F
+    !byte $F0, $03, $4C, $ED, $5C, $AD, $11, $C0, $CD, $15, $C0, $90, $12, $F0, $03, $4C
+    !byte $ED, $5C, $AD, $10, $C0, $CD, $14, $C0, $90, $05, $F0, $03, $4C, $ED, $5C, $A9
     !byte $00, $38, $ED, $10, $C0, $85, $10, $A9, $00, $ED, $11, $C0, $85, $11, $A9, $00
-    !byte $ED, $12, $C0, $85, $12, $A7, $12, $CD, $16, $C0, $B0, $03, $4C, $ED, $5C, $D0
-    !byte $16, $A5, $11, $CD, $15, $C0, $B0, $03, $4C, $ED, $5C, $D0, $0A, $A5, $10, $CD
-    !byte $14, $C0, $B0, $03, $4C, $ED, $5C, $AD, $14, $C0, $85, $13, $AD, $15, $C0, $85
-    !byte $14, $AD, $16, $C0, $85, $15, $4C, $2B, $5C, $AF, $12, $C0, $CD, $16, $C0, $90
-    !byte $1F, $F0, $03, $4C, $ED, $5C, $AD, $11, $C0, $CD, $15, $C0, $90, $12, $F0, $03
-    !byte $4C, $ED, $5C, $AD, $10, $C0, $CD, $14, $C0, $90, $05, $F0, $03, $4C, $ED, $5C
-    !byte $A9, $00, $38, $ED, $10, $C0, $85, $10, $A9, $00, $ED, $11, $C0, $85, $11, $A9
-    !byte $00, $ED, $12, $C0, $85, $12, $A9, $00, $38, $ED, $14, $C0, $85, $13, $A9, $00
-    !byte $ED, $15, $C0, $85, $14, $A9, $00, $ED, $16, $C0, $85, $15, $4C, $8B, $5C, $38
-    !byte $A5, $10, $E5, $13, $8D, $1C, $C0, $A5, $11, $E5, $14, $8D, $1D, $C0, $A5, $12
-    !byte $E5, $15, $8D, $1E, $C0, $C5, $15, $90, $12, $D0, $1F, $AD, $1D, $C0, $C5, $14
-    !byte $90, $09, $D0, $16, $AD, $1C, $C0, $C5, $13, $B0, $0F, $A9, $01, $8D, $18, $C0
-    !byte $A9, $00, $8D, $19, $C0, $8D, $1A, $C0, $18, $60, $A2, $00, $8E, $19, $C0, $8E
-    !byte $1A, $C0, $20, $E2, $83, $4C, $0C, $5D, $38, $A5, $10, $E5, $13, $8D, $1C, $C0
-    !byte $A5, $11, $E5, $14, $8D, $1D, $C0, $A5, $12, $E5, $15, $8D, $1E, $C0, $C5, $15
-    !byte $90, $12, $D0, $1D, $AD, $1D, $C0, $C5, $14, $90, $09, $D0, $14, $AD, $1C, $C0
-    !byte $C5, $13, $B0, $0D, $A9, $FF, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $18
-    !byte $60, $A2, $00, $8E, $19, $C0, $8E, $1A, $C0, $20, $E2, $83, $4C, $27, $5D, $38
-    !byte $A5, $10, $E5, $13, $8D, $1C, $C0, $A5, $11, $E5, $14, $8D, $1D, $C0, $A5, $12
-    !byte $E5, $15, $8D, $1E, $C0, $C5, $15, $90, $12, $D0, $36, $AD, $1D, $C0, $C5, $14
-    !byte $90, $09, $D0, $2D, $AD, $1C, $C0, $C5, $13, $B0, $26, $A9, $00, $38, $ED, $1C
-    !byte $C0, $8D, $1C, $C0, $A9, $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $00, $ED, $1E
-    !byte $C0, $8D, $1E, $C0, $A9, $FF, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $18
-    !byte $60, $A2, $00, $8E, $19, $C0, $8E, $1A, $C0, $20, $E2, $83, $4C, $0E, $5D, $38
-    !byte $A5, $10, $E5, $13, $8D, $1C, $C0, $A5, $11, $E5, $14, $8D, $1D, $C0, $A5, $12
-    !byte $E5, $15, $8D, $1E, $C0, $C5, $15, $90, $12, $D0, $38, $AD, $1D, $C0, $C5, $14
-    !byte $90, $09, $D0, $2F, $AD, $1C, $C0, $C5, $13, $B0, $28, $A9, $00, $38, $ED, $1C
-    !byte $C0, $8D, $1C, $C0, $A9, $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $00, $ED, $1E
-    !byte $C0, $8D, $1E, $C0, $A9, $01, $8D, $18, $C0, $A9, $00, $8D, $19, $C0, $8D, $1A
-    !byte $C0, $18, $60, $A2, $00, $8E, $19, $C0, $8E, $1A, $C0, $20, $E2, $83, $4C, $42
-    !byte $5D, $A9, $00, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $AD, $10, $C0, $8D
-    !byte $1C, $C0, $AD, $11, $C0, $8D, $1D, $C0, $AD, $12, $C0, $8D, $1E, $C0, $18, $60
-    !byte $18, $60, $A9, $00, $38, $ED, $1C, $C0, $8D, $1C, $C0, $A9, $00, $ED, $1D, $C0
-    !byte $8D, $1D, $C0, $A9, $00, $ED, $1E, $C0, $8D, $1E, $C0, $A9, $00, $38, $ED, $18
-    !byte $C0, $8D, $18, $C0, $A9, $00, $ED, $19, $C0, $8D, $19, $C0, $A9, $00, $ED, $1A
-    !byte $C0, $8D, $1A, $C0, $18, $60, $A9, $00, $38, $ED, $1C, $C0, $8D, $1C, $C0, $A9
-    !byte $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $00, $ED, $1E, $C0, $8D, $1E, $C0, $18
-    !byte $60, $A9, $00, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $8D, $1C, $C0, $8D
-    !byte $1D, $C0, $8D, $1E, $C0, $38, $60, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $ED, $12, $C0, $85, $12, $A9, $00, $38, $ED, $14, $C0, $85, $13, $A9, $00, $ED
+    !byte $15, $C0, $85, $14, $A9, $00, $ED, $16, $C0, $85, $15, $4C, $8B, $5C, $38, $A5
+    !byte $10, $E5, $13, $8D, $1C, $C0, $A5, $11, $E5, $14, $8D, $1D, $C0, $A5, $12, $E5
+    !byte $15, $8D, $1E, $C0, $C5, $15, $90, $12, $D0, $1F, $AD, $1D, $C0, $C5, $14, $90
+    !byte $09, $D0, $16, $AD, $1C, $C0, $C5, $13, $B0, $0F, $A9, $01, $8D, $18, $C0, $A9
+    !byte $00, $8D, $19, $C0, $8D, $1A, $C0, $18, $60, $A2, $00, $8E, $19, $C0, $8E, $1A
+    !byte $C0, $20, $E2, $83, $4C, $0C, $5D, $38, $A5, $10, $E5, $13, $8D, $1C, $C0, $A5
+    !byte $11, $E5, $14, $8D, $1D, $C0, $A5, $12, $E5, $15, $8D, $1E, $C0, $C5, $15, $90
+    !byte $12, $D0, $1D, $AD, $1D, $C0, $C5, $14, $90, $09, $D0, $14, $AD, $1C, $C0, $C5
+    !byte $13, $B0, $0D, $A9, $FF, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $18, $60
+    !byte $A2, $00, $8E, $19, $C0, $8E, $1A, $C0, $20, $E2, $83, $4C, $27, $5D, $38, $A5
+    !byte $10, $E5, $13, $8D, $1C, $C0, $A5, $11, $E5, $14, $8D, $1D, $C0, $A5, $12, $E5
+    !byte $15, $8D, $1E, $C0, $C5, $15, $90, $12, $D0, $36, $AD, $1D, $C0, $C5, $14, $90
+    !byte $09, $D0, $2D, $AD, $1C, $C0, $C5, $13, $B0, $26, $A9, $00, $38, $ED, $1C, $C0
+    !byte $8D, $1C, $C0, $A9, $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $00, $ED, $1E, $C0
+    !byte $8D, $1E, $C0, $A9, $FF, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $18, $60
+    !byte $A2, $00, $8E, $19, $C0, $8E, $1A, $C0, $20, $E2, $83, $4C, $0E, $5D, $38, $A5
+    !byte $10, $E5, $13, $8D, $1C, $C0, $A5, $11, $E5, $14, $8D, $1D, $C0, $A5, $12, $E5
+    !byte $15, $8D, $1E, $C0, $C5, $15, $90, $12, $D0, $38, $AD, $1D, $C0, $C5, $14, $90
+    !byte $09, $D0, $2F, $AD, $1C, $C0, $C5, $13, $B0, $28, $A9, $00, $38, $ED, $1C, $C0
+    !byte $8D, $1C, $C0, $A9, $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $00, $ED, $1E, $C0
+    !byte $8D, $1E, $C0, $A9, $01, $8D, $18, $C0, $A9, $00, $8D, $19, $C0, $8D, $1A, $C0
+    !byte $18, $60, $A2, $00, $8E, $19, $C0, $8E, $1A, $C0, $20, $E2, $83, $4C, $42, $5D
+    !byte $A9, $00, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $AD, $10, $C0, $8D, $1C
+    !byte $C0, $AD, $11, $C0, $8D, $1D, $C0, $AD, $12, $C0, $8D, $1E, $C0, $18, $60, $18
+    !byte $60, $A9, $00, $38, $ED, $1C, $C0, $8D, $1C, $C0, $A9, $00, $ED, $1D, $C0, $8D
+    !byte $1D, $C0, $A9, $00, $ED, $1E, $C0, $8D, $1E, $C0, $A9, $00, $38, $ED, $18, $C0
+    !byte $8D, $18, $C0, $A9, $00, $ED, $19, $C0, $8D, $19, $C0, $A9, $00, $ED, $1A, $C0
+    !byte $8D, $1A, $C0, $18, $60, $A9, $00, $38, $ED, $1C, $C0, $8D, $1C, $C0, $A9, $00
+    !byte $ED, $1D, $C0, $8D, $1D, $C0, $A9, $00, $ED, $1E, $C0, $8D, $1E, $C0, $18, $60
+    !byte $A9, $00, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $8D, $1C, $C0, $8D, $1D
+    !byte $C0, $8D, $1E, $C0, $38, $60, $60, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -3020,7 +3020,7 @@ L5A2A:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00
+    !byte $00, $00, $00
 
 ; Source interval $5E00-$5FFF
 * = REG_GAME_API
@@ -6167,66 +6167,68 @@ LCA1B:
     !byte $00, $00, $00, $00, $00, $00, $00
 ; MATH_INIT-installed native SMUL16 executable-ZP image, assembled symbolically.
 * = REG_GAME+$0B00
-    sty REG_KERNEL+$1A16
-    lda ZP_SMUL+$27
-    sta ZP_SMUL+$4B
+    lda ZP_SMUL+$24
+    sta ZP_SMUL+$48
     eor #$FF
-    sta ZP_SMUL+$2C
-    sta ZP_SMUL+$32
-    lda ZP_SMUL+$19
+    sta ZP_SMUL+$29
+    sta ZP_SMUL+$2F
+    lda ZP_SMUL+$16
+    sta ZP_SMUL+$1E
+    eor #$FF
+    sta ZP_SMUL+$19
     sta ZP_SMUL+$21
-    eor #$FF
-    sta ZP_SMUL+$1C
-    sta ZP_SMUL+$24
     sec
     lda REG_LOW+$1800,y
     adc REG_LOW+$1C00,y
-    sta ZP_SMUL+$72
+    sta ZP_SMUL+$6F
     lda REG_LOW+$1A00,y
     adc REG_LOW+$1E00,y
     adc REG_LOW+$1800,y
-    bcs ZCDD
+    bcs ZCDA
     adc REG_LOW+$1C00,y
     tax
-    lda (ZP_SMUL+$4B),y
-ZCB1:
+    lda (ZP_SMUL+$48),y
+ZCAE:
     adc REG_LOW+$1E00,y
-    sta ZP_SMUL+$57
+    sta ZP_SMUL+$54
     ldy #$00
-    lda (ZP_SMUL+$19),y
-    adc (ZP_SMUL+$1C),y
-    sta ZP_SMUL+$53
-    lda (ZP_SMUL+$21),y
+    lda (ZP_SMUL+$16),y
+    adc (ZP_SMUL+$19),y
+    sta ZP_SMUL+$50
+    lda (ZP_SMUL+$1E),y
+    adc (ZP_SMUL+$21),y
     adc (ZP_SMUL+$24),y
-    adc (ZP_SMUL+$27),y
-    bcs ZCE7
-    adc (ZP_SMUL+$2C),y
-    sta ZP_SMUL+$59
+    bcs ZCE4
+    adc (ZP_SMUL+$29),y
+    sta ZP_SMUL+$56
     lda REG_LOW+$1A00,y
-ZCCD:
-    adc (ZP_SMUL+$32),y
+ZCCA:
+    adc (ZP_SMUL+$2F),y
     tay
     clc
     txa
     adc #$00
-    sta ZP_SMUL+$73
+    sta ZP_SMUL+$70
     lda #$00
     adc #$00
     jmp REG_KERNEL+$1A00
-ZCDD:
+ZCDA:
     clc
-    adc (ZP_SMUL+$2C),y
+    adc (ZP_SMUL+$29),y
     tax
     lda #$01
-    adc (ZP_SMUL+$4B),y
-    bcc ZCB1
-ZCE7:
+    adc (ZP_SMUL+$48),y
+    bcc ZCAE
+ZCE4:
     clc
-    adc (ZP_SMUL+$2C),y
-    sta ZP_SMUL+$59
+    adc (ZP_SMUL+$29),y
+    sta ZP_SMUL+$56
     lda #$01
-    adc (ZP_SMUL+$4B),y
-    bcc ZCCD
+    adc (ZP_SMUL+$48),y
+    bcc ZCCA
+    brk
+    brk
+    brk
     brk
     brk
 

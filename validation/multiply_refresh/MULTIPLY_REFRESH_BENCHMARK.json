@@ -41,9 +41,9 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 323.8672322861729,
+        "mean_cycles": 322.9183673469388,
         "min_cycles": 291,
-        "max_cycles": 356,
+        "max_cycles": 354,
         "cases": 4361,
         "errors": 0
       },
@@ -85,9 +85,9 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 283.4113735381793,
-        "min_cycles": 261,
-        "max_cycles": 324,
+        "mean_cycles": 279.88878697546437,
+        "min_cycles": 257,
+        "max_cycles": 320,
         "cases": 4361,
         "errors": 0
       },
@@ -129,9 +129,9 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 283.4113735381793,
-        "min_cycles": 261,
-        "max_cycles": 324,
+        "mean_cycles": 279.88878697546437,
+        "min_cycles": 257,
+        "max_cycles": 320,
         "cases": 4361,
         "errors": 0
       },
@@ -173,9 +173,9 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 283.4113735381793,
-        "min_cycles": 261,
-        "max_cycles": 324,
+        "mean_cycles": 279.88878697546437,
+        "min_cycles": 257,
+        "max_cycles": 320,
         "cases": 4361,
         "errors": 0
       },
@@ -224,9 +224,9 @@
         "errors": 0
       },
       "MATH_SMUL16_SHR8": {
-        "mean_cycles": 323.8672322861729,
+        "mean_cycles": 322.9183673469388,
         "min_cycles": 291,
-        "max_cycles": 356,
+        "max_cycles": 354,
         "cases": 4361,
         "errors": 0
       },
@@ -242,6 +242,6 @@
   "summary": {
     "profiles": 5,
     "machine_calls": 415078,
-    "elapsed_seconds": 34.15
+    "elapsed_seconds": 28.06
   }
 }

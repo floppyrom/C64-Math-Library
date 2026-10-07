@@ -31,9 +31,9 @@
       "errors": 0
     },
     "MATH_SMUL16_SHR8": {
-      "mean_cycles": 283.4113735381793,
-      "min_cycles": 261,
-      "max_cycles": 324,
+      "mean_cycles": 279.88878697546437,
+      "min_cycles": 257,
+      "max_cycles": 320,
       "cases": 4361,
       "errors": 0
     },

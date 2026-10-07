@@ -10,8 +10,8 @@
         },
         "MATH_SMUL16": {
           "file": "v1_balanced/resident/signed/multiply/native/smul16_native.asm",
-          "instructions": 136,
-          "bytes_verified": 273
+          "instructions": 134,
+          "bytes_verified": 269
         },
         "MATH_SMUL24": {
           "file": "v1_balanced/resident/signed/multiply/native/smul24_native.asm",
@@ -30,8 +30,8 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "v1_balanced/resident/signed/multiply/native/smul16_shr8_native.asm",
-          "instructions": 143,
-          "bytes_verified": 292
+          "instructions": 141,
+          "bytes_verified": 288
         },
         "MATH_SMUL32_SHR16": {
           "file": "v1_balanced/resident/signed/multiply/native/smul32_shr16_native.asm",
@@ -81,8 +81,8 @@
         },
         "MATH_SMUL16": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul16_native.asm",
-          "instructions": 115,
-          "bytes_verified": 217
+          "instructions": 114,
+          "bytes_verified": 215
         },
         "MATH_SMUL24": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul24_native.asm",
@@ -101,8 +101,8 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul16_shr8_native.asm",
-          "instructions": 122,
-          "bytes_verified": 236
+          "instructions": 121,
+          "bytes_verified": 234
         },
         "MATH_SMUL32_SHR16": {
           "file": "v2_pareto_fast/resident/signed/multiply/native/smul32_shr16_native.asm",
@@ -133,8 +133,8 @@
         },
         "MATH_SDIV32_32": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 380,
-          "bytes_verified": 894
+          "instructions": 95,
+          "bytes_verified": 215
         },
         "MATH_SDIV16_SHL8": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv16_shl8_native.asm",
@@ -152,8 +152,8 @@
         },
         "MATH_SMUL16": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul16_native.asm",
-          "instructions": 115,
-          "bytes_verified": 217
+          "instructions": 114,
+          "bytes_verified": 215
         },
         "MATH_SMUL24": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul24_native.asm",
@@ -172,8 +172,8 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul16_shr8_native.asm",
-          "instructions": 122,
-          "bytes_verified": 236
+          "instructions": 121,
+          "bytes_verified": 234
         },
         "MATH_SMUL32_SHR16": {
           "file": "v3_reu_512k/resident/signed/multiply/native/smul32_shr16_native.asm",
@@ -223,8 +223,8 @@
         },
         "MATH_SMUL16": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul16_native.asm",
-          "instructions": 115,
-          "bytes_verified": 217
+          "instructions": 114,
+          "bytes_verified": 215
         },
         "MATH_SMUL24": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul24_native.asm",
@@ -243,8 +243,8 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul16_shr8_native.asm",
-          "instructions": 122,
-          "bytes_verified": 236
+          "instructions": 121,
+          "bytes_verified": 234
         },
         "MATH_SMUL32_SHR16": {
           "file": "v4_reu_16m/resident/signed/multiply/native/smul32_shr16_native.asm",
@@ -294,8 +294,8 @@
         },
         "MATH_SMUL16": {
           "file": "v5_hybrid_lowzp/resident/signed/multiply/native/smul16_native.asm",
-          "instructions": 136,
-          "bytes_verified": 273
+          "instructions": 134,
+          "bytes_verified": 269
         },
         "MATH_SMUL24": {
           "file": "v5_hybrid_lowzp/resident/signed/multiply/native/smul24_native.asm",
@@ -314,8 +314,8 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "v5_hybrid_lowzp/resident/signed/multiply/native/smul16_shr8_native.asm",
-          "instructions": 143,
-          "bytes_verified": 292
+          "instructions": 141,
+          "bytes_verified": 288
         },
         "MATH_SMUL32_SHR16": {
           "file": "v5_hybrid_lowzp/resident/signed/multiply/native/smul32_shr16_native.asm",
@@ -407,8 +407,8 @@
       "check": "v1_balanced_MATH_SMUL16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 136,
-        "runtime": 136,
+        "published": 134,
+        "runtime": 134,
         "missing": 0,
         "extra": 0
       }
@@ -507,8 +507,8 @@
       "check": "v1_balanced_MATH_SMUL16_SHR8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 143,
-        "runtime": 143,
+        "published": 141,
+        "runtime": 141,
         "missing": 0,
         "extra": 0
       }
@@ -742,8 +742,8 @@
       "check": "v2_pareto_fast_MATH_SMUL16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 115,
-        "runtime": 115,
+        "published": 114,
+        "runtime": 114,
         "missing": 0,
         "extra": 0
       }
@@ -842,8 +842,8 @@
       "check": "v2_pareto_fast_MATH_SMUL16_SHR8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 122,
-        "runtime": 122,
+        "published": 121,
+        "runtime": 121,
         "missing": 0,
         "extra": 0
       }
@@ -997,8 +997,8 @@
       "check": "v2_pareto_fast_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 380,
-        "runtime": 380,
+        "published": 95,
+        "runtime": 95,
         "missing": 0,
         "extra": 0
       }
@@ -1077,8 +1077,8 @@
       "check": "v3_reu_512k_MATH_SMUL16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 115,
-        "runtime": 115,
+        "published": 114,
+        "runtime": 114,
         "missing": 0,
         "extra": 0
       }
@@ -1177,8 +1177,8 @@
       "check": "v3_reu_512k_MATH_SMUL16_SHR8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 122,
-        "runtime": 122,
+        "published": 121,
+        "runtime": 121,
         "missing": 0,
         "extra": 0
       }
@@ -1412,8 +1412,8 @@
       "check": "v4_reu_16m_MATH_SMUL16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 115,
-        "runtime": 115,
+        "published": 114,
+        "runtime": 114,
         "missing": 0,
         "extra": 0
       }
@@ -1512,8 +1512,8 @@
       "check": "v4_reu_16m_MATH_SMUL16_SHR8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 122,
-        "runtime": 122,
+        "published": 121,
+        "runtime": 121,
         "missing": 0,
         "extra": 0
       }
@@ -1747,8 +1747,8 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 136,
-        "runtime": 136,
+        "published": 134,
+        "runtime": 134,
         "missing": 0,
         "extra": 0
       }
@@ -1847,8 +1847,8 @@
       "check": "v5_hybrid_lowzp_MATH_SMUL16_SHR8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 143,
-        "runtime": 143,
+        "published": 141,
+        "runtime": 141,
         "missing": 0,
         "extra": 0
       }

@@ -9,7 +9,7 @@
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
-          "instructions": 136
+          "instructions": 134
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
@@ -25,7 +25,7 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
-          "instructions": 143
+          "instructions": 141
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
@@ -67,7 +67,7 @@
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
-          "instructions": 115
+          "instructions": 114
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
@@ -83,7 +83,7 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
-          "instructions": 122
+          "instructions": 121
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
@@ -109,7 +109,7 @@
         },
         "MATH_SDIV32_32": {
           "file": "sdiv32_32_native.asm",
-          "instructions": 380
+          "instructions": 95
         },
         "MATH_SDIV16_SHL8": {
           "file": "sdiv16_shl8_native.asm",
@@ -125,7 +125,7 @@
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
-          "instructions": 115
+          "instructions": 114
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
@@ -141,7 +141,7 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
-          "instructions": 122
+          "instructions": 121
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
@@ -183,7 +183,7 @@
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
-          "instructions": 115
+          "instructions": 114
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
@@ -199,7 +199,7 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
-          "instructions": 122
+          "instructions": 121
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
@@ -241,7 +241,7 @@
         },
         "MATH_SMUL16": {
           "file": "smul16_native.asm",
-          "instructions": 136
+          "instructions": 134
         },
         "MATH_SMUL24": {
           "file": "smul24_native.asm",
@@ -257,7 +257,7 @@
         },
         "MATH_SMUL16_SHR8": {
           "file": "smul16_shr8_native.asm",
-          "instructions": 143
+          "instructions": 141
         },
         "MATH_SMUL32_SHR16": {
           "file": "smul32_shr16_native.asm",
