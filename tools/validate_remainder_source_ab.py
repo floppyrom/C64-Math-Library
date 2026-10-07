@@ -11,8 +11,6 @@ ROUTINES=[
  ('MATH_UMOD24',24,24,3),
  ('MATH_UMOD32_32',32,32,4),
 ]
-N=0xC010;D=0xC014;R=0xC01C
-
 def api(path):
  out={}
  for line in path.read_text().splitlines():
@@ -64,7 +62,8 @@ def cases(bits,seed):
  out += [(rng.randrange(1<<bits),0) for _ in range(256)]
  return out
 
-def run(c,entry,cs,nbytes):
+def run(c,A,entry,cs,nbytes):
+ N=A['MATH_N'];D=A['MATH_D'];R=A['MATH_R']
  tot=0;mn=10**9;mx=0;err=0
  for n,d in cs:
   wr(c.mem,N,n,nbytes);wr(c.mem,D,d,nbytes)
@@ -85,9 +84,9 @@ for pi,p in enumerate(PROFILES):
  pr={}
  for ri,(name,nb,db,nbytes) in enumerate(ROUTINES):
   cs=cases(nb,0x524D0000+pi*0x1000+ri)
-  b=run(base,BA[name],cs,nbytes)
-  n=run(ref,RA[name],cs,nbytes)
-  a=run(alt,AA[name],cs,nbytes)
+  b=run(base,BA,BA[name],cs,nbytes)
+  n=run(ref,RA,RA[name],cs,nbytes)
+  a=run(alt,AA,AA[name],cs,nbytes)
   if b['errors'] or n['errors'] or a['errors']:raise AssertionError((p,name,b,n,a))
   n['delta_vs_baseline']=n['mean_cycles']-b['mean_cycles']
   a['delta_vs_baseline']=a['mean_cycles']-b['mean_cycles']
