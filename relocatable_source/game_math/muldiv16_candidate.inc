@@ -10,33 +10,20 @@
 MATH_UMULDIV16_CANDIDATE = REG_API+$02E0
 MATH_SMULDIV16_CANDIDATE = REG_API+$02E3
 
-; Re-state the historical Z32->N32 convenience helper symbolically so the
-; candidate remains fully relocatable on the alternate source map.
-* = REG_API+$0250
-MULDIV16_Z32_TO_N32:
-    ldx #$03
-MULDIV16_COPY_ZN:
-    lda MATH_Z,x
-    sta MATH_N,x
-    dex
-    bpl MULDIV16_COPY_ZN
-    rts
+; Existing cross-profile composition helpers in the historical API support
+; area. These remain non-stable implementation details.
+MULDIV16_Z32_TO_N32 = REG_API+$0250
+MULDIV16_U_COMPOSED = REG_API+$0300
 
-; Public candidate slots are ordinary three-byte JMP entries.
 * = MATH_UMULDIV16_CANDIDATE
-    jmp MULDIV16_U_CORE
+    jmp MULDIV16_U_COMPOSED
 * = MATH_SMULDIV16_CANDIDATE
-    jmp MULDIV16_S_CORE
+    jmp MULDIV16_S_COMPOSED
 
-; $03E0-$03FF is the free tail immediately before the V1/V5 seek island.
-; Two nine-byte composition cores fit without changing any existing region.
+; V1/V5 signed baseline. V2/V3/V4 overlay this address with the optimized
+; signed producer handoff while preserving the same candidate entry.
 * = REG_API+$03E0
-MULDIV16_U_CORE:
-    jsr MATH_UMUL16
-    jsr MULDIV16_Z32_TO_N32
-    jmp MATH_UDIV32_16
-
-MULDIV16_S_CORE:
+MULDIV16_S_COMPOSED:
     jsr MATH_SMUL16
     jsr MULDIV16_Z32_TO_N32
     jmp MATH_SDIV32_16
