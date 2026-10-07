@@ -1,3 +1,11 @@
+## 2026-10-07 — V5 low-ZP MULDIV16 producer/divider fusion
+
+- Specialized V5 `MATH_UMULDIV16` and `MATH_SMULDIV16` without increasing its **31-byte normal-ZP contract**. The hybrid builder reuses the qualified V1 17-ZP UMUL16 record producer and feeds its register/ZP product directly into the relocated private V2 UDIV32/16 state.
+- V5 UMULDIV16 improves **956.646373 -> 834.646373 cycles mean**, with min/max **456-2078 -> 334-1956** on the unchanged 9,001-case corpus.
+- V5 SMULDIV16 now uses one signed-magnitude normalization, one unsigned multiply/divide, and final quotient/remainder sign fixup. Mean latency improves **1378.300411 -> 916.200755 cycles**, with min/max **490-2271 -> 83-1920**.
+- Reference and alternate V5 maps are cycle-vector identical. The focused MULDIV proof passes **9,001 unsigned + 9,001 signed cases per map**, and the V5 hybrid regression passes exhaustive UMOD8 plus randomized/mixed cross-API coverage.
+- The divisor is deliberately bound into private divider state only after UMUL16 returns because V5's divider D bytes overlap the low-ZP quarter-square pointer image. Public X/Y/D preservation, divide-by-zero semantics, zero persistent stack use, and existing table classes are unchanged.
+
 ## 2026-10-07 — UDIV32/16 optimization and bounded unsigned-division latency (PR #33)
 
 - Replaced V2/V3/V4 `MATH_UDIV32_16` with the direct split-byte constrained-tail implementation, including a compact `D<256` path. On the paired integration corpus, mean latency improves **1092.28 -> 715.36 cycles** and maximum latency **1880 -> 1738**.
