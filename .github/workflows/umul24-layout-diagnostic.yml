@@ -15,6 +15,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Instrument assembler write order at $5780
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tools/mini6502.py')
+          s=p.read_text()
+          s=s.replace("for v in vals: mem[pc]=self.expr(v)&255; pc+=1",
+                      "for v in vals:\n                    val=self.expr(v)&255\n                    if pc==0x5780: print('WRITE5780 BYTE',hex(val),vals)\n                    mem[pc]=val; pc+=1")
+          s=s.replace("for b in bs: mem[pc]=b; pc+=1",
+                      "for b in bs:\n                if pc==0x5780: print('WRITE5780 INS',op,arg,mode,hex(b))\n                mem[pc]=b; pc+=1")
+          p.write_text(s)
+          PY
       - name: Reproduce promotion trace
         run: |
           python3 tools/generate_sources.py
