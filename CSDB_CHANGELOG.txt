@@ -1,3 +1,13 @@
+2026-10-07 UDIV32/16 + UNSIGNED DIVISION LATENCY BOUNDING (PR #33)
+- V2/V3/V4 UDIV32/16 now use the direct split-byte constrained tail with compact D<256 handling.
+- Paired integration corpus: 1092.28 -> 715.36 cycles mean; max 1880 -> 1738.
+- UDIV24 hard-tail max: 3188 -> 1267. UDIV32/32 hard-tail max: 2532 -> 1792.
+- Narrow UDIV32/32 sample: 1485.38 -> 710.88 cycles mean, zero slower cases in 12k tests.
+- Added exact 17-bit-divisor UDIV32/32 fallback; wide live-high core remains the four-ZP hot path.
+- Full public UDIV32 graph: 2,755 reachable code bytes, 14 ZP bytes, 0 persistent stack bytes.
+- V5 relocation updated for the expanded $5957-$59A6 helper; wider V5 UMOD aliases keep exact remainder/carry semantics with profile-specific timing.
+- Validation: 822,050 unsigned DIV/MOD calls across V1-V5, 104,121 UDIV32 calls per map/profile, V5 hybrid + deterministic rebuild + package/CI gates all pass.
+
 2026-10-07 FOUR-ZP UDIV32 (REPOSE)
 - V2/V3/V4: 869 -> 793 reachable code bytes, 8 -> 4 ZP.
 - Paired uniform32 mean: 368.906 -> 191.169 cycles; not faster on every input.
