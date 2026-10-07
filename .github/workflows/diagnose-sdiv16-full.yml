@@ -1,0 +1,17 @@
+name: Diagnose SDIV16 full validation
+on:
+  push:
+    branches: [research/sdiv16-pp-late-copy-v1]
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python3 tools/diagnose_sdiv16_full_validation.py
