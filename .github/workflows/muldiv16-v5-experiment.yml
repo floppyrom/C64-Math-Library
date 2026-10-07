@@ -37,9 +37,20 @@ jobs:
                       if len(errs)>=8: break
                   uc.append(cy)
               if errs: raise SystemExit(('V5_UNSIGNED_FAIL',kind,errs))
-              st=v.stats(uc)
-              print('V5_UMULDIV16',kind,json.dumps(st,sort_keys=True),flush=True)
-              if ref is None: ref=uc
-              elif uc!=ref: raise SystemExit('V5 unsigned relocation cycle mismatch')
-          print('V5_UMULDIV16_EXPERIMENT_PASS',len(uv),flush=True)
+              sc=[]
+              for x,y,d in sv:
+                  cy,ok,got,exp=v.call_signed(cpu,api['MATH_SMULDIV16'],io,x,y,d)
+                  if not ok:
+                      errs.append((x,y,d,got,exp))
+                      if len(errs)>=8: break
+                  sc.append(cy)
+              if errs: raise SystemExit(('V5_SIGNED_FAIL',kind,errs))
+              ust=v.stats(uc); sst=v.stats(sc)
+              print('V5_UMULDIV16',kind,json.dumps(ust,sort_keys=True),flush=True)
+              print('V5_SMULDIV16',kind,json.dumps(sst,sort_keys=True),flush=True)
+              if ref is None: ref=(uc,sc)
+              else:
+                  if uc!=ref[0]: raise SystemExit('V5 unsigned relocation cycle mismatch')
+                  if sc!=ref[1]: raise SystemExit('V5 signed relocation cycle mismatch')
+          print('V5_MULDIV16_EXPERIMENT_PASS',len(uv),len(sv),flush=True)
           PY
