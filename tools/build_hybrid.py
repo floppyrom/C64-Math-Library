@@ -635,7 +635,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         prg = outdir / 'math_v5_hybrid_lowzp_game_math.prg'
         write_prg(dst, lo, new_hi, prg)
 
-        # Reuse the stable 54-entry caller include generated from the same map.
+        # Reuse the stable 56-entry caller include generated from the same map.
         inc_src = v1out / 'math_api.inc'
         inc = outdir / 'math_api.inc'
         inc_text = inc_src.read_text().rstrip() + '\n'
@@ -671,7 +671,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'MATH_URECIP16_Q16',
             ],
             'notes': [
-                'All 54 stable API addresses and semantics remain V1-compatible.',
+                'All 56 stable API addresses and semantics remain V1-compatible.',
                 'MATH_INIT remains optional exactly as in V1.',
                 'The imported certified V2 kernels use only the existing V1 normal ZP window.',
                 'Fast ATAN2, when enabled, adds no ZP and occupies four formerly empty V1 table pages (1024 bytes).',
