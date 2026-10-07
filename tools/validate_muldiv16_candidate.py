@@ -2,8 +2,8 @@
 """Validate and benchmark candidate wide-intermediate MULDIV16 primitives.
 
 Candidate ABI (not yet part of PUBLIC_API_COMPLETE.csv):
-  REG_GAME_API+$54  unsigned: (X16*Y16)/D16 -> Q32,R16
-  REG_GAME_API+$57  signed:   (X16*Y16)/D16 -> Q32,R16, trunc toward zero
+  REG_API+$2E0  unsigned: (X16*Y16)/D16 -> Q32,R16
+  REG_API+$2E3  signed:   (X16*Y16)/D16 -> Q32,R16, trunc toward zero
 
 X/Y/D are preserved. N is implementation scratch. Divide-by-zero returns C=1
 and zero Q/R, matching the selected public division engines.
@@ -54,8 +54,8 @@ def load(profile,kind):
     init=unhx(man['math_init']); cpu.call(init,2_000_000)
     api={k:unhx(v) for k,v in man['public_entries'].items()}
     io=unhx(man['public_io'].split('-')[0])
-    # Candidate slots immediately follow the last stable seek entry.
-    u=api['MATH_SEEK16_STEP1']+3
+    # Candidate slots occupy the common free hole after MATH_INIT.
+    u=init+0x60
     s=u+3
     return cpu,api,io,u,s
 
@@ -116,7 +116,7 @@ def stats(v):
 
 def run():
     uv,sv=vectors()
-    out={'status':'PASS','candidate':{'unsigned_address_offset':'REG_GAME_API+$0054','signed_address_offset':'REG_GAME_API+$0057'},'profiles':{}}
+    out={'status':'PASS','candidate':{'unsigned_address_offset':'REG_API+$02E0','signed_address_offset':'REG_API+$02E3'},'profiles':{}}
     for p in PROFILES:
         per={}
         ref_vectors={}
