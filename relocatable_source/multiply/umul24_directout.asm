@@ -176,14 +176,17 @@ R24_v12:    adc #0
         inc R24_v13+1
 R24_column3:
 R24_v21:    adc #0
-        tay
+        ; This core is public-only: write z3 in place instead of returning it in Y.
+        ; Combined with the tail-call public adapter below this removes one
+        ; register transfer, one absolute result store and both internal RTS edges.
+        sta MATH_IO+$0B
 R24_v13:    lda #0
 R24_v22:    adc #0
         bcs R24_final
-        rts
+        jmp R24_public_tail
 R24_final:
         inx
-        rts
+        jmp R24_public_tail
 
 R24_c2_1:
         clc
@@ -234,9 +237,12 @@ R24_public_impl:
         lda MATH_IO+$05
         sta R24_y1
         ldy MATH_IO+$06
-        jsr R24_umult
+        ; Public-only producer: tail-call the arithmetic core.  It writes z0-z3
+        ; directly and joins the common tail with z4 in A and z5 in X.
+        jmp R24_umult
+
+R24_public_tail:
         sta MATH_IO+$0C
         stx MATH_IO+$0D
-        sty MATH_IO+$0B
         clc
         rts
