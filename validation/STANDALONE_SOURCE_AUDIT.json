@@ -60,7 +60,7 @@
           "file": "mul_s16_s16_s32.asm",
           "alias_of": "",
           "entry_address": "$3BB0",
-          "reachable_instructions": 134
+          "reachable_instructions": 130
         },
         {
           "legacy_api": "MATH_SMUL24",
@@ -76,7 +76,7 @@
           "file": "mul_s32_s32_s64.asm",
           "alias_of": "",
           "entry_address": "$3C40",
-          "reachable_instructions": 669
+          "reachable_instructions": 668
         },
         {
           "legacy_api": "MATH_SMUL32_READY",
@@ -84,7 +84,7 @@
           "file": "mul_s32_s32_s64_ready.asm",
           "alias_of": "",
           "entry_address": "$3FE0",
-          "reachable_instructions": 660
+          "reachable_instructions": 659
         },
         {
           "legacy_api": "MATH_UDIV8",
@@ -260,7 +260,7 @@
           "file": "mul_s16_s16_s24_shr8.asm",
           "alias_of": "",
           "entry_address": "$5E0F",
-          "reachable_instructions": 141
+          "reachable_instructions": 137
         },
         {
           "legacy_api": "MATH_UMUL32_SHR16",
@@ -276,7 +276,7 @@
           "file": "mul_s32_s32_s48_shr16.asm",
           "alias_of": "",
           "entry_address": "$5E15",
-          "reachable_instructions": 685
+          "reachable_instructions": 684
         },
         {
           "legacy_api": "MATH_UDIV16_SHL8",
@@ -499,7 +499,7 @@
           "file": "mul_s16_s16_s32.asm",
           "alias_of": "",
           "entry_address": "$3BB0",
-          "reachable_instructions": 114
+          "reachable_instructions": 113
         },
         {
           "legacy_api": "MATH_SMUL24",
@@ -515,7 +515,7 @@
           "file": "mul_s32_s32_s64.asm",
           "alias_of": "",
           "entry_address": "$3C40",
-          "reachable_instructions": 653
+          "reachable_instructions": 652
         },
         {
           "legacy_api": "MATH_SMUL32_READY",
@@ -523,7 +523,7 @@
           "file": "mul_s32_s32_s64_ready.asm",
           "alias_of": "",
           "entry_address": "$3FE0",
-          "reachable_instructions": 654
+          "reachable_instructions": 653
         },
         {
           "legacy_api": "MATH_UDIV8",
@@ -699,7 +699,7 @@
           "file": "mul_s16_s16_s24_shr8.asm",
           "alias_of": "",
           "entry_address": "$5E0F",
-          "reachable_instructions": 121
+          "reachable_instructions": 120
         },
         {
           "legacy_api": "MATH_UMUL32_SHR16",
@@ -715,7 +715,7 @@
           "file": "mul_s32_s32_s48_shr16.asm",
           "alias_of": "",
           "entry_address": "$5E15",
-          "reachable_instructions": 669
+          "reachable_instructions": 668
         },
         {
           "legacy_api": "MATH_UDIV16_SHL8",
@@ -938,7 +938,7 @@
           "file": "mul_s16_s16_s32.asm",
           "alias_of": "",
           "entry_address": "$3BB0",
-          "reachable_instructions": 114
+          "reachable_instructions": 113
         },
         {
           "legacy_api": "MATH_SMUL24",
@@ -954,7 +954,7 @@
           "file": "mul_s32_s32_s64.asm",
           "alias_of": "",
           "entry_address": "$3C40",
-          "reachable_instructions": 653
+          "reachable_instructions": 652
         },
         {
           "legacy_api": "MATH_SMUL32_READY",
@@ -962,7 +962,7 @@
           "file": "mul_s32_s32_s64_ready.asm",
           "alias_of": "",
           "entry_address": "$3FE0",
-          "reachable_instructions": 654
+          "reachable_instructions": 653
         },
         {
           "legacy_api": "MATH_UDIV8",
@@ -1138,7 +1138,7 @@
           "file": "mul_s16_s16_s24_shr8.asm",
           "alias_of": "",
           "entry_address": "$5E0F",
-          "reachable_instructions": 121
+          "reachable_instructions": 120
         },
         {
           "legacy_api": "MATH_UMUL32_SHR16",
@@ -1154,7 +1154,7 @@
           "file": "mul_s32_s32_s48_shr16.asm",
           "alias_of": "",
           "entry_address": "$5E15",
-          "reachable_instructions": 669
+          "reachable_instructions": 668
         },
         {
           "legacy_api": "MATH_UDIV16_SHL8",
@@ -1425,7 +1425,7 @@
           "file": "mul_s16_s16_s32.asm",
           "alias_of": "",
           "entry_address": "$3BB0",
-          "reachable_instructions": 114
+          "reachable_instructions": 113
         },
         {
           "legacy_api": "MATH_SMUL24",
@@ -1441,7 +1441,7 @@
           "file": "mul_s32_s32_s64.asm",
           "alias_of": "",
           "entry_address": "$3C40",
-          "reachable_instructions": 653
+          "reachable_instructions": 652
         },
         {
           "legacy_api": "MATH_SMUL32_READY",
@@ -1449,7 +1449,7 @@
           "file": "mul_s32_s32_s64_ready.asm",
           "alias_of": "",
           "entry_address": "$3FE0",
-          "reachable_instructions": 654
+          "reachable_instructions": 653
         },
         {
           "legacy_api": "MATH_UDIV8",
@@ -1625,7 +1625,7 @@
           "file": "mul_s16_s16_s24_shr8.asm",
           "alias_of": "",
           "entry_address": "$5E0F",
-          "reachable_instructions": 121
+          "reachable_instructions": 120
         },
         {
           "legacy_api": "MATH_UMUL32_SHR16",
@@ -1641,7 +1641,7 @@
           "file": "mul_s32_s32_s48_shr16.asm",
           "alias_of": "",
           "entry_address": "$5E15",
-          "reachable_instructions": 669
+          "reachable_instructions": 668
         },
         {
           "legacy_api": "MATH_UDIV16_SHL8",
@@ -1936,7 +1936,7 @@
           "file": "mul_s16_s16_s32.asm",
           "alias_of": "",
           "entry_address": "$3BB0",
-          "reachable_instructions": 134
+          "reachable_instructions": 130
         },
         {
           "legacy_api": "MATH_SMUL24",
@@ -1952,7 +1952,7 @@
           "file": "mul_s32_s32_s64.asm",
           "alias_of": "",
           "entry_address": "$3C40",
-          "reachable_instructions": 669
+          "reachable_instructions": 668
         },
         {
           "legacy_api": "MATH_SMUL32_READY",
@@ -1960,7 +1960,7 @@
           "file": "mul_s32_s32_s64_ready.asm",
           "alias_of": "",
           "entry_address": "$3FE0",
-          "reachable_instructions": 660
+          "reachable_instructions": 659
         },
         {
           "legacy_api": "MATH_UDIV8",
@@ -2136,7 +2136,7 @@
           "file": "mul_s16_s16_s24_shr8.asm",
           "alias_of": "",
           "entry_address": "$5E0F",
-          "reachable_instructions": 141
+          "reachable_instructions": 137
         },
         {
           "legacy_api": "MATH_UMUL32_SHR16",
@@ -2152,7 +2152,7 @@
           "file": "mul_s32_s32_s48_shr16.asm",
           "alias_of": "",
           "entry_address": "$5E15",
-          "reachable_instructions": 685
+          "reachable_instructions": 684
         },
         {
           "legacy_api": "MATH_UDIV16_SHL8",

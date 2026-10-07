@@ -68,7 +68,7 @@
   "reu_transport": {
     "programmed_c64_destination": "$C820",
     "expected": "$C820",
-    "reu_image_sha256": "da767488080d83bc692c4a9b41ecbbe19ac331652170c4f47faccab53a96483d",
+    "reu_image_sha256": "4ba6ece174d54042d51736f3bb0ee3a8c0506c8fcdd9ac4c0163bfb5197a3fda",
     "reu_banks": {
       "REU_UMUL8_LO_BANK": "$02",
       "REU_UMUL8_HI_BANK": "$03",

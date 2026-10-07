@@ -1,0 +1,146 @@
+{
+  "status": "PASS",
+  "date": "2026-10-07",
+  "source": "PR #24 SMUL24 carry/register reuse generalized to other signed multiply widths",
+  "smul8": {
+    "decision": "UNCHANGED",
+    "reason": "The shipped 8x8 kernel is already direct signed-domain quarter-square code. It has no sign-dispatch correction wrapper, high-byte binder reload, or dead correction pointer to eliminate; replacing its SEC with a compare would be cycle-neutral.",
+    "mean_cycles": 67.9921875
+  },
+  "smul16": {
+    "techniques": [
+      "enter producer/dispatcher with X1 already live in A and skip redundant reload",
+      "V1/V5 CPX #0 sign test simultaneously primes C=1 for the producer",
+      "V1/V5 reuse known C=0 between NN magnitude negations with LDA #1/SBC",
+      "V1/V5 bind live X1 before X0 and reuse dead pointer-low scratch instead of correction SMC"
+    ],
+    "baseline_mean_cycles": {
+      "v1_balanced": 292.3497868521427,
+      "v2_pareto_fast": 248.80233340812205,
+      "v3_reu_512k": 249.10769575947947,
+      "v4_reu_16m": 249.14449181063495,
+      "v5_hybrid_lowzp": 292.02669957370426
+    },
+    "candidate": {
+      "v1_balanced": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 282.588063719991,
+        "min_cycles": 250,
+        "max_cycles": 316
+      },
+      "v2_pareto_fast": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 245.80233340812205,
+        "min_cycles": 223,
+        "max_cycles": 286
+      },
+      "v3_reu_512k": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 246.10769575947947,
+        "min_cycles": 223,
+        "max_cycles": 286
+      },
+      "v4_reu_16m": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 246.14449181063495,
+        "min_cycles": 223,
+        "max_cycles": 286
+      },
+      "v5_hybrid_lowzp": {
+        "cases": 4457,
+        "errors": 0,
+        "mean_cycles": 282.2629571460624,
+        "min_cycles": 250,
+        "max_cycles": 314
+      }
+    },
+    "delta_mean_cycles": {
+      "v1_balanced": -9.761723132151701,
+      "v2_pareto_fast": -3.0,
+      "v3_reu_512k": -3.0,
+      "v4_reu_16m": -3.0,
+      "v5_hybrid_lowzp": -9.763742427641887
+    },
+    "research_delta_distribution": {
+      "v1_v5": "-10 cycles on non-NN, -9 cycles on NN",
+      "v2_v4": "-3 cycles on every call"
+    }
+  },
+  "smul32": {
+    "technique": "NN X magnitude is known to leave C=0; begin -Y with LDA #1/SBC instead of SEC/LDA #0/SBC.",
+    "baseline_mean_cycles": {
+      "v1_balanced": 744.5699460356994,
+      "v2_pareto_fast": 711.5869655458697,
+      "v3_reu_512k": 711.9418845994188,
+      "v4_reu_16m": 712.1369863013699,
+      "v5_hybrid_lowzp": 743.9132420091324
+    },
+    "candidate": {
+      "v1_balanced": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 744.1282689912827,
+        "min_cycles": 660,
+        "max_cycles": 873
+      },
+      "v2_pareto_fast": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 711.1535907015359,
+        "min_cycles": 630,
+        "max_cycles": 838
+      },
+      "v3_reu_512k": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 711.4470734744707,
+        "min_cycles": 630,
+        "max_cycles": 838
+      },
+      "v4_reu_16m": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 711.706102117061,
+        "min_cycles": 630,
+        "max_cycles": 838
+      },
+      "v5_hybrid_lowzp": {
+        "cases": 2409,
+        "errors": 0,
+        "mean_cycles": 743.4773765047738,
+        "min_cycles": 660,
+        "max_cycles": 873
+      }
+    },
+    "delta_mean_cycles": {
+      "v1_balanced": -0.44167704441679234,
+      "v2_pareto_fast": -0.43337484433379814,
+      "v3_reu_512k": -0.4948111249481144,
+      "v4_reu_16m": -0.43088418430886577,
+      "v5_hybrid_lowzp": -0.4358655043586168
+    },
+    "research_delta_distribution": "-2 cycles on NN, 0 on all other quadrants"
+  },
+  "resources": {
+    "public_api_changed": false,
+    "zp_contract_changed": false,
+    "persistent_stack_changed": false,
+    "table_bytes_changed": false
+  },
+  "validation": {
+    "signed_multiply_calls": 264999,
+    "smul24_directout": "PASS",
+    "multiply_refresh": "PASS",
+    "hybrid": "PASS",
+    "deterministic_rebuild": "PASS",
+    "signed_layout": "PASS",
+    "published_signed_sources": "PASS",
+    "turbo_relocation": "PASS",
+    "turbo_boundary": "PASS",
+    "atan2_dispatch_regression": "PASS"
+  }
+}
