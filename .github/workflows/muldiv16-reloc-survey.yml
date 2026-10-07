@@ -1,0 +1,69 @@
+name: MULDIV16 relocation hole survey
+on:
+  push:
+    branches: [ promote/muldiv16-stable-20261007 ]
+    paths: [ '.github/workflows/muldiv16-reloc-survey.yml' ]
+permissions:
+  contents: read
+jobs:
+  survey:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Survey common relocatable holes
+        run: |
+          python3 - <<'PY'
+          from tools.source_relocation import load_reference, trace
+          from tools.mini6502 import REV, SIZE
+          profiles=('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+          regions={'REG_LOW':(0x1000,0x2fff),'REG_API':(0x3000,0x3fff),'REG_KERNEL':(0x4000,0x5fff)}
+          allruns={}
+          for p in profiles:
+              raw,_=load_reference(p); seen=trace(p,raw)
+              refs=set()
+              for pc in seen:
+                  oc=raw[pc]
+                  if oc not in REV: continue
+                  op,mode=REV[oc]
+                  if mode in ('abs','absx','absy','ind'):
+                      refs.add(raw[pc+1]|(raw[pc+2]<<8))
+              print('\nPROFILE',p)
+              allruns[p]={}
+              for rn,(lo,hi) in regions.items():
+                  runs=[];a=lo
+                  while a<=hi:
+                      if a in seen or a in refs or raw[a] not in (0x00,0xea):
+                          a+=1;continue
+                      s=a
+                      while a<=hi and a not in seen and a not in refs and raw[a] in (0x00,0xea):
+                          a+=1
+                      if a-s>=64:runs.append((s,a-1,a-s))
+                  allruns[p][rn]=runs
+                  print(rn)
+                  for s,e,n in sorted(runs,key=lambda x:(-x[2],x[0]))[:25]:
+                      print(f'  {s:04X}-{e:04X} {n}')
+          print('\nCOMMON OFFSETS >= 256')
+          bases={'REG_LOW':0x1000,'REG_API':0x3000,'REG_KERNEL':0x4000}
+          for rn in regions:
+              # brute-force every offset; require 256 consecutive bytes contained in a run for all profiles
+              good=[]
+              for off in range(regions[rn][1]-regions[rn][0]+1-256+1):
+                  ok=True
+                  for p in profiles:
+                      a=bases[rn]+off
+                      if not any(s<=a and a+255<=e for s,e,n in allruns[p][rn]):
+                          ok=False;break
+                  if ok:good.append(off)
+              if good:
+                  # collapse offsets
+                  s=prev=good[0]
+                  for x in good[1:]+[None]:
+                      if x is not None and x==prev+1:
+                          prev=x;continue
+                      print(rn,f'offset {s:04X}-{prev:04X} gives 256-byte common window starts')
+                      if x is not None:s=prev=x
+              else: print(rn,'none')
+          PY
