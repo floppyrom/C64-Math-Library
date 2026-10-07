@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the shipped unsigned divide/modulo family at the stable public ABI.\n\nStep-limit failures report the exact profile, API entry and input pair.
+"""Validate the shipped unsigned divide/modulo family at the stable public ABI.\n\nStep-limit failures report the exact profile, API entry and input pair. The diagnostic label is intentionally part of the validator contract.
 
 The corpus is deterministic. UDIV8 is exhaustive in every fixed profile; wider
 entries combine structured edges, random inputs, and explicit divide-by-zero
