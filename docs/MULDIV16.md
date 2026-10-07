@@ -48,12 +48,12 @@ random triples. Reference and alternate-map cycle vectors are identical.
 | Profile | UMULDIV16 mean | min-max | SMULDIV16 mean | min-max |
 |---|---:|---:|---:|---:|
 | V1 Balanced | 1289.022331 | 513-2300 | 1378.300411 | 490-2271 |
-| V2 Pareto-Fast | **801.646373** | 301-1923 | **889.395956** | 83-1893 |
-| V3 REU 512K | **801.646373** | 301-1923 | **889.395956** | 83-1893 |
-| V4 REU 16M | **801.646373** | 301-1923 | **889.395956** | 83-1893 |
-| V5 Hybrid Low-ZP | 956.646373 | 456-2078 | 1378.300411 | 490-2271 |
+| V2 Pareto-Fast | **801.646373** | 301-1923 | **860.152761** | **83-1870** |
+| V3 REU 512K | **801.646373** | 301-1923 | **860.152761** | **83-1870** |
+| V4 REU 16M | **801.646373** | 301-1923 | **860.152761** | **83-1870** |
+| V5 Hybrid Low-ZP | **834.646373** | **334-1956** | **888.154427** | **83-1899** |
 
-V1 and V5 use the compact compositional implementation: full public multiply,
+V1 keeps the compact compositional implementation: full public multiply,
 four-byte product handoff, then the selected mixed-width divider.
 
 V2-V4 use two OptiSearch-derived fusion ideas:
@@ -66,10 +66,34 @@ V2-V4 use two OptiSearch-derived fusion ideas:
    are applied once. This avoids doing signed-product correction and then
    reconstructing a magnitude again inside signed division.
 
-On the paired V2-V4 signed corpus, the fused signed path improves the composed
-baseline from **1133.038773 to 889.395956 cycles mean**, with maximum latency
-**2162 to 1893**, **zero slower cases**, and per-call savings of **64 to 988
-cycles**.
+The final V2-V4 signed path also preserves the product-sign quadrant in control
+flow instead of re-reading and XORing the public sign bytes after division.
+Specialized quotient-only, remainder-only, quotient+remainder and no-fix tails
+remove redundant sign dispatch and stack/jump overhead. On the paired corpus,
+the composed baseline improves from **1133.038773 to 860.152761 cycles mean**,
+with maximum latency **2162 to 1870**, **zero slower cases**, and per-call
+savings of **90 to 1027 cycles** (mean saving **272.886013 cycles**).
+
+V5 now applies the same producer-consumer principle under its stricter **31-byte
+normal-ZP contract**, without importing the high-ZP V2 multiplier. The hybrid
+builder reuses the qualified V1 **17-ZP UMUL16 record producer**, binds its
+quarter-square pointers in the overlapping low-ZP window, and feeds the returned
+`z0/X/A/Y` product bytes directly into the relocated private V2 UDIV32/16
+state. The signed path normalizes X/Y once, carries the product-sign quadrant
+through control flow, performs one unsigned magnitude multiply/divide, and
+enters a specialized result tail. Hot negative-result tails are inlined in
+otherwise free implementation space, so the final cycle pass adds no ZP,
+persistent stack reservation, or profile PRG-span growth. Divisor magnitude is
+bound only after multiplication because the divider's D slots overlap the
+producer pointer image.
+
+Against the previous V5 composition, unsigned mean latency improves
+**956.646373 -> 834.646373 cycles** (456-2078 -> 334-1956), while signed
+improves **1378.300411 -> 888.154427 cycles** (490-2271 -> 83-1899). The
+reference and alternate maps have identical cycle vectors. The remaining V5
+gap to V2-V4 is primarily the cost of re-binding the overlapping low-ZP
+quarter-square pointers on each call; retaining those bindings across arbitrary
+public calls would violate V5's shared-scratch assumptions.
 
 The fused routines add no persistent stack reservation and reuse the existing
 profile multiplication/division scratch classes. The V2-V4 signed fusion lives
