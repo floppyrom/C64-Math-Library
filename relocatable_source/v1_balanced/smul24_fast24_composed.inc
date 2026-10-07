@@ -57,7 +57,11 @@ S24_c1_2:
         lda #1
         adc (S24_p10),y
         bcc S24_t1_2
-S24_umult:
+S24_bind_primed:
+        sta S24_p10
+        eor #$ff
+        sta S24_p9
+        sta S24_p11
         lda S24_x0
         sta S24_p2
         eor #$ff
@@ -68,13 +72,6 @@ S24_umult:
         eor #$ff
         sta S24_p5
         sta S24_p7
-        lda S24_x2
-        sta S24_p10
-        eor #$ff
-        sta S24_p9
-        sta S24_p11
-S24_bound_entry:
-        sec
 S24_row0:
         lda (S24_p0),y
         adc (S24_p1),y
@@ -193,61 +190,57 @@ S24_c2_2:
         adc (S24_p10),y
         bcc S24_t2_2
 
-; Signed composition.
-; x sign is S24_x2 bit7; y sign is entry Y bit7 (y2).
+; Repose OptiSearchV2 carry-prime signed composition.
+; CPY #0 both tests y2's sign and establishes C=1 for all byte values.
+; Binding uses only loads/stores/EOR, preserving C into the first product.
+; S24_p2 is dead after the producer, so its low byte holds correction A.
 S24_smul24_composed:
+        cpy #0
+        bmi S24_smul24_yneg
         lda S24_x2
         bmi S24_smul24_xneg
-        tya
-        bmi S24_smul24_yneg_only
-        jmp S24_umult
+        jmp S24_bind_primed
 
-; x<0, y>=0: unsigned product then subtract y from upper 24 bits.
+; x<0, y>=0: subtract the original y from the upper product half.
 S24_smul24_xneg:
-        tya
-        bmi S24_smul24_nn
-        ; Public inputs remain stable in MATH_IO. Re-read original Y2 after
-        ; the producer instead of saving it into a self-modified immediate.
-        jsr S24_umult
-        sta S24_smul24_xneg_orig_a+1
+        ; Re-read stable public Y2 after the producer (upstream q2 optimization).
+        jsr S24_bind_primed
+        sta S24_p2
         tya
         sec
         sbc S24_y0
         tay
-S24_smul24_xneg_orig_a:
-        lda #0
+        lda S24_p2
         sbc S24_y1
-        sta S24_smul24_xneg_restore_a+1
+        sta S24_p2
         txa
         sbc MATH_IO+$06
         tax
-S24_smul24_xneg_restore_a:
-        lda #0
+        lda S24_p2
         rts
 
-; x>=0, y<0: unsigned product then subtract x from upper 24 bits.
-S24_smul24_yneg_only:
-        jsr S24_umult
-        sta S24_smul24_yneg_orig_a+1
+; x>=0, y<0: subtract the original x from the upper product half.
+S24_smul24_yneg:
+        lda S24_x2
+        bmi S24_smul24_nn
+        jsr S24_bind_primed
+        sta S24_p2
         tya
         sec
         sbc S24_x0
         tay
-S24_smul24_yneg_orig_a:
-        lda #0
+        lda S24_p2
         sbc S24_x1
-        sta S24_smul24_yneg_restore_a+1
+        sta S24_p2
         txa
         sbc S24_x2
         tax
-S24_smul24_yneg_restore_a:
-        lda #0
+        lda S24_p2
         rts
 
-; x<0, y<0: multiply magnitudes. Negate y in-place while preserving
-; carry propagation into entry Y, then negate/bind x and jump after binder.
+; x<0, y<0: negate both operands. Entry C=1 negates y. Since y2
+; is negative, EOR/ADC leaves C=0; LDA #1/SBC x0 starts -x exactly.
 S24_smul24_nn:
-        sec
         lda #0
         sbc S24_y0
         sta S24_y0
@@ -258,9 +251,7 @@ S24_smul24_nn:
         eor #$ff
         adc #0
         tay
-
-        sec
-        lda #0
+        lda #1
         sbc S24_x0
         sta S24_x0
         sta S24_p2
@@ -281,7 +272,8 @@ S24_smul24_nn:
         eor #$ff
         sta S24_p9
         sta S24_p11
-        jmp S24_bound_entry
+        sec
+        jmp S24_row0
 S24_smul24_composed_end:
 
 S24_public_impl:

@@ -19,8 +19,8 @@ MATH_ATAN2_8:
 LC814:
     clc                                ; @C814 18
     ldx $C000                          ; @C815 AE 00 C0
-    beq LC85C                          ; @C818 F0 42
-    bmi LC83A                          ; @C81A 30 1E
+    bmi LC83A                          ; @C818 30 20
+    beq LC85C                          ; @C81A F0 40
     lda $6D00,x                        ; @C81C BD 00 6D
     ldx $C004                          ; @C81F AE 04 C0
     bmi LC82F                          ; @C822 30 0B

@@ -1,3 +1,10 @@
+2026-10-07: Repose OptiSearchV2 follow-up
+- SMUL24: carry-primed dispatch saves 4-5 cycles/call and 6 code bytes.
+- ATAN2: about 1 cycle lower full-domain mean, same results/resources.
+  X=0 costs 4 extra cycles in V1 or 2 in V2/V3/V5; V4 unchanged.
+- Native FAST24: 395.756600 cycles on the paired 30,000-case corpus.
+- Preserves newer upstream multiply/division work; adds paired and exhaustive evidence.
+
 2026-10-07 SDIV16 DEFERRED Q>=2 MAGNITUDE COPY
 - V2-V4 positive/positive q=1 path reuses stable public inputs and defers private magnitude copies until q>=2.
 - Canonical V1/V2/V3/V4/V5 means: 187.131298 / 168.393021 / 170.582116 / 168.745038 / 171.905344.

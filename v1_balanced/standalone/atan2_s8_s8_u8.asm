@@ -18,9 +18,9 @@ MATH_ATAN2_8:
 * = $C814
 LC814:
     ldx $C000                          ; @C814 AE 00 C0
-    beq LC864                          ; @C817 F0 4B
-    sec                                ; @C819 38
-    bmi LC83F                          ; @C81A 30 23
+    sec                                ; @C817 38
+    bmi LC83F                          ; @C818 30 25
+    beq LC864                          ; @C81A F0 48
     lda $9600,x                        ; @C81C BD 00 96
     ldx $C004                          ; @C81F AE 04 C0
     bmi LC830                          ; @C822 30 0C

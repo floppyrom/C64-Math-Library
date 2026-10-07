@@ -183,6 +183,19 @@ def cycles_catalog():
         add_cycle(cat,p,'MATH_UMUL24',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
                   '2026-10-06 UMUL24 direct-output validation')
 
+    # Repose OptiSearchV2 transplants use common profile/map corpora. Keep these
+    # ahead of historical profile-specific samples in the public comparison.
+    s24=json.loads((ROOT/'validation/multiply_refresh/SMUL24_DIRECTOUT_VALIDATION.json').read_text())
+    for p,rr in s24['results'].items():
+        v=rr['reference']
+        add_cycle(cat,p,'MATH_SMUL24',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
+                  '2026-10-07 SMUL24 carry-prime/direct-output validation')
+    atan=json.loads((ROOT/'validation/ATAN2_DISPATCH_VALIDATION.json').read_text())
+    for p,rr in atan['results'].items():
+        v=rr['reference']
+        add_cycle(cat,p,'MATH_ATAN2_8',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
+                  '2026-10-06 exhaustive ATAN2 dispatch validation')
+
     # Q8.8 vector normalize profile-parity benchmark (107,396-vector deterministic corpus).
     norm=json.loads((ROOT/'validation/normalize/NORMALIZE_PROFILE_PARITY_107396.json').read_text())
     for row in norm['profiles']:
@@ -265,7 +278,7 @@ def provenance(profile,n):
         return ('FAST17 SMUL16 plus SHR8 extraction' if profile in ('v1_balanced','v5_hybrid_lowzp')
                 else '116-ZP practical native SMUL16 plus SHR8 extraction')
     if n=='MATH_SMUL24':
-        return 'FAST24 four-quadrant native signed composition; immutable quarter-square tables shared'
+        return 'FAST24 carry-primed signed dispatch with shared binder and dead pointer-low correction scratch; direct z0-z2 public output'
     if n in ('MATH_SMUL32','MATH_SMUL32_READY'):
         if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
             return ('FAST31/V29 native signed quadrant composition; all six pointer pairs persist '

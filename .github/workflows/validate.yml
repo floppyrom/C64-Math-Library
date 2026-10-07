@@ -54,5 +54,9 @@ jobs:
         run: |
           python3 tools/validate_smul24_directout.py
           git diff --exit-code -- validation/multiply_refresh/SMUL24_DIRECTOUT_VALIDATION.json
+      - name: Exhaustive ATAN2 dispatch and output compatibility
+        run: |
+          python3 tools/validate_atan2_dispatch.py
+          git diff --exit-code -- validation/ATAN2_DISPATCH_VALIDATION.json
       - name: Exhaustive REU UDIV8 hybrid validation
         run: python3 tools/validate_reu_udiv8_hybrid.py

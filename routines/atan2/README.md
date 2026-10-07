@@ -27,12 +27,12 @@ published API include rather than these internal addresses.
 
 | File | Profiles | Tables | Published public-entry timing |
 |---|---|---:|---:|
-| `atan2_compact_opt.asm` | V1 | 512 B | **48.447189 mean**, 29-50 cycles |
-| `atan2_sum_fast.asm` | V2, V3, V5 | 1024 B | **44.962814 mean**, 29-47 cycles |
+| `atan2_compact_opt.asm` | V1 | 512 B | **47.462814 mean**, 33-50 cycles |
+| `atan2_sum_fast.asm` | V2, V3, V5 | 1024 B | **43.970627 mean**, 31-45 cycles |
 
 The fast kernel spends two additional 256-byte pages and uses a carry-clearing
 log sum plus two reflected angle pages. That is a **512-byte incremental cost
-for about 7.2% lower average latency** than V1.
+for about 7.4% lower average latency** than V1.
 
 V4 keeps its separate exact REU-backed ATAN2 path at a fixed 48 cycles.
 
@@ -40,7 +40,9 @@ The size refresh moves sum-fast carry setup to one common entry instruction,
 saving four code bytes with identical cycles and outputs for every input.
 See [the size-refresh note](../../docs/SIZE_OPTIMIZATION_2026-09-21.md).
 
-## Optimized kernels (updated 2026-09-21)
+The 2026-10-07 OptiSearchV2 review moves the negative-X branch before the zero test. X<0 saves 2 cycles, X>0 is unchanged, and X=0 costs 4 extra cycles in compact-opt or 2 in sum-fast. Every output is unchanged; there is no code, table or ZP growth. See [the review](../../docs/OPTISEARCH_REVIEW_2026-10-07.md).
+
+## Optimized kernels (updated 2026-10-07)
 
 `compact_opt` and `sum_fast` are installed in the fixed profiles. `sum_small`
 remains an optional smaller-table alternative.
@@ -48,10 +50,10 @@ remains an optional smaller-table alternative.
 | Kernel | Code | Tables | Code + tables | Mean cycles | Range | Shipped-output parity |
 |---|---:|---:|---:|---:|---:|---|
 | previous `compact` | 106 B | 512 B | 618 B | 50.441345 | 30-53 | baseline |
-| **installed V1 `compact_opt`** | **94 B** | **512 B** | **606 B** | **48.447189** | 29-50 | exact |
+| **installed V1 `compact_opt`** | **94 B** | **512 B** | **606 B** | **47.462814** | 33-50 | exact |
 | previous `fast` | 94 B | 1280 B | 1374 B | 46.953064 | 30-48 | exact |
 | **`sum_small`** | **92 B** | **768 B** | **860 B** | **45.958908** | 29-48 | 202 results differ by 1 |
-| **installed V2/V3/V5 `sum_fast`** | **85 B** | **1024 B** | **1109 B** | **44.962814** | 29-47 | exact |
+| **installed V2/V3/V5 `sum_fast`** | **85 B** | **1024 B** | **1109 B** | **43.970627** | 31-45 | exact |
 
 All five use 0 extra ZP and satisfy the <=1 phase-unit bound against rounded
 mathematical atan2. Every axis and `(0,0)` is exact. The three-page `sum_small`
@@ -139,9 +141,10 @@ python3 routines/atan2/export_optimized.py --check
 python3 routines/atan2/validate_optimized.py --acme /path/to/acme
 ```
 
-The committed result is
+The original independent certification is retained in
 [`validation/ATAN2_OPTIMIZATION_VALIDATION.json`](../../validation/ATAN2_OPTIMIZATION_VALIDATION.json).
-
-The exhaustive installed-profile evidence remains in
-`validation/ATAN2_UPGRADE_VALIDATION.json`; game-use analysis is in
-`docs/ATAN2_GAME_AUDIT_2026-09-17.md`.
+Current branch-order results, with both incoming carry states, are in
+[`validation/ATAN2_STANDALONE_DISPATCH.json`](../../validation/ATAN2_STANDALONE_DISPATCH.json).
+Current exhaustive installed-profile evidence for both maps is in
+[`validation/ATAN2_DISPATCH_VALIDATION.json`](../../validation/ATAN2_DISPATCH_VALIDATION.json); regenerate it with `python3 tools/validate_atan2_dispatch.py` after building all profiles.
+The September upgrade and game-use reports remain historical evidence.

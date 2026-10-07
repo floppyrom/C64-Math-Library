@@ -1,0 +1,108 @@
+{
+  "status": "PASS",
+  "date": "2026-10-06",
+  "basis": "all 65536 signed-byte vectors per profile/map; public entry through RTS, excluding caller JSR/input stores",
+  "machine_calls": 655360,
+  "results": {
+    "v1_balanced": {
+      "reference": {
+        "cases": 65536,
+        "mean_cycles": 47.46281433105469,
+        "min_cycles": 33,
+        "max_cycles": 50,
+        "outputs_sha256": "73fd9db120732dbf71158863dde2ca220339bc47894ebb5517527d6ebd674859",
+        "max_phase_error": 1,
+        "input_or_carry_or_stack_failures": 0
+      },
+      "alternate": {
+        "cases": 65536,
+        "mean_cycles": 47.46281433105469,
+        "min_cycles": 33,
+        "max_cycles": 50,
+        "outputs_sha256": "73fd9db120732dbf71158863dde2ca220339bc47894ebb5517527d6ebd674859",
+        "max_phase_error": 1,
+        "input_or_carry_or_stack_failures": 0
+      }
+    },
+    "v2_pareto_fast": {
+      "reference": {
+        "cases": 65536,
+        "mean_cycles": 43.97062683105469,
+        "min_cycles": 31,
+        "max_cycles": 45,
+        "outputs_sha256": "73fd9db120732dbf71158863dde2ca220339bc47894ebb5517527d6ebd674859",
+        "max_phase_error": 1,
+        "input_or_carry_or_stack_failures": 0
+      },
+      "alternate": {
+        "cases": 65536,
+        "mean_cycles": 43.97062683105469,
+        "min_cycles": 31,
+        "max_cycles": 45,
+        "outputs_sha256": "73fd9db120732dbf71158863dde2ca220339bc47894ebb5517527d6ebd674859",
+        "max_phase_error": 1,
+        "input_or_carry_or_stack_failures": 0
+      }
+    },
+    "v3_reu_512k": {
+      "reference": {
+        "cases": 65536,
+        "mean_cycles": 43.97062683105469,
+        "min_cycles": 31,
+        "max_cycles": 45,
+        "outputs_sha256": "73fd9db120732dbf71158863dde2ca220339bc47894ebb5517527d6ebd674859",
+        "max_phase_error": 1,
+        "input_or_carry_or_stack_failures": 0
+      },
+      "alternate": {
+        "cases": 65536,
+        "mean_cycles": 43.97062683105469,
+        "min_cycles": 31,
+        "max_cycles": 45,
+        "outputs_sha256": "73fd9db120732dbf71158863dde2ca220339bc47894ebb5517527d6ebd674859",
+        "max_phase_error": 1,
+        "input_or_carry_or_stack_failures": 0
+      }
+    },
+    "v4_reu_16m": {
+      "reference": {
+        "cases": 65536,
+        "mean_cycles": 48.0,
+        "min_cycles": 48,
+        "max_cycles": 48,
+        "outputs_sha256": "27252e4c6c3808490e5d0ca163e22d8a1e22510cf82d14081517ec4d1a919b7d",
+        "max_phase_error": 0,
+        "input_or_carry_or_stack_failures": 0
+      },
+      "alternate": {
+        "cases": 65536,
+        "mean_cycles": 48.0,
+        "min_cycles": 48,
+        "max_cycles": 48,
+        "outputs_sha256": "27252e4c6c3808490e5d0ca163e22d8a1e22510cf82d14081517ec4d1a919b7d",
+        "max_phase_error": 0,
+        "input_or_carry_or_stack_failures": 0
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "reference": {
+        "cases": 65536,
+        "mean_cycles": 43.97062683105469,
+        "min_cycles": 31,
+        "max_cycles": 45,
+        "outputs_sha256": "73fd9db120732dbf71158863dde2ca220339bc47894ebb5517527d6ebd674859",
+        "max_phase_error": 1,
+        "input_or_carry_or_stack_failures": 0
+      },
+      "alternate": {
+        "cases": 65536,
+        "mean_cycles": 43.97062683105469,
+        "min_cycles": 31,
+        "max_cycles": 45,
+        "outputs_sha256": "73fd9db120732dbf71158863dde2ca220339bc47894ebb5517527d6ebd674859",
+        "max_phase_error": 1,
+        "input_or_carry_or_stack_failures": 0
+      }
+    }
+  }
+}

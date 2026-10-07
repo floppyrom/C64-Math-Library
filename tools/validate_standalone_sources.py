@@ -61,7 +61,7 @@ refresh_names={'MATH_UMUL24','MATH_UMUL32','MATH_UMUL32_READY','MATH_SMUL8','MAT
 for p in pub.PROFILES:
  for n in refresh_names:
   r=next(x for x in cons if x['profile']==p and x['routine']==n)
-  ok(f'{p}:{n}: current evidence',('2026-09-20' in r['cycle_basis'] or 'current native' in r['cycle_basis'] or (n=='MATH_UDIV8' and p in ('v3_reu_512k','v4_reu_16m') and '2026-10-06 exhaustive REU UDIV8 hybrid validation' in r['cycle_basis']) or (n=='MATH_UMUL24' and '2026-10-06 UMUL24 direct-output validation' in r['cycle_basis']) or (n=='MATH_UMUL24' and p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m') and '2026-09-14 record-upgrade' in r['cycle_basis'])),r['cycle_basis'])
+  ok(f'{p}:{n}: current evidence',('2026-09-20' in r['cycle_basis'] or 'current native' in r['cycle_basis'] or (n=='MATH_UDIV8' and p in ('v3_reu_512k','v4_reu_16m') and '2026-10-06 exhaustive REU UDIV8 hybrid validation' in r['cycle_basis']) or (n=='MATH_UMUL24' and '2026-10-06 UMUL24 direct-output validation' in r['cycle_basis']) or (n=='MATH_SMUL24' and '2026-10-07 SMUL24 carry-prime/direct-output validation' in r['cycle_basis']) or (n=='MATH_UMUL24' and p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m') and '2026-09-14 record-upgrade' in r['cycle_basis'])),r['cycle_basis'])
 report={'status':'PASS' if not errors else 'FAIL','checks':len(checks),'failed':len(errors),'errors':errors,'summary':{'profiles':{p:len(list(csv.DictReader((ROOT/p/'standalone/MANIFEST.csv').open()))) for p in pub.PROFILES},'consolidated_rows':len(cons),'stable_api_entries':len(api)}}
 (ROOT/'validation/STANDALONE_API_CONSISTENCY_AUDIT.json').write_text(json.dumps(report,indent=2)+'\n')
 print(report['status'],report['checks'],'checks;',report['failed'],'failed')

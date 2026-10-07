@@ -1,3 +1,13 @@
+## 2026-10-07 — Repose OptiSearchV2 SMUL24 and ATAN2 refinements
+
+- Adapted Repose's carry-primed signed dispatch and dead pointer-low scratch with one shared binder. Public SMUL24 saves 4–5 cycles per measured call and six code bytes, preserving 24 ZP bytes, tables, public inputs and zero persistent stack usage.
+- On the same 10,676-case corpus as baseline `ff1b602`, V1/V5 improve **516.095822 → 511.342357** and V2/V3/V4 **472.095822 → 467.342357** cycles. The current upstream stable-input correction is retained.
+- Native FAST24 improves **400.301600 → 395.756600** cycles on identical 30,000-pair inputs, with 4,265 independent Reduced6502 result/cycle checks and no mismatches.
+- ATAN2 checks negative X before zero: V1 averages **47.462814**, V2/V3/V5 **43.970627** cycles. Negative-X calls save 2 cycles; X=0 costs 4 extra cycles in V1 or 2 in V2/V3/V5. Outputs and resource use are unchanged; V4 retains exact REU lookup.
+- Exhaustive ATAN2 and strengthened SMUL24 ABI/interference checks are included in CI. Source mirrors, public tables and current evidence are regenerated.
+- Regenerated V5 from current donors, including the upstream SDIV16 late-copy change; signed division/modulo validation passes 364,533 calls.
+- See [the review](docs/OPTISEARCH_REVIEW_2026-10-07.md) for scope, attribution, candidate decisions, paired comparisons and reproduction commands.
+
 ## 2026-10-07 — SDIV16 deferred q>=2 magnitude copy
 
 - Generalized the stable-input optimization to the fast signed 16-bit divider in V2-V4.

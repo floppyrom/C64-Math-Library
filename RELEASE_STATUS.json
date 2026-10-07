@@ -5,19 +5,19 @@
     "historical_overlay_boundary_checks": 4,
     "historical_overlay_checks": 8,
     "historical_status": "PASS",
-    "note": "ACME 0.97 independently reproduces all current V1-V4 reference/alternate PRGs (including the seek include) and Turbo overlay/boundary builds; the standalone seek sources assemble byte-identically.",
-    "status": "PASS_CURRENT",
-    "current_checks": 8,
-    "current_overlay_checks": 8,
-    "current_overlay_boundary_checks": 4,
-    "current_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
+    "note": "The previous ACME 0.97 certificate is historical. The OptiSearch SMUL24/ATAN2 update has deterministic mini6502 builds and an independent Reduced6502 native oracle; the external ACME executable was not available for a current rerun.",
+    "status": "NOT_RUN_CURRENT",
+    "previous_checks": 8,
+    "previous_overlay_checks": 8,
+    "previous_overlay_boundary_checks": 4,
+    "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "529898a2b78bdab0f52a95431a5899c3a71ccd86c87deee2deeab75beee40e0d",
-    "v2_pareto_fast": "4bc134ef951b40e1ed598f17531731d443169a58c45f6283c2d864ac38ee9959",
-    "v3_reu_512k": "ffcfbb23169c04c255a49d015d73014e7d20a67cb68e4f42418b398dc0469f34",
-    "v4_reu_16m": "bb2c2313d74425023d928e0ed7c166c36fa9523ab4245c768f127413a086ca01",
-    "v5_hybrid_lowzp": "f954542d7dd59df21765d099d237c161de4c46f8d2e069da4cc48b97839b13ac"
+    "v1_balanced": "0c29395fe3259a5b4ed6c811b6f4b907f2eaa7d4bf9aa8d89f1e5ef3d7722d70",
+    "v2_pareto_fast": "ff5663429a4e71f19af1bc701f4de088d021f0cdcb118196faa19dab53f4c1ca",
+    "v3_reu_512k": "b313b36805c80243193f4e062184b6b6931b7c04c0c41c4c65a1ac2cdc4b19f3",
+    "v4_reu_16m": "6fd71639067541431526e1f3e6c46219f314e6d0d2ac1da084fb90ac7f1f8bcd",
+    "v5_hybrid_lowzp": "dac33d17d8f85fff7e840eee1b9dd34349d6aade9ba0c814941ab7440578c3d5"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "4ba6ece174d54042d51736f3bb0ee3a8c0506c8fcdd9ac4c0163bfb5197a3fda",
@@ -144,7 +144,7 @@
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "3abbacc805a490db5c0ee90498957f9c2c8501a99a3ce7e3b3b54b0eb8fb163b",
+    "alternate_prg_sha256": "dac33d17d8f85fff7e840eee1b9dd34349d6aade9ba0c814941ab7440578c3d5",
     "common_machine_calls_per_map": 21422,
     "common_public_entries_per_map": 54,
     "config_validation_cases": 8,
@@ -157,7 +157,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729",
+    "reference_prg_sha256": "74445a3d590cad45aa74fb8546d0704670516b801ca6f9f400d551dcb812e38f",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "atan2_tables_bytes": 1024
@@ -186,7 +186,7 @@
     "Division refresh integrates Repose-derived UDIV24, profile-specific UDIV8/16/24 selection and native direct-output signed division; 822,050 unsigned + 364,533 signed validation calls pass with zero errors.",
     "UMUL16/UMUL24 resident record upgrades are active; V1/V5 preserve the 31-byte normal-ZP and UMUL32_READY state contracts.",
     "V3/V4 Turbo32 keeps the stack-free 135-ZP overlay but uses a direct-I/O resident adapter; reference range $0A-$90, legal origins $02-$79; BEGIN/CALL/END = 326 / 684.185219 mean / 371 cycles on the canonical corpus, with a 116-product crossover versus normal UMUL32.",
-    "Current ACME 0.97 independently reproduces all V1-V4 reference/alternate PRGs and Turbo overlay/boundary builds byte-for-byte.",
+    "The retained ACME certificate predates the current OptiSearch update; current external ACME validation was not run.",
     "A 285-row consolidated routine table covers every stable API in V1-V5 plus V3/V4 Turbo and V4 QS16, including cycles, reachable code bytes, ZP and persistent stack-page reservation.",
     "All shipped SMUL*/SDIV* public paths own signed-specific executable paths; corresponding unsigned executable engines are not entered.",
     "Signed ownership validator: 279 checks and 65/65 zero-overlap signed/unsigned executable comparisons across V1-V5.",
@@ -211,7 +211,7 @@
     "Turbo executable-ZP origins and REU storage banks are selected at build time; overlay code is assembled from canonical source with no runtime relocation pass.",
     "Reference and alternate Turbo cycle vectors are identical; relocation adds zero runtime cycles.",
     "Fast exact independently derived ISQRT32 remains active; V4 uses 512 resident square-table bytes at $9800-$99FF.",
-    "ATAN2 profile integration: V1 uses compact_opt (48.447189 mean, 512 B tables); V2/V3/V5 use sum_fast (44.962814 mean, 1024 B tables); V4 retains exact REU ATAN2.",
+    "ATAN2 profile integration: V1 uses compact_opt (47.462814 mean, 512 B tables); V2/V3/V5 use sum_fast (43.970627 mean, 1024 B tables); V4 retains exact REU ATAN2.",
     "Turbo16 public CALL keeps the exact 113-byte overlay but removes a redundant x1 reload: 211.544111 mean cycles (199-236), BEGIN/END 282/327, 43-product crossover versus normal UMUL16; relocation and boundary cycle vectors remain identical.",
     "V2/V3/V4 public UMUL16 uses the resource-neutral A=x1/direct-Z0 adaptation: 216.980037 mean cycles (205-240), 16 ZP bytes; UMUL16_SHR8 is 257.980037 mean and remains exactly +41 cycles.",
     "All-profile public UMUL24 direct-output update: V1/V5 474.042329 mean (444-530), V2/V3/V4 429.555502 mean (400-485), exactly 18 cycles saved on every call in the 10,324-case old-vs-new comparison; 24-ZP/table contracts unchanged.",
@@ -222,17 +222,17 @@
   "package_cleanup": {
     "consolidated_routine_table_rows": 285,
     "csdb_changelog": "CSDB_CHANGELOG.txt",
-    "current_acme_validation": true,
+    "current_acme_validation": false,
     "generated_build_hybrid_shipped": false,
     "generated_build_pareto_shipped": false,
     "generated_build_source_shipped": false,
-    "lean_file_count_excluding_checksum": 974,
+    "lean_file_count_excluding_checksum": 1026,
     "legacy_native_signed_tree_removed": true,
     "obsolete_development_validators_removed": 2,
     "package_contents_doc": "docs/PACKAGE_CONTENTS.md",
     "prior_exhaustive_baseline_retained": true,
     "superseded_slow_isqrt32_baseline_shipped": false,
-    "uncompressed_bytes_excluding_checksum": 29299143,
+    "uncompressed_bytes_excluding_checksum": 29545973,
     "unreferenced_legacy_bin_label_artifacts_removed": 27
   },
   "profiles": [
@@ -243,11 +243,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "5dd3790c661266347442c6bce2bd4ccae53c3e0bd0891b3a84a07c8c29a328de",
-    "v2_pareto_fast": "e7082832342066561514838194163189023ab93e66425d11905ba977619f6804",
-    "v3_reu_512k": "05752e98ac25cbea266a6a290255d26cfd035713d5739949aade42347a5e86df",
-    "v4_reu_16m": "578dd94ac2621007921074a31c2fcada13b17717ea0384a6314367feefccc1e7",
-    "v5_hybrid_lowzp": "052165d0c0eabf29ea74f0a05362432eb6a5db10acc4e0a132a25b7d70b8dd19"
+    "v1_balanced": "2e5c2f93a41f1564181e4ccb26133ef8d878e7a4e07c3ad3a1a719c0a4ac6ff9",
+    "v2_pareto_fast": "f2aadd2eacd9dd6dfd7af26b09a1b90356da1c2203026aaa23a24f92048d055f",
+    "v3_reu_512k": "02117677cb35bff3e70930eb6721e5b113701cd56d2b7f16c116dc100b88517e",
+    "v4_reu_16m": "bc3b8b088fff142fad0d7bb25272d22382565ace95e1ab3c584ee26e723b38c2",
+    "v5_hybrid_lowzp": "74445a3d590cad45aa74fb8546d0704670516b801ca6f9f400d551dcb812e38f"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "674418328ebd210d161790c0a6d42be9d1ca08315c17fdc13d04bea4d0999b61",
@@ -259,7 +259,7 @@
   },
   "release": "c64_math_library_v1-v5_SEEK_DDA_54ENTRY_2026-09-25",
   "release_audit_checks": 268,
-  "release_audit_status": "PASS",
+  "release_audit_status": "HISTORICAL_PASS_NOT_RERUN",
   "reu_turbo_lifecycle_entries": 6,
   "signed_implementation_taxonomy": {
     "definition": "signed path owns executable arithmetic; no corresponding unsigned executable engine entered; immutable tables may be shared",
@@ -285,7 +285,7 @@
     "status": "PASS"
   },
   "stable_api_entries": 54,
-  "status": "PASS",
+  "status": "PASS_TARGETED_VALIDATION",
   "turbo_boundary_sweep": {
     "product_calls": 3556,
     "status": "PASS",
@@ -477,5 +477,32 @@
       "validation/movement/SEEK_DDA_BENCHMARK.json"
     ],
     "illegal_opcodes": "STEP1 uses stable NMOS DCP"
+  },
+  "release_audit_note": "Current validation is recorded in optisearch_review and OPTISEARCH_INTEGRATION_VALIDATION.json; the full historical release audit was not rerun.",
+  "optisearch_review": {
+    "status": "PASS",
+    "date": "2026-10-07",
+    "baseline_commit": "ff1b602f9ecff43724ca507f692beaa2aed89651",
+    "documentation": "docs/OPTISEARCH_REVIEW_2026-10-07.md",
+    "paired_comparison": "validation/records/OPTISEARCH_PROFILE_COMPARISON.json",
+    "integration_validation": "validation/records/OPTISEARCH_INTEGRATION_VALIDATION.json",
+    "smul24_validation": "validation/multiply_refresh/SMUL24_DIRECTOUT_VALIDATION.json",
+    "atan2_validation": "validation/ATAN2_DISPATCH_VALIDATION.json",
+    "native_independent_oracle": "validation/records/SMUL24_OPTISEARCH_ORACLE.json",
+    "smul24_public_saved_cycles": [
+      4,
+      5
+    ],
+    "smul24_code_bytes_saved": 6,
+    "atan2_axis_extra_cycles": {
+      "v1_balanced": 4,
+      "v2_pareto_fast": 2,
+      "v3_reu_512k": 2,
+      "v5_hybrid_lowzp": 2
+    },
+    "new_zp_bytes": 0,
+    "new_persistent_stack_bytes": 0,
+    "new_table_bytes": 0,
+    "scope": "Selected candidates screened and measured; no exhaustive benchmark of the entire frontier."
   }
 }

@@ -1,6 +1,7 @@
-; Experimental 24-ZP signed 24x24 -> 48 composition
+; Qualified 24-ZP signed 24x24 -> 48 composition with carry-primed dispatch
 ; Base: C64-Math-Library record_umul24_24zp_carry.a (357.041715 mean)
-; Signed composition derived from Repose OptiSearch smul24_generic_qs_recreated.a
+; Signed composition: Repose OptiSearch; carry-prime refinement from OptiSearchV2
+; 2026-10-06 smul24-carry-prime-dead-zp-v2, adapted with one shared binder.
 ; PP=unsigned; mixed quadrants=upper-half correction; NN=negate + fused X bind.
 ; ABI (native kernel):
 ;   x = x0,x1,x2 (24-bit two's complement)
@@ -68,7 +69,11 @@ c1_2:
         lda #1
         adc (p10),y
         bcc t1_2
-umult:
+bind_primed:
+        sta p10
+        eor #$ff
+        sta p9
+        sta p11
         lda x0
         sta p2
         eor #$ff
@@ -79,13 +84,6 @@ umult:
         eor #$ff
         sta p5
         sta p7
-        lda x2
-        sta p10
-        eor #$ff
-        sta p9
-        sta p11
-bound_entry:
-        sec
 row0:
         lda (p0),y
         adc (p1),y
@@ -204,61 +202,58 @@ c2_2:
         adc (p10),y
         bcc t2_2
 
-; Signed composition.
-; x sign is x2 bit7; y sign is entry Y bit7 (y2).
+; Repose OptiSearchV2 carry-prime signed composition.
+; CPY #0 both tests y2's sign and establishes C=1 for all byte values.
+; Binding uses only loads/stores/EOR, preserving C into the first product.
+; p2 is dead after the producer, so its low byte holds correction A.
 smul24_composed:
+        cpy #0
+        bmi smul24_yneg
         lda x2
         bmi smul24_xneg
-        tya
-        bmi smul24_yneg_only
-        jmp umult
+        jmp bind_primed
 
-; x<0, y>=0: unsigned product then subtract y from upper 24 bits.
+; x<0, y>=0: subtract the original y from the upper product half.
 smul24_xneg:
-        tya
-        bmi smul24_nn
         sty smul24_saved_y2+1
-        jsr umult
-        sta smul24_xneg_orig_a+1
+        jsr bind_primed
+        sta p2
         tya
         sec
         sbc y0
         tay
-smul24_xneg_orig_a:
-        lda #0
+        lda p2
         sbc y1
-        sta smul24_xneg_restore_a+1
+        sta p2
         txa
 smul24_saved_y2:
         sbc #0
         tax
-smul24_xneg_restore_a:
-        lda #0
+        lda p2
         rts
 
-; x>=0, y<0: unsigned product then subtract x from upper 24 bits.
-smul24_yneg_only:
-        jsr umult
-        sta smul24_yneg_orig_a+1
+; x>=0, y<0: subtract the original x from the upper product half.
+smul24_yneg:
+        lda x2
+        bmi smul24_nn
+        jsr bind_primed
+        sta p2
         tya
         sec
         sbc x0
         tay
-smul24_yneg_orig_a:
-        lda #0
+        lda p2
         sbc x1
-        sta smul24_yneg_restore_a+1
+        sta p2
         txa
         sbc x2
         tax
-smul24_yneg_restore_a:
-        lda #0
+        lda p2
         rts
 
-; x<0, y<0: multiply magnitudes. Negate y in-place while preserving
-; carry propagation into entry Y, then negate/bind x and jump after binder.
+; x<0, y<0: negate both operands. Entry C=1 negates y. Since y2
+; is negative, EOR/ADC leaves C=0; LDA #1/SBC x0 starts -x exactly.
 smul24_nn:
-        sec
         lda #0
         sbc y0
         sta y0
@@ -269,9 +264,7 @@ smul24_nn:
         eor #$ff
         adc #0
         tay
-
-        sec
-        lda #0
+        lda #1
         sbc x0
         sta x0
         sta p2
@@ -292,7 +285,8 @@ smul24_nn:
         eor #$ff
         sta p9
         sta p11
-        jmp bound_entry
+        sec
+        jmp row0
 smul24_composed_end:
 
 code_end:

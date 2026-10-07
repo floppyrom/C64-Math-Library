@@ -34,18 +34,18 @@ These are current public-entry means, through `RTS`; caller `JSR` and input stor
 
 | Routine | V1 | V2 | V3 | V4 | V5 |
 |---|---:|---:|---:|---:|---:|
-| `mul_u16_u16_u32` | 273.837 | 225.837 | 225.837 | 225.837 | 273.837 |
-| `mul_s24_s24_s48` | 531.496 | 487.182 | 486.816 | 487.220 | 530.874 |
-| `mul_s32_s32_s64` | 744.570 | **718.605** | **719.033** | **719.090** | 743.913 |
+| `mul_u16_u16_u32` | 273.837 | 216.980 | 216.980 | 216.980 | 273.837 |
+| `mul_s24_s24_s48` | 511.342 | 467.342 | 467.342 | 467.342 | 511.342 |
+| `mul_s32_s32_s64` | 744.570 | 711.587 | 711.942 | 712.137 | 743.913 |
 | `div_u16_u16_u16_16` | 132.726 | 127.774 | 125.424 | 125.626 | 126.386 |
 | `div_s24_s24_s24_24` | 313.583 | 248.344 | 236.810 | 237.569 | 253.487 |
-| `atan2_s8_s8_u8` | 48.447 | 44.963 | 44.963 | 48.000 | 44.963 |
+| `atan2_s8_s8_u8` | 47.463 | 43.971 | 43.971 | 48.000 | 43.971 |
 | `seek_u8_u8_step` (per object per frame) | 87.137 | 87.137 | 87.137 | 87.137 | 87.137 |
 | `seek_u8_u8_step1` (1 px/frame) | 65.954 | 65.954 | 65.954 | 65.954 | 65.954 |
 
 For the complete table, resource use, min/max, corpora and source links, see [`PERFORMANCE.md`](PERFORMANCE.md).
 
-The repository also publishes standalone record/Pareto alternatives, including the current 24-ZP signed 24x24 FAST24 point at **400.301600 cycles**, the SMUL32 `compact126` absolute native record at **646.354530 cycles** (**136 ZP + 126 persistent stack-page bytes**), and the new **31-ZP / stack-free** `fast31_native_v2` point at **692.825100 cycles**. The older `turbo135` point remains the faster high-ZP stack-free alternative at **665.877260 cycles**. These use their own documented benchmark bases and should not be compared blindly with public-profile means; see [`docs/SMUL32_COMPACT126.md`](docs/SMUL32_COMPACT126.md) and [`docs/SMUL32_FAST31_V2.md`](docs/SMUL32_FAST31_V2.md). The exact compact126 source is also exposed as an optional exclusive overlay in the V2/V3/V4 profile trees.
+The repository also publishes standalone record/Pareto alternatives, including the current 24-ZP signed 24x24 FAST24 point at **395.756600 cycles**, the SMUL32 `compact126` absolute native record at **646.354530 cycles** (**136 ZP + 126 persistent stack-page bytes**), and the new **31-ZP / stack-free** `fast31_native_v2` point at **692.825100 cycles**. The older `turbo135` point remains the faster high-ZP stack-free alternative at **665.877260 cycles**. These use their own documented benchmark bases and should not be compared blindly with public-profile means; see [`docs/SMUL32_COMPACT126.md`](docs/SMUL32_COMPACT126.md) and [`docs/SMUL32_FAST31_V2.md`](docs/SMUL32_FAST31_V2.md). The exact compact126 source is also exposed as an optional exclusive overlay in the V2/V3/V4 profile trees.
 
 For the shipped API, V2/V3/V4 keep all six FAST31 pointer pairs in already-owned persistent ZP holes. This removes the ordinary pointer repair entirely: signed 32-bit multiply paths save **25 cycles**, unsigned paths save **22 cycles**, with no added stack-page use and V2 still inside its 221-byte ZP commitment.
 
@@ -85,11 +85,13 @@ See [`QUICK_START.md`](QUICK_START.md) and [`docs/SOURCE_RELOCATION.md`](docs/SO
 
 ## Current ATAN2 selection
 
-The 2026-09-20 ATAN2 refresh is included in this tree:
+The ATAN2 kernels include the 2026-10-07 Repose dispatch refinement:
 
-- V1: `compact_opt`, **48.447189** mean, 606 B occupied, 0 ZP;
-- V2/V3/V5: `sum_fast`, **44.962814** mean, 1,113 B occupied, 0 ZP;
+- V1: `compact_opt`, **47.462814** mean, 606 B occupied, 0 ZP;
+- V2/V3/V5: `sum_fast`, **43.970627** mean, 1,109 B occupied, 0 ZP;
 - V4: exact REU lookup, **48 cycles fixed**.
+
+Negative-X inputs save 2 cycles; X=0 costs 4 extra cycles in V1 and 2 in V2/V3/V5. All outputs are unchanged. See the [OptiSearchV2 review](docs/OPTISEARCH_REVIEW_2026-10-07.md) for paired SMUL24 gains and validation.
 
 Standalone `compact_opt`, `sum_small` and `sum_fast` sources remain available under [`routines/atan2/`](routines/atan2/).
 

@@ -353,7 +353,7 @@
       "MATH_SDIV16": {
         "cases": 4585,
         "errors": 0,
-        "mean_cycles": 171.90534351145038,
+        "mean_cycles": 170.63118865866957,
         "min_cycles": 54,
         "max_cycles": 1159,
         "mode": "structured_random"
@@ -400,7 +400,7 @@
       "MATH_SMOD16": {
         "cases": 1385,
         "errors": 0,
-        "mean_cycles": 232.80938628158844,
+        "mean_cycles": 231.66714801444044,
         "min_cycles": 54,
         "max_cycles": 1159
       },
@@ -430,6 +430,6 @@
   "summary": {
     "profiles": 5,
     "machine_calls": 364533,
-    "elapsed_seconds": 52.85
+    "elapsed_seconds": 38.22
   }
 }
