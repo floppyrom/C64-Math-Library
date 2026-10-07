@@ -15,6 +15,10 @@ jobs:
           python-version: '3.12'
       - name: Regenerate canonical sources
         run: python3 tools/generate_sources.py
+      - name: Build V1-V4 reference and alternate
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
       - name: Build V5 reference and alternate
         run: |
           python3 tools/build_hybrid.py --config-kind reference
@@ -54,5 +58,7 @@ jobs:
                   if sc!=ref[1]: raise SystemExit('V5 signed relocation cycle mismatch')
           print('V5_MULDIV16_EXPERIMENT_PASS',len(uv),len(sv),flush=True)
           PY
+      - name: Validate all-profile MULDIV16
+        run: python3 tools/validate_muldiv16.py
       - name: Validate V5 hybrid regression
         run: python3 tools/validate_hybrid.py --random-per-family 500 --mixed 500
