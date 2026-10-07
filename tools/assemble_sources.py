@@ -15,7 +15,10 @@ def parse_config(path):
   m=re.fullmatch(r'([A-Z][A-Z0-9_]*)\s*=\s*(\$[0-9A-Fa-f]+|0x[0-9A-Fa-f]+|\d+)',s)
   if not m:raise ValueError(f'unsupported config line: {raw}')
   v=m.group(2);vals[m.group(1)]=int(v[1:],16) if v.startswith('$') else int(v,0)
- miss=[x for x in REQ if x not in vals]
+ # V4's 4 MiB ISQRT32 prefix range is an optional extension to the
+ # common config schema. Legacy/V1/V2/V3/V5/custom maps may omit it safely.
+ vals.setdefault('REU_ISQRT32_PREFIX_BASE_BANK',0x40)
+ miss=[x for x in REQ if x not in vals and x!='REU_ISQRT32_PREFIX_BASE_BANK']
  if miss:raise ValueError(f'missing config symbols: {miss}')
  return vals
 
