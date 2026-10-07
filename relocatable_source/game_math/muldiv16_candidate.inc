@@ -1,14 +1,14 @@
 ; Candidate wide-intermediate 16-bit multiply/divide primitives.
-; Intended future public slots:
-;   REG_GAME_API+$0054  UMULDIV16: (u16 X * u16 Y) / u16 D -> Q32,R16
-;   REG_GAME_API+$0057  SMULDIV16: (s16 X * s16 Y) / s16 D -> Q32,R16
+; Intended future public slots (common free hole after MATH_INIT):
+;   REG_API+$02E0  UMULDIV16: (u16 X * u16 Y) / u16 D -> Q32,R16
+;   REG_API+$02E3  SMULDIV16: (s16 X * s16 Y) / s16 D -> Q32,R16
 ; These are intentionally not yet listed in PUBLIC_API_COMPLETE.csv.
 ; X/Y/D are preserved by the selected multiply/divide engines.
 ; N is internal scratch and receives the full 32-bit product.
 ; Divide by zero inherits UDIV/SDIV semantics: C=1 and Q/R=0.
 
-MATH_UMULDIV16_CANDIDATE = REG_GAME_API+$0054
-MATH_SMULDIV16_CANDIDATE = REG_GAME_API+$0057
+MATH_UMULDIV16_CANDIDATE = REG_API+$02E0
+MATH_SMULDIV16_CANDIDATE = REG_API+$02E3
 
 ; Re-state the historical Z32->N32 convenience helper symbolically so the
 ; candidate remains fully relocatable on the alternate source map.
