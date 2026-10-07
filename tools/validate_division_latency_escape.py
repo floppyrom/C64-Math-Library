@@ -58,11 +58,15 @@ def corpora():
     u32=[(r.getrandbits(32),r.randrange(1,1<<32)) for _ in range(12000)]
     n32=[(r.getrandbits(32),r.randrange(1,1<<16)) for _ in range(12000)]
     w32=[(r.getrandbits(32),r.randrange(1<<16,1<<32)) for _ in range(5000)]
+    d17=[(r.getrandbits(32),r.randrange(0x10000,0x20000)) for _ in range(12000)]
+    for d in [0x10000,0x10001,0x10002,0x100ff,0x10100,0x17fff,0x1fffe,0x1ffff]:
+        for n in [0,1,d-1,d,d+1,0xffff,0x10000,0xffffff,0x7fffffff,0xfffffffe,0xffffffff]:
+            if 0<=n<=0xffffffff:d17.append((n,d))
     h32=[]
     for d in [0,1,2,3,7,15,255,256,257,511,1023,4095,65535,65536,65537,0x7fffffff,0xffffffff]:
         for n in [0,1,max(0,d-1),d,min(0xffffffff,d+1),0xffff,0x10000,0xffffff,0x7fffffff,0xffffffff]:
             if 0<=n<=0xffffffff:h32.append((n,d))
-    return {'u24':u24,'n24':n24,'q024':q024,'h24':h24,'u32':u32,'n32':n32,'w32':w32,'h32':h32}
+    return {'u24':u24,'n24':n24,'q024':q024,'h24':h24,'u32':u32,'n32':n32,'d17':d17,'w32':w32,'h32':h32}
 
 def main():
     C=corpora();out={'status':'PASS','profiles':{}}
@@ -71,14 +75,18 @@ def main():
         rows={}
         for tag in ('u24','n24','q024','h24'):
             rows[tag]=paired(old,new,Aold['MATH_UDIV24'],Anew['MATH_UDIV24'],Inew,C[tag],24,24,0xA5)
-        for tag in ('u32','n32','w32','h32'):
+        for tag in ('u32','n32','d17','w32','h32'):
             rows[tag]=paired(old,new,Aold['MATH_UDIV32_32'],Anew['MATH_UDIV32_32'],Inew,C[tag],32,32)
-        # The patch must not tax these established hot paths.
+        # The UDIV24 q=0 prefix must remain cycle-identical.  The revised
+        # UDIV32 width dispatch may improve the common wide path, but may not
+        # make any sampled wide or dedicated 17-bit-divisor case slower.
         assert all(x==0 for x in rows['q024']['_delta']),(p,'UDIV24 q0 path changed',rows['q024'])
-        assert all(x==0 for x in rows['w32']['_delta']),(p,'UDIV32/32 wide path changed',rows['w32'])
+        assert all(x>=0 for x in rows['w32']['_delta']),(p,'UDIV32/32 wide-path regression',rows['w32'])
+        assert all(x>=0 for x in rows['d17']['_delta']),(p,'UDIV32/32 D17 regression',rows['d17'])
         # Alternate-map exactness on deterministic subsets.
-        for ent,tag,nb,db,sent in [('MATH_UDIV24','h24',24,24,0x5A),('MATH_UDIV32_32','h32',32,32,None)]:
-            for n,d in C[tag]:
+        for ent,tag,nb,db,sent in [('MATH_UDIV24','h24',24,24,0x5A),('MATH_UDIV32_32','h32',32,32,None),('MATH_UDIV32_32','d17',32,32,None)]:
+            avec=C[tag] if tag!='d17' else C[tag][:2048]
+            for n,d in avec:
                 _,ok,g,e=one(alt,Aalt[ent],Ialt,n,d,nb,db,sent)
                 if not ok: raise AssertionError((p,'alternate',ent,hex(n),hex(d),g,e))
         for v in rows.values(): v.pop('_delta',None)
