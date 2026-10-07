@@ -1,0 +1,29 @@
+name: MULDIV16 final PR proof
+on:
+  push:
+    branches: [ experiment/muldiv16-v5-lowzp-fusion-20261007 ]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate canonical sources
+        run: python3 tools/generate_sources.py
+      - name: Build V1-V4 reference and alternate
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+      - name: Build V5 reference and alternate
+        run: |
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+      - name: Validate MULDIV16 full corpus
+        run: python3 tools/validate_muldiv16.py
+      - name: Validate V5 hybrid
+        run: python3 tools/validate_hybrid.py --random-per-family 500 --mixed 500
