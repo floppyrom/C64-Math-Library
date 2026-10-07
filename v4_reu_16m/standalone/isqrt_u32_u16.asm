@@ -6,126 +6,137 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 101.
+; Reachable instructions: 121.
 !cpu 6510
 
-; ---- executable island $5E2D ----
-* = $5E2D
-L5E2D:
-    jmp LC7AB                          ; @5E2D 4C AB C7
+; ---- executable island $5E30 ----
+* = $5E30
 isqrt_u32_u16:
 MATH_ISQRT32:
-    jmp LCB40                          ; @5E30 4C 40 CB
-; ---- executable island $C7AB ----
-* = $C7AB
-LC7AB:
-    lda $C010                          ; @C7AB AD 10 C0
-    sta $DF04                          ; @C7AE 8D 04 DF
-    lda $C011                          ; @C7B1 AD 11 C0
-    sta $DF05                          ; @C7B4 8D 05 DF
-    lda #$09                           ; @C7B7 A9 09
-    sta $DF06                          ; @C7B9 8D 06 DF
-    lda #$81                           ; @C7BC A9 81
-    sta $DF01                          ; @C7BE 8D 01 DF
-    lda $C020                          ; @C7C1 AD 20 C0
-    sta $C008                          ; @C7C4 8D 08 C0
-    lda #$00                           ; @C7C7 A9 00
-    sta $C009                          ; @C7C9 8D 09 C0
-    clc                                ; @C7CC 18
-    rts                                ; @C7CD 60
-; ---- executable island $C830 ----
-* = $C830
-LC830:
-    ldy #$04                           ; @C830 A0 04
-LC832:
-    txa                                ; @C832 8A
-    asl a                              ; @C833 0A
-    rol $54                            ; @C834 26 54
-    rol $55                            ; @C836 26 55
-    rol $56                            ; @C838 26 56
-    asl a                              ; @C83A 0A
-    rol $54                            ; @C83B 26 54
-    rol $55                            ; @C83D 26 55
-    rol $56                            ; @C83F 26 56
-    tax                                ; @C841 AA
-    asl $57                            ; @C842 06 57
-    rol $58                            ; @C844 26 58
-    lda $57                            ; @C846 A5 57
-    asl a                              ; @C848 0A
-    ora #$01                           ; @C849 09 01
-    sta $59                            ; @C84B 85 59
-    lda $58                            ; @C84D A5 58
-    rol a                              ; @C84F 2A
-    sta $5A                            ; @C850 85 5A
-    bcc LC85E                          ; @C852 90 0A
-    lda $56                            ; @C854 A5 56
-    beq LC885                          ; @C856 F0 2D
-    cmp #$01                           ; @C858 C9 01
-    bne LC870                          ; @C85A D0 14
-    beq LC862                          ; @C85C F0 04
-LC85E:
-    lda $56                            ; @C85E A5 56
-    bne LC870                          ; @C860 D0 0E
-LC862:
-    lda $55                            ; @C862 A5 55
-    cmp $5A                            ; @C864 C5 5A
-    bcc LC885                          ; @C866 90 1D
-    bne LC870                          ; @C868 D0 06
-    lda $54                            ; @C86A A5 54
-    cmp $59                            ; @C86C C5 59
-    bcc LC885                          ; @C86E 90 15
-LC870:
-    sec                                ; @C870 38
-    lda $54                            ; @C871 A5 54
-    sbc $59                            ; @C873 E5 59
-    sta $54                            ; @C875 85 54
-    lda $55                            ; @C877 A5 55
-    sbc $5A                            ; @C879 E5 5A
-    sta $55                            ; @C87B 85 55
-    lda $56                            ; @C87D A5 56
-    sbc #$00                           ; @C87F E9 00
-    sta $56                            ; @C881 85 56
-    inc $57                            ; @C883 E6 57
-LC885:
-    dey                                ; @C885 88
-    bne LC832                          ; @C886 D0 AA
-    rts                                ; @C888 60
-; ---- executable island $CB40 ----
-* = $CB40
-LCB40:
-    lda $C010                          ; @CB40 AD 10 C0
-    sta $5B                            ; @CB43 85 5B
-    lda $C011                          ; @CB45 AD 11 C0
-    sta $5C                            ; @CB48 85 5C
-    lda $C012                          ; @CB4A AD 12 C0
-    sta $C010                          ; @CB4D 8D 10 C0
-    lda $C013                          ; @CB50 AD 13 C0
-    sta $C011                          ; @CB53 8D 11 C0
-    jsr L5E2D                          ; @CB56 20 2D 5E
-    lda $5B                            ; @CB59 A5 5B
-    sta $C010                          ; @CB5B 8D 10 C0
-    lda $5C                            ; @CB5E A5 5C
-    sta $C011                          ; @CB60 8D 11 C0
-    ldx $C008                          ; @CB63 AE 08 C0
-    stx $57                            ; @CB66 86 57
-    lda #$00                           ; @CB68 A9 00
-    sta $58                            ; @CB6A 85 58
-    sec                                ; @CB6C 38
-    lda $C012                          ; @CB6D AD 12 C0
-    sbc $9800,x                        ; @CB70 FD 00 98
-    sta $54                            ; @CB73 85 54
-    lda $C013                          ; @CB75 AD 13 C0
-    sbc $9900,x                        ; @CB78 FD 00 99
-    sta $55                            ; @CB7B 85 55
-    lda #$00                           ; @CB7D A9 00
-    sta $56                            ; @CB7F 85 56
-    ldx $C011                          ; @CB81 AE 11 C0
-    jsr LC830                          ; @CB84 20 30 C8
-    ldx $C010                          ; @CB87 AE 10 C0
-    jsr LC830                          ; @CB8A 20 30 C8
-    lda $57                            ; @CB8D A5 57
-    sta $C008                          ; @CB8F 8D 08 C0
-    lda $58                            ; @CB92 A5 58
-    sta $C009                          ; @CB94 8D 09 C0
-    clc                                ; @CB97 18
-    rts                                ; @CB98 60
+    jmp LC8FC                          ; @5E30 4C FC C8
+; ---- executable island $C8FC ----
+* = $C8FC
+LC8FC:
+    lda $C013                          ; @C8FC AD 13 C0
+    lsr a                              ; @C8FF 4A
+    lsr a                              ; @C900 4A
+    ora #$40                           ; @C901 09 40
+    sta $DF06                          ; @C903 8D 06 DF
+    lda $C013                          ; @C906 AD 13 C0
+    and #$03                           ; @C909 29 03
+    asl a                              ; @C90B 0A
+    asl a                              ; @C90C 0A
+    asl a                              ; @C90D 0A
+    asl a                              ; @C90E 0A
+    asl a                              ; @C90F 0A
+    asl a                              ; @C910 0A
+    sta $C023                          ; @C911 8D 23 C0
+    lda $C012                          ; @C914 AD 12 C0
+    lsr a                              ; @C917 4A
+    lsr a                              ; @C918 4A
+    ora $C023                          ; @C919 0D 23 C0
+    sta $DF05                          ; @C91C 8D 05 DF
+    lda $C012                          ; @C91F AD 12 C0
+    and #$03                           ; @C922 29 03
+    asl a                              ; @C924 0A
+    asl a                              ; @C925 0A
+    asl a                              ; @C926 0A
+    asl a                              ; @C927 0A
+    asl a                              ; @C928 0A
+    asl a                              ; @C929 0A
+    sta $C023                          ; @C92A 8D 23 C0
+    lda $C011                          ; @C92D AD 11 C0
+    and #$F0                           ; @C930 29 F0
+    lsr a                              ; @C932 4A
+    lsr a                              ; @C933 4A
+    ora $C023                          ; @C934 0D 23 C0
+    sta $DF04                          ; @C937 8D 04 DF
+    lda #$20                           ; @C93A A9 20
+    sta $DF02                          ; @C93C 8D 02 DF
+    lda #$C0                           ; @C93F A9 C0
+    sta $DF03                          ; @C941 8D 03 DF
+    lda #$04                           ; @C944 A9 04
+    sta $DF07                          ; @C946 8D 07 DF
+    lda #$00                           ; @C949 A9 00
+    sta $DF08                          ; @C94B 8D 08 DF
+    sta $DF0A                          ; @C94E 8D 0A DF
+    lda #$81                           ; @C951 A9 81
+    sta $DF01                          ; @C953 8D 01 DF
+    lda $C020                          ; @C956 AD 20 C0
+    sta $57                            ; @C959 85 57
+    lda $C021                          ; @C95B AD 21 C0
+    sta $58                            ; @C95E 85 58
+    lda $C022                          ; @C960 AD 22 C0
+    sta $54                            ; @C963 85 54
+    lda $C023                          ; @C965 AD 23 C0
+    sta $55                            ; @C968 85 55
+    lda #$00                           ; @C96A A9 00
+    sta $56                            ; @C96C 85 56
+    lda $C011                          ; @C96E AD 11 C0
+    and #$0F                           ; @C971 29 0F
+    asl a                              ; @C973 0A
+    asl a                              ; @C974 0A
+    asl a                              ; @C975 0A
+    asl a                              ; @C976 0A
+    tax                                ; @C977 AA
+    ldy #$02                           ; @C978 A0 02
+    jsr LC991                          ; @C97A 20 91 C9
+    ldx $C010                          ; @C97D AE 10 C0
+    ldy #$04                           ; @C980 A0 04
+    jsr LC991                          ; @C982 20 91 C9
+    lda $57                            ; @C985 A5 57
+    sta $C008                          ; @C987 8D 08 C0
+    lda $58                            ; @C98A A5 58
+    sta $C009                          ; @C98C 8D 09 C0
+    clc                                ; @C98F 18
+    rts                                ; @C990 60
+LC991:
+    txa                                ; @C991 8A
+    asl a                              ; @C992 0A
+    rol $54                            ; @C993 26 54
+    rol $55                            ; @C995 26 55
+    rol $56                            ; @C997 26 56
+    asl a                              ; @C999 0A
+    rol $54                            ; @C99A 26 54
+    rol $55                            ; @C99C 26 55
+    rol $56                            ; @C99E 26 56
+    tax                                ; @C9A0 AA
+    asl $57                            ; @C9A1 06 57
+    rol $58                            ; @C9A3 26 58
+    lda $57                            ; @C9A5 A5 57
+    asl a                              ; @C9A7 0A
+    ora #$01                           ; @C9A8 09 01
+    sta $59                            ; @C9AA 85 59
+    lda $58                            ; @C9AC A5 58
+    rol a                              ; @C9AE 2A
+    sta $5A                            ; @C9AF 85 5A
+    lda #$00                           ; @C9B1 A9 00
+    rol a                              ; @C9B3 2A
+    sta $5B                            ; @C9B4 85 5B
+    lda $56                            ; @C9B6 A5 56
+    cmp $5B                            ; @C9B8 C5 5B
+    bcc LC9E1                          ; @C9BA 90 25
+    bne LC9CC                          ; @C9BC D0 0E
+    lda $55                            ; @C9BE A5 55
+    cmp $5A                            ; @C9C0 C5 5A
+    bcc LC9E1                          ; @C9C2 90 1D
+    bne LC9CC                          ; @C9C4 D0 06
+    lda $54                            ; @C9C6 A5 54
+    cmp $59                            ; @C9C8 C5 59
+    bcc LC9E1                          ; @C9CA 90 15
+LC9CC:
+    sec                                ; @C9CC 38
+    lda $54                            ; @C9CD A5 54
+    sbc $59                            ; @C9CF E5 59
+    sta $54                            ; @C9D1 85 54
+    lda $55                            ; @C9D3 A5 55
+    sbc $5A                            ; @C9D5 E5 5A
+    sta $55                            ; @C9D7 85 55
+    lda $56                            ; @C9D9 A5 56
+    sbc $5B                            ; @C9DB E5 5B
+    sta $56                            ; @C9DD 85 56
+    inc $57                            ; @C9DF E6 57
+LC9E1:
+    dey                                ; @C9E1 88
+    bne LC991                          ; @C9E2 D0 AD
+    rts                                ; @C9E4 60

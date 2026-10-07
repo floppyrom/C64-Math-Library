@@ -14,17 +14,17 @@
   },
   "alternate_prg_sha256": {
     "v1_balanced": "af9398439c99960c96948b36ee649a3eaff49e78a2a4c7cdc43bef8219c0bbe6",
-    "v2_pareto_fast": "f6b689481f8d4e782392b63ca0e7094780e9bdfb5f62a69babe5025f82124d12",
-    "v3_reu_512k": "1c337837155427f5ad8897bc5a197027b7646b34f13ff6cee74727ebeeb997c1",
-    "v4_reu_16m": "99dad934adc5709fbb3ecb38b6700d75aeddd885467ccb0bea062bacad627d51",
+    "v2_pareto_fast": "cb802c94ce0d3f9fa96dfb2bdabf229df1886610ee418f685c7e820a7dff1dac",
+    "v3_reu_512k": "231503e5289e871abdd1ffba7d10e7946fa20f23acfa84f49dad4139b68c5be3",
+    "v4_reu_16m": "4d438aa20bebdf059fcd46d150e285cd522d21837c29f57faf40ef91dcdd8836",
     "v5_hybrid_lowzp": "dac33d17d8f85fff7e840eee1b9dd34349d6aade9ba0c814941ab7440578c3d5"
   },
   "alternate_reu_sha256": {
-    "v3_reu_512k": "4ba6ece174d54042d51736f3bb0ee3a8c0506c8fcdd9ac4c0163bfb5197a3fda",
-    "v4_reu_16m": "5e5fc9149042b1055f05d3f1c382e93ed8c09c01b3895540e349315134d559bb"
+    "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
+    "v4_reu_16m": "55a1c6106ab096dafd64a472df60419202ad9776cb2cc9344517adf5b7902a62"
   },
   "alternate_turbo_overlay_sha256": {
-    "turbo16": "a231db022a18841656bcd138eb71b2dc1215b455f3646b27f081a18ffad4b475",
+    "turbo16": "a5fa1594ac0844775175b17f50d6a8ce278f52aa9de57ef6595e31e5810587df",
     "turbo32": "145504142950e62585eb993e99f07611214f6513109b6675a86059f6a64ae8ba"
   },
   "config_validation_cases": 27,
@@ -112,7 +112,7 @@
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-10-07",
+  "date": "2026-10-06",
   "deterministic_builds_checked": 8,
   "division_refresh": {
     "date": "2026-09-20",
@@ -244,17 +244,17 @@
   ],
   "reference_prg_sha256": {
     "v1_balanced": "677902adb0ad1d540b864fdad87609e0272fee413ce6d58888fe95673ee8fe5d",
-    "v2_pareto_fast": "40da0d940cda3e86d7976e46ebd3ce9c99aeba5122025dbde50a2a7d2f6d1984",
-    "v3_reu_512k": "e2601d63f3e9dd08b845601658c9f242c69b54caf90685a72394f7c51727d945",
-    "v4_reu_16m": "33edb5481446d3e8e808413fbcad47ae7f4022a24564f7eaa10710a837357a03",
+    "v2_pareto_fast": "6338258806778dba2bf3419d39c097e92a15456069396cd121b3fd61d226e54c",
+    "v3_reu_512k": "a762b35f69dd68b44524090abba8e4b22af6fa37085710c5a6eedd4532879226",
+    "v4_reu_16m": "454e847500a134ecdfac3cb02f99e3e6b7ee07cf3791f467eed421d064e6b3f1",
     "v5_hybrid_lowzp": "74445a3d590cad45aa74fb8546d0704670516b801ca6f9f400d551dcb812e38f"
   },
   "reference_reu_sha256": {
-    "v3_reu_512k": "674418328ebd210d161790c0a6d42be9d1ca08315c17fdc13d04bea4d0999b61",
-    "v4_reu_16m": "9384c1c1b02a6297116e624aa3709fd65bcb4b9e6826cf4d2e88ea6b9742156a"
+    "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
+    "v4_reu_16m": "f745ab4021518d0277e75b42ece6b3bd747d852bc75a1c2138d47f0a32c65a73"
   },
   "reference_turbo_overlay_sha256": {
-    "turbo16": "6021bfb1035db24400dd75b980d1f303698f4c72d25f17216f8c841bf41b890d",
+    "turbo16": "8723c75c287fe17054785c15f0a10f9b6cd43c6b321266a3e2a00d131c92766c",
     "turbo32": "0d99581ef21c7e0e815a8dacb1a79a5323718f73d325c3572634ed07bec51a1e"
   },
   "release": "c64_math_library_v1-v5_SEEK_DDA_54ENTRY_2026-09-25",

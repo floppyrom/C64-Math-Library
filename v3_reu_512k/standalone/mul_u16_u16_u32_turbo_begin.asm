@@ -21,7 +21,7 @@ MATH_REU_UMUL16_BEGIN:
     sta $DF05                          ; @380D 8D 05 DF
     lda #$04                           ; @3810 A9 04
     sta $DF06                          ; @3812 8D 06 DF
-    lda #$71                           ; @3815 A9 71
+    lda #$7A                           ; @3815 A9 7A
     sta $DF07                          ; @3817 8D 07 DF
     lda #$00                           ; @381A A9 00
     sta $DF08                          ; @381C 8D 08 DF

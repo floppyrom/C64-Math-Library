@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 168.
+; Reachable instructions: 167.
 !cpu 6510
 
 ; ---- executable island $001A ----
@@ -150,49 +150,49 @@ L1135:
     tya                                ; @113A 98
     ldx $C00D                          ; @113B AE 0D C0
     adc $17                            ; @113E 65 17
-    bcs L1173                          ; @1140 B0 31
+    bcs L117B                          ; @1140 B0 39
     adc $11                            ; @1142 65 11
     bcc L114A                          ; @1144 90 04
     inx                                ; @1146 E8
-    beq L117C                          ; @1147 F0 33
+    beq L1184                          ; @1147 F0 3B
 L1149:
     clc                                ; @1149 18
 L114A:
     adc $14                            ; @114A 65 14
-    tay                                ; @114C A8
-    txa                                ; @114D 8A
-    adc $15                            ; @114E 65 15
-    bcs L1163                          ; @1150 B0 11
-    adc $18                            ; @1152 65 18
-    tax                                ; @1154 AA
-    lda $C00E                          ; @1155 AD 0E C0
-    adc $19                            ; @1158 65 19
-    bcs L115F                          ; @115A B0 03
-    rts                                ; @115C 60
-L115D:
-    adc #$00                           ; @115D 69 00
-L115F:
-    inc $C00F                          ; @115F EE 0F C0
-    rts                                ; @1162 60
+    sta $C00C                          ; @114C 8D 0C C0
+    txa                                ; @114F 8A
+    adc $15                            ; @1150 65 15
+    bcs L1169                          ; @1152 B0 15
+    adc $18                            ; @1154 65 18
+    tax                                ; @1156 AA
+    lda $C00E                          ; @1157 AD 0E C0
+    adc $19                            ; @115A 65 19
+    bcs L1163                          ; @115C B0 05
+    jmp L391A                          ; @115E 4C 1A 39
+L1161:
+    adc #$00                           ; @1161 69 00
 L1163:
-    clc                                ; @1163 18
-    adc $18                            ; @1164 65 18
-    tax                                ; @1166 AA
-    lda $C00E                          ; @1167 AD 0E C0
-    adc $19                            ; @116A 65 19
-    bcs L115D                          ; @116C B0 EF
-    adc #$01                           ; @116E 69 01
-    bcs L115F                          ; @1170 B0 ED
-    rts                                ; @1172 60
-L1173:
-    inx                                ; @1173 E8
-    clc                                ; @1174 18
-    adc $11                            ; @1175 65 11
-    bcc L114A                          ; @1177 90 D1
-    inx                                ; @1179 E8
-    bne L1149                          ; @117A D0 CD
-L117C:
-    jmp L103D                          ; @117C 4C 3D 10
+    inc $C00F                          ; @1163 EE 0F C0
+    jmp L391A                          ; @1166 4C 1A 39
+L1169:
+    clc                                ; @1169 18
+    adc $18                            ; @116A 65 18
+    tax                                ; @116C AA
+    lda $C00E                          ; @116D AD 0E C0
+    adc $19                            ; @1170 65 19
+    bcs L1161                          ; @1172 B0 ED
+    adc #$01                           ; @1174 69 01
+    bcs L1163                          ; @1176 B0 EB
+    jmp L391A                          ; @1178 4C 1A 39
+L117B:
+    inx                                ; @117B E8
+    clc                                ; @117C 18
+    adc $11                            ; @117D 65 11
+    bcc L114A                          ; @117F 90 C9
+    inx                                ; @1181 E8
+    bne L1149                          ; @1182 D0 C5
+L1184:
+    jmp L103D                          ; @1184 4C 3D 10
 ; ---- executable island $3900 ----
 * = $3900
 mul_u32_u32_u64_turbo:
@@ -206,9 +206,9 @@ MATH_REU_UMUL32:
     ldy $C007                          ; @390F AC 07 C0
     lda $C000                          ; @3912 AD 00 C0
     sta $4D                            ; @3915 85 4D
-    jsr L1002                          ; @3917 20 02 10
+    jmp L1002                          ; @3917 4C 02 10
+L391A:
     sta $C00E                          ; @391A 8D 0E C0
     stx $C00D                          ; @391D 8E 0D C0
-    sty $C00C                          ; @3920 8C 0C C0
-    clc                                ; @3923 18
-    rts                                ; @3924 60
+    clc                                ; @3920 18
+    rts                                ; @3921 60
