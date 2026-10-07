@@ -15,6 +15,25 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Reproduce promotion trace
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          python3 - <<'PY'
+          import sys
+          sys.path.insert(0,'tools')
+          import source_relocation as sr
+          raw,tm=sr.load_reference('v2_pareto_fast')
+          print('RAW5780',hex(raw[0x5780]),'TM5780',hex(tm[0x5780]))
+          print('RAW5784',hex(raw[0x5784]),'TM5784',hex(tm[0x5784]))
+          try:
+              seen=sr.trace('v2_pareto_fast',tm)
+              print('TRACE PASS',len(seen))
+          except Exception as e:
+              print('TRACE FAIL',repr(e))
+              raise
+          PY
       - name: Assemble and dump FAST24 layout
         run: |
           python3 - <<'PY'
