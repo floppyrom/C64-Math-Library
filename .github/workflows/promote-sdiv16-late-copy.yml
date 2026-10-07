@@ -30,19 +30,31 @@ jobs:
           python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
           python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
 
-      - name: Promote V2-V4 resident images
+      - name: Promote only the SDIV16 signed front-end bytes
         run: |
-          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
-          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
-          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
-          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
-          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+          python3 - <<'PY'
+          from pathlib import Path
+          profiles=('v2_pareto_fast','v3_reu_512k','v4_reu_16m')
+          lo,hi=0x7A00,0x7C2B
+          for p in profiles:
+              dst=Path(p)/'resident'/f'math_{p}_game_math.prg'
+              src=Path('build_source/reference')/p/f'math_{p}_source_built.prg'
+              db=bytearray(dst.read_bytes()); sb=src.read_bytes()
+              dl=db[0]|db[1]<<8; sl=sb[0]|sb[1]<<8
+              assert dl==sl
+              for addr in range(lo,hi):
+                  db[2+addr-dl]=sb[2+addr-sl]
+              dst.write_bytes(db)
+              print(p,'patched',hex(lo),hex(hi-1))
+          PY
 
       - name: Regenerate canonical and published sources
         run: |
           python3 tools/generate_sources.py
           python3 tools/publish_native_signed_sources.py
           python3 tools/publish_standalone_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_final
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_final
 
       - name: Validate promoted signed division
         run: |
@@ -158,11 +170,11 @@ jobs:
           sha=lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
           s=json.loads((root/'RELEASE_STATUS.json').read_text())
           for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
-              s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
-              s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
+              s['reference_prg_sha256'][p]=sha(root/'build_final/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_final/alternate'/p/f'math_{p}_source_built.prg')
           for p in ('v3_reu_512k','v4_reu_16m'):
-              s['reference_reu_sha256'][p]=sha(root/'build_source/reference'/p/f'c64_math_{p}_source_built.reu')
-              s['alternate_reu_sha256'][p]=sha(root/'build_source/alternate'/p/f'c64_math_{p}_source_built.reu')
+              s['reference_reu_sha256'][p]=sha(root/'build_final/reference'/p/f'c64_math_{p}_source_built.reu')
+              s['alternate_reu_sha256'][p]=sha(root/'build_final/alternate'/p/f'c64_math_{p}_source_built.reu')
           s['date']='2026-10-07'
           (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
           PY
@@ -181,7 +193,7 @@ jobs:
           rm -f .github/workflows/research-sdiv16-late-copy-promotion.yml
           rm -f .github/workflows/promote-sdiv16-late-copy.yml
           rm -f tools/bench_sdiv16_late_copy_profiles.py
-          rm -rf build_source
+          rm -rf build_source build_final
 
       - name: Refresh package manifest
         run: |
