@@ -1,3 +1,12 @@
+## 2026-10-07 — UDIV32/16 optimization and bounded unsigned-division latency (PR #33)
+
+- Replaced V2/V3/V4 `MATH_UDIV32_16` with the direct split-byte constrained-tail implementation, including a compact `D<256` path. On the paired integration corpus, mean latency improves **1092.28 -> 715.36 cycles** and maximum latency **1880 -> 1738**.
+- Added bounded narrow-divisor fallbacks to the wider unsigned family. `MATH_UDIV24` hard-tail maximum improves **3188 -> 1267 cycles**; `MATH_UDIV32_32` hard-tail maximum improves **2532 -> 1792 cycles**. The 12k narrow UDIV32/32 sample improves **1485.38 -> 710.88 cycles mean** with zero slower cases.
+- Added the exact 17-bit-divisor UDIV32/32 tail while leaving the wide-divisor live-high hot path intact. The finalized whole public UDIV32 graph is **2,755 reachable code bytes / 14 ZP bytes / 0 persistent stack bytes**; the wide-divisor live-high core itself remains the four-ZP path.
+- Updated V5 relocation for the expanded division-latency helper range (`$5957-$59A6`). V5 retains compact wider-UMOD aliases to the imported UDIV engines; modulo semantics are certified exactly while their timing remains profile-specific.
+- Regenerated V2-V5 resident images, standalone sources, public performance/index files, validation evidence, release hashes and package checksums.
+- Validation passes **822,050 unsigned division/modulo calls** across all five profiles, **104,121 UDIV32 calls per map/profile** on reference and alternate maps, the V5 hybrid suite, deterministic rebuild, package audit and post-promotion library/Turbo32 CI.
+
 ## 2026-10-07 — remainder-only MOD, V4 ISQRT32, FAST24 and Turbo integration pass
 
 ## 2026-10-07 — Repose four-ZP UDIV32
