@@ -229,7 +229,7 @@ D16F_s_mag_pp:
 D16F_s_qone_pp:
         lda #1
         sta D16F_q0
-        lda #0
+        lsr
         sta D16F_q1
         clc
         rts
@@ -329,7 +329,7 @@ D16F_s_qone_nn:
         sta D16F_r1
         lda #1
         sta D16F_q0
-        lda #0
+        lsr
         sta D16F_q1
         clc
         rts
