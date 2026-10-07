@@ -537,6 +537,8 @@ def generate_source(profile,outpath:Path):
  # override a future table regeneration.
  lines += ['', '; Canonical generated normalization tables (final ownership).',
            f'!source "../../{profile}/resident/vector/native/vec2_normalize_tables.asm"']
+ lines += ['', '; Candidate wide-intermediate multiply/divide primitives.',
+           '!source "../game_math/muldiv16_candidate.inc"']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 
