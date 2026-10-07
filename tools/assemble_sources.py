@@ -40,7 +40,7 @@ def ranges(profile,v):
  out.append(('MATH_IO',v['MATH_IO'],v['MATH_IO']+0x1f,'main'))
  if profile in ('v3_reu_512k','v4_reu_16m'):out.append(('REU_SCRATCH',v['REU_SCRATCH'],v['REU_SCRATCH']+3,'main'))
  if profile=='v1_balanced':out.append(('V1_SCRATCH',v['V1_SCRATCH'],v['V1_SCRATCH']+0x17,'main'))
- if profile=='v2_pareto_fast':out.append(('SMUL8_SUM',v['SMUL8_SUM_BASE'],v['SMUL8_SUM_BASE']+0x3fe,'main'))
+ out.append(('SMUL8_SUM',v['SMUL8_SUM_BASE'],v['SMUL8_SUM_BASE']+0x3fe,'main'))
  if profile=='v1_balanced':out.append(('ZP_MAIN',v['ZP_MAIN'],v['ZP_MAIN']+0x1e,'zp'))
  else:
   out.append(('ZP_MAIN',v['ZP_MAIN'],v['ZP_MAIN']+0x68,'zp'))
@@ -51,7 +51,7 @@ def validate_config(profile,v):
  validate_reu_banks(profile,v)
  for n in ('REG_LOW','REG_API','REG_KERNEL','REG_TABLE','REG_GAME'):
   if v[n]&0xff:raise ValueError(f'{n} must be page aligned')
- if profile=='v2_pareto_fast' and v['SMUL8_SUM_BASE']&0x1ff:raise ValueError('SMUL8_SUM_BASE must be $0200 aligned')
+ if v['SMUL8_SUM_BASE']&0x1ff:raise ValueError('SMUL8_SUM_BASE must be $0200 aligned')
  rs=ranges(profile,v)
  for n,s,e,space in rs:
   lim=0xff if space=='zp' else 0xffff
@@ -211,7 +211,7 @@ def expand_source_file(path, preserve_config_include=False, _stack=()):
 
 def preprocess(src,config):
  cfg=Path(config).read_text().rstrip()+'\n'
- if 'v2_pareto_fast' in Path(src).parts and 'SMUL8_SUM_BASE' not in cfg: cfg += 'SMUL8_SUM_BASE = $9C00\n'
+ if 'SMUL8_SUM_BASE' not in cfg: cfg += 'SMUL8_SUM_BASE = $9C00\n'
  expanded=expand_source_file(src,preserve_config_include=False)
  body=[]
  for line in expanded.splitlines():
