@@ -2529,52 +2529,314 @@ L5A2B:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    brk
-    !byte $A9, $00, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $8D, $1B, $C0, $8D, $1C
-    !byte $C0, $8D, $1D, $C0, $8D, $1E, $C0, $8D, $1F, $C0, $38, $60, $A5, $57, $05, $58
-    !byte $05, $59, $05, $5A, $D0, $04, $20, $A8, $5A
+    lda #$00
+    sta MATH_IO+$18
+    sta MATH_IO+$19
+    sta MATH_IO+$1A
+    sta MATH_IO+$1B
+    sta MATH_IO+$1C
+    sta MATH_IO+$1D
+    sta MATH_IO+$1E
+    sta MATH_IO+$1F
+    sec
     rts
-    !byte $A5, $5A, $F0, $03, $4C, $94, $5B, $A5, $59, $F0, $03, $4C, $78, $5C, $A5, $58
-    !byte $F0, $03, $4C, $34, $5B, $A5, $53, $8D, $18, $C0, $A5, $54, $8D, $19, $C0, $A5
-    !byte $55, $8D, $1A, $C0, $A5, $56, $8D, $1B, $C0, $A9, $00, $8D, $1C, $C0, $8D, $1D
-    !byte $C0, $8D, $1E, $C0, $8D, $1F, $C0, $A2, $20, $0E, $18, $C0, $2E, $19, $C0, $2E
-    !byte $1A, $C0, $2E, $1B, $C0, $2E, $1C, $C0, $B0, $07, $AD, $1C, $C0, $C5, $57, $90
-    !byte $0C, $38, $AD, $1C, $C0, $E5, $57, $8D, $1C, $C0, $EE, $18, $C0, $CA, $D0, $D9
-    !byte $18, $60, $A5, $53, $8D, $18, $C0, $A5, $54, $8D, $19, $C0, $A5, $55, $8D, $1A
-    !byte $C0, $A9, $00, $8D, $1B, $C0, $A5, $56, $8D, $1C, $C0, $A9, $00, $8D, $1D, $C0
-    !byte $8D, $1E, $C0, $8D, $1F, $C0, $A2, $18, $0E, $18, $C0, $2E, $19, $C0, $2E, $1A
-    !byte $C0, $2E, $1C, $C0, $2E, $1D, $C0, $B0, $10, $AD, $1D, $C0, $C5, $58, $90, $1D
-    !byte $D0, $07, $AD, $1C, $C0, $C5, $57, $90, $14, $38, $AD, $1C, $C0, $E5, $57, $8D
-    !byte $1C, $C0, $AD, $1D, $C0, $E5, $58, $8D, $1D, $C0, $EE, $18, $C0, $CA, $D0, $C8
-    !byte $18, $60, $A5, $56, $C5, $5A, $90, $38, $D0, $5A, $A5, $55, $C5, $59, $90, $30
-    !byte $D0, $52, $A5, $54, $C5, $58, $90, $28, $D0, $4A, $A5, $53, $C5, $57, $90, $20
-    !byte $D0, $42, $A9, $01, $8D, $18, $C0, $A9, $00, $8D, $19, $C0, $8D, $1A, $C0, $8D
-    !byte $1B, $C0, $8D, $1C, $C0, $8D, $1D, $C0, $8D, $1E, $C0, $8D, $1F, $C0, $18, $60
-    !byte $A9, $00, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $8D, $1B, $C0, $A5, $53
-    !byte $8D, $1C, $C0, $A5, $54, $8D, $1D, $C0, $A5, $55, $8D, $1E, $C0, $A5, $56, $8D
-    !byte $1F, $C0, $18, $60, $A5, $53, $8D, $18, $C0, $A9, $00, $8D, $19, $C0, $8D, $1A
-    !byte $C0, $8D, $1B, $C0, $A5, $54, $8D, $1C, $C0, $A5, $55, $8D, $1D, $C0, $A5, $56
-    !byte $8D, $1E, $C0, $A9, $00, $8D, $1F, $C0, $A2, $08, $0E, $18, $C0, $2E, $1C, $C0
-    !byte $2E, $1D, $C0, $2E, $1E, $C0, $2E, $1F, $C0, $B0, $22, $AD, $1F, $C0, $C5, $5A
-    !byte $90, $3F, $D0, $19, $AD, $1E, $C0, $C5, $59, $90, $36, $D0, $10, $AD, $1D, $C0
-    !byte $C5, $58, $90, $2D, $D0, $07, $AD, $1C, $C0, $C5, $57, $90, $24, $38, $AD, $1C
-    !byte $C0, $E5, $57, $8D, $1C, $C0, $AD, $1D, $C0, $E5, $58, $8D, $1D, $C0, $AD, $1E
-    !byte $C0, $E5, $59, $8D, $1E, $C0, $AD, $1F, $C0, $E5, $5A, $8D, $1F, $C0, $EE, $18
-    !byte $C0, $CA, $D0, $A6, $18, $60, $A5, $56, $C5, $5A, $90, $38, $D0, $5A, $A5, $55
-    !byte $C5, $59, $90, $30, $D0, $52, $A5, $54, $C5, $58, $90, $28, $D0, $4A, $A5, $53
-    !byte $C5, $57, $90, $20, $D0, $42, $A9, $01, $8D, $18, $C0, $A9, $00, $8D, $19, $C0
-    !byte $8D, $1A, $C0, $8D, $1B, $C0, $8D, $1C, $C0, $8D, $1D, $C0, $8D, $1E, $C0, $8D
-    !byte $1F, $C0, $18, $60, $A9, $00, $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $8D
-    !byte $1B, $C0, $A5, $53, $8D, $1C, $C0, $A5, $54, $8D, $1D, $C0, $A5, $55, $8D, $1E
-    !byte $C0, $A5, $56, $8D, $1F, $C0, $18, $60, $A5, $53, $8D, $18, $C0, $A5, $54, $8D
-    !byte $19, $C0, $A9, $00, $8D, $1A, $C0, $8D, $1B, $C0, $A5, $55, $8D, $1C, $C0, $A5
-    !byte $56, $8D, $1D, $C0, $A9, $00, $8D, $1E, $C0, $8D, $1F, $C0, $A2, $10, $0E, $18
-    !byte $C0, $2E, $19, $C0, $2E, $1C, $C0, $2E, $1D, $C0, $2E, $1E, $C0, $2E, $1F, $C0
-    !byte $B0, $22, $AD, $1F, $C0, $C5, $5A, $90, $3F, $D0, $19, $AD, $1E, $C0, $C5, $59
-    !byte $90, $36, $D0, $10, $AD, $1D, $C0, $C5, $58, $90, $2D, $D0, $07, $AD, $1C, $C0
-    !byte $C5, $57, $90, $24, $38, $AD, $1C, $C0, $E5, $57, $8D, $1C, $C0, $AD, $1D, $C0
-    !byte $E5, $58, $8D, $1D, $C0, $AD, $1E, $C0, $E5, $59, $8D, $1E, $C0, $AD, $1F, $C0
-    !byte $E5, $5A, $8D, $1F, $C0, $EE, $18, $C0, $CA, $D0, $A3, $18, $60, $00, $00, $00
+    !byte $60, $A5, $57, $05, $58, $05, $59, $05, $5A, $D0, $04, $20, $A8, $5A
+    lda ZP_MAIN+$58
+    beq L5AD9
+    jmp REG_KERNEL+$1B94
+L5AD9:
+    lda ZP_MAIN+$57
+    beq L5AE0
+    jmp REG_KERNEL+$1C78
+L5AE0:
+    lda ZP_MAIN+$56
+    beq L5AE7
+    jmp REG_KERNEL+$1B34
+L5AE7:
+    lda ZP_MAIN+$51
+    sta MATH_IO+$18
+    lda ZP_MAIN+$52
+    sta MATH_IO+$19
+    lda ZP_MAIN+$53
+    sta MATH_IO+$1A
+    lda ZP_MAIN+$54
+    sta MATH_IO+$1B
+    lda #$00
+    sta MATH_IO+$1C
+    sta MATH_IO+$1D
+    sta MATH_IO+$1E
+    sta MATH_IO+$1F
+    ldx #$20
+L5B0B:
+    asl MATH_IO+$18
+    rol MATH_IO+$19
+    rol MATH_IO+$1A
+    rol MATH_IO+$1B
+    rol MATH_IO+$1C
+    bcs L5B23
+    lda MATH_IO+$1C
+    cmp ZP_MAIN+$55
+    bcc L5B2F
+L5B23:
+    sec
+    lda MATH_IO+$1C
+    sbc ZP_MAIN+$55
+    sta MATH_IO+$1C
+    inc MATH_IO+$18
+L5B2F:
+    dex
+    bne L5B0B
+    clc
+    rts
+    lda ZP_MAIN+$51
+    sta MATH_IO+$18
+    lda ZP_MAIN+$52
+    sta MATH_IO+$19
+    lda ZP_MAIN+$53
+    sta MATH_IO+$1A
+    lda #$00
+    sta MATH_IO+$1B
+    lda ZP_MAIN+$54
+    sta MATH_IO+$1C
+    lda #$00
+    sta MATH_IO+$1D
+    sta MATH_IO+$1E
+    sta MATH_IO+$1F
+    ldx #$18
+L5B5A:
+    asl MATH_IO+$18
+    rol MATH_IO+$19
+    rol MATH_IO+$1A
+    rol MATH_IO+$1C
+    rol MATH_IO+$1D
+    bcs L5B7B
+    lda MATH_IO+$1D
+    cmp ZP_MAIN+$56
+    bcc L5B8F
+    bne L5B7B
+    lda MATH_IO+$1C
+    cmp ZP_MAIN+$55
+    bcc L5B8F
+L5B7B:
+    sec
+    lda MATH_IO+$1C
+    sbc ZP_MAIN+$55
+    sta MATH_IO+$1C
+    lda MATH_IO+$1D
+    sbc ZP_MAIN+$56
+    sta MATH_IO+$1D
+    inc MATH_IO+$18
+L5B8F:
+    dex
+    bne L5B5A
+    clc
+    rts
+    lda ZP_MAIN+$54
+    cmp ZP_MAIN+$58
+    bcc L5BD2
+    bne L5BF6
+    lda ZP_MAIN+$53
+    cmp ZP_MAIN+$57
+    bcc L5BD2
+    bne L5BF6
+    lda ZP_MAIN+$52
+    cmp ZP_MAIN+$56
+    bcc L5BD2
+    bne L5BF6
+    lda ZP_MAIN+$51
+    cmp ZP_MAIN+$55
+    bcc L5BD2
+    bne L5BF6
+    lda #$01
+    sta MATH_IO+$18
+    lda #$00
+    sta MATH_IO+$19
+    sta MATH_IO+$1A
+    sta MATH_IO+$1B
+    sta MATH_IO+$1C
+    sta MATH_IO+$1D
+    sta MATH_IO+$1E
+    sta MATH_IO+$1F
+    clc
+    rts
+L5BD2:
+    lda #$00
+    sta MATH_IO+$18
+    sta MATH_IO+$19
+    sta MATH_IO+$1A
+    sta MATH_IO+$1B
+    lda ZP_MAIN+$51
+    sta MATH_IO+$1C
+    lda ZP_MAIN+$52
+    sta MATH_IO+$1D
+    lda ZP_MAIN+$53
+    sta MATH_IO+$1E
+    lda ZP_MAIN+$54
+    sta MATH_IO+$1F
+    clc
+    rts
+L5BF6:
+    lda ZP_MAIN+$51
+    sta MATH_IO+$18
+    lda #$00
+    sta MATH_IO+$19
+    sta MATH_IO+$1A
+    sta MATH_IO+$1B
+    lda ZP_MAIN+$52
+    sta MATH_IO+$1C
+    lda ZP_MAIN+$53
+    sta MATH_IO+$1D
+    lda ZP_MAIN+$54
+    sta MATH_IO+$1E
+    lda #$00
+    sta MATH_IO+$1F
+    ldx #$08
+L5C1C:
+    asl MATH_IO+$18
+    rol MATH_IO+$1C
+    rol MATH_IO+$1D
+    rol MATH_IO+$1E
+    rol MATH_IO+$1F
+    bcs L5C4F
+    lda MATH_IO+$1F
+    cmp ZP_MAIN+$58
+    bcc L5C73
+    bne L5C4F
+    lda MATH_IO+$1E
+    cmp ZP_MAIN+$57
+    bcc L5C73
+    bne L5C4F
+    lda MATH_IO+$1D
+    cmp ZP_MAIN+$56
+    bcc L5C73
+    bne L5C4F
+    lda MATH_IO+$1C
+    cmp ZP_MAIN+$55
+    bcc L5C73
+L5C4F:
+    sec
+    lda MATH_IO+$1C
+    sbc ZP_MAIN+$55
+    sta MATH_IO+$1C
+    lda MATH_IO+$1D
+    sbc ZP_MAIN+$56
+    sta MATH_IO+$1D
+    lda MATH_IO+$1E
+    sbc ZP_MAIN+$57
+    sta MATH_IO+$1E
+    lda MATH_IO+$1F
+    sbc ZP_MAIN+$58
+    sta MATH_IO+$1F
+    inc MATH_IO+$18
+L5C73:
+    dex
+    bne L5C1C
+    clc
+    rts
+    lda ZP_MAIN+$54
+    cmp ZP_MAIN+$58
+    bcc L5CB6
+    bne L5CDA
+    lda ZP_MAIN+$53
+    cmp ZP_MAIN+$57
+    bcc L5CB6
+    bne L5CDA
+    lda ZP_MAIN+$52
+    cmp ZP_MAIN+$56
+    bcc L5CB6
+    bne L5CDA
+    lda ZP_MAIN+$51
+    cmp ZP_MAIN+$55
+    bcc L5CB6
+    bne L5CDA
+    lda #$01
+    sta MATH_IO+$18
+    lda #$00
+    sta MATH_IO+$19
+    sta MATH_IO+$1A
+    sta MATH_IO+$1B
+    sta MATH_IO+$1C
+    sta MATH_IO+$1D
+    sta MATH_IO+$1E
+    sta MATH_IO+$1F
+    clc
+    rts
+L5CB6:
+    lda #$00
+    sta MATH_IO+$18
+    sta MATH_IO+$19
+    sta MATH_IO+$1A
+    sta MATH_IO+$1B
+    lda ZP_MAIN+$51
+    sta MATH_IO+$1C
+    lda ZP_MAIN+$52
+    sta MATH_IO+$1D
+    lda ZP_MAIN+$53
+    sta MATH_IO+$1E
+    lda ZP_MAIN+$54
+    sta MATH_IO+$1F
+    clc
+    rts
+L5CDA:
+    lda ZP_MAIN+$51
+    sta MATH_IO+$18
+    lda ZP_MAIN+$52
+    sta MATH_IO+$19
+    lda #$00
+    sta MATH_IO+$1A
+    sta MATH_IO+$1B
+    lda ZP_MAIN+$53
+    sta MATH_IO+$1C
+    lda ZP_MAIN+$54
+    sta MATH_IO+$1D
+    lda #$00
+    sta MATH_IO+$1E
+    sta MATH_IO+$1F
+    ldx #$10
+L5D00:
+    asl MATH_IO+$18
+    rol MATH_IO+$19
+    rol MATH_IO+$1C
+    rol MATH_IO+$1D
+    rol MATH_IO+$1E
+    rol MATH_IO+$1F
+    bcs L5D36
+    lda MATH_IO+$1F
+    cmp ZP_MAIN+$58
+    bcc L5D5A
+    bne L5D36
+    lda MATH_IO+$1E
+    cmp ZP_MAIN+$57
+    bcc L5D5A
+    bne L5D36
+    lda MATH_IO+$1D
+    cmp ZP_MAIN+$56
+    bcc L5D5A
+    bne L5D36
+    lda MATH_IO+$1C
+    cmp ZP_MAIN+$55
+    bcc L5D5A
+L5D36:
+    sec
+    lda MATH_IO+$1C
+    sbc ZP_MAIN+$55
+    sta MATH_IO+$1C
+    lda MATH_IO+$1D
+    sbc ZP_MAIN+$56
+    sta MATH_IO+$1D
+    lda MATH_IO+$1E
+    sbc ZP_MAIN+$57
+    sta MATH_IO+$1E
+    lda MATH_IO+$1F
+    sbc ZP_MAIN+$58
+    sta MATH_IO+$1F
+    inc MATH_IO+$18
+L5D5A:
+    dex
+    bne L5D00
+    clc
+    rts
+    !byte $60, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -2584,7 +2846,7 @@ L5A2B:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00
 
 ; Source interval $5E00-$5FFF
 * = REG_GAME_API
@@ -3055,34 +3317,34 @@ L5A2B:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $AD, $11, $C0, $30, $6B, $AD, $15, $C0, $30, $37, $AD, $14, $C0, $0D, $15, $C0
+    !byte $AD, $11, $C0, $30, $5A, $AD, $15, $C0, $30, $26, $AD, $14, $C0, $0D, $15, $C0
     !byte $D0, $03, $4C, $1B, $7C, $AF, $11, $C0, $CD, $15, $C0, $B0, $03, $4C, $CE, $7B
-    !byte $D0, $0B, $AD, $10, $C0, $CD, $14, $C0, $B0, $03, $4C, $CE, $7B, $AD, $10, $C0
-    !byte $85, $10, $86, $11, $AD, $14, $C0, $85, $12, $AD, $15, $C0, $85, $13, $4C, $ED
-    !byte $7A, $A9, $00, $38, $ED, $14, $C0, $85, $12, $A9, $00, $ED, $15, $C0, $85, $13
-    !byte $AF, $11, $C0, $C5, $13, $B0, $03, $4C, $CE, $7B, $D0, $0A, $AD, $10, $C0, $C5
-    !byte $12, $B0, $03, $4C, $CE, $7B, $AD, $10, $C0, $85, $10, $86, $11, $4C, $1D, $7B
-    !byte $AD, $15, $C0, $30, $3D, $AD, $14, $C0, $0D, $15, $C0, $D0, $03, $4C, $1B, $7C
-    !byte $A9, $00, $38, $ED, $10, $C0, $85, $10, $A9, $00, $ED, $11, $C0, $85, $11, $A7
-    !byte $11, $CD, $15, $C0, $B0, $03, $4C, $CE, $7B, $D0, $0A, $A5, $10, $CD, $14, $C0
-    !byte $B0, $03, $4C, $CE, $7B, $AD, $14, $C0, $85, $12, $AD, $15, $C0, $85, $13, $4C
-    !byte $4C, $7B, $AF, $11, $C0, $CD, $15, $C0, $90, $12, $F0, $03, $4C, $CE, $7B, $AD
-    !byte $10, $C0, $CD, $14, $C0, $90, $05, $F0, $03, $4C, $CE, $7B, $A9, $00, $38, $ED
-    !byte $10, $C0, $85, $10, $A9, $00, $ED, $11, $C0, $85, $11, $A9, $00, $38, $ED, $14
-    !byte $C0, $85, $12, $A9, $00, $ED, $15, $C0, $85, $13, $4C, $8C, $7B, $38, $A5, $10
+    !byte $D0, $0B, $AD, $10, $C0, $CD, $14, $C0, $B0, $03, $4C, $CE, $7B, $4C, $DC, $7A
+    !byte $A9, $00, $38, $ED, $14, $C0, $85, $12, $A9, $00, $ED, $15, $C0, $85, $13, $AF
+    !byte $11, $C0, $C5, $13, $B0, $03, $4C, $CE, $7B, $D0, $0A, $AD, $10, $C0, $C5, $12
+    !byte $B0, $03, $4C, $CE, $7B, $AD, $10, $C0, $85, $10, $86, $11, $4C, $1F, $7B, $AD
+    !byte $15, $C0, $30, $3D, $AD, $14, $C0, $0D, $15, $C0, $D0, $03, $4C, $1B, $7C, $A9
+    !byte $00, $38, $ED, $10, $C0, $85, $10, $A9, $00, $ED, $11, $C0, $85, $11, $A7, $11
+    !byte $CD, $15, $C0, $B0, $03, $4C, $CE, $7B, $D0, $0A, $A5, $10, $CD, $14, $C0, $B0
+    !byte $03, $4C, $CE, $7B, $AD, $14, $C0, $85, $12, $AD, $15, $C0, $85, $13, $4C, $4D
+    !byte $7B, $AF, $11, $C0, $CD, $15, $C0, $90, $12, $F0, $03, $4C, $CE, $7B, $AD, $10
+    !byte $C0, $CD, $14, $C0, $90, $05, $F0, $03, $4C, $CE, $7B, $A9, $00, $38, $ED, $10
+    !byte $C0, $85, $10, $A9, $00, $ED, $11, $C0, $85, $11, $A9, $00, $38, $ED, $14, $C0
+    !byte $85, $12, $A9, $00, $ED, $15, $C0, $85, $13, $4C, $8D, $7B, $38, $AD, $10, $C0
+    !byte $ED, $14, $C0, $8D, $1C, $C0, $8A, $ED, $15, $C0, $8D, $1D, $C0, $CD, $15, $C0
+    !byte $90, $0A, $D0, $12, $AD, $1C, $C0, $CD, $14, $C0, $B0, $0A, $A0, $00, $8C, $19
+    !byte $C0, $C8, $8C, $18, $C0, $60, $AD, $10, $C0, $85, $10, $86, $11, $AD, $14, $C0
+    !byte $85, $12, $AD, $15, $C0, $85, $13, $AD, $1D, $C0, $20, $09, $7D, $18, $60, $38
+    !byte $A5, $10, $E5, $12, $8D, $1C, $C0, $A5, $11, $E5, $13, $8D, $1D, $C0, $C5, $13
+    !byte $90, $09, $D0, $10, $AD, $1C, $C0, $C5, $12, $B0, $09, $A9, $FF, $8D, $18, $C0
+    !byte $8D, $19, $C0, $60, $AD, $1D, $C0, $20, $09, $7D, $4C, $F5, $7B, $38, $A5, $10
     !byte $E5, $12, $8D, $1C, $C0, $A5, $11, $E5, $13, $8D, $1D, $C0, $C5, $13, $90, $09
-    !byte $D0, $13, $AD, $1C, $C0, $C5, $12, $B0, $0C, $A9, $01, $8D, $18, $C0, $A9, $00
-    !byte $8D, $19, $C0, $18, $60, $AD, $1D, $C0, $20, $09, $7D, $18, $60, $38, $A5, $10
+    !byte $D0, $22, $AD, $1C, $C0, $C5, $12, $B0, $1B, $A9, $00, $38, $ED, $1C, $C0, $8D
+    !byte $1C, $C0, $A9, $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $FF, $8D, $18, $C0, $8D
+    !byte $19, $C0, $18, $60, $AD, $1D, $C0, $20, $09, $7D, $4C, $E4, $7B, $38, $A5, $10
     !byte $E5, $12, $8D, $1C, $C0, $A5, $11, $E5, $13, $8D, $1D, $C0, $C5, $13, $90, $09
-    !byte $D0, $11, $AD, $1C, $C0, $C5, $12, $B0, $0A, $A9, $FF, $8D, $18, $C0, $8D, $19
-    !byte $C0, $18, $60, $AD, $1D, $C0, $20, $09, $7D, $4C, $F5, $7B, $38, $A5, $10, $E5
-    !byte $12, $8D, $1C, $C0, $A5, $11, $E5, $13, $8D, $1D, $C0, $C5, $13, $90, $09, $D0
-    !byte $22, $AD, $1C, $C0, $C5, $12, $B0, $1B, $A9, $00, $38, $ED, $1C, $C0, $8D, $1C
-    !byte $C0, $A9, $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $FF, $8D, $18, $C0, $8D, $19
-    !byte $C0, $18, $60, $AD, $1D, $C0, $20, $09, $7D, $4C, $E4, $7B, $38, $A5, $10, $E5
-    !byte $12, $8D, $1C, $C0, $A5, $11, $E5, $13, $8D, $1D, $C0, $C5, $13, $90, $09, $D0
-    !byte $24, $AD, $1C, $C0, $C5, $12, $B0, $1D, $A9, $00, $38, $ED, $1C, $C0, $8D, $1C
-    !byte $C0, $A9, $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $01, $8D, $18, $C0, $A9, $00
+    !byte $D0, $23, $AD, $1C, $C0, $C5, $12, $B0, $1C, $A9, $00, $38, $ED, $1C, $C0, $8D
+    !byte $1C, $C0, $A9, $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $01, $8D, $18, $C0, $4A
     !byte $8D, $19, $C0, $18, $60, $AD, $1D, $C0, $20, $09, $7D, $4C, $08, $7C, $A9, $00
     !byte $8D, $18, $C0, $8D, $19, $C0, $AD, $10, $C0, $8D, $1C, $C0, $AD, $11, $C0, $8D
     !byte $1D, $C0, $18, $60, $A9, $00, $38, $ED, $1C, $C0, $8D, $1C, $C0, $A9, $00, $ED

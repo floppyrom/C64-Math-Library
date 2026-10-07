@@ -1,3 +1,9 @@
+2026-10-07 SDIV16 DEFERRED Q>=2 MAGNITUDE COPY
+- V2-V4 positive/positive q=1 path reuses stable public inputs and defers private magnitude copies until q>=2.
+- Canonical V1/V2/V3/V4/V5 means: 187.131298 / 168.393021 / 170.582116 / 168.745038 / 171.905344.
+- V2 fixed signed/unsigned boundary remains exact; the latent V2 SDIV32_32 helper regression is also restored from the pre-PR-22 known-good implementation.
+- Validation and relocation gates pass.
+
 2026-10-07 SMUL16 STABLE-INPUT Y0
 - Removed redundant Y0 preservation from FAST17 and executable-ZP signed 16x16 paths.
 - Canonical V1/V2/V3/V4/V5 means: 292.349787 / 248.802333 / 249.107696 / 249.144492 / 292.026700.

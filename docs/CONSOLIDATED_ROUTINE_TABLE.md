@@ -98,17 +98,17 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 300.949131 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 792.160335 | 178 | 1883 | 1893 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 26 | 600 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
-| `MATH_SDIV16` | `div_s16_s16_s16_16` | 169.428135 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
+| `MATH_SDIV16` | `div_s16_s16_s16_16` | 168.393021 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | 248.344384 | 57 | 3339 | 1570 | 9 | $10-$18 | 0 | fast direct-output native signed 24-bit divider | current native-signed division validation |
 | `MATH_SDIV32_16` | `div_s32_s16_s32_16` | 833.995638 | 166 | 1973 | 2122 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_SMOD8` | `mod_s8_s8_s8` | 97.066406 | 26 | 598 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
-| `MATH_SMOD16` | `mod_s16_s16_s16` | 233.088809 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
+| `MATH_SMOD16` | `mod_s16_s16_s16` | 231.872202 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 337.075090 | 57 | 3339 | 1570 | 9 | $10-$18 | 0 | fast direct-output native signed 24-bit divider | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 861.849097 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 401.556389 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | 524.881520 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
-| `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 553.098146 | 75 | 2384 | 215 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
-| `MATH_SMOD32_32` | `mod_s32_s32_s32` | 746.032491 | 75 | 2384 | 215 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
+| `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 553.098146 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
+| `MATH_SMOD32_32` | `mod_s32_s32_s32` | 746.032491 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 243.804139 | 232 | 267 | 181 | 16 | $21-$30 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 279.888787 | 257 | 320 | 234 | 113 | $80-$F0 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 757.876404 | 695 | 874 | 364 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
@@ -157,11 +157,11 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 302.914359 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 789.650998 | 178 | 1883 | 1893 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 26 | 600 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
-| `MATH_SDIV16` | `div_s16_s16_s16_16` | 171.806325 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
+| `MATH_SDIV16` | `div_s16_s16_s16_16` | 170.582116 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | 236.810251 | 68 | 3314 | 1894 | 9 | $10-$18 | 0 | Repose-derived direct-output native signed 24-bit divider with private magnitude engine | current native-signed division validation |
 | `MATH_SDIV32_16` | `div_s32_s16_s32_16` | 833.572737 | 166 | 1973 | 2122 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_SMOD8` | `mod_s8_s8_s8` | 97.152344 | 26 | 598 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
-| `MATH_SMOD16` | `mod_s16_s16_s16` | 235.588448 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
+| `MATH_SMOD16` | `mod_s16_s16_s16` | 234.659206 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 329.971841 | 68 | 3314 | 1894 | 9 | $10-$18 | 0 | Repose-derived direct-output native signed 24-bit divider with private magnitude engine | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 863.249097 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 395.884576 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
@@ -222,11 +222,11 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 301.613007 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 789.841597 | 178 | 1883 | 1893 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 89.009821 | 26 | 598 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
-| `MATH_SDIV16` | `div_s16_s16_s16_16` | 169.754198 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
+| `MATH_SDIV16` | `div_s16_s16_s16_16` | 168.745038 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | 237.569466 | 68 | 3314 | 1894 | 9 | $10-$18 | 0 | Repose-derived direct-output native signed 24-bit divider with private magnitude engine | current native-signed division validation |
 | `MATH_SDIV32_16` | `div_s32_s16_s32_16` | 829.631189 | 166 | 1973 | 2122 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_SMOD8` | `mod_s8_s8_s8` | 99.020313 | 26 | 598 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
-| `MATH_SMOD16` | `mod_s16_s16_s16` | 229.269314 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
+| `MATH_SMOD16` | `mod_s16_s16_s16` | 228.244765 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 326.184838 | 68 | 3314 | 1894 | 9 | $10-$18 | 0 | Repose-derived direct-output native signed 24-bit divider with private magnitude engine | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 861.002888 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 404.408910 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |

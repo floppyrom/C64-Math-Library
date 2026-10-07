@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 804.
+; Reachable instructions: 802.
 ; NOTE: legacy alias entry; semantic producer is MATH_SDIV16.
 !cpu 6510
 
@@ -19,9 +19,9 @@ MATH_SMOD16:
 * = $7A00
 L7A00:
     lda $C011                          ; @7A00 AD 11 C0
-    bmi L7A70                          ; @7A03 30 6B
+    bmi L7A5F                          ; @7A03 30 5A
     lda $C015                          ; @7A05 AD 15 C0
-    bmi L7A41                          ; @7A08 30 37
+    bmi L7A30                          ; @7A08 30 26
     lda $C014                          ; @7A0A AD 14 C0
     ora $C015                          ; @7A0D 0D 15 C0
     bne L7A15                          ; @7A10 D0 03
@@ -38,202 +38,200 @@ L7A20:
     bcs L7A2D                          ; @7A28 B0 03
     jmp L7BCE                          ; @7A2A 4C CE 7B
 L7A2D:
-    lda $C010                          ; @7A2D AD 10 C0
-    sta $10                            ; @7A30 85 10
-    stx $11                            ; @7A32 86 11
-    lda $C014                          ; @7A34 AD 14 C0
-    sta $12                            ; @7A37 85 12
-    lda $C015                          ; @7A39 AD 15 C0
-    sta $13                            ; @7A3C 85 13
-    jmp L7AED                          ; @7A3E 4C ED 7A
-L7A41:
-    lda #$00                           ; @7A41 A9 00
-    sec                                ; @7A43 38
-    sbc $C014                          ; @7A44 ED 14 C0
-    sta $12                            ; @7A47 85 12
-    lda #$00                           ; @7A49 A9 00
-    sbc $C015                          ; @7A4B ED 15 C0
-    sta $13                            ; @7A4E 85 13
-    !byte $AF, $11, $C0    ; LAX abs   ; @7A50 AF 11 C0
-    cmp $13                            ; @7A53 C5 13
-    bcs L7A5A                          ; @7A55 B0 03
-    jmp L7BCE                          ; @7A57 4C CE 7B
-L7A5A:
-    bne L7A66                          ; @7A5A D0 0A
-    lda $C010                          ; @7A5C AD 10 C0
-    cmp $12                            ; @7A5F C5 12
-    bcs L7A66                          ; @7A61 B0 03
-    jmp L7BCE                          ; @7A63 4C CE 7B
-L7A66:
-    lda $C010                          ; @7A66 AD 10 C0
-    sta $10                            ; @7A69 85 10
-    stx $11                            ; @7A6B 86 11
-    jmp L7B1D                          ; @7A6D 4C 1D 7B
-L7A70:
-    lda $C015                          ; @7A70 AD 15 C0
-    bmi L7AB2                          ; @7A73 30 3D
-    lda $C014                          ; @7A75 AD 14 C0
-    ora $C015                          ; @7A78 0D 15 C0
-    bne L7A80                          ; @7A7B D0 03
-    jmp L7C1B                          ; @7A7D 4C 1B 7C
-L7A80:
-    lda #$00                           ; @7A80 A9 00
-    sec                                ; @7A82 38
-    sbc $C010                          ; @7A83 ED 10 C0
-    sta $10                            ; @7A86 85 10
-    lda #$00                           ; @7A88 A9 00
-    sbc $C011                          ; @7A8A ED 11 C0
-    sta $11                            ; @7A8D 85 11
-    !byte $A7, $11    ; LAX zp         ; @7A8F A7 11
-    cmp $C015                          ; @7A91 CD 15 C0
-    bcs L7A99                          ; @7A94 B0 03
-    jmp L7BCE                          ; @7A96 4C CE 7B
-L7A99:
-    bne L7AA5                          ; @7A99 D0 0A
-    lda $10                            ; @7A9B A5 10
-    cmp $C014                          ; @7A9D CD 14 C0
-    bcs L7AA5                          ; @7AA0 B0 03
-    jmp L7BCE                          ; @7AA2 4C CE 7B
-L7AA5:
-    lda $C014                          ; @7AA5 AD 14 C0
-    sta $12                            ; @7AA8 85 12
-    lda $C015                          ; @7AAA AD 15 C0
-    sta $13                            ; @7AAD 85 13
-    jmp L7B4C                          ; @7AAF 4C 4C 7B
-L7AB2:
-    !byte $AF, $11, $C0    ; LAX abs   ; @7AB2 AF 11 C0
-    cmp $C015                          ; @7AB5 CD 15 C0
-    bcc L7ACC                          ; @7AB8 90 12
-    beq L7ABF                          ; @7ABA F0 03
-    jmp L7BCE                          ; @7ABC 4C CE 7B
-L7ABF:
-    lda $C010                          ; @7ABF AD 10 C0
-    cmp $C014                          ; @7AC2 CD 14 C0
-    bcc L7ACC                          ; @7AC5 90 05
-    beq L7ACC                          ; @7AC7 F0 03
-    jmp L7BCE                          ; @7AC9 4C CE 7B
-L7ACC:
-    lda #$00                           ; @7ACC A9 00
-    sec                                ; @7ACE 38
-    sbc $C010                          ; @7ACF ED 10 C0
-    sta $10                            ; @7AD2 85 10
-    lda #$00                           ; @7AD4 A9 00
-    sbc $C011                          ; @7AD6 ED 11 C0
-    sta $11                            ; @7AD9 85 11
-    lda #$00                           ; @7ADB A9 00
-    sec                                ; @7ADD 38
-    sbc $C014                          ; @7ADE ED 14 C0
-    sta $12                            ; @7AE1 85 12
-    lda #$00                           ; @7AE3 A9 00
-    sbc $C015                          ; @7AE5 ED 15 C0
-    sta $13                            ; @7AE8 85 13
-    jmp L7B8C                          ; @7AEA 4C 8C 7B
-L7AED:
-    sec                                ; @7AED 38
-    lda $10                            ; @7AEE A5 10
-    sbc $12                            ; @7AF0 E5 12
-    sta $C01C                          ; @7AF2 8D 1C C0
-    lda $11                            ; @7AF5 A5 11
-    sbc $13                            ; @7AF7 E5 13
-    sta $C01D                          ; @7AF9 8D 1D C0
-    cmp $13                            ; @7AFC C5 13
-    bcc L7B09                          ; @7AFE 90 09
-    bne L7B15                          ; @7B00 D0 13
-    lda $C01C                          ; @7B02 AD 1C C0
-    cmp $12                            ; @7B05 C5 12
-    bcs L7B15                          ; @7B07 B0 0C
-L7B09:
-    lda #$01                           ; @7B09 A9 01
-    sta $C018                          ; @7B0B 8D 18 C0
-    lda #$00                           ; @7B0E A9 00
-    sta $C019                          ; @7B10 8D 19 C0
-    clc                                ; @7B13 18
-    rts                                ; @7B14 60
-L7B15:
-    lda $C01D                          ; @7B15 AD 1D C0
-    jsr L7DEA                          ; @7B18 20 EA 7D
-    clc                                ; @7B1B 18
-    rts                                ; @7B1C 60
-L7B1D:
-    sec                                ; @7B1D 38
-    lda $10                            ; @7B1E A5 10
-    sbc $12                            ; @7B20 E5 12
-    sta $C01C                          ; @7B22 8D 1C C0
-    lda $11                            ; @7B25 A5 11
-    sbc $13                            ; @7B27 E5 13
-    sta $C01D                          ; @7B29 8D 1D C0
-    cmp $13                            ; @7B2C C5 13
-    bcc L7B39                          ; @7B2E 90 09
-    bne L7B43                          ; @7B30 D0 11
-    lda $C01C                          ; @7B32 AD 1C C0
-    cmp $12                            ; @7B35 C5 12
-    bcs L7B43                          ; @7B37 B0 0A
-L7B39:
-    lda #$FF                           ; @7B39 A9 FF
-    sta $C018                          ; @7B3B 8D 18 C0
-    sta $C019                          ; @7B3E 8D 19 C0
-    clc                                ; @7B41 18
-    rts                                ; @7B42 60
-L7B43:
-    lda $C01D                          ; @7B43 AD 1D C0
-    jsr L7DEA                          ; @7B46 20 EA 7D
-    jmp L7BF5                          ; @7B49 4C F5 7B
-L7B4C:
-    sec                                ; @7B4C 38
-    lda $10                            ; @7B4D A5 10
-    sbc $12                            ; @7B4F E5 12
-    sta $C01C                          ; @7B51 8D 1C C0
-    lda $11                            ; @7B54 A5 11
-    sbc $13                            ; @7B56 E5 13
-    sta $C01D                          ; @7B58 8D 1D C0
-    cmp $13                            ; @7B5B C5 13
-    bcc L7B68                          ; @7B5D 90 09
-    bne L7B83                          ; @7B5F D0 22
-    lda $C01C                          ; @7B61 AD 1C C0
-    cmp $12                            ; @7B64 C5 12
-    bcs L7B83                          ; @7B66 B0 1B
-L7B68:
-    lda #$00                           ; @7B68 A9 00
-    sec                                ; @7B6A 38
-    sbc $C01C                          ; @7B6B ED 1C C0
-    sta $C01C                          ; @7B6E 8D 1C C0
-    lda #$00                           ; @7B71 A9 00
-    sbc $C01D                          ; @7B73 ED 1D C0
-    sta $C01D                          ; @7B76 8D 1D C0
-    lda #$FF                           ; @7B79 A9 FF
-    sta $C018                          ; @7B7B 8D 18 C0
-    sta $C019                          ; @7B7E 8D 19 C0
-    clc                                ; @7B81 18
-    rts                                ; @7B82 60
-L7B83:
-    lda $C01D                          ; @7B83 AD 1D C0
-    jsr L7DEA                          ; @7B86 20 EA 7D
-    jmp L7BE4                          ; @7B89 4C E4 7B
-L7B8C:
-    sec                                ; @7B8C 38
-    lda $10                            ; @7B8D A5 10
-    sbc $12                            ; @7B8F E5 12
-    sta $C01C                          ; @7B91 8D 1C C0
-    lda $11                            ; @7B94 A5 11
-    sbc $13                            ; @7B96 E5 13
-    sta $C01D                          ; @7B98 8D 1D C0
-    cmp $13                            ; @7B9B C5 13
-    bcc L7BA8                          ; @7B9D 90 09
-    bne L7BC5                          ; @7B9F D0 24
-    lda $C01C                          ; @7BA1 AD 1C C0
-    cmp $12                            ; @7BA4 C5 12
-    bcs L7BC5                          ; @7BA6 B0 1D
-L7BA8:
-    lda #$00                           ; @7BA8 A9 00
-    sec                                ; @7BAA 38
-    sbc $C01C                          ; @7BAB ED 1C C0
-    sta $C01C                          ; @7BAE 8D 1C C0
-    lda #$00                           ; @7BB1 A9 00
-    sbc $C01D                          ; @7BB3 ED 1D C0
-    sta $C01D                          ; @7BB6 8D 1D C0
-    lda #$01                           ; @7BB9 A9 01
-    sta $C018                          ; @7BBB 8D 18 C0
-    lda #$00                           ; @7BBE A9 00
+    jmp L7ADC                          ; @7A2D 4C DC 7A
+L7A30:
+    lda #$00                           ; @7A30 A9 00
+    sec                                ; @7A32 38
+    sbc $C014                          ; @7A33 ED 14 C0
+    sta $12                            ; @7A36 85 12
+    lda #$00                           ; @7A38 A9 00
+    sbc $C015                          ; @7A3A ED 15 C0
+    sta $13                            ; @7A3D 85 13
+    !byte $AF, $11, $C0    ; LAX abs   ; @7A3F AF 11 C0
+    cmp $13                            ; @7A42 C5 13
+    bcs L7A49                          ; @7A44 B0 03
+    jmp L7BCE                          ; @7A46 4C CE 7B
+L7A49:
+    bne L7A55                          ; @7A49 D0 0A
+    lda $C010                          ; @7A4B AD 10 C0
+    cmp $12                            ; @7A4E C5 12
+    bcs L7A55                          ; @7A50 B0 03
+    jmp L7BCE                          ; @7A52 4C CE 7B
+L7A55:
+    lda $C010                          ; @7A55 AD 10 C0
+    sta $10                            ; @7A58 85 10
+    stx $11                            ; @7A5A 86 11
+    jmp L7B1F                          ; @7A5C 4C 1F 7B
+L7A5F:
+    lda $C015                          ; @7A5F AD 15 C0
+    bmi L7AA1                          ; @7A62 30 3D
+    lda $C014                          ; @7A64 AD 14 C0
+    ora $C015                          ; @7A67 0D 15 C0
+    bne L7A6F                          ; @7A6A D0 03
+    jmp L7C1B                          ; @7A6C 4C 1B 7C
+L7A6F:
+    lda #$00                           ; @7A6F A9 00
+    sec                                ; @7A71 38
+    sbc $C010                          ; @7A72 ED 10 C0
+    sta $10                            ; @7A75 85 10
+    lda #$00                           ; @7A77 A9 00
+    sbc $C011                          ; @7A79 ED 11 C0
+    sta $11                            ; @7A7C 85 11
+    !byte $A7, $11    ; LAX zp         ; @7A7E A7 11
+    cmp $C015                          ; @7A80 CD 15 C0
+    bcs L7A88                          ; @7A83 B0 03
+    jmp L7BCE                          ; @7A85 4C CE 7B
+L7A88:
+    bne L7A94                          ; @7A88 D0 0A
+    lda $10                            ; @7A8A A5 10
+    cmp $C014                          ; @7A8C CD 14 C0
+    bcs L7A94                          ; @7A8F B0 03
+    jmp L7BCE                          ; @7A91 4C CE 7B
+L7A94:
+    lda $C014                          ; @7A94 AD 14 C0
+    sta $12                            ; @7A97 85 12
+    lda $C015                          ; @7A99 AD 15 C0
+    sta $13                            ; @7A9C 85 13
+    jmp L7B4D                          ; @7A9E 4C 4D 7B
+L7AA1:
+    !byte $AF, $11, $C0    ; LAX abs   ; @7AA1 AF 11 C0
+    cmp $C015                          ; @7AA4 CD 15 C0
+    bcc L7ABB                          ; @7AA7 90 12
+    beq L7AAE                          ; @7AA9 F0 03
+    jmp L7BCE                          ; @7AAB 4C CE 7B
+L7AAE:
+    lda $C010                          ; @7AAE AD 10 C0
+    cmp $C014                          ; @7AB1 CD 14 C0
+    bcc L7ABB                          ; @7AB4 90 05
+    beq L7ABB                          ; @7AB6 F0 03
+    jmp L7BCE                          ; @7AB8 4C CE 7B
+L7ABB:
+    lda #$00                           ; @7ABB A9 00
+    sec                                ; @7ABD 38
+    sbc $C010                          ; @7ABE ED 10 C0
+    sta $10                            ; @7AC1 85 10
+    lda #$00                           ; @7AC3 A9 00
+    sbc $C011                          ; @7AC5 ED 11 C0
+    sta $11                            ; @7AC8 85 11
+    lda #$00                           ; @7ACA A9 00
+    sec                                ; @7ACC 38
+    sbc $C014                          ; @7ACD ED 14 C0
+    sta $12                            ; @7AD0 85 12
+    lda #$00                           ; @7AD2 A9 00
+    sbc $C015                          ; @7AD4 ED 15 C0
+    sta $13                            ; @7AD7 85 13
+    jmp L7B8D                          ; @7AD9 4C 8D 7B
+L7ADC:
+    sec                                ; @7ADC 38
+    lda $C010                          ; @7ADD AD 10 C0
+    sbc $C014                          ; @7AE0 ED 14 C0
+    sta $C01C                          ; @7AE3 8D 1C C0
+    txa                                ; @7AE6 8A
+    sbc $C015                          ; @7AE7 ED 15 C0
+    sta $C01D                          ; @7AEA 8D 1D C0
+    cmp $C015                          ; @7AED CD 15 C0
+    bcc L7AFC                          ; @7AF0 90 0A
+    bne L7B06                          ; @7AF2 D0 12
+    lda $C01C                          ; @7AF4 AD 1C C0
+    cmp $C014                          ; @7AF7 CD 14 C0
+    bcs L7B06                          ; @7AFA B0 0A
+L7AFC:
+    ldy #$00                           ; @7AFC A0 00
+    sty $C019                          ; @7AFE 8C 19 C0
+    iny                                ; @7B01 C8
+    sty $C018                          ; @7B02 8C 18 C0
+    rts                                ; @7B05 60
+L7B06:
+    lda $C010                          ; @7B06 AD 10 C0
+    sta $10                            ; @7B09 85 10
+    stx $11                            ; @7B0B 86 11
+    lda $C014                          ; @7B0D AD 14 C0
+    sta $12                            ; @7B10 85 12
+    lda $C015                          ; @7B12 AD 15 C0
+    sta $13                            ; @7B15 85 13
+    lda $C01D                          ; @7B17 AD 1D C0
+    jsr L7DEA                          ; @7B1A 20 EA 7D
+    clc                                ; @7B1D 18
+    rts                                ; @7B1E 60
+L7B1F:
+    sec                                ; @7B1F 38
+    lda $10                            ; @7B20 A5 10
+    sbc $12                            ; @7B22 E5 12
+    sta $C01C                          ; @7B24 8D 1C C0
+    lda $11                            ; @7B27 A5 11
+    sbc $13                            ; @7B29 E5 13
+    sta $C01D                          ; @7B2B 8D 1D C0
+    cmp $13                            ; @7B2E C5 13
+    bcc L7B3B                          ; @7B30 90 09
+    bne L7B44                          ; @7B32 D0 10
+    lda $C01C                          ; @7B34 AD 1C C0
+    cmp $12                            ; @7B37 C5 12
+    bcs L7B44                          ; @7B39 B0 09
+L7B3B:
+    lda #$FF                           ; @7B3B A9 FF
+    sta $C018                          ; @7B3D 8D 18 C0
+    sta $C019                          ; @7B40 8D 19 C0
+    rts                                ; @7B43 60
+L7B44:
+    lda $C01D                          ; @7B44 AD 1D C0
+    jsr L7DEA                          ; @7B47 20 EA 7D
+    jmp L7BF5                          ; @7B4A 4C F5 7B
+L7B4D:
+    sec                                ; @7B4D 38
+    lda $10                            ; @7B4E A5 10
+    sbc $12                            ; @7B50 E5 12
+    sta $C01C                          ; @7B52 8D 1C C0
+    lda $11                            ; @7B55 A5 11
+    sbc $13                            ; @7B57 E5 13
+    sta $C01D                          ; @7B59 8D 1D C0
+    cmp $13                            ; @7B5C C5 13
+    bcc L7B69                          ; @7B5E 90 09
+    bne L7B84                          ; @7B60 D0 22
+    lda $C01C                          ; @7B62 AD 1C C0
+    cmp $12                            ; @7B65 C5 12
+    bcs L7B84                          ; @7B67 B0 1B
+L7B69:
+    lda #$00                           ; @7B69 A9 00
+    sec                                ; @7B6B 38
+    sbc $C01C                          ; @7B6C ED 1C C0
+    sta $C01C                          ; @7B6F 8D 1C C0
+    lda #$00                           ; @7B72 A9 00
+    sbc $C01D                          ; @7B74 ED 1D C0
+    sta $C01D                          ; @7B77 8D 1D C0
+    lda #$FF                           ; @7B7A A9 FF
+    sta $C018                          ; @7B7C 8D 18 C0
+    sta $C019                          ; @7B7F 8D 19 C0
+    clc                                ; @7B82 18
+    rts                                ; @7B83 60
+L7B84:
+    lda $C01D                          ; @7B84 AD 1D C0
+    jsr L7DEA                          ; @7B87 20 EA 7D
+    jmp L7BE4                          ; @7B8A 4C E4 7B
+L7B8D:
+    sec                                ; @7B8D 38
+    lda $10                            ; @7B8E A5 10
+    sbc $12                            ; @7B90 E5 12
+    sta $C01C                          ; @7B92 8D 1C C0
+    lda $11                            ; @7B95 A5 11
+    sbc $13                            ; @7B97 E5 13
+    sta $C01D                          ; @7B99 8D 1D C0
+    cmp $13                            ; @7B9C C5 13
+    bcc L7BA9                          ; @7B9E 90 09
+    bne L7BC5                          ; @7BA0 D0 23
+    lda $C01C                          ; @7BA2 AD 1C C0
+    cmp $12                            ; @7BA5 C5 12
+    bcs L7BC5                          ; @7BA7 B0 1C
+L7BA9:
+    lda #$00                           ; @7BA9 A9 00
+    sec                                ; @7BAB 38
+    sbc $C01C                          ; @7BAC ED 1C C0
+    sta $C01C                          ; @7BAF 8D 1C C0
+    lda #$00                           ; @7BB2 A9 00
+    sbc $C01D                          ; @7BB4 ED 1D C0
+    sta $C01D                          ; @7BB7 8D 1D C0
+    lda #$01                           ; @7BBA A9 01
+    sta $C018                          ; @7BBC 8D 18 C0
+    lsr a                              ; @7BBF 4A
     sta $C019                          ; @7BC0 8D 19 C0
     clc                                ; @7BC3 18
     rts                                ; @7BC4 60

@@ -98,7 +98,7 @@
       "MATH_SDIV16": {
         "cases": 4585,
         "errors": 0,
-        "mean_cycles": 169.42813522355507,
+        "mean_cycles": 168.39302071973827,
         "min_cycles": 54,
         "max_cycles": 1159,
         "mode": "structured_random"
@@ -145,7 +145,7 @@
       "MATH_SMOD16": {
         "cases": 1385,
         "errors": 0,
-        "mean_cycles": 233.08880866425991,
+        "mean_cycles": 231.872202166065,
         "min_cycles": 54,
         "max_cycles": 1159
       },
@@ -183,7 +183,7 @@
       "MATH_SDIV16": {
         "cases": 4585,
         "errors": 0,
-        "mean_cycles": 171.80632497273717,
+        "mean_cycles": 170.58211559432934,
         "min_cycles": 54,
         "max_cycles": 1159,
         "mode": "structured_random"
@@ -230,7 +230,7 @@
       "MATH_SMOD16": {
         "cases": 1385,
         "errors": 0,
-        "mean_cycles": 235.5884476534296,
+        "mean_cycles": 234.65920577617328,
         "min_cycles": 54,
         "max_cycles": 1159
       },
@@ -268,7 +268,7 @@
       "MATH_SDIV16": {
         "cases": 4585,
         "errors": 0,
-        "mean_cycles": 169.75419847328243,
+        "mean_cycles": 168.74503816793893,
         "min_cycles": 54,
         "max_cycles": 1159,
         "mode": "structured_random"
@@ -315,7 +315,7 @@
       "MATH_SMOD16": {
         "cases": 1385,
         "errors": 0,
-        "mean_cycles": 229.26931407942237,
+        "mean_cycles": 228.24476534296028,
         "min_cycles": 54,
         "max_cycles": 1159
       },
@@ -430,7 +430,6 @@
   "summary": {
     "profiles": 5,
     "machine_calls": 364533,
-    "elapsed_seconds_sum": 60.05,
-    "note": "merged from per-profile final resident validation runs"
+    "elapsed_seconds": 52.85
   }
 }
