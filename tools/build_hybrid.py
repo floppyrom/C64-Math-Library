@@ -531,7 +531,61 @@ def validate_hybrid_region(vals: dict[str, int], hbase: int) -> None:
 
 def _public_addr(man: dict, name: str) -> int:
     v = man['public_entries'][name]
-    return int(v[1:], 16) if isinstance(v, str) and v.startswith('def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
+    return int(v[1:], 16) if isinstance(v, str) and v.startswith('$') else int(v)
+
+
+def apply_muldiv16_lowzp_unsigned(dst: bytearray, vals: dict[str, int],
+                                    base_man: dict, hbase: int) -> dict:
+    # Keep V5's existing 17-ZP UMUL16 producer; eliminate only the public
+    # product-copy + UDIV32/16 marshalling boundary in this first checkpoint.
+    mbase = vals['REG_TABLE'] + 0x1800
+    mend = vals['REG_TABLE'] + 0x19ED
+    z = vals['ZP_MAIN']
+    io = vals['MATH_IO']
+    umul = _public_addr(base_man, 'MATH_UMUL16')
+    uentry = hbase + 0x0C00
+
+    src_text = '\n'.join((
+        f'* = {hx(mbase)}',
+        'V5_MULDIV16_U:',
+        f'    jsr {hx(umul)}',
+        f'    lda {hx(io + 0x08)}',
+        f'    sta {hx(z + 0x16, 2)}',
+        f'    lda {hx(io + 0x09)}',
+        f'    sta {hx(z + 0x17, 2)}',
+        f'    lda {hx(io + 0x0A)}',
+        f'    sta {hx(z + 0x0E, 2)}',
+        f'    lda {hx(io + 0x0B)}',
+        f'    sta {hx(z + 0x0F, 2)}',
+        f'    lda {hx(io + 0x14)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        f'    lda {hx(io + 0x15)}',
+        f'    sta {hx(z + 0x11, 2)}',
+        f'    jmp {hx(uentry)}',
+        '',
+    ))
+    mem, labels, _ = Assembler().assemble(src_text)
+    if not mem:
+        raise RuntimeError('V5 UMULDIV16 fusion assembled no code')
+    lo, hi = min(mem), max(mem)
+    if lo != mbase or hi > mend:
+        raise RuntimeError(f'V5 UMULDIV16 fusion does not fit certified table hole: {hx(lo)}-{hx(hi)}')
+    if any(dst[lo:hi + 1]):
+        raise RuntimeError(f'V5 UMULDIV16 fusion destination {hx(lo)}-{hx(hi)} is not free')
+    for a, byte in mem.items():
+        dst[a] = byte
+    pub = _public_addr(base_man, 'MATH_UMULDIV16')
+    dst[pub:pub + 3] = bytes((0x4C, mbase & 0xFF, mbase >> 8))
+    return {
+        'entry': hx(mbase),
+        'end': hx(hi),
+        'code_bytes': hi - lo + 1,
+        'normal_zp_bytes': 31,
+        'producer': 'existing V1 low-ZP MATH_UMUL16',
+        'consumer': 'relocated private V2 UDIV32/16 entry',
+    }
+
+def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
     # V5 intentionally inherits the V1 normalization backend.  Publish a
     # profile-local standalone source, but require it to remain byte-identical
     # to the V1 canonical source so users can lift either copy safely.
