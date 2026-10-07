@@ -15,4 +15,5 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: python3 tools/map_sdiv16_signed_region.py
+      - run: python3 tools/map_sdiv16_api_gap.py
       - run: python3 tools/bench_sdiv16_pp_late_copy.py
