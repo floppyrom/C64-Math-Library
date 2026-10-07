@@ -15,3 +15,4 @@ jobs:
           python3 tools/generate_sources.py
           python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_u3216
           python3 tools/debug_divlat_trace.py
+# trace workflow active
