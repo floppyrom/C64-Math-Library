@@ -56,7 +56,7 @@ jobs:
           python3 tools/validate_turbo_boundary_sweep.py
 
   promote:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/opt/mod-isqrt-fast24-turbo-20261007'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/fix-turbo32-runtime'
     needs: prove
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -65,7 +65,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: opt/mod-isqrt-fast24-turbo-20261007
+          ref: fix-turbo32-runtime
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -74,10 +74,8 @@ jobs:
           python3 tools/generate_sources.py
           python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
           python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
-      - name: Promote optimized reference PRGs and REU images
+      - name: Promote V3/V4 reference PRGs and REU images
         run: |
-          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg \
-             v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
           cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg \
              v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
           cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg \
@@ -89,13 +87,6 @@ jobs:
       - name: Regenerate canonical sources and publication evidence
         run: |
           python3 tools/generate_sources.py
-          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
-          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
-          python3 tools/build_hybrid.py --config-kind reference
-          python3 tools/build_hybrid.py --config-kind alternate
-          python3 tools/validate_unsigned_division.py
-          python3 tools/validate_umul24_directout.py
-          python3 tools/benchmark_isqrt32_fast.py
           python3 tools/publish_standalone_sources.py
           python3 tools/validate_turbo_relocation.py
           python3 tools/validate_turbo_boundary_sweep.py
@@ -112,12 +103,11 @@ jobs:
           root=Path('.')
           def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
           s=json.loads((root/'RELEASE_STATUS.json').read_text())
-          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+          for p in ('v3_reu_512k','v4_reu_16m'):
               s['reference_prg_sha256'][p]=sha(root/'build_source/reference'/p/f'math_{p}_source_built.prg')
               s['alternate_prg_sha256'][p]=sha(root/'build_source/alternate'/p/f'math_{p}_source_built.prg')
-              if p in ('v3_reu_512k','v4_reu_16m'):
-                  s['reference_reu_sha256'][p]=sha(root/'build_source/reference'/p/f'c64_math_{p}_source_built.reu')
-                  s['alternate_reu_sha256'][p]=sha(root/'build_source/alternate'/p/f'c64_math_{p}_source_built.reu')
+              s['reference_reu_sha256'][p]=sha(root/'build_source/reference'/p/f'c64_math_{p}_source_built.reu')
+              s['alternate_reu_sha256'][p]=sha(root/'build_source/alternate'/p/f'c64_math_{p}_source_built.reu')
           tv=json.loads((root/'validation/turbo_relocation/TURBO_RELOCATION_VALIDATION.json').read_text())
           ref=tv['profiles']['v3_reu_512k']['reference']
           alt=tv['profiles']['v3_reu_512k']['alternate']
@@ -147,6 +137,7 @@ jobs:
               (root/'SHA256SUMS.txt').write_text('\n'.join(lines)+'\n')
           sums()
           PY
+          python3 tools/package_audit.py
           python3 - <<'PY'
           from pathlib import Path
           import hashlib
@@ -154,7 +145,8 @@ jobs:
           fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
           (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
           PY
-      - name: Commit promoted optimization artifacts
+          python3 tools/package_audit.py
+      - name: Commit promoted Turbo32 release artifacts
         run: |
           git config user.name "c64-math-release-bot"
           git config user.email "actions@users.noreply.github.com"
@@ -162,6 +154,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No promotion changes to commit"
           else
-            git commit -m "Promote MOD, ISQRT32, FAST24 and Turbo optimizations"
-            git push origin HEAD:opt/mod-isqrt-fast24-turbo-20261007
+            git commit -m "Promote optimized V3/V4 Turbo32 runtime"
+            git push origin HEAD:fix-turbo32-runtime
           fi
