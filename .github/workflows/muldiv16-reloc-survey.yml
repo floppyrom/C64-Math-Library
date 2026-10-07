@@ -127,6 +127,27 @@ jobs:
           print('fixed-plane diffs',len(diffs))
           print('first diffs',[(f'{a:04X}',f'{r:02X}',f'{v:02X}') for a,r,v in diffs[:40]])
           PY
+      - name: Inspect SMUL8 code and relocated difference tables
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out /tmp/smul8x
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind alternate --out /tmp/smul8x
+          python3 - <<'PY'
+          from pathlib import Path
+          def load(path):
+              b=Path(path).read_bytes();lo=b[0]|b[1]<<8
+              return lo,b[2:]
+          def get(lo,b,a,n=1): return b[a-lo:a-lo+n]
+          rl,rb=load('/tmp/smul8x/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg')
+          al,ab=load('/tmp/smul8x/alternate/v2_pareto_fast/math_v2_pareto_fast_source_built.prg')
+          for a,n in [(0x3b80,46),(0xbb80,46),(0x64ff,1),(0x66ff,1),(0x44ff,1),(0x46ff,1),(0x9c80,1),(0x9e80,1)]:
+              lo,b=(rl,rb) if (a<0x9000 and a not in (0x44ff,0x46ff)) else (al,ab)
+              print(f'{a:04X}',get(lo,b,a,n).hex())
+          # Cross-map table equivalence for relocated NEG planes.
+          for rs,as_ in ((0x6400,0x4400),(0x6600,0x4600)):
+              diffs=[i for i in range(0x200) if get(rl,rb,rs+i)[0]!=get(al,ab,as_+i)[0]]
+              print(f'{rs:04X}->{as_:04X} diffs',len(diffs),'first',diffs[:16])
+          PY
       - name: Validate reference and alternate source maps after relocation
         run: |
           python3 tools/generate_sources.py
