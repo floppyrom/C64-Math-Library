@@ -523,30 +523,7 @@ U3216_FORCE15:
 U3216_NO15:
 
         rol U3216_LN0
-        sta MATH_R+1
-        lda U3216_LN0
-        sta MATH_Q+0
-        lda U3216_LN1
-        sta MATH_Q+1
-        lda U3216_Q2
-        sta MATH_Q+2
-        lda U3216_Q3
-        sta MATH_Q+3
-        lda U3216_R0
-        sta MATH_R+0
-        clc
-        rts
-
-U3216_ZERO:
-        lda #0
-        sta MATH_Q+0
-        sta MATH_Q+1
-        sta MATH_Q+2
-        sta MATH_Q+3
-        sta MATH_R+0
-        sta MATH_R+1
-        sec
-        rts
+        jmp U3216_FINISH
 
 U3216_MAIN_END:
 * = U3216_D8_BASE
@@ -635,3 +612,35 @@ U3216_D8_N0:
         clc
         rts
 U3216_D8_END:
+
+; Shared V2/V3/V4 free island: after UMUL16 ($5472 reference end) and before
+; UMUL24 ($5649 reference start). Keeping this epilogue out of the main body
+; lets the arithmetic stay at its proven $4E00 origin without colliding with
+; V2 UDIV24's secondary $50E1 island.
+* = REG_KERNEL+$1480
+U3216_FINISH:
+        sta MATH_R+1
+        lda U3216_LN0
+        sta MATH_Q+0
+        lda U3216_LN1
+        sta MATH_Q+1
+        lda U3216_Q2
+        sta MATH_Q+2
+        lda U3216_Q3
+        sta MATH_Q+3
+        lda U3216_R0
+        sta MATH_R+0
+        clc
+        rts
+
+U3216_ZERO:
+        lda #0
+        sta MATH_Q+0
+        sta MATH_Q+1
+        sta MATH_Q+2
+        sta MATH_Q+3
+        sta MATH_R+0
+        sta MATH_R+1
+        sec
+        rts
+U3216_EPILOG_END:
