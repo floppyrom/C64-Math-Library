@@ -1,0 +1,20 @@
+name: V5 division debug
+on:
+  push:
+    branches: [ opt/udiv32-16-latency-20261007 ]
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build finalized V5
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/build_hybrid.py --config-kind reference
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+      - name: Validate V5 unsigned division
+        run: python3 tools/validate_unsigned_division.py --profile v5_hybrid_lowzp --out /tmp/v5_unsigned.json
