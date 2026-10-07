@@ -52,6 +52,8 @@ jobs:
       - name: Regenerate publication and benchmark evidence
         run: |
           python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
           python3 tools/publish_standalone_sources.py
           python3 tools/publish_native_signed_sources.py
           python3 tools/validate_unsigned_division.py
