@@ -105,6 +105,28 @@ jobs:
               end=max(pc+SIZE[REV[mem[pc]][1]]-1 for pc in local)
               print(f'LOCAL_RANGE {start:04X}-{end:04X} span={end-start+1} reachable_starts={len(local)}')
           PY
+      - name: Inspect alternate SMUL8 fixed planes
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out /tmp/smul8
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind alternate --out /tmp/smul8
+          python3 - <<'PY'
+          from pathlib import Path
+          def load(path):
+              b=Path(path).read_bytes(); lo=b[0]|b[1]<<8
+              return lo,b[2:]
+          def byte(lo,b,a): return b[a-lo] if lo<=a<lo+len(b) else None
+          rp='/tmp/smul8/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg'
+          ap='/tmp/smul8/alternate/v2_pareto_fast/math_v2_pareto_fast_source_built.prg'
+          rl,rb=load(rp); al,ab=load(ap)
+          for a in (0x9c00,0x9c7f,0x9c80,0x9cff,0x9e00,0x9e7f,0x9e80,0x9eff):
+              print(f'{a:04X} ref={byte(rl,rb,a):02X} alt={byte(al,ab,a):02X}')
+          diffs=[]
+          for a in range(0x9c00,0xa000):
+              if byte(rl,rb,a)!=byte(al,ab,a): diffs.append((a,byte(rl,rb,a),byte(al,ab,a)))
+          print('fixed-plane diffs',len(diffs))
+          print('first diffs',[(f'{a:04X}',f'{r:02X}',f'{v:02X}') for a,r,v in diffs[:40]])
+          PY
       - name: Validate reference and alternate source maps after relocation
         run: |
           python3 tools/generate_sources.py
