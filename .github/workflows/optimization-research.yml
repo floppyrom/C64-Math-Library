@@ -33,9 +33,7 @@ jobs:
         run: |
           python3 tools/validate_turbo_relocation.py
           python3 tools/validate_turbo_boundary_sweep.py
-      - name: Benchmark current ISQRT32 baseline
-        run: |
-          python3 tools/validate_isqrt32_fast.py
-          python3 tools/benchmark_isqrt32_fast.py
+      - name: Validate V4 ISQRT32 prefix accelerator
+        run: python3 tools/validate_isqrt32_reu_prefix_ab.py
       - name: Benchmark shifted134 Turbo16 candidate
         run: python3 tools/research_turbo16_shifted134.py
