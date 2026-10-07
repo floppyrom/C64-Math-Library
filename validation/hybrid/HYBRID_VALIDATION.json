@@ -27,15 +27,30 @@
       },
       "MATH_UMOD16": {
         "cases": 1000,
-        "cycle_vector_equal_to_v2": true
+        "correctness_against_v2": true,
+        "cycle_parity_required": false,
+        "cycle_vector_equal_to_v2": false,
+        "mean_cycle_delta_v5_minus_v2": 7.866,
+        "min_cycle_delta_v5_minus_v2": 1,
+        "max_cycle_delta_v5_minus_v2": 13
       },
       "MATH_UMOD24": {
         "cases": 1000,
-        "cycle_vector_equal_to_v2": true
+        "correctness_against_v2": true,
+        "cycle_parity_required": false,
+        "cycle_vector_equal_to_v2": false,
+        "mean_cycle_delta_v5_minus_v2": 11.796,
+        "min_cycle_delta_v5_minus_v2": -5,
+        "max_cycle_delta_v5_minus_v2": 19
       },
       "MATH_UMOD32_16": {
         "cases": 1000,
-        "cycle_vector_equal_to_v2": true
+        "correctness_against_v2": true,
+        "cycle_parity_required": false,
+        "cycle_vector_equal_to_v2": true,
+        "mean_cycle_delta_v5_minus_v2": 0.0,
+        "min_cycle_delta_v5_minus_v2": 0,
+        "max_cycle_delta_v5_minus_v2": 0
       },
       "MATH_UMOD8": {
         "cases": 65536,
@@ -93,5 +108,5 @@
       "status": "PASS"
     }
   },
-  "elapsed_seconds": 20.447
+  "elapsed_seconds": 10.242
 }

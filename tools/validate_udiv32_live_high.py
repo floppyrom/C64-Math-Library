@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Certify four-ZP UDIV32/UMOD32 in both maps, including memory guards."""
+"""Certify the live-high UDIV32/UMOD32 public graph in both maps, including memory guards.\n\nThe wide-divisor live-high core still owns four ZP bytes. The finalized public\ngraph also reaches the shared UDIV32/16 narrow-divisor engine, so its static\nwhole-call resource footprint is 2,755 code bytes and 14 ZP bytes.\n"""
 from pathlib import Path
 import json,random,sys
 ROOT=Path(__file__).resolve().parents[1]
@@ -16,7 +16,7 @@ def main():
  for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
   out[p]={};vectors=[]
   for kind in ('reference','alternate'):
-   cpu,api=load(p,kind);code,zp,stack=trace(cpu.mem,api['MATH_UDIV32_32']);assert len(code)==793 and len(zp)==4 and not stack
+   cpu,api=load(p,kind);code,zp,stack=trace(cpu.mem,api['MATH_UDIV32_32']);assert len(code)==2755 and len(zp)==14 and not stack
    allowed=zp|set(range(api['MATH_Q'],api['MATH_Q']+8))|set(range(0x1f8,0x1fe));stats={};vector=[]
    for tag,cases in groups.items():
     cycles=[]

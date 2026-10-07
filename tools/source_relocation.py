@@ -166,16 +166,16 @@ DIVISION_REFRESH_INCLUDES={
   'sdiv32_16_direct_balanced.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc'),
  'v2_pareto_fast':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
-  'udiv24_direct_repose.inc','sdiv16_directout_fast.inc','sdiv24_directout_fast.inc',
-  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
+  'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_fast.inc',
+  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
  'v3_reu_512k':(
   'reu_div8_public_stubs.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
-  'udiv24_direct_repose.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
-  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
+  'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
+  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
  'v4_reu_16m':(
   'reu_div8_public_stubs.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
-  'udiv24_direct_repose.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
-  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
+  'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
+  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
 }
 # Exact emitted address spans of the frozen division-refresh modules in the
 # reference map.  Instruction starts in these spans are intentionally omitted

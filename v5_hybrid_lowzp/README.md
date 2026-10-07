@@ -52,7 +52,7 @@ The shipped validation includes:
 - exhaustive 65,536-case `UMOD8` correctness;
 - exhaustive 256-phase `COS8` and `SINCOS8` checks;
 - exhaustive 65,536-vector `ATAN2_8` result/cycle parity with V2 and maximum error <=1 phase unit;
-- thousands of 16/24/32-bit division cases with exact V2 cycle-vector parity;
+- thousands of 16/24/32-bit UDIV cases with exact V2 cycle-vector parity; wider UMOD aliases are verified for exact remainder/carry/input semantics and keep V5-specific timing;
 - dynamic reference/alternate ZP confinement checks: all 225 bytes outside the 31-byte window unchanged;
 - mixed V1/V2 state stress;
 - 2,000 reference/alternate cold-load calls without `MATH_INIT`, covering imported paths and an untouched V1 safe routine;

@@ -58,12 +58,12 @@ This design means:
 - **144,246 direct-import test cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity and an independent <=1 phase-unit error check;
 - exhaustive `UMOD8` correctness over all 65,536 input pairs;
 - exhaustive `COS8/SINCOS8` phase-domain checks;
-- exact V2 cycle-vector parity over thousands of wide-division cases and all trig phases;
+- exact V2 cycle-vector parity over thousands of imported UDIV cases and all trig phases; wider UMOD aliases are checked for exact remainder/carry/input semantics with their profile-specific cycle deltas recorded. The release audit treats these wider UMOD entries as semantic, not cycle-parity, imports;
 - dynamic ZP guards on reference and alternate maps: all 225 bytes outside each 31-byte window remained unchanged;
 - mixed-state stress interleaving imported and untouched V1 routines;
 - 2,000 cold-load calls across reference/alternate maps without `MATH_INIT`, covering imported paths and an untouched V1 safe path, confirming V1-style optional initialization.
 
-Additional files:
+Release packaging removes transient Python cache files before checksum/audit generation.\n\nAdditional files:
 
 - `HYBRID_DETERMINISTIC_REBUILD.json` — reference and alternate builds reproduce byte-identically;
 - `HYBRID_CONFIG_VALIDATION.json` — valid maps accepted and unsafe overlap/I/O/alignment/overflow maps rejected;
