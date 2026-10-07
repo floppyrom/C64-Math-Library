@@ -98,3 +98,74 @@ for x,y in pairs:
 cand_mean=tot/len(pairs)
 print('PASS',len(pairs),'public_mean',f'{cand_mean:.6f}','min',mn,'max',mx,
       'delta_vs_baseline',f'{cand_mean-base_mean:.6f}')
+
+
+# Control experiment: keep the current Turbo16 arithmetic/table convention,
+# but make the private overlay public-output aware so the wrapper can tail-jump.
+# This tests whether ABI traffic, rather than arithmetic, is the larger target.
+base_src=(ROOT/'relocatable_source/turbo/turbo16_overlay.asm').read_text()
+base_src=base_src.replace('        sta+1 z0\n','        sta MATH_IO+$08\n')
+old_tail='''        clc
+        txa
+_z1_part2:
+        adc #0
+        tax
+_z2_part1:
+        lda #0
+_z2_part2:
+        adc #0
+        bcs _final_carry
+        rts
+_final_carry:
+        iny
+        rts
+'''
+new_tail='''        clc
+        txa
+_z1_part2:
+        adc #0
+        tax
+        stx MATH_IO+$09
+_z2_part1:
+        lda #0
+_z2_part2:
+        adc #0
+        sta MATH_IO+$0A
+        bcc _direct_no_carry
+        iny
+_direct_no_carry:
+        sty MATH_IO+$0B
+        clc
+        rts
+'''
+if old_tail not in base_src: raise AssertionError('Turbo16 tail pattern changed')
+base_src=base_src.replace(old_tail,new_tail).replace('\nz0:    !byte 0\n','\n')
+direct_wrapper=r'''
+* = $4100
+T16D_PUBLIC_TEST:
+    ldx MATH_IO+$05
+    lda MATH_IO+$00
+    sta+1 x0
+    lda MATH_IO+$01
+    sta+1 x1
+    stx+1 y1
+    ldy MATH_IO+$04
+    jmp umult_ax1
+'''
+dmem,dlabels,dconst=Assembler().assemble(cfg+base_src+direct_wrapper)
+dsize=dlabels['cg_zp_end']-dlabels['cg_zp_start']
+print('directout_zp_bytes',dsize)
+m2=load_prg(PRG); c2=CPU(m2,reu=bytearray(REU.read_bytes())); c2.d=0;c2.call(MATH_INIT,2_000_000)
+for a,v in dmem.items(): c2.mem[a]=v
+d_tot=0;d_mn=10**9;d_mx=0
+for x,y in pairs:
+    c2.mem[MATH_IO]=x&255;c2.mem[MATH_IO+1]=(x>>8)&255
+    c2.mem[MATH_IO+4]=y&255;c2.mem[MATH_IO+5]=(y>>8)&255
+    cy=c2.call(dlabels['T16D_PUBLIC_TEST'],100000)
+    got=sum(c2.mem[MATH_IO+8+i]<<(8*i) for i in range(4))
+    if got != x*y: raise AssertionError(('directout',hex(x),hex(y),hex(got),hex(x*y)))
+    d_tot+=cy;d_mn=min(d_mn,cy);d_mx=max(d_mx,cy)
+d_mean=d_tot/len(pairs)
+print('DIRECTOUT',len(pairs),'public_mean',f'{d_mean:.6f}','min',d_mn,'max',d_mx,
+      'delta_vs_baseline',f'{d_mean-base_mean:.6f}',
+      'delta_vs_shifted134',f'{d_mean-cand_mean:.6f}')
