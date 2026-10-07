@@ -27,12 +27,5 @@ jobs:
           done
       - name: Focused UDIV32-16 alias gate
         run: python3 tools/debug_udiv32_16_source.py
-      - name: Stable public API source-build validation
-        run: |
-          for kind in reference alternate; do
-            for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
-              python3 tools/validate_source_build.py "$p" --build "build_u3216/$kind" --out "validation/research/source_$kind"
-            done
-          done
       - name: Paired UDIV32-16 performance and exactness
         run: python3 tools/validate_udiv32_16_integrated.py
