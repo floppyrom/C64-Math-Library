@@ -717,14 +717,15 @@ L1ADA:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00
+    lda MATH_IO+$05
+    sta ZP_SMUL+$34
     lda MATH_IO
     sta ZP_SMUL+$16
     lda MATH_IO+$01
     sta ZP_SMUL+$24
-    lda MATH_IO+$05
-    sta ZP_SMUL+$34
     ldy MATH_IO+$04
-    jsr ZP_SMUL
+    ; A already holds X1: enter after the core's redundant leading LDA X1.
+    jsr ZP_SMUL+$02
     stx MATH_IO+$0A
     sta MATH_IO+$0B
     lda ZP_SMUL+$6F
