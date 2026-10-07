@@ -48,9 +48,9 @@ random triples. Reference and alternate-map cycle vectors are identical.
 | Profile | UMULDIV16 mean | min-max | SMULDIV16 mean | min-max |
 |---|---:|---:|---:|---:|
 | V1 Balanced | 1289.022331 | 513-2300 | 1378.300411 | 490-2271 |
-| V2 Pareto-Fast | **801.646373** | 301-1923 | **860.152761** | **83-1870** |
-| V3 REU 512K | **801.646373** | 301-1923 | **860.152761** | **83-1870** |
-| V4 REU 16M | **801.646373** | 301-1923 | **860.152761** | **83-1870** |
+| V2 Pareto-Fast | **801.646373** | 301-1923 | **860.448172** | **83-1869** |
+| V3 REU 512K | **801.646373** | 301-1923 | **860.448172** | **83-1869** |
+| V4 REU 16M | **801.646373** | 301-1923 | **860.448172** | **83-1869** |
 | V5 Hybrid Low-ZP | **834.646373** | **334-1956** | **888.154427** | **83-1899** |
 
 V1 keeps the compact compositional implementation: full public multiply,
@@ -70,8 +70,8 @@ The final V2-V4 signed path also preserves the product-sign quadrant in control
 flow instead of re-reading and XORing the public sign bytes after division.
 Specialized quotient-only, remainder-only, quotient+remainder and no-fix tails
 remove redundant sign dispatch and stack/jump overhead. On the paired corpus,
-the composed baseline improves from **1133.038773 to 860.152761 cycles mean**,
-with maximum latency **2162 to 1870**, **zero slower cases**, and per-call
+the composed baseline improves from **1133.038773 to 860.448172 cycles mean**,
+with maximum latency **2162 to 1869**, **zero slower cases**, and per-call
 savings of **90 to 1027 cycles** (mean saving **272.886013 cycles**).
 
 V5 now applies the same producer-consumer principle under its stricter **31-byte
@@ -97,7 +97,8 @@ public calls would violate V5's shared-scratch assumptions.
 
 The fused routines add no persistent stack reservation and reuse the existing
 profile multiplication/division scratch classes. The V2-V4 signed fusion lives
-in a certified previously unused `REG_LOW+$0BCD` island; the unsigned direct
+across three certified relocation-safe private islands. This avoids the alternate-map
+SMUL8 signed-sum planes while preserving reference/alternate cycle identity; the unsigned direct
 handoff replaces the now-dead composed handoff at `REG_API+$03C9`.
 
 ## Validation
