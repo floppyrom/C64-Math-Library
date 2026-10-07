@@ -14,4 +14,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
-      - run: python3 tools/diagnose_sdiv16_full_validation.py
+      - run: python3 tools/diagnose_sdiv16_state.py
