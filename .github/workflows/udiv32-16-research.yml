@@ -24,7 +24,7 @@ jobs:
               cfg=Path('relocatable_source')/p/f'math_config_{kind}.inc'
               src=Path('relocatable_source')/p/'math_relocatable.asm'
               mem,lab,const=Assembler().assemble(A.preprocess(src,cfg))
-              print(p,kind,'ENTRY',hex(lab['U3216_ENTRY']),'D8',hex(lab['U3216_D8']),'D8_END',hex(lab['U3216_D8_END']),'bytes',lab['U3216_D8_END']-lab['U3216_D8'])
+              print(p,kind,'ENTRY',hex(lab['U3216_ENTRY']),'MAIN_END',hex(lab['U3216_MAIN_END']),'D8',hex(lab['U3216_D8']),'D8_END',hex(lab['U3216_D8_END']),'bytes',lab['U3216_D8_END']-lab['U3216_D8'])
               if p=='v2_pareto_fast':
                 assert lab['U3216_D8_END'] <= (const['REG_KERNEL']+0x13ec)
               else:
