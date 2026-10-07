@@ -63,7 +63,7 @@ This design means:
 - mixed-state stress interleaving imported and untouched V1 routines;
 - 2,000 cold-load calls across reference/alternate maps without `MATH_INIT`, covering imported paths and an untouched V1 safe path, confirming V1-style optional initialization.
 
-Additional files:
+Release packaging removes transient Python cache files before checksum/audit generation.\n\nAdditional files:
 
 - `HYBRID_DETERMINISTIC_REBUILD.json` — reference and alternate builds reproduce byte-identically;
 - `HYBRID_CONFIG_VALIDATION.json` — valid maps accepted and unsafe overlap/I/O/alignment/overflow maps rejected;
