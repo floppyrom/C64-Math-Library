@@ -31,6 +31,13 @@ jobs:
           print('HEX')
           for a in range(0x5750,0x5791,16):
               print(hex(a), ' '.join(f'{mem.get(x,0):02x}' for x in range(a,a+16)))
+          print('POST_INIT')
+          from mini6502 import CPU
+          raw=bytearray(65536)
+          for a,v in mem.items(): raw[a]=v
+          cpu=CPU(bytearray(raw)); cpu.d=0; cpu.call(labels.get('MATH_INIT',const.get('MATH_INIT')),2_000_000)
+          for a in range(0x5770,0x5790,16):
+              print(hex(a), ' '.join(f'{cpu.mem[x]:02x}' for x in range(a,a+16)))
           print('LINEAR')
           pc=0x5750
           while pc<0x5791:
