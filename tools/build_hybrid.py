@@ -60,8 +60,9 @@ SDIV16_DIRECT_CORE_SRC = (0x7C2B, 0x8177)
 SDIV24_DIRECT_PREFIX_SRC = (0x8178, 0x82ED)
 SDIV24_DIRECT_CORE_SRC = (0x82EE, 0x8878)
 
-# Direct imported implementations; wider UMOD entries are stable aliases of the
-# patched UDIV wrappers and therefore inherit the V2 kernels automatically.
+# Direct imported implementations. Wider UMOD entries reuse the imported V2
+# division kernels through compact V5 aliases; V2's later dedicated remainder-only
+# q=0/q=1 front ends are intentionally not copied, so UMOD timing is profile-specific.
 IMPORTED_API = [
     'MATH_UDIV16', 'MATH_UDIV24', 'MATH_UDIV32_16',
     'MATH_UMOD8', 'MATH_UMOD16', 'MATH_UMOD24', 'MATH_UMOD32_16',
@@ -678,6 +679,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'V2 direct-output SDIV16 and SDIV24 are repacked into V1-free code/table windows and stay wholly inside the normal 31-byte ZP contract.',
                 'SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 imports the split-tail V2 core including its compact D8 island.',
                 'UDIV24 narrow-divisor tail calls the same relocated UDIV32/16 engine through the V2 latency helper; no additional ZP is required.',
+                'Wider UMOD entries keep compact V5 aliases to imported UDIV engines; they preserve remainder/carry semantics but do not import V2 remainder-only front-end timing.',
                 'HYBRID_CODE is private implementation storage and may be relocated at build time.',
                 'Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines.',
             ],
