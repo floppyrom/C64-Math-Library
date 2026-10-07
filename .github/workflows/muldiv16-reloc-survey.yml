@@ -31,6 +31,26 @@ jobs:
         run: |
           python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
           python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+      - name: Diagnose V2 SMUL8 relocated planes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          def load(p):
+              b=Path(p).read_bytes(); lo=b[0]|b[1]<<8
+              return lo,b[2:]
+          def val(lo,b,a): return b[a-lo]
+          rlo,rb=load('build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg')
+          alo,ab=load('build_source/alternate/v2_pareto_fast/math_v2_pareto_fast_source_built.prg')
+          diffs=[]
+          for i in range(0x3ff):
+              if val(rlo,rb,0x9c00+i)!=val(alo,ab,0x8c00+i):
+                  diffs.append((i,val(rlo,rb,0x9c00+i),val(alo,ab,0x8c00+i)))
+          print('sum-block diffs',len(diffs))
+          print('first',[(hex(i),hex(x),hex(y)) for i,x,y in diffs[:32]])
+          for a in (0x8c00,0x8d00,0x8dfe,0x8e00,0x8f00,0x8ffe):
+              print(hex(a),hex(val(alo,ab,a)))
+          print('SMUL8 alt code',bytes(val(alo,ab,a) for a in range(0xbb80,0xbbae)).hex())
+          PY
       - name: Validate all 56-entry source maps
         run: |
           python3 tools/validate_source_build.py all --build build_source/reference --out /tmp/ref
