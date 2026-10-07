@@ -36,11 +36,18 @@ MULDIV16_U_FAST:
     lda MATH_X+$01
     sta U16_X1
     jsr U16_UMULT_AX1
-    ; UMUL16 direct-output core returns:
-    ;   MATH_Z = product byte0, X=byte1, A=byte2, Y=byte3.
-    sta MATH_N+$02
-    stx MATH_N+$01
-    sty MATH_N+$03
+    ; OptiSearch-style producer/consumer fusion: do not materialize the
+    ; canonical 32-bit product in MATH_N and then make the public divider copy
+    ; it again.  Feed the product registers directly into the private
+    ; UDIV32/16 state and enter after its public marshalling wrapper.
+    ; UMUL16 returns MATH_Z=byte0, X=byte1, A=byte2, Y=byte3.
+    sta U3216_N0
+    stx U3216_LN1
+    sty U3216_N1
     lda MATH_Z
-    sta MATH_N
-    jmp MATH_UDIV32_16
+    sta U3216_LN0
+    lda MATH_D
+    sta U3216_D0
+    lda MATH_D+$01
+    sta U3216_D1
+    jmp U3216_ENTRY
