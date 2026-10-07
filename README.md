@@ -23,7 +23,7 @@ Every published benchmark row now points to a public source file and SHA-256. Ru
 | **V1 Balanced** | Stock C64 | Low integration pressure, 31-byte normal ZP contract |
 | **V2 Pareto-Fast** | Stock C64 | Faster resident choices where more ZP/private resources are acceptable |
 | **V3 REU 512K** | C64 + 512 KiB REU | REU-backed services plus Turbo16/Turbo32 |
-| **V4 REU 16M** | C64 + 16 MiB REU-compatible device/emulator | REU-heavy feature set, QS16, Turbo, exact REU ATAN2/ISQRT16 paths |
+| **V4 REU 16M** | C64 + 16 MiB REU-compatible device/emulator | REU-heavy feature set, QS16, Turbo, exact REU ATAN2/ISQRT16 and accelerated exact ISQRT32 |
 | **V5 Hybrid Low-ZP** | Stock C64 | V1 31-byte normal-ZP contract with selected faster V2-derived paths |
 
 Use [`docs/VERSION_SELECTION.md`](docs/VERSION_SELECTION.md) for integration trade-offs.
