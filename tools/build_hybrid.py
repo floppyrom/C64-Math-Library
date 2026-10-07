@@ -536,9 +536,9 @@ def _public_addr(man: dict, name: str) -> int:
 
 def apply_muldiv16_lowzp_unsigned(dst: bytearray, vals: dict[str, int],
                                     base_man: dict, hbase: int) -> dict:
-    # OptiSearch-style low-ZP producer/consumer fusion for V5. Bind the
-    # existing qualified V1 17-ZP UMUL16 record producer directly, keep its
-    # product in z0/X/A/Y, and feed those bytes straight into private UDIV32/16.
+    # OptiSearch-style low-ZP producer/consumer fusion for both V5 MULDIV16
+    # variants.  Reuse the qualified V1 17-ZP UMUL16 record producer directly,
+    # then feed magnitude product bytes z0/X/A/Y into private V2 UDIV32/16.
     mbase = vals['REG_TABLE'] + 0x1800
     mend = vals['REG_TABLE'] + 0x19ED
     z = vals['ZP_MAIN']
@@ -546,15 +546,16 @@ def apply_muldiv16_lowzp_unsigned(dst: bytearray, vals: dict[str, int],
     producer = vals['REG_KERNEL'] + 0x07EC
     producer_y1 = vals['REG_KERNEL'] + 0x081A
     uentry = hbase + 0x0C00
+    uzero = _public_addr(base_man, 'MATH_UDIV32_16') + 0x3E
 
     sl = (vals['REG_TABLE'] + 0x2400) >> 8
     nl = (vals['REG_TABLE'] + 0x2800) >> 8
     sh = (vals['REG_TABLE'] + 0x2600) >> 8
     nh = (vals['REG_TABLE'] + 0x2A00) >> 8
 
-    src_text = '\n'.join((
-        f'* = {hx(mbase)}',
-        'V5_MULDIV16_U:',
+    # Pointer-high initialization is duplicated between U/S entry points on
+    # purpose: MATH_INIT is optional and a shared helper would add JSR/RTS tax.
+    bind_hi = (
         f'    lda #{hx(sl, 2)}',
         f'    sta {hx(z + 0x08, 2)}',
         f'    sta {hx(z + 0x10, 2)}',
@@ -567,6 +568,11 @@ def apply_muldiv16_lowzp_unsigned(dst: bytearray, vals: dict[str, int],
         f'    lda #{hx(nh, 2)}',
         f'    sta {hx(z + 0x0E, 2)}',
         f'    sta {hx(z + 0x16, 2)}',
+    )
+
+    lines = [f'* = {hx(mbase)}', 'V5_MULDIV16_U:']
+    lines += list(bind_hi)
+    lines += [
         f'    lda {hx(io + 0x00)}',
         f'    sta {hx(z + 0x07, 2)}',
         f'    lda {hx(io + 0x01)}',
@@ -586,27 +592,129 @@ def apply_muldiv16_lowzp_unsigned(dst: bytearray, vals: dict[str, int],
         f'    sta {hx(z + 0x11, 2)}',
         f'    jmp {hx(uentry)}',
         '',
-    ))
+        'V5_MULDIV16_S:',
+        f'    lda {hx(io + 0x15)}',
+        f'    ora {hx(io + 0x14)}',
+        '    bne V5_S_DNZ',
+        f'    jmp {hx(uzero)}',
+        'V5_S_DNZ:',
+    ]
+    lines += list(bind_hi)
+    lines += [
+        f'    lda {hx(io + 0x15)}',
+        '    bpl V5_S_DPOS',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x14)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x15)}',
+        f'    sta {hx(z + 0x11, 2)}',
+        '    jmp V5_S_X',
+        'V5_S_DPOS:',
+        f'    lda {hx(io + 0x14)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        f'    lda {hx(io + 0x15)}',
+        f'    sta {hx(z + 0x11, 2)}',
+        'V5_S_X:',
+        f'    lda {hx(io + 0x01)}',
+        '    bpl V5_S_XPOS',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x00)}',
+        f'    sta {hx(z + 0x07, 2)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x01)}',
+        f'    sta {hx(z + 0x0F, 2)}',
+        '    jmp V5_S_Y',
+        'V5_S_XPOS:',
+        f'    lda {hx(io + 0x00)}',
+        f'    sta {hx(z + 0x07, 2)}',
+        f'    lda {hx(io + 0x01)}',
+        f'    sta {hx(z + 0x0F, 2)}',
+        'V5_S_Y:',
+        f'    lda {hx(io + 0x05)}',
+        '    bpl V5_S_YPOS',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x04)}',
+        '    tay',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x05)}',
+        f'    sta {hx(producer_y1)}',
+        '    jmp V5_S_MUL',
+        'V5_S_YPOS:',
+        f'    ldy {hx(io + 0x04)}',
+        f'    lda {hx(io + 0x05)}',
+        f'    sta {hx(producer_y1)}',
+        'V5_S_MUL:',
+        f'    jsr {hx(producer)}',
+        f'    sta {hx(z + 0x0E, 2)}',
+        f'    sty {hx(z + 0x0F, 2)}',
+        f'    lda {hx(z + 0x17, 2)}',
+        f'    sta {hx(z + 0x16, 2)}',
+        f'    stx {hx(z + 0x17, 2)}',
+        f'    jsr {hx(uentry)}',
+        f'    lda {hx(io + 0x01)}',
+        f'    eor {hx(io + 0x05)}',
+        f'    eor {hx(io + 0x15)}',
+        '    bpl V5_S_RSIGN',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x18)}',
+        f'    sta {hx(io + 0x18)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x19)}',
+        f'    sta {hx(io + 0x19)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x1A)}',
+        f'    sta {hx(io + 0x1A)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x1B)}',
+        f'    sta {hx(io + 0x1B)}',
+        'V5_S_RSIGN:',
+        f'    lda {hx(io + 0x01)}',
+        f'    eor {hx(io + 0x05)}',
+        '    bpl V5_S_OK',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x1C)}',
+        f'    sta {hx(io + 0x1C)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x1D)}',
+        f'    sta {hx(io + 0x1D)}',
+        'V5_S_OK:',
+        '    clc',
+        '    rts',
+        '',
+    ]
+    src_text = '\n'.join(lines)
     mem, labels, _ = Assembler().assemble(src_text)
     if not mem:
-        raise RuntimeError('V5 UMULDIV16 fusion assembled no code')
+        raise RuntimeError('V5 MULDIV16 fusion assembled no code')
     lo, hi = min(mem), max(mem)
     if lo != mbase or hi > mend:
-        raise RuntimeError(f'V5 UMULDIV16 fusion does not fit certified table hole: {hx(lo)}-{hx(hi)}')
+        raise RuntimeError(f'V5 MULDIV16 fusion does not fit certified table hole: {hx(lo)}-{hx(hi)}')
     if any(dst[lo:hi + 1]):
-        raise RuntimeError(f'V5 UMULDIV16 fusion destination {hx(lo)}-{hx(hi)} is not free')
+        raise RuntimeError(f'V5 MULDIV16 fusion destination {hx(lo)}-{hx(hi)} is not free')
     for addr, byte in mem.items():
         dst[addr] = byte
-    pub = _public_addr(base_man, 'MATH_UMULDIV16')
-    dst[pub:pub + 3] = bytes((0x4C, mbase & 0xFF, mbase >> 8))
+    upub = _public_addr(base_man, 'MATH_UMULDIV16')
+    spub = _public_addr(base_man, 'MATH_SMULDIV16')
+    uaddr = labels['V5_MULDIV16_U']
+    saddr = labels['V5_MULDIV16_S']
+    dst[upub:upub + 3] = bytes((0x4C, uaddr & 0xFF, uaddr >> 8))
+    dst[spub:spub + 3] = bytes((0x4C, saddr & 0xFF, saddr >> 8))
     return {
-        'entry': hx(mbase),
+        'unsigned_entry': hx(uaddr),
+        'signed_entry': hx(saddr),
         'end': hx(hi),
         'code_bytes': hi - lo + 1,
         'normal_zp_bytes': 31,
         'producer': 'qualified V1 17-ZP UMUL16 private record producer',
         'consumer': 'relocated private V2 UDIV32/16 entry',
         'materializes_public_product': False,
+        'signed_strategy': 'single magnitude multiply/divide plus quotient/remainder sign fixup',
     }
 
 def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
