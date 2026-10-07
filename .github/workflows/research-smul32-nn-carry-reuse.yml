@@ -1,0 +1,17 @@
+name: Research SMUL32 NN carry reuse
+on:
+  push:
+    branches: [research/smul32-nn-carry-reuse-v1]
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python3 tools/bench_smul32_nn_carry_reuse.py
