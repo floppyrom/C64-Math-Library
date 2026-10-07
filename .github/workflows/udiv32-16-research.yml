@@ -11,5 +11,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: D8 bounded fast path
-        run: python3 tools/research_udiv32_16_d8_fast.py
+      - name: Compact D8 bounded fast path
+        run: python3 tools/research_udiv32_16_d8_compact.py
