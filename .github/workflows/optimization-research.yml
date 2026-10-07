@@ -26,7 +26,9 @@ jobs:
           make alternate
           make hybrid
       - name: Validate remainder-only division family
-        run: python3 tools/validate_remainder_source_ab.py
+        run: |
+          python3 tools/validate_remainder_source_ab.py
+          python3 tools/validate_signed_remainder_source_ab.py
       - name: Validate UMUL24 direct-output path
         run: python3 tools/validate_umul24_directout.py
       - name: Validate Turbo lifecycle
