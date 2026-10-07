@@ -4,7 +4,7 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UMUL16_SHR8. Executable overlap: 0 instructions.
-; Public entry: $5E0F. Reachable signed instructions: 143.
+; Public entry: $5E0F. Reachable signed instructions: 141.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
@@ -48,56 +48,54 @@ LCE00:
     lda $11                            ; @CE00 A5 11
     bmi LCE0C                          ; @CE02 30 08
     bit $CF1A                          ; @CE04 2C 1A CF
-    bmi LCE25                          ; @CE07 30 1C
+    bmi LCE23                          ; @CE07 30 1A
     jmp LCEEC                          ; @CE09 4C EC CE
 LCE0C:
     bit $CF1A                          ; @CE0C 2C 1A CF
-    bmi LCE35                          ; @CE0F 30 24
-    sty $CE19                          ; @CE11 8C 19 CE
-    jsr LCEEC                          ; @CE14 20 EC CE
-    sec                                ; @CE17 38
-    sbc #$00                           ; @CE18 E9 00
-    sta $CE23                          ; @CE1A 8D 23 CE
-    tya                                ; @CE1D 98
-    sbc $CF1A                          ; @CE1E ED 1A CF
-    tay                                ; @CE21 A8
-    lda #$00                           ; @CE22 A9 00
-    rts                                ; @CE24 60
-LCE25:
-    jsr LCEEC                          ; @CE25 20 EC CE
-    sec                                ; @CE28 38
-    sbc $09                            ; @CE29 E5 09
-    sta $CE33                          ; @CE2B 8D 33 CE
-    tya                                ; @CE2E 98
-    sbc $11                            ; @CE2F E5 11
-    tay                                ; @CE31 A8
-    lda #$00                           ; @CE32 A9 00
-    rts                                ; @CE34 60
-LCE35:
-    sty $CE3C                          ; @CE35 8C 3C CE
-    sec                                ; @CE38 38
-    lda #$00                           ; @CE39 A9 00
-    sbc #$00                           ; @CE3B E9 00
-    tay                                ; @CE3D A8
-    lda #$00                           ; @CE3E A9 00
-    sbc $CF1A                          ; @CE40 ED 1A CF
-    sta $CF1A                          ; @CE43 8D 1A CF
-    sec                                ; @CE46 38
-    lda #$00                           ; @CE47 A9 00
-    sbc $09                            ; @CE49 E5 09
-    sta $09                            ; @CE4B 85 09
-    sta $0D                            ; @CE4D 85 0D
-    eor #$FF                           ; @CE4F 49 FF
-    sta $0B                            ; @CE51 85 0B
-    sta $0F                            ; @CE53 85 0F
-    lda #$00                           ; @CE55 A9 00
-    sbc $11                            ; @CE57 E5 11
-    sta $11                            ; @CE59 85 11
-    sta $15                            ; @CE5B 85 15
-    eor #$FF                           ; @CE5D 49 FF
-    sta $13                            ; @CE5F 85 13
-    sta $17                            ; @CE61 85 17
-    jmp LCF00                          ; @CE63 4C 00 CF
+    bmi LCE33                          ; @CE0F 30 22
+    jsr LCEEC                          ; @CE11 20 EC CE
+    sec                                ; @CE14 38
+    sbc $C004                          ; @CE15 ED 04 C0
+    sta $CE21                          ; @CE18 8D 21 CE
+    tya                                ; @CE1B 98
+    sbc $CF1A                          ; @CE1C ED 1A CF
+    tay                                ; @CE1F A8
+    lda #$00                           ; @CE20 A9 00
+    rts                                ; @CE22 60
+LCE23:
+    jsr LCEEC                          ; @CE23 20 EC CE
+    sec                                ; @CE26 38
+    sbc $09                            ; @CE27 E5 09
+    sta $CE31                          ; @CE29 8D 31 CE
+    tya                                ; @CE2C 98
+    sbc $11                            ; @CE2D E5 11
+    tay                                ; @CE2F A8
+    lda #$00                           ; @CE30 A9 00
+    rts                                ; @CE32 60
+LCE33:
+    sec                                ; @CE33 38
+    lda #$00                           ; @CE34 A9 00
+    sbc $C004                          ; @CE36 ED 04 C0
+    tay                                ; @CE39 A8
+    lda #$00                           ; @CE3A A9 00
+    sbc $CF1A                          ; @CE3C ED 1A CF
+    sta $CF1A                          ; @CE3F 8D 1A CF
+    sec                                ; @CE42 38
+    lda #$00                           ; @CE43 A9 00
+    sbc $09                            ; @CE45 E5 09
+    sta $09                            ; @CE47 85 09
+    sta $0D                            ; @CE49 85 0D
+    eor #$FF                           ; @CE4B 49 FF
+    sta $0B                            ; @CE4D 85 0B
+    sta $0F                            ; @CE4F 85 0F
+    lda #$00                           ; @CE51 A9 00
+    sbc $11                            ; @CE53 E5 11
+    sta $11                            ; @CE55 85 11
+    sta $15                            ; @CE57 85 15
+    eor #$FF                           ; @CE59 49 FF
+    sta $13                            ; @CE5B 85 13
+    sta $17                            ; @CE5D 85 17
+    jmp LCF00                          ; @CE5F 4C 00 CF
 ; ---- executable island $CEEC ----
 * = $CEEC
 LCEEC:

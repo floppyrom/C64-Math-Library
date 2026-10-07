@@ -1,3 +1,8 @@
+2026-10-07 SMUL16 STABLE-INPUT Y0
+- Removed redundant Y0 preservation from FAST17 and executable-ZP signed 16x16 paths.
+- Canonical V1/V2/V3/V4/V5 means: 292.349787 / 248.802333 / 249.107696 / 249.144492 / 292.026700.
+- V2 per-call improvement is 2-4 cycles; SMUL16_SHR8 benefits automatically.
+
 2026-10-06 SMUL24 STABLE-INPUT Q2
 - X<0,Y>=0 correction reuses stable MATH_IO Y2 instead of an SMC save; exact -2 cycles on q2.
 - Canonical V1/V2/V3/V4/V5 means: 512.981735 / 468.662931 / 468.354504 / 468.731839 / 512.416770.

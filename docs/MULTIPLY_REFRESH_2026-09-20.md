@@ -26,11 +26,11 @@ The consolidated table is authoritative for per-profile resource accounting and 
 | Entry | Profile(s) | Mean cycles | Range | Cases |
 |---|---|---:|---:|---:|
 | `MATH_SMUL8` | all five | **67.992188** | 66–70 | 65,536 exhaustive/profile |
-| `MATH_SMUL16` | V1 | **293.298407** | 260–327 | 4,457 |
-| `MATH_SMUL16` | V5 | **292.974871** | 260–325 | 4,457 |
-| `MATH_SMUL16` | V2 | 252.324882 | 230–293 | 4,457 |
-| `MATH_SMUL16` | V3 | 252.623962 | 230–293 | 4,457 |
-| `MATH_SMUL16` | V4 | 252.662553 | 230–293 | 4,457 |
+| `MATH_SMUL16` | V1 | **292.349787** | 260–327 | 4,457 |
+| `MATH_SMUL16` | V5 | **292.026700** | 260–325 | 4,457 |
+| `MATH_SMUL16` | V2 | 248.802333 | 230–293 | 4,457 |
+| `MATH_SMUL16` | V3 | 249.107696 | 230–293 | 4,457 |
+| `MATH_SMUL16` | V4 | 249.144492 | 230–293 | 4,457 |
 | `MATH_UMUL24` | V1/V5 | **474.042329** | 444–530 | 10,324 |
 | `MATH_UMUL24` | V2/V3/V4 | **429.555502** | 400–485 | 10,324 each |
 | `MATH_SMUL24` | V1 | **513.496472** | 456–573 | 2,409 |

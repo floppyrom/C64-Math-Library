@@ -4,90 +4,89 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UMUL16. Executable overlap: 0 instructions.
-; Public entry: $3BB0. Reachable signed instructions: 115.
+; Public entry: $3BB0. Reachable signed instructions: 114.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
 ; ---- executable island $0080 ----
 * = $0080
 L0080:
-    sty $5A16                          ; @0080 8C 16 5A
-    lda $A7                            ; @0083 A5 A7
-    sta $CB                            ; @0085 85 CB
-    eor #$FF                           ; @0087 49 FF
-    sta $AC                            ; @0089 85 AC
-    sta $B2                            ; @008B 85 B2
-    lda $99                            ; @008D A5 99
-    sta $A1                            ; @008F 85 A1
-    eor #$FF                           ; @0091 49 FF
-    sta $9C                            ; @0093 85 9C
-    sta $A4                            ; @0095 85 A4
-    sec                                ; @0097 38
-    lda $2800,y                        ; @0098 B9 00 28
-    adc $2C00,y                        ; @009B 79 00 2C
-    sta $F2                            ; @009E 85 F2
-    lda $2A00,y                        ; @00A0 B9 00 2A
-    adc $2E00,y                        ; @00A3 79 00 2E
-    adc $2800,y                        ; @00A6 79 00 28
-    bcs L00DD                          ; @00A9 B0 32
-    adc $2C00,y                        ; @00AB 79 00 2C
-    tax                                ; @00AE AA
-    lda ($CB),y                        ; @00AF B1 CB
-L00B1:
-    adc $2E00,y                        ; @00B1 79 00 2E
-    sta $D7                            ; @00B4 85 D7
-    ldy #$00                           ; @00B6 A0 00
-    lda ($99),y                        ; @00B8 B1 99
-    adc ($9C),y                        ; @00BA 71 9C
-    sta $D3                            ; @00BC 85 D3
-    lda ($A1),y                        ; @00BE B1 A1
-    adc ($A4),y                        ; @00C0 71 A4
-    adc ($A7),y                        ; @00C2 71 A7
-    bcs L00E7                          ; @00C4 B0 21
-    adc ($AC),y                        ; @00C6 71 AC
-    sta $D9                            ; @00C8 85 D9
-    lda $2A00,y                        ; @00CA B9 00 2A
-L00CD:
-    adc ($B2),y                        ; @00CD 71 B2
-    tay                                ; @00CF A8
-    clc                                ; @00D0 18
-    txa                                ; @00D1 8A
-    adc #$00                           ; @00D2 69 00
-    sta $F3                            ; @00D4 85 F3
-    lda #$00                           ; @00D6 A9 00
-    adc #$00                           ; @00D8 69 00
-    jmp L5A00                          ; @00DA 4C 00 5A
-L00DD:
-    clc                                ; @00DD 18
-    adc ($AC),y                        ; @00DE 71 AC
-    tax                                ; @00E0 AA
-    lda #$01                           ; @00E1 A9 01
-    adc ($CB),y                        ; @00E3 71 CB
-    bcc L00B1                          ; @00E5 90 CA
-L00E7:
-    clc                                ; @00E7 18
-    adc ($AC),y                        ; @00E8 71 AC
-    sta $D9                            ; @00EA 85 D9
-    lda #$01                           ; @00EC A9 01
-    adc ($CB),y                        ; @00EE 71 CB
-    bcc L00CD                          ; @00F0 90 DB
-    brk                                ; @00F2 00
+    lda $A4                            ; @0080 A5 A4
+    sta $C8                            ; @0082 85 C8
+    eor #$FF                           ; @0084 49 FF
+    sta $A9                            ; @0086 85 A9
+    sta $AF                            ; @0088 85 AF
+    lda $96                            ; @008A A5 96
+    sta $9E                            ; @008C 85 9E
+    eor #$FF                           ; @008E 49 FF
+    sta $99                            ; @0090 85 99
+    sta $A1                            ; @0092 85 A1
+    sec                                ; @0094 38
+    lda $2800,y                        ; @0095 B9 00 28
+    adc $2C00,y                        ; @0098 79 00 2C
+    sta $EF                            ; @009B 85 EF
+    lda $2A00,y                        ; @009D B9 00 2A
+    adc $2E00,y                        ; @00A0 79 00 2E
+    adc $2800,y                        ; @00A3 79 00 28
+    bcs L00DA                          ; @00A6 B0 32
+    adc $2C00,y                        ; @00A8 79 00 2C
+    tax                                ; @00AB AA
+    lda ($C8),y                        ; @00AC B1 C8
+L00AE:
+    adc $2E00,y                        ; @00AE 79 00 2E
+    sta $D4                            ; @00B1 85 D4
+    ldy #$00                           ; @00B3 A0 00
+    lda ($96),y                        ; @00B5 B1 96
+    adc ($99),y                        ; @00B7 71 99
+    sta $D0                            ; @00B9 85 D0
+    lda ($9E),y                        ; @00BB B1 9E
+    adc ($A1),y                        ; @00BD 71 A1
+    adc ($A4),y                        ; @00BF 71 A4
+    bcs L00E4                          ; @00C1 B0 21
+    adc ($A9),y                        ; @00C3 71 A9
+    sta $D6                            ; @00C5 85 D6
+    lda $2A00,y                        ; @00C7 B9 00 2A
+L00CA:
+    adc ($AF),y                        ; @00CA 71 AF
+    tay                                ; @00CC A8
+    clc                                ; @00CD 18
+    txa                                ; @00CE 8A
+    adc #$00                           ; @00CF 69 00
+    sta $F0                            ; @00D1 85 F0
+    lda #$00                           ; @00D3 A9 00
+    adc #$00                           ; @00D5 69 00
+    jmp L5A00                          ; @00D7 4C 00 5A
+L00DA:
+    clc                                ; @00DA 18
+    adc ($A9),y                        ; @00DB 71 A9
+    tax                                ; @00DD AA
+    lda #$01                           ; @00DE A9 01
+    adc ($C8),y                        ; @00E0 71 C8
+    bcc L00AE                          ; @00E2 90 CA
+L00E4:
+    clc                                ; @00E4 18
+    adc ($A9),y                        ; @00E5 71 A9
+    sta $D6                            ; @00E7 85 D6
+    lda #$01                           ; @00E9 A9 01
+    adc ($C8),y                        ; @00EB 71 C8
+    bcc L00CA                          ; @00ED 90 DB
+    brk                                ; @00EF 00
 ; ---- executable island $2100 ----
 * = $2100
 L2100:
     lda $C000                          ; @2100 AD 00 C0
-    sta $99                            ; @2103 85 99
+    sta $96                            ; @2103 85 96
     lda $C001                          ; @2105 AD 01 C0
-    sta $A7                            ; @2108 85 A7
+    sta $A4                            ; @2108 85 A4
     lda $C005                          ; @210A AD 05 C0
-    sta $B7                            ; @210D 85 B7
+    sta $B4                            ; @210D 85 B4
     ldy $C004                          ; @210F AC 04 C0
     jsr L0080                          ; @2112 20 80 00
     stx $C00A                          ; @2115 8E 0A C0
     sta $C00B                          ; @2118 8D 0B C0
-    lda $F2                            ; @211B A5 F2
+    lda $EF                            ; @211B A5 EF
     sta $C008                          ; @211D 8D 08 C0
-    lda $F3                            ; @2120 A5 F3
+    lda $F0                            ; @2120 A5 F0
     sta $C009                          ; @2122 8D 09 C0
     clc                                ; @2125 18
     rts                                ; @2126 60
@@ -98,50 +97,50 @@ L3BB0:
 ; ---- executable island $5A00 ----
 * = $5A00
 L5A00:
-    bit $A7                            ; @5A00 24 A7
+    bit $A4                            ; @5A00 24 A4
     bmi L5A0D                          ; @5A02 30 09
-    bit $B7                            ; @5A04 24 B7
-    bmi L5A1C                          ; @5A06 30 14
+    bit $B4                            ; @5A04 24 B4
+    bmi L5A1D                          ; @5A06 30 15
     tax                                ; @5A08 AA
     tya                                ; @5A09 98
     adc #$00                           ; @5A0A 69 00
     rts                                ; @5A0C 60
 L5A0D:
-    bit $B7                            ; @5A0D 24 B7
-    bmi L5A27                          ; @5A0F 30 16
+    bit $B4                            ; @5A0D 24 B4
+    bmi L5A28                          ; @5A0F 30 17
     bcc L5A14                          ; @5A11 90 01
     iny                                ; @5A13 C8
 L5A14:
     sec                                ; @5A14 38
-    sbc #$00                           ; @5A15 E9 00
-    tax                                ; @5A17 AA
-    tya                                ; @5A18 98
-    sbc $B7                            ; @5A19 E5 B7
-    rts                                ; @5A1B 60
-L5A1C:
-    bcc L5A1F                          ; @5A1C 90 01
-    iny                                ; @5A1E C8
-L5A1F:
-    sec                                ; @5A1F 38
-    sbc $99                            ; @5A20 E5 99
-    tax                                ; @5A22 AA
-    tya                                ; @5A23 98
-    sbc $A7                            ; @5A24 E5 A7
-    rts                                ; @5A26 60
-L5A27:
-    bcc L5A2A                          ; @5A27 90 01
-    iny                                ; @5A29 C8
-L5A2A:
-    sec                                ; @5A2A 38
-    sbc $5A16                          ; @5A2B ED 16 5A
-    tax                                ; @5A2E AA
-    tya                                ; @5A2F 98
-    sbc $B7                            ; @5A30 E5 B7
-    tay                                ; @5A32 A8
-    txa                                ; @5A33 8A
-    sec                                ; @5A34 38
-    sbc $99                            ; @5A35 E5 99
-    tax                                ; @5A37 AA
-    tya                                ; @5A38 98
-    sbc $A7                            ; @5A39 E5 A7
-    rts                                ; @5A3B 60
+    sbc $C004                          ; @5A15 ED 04 C0
+    tax                                ; @5A18 AA
+    tya                                ; @5A19 98
+    sbc $B4                            ; @5A1A E5 B4
+    rts                                ; @5A1C 60
+L5A1D:
+    bcc L5A20                          ; @5A1D 90 01
+    iny                                ; @5A1F C8
+L5A20:
+    sec                                ; @5A20 38
+    sbc $96                            ; @5A21 E5 96
+    tax                                ; @5A23 AA
+    tya                                ; @5A24 98
+    sbc $A4                            ; @5A25 E5 A4
+    rts                                ; @5A27 60
+L5A28:
+    bcc L5A2B                          ; @5A28 90 01
+    iny                                ; @5A2A C8
+L5A2B:
+    sec                                ; @5A2B 38
+    sbc $C004                          ; @5A2C ED 04 C0
+    tax                                ; @5A2F AA
+    tya                                ; @5A30 98
+    sbc $B4                            ; @5A31 E5 B4
+    tay                                ; @5A33 A8
+    txa                                ; @5A34 8A
+    sec                                ; @5A35 38
+    sbc $96                            ; @5A36 E5 96
+    tax                                ; @5A38 AA
+    tya                                ; @5A39 98
+    sbc $A4                            ; @5A3A E5 A4
+    rts                                ; @5A3C 60

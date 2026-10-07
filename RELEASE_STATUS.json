@@ -13,11 +13,11 @@
     "current_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "433ca46391d94c9b462adb5c43033001ef089fddbf9dcea4f895fa22cb73e20a",
-    "v2_pareto_fast": "96486fb13e49b5c048a2ebb4148182e4ad5aff709408481a5ab0055a2813b85a",
-    "v3_reu_512k": "8011664b2fb5aada6c3a70c0cf6816e8cfa97fd9429268857887826c51a21bad",
-    "v4_reu_16m": "f99f7e111c4c5d8b377f45702ae22915a26441611030adfee2d7f617a4ca9fa7",
-    "v5_hybrid_lowzp": "f3a5b9cb6d4ec543031491a72260d9cc7374bcc481a04a8856da7a6f2ea12b54"
+    "v1_balanced": "529898a2b78bdab0f52a95431a5899c3a71ccd86c87deee2deeab75beee40e0d",
+    "v2_pareto_fast": "9c2fc276ec2e5688a149648fe5eb44ec53edea1c4e7e193bc6b932fecd965f2d",
+    "v3_reu_512k": "b4fb136788d45d164b67c24ed27649f7ca88be4ba7ec01a7bf55b60962d4f027",
+    "v4_reu_16m": "d0601cbe149d40cc5c89728f1972f0beb794e2008f434f6ae8d135046f14e261",
+    "v5_hybrid_lowzp": "f954542d7dd59df21765d099d237c161de4c46f8d2e069da4cc48b97839b13ac"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "4ba6ece174d54042d51736f3bb0ee3a8c0506c8fcdd9ac4c0163bfb5197a3fda",
@@ -112,7 +112,7 @@
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-10-06",
+  "date": "2026-10-07",
   "deterministic_builds_checked": 8,
   "division_refresh": {
     "date": "2026-09-20",
@@ -243,11 +243,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "09f2e0a2ab2106234888357ca7672d3bd575a1d23e8327b395fcf02b90478661",
-    "v2_pareto_fast": "cbc8d36fd7865a6443b5ca056fec94aca1bf19f2fea32de9cc10730ec7b7ea2a",
-    "v3_reu_512k": "8f46f24e3cd36e070b44ec7a3240017559caede512eb43f4c81d49752fb4d972",
-    "v4_reu_16m": "06574d150a547f59dfbcee7a273a5e328b0fb34226602f0812fb5ea0382e0c59",
-    "v5_hybrid_lowzp": "21ff894a045b2fdd922d055f5a031d940d8ab644b79ab6c586a30ad1cd2b119d"
+    "v1_balanced": "5dd3790c661266347442c6bce2bd4ccae53c3e0bd0891b3a84a07c8c29a328de",
+    "v2_pareto_fast": "9d458f1040949354e35fd0be3aa2875a51ec4bbaeebab74f3776e1201bdfa550",
+    "v3_reu_512k": "1e0e4fd102aa60f666cf362dd53ca79ea07d402e2f8f19888c599e4d153b57b1",
+    "v4_reu_16m": "d9762ee6f3363c2aca7e5afb065e9939783de7f448e01171110eb95c1779aeef",
+    "v5_hybrid_lowzp": "052165d0c0eabf29ea74f0a05362432eb6a5db10acc4e0a132a25b7d70b8dd19"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "674418328ebd210d161790c0a6d42be9d1ca08315c17fdc13d04bea4d0999b61",

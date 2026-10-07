@@ -1,3 +1,11 @@
+## 2026-10-07 — SMUL16 stable-input Y0 optimization
+
+- Generalized the stable-input optimization used by SMUL24/SMUL32 to signed 16x16 multiplication.
+- V1/V5 FAST17 no longer save Y0 into SMC on X-negative paths; V2-V4 remove the unconditional executable-ZP Y0 save and relocate the 116-byte core symbol map safely.
+- Canonical V1/V2/V3/V4/V5 SMUL16 means are **292.349787 / 248.802333 / 249.107696 / 249.144492 / 292.026700 cycles**.
+- V2 research shows every call improves by 2-4 cycles; SMUL16_SHR8 inherits the same core improvement.
+- ABI, executable-ZP footprint, persistent stack usage and tables are unchanged; signed-multiply, deterministic rebuild, publication and Turbo relocation gates pass.
+
 ## 2026-10-06 — SMUL24 stable-input q2 correction
 
 - Removed the mixed-sign X<0,Y>=0 Y2 self-modifying save; the signed correction now re-reads stable public input MATH_IO+$06.

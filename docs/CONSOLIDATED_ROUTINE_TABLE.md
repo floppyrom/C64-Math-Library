@@ -11,9 +11,9 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | Profile | PRG payload span B | REU image B | Declared shared ZP B | Stable API ZP union touched B | Stack-page reserved B |
 |---|---:|---:|---:|---:|---:|
 | `v1_balanced` | 49040 | 0 |  | 31 | 0 |
-| `v2_pareto_fast` | 49040 | 0 |  | 207 | 0 |
-| `v3_reu_512k` | 49040 | 524288 |  | 202 | 0 |
-| `v4_reu_16m` | 49040 | 16777216 |  | 201 | 0 |
+| `v2_pareto_fast` | 49040 | 0 |  | 204 | 0 |
+| `v3_reu_512k` | 49040 | 524288 |  | 199 | 0 |
+| `v4_reu_16m` | 49040 | 16777216 |  | 198 | 0 |
 | `v5_hybrid_lowzp` | 49040 | 0 | 31 | 31 | 0 |
 
 ## v1_balanced
@@ -26,7 +26,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 712.235367 | 652 | 831 | 336 | 31 | $02-$20 | 0 | FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $02-$20 | 0 | FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_SMUL16` | `mul_s16_s16_s32` | 293.298407 | 260 | 327 | 273 | 17 | $09-$19 | 0 | FAST17 native signed composition with private 17-ZP magnitude core | current native-signed multiply validation |
+| `MATH_SMUL16` | `mul_s16_s16_s32` | 292.349787 | 260 | 325 | 269 | 17 | $09-$19 | 0 | FAST17 native signed composition with private 17-ZP magnitude core | current native-signed multiply validation |
 | `MATH_SMUL24` | `mul_s24_s24_s48` | 512.981735 | 456 | 571 | 491 | 24 | $09-$20 | 0 | FAST24 four-quadrant native signed composition; immutable quarter-square tables shared | current native-signed multiply validation |
 | `MATH_SMUL32` | `mul_s32_s32_s64` | 744.569946 | 660 | 873 | 1406 | 31 | $02-$20 | 0 | FAST31/V29 native signed quadrant composition; mixed-call-safe public path | current native-signed multiply validation |
 | `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | 726.388672 | 645 | 813 | 1387 | 31 | $02-$20 | 0 | FAST31/V29 native signed quadrant composition; mixed-call-safe public path | current native-signed multiply validation |
@@ -51,7 +51,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 586.396050 | 75 | 2474 | 987 | 0 | — | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | 785.979061 | 75 | 2474 | 987 | 0 | — | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 304.804139 | 293 | 328 | 227 | 17 | $09-$19 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
-| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 323.867232 | 291 | 356 | 292 | 17 | $09-$19 | 0 | FAST17 SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
+| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 322.918367 | 291 | 354 | 288 | 17 | $09-$19 | 0 | FAST17 SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 779.876404 | 717 | 896 | 380 | 31 | $02-$20 | 0 | FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 812.998853 | 725 | 938 | 1450 | 31 | $02-$20 | 0 | FAST31/V29 SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 877.773617 | 289 | 1914 | 388 | 12 | $10-$1B | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
@@ -85,7 +85,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 690.235367 | 630 | 809 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_SMUL16` | `mul_s16_s16_s32` | 252.324882 | 230 | 293 | 217 | 116 | $80-$F3 | 0 | 116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison) | current native-signed multiply validation |
+| `MATH_SMUL16` | `mul_s16_s16_s32` | 248.802333 | 226 | 289 | 215 | 113 | $80-$F0 | 0 | 116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison) | current native-signed multiply validation |
 | `MATH_SMUL24` | `mul_s24_s24_s48` | 468.662931 | 412 | 525 | 459 | 24 | $21-$38 | 0 | FAST24 four-quadrant native signed composition; immutable quarter-square tables shared | current native-signed multiply validation |
 | `MATH_SMUL32` | `mul_s32_s32_s64` | 711.586966 | 630 | 838 | 1372 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes; direct stable entry eliminates the legacy self-redirect | current native-signed multiply validation |
 | `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | 723.583008 | 641 | 798 | 1375 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes; direct stable entry eliminates the legacy self-redirect | current native-signed multiply validation |
@@ -107,10 +107,10 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 861.849097 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 401.556389 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | 524.881520 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
-| `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 553.098146 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
-| `MATH_SMOD32_32` | `mod_s32_s32_s32` | 746.032491 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
+| `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 553.098146 | 75 | 2384 | 215 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
+| `MATH_SMOD32_32` | `mod_s32_s32_s32` | 746.032491 | 75 | 2384 | 215 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 243.804139 | 232 | 267 | 181 | 16 | $21-$30 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
-| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 283.411374 | 261 | 324 | 236 | 116 | $80-$F3 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
+| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 279.888787 | 257 | 320 | 234 | 113 | $80-$F0 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 757.876404 | 695 | 874 | 364 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 780.756936 | 695 | 903 | 1416 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer direct-entry SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 764.129182 | 272 | 1849 | 1957 | 16 | $10-$1B;$53-$56 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
@@ -144,7 +144,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 690.235367 | 630 | 809 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_SMUL16` | `mul_s16_s16_s32` | 252.623962 | 230 | 293 | 217 | 116 | $80-$F3 | 0 | 116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison) | current native-signed multiply validation |
+| `MATH_SMUL16` | `mul_s16_s16_s32` | 249.107696 | 226 | 289 | 215 | 113 | $80-$F0 | 0 | 116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison) | current native-signed multiply validation |
 | `MATH_SMUL24` | `mul_s24_s24_s48` | 468.354504 | 412 | 527 | 459 | 24 | $21-$38 | 0 | FAST24 four-quadrant native signed composition; immutable quarter-square tables shared | current native-signed multiply validation |
 | `MATH_SMUL32` | `mul_s32_s32_s64` | 711.941885 | 630 | 838 | 1372 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes; direct stable entry eliminates the legacy self-redirect | current native-signed multiply validation |
 | `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | 723.993164 | 644 | 812 | 1375 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes; direct stable entry eliminates the legacy self-redirect | current native-signed multiply validation |
@@ -169,7 +169,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 552.481381 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | 742.016606 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 243.804139 | 232 | 267 | 181 | 16 | $21-$30 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
-| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 283.411374 | 261 | 324 | 236 | 116 | $80-$F3 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
+| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 279.888787 | 257 | 320 | 234 | 113 | $80-$F0 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 757.876404 | 695 | 874 | 364 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 780.756936 | 695 | 903 | 1416 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer direct-entry SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 764.339154 | 272 | 1849 | 1957 | 16 | $10-$1B;$53-$56 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
@@ -209,7 +209,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 690.235367 | 630 | 809 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_SMUL16` | `mul_s16_s16_s32` | 252.662553 | 230 | 293 | 217 | 116 | $80-$F3 | 0 | 116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison) | current native-signed multiply validation |
+| `MATH_SMUL16` | `mul_s16_s16_s32` | 249.144492 | 226 | 289 | 215 | 113 | $80-$F0 | 0 | 116-ZP practical native signed quarter-square kernel (retained after FAST17 comparison) | current native-signed multiply validation |
 | `MATH_SMUL24` | `mul_s24_s24_s48` | 468.731839 | 412 | 532 | 459 | 24 | $21-$38 | 0 | FAST24 four-quadrant native signed composition; immutable quarter-square tables shared | current native-signed multiply validation |
 | `MATH_SMUL32` | `mul_s32_s32_s64` | 712.136986 | 630 | 838 | 1372 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes; direct stable entry eliminates the legacy self-redirect | current native-signed multiply validation |
 | `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | 721.940430 | 641 | 816 | 1375 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 native signed quadrant composition; all six pointer pairs persist in profile-owned ZP holes; direct stable entry eliminates the legacy self-redirect | current native-signed multiply validation |
@@ -234,7 +234,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 552.840042 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | 754.883032 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 243.804139 | 232 | 267 | 181 | 16 | $21-$30 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
-| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 283.411374 | 261 | 324 | 236 | 116 | $80-$F3 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
+| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 279.888787 | 257 | 320 | 234 | 113 | $80-$F0 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 757.876404 | 695 | 874 | 364 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 780.756936 | 695 | 903 | 1416 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer direct-entry SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 764.628235 | 272 | 1849 | 1957 | 16 | $10-$1B;$53-$56 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
@@ -277,7 +277,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 712.235367 | 652 | 831 | 336 | 31 | $02-$20 | 0 | FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $02-$20 | 0 | FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_SMUL16` | `mul_s16_s16_s32` | 292.974871 | 260 | 325 | 273 | 17 | $09-$19 | 0 | FAST17 native signed composition with private 17-ZP magnitude core | current native-signed multiply validation |
+| `MATH_SMUL16` | `mul_s16_s16_s32` | 292.026700 | 260 | 323 | 269 | 17 | $09-$19 | 0 | FAST17 native signed composition with private 17-ZP magnitude core | current native-signed multiply validation |
 | `MATH_SMUL24` | `mul_s24_s24_s48` | 512.416770 | 456 | 570 | 491 | 24 | $09-$20 | 0 | FAST24 four-quadrant native signed composition; immutable quarter-square tables shared | current native-signed multiply validation |
 | `MATH_SMUL32` | `mul_s32_s32_s64` | 743.913242 | 660 | 873 | 1406 | 31 | $02-$20 | 0 | FAST31/V29 native signed quadrant composition; mixed-call-safe public path | current native-signed multiply validation |
 | `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | 726.739258 | 640 | 807 | 1387 | 31 | $02-$20 | 0 | FAST31/V29 native signed quadrant composition; mixed-call-safe public path | current native-signed multiply validation |
@@ -302,7 +302,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 591.562641 | 75 | 2474 | 987 | 0 | — | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | 785.582671 | 75 | 2474 | 987 | 0 | — | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 304.804139 | 293 | 328 | 227 | 17 | $09-$19 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
-| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 323.867232 | 291 | 356 | 292 | 17 | $09-$19 | 0 | FAST17 SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
+| `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 322.918367 | 291 | 354 | 288 | 17 | $09-$19 | 0 | FAST17 SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 779.876404 | 717 | 896 | 380 | 31 | $02-$20 | 0 | FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 812.998853 | 725 | 938 | 1450 | 31 | $02-$20 | 0 | FAST31/V29 SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 774.734904 | 282 | 1859 | 1967 | 12 | $10-$1B | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
