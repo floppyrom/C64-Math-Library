@@ -117,7 +117,7 @@ def validate(profile,build):
    if d==0:assert c.c==1 and q==0 and r==0,(profile,n,'div0',q,r)
    else:assert c.c==0 and (q,r)==divmod(a,d),(profile,n,a,d,q,r,divmod(a,d))
    assert snap(c,N,nn)==ns and snap(c,D,dn)==ds
- # UMOD8 is independent; wider UMOD entries alias UDIV.
+ # UMOD8 is independent; wider UMOD entries have a remainder-only cross-profile contract.
  for a,d in pairs(8,0xD808,20)[:70]:
   wr(c,N,a,1);wr(c,D,d,1);call('MATH_UMOD8');r=rd(c,R,1);assert (c.c==1 and r==0) if d==0 else (c.c==0 and r==a%d)
  # Wider UMOD entries guarantee remainder/carry and input preservation.
