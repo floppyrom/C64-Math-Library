@@ -29,6 +29,34 @@ def seek_code_addresses(profile):
  src=(ROOT/profile/'resident/movement/native/seek_dda.asm').read_text()
  mem,_,_=Assembler().assemble(cfg+'\n'+src)
  return set(mem)
+
+def turbo32_runtime_low_ranges(profile):
+ # Derive the resident Turbo32 helper extents from the canonical source rather
+ # than freezing end addresses. Direct-output integration legitimately changes
+ # the summation tail length, and stale hard-coded bounds can drop branch labels.
+ from mini6502 import Assembler
+ cfg=(ROOT/'relocatable_source'/profile/'math_config_reference.inc').read_text()
+ aliases='\n'.join((
+  'MATH_X = MATH_IO',
+  'MATH_Y = MATH_IO+$04',
+  'MATH_Z = MATH_IO+$08',
+  'MATH_N = MATH_IO+$10',
+  'MATH_D = MATH_IO+$14',
+  'MATH_Q = MATH_IO+$18',
+  'MATH_R = MATH_IO+$1C',
+ ))
+ src=(ROOT/'relocatable_source/turbo/turbo32_runtime.asm').read_text()
+ mem,_,_=Assembler().assemble(cfg+'\n'+aliases+'\n'+src)
+ addrs=sorted(a for a in mem if REGION_DEFAULT['REG_LOW']<=a<REGION_DEFAULT['REG_LOW']+LENGTHS['REG_LOW'])
+ ranges=[]
+ if not addrs:return ranges
+ s=prev=addrs[0]
+ for a in addrs[1:]:
+  if a!=prev+1:
+   ranges.append((s,prev+1));s=a
+  prev=a
+ ranges.append((s,prev+1))
+ return ranges
 NORMALIZE_NATIVE_REL={
  p:f'../../{p}/resident/vector/native/vec2_normalize_q8_8.asm'
  for p in PROFILES
@@ -413,7 +441,7 @@ def generate_source(profile,outpath:Path):
  # relocation rewrites their ZP and REG_LOW references symbolically rather than
  # publishing them as opaque reference-map bytes.
  if profile in REU:
-  for _s,_e in ((0x1000,0x1047),(0x1100,0x117f)):
+  for _s,_e in turbo32_runtime_low_ranges(profile):
    _pc=_s
    while _pc<_e:
     _oc=raw[_pc]
