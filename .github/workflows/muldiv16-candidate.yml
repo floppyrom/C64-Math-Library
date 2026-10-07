@@ -25,3 +25,7 @@ jobs:
           python3 tools/build_hybrid.py --config-kind alternate
       - name: Validate and benchmark MULDIV16 candidates
         run: python3 tools/validate_muldiv16_candidate.py
+      - name: Prove existing V1-V4 stable API remains intact
+        run: |
+          python3 tools/validate_source_build.py all --build build_muldiv16/reference --out /tmp/muldiv16_ref
+          python3 tools/validate_source_build.py all --build build_muldiv16/alternate --out /tmp/muldiv16_alt
