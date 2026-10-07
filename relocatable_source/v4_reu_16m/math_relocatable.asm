@@ -2988,15 +2988,15 @@ L50D2:
     !byte $49, $FF, $8D, $2F, $58, $8D, $37, $58, $AD, $01, $C0, $85, $3F, $8D, $3A, $58
     !byte $49, $FF, $85, $3D, $8D, $45, $58, $AD, $02, $C0, $85, $4F, $8D, $48, $58, $49
     !byte $FF, $85, $41, $8D, $53, $58, $4C, $2B, $58, $8D, $48, $58, $49, $FF, $85, $06
-    !byte $8D, $53, $58, $4C, $2B, $58, $AD, $14, $C0, $0D, $15, $C0, $0D, $16, $C0, $0D
-    !byte $17, $C0, $F0, $6E, $AD, $13, $C0, $CD, $17, $C0, $90, $3E, $D0, $64, $AD, $12
-    !byte $C0, $CD, $16, $C0, $90, $34, $D0, $5A, $AD, $11, $C0, $CD, $15, $C0, $90, $2A
-    !byte $D0, $50, $AD, $10, $C0, $CD, $14, $C0, $90, $20, $D0, $46, $A2, $00, $A9, $01
-    !byte $8D, $18, $C0, $8E, $19, $C0, $8E, $1A, $C0, $8E, $1B, $C0, $8E, $1C, $C0, $8E
-    !byte $1D, $C0, $8E, $1E, $C0, $8E, $1F, $C0, $18, $60, $A2, $00, $8E, $18, $C0, $8E
-    !byte $19, $C0, $8E, $1A, $C0, $8E, $1B, $C0, $AD, $10, $C0, $8D, $1C, $C0, $AD, $11
-    !byte $C0, $8D, $1D, $C0, $AD, $12, $C0, $8D, $1E, $C0, $AD, $13, $C0, $8D, $1F, $C0
-    !byte $18, $60, $4C, $00, $C1, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $8D, $53, $58, $4C, $2B, $58, $AD, $10, $C0, $8D, $18, $C0, $AD, $11, $C0, $8D
+    !byte $19, $C0, $AD, $12, $C0, $8D, $1A, $C0, $AD, $13, $C0, $8D, $1B, $C0, $A9, $00
+    !byte $8D, $1C, $C0, $8D, $1D, $C0, $8D, $1E, $C0, $8D, $1F, $C0, $A2, $20, $0E, $18
+    !byte $C0, $2E, $19, $C0, $2E, $1A, $C0, $2E, $1B, $C0, $2E, $1C, $C0, $B0, $07, $AD
+    !byte $1C, $C0, $C5, $53, $90, $0C, $38, $AD, $1C, $C0, $E5, $53, $8D, $1C, $C0, $EE
+    !byte $18, $C0, $CA, $D0, $D9, $18, $60, $0D, $15, $C0, $0D, $16, $C0, $0D, $17, $C0
+    !byte $F0, $1E, $A2, $00, $A9, $01, $8D, $18, $C0, $8E, $19, $C0, $8E, $1A, $C0, $8E
+    !byte $1B, $C0, $8E, $1C, $C0, $8E, $1D, $C0, $8E, $1E, $C0, $8E, $1F, $C0, $18, $60
+    !byte $4C, $3C, $C3, $00, $C1, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     bit ZP_SMUL+$24
@@ -3110,7 +3110,7 @@ L5A2B:
 
 ; Source interval $5E00-$5FFF
 * = REG_GAME_API
-    !byte $4C, $57, $59, $4C, $72, $54
+    !byte $4C, $FE, $C1, $4C, $72, $54
     jmp REG_GAME+$002C
     jmp REG_GAME+$002C
     !byte $4C, $B5, $C4, $4C, $80, $CF
@@ -5162,24 +5162,9 @@ L90D2:
 
 ; Source interval $C100-$CC73
 * = REG_GAME
-    lda MATH_IO+$10
-    sta ZP_MAIN+$51
-    lda MATH_IO+$11
-    sta ZP_MAIN+$52
-    lda MATH_IO+$12
-    sta ZP_MAIN+$53
-    lda MATH_IO+$13
-    sta ZP_MAIN+$54
-    lda MATH_IO+$14
-    sta ZP_MAIN+$55
-    lda MATH_IO+$15
-    sta ZP_MAIN+$56
-    lda MATH_IO+$16
-    sta ZP_MAIN+$57
-    lda MATH_IO+$17
-    sta ZP_MAIN+$58
-    jsr REG_GAME+$011A
-    rts
+    !byte $4C, $FE, $C1, $85, $53, $AD, $11, $C0, $85, $54, $AD, $12, $C0, $85, $55, $AD
+    !byte $13, $C0, $85, $56, $AD, $14, $C0, $85, $57, $AD, $15, $C0, $85, $58, $AD, $16
+    !byte $C0, $85, $59, $AD, $17, $C0, $85, $5A, $20, $1A, $C2, $60
     lda MATH_IO+$14
     ora MATH_IO+$15
     ora MATH_IO+$16
@@ -5277,323 +5262,53 @@ LC1FC:
     clc
 LC1FD:
     rts
-    lda #$00
-    sta MATH_IO+$18
-    sta MATH_IO+$19
-    sta MATH_IO+$1A
-    sta MATH_IO+$1B
-    sta MATH_IO+$1C
-    sta MATH_IO+$1D
-    sta MATH_IO+$1E
-    sta MATH_IO+$1F
-    sec
-    rts
-    lda ZP_MAIN+$55
-    ora ZP_MAIN+$56
-    ora ZP_MAIN+$57
-    ora ZP_MAIN+$58
-    bne LC228
-    jsr REG_GAME+$00FE
-    rts
-LC228:
-    lda ZP_MAIN+$58
-    beq LC22F
-    jmp REG_GAME+$01EA
-LC22F:
-    lda ZP_MAIN+$57
-    beq LC236
-    jmp REG_GAME+$02CE
-LC236:
-    lda ZP_MAIN+$56
-    beq LC23D
-    jmp REG_GAME+$018A
-LC23D:
-    lda ZP_MAIN+$51
-    sta MATH_IO+$18
-    lda ZP_MAIN+$52
-    sta MATH_IO+$19
-    lda ZP_MAIN+$53
-    sta MATH_IO+$1A
-    lda ZP_MAIN+$54
-    sta MATH_IO+$1B
-    lda #$00
-    sta MATH_IO+$1C
-    sta MATH_IO+$1D
-    sta MATH_IO+$1E
-    sta MATH_IO+$1F
-    ldx #$20
-LC261:
-    asl MATH_IO+$18
-    rol MATH_IO+$19
-    rol MATH_IO+$1A
-    rol MATH_IO+$1B
-    rol MATH_IO+$1C
-    bcs LC279
-    lda MATH_IO+$1C
-    cmp ZP_MAIN+$55
-    bcc LC285
-LC279:
-    sec
-    lda MATH_IO+$1C
-    sbc ZP_MAIN+$55
-    sta MATH_IO+$1C
-    inc MATH_IO+$18
-LC285:
-    dex
-    bne LC261
-    clc
-    rts
-    lda ZP_MAIN+$51
-    sta MATH_IO+$18
-    lda ZP_MAIN+$52
-    sta MATH_IO+$19
-    lda ZP_MAIN+$53
-    sta MATH_IO+$1A
-    lda #$00
-    sta MATH_IO+$1B
-    lda ZP_MAIN+$54
-    sta MATH_IO+$1C
-    lda #$00
-    sta MATH_IO+$1D
-    sta MATH_IO+$1E
-    sta MATH_IO+$1F
-    ldx #$18
-LC2B0:
-    asl MATH_IO+$18
-    rol MATH_IO+$19
-    rol MATH_IO+$1A
-    rol MATH_IO+$1C
-    rol MATH_IO+$1D
-    bcs LC2D1
-    lda MATH_IO+$1D
-    cmp ZP_MAIN+$56
-    bcc LC2E5
-    bne LC2D1
-    lda MATH_IO+$1C
-    cmp ZP_MAIN+$55
-    bcc LC2E5
-LC2D1:
-    sec
-    lda MATH_IO+$1C
-    sbc ZP_MAIN+$55
-    sta MATH_IO+$1C
-    lda MATH_IO+$1D
-    sbc ZP_MAIN+$56
-    sta MATH_IO+$1D
-    inc MATH_IO+$18
-LC2E5:
-    dex
-    bne LC2B0
-    clc
-    rts
-    lda ZP_MAIN+$54
-    cmp ZP_MAIN+$58
-    bcc LC328
-    bne LC34C
-    lda ZP_MAIN+$53
-    cmp ZP_MAIN+$57
-    bcc LC328
-    bne LC34C
-    lda ZP_MAIN+$52
-    cmp ZP_MAIN+$56
-    bcc LC328
-    bne LC34C
-    lda ZP_MAIN+$51
-    cmp ZP_MAIN+$55
-    bcc LC328
-    bne LC34C
-    lda #$01
-    sta MATH_IO+$18
-    lda #$00
-    sta MATH_IO+$19
-    sta MATH_IO+$1A
-    sta MATH_IO+$1B
-    sta MATH_IO+$1C
-    sta MATH_IO+$1D
-    sta MATH_IO+$1E
-    sta MATH_IO+$1F
-    clc
-    rts
-LC328:
-    lda #$00
-    sta MATH_IO+$18
-    sta MATH_IO+$19
-    sta MATH_IO+$1A
-    sta MATH_IO+$1B
-    lda ZP_MAIN+$51
-    sta MATH_IO+$1C
-    lda ZP_MAIN+$52
-    sta MATH_IO+$1D
-    lda ZP_MAIN+$53
-    sta MATH_IO+$1E
-    lda ZP_MAIN+$54
-    sta MATH_IO+$1F
-    clc
-    rts
-LC34C:
-    lda ZP_MAIN+$51
-    sta MATH_IO+$18
-    lda #$00
-    sta MATH_IO+$19
-    sta MATH_IO+$1A
-    sta MATH_IO+$1B
-    lda ZP_MAIN+$52
-    sta MATH_IO+$1C
-    lda ZP_MAIN+$53
-    sta MATH_IO+$1D
-    lda ZP_MAIN+$54
-    sta MATH_IO+$1E
-    lda #$00
-    sta MATH_IO+$1F
-    ldx #$08
-LC372:
-    asl MATH_IO+$18
-    rol MATH_IO+$1C
-    rol MATH_IO+$1D
-    rol MATH_IO+$1E
-    rol MATH_IO+$1F
-    bcs LC3A5
-    lda MATH_IO+$1F
-    cmp ZP_MAIN+$58
-    bcc LC3C9
-    bne LC3A5
-    lda MATH_IO+$1E
-    cmp ZP_MAIN+$57
-    bcc LC3C9
-    bne LC3A5
-    lda MATH_IO+$1D
-    cmp ZP_MAIN+$56
-    bcc LC3C9
-    bne LC3A5
-    lda MATH_IO+$1C
-    cmp ZP_MAIN+$55
-    bcc LC3C9
-LC3A5:
-    sec
-    lda MATH_IO+$1C
-    sbc ZP_MAIN+$55
-    sta MATH_IO+$1C
-    lda MATH_IO+$1D
-    sbc ZP_MAIN+$56
-    sta MATH_IO+$1D
-    lda MATH_IO+$1E
-    sbc ZP_MAIN+$57
-    sta MATH_IO+$1E
-    lda MATH_IO+$1F
-    sbc ZP_MAIN+$58
-    sta MATH_IO+$1F
-    inc MATH_IO+$18
-LC3C9:
-    dex
-    bne LC372
-    clc
-    rts
-    lda ZP_MAIN+$54
-    cmp ZP_MAIN+$58
-    bcc LC40C
-    bne LC430
-    lda ZP_MAIN+$53
-    cmp ZP_MAIN+$57
-    bcc LC40C
-    bne LC430
-    lda ZP_MAIN+$52
-    cmp ZP_MAIN+$56
-    bcc LC40C
-    bne LC430
-    lda ZP_MAIN+$51
-    cmp ZP_MAIN+$55
-    bcc LC40C
-    bne LC430
-    lda #$01
-    sta MATH_IO+$18
-    lda #$00
-    sta MATH_IO+$19
-    sta MATH_IO+$1A
-    sta MATH_IO+$1B
-    sta MATH_IO+$1C
-    sta MATH_IO+$1D
-    sta MATH_IO+$1E
-    sta MATH_IO+$1F
-    clc
-    rts
-LC40C:
-    lda #$00
-    sta MATH_IO+$18
-    sta MATH_IO+$19
-    sta MATH_IO+$1A
-    sta MATH_IO+$1B
-    lda ZP_MAIN+$51
-    sta MATH_IO+$1C
-    lda ZP_MAIN+$52
-    sta MATH_IO+$1D
-    lda ZP_MAIN+$53
-    sta MATH_IO+$1E
-    lda ZP_MAIN+$54
-    sta MATH_IO+$1F
-    clc
-    rts
-LC430:
-    lda ZP_MAIN+$51
-    sta MATH_IO+$18
-    lda ZP_MAIN+$52
-    sta MATH_IO+$19
-    lda #$00
-    sta MATH_IO+$1A
-    sta MATH_IO+$1B
-    lda ZP_MAIN+$53
-    sta MATH_IO+$1C
-    lda ZP_MAIN+$54
-    sta MATH_IO+$1D
-    lda #$00
-    sta MATH_IO+$1E
-    sta MATH_IO+$1F
-    ldx #$10
-LC456:
-    asl MATH_IO+$18
-    rol MATH_IO+$19
-    rol MATH_IO+$1C
-    rol MATH_IO+$1D
-    rol MATH_IO+$1E
-    rol MATH_IO+$1F
-    bcs LC48C
-    lda MATH_IO+$1F
-    cmp ZP_MAIN+$58
-    bcc LC4B0
-    bne LC48C
-    lda MATH_IO+$1E
-    cmp ZP_MAIN+$57
-    bcc LC4B0
-    bne LC48C
-    lda MATH_IO+$1D
-    cmp ZP_MAIN+$56
-    bcc LC4B0
-    bne LC48C
-    lda MATH_IO+$1C
-    cmp ZP_MAIN+$55
-    bcc LC4B0
-LC48C:
-    sec
-    lda MATH_IO+$1C
-    sbc ZP_MAIN+$55
-    sta MATH_IO+$1C
-    lda MATH_IO+$1D
-    sbc ZP_MAIN+$56
-    sta MATH_IO+$1D
-    lda MATH_IO+$1E
-    sbc ZP_MAIN+$57
-    sta MATH_IO+$1E
-    lda MATH_IO+$1F
-    sbc ZP_MAIN+$58
-    sta MATH_IO+$1F
-    inc MATH_IO+$18
-LC4B0:
-    dex
-    bne LC456
-    clc
-    rts
-    !byte $20, $20, $30, $8E, $08, $C0, $8D, $09, $C0, $8C, $0A, $C0, $60, $09, $C0, $AD
-    !byte $0B, $C0, $8D, $0A, $C0, $18, $60, $20, $B0, $3B, $AD, $09, $C0, $8D, $08, $C0
-    !byte $AD, $0A, $C0, $8D, $09, $C0, $AD, $0B, $C0, $8D, $0A, $C0, $18, $60
+    !byte $AD, $13, $C0, $CD, $17, $C0, $90, $23, $D0, $49, $AD, $12, $C0, $CD, $16, $C0
+    !byte $90, $19, $D0, $3F, $AD, $11, $C0, $CD, $15, $C0, $90, $0F, $D0, $35, $AD, $10
+    !byte $C0, $CD, $14, $C0, $90, $05, $D0, $2B, $4C, $A8, $59, $A9, $00, $8D, $18, $C0
+    !byte $8D, $19, $C0, $8D, $1A, $C0, $8D, $1B, $C0, $AD, $10, $C0, $8D, $1C, $C0, $AD
+    !byte $11, $C0, $8D, $1D, $C0, $AD, $12, $C0, $8D, $1E, $C0, $AD, $13, $C0, $8D, $1F
+    !byte $C0, $18, $60, $AD, $17, $C0, $0D, $16, $C0, $D0, $19, $AD, $14, $C0, $85, $53
+    !byte $AD, $15, $C0, $85, $54, $F0, $03, $4C, $33, $C4, $A5, $53, $D0, $03, $4C, $3C
+    !byte $C3, $4C, $57, $59, $38, $AD, $10, $C0, $ED, $14, $C0, $8D, $1C, $C0, $AD, $11
+    !byte $C0, $ED, $15, $C0, $8D, $1D, $C0, $AD, $12, $C0, $ED, $16, $C0, $8D, $1E, $C0
+    !byte $AD, $13, $C0, $ED, $17, $C0, $CD, $17, $C0, $90, $65, $F0, $23, $A8, $AD, $1C
+    !byte $C0, $ED, $14, $C0, $8D, $1C, $C0, $AD, $1D, $C0, $ED, $15, $C0, $8D, $1D, $C0
+    !byte $AD, $1E, $C0, $ED, $16, $C0, $8D, $1E, $C0, $98, $ED, $17, $C0, $4C, $13, $C3
+    !byte $AA, $AD, $1E, $C0, $CD, $16, $C0, $90, $36, $D0, $14, $AD, $1D, $C0, $CD, $15
+    !byte $C0, $90, $2C, $D0, $0A, $AD, $1C, $C0, $CD, $14, $C0, $90, $22, $D0, $00, $AD
+    !byte $1C, $C0, $ED, $14, $C0, $8D, $1C, $C0, $AD, $1D, $C0, $ED, $15, $C0, $8D, $1D
+    !byte $C0, $AD, $1E, $C0, $ED, $16, $C0, $8D, $1E, $C0, $A9, $00, $4C, $13, $C3, $8A
+    !byte $8D, $1F, $C0, $A9, $01, $8D, $18, $C0, $A9, $00, $8D, $19, $C0, $8D, $1A, $C0
+    !byte $8D, $1B, $C0, $18, $60, $8D, $1F, $C0, $20, $58, $C3, $18, $AD, $18, $C0, $69
+    !byte $02, $8D, $18, $C0, $AD, $19, $C0, $69, $00, $8D, $19, $C0, $AD, $1A, $C0, $69
+    !byte $00, $8D, $1A, $C0, $AD, $1B, $C0, $69, $00, $8D, $1B, $C0, $18, $60, $A9, $00
+    !byte $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $8D, $1B, $C0, $8D, $1C, $C0, $8D
+    !byte $1D, $C0, $8D, $1E, $C0, $8D, $1F, $C0, $38, $60, $AD, $14, $C0, $85, $53, $AD
+    !byte $15, $C0, $85, $54, $AD, $16, $C0, $85, $55, $AD, $17, $C0, $85, $56, $A9, $00
+    !byte $8D, $18, $C0, $8D, $19, $C0, $8D, $1A, $C0, $8D, $1B, $C0, $A2, $01, $24, $56
+    !byte $30, $36, $06, $53, $26, $54, $26, $55, $26, $56, $AD, $1F, $C0, $C5, $56, $90
+    !byte $1F, $D0, $19, $AD, $1E, $C0, $C5, $55, $90, $16, $D0, $10, $AD, $1D, $C0, $C5
+    !byte $54, $90, $0D, $D0, $07, $AD, $1C, $C0, $C5, $53, $90, $04, $E8, $4C, $7C, $C3
+    !byte $46, $56, $66, $55, $66, $54, $66, $53, $AC, $1F, $C0, $C4, $56, $90, $57, $D0
+    !byte $36, $AD, $1E, $C0, $C5, $55, $90, $4E, $D0, $10, $AD, $1D, $C0, $C5, $54, $90
+    !byte $45, $D0, $07, $AD, $1C, $C0, $C5, $53, $90, $3C, $AD, $1C, $C0, $E5, $53, $8D
+    !byte $1C, $C0, $AD, $1D, $C0, $E5, $54, $8D, $1D, $C0, $AD, $1E, $C0, $E5, $55, $8D
+    !byte $1E, $C0, $A0, $00, $4C, $15, $C4, $AD, $1C, $C0, $E5, $53, $8D, $1C, $C0, $AD
+    !byte $1D, $C0, $E5, $54, $8D, $1D, $C0, $AD, $1E, $C0, $E5, $55, $8D, $1E, $C0, $98
+    !byte $E5, $56, $A8, $4C, $15, $C4, $18, $2E, $18, $C0, $2E, $19, $C0, $2E, $1A, $C0
+    !byte $2E, $1B, $C0, $CA, $F0, $0B, $46, $56, $66, $55, $66, $54, $66, $53, $4C, $B9
+    !byte $C3, $8C, $1F, $C0, $60, $AD, $10, $C0, $8D, $18, $C0, $AD, $11, $C0, $8D, $19
+    !byte $C0, $AD, $12, $C0, $8D, $1A, $C0, $A9, $00, $8D, $1B, $C0, $AD, $13, $C0, $8D
+    !byte $1C, $C0, $A9, $00, $8D, $1D, $C0, $8D, $1E, $C0, $8D, $1F, $C0, $A2, $18, $0E
+    !byte $18, $C0, $2E, $19, $C0, $2E, $1A, $C0, $2E, $1C, $C0, $2E, $1D, $C0, $B0, $10
+    !byte $AD, $1D, $C0, $C5, $54, $90, $1D, $D0, $07, $AD, $1C, $C0, $C5, $53, $90, $14
+    !byte $38, $AD, $1C, $C0, $E5, $53, $8D, $1C, $C0, $AD, $1D, $C0, $E5, $54, $8D, $1D
+    !byte $C0, $EE, $18, $C0, $CA, $D0, $C8, $18, $60, $C0, $E5, $58, $8D, $1D, $C0, $AD
+    !byte $1E, $C0, $E5, $59, $8D, $1E, $C0, $AD, $1F, $C0, $E5, $5A, $8D, $1F, $C0, $EE
+    !byte $18, $C0, $CA, $D0, $A3, $18, $60, $20, $20, $30, $8E, $08, $C0, $8D, $09, $C0
+    !byte $8C, $0A, $C0, $60, $09, $C0, $AD, $0B, $C0, $8D, $0A, $C0, $18, $60, $20, $B0
+    !byte $3B, $AD, $09, $C0, $8D, $08, $C0, $AD, $0A, $C0, $8D, $09, $C0, $AD, $0B, $C0
+    !byte $8D, $0A, $C0, $18, $60
     jsr REG_API+$00B0
     lda MATH_IO+$0A
     sta MATH_IO+$08
@@ -6237,7 +5952,7 @@ ZCE4:
 !source "sdiv16_directout_fast.inc"
 !source "sdiv24_directout_repose.inc"
 !source "sdiv32_16_direct_fast.inc"
-!source "udiv32_32_early_gate.inc"
+!source "../division/udiv32_live_high4.inc"
 !source "sdiv32_32_skip_redundant_zero.inc"
 !source "../division/remainder_fast_v2.inc"
 ; END DIVISION REFRESH 2026-09-20

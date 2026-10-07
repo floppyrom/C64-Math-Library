@@ -4,6 +4,8 @@ This is the quickest way to answer **“how fast is it?”** for the current C64
 
 The five fixed profiles use different memory/ZP trade-offs, so the fastest number is not automatically the best choice for every program. For exact code size, ZP ranges, stack reservation, corpus and a direct source link for every row, use [`docs/CONSOLIDATED_ROUTINE_TABLE.md`](docs/CONSOLIDATED_ROUTINE_TABLE.md) or [`benchmarks/PUBLIC_PROFILE_RESULTS.csv`](benchmarks/PUBLIC_PROFILE_RESULTS.csv). For a one-row-per-routine view that automatically selects the fastest shipped profile, use [`benchmarks/BEST_PROFILE_RESULTS.csv`](benchmarks/BEST_PROFILE_RESULTS.csv).
 
+The V2/V3/V4 four-ZP UDIV32 update saves 76 reachable code bytes and averages 177.737 fewer cycles on a paired uniform32 corpus. Some inputs regress; see [the full comparison](docs/UDIV32_OPTISEARCH.md).
+
 ## Shipped profile means
 
 ### Multiply
@@ -27,7 +29,7 @@ The five fixed profiles use different memory/ZP trade-offs, so the fastest numbe
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 132.725857 | 127.773827 | 125.423943 | 125.625710 | 126.385862 |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 194.156322 | 183.660846 | 191.745424 | 187.307174 | 187.122028 |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 870.340206 | 753.994530 | 755.944246 | 757.480328 | 756.638544 |
-| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 428.554036 | 401.556389 | 395.884576 | 404.408910 | 421.077342 |
+| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 428.554036 | 238.390825 | 229.933098 | 235.735480 | 421.077342 |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 88.372650 | 88.372650 | 89.009821 | 90.272098 |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | 187.131298 | 168.393021 | 170.582116 | 168.745038 | 170.631189 |
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | 313.583206 | 248.344384 | 236.810251 | 237.569466 | 253.487023 |
@@ -44,7 +46,7 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 | `MATH_UMOD16` | `mod_u16_u16_u16` | 184.082421 | 195.951706 | 196.414681 | 195.529942 | 199.918867 |
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 303.233097 | 293.183516 | 294.880876 | 293.535093 | 299.273020 |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 971.613651 | 792.160335 | 789.650998 | 789.841597 | 789.508693 |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 552.220863 | 515.783001 | 509.623310 | 507.496458 | 548.000000 |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 552.220863 | 405.316806 | 402.340631 | 400.486800 | 548.000000 |
 | `MATH_SMOD8` | `mod_s8_s8_s8` | 98.157813 | 97.066406 | 97.152344 | 99.020313 | 96.707813 |
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 229.324910 | 231.872202 | 234.659206 | 228.244765 | 231.667148 |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 427.272924 | 337.075090 | 329.971841 | 326.184838 | 339.607942 |

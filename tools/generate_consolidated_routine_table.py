@@ -316,8 +316,8 @@ def provenance(profile,n):
                 'Repose q0-counter/direct-public UDIV24')
     if n in ('MATH_UDIV32_32','MATH_UMOD32_32'):
         if n=='MATH_UMOD32_32' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
-            return 'remainder-only compare/q=0-equality front end with exact tiered UDIV32_32 fallback'
-        return 'native tiered 32/32 divider with early q=0 gate'
+            return 'remainder-only compare/q=0-equality front end with Repose live-high four-ZP UDIV32 fallback'
+        return ('Repose live-high four-ZP divider with preserved narrow-divisor fast paths' if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m') else 'native tiered 32/32 divider with early q=0 gate')
     if n=='MATH_UDIV32_16' or n=='MATH_UMOD32_16':
         return ('V2 certified 32/16 divider imported into V5 hybrid private RAM' if profile=='v5_hybrid_lowzp' else
                 'profile-selected native 32/16 divider')

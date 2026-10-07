@@ -1,0 +1,7 @@
+{
+  "status": "PASS",
+  "cases": 4625,
+  "seed": 1234,
+  "oracle": "OptiSearchV2 Reduced6502, Python arithmetic, and library mini6502 cycle parity",
+  "prg_sha256": "0d675bcae909cbc383f11b70bcd199f05b025aa01ec5aeb2409ade32346260ca"
+}

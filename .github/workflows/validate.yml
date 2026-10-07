@@ -68,3 +68,8 @@ jobs:
         run: |
           python3 tools/benchmark_isqrt32_fast.py
           git diff --exit-code -- validation/review/ISQRT32_FAST_PERFORMANCE_4130.json
+
+      - name: Four-ZP UDIV32 ABI and relocation validation
+        run: |
+          python3 tools/validate_udiv32_live_high.py
+          git diff --exit-code -- validation/review/UDIV32_LIVE_HIGH_VALIDATION.json

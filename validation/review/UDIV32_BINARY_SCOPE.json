@@ -1,0 +1,48 @@
+{
+  "status": "PASS",
+  "baseline": "c29612a",
+  "checks": [
+    {
+      "profile": "v2_pareto_fast",
+      "map": "reference",
+      "changed_bytes_after_init": 763,
+      "changes_only_in_old_or_new_divider": true,
+      "other_public_entries_with_identical_executable_bytes": 52
+    },
+    {
+      "profile": "v2_pareto_fast",
+      "map": "alternate",
+      "changed_bytes_after_init": 789,
+      "changes_only_in_old_or_new_divider": true,
+      "other_public_entries_with_identical_executable_bytes": 52
+    },
+    {
+      "profile": "v3_reu_512k",
+      "map": "reference",
+      "changed_bytes_after_init": 763,
+      "changes_only_in_old_or_new_divider": true,
+      "other_public_entries_with_identical_executable_bytes": 52
+    },
+    {
+      "profile": "v3_reu_512k",
+      "map": "alternate",
+      "changed_bytes_after_init": 789,
+      "changes_only_in_old_or_new_divider": true,
+      "other_public_entries_with_identical_executable_bytes": 52
+    },
+    {
+      "profile": "v4_reu_16m",
+      "map": "reference",
+      "changed_bytes_after_init": 763,
+      "changes_only_in_old_or_new_divider": true,
+      "other_public_entries_with_identical_executable_bytes": 52
+    },
+    {
+      "profile": "v4_reu_16m",
+      "map": "alternate",
+      "changed_bytes_after_init": 789,
+      "changes_only_in_old_or_new_divider": true,
+      "other_public_entries_with_identical_executable_bytes": 52
+    }
+  ]
+}
