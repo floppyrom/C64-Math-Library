@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 from pathlib import Path
-import argparse,re,json,hashlib,sys
+import argparse,re,json,hashlib,sys,math
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import Assembler
@@ -84,6 +84,13 @@ def validate_reu_banks(profile,v):
   qset=set(range(q,q+8))
   for k in singles:
    if v[k] in qset: raise ValueError(f'{k} collides with QS16 bank range')
+  p=v['REU_ISQRT32_PREFIX_BASE_BANK']
+  if p & 0x3f: raise ValueError('REU_ISQRT32_PREFIX_BASE_BANK must be aligned to a 64-bank boundary')
+  if p>0xc0: raise ValueError('REU_ISQRT32_PREFIX_BASE_BANK 64-bank range exceeds 16 MiB REU')
+  pset=set(range(p,p+0x40))
+  for k in singles:
+   if v[k] in pset: raise ValueError(f'{k} collides with ISQRT32 prefix bank range')
+  if qset & pset: raise ValueError('QS16 bank range collides with ISQRT32 prefix bank range')
 
 def _assemble_overlay(name,v):
  src=ROOT/'relocatable_source'/'turbo'/f'{name}_overlay.asm'; text=src.read_text()
@@ -121,12 +128,31 @@ def build_reu_image(profile,v,outpath):
  clear={old for _,old in roles}|{4,5}|{v[k] for k,_ in roles}|{v['REU_TURBO16_BANK'],v['REU_TURBO32_BANK']}
  if profile=='v4_reu_16m':
   clear |= set(range(0x10,0x18))|set(range(v['REU_QS16_BASE_BANK'],v['REU_QS16_BASE_BANK']+8))
+  clear |= set(range(0x40,0x80))|set(range(v['REU_ISQRT32_PREFIX_BASE_BANK'],v['REU_ISQRT32_PREFIX_BASE_BANK']+0x40))
  for bno in clear: img[bno*bank:(bno+1)*bank]=b'\x00'*bank
  for k,old in roles:
   new=v[k];img[new*bank:(new+1)*bank]=snap[old*bank:(old+1)*bank]
  if profile=='v4_reu_16m':
   q=v['REU_QS16_BASE_BANK']
   for i,old in enumerate(range(0x10,0x18)):img[(q+i)*bank:(q+i+1)*bank]=snap[old*bank:(old+1)*bank]
+  # Exact two-root-bit ISQRT32 prefix table.
+  # Key = (high_word << 4) | next_radix_nibble, record = 4 bytes:
+  # [partial_root_lo, partial_root_hi, residual_lo, residual_hi].
+  # Four-byte records turn the 20-bit key into a 22-bit byte offset,
+  # occupying exactly 4 MiB / 64 REU banks.
+  pb=v['REU_ISQRT32_PREFIX_BASE_BANK']*bank
+  for h in range(0x10000):
+   base=(h<<4)
+   row=pb+(h<<6)
+   for nib in range(16):
+    prefix=base|nib
+    root=math.isqrt(prefix)
+    rem=prefix-root*root
+    off=row+(nib<<2)
+    img[off+0]=root&0xff
+    img[off+1]=(root>>8)&0xff
+    img[off+2]=rem&0xff
+    img[off+3]=(rem>>8)&0xff
  img[v['REU_TURBO16_BANK']*bank:v['REU_TURBO16_BANK']*bank+len(turbo16)]=turbo16
  # VEC2 normalize direct-ratio index table.  The Turbo16 overlay occupies
  # only the low bytes of its bank; the normalizer owns $8000-$FFFF.
@@ -150,7 +176,8 @@ def build_reu_image(profile,v,outpath):
          'turbo16_sha256':hashlib.sha256(turbo16).hexdigest(),'turbo32_sha256':hashlib.sha256(turbo32).hexdigest(),
          'normalize_ratio_bank':hx(v['REU_TURBO16_BANK'],2),
          'normalize_ratio_range':'$8000-$FFFF',
-         'normalize_ratio_sha256':hashlib.sha256(img[nb+0x8000:nb+0x10000]).hexdigest()}
+         'normalize_ratio_sha256':hashlib.sha256(img[nb+0x8000:nb+0x10000]).hexdigest(),
+         'isqrt32_prefix_base_bank':(hx(v['REU_ISQRT32_PREFIX_BASE_BANK'],2) if profile=='v4_reu_16m' else None)}
 
 _SOURCE_RE=re.compile(r'^\s*!source\s+"([^"]+)"\s*(?:;.*)?$',re.I)
 
