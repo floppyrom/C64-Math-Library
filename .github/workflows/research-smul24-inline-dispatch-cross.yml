@@ -16,5 +16,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Map SMUL24 packing
+        run: python3 tools/map_smul24_inline.py
       - name: Benchmark inline SMUL24 dispatcher across fixed profiles
         run: python3 tools/bench_smul24_inline_dispatch_cross.py
