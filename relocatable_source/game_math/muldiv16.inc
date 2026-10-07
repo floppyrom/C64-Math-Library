@@ -2,12 +2,9 @@
 ; Stable public slots (common free hole after MATH_INIT):
 ;   REG_API+$02E0  UMULDIV16: (u16 X * u16 Y) / u16 D -> Q32,R16
 ;   REG_API+$02E3  SMULDIV16: (s16 X * s16 Y) / s16 D -> Q32,R16
-; ; X/Y/D are preserved by the selected multiply/divide engines.
+; X/Y/D are preserved by the selected multiply/divide engines.
 ; N is internal scratch and receives the full 32-bit product.
 ; Divide by zero inherits UDIV/SDIV semantics: C=1 and Q/R=0.
-
-MATH_UMULDIV16 = REG_API+$02E0
-MATH_SMULDIV16 = REG_API+$02E3
 
 * = MATH_UMULDIV16
     jmp MULDIV16_U_COMPOSED
