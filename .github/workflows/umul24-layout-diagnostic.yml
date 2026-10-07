@@ -18,7 +18,24 @@ jobs:
       - name: Reproduce promotion trace
         run: |
           python3 tools/generate_sources.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,'tools')
+          from assemble_sources import preprocess
+          from mini6502 import Assembler
+          src=Path('relocatable_source/v2_pareto_fast/math_relocatable.asm')
+          cfg=Path('relocatable_source/v2_pareto_fast/math_config_reference.inc')
+          mem,labels,const=Assembler().assemble(preprocess(src,cfg))
+          print('AFTER_GENERATE_MEM',hex(mem.get(0x5780,0)),hex(mem.get(0x5784,0)),'MIN',hex(min(mem)),'MAX',hex(max(mem)))
+          PY
           python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg')
+          b=p.read_bytes(); load=b[0]|(b[1]<<8)
+          print('PRG_LOAD',hex(load),'LEN',len(b),'B5780',hex(b[2+0x5780-load]),'B5784',hex(b[2+0x5784-load]))
+          PY
           cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
           python3 - <<'PY'
           import sys
