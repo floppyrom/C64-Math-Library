@@ -149,7 +149,7 @@ ck('turbo_boundary_status',boundary['status']=='PASS')
 ck('turbo_boundary_products_3556',boundary['total_product_calls']==3556,boundary['total_product_calls'])
 for p in ('v3_reu_512k','v4_reu_16m'):
     lo=boundary['profiles'][p]['minimum_origins'];hi=boundary['profiles'][p]['maximum_origins']
-    ck(f'{p}_turbo16_origin_bounds',lo['turbo16']['zp_base']=='$02' and hi['turbo16']['zp_base']=='$86')
+    ck(f'{p}_turbo16_origin_bounds',lo['turbo16']['zp_base']=='$02' and hi['turbo16']['zp_base']=='$85')
     ck(f'{p}_turbo32_origin_bounds',lo['turbo32']['zp_base']=='$02' and hi['turbo32']['zp_base']=='$79')
     for t in ('turbo16','turbo32'):
         ck(f'{p}_{t}_boundary_cycle_identity',lo[t]['cycle_vector_sha256']==hi[t]['cycle_vector_sha256'])
