@@ -314,6 +314,7 @@ def operand_text(profile,pc,op,mode,raw,branch_prefix='L'):
    if pc==0x3800:return ' #<TURBO16_ZP_BASE'
    if pc==0x3805:return ' #>TURBO16_ZP_BASE'
    if pc==0x3810:return ' #REU_TURBO16_BANK'
+   if pc==0x3815:return ' #$7A'  # 122-byte direct-output Turbo16 overlay
    if pc==0x38c0:return ' #<TURBO32_ZP_BASE'
    if pc==0x38c5:return ' #>TURBO32_ZP_BASE'
    if pc==0x38d0:return ' #REU_TURBO32_BANK'
