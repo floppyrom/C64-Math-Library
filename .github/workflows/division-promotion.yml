@@ -133,6 +133,8 @@ jobs:
         run: |
           rm -f .github/workflows/division-tail-probe.yml .github/workflows/division-promotion.yml .github/workflows/v5-division-debug.yml .promotion-trigger
           rm -rf build_source build_hybrid build_u3216 build_probe build_v5trace
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          find . -type f -name '*.pyc' -delete
           python3 - <<'PY'
           from pathlib import Path
           import hashlib
