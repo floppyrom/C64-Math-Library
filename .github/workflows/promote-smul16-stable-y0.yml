@@ -232,3 +232,4 @@ jobs:
             git commit -m "Promote SMUL16 stable-input Y0 optimization"
             git push origin HEAD:research/smul16-stable-y0-promotion-v1
           fi
+# promotion trigger
