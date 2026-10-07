@@ -67,3 +67,41 @@ jobs:
                       if x is not None:s=prev=x
               else: print(rn,'none')
           PY
+      - name: Measure generated MULDIV16 labels
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from tools.assemble_sources import preprocess
+          from tools.mini6502 import Assembler, REV, SIZE
+          root=Path('.')
+          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              src=root/'relocatable_source'/p/'math_relocatable.asm'
+              cfg=root/'relocatable_source'/p/'math_config_reference.inc'
+              mem,labels,const=Assembler().assemble(preprocess(src,cfg))
+              names=[n for n in labels if n.startswith('MULDIV16_S_')]
+              vals=sorted((labels[n],n) for n in names)
+              print('\n',p)
+              for a,n in vals: print(f'{a:04X} {n}')
+              start=labels['MULDIV16_S_FUSED']
+              # Trace only the signed fused routine until RTS exits.
+              todo=[start]; seen=set()
+              while todo:
+                  pc=todo.pop()&0xffff
+                  if pc in seen: continue
+                  oc=mem.get(pc,0)
+                  if oc not in REV: raise RuntimeError((p,hex(pc),hex(oc)))
+                  seen.add(pc);op,mode=REV[oc];nxt=pc+SIZE[mode]
+                  if op in ('rts','rti','brk'): continue
+                  if mode=='rel':
+                      d=mem.get(pc+1,0); d=d-256 if d>=128 else d
+                      todo += [nxt,(nxt+d)&0xffff]; continue
+                  if op=='jmp':
+                      if mode!='abs': raise RuntimeError('indirect jmp')
+                      todo.append(mem.get(pc+1,0)|(mem.get(pc+2,0)<<8)); continue
+                  if op=='jsr':
+                      todo += [mem.get(pc+1,0)|(mem.get(pc+2,0)<<8),nxt]; continue
+                  todo.append(nxt)
+              local=[pc for pc in seen if 0x1000<=pc<=0x2fff]
+              end=max(pc+SIZE[REV[mem[pc]][1]]-1 for pc in local)
+              print(f'LOCAL_RANGE {start:04X}-{end:04X} span={end-start+1} reachable_starts={len(local)}')
+          PY
