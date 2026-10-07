@@ -193,21 +193,58 @@ S24_c2_2:
         adc (S24_p10),y
         bcc S24_t2_2
 
-; Signed composition.
-; x sign is S24_x2 bit7; y sign is entry Y bit7 (y2).
+; Signed public composition.
+; Sign dispatch lives in the public wrapper, so every quadrant calls the
+; producer directly. Mixed-sign paths avoid the former nested JSR/RTS pair.
+S24_public_impl:
+        lda #>S24_sl
+        sta S24_p0+1
+        sta S24_p4+1
+        sta S24_p8+1
+        lda #>S24_nl
+        sta S24_p1+1
+        sta S24_p5+1
+        sta S24_p9+1
+        lda #>S24_sh
+        sta S24_p2+1
+        sta S24_p6+1
+        sta S24_p10+1
+        lda #>S24_nh
+        sta S24_p3+1
+        sta S24_p7+1
+        sta S24_p11+1
+        lda MATH_IO+$00
+        sta S24_x0
+        lda MATH_IO+$01
+        sta S24_x1
+        lda MATH_IO+$02
+        sta S24_x2
+        lda MATH_IO+$04
+        sta S24_y0
+        lda MATH_IO+$05
+        sta S24_y1
+        ldy MATH_IO+$06
+
+; Compatibility/internal label: inputs are bound and Y contains original Y2.
 S24_smul24_composed:
         lda S24_x2
         bmi S24_smul24_xneg
         tya
         bmi S24_smul24_yneg_only
-        jmp S24_umult
+
+; x>=0, y>=0.
+S24_smul24_pp:
+        jsr S24_umult
+        sta MATH_IO+$0C
+        stx MATH_IO+$0D
+        sty MATH_IO+$0B
+        clc
+        rts
 
 ; x<0, y>=0: unsigned product then subtract y from upper 24 bits.
 S24_smul24_xneg:
         tya
         bmi S24_smul24_nn
-        ; Public inputs remain stable in MATH_IO. Re-read original Y2 after
-        ; the producer instead of saving it into a self-modified immediate.
         jsr S24_umult
         sta S24_smul24_xneg_orig_a+1
         tya
@@ -223,6 +260,10 @@ S24_smul24_xneg_orig_a:
         tax
 S24_smul24_xneg_restore_a:
         lda #0
+        sta MATH_IO+$0C
+        stx MATH_IO+$0D
+        sty MATH_IO+$0B
+        clc
         rts
 
 ; x>=0, y<0: unsigned product then subtract x from upper 24 bits.
@@ -242,10 +283,13 @@ S24_smul24_yneg_orig_a:
         tax
 S24_smul24_yneg_restore_a:
         lda #0
+        sta MATH_IO+$0C
+        stx MATH_IO+$0D
+        sty MATH_IO+$0B
+        clc
         rts
 
-; x<0, y<0: multiply magnitudes. Negate y in-place while preserving
-; carry propagation into entry Y, then negate/bind x and jump after binder.
+; x<0, y<0: multiply magnitudes and call after the normal X binder.
 S24_smul24_nn:
         sec
         lda #0
@@ -281,43 +325,13 @@ S24_smul24_nn:
         eor #$ff
         sta S24_p9
         sta S24_p11
-        jmp S24_bound_entry
-S24_smul24_composed_end:
-
-S24_public_impl:
-        lda #>S24_sl
-        sta S24_p0+1
-        sta S24_p4+1
-        sta S24_p8+1
-        lda #>S24_nl
-        sta S24_p1+1
-        sta S24_p5+1
-        sta S24_p9+1
-        lda #>S24_sh
-        sta S24_p2+1
-        sta S24_p6+1
-        sta S24_p10+1
-        lda #>S24_nh
-        sta S24_p3+1
-        sta S24_p7+1
-        sta S24_p11+1
-        lda MATH_IO+$00
-        sta S24_x0
-        lda MATH_IO+$01
-        sta S24_x1
-        lda MATH_IO+$02
-        sta S24_x2
-        lda MATH_IO+$04
-        sta S24_y0
-        lda MATH_IO+$05
-        sta S24_y1
-        ldy MATH_IO+$06
-        jsr S24_smul24_composed
+        jsr S24_bound_entry
         sta MATH_IO+$0C
         stx MATH_IO+$0D
         sty MATH_IO+$0B
         clc
         rts
+S24_smul24_composed_end:
 
 * = MATH_SMUL24
 S24_public:
