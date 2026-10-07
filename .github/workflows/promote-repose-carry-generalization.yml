@@ -1,0 +1,268 @@
+name: Promote Repose carry generalization
+
+on:
+  push:
+    branches:
+      - opt/repose-carry-generalization
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  promote:
+    if: github.event.head_commit.message == 'trigger Repose carry generalization promotion'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: opt/repose-carry-generalization
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Build candidates
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/build_hybrid.py --config-kind reference --out build_hybrid_new
+          python3 tools/build_hybrid.py --config-kind alternate --out build_hybrid_new
+
+      - name: Promote resident images
+        run: |
+          cp build_source/reference/v1_balanced/math_v1_balanced_source_built.prg v1_balanced/resident/math_v1_balanced_game_math.prg
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v3_reu_512k/math_v3_reu_512k_source_built.prg v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+          cp build_source/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+          cp build_hybrid_new/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+
+      - name: Regenerate published sources
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/publish_standalone_sources.py
+
+      - name: Validate arithmetic surfaces
+        run: |
+          python3 tools/validate_signed_multiply.py
+          python3 tools/benchmark_multiply_refresh.py
+          python3 tools/validate_mul16_shr8_register.py
+          python3 tools/validate_smul24_directout.py
+          python3 tools/validate_atan2_dispatch.py
+          python3 tools/validate_signed_division.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+
+      - name: Validate builds and relocation
+        run: |
+          python3 tools/validate_hybrid.py
+          python3 tools/test_hybrid_config.py
+          python3 tools/verify_hybrid_deterministic.py
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+
+      - name: Rebuild final source state
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_final
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_final
+          python3 tools/build_hybrid.py --config-kind reference --out build_hybrid_final
+          python3 tools/build_hybrid.py --config-kind alternate --out build_hybrid_final
+
+      - name: Write evidence and headline docs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('.')
+          ps=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp']
+          sm=json.loads((root/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
+          mr=json.loads((root/'validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json').read_text())
+          before16={'v1_balanced':292.349787,'v2_pareto_fast':248.802333,'v3_reu_512k':249.107696,'v4_reu_16m':249.144492,'v5_hybrid_lowzp':292.026700}
+          before32={'v1_balanced':744.569946,'v2_pareto_fast':711.586966,'v3_reu_512k':711.941885,'v4_reu_16m':712.136986,'v5_hybrid_lowzp':743.913242}
+          a16={p:sm['profiles'][p]['SMUL16']['mean_cycles'] for p in ps}
+          a32={p:sm['profiles'][p]['SMUL32']['mean_cycles'] for p in ps}
+          sh16={p:mr['profiles'][p]['MATH_SMUL16_SHR8']['mean_cycles'] for p in ps}
+          sh32={p:mr['profiles'][p]['MATH_SMUL32_SHR16']['mean_cycles'] for p in ps}
+          evidence={
+            'status':'PASS','date':'2026-10-07',
+            'provenance':'Generalization of Repose OptiSearchV2 SMUL24 ideas integrated by PR #24.',
+            'smul8':{'changed':False,'reason':'Direct signed-domain lookup kernel has no quadrant dispatcher/binder; an analogous carry-prime compare is not faster than its required SEC.'},
+            'smul16':{
+              'before_mean_cycles':before16,'after_mean_cycles':a16,
+              'delta_mean_cycles':{p:a16[p]-before16[p] for p in ps},
+              'shr8_mean_cycles':sh16,
+              'technique':'V1/V5 carry-primed sign dispatch, live Y1/X1 register state, dead pointer-low correction scratch and NN borrow reuse; V2-V4 live-X1 entry skips a redundant core reload.'
+            },
+            'smul32':{
+              'before_mean_cycles':before32,'after_mean_cycles':a32,
+              'delta_mean_cycles':{p:a32[p]-before32[p] for p in ps},
+              'shr16_mean_cycles':sh32,
+              'technique':'NN X-magnitude formation guarantees C=0, reused as LDA #1 / SBC Y0 to remove redundant SEC / LDA #0.'
+            },
+            'resource_contract':{'new_zp_bytes':0,'new_persistent_stack_bytes':0,'new_table_bytes':0,'public_abi_changed':False},
+            'validation':{
+              'signed_multiply_calls':sm['summary']['machine_calls'],
+              'multiply_refresh_calls':mr['summary']['machine_calls'],
+              'signed_layout':'PASS','published_sources':'PASS','signed_division_regression':'PASS',
+              'deterministic_rebuild':'PASS','hybrid':'PASS','turbo_relocation':'PASS','turbo_boundary':'PASS'
+            }
+          }
+          (root/'validation/review/REPOSE_CARRY_GENERALIZATION.json').write_text(json.dumps(evidence,indent=2)+'\n')
+
+          def rewrite_perf(path, mapping):
+              p=root/path
+              if not p.exists(): return
+              lines=p.read_text().splitlines()
+              out=[]
+              for line in lines:
+                  done=False
+                  for key,vals in mapping.items():
+                      if key in line and line.lstrip().startswith('|'):
+                          cells=line.split('|')
+                          if len(cells)>=9:
+                              for i,v in enumerate(vals,3):
+                                  cells[i]=f' {v:.6f} '
+                              line='|'.join(cells)
+                          done=True
+                          break
+                  out.append(line)
+              p.write_text('\n'.join(out)+'\n')
+          rewrite_perf('PERFORMANCE.md',{
+            'MATH_SMUL16':[a16[p] for p in ps],
+            'MATH_SMUL32':[a32[p] for p in ps],
+            'MATH_SMUL16_SHR8':[sh16[p] for p in ps],
+            'MATH_SMUL32_SHR16':[sh32[p] for p in ps],
+          })
+
+          p=root/'README.md'; lines=p.read_text().splitlines(); out=[]
+          for line in lines:
+              if 'mul_s16_s16_s32' in line and line.lstrip().startswith('|'):
+                  cells=line.split('|')
+                  if len(cells)>=8:
+                      for i,v in enumerate([a16[p] for p in ps],2): cells[i]=f' {v:.3f} '
+                      line='|'.join(cells)
+              if 'mul_s32_s32_s64' in line and line.lstrip().startswith('|'):
+                  cells=line.split('|')
+                  if len(cells)>=8:
+                      for i,v in enumerate([a32[p] for p in ps],2): cells[i]=f' {v:.3f} '
+                      line='|'.join(cells)
+              out.append(line)
+          p.write_text('\n'.join(out)+'\n')
+
+          s16=' / '.join(f'{a16[p]:.6f}' for p in ps)
+          s32=' / '.join(f'{a32[p]:.6f}' for p in ps)
+          p=root/'CHANGELOG.md'; t=p.read_text()
+          entry=(
+            '## 2026-10-07 — Repose carry-state generalization to SMUL16/SMUL32\n\n'
+            '- Generalized the carry-primed/live-state ideas from PR #24 SMUL24 to SMUL16 and the remaining useful SMUL32 NN carry chain.\n'
+            f'- Canonical V1/V2/V3/V4/V5 SMUL16 means are **{s16} cycles**.\n'
+            f'- Canonical V1/V2/V3/V4/V5 SMUL32 means are **{s32} cycles**.\n'
+            '- SMUL16_SHR8 and SMUL32_SHR16 inherit the producer reductions. No new ZP, persistent stack, table or public-ABI cost.\n'
+            '- SMUL8 remains unchanged because its direct signed-domain table kernel has no quadrant binder to prime.\n\n')
+          if 'Repose carry-state generalization to SMUL16/SMUL32' not in t: p.write_text(entry+t)
+
+          p=root/'CSDB_CHANGELOG.txt'; t=p.read_text()
+          entry=(
+            '2026-10-07: Repose carry-state generalization\n'
+            '- SMUL16: carry/live-register/dead-scratch adaptation of PR #24 SMUL24.\n'
+            '- SMUL32: reuse NN magnitude borrow, saving 2 cycles on every NN call.\n'
+            '- SMUL8 unchanged: direct signed-domain kernel has no applicable binder/dispatch overhead.\n\n')
+          if 'Repose carry-state generalization' not in t: p.write_text(entry+t)
+          PY
+
+      - name: Regenerate public indexes
+        run: |
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+
+      - name: Refresh release status
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('.')
+          sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          for p in ('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              s['reference_prg_sha256'][p]=sha(root/'build_final/reference'/p/f'math_{p}_source_built.prg')
+              s['alternate_prg_sha256'][p]=sha(root/'build_final/alternate'/p/f'math_{p}_source_built.prg')
+          for p in ('v3_reu_512k','v4_reu_16m'):
+              s['reference_reu_sha256'][p]=sha(root/'build_final/reference'/p/f'c64_math_{p}_source_built.reu')
+              s['alternate_reu_sha256'][p]=sha(root/'build_final/alternate'/p/f'c64_math_{p}_source_built.reu')
+          s['reference_prg_sha256']['v5_hybrid_lowzp']=sha(root/'build_hybrid_final/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg')
+          s['alternate_prg_sha256']['v5_hybrid_lowzp']=sha(root/'build_hybrid_final/alternate/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg')
+          sm=json.loads((root/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
+          mr=json.loads((root/'validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json').read_text())
+          s['multiply_refresh']['signed_multiply_machine_calls']=sm['summary']['machine_calls']
+          s['multiply_refresh']['benchmark_machine_calls']=mr['summary']['machine_calls']
+          s['signed_implementation_taxonomy']['signed_multiply_machine_calls']=sm['summary']['machine_calls']
+          s['repose_carry_generalization']={'status':'PASS','evidence':'validation/review/REPOSE_CARRY_GENERALIZATION.json','smul8_changed':False,'smul16_changed':True,'smul32_changed':True,'new_zp_bytes':0,'new_persistent_stack_bytes':0}
+          s['date']='2026-10-07'
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+
+      - name: Final validation
+        run: |
+          python3 tools/verify_deterministic_rebuild.py
+          python3 tools/verify_hybrid_deterministic.py
+          python3 tools/validate_signed_multiply.py
+          python3 tools/benchmark_multiply_refresh.py
+          python3 tools/validate_signed_division.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_mul16_shr8_register.py
+          python3 tools/validate_smul24_directout.py
+          python3 tools/validate_atan2_dispatch.py
+          python3 tools/validate_turbo_relocation.py
+          python3 tools/validate_turbo_boundary_sweep.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+
+      - name: Remove research scaffolding
+        run: |
+          rm -f .github/workflows/research-repose-carry-generalization.yml
+          rm -f .github/workflows/promote-repose-carry-generalization.yml
+          rm -f tools/bench_smul16_live_x1.py
+          rm -f tools/bench_smul16_v5_hybrid.py
+          rm -f tools/bench_smul32_nn_carry_reuse.py
+          rm -rf build_source build_hybrid_new build_final build_hybrid_final build_hybrid build_hybrid_repeat
+
+      - name: Refresh package manifest
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+
+      - name: Commit promoted artifacts
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No promotion changes"
+          else
+            git commit -m "Promote Repose carry generalization to SMUL16 and SMUL32"
+            git push origin HEAD:opt/repose-carry-generalization
+          fi
