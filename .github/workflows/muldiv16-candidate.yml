@@ -1,0 +1,27 @@
+name: MULDIV16 candidate
+
+on:
+  push:
+    branches: [ feat/muldiv16-20261007 ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate canonical sources
+        run: python3 tools/generate_sources.py
+      - name: Build V1-V4 reference and alternate maps
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_muldiv16
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_muldiv16
+      - name: Build V5 reference and alternate maps
+        run: |
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+      - name: Validate and benchmark MULDIV16 candidates
+        run: python3 tools/validate_muldiv16_candidate.py
