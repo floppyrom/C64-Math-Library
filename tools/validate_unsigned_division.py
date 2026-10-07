@@ -6,7 +6,7 @@ entries combine structured edges, random inputs, and explicit divide-by-zero
 cases. Modulo aliases are exercised independently. URECIP16_Q16 is exhaustive.
 """
 from pathlib import Path
-import argparse,json,random,re,sys,time
+import argparse,json,random,re,sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
@@ -53,7 +53,7 @@ def recip(cpu,entry):
   total+=cy;mi=cy if mi is None else min(mi,cy);ma=cy if ma is None else max(ma,cy)
  return {'cases':65536,'errors':errs,'mean_cycles':total/65536,'min_cycles':mi,'max_cycles':ma,'mode':'exhaustive'}
 def main():
- ap=argparse.ArgumentParser();ap.add_argument('--profile',choices=PROFILES);ap.add_argument('--out',type=Path);a=ap.parse_args();runp=[a.profile] if a.profile else PROFILES;result={};t=time.time()
+ ap=argparse.ArgumentParser();ap.add_argument('--profile',choices=PROFILES);ap.add_argument('--out',type=Path);a=ap.parse_args();runp=[a.profile] if a.profile else PROFILES;result={}
  defs=[('MATH_UDIV8',8,8,8,8,0),('MATH_UDIV16',16,16,16,16,0),('MATH_UDIV24',24,24,24,24,0),('MATH_UDIV32_16',32,16,32,16,0),('MATH_UDIV32_32',32,32,32,32,0),('MATH_UDIV16_SHL8',16,16,24,16,8)]
  aliases=[('MATH_UMOD8',8,8,8,8,0),('MATH_UMOD16',16,16,16,16,0),('MATH_UMOD24',24,24,24,24,0),('MATH_UMOD32_16',32,16,32,16,0),('MATH_UMOD32_32',32,32,32,32,0)]
  for p in runp:
@@ -70,6 +70,6 @@ def main():
   pr['MATH_URECIP16_Q16']=recip(c,A['MATH_URECIP16_Q16'])
   if any(v['errors'] for v in pr.values()):raise AssertionError((p,pr))
   result[p]=pr;print(p,'PASS',sum(v['cases'] for v in pr.values()),'unsigned division/modulo calls',flush=True)
- out={'status':'PASS','profiles':result,'summary':{'profiles':len(runp),'machine_calls':sum(v['cases'] for pr in result.values() for v in pr.values()),'elapsed_seconds':round(time.time()-t,2)}}
+ out={'status':'PASS','profiles':result,'summary':{'profiles':len(runp),'machine_calls':sum(v['cases'] for pr in result.values() for v in pr.values())}}
  path=a.out or ROOT/'validation/review/UNSIGNED_DIVISION_VALIDATION.json';path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(out,indent=2)+'\n');print('UNSIGNED DIVISION PASS',out['summary']['machine_calls'],'calls')
 if __name__=='__main__':main()
