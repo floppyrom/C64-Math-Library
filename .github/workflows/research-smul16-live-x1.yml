@@ -1,0 +1,17 @@
+name: Research SMUL16 live X1 entry
+on:
+  push:
+    branches: [research/smul16-live-x1-entry-v1]
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python3 tools/bench_smul16_live_x1.py
