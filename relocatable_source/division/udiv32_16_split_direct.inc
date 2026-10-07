@@ -75,14 +75,18 @@ U3216_ENTRY:
         bne U3216_D8_DISPATCH
         jmp U3216_ZERO
 U3216_D8_DISPATCH:
-        ; Preserve the exceptionally cheap N<D case for one-byte N/D.
+        ; The compact 32/8 loop wins once the dividend genuinely spans more
+        ; than 16 bits.  For <=16-bit dividends the split/general path is
+        ; cheaper; retain the single-byte N<D early exit before falling back.
         lda U3216_N1
         ora U3216_N0
-        ora U3216_LN1
         bne U3216_D8_JUMP
+        lda U3216_LN1
+        bne U3216_GENERAL
         lda U3216_LN0
         cmp U3216_D0
         bcc U3216_D8_QZERO
+        jmp U3216_GENERAL
 U3216_D8_JUMP:
         jmp U3216_D8
 U3216_D8_QZERO:
