@@ -15,4 +15,6 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - name: Validate V2-V4 SDIV16 late-copy candidate
-        run: python3 tools/bench_sdiv16_late_copy_profiles.py
+        run: |
+          python3 tools/bench_sdiv16_late_copy_profiles.py
+          python3 tools/diag_sdiv16_promotion_v2.py
