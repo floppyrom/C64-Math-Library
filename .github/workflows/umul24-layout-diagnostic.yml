@@ -28,6 +28,16 @@ jobs:
           cfg=Path('relocatable_source/v2_pareto_fast/math_config_reference.inc')
           mem,labels,const=Assembler().assemble(preprocess(src,cfg))
           print('AFTER_GENERATE_MEM',hex(mem.get(0x5780,0)),hex(mem.get(0x5784,0)),'MIN',hex(min(mem)),'MAX',hex(max(mem)))
+          from assemble_sources import source_dependencies
+          cfgtext=cfg.read_text()
+          for dep in source_dependencies(src):
+              try:
+                  dm,dl,dc=Assembler().assemble(cfgtext+'\n'+dep.read_text())
+              except Exception as e:
+                  continue
+              hits=[a for a in range(0x577e,0x5785) if a in dm]
+              if hits:
+                  print('WRITER',dep.as_posix(),[(hex(a),hex(dm[a])) for a in hits])
           PY
           python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_source
           python3 - <<'PY'
