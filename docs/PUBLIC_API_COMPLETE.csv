@@ -25,6 +25,8 @@ signed,modulo/remainder,8,MATH_SMOD8,mod_s8_s8_s8,$3FD4,alias of native SDIV rem
 signed,modulo/remainder,16,MATH_SMOD16,mod_s16_s16_s16,$3FD7,alias of native SDIV remainder,mod_s16_s16_s16__math_smod16.asm
 signed,modulo/remainder,24,MATH_SMOD24,mod_s24_s24_s24,$3FDA,alias of native SDIV remainder,mod_s24_s24_s24__math_smod24.asm
 signed,modulo/remainder,32/16,MATH_SMOD32_16,mod_s32_s16_s16,$3FDD,alias of native SDIV remainder,mod_s32_s16_s16__math_smod32_16.asm
+unsigned,wide multiply/divide,16x16/16,MATH_UMULDIV16,muldiv_u16_u16_u16_u32_16,$32E0,full 32-bit product then unsigned divide,muldiv_u16_u16_u16_u32_16.asm
+signed,wide multiply/divide,16x16/16,MATH_SMULDIV16,muldiv_s16_s16_s16_s32_16,$32E3,full signed product; truncation toward zero,muldiv_s16_s16_s16_s32_16.asm
 unsigned,divide,32/32,MATH_UDIV32_32,div_u32_u32_u32_32,$5E00,native tiered 32/32,div_u32_u32_u32_32.asm
 unsigned,modulo,32/32,MATH_UMOD32_32,mod_u32_u32_u32,$5E03,alias of UDIV32_32; q+r returned,mod_u32_u32_u32__math_umod32_32.asm
 signed,divide,32/32,MATH_SDIV32_32,div_s32_s32_s32_32,$5E06,native signed magnitude + tiered core,div_s32_s32_s32_32.asm
