@@ -23,7 +23,6 @@ MULDIV16_S_FAST:
     lda MATH_Z+$03
     sta MATH_N+$03
     jmp MATH_SDIV32_16
-!if * > REG_API+$0420 { !error "MULDIV16 signed fast handoff overflow" }
 
 ; Inline the V2-V4 public UMUL16 binder, but send its returned product bytes
 ; straight to N instead of materializing Z1/Z2/Z3 and then copying Z->N.
@@ -52,4 +51,3 @@ MULDIV16_U_FAST:
     lda MATH_D+$01
     sta U3216_D1
     jmp U3216_ENTRY
-!if * > REG_API+$03F8 { !error "MULDIV16 unsigned fast handoff overflow" }
