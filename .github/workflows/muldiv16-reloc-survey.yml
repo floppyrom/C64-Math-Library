@@ -105,3 +105,10 @@ jobs:
               end=max(pc+SIZE[REV[mem[pc]][1]]-1 for pc in local)
               print(f'LOCAL_RANGE {start:04X}-{end:04X} span={end-start+1} reachable_starts={len(local)}')
           PY
+      - name: Validate reference and alternate source maps after relocation
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+          python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+          python3 tools/validate_source_build.py all --build build_source/reference --out /tmp/ref
+          python3 tools/validate_source_build.py all --build build_source/alternate --out /tmp/alt
