@@ -17,4 +17,5 @@ jobs:
           python3 tools/debug_divlat_trace.py
           python3 tools/find_division_common_holes.py
           python3 tools/debug_divlat_quick.py
+          python3 tools/research_udiv24_crossover.py
 # trace workflow active
