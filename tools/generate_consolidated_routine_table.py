@@ -162,6 +162,14 @@ def cycles_catalog():
             game[p]['MATH_'+name]=r
             if 'MATH_'+name not in cat[p]:
                 add_cycle(cat,p,'MATH_'+name,r['mean_cycles'],r['min_cycles'],r['max_cycles'],r['cases'],'current exhaustive/profile game-math benchmark',('alias '+r['alias_of']) if r.get('alias_of') else '')
+    # Current ISQRT32 benchmark on the same 4,130-case corpus as the published
+    # game-math table.  V4 may replace the resident refinement with the exact
+    # REU prefix accelerator without changing the public contract.
+    is32=json.loads((ROOT/'validation/review/ISQRT32_FAST_PERFORMANCE_4130.json').read_text())
+    for v in is32['profiles']:
+        add_cycle(cat,v['profile'],'MATH_ISQRT32',v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
+                  'current deterministic 4,130-case ISQRT32 benchmark')
+
     # Multiplication refresh: common deterministic public-entry corpus for all
     # entries whose implementation changed in the 2026-09-20 profile sweep.
     # This intentionally comes after the older game/record rows so the current
@@ -258,7 +266,7 @@ def provenance(profile,n):
     if n=='MATH_UMUL24':
         if profile in ('v1_balanced','v5_hybrid_lowzp'):
             return 'FAST24 private 24-ZP carry producer; direct z0-z2 public output'
-        return '24-ZP reverse_24zp_carry resident kernel; direct z0-z2 public output'
+        return '24-ZP reverse_24zp_carry resident kernel; direct z0-z3 public output with tail-written z4-z5'
     if n in ('MATH_UMUL32','MATH_UMUL32_READY'):
         if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
             return ('FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist '
@@ -295,14 +303,20 @@ def provenance(profile,n):
             return 'REU direct remainder plane retained; hybrid UDIV8 selected separately'
         return 'direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling'
     if n in ('MATH_UDIV16','MATH_UMOD16'):
+        if n=='MATH_UMOD16' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            return 'remainder-only q=0/q=1 front end with exact shared UDIV16 fallback'
         return ('balanced direct-public 16-bit divider' if profile=='v1_balanced' else
                 'fast direct-public 16-bit divider; V5 repacked into hybrid private RAM' if profile=='v5_hybrid_lowzp' else
                 'fast direct-public 16-bit divider')
     if n in ('MATH_UDIV24','MATH_UMOD24'):
+        if n=='MATH_UMOD24' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            return 'remainder-only q=0/q=1 front end with exact Repose UDIV24 fallback'
         return ('balanced direct-public 24-bit divider' if profile=='v1_balanced' else
                 'Repose q0-counter/direct-public UDIV24; V5 repacked hybrid copy' if profile=='v5_hybrid_lowzp' else
                 'Repose q0-counter/direct-public UDIV24')
     if n in ('MATH_UDIV32_32','MATH_UMOD32_32'):
+        if n=='MATH_UMOD32_32' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+            return 'remainder-only compare/q=0-equality front end with exact tiered UDIV32_32 fallback'
         return 'native tiered 32/32 divider with early q=0 gate'
     if n=='MATH_UDIV32_16' or n=='MATH_UMOD32_16':
         return ('V2 certified 32/16 divider imported into V5 hybrid private RAM' if profile=='v5_hybrid_lowzp' else
@@ -331,6 +345,8 @@ def provenance(profile,n):
         return 'fixed-point adapter into selected native signed 32/16 divider'
     if profile=='v5_hybrid_lowzp' and n in {'MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD8','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8'}:
         return 'V2 certified kernel imported into V5 hybrid private RAM'
+    if n=='MATH_ISQRT32' and profile=='v4_reu_16m':
+        return 'exact 4 MiB REU prefix accelerator plus restoring low-bit refinement'
     return 'profile-selected resident implementation'
 
 
