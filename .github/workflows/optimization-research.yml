@@ -24,10 +24,9 @@ jobs:
           python3 tools/generate_sources.py
           make reference
           make alternate
+          make hybrid
       - name: Validate remainder-only division family
-        run: |
-          python3 tools/validate_unsigned_division.py
-          python3 tools/validate_signed_division.py
+        run: python3 tools/validate_remainder_source_ab.py
       - name: Validate UMUL24 direct-output path
         run: python3 tools/validate_umul24_directout.py
       - name: Validate Turbo lifecycle
