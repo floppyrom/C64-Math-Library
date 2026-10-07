@@ -72,6 +72,7 @@ jobs:
           import json
           root=Path('.')
           sm=json.loads((root/'validation/review/SIGNED_MULTIPLY_VALIDATION.json').read_text())
+          mr=json.loads((root/'validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json').read_text())
           ps=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
           baseline={
             'v1_balanced':293.29840700022436,
@@ -80,11 +81,8 @@ jobs:
             'v4_reu_16m':252.66255328696434,
             'v5_hybrid_lowzp':292.9748709894548,
           }
-          baseline_shr={
-            p: None for p in ps
-          }
           canon={p:sm['profiles'][p]['SMUL16'] for p in ps}
-          shr={p:sm['profiles'][p]['SMUL16_SHR8'] for p in ps}
+          shr={p:mr['profiles'][p]['MATH_SMUL16_SHR8'] for p in ps}
           evidence={
             'status':'PASS',
             'date':'2026-10-07',
