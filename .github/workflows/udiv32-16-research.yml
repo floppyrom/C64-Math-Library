@@ -6,30 +6,31 @@ on:
 jobs:
   research:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Compile integrated reference and alternate maps
+      - name: Regenerate canonical sources
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          import sys
-          sys.path.insert(0,'tools')
-          import assemble_sources as A
-          from mini6502 import Assembler
-          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
-            for kind in ('reference','alternate'):
-              cfg=Path('relocatable_source')/p/f'math_config_{kind}.inc'
-              src=Path('relocatable_source')/p/'math_relocatable.asm'
-              mem,lab,const=Assembler().assemble(A.preprocess(src,cfg))
-              print(p,kind,'ENTRY',hex(lab['U3216_ENTRY']),'MAIN_END',hex(lab['U3216_MAIN_END']),'D8',hex(lab['U3216_D8']),'D8_END',hex(lab['U3216_D8_END']),'bytes',lab['U3216_D8_END']-lab['U3216_D8'])
-              if p=='v2_pareto_fast':
-                assert lab['U3216_D8_END'] <= (const['REG_KERNEL']+0x13ec)
-              else:
-                assert lab['U3216_D8_END'] <= (const['REG_KERNEL']+0x12de)
-          PY
-          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_u3216
-          python3 tools/assemble_sources.py --profile v3_reu_512k --config-kind reference --out build_u3216
-          python3 tools/assemble_sources.py --profile v4_reu_16m --config-kind reference --out build_u3216
+          python3 tools/generate_sources.py
+          grep -q 'udiv32_16_split_direct.inc' relocatable_source/v2_pareto_fast/math_relocatable.asm
+          grep -q 'udiv32_16_split_direct.inc' relocatable_source/v3_reu_512k/math_relocatable.asm
+          grep -q 'udiv32_16_split_direct.inc' relocatable_source/v4_reu_16m/math_relocatable.asm
+      - name: Build integrated reference and alternate maps
+        run: |
+          for kind in reference alternate; do
+            python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind "$kind" --out build_u3216
+            python3 tools/assemble_sources.py --profile v3_reu_512k --config-kind "$kind" --out build_u3216
+            python3 tools/assemble_sources.py --profile v4_reu_16m --config-kind "$kind" --out build_u3216
+          done
+      - name: Stable public API source-build validation
+        run: |
+          for kind in reference alternate; do
+            for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
+              python3 tools/validate_source_build.py "$p" --build "build_u3216/$kind" --out "validation/research/source_$kind"
+            done
+          done
+      - name: Paired UDIV32-16 performance and exactness
+        run: python3 tools/validate_udiv32_16_integrated.py
