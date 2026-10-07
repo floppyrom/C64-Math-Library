@@ -1,0 +1,20 @@
+name: Research SMUL24 inline signed dispatch
+on:
+  push:
+    branches:
+      - research/smul24-inline-dispatch-v1
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Benchmark inline SMUL24 dispatcher
+        run: python3 tools/bench_smul24_inline_dispatch.py
