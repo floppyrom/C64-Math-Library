@@ -51,9 +51,9 @@ random triples. Reference and alternate-map cycle vectors are identical.
 | V2 Pareto-Fast | **801.646373** | 301-1923 | **889.395956** | 83-1893 |
 | V3 REU 512K | **801.646373** | 301-1923 | **889.395956** | 83-1893 |
 | V4 REU 16M | **801.646373** | 301-1923 | **889.395956** | 83-1893 |
-| V5 Hybrid Low-ZP | 956.646373 | 456-2078 | 1378.300411 | 490-2271 |
+| V5 Hybrid Low-ZP | **834.646373** | **334-1956** | **916.200755** | **83-1920** |
 
-V1 and V5 use the compact compositional implementation: full public multiply,
+V1 keeps the compact compositional implementation: full public multiply,
 four-byte product handoff, then the selected mixed-width divider.
 
 V2-V4 use two OptiSearch-derived fusion ideas:
@@ -70,6 +70,24 @@ On the paired V2-V4 signed corpus, the fused signed path improves the composed
 baseline from **1133.038773 to 889.395956 cycles mean**, with maximum latency
 **2162 to 1893**, **zero slower cases**, and per-call savings of **64 to 988
 cycles**.
+
+V5 now applies the same producer-consumer principle under its stricter **31-byte
+normal-ZP contract**, without importing the high-ZP V2 multiplier. The hybrid
+builder reuses the qualified V1 **17-ZP UMUL16 record producer**, binds its
+quarter-square pointers in the overlapping low-ZP window, and feeds the returned
+`z0/X/A/Y` product bytes directly into the relocated private V2 UDIV32/16
+state. The signed path normalizes X/Y once, performs one unsigned magnitude
+multiply/divide, then fixes quotient and remainder signs. Divisor magnitude is
+bound only after multiplication because the divider's D slots overlap the
+producer pointer image.
+
+Against the previous V5 composition, unsigned mean latency improves
+**956.646373 -> 834.646373 cycles** (456-2078 -> 334-1956), while signed
+improves **1378.300411 -> 916.200755 cycles** (490-2271 -> 83-1920). The
+reference and alternate maps have identical cycle vectors. The remaining V5
+gap to V2-V4 is primarily the cost of re-binding the overlapping low-ZP
+quarter-square pointers on each call; retaining those bindings across arbitrary
+public calls would violate V5's shared-scratch assumptions.
 
 The fused routines add no persistent stack reservation and reuse the existing
 profile multiplication/division scratch classes. The V2-V4 signed fusion lives
