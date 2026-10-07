@@ -54,3 +54,5 @@ jobs:
                   if sc!=ref[1]: raise SystemExit('V5 signed relocation cycle mismatch')
           print('V5_MULDIV16_EXPERIMENT_PASS',len(uv),len(sv),flush=True)
           PY
+      - name: Validate V5 hybrid regression
+        run: python3 tools/validate_hybrid.py --random-per-family 500 --mixed 500
