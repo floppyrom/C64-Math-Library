@@ -48,7 +48,7 @@ V2_REF_ZP_MAIN = 0x02
 V2_REF_MATH_IO = 0xC000
 
 PUBLIC_WRAPPERS = {
-    'MATH_UDIV32_16': (0x31B0, 0x31EF),
+    'MATH_UDIV32_16': (0x31B0, 0x31FD),
     'MATH_UMOD8': (0x3200, 0x3210),
 }
 
@@ -137,6 +137,11 @@ def map_abs(target: int, vals: dict[str, int], hbase: int) -> int:
     # The UDIV24 latency escape helper is only 34 bytes and fits after SINCOS.
     if DIVLAT_HELPER_SRC[0] <= target <= DIVLAT_HELPER_SRC[1]:
         return hbase + DIVLAT_HELPER_DST_OFF + (target - DIVLAT_HELPER_SRC[0])
+    # Stable public API references follow the selected V1-style map.  This is
+    # now required because the split-tail core exits through an epilogue inside
+    # the UDIV32/16 public slot.
+    if 0x3000 <= target <= 0x3FFF:
+        return vals['REG_API'] + (target - 0x3000)
     # Public I/O follows the selected V1-style map.
     if V2_REF_MATH_IO <= target <= V2_REF_MATH_IO + 0x1F:
         return vals['MATH_IO'] + (target - V2_REF_MATH_IO)
