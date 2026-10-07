@@ -65,7 +65,7 @@ def validate_config(profile,v):
  if profile in ('v3_reu_512k','v4_reu_16m'):
   t16s=v['TURBO16_ZP_BASE'];t16e=t16s+121
   t32s=v['TURBO32_ZP_BASE'];t32e=t32s+134
-  if not (2<=t16s<=t16e<=0xff):raise ValueError(f'TURBO16_ZP_BASE invalid: {hx(t16s,2)}-{hx(t16e,2)}')
+  if not (2<=t16s<=0x85 and t16e<=0xfe):raise ValueError(f'TURBO16_ZP_BASE invalid/slow-edge: {hx(t16s,2)}-{hx(t16e,2)}; supported direct-output range is $02-$85')
   if not (2<=t32s<=t32e<=0xff):raise ValueError(f'TURBO32_ZP_BASE invalid: {hx(t32s,2)}-{hx(t32e,2)}')
   # Overlay ranges may overlap normal scratch and each other: BEGIN/END makes
   # them explicit mutually exclusive ownership modes.  $00-$01 remain forbidden.
