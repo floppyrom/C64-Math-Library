@@ -1,4 +1,5 @@
 name: MULDIV16 V5 sign-flow experiment
+# Focused disposable proof branch; PR #36 remains unchanged.
 on:
   push:
     branches: [ experiment/muldiv16-v5-signflow-20261007 ]
