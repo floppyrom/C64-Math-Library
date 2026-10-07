@@ -48,6 +48,30 @@ jobs:
               print(p,'patched',hex(lo),hex(hi-1))
           PY
 
+      - name: Restore known-good V2 SDIV32_32 helpers
+        run: |
+          git show 480d679f0a57d502246803f806f8f01fde35f6e9:v2_pareto_fast/resident/signed/division/native/sdiv32_32_native.asm > /tmp/sdiv32_32_pre_pr22.asm
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          prg=Path('v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg')
+          b=bytearray(prg.read_bytes())
+          load=b[0]|b[1]<<8
+          src=Path('/tmp/sdiv32_32_pre_pr22.asm').read_text()
+          pat=re.compile(r'@([0-9A-Fa-f]{4})\s+([0-9A-Fa-f]{2}(?:\s+[0-9A-Fa-f]{2})*)')
+          ins=0; nbytes=0
+          for m in pat.finditer(src):
+              addr=int(m.group(1),16)
+              vals=bytes(int(x,16) for x in m.group(2).split())
+              off=2+addr-load
+              b[off:off+len(vals)]=vals
+              ins+=1; nbytes+=len(vals)
+          if ins < 100:
+              raise SystemExit(f'unexpectedly small SDIV32_32 restore: {ins} instructions')
+          prg.write_bytes(b)
+          print('restored V2 SDIV32_32',ins,'instructions',nbytes,'bytes from pre-PR22 known-good source')
+          PY
+
       - name: Regenerate canonical and published sources
         run: |
           python3 tools/generate_sources.py
@@ -112,6 +136,13 @@ jobs:
               'research_delta_range_cycles':[-23,5],
               'research_errors':0,
             },
+            'collateral_repair':{
+              'profile':'v2_pareto_fast',
+              'routine':'MATH_SDIV32_32',
+              'issue':'PR #22 source regeneration had collapsed the divide-by-zero and unsigned magnitude helper islands to BRK/RTS stubs.',
+              'repair_source_commit':'480d679f0a57d502246803f806f8f01fde35f6e9',
+              'repair_method':'restore only instruction bytes annotated by the known-good published native source before regenerating canonical source',
+            },
             'validation':{
               'signed_division_calls':dv['summary']['machine_calls'],
               'deterministic_rebuild':'PASS',
@@ -142,6 +173,7 @@ jobs:
             '- Positive/positive q=1 cases now subtract directly from preserved public inputs and avoid materializing four private magnitude bytes; q>=2 pays the copy only when needed.\n'
             f'- Canonical V1/V2/V3/V4/V5 SDIV16 means are **{summary} cycles**.\n'
             '- Research PP-focused corpora improve by about 4.7-4.8 cycles; V2 remains exactly packed against the unsigned engine with no overlap.\n'
+            '- Restored the V2 SDIV32_32 helper islands accidentally collapsed during the prior source-regeneration cycle; the repair is taken instruction-for-instruction from the last known-good pre-PR-22 native mirror.\n'
             '- ABI, ZP use, persistent stack and tables are unchanged; signed-division, layout, publication, deterministic-rebuild and Turbo gates pass.\n\n')
           if 'SDIV16 deferred q>=2 magnitude copy' not in t: p.write_text(entry+t)
 
@@ -150,7 +182,8 @@ jobs:
             '2026-10-07 SDIV16 DEFERRED Q>=2 MAGNITUDE COPY\n'
             '- V2-V4 positive/positive q=1 path reuses stable public inputs and defers private magnitude copies until q>=2.\n'
             f'- Canonical V1/V2/V3/V4/V5 means: {summary}.\n'
-            '- V2 fixed signed/unsigned boundary remains exact; validation and relocation gates pass.\n\n')
+            '- V2 fixed signed/unsigned boundary remains exact; the latent V2 SDIV32_32 helper regression is also restored from the pre-PR-22 known-good implementation.\n'
+            '- Validation and relocation gates pass.\n\n')
           if 'SDIV16 DEFERRED Q>=2 MAGNITUDE COPY' not in t: p.write_text(entry+t)
           PY
 
@@ -193,6 +226,7 @@ jobs:
           rm -f .github/workflows/research-sdiv16-late-copy-promotion.yml
           rm -f .github/workflows/promote-sdiv16-late-copy.yml
           rm -f tools/bench_sdiv16_late_copy_profiles.py
+          rm -f tools/diag_sdiv16_promotion_v2.py
           rm -rf build_source build_final
 
       - name: Refresh package manifest
