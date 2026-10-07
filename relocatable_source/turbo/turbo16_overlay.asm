@@ -36,7 +36,9 @@ _sqr_lo_0:
         lda sqr_lo,y
 _neg_lo_0:
         adc neg_sqr_lo,y
-        sta+1 z0
+        ; Public Turbo16 mode owns the stable result block as well as ZP.
+        ; Materialize z0 immediately so the CALL wrapper needs no result copy.
+        sta MATH_IO+$08
 _sqr_hi_0:
         lda sqr_hi,y
 _neg_hi_0:
@@ -79,14 +81,17 @@ _p11_tail:
 _z1_part2:
         adc #0
         tax
+        stx MATH_IO+$09
 _z2_part1:
         lda #0
 _z2_part2:
         adc #0
-        bcs _final_carry
-        rts
-_final_carry:
+        sta MATH_IO+$0A
+        bcc _direct_no_carry
         iny
+_direct_no_carry:
+        sty MATH_IO+$0B
+        clc
         rts
 
 _p10_carry:
@@ -105,4 +110,3 @@ _p11_carry:
         adc (_sqr_hi_1+1),y
         bcc _p11_tail              ; provably taken; one byte below JMP
 
-z0:    !byte 0
