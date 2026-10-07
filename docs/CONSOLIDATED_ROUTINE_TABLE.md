@@ -62,7 +62,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 39.000000 | 39 | 39 | 25 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 47.462814 | 33 | 50 | 97 | 0 | — | 0 | compact_opt signed-log kernel; two table pages; exact parity with prior compact outputs | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 219.740570 | 205 | 258 | 277 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | current deterministic 4,130-case ISQRT32 benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 84 | 302 | 881 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
@@ -81,7 +81,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 78.494614 | 77 | 80 | 54 | 5 | $39-$3D | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | canonical harness |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 216.980037 | 205 | 240 | 165 | 16 | $21-$30 | 0 | 16-ZP record-derived fused quarter-square core; A=x1 public entry and direct Z0 output | 2026-10-06 UMUL16 direct-output validation |
-| `MATH_UMUL24` | `mul_u24_u24_u48` | 429.555502 | 400 | 485 | 357 | 24 | $21-$38 | 0 | 24-ZP reverse_24zp_carry resident kernel; direct z0-z2 public output | 2026-10-06 UMUL24 direct-output validation |
+| `MATH_UMUL24` | `mul_u24_u24_u48` | 421.555502 | 392 | 477 | 360 | 24 | $21-$38 | 0 | 24-ZP reverse_24zp_carry resident kernel; direct z0-z3 public output with tail-written z4-z5 | 2026-10-06 UMUL24 direct-output validation |
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 690.235367 | 630 | 809 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
@@ -94,8 +94,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 183.660846 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 753.994530 | 175 | 1880 | 1890 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD8` | `mod_u8_u8_u8` | 67.284844 | 51 | 495 | 131 | 2 | $10-$11 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD16` | `mod_u16_u16_u16` | 203.033484 | 41 | 1076 | 1469 | 0 | — | 0 | fast direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD24` | `mod_u24_u24_u24` | 300.949131 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD16` | `mod_u16_u16_u16` | 195.951706 | 32 | 1075 | 1446 | 0 | — | 0 | remainder-only q=0/q=1 front end with exact shared UDIV16 fallback | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD24` | `mod_u24_u24_u24` | 293.183516 | 42 | 3193 | 1486 | 3 | $10-$12 | 0 | remainder-only q=0/q=1 front end with exact Repose UDIV24 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 792.160335 | 178 | 1883 | 1893 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 26 | 600 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | 168.393021 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
@@ -106,7 +106,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 337.075090 | 57 | 3339 | 1570 | 9 | $10-$18 | 0 | fast direct-output native signed 24-bit divider | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 861.849097 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 401.556389 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 524.881520 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 515.783001 | 72 | 2285 | 841 | 8 | $53-$5A | 0 | remainder-only compare/q=0-equality front end with exact tiered UDIV32_32 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 553.098146 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | 746.032491 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 243.804139 | 232 | 267 | 181 | 16 | $21-$30 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
@@ -121,7 +121,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 43.970627 | 31 | 45 | 88 | 0 | — | 0 | sum_fast carry-clearing signed-log kernel; four table pages; exact parity with prior fast outputs | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 205.760590 | 193 | 246 | 259 | 1 | $66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1198.619613 | 1052 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1198.619613 | 1052 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | current deterministic 4,130-case ISQRT32 benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.570038 | 64 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.570038 | 70 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 84 | 302 | 881 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
@@ -140,7 +140,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 69.000000 |  |  | 49 | 0 | — | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | REU transport model |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 216.980037 | 205 | 240 | 165 | 16 | $21-$30 | 0 | 16-ZP record-derived fused quarter-square core; A=x1 public entry and direct Z0 output | 2026-10-06 UMUL16 direct-output validation |
-| `MATH_UMUL24` | `mul_u24_u24_u48` | 429.555502 | 400 | 485 | 357 | 24 | $21-$38 | 0 | 24-ZP reverse_24zp_carry resident kernel; direct z0-z2 public output | 2026-10-06 UMUL24 direct-output validation |
+| `MATH_UMUL24` | `mul_u24_u24_u48` | 421.555502 | 392 | 477 | 360 | 24 | $21-$38 | 0 | 24-ZP reverse_24zp_carry resident kernel; direct z0-z3 public output with tail-written z4-z5 | 2026-10-06 UMUL24 direct-output validation |
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 690.235367 | 630 | 809 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
@@ -153,8 +153,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 191.745424 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 755.944246 | 175 | 1880 | 1890 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD8` | `mod_u8_u8_u8` | 49.712110 | 32 | 50 | 42 | 0 | — | 0 | REU direct remainder plane retained; hybrid UDIV8 selected separately | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD16` | `mod_u16_u16_u16` | 203.396008 | 41 | 1076 | 1469 | 0 | — | 0 | fast direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD24` | `mod_u24_u24_u24` | 302.914359 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD16` | `mod_u16_u16_u16` | 196.414681 | 32 | 1075 | 1446 | 0 | — | 0 | remainder-only q=0/q=1 front end with exact shared UDIV16 fallback | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD24` | `mod_u24_u24_u24` | 294.880876 | 42 | 3193 | 1486 | 3 | $10-$12 | 0 | remainder-only q=0/q=1 front end with exact Repose UDIV24 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 789.650998 | 178 | 1883 | 1893 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 26 | 600 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | 170.582116 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
@@ -165,7 +165,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 329.971841 | 68 | 3314 | 1894 | 9 | $10-$18 | 0 | Repose-derived direct-output native signed 24-bit divider with private magnitude engine | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 863.249097 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 395.884576 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 518.802962 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 509.623310 | 72 | 2285 | 841 | 8 | $53-$5A | 0 | remainder-only compare/q=0-equality front end with exact tiered UDIV32_32 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 552.481381 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | 742.016606 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 243.804139 | 232 | 267 | 181 | 16 | $21-$30 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
@@ -180,7 +180,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 43.970627 | 31 | 45 | 88 | 0 | — | 0 | sum_fast carry-clearing signed-log kernel; four table pages; exact parity with prior fast outputs | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 204.992523 | 192 | 246 | 259 | 1 | $66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1197.859322 | 1051 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1197.859322 | 1051 | 1428 | 440 | 10 | $54-$5C;$66 | 0 | profile-selected resident implementation | current deterministic 4,130-case ISQRT32 benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 156.661198 | 84 | 298 | 849 | 4 | $1A-$1D | 0 | quadrant-specific paths; existing REU ratio-index lookup | 2026-09-21 normalize profile-parity deterministic corpus |
@@ -192,11 +192,11 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SEEK16_STEP` | `seek_u16_u8_step` | 118.277360 | 102 | 150 | 282 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 85 | 132 | 152 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 77 | 121 | 143 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
-| `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 211.544111 | 199 | 236 | 148 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 300.000000 | 300 | 300 | 41 | 122 | $3E-$B7 | 0 | 122-ZP direct-output Turbo16 overlay | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 197.046257 | 185 | 220 | 248 | 122 | $3E-$B7 | 0 | 122-ZP direct-output Turbo16 overlay | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 345.000000 | 345 | 345 | 73 | 122 | $3E-$B7 | 0 | 122-ZP direct-output Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_BEGIN` | `mul_u32_u32_u64_turbo_begin` | 326.000000 | 326 | 326 | 41 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 684.185219 | 621 | 796 | 352 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 676.185219 | 613 | 788 | 357 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_END` | `mul_u32_u32_u64_turbo_end` | 371.000000 | 371 | 371 | 73 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 
 ## v4_reu_16m
@@ -205,7 +205,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 69.000000 |  |  | 49 | 0 | — | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | unchanged V3 path/evidence |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 216.980037 | 205 | 240 | 165 | 16 | $21-$30 | 0 | 16-ZP record-derived fused quarter-square core; A=x1 public entry and direct Z0 output | 2026-10-06 UMUL16 direct-output validation |
-| `MATH_UMUL24` | `mul_u24_u24_u48` | 429.555502 | 400 | 485 | 357 | 24 | $21-$38 | 0 | 24-ZP reverse_24zp_carry resident kernel; direct z0-z2 public output | 2026-10-06 UMUL24 direct-output validation |
+| `MATH_UMUL24` | `mul_u24_u24_u48` | 421.555502 | 392 | 477 | 360 | 24 | $21-$38 | 0 | 24-ZP reverse_24zp_carry resident kernel; direct z0-z3 public output with tail-written z4-z5 | 2026-10-06 UMUL24 direct-output validation |
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 690.235367 | 630 | 809 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29-derived private q0 unsigned producer; all six pointer pairs persist in profile-owned ZP holes, eliminating the ordinary mixed-call rebind | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
@@ -218,8 +218,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 187.307174 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 757.480328 | 175 | 1880 | 1890 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD8` | `mod_u8_u8_u8` | 49.725819 | 32 | 50 | 42 | 0 | — | 0 | REU direct remainder plane retained; hybrid UDIV8 selected separately | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD16` | `mod_u16_u16_u16` | 202.557630 | 41 | 1076 | 1469 | 0 | — | 0 | fast direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD24` | `mod_u24_u24_u24` | 301.613007 | 56 | 3188 | 1468 | 3 | $10-$12 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD16` | `mod_u16_u16_u16` | 195.529942 | 32 | 1075 | 1446 | 0 | — | 0 | remainder-only q=0/q=1 front end with exact shared UDIV16 fallback | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD24` | `mod_u24_u24_u24` | 293.535093 | 42 | 3193 | 1486 | 3 | $10-$12 | 0 | remainder-only q=0/q=1 front end with exact Repose UDIV24 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 789.841597 | 178 | 1883 | 1893 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 89.009821 | 26 | 598 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | 168.745038 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
@@ -230,7 +230,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 326.184838 | 68 | 3314 | 1894 | 9 | $10-$18 | 0 | Repose-derived direct-output native signed 24-bit divider with private magnitude engine | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 861.002888 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 404.408910 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 516.780425 | 90 | 2285 | 869 | 8 | $53-$5A | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 507.496458 | 72 | 2285 | 841 | 8 | $53-$5A | 0 | remainder-only compare/q=0-equality front end with exact tiered UDIV32_32 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 552.840042 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | 754.883032 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 243.804139 | 232 | 267 | 181 | 16 | $21-$30 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
@@ -245,7 +245,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 48.000000 | 48 | 48 | 33 | 0 | — | 0 | exact signed-byte phase plane in REU bank 8 | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 54.000000 | 54 | 54 | 38 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1046.622518 | 899 | 1237 | 219 | 9 | $54-$5C | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 917.317433 | 806 | 1067 | 236 | 8 | $54-$5B | 0 | exact 4 MiB REU prefix accelerator plus restoring low-bit refinement | current deterministic 4,130-case ISQRT32 benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 156.661198 | 84 | 298 | 849 | 4 | $1A-$1D | 0 | quadrant-specific paths; existing REU ratio-index lookup | 2026-09-21 normalize profile-parity deterministic corpus |
@@ -257,11 +257,11 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SEEK16_STEP` | `seek_u16_u8_step` | 118.277360 | 102 | 150 | 282 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK16_STEP_INT` | `seek_u16_u8_step_int` | 103.654782 | 85 | 132 | 152 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK16_STEP1` | `seek_u16_u8_step1` | 98.183384 | 77 | 121 | 143 | 0 | — | 0 | NMOS DCP distance countdown; X-indexed per-slot state; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
-| `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 282.000000 | 282 | 282 | 41 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 211.544111 | 199 | 236 | 148 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 327.000000 | 327 | 327 | 73 | 113 | $3E-$AE | 0 | 113-ZP Turbo16 overlay | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL16_BEGIN` | `mul_u16_u16_u32_turbo_begin` | 300.000000 | 300 | 300 | 41 | 122 | $3E-$B7 | 0 | 122-ZP direct-output Turbo16 overlay | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL16` | `mul_u16_u16_u32_turbo` | 197.046257 | 185 | 220 | 248 | 122 | $3E-$B7 | 0 | 122-ZP direct-output Turbo16 overlay | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL16_END` | `mul_u16_u16_u32_turbo_end` | 345.000000 | 345 | 345 | 73 | 122 | $3E-$B7 | 0 | 122-ZP direct-output Turbo16 overlay | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_BEGIN` | `mul_u32_u32_u64_turbo_begin` | 326.000000 | 326 | 326 | 41 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
-| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 684.185219 | 621 | 796 | 352 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
+| `MATH_REU_UMUL32` | `mul_u32_u32_u64_turbo` | 676.185219 | 613 | 788 | 357 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 | `MATH_REU_UMUL32_END` | `mul_u32_u32_u64_turbo_end` | 371.000000 | 371 | 371 | 73 | 135 | $0A-$90 | 0 | 135-ZP stack-free ram135 Turbo32 record compromise | Turbo relocation canonical reference corpus |
 | `MATH_REU_QS16_BEGIN` | `mul_u16_u16_u32_qs16_begin` | 18.000000 | 18 | 18 | 11 | 16 | $10-$1F | 0 | V4 16MiB QS16 mode | V4 QS16 source/exact timing classes |
 | `MATH_REU_QS16` | `mul_u16_u16_u32_qs16` | 281.541031 | 279 | 293 | 209 | 16 | $10-$1F | 0 | V4 16MiB QS16 mode | V4 QS16 source/exact timing classes |
@@ -313,7 +313,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; current exhaustive/profile game-math benchmark |
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 43.970627 | 31 | 45 | 88 | 0 | — | 0 | V2 sum_fast kernel imported into V5 with four private table pages | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 219.740570 | 205 | 258 | 277 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1193 | 1656 | 496 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current deterministic 4,130-case ISQRT32 benchmark |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 84 | 302 | 881 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
@@ -330,6 +330,6 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 
 - V1/V5 keep the 31-byte resident ZP contract. Their upgraded UMUL16/UMUL24 reuse that window and preserve `UMUL32_READY` state.
 - V2-V4 use larger profile-selected ZP regions for some native signed/division kernels; per-routine ZP rows show the actual touched/owned set.
-- V3/V4 Turbo16 owns 113 ZP bytes while active. Turbo32 now owns 135 ZP bytes (stack-free `ram135` compromise), down from the old 241-byte overlay.
+- V3/V4 Turbo16 owns 122 ZP bytes while active. Turbo32 now owns 135 ZP bytes (stack-free `ram135` compromise), down from the old 241-byte overlay.
 - V4 QS16 owns `$10-$1F` (16 ZP bytes) while active.
 - The PRG payload span includes address gaps in the load image and is not “occupied code bytes”. Use `SEGMENTS.csv` for physical segment placement and this table for per-entry reachable executable size.

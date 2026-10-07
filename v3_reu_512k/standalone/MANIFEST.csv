@@ -1,7 +1,7 @@
 legacy_api,canonical_name,file,alias_of,entry_address,reachable_instructions
 MATH_UMUL8,mul_u8_u8_u16,mul_u8_u8_u16.asm,,$3000,19
 MATH_UMUL16,mul_u16_u16_u32,mul_u16_u16_u32.asm,,$3020,83
-MATH_UMUL24,mul_u24_u24_u48,mul_u24_u24_u48.asm,,$3060,173
+MATH_UMUL24,mul_u24_u24_u48,mul_u24_u24_u48.asm,,$3060,172
 MATH_UMUL32,mul_u32_u32_u64,mul_u32_u32_u64.asm,,$30B0,151
 MATH_UMUL32_READY,mul_u32_u32_u64_ready,mul_u32_u32_u64_ready.asm,,$30C0,151
 MATH_SMUL8,mul_s8_s8_s16,mul_s8_s8_s16.asm,,$3B80,19
@@ -14,8 +14,8 @@ MATH_UDIV16,div_u16_u16_u16_16,div_u16_u16_u16_16.asm,,$3140,626
 MATH_UDIV24,div_u24_u24_u24_24,div_u24_u24_u24_24.asm,,$3170,583
 MATH_UDIV32_16,div_u32_u16_u32_16,div_u32_u16_u32_16.asm,,$31B0,1043
 MATH_UMOD8,mod_u8_u8_u8,mod_u8_u8_u8.asm,,$3200,18
-MATH_UMOD16,mod_u16_u16_u16,mod_u16_u16_u16__math_umod16.asm,MATH_UDIV16,$3220,626
-MATH_UMOD24,mod_u24_u24_u24,mod_u24_u24_u24__math_umod24.asm,MATH_UDIV24,$3223,583
+MATH_UMOD16,mod_u16_u16_u16,mod_u16_u16_u16__math_umod16.asm,MATH_UDIV16,$3220,617
+MATH_UMOD24,mod_u24_u24_u24,mod_u24_u24_u24__math_umod24.asm,MATH_UDIV24,$3223,590
 MATH_UMOD32_16,mod_u32_u16_u16,mod_u32_u16_u16__math_umod32_16.asm,MATH_UDIV32_16,$3226,1044
 MATH_SDIV8,div_s8_s8_s8_8,div_s8_s8_s8_8.asm,,$3CA0,235
 MATH_SDIV16,div_s16_s16_s16_16,div_s16_s16_s16_16.asm,,$3D20,802
@@ -26,7 +26,7 @@ MATH_SMOD16,mod_s16_s16_s16,mod_s16_s16_s16__math_smod16.asm,MATH_SDIV16,$3FD7,8
 MATH_SMOD24,mod_s24_s24_s24,mod_s24_s24_s24__math_smod24.asm,MATH_SDIV24,$3FDA,819
 MATH_SMOD32_16,mod_s32_s16_s16,mod_s32_s16_s16__math_smod32_16.asm,MATH_SDIV32_16,$3FDD,1155
 MATH_UDIV32_32,div_u32_u32_u32_32,div_u32_u32_u32_32.asm,,$5E00,362
-MATH_UMOD32_32,mod_u32_u32_u32,mod_u32_u32_u32__math_umod32_32.asm,MATH_UDIV32_32,$5E03,362
+MATH_UMOD32_32,mod_u32_u32_u32,mod_u32_u32_u32__math_umod32_32.asm,MATH_UDIV32_32,$5E03,352
 MATH_SDIV32_32,div_s32_s32_s32_32,div_s32_s32_s32_32.asm,,$5E06,380
 MATH_SMOD32_32,mod_s32_s32_s32,mod_s32_s32_s32__math_smod32_32.asm,MATH_SDIV32_32,$5E09,380
 MATH_UMUL16_SHR8,mul_u16_u16_u24_shr8,mul_u16_u16_u24_shr8.asm,,$5E0C,89
@@ -54,8 +54,8 @@ MATH_SEEK16_STEP,seek_u16_u8_step,seek_u16_u8_step.asm,,$5E4B,109
 MATH_SEEK16_STEP_INT,seek_u16_u8_step_int,seek_u16_u8_step_int.asm,,$5E4E,59
 MATH_SEEK16_STEP1,seek_u16_u8_step1,seek_u16_u8_step1.asm,,$5E51,55
 MATH_REU_UMUL16_BEGIN,mul_u16_u16_u32_turbo_begin,mul_u16_u16_u32_turbo_begin.asm,,$3800,17
-MATH_REU_UMUL16,mul_u16_u16_u32_turbo,mul_u16_u16_u32_turbo.asm,,$3840,73
+MATH_REU_UMUL16,mul_u16_u16_u32_turbo,mul_u16_u16_u32_turbo.asm,,$3840,133
 MATH_REU_UMUL16_END,mul_u16_u16_u32_turbo_end,mul_u16_u16_u32_turbo_end.asm,,$3880,30
 MATH_REU_UMUL32_BEGIN,mul_u32_u32_u64_turbo_begin,mul_u32_u32_u64_turbo_begin.asm,,$38C0,17
-MATH_REU_UMUL32,mul_u32_u32_u64_turbo,mul_u32_u32_u64_turbo.asm,,$3900,168
+MATH_REU_UMUL32,mul_u32_u32_u64_turbo,mul_u32_u32_u64_turbo.asm,,$3900,167
 MATH_REU_UMUL32_END,mul_u32_u32_u64_turbo_end,mul_u32_u32_u64_turbo_end.asm,,$3960,30

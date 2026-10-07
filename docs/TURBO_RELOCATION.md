@@ -6,7 +6,7 @@ V3 and V4 provide two high-throughput REU batch modes. They remain lifecycle API
 
 | Entry | Reference offset from `REG_API` | Purpose |
 |---|---:|---|
-| `MATH_REU_UMUL16_BEGIN` | `$0800` | SWAP/install 113-byte Turbo16 overlay |
+| `MATH_REU_UMUL16_BEGIN` | `$0800` | SWAP/install 122-byte Turbo16 overlay |
 | `MATH_REU_UMUL16` | `$0840` | one 16x16->32 product |
 | `MATH_REU_UMUL16_END` | `$0880` | restore caller ZP / save modified overlay |
 | `MATH_REU_UMUL32_BEGIN` | `$08C0` | SWAP/install 135-byte stack-free Turbo32 overlay |
@@ -17,7 +17,7 @@ V3 and V4 provide two high-throughput REU batch modes. They remain lifecycle API
 
 | Symbol | Reference | Alternate proof | Size/constraint |
 |---|---:|---:|---|
-| `TURBO16_ZP_BASE` | `$3E` | `$40` | 113 bytes; must fit `$02-$FF` |
+| `TURBO16_ZP_BASE` | `$3E` | `$40` | 122 bytes; supported zero-penalty base `$02-$85` |
 | `TURBO32_ZP_BASE` | `$0A` | `$06` | 135 bytes; therefore base `$02-$79` |
 | `REU_TURBO16_BANK` V3 | `$04` | `$00` | bank 0..7, unique active role |
 | `REU_TURBO32_BANK` V3 | `$05` | `$01` | bank 0..7, unique active role |
@@ -40,4 +40,4 @@ ACME 0.97 independently assembles all Turbo overlay sources for both maps and pr
 
 ## Boundary proof
 
-`TURBO_BOUNDARY_SWEEP.json` additionally executes both overlay families at the supported ZP-origin endpoints: Turbo16 `$02` and `$8F`, Turbo32 `$02` and `$79`. It also exercises V3 Turbo storage at banks `$06/$07` and V4 at `$FE/$FF`. The sweep adds **3,556 exact product calls** and preserves the same cycle vectors between minimum and maximum origins. ACME 0.97 independently reproduces the endpoint overlay bytes, including the `$8F` Turbo16 layout.
+`TURBO_BOUNDARY_SWEEP.json` additionally executes both overlay families at the supported ZP-origin endpoints: Turbo16 `$02` and `$85`, Turbo32 `$02` and `$79`. It also exercises V3 Turbo storage at banks `$06/$07` and V4 at `$FE/$FF`. The sweep adds **3,556 exact product calls** and preserves the same cycle vectors between minimum and maximum origins. ACME 0.97 independently reproduces the endpoint overlay bytes, including the `$85` Turbo16 layout.

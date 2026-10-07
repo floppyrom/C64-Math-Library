@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from __future__ import annotations
 from pathlib import Path
-import argparse,re,json,hashlib,sys
+import argparse,re,json,hashlib,sys,math
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import Assembler
@@ -15,7 +15,10 @@ def parse_config(path):
   m=re.fullmatch(r'([A-Z][A-Z0-9_]*)\s*=\s*(\$[0-9A-Fa-f]+|0x[0-9A-Fa-f]+|\d+)',s)
   if not m:raise ValueError(f'unsupported config line: {raw}')
   v=m.group(2);vals[m.group(1)]=int(v[1:],16) if v.startswith('$') else int(v,0)
- miss=[x for x in REQ if x not in vals]
+ # V4's 4 MiB ISQRT32 prefix range is an optional extension to the
+ # common config schema. Legacy/V1/V2/V3/V5/custom maps may omit it safely.
+ vals.setdefault('REU_ISQRT32_PREFIX_BASE_BANK',0x40)
+ miss=[x for x in REQ if x not in vals and x!='REU_ISQRT32_PREFIX_BASE_BANK']
  if miss:raise ValueError(f'missing config symbols: {miss}')
  return vals
 
@@ -60,9 +63,9 @@ def validate_config(profile,v):
  for n,s,e,_ in main:
   if max(s,0xdf00)<=min(e,0xdfff):raise ValueError(f'{n} overlaps REU/C64 I/O page $DF00-$DFFF')
  if profile in ('v3_reu_512k','v4_reu_16m'):
-  t16s=v['TURBO16_ZP_BASE'];t16e=t16s+112
+  t16s=v['TURBO16_ZP_BASE'];t16e=t16s+121
   t32s=v['TURBO32_ZP_BASE'];t32e=t32s+134
-  if not (2<=t16s<=t16e<=0xff):raise ValueError(f'TURBO16_ZP_BASE invalid: {hx(t16s,2)}-{hx(t16e,2)}')
+  if not (2<=t16s<=0x85 and t16e<=0xfe):raise ValueError(f'TURBO16_ZP_BASE invalid/slow-edge: {hx(t16s,2)}-{hx(t16e,2)}; supported direct-output range is $02-$85')
   if not (2<=t32s<=t32e<=0xff):raise ValueError(f'TURBO32_ZP_BASE invalid: {hx(t32s,2)}-{hx(t32e,2)}')
   # Overlay ranges may overlap normal scratch and each other: BEGIN/END makes
   # them explicit mutually exclusive ownership modes.  $00-$01 remain forbidden.
@@ -84,11 +87,18 @@ def validate_reu_banks(profile,v):
   qset=set(range(q,q+8))
   for k in singles:
    if v[k] in qset: raise ValueError(f'{k} collides with QS16 bank range')
+  p=v['REU_ISQRT32_PREFIX_BASE_BANK']
+  if p & 0x3f: raise ValueError('REU_ISQRT32_PREFIX_BASE_BANK must be aligned to a 64-bank boundary')
+  if p>0xc0: raise ValueError('REU_ISQRT32_PREFIX_BASE_BANK 64-bank range exceeds 16 MiB REU')
+  pset=set(range(p,p+0x40))
+  for k in singles:
+   if v[k] in pset: raise ValueError(f'{k} collides with ISQRT32 prefix bank range')
+  if qset & pset: raise ValueError('QS16 bank range collides with ISQRT32 prefix bank range')
 
 def _assemble_overlay(name,v):
  src=ROOT/'relocatable_source'/'turbo'/f'{name}_overlay.asm'; text=src.read_text()
  basekey='TURBO16_ZP_BASE' if name=='turbo16' else 'TURBO32_ZP_BASE'
- base=v[basekey]; refbase=0x3e if name=='turbo16' else 0x0a; length=113 if name=='turbo16' else 135
+ base=v[basekey]; refbase=0x3e if name=='turbo16' else 0x0a; length=122 if name=='turbo16' else 135
  def cfg_for(b):
   vals={'REG_LOW':v['REG_LOW'],'REG_TABLE':v['REG_TABLE'],'MATH_IO':v['MATH_IO'],'TURBO16_ZP_BASE':v['TURBO16_ZP_BASE'],'TURBO32_ZP_BASE':v['TURBO32_ZP_BASE']};vals[basekey]=b
   return '\n'.join(f'{k} = {hx(val,2 if k.endswith("ZP_BASE") else 4)}' for k,val in vals.items())+'\n'
@@ -121,12 +131,31 @@ def build_reu_image(profile,v,outpath):
  clear={old for _,old in roles}|{4,5}|{v[k] for k,_ in roles}|{v['REU_TURBO16_BANK'],v['REU_TURBO32_BANK']}
  if profile=='v4_reu_16m':
   clear |= set(range(0x10,0x18))|set(range(v['REU_QS16_BASE_BANK'],v['REU_QS16_BASE_BANK']+8))
+  clear |= set(range(0x40,0x80))|set(range(v['REU_ISQRT32_PREFIX_BASE_BANK'],v['REU_ISQRT32_PREFIX_BASE_BANK']+0x40))
  for bno in clear: img[bno*bank:(bno+1)*bank]=b'\x00'*bank
  for k,old in roles:
   new=v[k];img[new*bank:(new+1)*bank]=snap[old*bank:(old+1)*bank]
  if profile=='v4_reu_16m':
   q=v['REU_QS16_BASE_BANK']
   for i,old in enumerate(range(0x10,0x18)):img[(q+i)*bank:(q+i+1)*bank]=snap[old*bank:(old+1)*bank]
+  # Exact two-root-bit ISQRT32 prefix table.
+  # Key = (high_word << 4) | next_radix_nibble, record = 4 bytes:
+  # [partial_root_lo, partial_root_hi, residual_lo, residual_hi].
+  # Four-byte records turn the 20-bit key into a 22-bit byte offset,
+  # occupying exactly 4 MiB / 64 REU banks.
+  pb=v['REU_ISQRT32_PREFIX_BASE_BANK']*bank
+  for h in range(0x10000):
+   base=(h<<4)
+   row=pb+(h<<6)
+   for nib in range(16):
+    prefix=base|nib
+    root=math.isqrt(prefix)
+    rem=prefix-root*root
+    off=row+(nib<<2)
+    img[off+0]=root&0xff
+    img[off+1]=(root>>8)&0xff
+    img[off+2]=rem&0xff
+    img[off+3]=(rem>>8)&0xff
  img[v['REU_TURBO16_BANK']*bank:v['REU_TURBO16_BANK']*bank+len(turbo16)]=turbo16
  # VEC2 normalize direct-ratio index table.  The Turbo16 overlay occupies
  # only the low bytes of its bank; the normalizer owns $8000-$FFFF.
@@ -145,12 +174,13 @@ def build_reu_image(profile,v,outpath):
  outpath=Path(outpath);outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_bytes(img)
  return {'file':outpath.name,'sha256':hashlib.sha256(img).hexdigest(),'bytes':len(img),
          'turbo16_bank':hx(v['REU_TURBO16_BANK'],2),'turbo32_bank':hx(v['REU_TURBO32_BANK'],2),
-         'turbo16_zp':f'{hx(v["TURBO16_ZP_BASE"],2)}-{hx(v["TURBO16_ZP_BASE"]+112,2)}',
+         'turbo16_zp':f'{hx(v["TURBO16_ZP_BASE"],2)}-{hx(v["TURBO16_ZP_BASE"]+121,2)}',
          'turbo32_zp':f'{hx(v["TURBO32_ZP_BASE"],2)}-{hx(v["TURBO32_ZP_BASE"]+134,2)}',
          'turbo16_sha256':hashlib.sha256(turbo16).hexdigest(),'turbo32_sha256':hashlib.sha256(turbo32).hexdigest(),
          'normalize_ratio_bank':hx(v['REU_TURBO16_BANK'],2),
          'normalize_ratio_range':'$8000-$FFFF',
-         'normalize_ratio_sha256':hashlib.sha256(img[nb+0x8000:nb+0x10000]).hexdigest()}
+         'normalize_ratio_sha256':hashlib.sha256(img[nb+0x8000:nb+0x10000]).hexdigest(),
+         'isqrt32_prefix_base_bank':(hx(v['REU_ISQRT32_PREFIX_BASE_BANK'],2) if profile=='v4_reu_16m' else None)}
 
 _SOURCE_RE=re.compile(r'^\s*!source\s+"([^"]+)"\s*(?:;.*)?$',re.I)
 
@@ -240,7 +270,7 @@ def build(profile,config,outdir):
  inc.write_text('\n'.join(lines)+'\n')
  deps=source_dependencies(src)
  expanded_source=expand_source_file(src,preserve_config_include=False).encode()
- man={'profile':profile,'status':'BUILT_FROM_SOURCE','config':str(Path(config).relative_to(ROOT)) if Path(config).is_relative_to(ROOT) else str(config),'output_prg':prg.name,'output_load':hx(lo),'output_end':hx(hi),'output_sha256':hashlib.sha256(prg.read_bytes()).hexdigest(),'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),'expanded_source_sha256':hashlib.sha256(expanded_source).hexdigest(),'included_sources':{str(x.relative_to(ROOT)):hashlib.sha256(x.read_bytes()).hexdigest() for x in deps},'public_entries':{n:hx(const.get(n,labels.get(n))) for n in pubnames},'math_init':hx(const.get('MATH_INIT',labels.get('MATH_INIT'))),'public_io':f'{hx(vals["MATH_IO"])}-{hx(vals["MATH_IO"]+0x1f)}','reu_scratch':f'{hx(vals["REU_SCRATCH"])}-{hx(vals["REU_SCRATCH"]+3)}','reu_banks':{k:hx(vals[k],2) for k in REU_BANK_KEYS},'turbo_config':({'turbo16_zp':f'{hx(vals["TURBO16_ZP_BASE"],2)}-{hx(vals["TURBO16_ZP_BASE"]+112,2)}','turbo32_zp':f'{hx(vals["TURBO32_ZP_BASE"],2)}-{hx(vals["TURBO32_ZP_BASE"]+134,2)}'} if profile in REU else None),'reu_image':reu_info,'claims':[(n,hx(s),hx(e),sp) for n,s,e,sp in claims]}
+ man={'profile':profile,'status':'BUILT_FROM_SOURCE','config':str(Path(config).relative_to(ROOT)) if Path(config).is_relative_to(ROOT) else str(config),'output_prg':prg.name,'output_load':hx(lo),'output_end':hx(hi),'output_sha256':hashlib.sha256(prg.read_bytes()).hexdigest(),'source_sha256':hashlib.sha256(src.read_bytes()).hexdigest(),'expanded_source_sha256':hashlib.sha256(expanded_source).hexdigest(),'included_sources':{str(x.relative_to(ROOT)):hashlib.sha256(x.read_bytes()).hexdigest() for x in deps},'public_entries':{n:hx(const.get(n,labels.get(n))) for n in pubnames},'math_init':hx(const.get('MATH_INIT',labels.get('MATH_INIT'))),'public_io':f'{hx(vals["MATH_IO"])}-{hx(vals["MATH_IO"]+0x1f)}','reu_scratch':f'{hx(vals["REU_SCRATCH"])}-{hx(vals["REU_SCRATCH"]+3)}','reu_banks':{k:hx(vals[k],2) for k in REU_BANK_KEYS},'turbo_config':({'turbo16_zp':f'{hx(vals["TURBO16_ZP_BASE"],2)}-{hx(vals["TURBO16_ZP_BASE"]+121,2)}','turbo32_zp':f'{hx(vals["TURBO32_ZP_BASE"],2)}-{hx(vals["TURBO32_ZP_BASE"]+134,2)}'} if profile in REU else None),'reu_image':reu_info,'claims':[(n,hx(s),hx(e),sp) for n,s,e,sp in claims]}
  (outdir/'source_build_manifest.json').write_text(json.dumps(man,indent=2)+'\n');return man
 
 def main():

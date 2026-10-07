@@ -57,8 +57,8 @@ def main():
     overlay_rows.append({'profile':p,'map':kind,'overlay':name,'status':'PASS','bytes':len(internal_bytes),'sha256':sha(out),'byte_identical':True,'reference_overlay_identical':ref_overlay_same})
  boundary_rows=[]
  # Edge geometries independently verify the bundled assembler's full supported
- # Turbo origin range, including Turbo16 at $8F and Turbo32 at $79.
- for name,basekey,base,table in (('turbo16','TURBO16_ZP_BASE',0x02,0x4000),('turbo16','TURBO16_ZP_BASE',0x8f,0x6000),('turbo32','TURBO32_ZP_BASE',0x02,0x4000),('turbo32','TURBO32_ZP_BASE',0x79,0x6000)):
+ # Turbo origin range, including Turbo16 at $85 and Turbo32 at $79.
+ for name,basekey,base,table in (('turbo16','TURBO16_ZP_BASE',0x02,0x4000),('turbo16','TURBO16_ZP_BASE',0x85,0x6000),('turbo32','TURBO32_ZP_BASE',0x02,0x4000),('turbo32','TURBO32_ZP_BASE',0x79,0x6000)):
   vals=parse_config(ROOT/'relocatable_source'/'v3_reu_512k'/'math_config_reference.inc');vals[basekey]=base;vals['REG_TABLE']=table
   internal_bytes,_=_assemble_overlay(name,vals)
   stage=td/'overlay_boundary'/name/f'{base:02x}';stage.mkdir(parents=True,exist_ok=True)

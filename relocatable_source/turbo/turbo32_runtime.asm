@@ -133,7 +133,9 @@ T32_SUM_X_CLC:
         clc
 T32_SUM_X_OK:
         adc+1 T32_Z22
-        tay
+        ; z4 is dead after this column.  Store it directly instead of returning
+        ; it in Y and paying the public-tail STY.
+        sta MATH_Z+$04
         txa
         adc+1 T32_Z32
         bcs T32_SUM_CARRY_X1
@@ -142,12 +144,12 @@ T32_SUM_X_OK:
         lda T32_Z24
         adc+1 T32_Z33
         bcs T32_SUM_INC_TOP
-        rts
+        jmp T32_PUBLIC_TAIL
 T32_SUM_CARRY_TOP_A:
         adc #$00
 T32_SUM_INC_TOP:
         inc T32_Z34
-        rts
+        jmp T32_PUBLIC_TAIL
 T32_SUM_CARRY_X1:
         clc
         adc+1 T32_Z23
@@ -157,7 +159,7 @@ T32_SUM_CARRY_X1:
         bcs T32_SUM_CARRY_TOP_A
         adc #$01
         bcs T32_SUM_INC_TOP
-        rts
+        jmp T32_PUBLIC_TAIL
 T32_SUM_CARRY_X0:
         inx
         clc
@@ -179,9 +181,12 @@ T32_PUBLIC_CALL:
         ldy MATH_Y+$03
         lda MATH_X
         sta+1 T32_X0
-        jsr T32_PREP_LOADED
+        ; Public-only execution path: tail-call the producer.  The summation
+        ; writes z4 directly and returns z5/z6 in X/A to the common tail.
+        jmp T32_PREP_LOADED
+
+T32_PUBLIC_TAIL:
         sta MATH_Z+$06
         stx MATH_Z+$05
-        sty MATH_Z+$04
         clc
         rts

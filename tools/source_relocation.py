@@ -29,6 +29,34 @@ def seek_code_addresses(profile):
  src=(ROOT/profile/'resident/movement/native/seek_dda.asm').read_text()
  mem,_,_=Assembler().assemble(cfg+'\n'+src)
  return set(mem)
+
+def turbo32_runtime_low_ranges(profile):
+ # Derive the resident Turbo32 helper extents from the canonical source rather
+ # than freezing end addresses. Direct-output integration legitimately changes
+ # the summation tail length, and stale hard-coded bounds can drop branch labels.
+ from mini6502 import Assembler
+ cfg=(ROOT/'relocatable_source'/profile/'math_config_reference.inc').read_text()
+ aliases='\n'.join((
+  'MATH_X = MATH_IO',
+  'MATH_Y = MATH_IO+$04',
+  'MATH_Z = MATH_IO+$08',
+  'MATH_N = MATH_IO+$10',
+  'MATH_D = MATH_IO+$14',
+  'MATH_Q = MATH_IO+$18',
+  'MATH_R = MATH_IO+$1C',
+ ))
+ src=(ROOT/'relocatable_source/turbo/turbo32_runtime.asm').read_text()
+ mem,_,_=Assembler().assemble(cfg+'\n'+aliases+'\n'+src)
+ addrs=sorted(a for a in mem if REGION_DEFAULT['REG_LOW']<=a<REGION_DEFAULT['REG_LOW']+LENGTHS['REG_LOW'])
+ ranges=[]
+ if not addrs:return ranges
+ s=prev=addrs[0]
+ for a in addrs[1:]:
+  if a!=prev+1:
+   ranges.append((s,prev+1));s=a
+  prev=a
+ ranges.append((s,prev+1))
+ return ranges
 NORMALIZE_NATIVE_REL={
  p:f'../../{p}/resident/vector/native/vec2_normalize_q8_8.asm'
  for p in PROFILES
@@ -70,7 +98,7 @@ REU_BANK_SYMBOL_BY_DEFAULT={
  0x06:'REU_RECIP_LO_BANK', 0x07:'REU_RECIP_HI_BANK',
  0x08:'REU_ATAN2_BANK',     0x09:'REU_ISQRT16_BANK',
 }
-REU_BANK_KEYS=('REU_UMUL8_LO_BANK','REU_UMUL8_HI_BANK','REU_UDIV8_Q_BANK','REU_UDIV8_R_BANK','REU_TURBO16_BANK','REU_TURBO32_BANK','REU_RECIP_LO_BANK','REU_RECIP_HI_BANK','REU_ATAN2_BANK','REU_ISQRT16_BANK','REU_QS16_BASE_BANK')
+REU_BANK_KEYS=('REU_UMUL8_LO_BANK','REU_UMUL8_HI_BANK','REU_UDIV8_Q_BANK','REU_UDIV8_R_BANK','REU_TURBO16_BANK','REU_TURBO32_BANK','REU_RECIP_LO_BANK','REU_RECIP_HI_BANK','REU_ATAN2_BANK','REU_ISQRT16_BANK','REU_QS16_BASE_BANK','REU_ISQRT32_PREFIX_BASE_BANK')
 TURBO_PUBLIC_OLD=(0x3800,0x3840,0x3880,0x38c0,0x3900,0x3960)
 TURBO_PUBLIC_NAMES=('MATH_REU_UMUL16_BEGIN','MATH_REU_UMUL16','MATH_REU_UMUL16_END','MATH_REU_UMUL32_BEGIN','MATH_REU_UMUL32','MATH_REU_UMUL32_END')
 
@@ -109,17 +137,17 @@ MULTIPLY_REFRESH_DECODE_EXCLUDE={
   (0x6900,0x69fa),(0x6a41,0x6a76),(0x6b7c,0x6c8b),(0x7100,0x7140),
   (0xcc00,0xcc73)),
  'v2_pareto_fast':_REFRESH_COMMON+(
-  (0x3020,0x3045),(0x53ec,0x5471),(0x34c0,0x34fa),(0x5649,0x577e),
+  (0x3020,0x3045),(0x53ec,0x5471),(0x34c0,0x34fa),(0x5649,0x5784),
   (0x5e0c,0x5e0e),(0xc4b5,0xc4cb),
   (0x2300,0x2376),(0x3500,0x35fa),(0x397c,0x3a8b),(0x5500,0x5648),
   (0x5800,0x58fa),(0x5900,0x5956),(0xca32,0xcb25)),
  'v3_reu_512k':_REFRESH_COMMON+(
-  (0x3020,0x3045),(0x53ec,0x5471),(0x34c0,0x34fa),(0x5649,0x577e),
+  (0x3020,0x3045),(0x53ec,0x5471),(0x34c0,0x34fa),(0x5649,0x5784),
   (0x5e0c,0x5e0e),(0xc4b5,0xc4cb),
   (0x3500,0x35fa),(0x467c,0x478b),(0x5132,0x5225),(0x5500,0x5648),
   (0x5800,0x58fa),(0x5900,0x5956),(0x6c00,0x6c76)),
  'v4_reu_16m':_REFRESH_COMMON+(
-  (0x3020,0x3045),(0x53ec,0x5471),(0x34c0,0x34fa),(0x5649,0x577e),
+  (0x3020,0x3045),(0x53ec,0x5471),(0x34c0,0x34fa),(0x5649,0x5784),
   (0x5e0c,0x5e0e),(0xc4b5,0xc4cb),
   (0x3500,0x35fa),(0x467c,0x478b),(0x5132,0x5225),(0x5500,0x5648),
   (0x5800,0x58fa),(0x5900,0x5956),(0x6c00,0x6c76)),
@@ -139,15 +167,15 @@ DIVISION_REFRESH_INCLUDES={
  'v2_pareto_fast':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','sdiv16_directout_fast.inc','sdiv24_directout_fast.inc',
-  'sdiv32_16_direct_fast.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc'),
+  'sdiv32_16_direct_fast.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
  'v3_reu_512k':(
   'reu_div8_public_stubs.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
-  'sdiv32_16_direct_fast.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc'),
+  'sdiv32_16_direct_fast.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
  'v4_reu_16m':(
   'reu_div8_public_stubs.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
-  'sdiv32_16_direct_fast.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc'),
+  'sdiv32_16_direct_fast.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
 }
 # Exact emitted address spans of the frozen division-refresh modules in the
 # reference map.  Instruction starts in these spans are intentionally omitted
@@ -165,6 +193,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x2590,0x25b1),(0x5c00,0x5d01),
   (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1cf,0xc1d1)),
  'v2_pareto_fast':(
+  (0x5472,0x54d4),
   (0x3120,0x3122),(0x3200,0x3202),(0x4000,0x41ad),
   (0x3ca0,0x3ca2),(0x3fd4,0x3fd6),(0xbde0,0xbff0),
   (0x3140,0x3142),(0x3220,0x3222),(0xb800,0xbdc8),
@@ -174,6 +203,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x2590,0x25b1),(0x9200,0x9301),
   (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1ad,0xc1af)),
  'v3_reu_512k':(
+  (0x5472,0x54d4),
   (0x3120,0x3122),(0x4000,0x41ad),
   (0x3ca0,0x3ca2),(0x3fd4,0x3fd6),(0xbde0,0xbff0),
   (0x3140,0x3142),(0x3220,0x3222),(0xb800,0xbdc8),
@@ -183,6 +213,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x2690,0x26b1),(0x9200,0x9301),
   (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1ad,0xc1af)),
  'v4_reu_16m':(
+  (0x5472,0x54d4),
   (0x3120,0x3122),(0x4000,0x41ad),
   (0x3ca0,0x3ca2),(0x3fd4,0x3fd6),(0xbde0,0xbff0),
   (0x3140,0x3142),(0x3220,0x3222),(0xb800,0xbdc8),
@@ -314,6 +345,7 @@ def operand_text(profile,pc,op,mode,raw,branch_prefix='L'):
    if pc==0x3800:return ' #<TURBO16_ZP_BASE'
    if pc==0x3805:return ' #>TURBO16_ZP_BASE'
    if pc==0x3810:return ' #REU_TURBO16_BANK'
+   if pc==0x3815:return ' #$7A'  # 122-byte direct-output Turbo16 overlay
    if pc==0x38c0:return ' #<TURBO32_ZP_BASE'
    if pc==0x38c5:return ' #>TURBO32_ZP_BASE'
    if pc==0x38d0:return ' #REU_TURBO32_BANK'
@@ -409,7 +441,7 @@ def generate_source(profile,outpath:Path):
  # relocation rewrites their ZP and REG_LOW references symbolically rather than
  # publishing them as opaque reference-map bytes.
  if profile in REU:
-  for _s,_e in ((0x1000,0x1047),(0x1100,0x117f)):
+  for _s,_e in turbo32_runtime_low_ranges(profile):
    _pc=_s
    while _pc<_e:
     _oc=raw[_pc]
@@ -491,6 +523,9 @@ def generate_source(profile,outpath:Path):
             '!source "../turbo/turbo16_runtime.asm"',
             '', '; Canonical optimized Turbo32 resident runtime: binder, summation and CALL wrapper.',
             '!source "../turbo/turbo32_runtime.asm"']
+  if profile=='v4_reu_16m':
+   lines += ['', '; V4 exact ISQRT32 REU prefix accelerator.',
+             '!source "isqrt32_reu_prefix.asm"']
  lines += ['', '; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,',
            '; code islands and object state (final ownership of those bytes).',
            f'!source "{SEEK_NATIVE_REL[profile]}"']
@@ -506,22 +541,22 @@ def config_values(profile,alternate=False):
  if not alternate:
   d=dict(REGION_DEFAULT);d.update(MATH_IO=0xc000,REU_SCRATCH=0xc020,V1_SCRATCH=0xc040,ZP_MAIN=0x02,ZP_SMUL=0x80,TURBO16_ZP_BASE=0x3e,TURBO32_ZP_BASE=0x0a)
   d.update(REU_UMUL8_LO_BANK=0,REU_UMUL8_HI_BANK=1,REU_UDIV8_Q_BANK=2,REU_UDIV8_R_BANK=3,REU_TURBO16_BANK=4,REU_TURBO32_BANK=5,
-           REU_RECIP_LO_BANK=6,REU_RECIP_HI_BANK=7,REU_ATAN2_BANK=8,REU_ISQRT16_BANK=9,REU_QS16_BASE_BANK=0x10)
+           REU_RECIP_LO_BANK=6,REU_RECIP_HI_BANK=7,REU_ATAN2_BANK=8,REU_ISQRT16_BANK=9,REU_QS16_BASE_BANK=0x10,REU_ISQRT32_PREFIX_BASE_BANK=0x40)
  else:
   d={'REG_LOW':0x9000,'REG_API':0xb000,'REG_KERNEL':0x2000,'REG_GAME_API':0x7c00,'REG_TABLE':0x4000,'REG_GAME':0x8000,'MATH_IO':0xc800,'REU_SCRATCH':0xc820,'V1_SCRATCH':0xc840,'ZP_MAIN':0x07,'ZP_SMUL':0x70,'TURBO16_ZP_BASE':0x40,'TURBO32_ZP_BASE':0x06}
   if profile=='v3_reu_512k':
    # Strong proof within 512 KiB: permute every operational bank, including
    # relocating the Turbo overlay banks from 4/5 to 0/1.
    d.update(REU_UMUL8_LO_BANK=2,REU_UMUL8_HI_BANK=3,REU_UDIV8_Q_BANK=4,REU_UDIV8_R_BANK=5,REU_TURBO16_BANK=0,REU_TURBO32_BANK=1,
-            REU_RECIP_LO_BANK=6,REU_RECIP_HI_BANK=7,REU_ATAN2_BANK=8,REU_ISQRT16_BANK=9,REU_QS16_BASE_BANK=0x10)
+            REU_RECIP_LO_BANK=6,REU_RECIP_HI_BANK=7,REU_ATAN2_BANK=8,REU_ISQRT16_BANK=9,REU_QS16_BASE_BANK=0x10,REU_ISQRT32_PREFIX_BASE_BANK=0x40)
   elif profile=='v4_reu_16m':
    # Move stable data well away from the default banks, relocate both Turbo
    # overlay banks, and move the 8-bank quarter-square region as a unit.
    d.update(REU_UMUL8_LO_BANK=0x20,REU_UMUL8_HI_BANK=0x21,REU_UDIV8_Q_BANK=0x22,REU_UDIV8_R_BANK=0x23,REU_TURBO16_BANK=0x28,REU_TURBO32_BANK=0x29,
-            REU_RECIP_LO_BANK=0x24,REU_RECIP_HI_BANK=0x25,REU_ATAN2_BANK=0x26,REU_ISQRT16_BANK=0x27,REU_QS16_BASE_BANK=0x30)
+            REU_RECIP_LO_BANK=0x24,REU_RECIP_HI_BANK=0x25,REU_ATAN2_BANK=0x26,REU_ISQRT16_BANK=0x27,REU_QS16_BASE_BANK=0x30,REU_ISQRT32_PREFIX_BASE_BANK=0x80)
   else:
    d.update(REU_UMUL8_LO_BANK=0,REU_UMUL8_HI_BANK=1,REU_UDIV8_Q_BANK=2,REU_UDIV8_R_BANK=3,REU_TURBO16_BANK=4,REU_TURBO32_BANK=5,
-            REU_RECIP_LO_BANK=6,REU_RECIP_HI_BANK=7,REU_ATAN2_BANK=8,REU_ISQRT16_BANK=9,REU_QS16_BASE_BANK=0x10)
+            REU_RECIP_LO_BANK=6,REU_RECIP_HI_BANK=7,REU_ATAN2_BANK=8,REU_ISQRT16_BANK=9,REU_QS16_BASE_BANK=0x10,REU_ISQRT32_PREFIX_BASE_BANK=0x40)
  return d
 
 def write_config(profile,path,alternate=False):

@@ -30,9 +30,9 @@
     {
       "profile": "v4_reu_16m",
       "cases": 4130,
-      "mean_cycles": 1046.6225181598063,
-      "min_cycles": 899,
-      "max_cycles": 1237,
+      "mean_cycles": 917.3174334140435,
+      "min_cycles": 806,
+      "max_cycles": 1067,
       "errors": 0
     }
   ]

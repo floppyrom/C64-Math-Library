@@ -6,61 +6,56 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 626.
+; Reachable instructions: 617.
 ; NOTE: legacy alias entry; semantic producer is MATH_UDIV16.
 !cpu 6510
 
+; ---- executable island $204C ----
+* = $204C
+L204C:
+    !byte $AF, $11, $C0    ; LAX abs   ; @204C AF 11 C0
+    cmp $C015                          ; @204F CD 15 C0
+    bcc L2087                          ; @2052 90 33
+    beq L206B                          ; @2054 F0 15
+    lda $C010                          ; @2056 AD 10 C0
+    sbc $C014                          ; @2059 ED 14 C0
+    sta $C01C                          ; @205C 8D 1C C0
+    txa                                ; @205F 8A
+    sbc $C015                          ; @2060 ED 15 C0
+    cmp $C015                          ; @2063 CD 15 C0
+    bcc L2083                          ; @2066 90 1B
+    jmp LB8E9                          ; @2068 4C E9 B8
+L206B:
+    lda $C010                          ; @206B AD 10 C0
+    sbc $C014                          ; @206E ED 14 C0
+    bcc L2087                          ; @2071 90 14
+    cpx #$01                           ; @2073 E0 01
+    bcc L2080                          ; @2075 90 09
+    sta $C01C                          ; @2077 8D 1C C0
+    !byte $0B, $00    ; ANC #imm       ; @207A 0B 00
+    sta $C01D                          ; @207C 8D 1D C0
+    rts                                ; @207F 60
+L2080:
+    jmp LB837                          ; @2080 4C 37 B8
+L2083:
+    sta $C01D                          ; @2083 8D 1D C0
+    rts                                ; @2086 60
+L2087:
+    lda $C010                          ; @2087 AD 10 C0
+    sta $C01C                          ; @208A 8D 1C C0
+    stx $C01D                          ; @208D 8E 1D C0
+    rts                                ; @2090 60
 ; ---- executable island $3220 ----
 * = $3220
 mod_u16_u16_u16:
 MATH_UMOD16:
-    jmp LB800                          ; @3220 4C 00 B8
-; ---- executable island $B800 ----
-* = $B800
-LB800:
-    !byte $AF, $11, $C0    ; LAX abs   ; @B800 AF 11 C0
-    cmp $C015                          ; @B803 CD 15 C0
-    bcs LB83A                          ; @B806 B0 32
-LB808:
-    lda #$00                           ; @B808 A9 00
-    sta $C018                          ; @B80A 8D 18 C0
-    sta $C019                          ; @B80D 8D 19 C0
-    lda $C010                          ; @B810 AD 10 C0
-    sta $C01C                          ; @B813 8D 1C C0
-    stx $C01D                          ; @B816 8E 1D C0
-    rts                                ; @B819 60
-LB81A:
-    lda $C010                          ; @B81A AD 10 C0
-    sbc $C014                          ; @B81D ED 14 C0
-    bcc LB808                          ; @B820 90 E6
-    cpx #$01                           ; @B822 E0 01
-    bcc LB837                          ; @B824 90 11
-    sta $C01C                          ; @B826 8D 1C C0
-    !byte $0B, $00    ; ANC #imm       ; @B829 0B 00
-    sta $C01D                          ; @B82B 8D 1D C0
-    sta $C019                          ; @B82E 8D 19 C0
-    lda #$01                           ; @B831 A9 01
-    sta $C018                          ; @B833 8D 18 C0
-    rts                                ; @B836 60
+    jmp L204C                          ; @3220 4C 4C 20
+; ---- executable island $B837 ----
+* = $B837
 LB837:
     jmp LBD64                          ; @B837 4C 64 BD
-LB83A:
-    beq LB81A                          ; @B83A F0 DE
-    lda $C010                          ; @B83C AD 10 C0
-    sbc $C014                          ; @B83F ED 14 C0
-    sta $C01C                          ; @B842 8D 1C C0
-    txa                                ; @B845 8A
-    sbc $C015                          ; @B846 ED 15 C0
-    cmp $C015                          ; @B849 CD 15 C0
-    bcc LB851                          ; @B84C 90 03
-    jmp LB8E9                          ; @B84E 4C E9 B8
-LB851:
-    sta $C01D                          ; @B851 8D 1D C0
-    lda #$00                           ; @B854 A9 00
-    sta $C019                          ; @B856 8D 19 C0
-    lda #$01                           ; @B859 A9 01
-    sta $C018                          ; @B85B 8D 18 C0
-    rts                                ; @B85E 60
+; ---- executable island $B85F ----
+* = $B85F
 LB85F:
     cmp $BDBA,x                        ; @B85F DD BA BD
     bcc LB867                          ; @B862 90 03

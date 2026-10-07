@@ -12,7 +12,7 @@ The five fixed profiles use different memory/ZP trade-offs, so the fastest numbe
 |---|---|---:|---:|---:|---:|---:|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 90.494644 | 78.494614 | 69.000000 | 69.000000 | 90.494644 |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 273.837200 | 216.980037 | 216.980037 | 216.980037 | 273.837200 |
-| `MATH_UMUL24` | `mul_u24_u24_u48` | 474.042329 | 429.555502 | 429.555502 | 429.555502 | 474.042329 |
+| `MATH_UMUL24` | `mul_u24_u24_u48` | 474.042329 | 421.555502 | 421.555502 | 421.555502 | 474.042329 |
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 712.235367 | 690.235367 | 690.235367 | 690.235367 | 712.235367 |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 67.992188 | 67.992188 | 67.992188 | 67.992188 |
 | `MATH_SMUL16` | `mul_s16_s16_s32` | 282.588064 | 245.802333 | 246.107696 | 246.144492 | 282.262957 |
@@ -41,10 +41,10 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 | Routine | Typed name | V1 | V2 | V3 | V4 | V5 |
 |---|---|---:|---:|---:|---:|---:|
 | `MATH_UMOD8` | `mod_u8_u8_u8` | 67.167555 | 67.284844 | 49.712110 | 49.725819 | 68.523229 |
-| `MATH_UMOD16` | `mod_u16_u16_u16` | 184.082421 | 203.033484 | 203.396008 | 202.557630 | 199.918867 |
-| `MATH_UMOD24` | `mod_u24_u24_u24` | 303.233097 | 300.949131 | 302.914359 | 301.613007 | 299.273020 |
+| `MATH_UMOD16` | `mod_u16_u16_u16` | 184.082421 | 195.951706 | 196.414681 | 195.529942 | 199.918867 |
+| `MATH_UMOD24` | `mod_u24_u24_u24` | 303.233097 | 293.183516 | 294.880876 | 293.535093 | 299.273020 |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 971.613651 | 792.160335 | 789.650998 | 789.841597 | 789.508693 |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 552.220863 | 524.881520 | 518.802962 | 516.780425 | 548.000000 |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 552.220863 | 515.783001 | 509.623310 | 507.496458 | 548.000000 |
 | `MATH_SMOD8` | `mod_s8_s8_s8` | 98.157813 | 97.066406 | 97.152344 | 99.020313 | 96.707813 |
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 229.324910 | 231.872202 | 234.659206 | 228.244765 | 231.667148 |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 427.272924 | 337.075090 | 329.971841 | 326.184838 | 339.607942 |
@@ -58,6 +58,8 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 952.471538 | 834.061287 | 832.687023 | 831.029880 | 953.277863 |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 119.994705 | 118.523834 | 66.233795 | 66.233795 | 119.307602 |
 
+V2/V3/V4 now give `MATH_UMOD16`, `MATH_UMOD24`, and `MATH_UMOD32_32` dedicated remainder-only front ends. Quotient-0/1 (or equality) cases return without materializing quotient bytes; harder cases rejoin the exact existing divider. Signed modulo was measured separately and deliberately left unchanged because the analogous front end was slower.
+
 ### Trig / roots / game math
 
 | Routine | Typed name | V1 | V2 | V3 | V4 | V5 |
@@ -67,7 +69,7 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 39.000000 | 31.000000 | 31.000000 | 31.000000 | 31.000000 |
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 47.462814 | 43.970627 | 43.970627 | 48.000000 | 43.970627 |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 219.740570 | 205.760590 | 204.992523 | 54.000000 | 219.740570 |
-| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1198.619613 | 1197.859322 | 1046.622518 | 1378.900969 |
+| `MATH_ISQRT32` | `isqrt_u32_u16` | 1378.900969 | 1198.619613 | 1197.859322 | 917.317433 | 1378.900969 |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 79.570038 | 79.070038 | 79.070038 | 86.085602 |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 85.570038 | 85.070038 | 85.070038 | 92.085602 |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 160.150080 | 156.661198 | 156.661198 | 160.150080 |
@@ -90,6 +92,17 @@ Exact Bresenham/DDA "move toward target" steppers ([`docs/SEEK_DDA.md`](docs/SEE
 `*_INIT` means mix major-axis and Euclidean speeds. By speed mode, V2 cost is: SEEK8 336.5 major-axis, 310.6 integer, 279.4 at 1 px/frame, 751.4 Euclidean; SEEK16 479.6 / 458.1 / 382.7 / 925.8. V1/V5 run init about 10% slower because their init scratch is RAM (V1 low-ZP contract).
 
 SMUL24 now uses a common 10,676-case corpus across all profiles. Against the same corpus on `ff1b602`, carry-primed dispatch saves 4–5 cycles on every case and six code bytes. ATAN2 branch ordering saves 2 cycles for X<0, leaves X>0 unchanged, and costs 4 cycles for X=0 in V1 or 2 in V2/V3/V5. The full-domain average improves by about one cycle. [Review and exact paired results](docs/OPTISEARCH_REVIEW_2026-10-07.md).
+
+## Stateful REU Turbo multiply
+
+V3/V4 can temporarily exchange a larger executable-ZP overlay with the REU for repeated multiply batches. These calls are non-reentrant while the overlay is active.
+
+| Routine | CALL mean | Min–max | Active ZP | BEGIN | END | Approx. crossover vs normal public multiply |
+|---|---:|---:|---:|---:|---:|---:|
+| `MATH_REU_UMUL16` | 197.046257 | 185–220 | 122 bytes | 300 | 345 | ~33 products |
+| `MATH_REU_UMUL32` | 676.185219 | 613–788 | 135 bytes | 326 | 371 | ~50 products |
+
+Turbo16 now writes the complete result directly to `MATH_Z`; its supported zero-penalty ZP origins are `$02-$85`. Turbo32 writes z4 directly and tail-exits through the public result path; its supported origins remain `$02-$79`. The boundary proof is cycle-identical at both supported extremes in V3 and V4.
 
 ## Source-backed standalone / Pareto alternatives
 
