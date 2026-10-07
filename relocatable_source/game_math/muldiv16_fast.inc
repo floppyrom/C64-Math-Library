@@ -1,9 +1,8 @@
 ; V2/V3/V4 MULDIV16 stable fast handoffs.
 ; The common source keeps V1/V5 on composition. V2/V3/V4 overwrite the
-; now-dead composed baseline area and pack both fast handoffs below the
-; existing UMUL32 adapter at REG_API+$0420:
-;   +$03C9... unsigned fused handoff
-;   +$03F8... signed fused handoff.
+; now-dead unsigned composed baseline area for the direct unsigned handoff.
+; The larger signed-quadrant fusion lives in the certified free REG_LOW+$0BCD island;
+; the existing UMUL32 adapter at REG_API+$0420 remains untouched.
 
 * = MATH_SMULDIV16
     jmp MULDIV16_S_FUSED
@@ -123,8 +122,8 @@ MULDIV16_S_OK:
 MULDIV16_S_RET:
     rts
 
-; Inline the V2-V4 public UMUL16 binder, but send its returned product bytes
-; straight to N instead of materializing Z1/Z2/Z3 and then copying Z->N.
+; Inline the V2-V4 public UMUL16 binder, then feed its returned product bytes
+; directly into the private UDIV32/16 state without a public N/Z round-trip.
 * = REG_API+$03C9
 MULDIV16_U_FAST:
     lda MATH_X
