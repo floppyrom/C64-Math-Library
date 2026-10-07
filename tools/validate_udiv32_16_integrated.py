@@ -32,7 +32,8 @@ def load_source(profile,kind):
     cpu=CPU(mem,reu=reu);cpu.d=0
     api={k:unhx(v) for k,v in man['public_entries'].items()}
     cpu.call(unhx(man['math_init']),2_000_000)
-    return cpu,api
+    io=unhx(man['public_io'].split('-')[0])
+    return cpu,api,io
 
 def vectors():
     out=[(n,d) for n in edge(32) for d in edge(16)]
@@ -49,8 +50,8 @@ def vectors():
             if 0<=n<=0xffffffff: out.append((n,d))
     return list(dict.fromkeys(out))
 
-def one(cpu,entry,n,d):
-    N,D,Q,R=0xc010,0xc014,0xc018,0xc01c
+def one(cpu,entry,n,d,io=0xc000):
+    N,D,Q,R=io+0x10,io+0x14,io+0x18,io+0x1c
     wr(cpu.mem,N,n,4);wr(cpu.mem,D,d,2)
     bn=bytes(cpu.mem[N:N+4]);bd=bytes(cpu.mem[D:D+2])
     cy=cpu.call(entry,4_000_000)
@@ -66,13 +67,13 @@ def run():
     vec=vectors(); result={'status':'PASS','cases':len(vec),'profiles':{}}
     for p in PROFILES:
         old,Aold=load_resident(p)
-        new,Anew=load_source(p,'reference')
-        alt,Aalt=load_source(p,'alternate')
+        new,Anew,Inew=load_source(p,'reference')
+        alt,Aalt,Ialt=load_source(p,'alternate')
         oc=[];nc=[];d8o=[];d8n=[];errs=[]
         for n,d in vec:
-            a,ok1,g1,e=one(old,Aold['MATH_UDIV32_16'],n,d)
-            b,ok2,g2,_=one(new,Anew['MATH_UDIV32_16'],n,d)
-            _,ok3,g3,_=one(alt,Aalt['MATH_UDIV32_16'],n,d)
+            a,ok1,g1,e=one(old,Aold['MATH_UDIV32_16'],n,d,0xc000)
+            b,ok2,g2,_=one(new,Anew['MATH_UDIV32_16'],n,d,Inew)
+            _,ok3,g3,_=one(alt,Aalt['MATH_UDIV32_16'],n,d,Ialt)
             if not(ok1 and ok2 and ok3):
                 errs.append({'n':hex(n),'d':hex(d),'old':g1,'new':g2,'alt':g3,'exp':e})
                 if len(errs)>=8: break
