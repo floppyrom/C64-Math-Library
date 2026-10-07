@@ -37,7 +37,7 @@ def load(kind):
  if kind=='baseline':
   prg=ROOT/'v4_reu_16m/resident/math_v4_reu_16m_game_math.prg'
   reu=ROOT/'v4_reu_16m/reu/c64_math_v4_16m_game_math.reu'
-  api={'MATH_INIT':INIT,'MATH_ISQRT32':PUB}
+  api={'MATH_INIT':INIT,'MATH_ISQRT32':PUB,'MATH_N':IO_N,'MATH_Z':IO_Z}
  else:
   d=ROOT/'build_source'/kind/PROFILE
   prg=d/f'math_{PROFILE}_source_built.prg'
@@ -53,10 +53,11 @@ def rd(c,a,n):return sum(c.mem[a+i]<<(8*i) for i in range(n))
 
 def run(kind):
  c,A=load(kind);vec=[];err=0
+ io_n=A['MATH_N'];io_z=A['MATH_Z']
  for n in CASES:
-  wr(c,IO_N,n,4);before=bytes(c.mem[IO_N:IO_N+4])
-  cy=c.call(A['MATH_ISQRT32'],2_000_000);got=rd(c,IO_Z,2)
-  if got!=math.isqrt(n) or bytes(c.mem[IO_N:IO_N+4])!=before or c.c!=0:
+  wr(c,io_n,n,4);before=bytes(c.mem[io_n:io_n+4])
+  cy=c.call(A['MATH_ISQRT32'],2_000_000);got=rd(c,io_z,2)
+  if got!=math.isqrt(n) or bytes(c.mem[io_n:io_n+4])!=before or c.c!=0:
    err+=1
    if err<=5:print('ERROR',kind,hex(n),got,math.isqrt(n),c.c)
   vec.append(cy)
