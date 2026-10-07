@@ -1,7 +1,7 @@
 name: Research SMUL16 live X1 entry
 on:
   push:
-    branches: [research/smul16-live-x1-entry-v1]
+    branches: [research/smul16-live-x1-entry-v1, research/smul16-carry-prime-v1]
 permissions:
   contents: read
 env:
