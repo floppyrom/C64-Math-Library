@@ -148,11 +148,34 @@ MULDIV16_S_NEG_Q:
 
 MULDIV16_S_DIV_R:
     jsr U3216_ENTRY
-    jmp MULDIV16_S_NEG_R
+    ; R-only hot tail: duplicate the short negation to avoid an extra JMP.
+    lda #$00
+    sec
+    sbc MATH_R
+    sta MATH_R
+    lda #$00
+    sbc MATH_R+$01
+    sta MATH_R+$01
+    clc
+    rts
 
 MULDIV16_S_DIV_QR:
     jsr U3216_ENTRY
-    jsr MULDIV16_S_NEG_Q
+    ; QR hot tail: inline Q negation, omit the intermediate CLC/RTS, then
+    ; fall straight into the shared remainder negation.
+    lda #$00
+    sec
+    sbc MATH_Q
+    sta MATH_Q
+    lda #$00
+    sbc MATH_Q+$01
+    sta MATH_Q+$01
+    lda #$00
+    sbc MATH_Q+$02
+    sta MATH_Q+$02
+    lda #$00
+    sbc MATH_Q+$03
+    sta MATH_Q+$03
 MULDIV16_S_NEG_R:
     lda #$00
     sec
