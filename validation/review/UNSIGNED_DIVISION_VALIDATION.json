@@ -469,7 +469,6 @@
   },
   "summary": {
     "profiles": 5,
-    "machine_calls": 822050,
-    "elapsed_seconds": 62.74
+    "machine_calls": 822050
   }
 }
