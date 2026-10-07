@@ -24,6 +24,15 @@ jobs:
         run: |
           python3 tools/build_hybrid.py --config-kind reference
           python3 tools/build_hybrid.py --config-kind alternate
+      - name: Show V5 MULDIV layout
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('build_hybrid/reference/v5_hybrid_lowzp/source_build_manifest.json')
+          m=json.loads(p.read_text())
+          print('V5_MULDIV_LAYOUT',json.dumps(m['muldiv16_lowzp_fusion'],sort_keys=True))
+          PY
       - name: Validate MULDIV16 full corpus
         run: python3 tools/validate_muldiv16.py
       - name: Validate V5 hybrid
