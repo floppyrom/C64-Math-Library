@@ -58,7 +58,7 @@ def load(profile,kind):
     reg_api=init-0x280
     u=reg_api+0x2e0
     s=u+3
-    baseline_u=reg_api+0x3e0
+    baseline_u=reg_api+0x300
     return cpu,api,io,u,s,baseline_u
 
 def edge16_signed_bits():
@@ -113,6 +113,27 @@ def call_signed(cpu,entry,io,xb,yb,db):
     ok=(got==exp and bytes(cpu.mem[X:X+2])==bx and bytes(cpu.mem[Y:Y+2])==by and bytes(cpu.mem[D:D+2])==bd)
     return cy,ok,got,exp
 
+def call_signed_composed(cpu,api,io,xb,yb,db):
+    """Cycle-equivalent old public composition without needing a spare code island."""
+    X,Y,Z,N,D,Q,R=io,io+4,io+8,io+0x10,io+0x14,io+0x18,io+0x1c
+    wr(cpu.mem,X,xb,2); wr(cpu.mem,Y,yb,2); wr(cpu.mem,D,db,2)
+    bx=bytes(cpu.mem[X:X+2]); by=bytes(cpu.mem[Y:Y+2]); bd=bytes(cpu.mem[D:D+2])
+    mcy=cpu.call(api['MATH_SMUL16'],4_000_000)
+    cpu.mem[N:N+4]=cpu.mem[Z:Z+4]
+    dcy=cpu.call(api['MATH_SDIV32_16'],4_000_000)
+    # Old public candidate: JMP slot (3), JSR SMUL16 (6), JSR+Z->N helper
+    # (6+63), final JMP to SDIV32/16 (3).
+    cy=mcy+dcy+81
+    q=rd(cpu.mem,Q,4); r=rd(cpu.mem,R,2)
+    x,y,d=s16(xb),s16(yb),s16(db)
+    if d==0: exp=(0,0,1)
+    else:
+        eq,er=truncdiv(x*y,d)
+        exp=(eq&0xffffffff,er&0xffff,0)
+    got=(q,r,cpu.c)
+    ok=(got==exp and bytes(cpu.mem[X:X+2])==bx and bytes(cpu.mem[Y:Y+2])==by and bytes(cpu.mem[D:D+2])==bd)
+    return cy,ok,got,exp
+
 def stats(v):
     return {'cases':len(v),'mean_cycles':sum(v)/len(v),'min_cycles':min(v),'max_cycles':max(v)}
 
@@ -127,7 +148,7 @@ def run():
             # Stubs must be JMPs and the signed helper must sit below the seek island.
             assert cpu.mem[uent]==0x4c,(p,kind,'unsigned candidate stub',hex(uent),hex(cpu.mem[uent]))
             assert cpu.mem[sent]==0x4c,(p,kind,'signed candidate stub',hex(sent),hex(cpu.mem[sent]))
-            uc=[];sc=[];base_uc=[];errs=[]
+            uc=[];sc=[];base_uc=[];base_sc=[];errs=[]
             for x,y,d in uv:
                 cy,ok,got,exp=call_unsigned(cpu,uent,io,x,y,d)
                 if not ok:
@@ -149,12 +170,28 @@ def run():
                         errs.append({'kind':'signed','x':hex(x),'y':hex(y),'d':hex(d),'got':got,'exp':exp})
                         if len(errs)>=8: break
                     sc.append(cy)
+                    if p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+                        bcy,bok,bgot,bexp=call_signed_composed(cpu,api,io,x,y,d)
+                        if not bok or bgot!=exp:
+                            errs.append({'kind':'signed-baseline','x':hex(x),'y':hex(y),'d':hex(d),'got':bgot,'exp':bexp})
+                            if len(errs)>=8: break
+                        base_sc.append(bcy)
             if errs: raise AssertionError((p,kind,errs))
             per[kind]={'unsigned':stats(uc),'signed':stats(sc)}
             if base_uc:
                 delta=[b-n for b,n in zip(base_uc,uc)]
                 per[kind]['unsigned_composed_baseline']=stats(base_uc)
                 per[kind]['unsigned_fusion']={
+                    'saved_mean_cycles':sum(delta)/len(delta),
+                    'min_saved_cycles':min(delta),
+                    'max_saved_cycles':max(delta),
+                    'slower_cases':sum(x<0 for x in delta),
+                    'equal_cases':sum(x==0 for x in delta),
+                }
+            if base_sc:
+                delta=[b-n for b,n in zip(base_sc,sc)]
+                per[kind]['signed_composed_baseline']=stats(base_sc)
+                per[kind]['signed_fusion']={
                     'saved_mean_cycles':sum(delta)/len(delta),
                     'min_saved_cycles':min(delta),
                     'max_saved_cycles':max(delta),
