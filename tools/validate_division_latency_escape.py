@@ -84,7 +84,10 @@ def main():
         # Three-way width classification makes D3!=0 about four cycles faster.
         # The rare D3=0,D2>=2 band pays at most six cycles for that classifier.
         assert min(rows['w32']['_delta'])>=-6 and rows['w32']['slower_cases']<=len(C['w32'])//100,(p,'UDIV32/32 wide dispatch regression',rows['w32'])
-        assert all(x>=0 for x in rows['d17']['_delta']),(p,'UDIV32/32 D17 regression',rows['d17'])
+        # D17 uses the dedicated 16-step engine only for N3!=0.  N3=0 returns
+        # to the original live-high low-quotient path after classification;
+        # that rare round-trip is bounded to 17 cycles and <=1% of this corpus.
+        assert min(rows['d17']['_delta'])>=-17 and rows['d17']['slower_cases']<=len(C['d17'])//100,(p,'UDIV32/32 D17 dispatch regression',rows['d17'])
         # Alternate-map exactness on deterministic subsets.
         for ent,tag,nb,db,sent in [('MATH_UDIV24','h24',24,24,0x5A),('MATH_UDIV32_32','h32',32,32,None),('MATH_UDIV32_32','d17',32,32,None)]:
             avec=C[tag] if tag!='d17' else C[tag][:2048]
