@@ -1,0 +1,43 @@
+name: UMUL24 layout diagnostic
+
+on:
+  push:
+    branches: [opt/mod-isqrt-fast24-turbo-20261007]
+    paths:
+      - '.github/workflows/umul24-layout-diagnostic.yml'
+  workflow_dispatch:
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble and dump FAST24 layout
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,'tools')
+          from assemble_sources import preprocess
+          from mini6502 import Assembler,REV,SIZE
+          src=Path('relocatable_source/v2_pareto_fast/math_relocatable.asm')
+          cfg=Path('relocatable_source/v2_pareto_fast/math_config_reference.inc')
+          mem,labels,const=Assembler().assemble(preprocess(src,cfg))
+          for k in sorted(x for x in labels if x.startswith('R24_')):
+              print(k,hex(labels[k]))
+          print('HEX')
+          for a in range(0x5750,0x5791,16):
+              print(hex(a), ' '.join(f'{mem.get(x,0):02x}' for x in range(a,a+16)))
+          print('LINEAR')
+          pc=0x5750
+          while pc<0x5791:
+              oc=mem.get(pc,0)
+              if oc not in REV:
+                  print(hex(pc),'UNKNOWN',hex(oc)); pc+=1; continue
+              op,mode=REV[oc]; sz=SIZE[mode]
+              print(hex(pc),op,mode,' '.join(f'{mem.get(x,0):02x}' for x in range(pc,pc+sz)))
+              pc+=sz
+          PY
