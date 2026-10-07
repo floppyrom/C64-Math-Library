@@ -32,9 +32,6 @@ DIVLAT_DU24_OLD_STUB:
     lda MATH_D+3
     ora MATH_D+2
     bne UD32_L0662
-    lda MATH_D+1
-    ora MATH_D+0
-    beq UD32_L072A
     jmp DIVLAT_UD32_NARROW
 
 ; The narrow dispatch above makes the legacy internal 32/8 block unreachable.
@@ -54,6 +51,13 @@ DIVLAT_DU24_NARROW:
     rts
 
 DIVLAT_UD32_NARROW:
+    ; Preserve the original zero-divisor exit without lengthening the live-high
+    ; width dispatch (the legacy zero handler is too far for a relative branch).
+    lda MATH_D+1
+    ora MATH_D+0
+    bne DIVLAT_UD32_NONZERO
+    jmp UD32_L072A
+DIVLAT_UD32_NONZERO:
     jsr MATH_UDIV32_16
     lda #0
     sta MATH_R+2
