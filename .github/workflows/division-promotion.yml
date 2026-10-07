@@ -52,6 +52,96 @@ jobs:
           python3 tools/generate_public_indexes.py
           python3 tools/validate_public_catalog.py
           python3 tools/validate_standalone_sources.py
+      - name: Sync PERFORMANCE stable rows from consolidated evidence
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import csv,re
+          root=Path('.')
+          rows=list(csv.DictReader((root/'docs/CONSOLIDATED_ROUTINE_TABLE.csv').open()))
+          profiles=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp']
+          by={}
+          for r in rows:
+              if r['api_class']!='stable': continue
+              by.setdefault(r['routine'],{})[r['profile']]=r
+          p=root/'PERFORMANCE.md'; text=p.read_text()
+          for routine,d in by.items():
+              if not all(x in d for x in profiles): continue
+              typed=d[profiles[0]]['canonical_name']
+              vals=[d[x]['mean_cycles'] for x in profiles]
+              line='| `'+routine+'` | `'+typed+'` | '+' | '.join(vals)+' |'
+              pat=re.compile(r'^\| `'+re.escape(routine)+r'` \| `[^`]+` \|[^\n]+
+        run: |
+          make reference
+          make alternate
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+          python3 tools/validate_hybrid.py
+          python3 tools/verify_deterministic_rebuild.py
+      - name: Refresh release hashes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('.')
+          def sha(p): return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+          s=json.loads((root/'RELEASE_STATUS.json').read_text())
+          ref={
+            'v1_balanced': root/'v1_balanced/resident/math_v1_balanced_game_math.prg',
+            'v2_pareto_fast': root/'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg',
+            'v3_reu_512k': root/'v3_reu_512k/resident/math_v3_reu_512k_game_math.prg',
+            'v4_reu_16m': root/'v4_reu_16m/resident/math_v4_reu_16m_game_math.prg',
+            'v5_hybrid_lowzp': root/'v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg',
+          }
+          for p,f in ref.items(): s['reference_prg_sha256'][p]=sha(f)
+          for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+              f=root/'build_u3216/alternate'/p/f'math_{p}_source_built.prg'
+              s['alternate_prg_sha256'][p]=sha(f)
+          s['alternate_prg_sha256']['v5_hybrid_lowzp']=sha(root/'build_hybrid/alternate/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg')
+          s['reference_reu_sha256']['v3_reu_512k']=sha(root/'v3_reu_512k/reu/c64_math_v3_512k_game_math.reu')
+          s['reference_reu_sha256']['v4_reu_16m']=sha(root/'v4_reu_16m/reu/c64_math_v4_16m_game_math.reu')
+          s['alternate_reu_sha256']['v3_reu_512k']=sha(root/'build_u3216/alternate/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu')
+          s['alternate_reu_sha256']['v4_reu_16m']=sha(root/'build_u3216/alternate/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu')
+          s['hybrid_v5']['reference_prg_sha256']=s['reference_prg_sha256']['v5_hybrid_lowzp']
+          s['hybrid_v5']['alternate_prg_sha256']=s['alternate_prg_sha256']['v5_hybrid_lowzp']
+          s['date']='2026-10-07'
+          (root/'RELEASE_STATUS.json').write_text(json.dumps(s,indent=2)+'\n')
+          PY
+      - name: Refresh lean-package checksums
+        run: |
+          rm -rf build_source build_hybrid build_u3216 build_v5trace build_probe
+          rm -f .github/workflows/division-tail-probe.yml .github/workflows/division-promotion.yml
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          fs=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+          (root/'SHA256SUMS.txt').write_text('\n'.join(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}" for p in fs)+'\n')
+          PY
+          python3 tools/package_audit.py
+      - name: Commit promoted division artifacts
+        run: |
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No promotion changes to commit"
+          else
+            git commit -m "Promote optimized UDIV32/16 and bounded division tails"
+            git push origin HEAD:opt/udiv32-16-latency-20261007
+          fi
+,re.M)
+              text,n=pat.subn(line,text,count=1)
+          p.write_text(text)
+          PY
       - name: Validate promoted fixed profiles and V5 parity
         run: |
           make reference
