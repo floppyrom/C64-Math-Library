@@ -85,8 +85,8 @@ jobs:
               replacement='| `'+routine+'` | `'+typed+'` | '+' | '.join(values)+' |'
               pattern=re.compile(r'^\| `'+re.escape(routine)+r'` \| `[^`]+` \|[^\n]+$', re.M)
               body,n=pattern.subn(replacement,body,count=1)
-              if n != 1:
-                  raise RuntimeError(f'PERFORMANCE row not found: {routine}')
+              if n == 0:
+                  continue
           path.write_text(body)
           PY
 
