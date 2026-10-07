@@ -1423,7 +1423,7 @@ V5 is intentionally V1-based, so unchanged routines retain V1 behavior/timing. I
 
 `MATH_VEC2_NORMALIZE_Q8_8` is also available in V5 at **160.150080 cycles mean**, using the V1-compatible 31-ZP backend.
 
-These direct paths were validated against V2 with cycle-vector equality. `ATAN2_8` is exhaustive across all 65,536 signed-byte vectors and independently checked for a maximum one-phase-unit approximation error; UMOD8 uses exhaustive correctness plus sampled cycle parity. `UDIV16_SHL8` and `URECIP16_Q16` benefit indirectly through imported division but retain V1 outer code. See `docs/HYBRID_PROFILE.md`.
+Imported UDIV and trig paths were validated against V2 with cycle-vector equality. The wider V5 UMOD entries intentionally keep compact aliases to those imported UDIV engines rather than V2's dedicated remainder-only front ends, so they are validated for exact remainder/carry/input semantics with profile-specific timing. `ATAN2_8` is exhaustive across all 65,536 signed-byte vectors and independently checked for a maximum one-phase-unit approximation error; UMOD8 uses exhaustive correctness plus sampled cycle parity. `UDIV16_SHL8` and `URECIP16_Q16` benefit indirectly through imported division but retain V1 outer code. See `docs/HYBRID_PROFILE.md`.
 
 ---
 
