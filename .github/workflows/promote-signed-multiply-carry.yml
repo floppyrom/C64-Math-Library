@@ -44,7 +44,7 @@ jobs:
           cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
           cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
           cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
-          cp build_hybrid/reference/v5_hybrid_lowzp/HYBRID_BUILD_MANIFEST.json v5_hybrid_lowzp/resident/HYBRID_BUILD_MANIFEST.json
+          cp build_hybrid/reference/v5_hybrid_lowzp/source_build_manifest.json v5_hybrid_lowzp/resident/HYBRID_BUILD_MANIFEST.json
 
       - name: Regenerate canonical and published sources
         run: |
@@ -277,4 +277,4 @@ jobs:
           git add -A
           git commit -m "Promote SMUL16/SMUL32 carry-register optimizations"
           git push origin HEAD:opt/signed-multiply-carry-prime-v1
-# promotion trigger
+# promotion trigger fixed-v5-manifest
