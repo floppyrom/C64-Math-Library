@@ -31,11 +31,14 @@ def edge(b):
 def expected(n,d,qb,rb,shift=0):
  if d==0:return 0,0,1
  n<<=shift;return (n//d)&mask(qb),(n%d)&mask(rb),0
-def run(cpu,entry,cases,nb,db,qb,rb,shift=0,remainder_only=False):
+def run(cpu,entry,cases,nb,db,qb,rb,shift=0,remainder_only=False,label=''):
  N,D,Q,R=0xc010,0xc014,0xc018,0xc01c;nn=(nb+7)//8;dn=(db+7)//8;qn=(qb+7)//8;rn=(rb+7)//8
  total=errs=0;mi=None;ma=None
  for n,d in cases:
-  wr(cpu.mem,N,n,nn);wr(cpu.mem,D,d,dn);bn=bytes(cpu.mem[N:N+nn]);bd=bytes(cpu.mem[D:D+dn]);cy=cpu.call(entry,4_000_000)
+  wr(cpu.mem,N,n,nn);wr(cpu.mem,D,d,dn);bn=bytes(cpu.mem[N:N+nn]);bd=bytes(cpu.mem[D:D+dn])
+  try: cy=cpu.call(entry,4_000_000)
+  except RuntimeError as e:
+   raise RuntimeError(f'{label or hex(entry)} failed at N={n:#x} D={d:#x}: {e}') from e
   eq,er,ec=expected(n,d,qb,rb,shift);gq=rd(cpu.mem,Q,qn);gr=rd(cpu.mem,R,rn)
   ok=((gr,cpu.c)==(er,ec)) if remainder_only else ((gq,gr,cpu.c)==(eq,er,ec))
   if not ok or bytes(cpu.mem[N:N+nn])!=bn or bytes(cpu.mem[D:D+dn])!=bd:
@@ -63,10 +66,10 @@ def main():
    else:
     cases=[(n,d) for n in edge(nb) for d in edge(db)];r=random.Random(0xD1700000+pi*0x10000+nb*257+db+sh);count=4096 if name!='MATH_UDIV32_32' else 6144
     cases += [(r.randrange(1<<nb),r.randrange(1<<db)) for _ in range(count)];cases += [(r.randrange(1<<nb),0) for _ in range(128)];mode='structured_random'
-   z=run(c,A[name],cases,nb,db,qb,rb,sh);z['mode']=mode;pr[name]=z
+   z=run(c,A[name],cases,nb,db,qb,rb,sh,label=f'{p}:{name}');z['mode']=mode;pr[name]=z
   for i,(name,nb,db,qb,rb,sh) in enumerate(aliases):
    r=random.Random(0xA7700000+pi*0x1000+i);cases=[(n,d) for n in edge(nb) for d in edge(db)]+[(r.randrange(1<<nb),r.randrange(1<<db)) for _ in range(1024)]
-   pr[name]=run(c,A[name],cases,nb,db,qb,rb,sh,remainder_only=True)
+   pr[name]=run(c,A[name],cases,nb,db,qb,rb,sh,remainder_only=True,label=f'{p}:{name}')
   pr['MATH_URECIP16_Q16']=recip(c,A['MATH_URECIP16_Q16'])
   if any(v['errors'] for v in pr.values()):raise AssertionError((p,pr))
   result[p]=pr;print(p,'PASS',sum(v['cases'] for v in pr.values()),'unsigned division/modulo calls',flush=True)
