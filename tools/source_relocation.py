@@ -460,7 +460,7 @@ def generate_source(profile,outpath:Path):
   if mode=='rel':
    d=raw[pc+1];d=d-256 if d>=128 else d;btargets.add((pc+2+d)&0xffff)
  lines=[
-  '; GENERATED CANONICAL SOURCE. Builds the stable 54-entry API from symbolic assembly source.',
+  '; GENERATED CANONICAL SOURCE. Builds the stable 56-entry API from symbolic assembly source.',
   '; The fixed FINAL PRG is provenance/reference only. This file is the relocatable build input.',
   '; Compatible with the included source assembler; syntax is intentionally ACME-style.',
   '!cpu 6510','!source "math_config.inc"',''
@@ -537,10 +537,10 @@ def generate_source(profile,outpath:Path):
  # override a future table regeneration.
  lines += ['', '; Canonical generated normalization tables (final ownership).',
            f'!source "../../{profile}/resident/vector/native/vec2_normalize_tables.asm"']
- lines += ['', '; Candidate wide-intermediate multiply/divide primitives.',
-           '!source "../game_math/muldiv16_candidate.inc"']
+ lines += ['', '; Stable wide-intermediate multiply/divide primitives.',
+           '!source "../game_math/muldiv16.inc"']
  if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
-  lines += ['!source "../game_math/muldiv16_u_fast_candidate.inc"']
+  lines += ['!source "../game_math/muldiv16_fast.inc"']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 
