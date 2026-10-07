@@ -5971,3 +5971,6 @@ ZCE4:
 
 ; Canonical generated normalization tables (final ownership).
 !source "../../v2_pareto_fast/resident/vector/native/vec2_normalize_tables.asm"
+
+; Candidate wide-intermediate multiply/divide primitives.
+!source "../game_math/muldiv16_candidate.inc"
