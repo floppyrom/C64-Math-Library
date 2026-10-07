@@ -4507,3 +4507,6 @@ LCAFB:
 
 ; Canonical generated normalization tables (final ownership).
 !source "../../v1_balanced/resident/vector/native/vec2_normalize_tables.asm"
+
+; Candidate wide-intermediate multiply/divide primitives.
+!source "../game_math/muldiv16_candidate.inc"
