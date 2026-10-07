@@ -44,11 +44,14 @@ def d8_bit(i,q):
 d8_{i}:
     rol {q}
     rol a
-    bcs d8_take_{i}
+    bcs d8_force_{i}
     cmp $12
     bcc d8_no_{i}
-d8_take_{i}:
     sbc $12
+    bcs d8_no_{i}
+d8_force_{i}:
+    sbc $12
+    sec
 d8_no_{i}:
 """
 
