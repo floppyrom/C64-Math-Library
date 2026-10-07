@@ -2,7 +2,7 @@ name: MULDIV16 candidate
 
 on:
   push:
-    branches: [ feat/muldiv16-20261007 ]
+    branches: [ feat/muldiv16-20261007, experiment/muldiv16-optisearch-fusion-20261007 ]
 
 jobs:
   validate:
