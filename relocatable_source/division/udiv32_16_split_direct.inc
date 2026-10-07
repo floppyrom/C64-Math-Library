@@ -90,16 +90,18 @@ U3216_D8_DISPATCH:
 U3216_D8_JUMP:
         jmp U3216_D8
 U3216_D8_QZERO:
-        lda #0
-        sta MATH_Q+0
-        sta MATH_Q+1
-        sta MATH_Q+2
-        sta MATH_Q+3
-        sta MATH_R+1
+        ; LN1 and the high dividend word are known zero here.  Stage the
+        ; one-byte remainder, clear quotient staging, then reuse the public
+        ; output epilogue.  This recovers more bytes than the smarter D8 gate
+        ; costs, keeping the proven main-core page geometry intact.
         lda U3216_LN0
-        sta MATH_R+0
+        sta U3216_R0
+        lda #0
+        sta U3216_LN0
+        sta U3216_Q2
+        sta U3216_Q3
         clc
-        rts
+        jmp U3216_FINISH
 
 U3216_GENERAL:
         jsr U3216_DIV16
