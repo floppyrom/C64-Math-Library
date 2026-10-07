@@ -22,43 +22,43 @@ S16_x1 = S16_p4
 S16_composed:
         lda S16_x1
         bmi S16_xneg
-        bit S16_y1
+        ; X still holds original Y1. CPX #0 tests its sign and primes C=1.
+        cpx #0
         bmi S16_yneg_only
         jmp S16_umult
 S16_xneg:
-        bit S16_y1
+        ; Same sign test also primes C for the producer / NN negate chain.
+        cpx #0
         bmi S16_nn
         jsr S16_umult
         sec
         sbc MATH_IO+$04
-        sta S16_restore_a1+1
+        sta S16_p2
         tya
         sbc S16_y1
         tay
-S16_restore_a1:
-        lda #$00
+        lda S16_p2
         rts
 S16_yneg_only:
         jsr S16_umult
         sec
         sbc S16_x0
-        sta S16_restore_a2+1
+        sta S16_p2
         tya
         sbc S16_x1
         tay
-S16_restore_a2:
-        lda #$00
+        lda S16_p2
         rts
 S16_nn:
-        sec
+        ; CPX #0 entered with C=1, so start -Y directly.
         lda #$00
         sbc MATH_IO+$04
         tay
         lda #$00
         sbc S16_y1
         sta S16_y1
-        sec
-        lda #$00
+        ; Negating a negative Y leaves C=0. 1-X0-(1-C) == -X0.
+        lda #$01
         sbc S16_x0
         sta S16_x0
         sta S16_p2
@@ -72,22 +72,25 @@ S16_nn:
         eor #$ff
         sta S16_p5
         sta S16_p7
-        jmp S16_same_x
+        ; NN's magnitude chain ends with C=0; the producer requires C=1.
+        sec
+        jmp S16_primed_entry
 
 * = REG_GAME+$0DEC
 S16_umult:
+        ; Non-NN dispatch leaves original X1 live in A. Bind the high byte
+        ; first, then X0, avoiding a redundant reload exactly as FAST24 does.
+        sta S16_p6
+        eor #$ff
+        sta S16_p5
+        sta S16_p7
         lda S16_x0
         sta S16_p2
         eor #$ff
         sta S16_p1
         sta S16_p3
-        lda S16_x1
-        sta S16_p6
-        eor #$ff
-        sta S16_p5
-        sta S16_p7
-S16_same_x:
-        sec
+        ; All non-NN paths arrive with C=1 from CPX #0.
+S16_primed_entry:
         lda (S16_p0),y
         adc (S16_p1),y
         sta S16_z0
@@ -156,14 +159,15 @@ S16_public:
         lda #>S16_nh
         sta S16_p3+1
         sta S16_p7+1
+        ldx MATH_IO+$05
+        stx S16_y1
         lda MATH_IO+$00
         sta S16_x0
+        ldy MATH_IO+$04
         lda MATH_IO+$01
         sta S16_x1
-        lda MATH_IO+$05
-        sta S16_y1
-        ldy MATH_IO+$04
-        jsr S16_composed
+        ; A/N already hold X1: skip the dispatcher's redundant LDA S16_x1.
+        jsr S16_composed+2
         sta MATH_IO+$0A
         stx MATH_IO+$09
         sty MATH_IO+$0B
