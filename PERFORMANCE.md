@@ -4,7 +4,7 @@ This is the quickest way to answer **“how fast is it?”** for the current C64
 
 The five fixed profiles use different memory/ZP trade-offs, so the fastest number is not automatically the best choice for every program. For exact code size, ZP ranges, stack reservation, corpus and a direct source link for every row, use [`docs/CONSOLIDATED_ROUTINE_TABLE.md`](docs/CONSOLIDATED_ROUTINE_TABLE.md) or [`benchmarks/PUBLIC_PROFILE_RESULTS.csv`](benchmarks/PUBLIC_PROFILE_RESULTS.csv). For a one-row-per-routine view that automatically selects the fastest shipped profile, use [`benchmarks/BEST_PROFILE_RESULTS.csv`](benchmarks/BEST_PROFILE_RESULTS.csv).
 
-The V2/V3/V4 four-ZP UDIV32 update saves 76 reachable code bytes and averages 177.737 fewer cycles on a paired uniform32 corpus. Some inputs regress; see [the full comparison](docs/UDIV32_OPTISEARCH.md).
+The V2/V3/V4 UDIV32 live-high core uses four ZP bytes on the wide-divisor hot path and averages 177.737 fewer cycles on the original paired uniform32 comparison. The finalized public graph also reaches the bounded UDIV32/16 and 17-bit-divisor fallbacks, so its whole-call static resource footprint is larger; see [the full comparison and resource accounting](docs/UDIV32_OPTISEARCH.md).
 
 ## Shipped profile means
 
