@@ -120,10 +120,15 @@ def validate(profile,build):
  # UMOD8 is independent; wider UMOD entries alias UDIV.
  for a,d in pairs(8,0xD808,20)[:70]:
   wr(c,N,a,1);wr(c,D,d,1);call('MATH_UMOD8');r=rd(c,R,1);assert (c.c==1 and r==0) if d==0 else (c.c==0 and r==a%d)
+ # Wider UMOD entries guarantee remainder/carry and input preservation.
+ # V2-V4 use dedicated remainder-only fast front ends, so Q is intentionally
+ # unspecified on their fast exits; V1/V5 may still materialize it via aliases.
  for nb,db,n in [(16,16,'MATH_UMOD16'),(24,24,'MATH_UMOD24'),(32,16,'MATH_UMOD32_16')]:
   nn=nb//8;dn=db//8
   for a,d in pairs(nb,0xE000+nb,8)[:24]:
-   d&=MASK(db);wr(c,N,a,nn);wr(c,D,d,dn);call(n);q=rd(c,Q,nn);r=rd(c,R,dn);assert (c.c==1 and q==0 and r==0) if d==0 else (c.c==0 and (q,r)==divmod(a,d))
+   d&=MASK(db);wr(c,N,a,nn);wr(c,D,d,dn);ns=snap(c,N,nn);ds=snap(c,D,dn);call(n);r=rd(c,R,dn)
+   assert (c.c==1 and r==0) if d==0 else (c.c==0 and r==a%d),(profile,n,a,d,r,c.c)
+   assert snap(c,N,nn)==ns and snap(c,D,dn)==ds,(profile,n,'input preserve',a,d)
  # Signed divide and signed modulo aliases; quotient is truncation toward zero.
  for nb,db,n,mn in [(8,8,'MATH_SDIV8','MATH_SMOD8'),(16,16,'MATH_SDIV16','MATH_SMOD16'),(24,24,'MATH_SDIV24','MATH_SMOD24'),(32,16,'MATH_SDIV32_16','MATH_SMOD32_16')]:
   nn=nb//8;dn=db//8
@@ -136,8 +141,11 @@ def validate(profile,build):
      eq,er=truncdiv(sa,sd);assert c.c==0 and q==(eq&MASK(nb)) and r==(er&MASK(db)),(profile,ent,sa,sd,hex(q),hex(r),eq,er)
  # Game 32/32 divmod, both aliases, unsigned+signed.
  for a,d in pairs(32,0x323232,32)[:100]:
-  for ent in ('MATH_UDIV32_32','MATH_UMOD32_32'):
-   wr(c,N,a,4);wr(c,D,d,4);call(ent);q=rd(c,Q,4);r=rd(c,R,4);assert (c.c==1 and q==0 and r==0) if d==0 else (c.c==0 and (q,r)==divmod(a,d))
+  wr(c,N,a,4);wr(c,D,d,4);call('MATH_UDIV32_32');q=rd(c,Q,4);r=rd(c,R,4)
+  assert (c.c==1 and q==0 and r==0) if d==0 else (c.c==0 and (q,r)==divmod(a,d))
+  wr(c,N,a,4);wr(c,D,d,4);ns=snap(c,N,4);ds=snap(c,D,4);call('MATH_UMOD32_32');r=rd(c,R,4)
+  assert (c.c==1 and r==0) if d==0 else (c.c==0 and r==a%d),(profile,'MATH_UMOD32_32',a,d,r,c.c)
+  assert snap(c,N,4)==ns and snap(c,D,4)==ds
   sa=si(a,32);sd=si(d,32)
   for ent in ('MATH_SDIV32_32','MATH_SMOD32_32'):
    wr(c,N,a,4);wr(c,D,d,4);call(ent);q=rd(c,Q,4);r=rd(c,R,4)
