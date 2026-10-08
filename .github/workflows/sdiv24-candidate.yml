@@ -63,7 +63,7 @@ jobs:
                   vals=[f"{float(by[(prof,n)]['mean_cycles']):.6f}" for prof in profiles]
                   line='| `'+n+'` | `'+canon+'` | '+' | '.join(vals)+' |'
               out.append(line)
-          p.write_text('\\n'.join(out)+'\\n')
+          p.write_text('\n'.join(out)+'\n')
           PY
           python3 tools/generate_public_indexes.py
           python3 tools/validate_public_catalog.py
@@ -84,7 +84,7 @@ jobs:
           files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
           with open('SHA256SUMS.txt','w') as out:
               for p in files:
-                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\\n")
+                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n")
           PY
           python3 tools/package_audit.py
           python3 - <<'PY'
@@ -94,7 +94,7 @@ jobs:
           files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
           with open('SHA256SUMS.txt','w') as out:
               for p in files:
-                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\\n")
+                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n")
           PY
           python3 tools/package_audit.py
 
