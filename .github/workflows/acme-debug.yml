@@ -16,8 +16,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Regenerate canonical sources
+        run: python3 tools/generate_sources.py
       - name: Show expanded V4 source around ACME error
         run: |
+          git diff -- relocatable_source/v4_reu_16m/math_relocatable.asm || true
           python3 - <<'PY'
           from pathlib import Path
           import sys
