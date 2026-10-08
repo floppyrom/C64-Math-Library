@@ -3,9 +3,10 @@
 ; saving/re-writing/restoring the stable public N vector.
 ;
 ; The signed adapter deliberately shares the same U3216 magnitude substrate as
-; the unsigned adapter. It owns sign/magnitude preparation and result correction,
-; then enters U3216_ENTRY with |N<<8| and |D|. This mirrors the V5 architecture
-; that proved faster than maintaining a separate signed 32/16 magnitude engine.
+; the unsigned adapter. It owns sign/magnitude preparation, enters U3216_ENTRY
+; with |N<<8| and |D|, then reuses the already-published MULDIV16 signed result
+; tails for quotient/remainder correction. Keeping those tiny tails shared also
+; keeps this adapter inside its historical REG_GAME+$0475..+$04BA slot.
 
 * = REG_GAME+$0435
 FXDIV_U_SHL8:
@@ -23,8 +24,7 @@ FXDIV_U_SHL8:
         jmp U3216_ENTRY
 
 FXDIV_S_SHL8:
-        ; Bind |D| once. Public D remains untouched and therefore remains
-        ; available for sign rediscovery after the magnitude divide.
+        ; Bind |D| once. Public D remains untouched for sign rediscovery.
         lda MATH_D+1
         bmi FXDIV_S_DNEG
         sta U3216_D1
@@ -32,7 +32,8 @@ FXDIV_S_SHL8:
         sta U3216_D0
         ora U3216_D1
         bne FXDIV_S_NSET
-        jmp FXDIV_S_ZERO
+        ; D=0: U3216 detects zero before consuming numerator state.
+        jmp U3216_ENTRY
 FXDIV_S_DNEG:
         lda #0
         sec
@@ -58,11 +59,10 @@ FXDIV_S_NSET:
         bmi FXDIV_S_PN
         ; ++ : unsigned magnitude result already has the final signs.
         jmp U3216_ENTRY
-
 FXDIV_S_PN:
         ; +- : positive remainder, negative quotient.
         jsr U3216_ENTRY
-        jmp FXDIV_S_NEG_Q
+        jmp MULDIV16_S_NEG_Q
 
 FXDIV_S_NNEG:
         ; negative N: form abs(N16) directly in the shifted magnitude slots.
@@ -78,42 +78,12 @@ FXDIV_S_NNEG:
 
         ; -+ : negative remainder and negative quotient.
         jsr U3216_ENTRY
-        jsr FXDIV_S_NEG_R
-FXDIV_S_NEG_Q:
-        lda #0
-        sec
-        sbc MATH_Q+0
-        sta MATH_Q+0
-        lda #0
-        sbc MATH_Q+1
-        sta MATH_Q+1
-        lda #0
-        sbc MATH_Q+2
-        sta MATH_Q+2
-        lda #0
-        sbc MATH_Q+3
-        sta MATH_Q+3
-        clc
-        rts
-
+        jsr MULDIV16_S_NEG_R
+        jmp MULDIV16_S_NEG_Q
 FXDIV_S_NN:
         ; -- : quotient positive, remainder follows negative numerator.
         jsr U3216_ENTRY
-FXDIV_S_NEG_R:
-        lda #0
-        sec
-        sbc MATH_R+0
-        sta MATH_R+0
-        lda #0
-        sbc MATH_R+1
-        sta MATH_R+1
-        clc
-        rts
-
-FXDIV_S_ZERO:
-        ; U3216_D0/D1 are already zero. Reuse the unsigned divide-by-zero
-        ; path so Q/R and Carry semantics remain exactly identical.
-        jmp U3216_ENTRY
+        jmp MULDIV16_S_NEG_R
 
 
 * = MATH_UDIV16_SHL8
