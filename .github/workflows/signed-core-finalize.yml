@@ -91,6 +91,7 @@ jobs:
 
       - name: Remove transient workflows and build trees
         run: |
+          rm -f .github/workflows/acme-debug.yml
           rm -f .github/workflows/signed-core-candidate.yml
           rm -f .github/workflows/signed-core-finalize.yml
           rm -rf build_source build_hybrid build_hybrid_repeat build_pareto
