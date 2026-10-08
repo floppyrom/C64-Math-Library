@@ -30,8 +30,8 @@ jobs:
             cp "build_source/reference/$p/math_${p}_source_built.prg" "$p/resident/math_${p}_game_math.prg"
             cp "build_source/reference/$p/math_api.inc" "$p/resident/math_api.inc"
           done
-          cp build_source/reference/v3_reu_512k/*.reu v3_reu_512k/reu/
-          cp build_source/reference/v4_reu_16m/*.reu v4_reu_16m/reu/
+          cp build_source/reference/v3_reu_512k/c64_math_v3_reu_512k_source_built.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
           cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
           cp build_hybrid/reference/v5_hybrid_lowzp/math_api.inc v5_hybrid_lowzp/resident/math_api.inc
 
