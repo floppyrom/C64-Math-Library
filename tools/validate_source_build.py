@@ -92,7 +92,10 @@ def validate(profile,build):
  t=time.time();c,P,I,M,initcy=load(profile,build);X=I;Y=I+4;Z=I+8;N=I+0x10;D=I+0x14;Q=I+0x18;R=I+0x1c
  hits={k:0 for k in P};checks=0
  def call(n,lim=2_000_000):
-  nonlocal checks;cy=c.call(P[n],lim);hits[n]+=1;checks+=1;return cy
+  nonlocal checks
+  try: cy=c.call(P[n],lim)
+  except RuntimeError as e: raise RuntimeError(f'{profile} {n} at {P[n]:#06x}: {e}') from e
+  hits[n]+=1;checks+=1;return cy
  # Publication stubs for game entries remain JMP ABI slots at the relocated block.
  for n in list(P)[26:]:
   if n != 'MATH_VEC2_NORMALIZE_Q8_8': assert c.mem[P[n]]==0x4c,(profile,n,hex(P[n]),hex(c.mem[P[n]]))
