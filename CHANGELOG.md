@@ -1,3 +1,12 @@
+## 2026-10-08 — shifted DIV/reciprocal direct-input optimization campaign
+
+- Reworked `MATH_UDIV16_SHL8` and `MATH_SDIV16_SHL8` so V1-V5 bind `N16 << 8` directly into the selected private 32/16 divider state instead of paying generic public-vector adapter work. Final UDIV16_SHL8 means are **770.773617 / 552.649695 / 553.124974 / 552.577740 / 553.298759** cycles for V1-V5.
+- Final SDIV16_SHL8 means are **846.155071 / 715.633370 / 714.004798 / 712.609597 / 630.805016**. V5 gains most: **953.277863 -> 630.805016** cycles mean while retaining its **31-byte normal-ZP contract**.
+- `MATH_URECIP16_Q16` now seeds `0x00010000` directly into the private 32/16 fallback state. Means become **108.497635 / 94.822998 / 66.233795 / 66.233795 / 95.044128**; V3/V4 keep their faster REU reciprocal path unchanged.
+- V5 now reaches the certified relocated V2 UDIV32/16 split-tail entry at `HYBRID_CODE+$0C00`; the helper is installed into a build-verified page-aligned free table run rather than colliding with direct UDIV16 at `$B800-$BDC9`.
+- OptiSearch's complete shifted-Q0 schedule sweep confirms that generic restoring/Q0 candidates are far slower than the specialized direct-state design. A post-OptiSearch synthesis pass then removed one redundant zero load, saving a further **2 cycles and 2 bytes** from every UDIV16_SHL8 adapter.
+- Final all-profile validation is zero-error: 4,753 UDIV16_SHL8 cases/profile, 4,585 SDIV16_SHL8 cases/profile, and exhaustive 65,536-divisor URECIP16_Q16/profile. See `docs/SHIFTED_DIV_RECIP_OPTIMIZATION_2026-10-08.md`.
+
 ## 2026-10-08 — signed DIV/MOD manual + OptiSearch optimization campaign
 
 - Completed the first family in the library-wide issue #39 optimization campaign. SDIV8/16/24 were re-audited and retained after compatible manual/OptiSearch candidates failed to improve the selected fixed-profile implementations; the attempted SDIV24 magnitude-deferral transplant was correctness-clean but timing-neutral.
