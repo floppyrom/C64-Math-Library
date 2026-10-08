@@ -43,6 +43,28 @@ jobs:
               print(' adapter_bytes',labels['D32F_PUBLIC_END']-labels['D32F_PUBLIC'])
               print(' prefix_bytes',labels['D32F_PREFIX_END']-labels['D32F_DIV_S32_16'])
           PY
+      - name: Diagnose V5 SDIV32/32 ownership
+        run: |
+          python3 - <<'PY'
+          import sys, tempfile
+          from pathlib import Path
+          sys.path.insert(0, 'tools')
+          import assemble_sources as asm
+          from tools.build_hybrid import load_prg
+          cfg=Path('relocatable_source/v5_hybrid_lowzp/math_config_reference.inc')
+          with tempfile.TemporaryDirectory() as td:
+              out=Path(td)
+              man=asm.build('v1_balanced',cfg,out)
+              base,_lo,_hi=load_prg(out/man['output_prg'])
+              final,_flo,_fhi=load_prg(Path('build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg'))
+              for a,b,name in ((0x5E00,0x5E0C,'public'),(0xC12C,0xC222,'signed_wrapper'),(0x2A00,0x2B80,'magnitude_core')):
+                  dif=[x for x in range(a,b) if base[x]!=final[x]]
+                  print(name,hex(a),hex(b-1),'diff_count',len(dif),'first',hex(dif[0]) if dif else 'none')
+                  for x in dif[:24]:
+                      print(f'  {x:04X}: {base[x]:02X}->{final[x]:02X}')
+              for x in (0x5E06,0x5E09,0xC12C,0xC13E,0xC1AD,0x2A00,0x2A2E):
+                  print(f'bytes {x:04X}:',base[x:x+16].hex(),'=>',final[x:x+16].hex())
+          PY
       - name: Install rebuilt candidate images
         run: |
           for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
