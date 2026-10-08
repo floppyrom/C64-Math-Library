@@ -42,7 +42,7 @@ jobs:
           import json
           p=json.load(open('/tmp/SIGNED_DIVISION_CANDIDATE.json'))
           for prof in ('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
-              for name in ('MATH_SDIV16_SHL8','MATH_SDIV32_16'):
+              for name in ('MATH_SDIV16_SHL8','MATH_SDIV32_16','MATH_SDIV32_32'):
                   r=p['profiles'][prof][name]
                   print(prof, name, r['mean_cycles'], r['min_cycles'], r['max_cycles'], r['cases'], r['errors'])
           PY
