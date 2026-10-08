@@ -6214,3 +6214,6 @@ ZCE4:
 ; Stable wide-intermediate multiply/divide primitives.
 !source "../game_math/muldiv16.inc"
 !source "../game_math/muldiv16_fast.inc"
+
+; Shifted divide/reciprocal campaign overlay.
+!source "../game_math/shifted_div_direct_fast.inc"
