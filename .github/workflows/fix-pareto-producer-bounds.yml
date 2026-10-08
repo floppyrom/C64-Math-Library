@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Patch current producer bounds
+      - name: Patch current producer bounds and SMUL16 SHR8 adapter
         run: |
           rm -f .github/workflows/fix-pareto-producer-bounds.yml
           rm -f .github/workflows/fix-pareto-umul16-bound.yml
@@ -59,34 +59,21 @@ jobs:
               if a not in s:
                   raise RuntimeError(f'missing expected text: {a}')
               s=s.replace(a,b)
-          old="""    write_jmp(dst,public_addr(man,'MATH_SMUL16'),vals['REG_LOW']+0x1100)
-    # Shared finish routine.
-"""
-          new="""    write_jmp(dst,public_addr(man,'MATH_SMUL16'),vals['REG_LOW']+0x1100)
-    # The V2 executable-ZP SMUL16 returns A=byte1, X=byte2 and leaves byte3 in
-    # public Z3.  Replace the V1-base SHR8 adapter so the companion fixed-point
-    # API uses the same return convention in this selected pack.
-    shr_starts=trace(src_init,v2_entries['MATH_SMUL16_SHR8'])
-    shr=vals['REG_GAME']+0x0E80
-    copy_code_block(dst,src_raw,0xCF80,0xCF8F,shr,shr_starts,vals,aux,smul=True)
-    sm=public_addr(man,'MATH_SMUL16')
-    dst[shr+1]=sm&255; dst[shr+2]=(sm>>8)&255
-    write_jmp(dst,public_addr(man,'MATH_SMUL16_SHR8'),shr)
-    # Shared finish routine.
-"""
-          if old not in s:
+          needle="    write_jmp(dst,public_addr(man,'MATH_SMUL16'),vals['REG_LOW']+0x1100)\n    # Shared finish routine.\n"
+          insert="    write_jmp(dst,public_addr(man,'MATH_SMUL16'),vals['REG_LOW']+0x1100)\n    # The V2 executable-ZP SMUL16 returns A=byte1, X=byte2 and leaves byte3 in\n    # public Z3. Replace the V1-base SHR8 adapter to match that convention.\n    shr_starts=trace(src_init,v2_entries['MATH_SMUL16_SHR8'])\n    shr=vals['REG_GAME']+0x0E80\n    copy_code_block(dst,src_raw,0xCF80,0xCF8F,shr,shr_starts,vals,aux,smul=True)\n    sm=public_addr(man,'MATH_SMUL16')\n    dst[shr+1]=sm&255; dst[shr+2]=(sm>>8)&255\n    write_jmp(dst,public_addr(man,'MATH_SMUL16_SHR8'),shr)\n    # Shared finish routine.\n"
+          if needle not in s:
               raise RuntimeError('missing SMUL16 insertion point')
-          s=s.replace(old,new)
+          s=s.replace(needle,insert)
           p.write_text(s)
           PY
           python3 -m py_compile tools/build_pareto.py
       - name: Prove full Custom Pareto matrix
         run: python3 tools/validate_pareto.py
-      - name: Commit passing producer-bound fix
+      - name: Commit passing Pareto fixes
         run: |
           rm -rf build_pareto
           git config user.name "c64-math-release-bot"
           git config user.email "actions@users.noreply.github.com"
           git add -A
-          git commit -m "Fix Pareto refreshed producer donor bounds"
+          git commit -m "Fix Pareto refreshed producer and SHR8 integration"
           git push origin HEAD:promote/muldiv16-stable-20261007
