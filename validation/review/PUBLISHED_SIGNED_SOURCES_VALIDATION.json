@@ -62,8 +62,8 @@
         },
         "MATH_SDIV32_32": {
           "file": "v1_balanced/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 380,
-          "bytes_verified": 987
+          "instructions": 374,
+          "bytes_verified": 971
         },
         "MATH_SDIV16_SHL8": {
           "file": "v1_balanced/resident/signed/division/native/sdiv16_shl8_native.asm",
@@ -128,18 +128,18 @@
         },
         "MATH_SDIV32_16": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv32_16_native.asm",
-          "instructions": 1154,
-          "bytes_verified": 2122
+          "instructions": 1152,
+          "bytes_verified": 2142
         },
         "MATH_SDIV32_32": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 380,
-          "bytes_verified": 894
+          "instructions": 374,
+          "bytes_verified": 882
         },
         "MATH_SDIV16_SHL8": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1184,
-          "bytes_verified": 2195
+          "instructions": 1182,
+          "bytes_verified": 2215
         }
       }
     },
@@ -199,18 +199,18 @@
         },
         "MATH_SDIV32_16": {
           "file": "v3_reu_512k/resident/signed/division/native/sdiv32_16_native.asm",
-          "instructions": 1154,
-          "bytes_verified": 2122
+          "instructions": 1152,
+          "bytes_verified": 2142
         },
         "MATH_SDIV32_32": {
           "file": "v3_reu_512k/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 380,
-          "bytes_verified": 894
+          "instructions": 374,
+          "bytes_verified": 882
         },
         "MATH_SDIV16_SHL8": {
           "file": "v3_reu_512k/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1184,
-          "bytes_verified": 2195
+          "instructions": 1182,
+          "bytes_verified": 2215
         }
       }
     },
@@ -270,18 +270,18 @@
         },
         "MATH_SDIV32_16": {
           "file": "v4_reu_16m/resident/signed/division/native/sdiv32_16_native.asm",
-          "instructions": 1154,
-          "bytes_verified": 2122
+          "instructions": 1152,
+          "bytes_verified": 2142
         },
         "MATH_SDIV32_32": {
           "file": "v4_reu_16m/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 380,
-          "bytes_verified": 894
+          "instructions": 374,
+          "bytes_verified": 882
         },
         "MATH_SDIV16_SHL8": {
           "file": "v4_reu_16m/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1184,
-          "bytes_verified": 2195
+          "instructions": 1182,
+          "bytes_verified": 2215
         }
       }
     },
@@ -346,8 +346,8 @@
         },
         "MATH_SDIV32_32": {
           "file": "v5_hybrid_lowzp/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 380,
-          "bytes_verified": 987
+          "instructions": 374,
+          "bytes_verified": 971
         },
         "MATH_SDIV16_SHL8": {
           "file": "v5_hybrid_lowzp/resident/signed/division/native/sdiv16_shl8_native.asm",
@@ -662,8 +662,8 @@
       "check": "v1_balanced_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 380,
-        "runtime": 380,
+        "published": 374,
+        "runtime": 374,
         "missing": 0,
         "extra": 0
       }
@@ -972,8 +972,8 @@
       "check": "v2_pareto_fast_MATH_SDIV32_16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1154,
-        "runtime": 1154,
+        "published": 1152,
+        "runtime": 1152,
         "missing": 0,
         "extra": 0
       }
@@ -997,8 +997,8 @@
       "check": "v2_pareto_fast_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 380,
-        "runtime": 380,
+        "published": 374,
+        "runtime": 374,
         "missing": 0,
         "extra": 0
       }
@@ -1022,8 +1022,8 @@
       "check": "v2_pareto_fast_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1184,
-        "runtime": 1184,
+        "published": 1182,
+        "runtime": 1182,
         "missing": 0,
         "extra": 0
       }
@@ -1307,8 +1307,8 @@
       "check": "v3_reu_512k_MATH_SDIV32_16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1154,
-        "runtime": 1154,
+        "published": 1152,
+        "runtime": 1152,
         "missing": 0,
         "extra": 0
       }
@@ -1332,8 +1332,8 @@
       "check": "v3_reu_512k_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 380,
-        "runtime": 380,
+        "published": 374,
+        "runtime": 374,
         "missing": 0,
         "extra": 0
       }
@@ -1357,8 +1357,8 @@
       "check": "v3_reu_512k_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1184,
-        "runtime": 1184,
+        "published": 1182,
+        "runtime": 1182,
         "missing": 0,
         "extra": 0
       }
@@ -1642,8 +1642,8 @@
       "check": "v4_reu_16m_MATH_SDIV32_16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1154,
-        "runtime": 1154,
+        "published": 1152,
+        "runtime": 1152,
         "missing": 0,
         "extra": 0
       }
@@ -1667,8 +1667,8 @@
       "check": "v4_reu_16m_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 380,
-        "runtime": 380,
+        "published": 374,
+        "runtime": 374,
         "missing": 0,
         "extra": 0
       }
@@ -1692,8 +1692,8 @@
       "check": "v4_reu_16m_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1184,
-        "runtime": 1184,
+        "published": 1182,
+        "runtime": 1182,
         "missing": 0,
         "extra": 0
       }
@@ -2002,8 +2002,8 @@
       "check": "v5_hybrid_lowzp_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 380,
-        "runtime": 380,
+        "published": 374,
+        "runtime": 374,
         "missing": 0,
         "extra": 0
       }
