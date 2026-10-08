@@ -60,6 +60,7 @@ jobs:
           python3 tools/validate_signed_division.py
           python3 tools/validate_muldiv16.py
           python3 tools/validate_signed_multiply.py
+          python3 tools/benchmark_isqrt32_fast.py
           python3 tools/validate_hybrid.py
           python3 tools/test_hybrid_config.py
           python3 tools/verify_hybrid_deterministic.py
