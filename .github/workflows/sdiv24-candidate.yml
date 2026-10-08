@@ -67,7 +67,7 @@ jobs:
           PY
       - name: Install rebuilt candidate images
         run: |
-          for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
+          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m; do
             cp "build_source/reference/$p/math_${p}_source_built.prg" "$p/resident/math_${p}_game_math.prg"
             cp "build_source/reference/$p/math_api.inc" "$p/resident/math_api.inc"
           done
@@ -75,7 +75,7 @@ jobs:
           cp build_hybrid/reference/v5_hybrid_lowzp/math_api.inc v5_hybrid_lowzp/resident/math_api.inc
       - name: Validate and benchmark signed division family
         run: |
-          for p in v2_pareto_fast v3_reu_512k v4_reu_16m v5_hybrid_lowzp; do
+          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m v5_hybrid_lowzp; do
             python3 tools/validate_signed_division.py --profile "$p" --out "/tmp/${p}_SIGNED_DIVISION.json"
             cat "/tmp/${p}_SIGNED_DIVISION.json"
           done
