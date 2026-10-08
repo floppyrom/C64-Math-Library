@@ -1,104 +1,141 @@
-; SDIV32/32 sign-flow optimization.
-; Public N/D inputs are preserved, so quotient/remainder signs are rediscovered
-; after the private magnitude core instead of being saved in two ZP flag bytes.
-; Profile wrapper must define SD3232_ZERO and SD3232_MAG before sourcing this file.
+; SDIV32/32 public-unsigned reuse wrapper.
+; Profile wrapper defines SD3232_BASE before sourcing this file.
+;
+; Public N/D are preserved at the API boundary. For nonzero divisors, original
+; sign bytes are held transiently on the CPU stack while negative operands are
+; converted in place to magnitudes. The selected public MATH_UDIV32_32 is then
+; called directly; because it preserves its inputs, negative operands can be
+; restored in place afterward. Result signs are finally rediscovered from the
+; restored public inputs. This keeps signed division automatically coupled to
+; the profile's fastest qualified unsigned 32/32 core with no permanent ZP.
 
-* = REG_GAME+$002C
+* = SD3232_BASE
 SD3232_ENTRY:
-    lda MATH_D+0
-    ora MATH_D+1
-    ora MATH_D+2
-    ora MATH_D+3
-    bne SD3232_DNZ
-    jsr SD3232_ZERO
-    rts
+        ; Preserve canonical divide-by-zero behavior without touching N/D.
+        lda MATH_D+0
+        ora MATH_D+1
+        ora MATH_D+2
+        ora MATH_D+3
+        bne SD3232_DNZ
+        jmp MATH_UDIV32_32
 
 SD3232_DNZ:
-    lda MATH_N+0
-    sta ZP_MAIN+$51
-    lda MATH_N+1
-    sta ZP_MAIN+$52
-    lda MATH_N+2
-    sta ZP_MAIN+$53
-    lda MATH_N+3
-    sta ZP_MAIN+$54
-    bpl SD3232_N_READY
-    sec
-    lda #0
-    sbc ZP_MAIN+$51
-    sta ZP_MAIN+$51
-    lda #0
-    sbc ZP_MAIN+$52
-    sta ZP_MAIN+$52
-    lda #0
-    sbc ZP_MAIN+$53
-    sta ZP_MAIN+$53
-    lda #0
-    sbc ZP_MAIN+$54
-    sta ZP_MAIN+$54
-SD3232_N_READY:
-    lda MATH_D+0
-    sta ZP_MAIN+$55
-    lda MATH_D+1
-    sta ZP_MAIN+$56
-    lda MATH_D+2
-    sta ZP_MAIN+$57
-    lda MATH_D+3
-    sta ZP_MAIN+$58
-    bpl SD3232_D_READY
-    sec
-    lda #0
-    sbc ZP_MAIN+$55
-    sta ZP_MAIN+$55
-    lda #0
-    sbc ZP_MAIN+$56
-    sta ZP_MAIN+$56
-    lda #0
-    sbc ZP_MAIN+$57
-    sta ZP_MAIN+$57
-    lda #0
-    sbc ZP_MAIN+$58
-    sta ZP_MAIN+$58
-SD3232_D_READY:
-    jsr SD3232_MAG
-    bcs SD3232_RET
+        ; Save only the original sign bytes. Nested JSR use is safe: the
+        ; unsigned divider returns with its own stack balanced before these PLAs.
+        lda MATH_N+3
+        pha
+        lda MATH_D+3
+        pha
 
-    ; Quotient sign = original sign(N) XOR original sign(D).
-    lda MATH_N+3
-    eor MATH_D+3
-    bpl SD3232_Q_DONE
-    sec
-    lda #0
-    sbc MATH_Q+0
-    sta MATH_Q+0
-    lda #0
-    sbc MATH_Q+1
-    sta MATH_Q+1
-    lda #0
-    sbc MATH_Q+2
-    sta MATH_Q+2
-    lda #0
-    sbc MATH_Q+3
-    sta MATH_Q+3
+        ; Temporarily normalize N32 in place only when negative.
+        lda MATH_N+3
+        bpl SD3232_N_READY
+        lda #0
+        sec
+        sbc MATH_N+0
+        sta MATH_N+0
+        lda #0
+        sbc MATH_N+1
+        sta MATH_N+1
+        lda #0
+        sbc MATH_N+2
+        sta MATH_N+2
+        lda #0
+        sbc MATH_N+3
+        sta MATH_N+3
+SD3232_N_READY:
+
+        ; Temporarily normalize D32 in place only when negative.
+        lda MATH_D+3
+        bpl SD3232_D_READY
+        lda #0
+        sec
+        sbc MATH_D+0
+        sta MATH_D+0
+        lda #0
+        sbc MATH_D+1
+        sta MATH_D+1
+        lda #0
+        sbc MATH_D+2
+        sta MATH_D+2
+        lda #0
+        sbc MATH_D+3
+        sta MATH_D+3
+SD3232_D_READY:
+        jsr MATH_UDIV32_32
+
+        ; Restore D first (its sign byte was pushed last).
+        pla
+        bpl SD3232_D_RESTORED
+        lda #0
+        sec
+        sbc MATH_D+0
+        sta MATH_D+0
+        lda #0
+        sbc MATH_D+1
+        sta MATH_D+1
+        lda #0
+        sbc MATH_D+2
+        sta MATH_D+2
+        lda #0
+        sbc MATH_D+3
+        sta MATH_D+3
+SD3232_D_RESTORED:
+
+        ; Restore N from its magnitude when the original numerator was negative.
+        pla
+        bpl SD3232_N_RESTORED
+        lda #0
+        sec
+        sbc MATH_N+0
+        sta MATH_N+0
+        lda #0
+        sbc MATH_N+1
+        sta MATH_N+1
+        lda #0
+        sbc MATH_N+2
+        sta MATH_N+2
+        lda #0
+        sbc MATH_N+3
+        sta MATH_N+3
+SD3232_N_RESTORED:
+
+        ; Quotient sign = sign(N) XOR sign(D).
+        lda MATH_N+3
+        eor MATH_D+3
+        bpl SD3232_Q_DONE
+        lda #0
+        sec
+        sbc MATH_Q+0
+        sta MATH_Q+0
+        lda #0
+        sbc MATH_Q+1
+        sta MATH_Q+1
+        lda #0
+        sbc MATH_Q+2
+        sta MATH_Q+2
+        lda #0
+        sbc MATH_Q+3
+        sta MATH_Q+3
 SD3232_Q_DONE:
-    ; Remainder sign follows the original dividend.
-    lda MATH_N+3
-    bpl SD3232_SUCCESS
-    sec
-    lda #0
-    sbc MATH_R+0
-    sta MATH_R+0
-    lda #0
-    sbc MATH_R+1
-    sta MATH_R+1
-    lda #0
-    sbc MATH_R+2
-    sta MATH_R+2
-    lda #0
-    sbc MATH_R+3
-    sta MATH_R+3
+
+        ; Remainder sign follows the original numerator.
+        lda MATH_N+3
+        bpl SD3232_SUCCESS
+        lda #0
+        sec
+        sbc MATH_R+0
+        sta MATH_R+0
+        lda #0
+        sbc MATH_R+1
+        sta MATH_R+1
+        lda #0
+        sbc MATH_R+2
+        sta MATH_R+2
+        lda #0
+        sbc MATH_R+3
+        sta MATH_R+3
 SD3232_SUCCESS:
-    clc
-SD3232_RET:
-    rts
+        clc
+        rts
 SD3232_END:
