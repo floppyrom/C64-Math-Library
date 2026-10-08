@@ -1,0 +1,28 @@
+name: Pareto 60 diagnostic
+on:
+  push:
+    branches: [ promote/muldiv16-stable-20261007 ]
+    paths: [ '.github/workflows/pareto60-diagnostic.yml' ]
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,'tools')
+          import validate_pareto as vp
+          out,man=vp.build_point(60,'reference',outname='diag60_reference')
+          print('packs',man['selected_packs'])
+          print(vp.common_validate(out))
+          PY
