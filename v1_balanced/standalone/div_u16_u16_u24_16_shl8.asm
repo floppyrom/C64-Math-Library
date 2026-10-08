@@ -6,25 +6,12 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 191.
+; Reachable instructions: 165.
 !cpu 6510
 
-; ---- executable island $31B0 ----
-* = $31B0
-L31B0:
-    lda $C010                          ; @31B0 AD 10 C0
-    sta $18                            ; @31B3 85 18
-    lda $C011                          ; @31B5 AD 11 C0
-    sta $19                            ; @31B8 85 19
-    lda $C012                          ; @31BA AD 12 C0
-    sta $10                            ; @31BD 85 10
-    lda $C013                          ; @31BF AD 13 C0
-    sta $11                            ; @31C2 85 11
-    lda $C014                          ; @31C4 AD 14 C0
-    sta $12                            ; @31C7 85 12
-    lda $C015                          ; @31C9 AD 15 C0
-    sta $13                            ; @31CC 85 13
-    jsr L4500                          ; @31CE 20 00 45
+; ---- executable island $31D1 ----
+* = $31D1
+L31D1:
     lda $1A                            ; @31D1 A5 1A
     sta $C018                          ; @31D3 8D 18 C0
     lda $1B                            ; @31D6 A5 1B
@@ -206,29 +193,16 @@ MATH_UDIV16_SHL8:
 ; ---- executable island $C59E ----
 * = $C59E
 LC59E:
-    lda $C010                          ; @C59E AD 10 C0
-    sta $C040                          ; @C5A1 8D 40 C0
-    lda $C011                          ; @C5A4 AD 11 C0
-    sta $C041                          ; @C5A7 8D 41 C0
-    lda $C012                          ; @C5AA AD 12 C0
-    sta $C042                          ; @C5AD 8D 42 C0
-    lda $C013                          ; @C5B0 AD 13 C0
-    sta $C043                          ; @C5B3 8D 43 C0
-    lda #$00                           ; @C5B6 A9 00
-    sta $C010                          ; @C5B8 8D 10 C0
-    lda $C040                          ; @C5BB AD 40 C0
-    sta $C011                          ; @C5BE 8D 11 C0
-    lda $C041                          ; @C5C1 AD 41 C0
-    sta $C012                          ; @C5C4 8D 12 C0
-    lda #$00                           ; @C5C7 A9 00
-    sta $C013                          ; @C5C9 8D 13 C0
-    jsr L31B0                          ; @C5CC 20 B0 31
-    lda $C040                          ; @C5CF AD 40 C0
-    sta $C010                          ; @C5D2 8D 10 C0
-    lda $C041                          ; @C5D5 AD 41 C0
-    sta $C011                          ; @C5D8 8D 11 C0
-    lda $C042                          ; @C5DB AD 42 C0
-    sta $C012                          ; @C5DE 8D 12 C0
-    lda $C043                          ; @C5E1 AD 43 C0
-    sta $C013                          ; @C5E4 8D 13 C0
-    rts                                ; @C5E7 60
+    lda #$00                           ; @C59E A9 00
+    sta $18                            ; @C5A0 85 18
+    sta $11                            ; @C5A2 85 11
+    lda $C010                          ; @C5A4 AD 10 C0
+    sta $19                            ; @C5A7 85 19
+    lda $C011                          ; @C5A9 AD 11 C0
+    sta $10                            ; @C5AC 85 10
+    lda $C014                          ; @C5AE AD 14 C0
+    sta $12                            ; @C5B1 85 12
+    lda $C015                          ; @C5B3 AD 15 C0
+    sta $13                            ; @C5B6 85 13
+    jsr L4500                          ; @C5B8 20 00 45
+    jmp L31D1                          ; @C5BB 4C D1 31

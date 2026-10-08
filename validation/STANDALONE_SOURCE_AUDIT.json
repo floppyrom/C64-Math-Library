@@ -300,7 +300,7 @@
           "file": "div_u16_u16_u24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E18",
-          "reachable_instructions": 191
+          "reachable_instructions": 165
         },
         {
           "legacy_api": "MATH_SDIV16_SHL8",
@@ -308,7 +308,7 @@
           "file": "div_s16_s16_s24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E1B",
-          "reachable_instructions": 304
+          "reachable_instructions": 252
         },
         {
           "legacy_api": "MATH_URECIP16_Q16",
@@ -316,7 +316,7 @@
           "file": "recip_u16_u24_q16.asm",
           "alias_of": "",
           "entry_address": "$5E1E",
-          "reachable_instructions": 622
+          "reachable_instructions": 305
         },
         {
           "legacy_api": "MATH_SIN8",
@@ -755,7 +755,7 @@
           "file": "div_u16_u16_u24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E18",
-          "reachable_instructions": 1139
+          "reachable_instructions": 1112
         },
         {
           "legacy_api": "MATH_SDIV16_SHL8",
@@ -763,7 +763,7 @@
           "file": "div_s16_s16_s24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E1B",
-          "reachable_instructions": 1182
+          "reachable_instructions": 1116
         },
         {
           "legacy_api": "MATH_URECIP16_Q16",
@@ -771,7 +771,7 @@
           "file": "recip_u16_u24_q16.asm",
           "alias_of": "",
           "entry_address": "$5E1E",
-          "reachable_instructions": 1891
+          "reachable_instructions": 1252
         },
         {
           "legacy_api": "MATH_SIN8",
@@ -1210,7 +1210,7 @@
           "file": "div_u16_u16_u24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E18",
-          "reachable_instructions": 1139
+          "reachable_instructions": 1112
         },
         {
           "legacy_api": "MATH_SDIV16_SHL8",
@@ -1218,7 +1218,7 @@
           "file": "div_s16_s16_s24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E1B",
-          "reachable_instructions": 1182
+          "reachable_instructions": 1116
         },
         {
           "legacy_api": "MATH_URECIP16_Q16",
@@ -1713,7 +1713,7 @@
           "file": "div_u16_u16_u24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E18",
-          "reachable_instructions": 1139
+          "reachable_instructions": 1112
         },
         {
           "legacy_api": "MATH_SDIV16_SHL8",
@@ -1721,7 +1721,7 @@
           "file": "div_s16_s16_s24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E1B",
-          "reachable_instructions": 1182
+          "reachable_instructions": 1116
         },
         {
           "legacy_api": "MATH_URECIP16_Q16",
@@ -2240,7 +2240,7 @@
           "file": "div_u16_u16_u24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E18",
-          "reachable_instructions": 1139
+          "reachable_instructions": 1112
         },
         {
           "legacy_api": "MATH_SDIV16_SHL8",
@@ -2248,7 +2248,7 @@
           "file": "div_s16_s16_s24_16_shl8.asm",
           "alias_of": "",
           "entry_address": "$5E1B",
-          "reachable_instructions": 304
+          "reachable_instructions": 1170
         },
         {
           "legacy_api": "MATH_URECIP16_Q16",
@@ -2256,7 +2256,7 @@
           "file": "recip_u16_u24_q16.asm",
           "alias_of": "",
           "entry_address": "$5E1E",
-          "reachable_instructions": 1891
+          "reachable_instructions": 1253
         },
         {
           "legacy_api": "MATH_SIN8",

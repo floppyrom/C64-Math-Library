@@ -3,7 +3,7 @@
 ; Canonical integrated build source remains relocatable_source/v4_reu_16m/math_relocatable.asm
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
-; Corresponding unsigned API: MATH_UDIV32_32. Executable overlap: 0 instructions.
+; Corresponding unsigned API: MATH_UDIV32_32. Approved shared executable overlap: 0 instructions.
 ; Public entry: $5E06. Reachable signed instructions: 374.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510

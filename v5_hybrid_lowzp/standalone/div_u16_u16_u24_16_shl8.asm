@@ -6,25 +6,11 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 1139.
+; Reachable instructions: 1112.
 !cpu 6510
 
-; ---- executable island $31B0 ----
-* = $31B0
-L31B0:
-    lda $C010                          ; @31B0 AD 10 C0
-    sta $18                            ; @31B3 85 18
-    lda $C011                          ; @31B5 AD 11 C0
-    sta $19                            ; @31B8 85 19
-    lda $C012                          ; @31BA AD 12 C0
-    sta $10                            ; @31BD 85 10
-    lda $C013                          ; @31BF AD 13 C0
-    sta $11                            ; @31C2 85 11
-    lda $C014                          ; @31C4 AD 14 C0
-    sta $12                            ; @31C7 85 12
-    lda $C015                          ; @31C9 AD 15 C0
-    sta $13                            ; @31CC 85 13
-    jmp LAC00                          ; @31CE 4C 00 AC
+; ---- executable island $31D1 ----
+* = $31D1
 L31D1:
     sta $C01D                          ; @31D1 8D 1D C0
     lda $18                            ; @31D4 A5 18
@@ -51,7 +37,22 @@ L31EE:
 * = $5E18
 div_u16_u16_u24_16_shl8:
 MATH_UDIV16_SHL8:
-    jmp LC59E                          ; @5E18 4C 9E C5
+    jmp L9500                          ; @5E18 4C 00 95
+; ---- executable island $9500 ----
+* = $9500
+L9500:
+    lda #$00                           ; @9500 A9 00
+    sta $18                            ; @9502 85 18
+    sta $11                            ; @9504 85 11
+    lda $C010                          ; @9506 AD 10 C0
+    sta $19                            ; @9509 85 19
+    lda $C011                          ; @950B AD 11 C0
+    sta $10                            ; @950E 85 10
+    lda $C014                          ; @9510 AD 14 C0
+    sta $12                            ; @9513 85 12
+    lda $C015                          ; @9515 AD 15 C0
+    sta $13                            ; @9518 85 13
+    jmp LAC00                          ; @951A 4C 00 AC
 ; ---- executable island $A00C ----
 * = $A00C
 LA00C:
@@ -1292,32 +1293,3 @@ LB7CB:
     sta $C01B                          ; @B7E9 8D 1B C0
     clc                                ; @B7EC 18
     rts                                ; @B7ED 60
-; ---- executable island $C59E ----
-* = $C59E
-LC59E:
-    lda $C010                          ; @C59E AD 10 C0
-    sta $C040                          ; @C5A1 8D 40 C0
-    lda $C011                          ; @C5A4 AD 11 C0
-    sta $C041                          ; @C5A7 8D 41 C0
-    lda $C012                          ; @C5AA AD 12 C0
-    sta $C042                          ; @C5AD 8D 42 C0
-    lda $C013                          ; @C5B0 AD 13 C0
-    sta $C043                          ; @C5B3 8D 43 C0
-    lda #$00                           ; @C5B6 A9 00
-    sta $C010                          ; @C5B8 8D 10 C0
-    lda $C040                          ; @C5BB AD 40 C0
-    sta $C011                          ; @C5BE 8D 11 C0
-    lda $C041                          ; @C5C1 AD 41 C0
-    sta $C012                          ; @C5C4 8D 12 C0
-    lda #$00                           ; @C5C7 A9 00
-    sta $C013                          ; @C5C9 8D 13 C0
-    jsr L31B0                          ; @C5CC 20 B0 31
-    lda $C040                          ; @C5CF AD 40 C0
-    sta $C010                          ; @C5D2 8D 10 C0
-    lda $C041                          ; @C5D5 AD 41 C0
-    sta $C011                          ; @C5D8 8D 11 C0
-    lda $C042                          ; @C5DB AD 42 C0
-    sta $C012                          ; @C5DE 8D 12 C0
-    lda $C043                          ; @C5E1 AD 43 C0
-    sta $C013                          ; @C5E4 8D 13 C0
-    rts                                ; @C5E7 60

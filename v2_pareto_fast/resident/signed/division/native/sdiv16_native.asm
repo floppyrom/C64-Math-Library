@@ -3,7 +3,7 @@
 ; Canonical integrated build source remains relocatable_source/v2_pareto_fast/math_relocatable.asm
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
-; Corresponding unsigned API: MATH_UDIV16. Executable overlap: 0 instructions.
+; Corresponding unsigned API: MATH_UDIV16. Approved shared executable overlap: 0 instructions.
 ; Public entry: $3D20. Reachable signed instructions: 802.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
