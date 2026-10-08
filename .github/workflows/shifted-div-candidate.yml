@@ -27,7 +27,7 @@ jobs:
           python3 tools/build_hybrid.py --config-kind reference
       - name: Install candidate residents
         run: |
-          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m v5_hybrid_lowzp; do
+          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m; do
             cp "build_source/reference/$p/math_${p}_source_built.prg" "$p/resident/math_${p}_game_math.prg"
             cp "build_source/reference/$p/math_api.inc" "$p/resident/math_api.inc"
           done
