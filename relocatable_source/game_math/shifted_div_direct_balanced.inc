@@ -15,12 +15,11 @@ V1FX_UOUT  = REG_API+$01D1
 V1FX_U_SHL8:
         lda #0
         sta V1FX_ULN0
+        sta V1FX_UN1
         lda MATH_N+0
         sta V1FX_ULN1
         lda MATH_N+1
         sta V1FX_UN0
-        lda #0
-        sta V1FX_UN1
         lda MATH_D+0
         sta V1FX_UD0
         lda MATH_D+1
