@@ -23,6 +23,7 @@ jobs:
         run: rm .github/workflows/reseal-signed-determinism.yml
       - name: Refresh checksum package contract
         run: |
+          make clean
           python3 - <<'PY'
           from pathlib import Path
           import hashlib
