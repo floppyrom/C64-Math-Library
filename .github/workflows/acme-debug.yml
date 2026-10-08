@@ -1,0 +1,32 @@
+name: ACME V4 diagnostic
+
+on:
+  push:
+    branches:
+      - opt/signed-core-reuse-liftable-20261008
+
+permissions:
+  contents: read
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Show expanded V4 source around ACME error
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import sys
+          sys.path.insert(0,'tools')
+          from assemble_sources import expand_source_file
+          p=Path('relocatable_source/v4_reu_16m/math_relocatable.asm')
+          txt=expand_source_file(p,preserve_config_include=True)
+          lines=txt.splitlines()
+          for i in range(13915,13946):
+              print(f'{i+1:05d}: {lines[i] if i < len(lines) else "<EOF>"}')
+          print('TOTAL_LINES',len(lines))
+          PY
