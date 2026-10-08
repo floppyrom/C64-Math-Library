@@ -1,0 +1,48 @@
+name: Reseal signed DIVMOD package
+
+on:
+  push:
+    branches:
+      - opt/signed-divmod-campaign-20261008
+
+permissions:
+  contents: write
+
+jobs:
+  reseal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Remove temporary workflow and regenerate package contract
+        run: |
+          rm .github/workflows/reseal-signed-divmod.yml
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          with open('SHA256SUMS.txt','w') as out:
+              for p in files:
+                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n")
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          with open('SHA256SUMS.txt','w') as out:
+              for p in files:
+                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n")
+          PY
+          python3 tools/package_audit.py
+      - name: Commit resealed package
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Reseal signed DIV/MOD package checksums"
+          git push
