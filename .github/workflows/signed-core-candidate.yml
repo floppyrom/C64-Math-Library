@@ -1,0 +1,50 @@
+name: Signed core reuse candidate
+
+on:
+  push:
+    branches:
+      - opt/signed-core-reuse-liftable-20261008
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build candidate source images
+        run: |
+          make reference
+      - name: Validate rebuilt source images
+        run: |
+          python3 tools/validate_source_build.py all --build build_source/reference --out /tmp/signed-core-source-validation
+      - name: Install candidate V2-V4 images in runner
+        run: |
+          for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
+            cp "build_source/reference/$p/math_${p}_source_built.prg" "$p/resident/math_${p}_game_math.prg"
+          done
+          cp build_source/reference/v3_reu_512k/*.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
+          cp build_source/reference/v4_reu_16m/*.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+      - name: Full signed division correctness and timing
+        run: |
+          python3 tools/validate_signed_division.py --out /tmp/SIGNED_DIVISION_CANDIDATE.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('/tmp/SIGNED_DIVISION_CANDIDATE.json'))
+          for prof in ('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
+              r=p['profiles'][prof]['MATH_SDIV16_SHL8']
+              print(prof, 'SDIV16_SHL8', r['mean_cycles'], r['min_cycles'], r['max_cycles'], r['cases'], r['errors'])
+          PY
+      - name: Audit signed executable sharing on candidate images
+        run: |
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_signed_layout.py
