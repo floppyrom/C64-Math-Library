@@ -17,7 +17,8 @@ D32F_DIV_U32_16 = REG_TABLE+$2E00
 
 * = REG_LOW+$1590
 D32F_PUBLIC:
-        jsr D32F_DIV_S32_16
+        jmp D32F_DIV_S32_16
+D32F_OUTPUT:
         lda D32F_LQ0
         sta MATH_Q+0
         lda D32F_LQ1
@@ -63,7 +64,7 @@ D32F_PP_SETUP:
         lda MATH_N+3
         sta D32F_N1
         jsr D32F_DIV_U32_16
-        rts
+        jmp D32F_OUTPUT
 
 D32F_NP_SETUP:
         lda #0
@@ -101,7 +102,7 @@ D32F_NP_SETUP:
         sbc D32F_Q1
         sta D32F_Q1
         clc
-        rts
+        jmp D32F_OUTPUT
 
 D32F_DNEG:
         lda #0
@@ -137,7 +138,7 @@ D32F_PN_SETUP:
         sbc D32F_Q1
         sta D32F_Q1
         clc
-        rts
+        jmp D32F_OUTPUT
 
 D32F_NN_SETUP:
         lda #0
@@ -162,11 +163,12 @@ D32F_NN_SETUP:
         sbc D32F_R1
         sta D32F_R1
         clc
-        rts
+        jmp D32F_OUTPUT
 
 D32F_ZERO:
         lda #0
         sta D32F_D0
         sta D32F_D1
-        jmp D32F_DIV_U32_16
+        jsr D32F_DIV_U32_16
+        jmp D32F_OUTPUT
 D32F_PREFIX_END:
