@@ -21,6 +21,27 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Regenerate package publication artifacts
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          with open('SHA256SUMS.txt','w') as out:
+              for p in files:
+                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n")
+          PY
+          python3 tools/package_audit.py
+      - name: Upload package publication artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-divmod-package-artifacts
+          path: |
+            SHA256SUMS.txt
+            validation/PACKAGE_AUDIT.json
+          if-no-files-found: error
+          retention-days: 1
       - name: Build reference profiles
         run: |
           make reference
