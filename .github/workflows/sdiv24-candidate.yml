@@ -23,6 +23,21 @@ jobs:
           python-version: '3.12'
       - name: Build reference profiles
         run: make reference
+      - name: Report SDIV24 candidate geometry
+        run: |
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'tools')
+          from assemble_sources import preprocess
+          from mini6502 import Assembler
+          src=Path('relocatable_source/v2_pareto_fast/math_relocatable.asm')
+          cfg=Path('relocatable_source/v2_pareto_fast/math_config_reference.inc')
+          mem,labels,const=Assembler().assemble(preprocess(src,cfg))
+          for n in ('D24F_sg_code_start','D24F_div_s24','D24F_sg_code_end','D24F_cg_code_start','D24F_q1_sub_mem','D24F_cg_code_end'):
+              print(n, hex(labels[n]))
+          print('signed_frontend_bytes', labels['D24F_sg_code_end']-labels['D24F_sg_code_start'])
+          PY
       - name: Install rebuilt V2 candidate image
         run: |
           cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
