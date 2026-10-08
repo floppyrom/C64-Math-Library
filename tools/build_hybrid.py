@@ -791,7 +791,12 @@ def apply_shifted_div_recip_direct(dst: bytearray, vals: dict[str,int],
     ln0=z+0x16; ln1=z+0x17; n0=z+0x0E; n1=z+0x0F
     d0=z+0x10; d1=z+0x11
     uentry=hbase+(0x4300-DIV_SRC[0])
-    # Keep these ~220 bytes in the free $7100-$73FF V1 table gap. The high\n    # hybrid tail at $B800 is owned by the direct UDIV16 engine. $7100 keeps\n    # the helper page phase unchanged (low byte $00), preserving branch timing.\n    base=vals['REG_TABLE']+0x1100\n    end_limit=vals['REG_TABLE']+0x13FF\n    lines=[
+    # Keep these ~220 bytes in the free $7100-$73FF V1 table gap. The high
+    # hybrid tail at $B800 is owned by the direct UDIV16 engine. $7100 keeps
+    # the helper page phase unchanged (low byte $00), preserving branch timing.
+    base=vals['REG_TABLE']+0x1100
+    end_limit=vals['REG_TABLE']+0x13FF
+    lines=[
         f'* = {hx(base)}',
         'V5_FX_U:',
         '    lda #$00',
