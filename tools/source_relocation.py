@@ -167,7 +167,7 @@ DIVISION_REFRESH_INCLUDES={
  'v2_pareto_fast':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_fast.inc',
-  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
+  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_signflow.inc','../division/remainder_fast_v2.inc'),
  'v3_reu_512k':(
   'reu_div8_public_stubs.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
@@ -201,7 +201,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x7a00,0x8177),
   (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x8178,0x8878),
   (0x2590,0x25b1),(0x9200,0x9301),
-  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1ad,0xc1af),
+  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc12c,0xc1fd),
   (0xc100,0xc102),(0xc1fe,0xc496)),
  'v3_reu_512k':(
   (0x5472,0x54d4),
