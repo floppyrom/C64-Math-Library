@@ -1,0 +1,30 @@
+name: MULDIV16 signed smoke
+on:
+  push:
+    branches: [ experiment/muldiv16-optisearch-fusion-20261007 ]
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out build_muldiv16
+      - run: |
+          python3 - <<'PY'
+          import sys
+          sys.path.insert(0,'tools')
+          import validate_muldiv16_candidate as v
+          cpu,api,io,u,s,b=v.load('v2_pareto_fast','reference')
+          _,sv=v.vectors()
+          cyc=[]
+          for x,y,d in sv[:1800]:
+              c,ok,got,exp=v.call_signed(cpu,s,io,x,y,d)
+              if not ok: raise SystemExit(('FAIL',hex(x),hex(y),hex(d),got,exp))
+              cyc.append(c)
+          print('SIGNED_SMOKE_PASS',len(cyc),'mean',sum(cyc)/len(cyc),'min',min(cyc),'max',max(cyc))
+          PY

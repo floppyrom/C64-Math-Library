@@ -5,6 +5,7 @@ The library keeps the historical `MATH_*` ABI for compatibility, but the canonic
 ## Binary arithmetic grammar
 
 - Multiply: `mul_<A type><A bits>_<B type><B bits>_<result type><result bits>`; for example `mul_u8_u8_u16` and `mul_s16_s16_s32`. Mixed-sign future routines use the same form, for example `mul_u16_s8_s24`.
+- Multiply/divide with a full-width intermediate: `muldiv_<A>_<B>_<D>_<Q>_<R bits>`. For example, `muldiv_u16_u16_u16_u32_16` computes the full unsigned 32-bit product of two 16-bit operands, divides by a 16-bit divisor, and returns a 32-bit quotient plus 16-bit remainder.
 - Division without a returned remainder: `div_<N>_<D>_<Q>`.
 - Division with a returned remainder: `div_<N>_<D>_<Q>_<R bits>`. For example, `div_u8_u8_u8_8` means unsigned 8-bit numerator, unsigned 8-bit divisor, unsigned 8-bit quotient, and 8-bit remainder.
 - Modulo-only entry points use `mod_<N>_<D>_<R>`. Legacy modulo aliases that also happen to return a quotient retain `mod_...` canonical aliases because the requested operation is modulo; their extra quotient is documented, not hidden.
@@ -47,6 +48,8 @@ Every canonical name is an alias of the existing fixed-address `MATH_*` symbol i
 | `MATH_SMOD16` | `mod_s16_s16_s16` | `$3FD7` | `mod_s16_s16_s16__math_smod16.asm` |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | `$3FDA` | `mod_s24_s24_s24__math_smod24.asm` |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | `$3FDD` | `mod_s32_s16_s16__math_smod32_16.asm` |
+| `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | `$32E0` | `muldiv_u16_u16_u16_u32_16.asm` |
+| `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | `$32E3` | `muldiv_s16_s16_s16_s32_16.asm` |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | `$5E00` | `div_u32_u32_u32_32.asm` |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | `$5E03` | `mod_u32_u32_u32__math_umod32_32.asm` |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | `$5E06` | `div_s32_s32_s32_32.asm` |

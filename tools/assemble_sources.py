@@ -18,6 +18,7 @@ def parse_config(path):
  # V4's 4 MiB ISQRT32 prefix range is an optional extension to the
  # common config schema. Legacy/V1/V2/V3/V5/custom maps may omit it safely.
  vals.setdefault('REU_ISQRT32_PREFIX_BASE_BANK',0x40)
+ vals.setdefault('SMUL8_SUM_BASE',0x9c00)
  miss=[x for x in REQ if x not in vals and x!='REU_ISQRT32_PREFIX_BASE_BANK']
  if miss:raise ValueError(f'missing config symbols: {miss}')
  return vals
@@ -39,6 +40,7 @@ def ranges(profile,v):
  out.append(('MATH_IO',v['MATH_IO'],v['MATH_IO']+0x1f,'main'))
  if profile in ('v3_reu_512k','v4_reu_16m'):out.append(('REU_SCRATCH',v['REU_SCRATCH'],v['REU_SCRATCH']+3,'main'))
  if profile=='v1_balanced':out.append(('V1_SCRATCH',v['V1_SCRATCH'],v['V1_SCRATCH']+0x17,'main'))
+ out.append(('SMUL8_SUM',v['SMUL8_SUM_BASE'],v['SMUL8_SUM_BASE']+0x3fe,'main'))
  if profile=='v1_balanced':out.append(('ZP_MAIN',v['ZP_MAIN'],v['ZP_MAIN']+0x1e,'zp'))
  else:
   out.append(('ZP_MAIN',v['ZP_MAIN'],v['ZP_MAIN']+0x68,'zp'))
@@ -49,6 +51,7 @@ def validate_config(profile,v):
  validate_reu_banks(profile,v)
  for n in ('REG_LOW','REG_API','REG_KERNEL','REG_TABLE','REG_GAME'):
   if v[n]&0xff:raise ValueError(f'{n} must be page aligned')
+ if v['SMUL8_SUM_BASE']&0x1ff:raise ValueError('SMUL8_SUM_BASE must be $0200 aligned')
  rs=ranges(profile,v)
  for n,s,e,space in rs:
   lim=0xff if space=='zp' else 0xffff
@@ -208,6 +211,7 @@ def expand_source_file(path, preserve_config_include=False, _stack=()):
 
 def preprocess(src,config):
  cfg=Path(config).read_text().rstrip()+'\n'
+ if 'SMUL8_SUM_BASE' not in cfg: cfg += 'SMUL8_SUM_BASE = $9C00\n'
  expanded=expand_source_file(src,preserve_config_include=False)
  body=[]
  for line in expanded.splitlines():
@@ -238,22 +242,37 @@ def build(profile,config,outdir):
  prg=outdir/f'math_{profile}_source_built.prg';lo,hi=write_prg(mem,prg)
  reu_info=build_reu_image(profile,vals,outdir/f'c64_math_{profile}_source_built.reu')
  # Public include is source-level expressions resolved to concrete selected map for callers.
- pubnames=[]
  import csv
  with (ROOT/'docs/PUBLIC_API_COMPLETE.csv').open() as f:
-  for r in csv.DictReader(f):pubnames.append(r['entry'])
+  public_rows=list(csv.DictReader(f))
+ pubnames=[r['entry'] for r in public_rows]
  inc=outdir/'math_api.inc';lines=['; GENERATED from source-level assembly configuration',f'MATH_INIT = {hx(labels.get("MATH_INIT",const.get("MATH_INIT")))}']
- # Publish every callable legacy entry listed by the profile standalone manifest.
- # This includes stable API entries plus V3/V4 Turbo and V4 QS16 lifecycle calls.
+ # The authoritative stable surface comes from PUBLIC_API_COMPLETE.csv.  The
+ # standalone manifest may lag while a new stable entry is being promoted, so
+ # use it only for profile-specific extras (Turbo/QS16), never to suppress a
+ # stable API symbol from the generated caller include.
  manifest_rows=[]
  manifest_path=ROOT/profile/'standalone/MANIFEST.csv'
  if manifest_path.exists():
   with manifest_path.open() as f: manifest_rows=list(csv.DictReader(f))
- else:
-  manifest_rows=[{'legacy_api':n,'canonical_name':''} for n in pubnames]
+ stable_names=set(pubnames)
+ publish_rows=[{'legacy_api':r['entry'],'canonical_name':r.get('canonical_name','')} for r in public_rows]
+ publish_rows += [r for r in manifest_rows if r['legacy_api'] not in stable_names]
  emitted=set()
- for r in manifest_rows:
+ for r in publish_rows:
   n=r['legacy_api']; val=const.get(n,labels.get(n))
+  # Some profile-only lifecycle entries (currently V4 QS16) live in source-backed
+  # resident bytes but do not have a monolith label. Their standalone manifest
+  # records the reference entry address; relocate that address through the same
+  # configured region map instead of dropping the symbol from math_api.inc.
+  if val is None and n not in stable_names:
+   raw=r.get('entry_address','')
+   if raw.startswith('$'):
+    ref=int(raw[1:],16)
+    for region_name,os,oe in REGIONS:
+     if os <= ref <= oe:
+      val=vals[region_name] + (ref-REGION_DEFAULT[region_name])
+      break
   if val is not None:
    lines.append(f'{n:<24} = {hx(val)}'); emitted.add(n)
  # Keep configured Turbo geometry visible to callers.
@@ -264,7 +283,7 @@ def build(profile,config,outdir):
  for n,c in (('MATH_SEEK8_POS_X','S8_POS_X'),('MATH_SEEK8_POS_Y','S8_POS_Y'),('MATH_SEEK16_POS_XL','S16_POS_XL'),('MATH_SEEK16_POS_XH','S16_POS_XH'),('MATH_SEEK16_POS_Y','S16_POS_Y')):
   if c in const: lines.append(f'{n:<24} = {hx(const[c])}')
  lines += ['', '; Canonical typed aliases (source-facing names).', '; Legacy MATH_* names and addresses remain stable.']
- for r in manifest_rows:
+ for r in publish_rows:
   n=r['legacy_api']; c=r.get('canonical_name','')
   if c and n in emitted: lines.append(f'{c:<48} = {n}')
  inc.write_text('\n'.join(lines)+'\n')

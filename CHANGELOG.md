@@ -1,3 +1,12 @@
+## 2026-10-07 — Final MULDIV16 producer/divider and signed sign-flow fusion
+
+- Specialized V5 `MATH_UMULDIV16` and `MATH_SMULDIV16` without increasing its **31-byte normal-ZP contract**. The hybrid builder reuses the qualified V1 17-ZP UMUL16 record producer and feeds its register/ZP product directly into the relocated private V2 UDIV32/16 state.
+- V5 UMULDIV16 improves **956.646373 -> 834.646373 cycles mean**, with min/max **456-2078 -> 334-1956** on the unchanged 9,001-case corpus.
+- V5 SMULDIV16 improves **1378.300411 -> 888.154427 cycles mean**, with min/max **490-2271 -> 83-1899**. The signed path preserves product-sign state in control flow and uses specialized no-fix, quotient-only, remainder-only, and quotient+remainder tails.
+- The same signed sign-flow/tail specialization improves V2/V3/V4 SMULDIV16 from **889.395956 -> 860.448172 cycles mean**, with maximum latency **1893 -> 1869**. Against the composed baseline, mean saving is **272.590601 cycles**, with **91-1025 cycles saved per call** and zero slower cases.
+- The final code-for-cycles pass uses otherwise free implementation space; it adds **no ZP, no persistent stack reservation, and no profile PRG-span growth**. The V2-V4 signed body is split across relocation-safe private islands so alternate maps remain clear of SMUL8's signed-sum planes. SMUL8 sum planes are now explicitly relocatable (`$9C00` reference, `$1000` alternate). The divisor is deliberately bound only after multiplication on V5 because its divider D bytes overlap the low-ZP quarter-square pointer image.
+- Reference and alternate maps are cycle-vector identical. The focused proof passes **9,001 unsigned + 9,001 signed cases per profile/map**, and the V5 hybrid regression passes exhaustive UMOD8 plus randomized/mixed cross-API coverage.
+
 ## 2026-10-07 — UDIV32/16 optimization and bounded unsigned-division latency (PR #33)
 
 - Replaced V2/V3/V4 `MATH_UDIV32_16` with the direct split-byte constrained-tail implementation, including a compact `D<256` path. On the paired integration corpus, mean latency improves **1092.28 -> 715.36 cycles** and maximum latency **1880 -> 1738**.

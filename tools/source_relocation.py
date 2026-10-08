@@ -460,7 +460,7 @@ def generate_source(profile,outpath:Path):
   if mode=='rel':
    d=raw[pc+1];d=d-256 if d>=128 else d;btargets.add((pc+2+d)&0xffff)
  lines=[
-  '; GENERATED CANONICAL SOURCE. Builds the stable 54-entry API from symbolic assembly source.',
+  '; GENERATED CANONICAL SOURCE. Builds the stable 56-entry API from symbolic assembly source.',
   '; The fixed FINAL PRG is provenance/reference only. This file is the relocatable build input.',
   '; Compatible with the included source assembler; syntax is intentionally ACME-style.',
   '!cpu 6510','!source "math_config.inc"',''
@@ -537,16 +537,22 @@ def generate_source(profile,outpath:Path):
  # override a future table regeneration.
  lines += ['', '; Canonical generated normalization tables (final ownership).',
            f'!source "../../{profile}/resident/vector/native/vec2_normalize_tables.asm"']
+ lines += ['', '; Stable wide-intermediate multiply/divide primitives.',
+           '!source "../game_math/muldiv16.inc"']
+ if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+  lines += ['!source "../game_math/muldiv16_fast.inc"']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 
 def config_values(profile,alternate=False):
  if not alternate:
   d=dict(REGION_DEFAULT);d.update(MATH_IO=0xc000,REU_SCRATCH=0xc020,V1_SCRATCH=0xc040,ZP_MAIN=0x02,ZP_SMUL=0x80,TURBO16_ZP_BASE=0x3e,TURBO32_ZP_BASE=0x0a)
+  d['SMUL8_SUM_BASE']=0x9c00
   d.update(REU_UMUL8_LO_BANK=0,REU_UMUL8_HI_BANK=1,REU_UDIV8_Q_BANK=2,REU_UDIV8_R_BANK=3,REU_TURBO16_BANK=4,REU_TURBO32_BANK=5,
            REU_RECIP_LO_BANK=6,REU_RECIP_HI_BANK=7,REU_ATAN2_BANK=8,REU_ISQRT16_BANK=9,REU_QS16_BASE_BANK=0x10,REU_ISQRT32_PREFIX_BASE_BANK=0x40)
  else:
   d={'REG_LOW':0x9000,'REG_API':0xb000,'REG_KERNEL':0x2000,'REG_GAME_API':0x7c00,'REG_TABLE':0x4000,'REG_GAME':0x8000,'MATH_IO':0xc800,'REU_SCRATCH':0xc820,'V1_SCRATCH':0xc840,'ZP_MAIN':0x07,'ZP_SMUL':0x70,'TURBO16_ZP_BASE':0x40,'TURBO32_ZP_BASE':0x06}
+  d['SMUL8_SUM_BASE']=0x1000
   if profile=='v3_reu_512k':
    # Strong proof within 512 KiB: permute every operational bank, including
    # relocating the Turbo overlay banks from 4/5 to 0/1.
@@ -566,6 +572,7 @@ def write_config(profile,path,alternate=False):
  vals=config_values(profile,alternate);lines=['; Assembly-time memory/REU map. Edit values subject to docs/SOURCE_RELOCATION.md constraints.']
  for k in ('REG_LOW','REG_API','REG_KERNEL','REG_GAME_API','REG_TABLE','REG_GAME','MATH_IO','REU_SCRATCH','V1_SCRATCH','ZP_MAIN','ZP_SMUL','TURBO16_ZP_BASE','TURBO32_ZP_BASE'):
   lines.append(f'{k} = {hx(vals[k],2 if k.startswith("ZP_") else 4)}')
+ lines.append(f'SMUL8_SUM_BASE = {hx(vals["SMUL8_SUM_BASE"])}')
  lines.append('')
  lines.append('; Stable API REU bank assignments. V1/V2 ignore these values.')
  for k in REU_BANK_KEYS: lines.append(f'{k} = {hx(vals[k],2)}')

@@ -12,6 +12,7 @@ ZP_MAIN = $02
 ZP_SMUL = $80
 TURBO16_ZP_BASE = $3E
 TURBO32_ZP_BASE = $0A
+SMUL8_SUM_BASE = $9C00
 
 ; Unused in this stock-C64 hybrid; retained for common config schema.
 REU_UMUL8_LO_BANK = $00

@@ -92,7 +92,10 @@ def validate(profile,build):
  t=time.time();c,P,I,M,initcy=load(profile,build);X=I;Y=I+4;Z=I+8;N=I+0x10;D=I+0x14;Q=I+0x18;R=I+0x1c
  hits={k:0 for k in P};checks=0
  def call(n,lim=2_000_000):
-  nonlocal checks;cy=c.call(P[n],lim);hits[n]+=1;checks+=1;return cy
+  nonlocal checks
+  try: cy=c.call(P[n],lim)
+  except RuntimeError as e: raise RuntimeError(f'{profile} {n} at {P[n]:#06x}: {e}') from e
+  hits[n]+=1;checks+=1;return cy
  # Publication stubs for game entries remain JMP ABI slots at the relocated block.
  for n in list(P)[26:]:
   if n != 'MATH_VEC2_NORMALIZE_Q8_8': assert c.mem[P[n]]==0x4c,(profile,n,hex(P[n]),hex(c.mem[P[n]]))
@@ -117,13 +120,18 @@ def validate(profile,build):
    if d==0:assert c.c==1 and q==0 and r==0,(profile,n,'div0',q,r)
    else:assert c.c==0 and (q,r)==divmod(a,d),(profile,n,a,d,q,r,divmod(a,d))
    assert snap(c,N,nn)==ns and snap(c,D,dn)==ds
- # UMOD8 is independent; wider UMOD entries alias UDIV.
+ # UMOD8 is independent; wider UMOD entries have a remainder-only cross-profile contract.
  for a,d in pairs(8,0xD808,20)[:70]:
   wr(c,N,a,1);wr(c,D,d,1);call('MATH_UMOD8');r=rd(c,R,1);assert (c.c==1 and r==0) if d==0 else (c.c==0 and r==a%d)
+ # Wider UMOD entries guarantee remainder/carry and input preservation.
+ # V2-V4 use dedicated remainder-only fast front ends, so Q is intentionally
+ # unspecified on their fast exits; V1/V5 may still materialize it via aliases.
  for nb,db,n in [(16,16,'MATH_UMOD16'),(24,24,'MATH_UMOD24'),(32,16,'MATH_UMOD32_16')]:
   nn=nb//8;dn=db//8
   for a,d in pairs(nb,0xE000+nb,8)[:24]:
-   d&=MASK(db);wr(c,N,a,nn);wr(c,D,d,dn);call(n);q=rd(c,Q,nn);r=rd(c,R,dn);assert (c.c==1 and q==0 and r==0) if d==0 else (c.c==0 and (q,r)==divmod(a,d))
+   d&=MASK(db);wr(c,N,a,nn);wr(c,D,d,dn);ns=snap(c,N,nn);ds=snap(c,D,dn);call(n);r=rd(c,R,dn)
+   assert (c.c==1 and r==0) if d==0 else (c.c==0 and r==a%d),(profile,n,a,d,r,c.c)
+   assert snap(c,N,nn)==ns and snap(c,D,dn)==ds,(profile,n,'input preserve',a,d)
  # Signed divide and signed modulo aliases; quotient is truncation toward zero.
  for nb,db,n,mn in [(8,8,'MATH_SDIV8','MATH_SMOD8'),(16,16,'MATH_SDIV16','MATH_SMOD16'),(24,24,'MATH_SDIV24','MATH_SMOD24'),(32,16,'MATH_SDIV32_16','MATH_SMOD32_16')]:
   nn=nb//8;dn=db//8
@@ -134,10 +142,32 @@ def validate(profile,build):
     if sd==0:assert c.c==1 and q==0 and r==0,(profile,ent,'div0',q,r)
     else:
      eq,er=truncdiv(sa,sd);assert c.c==0 and q==(eq&MASK(nb)) and r==(er&MASK(db)),(profile,ent,sa,sd,hex(q),hex(r),eq,er)
+ # Stable wide-intermediate MULDIV16 pair: full 32-bit product, then / D16.
+ md_e=cases(16,0x4D16,16);mdr=random.Random(0x4D554C44)
+ md_cases=[(md_e[i%len(md_e)],md_e[(i*5+3)%len(md_e)],md_e[(i*7+1)%len(md_e)]) for i in range(32)]
+ md_cases += [(mdr.randrange(1<<16),mdr.randrange(1<<16),mdr.randrange(1<<16)) for _ in range(96)]
+ for x,y,d in md_cases:
+  wr(c,X,x,2);wr(c,Y,y,2);wr(c,D,d,2);xs=snap(c,X,2);ys=snap(c,Y,2);ds=snap(c,D,2)
+  call('MATH_UMULDIV16');q=rd(c,Q,4);r=rd(c,R,2)
+  if d==0: assert c.c==1 and q==0 and r==0,(profile,'MATH_UMULDIV16','div0',x,y,q,r)
+  else: assert c.c==0 and (q,r)==divmod(x*y,d),(profile,'MATH_UMULDIV16',x,y,d,q,r,divmod(x*y,d))
+  assert snap(c,X,2)==xs and snap(c,Y,2)==ys and snap(c,D,2)==ds,(profile,'MATH_UMULDIV16','input preserve')
+ for xb,yb,db in md_cases:
+  sx,sy,sd=si(xb,16),si(yb,16),si(db,16)
+  wr(c,X,xb,2);wr(c,Y,yb,2);wr(c,D,db,2);xs=snap(c,X,2);ys=snap(c,Y,2);ds=snap(c,D,2)
+  call('MATH_SMULDIV16');q=rd(c,Q,4);r=rd(c,R,2)
+  if sd==0: assert c.c==1 and q==0 and r==0,(profile,'MATH_SMULDIV16','div0',sx,sy,q,r)
+  else:
+   eq,er=truncdiv(sx*sy,sd)
+   assert c.c==0 and q==(eq&MASK(32)) and r==(er&MASK(16)),(profile,'MATH_SMULDIV16',sx,sy,sd,hex(q),hex(r),eq,er)
+  assert snap(c,X,2)==xs and snap(c,Y,2)==ys and snap(c,D,2)==ds,(profile,'MATH_SMULDIV16','input preserve')
  # Game 32/32 divmod, both aliases, unsigned+signed.
  for a,d in pairs(32,0x323232,32)[:100]:
-  for ent in ('MATH_UDIV32_32','MATH_UMOD32_32'):
-   wr(c,N,a,4);wr(c,D,d,4);call(ent);q=rd(c,Q,4);r=rd(c,R,4);assert (c.c==1 and q==0 and r==0) if d==0 else (c.c==0 and (q,r)==divmod(a,d))
+  wr(c,N,a,4);wr(c,D,d,4);call('MATH_UDIV32_32');q=rd(c,Q,4);r=rd(c,R,4)
+  assert (c.c==1 and q==0 and r==0) if d==0 else (c.c==0 and (q,r)==divmod(a,d))
+  wr(c,N,a,4);wr(c,D,d,4);ns=snap(c,N,4);ds=snap(c,D,4);call('MATH_UMOD32_32');r=rd(c,R,4)
+  assert (c.c==1 and r==0) if d==0 else (c.c==0 and r==a%d),(profile,'MATH_UMOD32_32',a,d,r,c.c)
+  assert snap(c,N,4)==ns and snap(c,D,4)==ds
   sa=si(a,32);sd=si(d,32)
   for ent in ('MATH_SDIV32_32','MATH_SMOD32_32'):
    wr(c,N,a,4);wr(c,D,d,4);call(ent);q=rd(c,Q,4);r=rd(c,R,4)

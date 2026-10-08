@@ -32,9 +32,9 @@ ck('signed_division_call_volume',sd['summary']['machine_calls']>=364533,sd['summ
 rows=list(csv.DictReader((ROOT/'docs/PUBLIC_API_COMPLETE.csv').open()))
 names=[r['entry'] for r in rows]
 API_COUNT=len(rows)
-COMMON_CALLS=21422  # machine calls of one common-API validation run (incl. seek frames)
-ck('public_api_count',API_COUNT==54,API_COUNT);ck('public_api_unique',len(set(names))==API_COUNT)
-game=rows[26:]
+COMMON_CALLS=21678  # 54-entry baseline 21422 + 128 calls for each MULDIV16 entry
+ck('public_api_count',API_COUNT==56,API_COUNT);ck('public_api_unique',len(set(names))==API_COUNT)
+game=rows[28:]
 ck('game_api_slots',len(game)==28 and all(int(r['address'][1:],16)==0x5e00+i*3 for i,r in enumerate(game[:19])) and int(game[19]['address'][1:],16)==0x5e39 and all(int(r['address'][1:],16)==0x5e3c+i*3 for i,r in enumerate(game[20:])),[r['address'] for r in game])
 ck('seek_api_slots',[r['entry'] for r in game[20:]]==['MATH_SEEK8_INIT','MATH_SEEK8_STEP','MATH_SEEK8_STEP_INT','MATH_SEEK8_STEP1','MATH_SEEK16_INIT','MATH_SEEK16_STEP','MATH_SEEK16_STEP_INT','MATH_SEEK16_STEP1'])
 turbo_rows=list(csv.DictReader((ROOT/'docs/TURBO_API.csv').open()))

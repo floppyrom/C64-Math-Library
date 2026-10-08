@@ -4,13 +4,13 @@
   "tests": {
     "common_reference": {
       "status": "PASS",
-      "public_entries": 54,
-      "machine_calls": 21422
+      "public_entries": 56,
+      "machine_calls": 21678
     },
     "common_alternate": {
       "status": "PASS",
-      "public_entries": 54,
-      "machine_calls": 21422
+      "public_entries": 56,
+      "machine_calls": 21678
     },
     "direct_v2_parity": {
       "MATH_UDIV16": {
@@ -108,5 +108,5 @@
       "status": "PASS"
     }
   },
-  "elapsed_seconds": 10.242
+  "elapsed_seconds": 19.618
 }

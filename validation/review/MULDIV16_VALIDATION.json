@@ -1,0 +1,242 @@
+{
+  "status": "PASS",
+  "stable_api": {
+    "MATH_UMULDIV16": "REG_API+$02E0",
+    "MATH_SMULDIV16": "REG_API+$02E3"
+  },
+  "profiles": {
+    "v1_balanced": {
+      "reference": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 1289.0223308521277,
+          "min_cycles": 513,
+          "max_cycles": 2300
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 1378.3004110654372,
+          "min_cycles": 490,
+          "max_cycles": 2271
+        }
+      },
+      "alternate": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 1289.0223308521277,
+          "min_cycles": 513,
+          "max_cycles": 2300
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 1378.3004110654372,
+          "min_cycles": 490,
+          "max_cycles": 2271
+        },
+        "cycle_vector_equal_to_reference": true
+      }
+    },
+    "v2_pareto_fast": {
+      "reference": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 801.6463726252639,
+          "min_cycles": 301,
+          "max_cycles": 1923
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 860.4481724252861,
+          "min_cycles": 83,
+          "max_cycles": 1869
+        },
+        "signed_composed_baseline": {
+          "cases": 9001,
+          "mean_cycles": 1133.0387734696144,
+          "min_cycles": 470,
+          "max_cycles": 2162
+        },
+        "signed_fusion": {
+          "saved_mean_cycles": 272.5906010443284,
+          "min_saved_cycles": 91,
+          "max_saved_cycles": 1025,
+          "slower_cases": 0,
+          "equal_cases": 0
+        }
+      },
+      "alternate": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 801.6463726252639,
+          "min_cycles": 301,
+          "max_cycles": 1923
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 860.4481724252861,
+          "min_cycles": 83,
+          "max_cycles": 1869
+        },
+        "signed_composed_baseline": {
+          "cases": 9001,
+          "mean_cycles": 1133.0387734696144,
+          "min_cycles": 470,
+          "max_cycles": 2162
+        },
+        "signed_fusion": {
+          "saved_mean_cycles": 272.5906010443284,
+          "min_saved_cycles": 91,
+          "max_saved_cycles": 1025,
+          "slower_cases": 0,
+          "equal_cases": 0
+        },
+        "cycle_vector_equal_to_reference": true
+      }
+    },
+    "v3_reu_512k": {
+      "reference": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 801.6463726252639,
+          "min_cycles": 301,
+          "max_cycles": 1923
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 860.4481724252861,
+          "min_cycles": 83,
+          "max_cycles": 1869
+        },
+        "signed_composed_baseline": {
+          "cases": 9001,
+          "mean_cycles": 1133.0387734696144,
+          "min_cycles": 470,
+          "max_cycles": 2162
+        },
+        "signed_fusion": {
+          "saved_mean_cycles": 272.5906010443284,
+          "min_saved_cycles": 91,
+          "max_saved_cycles": 1025,
+          "slower_cases": 0,
+          "equal_cases": 0
+        }
+      },
+      "alternate": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 801.6463726252639,
+          "min_cycles": 301,
+          "max_cycles": 1923
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 860.4481724252861,
+          "min_cycles": 83,
+          "max_cycles": 1869
+        },
+        "signed_composed_baseline": {
+          "cases": 9001,
+          "mean_cycles": 1133.0387734696144,
+          "min_cycles": 470,
+          "max_cycles": 2162
+        },
+        "signed_fusion": {
+          "saved_mean_cycles": 272.5906010443284,
+          "min_saved_cycles": 91,
+          "max_saved_cycles": 1025,
+          "slower_cases": 0,
+          "equal_cases": 0
+        },
+        "cycle_vector_equal_to_reference": true
+      }
+    },
+    "v4_reu_16m": {
+      "reference": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 801.6463726252639,
+          "min_cycles": 301,
+          "max_cycles": 1923
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 860.4481724252861,
+          "min_cycles": 83,
+          "max_cycles": 1869
+        },
+        "signed_composed_baseline": {
+          "cases": 9001,
+          "mean_cycles": 1133.0387734696144,
+          "min_cycles": 470,
+          "max_cycles": 2162
+        },
+        "signed_fusion": {
+          "saved_mean_cycles": 272.5906010443284,
+          "min_saved_cycles": 91,
+          "max_saved_cycles": 1025,
+          "slower_cases": 0,
+          "equal_cases": 0
+        }
+      },
+      "alternate": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 801.6463726252639,
+          "min_cycles": 301,
+          "max_cycles": 1923
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 860.4481724252861,
+          "min_cycles": 83,
+          "max_cycles": 1869
+        },
+        "signed_composed_baseline": {
+          "cases": 9001,
+          "mean_cycles": 1133.0387734696144,
+          "min_cycles": 470,
+          "max_cycles": 2162
+        },
+        "signed_fusion": {
+          "saved_mean_cycles": 272.5906010443284,
+          "min_saved_cycles": 91,
+          "max_saved_cycles": 1025,
+          "slower_cases": 0,
+          "equal_cases": 0
+        },
+        "cycle_vector_equal_to_reference": true
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "reference": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 834.6463726252639,
+          "min_cycles": 334,
+          "max_cycles": 1956
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 888.1544272858571,
+          "min_cycles": 83,
+          "max_cycles": 1899
+        }
+      },
+      "alternate": {
+        "unsigned": {
+          "cases": 9001,
+          "mean_cycles": 834.6463726252639,
+          "min_cycles": 334,
+          "max_cycles": 1956
+        },
+        "signed": {
+          "cases": 9001,
+          "mean_cycles": 888.1544272858571,
+          "min_cycles": 83,
+          "max_cycles": 1899
+        },
+        "cycle_vector_equal_to_reference": true
+      }
+    }
+  }
+}

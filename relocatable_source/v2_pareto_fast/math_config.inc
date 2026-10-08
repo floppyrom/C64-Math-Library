@@ -12,6 +12,7 @@ ZP_MAIN = $02
 ZP_SMUL = $80
 TURBO16_ZP_BASE = $003E
 TURBO32_ZP_BASE = $000A
+SMUL8_SUM_BASE = $9C00
 
 ; Stable API REU bank assignments. V1/V2 ignore these values.
 REU_UMUL8_LO_BANK = $00

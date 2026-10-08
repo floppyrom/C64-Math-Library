@@ -217,6 +217,17 @@ def cycles_catalog():
                 note=(f"major-axis speed {v['major_axis_speed']['mean_cycles']:.2f}, Euclidean {v['euclidean_speed']['mean_cycles']:.2f}, "
                       f"integer {v['integer_speed']['mean_cycles']:.2f}, 1 px/frame {v['one_pixel']['mean_cycles']:.2f}")
             add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],'2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified)',note)
+    # Full-width 16x16 -> 32 intermediate multiply/divide. This current
+    # all-profile reference/alternate proof is authoritative for the two new
+    # stable MULDIV16 entries.
+    md=json.loads((ROOT/'validation/review/MULDIV16_VALIDATION.json').read_text())
+    for p,rr in md['profiles'].items():
+        ref=rr['reference']
+        for n,key in (('MATH_UMULDIV16','unsigned'),('MATH_SMULDIV16','signed')):
+            v=ref[key]
+            note='full 32-bit product divided by 16-bit D; reference/alternate cycle vectors identical'
+            add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],
+                      '2026-10-07 MULDIV16 9,001-case all-profile/map validation',note)
     # V5 is V1 plus documented V2 imports; current signed/changed rows above override these inheritance rows.
     for n in API:
         if n in cat['v5_hybrid_lowzp']: continue

@@ -258,12 +258,12 @@ def map_v2_abs(old: int, vals: dict, aux: int, pack: str|None=None) -> int:
         if src <= old < src+ln: return dst+(old-src)
     # Pack code locations.
     if 0x5300 <= old <= 0x5322: return aux+AUX_UMUL8_CODE+(old-0x5300)
-    if 0x53EC <= old <= 0x5457: return aux+AUX_UMUL16_CODE+(old-0x53EC)
-    if 0x5649 <= old <= 0x575A: return aux+AUX_UMUL24_CODE+(old-0x5649)
+    if 0x53EC <= old <= 0x5458: return aux+AUX_UMUL16_CODE+(old-0x53EC)
+    if 0x5649 <= old <= 0x5763: return aux+AUX_UMUL24_CODE+(old-0x5649)
     if 0x34C0 <= old <= 0x3505: return aux+AUX_UMUL24_ADAPTER+(old-0x34C0)
     if 0x5800 <= old <= 0x5912: return aux+AUX_UMUL32_CODE+(old-0x5800)
     if 0x3420 <= old <= 0x346A: return aux+AUX_UMUL32_ADAPTER+(old-0x3420)
-    if 0x5A00 <= old <= 0x5A3B: return aux+AUX_SMUL_FINISH+(old-0x5A00)
+    if 0x5A00 <= old <= 0x5A3C: return aux+AUX_SMUL_FINISH+(old-0x5A00)
     # Native-signed private executable cores in the refreshed V2 donor.
     if 0x2600 <= old <= 0x2622: return aux+AUX_SMUL8_PRIVATE+(old-0x2600)
     if 0xCD00 <= old <= 0xCED5: return aux+AUX_SMUL24_PRIVATE+(old-0xCD00)
@@ -360,25 +360,25 @@ def apply_umul8_16(dst, src, vals, man, aux, v2_entries):
 
 
 def apply_umul24(dst,src,vals,man,aux,v2_entries):
-    # Record UMUL16.  Its runtime core is $53EC-$5457; the following $5458-$5470
+    # Record UMUL16.  Its runtime core is $53EC-$5458; the following $5459-$5471
     # is the standalone candidate's init helper and is deliberately replaced by
     # the generated Pareto MATH_INIT helper.
     u16starts=trace(src,v2_entries['MATH_UMUL16'])
-    copy_code_block(dst,src,0x53EC,0x5457,aux+AUX_UMUL16_CODE,u16starts,vals,aux)
+    copy_code_block(dst,src,0x53EC,0x5458,aux+AUX_UMUL16_CODE,u16starts,vals,aux)
     copy_code_block(dst,src,0x3020,0x3045,public_addr(man,'MATH_UMUL16'),u16starts,vals,aux)
 
-    # Record UMUL24.  Likewise omit its dead standalone init tail $575B-$577B.
+    # Record UMUL24.  Likewise omit its dead standalone init tail beginning at $5764.
     starts=trace(src,v2_entries['MATH_UMUL24'])
-    copy_code_block(dst,src,0x5649,0x575A,aux+AUX_UMUL24_CODE,starts,vals,aux)
+    copy_code_block(dst,src,0x5649,0x5763,aux+AUX_UMUL24_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x34C0,0x34FA,aux+AUX_UMUL24_ADAPTER,starts,vals,aux)
     write_jmp(dst,public_addr(man,'MATH_UMUL24'),aux+AUX_UMUL24_ADAPTER)
     # Refreshed FAST24 native-signed core. The current V2 implementation is a
     # single private island at $CD00-$CED5 plus a 3-byte public trampoline.
     # Copy the private island and point the stable custom-profile entry directly
-    # at the relocated public implementation ($CE9B in the V2 reference map).
+    # at the relocated public implementation ($CE96 in the V2 reference map).
     sstarts=trace(src,v2_entries['MATH_SMUL24'])
     copy_code_block(dst,src,0xCD00,0xCED5,aux+AUX_SMUL24_PRIVATE,sstarts,vals,aux)
-    write_jmp(dst,public_addr(man,'MATH_SMUL24'),aux+AUX_SMUL24_PRIVATE+(0xCE9B-0xCD00))
+    write_jmp(dst,public_addr(man,'MATH_SMUL24'),aux+AUX_SMUL24_PRIVATE+(0xCE96-0xCD00))
 
 
 def apply_umul32(dst,src,vals,man,aux,v2_entries):
@@ -399,8 +399,16 @@ def apply_smul16(dst,src_raw,src_init,vals,man,aux,v2_entries):
     starts=trace(src_init,v2_entries['MATH_SMUL16'])
     copy_code_block(dst,src_raw,0x2100,0x2126,vals['REG_LOW']+0x1100,starts,vals,aux,smul=True)
     write_jmp(dst,public_addr(man,'MATH_SMUL16'),vals['REG_LOW']+0x1100)
+    # The V2 executable-ZP SMUL16 returns A=byte1, X=byte2 and leaves byte3 in
+    # public Z3. Replace the V1-base SHR8 adapter to match that convention.
+    shr_starts=trace(src_init,v2_entries['MATH_SMUL16_SHR8'])
+    shr=vals['REG_GAME']+0x0E80
+    copy_code_block(dst,src_raw,0xCF80,0xCF8F,shr,shr_starts,vals,aux,smul=True)
+    sm=public_addr(man,'MATH_SMUL16')
+    dst[shr+1]=sm&255; dst[shr+2]=(sm>>8)&255
+    write_jmp(dst,public_addr(man,'MATH_SMUL16_SHR8'),shr)
     # Shared finish routine.
-    copy_code_block(dst,src_raw,0x5A00,0x5A3B,aux+AUX_SMUL_FINISH,starts,vals,aux,smul=True)
+    copy_code_block(dst,src_raw,0x5A00,0x5A3C,aux+AUX_SMUL_FINISH,starts,vals,aux,smul=True)
     # Start from the source image and relocate instructions according to the initialized executable-ZP trace.
     image=bytearray(src_raw[0xCC00:0xCC74]); dst[aux+AUX_SMUL_IMAGE:aux+AUX_SMUL_IMAGE+0x74]=image
     zstarts=trace(src_init,0x80)
@@ -433,8 +441,8 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
         add('PARETO_DIFF_HI', aux+AUX_DIFF_HI, aux+AUX_DIFF_HI+0xff)
         add('PARETO_UMUL8_CODE', aux+AUX_UMUL8_CODE, aux+AUX_UMUL8_CODE+0x22)
     if 'umul24' in packs:
-        add('PARETO_UMUL16_CODE', aux+AUX_UMUL16_CODE, aux+AUX_UMUL16_CODE+0x6b)
-        add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x111)
+        add('PARETO_UMUL16_CODE', aux+AUX_UMUL16_CODE, aux+AUX_UMUL16_CODE+0x6c)
+        add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x11a)
         add('PARETO_UMUL24_ADAPTER', aux+AUX_UMUL24_ADAPTER, aux+AUX_UMUL24_ADAPTER+0x3a)
         add('PARETO_SMUL24_PRIVATE', aux+AUX_SMUL24_PRIVATE, aux+AUX_SMUL24_PRIVATE+0x1d5)
     if 'umul32_initialized' in packs:
@@ -442,7 +450,7 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
         add('PARETO_UMUL32_ADAPTER', aux+AUX_UMUL32_ADAPTER, aux+AUX_UMUL32_ADAPTER+0x4a)
         add('PARETO_SMUL32_PRIVATE', aux+AUX_SMUL32_PRIVATE, aux+AUX_SMUL32_PRIVATE+0x114)
     if 'smul16_exec' in packs:
-        add('PARETO_SMUL16_FINISH', aux+AUX_SMUL_FINISH, aux+AUX_SMUL_FINISH+0x3b)
+        add('PARETO_SMUL16_FINISH', aux+AUX_SMUL_FINISH, aux+AUX_SMUL_FINISH+0x3c)
         add('PARETO_SMUL16_IMAGE', aux+AUX_SMUL_IMAGE, aux+AUX_SMUL_IMAGE+0x73)
     if init_len:
         add('PARETO_INIT_HELPER', aux+AUX_INIT, aux+AUX_INIT+init_len-1)
@@ -506,7 +514,7 @@ def build_hybrid_custom(config: Path, outdir: Path, selection: dict) -> dict:
             'notes':[
                 'Selection occurs at build time; there is no runtime dispatcher.',
                 'Only certified dependency-compatible packs are considered.',
-                'All callers retain the common 54-entry ABI.',
+                'All callers retain the common 56-entry ABI.',
                 'If math_init_required is true, call MATH_INIT once before any math routine.',
                 'The RAM budget is enforced against the exact selected private payload; it is not a requirement for one contiguous block. Inspect private_main_ram_ranges for placement/ownership.',
             ],

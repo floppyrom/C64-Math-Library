@@ -7,7 +7,7 @@
   "output_prg": "math_v5_hybrid_lowzp_game_math.prg",
   "output_load": "$1000",
   "output_end": "$CF8F",
-  "output_sha256": "9c343ce3b8de0375cb9d622a4c8460ed385652e19a6b032106addf65bdb5d794",
+  "output_sha256": "2b2fecd504568d1f14a3ed1b4ceb31f25847e19f04b4baac1d252d2c6d956071",
   "public_entries": {
     "MATH_UMUL8": "$3000",
     "MATH_UMUL16": "$3020",
@@ -35,6 +35,8 @@
     "MATH_SMOD16": "$3FD7",
     "MATH_SMOD24": "$3FDA",
     "MATH_SMOD32_16": "$3FDD",
+    "MATH_UMULDIV16": "$32E0",
+    "MATH_SMULDIV16": "$32E3",
     "MATH_UDIV32_32": "$5E00",
     "MATH_UMOD32_32": "$5E03",
     "MATH_SDIV32_32": "$5E06",
@@ -125,27 +127,40 @@
     "zp": "$10-$18",
     "zp_bytes": 9
   },
+  "muldiv16_lowzp_fusion": {
+    "unsigned_entry": "$7800",
+    "signed_entry": "$7845",
+    "end": "$799D",
+    "code_bytes": 414,
+    "normal_zp_bytes": 31,
+    "producer": "qualified V1 17-ZP UMUL16 private record producer",
+    "consumer": "relocated private V2 UDIV32/16 entry",
+    "materializes_public_product": false,
+    "signed_strategy": "single magnitude multiply/divide plus quotient/remainder sign fixup"
+  },
   "indirect_beneficiaries": [
     "MATH_UDIV16_SHL8",
     "MATH_URECIP16_Q16"
   ],
   "notes": [
-    "All 54 stable API addresses and semantics remain V1-compatible.",
+    "All 56 stable API addresses and semantics remain V1-compatible.",
     "MATH_INIT remains optional exactly as in V1.",
     "The imported certified V2 kernels use only the existing V1 normal ZP window.",
     "Fast ATAN2, when enabled, adds no ZP and occupies four formerly empty V1 table pages (1024 bytes).",
     "V2 direct UDIV8 replaces the V1 256-class core in place; V2 direct UDIV16 is repacked into private hybrid RAM; UDIV24 uses the copied Repose direct core.",
     "V2 direct-output SDIV16 and SDIV24 are repacked into V1-free code/table windows and stay wholly inside the normal 31-byte ZP contract.",
-    "SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 retains the faster V2 hybrid import.",
+    "SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 imports the split-tail V2 core including its compact D8 island.",
+    "UDIV24 narrow-divisor tail calls the same relocated UDIV32/16 engine through the V2 latency helper; no additional ZP is required.",
+    "Wider UMOD entries keep compact V5 aliases to imported UDIV engines; they preserve remainder/carry semantics but do not import V2 remainder-only front-end timing.",
     "HYBRID_CODE is private implementation storage and may be relocated at build time.",
     "Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines."
   ],
   "source_inputs": {
-    "v1_source_sha256": "9f39d126ec25af595804b46058c49826d8e2eb6be67498e597f482e996aa876a",
-    "v2_source_sha256": "7b3a3ed689f385d64e8d8f76f9bdb541b31f46c1cc929381b1ff29406028ab96",
+    "v1_source_sha256": "8a768a9668f6b093e862a81300473a1ce2b01f13ecf9e0f4b35dd6dcb8f6d5fb",
+    "v2_source_sha256": "f5b97df04d8ef49a831384c875c5ac52b650b4ca29cfcf88aafc6eae01a2bfd3",
     "normalize_native_sha256": "02c62b29908cb367195eb9f8ac3f80c715532f2442369f5181769f3dc468dd58",
     "normalize_tables_sha256": "59092b96cebca7715f98f1fe7a8264a0169e535fc48946ac4f4b596358b1f0ab",
     "seek_native_sha256": "96d9d6d33e4f0d05b5acef61aa67990a8dcc041d9008196f2bb6c167c7970d9f",
-    "builder_sha256": "9e477e23f41d9e8fe37e3330917dadd8da9d4991b4ea99a5af460a8be4c26f92"
+    "builder_sha256": "cb0199d428acae4c008ce2826e577d6079e5c67eff4ec72619bc6049d0b1f5ab"
   }
 }

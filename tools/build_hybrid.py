@@ -6,7 +6,7 @@ import argparse, hashlib, json, shutil, sys, tempfile
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 
-from mini6502 import REV, SIZE
+from mini6502 import REV, SIZE, Assembler
 import assemble_sources as asm
 import source_relocation as sr
 
@@ -534,6 +534,255 @@ def _public_addr(man: dict, name: str) -> int:
     return int(v[1:], 16) if isinstance(v, str) and v.startswith('$') else int(v)
 
 
+def apply_muldiv16_lowzp_fusion(dst: bytearray, vals: dict[str, int],
+                                    base_man: dict, hbase: int) -> dict:
+    # OptiSearch-style low-ZP producer/consumer fusion for both V5 MULDIV16
+    # variants.  Reuse the qualified V1 17-ZP UMUL16 record producer directly,
+    # then feed magnitude product bytes z0/X/A/Y into private V2 UDIV32/16.
+    mbase = vals['REG_TABLE'] + 0x1800
+    mend = vals['REG_TABLE'] + 0x19ED
+    z = vals['ZP_MAIN']
+    io = vals['MATH_IO']
+    producer = vals['REG_KERNEL'] + 0x07EC
+    producer_y1 = vals['REG_KERNEL'] + 0x081A
+    uentry = hbase + 0x0C00
+    uzero = _public_addr(base_man, 'MATH_UDIV32_16') + 0x3E
+
+    sl = (vals['REG_TABLE'] + 0x2400) >> 8
+    nl = (vals['REG_TABLE'] + 0x2800) >> 8
+    sh = (vals['REG_TABLE'] + 0x2600) >> 8
+    nh = (vals['REG_TABLE'] + 0x2A00) >> 8
+
+    # Pointer-high initialization is duplicated between U/S entry points on
+    # purpose: MATH_INIT is optional and a shared helper would add JSR/RTS tax.
+    bind_hi = (
+        f'    lda #{hx(sl, 2)}',
+        f'    sta {hx(z + 0x08, 2)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        f'    lda #{hx(nl, 2)}',
+        f'    sta {hx(z + 0x0A, 2)}',
+        f'    sta {hx(z + 0x12, 2)}',
+        f'    lda #{hx(sh, 2)}',
+        f'    sta {hx(z + 0x0C, 2)}',
+        f'    sta {hx(z + 0x14, 2)}',
+        f'    lda #{hx(nh, 2)}',
+        f'    sta {hx(z + 0x0E, 2)}',
+        f'    sta {hx(z + 0x16, 2)}',
+    )
+
+    lines = [f'* = {hx(mbase)}', 'V5_MULDIV16_U:']
+    lines += list(bind_hi)
+    lines += [
+        f'    lda {hx(io + 0x00)}',
+        f'    sta {hx(z + 0x07, 2)}',
+        f'    lda {hx(io + 0x01)}',
+        f'    sta {hx(z + 0x0F, 2)}',
+        f'    lda {hx(io + 0x05)}',
+        f'    sta {hx(producer_y1)}',
+        f'    ldy {hx(io + 0x04)}',
+        f'    jsr {hx(producer)}',
+        f'    sta {hx(z + 0x0E, 2)}',
+        f'    sty {hx(z + 0x0F, 2)}',
+        f'    lda {hx(z + 0x17, 2)}',
+        f'    sta {hx(z + 0x16, 2)}',
+        f'    stx {hx(z + 0x17, 2)}',
+        f'    lda {hx(io + 0x14)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        f'    lda {hx(io + 0x15)}',
+        f'    sta {hx(z + 0x11, 2)}',
+        f'    jmp {hx(uentry)}',
+        '',
+        'V5_MULDIV16_S:',
+        f'    lda {hx(io + 0x15)}',
+        f'    ora {hx(io + 0x14)}',
+        '    bne V5_S_DNZ',
+        f'    jmp {hx(uzero)}',
+        'V5_S_DNZ:',
+    ]
+    lines += list(bind_hi)
+    lines += [
+        'V5_S_X:',
+        f'    lda {hx(io + 0x01)}',
+        '    bpl V5_S_XPOS',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x00)}',
+        f'    sta {hx(z + 0x07, 2)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x01)}',
+        f'    sta {hx(z + 0x0F, 2)}',
+        f'    lda {hx(io + 0x05)}',
+        '    bpl V5_S_XNEG_YPOS',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x04)}',
+        '    tay',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x05)}',
+        f'    sta {hx(producer_y1)}',
+        '    jmp V5_S_MUL_PPOS',
+        'V5_S_XNEG_YPOS:',
+        f'    ldy {hx(io + 0x04)}',
+        f'    lda {hx(io + 0x05)}',
+        f'    sta {hx(producer_y1)}',
+        '    jmp V5_S_MUL_PNEG',
+        'V5_S_XPOS:',
+        f'    lda {hx(io + 0x00)}',
+        f'    sta {hx(z + 0x07, 2)}',
+        f'    lda {hx(io + 0x01)}',
+        f'    sta {hx(z + 0x0F, 2)}',
+        f'    lda {hx(io + 0x05)}',
+        '    bpl V5_S_XPOS_YPOS',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x04)}',
+        '    tay',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x05)}',
+        f'    sta {hx(producer_y1)}',
+        '    jmp V5_S_MUL_PNEG',
+        'V5_S_XPOS_YPOS:',
+        f'    ldy {hx(io + 0x04)}',
+        f'    lda {hx(io + 0x05)}',
+        f'    sta {hx(producer_y1)}',
+
+        # Product-positive path: quotient sign follows D, remainder stays positive.
+        'V5_S_MUL_PPOS:',
+        f'    jsr {hx(producer)}',
+        f'    sta {hx(z + 0x0E, 2)}',
+        f'    sty {hx(z + 0x0F, 2)}',
+        f'    lda {hx(z + 0x17, 2)}',
+        f'    sta {hx(z + 0x16, 2)}',
+        f'    stx {hx(z + 0x17, 2)}',
+        f'    lda {hx(io + 0x15)}',
+        '    bpl V5_S_PPOS_DPOS',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x14)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x15)}',
+        f'    sta {hx(z + 0x11, 2)}',
+        '    jmp V5_S_DIV_Q',
+        'V5_S_PPOS_DPOS:',
+        f'    lda {hx(io + 0x14)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        f'    lda {hx(io + 0x15)}',
+        f'    sta {hx(z + 0x11, 2)}',
+        f'    jmp {hx(uentry)}',
+
+        # Product-negative path: remainder is negative; quotient sign is !sign(D).
+        'V5_S_MUL_PNEG:',
+        f'    jsr {hx(producer)}',
+        f'    sta {hx(z + 0x0E, 2)}',
+        f'    sty {hx(z + 0x0F, 2)}',
+        f'    lda {hx(z + 0x17, 2)}',
+        f'    sta {hx(z + 0x16, 2)}',
+        f'    stx {hx(z + 0x17, 2)}',
+        f'    lda {hx(io + 0x15)}',
+        '    bpl V5_S_PNEG_DPOS',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x14)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x15)}',
+        f'    sta {hx(z + 0x11, 2)}',
+        '    jmp V5_S_DIV_R',
+        'V5_S_PNEG_DPOS:',
+        f'    lda {hx(io + 0x14)}',
+        f'    sta {hx(z + 0x10, 2)}',
+        f'    lda {hx(io + 0x15)}',
+        f'    sta {hx(z + 0x11, 2)}',
+        '    jmp V5_S_DIV_QR',
+
+        'V5_S_DIV_Q:',
+        f'    jsr {hx(uentry)}',
+        'V5_S_NEG_Q:',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x18)}',
+        f'    sta {hx(io + 0x18)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x19)}',
+        f'    sta {hx(io + 0x19)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x1A)}',
+        f'    sta {hx(io + 0x1A)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x1B)}',
+        f'    sta {hx(io + 0x1B)}',
+        '    clc',
+        '    rts',
+
+        'V5_S_DIV_R:',
+        f'    jsr {hx(uentry)}',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x1C)}',
+        f'    sta {hx(io + 0x1C)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x1D)}',
+        f'    sta {hx(io + 0x1D)}',
+        '    clc',
+        '    rts',
+
+        'V5_S_DIV_QR:',
+        f'    jsr {hx(uentry)}',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x18)}',
+        f'    sta {hx(io + 0x18)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x19)}',
+        f'    sta {hx(io + 0x19)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x1A)}',
+        f'    sta {hx(io + 0x1A)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x1B)}',
+        f'    sta {hx(io + 0x1B)}',
+        'V5_S_NEG_R:',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io + 0x1C)}',
+        f'    sta {hx(io + 0x1C)}',
+        '    lda #$00',
+        f'    sbc {hx(io + 0x1D)}',
+        f'    sta {hx(io + 0x1D)}',
+        '    clc',
+        '    rts',
+        '',
+    ]
+    src_text = '\n'.join(lines)
+    mem, labels, _ = Assembler().assemble(src_text)
+    if not mem:
+        raise RuntimeError('V5 MULDIV16 fusion assembled no code')
+    lo, hi = min(mem), max(mem)
+    if lo != mbase or hi > mend:
+        raise RuntimeError(f'V5 MULDIV16 fusion does not fit certified table hole: {hx(lo)}-{hx(hi)}')
+    if any(dst[lo:hi + 1]):
+        raise RuntimeError(f'V5 MULDIV16 fusion destination {hx(lo)}-{hx(hi)} is not free')
+    for addr, byte in mem.items():
+        dst[addr] = byte
+    upub = _public_addr(base_man, 'MATH_UMULDIV16')
+    spub = _public_addr(base_man, 'MATH_SMULDIV16')
+    uaddr = labels['V5_MULDIV16_U']
+    saddr = labels['V5_MULDIV16_S']
+    dst[upub:upub + 3] = bytes((0x4C, uaddr & 0xFF, uaddr >> 8))
+    dst[spub:spub + 3] = bytes((0x4C, saddr & 0xFF, saddr >> 8))
+    return {
+        'unsigned_entry': hx(uaddr),
+        'signed_entry': hx(saddr),
+        'end': hx(hi),
+        'code_bytes': hi - lo + 1,
+        'normal_zp_bytes': 31,
+        'producer': 'qualified V1 17-ZP UMUL16 private record producer',
+        'consumer': 'relocated private V2 UDIV32/16 entry',
+        'materializes_public_product': False,
+        'signed_strategy': 'single magnitude multiply/divide plus quotient/remainder sign fixup',
+    }
+
 def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
     # V5 intentionally inherits the V1 normalization backend.  Publish a
     # profile-local standalone source, but require it to remain byte-identical
@@ -582,6 +831,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         udiv16_detail = apply_udiv16_direct(dst, src, vals, v1man, entries, hbase)
         sdiv16_detail = apply_sdiv16_direct(dst, src, vals, v1man, entries, hbase)
         sdiv24_detail = apply_sdiv24_direct(dst, src, vals, v1man, entries)
+        muldiv16_lowzp_detail = apply_muldiv16_lowzp_fusion(dst, vals, v1man, hbase)
         selected_trace: set[int] = set()
         for name in ('MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8'):
             selected_trace |= trace(src, entries[name])
@@ -635,7 +885,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         prg = outdir / 'math_v5_hybrid_lowzp_game_math.prg'
         write_prg(dst, lo, new_hi, prg)
 
-        # Reuse the stable 54-entry caller include generated from the same map.
+        # Reuse the stable 56-entry caller include generated from the same map.
         inc_src = v1out / 'math_api.inc'
         inc = outdir / 'math_api.inc'
         inc_text = inc_src.read_text().rstrip() + '\n'
@@ -666,12 +916,13 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             'udiv16_direct': udiv16_detail,
             'sdiv16_direct': sdiv16_detail,
             'sdiv24_direct': sdiv24_detail,
+            'muldiv16_lowzp_fusion': muldiv16_lowzp_detail,
             'indirect_beneficiaries': [
                 'MATH_UDIV16_SHL8',
                 'MATH_URECIP16_Q16',
             ],
             'notes': [
-                'All 54 stable API addresses and semantics remain V1-compatible.',
+                'All 56 stable API addresses and semantics remain V1-compatible.',
                 'MATH_INIT remains optional exactly as in V1.',
                 'The imported certified V2 kernels use only the existing V1 normal ZP window.',
                 'Fast ATAN2, when enabled, adds no ZP and occupies four formerly empty V1 table pages (1024 bytes).',

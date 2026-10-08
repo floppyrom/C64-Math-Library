@@ -21,6 +21,7 @@ PROFILES = [
 
 NAME_PATTERNS = [
     re.compile(r"^mul_[us]\d+_[us]\d+_[us]\d+(?:_(?:ready|shr\d+|turbo|turbo_begin|turbo_end|qs16|qs16_begin|qs16_end))?$"),
+    re.compile(r"^muldiv_[us]\d+_[us]\d+_[us]\d+_[us]\d+_\d+$"),
     re.compile(r"^div_[us]\d+_[us]\d+_[us]\d+(?:_\d+)?(?:_shl\d+)?$"),
     re.compile(r"^mod_[us]\d+_[us]\d+_[us]\d+$"),
     re.compile(r"^recip_[us]\d+_[us]\d+_q\d+$"),

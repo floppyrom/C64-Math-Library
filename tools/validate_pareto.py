@@ -52,13 +52,23 @@ def parity_tests(out:Path,random_per=500):
     muls=[('MATH_UMUL8',8,False),('MATH_UMUL16',16,False),('MATH_UMUL24',24,False),('MATH_UMUL32',32,False),
           ('MATH_SMUL8',8,True),('MATH_SMUL16',16,True),('MATH_SMUL24',24,True),('MATH_SMUL32',32,True)]
     for name,bits,sgn in muls:
+        parity_required=name not in ('MATH_UMUL32','MATH_SMUL32')
+        deltas=[]
         n=bits//8
         for _ in range(random_per):
             x=rng.randrange(1<<bits);y=rng.randrange(1<<bits)
             wr(c,I,x,n);wr(c,I+4,y,n);cy=c.call(P[name],2_000_000);o=rd(c,I+8,2*n);cc=c.c
             wr(v,I2,x,n);wr(v,I2+4,y,n);cy2=v.call(P2[name],2_000_000);o2=rd(v,I2+8,2*n);cc2=v.c
-            assert (cy,o,cc)==(cy2,o2,cc2),(name,x,y,cy,cy2,hex(o),hex(o2),cc,cc2)
-        detail[name]={'cases':random_per,'cycle_vector_equal_to_v2':True};total+=random_per
+            if parity_required:
+                assert (cy,o,cc)==(cy2,o2,cc2),(name,x,y,cy,cy2,hex(o),hex(o2),cc,cc2)
+            else:
+                assert (o,cc)==(o2,cc2),(name,x,y,cy,cy2,hex(o),hex(o2),cc,cc2)
+                deltas.append(cy-cy2)
+        if parity_required:
+            detail[name]={'cases':random_per,'cycle_vector_equal_to_v2':True}
+        else:
+            detail[name]={'cases':random_per,'correctness_against_v2':True,'cycle_parity_required':False,'mean_cycle_delta_vs_v2':sum(deltas)/len(deltas),'min_cycle_delta_vs_v2':min(deltas),'max_cycle_delta_vs_v2':max(deltas)}
+        total+=random_per
     for name,nb,db in [('MATH_UDIV16',16,16),('MATH_UDIV24',24,24),('MATH_UDIV32_16',32,16)]:
         nn=nb//8;dn=db//8
         for _ in range(random_per):

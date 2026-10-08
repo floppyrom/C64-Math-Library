@@ -10,7 +10,7 @@ from source_relocation import config_values,hx,REU_BANK_KEYS
 PROFILES=('v3_reu_512k','v4_reu_16m')
 
 def write_cfg(path,v):
-    keys=['REG_LOW','REG_API','REG_KERNEL','REG_GAME_API','REG_TABLE','REG_GAME','MATH_IO','REU_SCRATCH','V1_SCRATCH','ZP_MAIN','ZP_SMUL','TURBO16_ZP_BASE','TURBO32_ZP_BASE']+list(REU_BANK_KEYS)
+    keys=['REG_LOW','REG_API','REG_KERNEL','REG_GAME_API','REG_TABLE','REG_GAME','MATH_IO','REU_SCRATCH','V1_SCRATCH','ZP_MAIN','ZP_SMUL','TURBO16_ZP_BASE','TURBO32_ZP_BASE','SMUL8_SUM_BASE']+list(REU_BANK_KEYS)
     path.write_text('\n'.join(f'{k} = {hx(v[k],2 if (k.startswith("ZP_") or k.startswith("TURBO") or k.startswith("REU_")) else 4)}' for k in keys)+'\n')
 
 def load_prg(path):

@@ -1,17 +1,17 @@
 {
   "status": "PASS",
-  "catalog_rows": 310,
-  "shipped_profile_rows": 285,
+  "catalog_rows": 320,
+  "shipped_profile_rows": 295,
   "standalone_alternative_rows": 25,
-  "public_profile_results": 285,
+  "public_profile_results": 295,
   "standalone_results": 25,
-  "best_profile_results": 63,
+  "best_profile_results": 65,
   "profiles": {
-    "v1_balanced": 54,
-    "v2_pareto_fast": 54,
-    "v3_reu_512k": 60,
-    "v4_reu_16m": 63,
-    "v5_hybrid_lowzp": 54
+    "v1_balanced": 56,
+    "v2_pareto_fast": 56,
+    "v3_reu_512k": 62,
+    "v4_reu_16m": 65,
+    "v5_hybrid_lowzp": 56
   },
   "errors": []
 }

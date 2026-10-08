@@ -124,13 +124,13 @@
       "name": "Turbo16 processor-port overlap rejected",
       "profile": "v3_reu_512k",
       "status": "PASS",
-      "rejected_with": "TURBO16_ZP_BASE invalid: $01-$71"
+      "rejected_with": "TURBO16_ZP_BASE invalid/slow-edge: $01-$7A; supported direct-output range is $02-$85"
     },
     {
       "name": "Turbo16 ZP wrap rejected",
       "profile": "v3_reu_512k",
       "status": "PASS",
-      "rejected_with": "TURBO16_ZP_BASE invalid: $90-$100"
+      "rejected_with": "TURBO16_ZP_BASE invalid/slow-edge: $90-$109; supported direct-output range is $02-$85"
     },
     {
       "name": "Turbo32 processor-port overlap rejected",

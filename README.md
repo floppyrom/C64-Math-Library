@@ -2,7 +2,7 @@
 
 High-performance integer, fixed-point and game math for the Commodore 64 / NMOS 6502/6510.
 
-The library exposes one stable **54-entry public API** across five fixed profiles. V3/V4 add stateful Turbo16/Turbo32 calls; V4 also adds QS16. A Custom Pareto Builder can generate a stock-C64 mix for a chosen ZP/RAM budget.
+The library exposes one stable **56-entry public API** across five fixed profiles. V3/V4 add stateful Turbo16/Turbo32 calls; V4 also adds QS16. A Custom Pareto Builder can generate a stock-C64 mix for a chosen ZP/RAM budget.
 
 ## Start here
 
@@ -13,6 +13,7 @@ The library exposes one stable **54-entry public API** across five fixed profile
 - **Naming convention:** [`docs/NAMING_STANDARD.md`](docs/NAMING_STANDARD.md)
 - **Repository layout:** [`docs/STRUCTURE.md`](docs/STRUCTURE.md)
 - **Moving an object toward a target:** use `MATH_SEEK8_*`/`MATH_SEEK16_*`, the exact Bresenham/DDA steppers ([`docs/SEEK_DDA.md`](docs/SEEK_DDA.md)), not vector normalization
+- **Full-width multiply/divide:** use `MATH_UMULDIV16` / `MATH_SMULDIV16` for `(X16*Y16)/D16` without truncating the 32-bit product ([`docs/MULDIV16.md`](docs/MULDIV16.md))
 
 Every published benchmark row now points to a public source file and SHA-256. Run `python3 tools/validate_public_catalog.py` to verify that contract.
 
