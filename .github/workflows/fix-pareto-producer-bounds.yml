@@ -44,6 +44,10 @@ jobs:
               "Likewise omit its dead standalone init tail beginning at $5764.",
             "add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x111)":
               "add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x11a)",
+            "($CE9B in the V2 reference map).":
+              "($CE96 in the V2 reference map).",
+            "aux+AUX_SMUL24_PRIVATE+(0xCE9B-0xCD00)":
+              "aux+AUX_SMUL24_PRIVATE+(0xCE96-0xCD00)",
           }
           for a,b in reps.items():
               if a not in s:
