@@ -1,0 +1,64 @@
+name: Fix Pareto producer donor bounds
+on:
+  push:
+    branches: [ promote/muldiv16-stable-20261007 ]
+    paths: [ '.github/workflows/fix-pareto-producer-bounds.yml' ]
+permissions:
+  contents: write
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: promote/muldiv16-stable-20261007
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Patch current producer bounds
+        run: |
+          rm -f .github/workflows/fix-pareto-producer-bounds.yml
+          rm -f .github/workflows/fix-pareto-umul16-bound.yml
+          rm -f .github/workflows/pareto60-diagnostic.yml
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('tools/build_pareto.py')
+          s=p.read_text()
+          reps={
+            "if 0x53EC <= old <= 0x5457: return aux+AUX_UMUL16_CODE+(old-0x53EC)":
+              "if 0x53EC <= old <= 0x5458: return aux+AUX_UMUL16_CODE+(old-0x53EC)",
+            "copy_code_block(dst,src,0x53EC,0x5457,aux+AUX_UMUL16_CODE,u16starts,vals,aux)":
+              "copy_code_block(dst,src,0x53EC,0x5458,aux+AUX_UMUL16_CODE,u16starts,vals,aux)",
+            "core is $53EC-$5457; the following $5458-$5470":
+              "core is $53EC-$5458; the following $5459-$5471",
+            "add('PARETO_UMUL16_CODE', aux+AUX_UMUL16_CODE, aux+AUX_UMUL16_CODE+0x6b)":
+              "add('PARETO_UMUL16_CODE', aux+AUX_UMUL16_CODE, aux+AUX_UMUL16_CODE+0x6c)",
+            "if 0x5649 <= old <= 0x575A: return aux+AUX_UMUL24_CODE+(old-0x5649)":
+              "if 0x5649 <= old <= 0x5763: return aux+AUX_UMUL24_CODE+(old-0x5649)",
+            "copy_code_block(dst,src,0x5649,0x575A,aux+AUX_UMUL24_CODE,starts,vals,aux)":
+              "copy_code_block(dst,src,0x5649,0x5763,aux+AUX_UMUL24_CODE,starts,vals,aux)",
+            "Likewise omit its dead standalone init tail $575B-$577B.":
+              "Likewise omit its dead standalone init tail beginning at $5764.",
+            "add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x111)":
+              "add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x11a)",
+          }
+          for a,b in reps.items():
+              if a not in s:
+                  raise RuntimeError(f'missing expected text: {a}')
+              s=s.replace(a,b)
+          p.write_text(s)
+          PY
+          python3 -m py_compile tools/build_pareto.py
+      - name: Prove full Custom Pareto matrix
+        run: python3 tools/validate_pareto.py
+      - name: Commit passing producer-bound fix
+        run: |
+          rm -rf build_pareto
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Fix Pareto refreshed producer donor bounds"
+          git push origin HEAD:promote/muldiv16-stable-20261007
