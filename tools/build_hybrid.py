@@ -790,7 +790,9 @@ def apply_shifted_div_recip_direct(dst: bytearray, vals: dict[str,int],
     z=vals['ZP_MAIN']; io=vals['MATH_IO']
     ln0=z+0x16; ln1=z+0x17; n0=z+0x0E; n1=z+0x0F
     d0=z+0x10; d1=z+0x11
-    uentry=hbase+(0x4300-DIV_SRC[0])
+    # Reuse the certified relocated V2 UDIV32/16 split-tail entry. This is
+    # the same private entry used by the validated V5 MULDIV16 fusion.
+    uentry=hbase+0x0C00
     # Keep these ~220 bytes in the free $7100-$73FF V1 table gap. The high
     # hybrid tail at $B800 is owned by the direct UDIV16 engine. $7100 keeps
     # the helper page phase unchanged (low byte $00), preserving branch timing.
