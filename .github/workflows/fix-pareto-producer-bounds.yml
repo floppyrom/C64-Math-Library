@@ -18,6 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
       - name: Patch current producer bounds and SMUL16 SHR8 adapter
         run: |
           rm -f .github/workflows/fix-pareto-producer-bounds.yml
@@ -63,34 +64,26 @@ jobs:
           insert="    write_jmp(dst,public_addr(man,'MATH_SMUL16'),vals['REG_LOW']+0x1100)\n    # The V2 executable-ZP SMUL16 returns A=byte1, X=byte2 and leaves byte3 in\n    # public Z3. Replace the V1-base SHR8 adapter to match that convention.\n    shr_starts=trace(src_init,v2_entries['MATH_SMUL16_SHR8'])\n    shr=vals['REG_GAME']+0x0E80\n    copy_code_block(dst,src_raw,0xCF80,0xCF8F,shr,shr_starts,vals,aux,smul=True)\n    sm=public_addr(man,'MATH_SMUL16')\n    dst[shr+1]=sm&255; dst[shr+2]=(sm>>8)&255\n    write_jmp(dst,public_addr(man,'MATH_SMUL16_SHR8'),shr)\n    # Shared finish routine.\n"
           if needle not in s:
               raise RuntimeError('missing SMUL16 insertion point')
-          s=s.replace(needle,insert)
-          p.write_text(s)
-          for name,val in (('math_config_reference.inc','$9C00'),('math_config_alternate.inc','$1000')):
-              q=Path('relocatable_source/custom_pareto')/name
-              t=q.read_text()
-              line=f'SMUL8_SUM_BASE = {val}'
-              if 'SMUL8_SUM_BASE' in t:
-                  import re
-                  t=re.sub(r'^SMUL8_SUM_BASE\\s*=.*
-          python3 -m py_compile tools/build_pareto.py
-      - name: Prove full Custom Pareto matrix
-        run: python3 tools/validate_pareto.py
-      - name: Commit passing Pareto fixes
-        run: |
-          rm -rf build_pareto
-          git config user.name "c64-math-release-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git add -A
-          git commit -m "Fix Pareto refreshed producer and SHR8 integration"
-          git push origin HEAD:promote/muldiv16-stable-20261007
-,line,t,flags=re.M)
-              else:
-                  t=t.replace('TURBO32_ZP_BASE = $0A','TURBO32_ZP_BASE = $0A\\n'+line) if name.endswith('reference.inc') else t.replace('TURBO32_ZP_BASE = $06','TURBO32_ZP_BASE = $06\\n'+line)
-              q.write_text(t)
+          p.write_text(s.replace(needle,insert))
           PY
           python3 -m py_compile tools/build_pareto.py
+
+      - name: Patch Custom Pareto SMUL8 sum-plane configs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          root=Path('relocatable_source/custom_pareto')
+          for name,val in (('math_config_reference.inc','$9C00'),('math_config_alternate.inc','$1000')):
+              p=root/name
+              lines=[x for x in p.read_text().splitlines() if not x.startswith('SMUL8_SUM_BASE')]
+              idx=next(i for i,x in enumerate(lines) if x.startswith('TURBO32_ZP_BASE'))
+              lines.insert(idx+1,f'SMUL8_SUM_BASE = {val}')
+              p.write_text(chr(10).join(lines)+chr(10))
+          PY
+
       - name: Prove full Custom Pareto matrix
         run: python3 tools/validate_pareto.py
+
       - name: Commit passing Pareto fixes
         run: |
           rm -rf build_pareto
