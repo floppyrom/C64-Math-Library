@@ -75,8 +75,9 @@ MULDIV16_S_XPOS_YPOS:
     ldy MATH_Y
     lda MATH_Y+$01
     sta U16_Y1
-    jmp MULDIV16_S_MUL_PPOS
-
+    ; OptiSearch local-rule pass: fall through directly to the positive-product
+    ; multiply path instead of paying a redundant JMP.
+    
 ; Island B: product-positive/product-negative divider setup.
 ; Reference $5785-$57EC; alternate $3785-$37EC.
 * = REG_KERNEL+$1785
