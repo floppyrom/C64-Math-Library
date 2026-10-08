@@ -62,30 +62,57 @@ D24F_sd2 = ZP_MAIN+$16
 * = REG_TABLE+$2178
 D24F_sg_code_start:
 D24F_div_s24:
-        ; Divisor magnitude. D24F_d2==0 is the only class that needs a low-word D24F_zero test.
-        !byte $AF,<MATH_D+2,>MATH_D+2
-        beq D24F_sd_high_zero
-        bmi D24F_sd_negative
-D24F_sd_positive:
-        lda D24F_sdin0
-        sta D24F_d0
-        lda D24F_sdin1
-        sta D24F_d1
-        stx D24F_d2
-        jmp D24F_sn_make
-D24F_sd_high_zero:
+        ; Four-quadrant signed front end.  Unlike the previous path, do not
+        ; materialize both magnitudes before knowing whether |n| >= |d|.
+        ; The private N magnitude is unnecessary: the first residual lives
+        ; directly in R, which is exactly the state expected by q1_sub_mem.
+        lda D24F_sn2
+        bmi D24F_s_nneg_dispatch
+        lda D24F_sdin2
+        bmi D24F_s_case_pn
+
+        ; ++: compare the public positive operands directly.  The common q=0
+        ; path therefore performs no private magnitude copies at all.
+D24F_s_case_pp:
+        lda D24F_sdin2
+        bne D24F_s_pp_cmp
         lda D24F_sdin0
         ora D24F_sdin1
-        bne D24F_sd_low_nonzero
+        bne D24F_s_pp_cmp
         jmp D24F_s_zero
-D24F_sd_low_nonzero:
+D24F_s_pp_cmp:
+        lda D24F_sn2
+        cmp D24F_sdin2
+        bcc D24F_sqzero
+        bne D24F_s_pp_ge
+        lda D24F_sn1
+        cmp D24F_sdin1
+        bcc D24F_sqzero
+        bne D24F_s_pp_ge
+        lda D24F_sn0
+        cmp D24F_sdin0
+        bcc D24F_sqzero
+D24F_s_pp_ge:
         lda D24F_sdin0
         sta D24F_d0
         lda D24F_sdin1
         sta D24F_d1
-        stx D24F_d2
-        jmp D24F_sn_make
-D24F_sd_negative:
+        lda D24F_sdin2
+        sta D24F_d2
+        lda D24F_sn0
+        sbc D24F_d0
+        sta D24F_r0
+        lda D24F_sn1
+        sbc D24F_d1
+        sta D24F_r1
+        lda D24F_sn2
+        sbc D24F_d2
+        sta D24F_r2
+        jmp D24F_s_after_first
+
+        ; +-: only |d| is needed for the q=0 decision.  N stays in the stable
+        ; public ABI and the first subtraction writes R directly.
+D24F_s_case_pn:
         lda #0
         sec
         sbc D24F_sdin0
@@ -96,50 +123,132 @@ D24F_sd_negative:
         lda #0
         sbc D24F_sdin2
         sta D24F_d2
-D24F_sn_make:
-        !byte $AF,<MATH_N+2,>MATH_N+2
-        bmi D24F_sn_negative
-        lda D24F_sn0
-        sta D24F_n0
+        lda D24F_sn2
+        cmp D24F_d2
+        bcc D24F_sqzero
+        bne D24F_s_pn_ge
         lda D24F_sn1
-        sta D24F_n1
-        stx D24F_n2
-        jmp D24F_sq0_test
-D24F_sn_negative:
+        cmp D24F_d1
+        bcc D24F_sqzero
+        bne D24F_s_pn_ge
+        lda D24F_sn0
+        cmp D24F_d0
+        bcc D24F_sqzero
+D24F_s_pn_ge:
+        lda D24F_sn0
+        sbc D24F_d0
+        sta D24F_r0
+        lda D24F_sn1
+        sbc D24F_d1
+        sta D24F_r1
+        lda D24F_sn2
+        sbc D24F_d2
+        sta D24F_r2
+        jmp D24F_s_after_first
+
+D24F_s_nneg_dispatch:
+        lda D24F_sdin2
+        bmi D24F_s_case_nn
+
+        ; -+: normalize only N, directly into R.  Positive D is copied into
+        ; private state only after the magnitude comparison proves q!=0.
+D24F_s_case_np:
+        lda D24F_sdin2
+        bne D24F_s_np_dnz
+        lda D24F_sdin0
+        ora D24F_sdin1
+        bne D24F_s_np_dnz
+        jmp D24F_s_zero
+D24F_s_np_dnz:
         lda #0
         sec
         sbc D24F_sn0
-        sta D24F_n0
+        sta D24F_r0
         lda #0
         sbc D24F_sn1
-        sta D24F_n1
+        sta D24F_r1
         lda #0
         sbc D24F_sn2
-        sta D24F_n2
-
-D24F_sq0_test:
-        !byte $a7,D24F_n2
-        cmp D24F_d2
+        sta D24F_r2
+        cmp D24F_sdin2
         bcc D24F_sqzero
-        bne D24F_sfirst_sub
-        lda D24F_n1
-        cmp D24F_d1
+        bne D24F_s_np_ge
+        lda D24F_r1
+        cmp D24F_sdin1
         bcc D24F_sqzero
-        bne D24F_sfirst_sub
-        lda D24F_n0
-        cmp D24F_d0
+        bne D24F_s_np_ge
+        lda D24F_r0
+        cmp D24F_sdin0
         bcc D24F_sqzero
-D24F_sfirst_sub:
-        lda D24F_n0
+D24F_s_np_ge:
+        lda D24F_sdin0
+        sta D24F_d0
+        lda D24F_sdin1
+        sta D24F_d1
+        lda D24F_sdin2
+        sta D24F_d2
+        lda D24F_r0
         sbc D24F_d0
         sta D24F_r0
-        lda D24F_n1
+        lda D24F_r1
         sbc D24F_d1
         sta D24F_r1
-        txa
+        lda D24F_r2
         sbc D24F_d2
         sta D24F_r2
-        ; Is a second divisor still <= residual?
+        jmp D24F_s_after_first
+
+        ; --: raw two's-complement order is reverse magnitude order, so q=0
+        ; can be decided before either magnitude is formed.
+D24F_s_case_nn:
+        lda D24F_sn2
+        cmp D24F_sdin2
+        bcc D24F_s_nn_ge
+        bne D24F_sqzero
+        lda D24F_sn1
+        cmp D24F_sdin1
+        bcc D24F_s_nn_ge
+        bne D24F_sqzero
+        lda D24F_sn0
+        cmp D24F_sdin0
+        bcc D24F_s_nn_ge
+        beq D24F_s_nn_ge
+        jmp D24F_sqzero
+D24F_s_nn_ge:
+        lda #0
+        sec
+        sbc D24F_sdin0
+        sta D24F_d0
+        lda #0
+        sbc D24F_sdin1
+        sta D24F_d1
+        lda #0
+        sbc D24F_sdin2
+        sta D24F_d2
+        lda #0
+        sec
+        sbc D24F_sn0
+        sta D24F_r0
+        lda #0
+        sbc D24F_sn1
+        sta D24F_r1
+        lda #0
+        sbc D24F_sn2
+        sta D24F_r2
+        sec
+        lda D24F_r0
+        sbc D24F_d0
+        sta D24F_r0
+        lda D24F_r1
+        sbc D24F_d1
+        sta D24F_r1
+        lda D24F_r2
+        sbc D24F_d2
+        sta D24F_r2
+
+        ; R is now |n|-|d| and D is |d| in every q>=1 quadrant.
+D24F_s_after_first:
+        lda D24F_r2
         cmp D24F_d2
         bcc D24F_sqone
         bne D24F_sqge2
@@ -151,8 +260,6 @@ D24F_sfirst_sub:
         cmp D24F_d0
         bcc D24F_sqone
 D24F_sqge2:
-        ; D24F_q1_sub_mem expects r=|n|-|d| and C=1. It performs the guaranteed
-        ; second subtraction and continues directly through the q>=2 core.
         ldx #0
         stx D24F_q1
         stx D24F_q2
