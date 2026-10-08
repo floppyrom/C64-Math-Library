@@ -915,10 +915,29 @@ def apply_shifted_div_recip_direct(dst: bytearray, vals: dict[str,int],
     mem,labels,_=Assembler().assemble('\n'.join(lines))
     if not mem: raise RuntimeError('V5 shifted DIV helper assembled no code')
     lo,hi=min(mem),max(mem)
-    if lo!=base or hi>end_limit:
-        raise RuntimeError(f'V5 shifted DIV helper outside private hybrid range: {hx(lo)}-{hx(hi)}')
-    if any(dst[lo:hi+1]):
-        raise RuntimeError(f'V5 shifted DIV helper destination {hx(lo)}-{hx(hi)} is not free')
+    span=hi-lo+1
+    # The generated V1/V5 table image is sparse, but exact free pages move as
+    # source-level optimizations evolve. Select a page-aligned zero run from the
+    # table region after all earlier V5 table overlays have been installed.
+    # Keeping the low byte at $00 preserves the helper's branch-page timing.
+    if lo!=base or hi>end_limit or any(dst[lo:hi+1]):
+        placed=False
+        table_lo=vals['REG_TABLE']
+        table_hi=vals['REG_TABLE']+0x3BFF
+        for cand in range(table_lo, table_hi+1, 0x100):
+            if cand+span-1>table_hi or any(dst[cand:cand+span]):
+                continue
+            lines[0]=f'* = {hx(cand)}'
+            trial,tlabels,_=Assembler().assemble('\n'.join(lines))
+            if not trial:
+                continue
+            tlo,thi=min(trial),max(trial)
+            if tlo==cand and thi-tlo+1==span and not any(dst[tlo:thi+1]):
+                base=cand; mem=trial; labels=tlabels; lo=tlo; hi=thi
+                placed=True
+                break
+        if not placed:
+            raise RuntimeError(f'no free page-aligned V5 shifted DIV helper slot for {span} bytes')
     for a,b in mem.items(): dst[a]=b
     for name,label in (('MATH_UDIV16_SHL8','V5_FX_U'),('MATH_SDIV16_SHL8','V5_FX_S')):
         a=_public_addr(base_man,name); t=labels[label]
