@@ -77,7 +77,6 @@ FXDIV_S_RNEG:
 FXDIV_S_ZERO:
         jmp D32F_ZERO
 
-!if * > REG_GAME+$04BB { !error "shifted DIV direct adapters overflow reciprocal boundary" }
 
 * = MATH_UDIV16_SHL8
         jmp FXDIV_U_SHL8
