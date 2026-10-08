@@ -67,9 +67,12 @@ D24F_div_s24:
         ; The private N magnitude is unnecessary: the first residual lives
         ; directly in R, which is exactly the state expected by q1_sub_mem.
         lda D24F_sn2
-        bmi D24F_s_nneg_dispatch
+        bpl D24F_s_npos_dispatch
+        jmp D24F_s_nneg_dispatch
+D24F_s_npos_dispatch:
         lda D24F_sdin2
-        bmi D24F_s_case_pn
+        bpl D24F_s_case_pp
+        jmp D24F_s_case_pn
 
         ; ++: compare the public positive operands directly.  The common q=0
         ; path therefore performs no private magnitude copies at all.
@@ -83,15 +86,20 @@ D24F_s_case_pp:
 D24F_s_pp_cmp:
         lda D24F_sn2
         cmp D24F_sdin2
-        bcc D24F_sqzero
+        bcs D24F_s_pp_high_ge
+        jmp D24F_sqzero
+D24F_s_pp_high_ge:
         bne D24F_s_pp_ge
         lda D24F_sn1
         cmp D24F_sdin1
-        bcc D24F_sqzero
+        bcs D24F_s_pp_mid_ge
+        jmp D24F_sqzero
+D24F_s_pp_mid_ge:
         bne D24F_s_pp_ge
         lda D24F_sn0
         cmp D24F_sdin0
-        bcc D24F_sqzero
+        bcs D24F_s_pp_ge
+        jmp D24F_sqzero
 D24F_s_pp_ge:
         lda D24F_sdin0
         sta D24F_d0
@@ -125,15 +133,20 @@ D24F_s_case_pn:
         sta D24F_d2
         lda D24F_sn2
         cmp D24F_d2
-        bcc D24F_sqzero
+        bcs D24F_s_pn_high_ge
+        jmp D24F_sqzero
+D24F_s_pn_high_ge:
         bne D24F_s_pn_ge
         lda D24F_sn1
         cmp D24F_d1
-        bcc D24F_sqzero
+        bcs D24F_s_pn_mid_ge
+        jmp D24F_sqzero
+D24F_s_pn_mid_ge:
         bne D24F_s_pn_ge
         lda D24F_sn0
         cmp D24F_d0
-        bcc D24F_sqzero
+        bcs D24F_s_pn_ge
+        jmp D24F_sqzero
 D24F_s_pn_ge:
         lda D24F_sn0
         sbc D24F_d0
@@ -171,15 +184,20 @@ D24F_s_np_dnz:
         sbc D24F_sn2
         sta D24F_r2
         cmp D24F_sdin2
-        bcc D24F_sqzero
+        bcs D24F_s_np_high_ge
+        jmp D24F_sqzero
+D24F_s_np_high_ge:
         bne D24F_s_np_ge
         lda D24F_r1
         cmp D24F_sdin1
-        bcc D24F_sqzero
+        bcs D24F_s_np_mid_ge
+        jmp D24F_sqzero
+D24F_s_np_mid_ge:
         bne D24F_s_np_ge
         lda D24F_r0
         cmp D24F_sdin0
-        bcc D24F_sqzero
+        bcs D24F_s_np_ge
+        jmp D24F_sqzero
 D24F_s_np_ge:
         lda D24F_sdin0
         sta D24F_d0
@@ -204,11 +222,15 @@ D24F_s_case_nn:
         lda D24F_sn2
         cmp D24F_sdin2
         bcc D24F_s_nn_ge
-        bne D24F_sqzero
+        beq D24F_s_nn_high_eq
+        jmp D24F_sqzero
+D24F_s_nn_high_eq:
         lda D24F_sn1
         cmp D24F_sdin1
         bcc D24F_s_nn_ge
-        bne D24F_sqzero
+        beq D24F_s_nn_mid_eq
+        jmp D24F_sqzero
+D24F_s_nn_mid_eq:
         lda D24F_sn0
         cmp D24F_sdin0
         bcc D24F_s_nn_ge
