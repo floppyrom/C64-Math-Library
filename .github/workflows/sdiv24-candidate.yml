@@ -23,6 +23,10 @@ jobs:
           python-version: '3.12'
       - name: Build reference profiles
         run: make reference
+      - name: Install rebuilt V2 candidate image
+        run: |
+          cp build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+          cp build_source/reference/v2_pareto_fast/math_api.inc v2_pareto_fast/resident/math_api.inc
       - name: Validate and benchmark V2 signed division
         run: |
           python3 tools/validate_signed_division.py --profile v2_pareto_fast --out /tmp/SDIV24_CANDIDATE.json
