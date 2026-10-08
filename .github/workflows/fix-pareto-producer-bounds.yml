@@ -48,6 +48,12 @@ jobs:
               "($CE96 in the V2 reference map).",
             "aux+AUX_SMUL24_PRIVATE+(0xCE9B-0xCD00)":
               "aux+AUX_SMUL24_PRIVATE+(0xCE96-0xCD00)",
+            "if 0x5A00 <= old <= 0x5A3B: return aux+AUX_SMUL_FINISH+(old-0x5A00)":
+              "if 0x5A00 <= old <= 0x5A3C: return aux+AUX_SMUL_FINISH+(old-0x5A00)",
+            "copy_code_block(dst,src_raw,0x5A00,0x5A3B,aux+AUX_SMUL_FINISH,starts,vals,aux,smul=True)":
+              "copy_code_block(dst,src_raw,0x5A00,0x5A3C,aux+AUX_SMUL_FINISH,starts,vals,aux,smul=True)",
+            "add('PARETO_SMUL16_FINISH', aux+AUX_SMUL_FINISH, aux+AUX_SMUL_FINISH+0x3b)":
+              "add('PARETO_SMUL16_FINISH', aux+AUX_SMUL_FINISH, aux+AUX_SMUL_FINISH+0x3c)",
           }
           for a,b in reps.items():
               if a not in s:
