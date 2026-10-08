@@ -2,7 +2,7 @@
 
 These files expose the **actual native signed executable paths shipped by `v1_balanced`**. They are exact generated source mirrors of the resident image after `MATH_INIT`, not placeholders. Every instruction is annotated with its resident address and bytes and is checked by `tools/validate_published_signed_sources.py`.
 
-The canonical integrated build source remains `relocatable_source/v1_balanced/math_relocatable.asm`. These mirrors exist so a GitHub reader can inspect each signed implementation directly without hunting through the monolithic generated source. Shared immutable lookup/data tables are not duplicated; corresponding unsigned executable instructions are never entered.
+The canonical integrated build source remains `relocatable_source/v1_balanced/math_relocatable.asm`. These mirrors exist so a GitHub reader can inspect each signed implementation directly without hunting through the monolithic generated source. Shared immutable lookup/data tables are not duplicated. Corresponding unsigned executable instructions are disjoint except for explicitly audited shared magnitude substrates recorded by the signed-layout validator.
 
 | Public API | Published source |
 |---|---|

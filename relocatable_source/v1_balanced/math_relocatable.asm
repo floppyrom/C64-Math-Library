@@ -2101,7 +2101,7 @@ L5B70:
     jmp REG_GAME+$044C
     jmp REG_GAME+$0475
     jmp REG_GAME+$049E
-    jmp REG_GAME+$04E8
+    jmp REG_GAME+$04BE
     jmp REG_GAME+$0538
     jmp REG_GAME+$06E4
     jmp REG_GAME+$06EF
@@ -3785,63 +3785,70 @@ LC519:
     sta MATH_IO+$0D
     clc
     rts
+    lda #$00
+    sta ZP_MAIN+$16
+    sta ZP_MAIN+$0F
     lda MATH_IO+$10
-    sta V1_SCRATCH
+    sta ZP_MAIN+$17
     lda MATH_IO+$11
-    sta V1_SCRATCH+$01
-    lda MATH_IO+$12
-    sta V1_SCRATCH+$02
-    lda MATH_IO+$13
-    sta V1_SCRATCH+$03
+    sta ZP_MAIN+$0E
+    lda MATH_IO+$14
+    sta ZP_MAIN+$10
+    lda MATH_IO+$15
+    sta ZP_MAIN+$11
+    jsr REG_KERNEL+$0500
+    jmp REG_API+$01D1
+    lda MATH_IO+$15
+    bmi LC5D1
+    sta ZP_MAIN+$15
+    lda MATH_IO+$14
+    sta ZP_MAIN+$14
+    ora ZP_MAIN+$15
+    beq LC626
+    jmp REG_GAME+$04E0
+LC5D1:
     lda #$00
-    sta MATH_IO+$10
-    lda V1_SCRATCH
-    sta MATH_IO+$11
-    lda V1_SCRATCH+$01
-    sta MATH_IO+$12
+    sec
+    sbc MATH_IO+$14
+    sta ZP_MAIN+$14
     lda #$00
-    sta MATH_IO+$13
-    jsr REG_API+$01B0
-    lda V1_SCRATCH
-    sta MATH_IO+$10
-    lda V1_SCRATCH+$01
-    sta MATH_IO+$11
-    lda V1_SCRATCH+$02
-    sta MATH_IO+$12
-    lda V1_SCRATCH+$03
-    sta MATH_IO+$13
-    rts
+    sbc MATH_IO+$15
+    sta ZP_MAIN+$15
+    lda #$00
+    sta ZP_MAIN+$1A
+    sta ZP_MAIN+$13
+    lda MATH_IO+$11
+    bmi LC606
     lda MATH_IO+$10
-    sta V1_SCRATCH
+    sta ZP_MAIN+$1B
     lda MATH_IO+$11
-    sta V1_SCRATCH+$01
-    lda MATH_IO+$12
-    sta V1_SCRATCH+$02
-    lda MATH_IO+$13
-    sta V1_SCRATCH+$03
+    sta ZP_MAIN+$12
+    lda MATH_IO+$15
+    bmi LC600
+    jsr REG_KERNEL+$1C38
+    jmp REG_LOW+$1593
+LC600:
+    jsr REG_KERNEL+$1CAC
+    jmp REG_LOW+$1593
+LC606:
     lda #$00
-    sta MATH_IO+$10
-    lda V1_SCRATCH
-    sta MATH_IO+$11
-    lda V1_SCRATCH+$01
-    sta MATH_IO+$12
-    bpl LC617
-    lda #$FF
-    bne LC619
-LC617:
+    sec
+    sbc MATH_IO+$10
+    sta ZP_MAIN+$1B
     lda #$00
-LC619:
-    sta MATH_IO+$13
-    jsr REG_API+$0EE0
-    lda V1_SCRATCH
-    sta MATH_IO+$10
-    lda V1_SCRATCH+$01
-    sta MATH_IO+$11
-    lda V1_SCRATCH+$02
-    sta MATH_IO+$12
-    lda V1_SCRATCH+$03
-    sta MATH_IO+$13
-    rts
+    sbc MATH_IO+$11
+    sta ZP_MAIN+$12
+    lda MATH_IO+$15
+    bmi LC620
+    jsr REG_KERNEL+$1C59
+    jmp REG_LOW+$1593
+LC620:
+    jsr REG_KERNEL+$1CE7
+    jmp REG_LOW+$1593
+LC626:
+    jsr REG_KERNEL+$1CF9
+    jmp REG_LOW+$1593
+    !byte $42, $C0, $8D, $12, $C0, $AD, $43, $C0, $8D, $13, $C0, $60
     lda MATH_IO+$15
     cmp #$80
     bcc LC64D
@@ -4013,41 +4020,23 @@ LC76E:
     clc
     rts
 LC780:
-    lda MATH_IO+$10
-    sta V1_SCRATCH+$0E
-    lda MATH_IO+$11
-    sta V1_SCRATCH+$0F
-    lda MATH_IO+$12
-    sta V1_SCRATCH+$10
-    lda MATH_IO+$13
-    sta V1_SCRATCH+$11
-    lda MATH_IO+$16
-    sta V1_SCRATCH+$14
-    lda MATH_IO+$17
-    sta V1_SCRATCH+$15
     lda #$00
-    sta MATH_IO+$10
-    sta MATH_IO+$11
+    sta ZP_MAIN+$16
+    sta ZP_MAIN+$17
+    sta ZP_MAIN+$0F
     lda #$01
-    sta MATH_IO+$12
-    lda #$00
-    sta MATH_IO+$13
-    sta MATH_IO+$16
-    sta MATH_IO+$17
-    jsr REG_API+$0170
-    lda V1_SCRATCH+$0E
-    sta MATH_IO+$10
-    lda V1_SCRATCH+$0F
-    sta MATH_IO+$11
-    lda V1_SCRATCH+$10
-    sta MATH_IO+$12
-    lda V1_SCRATCH+$11
-    sta MATH_IO+$13
-    lda V1_SCRATCH+$14
-    sta MATH_IO+$16
-    lda V1_SCRATCH+$15
-    sta MATH_IO+$17
-    rts
+    sta ZP_MAIN+$0E
+    lda MATH_IO+$14
+    sta ZP_MAIN+$10
+    lda MATH_IO+$15
+    sta ZP_MAIN+$11
+    jsr REG_KERNEL+$0500
+    jmp REG_API+$01D1
+    !byte $54, $C0, $AD, $17, $C0, $8D, $55, $C0, $A9, $00, $8D, $10, $C0, $8D, $11, $C0
+    !byte $A9, $01, $8D, $12, $C0, $A9, $00, $8D, $13, $C0, $8D, $16, $C0, $8D, $17, $C0
+    !byte $20, $70, $31, $AD, $4E, $C0, $8D, $10, $C0, $AD, $4F, $C0, $8D, $11, $C0, $AD
+    !byte $50, $C0, $8D, $12, $C0, $AD, $51, $C0, $8D, $13, $C0, $AD, $54, $C0, $8D, $16
+    !byte $C0, $AD, $55, $C0, $8D, $17, $C0, $60
     ldx MATH_IO
     lda REG_TABLE+$3400,x
     sta MATH_IO+$08

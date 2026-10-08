@@ -73,7 +73,7 @@ p3_carry:
                 dex
                 beq sum_trampoline
 loop:
-        sta+1 z14-1,x
+        sta z14-1,x
                 ldy MATH_IO+$03,x
 
 umult32x8_same_x

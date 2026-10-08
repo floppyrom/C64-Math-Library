@@ -818,13 +818,15 @@ def apply_shifted_div_recip_direct(dst: bytearray, vals: dict[str,int],
         f'    lda {hx(io+0x15)}',
         '    bmi V5_FX_S_DNEG',
         f'    sta {hx(d1,2)}',
+        '    beq V5_FX_S_DHI_ZERO',
         f'    lda {hx(io+0x14)}',
         f'    sta {hx(d0,2)}',
-        f'    ora {hx(d1,2)}',
-        '    bne V5_FX_S_DPOS_OK',
-        '    jmp V5_FX_S_ZERO',
-        'V5_FX_S_DPOS_OK:',
         '    jmp V5_FX_S_N',
+        'V5_FX_S_DHI_ZERO:',
+        f'    lda {hx(io+0x14)}',
+        f'    sta {hx(d0,2)}',
+        '    bne V5_FX_S_N',
+        '    jmp V5_FX_S_ZERO',
         'V5_FX_S_DNEG:',
         '    lda #$00',
         '    sec',
@@ -940,8 +942,90 @@ def apply_shifted_div_recip_direct(dst: bytearray, vals: dict[str,int],
         if not placed:
             raise RuntimeError(f'no free page-aligned V5 shifted DIV helper slot for {span} bytes')
     for a,b in mem.items(): dst[a]=b
+
+    # The old V5 SDIV32/16 signed prefix occupied exactly one private 256-byte
+    # page at REG_KERNEL+$1D00. It becomes dead once we use the relocated U3216
+    # magnitude substrate, so reuse that page for the thin signed adapter rather
+    # than consuming another table hole.
+    s32base=vals['REG_KERNEL']+0x1D00
+    s32lines=[
+        f'* = {hx(s32base)}',
+        'V5_S3216:',
+        f'    lda {hx(io+0x15)}',
+        '    bmi V5_S3216_DNEG',
+        f'    sta {hx(d1,2)}',
+        '    beq V5_S3216_DHI_ZERO',
+        f'    lda {hx(io+0x14)}',
+        f'    sta {hx(d0,2)}',
+        '    jmp V5_S3216_NSET',
+        'V5_S3216_DHI_ZERO:',
+        f'    lda {hx(io+0x14)}',
+        f'    sta {hx(d0,2)}',
+        '    bne V5_S3216_NSET',
+        f'    jmp {hx(uentry)}',
+        'V5_S3216_DNEG:',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io+0x14)}',
+        f'    sta {hx(d0,2)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x15)}',
+        f'    sta {hx(d1,2)}',
+        'V5_S3216_NSET:',
+        f'    lda {hx(io+0x13)}',
+        '    bmi V5_S3216_NNEG',
+        f'    lda {hx(io+0x10)}',
+        f'    sta {hx(ln0,2)}',
+        f'    lda {hx(io+0x11)}',
+        f'    sta {hx(ln1,2)}',
+        f'    lda {hx(io+0x12)}',
+        f'    sta {hx(n0,2)}',
+        f'    lda {hx(io+0x13)}',
+        f'    sta {hx(n1,2)}',
+        f'    lda {hx(io+0x15)}',
+        '    bmi V5_S3216_PN',
+        f'    jmp {hx(uentry)}',
+        'V5_S3216_PN:',
+        f'    jsr {hx(uentry)}',
+        f'    jmp {hx(labels["V5_FX_NEG_Q"])}',
+        'V5_S3216_NNEG:',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io+0x10)}',
+        f'    sta {hx(ln0,2)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x11)}',
+        f'    sta {hx(ln1,2)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x12)}',
+        f'    sta {hx(n0,2)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x13)}',
+        f'    sta {hx(n1,2)}',
+        f'    lda {hx(io+0x15)}',
+        '    bmi V5_S3216_NN',
+        f'    jsr {hx(uentry)}',
+        f'    jsr {hx(labels["V5_FX_NEG_R"])}',
+        f'    jmp {hx(labels["V5_FX_NEG_Q"])}',
+        'V5_S3216_NN:',
+        f'    jsr {hx(uentry)}',
+        f'    jmp {hx(labels["V5_FX_NEG_R"])}',
+    ]
+    s32mem,s32labels,_=Assembler().assemble('\n'.join(s32lines))
+    if not s32mem: raise RuntimeError('V5 SDIV32/16 shared-core helper assembled no code')
+    s32lo,s32hi=min(s32mem),max(s32mem)
+    if s32lo!=s32base or s32hi>=s32base+0x100:
+        raise RuntimeError(f'V5 SDIV32/16 helper does not fit retired prefix page: {hx(s32lo)}-{hx(s32hi)}')
+    # Clear the retired prefix page so no stale signed-prefix instructions remain
+    # accidentally reachable through a future branch/layout change.
+    dst[s32base:s32base+0x100]=bytes(0x100)
+    for a,b in s32mem.items(): dst[a]=b
+
     for name,label in (('MATH_UDIV16_SHL8','V5_FX_U'),('MATH_SDIV16_SHL8','V5_FX_S')):
         a=_public_addr(base_man,name); t=labels[label]
+        dst[a:a+3]=bytes((0x4C,t&255,t>>8))
+    for name in ('MATH_SDIV32_16','MATH_SMOD32_16'):
+        a=_public_addr(base_man,name); t=s32labels['V5_S3216']
         dst[a:a+3]=bytes((0x4C,t&255,t>>8))
     # V1 reciprocal ladder's small-divisor branch targets REG_GAME+$0680.
     # Replace that fallback entry with a jump to the V2-core constant-numerator helper.
@@ -950,6 +1034,7 @@ def apply_shifted_div_recip_direct(dst: bytearray, vals: dict[str,int],
     return {
         'unsigned_entry':hx(labels['V5_FX_U']),
         'signed_entry':hx(labels['V5_FX_S']),
+        'signed32_16_entry':hx(s32labels['V5_S3216']),
         'reciprocal_fallback':hx(labels['V5_RECIP_FALLBACK']),
         'code_range':f'{hx(lo)}-{hx(hi)}',
         'code_bytes':hi-lo+1,

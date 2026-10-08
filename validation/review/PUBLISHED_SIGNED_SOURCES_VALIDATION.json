@@ -128,18 +128,18 @@
         },
         "MATH_SDIV32_16": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv32_16_native.asm",
-          "instructions": 1152,
-          "bytes_verified": 2142
+          "instructions": 1178,
+          "bytes_verified": 2182
         },
         "MATH_SDIV32_32": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 374,
-          "bytes_verified": 882
+          "instructions": 1519,
+          "bytes_verified": 3018
         },
         "MATH_SDIV16_SHL8": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1116,
-          "bytes_verified": 2051
+          "instructions": 1167,
+          "bytes_verified": 2153
         }
       }
     },
@@ -199,18 +199,18 @@
         },
         "MATH_SDIV32_16": {
           "file": "v3_reu_512k/resident/signed/division/native/sdiv32_16_native.asm",
-          "instructions": 1152,
-          "bytes_verified": 2142
+          "instructions": 1178,
+          "bytes_verified": 2182
         },
         "MATH_SDIV32_32": {
           "file": "v3_reu_512k/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 374,
-          "bytes_verified": 882
+          "instructions": 1519,
+          "bytes_verified": 3018
         },
         "MATH_SDIV16_SHL8": {
           "file": "v3_reu_512k/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1116,
-          "bytes_verified": 2051
+          "instructions": 1167,
+          "bytes_verified": 2153
         }
       }
     },
@@ -270,18 +270,18 @@
         },
         "MATH_SDIV32_16": {
           "file": "v4_reu_16m/resident/signed/division/native/sdiv32_16_native.asm",
-          "instructions": 1152,
-          "bytes_verified": 2142
+          "instructions": 1178,
+          "bytes_verified": 2182
         },
         "MATH_SDIV32_32": {
           "file": "v4_reu_16m/resident/signed/division/native/sdiv32_32_native.asm",
-          "instructions": 374,
-          "bytes_verified": 882
+          "instructions": 1519,
+          "bytes_verified": 3018
         },
         "MATH_SDIV16_SHL8": {
           "file": "v4_reu_16m/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1116,
-          "bytes_verified": 2051
+          "instructions": 1167,
+          "bytes_verified": 2153
         }
       }
     },
@@ -341,8 +341,8 @@
         },
         "MATH_SDIV32_16": {
           "file": "v5_hybrid_lowzp/resident/signed/division/native/sdiv32_16_native.asm",
-          "instructions": 274,
-          "bytes_verified": 542
+          "instructions": 1177,
+          "bytes_verified": 2179
         },
         "MATH_SDIV32_32": {
           "file": "v5_hybrid_lowzp/resident/signed/division/native/sdiv32_32_native.asm",
@@ -351,8 +351,8 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "v5_hybrid_lowzp/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1170,
-          "bytes_verified": 2159
+          "instructions": 1172,
+          "bytes_verified": 2164
         }
       }
     }
@@ -1059,8 +1059,8 @@
       "check": "v2_pareto_fast_MATH_SDIV32_16_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1099,
+        "approved": 1099,
         "unexpected": []
       }
     },
@@ -1068,8 +1068,8 @@
       "check": "v2_pareto_fast_MATH_SDIV32_16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1152,
-        "runtime": 1152,
+        "published": 1178,
+        "runtime": 1178,
         "missing": 0,
         "extra": 0
       }
@@ -1088,8 +1088,8 @@
       "check": "v2_pareto_fast_MATH_SDIV32_32_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1413,
+        "approved": 1413,
         "unexpected": []
       }
     },
@@ -1097,8 +1097,8 @@
       "check": "v2_pareto_fast_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 374,
-        "runtime": 374,
+        "published": 1519,
+        "runtime": 1519,
         "missing": 0,
         "extra": 0
       }
@@ -1117,8 +1117,8 @@
       "check": "v2_pareto_fast_MATH_SDIV16_SHL8_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1099,
+        "approved": 1099,
         "unexpected": []
       }
     },
@@ -1126,8 +1126,8 @@
       "check": "v2_pareto_fast_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1116,
-        "runtime": 1116,
+        "published": 1167,
+        "runtime": 1167,
         "missing": 0,
         "extra": 0
       }
@@ -1446,8 +1446,8 @@
       "check": "v3_reu_512k_MATH_SDIV32_16_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1099,
+        "approved": 1099,
         "unexpected": []
       }
     },
@@ -1455,8 +1455,8 @@
       "check": "v3_reu_512k_MATH_SDIV32_16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1152,
-        "runtime": 1152,
+        "published": 1178,
+        "runtime": 1178,
         "missing": 0,
         "extra": 0
       }
@@ -1475,8 +1475,8 @@
       "check": "v3_reu_512k_MATH_SDIV32_32_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1413,
+        "approved": 1413,
         "unexpected": []
       }
     },
@@ -1484,8 +1484,8 @@
       "check": "v3_reu_512k_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 374,
-        "runtime": 374,
+        "published": 1519,
+        "runtime": 1519,
         "missing": 0,
         "extra": 0
       }
@@ -1504,8 +1504,8 @@
       "check": "v3_reu_512k_MATH_SDIV16_SHL8_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1099,
+        "approved": 1099,
         "unexpected": []
       }
     },
@@ -1513,8 +1513,8 @@
       "check": "v3_reu_512k_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1116,
-        "runtime": 1116,
+        "published": 1167,
+        "runtime": 1167,
         "missing": 0,
         "extra": 0
       }
@@ -1833,8 +1833,8 @@
       "check": "v4_reu_16m_MATH_SDIV32_16_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1099,
+        "approved": 1099,
         "unexpected": []
       }
     },
@@ -1842,8 +1842,8 @@
       "check": "v4_reu_16m_MATH_SDIV32_16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1152,
-        "runtime": 1152,
+        "published": 1178,
+        "runtime": 1178,
         "missing": 0,
         "extra": 0
       }
@@ -1862,8 +1862,8 @@
       "check": "v4_reu_16m_MATH_SDIV32_32_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1413,
+        "approved": 1413,
         "unexpected": []
       }
     },
@@ -1871,8 +1871,8 @@
       "check": "v4_reu_16m_MATH_SDIV32_32_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 374,
-        "runtime": 374,
+        "published": 1519,
+        "runtime": 1519,
         "missing": 0,
         "extra": 0
       }
@@ -1891,8 +1891,8 @@
       "check": "v4_reu_16m_MATH_SDIV16_SHL8_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1099,
+        "approved": 1099,
         "unexpected": []
       }
     },
@@ -1900,8 +1900,8 @@
       "check": "v4_reu_16m_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1116,
-        "runtime": 1116,
+        "published": 1167,
+        "runtime": 1167,
         "missing": 0,
         "extra": 0
       }
@@ -2220,8 +2220,8 @@
       "check": "v5_hybrid_lowzp_MATH_SDIV32_16_approved_exec_overlap_only",
       "status": "PASS",
       "detail": {
-        "overlap": 0,
-        "approved": 0,
+        "overlap": 1099,
+        "approved": 1099,
         "unexpected": []
       }
     },
@@ -2229,8 +2229,8 @@
       "check": "v5_hybrid_lowzp_MATH_SDIV32_16_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 274,
-        "runtime": 274,
+        "published": 1177,
+        "runtime": 1177,
         "missing": 0,
         "extra": 0
       }
@@ -2287,8 +2287,8 @@
       "check": "v5_hybrid_lowzp_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1170,
-        "runtime": 1170,
+        "published": 1172,
+        "runtime": 1172,
         "missing": 0,
         "extra": 0
       }

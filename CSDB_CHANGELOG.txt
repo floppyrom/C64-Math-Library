@@ -1,3 +1,12 @@
+2026-10-08 SIGNED MAGNITUDE-CORE REUSE + LIFTABLE MULDIV16
+- SDIV16_SHL8 V2/V3/V4/V5: 630.033 / 630.265 / 628.418 / 628.885 cycles (V1 Balanced 846.155).
+- SDIV32/16 V2/V3/V4/V5: 724.392 / 724.450 / 721.003 / 722.171 cycles (V1 Balanced 955.052).
+- SDIV32/32 V2/V3/V4: 420.452 / 416.866 / 418.154 cycles; V1/V5 keep Balanced private paths.
+- Signed front ends now share certified unsigned magnitude substrates only through explicit validator exceptions.
+- 364,533 signed DIV/MOD calls pass with zero errors; signed source/layout gates pass.
+- OptiSearch local pass found no legal selected-wrapper rewrite after placement barriers; post-pass manual high-byte shortcut retained where safe.
+- Clean symbolic MULDIV16 source modules are now published under routines/muldiv16/ and are used by the integrated build.
+
 2026-10-08 SHIFTED DIV / RECIPROCAL DIRECT-INPUT OPTIMIZATION
 - UDIV16_SHL8 V1-V5 now: 770.773617 / 552.649695 / 553.124974 / 552.577740 / 553.298759 cycles mean.
 - SDIV16_SHL8 V1-V5 now: 846.155071 / 715.633370 / 714.004798 / 712.609597 / 630.805016.

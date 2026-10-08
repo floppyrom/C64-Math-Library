@@ -24,39 +24,39 @@ IS32P_ENTRY:
     ; The configured base is 64-bank aligned, so its upper two address bits
     ; can be ORed with high_word>>10.
     lda MATH_N+3
-    lsr a
-    lsr a
+    lsr
+    lsr
     ora #REU_ISQRT32_PREFIX_BASE_BANK
     sta $DF06
 
     lda MATH_N+3
     and #$03
-    asl a
-    asl a
-    asl a
-    asl a
-    asl a
-    asl a
+    asl
+    asl
+    asl
+    asl
+    asl
+    asl
     sta REU_SCRATCH+3
     lda MATH_N+2
-    lsr a
-    lsr a
+    lsr
+    lsr
     ora REU_SCRATCH+3
     sta $DF05
 
     lda MATH_N+2
     and #$03
-    asl a
-    asl a
-    asl a
-    asl a
-    asl a
-    asl a
+    asl
+    asl
+    asl
+    asl
+    asl
+    asl
     sta REU_SCRATCH+3
     lda MATH_N+1
     and #$F0
-    lsr a
-    lsr a
+    lsr
+    lsr
     ora REU_SCRATCH+3
     sta $DF04
 
@@ -89,10 +89,10 @@ IS32P_ENTRY:
     ; for two steps, then process all eight bits of N0 in four more steps.
     lda MATH_N+1
     and #$0F
-    asl a
-    asl a
-    asl a
-    asl a
+    asl
+    asl
+    asl
+    asl
     tax
     ldy #$02
     jsr IS32P_REFINE
@@ -112,11 +112,11 @@ IS32P_ENTRY:
 IS32P_REFINE:
 IS32P_LOOP:
     txa
-    asl a
+    asl
     rol IS32_RES0
     rol IS32_RES1
     rol IS32_RES2
-    asl a
+    asl
     rol IS32_RES0
     rol IS32_RES1
     rol IS32_RES2
@@ -125,14 +125,14 @@ IS32P_LOOP:
     asl IS32_ROOT0
     rol IS32_ROOT1
     lda IS32_ROOT0
-    asl a
+    asl
     ora #$01
     sta IS32_TRIAL0
     lda IS32_ROOT1
-    rol a
+    rol
     sta IS32_TRIAL1
     lda #$00
-    rol a
+    rol
     sta IS32_TRIAL2
 
     ; Compare the full 17-bit trial against the 17-bit residual.  The top

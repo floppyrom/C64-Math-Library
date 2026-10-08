@@ -1,3 +1,4 @@
-SD3232_ZERO = REG_LOW+$0828
-SD3232_MAG  = REG_LOW+$0852
+; v3_reu_512k SDIV32/32 wrapper: reuse the profile-selected public UDIV32/32 core.
+SD3232_STUB = REG_GAME+$002C
+SD3232_BODY = REG_LOW+$0852
 !source "../division/sdiv32_32_signflow_common.inc"

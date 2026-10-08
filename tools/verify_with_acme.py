@@ -8,6 +8,11 @@ from assemble_sources import build,parse_config,_assemble_overlay,expand_source_
 from source_relocation import PROFILES
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def acme_config(vals):
+    # Give ACME the same complete symbolic map as the internal assembler.
+    # Overlay sources may legitimately reference MATH_IO or future profile
+    # symbols in addition to REG_LOW/REG_TABLE and their relocatable ZP base.
+    return ''.join(f'{k}=${v:X}\n' for k,v in sorted(vals.items()))
 def main():
  ap=argparse.ArgumentParser(description='Verify source builds with real ACME and compare byte-for-byte with the bundled independent assembler.')
  ap.add_argument('--acme',type=Path,default=Path(os.environ.get('ACME','acme')))
@@ -43,7 +48,7 @@ def main():
     internal_bytes,_=_assemble_overlay(name,vals)
     stage=td/'overlay'/kind/p/name;stage.mkdir(parents=True,exist_ok=True)
     shutil.copy2(ROOT/'relocatable_source'/'turbo'/f'{name}_overlay.asm',stage/f'{name}_overlay.asm')
-    wrapper=stage/'wrapper.asm';wrapper.write_text(f'REG_LOW=${vals["REG_LOW"]:04x}\nREG_TABLE=${vals["REG_TABLE"]:04x}\n{basekey}=${vals[basekey]:02x}\n!source "{name}_overlay.asm"\n')
+    wrapper=stage/'wrapper.asm';wrapper.write_text(acme_config(vals)+f'!source "{name}_overlay.asm"\n')
     out=stage/'overlay.bin';cp=subprocess.run([acme,'-f','plain','-o',str(out),'wrapper.asm'],cwd=stage,text=True,capture_output=True)
     if cp.returncode:raise RuntimeError(f'ACME overlay failed {p}/{kind}/{name}:\n{cp.stdout}\n{cp.stderr}')
     same=out.read_bytes()==internal_bytes
@@ -63,7 +68,7 @@ def main():
   internal_bytes,_=_assemble_overlay(name,vals)
   stage=td/'overlay_boundary'/name/f'{base:02x}';stage.mkdir(parents=True,exist_ok=True)
   shutil.copy2(ROOT/'relocatable_source'/'turbo'/f'{name}_overlay.asm',stage/f'{name}_overlay.asm')
-  wrapper=stage/'wrapper.asm';wrapper.write_text(f'REG_LOW=${vals["REG_LOW"]:04x}\nREG_TABLE=${table:04x}\n{basekey}=${base:02x}\n!source "{name}_overlay.asm"\n')
+  wrapper=stage/'wrapper.asm';wrapper.write_text(acme_config(vals)+f'!source "{name}_overlay.asm"\n')
   out=stage/'overlay.bin';cp=subprocess.run([acme,'-f','plain','-o',str(out),'wrapper.asm'],cwd=stage,text=True,capture_output=True)
   if cp.returncode:raise RuntimeError(f'ACME boundary overlay failed {name}/${base:02X}:\n{cp.stdout}\n{cp.stderr}')
   if out.read_bytes()!=internal_bytes:raise AssertionError(f'ACME/internal boundary overlay mismatch: {name}/${base:02X}')

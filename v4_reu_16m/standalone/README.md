@@ -30,23 +30,23 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | `div_s8_s8_s8_8.asm` |  | 235 |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | `div_s16_s16_s16_16.asm` |  | 802 |
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | `div_s24_s24_s24_24.asm` |  | 819 |
-| `MATH_SDIV32_16` | `div_s32_s16_s32_16` | `div_s32_s16_s32_16.asm` |  | 1152 |
+| `MATH_SDIV32_16` | `div_s32_s16_s32_16` | `div_s32_s16_s32_16.asm` |  | 1178 |
 | `MATH_SMOD8` | `mod_s8_s8_s8` | `mod_s8_s8_s8__math_smod8.asm` | `MATH_SDIV8` | 235 |
 | `MATH_SMOD16` | `mod_s16_s16_s16` | `mod_s16_s16_s16__math_smod16.asm` | `MATH_SDIV16` | 802 |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | `mod_s24_s24_s24__math_smod24.asm` | `MATH_SDIV24` | 819 |
-| `MATH_SMOD32_16` | `mod_s32_s16_s16` | `mod_s32_s16_s16__math_smod32_16.asm` | `MATH_SDIV32_16` | 1153 |
+| `MATH_SMOD32_16` | `mod_s32_s16_s16` | `mod_s32_s16_s16__math_smod32_16.asm` | `MATH_SDIV32_16` | 1179 |
 | `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | `muldiv_u16_u16_u16_u32_16.asm` |  | 1188 |
 | `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | `muldiv_s16_s16_s16_s32_16.asm` |  | 1308 |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | `div_u32_u32_u32_32.asm` |  | 1413 |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | `mod_u32_u32_u32__math_umod32_32.asm` | `MATH_UDIV32_32` | 1453 |
-| `MATH_SDIV32_32` | `div_s32_s32_s32_32` | `div_s32_s32_s32_32.asm` |  | 374 |
-| `MATH_SMOD32_32` | `mod_s32_s32_s32` | `mod_s32_s32_s32__math_smod32_32.asm` | `MATH_SDIV32_32` | 374 |
+| `MATH_SDIV32_32` | `div_s32_s32_s32_32` | `div_s32_s32_s32_32.asm` |  | 1519 |
+| `MATH_SMOD32_32` | `mod_s32_s32_s32` | `mod_s32_s32_s32__math_smod32_32.asm` | `MATH_SDIV32_32` | 1519 |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | `mul_u16_u16_u24_shr8.asm` |  | 89 |
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | `mul_s16_s16_s24_shr8.asm` |  | 120 |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | `mul_u32_u32_u48_shr16.asm` |  | 167 |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | `mul_s32_s32_s48_shr16.asm` |  | 668 |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | `div_u16_u16_u24_16_shl8.asm` |  | 1112 |
-| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | `div_s16_s16_s24_16_shl8.asm` |  | 1116 |
+| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | `div_s16_s16_s24_16_shl8.asm` |  | 1167 |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | `recip_u16_u24_q16.asm` |  | 183 |
 | `MATH_SIN8` | `sin_u8_s8` | `sin_u8_s8.asm` |  | 6 |
 | `MATH_COS8` | `cos_u8_s8` | `cos_u8_s8.asm` |  | 6 |

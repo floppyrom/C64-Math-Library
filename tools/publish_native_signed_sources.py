@@ -96,11 +96,16 @@ def operand(mem,pc,op,mode,code):
  return {'abs':f' {target}','absx':f' {target},x','absy':f' {target},y','ind':f' ({target})'}[mode]
 
 def approved_shared_exec(profile,name,mem,vals):
- # V5's shifted signed adapter owns all sign/magnitude setup and correction,
- # then deliberately joins the certified relocated UDIV32/16 magnitude graph.
+ # Shifted signed DIV owns all sign/magnitude setup and correction, then
+ # deliberately joins the selected UDIV32/16 magnitude graph. V2/V3/V4 use
+ # their native U3216 substrate; V5 uses its certified relocated copy.
  # No other signed API is permitted to enter corresponding unsigned code.
- if profile=='v5_hybrid_lowzp' and name=='MATH_SDIV16_SHL8':
+ if name=='MATH_SDIV16_SHL8' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
   return trace(mem,vals['MATH_UDIV32_16'])
+ if name=='MATH_SDIV32_16' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
+  return trace(mem,vals['MATH_UDIV32_16'])
+ if name=='MATH_SDIV32_32' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+  return trace(mem,vals['MATH_UDIV32_32'])
  return set()
 
 def render(profile,name,mem,vals):
@@ -152,7 +157,7 @@ def readme(profile,kind,names):
  for name,fn in names.items(): rows.append(f'| `{name}` | `{fn}` |')
  extra='\nFor V2–V4, `smul16_practical_116zp.a` remains the hand-authored executable-ZP SMUL16 source and its relocation JSON remains alongside these mirrors.\n' if kind=='multiply' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m') else ''
  if kind=='division': extra+='\n`SMOD*` entries are aliases of the corresponding native signed divider and therefore do not need separate executable kernels.\n'
- return f'''# Native signed {noun}: published executable sources\n\nThese files expose the **actual native signed executable paths shipped by `{profile}`**. They are exact generated source mirrors of the resident image after `MATH_INIT`, not placeholders. Every instruction is annotated with its resident address and bytes and is checked by `tools/validate_published_signed_sources.py`.\n\nThe canonical integrated build source remains `{rel}`. These mirrors exist so a GitHub reader can inspect each signed implementation directly without hunting through the monolithic generated source. Shared immutable lookup/data tables are not duplicated; corresponding unsigned executable instructions are never entered.\n\n| Public API | Published source |\n|---|---|\n{chr(10).join(rows)}\n{extra}\nSee `../../SIGNED_LINK_MAP.json` for placements/provenance and `validation/review/SIGNED_LAYOUT_VALIDATION.json` for the zero-overlap proof.\n'''
+ return f'''# Native signed {noun}: published executable sources\n\nThese files expose the **actual native signed executable paths shipped by `{profile}`**. They are exact generated source mirrors of the resident image after `MATH_INIT`, not placeholders. Every instruction is annotated with its resident address and bytes and is checked by `tools/validate_published_signed_sources.py`.\n\nThe canonical integrated build source remains `{rel}`. These mirrors exist so a GitHub reader can inspect each signed implementation directly without hunting through the monolithic generated source. Shared immutable lookup/data tables are not duplicated. Corresponding unsigned executable instructions are disjoint except for explicitly audited shared magnitude substrates recorded by the signed-layout validator.\n\n| Public API | Published source |\n|---|---|\n{chr(10).join(rows)}\n{extra}\nSee `../../SIGNED_LINK_MAP.json` for placements/provenance and `validation/review/SIGNED_LAYOUT_VALIDATION.json` for the zero-overlap proof.\n'''
 
 def main():
  report={'status':'PASS','profiles':{}}

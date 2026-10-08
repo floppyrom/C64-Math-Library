@@ -72,10 +72,15 @@ def trace(mem,start):
     return seen
 
 def approved_shared_exec(profile,signed_name,mem,vals):
-    # V5 SDIV16_SHL8 deliberately joins the certified relocated UDIV32/16
-    # magnitude graph after its signed front-end has bound |N<<8|, |D| and sign.
-    if profile=='v5_hybrid_lowzp' and signed_name=='MATH_SDIV16_SHL8':
+    # SDIV16_SHL8 deliberately joins the selected UDIV32/16 magnitude graph
+    # after its signed front-end has bound |N<<8|, |D| and sign. V2/V3/V4 use
+    # the native U3216 substrate; V5 uses the certified relocated copy.
+    if signed_name=='MATH_SDIV16_SHL8' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
         return trace(mem,vals['MATH_UDIV32_16'])
+    if signed_name=='MATH_SDIV32_16' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
+        return trace(mem,vals['MATH_UDIV32_16'])
+    if signed_name=='MATH_SDIV32_32' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+        return trace(mem,vals['MATH_UDIV32_32'])
     return set()
 
 profiles_out={}

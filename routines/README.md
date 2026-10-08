@@ -5,7 +5,7 @@ This directory is the public source index for the C64 Math Library.
 There are two source classes:
 
 1. **Shipped profile routines.** Every callable entry in V1-V5 has an exact typed `.asm` mirror in that profile's `standalone/` directory. These mirrors match the shipped executable after initialization and preserve the historical `MATH_*` ABI. The machine-readable index is [`SOURCE_CATALOG.csv`](SOURCE_CATALOG.csv).
-2. **Standalone alternatives / record-Pareto points.** Independently benchmarked kernels that are useful outside a fixed profile live here under their operation family, for example `multiply/mul_s24_s24_s48_fast24.asm`. These are listed in [`../benchmarks/STANDALONE_RESULTS.csv`](../benchmarks/STANDALONE_RESULTS.csv), including timing basis, ZP, stack reservation, source hash and validation evidence.
+2. **Liftable symbolic modules and standalone alternatives.** Human-facing source modules that are intended to be transplanted without reverse-engineering a resident disassembly live here under their operation family. `muldiv16/` is the first stable-API family whose integrated profile build now sources the same symbolic files exposed to developers. Independently benchmarked record/Pareto kernels (for example `multiply/mul_s24_s24_s48_fast24.asm`) live alongside them and are listed in [`../benchmarks/STANDALONE_RESULTS.csv`](../benchmarks/STANDALONE_RESULTS.csv).
 
 ## Publication rule
 
@@ -18,6 +18,14 @@ A performance number is considered publishable in this repository only when:
 - `python3 tools/validate_public_catalog.py` passes.
 
 This prevents source-less benchmark claims and makes every published number traceable to code.
+
+## Audit mirror versus liftable module
+
+A file under `<profile>/standalone/` proves exactly what executable graph ships for one public entry. It is excellent for inspection and exact extraction, but shared tables/data are intentionally not duplicated, so it is not automatically a one-file drop-in module.
+
+A curated module under `routines/` is the preferred copy/paste surface when one exists: it uses symbolic ABI/dependency names and is either sourced directly by the integrated build or independently benchmarked and validated. The project is moving stable families toward this model without weakening the exact audit mirrors.
+
+For `MATH_UMULDIV16` / `MATH_SMULDIV16`, use [`muldiv16/README.md`](muldiv16/README.md): it documents the portable composed source and the faster V2/V3/V4 fused source plus their exact dependencies.
 
 ## Game movement
 

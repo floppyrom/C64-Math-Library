@@ -349,11 +349,17 @@ def provenance(profile,n):
             return 'fast direct-output native signed 24-bit divider repacked under V5 31-ZP contract'
         return ('balanced direct-output native signed 24-bit divider' if profile=='v1_balanced' else 'fast direct-output native signed 24-bit divider')
     if n in ('MATH_SDIV32_16','MATH_SMOD32_16'):
-        return ('refreshed low-ZP native signed 32/16 divider retained in V5' if profile=='v5_hybrid_lowzp' else 'direct-output native signed 32/16 divider')
+        if profile=='v1_balanced':
+            return 'balanced private signed 32/16 magnitude path'
+        return ('thin signed front end around relocated V2 UDIV32/16 magnitude substrate under the 31-ZP contract'
+                if profile=='v5_hybrid_lowzp'
+                else 'thin signed front end around profile-selected UDIV32/16 magnitude substrate')
     if n in ('MATH_SDIV32_32','MATH_SMOD32_32'):
-        return 'native signed 32/32 magnitude path with redundant zero-test removed'
+        return ('signed-private balanced 32/32 path' if profile in ('v1_balanced','v5_hybrid_lowzp')
+                else 'signed normalize/restore wrapper around profile-selected public UDIV32/32 core')
     if n=='MATH_SDIV16_SHL8':
-        return 'fixed-point adapter into selected native signed 32/16 divider'
+        return ('fixed-point adapter into balanced private signed 32/16 divider' if profile=='v1_balanced'
+                else 'thin signed fixed-point front end around selected UDIV32/16 magnitude substrate')
     if profile=='v5_hybrid_lowzp' and n in {'MATH_UDIV16','MATH_UDIV24','MATH_UDIV32_16','MATH_UMOD8','MATH_UMOD16','MATH_UMOD24','MATH_UMOD32_16','MATH_COS8','MATH_SINCOS8','MATH_ATAN2_8'}:
         return 'V2 certified kernel imported into V5 hybrid private RAM'
     if n=='MATH_ISQRT32' and profile=='v4_reu_16m':

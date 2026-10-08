@@ -4,7 +4,7 @@
     {
       "check": "python_tools_compile",
       "status": "PASS",
-      "detail": "51 files"
+      "detail": "66 files"
     },
     {
       "check": "signed_layout_validation",
@@ -12,10 +12,12 @@
       "detail": {
         "profiles": 5,
         "api_pairs_per_profile": 13,
-        "zero_overlap_comparisons": 65,
+        "pair_comparisons": 65,
+        "approved_shared_pairs": 11,
         "checks_passed": 279,
         "taxonomy": [
-          "native_signed_kernel"
+          "native_signed_kernel",
+          "audited_shared_magnitude_substrate"
         ]
       }
     },
@@ -34,7 +36,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 21.09
+        "elapsed_seconds": 17.49
       }
     },
     {
@@ -43,7 +45,7 @@
       "detail": {
         "profiles": 5,
         "machine_calls": 264999,
-        "elapsed_seconds": 21.09
+        "elapsed_seconds": 17.49
       }
     },
     {
@@ -56,9 +58,7 @@
       "status": "PASS",
       "detail": {
         "profiles": 5,
-        "machine_calls": 364533,
-        "elapsed_seconds_sum": 60.05,
-        "note": "merged from per-profile final resident validation runs"
+        "machine_calls": 364533
       }
     },
     {
@@ -66,9 +66,7 @@
       "status": "PASS",
       "detail": {
         "profiles": 5,
-        "machine_calls": 364533,
-        "elapsed_seconds_sum": 60.05,
-        "note": "merged from per-profile final resident validation runs"
+        "machine_calls": 364533
       }
     },
     {
@@ -79,7 +77,7 @@
     {
       "check": "public_api_count",
       "status": "PASS",
-      "detail": 54
+      "detail": 56
     },
     {
       "check": "public_api_unique",
@@ -357,6 +355,91 @@
       }
     },
     {
+      "check": "atan2_dispatch_current",
+      "status": "PASS",
+      "detail": 655360
+    },
+    {
+      "check": "atan2_dispatch_v1_balanced_reference",
+      "status": "PASS",
+      "detail": {
+        "mean": 47.46281433105469,
+        "max_phase_error": 1
+      }
+    },
+    {
+      "check": "atan2_dispatch_v1_balanced_alternate",
+      "status": "PASS",
+      "detail": {
+        "mean": 47.46281433105469,
+        "max_phase_error": 1
+      }
+    },
+    {
+      "check": "atan2_dispatch_v2_pareto_fast_reference",
+      "status": "PASS",
+      "detail": {
+        "mean": 43.97062683105469,
+        "max_phase_error": 1
+      }
+    },
+    {
+      "check": "atan2_dispatch_v2_pareto_fast_alternate",
+      "status": "PASS",
+      "detail": {
+        "mean": 43.97062683105469,
+        "max_phase_error": 1
+      }
+    },
+    {
+      "check": "atan2_dispatch_v3_reu_512k_reference",
+      "status": "PASS",
+      "detail": {
+        "mean": 43.97062683105469,
+        "max_phase_error": 1
+      }
+    },
+    {
+      "check": "atan2_dispatch_v3_reu_512k_alternate",
+      "status": "PASS",
+      "detail": {
+        "mean": 43.97062683105469,
+        "max_phase_error": 1
+      }
+    },
+    {
+      "check": "atan2_dispatch_v4_reu_16m_reference",
+      "status": "PASS",
+      "detail": {
+        "mean": 48.0,
+        "max_phase_error": 0
+      }
+    },
+    {
+      "check": "atan2_dispatch_v4_reu_16m_alternate",
+      "status": "PASS",
+      "detail": {
+        "mean": 48.0,
+        "max_phase_error": 0
+      }
+    },
+    {
+      "check": "atan2_dispatch_v5_hybrid_lowzp_reference",
+      "status": "PASS",
+      "detail": {
+        "mean": 43.97062683105469,
+        "max_phase_error": 1
+      }
+    },
+    {
+      "check": "atan2_dispatch_v5_hybrid_lowzp_alternate",
+      "status": "PASS",
+      "detail": {
+        "mean": 43.97062683105469,
+        "max_phase_error": 1
+      }
+    },
+    {
       "check": "alternate_validation_status",
       "status": "PASS",
       "detail": null
@@ -367,17 +450,17 @@
       "detail": null
     },
     {
-      "check": "alternate_entries_216",
+      "check": "alternate_entries_224",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "alternate_calls_85688",
+      "check": "alternate_calls_86712",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "v1_balanced_54_entries",
+      "check": "v1_balanced_56_entries",
       "status": "PASS",
       "detail": null
     },
@@ -387,7 +470,7 @@
       "detail": null
     },
     {
-      "check": "v2_pareto_fast_54_entries",
+      "check": "v2_pareto_fast_56_entries",
       "status": "PASS",
       "detail": null
     },
@@ -397,7 +480,7 @@
       "detail": null
     },
     {
-      "check": "v3_reu_512k_54_entries",
+      "check": "v3_reu_512k_56_entries",
       "status": "PASS",
       "detail": null
     },
@@ -407,7 +490,7 @@
       "detail": null
     },
     {
-      "check": "v4_reu_16m_54_entries",
+      "check": "v4_reu_16m_56_entries",
       "status": "PASS",
       "detail": null
     },
@@ -682,7 +765,7 @@
       "detail": null
     },
     {
-      "check": "acme_boundary_turbo16_$8F",
+      "check": "acme_boundary_turbo16_$85",
       "status": "PASS",
       "detail": null
     },
@@ -862,27 +945,27 @@
       "detail": null
     },
     {
-      "check": "v1_balanced_manifest_54",
+      "check": "v1_balanced_manifest_56",
       "status": "PASS",
       "detail": null
     },
     {
       "check": "v1_balanced_reference_prg_exact",
       "status": "PASS",
-      "detail": "86c2784f67784e01ed4f87f17a9e1f1612f63c42b20e564af3b240bd0092e4cb"
+      "detail": "6e58dfb142a16c341de53d45ce129419a524c6295b9e38c6d5b720cc120f7e28"
     },
     {
-      "check": "v2_pareto_fast_manifest_54",
+      "check": "v2_pareto_fast_manifest_56",
       "status": "PASS",
       "detail": null
     },
     {
       "check": "v2_pareto_fast_reference_prg_exact",
       "status": "PASS",
-      "detail": "0e1818b86d7b4d463a2af6b0424fdee728b79331a277726f72d5d4e7236e1bb9"
+      "detail": "8bc25fa0c79a287ac2a28c6ce6d596da1333f2d84c0e9000724cfa1e9d5455d6"
     },
     {
-      "check": "v3_reu_512k_manifest_54",
+      "check": "v3_reu_512k_manifest_56",
       "status": "PASS",
       "detail": null
     },
@@ -899,15 +982,15 @@
     {
       "check": "v3_reu_512k_reference_prg_exact",
       "status": "PASS",
-      "detail": "cede0fedc07c447ed2d94372b21cb1e6ae869d7dd13250076c6556f21e508ac7"
+      "detail": "f76a7e8770a01ac7fabc9d9f65b567ef5bfe63128769865a228a9085154f665b"
     },
     {
       "check": "v3_reu_512k_reference_reu_exact",
       "status": "PASS",
-      "detail": "66a3feab7d1a18356291c2aac9f404627ca13004d1032d6c6efb4cd1e4f1acf5"
+      "detail": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f"
     },
     {
-      "check": "v4_reu_16m_manifest_54",
+      "check": "v4_reu_16m_manifest_56",
       "status": "PASS",
       "detail": null
     },
@@ -924,12 +1007,12 @@
     {
       "check": "v4_reu_16m_reference_prg_exact",
       "status": "PASS",
-      "detail": "a3e6b9d4667e84ba2405f751cf5230a904fc2e78ea470c0aa6ee48556cf02904"
+      "detail": "e7841af8f3622236fef1d3f129e8fd6903c3d0ad06cfa09ce972e55def01c15b"
     },
     {
       "check": "v4_reu_16m_reference_reu_exact",
       "status": "PASS",
-      "detail": "123e870c5d30a0ae08098911bdf8c3e37f328f372a71b829d740622f8bf9f240"
+      "detail": "f745ab4021518d0277e75b42ece6b3bd747d852bc75a1c2138d47f0a32c65a73"
     },
     {
       "check": "hybrid_validation_status",
@@ -937,12 +1020,12 @@
       "detail": null
     },
     {
-      "check": "hybrid_reference_54_entries",
+      "check": "hybrid_reference_56_entries",
       "status": "PASS",
       "detail": {
         "status": "PASS",
-        "public_entries": 54,
-        "machine_calls": 21422
+        "public_entries": 56,
+        "machine_calls": 21678
       }
     },
     {
@@ -965,12 +1048,12 @@
       }
     },
     {
-      "check": "hybrid_alternate_54_entries",
+      "check": "hybrid_alternate_56_entries",
       "status": "PASS",
       "detail": {
         "status": "PASS",
-        "public_entries": 54,
-        "machine_calls": 21422
+        "public_entries": 56,
+        "machine_calls": 21678
       }
     },
     {
@@ -1013,21 +1096,6 @@
       "detail": null
     },
     {
-      "check": "hybrid_v2_cycle_parity_MATH_UMOD16",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "hybrid_v2_cycle_parity_MATH_UMOD24",
-      "status": "PASS",
-      "detail": null
-    },
-    {
-      "check": "hybrid_v2_cycle_parity_MATH_UMOD32_16",
-      "status": "PASS",
-      "detail": null
-    },
-    {
       "check": "hybrid_v2_cycle_parity_MATH_COS8",
       "status": "PASS",
       "detail": null
@@ -1041,6 +1109,45 @@
       "check": "hybrid_v2_cycle_parity_MATH_ATAN2_8",
       "status": "PASS",
       "detail": null
+    },
+    {
+      "check": "hybrid_v2_semantics_MATH_UMOD16",
+      "status": "PASS",
+      "detail": {
+        "cases": 1000,
+        "correctness_against_v2": true,
+        "cycle_parity_required": false,
+        "cycle_vector_equal_to_v2": false,
+        "mean_cycle_delta_v5_minus_v2": 7.866,
+        "min_cycle_delta_v5_minus_v2": 1,
+        "max_cycle_delta_v5_minus_v2": 13
+      }
+    },
+    {
+      "check": "hybrid_v2_semantics_MATH_UMOD24",
+      "status": "PASS",
+      "detail": {
+        "cases": 1000,
+        "correctness_against_v2": true,
+        "cycle_parity_required": false,
+        "cycle_vector_equal_to_v2": false,
+        "mean_cycle_delta_v5_minus_v2": 11.796,
+        "min_cycle_delta_v5_minus_v2": -5,
+        "max_cycle_delta_v5_minus_v2": 19
+      }
+    },
+    {
+      "check": "hybrid_v2_semantics_MATH_UMOD32_16",
+      "status": "PASS",
+      "detail": {
+        "cases": 1000,
+        "correctness_against_v2": true,
+        "cycle_parity_required": false,
+        "cycle_vector_equal_to_v2": true,
+        "mean_cycle_delta_v5_minus_v2": 0.0,
+        "min_cycle_delta_v5_minus_v2": 0,
+        "max_cycle_delta_v5_minus_v2": 0
+      }
     },
     {
       "check": "hybrid_umod8_exhaustive",
@@ -1068,14 +1175,14 @@
       "detail": null
     },
     {
-      "check": "hybrid_manifest_54",
+      "check": "hybrid_manifest_56",
       "status": "PASS",
       "detail": null
     },
     {
       "check": "hybrid_reference_prg_exact",
       "status": "PASS",
-      "detail": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729"
+      "detail": "aaa00c4f0919c4619a99a0f66d3c58f7e7c7f3cd8d245b5006472fde51f20339"
     },
     {
       "check": "hybrid_docs_present",
@@ -1093,9 +1200,9 @@
       "detail": 12
     },
     {
-      "check": "pareto_matrix_257064_calls",
+      "check": "pareto_matrix_260136_calls",
       "status": "PASS",
-      "detail": 257064
+      "detail": 260136
     },
     {
       "check": "pareto_reference_six_breakpoints",
@@ -1103,32 +1210,32 @@
       "detail": null
     },
     {
-      "check": "pareto_reference_31_54_entries",
+      "check": "pareto_reference_31_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_36_54_entries",
+      "check": "pareto_reference_36_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_60_54_entries",
+      "check": "pareto_reference_60_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_147_54_entries",
+      "check": "pareto_reference_147_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_176_54_entries",
+      "check": "pareto_reference_176_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_reference_221_54_entries",
+      "check": "pareto_reference_221_56_entries",
       "status": "PASS",
       "detail": null
     },
@@ -1138,32 +1245,32 @@
       "detail": null
     },
     {
-      "check": "pareto_alternate_31_54_entries",
+      "check": "pareto_alternate_31_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_36_54_entries",
+      "check": "pareto_alternate_36_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_60_54_entries",
+      "check": "pareto_alternate_60_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_147_54_entries",
+      "check": "pareto_alternate_147_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_176_54_entries",
+      "check": "pareto_alternate_176_56_entries",
       "status": "PASS",
       "detail": null
     },
     {
-      "check": "pareto_alternate_221_54_entries",
+      "check": "pareto_alternate_221_56_entries",
       "status": "PASS",
       "detail": null
     },
@@ -1472,12 +1579,12 @@
       "detail": null
     },
     {
-      "check": "consolidated_table_rows_285",
+      "check": "consolidated_table_rows_295",
       "status": "PASS",
-      "detail": 285
+      "detail": 295
     },
     {
-      "check": "consolidated_stable_rows_270",
+      "check": "consolidated_stable_rows_280",
       "status": "PASS",
       "detail": null
     },
@@ -1575,10 +1682,10 @@
   ],
   "summary": {
     "acme_current_status": "PASS",
-    "checks_passed": 268,
-    "public_entries": 54,
-    "alternate_entry_executions": 216,
-    "alternate_machine_calls": 85688,
+    "checks_passed": 279,
+    "public_entries": 56,
+    "alternate_entry_executions": 224,
+    "alternate_machine_calls": 86712,
     "config_cases": 27,
     "turbo_product_calls": 17164,
     "turbo_lifecycle_calls": 32,
@@ -1586,13 +1693,13 @@
     "turbo_boundary_product_calls": 3556,
     "reu_profiles_turbo_entries": 6,
     "isqrt32_cases_per_profile": 5097,
-    "hybrid_public_entries": 54,
-    "hybrid_common_machine_calls_per_map": 21422,
+    "hybrid_public_entries": 56,
+    "hybrid_common_machine_calls_per_map": 21678,
     "hybrid_direct_import_cases": 144246,
     "hybrid_optional_init_cases": 2000,
     "hybrid_zp_bytes": 31,
     "pareto_matrix_builds": 12,
-    "pareto_common_machine_calls": 257064,
+    "pareto_common_machine_calls": 260136,
     "pareto_direct_cycle_parity_cases": 75644,
     "pareto_smul16_stress_cases": 50144,
     "pareto_mixed_workload_iterations": 25000,
