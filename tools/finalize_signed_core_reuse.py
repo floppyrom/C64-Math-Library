@@ -7,7 +7,7 @@ or validate; the one-shot finalization workflow does that first.
 """
 from __future__ import annotations
 from pathlib import Path
-import hashlib, json, re
+import hashlib, json, re, csv
 
 ROOT=Path(__file__).resolve().parents[1]
 PROFILES=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp']
@@ -16,7 +16,22 @@ TARGETS=['MATH_SDIV32_16','MATH_SDIV32_32','MATH_SMOD32_16','MATH_SMOD32_32','MA
 def sha(p:Path)->str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
 
+def rebuild_game_math_aggregate():
+    # Legacy cross-profile game-math CSV had no generator and could silently
+    # retain stale rows after a source-backed profile benchmark changed.
+    rows=[]
+    for p in PROFILES[:4]:
+        src=ROOT/p/'PUBLIC_PERFORMANCE_GAME_MATH.csv'
+        for r in csv.DictReader(src.open()):
+            rows.append({'profile':p,**r})
+    fields=['profile','routine','canonical_name','cases','mean_cycles','min_cycles','max_cycles','alias_of']
+    out=ROOT/'docs/PERFORMANCE_GAME_MATH_FINAL.csv'
+    with out.open('w',newline='') as f:
+        w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n')
+        w.writeheader();w.writerows(rows)
+
 def update_performance():
+    rebuild_game_math_aggregate()
     sd=json.loads((ROOT/'validation/review/SIGNED_DIVISION_VALIDATION.json').read_text())
     txt=(ROOT/'PERFORMANCE.md').read_text()
     canon={}
