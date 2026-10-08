@@ -95,10 +95,20 @@ def operand(mem,pc,op,mode,code):
  target=f'L{a:04X}' if a in code and op in ('jmp','jsr') else f'${a:04X}'
  return {'abs':f' {target}','absx':f' {target},x','absy':f' {target},y','ind':f' ({target})'}[mode]
 
+def approved_shared_exec(profile,name,mem,vals):
+ # V5's shifted signed adapter owns all sign/magnitude setup and correction,
+ # then deliberately joins the certified relocated UDIV32/16 magnitude graph.
+ # No other signed API is permitted to enter corresponding unsigned code.
+ if profile=='v5_hybrid_lowzp' and name=='MATH_SDIV16_SHL8':
+  return trace(mem,vals['MATH_UDIV32_16'])
+ return set()
+
 def render(profile,name,mem,vals):
  code=trace(mem,vals[name]); unsigned=trace(mem,vals[PAIR[name]])
  overlap=code & unsigned
- if overlap: raise AssertionError(f'{profile} {name}: signed/unsigned executable overlap {sorted(overlap)[:4]}')
+ approved=approved_shared_exec(profile,name,mem,vals)
+ unexpected=overlap-approved
+ if unexpected: raise AssertionError(f'{profile} {name}: unapproved signed/unsigned executable overlap {sorted(unexpected)[:4]}')
  pcs=sorted(code)
  branch_targets=set()
  for pc in pcs:
@@ -115,7 +125,7 @@ def render(profile,name,mem,vals):
   f'; Canonical integrated build source remains ' + ('relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py' if profile=='v5_hybrid_lowzp' else f'relocatable_source/{profile}/math_relocatable.asm'),
   '; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.',
   '; Immutable lookup/data tables are intentionally not duplicated here.',
-  f'; Corresponding unsigned API: {PAIR[name]}. Executable overlap: 0 instructions.',
+  f'; Corresponding unsigned API: {PAIR[name]}. Approved shared executable overlap: {len(overlap)} instructions.',
   f'; Public entry: ${vals[name]:04X}. Reachable signed instructions: {len(code)}.',
   '; Each instruction has an @ADDR byte annotation used by the publication validator.',
   '!cpu 6510',''
