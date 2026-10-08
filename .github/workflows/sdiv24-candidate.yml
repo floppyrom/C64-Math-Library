@@ -1,4 +1,4 @@
-name: Signed division candidate
+name: Finalize signed division campaign
 
 on:
   push:
@@ -13,31 +13,70 @@ env:
   PYTHONDONTWRITEBYTECODE: '1'
 
 jobs:
-  signed-divmod:
+  finalize:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Regenerate package publication artifacts
+
+      - name: Rebuild reference residents
         run: |
+          make reference
+          python3 tools/build_hybrid.py --config-kind reference
+          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m; do
+            cp "build_source/reference/$p/math_${p}_source_built.prg" "$p/resident/math_${p}_game_math.prg"
+            cp "build_source/reference/$p/math_api.inc" "$p/resident/math_api.inc"
+          done
+          cp build_source/reference/v3_reu_512k/*.reu v3_reu_512k/reu/
+          cp build_source/reference/v4_reu_16m/*.reu v4_reu_16m/reu/
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_api.inc v5_hybrid_lowzp/resident/math_api.inc
+
+      - name: Regenerate signed validation and publication views
+        run: |
+          python3 tools/validate_signed_division.py
+          python3 tools/publish_standalone_sources.py
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/validate_published_signed_sources.py
+          python3 tools/validate_signed_layout.py
+
+      - name: Regenerate performance and public indexes
+        run: |
+          python3 tools/generate_consolidated_routine_table.py
           python3 - <<'PY'
           from pathlib import Path
-          import hashlib
-          def write_manifest():
-              root=Path('.')
-              files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
-              with open('SHA256SUMS.txt','w') as out:
-                  for p in files:
-                      out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n")
-          write_manifest()
+          import csv,re
+          profiles=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp']
+          wanted=['MATH_SDIV8','MATH_SDIV16','MATH_SDIV24','MATH_SDIV32_16','MATH_SDIV32_32','MATH_SMOD8','MATH_SMOD16','MATH_SMOD24','MATH_SMOD32_16','MATH_SMOD32_32','MATH_SDIV16_SHL8']
+          rows=list(csv.DictReader(open('docs/CONSOLIDATED_ROUTINE_TABLE.csv',newline='')))
+          by={(r['profile'],r['routine']):r for r in rows if r['api_class']=='stable'}
+          p=Path('PERFORMANCE.md')
+          lines=p.read_text().splitlines()
+          out=[]
+          for line in lines:
+              m=re.match(r'^\\| `?(MATH_[A-Z0-9_]+)`? \\| `?([^`|]+)`? \\|',line)
+              if m and m.group(1) in wanted:
+                  n=m.group(1); canon=m.group(2)
+                  vals=[f"{float(by[(prof,n)]['mean_cycles']):.6f}" for prof in profiles]
+                  line='| `'+n+'` | `'+canon+'` | '+' | '.join(vals)+' |'
+              out.append(line)
+          p.write_text('\\n'.join(out)+'\\n')
           PY
-          # First pass refreshes PACKAGE_AUDIT.json against the current tree.
-          python3 tools/package_audit.py
-          # PACKAGE_AUDIT.json is itself checksummed, so regenerate once more
-          # and verify a second pass is byte-stable.
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+
+      - name: Remove temporary campaign workflow
+        run: rm .github/workflows/sdiv24-candidate.yml
+
+      - name: Clean transient builds
+        run: make clean
+
+      - name: Regenerate package checksum and audit
+        run: |
           python3 - <<'PY'
           from pathlib import Path
           import hashlib
@@ -45,82 +84,27 @@ jobs:
           files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
           with open('SHA256SUMS.txt','w') as out:
               for p in files:
-                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n")
+                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\\n")
           PY
           python3 tools/package_audit.py
-      - name: Commit package publication artifacts
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+          with open('SHA256SUMS.txt','w') as out:
+              for p in files:
+                  out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\\n")
+          PY
+          python3 tools/package_audit.py
+
+      - name: Commit finalized signed DIV/MOD publication
         run: |
-          if ! git diff --quiet -- SHA256SUMS.txt validation/PACKAGE_AUDIT.json; then
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json
-            git commit -m "Refresh signed DIV/MOD package publication artifacts"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status --short
+          if ! git diff --cached --quiet; then
+            git commit -m "Finalize signed DIV/MOD optimization publication"
             git push
           fi
-      - name: Upload package publication artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: signed-divmod-package-artifacts
-          path: |
-            SHA256SUMS.txt
-            validation/PACKAGE_AUDIT.json
-          if-no-files-found: error
-          retention-days: 1
-      - name: Build reference profiles
-        run: |
-          make reference
-          python3 tools/build_hybrid.py --config-kind reference
-      - name: Report SDIV32/16 candidate geometry
-        run: |
-          python3 - <<'PY'
-          import sys
-          from pathlib import Path
-          sys.path.insert(0, 'tools')
-          from assemble_sources import preprocess
-          from mini6502 import Assembler
-          for profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
-              src=Path('relocatable_source')/profile/'math_relocatable.asm'
-              cfg=Path('relocatable_source')/profile/'math_config_reference.inc'
-              mem,labels,const=Assembler().assemble(preprocess(src,cfg))
-              print(profile)
-              for n in ('D32F_PUBLIC','D32F_PUBLIC_END','D32F_DIV_S32_16','D32F_PREFIX_END','D32F_DIV_U32_16'):
-                  print(' ',n,hex(labels.get(n,const.get(n,0))))
-              print(' adapter_bytes',labels['D32F_PUBLIC_END']-labels['D32F_PUBLIC'])
-              print(' prefix_bytes',labels['D32F_PREFIX_END']-labels['D32F_DIV_S32_16'])
-          PY
-      - name: Diagnose V5 SDIV32/32 ownership
-        run: |
-          python3 - <<'PY'
-          import sys, tempfile
-          from pathlib import Path
-          sys.path.insert(0, 'tools')
-          import assemble_sources as asm
-          from tools.build_hybrid import load_prg
-          cfg=Path('relocatable_source/v5_hybrid_lowzp/math_config_reference.inc')
-          with tempfile.TemporaryDirectory() as td:
-              out=Path(td)
-              man=asm.build('v1_balanced',cfg,out)
-              base,_lo,_hi=load_prg(out/man['output_prg'])
-              final,_flo,_fhi=load_prg(Path('build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg'))
-              for a,b,name in ((0x5E00,0x5E0C,'public'),(0xC12C,0xC222,'signed_wrapper'),(0x2A00,0x2B80,'magnitude_core')):
-                  dif=[x for x in range(a,b) if base[x]!=final[x]]
-                  print(name,hex(a),hex(b-1),'diff_count',len(dif),'first',hex(dif[0]) if dif else 'none')
-                  for x in dif[:24]:
-                      print(f'  {x:04X}: {base[x]:02X}->{final[x]:02X}')
-              for x in (0x5E06,0x5E09,0xC12C,0xC13E,0xC1AD,0x2A00,0x2A2E):
-                  print(f'bytes {x:04X}:',base[x:x+16].hex(),'=>',final[x:x+16].hex())
-          PY
-      - name: Install rebuilt candidate images
-        run: |
-          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m; do
-            cp "build_source/reference/$p/math_${p}_source_built.prg" "$p/resident/math_${p}_game_math.prg"
-            cp "build_source/reference/$p/math_api.inc" "$p/resident/math_api.inc"
-          done
-          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
-          cp build_hybrid/reference/v5_hybrid_lowzp/math_api.inc v5_hybrid_lowzp/resident/math_api.inc
-      - name: Validate and benchmark signed division family
-        run: |
-          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m v5_hybrid_lowzp; do
-            python3 tools/validate_signed_division.py --profile "$p" --out "/tmp/${p}_SIGNED_DIVISION.json"
-            cat "/tmp/${p}_SIGNED_DIVISION.json"
-          done
