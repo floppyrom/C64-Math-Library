@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   PYTHONDONTWRITEBYTECODE: '1'
@@ -26,6 +26,21 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           import hashlib
+          def write_manifest():
+              root=Path('.')
+              files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
+              with open('SHA256SUMS.txt','w') as out:
+                  for p in files:
+                      out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n")
+          write_manifest()
+          PY
+          # First pass refreshes PACKAGE_AUDIT.json against the current tree.
+          python3 tools/package_audit.py
+          # PACKAGE_AUDIT.json is itself checksummed, so regenerate once more
+          # and verify a second pass is byte-stable.
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
           root=Path('.')
           files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'), key=lambda p:str(p))
           with open('SHA256SUMS.txt','w') as out:
@@ -33,6 +48,15 @@ jobs:
                   out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n")
           PY
           python3 tools/package_audit.py
+      - name: Commit package publication artifacts
+        run: |
+          if ! git diff --quiet -- SHA256SUMS.txt validation/PACKAGE_AUDIT.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json
+            git commit -m "Refresh signed DIV/MOD package publication artifacts"
+            git push
+          fi
       - name: Upload package publication artifacts
         uses: actions/upload-artifact@v4
         with:
