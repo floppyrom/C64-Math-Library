@@ -102,7 +102,7 @@ def approved_shared_exec(profile,name,mem,vals):
  # No other signed API is permitted to enter corresponding unsigned code.
  if name=='MATH_SDIV16_SHL8' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
   return trace(mem,vals['MATH_UDIV32_16'])
- if name=='MATH_SDIV32_16' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+ if name=='MATH_SDIV32_16' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
   return trace(mem,vals['MATH_UDIV32_16'])
  return set()
 
