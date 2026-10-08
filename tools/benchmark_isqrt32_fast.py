@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import sys,json,math
+import sys,json,math,csv
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
@@ -37,5 +37,15 @@ for p in PROFILES:
   tot+=cy;mn=min(mn,cy);mx=max(mx,cy)
  r={'profile':p,'cases':len(CASES),'mean_cycles':tot/len(CASES),'min_cycles':mn,'max_cycles':mx,'errors':errors};res.append(r);print(p,r,flush=True)
  assert errors==0
+ # Keep the published per-profile row tied to the deterministic benchmark
+ # instead of leaving stale timing data after source-backed image changes.
+ perf=ROOT/p/'PUBLIC_PERFORMANCE_GAME_MATH.csv'
+ rows=list(csv.DictReader(perf.open()))
+ fields=list(rows[0])
+ row=next(x for x in rows if x['routine']=='ISQRT32')
+ row['cases']=str(r['cases']);row['mean_cycles']=repr(r['mean_cycles'])
+ row['min_cycles']=str(r['min_cycles']);row['max_cycles']=str(r['max_cycles'])
+ with perf.open('w',newline='') as f:
+  w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n');w.writeheader();w.writerows(rows)
 out={'status':'PASS','corpus':'same 4,130-case deterministic ISQRT32 corpus used by the prior GAME_MATH performance table','algorithm':'ISQRT16 high-word seed + eight restoring base-4 refinement steps','profiles':res}
 (ROOT/'validation/review/ISQRT32_FAST_PERFORMANCE_4130.json').write_text(json.dumps(out,indent=2)+'\n')
