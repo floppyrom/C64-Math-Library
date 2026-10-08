@@ -81,6 +81,7 @@ jobs:
           make turbo
           make turbo-boundary
           python3 tools/benchmark_normalize_profile_parity.py
+          python3 tools/benchmark_seek_profiles.py
           python3 tools/release_audit.py
 
       - name: Remove transient workflows and build trees
