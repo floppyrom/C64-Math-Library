@@ -2,7 +2,7 @@
 
 ## Contract
 
-For V1–V4, the stable 54-entry API is built from `relocatable_source/<profile>/math_relocatable.asm`; `math_config.inc` supplies the selected map at assembly time. V5 is built by `tools/build_hybrid.py`, which source-builds V1 and V2 and deterministically relocates the certified donor kernels into a single V1-based image. The **Custom Pareto Builder** extends that same source-derived approach: `tools/build_pareto.py` selects certified compatible V1/V2 packs from a ZP/RAM/workload budget and links one generated image. The shipped reference PRGs are reproducibility/provenance outputs, not donor inputs. Selection and relocation happen at build time; there is no runtime profile dispatcher.
+For V1–V4, the stable 56-entry API is built from `relocatable_source/<profile>/math_relocatable.asm`; `math_config.inc` supplies the selected map at assembly time. V5 is built by `tools/build_hybrid.py`, which source-builds V1 and V2 and deterministically relocates the certified donor kernels into a single V1-based image. The **Custom Pareto Builder** extends that same source-derived approach: `tools/build_pareto.py` selects certified compatible V1/V2 packs from a ZP/RAM/workload budget and links one generated image. The shipped reference PRGs are reproducibility/provenance outputs, not donor inputs. Selection and relocation happen at build time; there is no runtime profile dispatcher.
 
 ### Configurable C64 symbols
 

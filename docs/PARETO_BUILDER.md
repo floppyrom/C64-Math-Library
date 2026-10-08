@@ -2,7 +2,7 @@
 
 The **Custom Pareto Builder** generates one stock-C64 C64 Math Library build from certified V1/V2 implementation packs. It is intended for games and demos that know how much zero page and ordinary RAM they can dedicate to math.
 
-There is **no runtime dispatcher**. Selection happens at build time and the generated library keeps the same 54-entry public API.
+There is **no runtime dispatcher**. Selection happens at build time and the generated library keeps the same 56-entry public API.
 
 ## Easiest way: interactive wizard
 

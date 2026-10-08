@@ -257,7 +257,7 @@
     "turbo16": "8723c75c287fe17054785c15f0a10f9b6cd43c6b321266a3e2a00d131c92766c",
     "turbo32": "0d99581ef21c7e0e815a8dacb1a79a5323718f73d325c3572634ed07bec51a1e"
   },
-  "release": "c64_math_library_v1-v5_SEEK_DDA_54ENTRY_2026-09-25",
+  "release": "c64_math_library_v1-v5_MULDIV16_56ENTRY_2026-10-08",
   "release_audit_checks": 268,
   "release_audit_status": "HISTORICAL_PASS_NOT_RERUN",
   "reu_turbo_lifecycle_entries": 6,

@@ -1,6 +1,6 @@
 # Optional compact126 SMUL32 overlay — V2 Pareto-Fast
 
-This directory exposes the exact validated `compact126` signed 32x32 -> 64 kernel for V2 as a **manual exclusive overlay source**. It is not selected by the fixed resident 54-entry API.
+This directory exposes the exact validated `compact126` signed 32x32 -> 64 kernel for V2 as a **manual exclusive overlay source**. It is not selected by the fixed resident 56-entry API.
 
 V2 has enough aggregate ZP capacity, but the record kernel overlaps resident executable state. Before entering this mode, preserve and later restore:
 

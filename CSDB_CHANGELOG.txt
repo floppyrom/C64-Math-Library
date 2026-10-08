@@ -1,3 +1,12 @@
+2026-10-08 STABLE MULDIV16 FULL-WIDTH API (PR #37)
+- Added MATH_UMULDIV16 and MATH_SMULDIV16 as stable entries 55/56 across V1-V5 and Custom Pareto builds.
+- Computes the full 32-bit 16x16 product before division by a 16-bit divisor; signed division truncates toward zero and returns the signed remainder.
+- V2/V3/V4: UMULDIV16 801.646373 cycles mean (301-1923); SMULDIV16 860.448172 (83-1869).
+- V5 Low-ZP: UMULDIV16 834.646373 (334-1956); SMULDIV16 888.154427 (83-1899), retaining the 31-byte normal-ZP contract.
+- Reference/alternate cycle vectors are identical. Validation passes 9,001 unsigned + 9,001 signed cases per profile/map.
+- Common API validation now covers 56 entries / 21,678 calls per map. Custom Pareto covers all 12 standard builds / 260,136 common-API calls.
+- PR #37 also publishes relocation-safe SMUL8 sum-plane mapping, synchronized resident/source/standalone artifacts, and green main CI.
+
 2026-10-07 UDIV32/16 + UNSIGNED DIVISION LATENCY BOUNDING (PR #33)
 - V2/V3/V4 UDIV32/16 now use the direct split-byte constrained tail with compact D<256 handling.
 - Paired integration corpus: 1092.28 -> 715.36 cycles mean; max 1880 -> 1738.

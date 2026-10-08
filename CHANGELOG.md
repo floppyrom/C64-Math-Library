@@ -1,5 +1,6 @@
-## 2026-10-07 — Final MULDIV16 producer/divider and signed sign-flow fusion
+## 2026-10-08 — PR #37: stable MULDIV16 full-width multiply/divide API
 
+- Promoted `MATH_UMULDIV16` and `MATH_SMULDIV16` as stable API entries 55 and 56 across V1-V5 and Custom Pareto builds; the common public surface is now **56 entries**.
 - Specialized V5 `MATH_UMULDIV16` and `MATH_SMULDIV16` without increasing its **31-byte normal-ZP contract**. The hybrid builder reuses the qualified V1 17-ZP UMUL16 record producer and feeds its register/ZP product directly into the relocated private V2 UDIV32/16 state.
 - V5 UMULDIV16 improves **956.646373 -> 834.646373 cycles mean**, with min/max **456-2078 -> 334-1956** on the unchanged 9,001-case corpus.
 - V5 SMULDIV16 improves **1378.300411 -> 888.154427 cycles mean**, with min/max **490-2271 -> 83-1899**. The signed path preserves product-sign state in control flow and uses specialized no-fix, quotient-only, remainder-only, and quotient+remainder tails.

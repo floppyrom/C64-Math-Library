@@ -5,7 +5,7 @@
 **Target CPU:** NMOS 6502/6510, Commodore 64  
 **Profiles:** V1 Balanced, V2 Pareto-Fast, V3 REU 512K, V4 REU 16M, V5 Hybrid Low-ZP
 
-This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 54-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 specialized mode.
+This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 56-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 specialized mode.
 
 The short version is:
 
@@ -57,7 +57,7 @@ Recommended default choices:
 - Stock C64, V1-sized ZP budget but faster division/modulo/COS/SINCOS: **V5**.
 - New stock-C64 game/demo where you know your available ZP/RAM: **Custom Pareto Builder** (recommended flexible path).
 
-All five resident profiles and generated Pareto profiles expose the same **54-entry stable API**. V3/V4 additionally expose six stateful Turbo lifecycle entries. V4 also contains the specialized QS16 small-batch mode. V5 and custom Pareto builds add no new public calls.
+All five resident profiles and generated Pareto profiles expose the same **56-entry stable API**. V3/V4 additionally expose six stateful Turbo lifecycle entries. V4 also contains the specialized QS16 small-batch mode. V5 and custom Pareto builds add no new public calls.
 
 ---
 
@@ -458,7 +458,7 @@ For multiply entries, Carry returns clear.
 
 ---
 
-# Part II — Stable 54-entry API reference
+# Part II — Stable 56-entry API reference
 
 ## 9. Unsigned multiplication
 
@@ -1598,12 +1598,12 @@ python3 tools/verify_with_acme.py --acme /path/to/acme --kind all
 
 The frozen Turbo FINAL release records:
 
-- 54 stable entries in all four original V1–V4 profiles, plus the same 54-entry surface in V5 (the 2026-09-25 seek entries 47–54 are included in every count below);
+- 56 stable entries in all four original V1–V4 profiles, plus the same 56-entry surface in V5 (the 2026-09-25 seek entries 47–54 are included in every count below);
 - V1–V4 alternate proof: 216/216 relocated stable entry executions and 85,688 machine calls;
-- V5 reference + alternate: 54/54 entries and 21,422 machine calls per map;
+- V5 reference + alternate: 56/56 entries and 21,678 machine calls per map;
 - V5 hybrid direct-import validation: **144,246 cases**, including exhaustive 65,536-vector `ATAN2_8` result/cycle parity, plus 2,000 cold-load calls without `MATH_INIT`;
 - V5 ZP confinement: 31-byte normal window, all 225 outside page-zero bytes unchanged in stress on both maps;
-- Custom Pareto matrix: six ZP breakpoints on reference + alternate maps, 12 generated builds, 54/54 entries and 21,422 calls each (**257,064 common-API calls**);
+- Custom Pareto matrix: six ZP breakpoints on reference + alternate maps, 12 generated builds, 56/56 entries and 21,678 calls each (**260,136 common-API calls**);
 - Custom Pareto direct V2 cycle parity: **75,644 cases**, including exhaustive 65,536-vector `ATAN2_8`, plus exhaustive 65,536-case UMOD8;
 - Custom Pareto stress: 50,144 SMUL16 cycle-parity cases, 25,000 mixed-workload iterations and 10,000 ZP-guard iterations;
 - Custom Pareto endpoint identity: 31 ZP + zero extra RAM is byte-identical to V1; 31 ZP + optional-init policy is byte-identical to V5;
@@ -1628,7 +1628,7 @@ These tests are extensive, but they do not replace application-level testing of 
 
 # Part XII — Complete stable API cheat sheet
 
-## 48. All 54 entries at a glance
+## 48. All 56 entries at a glance
 
 | Entry | Inputs | Outputs | Status / note |
 |---|---|---|---|
@@ -1760,7 +1760,7 @@ These addresses are provided for diagnostics and fixed-reference builds. **Reloc
 | `QUICK_START.md` | minimal build commands |
 | `docs/VERSION_SELECTION.md` | fixed profile vs custom-builder choice |
 | `docs/PARETO_BUILDER.md` | ZP/RAM budget-driven stock-C64 profile generation |
-| `docs/PUBLIC_API_COMPLETE.csv` | authoritative 54-entry stable surface |
+| `docs/PUBLIC_API_COMPLETE.csv` | authoritative 56-entry stable surface |
 | `docs/PERFORMANCE_COMPARISON.csv` | common arithmetic performance |
 | `docs/PERFORMANCE_GAME_MATH_FINAL.csv` | game/fixed-point performance |
 | `docs/SOURCE_RELOCATION.md` | memory-map relocation contract |
