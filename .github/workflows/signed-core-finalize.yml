@@ -1,4 +1,5 @@
 name: Finalize signed core reuse
+# V4 ACME accumulator syntax is verified before publication.
 
 on:
   push:
