@@ -1,17 +1,17 @@
 {
   "status": "PASS",
-  "checks": 1565,
+  "checks": 1617,
   "failed": 0,
   "errors": [],
   "summary": {
     "profiles": {
-      "v1_balanced": 54,
-      "v2_pareto_fast": 54,
-      "v3_reu_512k": 60,
-      "v4_reu_16m": 63,
-      "v5_hybrid_lowzp": 54
+      "v1_balanced": 56,
+      "v2_pareto_fast": 56,
+      "v3_reu_512k": 62,
+      "v4_reu_16m": 65,
+      "v5_hybrid_lowzp": 56
     },
-    "consolidated_rows": 285,
-    "stable_api_entries": 54
+    "consolidated_rows": 295,
+    "stable_api_entries": 56
   }
 }

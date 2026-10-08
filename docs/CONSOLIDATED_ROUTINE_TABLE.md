@@ -46,6 +46,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 229.324910 | 45 | 1604 | 425 | 6 | $10-$15 | 0 | balanced direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 427.272924 | 51 | 3502 | 462 | 6 | $10-$15 | 0 | balanced direct-output native signed 24-bit divider | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 1061.083032 | 174 | 2066 | 545 | 12 | $14-$1F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
+| `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | 1289.022331 | 513 | 2300 | 539 | 19 | $09-$1B | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
+| `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | 1378.300411 | 490 | 2271 | 821 | 23 | $09-$1F | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 428.554036 | 90 | 2423 | 946 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | 552.220863 | 90 | 2423 | 946 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 586.396050 | 75 | 2474 | 987 | 0 | — | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
@@ -105,6 +107,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 231.872202 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 337.075090 | 57 | 3339 | 1570 | 9 | $10-$18 | 0 | fast direct-output native signed 24-bit divider | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 861.849097 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
+| `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | 801.646373 | 301 | 1923 | 2173 | 26 | $10-$19;$21-$30 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
+| `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | 860.448172 | 83 | 1869 | 2457 | 26 | $10-$19;$21-$30 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 212.304220 | 72 | 1792 | 2755 | 14 | $10-$19;$53-$56 | 0 | Repose live-high four-ZP divider with preserved narrow-divisor fast paths | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | 290.452028 | 72 | 1829 | 2857 | 14 | $10-$19;$53-$56 | 0 | remainder-only compare/q=0-equality front end with Repose live-high four-ZP UDIV32 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 553.098146 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
@@ -164,6 +168,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 234.659206 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 329.971841 | 68 | 3314 | 1894 | 9 | $10-$18 | 0 | Repose-derived direct-output native signed 24-bit divider with private magnitude engine | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 863.249097 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
+| `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | 801.646373 | 301 | 1923 | 2173 | 26 | $10-$19;$21-$30 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
+| `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | 860.448172 | 83 | 1869 | 2457 | 26 | $10-$19;$21-$30 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 203.864138 | 72 | 1792 | 2755 | 14 | $10-$19;$53-$56 | 0 | Repose live-high four-ZP divider with preserved narrow-divisor fast paths | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | 287.455248 | 72 | 1829 | 2857 | 14 | $10-$19;$53-$56 | 0 | remainder-only compare/q=0-equality front end with Repose live-high four-ZP UDIV32 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 552.481381 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
@@ -229,6 +235,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 228.244765 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 326.184838 | 68 | 3314 | 1894 | 9 | $10-$18 | 0 | Repose-derived direct-output native signed 24-bit divider with private magnitude engine | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 861.002888 | 169 | 1976 | 2125 | 12 | $44-$4F | 0 | direct-output native signed 32/16 divider | current native-signed division validation |
+| `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | 801.646373 | 301 | 1923 | 2173 | 26 | $10-$19;$21-$30 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
+| `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | 860.448172 | 83 | 1869 | 2457 | 26 | $10-$19;$21-$30 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 209.625349 | 72 | 2044 | 2755 | 14 | $10-$19;$53-$56 | 0 | Repose live-high four-ZP divider with preserved narrow-divisor fast paths | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | 285.637476 | 72 | 1829 | 2857 | 14 | $10-$19;$53-$56 | 0 | remainder-only compare/q=0-equality front end with Repose live-high four-ZP UDIV32 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 552.840042 | 75 | 2384 | 894 | 10 | $53-$5C | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |
@@ -297,6 +305,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 231.667148 | 54 | 1159 | 1771 | 4 | $10-$13 | 0 | fast direct-output native signed 16-bit divider; V5 repacked under 31-ZP contract | current native-signed division validation |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 339.607942 | 57 | 3339 | 1570 | 9 | $10-$18 | 0 | fast direct-output native signed 24-bit divider repacked under V5 31-ZP contract | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 1061.475812 | 174 | 2066 | 545 | 12 | $14-$1F | 0 | refreshed low-ZP native signed 32/16 divider retained in V5 | current native-signed division validation |
+| `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | 834.646373 | 334 | 1956 | 2197 | 17 | $09-$19 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
+| `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | 888.154427 | 83 | 1899 | 2473 | 17 | $09-$19 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 421.077342 | 90 | 2423 | 946 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | 548.000000 | 90 | 2423 | 946 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 591.562641 | 75 | 2474 | 987 | 0 | — | 0 | native signed 32/32 magnitude path with redundant zero-test removed | current native-signed division validation |

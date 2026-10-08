@@ -14,15 +14,15 @@
     },
     "direct_v2_parity": {
       "MATH_UDIV16": {
-        "cases": 789,
+        "cases": 3289,
         "cycle_vector_equal_to_v2": true
       },
       "MATH_UDIV24": {
-        "cases": 669,
+        "cases": 3169,
         "cycle_vector_equal_to_v2": true
       },
       "MATH_UDIV32_16": {
-        "cases": 704,
+        "cases": 3204,
         "cycle_vector_equal_to_v2": true
       },
       "MATH_UMOD16": {
@@ -30,7 +30,7 @@
         "correctness_against_v2": true,
         "cycle_parity_required": false,
         "cycle_vector_equal_to_v2": false,
-        "mean_cycle_delta_v5_minus_v2": 7.716,
+        "mean_cycle_delta_v5_minus_v2": 7.866,
         "min_cycle_delta_v5_minus_v2": 1,
         "max_cycle_delta_v5_minus_v2": 13
       },
@@ -39,7 +39,7 @@
         "correctness_against_v2": true,
         "cycle_parity_required": false,
         "cycle_vector_equal_to_v2": false,
-        "mean_cycle_delta_v5_minus_v2": 11.844,
+        "mean_cycle_delta_v5_minus_v2": 11.796,
         "min_cycle_delta_v5_minus_v2": -5,
         "max_cycle_delta_v5_minus_v2": 19
       },
@@ -104,9 +104,9 @@
       }
     },
     "mixed_state_stress": {
-      "iterations": 500,
+      "iterations": 3000,
       "status": "PASS"
     }
   },
-  "elapsed_seconds": 8.681
+  "elapsed_seconds": 19.618
 }

@@ -2,8 +2,8 @@
   "status": "PASS",
   "profiles": {
     "v1_balanced": {
-      "callable_entries": 54,
-      "files": 54,
+      "callable_entries": 56,
+      "files": 56,
       "aliases": 9,
       "rows": [
         {
@@ -213,6 +213,22 @@
           "alias_of": "MATH_SDIV32_16",
           "entry_address": "$3FDD",
           "reachable_instructions": 275
+        },
+        {
+          "legacy_api": "MATH_UMULDIV16",
+          "canonical_name": "muldiv_u16_u16_u16_u32_16",
+          "file": "muldiv_u16_u16_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E0",
+          "reachable_instructions": 276
+        },
+        {
+          "legacy_api": "MATH_SMULDIV16",
+          "canonical_name": "muldiv_s16_s16_s16_s32_16",
+          "file": "muldiv_s16_s16_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E3",
+          "reachable_instructions": 412
         },
         {
           "legacy_api": "MATH_UDIV32_32",
@@ -441,8 +457,8 @@
       ]
     },
     "v2_pareto_fast": {
-      "callable_entries": 54,
-      "files": 54,
+      "callable_entries": 56,
+      "files": 56,
       "aliases": 9,
       "rows": [
         {
@@ -652,6 +668,22 @@
           "alias_of": "MATH_SDIV32_16",
           "entry_address": "$3FDD",
           "reachable_instructions": 1155
+        },
+        {
+          "legacy_api": "MATH_UMULDIV16",
+          "canonical_name": "muldiv_u16_u16_u16_u32_16",
+          "file": "muldiv_u16_u16_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E0",
+          "reachable_instructions": 1188
+        },
+        {
+          "legacy_api": "MATH_SMULDIV16",
+          "canonical_name": "muldiv_s16_s16_s16_s32_16",
+          "file": "muldiv_s16_s16_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E3",
+          "reachable_instructions": 1308
         },
         {
           "legacy_api": "MATH_UDIV32_32",
@@ -880,8 +912,8 @@
       ]
     },
     "v3_reu_512k": {
-      "callable_entries": 60,
-      "files": 60,
+      "callable_entries": 62,
+      "files": 62,
       "aliases": 9,
       "rows": [
         {
@@ -1091,6 +1123,22 @@
           "alias_of": "MATH_SDIV32_16",
           "entry_address": "$3FDD",
           "reachable_instructions": 1155
+        },
+        {
+          "legacy_api": "MATH_UMULDIV16",
+          "canonical_name": "muldiv_u16_u16_u16_u32_16",
+          "file": "muldiv_u16_u16_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E0",
+          "reachable_instructions": 1188
+        },
+        {
+          "legacy_api": "MATH_SMULDIV16",
+          "canonical_name": "muldiv_s16_s16_s16_s32_16",
+          "file": "muldiv_s16_s16_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E3",
+          "reachable_instructions": 1308
         },
         {
           "legacy_api": "MATH_UDIV32_32",
@@ -1367,8 +1415,8 @@
       ]
     },
     "v4_reu_16m": {
-      "callable_entries": 63,
-      "files": 63,
+      "callable_entries": 65,
+      "files": 65,
       "aliases": 9,
       "rows": [
         {
@@ -1578,6 +1626,22 @@
           "alias_of": "MATH_SDIV32_16",
           "entry_address": "$3FDD",
           "reachable_instructions": 1155
+        },
+        {
+          "legacy_api": "MATH_UMULDIV16",
+          "canonical_name": "muldiv_u16_u16_u16_u32_16",
+          "file": "muldiv_u16_u16_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E0",
+          "reachable_instructions": 1188
+        },
+        {
+          "legacy_api": "MATH_SMULDIV16",
+          "canonical_name": "muldiv_s16_s16_s16_s32_16",
+          "file": "muldiv_s16_s16_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E3",
+          "reachable_instructions": 1308
         },
         {
           "legacy_api": "MATH_UDIV32_32",
@@ -1878,8 +1942,8 @@
       ]
     },
     "v5_hybrid_lowzp": {
-      "callable_entries": 54,
-      "files": 54,
+      "callable_entries": 56,
+      "files": 56,
       "aliases": 9,
       "rows": [
         {
@@ -2089,6 +2153,22 @@
           "alias_of": "MATH_SDIV32_16",
           "entry_address": "$3FDD",
           "reachable_instructions": 275
+        },
+        {
+          "legacy_api": "MATH_UMULDIV16",
+          "canonical_name": "muldiv_u16_u16_u16_u32_16",
+          "file": "muldiv_u16_u16_u16_u32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E0",
+          "reachable_instructions": 1201
+        },
+        {
+          "legacy_api": "MATH_SMULDIV16",
+          "canonical_name": "muldiv_s16_s16_s16_s32_16",
+          "file": "muldiv_s16_s16_s16_s32_16.asm",
+          "alias_of": "",
+          "entry_address": "$32E3",
+          "reachable_instructions": 1318
         },
         {
           "legacy_api": "MATH_UDIV32_32",
@@ -2344,6 +2424,8 @@
     "MATH_SMOD16": "mod_s16_s16_s16",
     "MATH_SMOD24": "mod_s24_s24_s24",
     "MATH_SMOD32_16": "mod_s32_s16_s16",
+    "MATH_UMULDIV16": "muldiv_u16_u16_u16_u32_16",
+    "MATH_SMULDIV16": "muldiv_s16_s16_s16_s32_16",
     "MATH_UDIV32_32": "div_u32_u32_u32_32",
     "MATH_UMOD32_32": "mod_u32_u32_u32",
     "MATH_SDIV32_32": "div_s32_s32_s32_32",

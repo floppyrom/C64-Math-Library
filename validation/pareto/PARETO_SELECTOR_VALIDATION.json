@@ -351,7 +351,7 @@
         ],
         "zp_bytes": 55,
         "extra_ram": 10594,
-        "score": 4742.661511,
+        "score": 4742.661510999999,
         "init_required": true
       }
     }
@@ -497,5 +497,5 @@
     }
   ],
   "common_api_machine_calls": 260136,
-  "elapsed_seconds": 95.99
+  "elapsed_seconds": 99.728
 }
