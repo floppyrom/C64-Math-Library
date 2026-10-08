@@ -2,9 +2,11 @@
 
 ## Definition used by this release
 
-A routine is **native signed** when its signed public API owns the executable arithmetic path and never enters the corresponding unsigned executable multiply/divide engine. A native signed implementation may share immutable lookup tables or arithmetic identities with an unsigned implementation; code ownership, not mathematical novelty, is the enforceable boundary. Sign handling remains part of the signed path before it returns.
+A routine is **native signed** when the signed public API owns its sign semantics, input normalization and result correction. The arithmetic magnitude substrate may either be signed-private or an explicitly audited shared unsigned core.
 
-This definition prevents the previous ambiguity where a signed wrapper could reuse a full unsigned producer and merely correct the result afterward. `tools/validate_signed_layout.py` traces the executable graph of every signed/unsigned pair and requires zero overlap.
+The earlier release rule required zero signed/unsigned executable overlap. The signed-core reuse audit showed that rule could force slower duplicate arithmetic without adding a semantic guarantee: V5 already demonstrated that a thin signed front end can bind magnitudes into a certified unsigned divider, then restore quotient/remainder signs correctly. The validator therefore now permits only named, audited magnitude-substrate exceptions. All other signed/unsigned pairs remain executable-disjoint.
+
+`tools/validate_signed_layout.py` traces every pair and rejects any overlap not listed as an approved shared-core relationship. In the current division family, V2-V5 `SDIV16_SHL8` and V2-V5 `SDIV32_16` may share the selected UDIV32/16 magnitude graph; V2-V4 `SDIV32_32` may call the selected public UDIV32/32 core after temporary magnitude normalization. V1 keeps its Balanced private 32/32 path, and V5 keeps the inherited Balanced 32/32 path.
 
 For source transparency, every signed API also has an exact per-routine executable mirror under each profile's `resident/signed/{multiply,division}/native/` directory. `tools/validate_published_signed_sources.py` verifies those mirrors byte-for-byte against the initialized resident image.
 
@@ -28,8 +30,8 @@ The new [`fast31_native_v2`](SMUL32_FAST31_V2.md) point applies the compact126 N
 
 ## Division
 
-`SDIV8`, `SDIV16`, `SDIV24`, `SDIV32_16`, `SDIV32_32`, and `SDIV16_SHL8` all own signed executable paths. Most resident signed dividers were already executable-independent; `SDIV32_32` was explicitly split from the unsigned 32/32 engine in this release. Signed modulo entries remain aliases of the corresponding signed dividers and therefore inherit the same native implementation.
+`SDIV8`, `SDIV16`, and `SDIV24` retain signed-private arithmetic. `SDIV16_SHL8` and `SDIV32_16` now use thin signed sign/magnitude front ends around the fastest qualified UDIV32/16 magnitude substrate in V2-V5. V2-V4 `SDIV32_32` similarly normalize public N/D temporarily, call the profile-selected UDIV32/32 core, restore N/D, and correct output signs. V1 and V5 keep their Balanced private 32/32 path. Signed modulo entries remain aliases of the corresponding signed dividers and inherit the same semantics and selected magnitude architecture.
 
 ## Verification
 
-The release uses four independent signed gates: executable-ownership tracing (`SIGNED_LAYOUT_VALIDATION.json`), arithmetic multiply testing (`SIGNED_MULTIPLY_VALIDATION.json`), and arithmetic divide/modulo testing (`SIGNED_DIVISION_VALIDATION.json`). The current multiplication measurements are recorded in `validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json`; the older `NATIVE_SIGNED_DELTA_AUDIT.json` remains provenance for the pre-refresh ownership split. The broader relocation, hybrid, Pareto and release audits exercise the same binaries in the complete library.
+The release uses independent signed gates: executable-ownership/shared-core tracing (`SIGNED_LAYOUT_VALIDATION.json`), arithmetic multiply testing (`SIGNED_MULTIPLY_VALIDATION.json`), arithmetic divide/modulo testing (`SIGNED_DIVISION_VALIDATION.json`), and byte-exact published-source validation. Approved overlap is explicit rather than inferred. The current multiplication measurements are recorded in `validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json`; the older `NATIVE_SIGNED_DELTA_AUDIT.json` remains provenance for the pre-refresh ownership split. The broader relocation, hybrid, Pareto and release audits exercise the same binaries in the complete library.
