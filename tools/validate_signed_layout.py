@@ -77,7 +77,7 @@ def approved_shared_exec(profile,signed_name,mem,vals):
     # the native U3216 substrate; V5 uses the certified relocated copy.
     if signed_name=='MATH_SDIV16_SHL8' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
         return trace(mem,vals['MATH_UDIV32_16'])
-    if signed_name=='MATH_SDIV32_16' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
+    if signed_name=='MATH_SDIV32_16' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
         return trace(mem,vals['MATH_UDIV32_16'])
     return set()
 
