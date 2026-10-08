@@ -65,6 +65,28 @@ jobs:
               raise RuntimeError('missing SMUL16 insertion point')
           s=s.replace(needle,insert)
           p.write_text(s)
+          for name,val in (('math_config_reference.inc','$9C00'),('math_config_alternate.inc','$1000')):
+              q=Path('relocatable_source/custom_pareto')/name
+              t=q.read_text()
+              line=f'SMUL8_SUM_BASE = {val}'
+              if 'SMUL8_SUM_BASE' in t:
+                  import re
+                  t=re.sub(r'^SMUL8_SUM_BASE\\s*=.*
+          python3 -m py_compile tools/build_pareto.py
+      - name: Prove full Custom Pareto matrix
+        run: python3 tools/validate_pareto.py
+      - name: Commit passing Pareto fixes
+        run: |
+          rm -rf build_pareto
+          git config user.name "c64-math-release-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          git commit -m "Fix Pareto refreshed producer and SHR8 integration"
+          git push origin HEAD:promote/muldiv16-stable-20261007
+,line,t,flags=re.M)
+              else:
+                  t=t.replace('TURBO32_ZP_BASE = $0A','TURBO32_ZP_BASE = $0A\\n'+line) if name.endswith('reference.inc') else t.replace('TURBO32_ZP_BASE = $06','TURBO32_ZP_BASE = $06\\n'+line)
+              q.write_text(t)
           PY
           python3 -m py_compile tools/build_pareto.py
       - name: Prove full Custom Pareto matrix
