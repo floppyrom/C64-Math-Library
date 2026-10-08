@@ -89,3 +89,22 @@ V1FX_S_ZERO:
         jmp V1FX_U_SHL8
 * = MATH_SDIV16_SHL8
         jmp V1FX_S_SHL8
+
+
+; URECIP16_Q16 small-divisor fallback.  The quotient ladder branches here
+; for D<$1001.  floor(65536/D) is exactly 0x00010000 / D, so seed the same
+; private 32/16 engine directly without rewriting N or D.
+* = REG_GAME+$0680
+V1FX_RECIP_FALLBACK:
+        lda #0
+        sta V1FX_ULN0
+        sta V1FX_ULN1
+        sta V1FX_UN1
+        lda #1
+        sta V1FX_UN0
+        lda MATH_D+0
+        sta V1FX_UD0
+        lda MATH_D+1
+        sta V1FX_UD1
+        jsr V1FX_UCORE
+        jmp V1FX_UOUT
