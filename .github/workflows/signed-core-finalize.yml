@@ -14,7 +14,6 @@ env:
 
 jobs:
   finalize:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Add deterministic signed core reuse publication finalizer'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
