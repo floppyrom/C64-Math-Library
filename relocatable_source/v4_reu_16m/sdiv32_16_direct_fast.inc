@@ -15,9 +15,15 @@ D32F_DIV_S32_16:
         lda MATH_D+1
         bmi D32F_DNEG
         sta U3216_D1
+        ; STA preserves Z from the high-byte load. Positive divisors with a
+        ; nonzero high byte can skip the redundant low-byte zero classification.
+        beq D32F_DHI_ZERO
         lda MATH_D+0
         sta U3216_D0
-        ora U3216_D1
+        jmp D32F_NSET
+D32F_DHI_ZERO:
+        lda MATH_D+0
+        sta U3216_D0
         bne D32F_NSET
         ; D=0: the unsigned core owns the canonical Q/R/C zero-divisor result.
         jmp U3216_ENTRY
