@@ -31,7 +31,7 @@ jobs:
           done
       - name: Validate unsigned shifted divide and reciprocal
         run: |
-          for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
+          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m; do
             python3 tools/validate_unsigned_division.py --profile "$p" --out "/tmp/${p}_unsigned.json"
             python3 - "$p" "/tmp/${p}_unsigned.json" <<'PY'
           import json,sys
@@ -43,7 +43,7 @@ jobs:
           done
       - name: Validate signed shifted divide
         run: |
-          for p in v2_pareto_fast v3_reu_512k v4_reu_16m; do
+          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m; do
             python3 tools/validate_signed_division.py --profile "$p" --out "/tmp/${p}_signed.json"
             python3 - "$p" "/tmp/${p}_signed.json" <<'PY'
           import json,sys
