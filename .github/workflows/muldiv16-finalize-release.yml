@@ -190,6 +190,8 @@ jobs:
       - name: Refresh lean package manifest and audit
         run: |
           rm -rf build_source build_hybrid build_hybrid_repeat build_pareto
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          find . -type f \( -name '*.pyc' -o -name '*.pyo' \) -delete
           python3 - <<'PY'
           from pathlib import Path
           import hashlib
