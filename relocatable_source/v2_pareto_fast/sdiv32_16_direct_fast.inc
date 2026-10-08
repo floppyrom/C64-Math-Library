@@ -37,7 +37,9 @@ D32F_PUBLIC_END:
 * = REG_TABLE+$3200
 D32F_DIV_S32_16:
         lda MATH_D+1
-        bmi D32F_DNEG
+        bpl D32F_DPOS_ENTRY
+        jmp D32F_DNEG
+D32F_DPOS_ENTRY:
         bne D32F_DPOS_HI
         lda MATH_D+0
         bne D32F_DPOS_LOW
