@@ -1,0 +1,29 @@
+name: SDIV24 candidate
+
+on:
+  push:
+    branches:
+      - opt/signed-divmod-campaign-20261008
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  v2-sdiv24:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build reference profiles
+        run: make reference
+      - name: Validate and benchmark V2 signed division
+        run: |
+          python3 tools/validate_signed_division.py --profile v2_pareto_fast --out /tmp/SDIV24_CANDIDATE.json
+          cat /tmp/SDIV24_CANDIDATE.json
