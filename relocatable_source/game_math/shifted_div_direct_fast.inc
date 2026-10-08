@@ -28,15 +28,9 @@ FXDIV_S_SHL8:
         lda MATH_D+1
         bmi FXDIV_S_DNEG
         sta U3216_D1
-        ; STA preserves Z from the high-byte load. Skip the low-byte zero test
-        ; on the common positive high-byte-nonzero class.
-        beq FXDIV_S_DHI_ZERO
         lda MATH_D+0
         sta U3216_D0
-        jmp FXDIV_S_NSET
-FXDIV_S_DHI_ZERO:
-        lda MATH_D+0
-        sta U3216_D0
+        ora U3216_D1
         bne FXDIV_S_NSET
         ; D=0: U3216 detects zero before consuming numerator state.
         jmp U3216_ENTRY
