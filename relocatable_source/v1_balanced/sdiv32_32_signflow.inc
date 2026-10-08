@@ -1,7 +1,7 @@
 ; V1 SDIV32/32 preserved-input sign rediscovery.
 ; Removes V1_SCRATCH+$08/$09 sign flags; public N/D remain unchanged.
 
-* = REG_GAME+$002C
+* = REG_GAME+$0034
 SD3232V1_ENTRY:
     lda MATH_D+0
     ora MATH_D+1
