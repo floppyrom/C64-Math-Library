@@ -81,6 +81,7 @@ jobs:
           make turbo
           make turbo-boundary
           python3 tools/benchmark_normalize_profile_parity.py
+          python3 tools/validate_atan2_dispatch.py
           python3 tools/benchmark_seek_profiles.py
           sudo apt-get update
           sudo apt-get install -y acme
