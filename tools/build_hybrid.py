@@ -783,6 +783,156 @@ def apply_muldiv16_lowzp_fusion(dst: bytearray, vals: dict[str, int],
         'signed_strategy': 'single magnitude multiply/divide plus quotient/remainder sign fixup',
     }
 
+
+def apply_shifted_div_recip_direct(dst: bytearray, vals: dict[str,int],
+                                   base_man: dict, hbase: int) -> dict:
+    """Install V5 direct shifted-divide helpers around the imported V2 UDIV32/16 core."""
+    z=vals['ZP_MAIN']; io=vals['MATH_IO']
+    ln0=z+0x16; ln1=z+0x17; n0=z+0x0E; n1=z+0x0F
+    d0=z+0x10; d1=z+0x11
+    uentry=hbase+(0x4300-DIV_SRC[0])
+    base=hbase+0x1800
+    end_limit=hbase+HYBRID_BYTES-1
+    lines=[
+        f'* = {hx(base)}',
+        'V5_FX_U:',
+        '    lda #$00',
+        f'    sta {hx(ln0,2)}',
+        f'    lda {hx(io+0x10)}',
+        f'    sta {hx(ln1,2)}',
+        f'    lda {hx(io+0x11)}',
+        f'    sta {hx(n0,2)}',
+        '    lda #$00',
+        f'    sta {hx(n1,2)}',
+        f'    lda {hx(io+0x14)}',
+        f'    sta {hx(d0,2)}',
+        f'    lda {hx(io+0x15)}',
+        f'    sta {hx(d1,2)}',
+        f'    jmp {hx(uentry)}',
+
+        'V5_FX_S:',
+        f'    lda {hx(io+0x15)}',
+        '    bmi V5_FX_S_DNEG',
+        f'    sta {hx(d1,2)}',
+        f'    lda {hx(io+0x14)}',
+        f'    sta {hx(d0,2)}',
+        f'    ora {hx(d1,2)}',
+        '    beq V5_FX_S_ZERO',
+        '    jmp V5_FX_S_N',
+        'V5_FX_S_DNEG:',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io+0x14)}',
+        f'    sta {hx(d0,2)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x15)}',
+        f'    sta {hx(d1,2)}',
+
+        'V5_FX_S_N:',
+        '    lda #$00',
+        f'    sta {hx(ln0,2)}',
+        f'    sta {hx(n1,2)}',
+        f'    lda {hx(io+0x11)}',
+        '    bmi V5_FX_S_NNEG',
+        f'    lda {hx(io+0x10)}',
+        f'    sta {hx(ln1,2)}',
+        f'    lda {hx(io+0x11)}',
+        f'    sta {hx(n0,2)}',
+        f'    lda {hx(io+0x15)}',
+        '    bmi V5_FX_S_PN',
+        f'    jmp {hx(uentry)}',
+        'V5_FX_S_PN:',
+        f'    jsr {hx(uentry)}',
+        '    jmp V5_FX_NEG_Q',
+
+        'V5_FX_S_NNEG:',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io+0x10)}',
+        f'    sta {hx(ln1,2)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x11)}',
+        f'    sta {hx(n0,2)}',
+        f'    lda {hx(io+0x15)}',
+        '    bmi V5_FX_S_NN',
+        f'    jsr {hx(uentry)}',
+        '    jsr V5_FX_NEG_R',
+        'V5_FX_NEG_Q:',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io+0x18)}',
+        f'    sta {hx(io+0x18)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x19)}',
+        f'    sta {hx(io+0x19)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x1A)}',
+        f'    sta {hx(io+0x1A)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x1B)}',
+        f'    sta {hx(io+0x1B)}',
+        '    clc',
+        '    rts',
+
+        'V5_FX_S_NN:',
+        f'    jsr {hx(uentry)}',
+        'V5_FX_NEG_R:',
+        '    lda #$00',
+        '    sec',
+        f'    sbc {hx(io+0x1C)}',
+        f'    sta {hx(io+0x1C)}',
+        '    lda #$00',
+        f'    sbc {hx(io+0x1D)}',
+        f'    sta {hx(io+0x1D)}',
+        '    clc',
+        '    rts',
+
+        'V5_FX_S_ZERO:',
+        '    lda #$00',
+        f'    sta {hx(d0,2)}',
+        f'    sta {hx(d1,2)}',
+        f'    jmp {hx(uentry)}',
+
+        'V5_RECIP_FALLBACK:',
+        '    lda #$00',
+        f'    sta {hx(ln0,2)}',
+        f'    sta {hx(ln1,2)}',
+        f'    sta {hx(n1,2)}',
+        '    lda #$01',
+        f'    sta {hx(n0,2)}',
+        f'    lda {hx(io+0x14)}',
+        f'    sta {hx(d0,2)}',
+        f'    lda {hx(io+0x15)}',
+        f'    sta {hx(d1,2)}',
+        f'    jmp {hx(uentry)}',
+        '',
+    ]
+    mem,labels,_=Assembler().assemble('\n'.join(lines))
+    if not mem: raise RuntimeError('V5 shifted DIV helper assembled no code')
+    lo,hi=min(mem),max(mem)
+    if lo!=base or hi>end_limit:
+        raise RuntimeError(f'V5 shifted DIV helper outside private hybrid range: {hx(lo)}-{hx(hi)}')
+    if any(dst[lo:hi+1]):
+        raise RuntimeError(f'V5 shifted DIV helper destination {hx(lo)}-{hx(hi)} is not free')
+    for a,b in mem.items(): dst[a]=b
+    for name,label in (('MATH_UDIV16_SHL8','V5_FX_U'),('MATH_SDIV16_SHL8','V5_FX_S')):
+        a=_public_addr(base_man,name); t=labels[label]
+        dst[a:a+3]=bytes((0x4C,t&255,t>>8))
+    # V1 reciprocal ladder's small-divisor branch targets REG_GAME+$0680.
+    # Replace that fallback entry with a jump to the V2-core constant-numerator helper.
+    rf=vals['REG_GAME']+0x0680; t=labels['V5_RECIP_FALLBACK']
+    dst[rf:rf+3]=bytes((0x4C,t&255,t>>8))
+    return {
+        'unsigned_entry':hx(labels['V5_FX_U']),
+        'signed_entry':hx(labels['V5_FX_S']),
+        'reciprocal_fallback':hx(labels['V5_RECIP_FALLBACK']),
+        'code_range':f'{hx(lo)}-{hx(hi)}',
+        'code_bytes':hi-lo+1,
+        'consumer':'relocated V2 UDIV32/16 private split-tail core',
+        'normal_zp_bytes':31,
+    }
+
+
 def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
     # V5 intentionally inherits the V1 normalization backend.  Publish a
     # profile-local standalone source, but require it to remain byte-identical
@@ -832,6 +982,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         sdiv16_detail = apply_sdiv16_direct(dst, src, vals, v1man, entries, hbase)
         sdiv24_detail = apply_sdiv24_direct(dst, src, vals, v1man, entries)
         muldiv16_lowzp_detail = apply_muldiv16_lowzp_fusion(dst, vals, v1man, hbase)
+        shifted_div_recip_detail = apply_shifted_div_recip_direct(dst, vals, v1man, hbase)
         selected_trace: set[int] = set()
         for name in ('MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8'):
             selected_trace |= trace(src, entries[name])
@@ -917,6 +1068,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             'sdiv16_direct': sdiv16_detail,
             'sdiv24_direct': sdiv24_detail,
             'muldiv16_lowzp_fusion': muldiv16_lowzp_detail,
+            'shifted_div_recip_direct': shifted_div_recip_detail,
             'indirect_beneficiaries': [
                 'MATH_UDIV16_SHL8',
                 'MATH_URECIP16_Q16',
