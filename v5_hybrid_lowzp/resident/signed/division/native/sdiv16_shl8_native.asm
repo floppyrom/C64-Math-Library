@@ -4,7 +4,7 @@
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
 ; Corresponding unsigned API: MATH_UDIV16_SHL8. Approved shared executable overlap: 1099 instructions.
-; Public entry: $5E1B. Reachable signed instructions: 1170.
+; Public entry: $5E1B. Reachable signed instructions: 1172.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
@@ -40,84 +40,86 @@ L5E1B:
 * = $951D
 L951D:
     lda $C015                          ; @951D AD 15 C0
-    bmi L9533                          ; @9520 30 11
+    bmi L9538                          ; @9520 30 16
     sta $13                            ; @9522 85 13
-    lda $C014                          ; @9524 AD 14 C0
-    sta $12                            ; @9527 85 12
-    ora $13                            ; @9529 05 13
-    bne L9530                          ; @952B D0 03
-    jmp L95B8                          ; @952D 4C B8 95
-L9530:
-    jmp L9542                          ; @9530 4C 42 95
-L9533:
-    lda #$00                           ; @9533 A9 00
-    sec                                ; @9535 38
-    sbc $C014                          ; @9536 ED 14 C0
-    sta $12                            ; @9539 85 12
-    lda #$00                           ; @953B A9 00
-    sbc $C015                          ; @953D ED 15 C0
-    sta $13                            ; @9540 85 13
-L9542:
-    lda #$00                           ; @9542 A9 00
-    sta $18                            ; @9544 85 18
-    sta $11                            ; @9546 85 11
-    lda $C011                          ; @9548 AD 11 C0
-    bmi L9565                          ; @954B 30 18
-    lda $C010                          ; @954D AD 10 C0
-    sta $19                            ; @9550 85 19
-    lda $C011                          ; @9552 AD 11 C0
-    sta $10                            ; @9555 85 10
-    lda $C015                          ; @9557 AD 15 C0
-    bmi L955F                          ; @955A 30 03
-    jmp LAC00                          ; @955C 4C 00 AC
-L955F:
-    jsr LAC00                          ; @955F 20 00 AC
-    jmp L957F                          ; @9562 4C 7F 95
-L9565:
-    lda #$00                           ; @9565 A9 00
-    sec                                ; @9567 38
-    sbc $C010                          ; @9568 ED 10 C0
-    sta $19                            ; @956B 85 19
-    lda #$00                           ; @956D A9 00
-    sbc $C011                          ; @956F ED 11 C0
-    sta $10                            ; @9572 85 10
-    lda $C015                          ; @9574 AD 15 C0
-    bmi L95A2                          ; @9577 30 29
-    jsr LAC00                          ; @9579 20 00 AC
-    jsr L95A5                          ; @957C 20 A5 95
-L957F:
-    lda #$00                           ; @957F A9 00
-    sec                                ; @9581 38
-    sbc $C018                          ; @9582 ED 18 C0
-    sta $C018                          ; @9585 8D 18 C0
-    lda #$00                           ; @9588 A9 00
-    sbc $C019                          ; @958A ED 19 C0
-    sta $C019                          ; @958D 8D 19 C0
-    lda #$00                           ; @9590 A9 00
-    sbc $C01A                          ; @9592 ED 1A C0
-    sta $C01A                          ; @9595 8D 1A C0
-    lda #$00                           ; @9598 A9 00
-    sbc $C01B                          ; @959A ED 1B C0
-    sta $C01B                          ; @959D 8D 1B C0
-    clc                                ; @95A0 18
-    rts                                ; @95A1 60
-L95A2:
-    jsr LAC00                          ; @95A2 20 00 AC
-L95A5:
-    lda #$00                           ; @95A5 A9 00
-    sec                                ; @95A7 38
-    sbc $C01C                          ; @95A8 ED 1C C0
-    sta $C01C                          ; @95AB 8D 1C C0
-    lda #$00                           ; @95AE A9 00
-    sbc $C01D                          ; @95B0 ED 1D C0
-    sta $C01D                          ; @95B3 8D 1D C0
-    clc                                ; @95B6 18
-    rts                                ; @95B7 60
-L95B8:
-    lda #$00                           ; @95B8 A9 00
-    sta $12                            ; @95BA 85 12
-    sta $13                            ; @95BC 85 13
-    jmp LAC00                          ; @95BE 4C 00 AC
+    beq L952E                          ; @9524 F0 08
+    lda $C014                          ; @9526 AD 14 C0
+    sta $12                            ; @9529 85 12
+    jmp L9547                          ; @952B 4C 47 95
+L952E:
+    lda $C014                          ; @952E AD 14 C0
+    sta $12                            ; @9531 85 12
+    bne L9547                          ; @9533 D0 12
+    jmp L95BD                          ; @9535 4C BD 95
+L9538:
+    lda #$00                           ; @9538 A9 00
+    sec                                ; @953A 38
+    sbc $C014                          ; @953B ED 14 C0
+    sta $12                            ; @953E 85 12
+    lda #$00                           ; @9540 A9 00
+    sbc $C015                          ; @9542 ED 15 C0
+    sta $13                            ; @9545 85 13
+L9547:
+    lda #$00                           ; @9547 A9 00
+    sta $18                            ; @9549 85 18
+    sta $11                            ; @954B 85 11
+    lda $C011                          ; @954D AD 11 C0
+    bmi L956A                          ; @9550 30 18
+    lda $C010                          ; @9552 AD 10 C0
+    sta $19                            ; @9555 85 19
+    lda $C011                          ; @9557 AD 11 C0
+    sta $10                            ; @955A 85 10
+    lda $C015                          ; @955C AD 15 C0
+    bmi L9564                          ; @955F 30 03
+    jmp LAC00                          ; @9561 4C 00 AC
+L9564:
+    jsr LAC00                          ; @9564 20 00 AC
+    jmp L9584                          ; @9567 4C 84 95
+L956A:
+    lda #$00                           ; @956A A9 00
+    sec                                ; @956C 38
+    sbc $C010                          ; @956D ED 10 C0
+    sta $19                            ; @9570 85 19
+    lda #$00                           ; @9572 A9 00
+    sbc $C011                          ; @9574 ED 11 C0
+    sta $10                            ; @9577 85 10
+    lda $C015                          ; @9579 AD 15 C0
+    bmi L95A7                          ; @957C 30 29
+    jsr LAC00                          ; @957E 20 00 AC
+    jsr L95AA                          ; @9581 20 AA 95
+L9584:
+    lda #$00                           ; @9584 A9 00
+    sec                                ; @9586 38
+    sbc $C018                          ; @9587 ED 18 C0
+    sta $C018                          ; @958A 8D 18 C0
+    lda #$00                           ; @958D A9 00
+    sbc $C019                          ; @958F ED 19 C0
+    sta $C019                          ; @9592 8D 19 C0
+    lda #$00                           ; @9595 A9 00
+    sbc $C01A                          ; @9597 ED 1A C0
+    sta $C01A                          ; @959A 8D 1A C0
+    lda #$00                           ; @959D A9 00
+    sbc $C01B                          ; @959F ED 1B C0
+    sta $C01B                          ; @95A2 8D 1B C0
+    clc                                ; @95A5 18
+    rts                                ; @95A6 60
+L95A7:
+    jsr LAC00                          ; @95A7 20 00 AC
+L95AA:
+    lda #$00                           ; @95AA A9 00
+    sec                                ; @95AC 38
+    sbc $C01C                          ; @95AD ED 1C C0
+    sta $C01C                          ; @95B0 8D 1C C0
+    lda #$00                           ; @95B3 A9 00
+    sbc $C01D                          ; @95B5 ED 1D C0
+    sta $C01D                          ; @95B8 8D 1D C0
+    clc                                ; @95BB 18
+    rts                                ; @95BC 60
+L95BD:
+    lda #$00                           ; @95BD A9 00
+    sta $12                            ; @95BF 85 12
+    sta $13                            ; @95C1 85 13
+    jmp LAC00                          ; @95C3 4C 00 AC
 ; ---- executable island $A00C ----
 * = $A00C
 LA00C:

@@ -1,3 +1,14 @@
+2026-10-08 SIGNED MAGNITUDE-CORE REUSE + LIFTABLE MULDIV16
+- V2/V3/V4 SDIV16_SHL8 now bind signed magnitudes directly into the selected UDIV32/16 substrate; V5 keeps the same architecture with a post-OptiSearch positive-divisor shortcut.
+- Final SDIV16_SHL8 means V1-V5: 846.155071 / 630.032715 / 630.265213 / 628.417884 / 628.885496 cycles.
+- V2/V3/V4/V5 SDIV32/16 now use thin signed front ends around the qualified UDIV32/16 magnitude core. Final means: 724.392148 / 724.449509 / 721.003490 / 722.170774; V1 Balanced remains 955.051690.
+- V2/V3/V4 SDIV32/32 now normalize/restore public operands around the profile-selected UDIV32/32 core: 420.452435 / 416.865672 / 418.153927 cycles. V1/V5 keep their Balanced private 32/32 paths.
+- Signed-layout policy now permits only explicit audited magnitude-core sharing; all unlisted signed/unsigned executable overlap remains an error.
+- Full signed DIV/MOD proof: 364,533 calls, zero errors; published signed-source and layout gates pass.
+- OptiSearchV2 generic signed 32/32 is noncompetitive (~3480 cycles). Six local MOS6502 rewrite classes produced no legal selected-wrapper rewrite once explicit code-island origins were respected. Post-OptiSearch manual review retained the high-byte divisor shortcut only where placement allowed it.
+- MULDIV16 now has canonical symbolic liftable sources under routines/muldiv16/, and the integrated sources include those same files. Exact per-profile standalone mirrors remain for byte-level auditing.
+- Technical note: docs/SIGNED_CORE_REUSE_OPTIMIZATION_2026-10-08.md.
+
 ## 2026-10-08 — shifted DIV/reciprocal direct-input optimization campaign
 
 - Reworked `MATH_UDIV16_SHL8` and `MATH_SDIV16_SHL8` so V1-V5 bind `N16 << 8` directly into the selected private 32/16 divider state instead of paying generic public-vector adapter work. Final UDIV16_SHL8 means are **770.773617 / 552.649695 / 553.124974 / 552.577740 / 553.298759** cycles for V1-V5.

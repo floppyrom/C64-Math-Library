@@ -13,11 +13,11 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "699cb7977aaa9c1af6cefd3146e3b4b0f66ee4ec82a44329b567b2997063b146",
-    "v2_pareto_fast": "3e8b2a4dafeef4ced3239b81d9f9971b04bcf057850a76b6eed1dfa8a46193d5",
-    "v3_reu_512k": "eefbff159fdcd6dc042b012ab411b0634d4d6e1b35dc04bf1cca1841e7925cd3",
-    "v4_reu_16m": "2249b8ba5e0a4e2733c17d4ed2e04a6d215e6b5677a941b91bf9987b9e717988",
-    "v5_hybrid_lowzp": "c5f905dd63afca5e4278083a8ce149a267d5f8f056852c603d7245bff4eaf5be"
+    "v1_balanced": "c44f6698400b7571707ad588adcb2fecee35561ef80c5b7d320d0d78e4f366d9",
+    "v2_pareto_fast": "09a50708536d5ac21b6a6ba086a5e0d8a26785328bdb11c0017389afd953f08e",
+    "v3_reu_512k": "a3b9d9b7a2de7be0b119e068914a0cb4405f15baf3c6b38eaa54ba08468334cd",
+    "v4_reu_16m": "87d73a21c599aaa8eebc4a8c3fb4762dcc8b22c73c93d56b65037679ebc5ed7e",
+    "v5_hybrid_lowzp": "6c1deab70d6cf1b7bd7132690718e48e11b0f959439e7159f32cbc60c48177ec"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -112,7 +112,7 @@
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-10-07",
+  "date": "2026-10-08",
   "deterministic_builds_checked": 8,
   "division_refresh": {
     "date": "2026-09-20",
@@ -144,7 +144,7 @@
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "c5f905dd63afca5e4278083a8ce149a267d5f8f056852c603d7245bff4eaf5be",
+    "alternate_prg_sha256": "6c1deab70d6cf1b7bd7132690718e48e11b0f959439e7159f32cbc60c48177ec",
     "common_machine_calls_per_map": 21678,
     "common_public_entries_per_map": 56,
     "config_validation_cases": 8,
@@ -157,7 +157,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "2b2fecd504568d1f14a3ed1b4ceb31f25847e19f04b4baac1d252d2c6d956071",
+    "reference_prg_sha256": "aaa00c4f0919c4619a99a0f66d3c58f7e7c7f3cd8d245b5006472fde51f20339",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "atan2_tables_bytes": 1024
@@ -188,7 +188,7 @@
     "V3/V4 Turbo32 keeps the stack-free 135-ZP overlay but uses a direct-I/O resident adapter; reference range $0A-$90, legal origins $02-$79; BEGIN/CALL/END = 326 / 684.185219 mean / 371 cycles on the canonical corpus, with a 116-product crossover versus normal UMUL32.",
     "The retained ACME certificate predates the current OptiSearch update; current external ACME validation was not run.",
     "A 285-row consolidated routine table covers every stable API in V1-V5 plus V3/V4 Turbo and V4 QS16, including cycles, reachable code bytes, ZP and persistent stack-page reservation.",
-    "All shipped SMUL*/SDIV* public paths own signed-specific executable paths; corresponding unsigned executable engines are not entered.",
+    "Signed APIs own signed semantics; selected fast division paths may share certified unsigned magnitude substrates only through explicit signed-layout validator exceptions.",
     "Signed ownership validator: 279 checks and 65/65 zero-overlap signed/unsigned executable comparisons across V1-V5.",
     "Signed arithmetic regression: 264,999 multiply calls and 364,533 divide/modulo calls, zero errors.",
     "Same-corpus division-family audit covers 23 public paths per profile and reports zero timing regressions in V1-V5.",
@@ -521,5 +521,35 @@
     "comparison": "validation/review/UDIV32_LIVE_HIGH_COMPARISON.json",
     "scope": "52 other public executable graphs unchanged in both maps; V1/V5 unchanged",
     "known_baseline_issue": "Broad alternate-map validator fails SMUL8(0,0)=0xaf00 on V2 both before and after this change; no new all-library certification claimed."
+  },
+  "signed_core_reuse_2026_10_08": {
+    "status": "PASS",
+    "documentation": "docs/SIGNED_CORE_REUSE_OPTIMIZATION_2026-10-08.md",
+    "signed_division_modulo_machine_calls": 364533,
+    "approved_shared_core_pairs": 11,
+    "normal_zp_bytes_v5": 31,
+    "optisearch_archive_sha256": "f5a6a9f0e8728186f91a95c1112a70488cf943fc99b2380c52272424e44455eb",
+    "sdiv16_shl8_mean_cycles": {
+      "v1_balanced": 846.1550708833151,
+      "v2_pareto_fast": 630.0327153762269,
+      "v3_reu_512k": 630.2652126499455,
+      "v4_reu_16m": 628.4178844056706,
+      "v5_hybrid_lowzp": 628.8854961832061
+    },
+    "sdiv32_16_mean_cycles": {
+      "v1_balanced": 955.0516902944383,
+      "v2_pareto_fast": 724.3921483097056,
+      "v3_reu_512k": 724.4495092693566,
+      "v4_reu_16m": 721.0034896401309,
+      "v5_hybrid_lowzp": 722.170774263904
+    },
+    "sdiv32_32_mean_cycles": {
+      "v1_balanced": 566.8392884064526,
+      "v2_pareto_fast": 420.4524347957184,
+      "v3_reu_512k": 416.86567164179104,
+      "v4_reu_16m": 418.1539273330318,
+      "v5_hybrid_lowzp": 572.0058796924469
+    },
+    "liftable_muldiv16": "routines/muldiv16/README.md"
   }
 }

@@ -38,20 +38,20 @@ L31EE:
 recip_u16_u24_q16:
 MATH_URECIP16_Q16:
     jmp LC638                          ; @5E1E 4C 38 C6
-; ---- executable island $95C1 ----
-* = $95C1
-L95C1:
-    lda #$00                           ; @95C1 A9 00
-    sta $18                            ; @95C3 85 18
-    sta $19                            ; @95C5 85 19
-    sta $11                            ; @95C7 85 11
-    lda #$01                           ; @95C9 A9 01
-    sta $10                            ; @95CB 85 10
-    lda $C014                          ; @95CD AD 14 C0
-    sta $12                            ; @95D0 85 12
-    lda $C015                          ; @95D2 AD 15 C0
-    sta $13                            ; @95D5 85 13
-    jmp LAC00                          ; @95D7 4C 00 AC
+; ---- executable island $95C6 ----
+* = $95C6
+L95C6:
+    lda #$00                           ; @95C6 A9 00
+    sta $18                            ; @95C8 85 18
+    sta $19                            ; @95CA 85 19
+    sta $11                            ; @95CC 85 11
+    lda #$01                           ; @95CE A9 01
+    sta $10                            ; @95D0 85 10
+    lda $C014                          ; @95D2 AD 14 C0
+    sta $12                            ; @95D5 85 12
+    lda $C015                          ; @95D7 AD 15 C0
+    sta $13                            ; @95DA 85 13
+    jmp LAC00                          ; @95DC 4C 00 AC
 ; ---- executable island $A00C ----
 * = $A00C
 LA00C:
@@ -1467,4 +1467,4 @@ LC773:
     clc                                ; @C77E 18
     rts                                ; @C77F 60
 LC780:
-    jmp L95C1                          ; @C780 4C C1 95
+    jmp L95C6                          ; @C780 4C C6 95
