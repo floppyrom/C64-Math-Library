@@ -11,10 +11,10 @@
         "extra_private_ram_bytes": 9633,
         "init_required": false,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729"
+        "sha256": "2b2fecd504568d1f14a3ed1b4ceb31f25847e19f04b4baac1d252d2c6d956071"
       },
       "36": {
         "selected_packs": [
@@ -26,10 +26,10 @@
         "extra_private_ram_bytes": 10206,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "de9a06d2c60ffd795b5436ec03282005a9a04bc0f22ff5e5f049733a5eb7793f"
+        "sha256": "c99ae2174d51c153ce9288357df8c23eee28392409a6b366d603149cc8ad4bb6"
       },
       "60": {
         "selected_packs": [
@@ -39,13 +39,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 11149,
+        "extra_private_ram_bytes": 11159,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "e391a459d72d43574191697397ce5af98d2153473c1563a25bbb3f7ff2d9d2ad"
+        "sha256": "e0b5ccd5b61a3ee3bddb457091340a625e45d64592e25541522bd286a7413682"
       },
       "147": {
         "selected_packs": [
@@ -54,13 +54,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_private_ram_bytes": 9837,
+        "extra_private_ram_bytes": 9838,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "add422e0790bd19da50867ff9b1d58a3a4489b81b102f15a7d16f25c15fca292"
+        "sha256": "844434f7b672acf9975c632b4802d72f94c639ac61f9c6d4dca6e4adf008bcba"
       },
       "176": {
         "selected_packs": [
@@ -71,13 +71,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 11335,
+        "extra_private_ram_bytes": 11346,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "48817150f3f3affe1b84b07d1047bc5060b23b83faeb4623989f48905045b261"
+        "sha256": "20c9ca00a0100612e12954af0dc1a2db477a3829621a51aedc99eaccd4cfd459"
       },
       "221": {
         "selected_packs": [
@@ -87,10 +87,10 @@
         "extra_private_ram_bytes": 208,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "0e1818b86d7b4d463a2af6b0424fdee728b79331a277726f72d5d4e7236e1bb9"
+        "sha256": "1af2033533d68d8a19b289843a7458406063ca638dbeb9f8e2d838470c8273ca"
       }
     },
     "alternate": {
@@ -103,10 +103,10 @@
         "extra_private_ram_bytes": 9633,
         "init_required": false,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "3abbacc805a490db5c0ee90498957f9c2c8501a99a3ce7e3b3b54b0eb8fb163b"
+        "sha256": "c5f905dd63afca5e4278083a8ce149a267d5f8f056852c603d7245bff4eaf5be"
       },
       "36": {
         "selected_packs": [
@@ -118,10 +118,10 @@
         "extra_private_ram_bytes": 10206,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "38c7d5cb70ff023a1ace5036949e407eded71664087ccc6c4a8f208df7e63f90"
+        "sha256": "b5adc251043fedf01626dedb35f2a1fd4a971658ecbeaa49a5919fabdf00c52f"
       },
       "60": {
         "selected_packs": [
@@ -131,13 +131,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 60,
-        "extra_private_ram_bytes": 11149,
+        "extra_private_ram_bytes": 11159,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "29aaee9b7541d1f857ea6e1ca13cf2f72ec80bb105d8fddef152cda16c248bef"
+        "sha256": "9cb1e981cd1cdf8afa23c021388bcd85bb5936b1caf191cbda5fac1e20044768"
       },
       "147": {
         "selected_packs": [
@@ -146,13 +146,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 147,
-        "extra_private_ram_bytes": 9837,
+        "extra_private_ram_bytes": 9838,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "242425524358f2af72d96eb768ce438e7e1ddba94d7572c44fbe839d68018b16"
+        "sha256": "92383664a4167a0f14506f07b47853a390b38aa4020a1490ea09791b657ef67e"
       },
       "176": {
         "selected_packs": [
@@ -163,13 +163,13 @@
           "zero_zp_v5"
         ],
         "zp_bytes": 176,
-        "extra_private_ram_bytes": 11335,
+        "extra_private_ram_bytes": 11346,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "ae320c9f983e3004af008786047f4dcb7fac215c93cf3014533089da8f4ba7e9"
+        "sha256": "03662bb41eba9246c07439ff1f2727e5176274f8a177d4985db8cef8ad60e4cc"
       },
       "221": {
         "selected_packs": [
@@ -179,10 +179,10 @@
         "extra_private_ram_bytes": 208,
         "init_required": true,
         "common_api": {
-          "entries": 54,
-          "calls": 21422
+          "entries": 56,
+          "calls": 21678
         },
-        "sha256": "e36efb836ecb2f8c14b8a66b68cc49a8a65d647d3a9b5c3e793607f4e82f8260"
+        "sha256": "dbe90e6c0d8648d7c37800e69fa98f1b970a3e7b3d165e5b5f8ccf9265ebe2b4"
       }
     }
   },
@@ -374,7 +374,11 @@
       },
       "MATH_UMUL32": {
         "cases": 500,
-        "cycle_vector_equal_to_v2": true
+        "correctness_against_v2": true,
+        "cycle_parity_required": false,
+        "mean_cycle_delta_vs_v2": 22.0,
+        "min_cycle_delta_vs_v2": 22,
+        "max_cycle_delta_vs_v2": 22
       },
       "MATH_SMUL8": {
         "cases": 500,
@@ -390,7 +394,11 @@
       },
       "MATH_SMUL32": {
         "cases": 500,
-        "cycle_vector_equal_to_v2": true
+        "correctness_against_v2": true,
+        "cycle_parity_required": false,
+        "mean_cycle_delta_vs_v2": 32.594,
+        "min_cycle_delta_vs_v2": 23,
+        "max_cycle_delta_vs_v2": 44
       },
       "MATH_UDIV16": {
         "cases": 500,
@@ -422,9 +430,9 @@
         "cases": 65536,
         "cycle_vector_equal_to_v2": true,
         "exhaustive": true,
-        "mean_cycles": 44.96281433105469,
-        "min_cycles": 29,
-        "max_cycles": 47,
+        "mean_cycles": 43.97062683105469,
+        "min_cycles": 31,
+        "max_cycles": 45,
         "max_phase_error": 1
       }
     }
@@ -466,28 +474,28 @@
     {
       "map": "reference",
       "zp_budget": 31,
-      "sha256": "7e39c4c134806fbfce1759421c158f2487395dc471ed1138c73da88767885729",
+      "sha256": "2b2fecd504568d1f14a3ed1b4ceb31f25847e19f04b4baac1d252d2c6d956071",
       "identical": true
     },
     {
       "map": "reference",
       "zp_budget": 176,
-      "sha256": "48817150f3f3affe1b84b07d1047bc5060b23b83faeb4623989f48905045b261",
+      "sha256": "20c9ca00a0100612e12954af0dc1a2db477a3829621a51aedc99eaccd4cfd459",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 31,
-      "sha256": "3abbacc805a490db5c0ee90498957f9c2c8501a99a3ce7e3b3b54b0eb8fb163b",
+      "sha256": "c5f905dd63afca5e4278083a8ce149a267d5f8f056852c603d7245bff4eaf5be",
       "identical": true
     },
     {
       "map": "alternate",
       "zp_budget": 176,
-      "sha256": "ae320c9f983e3004af008786047f4dcb7fac215c93cf3014533089da8f4ba7e9",
+      "sha256": "03662bb41eba9246c07439ff1f2727e5176274f8a177d4985db8cef8ad60e4cc",
       "identical": true
     }
   ],
-  "common_api_machine_calls": 257064,
-  "elapsed_seconds": 67.887
+  "common_api_machine_calls": 260136,
+  "elapsed_seconds": 95.99
 }
