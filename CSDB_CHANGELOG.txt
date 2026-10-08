@@ -1,3 +1,12 @@
+2026-10-08 SHIFTED DIV / RECIPROCAL DIRECT-INPUT OPTIMIZATION
+- UDIV16_SHL8 V1-V5 now: 770.773617 / 552.649695 / 553.124974 / 552.577740 / 553.298759 cycles mean.
+- SDIV16_SHL8 V1-V5 now: 846.155071 / 715.633370 / 714.004798 / 712.609597 / 630.805016.
+- V5 SDIV16_SHL8 improves 953.277863 -> 630.805016 while retaining the 31-byte normal-ZP contract.
+- URECIP16_Q16 V1-V5 now: 108.497635 / 94.822998 / 66.233795 / 66.233795 / 95.044128; V3/V4 REU path unchanged.
+- Shifted N and reciprocal constant are bound directly into the selected private 32/16 state; V5 reuses the certified relocated V2 split-tail core.
+- OptiSearch generic shifted-Q0 schedules were noncompetitive; the post-OptiSearch pass still found a 2-cycle/2-byte zero-seed adapter win.
+- Zero-error final validation: 4,753 unsigned + 4,585 signed shifted cases per profile and exhaustive 65,536-divisor reciprocal per profile.
+
 2026-10-08 SIGNED DIV/MOD MANUAL + OPTISEARCH CAMPAIGN
 - Completed signed DIV/MOD audit before adding new routine families; SDIV8/16/24 retained after no compatible faster replacement was found.
 - V2/V3/V4 SDIV32/16: 833.995638/833.572737/829.631189 -> 817.550927/817.533479/813.759215 cycles mean.

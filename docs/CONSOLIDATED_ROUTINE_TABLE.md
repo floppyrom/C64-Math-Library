@@ -11,7 +11,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | Profile | PRG payload span B | REU image B | Declared shared ZP B | Stable API ZP union touched B | Stack-page reserved B |
 |---|---:|---:|---:|---:|---:|
 | `v1_balanced` | 49040 | 0 |  | 31 | 0 |
-| `v2_pareto_fast` | 49040 | 0 |  | 202 | 0 |
+| `v2_pareto_fast` | 49040 | 0 |  | 201 | 0 |
 | `v3_reu_512k` | 49040 | 524288 |  | 197 | 0 |
 | `v4_reu_16m` | 49040 | 16777216 |  | 196 | 0 |
 | `v5_hybrid_lowzp` | 49040 | 0 | 31 | 31 | 0 |
@@ -56,9 +56,9 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 313.154093 | 281 | 345 | 278 | 17 | $09-$19 | 0 | FAST17 SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 779.876404 | 717 | 896 | 380 | 31 | $02-$20 | 0 | FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 812.544371 | 725 | 938 | 1449 | 31 | $02-$20 | 0 | FAST31/V29 SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 877.773617 | 289 | 1914 | 388 | 12 | $10-$1B | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
-| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 952.471538 | 281 | 2007 | 625 | 12 | $14-$1F | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
-| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 119.994705 | 41 | 2179 | 1559 | 3 | $10-$12 | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
+| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 770.773617 | 182 | 1807 | 313 | 12 | $10-$1B | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
+| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 846.155071 | 180 | 1893 | 495 | 12 | $14-$1F | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
+| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 108.497635 | 41 | 1801 | 637 | 12 | $10-$1B | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_COS8` | `cos_u8_s8` | 29.000000 | 29 | 29 | 18 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 39.000000 | 39 | 39 | 25 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
@@ -117,9 +117,9 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 276.888787 | 254 | 317 | 232 | 111 | $82-$F0 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 757.876404 | 695 | 874 | 364 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 780.302454 | 695 | 903 | 1415 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer direct-entry SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 652.649695 | 222 | 1018 | 2092 | 14 | $10-$19;$53-$56 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
-| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 819.067394 | 158 | 1876 | 2215 | 16 | $44-$4F;$53-$56 | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
-| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 117.958527 | 41 | 1453 | 3958 | 16 | $10-$19;$61-$64;$67-$68 | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
+| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 552.649695 | 122 | 918 | 2024 | 10 | $10-$19 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
+| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 715.633370 | 62 | 1765 | 2051 | 12 | $44-$4F | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
+| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 94.822998 | 41 | 947 | 2348 | 10 | $10-$19 | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
@@ -178,8 +178,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 276.888787 | 254 | 317 | 232 | 111 | $82-$F0 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 757.876404 | 695 | 874 | 364 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 780.302454 | 695 | 903 | 1415 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer direct-entry SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 653.124974 | 222 | 1018 | 2092 | 14 | $10-$19;$53-$56 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
-| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 817.401091 | 158 | 1876 | 2215 | 16 | $44-$4F;$53-$56 | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
+| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 553.124974 | 122 | 918 | 2024 | 10 | $10-$19 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
+| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 714.004798 | 62 | 1765 | 2051 | 12 | $44-$4F | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 66.233795 | 41 | 239 | 430 | 0 | — | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
@@ -245,8 +245,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 276.888787 | 254 | 317 | 232 | 111 | $82-$F0 | 0 | 116-ZP practical native SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 757.876404 | 695 | 874 | 364 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 780.302454 | 695 | 903 | 1415 | 31 | $0E-$20;$3D-$42;$4F-$52;$68-$69 | 0 | FAST31/V29 persistent-pointer direct-entry SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 652.577740 | 222 | 1018 | 2092 | 14 | $10-$19;$53-$56 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
-| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 816.061505 | 158 | 1876 | 2215 | 16 | $44-$4F;$53-$56 | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
+| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 552.577740 | 122 | 918 | 2024 | 10 | $10-$19 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
+| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 712.609597 | 62 | 1765 | 2051 | 12 | $44-$4F | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 66.233795 | 41 | 239 | 430 | 0 | — | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
@@ -315,9 +315,9 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 313.154093 | 281 | 345 | 278 | 17 | $09-$19 | 0 | FAST17 SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 779.876404 | 717 | 896 | 380 | 31 | $02-$20 | 0 | FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 812.544371 | 725 | 938 | 1449 | 31 | $02-$20 | 0 | FAST31/V29 SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 663.298759 | 232 | 1028 | 2102 | 10 | $10-$19 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
-| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 953.277863 | 281 | 2007 | 625 | 12 | $14-$1F | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
-| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 118.742294 | 41 | 1465 | 3970 | 10 | $10-$19 | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
+| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 553.298759 | 122 | 918 | 2024 | 10 | $10-$19 | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
+| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 630.805016 | 118 | 971 | 2159 | 10 | $10-$19 | 0 | fixed-point adapter into selected native signed 32/16 divider | current native-signed division validation |
+| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 95.044128 | 41 | 950 | 2351 | 10 | $10-$19 | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_COS8` | `cos_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; current exhaustive/profile game-math benchmark |
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 31.000000 | 31 | 31 | 20 | 0 | — | 0 | V2 certified kernel imported into V5 hybrid private RAM | V5 documented v2_pareto_fast path; current exhaustive/profile game-math benchmark |

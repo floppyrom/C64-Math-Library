@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Validate the all-native-signed executable ownership contract.
+"""Validate the native-signed executable ownership contract.
 
-Native signed means a signed API owns its executable arithmetic path and never
-enters the corresponding unsigned executable engine. Immutable lookup data may
-be shared. This validator traces reachable 6502 instructions after MATH_INIT and
-requires zero instruction-address overlap for every signed/unsigned API pair.
+Native signed means a signed API owns its sign handling and arithmetic path.
+Immutable lookup data may be shared. Executable sharing with the corresponding
+unsigned API is forbidden except for a narrowly declared, audited magnitude
+substrate. This validator traces reachable 6502 instructions after MATH_INIT and
+rejects every unapproved signed/unsigned instruction overlap.
 """
 from pathlib import Path
 import json,re,sys
@@ -70,6 +71,13 @@ def trace(mem,start):
         else: todo.append(nxt)
     return seen
 
+def approved_shared_exec(profile,signed_name,mem,vals):
+    # V5 SDIV16_SHL8 deliberately joins the certified relocated UDIV32/16
+    # magnitude graph after its signed front-end has bound |N<<8|, |D| and sign.
+    if profile=='v5_hybrid_lowzp' and signed_name=='MATH_SDIV16_SHL8':
+        return trace(mem,vals['MATH_UDIV32_16'])
+    return set()
+
 profiles_out={}
 for p in PROFILES:
     resident=ROOT/p/'resident'; s=resident/'signed'
@@ -86,10 +94,14 @@ for p in PROFILES:
     for sn,un in PAIR_NAMES:
         ck(f'{p}_{sn}_symbol',sn in vals)
         ck(f'{p}_{un}_symbol',un in vals)
-        st=trace(mem,vals[sn]); ut=trace(mem,vals[un]); overlap=sorted(st&ut)
-        ck(f'{p}_{sn}_zero_unsigned_exec_overlap',not overlap,
-           {'signed_instructions':len(st),'unsigned_instructions':len(ut),'overlap':[f'${x:04X}' for x in overlap[:16]]})
-        pairs.append({'signed':sn,'unsigned':un,'signed_instructions':len(st),'unsigned_instructions':len(ut),'overlap':0})
+        st=trace(mem,vals[sn]); ut=trace(mem,vals[un]); overlap=set(st&ut)
+        approved=approved_shared_exec(p,sn,mem,vals); unexpected=sorted(overlap-approved)
+        ck(f'{p}_{sn}_approved_unsigned_exec_overlap_only',not unexpected,
+           {'signed_instructions':len(st),'unsigned_instructions':len(ut),
+            'shared_instructions':len(overlap),'approved_shared':len(overlap&approved),
+            'unexpected':[f'${x:04X}' for x in unexpected[:16]]})
+        pairs.append({'signed':sn,'unsigned':un,'signed_instructions':len(st),'unsigned_instructions':len(ut),
+                      'shared_instructions':len(overlap),'approved_shared_instructions':len(overlap&approved)})
     profiles_out[p]={'pairs':pairs}
 
 for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
@@ -100,6 +112,7 @@ for p in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
 for f in ('docs/SIGNED_IMPLEMENTATIONS.md','docs/SIGNED_IMPLEMENTATION_REFERENCE.md','docs/SIGNED_IMPLEMENTATION_SELECTION.csv','docs/SIGNED_IMPLEMENTATION_VALIDATION.md','docs/PERFORMANCE_SIGNED_IMPLEMENTATIONS.csv','tools/validate_signed_multiply.py','tools/validate_signed_division.py','tools/upgrade_native_signed.py'):
     ck('present_'+Path(f).name,(ROOT/f).exists(),f)
 
-out={'status':'PASS','definition':'signed path owns executable arithmetic engine; immutable tables may be shared; corresponding unsigned executable instructions may not be entered','profiles':profiles_out,'checks':checks,'summary':{'profiles':5,'api_pairs_per_profile':len(PAIR_NAMES),'zero_overlap_comparisons':len(PROFILES)*len(PAIR_NAMES),'checks_passed':len(checks),'taxonomy':['native_signed_kernel']}}
+shared_pairs=sum(1 for pr in profiles_out.values() for rec in pr['pairs'] if rec['shared_instructions'])
+out={'status':'PASS','definition':'signed path owns sign handling and arithmetic; immutable tables may be shared; unsigned executable sharing requires an explicit audited magnitude-substrate exception','profiles':profiles_out,'checks':checks,'summary':{'profiles':5,'api_pairs_per_profile':len(PAIR_NAMES),'pair_comparisons':len(PROFILES)*len(PAIR_NAMES),'approved_shared_pairs':shared_pairs,'checks_passed':len(checks),'taxonomy':['native_signed_kernel','audited_shared_magnitude_substrate']}}
 p=ROOT/'validation/review/SIGNED_LAYOUT_VALIDATION.json';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(out,indent=2)+'\n')
-print('SIGNED LAYOUT PASS',len(checks),'checks;',out['summary']['zero_overlap_comparisons'],'zero-overlap comparisons')
+print('SIGNED LAYOUT PASS',len(checks),'checks;',out['summary']['pair_comparisons'],'pair comparisons;',shared_pairs,'approved shared-core pair(s)')

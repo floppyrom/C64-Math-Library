@@ -3,15 +3,13 @@
 ; Canonical integrated build source remains relocatable_source/v4_reu_16m/math_relocatable.asm
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
-; Corresponding unsigned API: MATH_UDIV16_SHL8. Executable overlap: 0 instructions.
-; Public entry: $5E1B. Reachable signed instructions: 1182.
+; Corresponding unsigned API: MATH_UDIV16_SHL8. Approved shared executable overlap: 0 instructions.
+; Public entry: $5E1B. Reachable signed instructions: 1116.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510
 
-; ---- executable island $2590 ----
-* = $2590
-L2590:
-    jmp L9200                          ; @2590 4C 00 92
+; ---- executable island $2593 ----
+* = $2593
 L2593:
     lda $4E                            ; @2593 A5 4E
     sta $C018                          ; @2595 8D 18 C0
@@ -39,14 +37,10 @@ L25A9:
     sta $C01B                          ; @25C3 8D 1B C0
     clc                                ; @25C6 18
     rts                                ; @25C7 60
-; ---- executable island $3EE0 ----
-* = $3EE0
-L3EE0:
-    jmp L2590                          ; @3EE0 4C 90 25
 ; ---- executable island $5E1B ----
 * = $5E1B
 L5E1B:
-    jmp LC575                          ; @5E1B 4C 75 C5
+    jmp LC552                          ; @5E1B 4C 52 C5
 ; ---- executable island $890C ----
 * = $890C
 L890C:
@@ -1209,95 +1203,8 @@ L90DA:
     sta $4F                            ; @90DE 85 4F
     sec                                ; @90E0 38
     rts                                ; @90E1 60
-; ---- executable island $9200 ----
-* = $9200
-L9200:
-    lda $C015                          ; @9200 AD 15 C0
-    bpl L9208                          ; @9203 10 03
-    jmp L9268                          ; @9205 4C 68 92
-L9208:
-    bne L921B                          ; @9208 D0 11
-    lda $C014                          ; @920A AD 14 C0
-    bne L9212                          ; @920D D0 03
-    jmp L92BD                          ; @920F 4C BD 92
-L9212:
-    sta $46                            ; @9212 85 46
-    lda #$00                           ; @9214 A9 00
-    sta $47                            ; @9216 85 47
-    jmp L9222                          ; @9218 4C 22 92
-L921B:
-    sta $47                            ; @921B 85 47
-    lda $C014                          ; @921D AD 14 C0
-    sta $46                            ; @9220 85 46
-L9222:
-    lda $C013                          ; @9222 AD 13 C0
-    bmi L9243                          ; @9225 30 1C
-    lda $C010                          ; @9227 AD 10 C0
-    sta $4C                            ; @922A 85 4C
-    lda $C011                          ; @922C AD 11 C0
-    sta $4D                            ; @922F 85 4D
-    lda $C012                          ; @9231 AD 12 C0
-    sta $44                            ; @9234 85 44
-    lda $C013                          ; @9236 AD 13 C0
-    sta $45                            ; @9239 85 45
-    jsr L8E00                          ; @923B 20 00 8E
-    ldx #$00                           ; @923E A2 00
-    jmp L92D3                          ; @9240 4C D3 92
-L9243:
-    lda #$00                           ; @9243 A9 00
-    sec                                ; @9245 38
-    sbc $C010                          ; @9246 ED 10 C0
-    sta $4C                            ; @9249 85 4C
-    lda #$00                           ; @924B A9 00
-    sbc $C011                          ; @924D ED 11 C0
-    sta $4D                            ; @9250 85 4D
-    lda #$00                           ; @9252 A9 00
-    sbc $C012                          ; @9254 ED 12 C0
-    sta $44                            ; @9257 85 44
-    lda #$00                           ; @9259 A9 00
-    sbc $C013                          ; @925B ED 13 C0
-    sta $45                            ; @925E 85 45
-    jsr L8E00                          ; @9260 20 00 8E
-    ldx #$01                           ; @9263 A2 01
-    jmp L92E7                          ; @9265 4C E7 92
-L9268:
-    lda #$00                           ; @9268 A9 00
-    sec                                ; @926A 38
-    sbc $C014                          ; @926B ED 14 C0
-    sta $46                            ; @926E 85 46
-    lda #$00                           ; @9270 A9 00
-    sbc $C015                          ; @9272 ED 15 C0
-    sta $47                            ; @9275 85 47
-    lda $C013                          ; @9277 AD 13 C0
-    bmi L9298                          ; @927A 30 1C
-    lda $C010                          ; @927C AD 10 C0
-    sta $4C                            ; @927F 85 4C
-    lda $C011                          ; @9281 AD 11 C0
-    sta $4D                            ; @9284 85 4D
-    lda $C012                          ; @9286 AD 12 C0
-    sta $44                            ; @9289 85 44
-    lda $C013                          ; @928B AD 13 C0
-    sta $45                            ; @928E 85 45
-    jsr L8E00                          ; @9290 20 00 8E
-    ldx #$01                           ; @9293 A2 01
-    jmp L92D3                          ; @9295 4C D3 92
-L9298:
-    lda #$00                           ; @9298 A9 00
-    sec                                ; @929A 38
-    sbc $C010                          ; @929B ED 10 C0
-    sta $4C                            ; @929E 85 4C
-    lda #$00                           ; @92A0 A9 00
-    sbc $C011                          ; @92A2 ED 11 C0
-    sta $4D                            ; @92A5 85 4D
-    lda #$00                           ; @92A7 A9 00
-    sbc $C012                          ; @92A9 ED 12 C0
-    sta $44                            ; @92AC 85 44
-    lda #$00                           ; @92AE A9 00
-    sbc $C013                          ; @92B0 ED 13 C0
-    sta $45                            ; @92B3 85 45
-    jsr L8E00                          ; @92B5 20 00 8E
-    ldx #$00                           ; @92B8 A2 00
-    jmp L92E7                          ; @92BA 4C E7 92
+; ---- executable island $92BD ----
+* = $92BD
 L92BD:
     lda #$00                           ; @92BD A9 00
     sta $C018                          ; @92BF 8D 18 C0
@@ -1331,37 +1238,56 @@ L92E7:
     jmp L25A9                          ; @92FA 4C A9 25
 L92FD:
     jmp L2593                          ; @92FD 4C 93 25
-; ---- executable island $C575 ----
-* = $C575
-LC575:
-    lda $C010                          ; @C575 AD 10 C0
-    sta $53                            ; @C578 85 53
+; ---- executable island $C552 ----
+* = $C552
+LC552:
+    lda $C015                          ; @C552 AD 15 C0
+    bmi LC565                          ; @C555 30 0E
+    sta $47                            ; @C557 85 47
+    lda $C014                          ; @C559 AD 14 C0
+    sta $46                            ; @C55C 85 46
+    ora $47                            ; @C55E 05 47
+    beq LC5B4                          ; @C560 F0 52
+    jmp LC574                          ; @C562 4C 74 C5
+LC565:
+    lda #$00                           ; @C565 A9 00
+    sec                                ; @C567 38
+    sbc $C014                          ; @C568 ED 14 C0
+    sta $46                            ; @C56B 85 46
+    lda #$00                           ; @C56D A9 00
+    sbc $C015                          ; @C56F ED 15 C0
+    sta $47                            ; @C572 85 47
+LC574:
+    lda #$00                           ; @C574 A9 00
+    sta $4C                            ; @C576 85 4C
+    sta $45                            ; @C578 85 45
     lda $C011                          ; @C57A AD 11 C0
-    sta $54                            ; @C57D 85 54
-    lda $C012                          ; @C57F AD 12 C0
-    sta $55                            ; @C582 85 55
-    lda $C013                          ; @C584 AD 13 C0
-    sta $56                            ; @C587 85 56
-    lda #$00                           ; @C589 A9 00
-    sta $C010                          ; @C58B 8D 10 C0
-    lda $53                            ; @C58E A5 53
-    sta $C011                          ; @C590 8D 11 C0
-    lda $54                            ; @C593 A5 54
-    sta $C012                          ; @C595 8D 12 C0
-    bpl LC59E                          ; @C598 10 04
-    lda #$FF                           ; @C59A A9 FF
-    bne LC5A0                          ; @C59C D0 02
-LC59E:
-    lda #$00                           ; @C59E A9 00
-LC5A0:
-    sta $C013                          ; @C5A0 8D 13 C0
-    jsr L3EE0                          ; @C5A3 20 E0 3E
-    lda $53                            ; @C5A6 A5 53
-    sta $C010                          ; @C5A8 8D 10 C0
-    lda $54                            ; @C5AB A5 54
-    sta $C011                          ; @C5AD 8D 11 C0
-    lda $55                            ; @C5B0 A5 55
-    sta $C012                          ; @C5B2 8D 12 C0
-    lda $56                            ; @C5B5 A5 56
-    sta $C013                          ; @C5B7 8D 13 C0
-    rts                                ; @C5BA 60
+    bmi LC597                          ; @C57D 30 18
+    lda $C010                          ; @C57F AD 10 C0
+    sta $4D                            ; @C582 85 4D
+    lda $C011                          ; @C584 AD 11 C0
+    sta $44                            ; @C587 85 44
+    jsr L8E00                          ; @C589 20 00 8E
+    ldx #$00                           ; @C58C A2 00
+    lda $C015                          ; @C58E AD 15 C0
+    bpl LC594                          ; @C591 10 01
+    inx                                ; @C593 E8
+LC594:
+    jmp L92D3                          ; @C594 4C D3 92
+LC597:
+    lda #$00                           ; @C597 A9 00
+    sec                                ; @C599 38
+    sbc $C010                          ; @C59A ED 10 C0
+    sta $4D                            ; @C59D 85 4D
+    lda #$00                           ; @C59F A9 00
+    sbc $C011                          ; @C5A1 ED 11 C0
+    sta $44                            ; @C5A4 85 44
+    jsr L8E00                          ; @C5A6 20 00 8E
+    ldx #$01                           ; @C5A9 A2 01
+    lda $C015                          ; @C5AB AD 15 C0
+    bpl LC5B1                          ; @C5AE 10 01
+    dex                                ; @C5B0 CA
+LC5B1:
+    jmp L92E7                          ; @C5B1 4C E7 92
+LC5B4:
+    jmp L92BD                          ; @C5B4 4C BD 92

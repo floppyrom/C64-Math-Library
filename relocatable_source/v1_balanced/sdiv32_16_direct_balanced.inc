@@ -20,6 +20,7 @@ V1D32_DIV_U32_16 = REG_KERNEL+$1B00
 * = REG_LOW+$1590
 V1D32_PUBLIC:
         jsr V1D32_DIV_S32_16
+V1D32_OUTPUT:
         lda V1D32_LQ0
         sta MATH_Q+0
         lda V1D32_LQ1
@@ -66,6 +67,7 @@ V1D32_PP_SETUP:
         sta V1D32_N0
         lda MATH_N+3
         sta V1D32_N1
+V1D32_PP_DIV:
         jsr V1D32_DIV_U32_16
         rts
 
@@ -84,6 +86,7 @@ V1D32_NP_SETUP:
         lda #0
         sbc MATH_N+3
         sta V1D32_N1
+V1D32_NP_DIV:
         jsr V1D32_DIV_U32_16
         lda #0
         sec
@@ -129,6 +132,7 @@ V1D32_PN_SETUP:
         sta V1D32_N0
         lda MATH_N+3
         sta V1D32_N1
+V1D32_PN_DIV:
         jsr V1D32_DIV_U32_16
         lda #0
         sec
@@ -161,6 +165,7 @@ V1D32_NN_SETUP:
         lda #0
         sbc MATH_N+3
         sta V1D32_N1
+V1D32_NN_DIV:
         jsr V1D32_DIV_U32_16
         lda #0
         sec

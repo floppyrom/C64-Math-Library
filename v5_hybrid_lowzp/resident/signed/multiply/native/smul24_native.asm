@@ -3,7 +3,7 @@
 ; Canonical integrated build source remains relocatable_source/v1_balanced/math_relocatable.asm + tools/build_hybrid.py
 ; This mirror contains every executable instruction reachable from this signed API after MATH_INIT.
 ; Immutable lookup/data tables are intentionally not duplicated here.
-; Corresponding unsigned API: MATH_UMUL24. Executable overlap: 0 instructions.
+; Corresponding unsigned API: MATH_UMUL24. Approved shared executable overlap: 0 instructions.
 ; Public entry: $3BF0. Reachable signed instructions: 238.
 ; Each instruction has an @ADDR byte annotation used by the publication validator.
 !cpu 6510

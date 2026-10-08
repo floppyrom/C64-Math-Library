@@ -45,9 +45,9 @@
       "MATH_UDIV16_SHL8": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 877.77361666316,
-        "min_cycles": 289,
-        "max_cycles": 1914,
+        "mean_cycles": 770.77361666316,
+        "min_cycles": 182,
+        "max_cycles": 1807,
         "mode": "structured_random"
       },
       "MATH_UMOD8": {
@@ -88,9 +88,9 @@
       "MATH_URECIP16_Q16": {
         "cases": 65536,
         "errors": 0,
-        "mean_cycles": 119.99470520019531,
+        "mean_cycles": 108.49763488769531,
         "min_cycles": 41,
-        "max_cycles": 2179,
+        "max_cycles": 1801,
         "mode": "exhaustive"
       }
     },
@@ -138,9 +138,9 @@
       "MATH_UDIV16_SHL8": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 652.6496949295182,
-        "min_cycles": 222,
-        "max_cycles": 1018,
+        "mean_cycles": 552.6496949295182,
+        "min_cycles": 122,
+        "max_cycles": 918,
         "mode": "structured_random"
       },
       "MATH_UMOD8": {
@@ -181,9 +181,9 @@
       "MATH_URECIP16_Q16": {
         "cases": 65536,
         "errors": 0,
-        "mean_cycles": 117.95852661132812,
+        "mean_cycles": 94.822998046875,
         "min_cycles": 41,
-        "max_cycles": 1453,
+        "max_cycles": 947,
         "mode": "exhaustive"
       }
     },
@@ -231,9 +231,9 @@
       "MATH_UDIV16_SHL8": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 653.1249737008205,
-        "min_cycles": 222,
-        "max_cycles": 1018,
+        "mean_cycles": 553.1249737008205,
+        "min_cycles": 122,
+        "max_cycles": 918,
         "mode": "structured_random"
       },
       "MATH_UMOD8": {
@@ -324,9 +324,9 @@
       "MATH_UDIV16_SHL8": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 652.5777403745003,
-        "min_cycles": 222,
-        "max_cycles": 1018,
+        "mean_cycles": 552.5777403745003,
+        "min_cycles": 122,
+        "max_cycles": 918,
         "mode": "structured_random"
       },
       "MATH_UMOD8": {
@@ -417,9 +417,9 @@
       "MATH_UDIV16_SHL8": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 663.2987586787292,
-        "min_cycles": 232,
-        "max_cycles": 1028,
+        "mean_cycles": 553.2987586787292,
+        "min_cycles": 122,
+        "max_cycles": 918,
         "mode": "structured_random"
       },
       "MATH_UMOD8": {
@@ -460,9 +460,9 @@
       "MATH_URECIP16_Q16": {
         "cases": 65536,
         "errors": 0,
-        "mean_cycles": 118.74229431152344,
+        "mean_cycles": 95.04412841796875,
         "min_cycles": 41,
-        "max_cycles": 1465,
+        "max_cycles": 950,
         "mode": "exhaustive"
       }
     }

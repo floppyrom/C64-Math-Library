@@ -539,8 +539,16 @@ def generate_source(profile,outpath:Path):
            f'!source "../../{profile}/resident/vector/native/vec2_normalize_tables.asm"']
  lines += ['', '; Stable wide-intermediate multiply/divide primitives.',
            '!source "../game_math/muldiv16.inc"']
+ if profile=='v1_balanced':
+  lines += ['', '; V1 direct shifted DIV adapters.',
+            '!source "../game_math/shifted_div_direct_balanced.inc"']
  if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
-  lines += ['!source "../game_math/muldiv16_fast.inc"']
+  lines += ['!source "../game_math/muldiv16_fast.inc"',
+            '', '; Shifted DIV/reciprocal optimization campaign overlay.',
+            '!source "../game_math/shifted_div_direct_fast.inc"']
+ if profile=='v2_pareto_fast':
+  lines += ['', '; V2 reciprocal constant-numerator fallback.',
+            '!source "../game_math/recip16_direct_fast_v2.inc"']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 

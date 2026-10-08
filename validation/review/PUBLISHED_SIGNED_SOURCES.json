@@ -55,7 +55,7 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "sdiv16_shl8_native.asm",
-          "instructions": 304
+          "instructions": 252
         }
       }
     },
@@ -113,7 +113,7 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "sdiv16_shl8_native.asm",
-          "instructions": 1182
+          "instructions": 1116
         }
       }
     },
@@ -171,7 +171,7 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "sdiv16_shl8_native.asm",
-          "instructions": 1182
+          "instructions": 1116
         }
       }
     },
@@ -229,7 +229,7 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "sdiv16_shl8_native.asm",
-          "instructions": 1182
+          "instructions": 1116
         }
       }
     },
@@ -287,7 +287,7 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "sdiv16_shl8_native.asm",
-          "instructions": 304
+          "instructions": 1170
         }
       }
     }

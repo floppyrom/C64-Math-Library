@@ -67,8 +67,8 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "v1_balanced/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 304,
-          "bytes_verified": 625
+          "instructions": 252,
+          "bytes_verified": 495
         }
       }
     },
@@ -138,8 +138,8 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "v2_pareto_fast/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1182,
-          "bytes_verified": 2215
+          "instructions": 1116,
+          "bytes_verified": 2051
         }
       }
     },
@@ -209,8 +209,8 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "v3_reu_512k/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1182,
-          "bytes_verified": 2215
+          "instructions": 1116,
+          "bytes_verified": 2051
         }
       }
     },
@@ -280,8 +280,8 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "v4_reu_16m/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 1182,
-          "bytes_verified": 2215
+          "instructions": 1116,
+          "bytes_verified": 2051
         }
       }
     },
@@ -351,8 +351,8 @@
         },
         "MATH_SDIV16_SHL8": {
           "file": "v5_hybrid_lowzp/resident/signed/division/native/sdiv16_shl8_native.asm",
-          "instructions": 304,
-          "bytes_verified": 625
+          "instructions": 1170,
+          "bytes_verified": 2159
         }
       }
     }
@@ -374,9 +374,13 @@
       "detail": "v1_balanced/resident/signed/multiply/native/smul8_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SMUL8_zero_overlap",
+      "check": "v1_balanced_MATH_SMUL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SMUL8_instruction_count",
@@ -399,9 +403,13 @@
       "detail": "v1_balanced/resident/signed/multiply/native/smul16_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SMUL16_zero_overlap",
+      "check": "v1_balanced_MATH_SMUL16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SMUL16_instruction_count",
@@ -424,9 +432,13 @@
       "detail": "v1_balanced/resident/signed/multiply/native/smul24_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SMUL24_zero_overlap",
+      "check": "v1_balanced_MATH_SMUL24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SMUL24_instruction_count",
@@ -449,9 +461,13 @@
       "detail": "v1_balanced/resident/signed/multiply/native/smul32_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SMUL32_zero_overlap",
+      "check": "v1_balanced_MATH_SMUL32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SMUL32_instruction_count",
@@ -474,9 +490,13 @@
       "detail": "v1_balanced/resident/signed/multiply/native/smul32_ready_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SMUL32_READY_zero_overlap",
+      "check": "v1_balanced_MATH_SMUL32_READY_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SMUL32_READY_instruction_count",
@@ -499,9 +519,13 @@
       "detail": "v1_balanced/resident/signed/multiply/native/smul16_shr8_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SMUL16_SHR8_zero_overlap",
+      "check": "v1_balanced_MATH_SMUL16_SHR8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SMUL16_SHR8_instruction_count",
@@ -524,9 +548,13 @@
       "detail": "v1_balanced/resident/signed/multiply/native/smul32_shr16_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SMUL32_SHR16_zero_overlap",
+      "check": "v1_balanced_MATH_SMUL32_SHR16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SMUL32_SHR16_instruction_count",
@@ -554,9 +582,13 @@
       "detail": "v1_balanced/resident/signed/division/native/sdiv8_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SDIV8_zero_overlap",
+      "check": "v1_balanced_MATH_SDIV8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SDIV8_instruction_count",
@@ -579,9 +611,13 @@
       "detail": "v1_balanced/resident/signed/division/native/sdiv16_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SDIV16_zero_overlap",
+      "check": "v1_balanced_MATH_SDIV16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SDIV16_instruction_count",
@@ -604,9 +640,13 @@
       "detail": "v1_balanced/resident/signed/division/native/sdiv24_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SDIV24_zero_overlap",
+      "check": "v1_balanced_MATH_SDIV24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SDIV24_instruction_count",
@@ -629,9 +669,13 @@
       "detail": "v1_balanced/resident/signed/division/native/sdiv32_16_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SDIV32_16_zero_overlap",
+      "check": "v1_balanced_MATH_SDIV32_16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SDIV32_16_instruction_count",
@@ -654,9 +698,13 @@
       "detail": "v1_balanced/resident/signed/division/native/sdiv32_32_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SDIV32_32_zero_overlap",
+      "check": "v1_balanced_MATH_SDIV32_32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SDIV32_32_instruction_count",
@@ -679,16 +727,20 @@
       "detail": "v1_balanced/resident/signed/division/native/sdiv16_shl8_native.asm"
     },
     {
-      "check": "v1_balanced_MATH_SDIV16_SHL8_zero_overlap",
+      "check": "v1_balanced_MATH_SDIV16_SHL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v1_balanced_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 304,
-        "runtime": 304,
+        "published": 252,
+        "runtime": 252,
         "missing": 0,
         "extra": 0
       }
@@ -709,9 +761,13 @@
       "detail": "v2_pareto_fast/resident/signed/multiply/native/smul8_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SMUL8_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SMUL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SMUL8_instruction_count",
@@ -734,9 +790,13 @@
       "detail": "v2_pareto_fast/resident/signed/multiply/native/smul16_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SMUL16_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SMUL16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SMUL16_instruction_count",
@@ -759,9 +819,13 @@
       "detail": "v2_pareto_fast/resident/signed/multiply/native/smul24_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SMUL24_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SMUL24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SMUL24_instruction_count",
@@ -784,9 +848,13 @@
       "detail": "v2_pareto_fast/resident/signed/multiply/native/smul32_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SMUL32_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SMUL32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SMUL32_instruction_count",
@@ -809,9 +877,13 @@
       "detail": "v2_pareto_fast/resident/signed/multiply/native/smul32_ready_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SMUL32_READY_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SMUL32_READY_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SMUL32_READY_instruction_count",
@@ -834,9 +906,13 @@
       "detail": "v2_pareto_fast/resident/signed/multiply/native/smul16_shr8_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SMUL16_SHR8_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SMUL16_SHR8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SMUL16_SHR8_instruction_count",
@@ -859,9 +935,13 @@
       "detail": "v2_pareto_fast/resident/signed/multiply/native/smul32_shr16_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SMUL32_SHR16_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SMUL32_SHR16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SMUL32_SHR16_instruction_count",
@@ -889,9 +969,13 @@
       "detail": "v2_pareto_fast/resident/signed/division/native/sdiv8_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SDIV8_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SDIV8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SDIV8_instruction_count",
@@ -914,9 +998,13 @@
       "detail": "v2_pareto_fast/resident/signed/division/native/sdiv16_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SDIV16_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SDIV16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SDIV16_instruction_count",
@@ -939,9 +1027,13 @@
       "detail": "v2_pareto_fast/resident/signed/division/native/sdiv24_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SDIV24_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SDIV24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SDIV24_instruction_count",
@@ -964,9 +1056,13 @@
       "detail": "v2_pareto_fast/resident/signed/division/native/sdiv32_16_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SDIV32_16_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SDIV32_16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SDIV32_16_instruction_count",
@@ -989,9 +1085,13 @@
       "detail": "v2_pareto_fast/resident/signed/division/native/sdiv32_32_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SDIV32_32_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SDIV32_32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SDIV32_32_instruction_count",
@@ -1014,16 +1114,20 @@
       "detail": "v2_pareto_fast/resident/signed/division/native/sdiv16_shl8_native.asm"
     },
     {
-      "check": "v2_pareto_fast_MATH_SDIV16_SHL8_zero_overlap",
+      "check": "v2_pareto_fast_MATH_SDIV16_SHL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v2_pareto_fast_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1182,
-        "runtime": 1182,
+        "published": 1116,
+        "runtime": 1116,
         "missing": 0,
         "extra": 0
       }
@@ -1044,9 +1148,13 @@
       "detail": "v3_reu_512k/resident/signed/multiply/native/smul8_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SMUL8_zero_overlap",
+      "check": "v3_reu_512k_MATH_SMUL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SMUL8_instruction_count",
@@ -1069,9 +1177,13 @@
       "detail": "v3_reu_512k/resident/signed/multiply/native/smul16_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SMUL16_zero_overlap",
+      "check": "v3_reu_512k_MATH_SMUL16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SMUL16_instruction_count",
@@ -1094,9 +1206,13 @@
       "detail": "v3_reu_512k/resident/signed/multiply/native/smul24_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SMUL24_zero_overlap",
+      "check": "v3_reu_512k_MATH_SMUL24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SMUL24_instruction_count",
@@ -1119,9 +1235,13 @@
       "detail": "v3_reu_512k/resident/signed/multiply/native/smul32_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SMUL32_zero_overlap",
+      "check": "v3_reu_512k_MATH_SMUL32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SMUL32_instruction_count",
@@ -1144,9 +1264,13 @@
       "detail": "v3_reu_512k/resident/signed/multiply/native/smul32_ready_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SMUL32_READY_zero_overlap",
+      "check": "v3_reu_512k_MATH_SMUL32_READY_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SMUL32_READY_instruction_count",
@@ -1169,9 +1293,13 @@
       "detail": "v3_reu_512k/resident/signed/multiply/native/smul16_shr8_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SMUL16_SHR8_zero_overlap",
+      "check": "v3_reu_512k_MATH_SMUL16_SHR8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SMUL16_SHR8_instruction_count",
@@ -1194,9 +1322,13 @@
       "detail": "v3_reu_512k/resident/signed/multiply/native/smul32_shr16_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SMUL32_SHR16_zero_overlap",
+      "check": "v3_reu_512k_MATH_SMUL32_SHR16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SMUL32_SHR16_instruction_count",
@@ -1224,9 +1356,13 @@
       "detail": "v3_reu_512k/resident/signed/division/native/sdiv8_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SDIV8_zero_overlap",
+      "check": "v3_reu_512k_MATH_SDIV8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SDIV8_instruction_count",
@@ -1249,9 +1385,13 @@
       "detail": "v3_reu_512k/resident/signed/division/native/sdiv16_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SDIV16_zero_overlap",
+      "check": "v3_reu_512k_MATH_SDIV16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SDIV16_instruction_count",
@@ -1274,9 +1414,13 @@
       "detail": "v3_reu_512k/resident/signed/division/native/sdiv24_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SDIV24_zero_overlap",
+      "check": "v3_reu_512k_MATH_SDIV24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SDIV24_instruction_count",
@@ -1299,9 +1443,13 @@
       "detail": "v3_reu_512k/resident/signed/division/native/sdiv32_16_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SDIV32_16_zero_overlap",
+      "check": "v3_reu_512k_MATH_SDIV32_16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SDIV32_16_instruction_count",
@@ -1324,9 +1472,13 @@
       "detail": "v3_reu_512k/resident/signed/division/native/sdiv32_32_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SDIV32_32_zero_overlap",
+      "check": "v3_reu_512k_MATH_SDIV32_32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SDIV32_32_instruction_count",
@@ -1349,16 +1501,20 @@
       "detail": "v3_reu_512k/resident/signed/division/native/sdiv16_shl8_native.asm"
     },
     {
-      "check": "v3_reu_512k_MATH_SDIV16_SHL8_zero_overlap",
+      "check": "v3_reu_512k_MATH_SDIV16_SHL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v3_reu_512k_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1182,
-        "runtime": 1182,
+        "published": 1116,
+        "runtime": 1116,
         "missing": 0,
         "extra": 0
       }
@@ -1379,9 +1535,13 @@
       "detail": "v4_reu_16m/resident/signed/multiply/native/smul8_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SMUL8_zero_overlap",
+      "check": "v4_reu_16m_MATH_SMUL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SMUL8_instruction_count",
@@ -1404,9 +1564,13 @@
       "detail": "v4_reu_16m/resident/signed/multiply/native/smul16_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SMUL16_zero_overlap",
+      "check": "v4_reu_16m_MATH_SMUL16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SMUL16_instruction_count",
@@ -1429,9 +1593,13 @@
       "detail": "v4_reu_16m/resident/signed/multiply/native/smul24_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SMUL24_zero_overlap",
+      "check": "v4_reu_16m_MATH_SMUL24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SMUL24_instruction_count",
@@ -1454,9 +1622,13 @@
       "detail": "v4_reu_16m/resident/signed/multiply/native/smul32_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SMUL32_zero_overlap",
+      "check": "v4_reu_16m_MATH_SMUL32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SMUL32_instruction_count",
@@ -1479,9 +1651,13 @@
       "detail": "v4_reu_16m/resident/signed/multiply/native/smul32_ready_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SMUL32_READY_zero_overlap",
+      "check": "v4_reu_16m_MATH_SMUL32_READY_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SMUL32_READY_instruction_count",
@@ -1504,9 +1680,13 @@
       "detail": "v4_reu_16m/resident/signed/multiply/native/smul16_shr8_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SMUL16_SHR8_zero_overlap",
+      "check": "v4_reu_16m_MATH_SMUL16_SHR8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SMUL16_SHR8_instruction_count",
@@ -1529,9 +1709,13 @@
       "detail": "v4_reu_16m/resident/signed/multiply/native/smul32_shr16_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SMUL32_SHR16_zero_overlap",
+      "check": "v4_reu_16m_MATH_SMUL32_SHR16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SMUL32_SHR16_instruction_count",
@@ -1559,9 +1743,13 @@
       "detail": "v4_reu_16m/resident/signed/division/native/sdiv8_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SDIV8_zero_overlap",
+      "check": "v4_reu_16m_MATH_SDIV8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SDIV8_instruction_count",
@@ -1584,9 +1772,13 @@
       "detail": "v4_reu_16m/resident/signed/division/native/sdiv16_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SDIV16_zero_overlap",
+      "check": "v4_reu_16m_MATH_SDIV16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SDIV16_instruction_count",
@@ -1609,9 +1801,13 @@
       "detail": "v4_reu_16m/resident/signed/division/native/sdiv24_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SDIV24_zero_overlap",
+      "check": "v4_reu_16m_MATH_SDIV24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SDIV24_instruction_count",
@@ -1634,9 +1830,13 @@
       "detail": "v4_reu_16m/resident/signed/division/native/sdiv32_16_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SDIV32_16_zero_overlap",
+      "check": "v4_reu_16m_MATH_SDIV32_16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SDIV32_16_instruction_count",
@@ -1659,9 +1859,13 @@
       "detail": "v4_reu_16m/resident/signed/division/native/sdiv32_32_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SDIV32_32_zero_overlap",
+      "check": "v4_reu_16m_MATH_SDIV32_32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SDIV32_32_instruction_count",
@@ -1684,16 +1888,20 @@
       "detail": "v4_reu_16m/resident/signed/division/native/sdiv16_shl8_native.asm"
     },
     {
-      "check": "v4_reu_16m_MATH_SDIV16_SHL8_zero_overlap",
+      "check": "v4_reu_16m_MATH_SDIV16_SHL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v4_reu_16m_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 1182,
-        "runtime": 1182,
+        "published": 1116,
+        "runtime": 1116,
         "missing": 0,
         "extra": 0
       }
@@ -1714,9 +1922,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/multiply/native/smul8_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SMUL8_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SMUL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SMUL8_instruction_count",
@@ -1739,9 +1951,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/multiply/native/smul16_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SMUL16_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SMUL16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SMUL16_instruction_count",
@@ -1764,9 +1980,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/multiply/native/smul24_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SMUL24_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SMUL24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SMUL24_instruction_count",
@@ -1789,9 +2009,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/multiply/native/smul32_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SMUL32_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SMUL32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SMUL32_instruction_count",
@@ -1814,9 +2038,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/multiply/native/smul32_ready_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SMUL32_READY_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SMUL32_READY_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SMUL32_READY_instruction_count",
@@ -1839,9 +2067,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/multiply/native/smul16_shr8_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SMUL16_SHR8_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SMUL16_SHR8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SMUL16_SHR8_instruction_count",
@@ -1864,9 +2096,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/multiply/native/smul32_shr16_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SMUL32_SHR16_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SMUL32_SHR16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SMUL32_SHR16_instruction_count",
@@ -1894,9 +2130,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/division/native/sdiv8_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SDIV8_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SDIV8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SDIV8_instruction_count",
@@ -1919,9 +2159,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/division/native/sdiv16_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SDIV16_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SDIV16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SDIV16_instruction_count",
@@ -1944,9 +2188,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/division/native/sdiv24_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SDIV24_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SDIV24_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SDIV24_instruction_count",
@@ -1969,9 +2217,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/division/native/sdiv32_16_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SDIV32_16_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SDIV32_16_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SDIV32_16_instruction_count",
@@ -1994,9 +2246,13 @@
       "detail": "v5_hybrid_lowzp/resident/signed/division/native/sdiv32_32_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SDIV32_32_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SDIV32_32_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 0,
+        "approved": 0,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SDIV32_32_instruction_count",
@@ -2019,16 +2275,20 @@
       "detail": "v5_hybrid_lowzp/resident/signed/division/native/sdiv16_shl8_native.asm"
     },
     {
-      "check": "v5_hybrid_lowzp_MATH_SDIV16_SHL8_zero_overlap",
+      "check": "v5_hybrid_lowzp_MATH_SDIV16_SHL8_approved_exec_overlap_only",
       "status": "PASS",
-      "detail": 0
+      "detail": {
+        "overlap": 1099,
+        "approved": 1099,
+        "unexpected": []
+      }
     },
     {
       "check": "v5_hybrid_lowzp_MATH_SDIV16_SHL8_instruction_count",
       "status": "PASS",
       "detail": {
-        "published": 304,
-        "runtime": 304,
+        "published": 1170,
+        "runtime": 1170,
         "missing": 0,
         "extra": 0
       }
