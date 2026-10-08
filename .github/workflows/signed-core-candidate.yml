@@ -23,6 +23,7 @@ jobs:
       - name: Build candidate source images
         run: |
           make reference
+          make hybrid
       - name: Validate rebuilt source images
         run: |
           python3 tools/validate_source_build.py all --build build_source/reference --out /tmp/signed-core-source-validation
@@ -33,6 +34,7 @@ jobs:
           done
           cp build_source/reference/v3_reu_512k/*.reu v3_reu_512k/reu/c64_math_v3_512k_game_math.reu
           cp build_source/reference/v4_reu_16m/*.reu v4_reu_16m/reu/c64_math_v4_16m_game_math.reu
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
       - name: Full signed division correctness and timing
         run: |
           python3 tools/validate_signed_division.py --out /tmp/SIGNED_DIVISION_CANDIDATE.json
