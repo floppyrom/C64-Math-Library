@@ -100,7 +100,9 @@ def approved_shared_exec(profile,name,mem,vals):
  # deliberately joins the selected UDIV32/16 magnitude graph. V2/V3/V4 use
  # their native U3216 substrate; V5 uses its certified relocated copy.
  # No other signed API is permitted to enter corresponding unsigned code.
- if profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp') and name=='MATH_SDIV16_SHL8':
+ if name=='MATH_SDIV16_SHL8' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
+  return trace(mem,vals['MATH_UDIV32_16'])
+ if name=='MATH_SDIV32_16' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
   return trace(mem,vals['MATH_UDIV32_16'])
  return set()
 
