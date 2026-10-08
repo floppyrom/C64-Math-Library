@@ -1,5 +1,5 @@
 ; SDIV32/32 public-unsigned reuse wrapper.
-; Profile wrapper defines SD3232_BASE before sourcing this file.
+; Profile wrapper defines SD3232_STUB and SD3232_BODY before sourcing this file.
 ;
 ; Public N/D are preserved at the API boundary. For nonzero divisors, original
 ; sign bytes are held transiently on the CPU stack while negative operands are
@@ -9,7 +9,13 @@
 ; restored public inputs. This keeps signed division automatically coupled to
 ; the profile's fastest qualified unsigned 32/32 core with no permanent ZP.
 
-* = SD3232_BASE
+* = SD3232_STUB
+SD3232_PUBLIC:
+        jmp SD3232_ENTRY
+
+; Reuse the retired private signed-magnitude region. The new wrapper is larger
+; than the historical REG_GAME stub but far smaller than the core it replaces.
+* = SD3232_BODY
 SD3232_ENTRY:
         ; Preserve canonical divide-by-zero behavior without touching N/D.
         lda MATH_D+0
