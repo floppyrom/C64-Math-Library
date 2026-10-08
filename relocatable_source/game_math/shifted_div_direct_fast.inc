@@ -31,8 +31,8 @@ FXDIV_S_SHL8:
         lda MATH_D+0
         sta U3216_D0
         ora U3216_D1
-        beq FXDIV_S_ZERO
-        jmp FXDIV_S_NSET
+        bne FXDIV_S_NSET
+        jmp FXDIV_S_ZERO
 FXDIV_S_DNEG:
         lda #0
         sec
