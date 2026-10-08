@@ -163,19 +163,19 @@ DIVISION_REFRESH_INCLUDES={
  'v1_balanced':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_balanced.inc',
   'udiv24_direct_repose_balanced.inc','sdiv16_directout_balanced.inc','sdiv24_directout_balanced.inc',
-  'sdiv32_16_direct_balanced.inc','udiv32_32_early_gate.inc','sdiv32_32_skip_redundant_zero.inc'),
+  'sdiv32_16_direct_balanced.inc','udiv32_32_early_gate.inc','sdiv32_32_signflow.inc'),
  'v2_pareto_fast':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_fast.inc',
-  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
+  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_signflow.inc','../division/remainder_fast_v2.inc'),
  'v3_reu_512k':(
   'reu_div8_public_stubs.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
-  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
+  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_signflow.inc','../division/remainder_fast_v2.inc'),
  'v4_reu_16m':(
   'reu_div8_public_stubs.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_repose.inc',
-  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_skip_redundant_zero.inc','../division/remainder_fast_v2.inc'),
+  'sdiv32_16_direct_fast.inc','../division/udiv32_live_high4.inc','../division/division_latency_escape.inc','sdiv32_32_signflow.inc','../division/remainder_fast_v2.inc'),
 }
 # Exact emitted address spans of the frozen division-refresh modules in the
 # reference map.  Instruction starts in these spans are intentionally omitted
@@ -191,7 +191,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x5200,0x52de),(0x5400,0x552c),
   (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x5600,0x5714),(0x5800,0x58b5),
   (0x2590,0x25b1),(0x5c00,0x5d01),
-  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1cf,0xc1d1)),
+  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc134,0xc221)),
  'v2_pareto_fast':(
   (0x5472,0x54d4),
   (0x3120,0x3122),(0x3200,0x3202),(0x4000,0x41ad),
@@ -201,7 +201,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x7a00,0x8177),
   (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x8178,0x8878),
   (0x2590,0x25b1),(0x9200,0x9301),
-  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1ad,0xc1af),
+  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc12c,0xc1fd),
   (0xc100,0xc102),(0xc1fe,0xc496)),
  'v3_reu_512k':(
   (0x5472,0x54d4),
@@ -212,7 +212,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x7a00,0x7c2a),(0x7d0c,0x8258),
   (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x5a40,0x5d72),(0x8300,0x8811),
   (0x2690,0x26b1),(0x9200,0x9301),
-  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1ad,0xc1af),
+  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc12c,0xc1fd),
   (0xc100,0xc102),(0xc1fe,0xc496)),
  'v4_reu_16m':(
   (0x5472,0x54d4),
@@ -223,7 +223,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x7a00,0x7c2a),(0x7d0c,0x8258),
   (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x5a40,0x5d72),(0x8300,0x8811),
   (0x2590,0x25b1),(0x9200,0x9301),
-  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc1ad,0xc1af),
+  (0x5957,0x59d5),(0x5e00,0x5e05),(0xc12c,0xc1fd),
   (0xc100,0xc102),(0xc1fe,0xc496)),
 }
 

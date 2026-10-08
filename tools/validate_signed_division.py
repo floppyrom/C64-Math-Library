@@ -105,7 +105,8 @@ def main():
             pr[name]=run_cases(cpu,api[name],cases,nb,db,qb,rb,sh)
         if any(x['errors'] for x in pr.values()): raise AssertionError((p,pr))
         result[p]=pr;print(p,'PASS',sum(x['cases'] for x in pr.values()),'signed division/modulo calls',flush=True)
-    out={'status':'PASS','profiles':result,'summary':{'profiles':len(run),'machine_calls':sum(x['cases'] for p in result.values() for x in p.values()),'elapsed_seconds':round(time.time()-start,2)}}
+    elapsed=round(time.time()-start,2)
+    out={'status':'PASS','profiles':result,'summary':{'profiles':len(run),'machine_calls':sum(x['cases'] for p in result.values() for x in p.values())}}
     path=a.out if a.out else ROOT/'validation/review/SIGNED_DIVISION_VALIDATION.json';path.parent.mkdir(parents=True,exist_ok=True);path.write_text(json.dumps(out,indent=2)+'\n')
-    print('SIGNED DIVISION PASS',out['summary']['machine_calls'],'calls')
+    print('SIGNED DIVISION PASS',out['summary']['machine_calls'],'calls',f'in {elapsed:.2f}s')
 if __name__=='__main__': main()

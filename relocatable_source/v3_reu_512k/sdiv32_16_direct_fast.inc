@@ -17,7 +17,11 @@ D32F_DIV_U32_16 = REG_TABLE+$2E00
 
 * = REG_LOW+$1690
 D32F_PUBLIC:
-        jsr D32F_DIV_S32_16
+        jmp D32F_DIV_S32_16
+
+; Final quotient tails live inside the adapter's existing 64-byte reservation.
+; R has already been materialized directly to MATH_R by the prefix tail.
+D32F_QPOS_OUT:
         lda D32F_LQ0
         sta MATH_Q+0
         lda D32F_LQ1
@@ -26,17 +30,33 @@ D32F_PUBLIC:
         sta MATH_Q+2
         lda D32F_Q1
         sta MATH_Q+3
-        lda D32F_R0
-        sta MATH_R+0
-        lda D32F_R1
-        sta MATH_R+1
+        clc
+        rts
+
+D32F_QNEG_OUT:
+        lda #0
+        sec
+        sbc D32F_LQ0
+        sta MATH_Q+0
+        lda #0
+        sbc D32F_LQ1
+        sta MATH_Q+1
+        lda #0
+        sbc D32F_Q0
+        sta MATH_Q+2
+        lda #0
+        sbc D32F_Q1
+        sta MATH_Q+3
+        clc
         rts
 D32F_PUBLIC_END:
 
 * = REG_TABLE+$3200
 D32F_DIV_S32_16:
         lda MATH_D+1
-        bmi D32F_DNEG
+        bpl D32F_DPOS_ENTRY
+        jmp D32F_DNEG
+D32F_DPOS_ENTRY:
         bne D32F_DPOS_HI
         lda MATH_D+0
         bne D32F_DPOS_LOW
@@ -63,7 +83,8 @@ D32F_PP_SETUP:
         lda MATH_N+3
         sta D32F_N1
         jsr D32F_DIV_U32_16
-        rts
+        ldx #0
+        jmp D32F_RPOS_OUT
 
 D32F_NP_SETUP:
         lda #0
@@ -80,28 +101,8 @@ D32F_NP_SETUP:
         sbc MATH_N+3
         sta D32F_N1
         jsr D32F_DIV_U32_16
-        lda #0
-        sec
-        sbc D32F_R0
-        sta D32F_R0
-        lda #0
-        sbc D32F_R1
-        sta D32F_R1
-        lda #0
-        sec
-        sbc D32F_LQ0
-        sta D32F_LQ0
-        lda #0
-        sbc D32F_LQ1
-        sta D32F_LQ1
-        lda #0
-        sbc D32F_Q0
-        sta D32F_Q0
-        lda #0
-        sbc D32F_Q1
-        sta D32F_Q1
-        clc
-        rts
+        ldx #1
+        jmp D32F_RNEG_OUT
 
 D32F_DNEG:
         lda #0
@@ -123,21 +124,8 @@ D32F_PN_SETUP:
         lda MATH_N+3
         sta D32F_N1
         jsr D32F_DIV_U32_16
-        lda #0
-        sec
-        sbc D32F_LQ0
-        sta D32F_LQ0
-        lda #0
-        sbc D32F_LQ1
-        sta D32F_LQ1
-        lda #0
-        sbc D32F_Q0
-        sta D32F_Q0
-        lda #0
-        sbc D32F_Q1
-        sta D32F_Q1
-        clc
-        rts
+        ldx #1
+        jmp D32F_RPOS_OUT
 
 D32F_NN_SETUP:
         lda #0
@@ -154,19 +142,45 @@ D32F_NN_SETUP:
         sbc MATH_N+3
         sta D32F_N1
         jsr D32F_DIV_U32_16
+        ldx #0
+        jmp D32F_RNEG_OUT
+
+D32F_ZERO:
+        ; Divide-by-zero is already known here; avoid entering the magnitude
+        ; engine merely to manufacture zero outputs.
+        lda #0
+        sta MATH_Q+0
+        sta MATH_Q+1
+        sta MATH_Q+2
+        sta MATH_Q+3
+        sta MATH_R+0
+        sta MATH_R+1
+        sec
+        rts
+
+; X=0 selects positive Q, X=1 selects negative Q.
+D32F_RPOS_OUT:
+        lda D32F_R0
+        sta MATH_R+0
+        lda D32F_R1
+        sta MATH_R+1
+        cpx #0
+        beq D32F_RPOS_QPOS
+        jmp D32F_QNEG_OUT
+D32F_RPOS_QPOS:
+        jmp D32F_QPOS_OUT
+
+D32F_RNEG_OUT:
         lda #0
         sec
         sbc D32F_R0
-        sta D32F_R0
+        sta MATH_R+0
         lda #0
         sbc D32F_R1
-        sta D32F_R1
-        clc
-        rts
-
-D32F_ZERO:
-        lda #0
-        sta D32F_D0
-        sta D32F_D1
-        jmp D32F_DIV_U32_16
+        sta MATH_R+1
+        cpx #0
+        beq D32F_RNEG_QPOS
+        jmp D32F_QNEG_OUT
+D32F_RNEG_QPOS:
+        jmp D32F_QPOS_OUT
 D32F_PREFIX_END:

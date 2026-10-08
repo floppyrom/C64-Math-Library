@@ -1,3 +1,13 @@
+2026-10-08 SIGNED DIV/MOD MANUAL + OPTISEARCH CAMPAIGN
+- Completed signed DIV/MOD audit before adding new routine families; SDIV8/16/24 retained after no compatible faster replacement was found.
+- V2/V3/V4 SDIV32/16: 833.995638/833.572737/829.631189 -> 817.550927/817.533479/813.759215 cycles mean.
+- V2/V3/V4 SMOD32/16: 861.849097/863.249097/861.002888 -> 848.623105/850.511191/848.283755.
+- SDIV32/32 V1-V5 now: 566.839288 / 537.452736 / 536.835972 / 537.194633 / 572.005880 cycles.
+- SMOD32/32 V1-V5 now: 766.253430 / 730.251986 / 726.236101 / 739.102527 / 765.857040 cycles.
+- Removed stored 32/32 sign flags by rediscovering signs from preserved public N/D after the unchanged magnitude core.
+- OptiSearch fast 32/16 family retained; generic 32/32 restoring candidate rejected as noncompetitive. Stable SMOD Q+R semantics preserved.
+- Final all-profile signed DIV/MOD validation: zero errors; signed division is now a permanent CI gate.
+
 2026-10-08 STABLE MULDIV16 FULL-WIDTH API (PR #37)
 - Added MATH_UMULDIV16 and MATH_SMULDIV16 as stable entries 55/56 across V1-V5 and Custom Pareto builds.
 - Computes the full 32-bit 16x16 product before division by a 16-bit divisor; signed division truncates toward zero and returns the signed remainder.

@@ -1,3 +1,11 @@
+## 2026-10-08 — signed DIV/MOD manual + OptiSearch optimization campaign
+
+- Completed the first family in the library-wide issue #39 optimization campaign. SDIV8/16/24 were re-audited and retained after compatible manual/OptiSearch candidates failed to improve the selected fixed-profile implementations; the attempted SDIV24 magnitude-deferral transplant was correctness-clean but timing-neutral.
+- V2/V3/V4 `MATH_SDIV32_16` now fuses signed continuation state with direct public Q/R tails. Means improve **833.995638 -> 817.550927**, **833.572737 -> 817.533479**, and **829.631189 -> 813.759215** cycles respectively. `SMOD32_16` and `SDIV16_SHL8` inherit the same improvement; V1/V5 retain their lower-pressure 32/16 implementation.
+- All five profiles remove stored sign flags from `MATH_SDIV32_32`: because public N/D are preserved, quotient/remainder signs are rediscovered after the unchanged magnitude core. SDIV32/32 means become **566.839288 / 537.452736 / 536.835972 / 537.194633 / 572.005880** cycles for V1-V5; SMOD32/32 becomes **766.253430 / 730.251986 / 726.236101 / 739.102527 / 765.857040**.
+- OptiSearch confirms the fast decomposed-rectangular family remains the right 32/16 speed substrate. Its 32/32 generic restoring Q+R point (~3480 cycles) is not competitive. Remainder-only signed specialization is not promoted because stable SMOD aliases preserve the full Q+R state and the repository's earlier signed remainder A/B was 29-41 cycles slower.
+- The final rebuilt V1-V5 signed DIV/MOD corpus passes with zero errors. Signed division validation is now a permanent CI gate. See `docs/SIGNED_DIVMOD_OPTIMIZATION_2026-10-08.md` for the candidate decisions and OptiSearch evidence.
+
 ## 2026-10-08 — PR #37: stable MULDIV16 full-width multiply/divide API
 
 - Promoted `MATH_UMULDIV16` and `MATH_SMULDIV16` as stable API entries 55 and 56 across V1-V5 and Custom Pareto builds; the common public surface is now **56 entries**.

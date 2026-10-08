@@ -33,8 +33,8 @@ The V2/V3/V4 UDIV32 live-high core uses four ZP bytes on the wide-divisor hot pa
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 88.372650 | 88.372650 | 89.009821 | 90.272098 |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | 187.131298 | 168.393021 | 170.582116 | 168.745038 | 170.631189 |
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | 313.583206 | 248.344384 | 236.810251 | 237.569466 | 253.487023 |
-| `MATH_SDIV32_16` | `div_s32_s16_s32_16` | 955.051690 | 833.995638 | 833.572737 | 829.631189 | 958.522137 |
-| `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 586.396050 | 553.098146 | 552.481381 | 552.840042 | 591.562641 |
+| `MATH_SDIV32_16` | `div_s32_s16_s32_16` | 955.051690 | 817.550927 | 817.533479 | 813.759215 | 958.522137 |
+| `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 566.839288 | 537.452736 | 536.835972 | 537.194633 | 572.005880 |
 
 V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the exact REU quotient/remainder planes only for quotient 4+. The exhaustive 65,536-input mean is **52.852264 cycles** (28–115), with zero errors.
 
@@ -50,14 +50,14 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 | `MATH_SMOD8` | `mod_s8_s8_s8` | 98.157813 | 97.066406 | 97.152344 | 99.020313 | 96.707813 |
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 229.324910 | 231.872202 | 234.659206 | 228.244765 | 231.667148 |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 427.272924 | 337.075090 | 329.971841 | 326.184838 | 339.607942 |
-| `MATH_SMOD32_16` | `mod_s32_s16_s16` | 1061.083032 | 861.849097 | 863.249097 | 861.002888 | 1061.475812 |
-| `MATH_SMOD32_32` | `mod_s32_s32_s32` | 785.979061 | 746.032491 | 742.016606 | 754.883032 | 785.582671 |
+| `MATH_SMOD32_16` | `mod_s32_s16_s16` | 1061.083032 | 848.623105 | 850.511191 | 848.283755 | 1061.475812 |
+| `MATH_SMOD32_32` | `mod_s32_s32_s32` | 766.253430 | 730.251986 | 726.236101 | 739.102527 | 765.857040 |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 304.804139 | 243.804139 | 243.804139 | 243.804139 | 304.804139 |
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 313.154093 | 276.888787 | 276.888787 | 276.888787 | 313.154093 |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 779.876404 | 757.876404 | 757.876404 | 757.876404 | 779.876404 |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 812.544371 | 780.302454 | 780.302454 | 780.302454 | 812.544371 |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 877.773617 | 652.649695 | 653.124974 | 652.577740 | 663.298759 |
-| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 952.471538 | 834.061287 | 832.687023 | 831.029880 | 953.277863 |
+| `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 952.471538 | 819.067394 | 817.401091 | 816.061505 | 953.277863 |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 119.994705 | 117.958527 | 66.233795 | 66.233795 | 118.742294 |
 
 V2/V3/V4 now give `MATH_UMOD16`, `MATH_UMOD24`, and `MATH_UMOD32_32` dedicated remainder-only front ends. Quotient-0/1 (or equality) cases return without materializing quotient bytes; harder cases rejoin the exact existing divider. Signed modulo was measured separately and deliberately left unchanged because the analogous front end was slower.

@@ -64,6 +64,10 @@ jobs:
         run: |
           python3 tools/validate_unsigned_division.py
           git diff --exit-code -- validation/review/UNSIGNED_DIVISION_VALIDATION.json
+      - name: Signed division and modulo family validation
+        run: |
+          python3 tools/validate_signed_division.py
+          git diff --exit-code -- validation/review/SIGNED_DIVISION_VALIDATION.json
       - name: ISQRT32 deterministic correctness and performance
         run: |
           python3 tools/benchmark_isqrt32_fast.py

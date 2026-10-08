@@ -3423,103 +3423,21 @@ L7664:
     sta V1_SCRATCH+$07
     jsr REG_GAME+$013E
     rts
-    lda MATH_IO+$14
-    ora MATH_IO+$15
-    ora MATH_IO+$16
-    ora MATH_IO+$17
-    bne LC146
-    jsr REG_LOW+$1A00
-    rts
-LC146:
-    lda MATH_IO+$13
-    eor MATH_IO+$17
-    and #$80
-    sta V1_SCRATCH+$08
-    lda MATH_IO+$13
-    and #$80
-    sta V1_SCRATCH+$09
-    lda MATH_IO+$10
-    sta V1_SCRATCH
-    lda MATH_IO+$11
-    sta V1_SCRATCH+$01
-    lda MATH_IO+$12
-    sta V1_SCRATCH+$02
-    lda MATH_IO+$13
-    sta V1_SCRATCH+$03
-    bpl LC194
-    sec
-    lda #$00
-    sbc V1_SCRATCH
-    sta V1_SCRATCH
-    lda #$00
-    sbc V1_SCRATCH+$01
-    sta V1_SCRATCH+$01
-    lda #$00
-    sbc V1_SCRATCH+$02
-    sta V1_SCRATCH+$02
-    lda #$00
-    sbc V1_SCRATCH+$03
-    sta V1_SCRATCH+$03
-LC194:
-    lda MATH_IO+$14
-    sta V1_SCRATCH+$04
-    lda MATH_IO+$15
-    sta V1_SCRATCH+$05
-    lda MATH_IO+$16
-    sta V1_SCRATCH+$06
-    lda MATH_IO+$17
-    sta V1_SCRATCH+$07
-    bpl LC1CF
-    sec
-    lda #$00
-    sbc V1_SCRATCH+$04
-    sta V1_SCRATCH+$04
-    lda #$00
-    sbc V1_SCRATCH+$05
-    sta V1_SCRATCH+$05
-    lda #$00
-    sbc V1_SCRATCH+$06
-    sta V1_SCRATCH+$06
-    lda #$00
-    sbc V1_SCRATCH+$07
-    sta V1_SCRATCH+$07
-    !byte $20, $2E, $2A
-    bcs LC221
-    lda V1_SCRATCH+$08
-    beq LC1FA
-    sec
-    lda #$00
-    sbc MATH_IO+$18
-    sta MATH_IO+$18
-    lda #$00
-    sbc MATH_IO+$19
-    sta MATH_IO+$19
-    lda #$00
-    sbc MATH_IO+$1A
-    sta MATH_IO+$1A
-    lda #$00
-    sbc MATH_IO+$1B
-    sta MATH_IO+$1B
-LC1FA:
-    lda V1_SCRATCH+$09
-    beq LC220
-    sec
-    lda #$00
-    sbc MATH_IO+$1C
-    sta MATH_IO+$1C
-    lda #$00
-    sbc MATH_IO+$1D
-    sta MATH_IO+$1D
-    lda #$00
-    sbc MATH_IO+$1E
-    sta MATH_IO+$1E
-    lda #$00
-    sbc MATH_IO+$1F
-    sta MATH_IO+$1F
-LC220:
-    clc
-LC221:
-    rts
+    !byte $AD, $14, $C0, $0D, $15, $C0, $0D, $16, $C0, $0D, $17, $C0, $D0, $04, $20, $00
+    !byte $2A, $60, $AD, $13, $C0, $4D, $17, $C0, $29, $80, $8D, $48, $C0, $AD, $13, $C0
+    !byte $29, $80, $8D, $49, $C0, $AD, $10, $C0, $8D, $40, $C0, $AD, $11, $C0, $8D, $41
+    !byte $C0, $AD, $12, $C0, $8D, $42, $C0, $AD, $13, $C0, $8D, $43, $C0, $10, $21, $38
+    !byte $A9, $00, $ED, $40, $C0, $8D, $40, $C0, $A9, $00, $ED, $41, $C0, $8D, $41, $C0
+    !byte $A9, $00, $ED, $42, $C0, $8D, $42, $C0, $A9, $00, $ED, $43, $C0, $8D, $43, $C0
+    !byte $AD, $14, $C0, $8D, $44, $C0, $AD, $15, $C0, $8D, $45, $C0, $AD, $16, $C0, $8D
+    !byte $46, $C0, $AD, $17, $C0, $8D, $47, $C0, $10, $21, $38, $A9, $00, $ED, $44, $C0
+    !byte $8D, $44, $C0, $A9, $00, $ED, $45, $C0, $8D, $45, $C0, $A9, $00, $ED, $46, $C0
+    !byte $8D, $46, $C0, $A9, $00, $ED, $47, $C0, $8D, $47, $C0, $20, $2E, $2A, $B0, $4D
+    !byte $AD, $48, $C0, $F0, $21, $38, $A9, $00, $ED, $18, $C0, $8D, $18, $C0, $A9, $00
+    !byte $ED, $19, $C0, $8D, $19, $C0, $A9, $00, $ED, $1A, $C0, $8D, $1A, $C0, $A9, $00
+    !byte $ED, $1B, $C0, $8D, $1B, $C0, $AD, $49, $C0, $F0, $21, $38, $A9, $00, $ED, $1C
+    !byte $C0, $8D, $1C, $C0, $A9, $00, $ED, $1D, $C0, $8D, $1D, $C0, $A9, $00, $ED, $1E
+    !byte $C0, $8D, $1E, $C0, $A9, $00, $ED, $1F, $C0, $8D, $1F, $C0, $18, $60
     lda #$00
     sta MATH_IO+$18
     sta MATH_IO+$19
@@ -4517,7 +4435,7 @@ LCAFB:
 !source "sdiv24_directout_balanced.inc"
 !source "sdiv32_16_direct_balanced.inc"
 !source "udiv32_32_early_gate.inc"
-!source "sdiv32_32_skip_redundant_zero.inc"
+!source "sdiv32_32_signflow.inc"
 ; END DIVISION REFRESH 2026-09-20
 
 ; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,
