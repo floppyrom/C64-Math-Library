@@ -6,12 +6,11 @@
 FXDIV_U_SHL8:
         lda #0
         sta U3216_LN0
+        sta U3216_N1
         lda MATH_N+0
         sta U3216_LN1
         lda MATH_N+1
         sta U3216_N0
-        lda #0
-        sta U3216_N1
         lda MATH_D+0
         sta U3216_D0
         lda MATH_D+1
