@@ -104,7 +104,7 @@ def approved_shared_exec(profile,name,mem,vals):
   return trace(mem,vals['MATH_UDIV32_16'])
  if name=='MATH_SDIV32_16' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp'):
   return trace(mem,vals['MATH_UDIV32_16'])
- if name=='MATH_SDIV32_32':
+ if name=='MATH_SDIV32_32' and profile in ('v2_pareto_fast','v3_reu_512k','v4_reu_16m'):
   return trace(mem,vals['MATH_UDIV32_32'])
  return set()
 
