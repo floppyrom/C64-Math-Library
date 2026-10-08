@@ -100,12 +100,21 @@ jobs:
           PY
           python3 -m py_compile tools/validate_pareto.py
 
+      - name: Build temporary current V1 and V5 identity baselines
+        run: |
+          rm -rf build_source build_hybrid
+          python3 tools/assemble_sources.py --profile v1_balanced --config-kind reference --out build_source
+          cp build_source/reference/v1_balanced/math_v1_balanced_source_built.prg v1_balanced/resident/math_v1_balanced_game_math.prg
+          python3 tools/build_hybrid.py --config-kind reference
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+
       - name: Prove full Custom Pareto matrix
         run: python3 tools/validate_pareto.py
 
       - name: Commit passing Pareto fixes
         run: |
-          rm -rf build_pareto
+          git checkout -- v1_balanced/resident/math_v1_balanced_game_math.prg v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+          rm -rf build_pareto build_source build_hybrid
           git config user.name "c64-math-release-bot"
           git config user.email "actions@users.noreply.github.com"
           git add -A
