@@ -151,6 +151,7 @@ def cycles_catalog():
         for n,v in rr.items():
             basis=('2026-10-06 exhaustive REU UDIV8 hybrid validation'
                    if p in ('v3_reu_512k','v4_reu_16m') and n=='MATH_UDIV8'
+                   else '2026-10-10 exhaustive X-cached reciprocal validation' if p in ('v3_reu_512k','v4_reu_16m') and n=='MATH_URECIP16_Q16'
                    else '2026-09-20 unsigned division-family validation')
             add_cycle(cat,p,n,v['mean_cycles'],v['min_cycles'],v['max_cycles'],v['cases'],basis,v.get('mode',''))
     # Game math published measurements for unaffected entries.

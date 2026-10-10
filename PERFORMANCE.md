@@ -58,7 +58,7 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 812.544371 | 780.302454 | 780.302454 | 780.302454 | 812.544371 |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 770.773617 | 552.649695 | 553.124974 | 552.577740 | 553.298759 |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 846.155071 | 630.032715 | 630.265213 | 628.417884 | 628.885496 |
-| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 108.497635 | 94.822998 | 66.233795 | 66.233795 | 95.044128 |
+| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 108.497635 | 94.822998 | 57.331436 | 57.331436 | 95.044128 |
 
 V2/V3/V4 now give `MATH_UMOD16`, `MATH_UMOD24`, and `MATH_UMOD32_32` dedicated remainder-only front ends. Quotient-0/1 (or equality) cases return without materializing quotient bytes; harder cases rejoin the exact existing divider. Signed modulo was measured separately and deliberately left unchanged because the analogous front end was slower.
 
