@@ -394,9 +394,9 @@ REU_LEN_LO  = $df07
 REU_LEN_HI  = $df08
 REU_IMR     = $df09
 REU_ACR     = $df0a
-REU_CMD_FETCH = $81        ; Execute + REU -> C64
-REU_CMD_FETCH_AUTO = $a1   ; Execute + REU -> C64 + AUTOLOAD
-REU_CMD_SWAP  = $82        ; Execute + SWAP
+REU_CMD_FETCH = $91        ; Execute + REU -> C64
+REU_CMD_FETCH_AUTO = $b1   ; Execute + REU -> C64 + AUTOLOAD
+REU_CMD_SWAP  = $92        ; Execute + SWAP
 REU_ACR_FIX_BOTH = $c0     ; one-byte lookup: hold C64 and REU addresses fixed
 
 *=$3800

@@ -70,7 +70,7 @@ IS32P_ENTRY:
     lda #$00
     sta $DF08
     sta $DF0A
-    lda #$81
+    lda #$91
     sta $DF01
 
     ; Record = partial root (16-bit), residual (16-bit).

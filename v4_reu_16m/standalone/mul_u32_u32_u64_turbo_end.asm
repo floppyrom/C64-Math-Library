@@ -25,7 +25,7 @@ L38C0:
     lda #$00                           ; @38DA A9 00
     sta $DF08                          ; @38DC 8D 08 DF
     sta $DF0A                          ; @38DF 8D 0A DF
-    lda #$82                           ; @38E2 A9 82
+    lda #$92                           ; @38E2 A9 92
     sta $DF01                          ; @38E4 8D 01 DF
     clc                                ; @38E7 18
     rts                                ; @38E8 60

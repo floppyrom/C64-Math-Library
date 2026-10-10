@@ -25,7 +25,7 @@ L3800:
     lda #$00                           ; @381A A9 00
     sta $DF08                          ; @381C 8D 08 DF
     sta $DF0A                          ; @381F 8D 0A DF
-    lda #$82                           ; @3822 A9 82
+    lda #$92                           ; @3822 A9 92
     sta $DF01                          ; @3824 8D 01 DF
     clc                                ; @3827 18
     rts                                ; @3828 60

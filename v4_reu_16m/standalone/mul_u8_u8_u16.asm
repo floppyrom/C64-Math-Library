@@ -23,13 +23,13 @@ L39C0:
     sta $DF05                          ; @39C9 8D 05 DF
     lda #$00                           ; @39CC A9 00
     sta $DF06                          ; @39CE 8D 06 DF
-    lda #$81                           ; @39D1 A9 81
+    lda #$91                           ; @39D1 A9 91
     sta $DF01                          ; @39D3 8D 01 DF
     lda $C020                          ; @39D6 AD 20 C0
     sta $C008                          ; @39D9 8D 08 C0
     lda #$01                           ; @39DC A9 01
     sta $DF06                          ; @39DE 8D 06 DF
-    lda #$81                           ; @39E1 A9 81
+    lda #$91                           ; @39E1 A9 91
     sta $DF01                          ; @39E3 8D 01 DF
     lda $C020                          ; @39E6 AD 20 C0
     sta $C009                          ; @39E9 8D 09 C0

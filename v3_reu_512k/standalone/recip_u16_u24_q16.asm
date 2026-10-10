@@ -218,13 +218,13 @@ LC733:
     sta $DF05                          ; @C73C 8D 05 DF
     lda #$06                           ; @C73F A9 06
     sta $DF06                          ; @C741 8D 06 DF
-    lda #$81                           ; @C744 A9 81
+    lda #$91                           ; @C744 A9 91
     sta $DF01                          ; @C746 8D 01 DF
     lda $C020                          ; @C749 AD 20 C0
     sta $C018                          ; @C74C 8D 18 C0
     lda #$07                           ; @C74F A9 07
     sta $DF06                          ; @C751 8D 06 DF
-    lda #$81                           ; @C754 A9 81
+    lda #$91                           ; @C754 A9 91
     sta $DF01                          ; @C756 8D 01 DF
     lda $C020                          ; @C759 AD 20 C0
     sta $C019                          ; @C75C 8D 19 C0

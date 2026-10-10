@@ -37,13 +37,13 @@ L4D00:
     sta $DF05                          ; @4D2E 8D 05 DF
     lda #$02                           ; @4D31 A9 02
     sta $DF06                          ; @4D33 8D 06 DF
-    lda #$81                           ; @4D36 A9 81
+    lda #$91                           ; @4D36 A9 91
     sta $DF01                          ; @4D38 8D 01 DF
     lda $C020                          ; @4D3B AD 20 C0
     sta $C018                          ; @4D3E 8D 18 C0
     lda #$03                           ; @4D41 A9 03
     sta $DF06                          ; @4D43 8D 06 DF
-    lda #$81                           ; @4D46 A9 81
+    lda #$91                           ; @4D46 A9 91
     sta $DF01                          ; @4D48 8D 01 DF
     lda $C020                          ; @4D4B AD 20 C0
     sta $C01C                          ; @4D4E 8D 1C C0

@@ -32,7 +32,7 @@ atan2_reu_exact:
     sta REU_ADDR_HI
     lda #8
     sta REU_BANK
-    lda #$81
+    lda #$91
     sta REU_COMMAND
     lda ATAN2_STAGE
     sta Z0

@@ -920,13 +920,13 @@ recip_reu_table:
     sta $DF05
     lda #6
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     lda $C020
     sta Q0
     lda #7
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     lda $C020
     sta Q1
@@ -971,7 +971,7 @@ atan2_8:
     sta $DF05
     lda #8
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     lda $C020
     sta Z0
@@ -989,7 +989,7 @@ isqrt16:
     sta $DF05
     lda #9
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     lda $C020
     sta Z0
