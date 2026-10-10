@@ -60,7 +60,7 @@ LC8FC:
     lda #$00                           ; @C949 A9 00
     sta $DF08                          ; @C94B 8D 08 DF
     sta $DF0A                          ; @C94E 8D 0A DF
-    lda #$81                           ; @C951 A9 81
+    lda #$91                           ; @C951 A9 91
     sta $DF01                          ; @C953 8D 01 DF
     lda $C020                          ; @C956 AD 20 C0
     sta $57                            ; @C959 85 57

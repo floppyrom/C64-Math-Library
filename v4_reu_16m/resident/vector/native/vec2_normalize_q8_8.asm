@@ -91,7 +91,7 @@ pp_x_dma:
     sty $DF05
     lda #REU_TURBO16_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     ldx REU_SCRATCH
     lda REG_TABLE+$0800,x
@@ -122,7 +122,7 @@ pp_y_dma:
     sty $DF05
     lda #REU_TURBO16_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     ldx REU_SCRATCH
     lda REG_TABLE+$0A00,x
@@ -198,7 +198,7 @@ pn_x_dma:
     sty $DF05
     lda #REU_TURBO16_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     ldx REU_SCRATCH
     lda REG_TABLE+$0800,x
@@ -231,7 +231,7 @@ pn_y_dma:
     sty $DF05
     lda #REU_TURBO16_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     ldx REU_SCRATCH
     lda REG_TABLE+$0A00,x
@@ -309,7 +309,7 @@ np_x_dma:
     sty $DF05
     lda #REU_TURBO16_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     ldx REU_SCRATCH
     sec
@@ -342,7 +342,7 @@ np_y_dma:
     sty $DF05
     lda #REU_TURBO16_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     ldx REU_SCRATCH
     sec
@@ -425,7 +425,7 @@ nn_x_dma:
     sty $DF05
     lda #REU_TURBO16_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     ldx REU_SCRATCH
     sec
@@ -461,7 +461,7 @@ nn_y_dma:
     sty $DF05
     lda #REU_TURBO16_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     ldx REU_SCRATCH
     sec

@@ -1,3 +1,8 @@
+2026-10-10 V3/V4 REU IMMEDIATE-DMA CORRECTION
+- Fixed incorrectly deferred REU fetch/swap/autoload commands in V3/V4 fixed-map PRGs and canonical, relocatable and standalone ASM mirrors. Commands now use $91/$92/$B1 at immediate-result sites.
+- Exact reference/alternate rebuilds pass; P38 VICE native arithmetic and Turbo BEGIN/CALL/END smoke tests pass on fixed builds (see docs/REU_IMMEDIATE_DMA_FIX_2026-10-10.md).
+- ABI, PRG sizes and REU images unchanged; native hardware/cycle requalification remains open.
+
 2026-10-08 SIGNED MAGNITUDE-CORE REUSE + LIFTABLE MULDIV16
 - V2/V3/V4 SDIV16_SHL8 now bind signed magnitudes directly into the selected UDIV32/16 substrate; V5 keeps the same architecture with a post-OptiSearch positive-divisor shortcut.
 - Final SDIV16_SHL8 means V1-V5: 846.155071 / 630.032715 / 630.265213 / 628.417884 / 628.885496 cycles.

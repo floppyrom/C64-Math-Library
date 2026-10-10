@@ -49,14 +49,14 @@ REU8_div_u8:
 
     lda #REU_UDIV8_Q_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     lda REU_SCRATCH
     sta MATH_Q
 
     lda #REU_UDIV8_R_BANK
     sta $DF06
-    lda #$81
+    lda #$91
     sta $DF01
     lda REU_SCRATCH
     sta MATH_R

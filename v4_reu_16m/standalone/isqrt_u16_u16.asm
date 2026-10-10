@@ -23,7 +23,7 @@ LC7AB:
     sta $DF05                          ; @C7B4 8D 05 DF
     lda #$09                           ; @C7B7 A9 09
     sta $DF06                          ; @C7B9 8D 06 DF
-    lda #$81                           ; @C7BC A9 81
+    lda #$91                           ; @C7BC A9 91
     sta $DF01                          ; @C7BE 8D 01 DF
     lda $C020                          ; @C7C1 AD 20 C0
     sta $C008                          ; @C7C4 8D 08 C0

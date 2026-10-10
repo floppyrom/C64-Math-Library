@@ -24,7 +24,7 @@ L3A40:
     sta $DF05                          ; @3A4B 8D 05 DF
     lda #$03                           ; @3A4E A9 03
     sta $DF06                          ; @3A50 8D 06 DF
-    lda #$81                           ; @3A53 A9 81
+    lda #$91                           ; @3A53 A9 91
     sta $DF01                          ; @3A55 8D 01 DF
     lda $C020                          ; @3A58 AD 20 C0
     sta $C01C                          ; @3A5B 8D 1C C0

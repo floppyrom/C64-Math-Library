@@ -23,7 +23,7 @@ LC78D:
     sta $DF05                          ; @C796 8D 05 DF
     lda #$08                           ; @C799 A9 08
     sta $DF06                          ; @C79B 8D 06 DF
-    lda #$81                           ; @C79E A9 81
+    lda #$91                           ; @C79E A9 91
     sta $DF01                          ; @C7A0 8D 01 DF
     lda $C020                          ; @C7A3 AD 20 C0
     sta $C008                          ; @C7A6 8D 08 C0

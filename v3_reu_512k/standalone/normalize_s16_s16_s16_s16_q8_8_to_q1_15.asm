@@ -76,7 +76,7 @@ L1269:
     sty $DF05                          ; @126C 8C 05 DF
     lda #$04                           ; @126F A9 04
     sta $DF06                          ; @1271 8D 06 DF
-    lda #$81                           ; @1274 A9 81
+    lda #$91                           ; @1274 A9 91
     sta $DF01                          ; @1276 8D 01 DF
     ldx $C020                          ; @1279 AE 20 C0
     lda $6800,x                        ; @127C BD 00 68
@@ -106,7 +106,7 @@ L12A8:
     sty $DF05                          ; @12AB 8C 05 DF
     lda #$04                           ; @12AE A9 04
     sta $DF06                          ; @12B0 8D 06 DF
-    lda #$81                           ; @12B3 A9 81
+    lda #$91                           ; @12B3 A9 91
     sta $DF01                          ; @12B5 8D 01 DF
     ldx $C020                          ; @12B8 AE 20 C0
     lda $6A00,x                        ; @12BB BD 00 6A
@@ -180,7 +180,7 @@ L1345:
     sty $DF05                          ; @1348 8C 05 DF
     lda #$04                           ; @134B A9 04
     sta $DF06                          ; @134D 8D 06 DF
-    lda #$81                           ; @1350 A9 81
+    lda #$91                           ; @1350 A9 91
     sta $DF01                          ; @1352 8D 01 DF
     ldx $C020                          ; @1355 AE 20 C0
     lda $6800,x                        ; @1358 BD 00 68
@@ -212,7 +212,7 @@ L1388:
     sty $DF05                          ; @138B 8C 05 DF
     lda #$04                           ; @138E A9 04
     sta $DF06                          ; @1390 8D 06 DF
-    lda #$81                           ; @1393 A9 81
+    lda #$91                           ; @1393 A9 91
     sta $DF01                          ; @1395 8D 01 DF
     ldx $C020                          ; @1398 AE 20 C0
     lda $6A00,x                        ; @139B BD 00 6A
@@ -293,7 +293,7 @@ L176D:
     sty $DF05                          ; @1770 8C 05 DF
     lda #$04                           ; @1773 A9 04
     sta $DF06                          ; @1775 8D 06 DF
-    lda #$81                           ; @1778 A9 81
+    lda #$91                           ; @1778 A9 91
     sta $DF01                          ; @177A 8D 01 DF
     ldx $C020                          ; @177D AE 20 C0
     sec                                ; @1780 38
@@ -328,7 +328,7 @@ L17B5:
     sty $DF05                          ; @17B8 8C 05 DF
     lda #$04                           ; @17BB A9 04
     sta $DF06                          ; @17BD 8D 06 DF
-    lda #$81                           ; @17C0 A9 81
+    lda #$91                           ; @17C0 A9 91
     sta $DF01                          ; @17C2 8D 01 DF
     ldx $C020                          ; @17C5 AE 20 C0
     sec                                ; @17C8 38
@@ -407,7 +407,7 @@ L1B45:
     sty $DF05                          ; @1B48 8C 05 DF
     lda #$04                           ; @1B4B A9 04
     sta $DF06                          ; @1B4D 8D 06 DF
-    lda #$81                           ; @1B50 A9 81
+    lda #$91                           ; @1B50 A9 91
     sta $DF01                          ; @1B52 8D 01 DF
     ldx $C020                          ; @1B55 AE 20 C0
     sec                                ; @1B58 38
@@ -439,7 +439,7 @@ L1B88:
     sty $DF05                          ; @1B8B 8C 05 DF
     lda #$04                           ; @1B8E A9 04
     sta $DF06                          ; @1B90 8D 06 DF
-    lda #$81                           ; @1B93 A9 81
+    lda #$91                           ; @1B93 A9 91
     sta $DF01                          ; @1B95 8D 01 DF
     ldx $C020                          ; @1B98 AE 20 C0
     sec                                ; @1B9B 38
