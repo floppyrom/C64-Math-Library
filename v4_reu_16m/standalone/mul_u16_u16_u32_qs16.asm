@@ -65,7 +65,7 @@ L3AE1:
     lda $12                            ; @3AF7 A5 12
     ora #$10                           ; @3AF9 09 10
     sta $DF06                          ; @3AFB 8D 06 DF
-    lda #$b1                           ; @3AFE A9 b1
+    lda #$B1                           ; @3AFE A9 B1
     sta $DF01                          ; @3B00 8D 01 DF
     lda $C020                          ; @3B03 AD 20 C0
     sta $1C                            ; @3B06 85 1C
@@ -88,7 +88,7 @@ L3AE1:
     lda $15                            ; @3B2D A5 15
     ora #$10                           ; @3B2F 09 10
     sta $DF06                          ; @3B31 8D 06 DF
-    lda #$b1                           ; @3B34 A9 b1
+    lda #$B1                           ; @3B34 A9 B1
     sta $DF01                          ; @3B36 8D 01 DF
     sec                                ; @3B39 38
     lda $1C                            ; @3B3A A5 1C
