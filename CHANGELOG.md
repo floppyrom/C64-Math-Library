@@ -1,3 +1,10 @@
+2026-10-11 ISSUE39 V1/V5 32/32 PROVEN QUOTIENT-2/3
+- 131-byte bounded quotient-two/three fast path added after the existing V1/V5 q=1 32/32 guard. D3 in $40–$7F and N3>2*D3+1 proves 2D<=N<4D; compute R=N−2D, conditionally subtract D, and emit Q=2 or 3. DEY loop preserves SBC carry. All nonqualifying inputs use the original core.
+- Common-input V1 and V5: UDIV32_32 370.572004→359.077684 cycles (−3.10%, 2,729 operands/profile), UMOD32_32 444.652199→436.899707 (−1.74%, 1,705/profile). Max one-call speedup 388 cycles; max slowdown 22. Uniform 32×32 inputs improve 21.442 cycles/call, while narrow-divisor inputs incur about +12; explicit Pareto trade-off.
+- Zero additional normal ZP; unchanged 56-entry API and resident PRG length. New source island $6860–$68E2. Full 822,050 unsigned, 364,533 signed, 136,335 common-corpus, 30,720 workload calls, reference/alternate source builds, V5 hybrid, catalogs, dual changelogs and checksums republished. Native x64sc old/new 48-case proof passed.
+- Manual high-byte range proof, not an OptiSearch-generated native record. Issue #39 unsigned family remains open.
+- Details: docs/ISSUE39_UDIV32_32_HIGH_Q23_V1V5_2026-10-11.md
+
 2026-10-11 ISSUE39 32/16 MULTI-WORKLOAD RANKING AUDIT
 - Added a deterministic 30,720-call six-workload common-operand benchmark for all five 32/16 unsigned DIV/MOD profiles, including median, p95, extrema and input/source hashes. The published weighted-corpus ranking is preserved; workload-conditioned evidence is now separately reproducible and CI-gated.
 - Tested but REJECTED a V1 92-byte q0/q1 shortcut despite an edge-weighted 7.13% UDIV32/16 and 12.27% UMOD32/16 mean improvement: 91% and 86% of calls regressed, up to +51 cycles. Full-width uniform workloads slow by +17 cycles per call, while 16-bit numerators gain substantially. Not a Balanced default.
