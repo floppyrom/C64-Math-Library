@@ -8,6 +8,7 @@ import hashlib
 from issue39_umod8_guard_parent import restore_umod8_parent
 PR61_SHA='67d709a3006e5529d49b579be20747b292f466679ea42ac24fd5384e4d71879e'
 def restore_pr61(blob:bytes)->bytes:
+    blob=restore_umod8_parent('v1_balanced',blob)
     lo=blob[0]|blob[1]<<8
     if hashlib.sha256(blob).hexdigest()==PR61_SHA:return blob
     a=lambda x:2+x-lo
