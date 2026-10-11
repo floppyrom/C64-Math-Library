@@ -61,7 +61,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 18968
+      "stable_api_reachable_code_union_bytes": 19037
     }
   ],
   "rows": [
@@ -5570,12 +5570,12 @@
       "signedness": "unsigned",
       "operation": "modulo",
       "width": "16",
-      "mean_cycles": "199.898261",
-      "min_cycles": 41,
-      "max_cycles": 1076,
+      "mean_cycles": "192.905344",
+      "min_cycles": 32,
+      "max_cycles": 1075,
       "cases": 1553,
       "cycle_basis": "2026-09-20 unsigned division-family validation",
-      "reachable_code_bytes": 1467,
+      "reachable_code_bytes": 1444,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,

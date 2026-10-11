@@ -1850,3 +1850,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - V1 Balanced UDIV24/UMOD24 narrow-quotient latency escape: docs/ISSUE39_V1_UDIV24_NARROW_ESCAPE_2026-10-11.md (explicit latency/mean trade-off; other issue39 unsigned audits open).
 
 - Issue39 V5 dedicated 24-bit remainder frontend (zero extra ZP; 179 code bytes): docs/ISSUE39_V5_UMOD24_REMAINDER_TRANSPLANT_2026-10-11.md. Unsigned campaign remains open.
+
+- V5 16/24-bit dedicated remainder paths fit within one final-page 256-byte region: docs/ISSUE39_V5_UMOD16_REMAINDER_TRANSPLANT_2026-10-11.md. Unsigned family campaign remains open.

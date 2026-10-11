@@ -93,20 +93,21 @@ def main():
             assert ch==cv,(name,'cycle mismatch',n,d,ch,cv);count+=1
         parity[name]={'cases':count,'cycle_vector_equal_to_v2':True}
 
-    # V5 keeps compact wider-UMOD aliases to the imported division engines
-    # rather than importing V2's later dedicated remainder-only q=0/q=1 front
-    # ends. Semantics/ABI must match exactly; cycle equality is not part of the
-    # V5 contract for these three entries.
+    # V5 now imports V2's dedicated remainder-only frontends for UMOD16
+    # and UMOD24. The remaining UMOD32/16 alias uses the quotient core.
+    # Require identical V2 cycle vectors for both imported frontends.
     for name,divname,nb,db in [('MATH_UMOD16','MATH_UDIV16',16,16),('MATH_UMOD24','MATH_UDIV24',24,24),('MATH_UMOD32_16','MATH_UDIV32_16',32,16)]:
         count=1000; deltas=[]
         for _ in range(count):
             n=rng.randrange(1<<nb);d=rng.randrange(1<<db)
             ch=call_div(h,PH,IH,name,nb,db,n,d);cv=call_div(v2,P2,I2,name,nb,db,n,d)
             deltas.append(ch-cv)
+        must_match=(name in ('MATH_UMOD16','MATH_UMOD24'))
+        if must_match:assert not any(deltas),(name,'V2/V5 imported remainder-only timing drift',min(deltas),max(deltas))
         parity[name]={
             'cases':count,
             'correctness_against_v2':True,
-            'cycle_parity_required':False,
+            'cycle_parity_required':must_match,
             'cycle_vector_equal_to_v2':all(x==0 for x in deltas),
             'mean_cycle_delta_v5_minus_v2':sum(deltas)/len(deltas),
             'min_cycle_delta_v5_minus_v2':min(deltas),

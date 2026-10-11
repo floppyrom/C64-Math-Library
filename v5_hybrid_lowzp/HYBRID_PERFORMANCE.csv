@@ -3,7 +3,7 @@ MATH_UDIV16,div_u16_u16_u16_16,132.725857,126.385862,4.77676,2026-09-20 final di
 MATH_UDIV24,div_u24_u24_u24_24,184.273091,157.655376,14.444711,2026-10-11 issue39 changed-V1 paired ABI and all-profile audit
 MATH_UDIV32_16,div_u32_u16_u32_16,870.340206,756.638544,13.064048,2026-09-20 final division-family public-ABI validation
 MATH_UMOD8,mod_u8_u8_u8,67.167555,68.523229,-2.018347,2026-09-20 final division-family public-ABI validation
-MATH_UMOD16,mod_u16_u16_u16,184.082421,199.918867,-8.60291,2026-09-20 final division-family public-ABI validation
+MATH_UMOD16,mod_u16_u16_u16,189.383578,198.610557,-4.872112,2026-10-11 issue39 identical-input 1705-case V1/V5 benchmark
 MATH_UMOD24,mod_u24_u24_u24,276.590470,207.490663,24.982714,2026-10-11 issue39 identical-input 1553-case V1/V5 same-corpus benchmark
 MATH_UMOD32_16,mod_u32_u16_u16,971.613651,789.508693,18.742528,2026-09-20 final division-family public-ABI validation
 MATH_COS8,cos_u8_s8,29,23,20.6897,V2 direct import; exhaustive phase/cycle parity

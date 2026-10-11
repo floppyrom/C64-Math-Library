@@ -17,6 +17,8 @@ DIV_SRC = (0x4200, 0x51FF)
 # true UMOD8 body, plus a narrow-tail helper reused from dead UDIV32/32 code.
 UMOD8_SRC = (0x5200, 0x5271)
 UMOD24_ONLY_SRC = (0x1F00, 0x1FB2)
+UMOD16_ONLY_SRC = (0x204C, 0x2090)
+UMOD16_ONLY_DST_OFF = 0x1FB3  # packed after 179-byte UMOD24 in last low page
 UMOD24_ONLY_DST_OFF = 0x1F00  # REG_LOW final free page, preserve byte phase
 UDIV32_16_D8_SRC = (0x5272, 0x52ED)
 DIVLAT_HELPER_SRC = (0x5957, 0x59A6)
@@ -127,6 +129,10 @@ def trace(mem: bytearray, start: int) -> set[int]:
 
 
 def map_abs(target: int, vals: dict[str, int], hbase: int) -> int:
+    if UMOD16_ONLY_SRC[0] <= target <= UMOD16_ONLY_SRC[1]:
+        return vals['REG_LOW'] + UMOD16_ONLY_DST_OFF + (target - UMOD16_ONLY_SRC[0])
+    if UDIV16_DIRECT_SRC[0] <= target <= UDIV16_DIRECT_SRC[1]:
+        return hbase + 0x1800 + (target - UDIV16_DIRECT_SRC[0])
     if UMOD24_ONLY_SRC[0] <= target <= UMOD24_ONLY_SRC[1]:
         return vals['REG_LOW'] + UMOD24_ONLY_DST_OFF + (target - UMOD24_ONLY_SRC[0])
     # Private V2 division block: old $4200-$51FF -> HYBRID_CODE+$0000-$0FFF.
@@ -1151,7 +1157,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         muldiv16_lowzp_detail = apply_muldiv16_lowzp_fusion(dst, vals, v1man, hbase)
         shifted_div_recip_detail = apply_shifted_div_recip_direct(dst, vals, v1man, hbase)
         selected_trace: set[int] = set()
-        for name in ('MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8', 'MATH_UMOD24'):
+        for name in ('MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8', 'MATH_UMOD24', 'MATH_UMOD16'):
             selected_trace |= trace(src, entries[name])
         cos_trace = trace(src, entries['MATH_COS8'])
         sincos_trace = trace(src, entries['MATH_SINCOS8'])
@@ -1187,6 +1193,16 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                              selected_trace,vals,hbase)
         um24=_public_addr(v1man,'MATH_UMOD24')
         dst[um24:um24+3]=bytes((0x4C,um24_target&255,um24_target>>8))
+        # The V2 UMOD16 frontend fits the 69 bytes immediately after UMOD24.
+        # Both are resident in the same previously unoccupied low-memory page.
+        um16_target=vals['REG_LOW']+UMOD16_ONLY_DST_OFF
+        n16=UMOD16_ONLY_SRC[1]-UMOD16_ONLY_SRC[0]+1
+        if any(dst[um16_target:um16_target+n16]):
+            raise RuntimeError(f'V5 UMOD16 remainder-only page {hx(um16_target)} not free')
+        copy_relocated_block(dst,src,*UMOD16_ONLY_SRC,um16_target,
+                             selected_trace,vals,hbase)
+        um16=_public_addr(v1man,'MATH_UMOD16')
+        dst[um16:um16+3]=bytes((0x4C,um16_target&255,um16_target>>8))
         copy_relocated_block(dst, src, COS_SRC[0], COS_SRC[1], hbase + 0x1080,
                              cos_trace, vals, hbase)
         copy_relocated_block(dst, src, SINCOS_SRC[0], SINCOS_SRC[1], hbase + 0x1090,
@@ -1244,6 +1260,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             'udiv8_direct': udiv8_detail,
             'udiv16_direct': udiv16_detail,
             'umod24_remainder_only': {'code': f'{hx(um24_target)}-{hx(um24_target+n-1)}', 'code_bytes':n, 'normal_zp_growth':0},
+            'umod16_remainder_only': {'code': f'{hx(um16_target)}-{hx(um16_target+n16-1)}', 'code_bytes':n16, 'normal_zp_growth':0},
             'sdiv16_direct': sdiv16_detail,
             'sdiv24_direct': sdiv24_detail,
             'muldiv16_lowzp_fusion': muldiv16_lowzp_detail,
@@ -1263,7 +1280,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 imports the split-tail V2 core including its compact D8 island.',
                 'UDIV24 narrow-divisor tail calls the same relocated UDIV32/16 engine through the V2 latency helper; no additional ZP is required.',
                 'V5 UMOD24 imports the V2 remainder-only frontend into the final free REG_LOW page and rejoins the same relocated 24-bit quotient core.',
-                'V5 UMOD16 and UMOD32/16 still use compact quotient-core aliases without importing their V2 remainder-only frontends.',
+                'V5 UMOD16 now also imports its V2 remainder-only frontend; UMOD32/16 remains a compact quotient-core alias.',
                 'HYBRID_CODE is private implementation storage and may be relocated at build time.',
                 'Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines.',
             ],
