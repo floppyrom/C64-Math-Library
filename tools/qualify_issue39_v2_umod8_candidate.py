@@ -39,8 +39,22 @@ def cpubuild(blob):
     return cpu
 
 def main():
-    oldbytes=PARENT.read_bytes()
+    parentbytes=PARENT.read_bytes()
     newbytes=NEW.read_bytes()
+    # Before publication the resident is the historical old image. After
+    # publication reconstruct that *exact* historical image from the
+    # SHA-certified 104 changed addresses, without altering the new code.
+    if sha(parentbytes)== 'e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd':
+        oldbytes=parentbytes
+    elif sha(parentbytes)=='28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6':
+        lo=int.from_bytes(parentbytes[:2],'little')
+        old=bytearray(parentbytes)
+        old[2+ENTRY-lo:2+ENTRY-lo+3]=bytes((0xAD,0x10,0xC0))
+        old[2+HELPER-lo:2+END-lo]=bytes(101)
+        oldbytes=bytes(old)
+    else:
+        raise AssertionError('unrecognized V2 historical/release resident SHA')
+    assert sha(oldbytes)=='e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd'
     assert oldbytes[:2]==newbytes[:2], 'load address changed'
     assert len(oldbytes)==len(newbytes), 'resident length changed'
     oldmem,lo=memof(oldbytes)
