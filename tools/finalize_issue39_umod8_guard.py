@@ -40,7 +40,7 @@ for name,rootkey,total in [
     ('ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.json','total_calls',53760),
     ('ISSUE39_V1_UDIV24_BYTE8_PAIRED.json','paired_machine_calls',56580),
     ('ISSUE39_V1_32_32_D8_DELEGATION.json','paired_machine_calls',51812),
-    ('ISSUE39_V5_32_32_NARROW_DELEGATION.json','paired_machine_calls',21412)]:
+    ('ISSUE39_V5_32_32_NARROW_DELEGATION.json','machine_calls',21412)]:
     j=json.loads((R/'validation/review'/name).read_text())
     assert j['status']=='PASS' and j[rootkey]==total,(name,j.get(rootkey))
 common=load_common(R)
