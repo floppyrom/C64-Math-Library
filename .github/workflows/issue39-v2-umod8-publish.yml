@@ -24,6 +24,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      # Include the 32/16 workload provenance rerun in the sealed release.
       - name: Stage source, binary, benchmarks, source mirrors and publication
         run: python3 tools/stage_issue39_v2_umod8_release.py
       - name: Verify the 320-item source catalog and checksum seal
