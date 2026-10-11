@@ -748,5 +748,17 @@
     "all_profile_unsigned_calls": 822050,
     "all_profile_signed_calls": 364533,
     "common_input_calls": 136335
+  },
+  "issue39_unsigned_3216_multiworkload_2026_10_11": {
+    "status": "PASS",
+    "documentation": "docs/ISSUE39_UDIV32_16_WORKLOAD_DECISION_2026-10-11.md",
+    "reported_calls": 30720,
+    "scenario_count": 6,
+    "same_input_across_profiles": true,
+    "report_sha256": "3b7637bee82d873a38508d31e1fc8f992da4493633552b09888e6d42bb68a72f",
+    "resident_binaries_changed": false,
+    "public_abi_changed": false,
+    "rejected_q01_source_published": false,
+    "unsigned_family_completed": false
   }
 }
