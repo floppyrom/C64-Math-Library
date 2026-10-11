@@ -44,7 +44,7 @@ entry=f"""{marker}
 - Removed an unreachable BCC after SEC in V2/V3/V4 UDIV16 shared producer; V5 inherits the source-level patch from V2.
 - V2/V3/V4/V5 UDIV16 mean cycles: 127.754892 / 125.408794 / 125.605512 / 126.362297.
 - V2/V3/V4/V5 UMOD16 mean cycles: 195.931101 / 196.392788 / 195.511912 / 199.898261.
-- 25,224 deterministic paired calls: zero mismatches, zero regressions; 2 cycles saved on 238 calls across the eight public-entry corpora. No PRG span, stable ABI, ZP or stack-page change. V1 retained.
+- 25,224 deterministic paired calls: zero mismatches, zero regressions; 2 cycles saved on 248 calls across the eight public-entry corpora. No PRG span, stable ABI, ZP or stack-page change. V1 retained.
 - Reference/alternate source rebuilt, all-profile unsigned and signed validators requalified, standalone source mirrors/catalog, benchmark tables, release-status/checksums regenerated.
 - Private OptiSearch P40 supplied a constrained search candidate; this is a human-guided transformation, not a large generic OptiSearch discovery. The unsigned DIV/MOD campaign in issue #39 remains unchecked.
 - Detail: {doc}
