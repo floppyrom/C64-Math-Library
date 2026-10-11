@@ -1208,6 +1208,20 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         v2prg = v2out / v2man['output_prg']
         src, _, _ = load_prg(v2prg)
 
+        # Issue #39: V2's optional D>=24 public UMOD8 guard must *not* leak
+        # into the V5 hybrid. V5 already installs its independently certified
+        # D>=32 guard and imports V2's original wrapper from +3 onward.
+        # Restore the original V2 first instruction in this transient donor
+        # image *before* any reachability tracing or wrapper relocation.
+        # This is not a modification of the built/shipped V2 resident.
+        umod8_v2 = 0x3200
+        d24_helper = 0x5323
+        if src[umod8_v2:umod8_v2+3] != bytes((0x4C, d24_helper & 255, d24_helper >> 8)):
+            raise RuntimeError('V2 UMOD8 D24 donor JMP drifted')
+        if src[d24_helper:d24_helper+5] != bytes((0xAD, 0x14, 0xC0, 0xC9, 0x18)):
+            raise RuntimeError('V2 UMOD8 D24 donor helper drifted')
+        src[umod8_v2:umod8_v2+3] = bytes((0xAD, 0x10, 0xC0))
+
         # Build exact reachability sets from the rebuilt V2 donor image.
         entries = dict(sr.public_entries())
         atan2_detail = apply_atan2_fast(dst, src, vals, v1man, entries, hbase) if include_atan2_fast else None
