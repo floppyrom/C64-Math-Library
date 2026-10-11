@@ -23,20 +23,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          cp build_source/reference/BUILD_SUMMARY.json /tmp/v1_ref_summary.json
-          cp build_source/alternate/BUILD_SUMMARY.json /tmp/v1_alt_summary.json
           python3 tools/assemble_sources.py --profile v1_balanced --config-kind reference
           python3 tools/assemble_sources.py --profile v1_balanced --config-kind alternate
-          python3 - <<'PY'
-          from pathlib import Path
-          import json
-          for kind in ('reference','alternate'):
-              old=json.loads(Path(f'/tmp/v1_{ "ref" if kind=="reference" else "alt" }_summary.json').read_text())
-              new=json.loads(Path(f'build_source/{kind}/v1_balanced/source_build_manifest.json').read_text())
-              assert old['profiles'][0]['profile']=='v1_balanced'
-              old['profiles'][0]=new
-              Path(f'build_source/{kind}/BUILD_SUMMARY.json').write_text(json.dumps(old,indent=2)+'\n')
-          PY
           cp build_source/reference/v1_balanced/math_v1_balanced_source_built.prg \
             v1_balanced/resident/math_v1_balanced_game_math.prg
           python3 - <<'PY'
@@ -87,6 +75,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -f .github/workflows/issue39-v1-byte8-publish.yml
+          rm -rf build_source build_hybrid
           git add -A
           python3 - <<'PY'
           from pathlib import Path
