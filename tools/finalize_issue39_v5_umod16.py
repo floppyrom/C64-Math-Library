@@ -53,7 +53,7 @@ with csvfile.open('w',newline='') as f:
 marker='2026-10-11 ISSUE39 V5 UMOD16 REMAINDER-ONLY SOURCE TRANSPLANT'
 log=f"""{marker}
 - Imported 69-byte V2 UMOD16 remainder-only frontend into the 77 bytes remaining in the same already-unoccupied V5 REG_LOW final page after PR #52 UMOD24. Final combined code: $2F00-$2FF7 (248/256); reference UMOD16 $2FB3-$2FF7; alternate $AFB3-$AFF7. No additional normal ZP or resident PRG file bytes, no stable API relocation.
-- V5 UMOD16 identical-input mean {old:.6f}->{new:.6f} cycles (−6.418182, −3.13%); 1,705/1,705 V2 matched per-call cycle values, 1,613 faster than old V5, 92 slower by two cycles. UMOD24, UDIV16 and UDIV24 timing unchanged on 9,? independently paired controls.
+- V5 UMOD16 identical-input mean {old:.6f}->{new:.6f} cycles (−6.418182, −3.13%); 1,705/1,705 V2 matched per-call cycle values, 1,613 faster than old V5, 92 slower by two cycles. UMOD24, UDIV16 and UDIV24 timing unchanged on 9,035 independently paired controls.
 - Full 822,050 all-profile unsigned, 364,533 signed, 136,335 common-input calls; V5 native VICE x64sc old/new 16+16; source reference and alternate 56 public API/mixed-call/ZP confinement certification; standalone/source catalogs, indexes, both changelogs and release seals refreshed.
 - Permanent V2/V5 UMOD16 exact timing+output gate in comparable-unsigned CI. Source design is manual transplantation of a V2 frontend (not novel OptiSearch native synthesis); private OptiSearch stays private. Issue39 unsigned family stays unchecked.
 - Details: {DOC}
