@@ -16,12 +16,12 @@ jobs:
           sudo apt-get update -qq
           mkdir -p /tmp/vice-deps/debs /tmp/vice-deps/extracted /tmp/vice-deps/vice-runtime/lib /tmp/vice-deps/vice-runtime/licenses
           cd /tmp/vice-deps/debs
-          apt-get download libpcap0.8t64 libieee1284-3t64 libmicrohttpd12t64 libflac12t64
+          apt-get download libpcap0.8t64 libieee1284-3t64 libmicrohttpd12t64 libflac12t64 libibverbs1
           for p in *.deb; do dpkg-deb -x "$p" /tmp/vice-deps/extracted; done
-          for lib in libpcap.so libieee1284.so libmicrohttpd.so libFLAC.so; do
+          for lib in libpcap.so libieee1284.so libmicrohttpd.so libFLAC.so libibverbs.so; do
             cp -a /tmp/vice-deps/extracted/usr/lib/x86_64-linux-gnu/"$lib"* /tmp/vice-deps/vice-runtime/lib/
           done
-          for pkg in libpcap0.8t64 libieee1284-3t64 libmicrohttpd12t64 libflac12t64; do
+          for pkg in libpcap0.8t64 libieee1284-3t64 libmicrohttpd12t64 libflac12t64 libibverbs1; do
             test -e /tmp/vice-deps/extracted/usr/share/doc/"$pkg"/copyright
             cp /tmp/vice-deps/extracted/usr/share/doc/"$pkg"/copyright /tmp/vice-deps/vice-runtime/licenses/"$pkg".copyright
           done
@@ -51,7 +51,7 @@ jobs:
           Run vice-runtime/run-x64sc.sh -help.
           This includes genuine Ubuntu 24.04 libpcap, libieee1284, libmicrohttpd and libFLAC.so.12 libraries; no dummy stubs.
           Your machine still supplies the other system libraries. Cross-distribution ABI compatibility is not guaranteed.
-          The four runtime library copyrights and downloadable package hashes are bundled.
+          The five runtime library copyrights and downloadable package hashes are bundled.
           MD
           cd "$dst"
           sha256sum -b lib/* | sort > RUNTIME_LIBRARY_SHA256SUMS.txt
