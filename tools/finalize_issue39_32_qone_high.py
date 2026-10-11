@@ -47,7 +47,7 @@ for row in rows:
     row['mean_cycles']=f"{z['mean_cycles']:.6f}"
     row['min_cycles']=str(z['min_cycles'])
     row['max_cycles']=str(z['max_cycles'])
-    row['alias_of']=''
+    # Preserve the published shared-core alias; per-API corpora differ.
     found.add(k)
 assert found=={'UDIV32_32','UMOD32_32'},found
 with p.open('w',newline='') as f:
