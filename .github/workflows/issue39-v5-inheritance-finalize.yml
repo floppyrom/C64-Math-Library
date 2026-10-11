@@ -1,0 +1,83 @@
+name: One-time V5 inheritance compatibility publication
+on:
+  push:
+    branches: [issue39-v1-prechecked-gate]
+permissions:
+  contents: write
+jobs:
+  finish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: V5 existing-precheck qualification
+        run: |
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+          python3 tools/validate_hybrid.py
+          python3 tools/verify_hybrid_deterministic.py
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          root=Path('.')
+          for kind in ('reference','alternate'):
+              d=root/'build_hybrid'/kind/'v5_hybrid_lowzp'
+              m=json.loads((d/'source_build_manifest.json').read_text())
+              assert m['udiv32_32_prechecked_gate']['source_gate_state']=='prechecked',m.get('udiv32_32_prechecked_gate')
+              target=d/m['output_prg']
+              assert hashlib.sha256(target.read_bytes()).hexdigest()==m['output_sha256']
+              if kind=='reference':
+                  resident=root/'v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg'
+                  assert target.read_bytes()==resident.read_bytes(),'V5 changed despite inherited precheck'
+          print('V5 REFERENCE BINARY PARITY AND ALTERNATE BUILD: PASS')
+          PY
+      - name: Document V5 inheritance fix
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('.')
+          doc=root/'docs/V1_UDIV32_32_PRECHECKED_GATE_2026-10-11.md'
+          text=doc.read_text()
+          note='Cross-profile V5 qualification: V5 hybrid starts from the shipped V1 resident image. Its shared 32/32 gate application now accepts a fully original or fully prechecked byte state, rejects mixed states, and reproduces the same published V5 reference PRG without a second patch.'
+          if note not in text:doc.write_text(text.rstrip()+'\n\n'+note+'\n')
+          change='- V5 hybrid builder recognizes a fully source-integrated V1 prechecked gate and refuses mixed original/optimized byte states; both reference and alternate builds are independently revalidated.'
+          for filename in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
+              p=root/filename;s=p.read_text()
+              if change not in s:
+                  pos=s.find('\n')
+                  p.write_text(s[:pos+1]+change+'\n'+s[pos+1:])
+          p=root/'RELEASE_STATUS.json';rs=json.loads(p.read_text())
+          rs.setdefault('issue_39_v1_32_32_prechecked',{})['v5_hybrid_inheritance']='validated unchanged V5 reference image; source gate idempotent with all-or-none old/new guard'
+          p.write_text(json.dumps(rs,indent=2)+'\n')
+          PY
+      - name: Seal and validate clean package
+        run: |
+          rm .github/workflows/issue39-v5-inheritance-finalize.yml
+          rm -rf build_source build_hybrid build_hybrid_repeat build_pareto
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,subprocess
+          root=Path('.')
+          def seal():
+              paths=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=str)
+              (root/'SHA256SUMS.txt').write_text(''.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n' for p in paths))
+          for _ in range(5):
+              seal()
+              subprocess.run(['python3','tools/package_audit.py'],check=True)
+          seal()
+          PY
+          python3 tools/package_audit.py
+      - name: Commit validated builder and publication
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Validate V5 inheritance of source-integrated V1 gate and reseal'
+          git push origin HEAD:issue39-v1-prechecked-gate
