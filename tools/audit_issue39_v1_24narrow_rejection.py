@@ -15,7 +15,16 @@ from validate_unsigned_division import api,wr,rd,expected
 from audit_issue39_unsigned_small_workloads import pairs
 PATH=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 OUT=ROOT/'validation/review/ISSUE39_V1_UDIV24_NARROW_REJECTION.json'
-prg=PATH.read_bytes();lo=prg[0]|prg[1]<<8
+# This negative screen certifies a *historical* rejected dispatch experiment.
+# Reconstruct the exact PR60 parent after the newer 24/8 specialization:
+# old selector restored; formerly empty low 128-byte island zeroed.
+current=PATH.read_bytes();lo=current[0]|current[1]<<8
+assert current[2+0x7FA0-lo:2+0x7FA8-lo]==bytes.fromhex('ad15c0d0034c001d')
+prior=bytearray(current)
+prior[2+0x7FA0-lo:2+0x7FA0-lo+16]=bytes.fromhex('ad15c0d008ec14c090034cb07f4c9672')
+prior[2+0x1D00-lo:2+0x1D80-lo]=bytes(0x80)
+prg=bytes(prior)
+assert hashlib.sha256(prg).hexdigest()=='97c3e04112335e5958653ac656771b9e11d1d4fede0f5c824b9169aa49b1b564'
 m=bytearray(65536);m[lo:lo+len(prg)-2]=prg[2:]
 assert m[0x7fa8:0x7faa]==bytes.fromhex('90 03'),'unexpected shipped gate'
 candidate=m.copy();candidate[0x7fa8:0x7faa]=bytes.fromhex('ea ea')
