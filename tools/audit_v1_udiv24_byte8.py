@@ -13,6 +13,7 @@ from mini6502 import CPU
 from validate_unsigned_division import api,wr,rd,expected
 from benchmark_unsigned_common_corpus import corpus
 from audit_issue39_unsigned_small_workloads import pairs,KINDS
+from issue39_v1_3232_d8_parent import restore_pr61
 BASE_SHA='97c3e04112335e5958653ac656771b9e11d1d4fede0f5c824b9169aa49b1b564'
 P=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 OUT=ROOT/'validation/review/ISSUE39_V1_UDIV24_BYTE8_PAIRED.json'
