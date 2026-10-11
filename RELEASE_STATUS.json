@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 65806,
-    "user_manual_lines": 1874,
-    "user_manual_sha256": "bd6d9866da03df402986dd2d8dcf8521fe27f788ad28a6a245549954286a0451"
+    "user_manual_bytes": 66047,
+    "user_manual_lines": 1876,
+    "user_manual_sha256": "1b849ed30496b2e0bf11a8047e432232ebe0723169d68963da48c29fa2d408f0"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -958,5 +958,18 @@
     "all_profile_unsigned_calls": 822050,
     "same_input_calls": 136335,
     "certificate_sha256": "4924d4aeb54d61f56e12bbecc9832299334f9b1524a5710b0a36eb0b23c60fc4"
+  },
+  "issue39_signed16_paired_and_v2_donor_screen_2026_10_12": {
+    "status": "PASS",
+    "report_document": "docs/ISSUE39_SIGNED16_PAIRED_AND_V2_16BIT_DONOR_SCREEN_2026-10-12.md",
+    "common_signed_calls": 54770,
+    "operand_pairs_per_api": 5477,
+    "source_candidate_promoted": false,
+    "shipped_prgs_unchanged": true,
+    "public_abi_unchanged": true,
+    "routine_family_completed": false,
+    "signed_paired_report_sha256": "c7378717f87a2a0da2d9050d81827887af7fbabebe77fd1002a8d81fad675056",
+    "signed_paired_csv_sha256": "05ea0de329fd233f25d5033d4812f5f8aaa204f589de1fe4d54e281c4ebec13b",
+    "v2_donor_negative_report_sha256": "291bbdd50c9c597bbe2913f56e2c824bec305fa7850de09f4bdc1737f088b85c"
   }
 }
