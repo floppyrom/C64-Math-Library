@@ -21,7 +21,7 @@ PARENT=ROOT/NAME/'resident'/f'math_{NAME}_game_math.prg'
 NEW=ROOT/'build_source/reference'/NAME/f'math_{NAME}_source_built.prg'
 ALT=ROOT/'build_source/alternate'/NAME/f'math_{NAME}_source_built.prg'
 V5=ROOT/'v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg'
-V5_NEW=ROOT/'build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_source_built.prg'
+V5_NEW=ROOT/'build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg'
 OUT=ROOT/'validation/review/ISSUE39_V2_UMOD8_D24_CANDIDATE.json'
 
 def sha(data):return hashlib.sha256(data).hexdigest()
