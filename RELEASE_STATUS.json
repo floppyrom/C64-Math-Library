@@ -565,6 +565,7 @@
     "means": {
       "MATH_UDIV32_32": 416.8611968828113,
       "MATH_UMOD32_32": 541.401802962009
-    }
+    },
+    "v5_hybrid_inheritance": "validated unchanged V5 reference image; source gate idempotent with all-or-none old/new guard"
   }
 }
