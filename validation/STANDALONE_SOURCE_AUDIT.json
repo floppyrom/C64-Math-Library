@@ -108,7 +108,7 @@
           "file": "div_u24_u24_u24_24.asm",
           "alias_of": "",
           "entry_address": "$3170",
-          "reachable_instructions": 1188
+          "reachable_instructions": 482
         },
         {
           "legacy_api": "MATH_UDIV32_16",
@@ -140,7 +140,7 @@
           "file": "mod_u24_u24_u24__math_umod24.asm",
           "alias_of": "MATH_UDIV24",
           "entry_address": "$3223",
-          "reachable_instructions": 1188
+          "reachable_instructions": 482
         },
         {
           "legacy_api": "MATH_UMOD32_16",

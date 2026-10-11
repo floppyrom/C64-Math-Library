@@ -1864,3 +1864,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - V5 32/32 narrow-divisor shared fast-32/16 path: docs/ISSUE39_V5_3232_NARROW_DELEGATION_2026-10-11.md; the unsigned DIV/MOD family campaign remains open.
 
 - Issue #39 unsigned 8/16/24 seven-workload audit: docs/ISSUE39_UNSIGNED_SMALL_WIDTH_WORKLOADS_2026-10-11.md; 53,760 public calls, negative V1 24-bit selector proof; no resident changes. Overall family campaign remains open.
+
+- Issue #39 V1 Balanced exact unsigned 24/8 narrow-division fast path: docs/ISSUE39_V1_UDIV24_BYTE8_2026-10-11.md. The wider unsigned DIV/MOD campaign remains open.
