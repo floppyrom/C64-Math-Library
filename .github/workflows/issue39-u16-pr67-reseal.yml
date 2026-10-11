@@ -1,0 +1,40 @@
+name: Issue39 PR67 V5 UMOD16 regression fixture reseal
+
+on:
+  push:
+    branches:
+      - issue39-u16-known-carry-branch-pr67
+    paths:
+      - '.github/workflows/issue39-u16-pr67-reseal.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  reseal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u16-known-carry-branch-pr67
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Revalidate V5 1705-case parity and reseal all provenance
+        run: python3 tools/reseal_issue39_u16_pr67_release.py
+      - name: Independent package seal verification
+        run: python3 tools/package_audit.py
+      - name: Commit current-release benchmark parity fixture and checksums
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: seal V5 UMOD16 current-corpus regression fixture"
+            git push origin HEAD:issue39-u16-known-carry-branch-pr67
+          fi
