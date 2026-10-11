@@ -17,7 +17,7 @@
     "v2_pareto_fast": "8c77a56c713dd16717a53d6bf60e2a84f83db8df516896de41ce7e5d1a0b763f",
     "v3_reu_512k": "97f174548aa8a1569fd322ff550b630c76ea5afc6f930ee0fc99b3126dea5535",
     "v4_reu_16m": "d9ee2a1d28f88ede06688338f9aab65b3913620ec162d6597695c98ad4363880",
-    "v5_hybrid_lowzp": "8cf7a1d4be4cc9ee4de535a9605e4b69c949ca58d106455ac0efb36a4a40d37d"
+    "v5_hybrid_lowzp": "fe902d4ad394f73d00b919a5ff18aef8d093ef45eadb5974d181b01fa210c615"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -138,13 +138,13 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 64716,
-    "user_manual_lines": 1862,
-    "user_manual_sha256": "db1cbce86c6423dcb79e5c943b66278952940ad3c88659cbc263b3c1c37e8ff5"
+    "user_manual_bytes": 64872,
+    "user_manual_lines": 1864,
+    "user_manual_sha256": "460445232b3685b44b5af489f74e5aa01abb7912b974f424e3cc92c3ba468641"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "8cf7a1d4be4cc9ee4de535a9605e4b69c949ca58d106455ac0efb36a4a40d37d",
+    "alternate_prg_sha256": "fe902d4ad394f73d00b919a5ff18aef8d093ef45eadb5974d181b01fa210c615",
     "common_machine_calls_per_map": 21678,
     "common_public_entries_per_map": 56,
     "config_validation_cases": 8,
@@ -157,7 +157,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "6255f93fdfcd35c2aa27085915e32dca86e3f641af96a1160cd38cf951f70d51",
+    "reference_prg_sha256": "9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "atan2_tables_bytes": 1024
@@ -247,7 +247,7 @@
     "v2_pareto_fast": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
     "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
     "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
-    "v5_hybrid_lowzp": "6255f93fdfcd35c2aa27085915e32dca86e3f641af96a1160cd38cf951f70d51"
+    "v5_hybrid_lowzp": "9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "e0bf3c4cf3a5c3da41437c99f1c721c313891ffc7adecaf09152f4ca12d430c7",
+    "benchmark_sha256": "714ace0733cd00f478e200ef65cb0b976ee7775c9e1c368ab3f2c754af558bc3",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -830,5 +830,24 @@
       "MATH_UDIV32_16": 825.8739465005497,
       "MATH_UMOD32_16": 843.6299120234604
     }
+  },
+  "issue39_v5_32_32_narrow_delegate_2026_10_11": {
+    "status": "PASS",
+    "documentation": "docs/ISSUE39_V5_3232_NARROW_DELEGATION_2026-10-11.md",
+    "unsigned_family_complete": false,
+    "v5_reference_sha256": "9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2",
+    "v5_alternate_sha256": "fe902d4ad394f73d00b919a5ff18aef8d093ef45eadb5974d181b01fa210c615",
+    "normal_zp_growth_bytes": 0,
+    "new_private_code_bytes": 21,
+    "prg_file_growth_bytes": 0,
+    "public_abi_changed": false,
+    "paired_old_new_calls": 21412,
+    "canonical_udiv32_32_mean_cycles": 275.01319164529133,
+    "canonical_umod32_32_mean_cycles": 302.35307917888565,
+    "max_guard_regression_cycles": 10,
+    "all_profile_unsigned_calls": 822050,
+    "all_profile_signed_calls": 364533,
+    "same_input_calls": 136335,
+    "native_vice_calls_per_version": 80
   }
 }

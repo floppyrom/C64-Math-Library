@@ -1860,3 +1860,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue #39 zero-high-byte V1/V5 32/32 fallback bypass: docs/ISSUE39_UDIV32_ZERO_HIGH_BYPASS_2026-10-11.md. Other unsigned architecture audits remain open.
 
 - Issue #39 V1 32/16 dual-loop quotient unroll: docs/ISSUE39_V1_UDIV32_16_DUAL_LOOP_UNROLL_2026-10-11.md. The unsigned DIV/MOD campaign remains open.
+
+- V5 32/32 narrow-divisor shared fast-32/16 path: docs/ISSUE39_V5_3232_NARROW_DELEGATION_2026-10-11.md; the unsigned DIV/MOD family campaign remains open.

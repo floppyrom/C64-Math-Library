@@ -5,7 +5,7 @@
     "v2_pareto_fast": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
     "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
     "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
-    "v5_hybrid_lowzp": "6255f93fdfcd35c2aa27085915e32dca86e3f641af96a1160cd38cf951f70d51"
+    "v5_hybrid_lowzp": "9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2"
   },
   "profiles": [
     "v1_balanced",
