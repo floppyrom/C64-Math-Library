@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 63238,
-    "user_manual_lines": 1846,
-    "user_manual_sha256": "ce1ada1cf31f386f7b9b8ea0c2e74cf7d1578d1e396ad5e9c711edd46f654e16"
+    "user_manual_bytes": 63543,
+    "user_manual_lines": 1848,
+    "user_manual_sha256": "86c176c8a55893c2d29fb321c0f814cf555259af924971fa9b1093fbdaf26a25"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -647,5 +647,18 @@
     },
     "stable_abi_changed": false,
     "normal_zp_growth_bytes": 0
+  },
+  "issue39_common_input_unsigned_divmod": {
+    "status": "PASS",
+    "validated_calls": 136335,
+    "routine_count": 11,
+    "profile_count": 5,
+    "public_abi_changed": false,
+    "arithmetic_binaries_changed": false,
+    "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
+    "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
+    "benchmark_sha256": "8e3ff9245d2f5f39289ad99403ea03ff86fd4ee32b092c85e4fb1b75bb829259",
+    "common_best_profile_ranking": true,
+    "unsigned_family_completed": false
   }
 }

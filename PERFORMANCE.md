@@ -6,6 +6,8 @@ The five fixed profiles use different memory/ZP trade-offs, so the fastest numbe
 
 The V2/V3/V4 UDIV32 live-high core uses four ZP bytes on the wide-divisor hot path and averages 177.737 fewer cycles on the original paired uniform32 comparison. The finalized public graph also reaches the bounded UDIV32/16 and 17-bit-divisor fallbacks, so its whole-call static resource footprint is larger; see [the full comparison and resource accounting](docs/UDIV32_OPTISEARCH.md).
 
+**Benchmark basis:** The unsigned DIV/MOD rows (UDIV8/16/24/32_16/32_32, UMOD counterparts and UDIV16_SHL8) now use **identical input pairs for all five profiles**. These common-corpus averages are reproducible but workload-dependent: see [the same-input results](benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv) for per-profile p95/worst-case, and the [audit methodology](docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md). The remaining published routine rows retain their existing distinct benchmark corpora and should not be treated as automatically comparable until independently certified. For V3/V4 REU-assisted functions, instruction cycles exclude external DMA/bus wait time.**
+
 ## Shipped profile means
 
 ### Multiply
@@ -25,11 +27,11 @@ The V2/V3/V4 UDIV32 live-high core uses four ZP bytes on the wide-divisor hot pa
 
 | Routine | Typed name | V1 | V2 | V3 | V4 | V5 |
 |---|---|---:|---:|---:|---:|---:|
-| `MATH_UDIV8` | `div_u8_u8_u8_8` | 59.571976 | 59.383011 | 52.852264 | 52.852264 | 59.383011 |
-| `MATH_UDIV16` | `div_u16_u16_u16_16` | 132.725857 | 127.754892 | 125.408794 | 125.605512 | 126.362297 |
-| `MATH_UDIV24` | `div_u24_u24_u24_24` | 194.032611 | 154.218178 | 161.533347 | 158.385020 | 157.655376 |
-| `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 870.340206 | 631.739323 | 632.886598 | 634.698506 | 634.079529 |
-| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 416.861197 | 212.304220 | 203.864138 | 209.625349 | 409.633142 |
+| `MATH_UDIV8` | `div_u8_u8_u8_8` | 65.093306 | 65.206085 | 52.227992 | 52.227992 | 65.206085 |
+| `MATH_UDIV16` | `div_u16_u16_u16_16` | 156.348479 | 161.761451 | 161.761451 | 161.761451 | 161.761451 |
+| `MATH_UDIV24` | `div_u24_u24_u24_24` | 189.741847 | 157.851462 | 157.851462 | 157.851462 | 157.851462 |
+| `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 896.061561 | 617.202638 | 617.202638 | 617.202638 | 617.202638 |
+| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 470.755955 | 242.548553 | 242.548553 | 242.548553 | 470.755955 |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 88.372650 | 88.372650 | 89.009821 | 90.272098 |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | 187.131298 | 168.393021 | 170.582116 | 168.745038 | 170.631189 |
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | 313.583206 | 248.344384 | 236.810251 | 237.569466 | 253.487023 |
@@ -42,11 +44,11 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 
 | Routine | Typed name | V1 | V2 | V3 | V4 | V5 |
 |---|---|---:|---:|---:|---:|---:|
-| `MATH_UMOD8` | `mod_u8_u8_u8` | 67.167555 | 67.284844 | 49.712110 | 49.725819 | 68.523229 |
-| `MATH_UMOD16` | `mod_u16_u16_u16` | 184.082421 | 195.931101 | 196.392788 | 195.511912 | 199.898261 |
-| `MATH_UMOD24` | `mod_u24_u24_u24` | 302.877656 | 205.325821 | 207.136510 | 205.247263 | 210.894398 |
-| `MATH_UMOD32_16` | `mod_u32_u16_u16` | 971.613651 | 629.783001 | 625.840953 | 626.014810 | 626.658725 |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 541.401803 | 290.452028 | 287.455248 | 285.637476 | 537.266581 |
+| `MATH_UMOD8` | `mod_u8_u8_u8` | 67.294523 | 66.848276 | 48.882759 | 48.882759 | 66.848276 |
+| `MATH_UMOD16` | `mod_u16_u16_u16` | 189.383578 | 198.610557 | 198.610557 | 198.610557 | 205.028739 |
+| `MATH_UMOD24` | `mod_u24_u24_u24` | 306.577592 | 207.490663 | 207.490663 | 207.490663 | 214.991629 |
+| `MATH_UMOD32_16` | `mod_u32_u16_u16` | 916.280352 | 591.943109 | 591.943109 | 591.943109 | 591.943109 |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 523.279765 | 295.997654 | 295.997654 | 295.997654 | 523.279765 |
 | `MATH_SMOD8` | `mod_s8_s8_s8` | 98.157813 | 97.066406 | 97.152344 | 99.020313 | 96.707813 |
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 229.324910 | 231.872202 | 234.659206 | 228.244765 | 231.667148 |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 427.272924 | 337.075090 | 329.971841 | 326.184838 | 339.607942 |
@@ -56,7 +58,7 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 313.154093 | 276.888787 | 276.888787 | 276.888787 | 313.154093 |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 779.876404 | 757.876404 | 757.876404 | 757.876404 | 779.876404 |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 812.544371 | 780.302454 | 780.302454 | 780.302454 | 812.544371 |
-| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 770.773617 | 552.649695 | 553.124974 | 552.577740 | 553.298759 |
+| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 798.612312 | 550.554416 | 550.554416 | 550.554416 | 550.554416 |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 846.155071 | 630.032715 | 630.265213 | 628.417884 | 628.885496 |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 108.497635 | 94.822998 | 57.331436 | 57.331436 | 95.044128 |
 

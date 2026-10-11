@@ -9,6 +9,7 @@ routines/SOURCE_CATALOG.csv.
 from __future__ import annotations
 import csv, hashlib
 from pathlib import Path
+from common_corpus_ranking import load_common, rank_public
 
 ROOT=Path(__file__).resolve().parents[1]
 PROFILES=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp']
@@ -34,8 +35,10 @@ def main():
 
     # One-row-per-canonical-routine convenience index: fastest shipped profile.
     published_rows=read_csv(ROOT/'benchmarks/PUBLIC_PROFILE_RESULTS.csv')
+    common=load_common(ROOT)
     best={}
-    for r in published_rows:
+    for row in published_rows:
+        r=rank_public(row,common)
         k=r['canonical_name']
         try: cyc=float(r['mean_cycles'])
         except Exception: continue
