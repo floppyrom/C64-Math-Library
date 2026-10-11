@@ -10,6 +10,8 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[individual-guide-published]')"
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,6 +47,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -f .github/workflows/issue39-individual-guide-publish.yml
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
           git add -A
           python3 - <<'PY'
           from pathlib import Path
