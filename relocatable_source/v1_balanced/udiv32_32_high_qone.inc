@@ -7,7 +7,7 @@
 * = REG_TABLE+$0810
 D3232_HIGH_QONE:
     lda MATH_D+3
-    beq D3232_HIGH_OLD
+    beq D3232_HIGH_ZERO
     bmi D3232_HIGH_ONE
     asl
     cmp MATH_N+3
@@ -37,3 +37,5 @@ D3232_HIGH_ONE:
     rts
 D3232_HIGH_OLD:
     jmp D3232_HIGH_Q23
+D3232_HIGH_ZERO:
+    jmp REG_GAME

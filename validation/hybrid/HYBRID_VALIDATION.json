@@ -14,15 +14,15 @@
     },
     "direct_v2_parity": {
       "MATH_UDIV16": {
-        "cases": 339,
+        "cases": 3289,
         "cycle_vector_equal_to_v2": true
       },
       "MATH_UDIV24": {
-        "cases": 219,
+        "cases": 3169,
         "cycle_vector_equal_to_v2": true
       },
       "MATH_UDIV32_16": {
-        "cases": 254,
+        "cases": 3204,
         "cycle_vector_equal_to_v2": true
       },
       "MATH_UMOD16": {
@@ -104,9 +104,9 @@
       }
     },
     "mixed_state_stress": {
-      "iterations": 50,
+      "iterations": 3000,
       "status": "PASS"
     }
   },
-  "elapsed_seconds": 15.886
+  "elapsed_seconds": 19.51
 }

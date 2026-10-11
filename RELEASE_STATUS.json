@@ -13,11 +13,11 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "3a7f54fe367a22aeb6b321826b331d941fd2f0dbe5876b11bbddd2ff010fb6e0",
+    "v1_balanced": "a54ba1a67e55b78c4001b4b68191dd2023e698427501895bdc698c36f1f83aed",
     "v2_pareto_fast": "8c77a56c713dd16717a53d6bf60e2a84f83db8df516896de41ce7e5d1a0b763f",
     "v3_reu_512k": "97f174548aa8a1569fd322ff550b630c76ea5afc6f930ee0fc99b3126dea5535",
     "v4_reu_16m": "d9ee2a1d28f88ede06688338f9aab65b3913620ec162d6597695c98ad4363880",
-    "v5_hybrid_lowzp": "bc10ada954468ad3e38f52045eb76cbe5931501ba12deb3379755e7f01070be8"
+    "v5_hybrid_lowzp": "8a19672ef9e93d1bbbdcdac87276d6de8a3fab29dfea257dfcd25bdcf306e076"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -138,13 +138,13 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 64408,
-    "user_manual_lines": 1858,
-    "user_manual_sha256": "5430566b6b5772d24bf01992a955cacd45e4253f49968992dc228a08aaf49acc"
+    "user_manual_bytes": 64565,
+    "user_manual_lines": 1860,
+    "user_manual_sha256": "1c097528af18d7adcaf38d911599d8dd406d540032ccc07baf2abed979bcd219"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "bc10ada954468ad3e38f52045eb76cbe5931501ba12deb3379755e7f01070be8",
+    "alternate_prg_sha256": "8a19672ef9e93d1bbbdcdac87276d6de8a3fab29dfea257dfcd25bdcf306e076",
     "common_machine_calls_per_map": 21678,
     "common_public_entries_per_map": 56,
     "config_validation_cases": 8,
@@ -157,7 +157,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "1c479dfd72257ae791df7ff2e38dddd9fe9cd2d50eaa7090e3e15ce8e96bdaf8",
+    "reference_prg_sha256": "f93d8f0cc5163ed00fcdc0ecfe117550131c33c4632bc484c5d30c481040e2d5",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "atan2_tables_bytes": 1024
@@ -243,11 +243,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "45bf4a6a75462983dbfed1cb03b670cacc4299ed25d45865e34a353640c94d9f",
+    "v1_balanced": "5fb24ad166ecb0f8a3897d8523ce8224dfce947a0d0c5320f287dcefc98f4e6a",
     "v2_pareto_fast": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
     "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
     "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
-    "v5_hybrid_lowzp": "1c479dfd72257ae791df7ff2e38dddd9fe9cd2d50eaa7090e3e15ce8e96bdaf8"
+    "v5_hybrid_lowzp": "f93d8f0cc5163ed00fcdc0ecfe117550131c33c4632bc484c5d30c481040e2d5"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "72c36f51f156b8813d27151da0795254731051fae2cabcb523e814f6dc490fe7",
+    "benchmark_sha256": "73c6ae37a96fd195f23f4fe12b1ef7ca842a537127c37441ebe41f9bf1e0e327",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -782,5 +782,30 @@
     "all_profile_unsigned_calls": 822050,
     "all_profile_signed_calls": 364533,
     "common_input_calls": 136335
+  },
+  "issue39_v1_v5_32_32_zero_high_bypass_2026_10_11": {
+    "status": "PASS",
+    "documentation": "docs/ISSUE39_UDIV32_ZERO_HIGH_BYPASS_2026-10-11.md",
+    "unsigned_family_complete": false,
+    "pr56_parent": "eb2153b4dfd64c64437e0c89dda1db5dbf89bbdb",
+    "v1_reference_sha256": "5fb24ad166ecb0f8a3897d8523ce8224dfce947a0d0c5320f287dcefc98f4e6a",
+    "v5_reference_sha256": "f93d8f0cc5163ed00fcdc0ecfe117550131c33c4632bc484c5d30c481040e2d5",
+    "normal_zp_growth_bytes": 0,
+    "resident_size_growth_bytes": 0,
+    "public_abi_changed": false,
+    "executable_byte_deltas": 3,
+    "paired_calls": 8868,
+    "paired_mismatches": 0,
+    "paired_slowdowns": 0,
+    "max_case_speedup_cycles": 12,
+    "v1_v5_common_input_cycles": {
+      "MATH_UDIV32_32": 358.00916086478566,
+      "MATH_UMOD32_32": 435.22463343108507
+    },
+    "all_profile_unsigned_calls": 822050,
+    "all_profile_signed_calls": 364533,
+    "common_input_calls": 136335,
+    "workload_calls": 30720,
+    "native_vice_full_resident_calls": 320
   }
 }

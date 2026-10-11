@@ -1,7 +1,7 @@
 profile,routine,canonical_name,cases,mean_cycles,min_cycles,max_cycles,alias_of
 v1_balanced,SMUL16_REPAIRED,,4457,293.29840700022436,260,327,
-v1_balanced,UDIV32_32,div_u32_u32_u32_32,6801,279.420085,67,2426,
-v1_balanced,UMOD32_32,mod_u32_u32_u32,1553,436.163554,67,2426,UDIV32_32
+v1_balanced,UDIV32_32,div_u32_u32_u32_32,6801,279.014263,67,2414,
+v1_balanced,UMOD32_32,mod_u32_u32_u32,1553,434.486800,67,2414,UDIV32_32
 v1_balanced,SDIV32_32,div_s32_s32_s32_32,6633,586.39605,75,2474,
 v1_balanced,SMOD32_32,mod_s32_s32_s32,6633,586.39605,75,2474,SDIV32_32
 v1_balanced,UMUL16_SHR8,mul_u16_u16_u24_shr8,5000,314.9656,303,338,

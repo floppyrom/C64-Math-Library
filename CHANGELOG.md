@@ -1,3 +1,9 @@
+2026-10-11 ISSUE39 V1/V5 32/32 ZERO-HIGH FALLBACK BYPASS
+- Post-PR56: divisor high byte zero skips the provably impossible q2/q3 gate and jumps directly from qone to the original legacy divider. Three resident byte changes, no ZP/ABI/PRG span growth.
+- Same-input V1/V5: UDIV32_32 359.077684→358.009161 cycles (2,729 calls/profile); UMOD32_32 436.899707→435.224633 (1,705/profile); 243 + 238 faster inputs/profile, exactly 12 cycles saved, no regressions among 8,868 paired calls.
+- Five-profile 822,050 unsigned, 364,533 signed, 136,335 common corpus, 30,720 workloads; source relocation, V5 hybrid and full-resident VICE validated. Generated sources, both changelogs and hashes republished; unsigned DIV/MOD family remains open.
+- Details: docs/ISSUE39_UDIV32_ZERO_HIGH_BYPASS_2026-10-11.md
+
 2026-10-11 ISSUE39 V1/V5 32/32 PROVEN QUOTIENT-2/3
 - 131-byte bounded quotient-two/three fast path added after the existing V1/V5 q=1 32/32 guard. D3 in $40–$7F and N3>2*D3+1 proves 2D<=N<4D; compute R=N−2D, conditionally subtract D, and emit Q=2 or 3. DEY loop preserves SBC carry. All nonqualifying inputs use the original core.
 - Common-input V1 and V5: UDIV32_32 370.572004→359.077684 cycles (−3.10%, 2,729 operands/profile), UMOD32_32 444.652199→436.899707 (−1.74%, 1,705/profile). Max one-call speedup 388 cycles; max slowdown 22. Uniform 32×32 inputs improve 21.442 cycles/call, while narrow-divisor inputs incur about +12; explicit Pareto trade-off.
