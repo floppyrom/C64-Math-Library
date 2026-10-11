@@ -53,13 +53,13 @@ with path.open('w',newline='') as f:
  writer.writeheader();writer.writerows(rows)
 rebuild_game_math_aggregate()
 marker='2026-10-11 ISSUE39 V5 32/32 NARROW-DIVISOR DELEGATION'
-msg=f"""\{marker}
+msg=f"""{marker}
 - V5-only shared UDIV32_32/UMOD32_32 route when D3=D2=0 reuses the already imported V2-derived 32/16 quotient engine; direct 21-byte helper at REG_LOW+$0D00, 0 new ZP, no public ABI or resident PRG size change. V1 stays untouched (its candidate suffered up to +403 cycles).
 - Same-input V5 UDIV32_32 358.009161→275.013192 cycles (2,729 pairs, 234 faster, 2,486 equal, 9 slower); UMOD32_32 435.224633→302.353079 (1,705 pairs, 234 faster, 1,467 equal, 4 slower). Narrow 16-bit divisor class saves ~934 cycles on average; 17–24-bit divisors pay +10 guard cycles in most cases. Results workload-dependent.
 - Paired 21,412 CPU calls, V5 unsigned 164,410 and signed 36,273 calls, real VICE 80 old+80 new calls and hybrid mixed-call validation; all-profile 822,050 unsigned/364,533 signed, 136,335 common corpus. Earlier PR57 zero-high certificate is reconstructed from the historical PR58 V5 parent image and remains valid.
 - Regenerated hybrid source/binaries, standalone mirrors, public and consolidated indexes, both changelogs and checksums. OptiSearch private; this is a manual architecture reuse, not an optimizer-native record. Issue39 unsigned campaign remains unchecked.
 - Details: {DOC}
-""".replace('\\{marker}','{marker}')
+"""
 for f in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
  path=R/f
  if marker not in path.read_text():path.write_text(msg+'\n'+path.read_text())
