@@ -1278,6 +1278,23 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             dst_addr = _public_addr(v1man, name)
             copy_relocated_wrapper(dst, src, ss, se, dst_addr, api_starts, vals, hbase)
 
+        # Both V1 and V5 can use the source-backed 77-byte public UMOD8
+        # remainder-only guard. The V2 public wrapper above remains in place
+        # from +3 onward as the small-divisor fallback; preserve its private
+        # donor core, normal ZP and mixed-call lifetime contract.
+        mod8_gate = vals['REG_LOW'] + 0x0E00
+        d0 = vals['MATH_IO'] + 0x14
+        expect_gate = bytes((0xAD, d0 & 255, d0 >> 8, 0xC9, 0x20))
+        if dst[mod8_gate:mod8_gate + 5] != expect_gate:
+            raise RuntimeError('V1 source-backed UMOD8 guard signature drift')
+        if any(dst[mod8_gate + 77:mod8_gate + 0x80]):
+            raise RuntimeError('UMOD8 guarded core exceeds its owned 128-byte low island')
+        mod8_entry = _public_addr(v1man, 'MATH_UMOD8')
+        n0 = vals['MATH_IO'] + 0x10
+        if dst[mod8_entry:mod8_entry + 3] != bytes((0xAD,n0 & 255,n0 >> 8)):
+            raise RuntimeError('V2 UMOD8 fallback wrapper lost its first LDA')
+        dst[mod8_entry:mod8_entry + 3] = bytes((0x4C,mod8_gate & 255,mod8_gate >> 8))
+
         # V2 COS/SINCOS public ABI slots are JMP stubs. Redirect the V1 slots to
         # the private V2 implementations. SIN8 stays V1 because its timing is equal.
         for name, target in [('MATH_COS8', hbase + 0x1080),
