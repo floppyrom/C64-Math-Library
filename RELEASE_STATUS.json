@@ -13,7 +13,7 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "b83fc18c13a979848d4266f9b4cb402a66d97b4ecc95f0002ed2052f514edeb0",
+    "v1_balanced": "6c8859355b03aa9fef24cc216003f84683779b832c910242c001fe262880c32c",
     "v2_pareto_fast": "8c77a56c713dd16717a53d6bf60e2a84f83db8df516896de41ce7e5d1a0b763f",
     "v3_reu_512k": "97f174548aa8a1569fd322ff550b630c76ea5afc6f930ee0fc99b3126dea5535",
     "v4_reu_16m": "d9ee2a1d28f88ede06688338f9aab65b3913620ec162d6597695c98ad4363880",
@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 65264,
-    "user_manual_lines": 1868,
-    "user_manual_sha256": "f27981dbce39a937adab71d74253ddf13e203ddda0a44be9e8ceb3f68e3b8662"
+    "user_manual_bytes": 65426,
+    "user_manual_lines": 1870,
+    "user_manual_sha256": "065f8f720627f4ae3180dbe39a2a40ff2f2c682b78842f2c3c30dcfa405a4d55"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -243,7 +243,7 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "67d709a3006e5529d49b579be20747b292f466679ea42ac24fd5384e4d71879e",
+    "v1_balanced": "795cf2320f1fee8b097641bb87f3e2ff591b3c84329b700f35ec7d4ef9593387",
     "v2_pareto_fast": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
     "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
     "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "d08070fc30906e5ffad86460289635d7f9af05ca7a8c1bfab64a3a9b20f2c373",
+    "benchmark_sha256": "fb9dd255afbc522cc8139b3e6751b4846804fe626b4d3d0358c71d4123be5a40",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -857,7 +857,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "0490a3c4b381090f0238aec45fb2f262840a447953a25cfca7aed5fe10f3052e",
+    "data_sha256": "0fe76d82e514a48a3d4278c4baffc7d120986045f7a732fa3d8daf2286b43ce0",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -894,5 +894,23 @@
       }
     },
     "paired_report_sha256": "595ec7e34a7a233fe01a971011a192da9f726e6f8a91c63ed9559d870771718d"
+  },
+  "issue39_v1_32_32_guarded_d8_2026_10_11": {
+    "status": "PASS",
+    "document": "docs/ISSUE39_V1_3232_D8_DELEGATION_2026-10-11.md",
+    "unsigned_family_complete": false,
+    "prior_v1_resident_sha256": "67d709a3006e5529d49b579be20747b292f466679ea42ac24fd5384e4d71879e",
+    "v1_resident_sha256": "795cf2320f1fee8b097641bb87f3e2ff591b3c84329b700f35ec7d4ef9593387",
+    "v5_unchanged_sha256": "9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2",
+    "public_abi_changed": false,
+    "normal_zp_growth": 0,
+    "resident_prg_byte_growth": 0,
+    "paired_old_new_cpu_calls": 51812,
+    "max_guard_regression_cycles": 14,
+    "vice_full_resident_old_new_calls": 160,
+    "all_profile_unsigned_calls": 822050,
+    "all_profile_signed_calls": 364533,
+    "same_input_corpus_calls": 136335,
+    "paired_report_sha256": "01ed5af3898a770e72a9bd70e118eac7993762d45944da51ffd0859f5f24dc47"
   }
 }
