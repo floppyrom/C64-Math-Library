@@ -24,6 +24,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      # Rerun after checking all gates regress in aggregate, though rare calls may improve.
       - name: Recompute 54,770 signed16 calls and V2 donor negative selection
         run: python3 tools/publish_issue39_16bit_architecture_audit.py
       - name: Independent package and source catalog audit
