@@ -80,7 +80,7 @@
           "signed": "MATH_SDIV32_32",
           "unsigned": "MATH_UDIV32_32",
           "signed_instructions": 374,
-          "unsigned_instructions": 385,
+          "unsigned_instructions": 444,
           "shared_instructions": 0,
           "approved_shared_instructions": 0
         },
@@ -512,7 +512,7 @@
           "signed": "MATH_SDIV32_32",
           "unsigned": "MATH_UDIV32_32",
           "signed_instructions": 374,
-          "unsigned_instructions": 385,
+          "unsigned_instructions": 444,
           "shared_instructions": 0,
           "approved_shared_instructions": 0
         },
@@ -982,7 +982,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 374,
-        "unsigned_instructions": 385,
+        "unsigned_instructions": 444,
         "shared_instructions": 0,
         "approved_shared": 0,
         "unexpected": []
@@ -2912,7 +2912,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 374,
-        "unsigned_instructions": 385,
+        "unsigned_instructions": 444,
         "shared_instructions": 0,
         "approved_shared": 0,
         "unexpected": []

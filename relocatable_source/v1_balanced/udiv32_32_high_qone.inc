@@ -36,4 +36,4 @@ D3232_HIGH_ONE:
     clc
     rts
 D3232_HIGH_OLD:
-    jmp REG_GAME
+    jmp D3232_HIGH_Q23

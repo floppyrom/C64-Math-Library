@@ -48,8 +48,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 1061.083032 | 174 | 2066 | 545 | 12 | $14-$1F | 0 | balanced private signed 32/16 magnitude path | current native-signed division validation |
 | `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | 1289.022331 | 513 | 2300 | 539 | 19 | $09-$1B | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
 | `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | 1378.300411 | 490 | 2271 | 821 | 23 | $09-$1F | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
-| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 300.905749 | 67 | 2414 | 1004 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 450.781713 | 67 | 2414 | 1004 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
+| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 279.420085 | 67 | 2426 | 1134 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 436.163554 | 67 | 2426 | 1134 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 566.839288 | 75 | 2454 | 971 | 0 | — | 0 | signed-private balanced 32/32 path | current native-signed division validation |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | 766.253430 | 75 | 2454 | 971 | 0 | — | 0 | signed-private balanced 32/32 path | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 304.804139 | 293 | 328 | 227 | 17 | $09-$19 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |
@@ -307,8 +307,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 704.786282 | 107 | 1642 | 2179 | 10 | $10-$19 | 0 | thin signed front end around relocated V2 UDIV32/16 magnitude substrate under the 31-ZP contract | current native-signed division validation |
 | `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | 834.646373 | 334 | 1956 | 2197 | 17 | $09-$19 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
 | `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | 888.154427 | 83 | 1899 | 2473 | 17 | $09-$19 | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
-| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 298.539038 | 67 | 2414 | 1004 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-10-11 V5 prechecked nonzero divisor optimization |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 448.050869 | 67 | 2414 | 1004 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-10-11 V5 prechecked nonzero divisor optimization |
+| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 279.823555 | 67 | 2426 | 1134 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-10-11 V5 prechecked nonzero divisor optimization |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 435.700580 | 67 | 2426 | 1134 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-10-11 V5 prechecked nonzero divisor optimization |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | 572.005880 | 75 | 2454 | 971 | 0 | — | 0 | signed-private balanced 32/32 path | current native-signed division validation |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | 765.857040 | 75 | 2454 | 971 | 0 | — | 0 | signed-private balanced 32/32 path | current native-signed division validation |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | 304.804139 | 293 | 328 | 227 | 17 | $09-$19 | 0 | profile-selected resident implementation | 2026-10-06 MUL16 SHR8 register-return validation |

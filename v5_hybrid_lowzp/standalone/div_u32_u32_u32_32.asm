@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 385.
+; Reachable instructions: 444.
 !cpu 6510
 
 ; ---- executable island $5957 ----
@@ -103,7 +103,75 @@ L681F:
     clc                                ; @6854 18
     rts                                ; @6855 60
 L6856:
-    jmp LC100                          ; @6856 4C 00 C1
+    jmp L6860                          ; @6856 4C 60 68
+; ---- executable island $6860 ----
+* = $6860
+L6860:
+    lda $C017                          ; @6860 AD 17 C0
+    cmp #$40                           ; @6863 C9 40
+    bcc L68DF                          ; @6865 90 78
+    asl a                              ; @6867 0A
+    adc #$01                           ; @6868 69 01
+    cmp $C013                          ; @686A CD 13 C0
+    bcs L68DF                          ; @686D B0 70
+    sec                                ; @686F 38
+    ldx #$00                           ; @6870 A2 00
+    ldy #$04                           ; @6872 A0 04
+L6874:
+    lda $C010,x                        ; @6874 BD 10 C0
+    sbc $C014,x                        ; @6877 FD 14 C0
+    sta $C01C,x                        ; @687A 9D 1C C0
+    inx                                ; @687D E8
+    dey                                ; @687E 88
+    bne L6874                          ; @687F D0 F3
+    ldx #$00                           ; @6881 A2 00
+    ldy #$04                           ; @6883 A0 04
+L6885:
+    lda $C01C,x                        ; @6885 BD 1C C0
+    sbc $C014,x                        ; @6888 FD 14 C0
+    sta $C01C,x                        ; @688B 9D 1C C0
+    inx                                ; @688E E8
+    dey                                ; @688F 88
+    bne L6885                          ; @6890 D0 F3
+    ldy #$02                           ; @6892 A0 02
+    lda $C01F                          ; @6894 AD 1F C0
+    cmp $C017                          ; @6897 CD 17 C0
+    bcc L68CE                          ; @689A 90 32
+    bne L68BA                          ; @689C D0 1C
+    lda $C01E                          ; @689E AD 1E C0
+    cmp $C016                          ; @68A1 CD 16 C0
+    bcc L68CE                          ; @68A4 90 28
+    bne L68BA                          ; @68A6 D0 12
+    lda $C01D                          ; @68A8 AD 1D C0
+    cmp $C015                          ; @68AB CD 15 C0
+    bcc L68CE                          ; @68AE 90 1E
+    bne L68BA                          ; @68B0 D0 08
+    lda $C01C                          ; @68B2 AD 1C C0
+    cmp $C014                          ; @68B5 CD 14 C0
+    bcc L68CE                          ; @68B8 90 14
+L68BA:
+    ldx #$00                           ; @68BA A2 00
+    ldy #$04                           ; @68BC A0 04
+    sec                                ; @68BE 38
+L68BF:
+    lda $C01C,x                        ; @68BF BD 1C C0
+    sbc $C014,x                        ; @68C2 FD 14 C0
+    sta $C01C,x                        ; @68C5 9D 1C C0
+    inx                                ; @68C8 E8
+    dey                                ; @68C9 88
+    bne L68BF                          ; @68CA D0 F3
+    ldy #$03                           ; @68CC A0 03
+L68CE:
+    tya                                ; @68CE 98
+    sta $C018                          ; @68CF 8D 18 C0
+    lda #$00                           ; @68D2 A9 00
+    sta $C019                          ; @68D4 8D 19 C0
+    sta $C01A                          ; @68D7 8D 1A C0
+    sta $C01B                          ; @68DA 8D 1B C0
+    clc                                ; @68DD 18
+    rts                                ; @68DE 60
+L68DF:
+    jmp LC100                          ; @68DF 4C 00 C1
 ; ---- executable island $C100 ----
 * = $C100
 LC100:
