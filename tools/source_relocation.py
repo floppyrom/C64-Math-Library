@@ -162,7 +162,7 @@ def in_multiply_refresh(profile,a):
 DIVISION_REFRESH_INCLUDES={
  'v1_balanced':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_balanced.inc',
-  'udiv24_direct_repose_balanced.inc','sdiv16_directout_balanced.inc','sdiv24_directout_balanced.inc',
+  'udiv24_direct_repose_balanced.inc','udiv24_latency_escape_balanced.inc','sdiv16_directout_balanced.inc','sdiv24_directout_balanced.inc',
   'sdiv32_16_direct_balanced.inc','udiv32_32_early_gate.inc','sdiv32_32_signflow.inc'),
  'v2_pareto_fast':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
@@ -187,7 +187,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x3120,0x3122),(0x3200,0x3202),(0x4000,0x4125),
   (0x3ca0,0x3ca2),(0x3fd4,0x3fd6),(0xbde0,0xbff0),
   (0x3140,0x3142),(0x3220,0x3222),(0x4200,0x4342),
-  (0x3170,0x3172),(0x3223,0x3225),(0x7200,0x734e),
+  (0x3170,0x3172),(0x3223,0x3225),(0x7200,0x734e),(0x7fa0,0x7fc7),
   (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x5200,0x52de),(0x5400,0x552c),
   (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x5600,0x5714),(0x5800,0x58b5),
   (0x2590,0x25b1),(0x5c00,0x5d01),
