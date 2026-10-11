@@ -1,0 +1,50 @@
+name: Issue39 one-shot publication seal repair
+on:
+  push:
+    branches:
+      - issue39-v1-3216-unroll
+permissions:
+  contents: write
+jobs:
+  reseal:
+    if: "!contains(github.event.head_commit.message, '[issue39-3216-resealed]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recompute inherited PR57 cycle certificate with PR58 resident hashes
+        run: |
+          python3 tools/audit_issue39_zero_high_bypass.py
+          python3 tools/validate_v1_3216_unroll.py
+      - name: Remove temporary workflow, seal deterministic package and commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/issue39-3216-reseal.yml
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,hashlib
+          tracked=[Path(s) for s in subprocess.check_output(['git','ls-files','-z']).decode().split('\0') if s]
+          files=sorted({p for p in tracked if p.is_file() and p.name!='SHA256SUMS.txt'},key=str)
+          def seal():
+              Path('SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p)+'\n' for p in files))
+          seal()
+          subprocess.run(['python3','tools/package_audit.py'],check=True)
+          seal()
+          saved=Path('validation/PACKAGE_AUDIT.json').read_bytes()
+          subprocess.run(['python3','tools/package_audit.py'],check=True)
+          assert saved==Path('validation/PACKAGE_AUDIT.json').read_bytes(),'unstable package report'
+          PY
+          git add -A
+          git diff --cached --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "[issue39-3216-resealed] Synchronize inherited PR57 resident provenance"
+          git push origin HEAD:issue39-v1-3216-unroll
