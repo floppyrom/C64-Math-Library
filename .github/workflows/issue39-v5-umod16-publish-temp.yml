@@ -26,7 +26,7 @@ jobs:
           src=root/'build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg'
           dst=root/'v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg'
           assert src.stat().st_size==dst.stat().st_size
-          assert hashlib.sha256(src.read_bytes()).hexdigest()=='6aff56fc151a2bf6037323764f2317c6f3416cf8c181332a5592e31f2d'
+          assert hashlib.sha256(src.read_bytes()).hexdigest()=='6aff56fc151a2bf6037323764f2317c6f3416cf8c181332a5592e31f2cf91f1d'
           shutil.copy2(src,dst)
           PY
           python3 tools/assemble_sources.py --profile all --config-kind alternate

@@ -6,7 +6,7 @@ from common_corpus_ranking import load_common
 R=Path(__file__).resolve().parents[1]
 PROFILES=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
 V5='v5_hybrid_lowzp';NAME='MATH_UMOD16'
-EXPECTED='6aff56fc151a2bf6037323764f2317c6f3416cf8c181332a5592e31f2d'
+EXPECTED='6aff56fc151a2bf6037323764f2317c6f3416cf8c181332a5592e31f2cf91f1d'
 BASELINE='23833dcaf92d5b69cc16e215e67a38776c6feee6523526d7e5592813ceeb7939'
 DOC='docs/ISSUE39_V5_UMOD16_REMAINDER_TRANSPLANT_2026-10-11.md'
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()

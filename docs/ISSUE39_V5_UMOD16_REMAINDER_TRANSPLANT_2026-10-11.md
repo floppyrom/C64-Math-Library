@@ -12,7 +12,7 @@ The joint direct-UMOD16/24 path occupies **248 of 256 bytes in an already-existi
 
 Local full V5 regression: **164,410 unsigned + 36,273 signed** machine-code calls, zero failures. Full V5 hybrid integration checks pass on reference and alternate layouts, including all 56 public APIs, mixed calls, sentinel outside-ZP preservation, and exhaustive 65,536-case UMOD8 regressions. Targeted genuine VICE x64sc 3.13.2 emulator checks: 16 operands on old and new images, **32 native calls, zero mismatches**. Both source-built V5 reference and alternate binaries reproduce.
 
-SHA-256 of candidate source-built reference V5 resident: `6aff56fc151a2bf6037323764f2317c6f3416cf8c181332a5592e31f2d`. Alternate: `02005dbf5d14753bff8401de90036893f44aa7dd67860ee060f57da3860bd95c`. Baseline (post-UMOD24 PR52) reference: `23833dcaf92d5b69cc16e215e67a38776c6feee6523526d7e5592813ceeb7939`.
+SHA-256 of candidate source-built reference V5 resident: `6aff56fc151a2bf6037323764f2317c6f3416cf8c181332a5592e31f2cf91f1d`. Alternate: `02005dbf5d14753bff8401de90036893f44aa7dd67860ee060f57da3860bd95c`. Baseline (post-UMOD24 PR52) reference: `23833dcaf92d5b69cc16e215e67a38776c6feee6523526d7e5592813ceeb7939`.
 
 The permanent identical-input parity check is `tools/validate_v5_umod16_frontend.py`, run alongside `tools/validate_v5_umod24_frontend.py` in the public comparable-benchmark workflow.
 
