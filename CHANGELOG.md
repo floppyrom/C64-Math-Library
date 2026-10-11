@@ -1,3 +1,12 @@
+2026-10-11 ISSUE39 UDIV16/UMOD16 SHARED CONDITIONAL TRANSPLANT
+- Removed an unreachable BCC after SEC in V2/V3/V4 UDIV16 shared producer; V5 inherits the source-level patch from V2.
+- V2/V3/V4/V5 UDIV16 mean cycles: 127.754892 / 125.408794 / 125.605512 / 126.362297.
+- V2/V3/V4/V5 UMOD16 mean cycles: 195.931101 / 196.392788 / 195.511912 / 199.898261.
+- 25,224 deterministic paired calls: zero mismatches, zero regressions; 2 cycles saved on 248 calls across the eight public-entry corpora. No PRG span, stable ABI, ZP or stack-page change. V1 retained.
+- Reference/alternate source rebuilt, all-profile unsigned and signed validators requalified, standalone source mirrors/catalog, benchmark tables, release-status/checksums regenerated.
+- Private OptiSearch P40 supplied a constrained search candidate; this is a human-guided transformation, not a large generic OptiSearch discovery. The unsigned DIV/MOD campaign in issue #39 remains unchecked.
+- Detail: docs/ISSUE39_UDIV16_BRANCH_TRANSPLANT_2026-10-11.md
+
 2026-10-11 V1 UDIV32/32 + UMOD32/32 NONZERO GATE
 - V5 hybrid builder recognizes a fully source-integrated V1 prechecked gate and refuses mixed original/optimized byte states; both reference and alternate builds are independently revalidated.
 - V1 zero-ZP shared 32/32 divider reuses the prechecked nonzero-divisor decision, avoiding duplicate D!=0 work on N>D.

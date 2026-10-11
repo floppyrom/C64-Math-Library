@@ -117,3 +117,5 @@ make package-audit
 The library is **not reentrant**. Sequential calls in ordinary game/demo loops are supported; do not enter shared math state from an IRQ/NMI while another library call is active.
 
 - V1 32/32 shared nonzero-divisor gate (issue #39): docs/V1_UDIV32_32_PRECHECKED_GATE_2026-10-11.md; remaining unsigned family audit stays open.
+
+- Issue #39 shared UDIV16/UMOD16 branch transplant: docs/ISSUE39_UDIV16_BRANCH_TRANSPLANT_2026-10-11.md; unsigned family audit remains open.
