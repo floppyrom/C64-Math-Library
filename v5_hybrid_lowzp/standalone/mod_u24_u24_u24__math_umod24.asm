@@ -6,10 +6,95 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 1714.
+; Reachable instructions: 1721.
 ; NOTE: legacy alias entry; semantic producer is MATH_UDIV24.
 !cpu 6510
 
+; ---- executable island $2F00 ----
+* = $2F00
+L2F00:
+    !byte $AF, $12, $C0    ; LAX abs   ; @2F00 AF 12 C0
+    cmp $C016                          ; @2F03 CD 16 C0
+    bcs L2F0B                          ; @2F06 B0 03
+L2F08:
+    jmp L2FA3                          ; @2F08 4C A3 2F
+L2F0B:
+    beq L2F66                          ; @2F0B F0 59
+    lda $C016                          ; @2F0D AD 16 C0
+    bne L2F15                          ; @2F10 D0 03
+    jmp L2FA0                          ; @2F12 4C A0 2F
+L2F15:
+    lda $C010                          ; @2F15 AD 10 C0
+    sec                                ; @2F18 38
+    sbc $C014                          ; @2F19 ED 14 C0
+    sta $C01C                          ; @2F1C 8D 1C C0
+    lda $C011                          ; @2F1F AD 11 C0
+    sbc $C015                          ; @2F22 ED 15 C0
+    sta $C01D                          ; @2F25 8D 1D C0
+    lda $C012                          ; @2F28 AD 12 C0
+    sbc $C016                          ; @2F2B ED 16 C0
+    cmp $C016                          ; @2F2E CD 16 C0
+    bcc L2F4C                          ; @2F31 90 19
+    bne L2F50                          ; @2F33 D0 1B
+    sta $C01E                          ; @2F35 8D 1E C0
+    lda $C01D                          ; @2F38 AD 1D C0
+    cmp $C015                          ; @2F3B CD 15 C0
+    bcc L2F4A                          ; @2F3E 90 0A
+    bne L2F5B                          ; @2F40 D0 19
+    lda $C01C                          ; @2F42 AD 1C C0
+    cmp $C014                          ; @2F45 CD 14 C0
+    bcs L2F5B                          ; @2F48 B0 11
+L2F4A:
+    clc                                ; @2F4A 18
+    rts                                ; @2F4B 60
+L2F4C:
+    sta $C01E                          ; @2F4C 8D 1E C0
+    rts                                ; @2F4F 60
+L2F50:
+    ldx #$00                           ; @2F50 A2 00
+    stx $C019                          ; @2F52 8E 19 C0
+    stx $C01A                          ; @2F55 8E 1A C0
+    jmp LA714                          ; @2F58 4C 14 A7
+L2F5B:
+    ldx #$00                           ; @2F5B A2 00
+    stx $C019                          ; @2F5D 8E 19 C0
+    stx $C01A                          ; @2F60 8E 1A C0
+    jmp LA717                          ; @2F63 4C 17 A7
+L2F66:
+    lda $C016                          ; @2F66 AD 16 C0
+    bne L2F6E                          ; @2F69 D0 03
+    jmp L2F9D                          ; @2F6B 4C 9D 2F
+L2F6E:
+    lda $C011                          ; @2F6E AD 11 C0
+    cmp $C015                          ; @2F71 CD 15 C0
+    bcc L2F08                          ; @2F74 90 92
+    bne L2F80                          ; @2F76 D0 08
+    lda $C010                          ; @2F78 AD 10 C0
+    cmp $C014                          ; @2F7B CD 14 C0
+    bcc L2F08                          ; @2F7E 90 88
+L2F80:
+    lda $C010                          ; @2F80 AD 10 C0
+    sbc $C014                          ; @2F83 ED 14 C0
+    sta $C01C                          ; @2F86 8D 1C C0
+    lda $C011                          ; @2F89 AD 11 C0
+    sbc $C015                          ; @2F8C ED 15 C0
+    sta $C01D                          ; @2F8F 8D 1D C0
+    lda $C012                          ; @2F92 AD 12 C0
+    sbc $C016                          ; @2F95 ED 16 C0
+    sta $C01E                          ; @2F98 8D 1E C0
+    clc                                ; @2F9B 18
+    rts                                ; @2F9C 60
+L2F9D:
+    jmp LA669                          ; @2F9D 4C 69 A6
+L2FA0:
+    jmp LA688                          ; @2FA0 4C 88 A6
+L2FA3:
+    lda $C010                          ; @2FA3 AD 10 C0
+    sta $C01C                          ; @2FA6 8D 1C C0
+    lda $C011                          ; @2FA9 AD 11 C0
+    sta $C01D                          ; @2FAC 8D 1D C0
+    stx $C01E                          ; @2FAF 8E 1E C0
+    rts                                ; @2FB2 60
 ; ---- executable island $31B0 ----
 * = $31B0
 L31B0:
@@ -52,7 +137,7 @@ L31EE:
 * = $3223
 mod_u24_u24_u24:
 MATH_UMOD24:
-    jmp LA616                          ; @3223 4C 16 A6
+    jmp L2F00                          ; @3223 4C 00 2F
 ; ---- executable island $A00C ----
 * = $A00C
 LA00C:
@@ -756,42 +841,8 @@ LA600:
     sta $C01E                          ; @A611 8D 1E C0
     sec                                ; @A614 38
     rts                                ; @A615 60
-LA616:
-    !byte $AF, $12, $C0    ; LAX abs   ; @A616 AF 12 C0
-    cmp $C016                          ; @A619 CD 16 C0
-    bcs LA621                          ; @A61C B0 03
-    jmp LA6AD                          ; @A61E 4C AD A6
-LA621:
-    beq LA62B                          ; @A621 F0 08
-    lda $C016                          ; @A623 AD 16 C0
-    beq LA688                          ; @A626 F0 60
-    jmp LA6C8                          ; @A628 4C C8 A6
-LA62B:
-    txa                                ; @A62B 8A
-    beq LA669                          ; @A62C F0 3B
-    lda $C011                          ; @A62E AD 11 C0
-    cmp $C015                          ; @A631 CD 15 C0
-    bcc LA6AD                          ; @A634 90 77
-    bne LA640                          ; @A636 D0 08
-    lda $C010                          ; @A638 AD 10 C0
-    cmp $C014                          ; @A63B CD 14 C0
-    bcc LA6AD                          ; @A63E 90 6D
-LA640:
-    lda $C010                          ; @A640 AD 10 C0
-    sbc $C014                          ; @A643 ED 14 C0
-    sta $C01C                          ; @A646 8D 1C C0
-    lda $C011                          ; @A649 AD 11 C0
-    sbc $C015                          ; @A64C ED 15 C0
-    sta $C01D                          ; @A64F 8D 1D C0
-    lda $C012                          ; @A652 AD 12 C0
-    sbc $C016                          ; @A655 ED 16 C0
-    sta $C01E                          ; @A658 8D 1E C0
-    !byte $0B, $00    ; ANC #imm       ; @A65B 0B 00
-    sta $C019                          ; @A65D 8D 19 C0
-    sta $C01A                          ; @A660 8D 1A C0
-    lda #$01                           ; @A663 A9 01
-    sta $C018                          ; @A665 8D 18 C0
-    rts                                ; @A668 60
+; ---- executable island $A669 ----
+* = $A669
 LA669:
     lda $C014                          ; @A669 AD 14 C0
     ora $C015                          ; @A66C 0D 15 C0
@@ -836,39 +887,8 @@ LA6AD:
     sta $C01D                          ; @A6C1 8D 1D C0
     stx $C01E                          ; @A6C4 8E 1E C0
     rts                                ; @A6C7 60
-LA6C8:
-    lda $C010                          ; @A6C8 AD 10 C0
-    sec                                ; @A6CB 38
-    sbc $C014                          ; @A6CC ED 14 C0
-    sta $C01C                          ; @A6CF 8D 1C C0
-    lda $C011                          ; @A6D2 AD 11 C0
-    sbc $C015                          ; @A6D5 ED 15 C0
-    sta $C01D                          ; @A6D8 8D 1D C0
-    lda $C012                          ; @A6DB AD 12 C0
-    sbc $C016                          ; @A6DE ED 16 C0
-    ldx #$00                           ; @A6E1 A2 00
-    stx $C019                          ; @A6E3 8E 19 C0
-    stx $C01A                          ; @A6E6 8E 1A C0
-    cmp $C016                          ; @A6E9 CD 16 C0
-    bcc LA70B                          ; @A6EC 90 1D
-    bne LA714                          ; @A6EE D0 24
-    sta $C01E                          ; @A6F0 8D 1E C0
-    lda $C01D                          ; @A6F3 AD 1D C0
-    cmp $C015                          ; @A6F6 CD 15 C0
-    bcc LA705                          ; @A6F9 90 0A
-    bne LA717                          ; @A6FB D0 1A
-    lda $C01C                          ; @A6FD AD 1C C0
-    cmp $C014                          ; @A700 CD 14 C0
-    bcs LA717                          ; @A703 B0 12
-LA705:
-    lda #$01                           ; @A705 A9 01
-    sta $C018                          ; @A707 8D 18 C0
-    rts                                ; @A70A 60
-LA70B:
-    sta $C01E                          ; @A70B 8D 1E C0
-    lda #$01                           ; @A70E A9 01
-    sta $C018                          ; @A710 8D 18 C0
-    rts                                ; @A713 60
+; ---- executable island $A714 ----
+* = $A714
 LA714:
     sta $C01E                          ; @A714 8D 1E C0
 LA717:

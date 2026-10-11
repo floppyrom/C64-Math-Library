@@ -1,3 +1,10 @@
+2026-10-11 ISSUE39 V5 UMOD24 REMAINDER-ONLY SOURCE TRANSPLANT
+- Imported existing V2 179-byte q=0/q=1 remainder-only frontend into V5's previously free REG_LOW final page, reference $2F00-$2FB2 and alternate $AF00-$AFB2. Preserve full public modulo remainder/carry/input semantics with no new normal ZP, no PRG span growth, and unchanged UDIV24.
+- Identical-input UMOD24 V5 mean 214.991629 -> 207.490663 cycles (3.49% faster), exactly matches V2/V3/V4 on all 1,553 calls. 914 faster, 375 slower (max +7 cycles); explicitly accepted mean/fast-exit trade-off, 179 newly occupied code bytes. Other V5 unsigned API means unchanged.
+- Native VICE x64sc paired 16+16 calls; 9,716 old/new paired public calls; V5 164,410 unsigned and 36,273 signed regression calls; full all-profile 822,050 unsigned/364,533 signed and 136,335 common-input validation; source/alternate builds, mirrors, stable 56-entry ABI, package/checksums requalified.
+- Permanent exact V2/V5 output/cycle-parity regression in tools/validate_v5_umod24_frontend.py. Public performance ranks use only common-input corpora. No private OptiSearch code published; full unsigned campaign remains unchecked.
+- Detail: docs/ISSUE39_V5_UMOD24_REMAINDER_TRANSPLANT_2026-10-11.md
+
 2026-10-11 ISSUE39 V1 BALANCED 24-BIT NARROW-DIVISOR LATENCY ESCAPE
 - V1 Balanced UDIV24/UMOD24: route the costly N2>0,D2=0 and Q>=65536 fallback through the existing V1 32/16 division core; preserve original low-quotient path and reuse LAX-provided X=N2. V5 keeps the optimized V2 donor behavior.
 - Paired same-input 4,753 UDIV24 and 1,553 UMOD24 calls: V1 means 189.741847→179.964654 and 306.577592→276.590470 cycles. 162 calls faster, 91 slower (maximum +19), remainder unchanged; the large Q example $FFFFFF/$000001 improves 3235→1986.

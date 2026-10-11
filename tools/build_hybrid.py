@@ -16,6 +16,8 @@ DIV_SRC = (0x4200, 0x51FF)
 # V2 UDIV32/16 now has a compact byte-divisor island immediately after the
 # true UMOD8 body, plus a narrow-tail helper reused from dead UDIV32/32 code.
 UMOD8_SRC = (0x5200, 0x5271)
+UMOD24_ONLY_SRC = (0x1F00, 0x1FB2)
+UMOD24_ONLY_DST_OFF = 0x1F00  # REG_LOW final free page, preserve byte phase
 UDIV32_16_D8_SRC = (0x5272, 0x52ED)
 DIVLAT_HELPER_SRC = (0x5957, 0x59A6)
 UDIV32_16_D8_DST_OFF = 0x1772
@@ -62,7 +64,7 @@ SDIV24_DIRECT_CORE_SRC = (0x82EE, 0x8878)
 
 # Direct imported implementations. Wider UMOD entries reuse the imported V2
 # division kernels through compact V5 aliases; V2's later dedicated remainder-only
-# q=0/q=1 front ends are intentionally not copied, so UMOD timing is profile-specific.
+# q=0/q=1 front ends are not all copied, except UMOD24 which imports its 179-byte frontend.
 IMPORTED_API = [
     'MATH_UDIV16', 'MATH_UDIV24', 'MATH_UDIV32_16',
     'MATH_UMOD8', 'MATH_UMOD16', 'MATH_UMOD24', 'MATH_UMOD32_16',
@@ -125,6 +127,8 @@ def trace(mem: bytearray, start: int) -> set[int]:
 
 
 def map_abs(target: int, vals: dict[str, int], hbase: int) -> int:
+    if UMOD24_ONLY_SRC[0] <= target <= UMOD24_ONLY_SRC[1]:
+        return vals['REG_LOW'] + UMOD24_ONLY_DST_OFF + (target - UMOD24_ONLY_SRC[0])
     # Private V2 division block: old $4200-$51FF -> HYBRID_CODE+$0000-$0FFF.
     if DIV_SRC[0] <= target <= DIV_SRC[1]:
         return hbase + (target - DIV_SRC[0])
@@ -1147,7 +1151,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         muldiv16_lowzp_detail = apply_muldiv16_lowzp_fusion(dst, vals, v1man, hbase)
         shifted_div_recip_detail = apply_shifted_div_recip_direct(dst, vals, v1man, hbase)
         selected_trace: set[int] = set()
-        for name in ('MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8'):
+        for name in ('MATH_UDIV24', 'MATH_UDIV32_16', 'MATH_UMOD8', 'MATH_UMOD24'):
             selected_trace |= trace(src, entries[name])
         cos_trace = trace(src, entries['MATH_COS8'])
         sincos_trace = trace(src, entries['MATH_SINCOS8'])
@@ -1169,11 +1173,20 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             if any(dst[ds:ds+n]):
                 raise RuntimeError(f'V5 {label} destination {hx(ds)}-{hx(ds+n-1)} is not free')
             copy_relocated_block(dst,src,ss,se,ds,selected_trace,vals,hbase)
-        # The current V2 UDIV24 is a direct-ABI JMP into the copied $4800 island.
-        # Patch both quotient and modulo public entries to that relocated core.
+        # Import the V2 quotient core and its distinct remainder-only q=0/q=1
+        # frontend. The latter fits into the last unused V1 REG_LOW page and
+        # retains the V2 low-byte phase, preserving branch page-cross timing.
         u24_target=hbase+(0x4816-DIV_SRC[0])
-        for name in ('MATH_UDIV24','MATH_UMOD24'):
-            a=_public_addr(v1man,name); dst[a:a+3]=bytes((0x4C,u24_target&255,u24_target>>8))
+        um24_target=vals['REG_LOW']+UMOD24_ONLY_DST_OFF
+        u24=_public_addr(v1man,'MATH_UDIV24')
+        dst[u24:u24+3]=bytes((0x4C,u24_target&255,u24_target>>8))
+        n=UMOD24_ONLY_SRC[1]-UMOD24_ONLY_SRC[0]+1
+        if any(dst[um24_target:um24_target+n]):
+            raise RuntimeError(f'V5 UMOD24 remainder-only page {hx(um24_target)} not free')
+        copy_relocated_block(dst,src,*UMOD24_ONLY_SRC,um24_target,
+                             selected_trace,vals,hbase)
+        um24=_public_addr(v1man,'MATH_UMOD24')
+        dst[um24:um24+3]=bytes((0x4C,um24_target&255,um24_target>>8))
         copy_relocated_block(dst, src, COS_SRC[0], COS_SRC[1], hbase + 0x1080,
                              cos_trace, vals, hbase)
         copy_relocated_block(dst, src, SINCOS_SRC[0], SINCOS_SRC[1], hbase + 0x1090,
@@ -1230,6 +1243,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             'atan2_fast': atan2_detail,
             'udiv8_direct': udiv8_detail,
             'udiv16_direct': udiv16_detail,
+            'umod24_remainder_only': {'code': f'{hx(um24_target)}-{hx(um24_target+n-1)}', 'code_bytes':n, 'normal_zp_growth':0},
             'sdiv16_direct': sdiv16_detail,
             'sdiv24_direct': sdiv24_detail,
             'muldiv16_lowzp_fusion': muldiv16_lowzp_detail,
@@ -1248,7 +1262,8 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'V2 direct-output SDIV16 and SDIV24 are repacked into V1-free code/table windows and stay wholly inside the normal 31-byte ZP contract.',
                 'SDIV32/16 remains the refreshed V1 low-ZP direct implementation in V5; UDIV32/16 imports the split-tail V2 core including its compact D8 island.',
                 'UDIV24 narrow-divisor tail calls the same relocated UDIV32/16 engine through the V2 latency helper; no additional ZP is required.',
-                'Wider UMOD entries keep compact V5 aliases to imported UDIV engines; they preserve remainder/carry semantics but do not import V2 remainder-only front-end timing.',
+                'V5 UMOD24 imports the V2 remainder-only frontend into the final free REG_LOW page and rejoins the same relocated 24-bit quotient core.',
+                'V5 UMOD16 and UMOD32/16 still use compact quotient-core aliases without importing their V2 remainder-only frontends.',
                 'HYBRID_CODE is private implementation storage and may be relocated at build time.',
                 'Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines.',
             ],
