@@ -488,19 +488,19 @@
           "class_means": {
             "divisor_zero": 67.0,
             "quotient_0": 93.18808777429467,
-            "quotient_1": 157.79310344827587,
-            "quotient_10_to_255": 1093.355828220859,
-            "quotient_256_plus": 1929.807142857143,
-            "quotient_2_to_9": 735.2553699284009
+            "quotient_1": 154.13793103448276,
+            "quotient_10_to_255": 1019.0429447852761,
+            "quotient_256_plus": 1683.0142857142857,
+            "quotient_2_to_9": 707.200477326969
           },
-          "max_cycles": 2414,
-          "mean_cycles": 358.00916086478566,
+          "max_cycles": 2428,
+          "mean_cycles": 335.8255771344815,
           "min_cycles": 67,
-          "p95_cycles": 1813,
+          "p95_cycles": 1545,
           "selection_means": {
-            "edges": 813.2665406427221,
-            "random": 239.16015625,
-            "stress": 2017.2083333333333,
+            "edges": 710.1663516068053,
+            "random": 239.2216796875,
+            "stress": 1762.0,
             "zero": 67.0
           }
         },
@@ -1048,19 +1048,19 @@
           "class_means": {
             "divisor_zero": 67.0,
             "quotient_0": 95.32105263157895,
-            "quotient_1": 182.18421052631578,
-            "quotient_10_to_255": 1269.7047619047619,
-            "quotient_256_plus": 1942.8444444444444,
-            "quotient_2_to_9": 834.04
+            "quotient_1": 175.21052631578948,
+            "quotient_10_to_255": 1154.3428571428572,
+            "quotient_256_plus": 1686.3925925925926,
+            "quotient_2_to_9": 787.02
           },
-          "max_cycles": 2414,
-          "mean_cycles": 435.22463343108507,
+          "max_cycles": 2428,
+          "mean_cycles": 399.6768328445748,
           "min_cycles": 67,
-          "p95_cycles": 1858,
+          "p95_cycles": 1575,
           "selection_means": {
-            "edges": 813.2665406427221,
-            "random": 248.8779296875,
-            "stress": 2017.2083333333333,
+            "edges": 710.1663516068053,
+            "random": 248.9326171875,
+            "stress": 1762.0,
             "zero": 67.0
           }
         },
@@ -1259,7 +1259,7 @@
   },
   "sources": {
     "v1_balanced": {
-      "resident_sha256": "67d709a3006e5529d49b579be20747b292f466679ea42ac24fd5384e4d71879e"
+      "resident_sha256": "795cf2320f1fee8b097641bb87f3e2ff591b3c84329b700f35ec7d4ef9593387"
     },
     "v2_pareto_fast": {
       "resident_sha256": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd"

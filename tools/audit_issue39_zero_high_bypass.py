@@ -7,12 +7,15 @@ sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
 from benchmark_unsigned_common_corpus import SPECS,corpus
 from validate_unsigned_division import wr,rd,expected,api
+from issue39_v1_3232_d8_parent import restore_pr61
 BEFORE={0x6814:0x41,0x6859:0,0x685B:0}
 AFTER={0x6814:0x44,0x6859:0x4c,0x685B:0xc1}
 j={'status':'PASS','profiles':{},'matched_calls':0,'matched_errors':0}
 for profile in ('v1_balanced','v5_hybrid_lowzp'):
     path=ROOT/profile/'resident'/f'math_{profile}_game_math.prg'
-    blob=path.read_bytes();lo=blob[0]|blob[1]<<8
+    blob=path.read_bytes()
+    if profile=='v1_balanced':blob=restore_pr61(blob)
+    lo=blob[0]|blob[1]<<8
     mem=bytearray(65536);mem[lo:lo+len(blob)-2]=blob[2:]
     # Freeze the historical PR57/PR58 V5 state before checking its 12-cycle
     # three-byte bypass. Later V5-only 32/16 delegation modifies that SAME

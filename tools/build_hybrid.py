@@ -1310,6 +1310,21 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         if dst[g:g+3] != restore[:3]:
             raise RuntimeError('V1 24-bit gate moved: cannot restore inert V5 image')
         dst[g:g+len(restore)] = restore
+        # The V1 D8-only 32/32 helper is owned by V1, not the
+        # faster V5 D16 delegate. Source-backed ownership proof, then reclaim.
+        v1_d8 = vals['REG_LOW'] + 0x0D80
+        old_head = bytes((0xAD, (vals['MATH_IO']+0x16)&255,
+                          (vals['MATH_IO']+0x16)>>8, 0x0D))
+        if dst[v1_d8:v1_d8+4] != old_head:
+            raise RuntimeError('V1 32/32 D8 helper source signature drift')
+        if any(dst[v1_d8+0x40:v1_d8+0x80]):
+            raise RuntimeError('V1 32/32 D8 helper exceeded V5 reclaim interval')
+        dst[v1_d8:v1_d8+0x80] = bytes(0x80)
+        high_zero = vals['REG_TABLE'] + 0x0859
+        if dst[high_zero:high_zero+3] != bytes((0x4C,v1_d8&255,v1_d8>>8)):
+            raise RuntimeError('V1 32/32 D8 dispatch signature drift')
+        game = vals['REG_GAME']
+        dst[high_zero:high_zero+3] = bytes((0x4C,game&255,game>>8))
         udiv32_32_prechecked = apply_udiv32_32_prechecked_gate(dst, vals)
         udiv32_32_narrow = apply_v5_udiv32_32_narrow(dst, vals, v1man)
 
