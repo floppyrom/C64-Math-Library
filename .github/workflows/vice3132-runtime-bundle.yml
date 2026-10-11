@@ -1,0 +1,65 @@
+name: Bundle VICE 3.13.2 shared libraries
+on:
+  push:
+    branches: [support-vice3132-runtime-deps]
+permissions:
+  contents: read
+jobs:
+  portable-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Fetch Ubuntu 24.04 libraries
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          mkdir -p /tmp/vice-deps/debs /tmp/vice-deps/extracted /tmp/vice-deps/vice-runtime/lib /tmp/vice-deps/vice-runtime/licenses
+          cd /tmp/vice-deps/debs
+          apt-get download libpcap0.8t64 libieee1284-3t64 libmicrohttpd12t64 libflac12t64
+          for p in *.deb; do dpkg-deb -x "$p" /tmp/vice-deps/extracted; done
+          for lib in libpcap.so libieee1284.so libmicrohttpd.so libFLAC.so; do
+            cp -a /tmp/vice-deps/extracted/usr/lib/x86_64-linux-gnu/"$lib"* /tmp/vice-deps/vice-runtime/lib/
+          done
+          for pkg in libpcap0.8t64 libieee1284-3t64 libmicrohttpd12t64 libflac12t64; do
+            test -e /tmp/vice-deps/extracted/usr/share/doc/"$pkg"/copyright
+            cp /tmp/vice-deps/extracted/usr/share/doc/"$pkg"/copyright /tmp/vice-deps/vice-runtime/licenses/"$pkg".copyright
+          done
+          sha256sum *.deb > /tmp/vice-deps/vice-runtime/ORIGINAL_UBUNTU_PACKAGES_SHA256SUMS.txt
+      - name: Make reusable VICE launcher ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          dst=/tmp/vice-deps/vice-runtime
+          cat > "$dst/run-x64sc.sh" <<'SH'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          dir="$(cd "$(dirname "$0")" && pwd)"
+          vice_root="$dir/../vice3132/usr/local"
+          if [ ! -x "$vice_root/bin/x64sc" ]; then
+            echo "Missing x64sc under $vice_root/bin. Put the extracted VICE zip under sibling vice3132 directory." >&2
+            exit 1
+          fi
+          export LD_LIBRARY_PATH="$dir/lib"
+          export VICE_DATADIR="$vice_root/share/vice"
+          exec "$vice_root/bin/x64sc" "$@"
+          SH
+          chmod +x "$dst/run-x64sc.sh"
+          cat > "$dst/README.md" <<'MD'
+          # VICE 3.13.2 headless — compatible Linux x64 dependencies
+          Extract v3.13.2-linux-x86_64-headless.zip to a sibling directory named vice3132.
+          Run vice-runtime/run-x64sc.sh -help.
+          This includes genuine Ubuntu 24.04 libpcap, libieee1284, libmicrohttpd and libFLAC.so.12 libraries; no dummy stubs.
+          Your machine still supplies the other system libraries. Cross-distribution ABI compatibility is not guaranteed.
+          The four runtime library copyrights and downloadable package hashes are bundled.
+          MD
+          cd "$dst"
+          sha256sum -b lib/* | sort > RUNTIME_LIBRARY_SHA256SUMS.txt
+          cd /tmp/vice-deps
+          zip -qr VICE_3.13.2_Linux_x64_Shared_Runtime_2026-10-11.zip vice-runtime
+          unzip -t VICE_3.13.2_Linux_x64_Shared_Runtime_2026-10-11.zip | tail -2
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VICE-3.13.2-linux-x64-runtime
+          path: /tmp/vice-deps/VICE_3.13.2_Linux_x64_Shared_Runtime_2026-10-11.zip
+          retention-days: 30
