@@ -95,7 +95,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 127.754892 | 41 | 1076 | 1467 | 0 | — | 0 | fast direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 154.218178 | 56 | 1412 | 3537 | 10 | $10-$19 | 0 | Repose q0-counter/direct-public UDIV24 | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 631.739323 | 125 | 1738 | 2025 | 10 | $10-$19 | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD8` | `mod_u8_u8_u8` | 67.284844 | 51 | 495 | 131 | 2 | $10-$11 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD8` | `mod_u8_u8_u8` | 56.963442 | 35 | 509 | 232 | 2 | $10-$11 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD16` | `mod_u16_u16_u16` | 195.931101 | 32 | 1075 | 1444 | 0 | — | 0 | remainder-only q=0/q=1 front end with exact shared UDIV16 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 205.325821 | 42 | 1419 | 3557 | 10 | $10-$19 | 0 | remainder-only q=0/q=1 front end with exact Repose UDIV24 fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 629.783001 | 128 | 1741 | 2028 | 10 | $10-$19 | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |

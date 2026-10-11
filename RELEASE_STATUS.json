@@ -14,7 +14,7 @@
   },
   "alternate_prg_sha256": {
     "v1_balanced": "17d4b439abd7817152d250c9dd55d3ff1ea3496ccda5c2fa769348d74b49b9e0",
-    "v2_pareto_fast": "8c77a56c713dd16717a53d6bf60e2a84f83db8df516896de41ce7e5d1a0b763f",
+    "v2_pareto_fast": "46b24edb293890d0aa7f72675b66a954f61927620d820e90a9459e4d505d4b3a",
     "v3_reu_512k": "97f174548aa8a1569fd322ff550b630c76ea5afc6f930ee0fc99b3126dea5535",
     "v4_reu_16m": "d9ee2a1d28f88ede06688338f9aab65b3913620ec162d6597695c98ad4363880",
     "v5_hybrid_lowzp": "5a56df7f013b2e8cf907ea297edc96893207f0d087a702a44e28cde02674bcec"
@@ -112,7 +112,7 @@
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-10-11",
+  "date": "2026-10-12",
   "deterministic_builds_checked": 8,
   "division_refresh": {
     "date": "2026-09-20",
@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 65608,
-    "user_manual_lines": 1872,
-    "user_manual_sha256": "6a5cdbde05f2ea1df56fb3996b28255cce9e9f66c6633920d820bc8ef6ab8eb9"
+    "user_manual_bytes": 65806,
+    "user_manual_lines": 1874,
+    "user_manual_sha256": "bd6d9866da03df402986dd2d8dcf8521fe27f788ad28a6a245549954286a0451"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -244,7 +244,7 @@
   ],
   "reference_prg_sha256": {
     "v1_balanced": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62",
-    "v2_pareto_fast": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
+    "v2_pareto_fast": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6",
     "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
     "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
     "v5_hybrid_lowzp": "bed1ee986857d045d452036d78d0d6cbdc078dbc3407f8a860a8fd54f8395fa2"
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "079353e584d89c2148fdc0cd1a6e6708a60f9e8c30beac6cbae4bfee55caf85c",
+    "benchmark_sha256": "a761f180bd946834e60bba7d9848385574f7f90ea3af09812af16a8fe7d0cb43",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -857,7 +857,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "cba4a0c056e3c6806be73991e563bc1d73d42f8eaa5d5c78d020c4461882efe0",
+    "data_sha256": "fcbeb987bfbdd8308d74883abd5ae77c3d31d4827b223d42a7805befef869e8e",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -933,5 +933,29 @@
     "all_profile_signed_calls": 364533,
     "common_input_calls": 136335,
     "new_certificate_sha256": "93858a2b7ac4ec83d2be35b7ad708f47999dce6f34d7393de85579492ec325a4"
+  },
+  "issue39_v2_umod8_d24_2026_10_12": {
+    "status": "PASS",
+    "documentation": "docs/ISSUE39_V2_UMOD8_D24_RELEASE_2026-10-12.md",
+    "unsigned_family_complete": false,
+    "previous_v2_sha256": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
+    "new_v2_sha256": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6",
+    "public_abi_changed": false,
+    "normal_zp_growth": 0,
+    "stack_growth": 0,
+    "resident_prg_growth": 0,
+    "source_helper_bytes": 101,
+    "guard_min_divisor": 24,
+    "paired_complete_resident_cpu_calls": 131072,
+    "native_vice_old_new_calls": 4096,
+    "full_input_old_mean": 64.81915283203125,
+    "full_input_new_mean": 52.20445251464844,
+    "max_case_regression_cycles": 15,
+    "independent_v2_profile_mean": 56.963442498095965,
+    "same_input_v2_mean": 57.29290060851927,
+    "v5_resident_unchanged": true,
+    "all_profile_unsigned_calls": 822050,
+    "same_input_calls": 136335,
+    "certificate_sha256": "4924d4aeb54d61f56e12bbecc9832299334f9b1524a5710b0a36eb0b23c60fc4"
   }
 }

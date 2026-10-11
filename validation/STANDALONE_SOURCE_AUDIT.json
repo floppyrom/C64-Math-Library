@@ -579,7 +579,7 @@
           "file": "mod_u8_u8_u8.asm",
           "alias_of": "",
           "entry_address": "$3200",
-          "reachable_instructions": 69
+          "reachable_instructions": 108
         },
         {
           "legacy_api": "MATH_UMOD16",
