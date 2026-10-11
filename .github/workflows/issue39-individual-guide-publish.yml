@@ -1,0 +1,72 @@
+name: Issue39 individual source guide publication
+on:
+  push:
+    branches:
+      - docs-individual-routine-pickup-issue39
+permissions:
+  contents: write
+jobs:
+  publish:
+    if: "!contains(github.event.head_commit.message, '[individual-guide-published]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate source catalog and guide link destinations
+        run: |
+          set -euo pipefail
+          python3 tools/validate_public_catalog.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import re,csv
+          f=Path('docs/INDIVIDUAL_ROUTINE_PICKUP.md')
+          assert f.exists()
+          links=re.findall(r'\[[^]]+\]\(([^)#]+)(?:#[^)]*)?\)',f.read_text())
+          for target in links:
+              if target.startswith('http'):continue
+              p=f.parent/target
+              assert p.exists(),(target,str(p))
+          with Path('routines/SOURCE_CATALOG.csv').open(newline='') as file:
+              rows=list(csv.DictReader(file))
+          shipped=[r for r in rows if r['scope']=='shipped-profile']
+          alts=[r for r in rows if r['scope']=='standalone-alternative']
+          assert len(shipped)==295 and len(alts)==25,(len(shipped),len(alts))
+          assert len({r['source_path'] for r in shipped})==295
+          assert all(Path(r['source_path']).is_file() for r in shipped)
+          print('295 source mirrors, 25 independent alternatives,',len(links),'valid documentation links')
+          PY
+      - name: Remove one-shot publication and seal both catalogs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/issue39-individual-guide-publish.yml
+          git add -A
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,hashlib
+          def seal():
+              paths=[Path(s) for s in subprocess.check_output(['git','ls-files','-z']).decode().split('\0') if s]
+              paths=sorted((p for p in paths if p.is_file() and p.name!='SHA256SUMS.txt'),key=str)
+              Path('SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p)+'\n' for p in paths))
+          seal()
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,hashlib
+          paths=[Path(s) for s in subprocess.check_output(['git','ls-files','-z']).decode().split('\0') if s]
+          paths=sorted((p for p in paths if p.is_file() and p.name!='SHA256SUMS.txt'),key=str)
+          Path('SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p)+'\n' for p in paths))
+          PY
+          python3 tools/package_audit.py
+          git add -A
+          git diff --cached --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "[individual-guide-published] Publish 295 mirror links and validated single-routine guide"
+          git push origin HEAD:docs-individual-routine-pickup-issue39
