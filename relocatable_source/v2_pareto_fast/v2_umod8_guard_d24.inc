@@ -42,6 +42,9 @@ V2_UMOD8_FAST:
     cmp MATH_D
     bcc V2_UMOD8_DONE
     sbc MATH_D
+    cmp MATH_D
+    bcc V2_UMOD8_DONE
+    sbc MATH_D
 V2_UMOD8_DONE:
     sta MATH_R
     clc
