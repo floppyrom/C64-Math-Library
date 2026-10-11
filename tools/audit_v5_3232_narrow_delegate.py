@@ -11,7 +11,7 @@ from benchmark_unsigned_common_corpus import SPECS,corpus
 PROFILE='v5_hybrid_lowzp'
 OLD_SHA='6255f93fdfcd35c2aa27085915e32dca86e3f641af96a1160cd38cf951f70d51'
 NAMES=('MATH_UDIV32_32','MATH_UMOD32_32')
-prg=(ROOT/PROFILE/'resident'/f'math_{PROFILE}_game_math.prg').read_bytes()
+prg=restore_umod8_parent(PROFILE,(ROOT/PROFILE/'resident'/f'math_{PROFILE}_game_math.prg').read_bytes())
 lo=prg[0]|prg[1]<<8
 candidate=bytearray(65536);candidate[lo:lo+len(prg)-2]=prg[2:]
 original=candidate.copy()
