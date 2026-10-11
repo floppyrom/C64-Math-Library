@@ -488,19 +488,19 @@
           "class_means": {
             "divisor_zero": 67.0,
             "quotient_0": 93.18808777429467,
-            "quotient_1": 157.97931034482758,
-            "quotient_10_to_255": 1096.8895705521472,
-            "quotient_256_plus": 1941.807142857143,
-            "quotient_2_to_9": 736.5727923627685
+            "quotient_1": 157.79310344827587,
+            "quotient_10_to_255": 1093.355828220859,
+            "quotient_256_plus": 1929.807142857143,
+            "quotient_2_to_9": 735.2553699284009
           },
-          "max_cycles": 2426,
-          "mean_cycles": 359.0776841333822,
+          "max_cycles": 2414,
+          "mean_cycles": 358.00916086478566,
           "min_cycles": 67,
-          "p95_cycles": 1825,
+          "p95_cycles": 1813,
           "selection_means": {
-            "edges": 818.0302457466919,
-            "random": 239.212890625,
-            "stress": 2029.2083333333333,
+            "edges": 813.2665406427221,
+            "random": 239.16015625,
+            "stress": 2017.2083333333333,
             "zero": 67.0
           }
         },
@@ -568,19 +568,19 @@
           "class_means": {
             "divisor_zero": 67.0,
             "quotient_0": 93.18808777429467,
-            "quotient_1": 157.97931034482758,
-            "quotient_10_to_255": 1096.8895705521472,
-            "quotient_256_plus": 1941.807142857143,
-            "quotient_2_to_9": 736.5727923627685
+            "quotient_1": 157.79310344827587,
+            "quotient_10_to_255": 1093.355828220859,
+            "quotient_256_plus": 1929.807142857143,
+            "quotient_2_to_9": 735.2553699284009
           },
-          "max_cycles": 2426,
-          "mean_cycles": 359.0776841333822,
+          "max_cycles": 2414,
+          "mean_cycles": 358.00916086478566,
           "min_cycles": 67,
-          "p95_cycles": 1825,
+          "p95_cycles": 1813,
           "selection_means": {
-            "edges": 818.0302457466919,
-            "random": 239.212890625,
-            "stress": 2029.2083333333333,
+            "edges": 813.2665406427221,
+            "random": 239.16015625,
+            "stress": 2017.2083333333333,
             "zero": 67.0
           }
         }
@@ -1048,19 +1048,19 @@
           "class_means": {
             "divisor_zero": 67.0,
             "quotient_0": 95.32105263157895,
-            "quotient_1": 182.53947368421052,
-            "quotient_10_to_255": 1275.1904761904761,
-            "quotient_256_plus": 1954.8444444444444,
-            "quotient_2_to_9": 836.248
+            "quotient_1": 182.18421052631578,
+            "quotient_10_to_255": 1269.7047619047619,
+            "quotient_256_plus": 1942.8444444444444,
+            "quotient_2_to_9": 834.04
           },
-          "max_cycles": 2426,
-          "mean_cycles": 436.899706744868,
+          "max_cycles": 2414,
+          "mean_cycles": 435.22463343108507,
           "min_cycles": 67,
-          "p95_cycles": 1870,
+          "p95_cycles": 1858,
           "selection_means": {
-            "edges": 818.0302457466919,
-            "random": 248.9248046875,
-            "stress": 2029.2083333333333,
+            "edges": 813.2665406427221,
+            "random": 248.8779296875,
+            "stress": 2017.2083333333333,
             "zero": 67.0
           }
         },
@@ -1128,19 +1128,19 @@
           "class_means": {
             "divisor_zero": 67.0,
             "quotient_0": 95.32105263157895,
-            "quotient_1": 182.53947368421052,
-            "quotient_10_to_255": 1275.1904761904761,
-            "quotient_256_plus": 1954.8444444444444,
-            "quotient_2_to_9": 836.248
+            "quotient_1": 182.18421052631578,
+            "quotient_10_to_255": 1269.7047619047619,
+            "quotient_256_plus": 1942.8444444444444,
+            "quotient_2_to_9": 834.04
           },
-          "max_cycles": 2426,
-          "mean_cycles": 436.899706744868,
+          "max_cycles": 2414,
+          "mean_cycles": 435.22463343108507,
           "min_cycles": 67,
-          "p95_cycles": 1870,
+          "p95_cycles": 1858,
           "selection_means": {
-            "edges": 818.0302457466919,
-            "random": 248.9248046875,
-            "stress": 2029.2083333333333,
+            "edges": 813.2665406427221,
+            "random": 248.8779296875,
+            "stress": 2017.2083333333333,
             "zero": 67.0
           }
         }
@@ -1259,7 +1259,7 @@
   },
   "sources": {
     "v1_balanced": {
-      "resident_sha256": "45bf4a6a75462983dbfed1cb03b670cacc4299ed25d45865e34a353640c94d9f"
+      "resident_sha256": "5fb24ad166ecb0f8a3897d8523ce8224dfce947a0d0c5320f287dcefc98f4e6a"
     },
     "v2_pareto_fast": {
       "resident_sha256": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd"
@@ -1271,7 +1271,7 @@
       "resident_sha256": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7"
     },
     "v5_hybrid_lowzp": {
-      "resident_sha256": "1c479dfd72257ae791df7ff2e38dddd9fe9cd2d50eaa7090e3e15ce8e96bdaf8"
+      "resident_sha256": "f93d8f0cc5163ed00fcdc0ecfe117550131c33c4632bc484c5d30c481040e2d5"
     }
   },
   "status": "PASS",

@@ -1856,3 +1856,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue #39 bounded-high-byte 32/32 V1/V5 q=1 optimization: docs/ISSUE39_UDIV32_32_HIGH_QONE_V1V5_2026-10-11.md. Other unsigned architecture audits remain open.
 
 - Issue #39 bounded-high-byte 32/32 V1/V5 q=2/3 optimization: docs/ISSUE39_UDIV32_32_HIGH_Q23_V1V5_2026-10-11.md. Other unsigned architecture audits remain open.
+
+- Issue #39 zero-high-byte V1/V5 32/32 fallback bypass: docs/ISSUE39_UDIV32_ZERO_HIGH_BYPASS_2026-10-11.md. Other unsigned architecture audits remain open.

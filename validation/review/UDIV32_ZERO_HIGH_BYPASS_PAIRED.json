@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "profiles": {
+    "v1_balanced": {
+      "sha256_candidate": "5fb24ad166ecb0f8a3897d8523ce8224dfce947a0d0c5320f287dcefc98f4e6a",
+      "routines": {
+        "MATH_UDIV32_32": {
+          "count": 2729,
+          "faster": 243,
+          "same": 2486,
+          "slower": 0,
+          "d3_zero_qualified": 243,
+          "min_delta": -12,
+          "max_delta": 0,
+          "before_cycles": 979923,
+          "after_cycles": 977007,
+          "mean_before": 359.0776841333822,
+          "mean_after": 358.00916086478566,
+          "mean_delta": -1.0685232685965502
+        },
+        "MATH_UMOD32_32": {
+          "count": 1705,
+          "faster": 238,
+          "same": 1467,
+          "slower": 0,
+          "d3_zero_qualified": 238,
+          "min_delta": -12,
+          "max_delta": 0,
+          "before_cycles": 744914,
+          "after_cycles": 742058,
+          "mean_before": 436.899706744868,
+          "mean_after": 435.22463343108507,
+          "mean_delta": -1.6750733137829457
+        }
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "sha256_candidate": "f93d8f0cc5163ed00fcdc0ecfe117550131c33c4632bc484c5d30c481040e2d5",
+      "routines": {
+        "MATH_UDIV32_32": {
+          "count": 2729,
+          "faster": 243,
+          "same": 2486,
+          "slower": 0,
+          "d3_zero_qualified": 243,
+          "min_delta": -12,
+          "max_delta": 0,
+          "before_cycles": 979923,
+          "after_cycles": 977007,
+          "mean_before": 359.0776841333822,
+          "mean_after": 358.00916086478566,
+          "mean_delta": -1.0685232685965502
+        },
+        "MATH_UMOD32_32": {
+          "count": 1705,
+          "faster": 238,
+          "same": 1467,
+          "slower": 0,
+          "d3_zero_qualified": 238,
+          "min_delta": -12,
+          "max_delta": 0,
+          "before_cycles": 744914,
+          "after_cycles": 742058,
+          "mean_before": 436.899706744868,
+          "mean_after": 435.22463343108507,
+          "mean_delta": -1.6750733137829457
+        }
+      }
+    }
+  },
+  "matched_calls": 8868,
+  "matched_errors": 0
+}

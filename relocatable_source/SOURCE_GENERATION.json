@@ -4,8 +4,8 @@
     {
       "profile": "v1_balanced",
       "source": "relocatable_source/v1_balanced/math_relocatable.asm",
-      "reachable_instructions": 5773,
-      "source_sha256": "5a210ea6072d94ca13955e8f5fa036800fe22ae8d889fbbc515ff79814698d4b"
+      "reachable_instructions": 5774,
+      "source_sha256": "e1da75b05a963535ff175f46c90a9f11eff9bdbc768b3c84c8fe6a3ffc985812"
     },
     {
       "profile": "v2_pareto_fast",

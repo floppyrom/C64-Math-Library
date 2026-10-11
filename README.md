@@ -135,3 +135,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - [Issue #39 unsigned 32/16 multi-workload audit](docs/ISSUE39_UDIV32_16_WORKLOAD_DECISION_2026-10-11.md) provides reproducible workload-conditioned speed figures alongside the weighted profile ranking; the rejected V1 shortcut is **not** shipped.
 
 - Issue #39 bounded-high-byte 32/32 V1/V5 q=2/3 optimization: docs/ISSUE39_UDIV32_32_HIGH_Q23_V1V5_2026-10-11.md. Other unsigned architecture audits remain open.
+
+- Issue #39 zero-high-byte V1/V5 32/32 fallback bypass: docs/ISSUE39_UDIV32_ZERO_HIGH_BYPASS_2026-10-11.md. Other unsigned architecture audits remain open.
