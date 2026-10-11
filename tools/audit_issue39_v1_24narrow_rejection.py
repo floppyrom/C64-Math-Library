@@ -19,7 +19,7 @@ OUT=ROOT/'validation/review/ISSUE39_V1_UDIV24_NARROW_REJECTION.json'
 # This negative screen certifies a *historical* rejected dispatch experiment.
 # Reconstruct the exact PR60 parent after the newer 24/8 specialization:
 # old selector restored; formerly empty low 128-byte island zeroed.
-current=PATH.read_bytes();lo=current[0]|current[1]<<8
+current=restore_pr61(PATH.read_bytes());lo=current[0]|current[1]<<8
 assert current[2+0x7FA0-lo:2+0x7FA8-lo]==bytes.fromhex('ad15c0d0034c001d')
 prior=bytearray(current)
 prior[2+0x7FA0-lo:2+0x7FA0-lo+16]=bytes.fromhex('ad15c0d008ec14c090034cb07f4c9672')
