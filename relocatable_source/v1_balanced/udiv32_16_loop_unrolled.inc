@@ -1,10 +1,9 @@
-; Issue #39 V1 Balanced UDIV/UMOD 32/16 loop-control elimination.
-; Full-width low quotient loop (15 rounds) + conditional initial high-word loop
-; (16 rounds). Keep round zero in the existing kernel; replace only DEX/BNE.
-; Relative branch targets within each identical body naturally land at the next
-; iteration or at the common epilogue. The duplicated instructions use ZP
-; only; no absolute addressing in either repeated body. X is a loop counter only.
-; No ZP/ABI/REU/PRG span changes; island was previously unoccupied.
+; Issue #39 V1 32/16 dual-loop unroll; source-level symbolic operands.
+; Retain first iterations in existing core; unroll remaining 14 low and
+; 15 high rounds. Source expresses ALL mutable ZP operands through ZP_MAIN,
+; so reference $02 and alternate $07 relocate identically to parent core.
+; Code islands $1900-$1CF7 (REG_LOW+$0900..+$0CF7) preserve X=0.
+; Explicit branch labels are local to each copy and retain original widths.
 
 * = REG_KERNEL+$046A
 L446A:
@@ -18,68 +17,656 @@ D3216_LOW_REDIRECT:
 
 * = REG_LOW+$0900
 D3216_LOW_ROUNDS:
-    ; Low-word iteration 2/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 3/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 4/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 5/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 6/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 7/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 8/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 9/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 10/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 11/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 12/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 13/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 14/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
-    ; Low-word iteration 15/15
-    !byte $26, $1A, $26, $1B, $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90, $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38
+    ; low-word iteration 2/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_2
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_2
+    bne D3216_LOW_SIMPLE_2
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_2
+D3216_LOW_SIMPLE_2:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_2
+D3216_LOW_FULL_2:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_2:
+    ; low-word iteration 3/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_3
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_3
+    bne D3216_LOW_SIMPLE_3
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_3
+D3216_LOW_SIMPLE_3:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_3
+D3216_LOW_FULL_3:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_3:
+    ; low-word iteration 4/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_4
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_4
+    bne D3216_LOW_SIMPLE_4
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_4
+D3216_LOW_SIMPLE_4:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_4
+D3216_LOW_FULL_4:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_4:
+    ; low-word iteration 5/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_5
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_5
+    bne D3216_LOW_SIMPLE_5
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_5
+D3216_LOW_SIMPLE_5:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_5
+D3216_LOW_FULL_5:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_5:
+    ; low-word iteration 6/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_6
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_6
+    bne D3216_LOW_SIMPLE_6
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_6
+D3216_LOW_SIMPLE_6:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_6
+D3216_LOW_FULL_6:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_6:
+    ; low-word iteration 7/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_7
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_7
+    bne D3216_LOW_SIMPLE_7
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_7
+D3216_LOW_SIMPLE_7:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_7
+D3216_LOW_FULL_7:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_7:
+    ; low-word iteration 8/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_8
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_8
+    bne D3216_LOW_SIMPLE_8
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_8
+D3216_LOW_SIMPLE_8:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_8
+D3216_LOW_FULL_8:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_8:
+    ; low-word iteration 9/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_9
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_9
+    bne D3216_LOW_SIMPLE_9
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_9
+D3216_LOW_SIMPLE_9:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_9
+D3216_LOW_FULL_9:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_9:
+    ; low-word iteration 10/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_10
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_10
+    bne D3216_LOW_SIMPLE_10
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_10
+D3216_LOW_SIMPLE_10:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_10
+D3216_LOW_FULL_10:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_10:
+    ; low-word iteration 11/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_11
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_11
+    bne D3216_LOW_SIMPLE_11
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_11
+D3216_LOW_SIMPLE_11:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_11
+D3216_LOW_FULL_11:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_11:
+    ; low-word iteration 12/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_12
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_12
+    bne D3216_LOW_SIMPLE_12
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_12
+D3216_LOW_SIMPLE_12:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_12
+D3216_LOW_FULL_12:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_12:
+    ; low-word iteration 13/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_13
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_13
+    bne D3216_LOW_SIMPLE_13
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_13
+D3216_LOW_SIMPLE_13:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_13
+D3216_LOW_FULL_13:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_13:
+    ; low-word iteration 14/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_14
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_14
+    bne D3216_LOW_SIMPLE_14
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_14
+D3216_LOW_SIMPLE_14:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_14
+D3216_LOW_FULL_14:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_14:
+    ; low-word iteration 15/15
+    rol ZP_MAIN+$18
+    rol ZP_MAIN+$19
+    rol ZP_MAIN+$14
+    rol a
+    bcs D3216_LOW_FULL_15
+    cmp ZP_MAIN+$11
+    bcc D3216_LOW_NEXT_15
+    bne D3216_LOW_SIMPLE_15
+    ldy ZP_MAIN+$14
+    cpy ZP_MAIN+$10
+    bcc D3216_LOW_NEXT_15
+D3216_LOW_SIMPLE_15:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    bcs D3216_LOW_NEXT_15
+D3216_LOW_FULL_15:
+    tay
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    sta ZP_MAIN+$14
+    tya
+    sbc ZP_MAIN+$11
+    sec
+D3216_LOW_NEXT_15:
     ldx #$00
     jmp REG_KERNEL+$0573
 
 * = REG_LOW+$0B6D
 D3216_HIGH_ROUNDS:
-    ; High-word iteration 2/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 3/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 4/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 5/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 6/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 7/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 8/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 9/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 10/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 11/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 12/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 13/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 14/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 15/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
-    ; High-word iteration 16/16
-    !byte $06, $14, $26, $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6, $14
+    ; high-word iteration 2/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_2
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_2:
+    ; high-word iteration 3/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_3
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_3:
+    ; high-word iteration 4/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_4
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_4:
+    ; high-word iteration 5/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_5
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_5:
+    ; high-word iteration 6/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_6
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_6:
+    ; high-word iteration 7/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_7
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_7:
+    ; high-word iteration 8/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_8
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_8:
+    ; high-word iteration 9/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_9
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_9:
+    ; high-word iteration 10/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_10
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_10:
+    ; high-word iteration 11/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_11
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_11:
+    ; high-word iteration 12/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_12
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_12:
+    ; high-word iteration 13/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_13
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_13:
+    ; high-word iteration 14/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_14
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_14:
+    ; high-word iteration 15/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_15
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_15:
+    ; high-word iteration 16/16
+    asl ZP_MAIN+$12
+    rol ZP_MAIN+$13
+    rol ZP_MAIN+$14
+    rol ZP_MAIN+$15
+    sec
+    lda ZP_MAIN+$14
+    sbc ZP_MAIN+$10
+    tay
+    lda ZP_MAIN+$15
+    sbc ZP_MAIN+$11
+    bcc D3216_HIGH_NEXT_16
+    sta ZP_MAIN+$15
+    sty ZP_MAIN+$14
+    inc ZP_MAIN+$12
+D3216_HIGH_NEXT_16:
     ldx #$00
     jmp REG_KERNEL+$046D
