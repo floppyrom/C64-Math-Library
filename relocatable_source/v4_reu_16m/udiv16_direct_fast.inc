@@ -87,8 +87,9 @@ DU16F_chain_q2_done
 DU16F_chain_q2_equal_take
         sta MATH_R+0
         !byte $0b,$00
-        bcs DU16F___relax_6
         jmp DU16F_chain_q3_done
+        nop
+        nop                  ; C=0 after ANC #0, preserve code addresses
 DU16F___relax_6:
 DU16F_chain_q3_equal
         lda MATH_R+0
@@ -103,8 +104,9 @@ DU16F_chain_q3_done
 DU16F_chain_q3_equal_take
         sta MATH_R+0
         !byte $0b,$00
-        bcs DU16F___relax_9
         jmp DU16F_chain_q4_done
+        nop
+        nop                  ; C=0 after ANC #0, preserve code addresses
 DU16F___relax_9:
 DU16F_chain_q4_equal
         lda MATH_R+0
@@ -140,8 +142,9 @@ DU16F_q1_equal_q2
         sta MATH_R+0
         !byte $0b,$00
         sta MATH_Q+1
-        bcs DU16F___relax_2
         jmp DU16F_chain_q2_done
+        nop
+        nop                  ; C=0 after ANC #0 and STA, preserve code addresses
 DU16F___relax_2:
 DU16F_q1_high_ge
         beq DU16F_q1_high_equal
