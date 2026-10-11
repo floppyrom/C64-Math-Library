@@ -17,7 +17,7 @@
     "v2_pareto_fast": "8c77a56c713dd16717a53d6bf60e2a84f83db8df516896de41ce7e5d1a0b763f",
     "v3_reu_512k": "97f174548aa8a1569fd322ff550b630c76ea5afc6f930ee0fc99b3126dea5535",
     "v4_reu_16m": "d9ee2a1d28f88ede06688338f9aab65b3913620ec162d6597695c98ad4363880",
-    "v5_hybrid_lowzp": "4f6a69b268a6b8f47d5153b52905e08b1c432b7a308fded6f1c04f8ee1a7b49e"
+    "v5_hybrid_lowzp": "02005dbf5d14753bff8401de90036893f44aa7dd67860ee060f57da3860bd95c"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -138,13 +138,13 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 63900,
-    "user_manual_lines": 1852,
-    "user_manual_sha256": "78df935e33fbd7d0d6a47efa36cc18e2f1af2c6c2871e15dd54d4ceb5987e724"
+    "user_manual_bytes": 64083,
+    "user_manual_lines": 1854,
+    "user_manual_sha256": "28796db5f32d79b1c9b5ab726bcd03e6e8151e492a685d1fa4aedfc3cbacfd53"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "4f6a69b268a6b8f47d5153b52905e08b1c432b7a308fded6f1c04f8ee1a7b49e",
+    "alternate_prg_sha256": "02005dbf5d14753bff8401de90036893f44aa7dd67860ee060f57da3860bd95c",
     "common_machine_calls_per_map": 21678,
     "common_public_entries_per_map": 56,
     "config_validation_cases": 8,
@@ -157,7 +157,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "23833dcaf92d5b69cc16e215e67a38776c6feee6523526d7e5592813ceeb7939",
+    "reference_prg_sha256": "6aff56fc151a2bf6037323764f2317c6f3416cf8c181332a5592e31f2cf91f1d",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "atan2_tables_bytes": 1024
@@ -247,7 +247,7 @@
     "v2_pareto_fast": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
     "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
     "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
-    "v5_hybrid_lowzp": "23833dcaf92d5b69cc16e215e67a38776c6feee6523526d7e5592813ceeb7939"
+    "v5_hybrid_lowzp": "6aff56fc151a2bf6037323764f2317c6f3416cf8c181332a5592e31f2cf91f1d"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "79f5e4e45e9b72112a331fc251bf7e8a9d2cae4ade85c2d8ef5e41f36da878b4",
+    "benchmark_sha256": "3ccee2146d6f6a770d16cb822bbb455518267e510e98c6ba384b1ea1b45bbbaa",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -702,6 +702,29 @@
     "all_profile_signed_calls": 364533,
     "common_input_calls": 136335,
     "native_x64sc_paired_calls": 32,
+    "public_abi_changed": false
+  },
+  "issue39_v5_umod16_remainder_transplant_2026_10_11": {
+    "status": "PASS",
+    "documentation": "docs/ISSUE39_V5_UMOD16_REMAINDER_TRANSPLANT_2026-10-11.md",
+    "unsigned_family_completed": false,
+    "prior_v5_reference_sha256": "23833dcaf92d5b69cc16e215e67a38776c6feee6523526d7e5592813ceeb7939",
+    "new_v5_reference_sha256": "6aff56fc151a2bf6037323764f2317c6f3416cf8c181332a5592e31f2cf91f1d",
+    "alternate_v5_reference_sha256": "02005dbf5d14753bff8401de90036893f44aa7dd67860ee060f57da3860bd95c",
+    "umod16_same_input_calls": 1705,
+    "prior_mean_cycles": 205.02873900293255,
+    "new_mean_cycles": 198.61055718475075,
+    "faster_cases": 1613,
+    "slower_cases": 92,
+    "max_regression_cycles": 2,
+    "added_code_bytes": 69,
+    "joint_umod16_umod24_low_page_code_bytes": 248,
+    "normal_zp_growth_bytes": 0,
+    "resident_file_growth_bytes": 0,
+    "all_profile_unsigned_calls": 822050,
+    "all_profile_signed_calls": 364533,
+    "common_input_calls": 136335,
+    "vice_native_old_new_calls": 32,
     "public_abi_changed": false
   }
 }

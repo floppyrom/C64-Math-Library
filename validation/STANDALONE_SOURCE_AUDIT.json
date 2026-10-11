@@ -2072,7 +2072,7 @@
           "file": "mod_u16_u16_u16__math_umod16.asm",
           "alias_of": "MATH_UDIV16",
           "entry_address": "$3220",
-          "reachable_instructions": 625
+          "reachable_instructions": 616
         },
         {
           "legacy_api": "MATH_UMOD24",

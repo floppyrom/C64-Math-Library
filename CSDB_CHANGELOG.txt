@@ -1,3 +1,10 @@
+2026-10-11 ISSUE39 V5 UMOD16 REMAINDER-ONLY SOURCE TRANSPLANT
+- Imported 69-byte V2 UMOD16 remainder-only frontend into the 77 bytes remaining in the same already-unoccupied V5 REG_LOW final page after PR #52 UMOD24. Final combined code: $2F00-$2FF7 (248/256); reference UMOD16 $2FB3-$2FF7; alternate $AFB3-$AFF7. No additional normal ZP or resident PRG file bytes, no stable API relocation.
+- V5 UMOD16 identical-input mean 205.028739->198.610557 cycles (−6.418182, −3.13%); 1,705/1,705 V2 matched per-call cycle values, 1,613 faster than old V5, 92 slower by two cycles. UMOD24, UDIV16 and UDIV24 timing unchanged on 9,035 independently paired controls.
+- Full 822,050 all-profile unsigned, 364,533 signed, 136,335 common-input calls; V5 native VICE x64sc old/new 16+16; source reference and alternate 56 public API/mixed-call/ZP confinement certification; standalone/source catalogs, indexes, both changelogs and release seals refreshed.
+- Permanent V2/V5 UMOD16 exact timing+output gate in comparable-unsigned CI. Source design is manual transplantation of a V2 frontend (not novel OptiSearch native synthesis); private OptiSearch stays private. Issue39 unsigned family stays unchecked.
+- Details: docs/ISSUE39_V5_UMOD16_REMAINDER_TRANSPLANT_2026-10-11.md
+
 2026-10-11 ISSUE39 V5 UMOD24 REMAINDER-ONLY SOURCE TRANSPLANT
 - Imported existing V2 179-byte q=0/q=1 remainder-only frontend into V5's previously free REG_LOW final page, reference $2F00-$2FB2 and alternate $AF00-$AFB2. Preserve full public modulo remainder/carry/input semantics with no new normal ZP, no PRG span growth, and unchanged UDIV24.
 - Identical-input UMOD24 V5 mean 214.991629 -> 207.490663 cycles (3.49% faster), exactly matches V2/V3/V4 on all 1,553 calls. 914 faster, 375 slower (max +7 cycles); explicitly accepted mean/fast-exit trade-off, 179 newly occupied code bytes. Other V5 unsigned API means unchanged.
