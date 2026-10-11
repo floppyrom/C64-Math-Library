@@ -12,7 +12,11 @@ import hashlib,json
 ROOT=Path(__file__).resolve().parents[1]
 P=['v2_pareto_fast','v3_reu_512k','v4_reu_16m']
 BASE={'v2_pareto_fast':'28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6'}
-OPCODES={0xB884,0xB8A0,0xB8E4,0x7C8A,0x7CA5,0x7CC0}
+OPCODES={
+ 'v2_pareto_fast':(0xB884,0xB8A0,0xB8E4,0x7C8A,0x7CA5,0x7CC0),
+ 'v3_reu_512k':(0xB884,0xB8A0,0xB8E4,0x7D6B,0x7D86,0x7DA1),
+ 'v4_reu_16m':(0xB884,0xB8A0,0xB8E4,0x7D6B,0x7D86,0x7DA1),
+}
 OUT=ROOT/'validation/review/ISSUE39_U16_PR67_SOURCE_DIFF_SCREEN.json'
 def sha(s):return hashlib.sha256(s).hexdigest()
 def screen(profile):
@@ -24,7 +28,7 @@ def screen(profile):
  assert len(old)==len(ref),(profile,'resident length changed')
  locations=[]
  expected=bytearray(old)
- for a in sorted(OPCODES):
+ for a in sorted(OPCODES[profile]):
   i=2+a-0x1000
   initial=old[i:i+5]
   assert initial[1:3]==bytes.fromhex('034c') and initial[0] in (0x90,0xb0),(profile,hex(a),initial.hex())
