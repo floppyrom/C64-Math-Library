@@ -1,3 +1,9 @@
+2026-10-12 ISSUE39 V2 GUARDED D24 REMAINDER-ONLY UMOD8
+- V2 UMOD8 public ABI stable, source-backed 101-byte D>=24 guard at REG_KERNEL+$1323; preserves Q/N/D, upper R and divide-by-zero carry. Ten inline subtract/compare stages; original fallback retained for smaller divisors. No normal ZP, stack, resident PRG length or REU growth.
+- 131,072 exhaustive historical parent/new complete-resident CPU calls: 64.819153→52.204453 mean cycles (-19.46%), 58,290 faster / 504 equal / 6,742 slower, worst +15 cycles. 4,096 independent native VICE old/new full-resident calls passed.
+- V5 donor guard isolation restored certified identical V5 output; alternate relocation and five-profile unsigned correctness verified. Source mirrors, common-input benchmark catalog, documentation, release status and checksums updated.
+- Original V2 parent SHA e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd; new resident 28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6. This is not universal Pareto dominance. Unsigned DIV/MOD family campaign is still open; see docs/ISSUE39_V2_UMOD8_D24_RELEASE_2026-10-12.md.
+
 2026-10-11 ISSUE39 INDIVIDUAL SOURCE PICKUP GUIDE
 - Added docs/INDIVIDUAL_ROUTINE_PICKUP.md and top-level README/QUICK_START/routines index links so any C64 developer can find the exact V1–V5 source mirror and stable API for each recently optimized UDIV/UMOD operation without searching commit history.
 - Clearly distinguish individually indexed executable graph mirrors (not guaranteed one-file drop-ins because shared tables, ZP and private helpers can remain) from curated standalone/liftable modules; document direct per-routine links and minimal resident API example.

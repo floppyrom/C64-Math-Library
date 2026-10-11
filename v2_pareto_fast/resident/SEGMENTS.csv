@@ -47,3 +47,4 @@ seek16_helpers,$3EE3,137,integrated PRG,SEEK16 rate/plane helpers
 seek_shared,$3D23,109,integrated PRG,shared Euclidean speed correction + 32-byte cos table
 seek8_state,$3A90,160,integrated PRG,"SEEK8 per-slot state, 8 slots (POS_X/POS_Y public); runtime RAM"
 seek16_state,$90E8,248,integrated PRG,"SEEK16 per-slot state, 8 slots (POS_XL/XH/Y public); runtime RAM"
+umod8_guard_d24,$5323,101,integrated PRG,V2-only source-backed guarded D>=24 remainder-only UMOD8

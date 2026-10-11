@@ -1,0 +1,48 @@
+name: Issue39 V2 UMOD8 stage candidate release
+
+on:
+  push:
+    branches:
+      - issue39-v2-umod8-d24-qualification
+    paths:
+      - '.github/workflows/issue39-v2-umod8-publish.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  stage-qualified-release:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v2-umod8-d24-qualification
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      # Include the 32/16 workload provenance rerun in the sealed release.
+      - name: Stage source, binary, benchmarks, source mirrors and publication
+        run: python3 tools/stage_issue39_v2_umod8_release.py
+      - name: Verify the 320-item source catalog and checksum seal
+        run: |
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/package_audit.py
+      - name: Publish staged candidate assets to this draft branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish qualified V2 UMOD8 candidate artifacts"
+            git push origin HEAD:issue39-v2-umod8-d24-qualification
+          fi
+      - name: Show staged release status
+        run: |
+          git status --short
+          git log -1 --format='%h %s'

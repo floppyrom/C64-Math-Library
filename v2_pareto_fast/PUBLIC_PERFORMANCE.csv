@@ -7,7 +7,7 @@ math_udiv8,div_u8_u8_u8_8,59.383011,26,634,65536,,0,2026-09-20 unsigned division
 math_udiv16,div_u16_u16_u16_16,127.773827,41,1076,4753,,0,2026-09-20 unsigned division-family validation
 math_udiv24,div_u24_u24_u24_24,154.218178,56,1412,4753,,0,2026-10-11 issue39 live-X equal-high source validation
 math_udiv32_16,div_u32_u16_u32_16,753.99453,175,1880,4753,,0,2026-09-20 unsigned division-family validation
-math_umod8,mod_u8_u8_u8,67.284844,51,495,1313,,0,2026-09-20 unsigned division-family validation
+math_umod8,mod_u8_u8_u8,56.963442,35,509,1313,,0,2026-10-12 issue39 V2 D24 full-resident exhaustive paired proof
 math_umod16,mod_u16_u16_u16,203.033484,41,1076,1553,,0,2026-09-20 unsigned division-family validation
 math_umod24,mod_u24_u24_u24,205.325821,42,1419,1553,,0,2026-10-11 issue39 live-X equal-high source validation
 math_umod32_16,mod_u32_u16_u16,792.160335,178,1883,1553,,0,2026-09-20 unsigned division-family validation

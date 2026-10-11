@@ -1,0 +1,23 @@
+{
+  "all_input_pairs": 65536,
+  "delta_addresses": 104,
+  "equal": 504,
+  "faster": 58290,
+  "guard_bytes": 101,
+  "maximum_regression_cycles": 15,
+  "new_cycle_stream_sha256": "e623843c653c008233dc4ef28db74235767b36d171ffee4ff9938b79c8474767",
+  "new_mean_cycles": 52.20445251464844,
+  "new_resident_sha256": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6",
+  "old_cycle_stream_sha256": "a30972670604b83615166d042e312a403a9f5019a1f9b64295c6f702052ba985",
+  "old_mean_cycles": 64.81915283203125,
+  "old_resident_sha256": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
+  "paired_calls": 131072,
+  "profile": "v2_pareto_fast",
+  "qualification": "candidate only, not published release",
+  "reference_and_alternate_relocation_validated": true,
+  "slower": 6742,
+  "source_candidate_sha256": "6a733be6ca05992b46585c8443ae6ce7b21a075bfdfdfe34cf844e748b8f6f29",
+  "status": "PASS",
+  "threshold_divisor": 24,
+  "v5_resident_byte_identical": true
+}

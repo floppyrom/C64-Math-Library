@@ -6,14 +6,15 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 69.
+; Reachable instructions: 108.
 !cpu 6510
 
 ; ---- executable island $3200 ----
 * = $3200
 mod_u8_u8_u8:
 MATH_UMOD8:
-    lda $C010                          ; @3200 AD 10 C0
+    jmp L5323                          ; @3200 4C 23 53
+L3203:
     sta $10                            ; @3203 85 10
     lda $C014                          ; @3205 AD 14 C0
     sta $11                            ; @3208 85 11
@@ -92,3 +93,47 @@ L526E:
     adc $11                            ; @526E 65 11
     clc                                ; @5270 18
     rts                                ; @5271 60
+; ---- executable island $5323 ----
+* = $5323
+L5323:
+    lda $C014                          ; @5323 AD 14 C0
+    cmp #$18                           ; @5326 C9 18
+    bcs L5330                          ; @5328 B0 06
+    lda $C010                          ; @532A AD 10 C0
+    jmp L3203                          ; @532D 4C 03 32
+L5330:
+    lda $C010                          ; @5330 AD 10 C0
+    cmp $C014                          ; @5333 CD 14 C0
+    bcc L5383                          ; @5336 90 4B
+    sbc $C014                          ; @5338 ED 14 C0
+    cmp $C014                          ; @533B CD 14 C0
+    bcc L5383                          ; @533E 90 43
+    sbc $C014                          ; @5340 ED 14 C0
+    cmp $C014                          ; @5343 CD 14 C0
+    bcc L5383                          ; @5346 90 3B
+    sbc $C014                          ; @5348 ED 14 C0
+    cmp $C014                          ; @534B CD 14 C0
+    bcc L5383                          ; @534E 90 33
+    sbc $C014                          ; @5350 ED 14 C0
+    cmp $C014                          ; @5353 CD 14 C0
+    bcc L5383                          ; @5356 90 2B
+    sbc $C014                          ; @5358 ED 14 C0
+    cmp $C014                          ; @535B CD 14 C0
+    bcc L5383                          ; @535E 90 23
+    sbc $C014                          ; @5360 ED 14 C0
+    cmp $C014                          ; @5363 CD 14 C0
+    bcc L5383                          ; @5366 90 1B
+    sbc $C014                          ; @5368 ED 14 C0
+    cmp $C014                          ; @536B CD 14 C0
+    bcc L5383                          ; @536E 90 13
+    sbc $C014                          ; @5370 ED 14 C0
+    cmp $C014                          ; @5373 CD 14 C0
+    bcc L5383                          ; @5376 90 0B
+    sbc $C014                          ; @5378 ED 14 C0
+    cmp $C014                          ; @537B CD 14 C0
+    bcc L5383                          ; @537E 90 03
+    sbc $C014                          ; @5380 ED 14 C0
+L5383:
+    sta $C01C                          ; @5383 8D 1C C0
+    clc                                ; @5386 18
+    rts                                ; @5387 60

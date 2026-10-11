@@ -28,7 +28,7 @@
       "stable_api_zp_union_touched_bytes": 190,
       "stable_api_zp_union_ranges": "$0E-$42;$4F-$66;$68-$69;$82-$F0",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 17753
+      "stable_api_reachable_code_union_bytes": 17854
     },
     {
       "profile": "v3_reu_512k",
@@ -1683,12 +1683,12 @@
       "signedness": "unsigned",
       "operation": "modulo",
       "width": "8",
-      "mean_cycles": "67.284844",
-      "min_cycles": 51,
-      "max_cycles": 495,
+      "mean_cycles": "56.963442",
+      "min_cycles": 35,
+      "max_cycles": 509,
       "cases": 1313,
       "cycle_basis": "2026-09-20 unsigned division-family validation",
-      "reachable_code_bytes": 131,
+      "reachable_code_bytes": 232,
       "zp_bytes": 2,
       "zp_ranges": "$10-$11",
       "stack_page_reserved_bytes": 0,

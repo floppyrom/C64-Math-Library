@@ -146,9 +146,9 @@
       "MATH_UMOD8": {
         "cases": 1313,
         "errors": 0,
-        "mean_cycles": 67.28484386900229,
-        "min_cycles": 51,
-        "max_cycles": 495
+        "mean_cycles": 56.963442498095965,
+        "min_cycles": 35,
+        "max_cycles": 509
       },
       "MATH_UMOD16": {
         "cases": 1553,
