@@ -1,3 +1,12 @@
+2026-10-11 ISSUE39 UDIV24/UMOD24 LIVE-X EQUALITY FAST PATH
+- In V1 Balanced and V2/V3/V4 direct 24-bit quotient cores, reuse the already-live X=N2=D2 high byte using TXA instead of an extra LDA MATH_D+2, shortening the fast path by two cycles and two code bytes; V5 inherits both donor improvements.
+- Paired deterministic public-entry corpus: 31,530 calls across V1–V5, no arithmetic/carry mismatches and no slower calls; exactly 1,994 calls save two cycles. Mean UDIV24 cycles V1–V5: 194.032611, 154.218178, 161.533347, 158.385020, 157.655376. UMOD24 means: 302.877656, 205.325821, 207.136510, 205.247263, 210.894398.
+- V2–V4 UMOD24 dedicated remainder paths are unchanged on the benchmark corpus; public ABI and normal-ZP/resource contracts remain unchanged.
+- Initial genuine VICE x64sc 3.13.2 paired spot proof: 80 before + 80 after native calls, including REU 512 KiB/16 MiB and V5 C64 CPU-port ROM banking.
+- Source/relocation, signed and unsigned family checks, source mirrors, public benchmarks, README/manual, both changelogs, release metadata, SHA256 manifest and package audit refreshed.
+- This is a manual register-lifetime synthesis on OptiSearch/Repose-derived architectures, not an independent generic OptiSearch native record. The larger issue #39 unsigned DIV/MOD campaign remains open.
+- Documentation: docs/ISSUE39_UDIV24_EQUAL_HIGH_X_LIFETIME_2026-10-11.md
+
 2026-10-11 ISSUE39 UDIV16/UMOD16 SHARED CONDITIONAL TRANSPLANT
 - Removed an unreachable BCC after SEC in V2/V3/V4 UDIV16 shared producer; V5 inherits the source-level patch from V2.
 - V2/V3/V4/V5 UDIV16 mean cycles: 127.754892 / 125.408794 / 125.605512 / 126.362297.

@@ -28,7 +28,7 @@ DU24B___relax_0:
  beq DU24B_low_d2
  jmp DU24B_high_gt
 DU24B_high_equal:
- lda MATH_D+2
+ txa  ; X=N2=D2 proved by preceding CMP+BEQ; saves 2 cycles
  beq DU24B_low_d2_equal
  lda MATH_N+1
  cmp MATH_D+1

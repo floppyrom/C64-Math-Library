@@ -5,9 +5,9 @@ umul24,mul_u24_u24_u48,474.042329,429.555502,429.555502,2026-10-06 UMUL24 direct
 umul32,mul_u32_u32_u64,712.235367,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
 udiv8,div_u8_u8_u8_8,59.571976,59.383011,52.852264,2026-10-06 exhaustive REU UDIV8 hybrid validation
 udiv16,div_u16_u16_u16_16,132.725857,127.773827,125.423943,2026-09-20 unsigned division-family validation
-udiv24,div_u24_u24_u24_24,194.156322,183.660846,191.745424,2026-09-20 unsigned division-family validation
+udiv24,div_u24_u24_u24_24,194.032611,154.218178,161.533347,2026-10-11 issue39 4753/1553-call paired source validation
 udiv32_16,div_u32_u16_u32_16,870.340206,753.99453,755.944246,2026-09-20 unsigned division-family validation
 umod8,mod_u8_u8_u8,67.167555,67.284844,49.71211,2026-09-20 unsigned division-family validation
 umod16,mod_u16_u16_u16,184.082421,203.033484,203.396008,2026-09-20 unsigned division-family validation
-umod24,mod_u24_u24_u24,303.233097,300.949131,302.914359,2026-09-20 unsigned division-family validation
+umod24,mod_u24_u24_u24,302.877656,205.325821,207.136510,2026-10-11 issue39 4753/1553-call paired source validation
 umod32_16,mod_u32_u16_u16,971.613651,792.160335,789.650998,2026-09-20 unsigned division-family validation

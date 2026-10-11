@@ -5,10 +5,10 @@ math_umul24,mul_u24_u24_u48,474.042329,444,530,10324,,0,2026-10-06 UMUL24 direct
 math_umul32,mul_u32_u32_u64,712.235367,652,831,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29-derived private q0 producer; mixed-call-safe public binder
 math_udiv8,div_u8_u8_u8_8,59.571976,26,554,65536,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
 math_udiv16,div_u16_u16_u16_16,132.725857,41,1535,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
-math_udiv24,div_u24_u24_u24_24,194.156322,56,3235,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_udiv24,div_u24_u24_u24_24,194.032611,56,3235,4753,,0,2026-10-11 issue39 live-X equal-high source validation,final shipped resident; deterministic public-ABI corpus
 math_udiv32_16,div_u32_u16_u32_16,870.340206,182,2099,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
 math_umul32_ready,mul_u32_u32_u64_ready,697.175781,642,784,1024,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29 READY entry; requires initialized/bound pointer state
 math_umod8,mod_u8_u8_u8,67.167555,51,495,1313,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
 math_umod16,mod_u16_u16_u16,184.082421,41,1535,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
-math_umod24,mod_u24_u24_u24,303.233097,56,3235,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_umod24,mod_u24_u24_u24,302.877656,56,3235,1553,,0,2026-10-11 issue39 live-X equal-high source validation,final shipped resident; deterministic public-ABI corpus
 math_umod32_16,mod_u32_u16_u16,971.613651,185,1978,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus

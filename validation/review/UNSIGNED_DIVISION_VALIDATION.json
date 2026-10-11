@@ -21,7 +21,7 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 194.15632232274353,
+        "mean_cycles": 194.03261098253734,
         "min_cycles": 56,
         "max_cycles": 3235,
         "mode": "structured_random"
@@ -67,7 +67,7 @@
       "MATH_UMOD24": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 303.23309723116546,
+        "mean_cycles": 302.87765614938826,
         "min_cycles": 56,
         "max_cycles": 3235
       },
@@ -114,9 +114,9 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 154.33894382495265,
+        "mean_cycles": 154.21817799284662,
         "min_cycles": 56,
-        "max_cycles": 1414,
+        "max_cycles": 1412,
         "mode": "structured_random"
       },
       "MATH_UDIV32_16": {
@@ -207,9 +207,9 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 161.65327161792553,
+        "mean_cycles": 161.53334735956238,
         "min_cycles": 56,
-        "max_cycles": 1414,
+        "max_cycles": 1412,
         "mode": "structured_random"
       },
       "MATH_UDIV32_16": {
@@ -300,9 +300,9 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 158.50704818009677,
+        "mean_cycles": 158.38501998737638,
         "min_cycles": 56,
-        "max_cycles": 1414,
+        "max_cycles": 1412,
         "mode": "structured_random"
       },
       "MATH_UDIV32_16": {
@@ -393,9 +393,9 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 157.7761413843888,
+        "mean_cycles": 157.65537555228278,
         "min_cycles": 56,
-        "max_cycles": 1414,
+        "max_cycles": 1412,
         "mode": "structured_random"
       },
       "MATH_UDIV32_16": {
@@ -439,9 +439,9 @@
       "MATH_UMOD24": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 211.24855119124277,
+        "mean_cycles": 210.894397939472,
         "min_cycles": 56,
-        "max_cycles": 1414
+        "max_cycles": 1412
       },
       "MATH_UMOD32_16": {
         "cases": 1553,
