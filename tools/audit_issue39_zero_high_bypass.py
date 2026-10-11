@@ -14,6 +14,18 @@ for profile in ('v1_balanced','v5_hybrid_lowzp'):
     path=ROOT/profile/'resident'/f'math_{profile}_game_math.prg'
     blob=path.read_bytes();lo=blob[0]|blob[1]<<8
     mem=bytearray(65536);mem[lo:lo+len(blob)-2]=blob[2:]
+    # Freeze the historical PR57/PR58 V5 state before checking its 12-cycle
+    # three-byte bypass. Later V5-only 32/16 delegation modifies that SAME
+    # high-zero junction; merely comparing the current live program would
+    # misattribute the newer optimization to the earlier PR57 certificate.
+    if profile=='v5_hybrid_lowzp':
+        assert mem[0x6859:0x685c]==bytes.fromhex('4c 00 1d')
+        assert mem[0x1d00:0x1d03]==bytes.fromhex('ad 16 c0')
+        mem[0x6859:0x685c]=bytes.fromhex('4c 00 c1')
+        mem[0x1d00:0x1d15]=bytes(21)
+        reconstructed=bytes((lo&255,lo>>8))+bytes(mem[lo:lo+len(blob)-2])
+        assert hashlib.sha256(reconstructed).hexdigest()=='6255f93fdfcd35c2aa27085915e32dca86e3f641af96a1160cd38cf951f70d51'
+        blob=reconstructed
     assert all(mem[a]==v for a,v in AFTER.items()),profile
     parent=mem.copy()
     for a,v in BEFORE.items():parent[a]=v

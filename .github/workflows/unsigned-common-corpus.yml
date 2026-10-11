@@ -25,6 +25,8 @@ jobs:
           python3 tools/validate_v1_3216_unroll.py
           git diff --exit-code -- validation/review/V1_UDIV32_16_DUAL_UNROLL.json
           python3 tools/audit_issue39_zero_high_bypass.py
+          python3 tools/audit_v5_3232_narrow_delegate.py
+          git diff --exit-code -- validation/review/ISSUE39_V5_32_32_NARROW_DELEGATION.json
           git diff --exit-code -- validation/review/UDIV32_ZERO_HIGH_BYPASS_PAIRED.json
           python3 tools/benchmark_unsigned_3216_workloads.py
           git diff --exit-code -- validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json benchmarks/UNSIGNED_3216_WORKLOAD_AUDIT.csv

@@ -1,0 +1,126 @@
+{
+  "baseline_sha256": "6255f93fdfcd35c2aa27085915e32dca86e3f641af96a1160cd38cf951f70d51",
+  "candidate_sha256": "9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2",
+  "machine_calls": 21412,
+  "method": "paired exact public 6502 cycles, quotient/remainder/carry and N/D preservation",
+  "normal_zp_growth": 0,
+  "paired_inputs": 10706,
+  "resident_prg_growth": 0,
+  "routines": {
+    "MATH_UDIV32_32": {
+      "canonical": {
+        "after_mean_cycles": 275.01319164529133,
+        "before_mean_cycles": 358.00916086478566,
+        "case_sha256": "90f8357902790bd62357bc1677b516bc28222cc066daba339262aba28826e980",
+        "cases": 2729,
+        "equal": 2486,
+        "faster": 234,
+        "maximum_saving_cycles": 1330,
+        "slower": 9,
+        "worst_regression_cycles": 10
+      },
+      "divide_by_zero": {
+        "after_mean_cycles": 67.0,
+        "before_mean_cycles": 67.0,
+        "case_sha256": "40e744e81fb5bc636c5424dc7ae5fbfff601285ae5a8bc979a12440a8f0adc4b",
+        "cases": 64,
+        "equal": 64,
+        "faster": 0,
+        "maximum_saving_cycles": 0,
+        "slower": 0,
+        "worst_regression_cycles": 0
+      },
+      "middle_24bit_divisor": {
+        "after_mean_cycles": 1552.6455078125,
+        "before_mean_cycles": 1542.6748046875,
+        "case_sha256": "d4919eb456ed1dda18dfa48514fb68d3165cae3bf9d0377575a8003233d08b55",
+        "cases": 1024,
+        "equal": 3,
+        "faster": 0,
+        "maximum_saving_cycles": 0,
+        "slower": 1021,
+        "worst_regression_cycles": 10
+      },
+      "narrow_16bit_divisor": {
+        "after_mean_cycles": 732.8935546875,
+        "before_mean_cycles": 1666.6416015625,
+        "case_sha256": "0560de54248e644198335ce1038986dfd664afc5d016896e04c867b85b8090d7",
+        "cases": 1024,
+        "equal": 0,
+        "faster": 1024,
+        "maximum_saving_cycles": 1120,
+        "slower": 0,
+        "worst_regression_cycles": 0
+      },
+      "wide_32bit_divisor": {
+        "after_mean_cycles": 231.0419921875,
+        "before_mean_cycles": 231.0419921875,
+        "case_sha256": "8906aac8d8c9b9e9e99f35c64efefea201f6609d33beb6f350f613c8f0b9dadb",
+        "cases": 1024,
+        "equal": 1024,
+        "faster": 0,
+        "maximum_saving_cycles": 0,
+        "slower": 0,
+        "worst_regression_cycles": 0
+      }
+    },
+    "MATH_UMOD32_32": {
+      "canonical": {
+        "after_mean_cycles": 302.35307917888565,
+        "before_mean_cycles": 435.22463343108507,
+        "case_sha256": "5d91abb2b74f98b67c73630f9d882c10abc7ee54d9e6716b29f9334a9d41e0eb",
+        "cases": 1705,
+        "equal": 1467,
+        "faster": 234,
+        "maximum_saving_cycles": 1330,
+        "slower": 4,
+        "worst_regression_cycles": 10
+      },
+      "divide_by_zero": {
+        "after_mean_cycles": 67.0,
+        "before_mean_cycles": 67.0,
+        "case_sha256": "52568fe1a29d9fd518d3acde9506ecf6a8dcd104c06411a6a4ccfc897e48cc5b",
+        "cases": 64,
+        "equal": 64,
+        "faster": 0,
+        "maximum_saving_cycles": 0,
+        "slower": 0,
+        "worst_regression_cycles": 0
+      },
+      "middle_24bit_divisor": {
+        "after_mean_cycles": 1557.5693359375,
+        "before_mean_cycles": 1547.5888671875,
+        "case_sha256": "da22e24ebcb824139731ff6c622fc1b74975821a3db939f7b6c22f9603473a7d",
+        "cases": 1024,
+        "equal": 2,
+        "faster": 0,
+        "maximum_saving_cycles": 0,
+        "slower": 1022,
+        "worst_regression_cycles": 10
+      },
+      "narrow_16bit_divisor": {
+        "after_mean_cycles": 732.8349609375,
+        "before_mean_cycles": 1666.6484375,
+        "case_sha256": "8388d40515eb8af02ae86fb98866ddc170c5df5db19da4bef6155916fa4c0b7d",
+        "cases": 1024,
+        "equal": 0,
+        "faster": 1024,
+        "maximum_saving_cycles": 1064,
+        "slower": 0,
+        "worst_regression_cycles": 0
+      },
+      "wide_32bit_divisor": {
+        "after_mean_cycles": 236.4609375,
+        "before_mean_cycles": 236.4609375,
+        "case_sha256": "b2dd66457972b8c2ae94b65eace0b00079e616b5d6d21b228bd85e767bdb3492",
+        "cases": 1024,
+        "equal": 1024,
+        "faster": 0,
+        "maximum_saving_cycles": 0,
+        "slower": 0,
+        "worst_regression_cycles": 0
+      }
+    }
+  },
+  "status": "PASS"
+}

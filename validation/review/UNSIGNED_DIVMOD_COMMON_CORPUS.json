@@ -568,19 +568,19 @@
           "class_means": {
             "divisor_zero": 67.0,
             "quotient_0": 93.18808777429467,
-            "quotient_1": 157.79310344827587,
-            "quotient_10_to_255": 1093.355828220859,
-            "quotient_256_plus": 1929.807142857143,
-            "quotient_2_to_9": 735.2553699284009
+            "quotient_1": 142.65172413793104,
+            "quotient_10_to_255": 818.9018404907976,
+            "quotient_256_plus": 1018.2071428571429,
+            "quotient_2_to_9": 627.0119331742244
           },
-          "max_cycles": 2414,
-          "mean_cycles": 358.00916086478566,
+          "max_cycles": 1815,
+          "mean_cycles": 275.01319164529133,
           "min_cycles": 67,
-          "p95_cycles": 1813,
+          "p95_cycles": 874,
           "selection_means": {
-            "edges": 813.2665406427221,
-            "random": 239.16015625,
-            "stress": 2017.2083333333333,
+            "edges": 430.945179584121,
+            "random": 239.2041015625,
+            "stress": 1003.125,
             "zero": 67.0
           }
         }
@@ -1128,19 +1128,19 @@
           "class_means": {
             "divisor_zero": 67.0,
             "quotient_0": 95.32105263157895,
-            "quotient_1": 182.18421052631578,
-            "quotient_10_to_255": 1269.7047619047619,
-            "quotient_256_plus": 1942.8444444444444,
-            "quotient_2_to_9": 834.04
+            "quotient_1": 153.29605263157896,
+            "quotient_10_to_255": 843.6476190476191,
+            "quotient_256_plus": 997.1111111111111,
+            "quotient_2_to_9": 652.624
           },
-          "max_cycles": 2414,
-          "mean_cycles": 435.22463343108507,
+          "max_cycles": 1815,
+          "mean_cycles": 302.35307917888565,
           "min_cycles": 67,
-          "p95_cycles": 1858,
+          "p95_cycles": 896,
           "selection_means": {
-            "edges": 813.2665406427221,
-            "random": 248.8779296875,
-            "stress": 2017.2083333333333,
+            "edges": 430.945179584121,
+            "random": 248.9169921875,
+            "stress": 1003.125,
             "zero": 67.0
           }
         }
@@ -1271,7 +1271,7 @@
       "resident_sha256": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7"
     },
     "v5_hybrid_lowzp": {
-      "resident_sha256": "6255f93fdfcd35c2aa27085915e32dca86e3f641af96a1160cd38cf951f70d51"
+      "resident_sha256": "9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2"
     }
   },
   "status": "PASS",
