@@ -1,3 +1,12 @@
+2026-10-11 ISSUE39 COMMON-INPUT UNSIGNED DIVMOD RANKING AUDIT
+- Corrects a benchmark-methodology issue: the legacy unsigned family validator deliberately varies random input seeds per profile, making its individual cycle means unsuitable for direct V1–V5 ranking.
+- Adds a separate 136,335-call common-input machine-code audit covering 11 public unsigned DIV/MOD APIs and all V1–V5 reference residents, with result/carry/input preservation checks and workload-class, p95, max, mean timings.
+- Changes `benchmarks/BEST_PROFILE_RESULTS.csv` to choose winners using identical-input data for these 11 routines, while preserving legacy independent validation/performance rows for extra correctness coverage.
+- Publishes `benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv`, a permanent generator and verification gate, documentation, performance table correction, source SHA and corpus fingerprints.
+- V1 UDIV24 slow paths are genuine when quotient >255: V1 2,098.8 vs V2 859.9 mean on that slice. In contrast V1 UDIV16 156.348 vs V2–V5 161.761, demonstrating workload-dependent ranking. V3/V4 UDIV24 and UMOD24 cycle vectors match V2 on identical inputs.
+- No arithmetic routines or public ABI changed; unsigned family #39 remains open pending remaining architecture audits and no-gain decisions.
+- See `docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md`.
+
 2026-10-11 ISSUE39 UDIV24/UMOD24 LIVE-X EQUALITY FAST PATH
 - In V1 Balanced and V2/V3/V4 direct 24-bit quotient cores, reuse the already-live X=N2=D2 high byte using TXA instead of an extra LDA MATH_D+2, shortening the fast path by two cycles and two code bytes; V5 inherits both donor improvements.
 - Paired deterministic public-entry corpus: 31,530 calls across V1–V5, no arithmetic/carry mismatches and no slower calls; exactly 1,994 calls save two cycles. Mean UDIV24 cycles V1–V5: 194.032611, 154.218178, 161.533347, 158.385020, 157.655376. UMOD24 means: 302.877656, 205.325821, 207.136510, 205.247263, 210.894398.

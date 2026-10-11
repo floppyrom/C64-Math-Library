@@ -1844,3 +1844,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue #39 shared UDIV16/UMOD16 branch transplant: docs/ISSUE39_UDIV16_BRANCH_TRANSPLANT_2026-10-11.md; unsigned family audit remains open.
 
 - Issue #39 UDIV24/UMOD24 live-X equal-high optimization: docs/ISSUE39_UDIV24_EQUAL_HIGH_X_LIFETIME_2026-10-11.md. Wider unsigned family campaign not yet complete.
+
+- Issue #39 same-input performance ranking audit: use common operands and workload classes before deciding which fixed profile is fastest; see `benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv`. V1 24-bit heavy quotient tails differ markedly from V2–V5, and REU cycle counts do not include DMA bus time.
