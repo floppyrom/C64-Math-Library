@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 PR67 V5 PAIR-CORPUS FIXTURE REFRESH
+- Removed the obsolete hard-coded 198.610557-cycle V5/ V2 UMOD16 comparison.
+- The permanent 1,705-pair exact V2/V5 public ABI parity test now pins both current shipped resident SHA-256 hashes against the same-input benchmark report and checks each measured mean against the corresponding report metric. This preserves a strict cycle regression check across further source-qualified changes while avoiding stale pre-release literals. All four candidate resident images remain byte-identical to the already staged PR67 release.
+
 2026-10-12 ISSUE39 PR67 KNOWN-CARRY 16BIT DIV/MOD
 - Source-backed V2/V3/V4 UDIV16/UMOD16/SDIV16/SMOD16: replace three carry-proven unreachable conditional-plus-JMP pairs per unsigned and signed private divider by direct JMP with two never-executed padding NOPs. Exact instruction addresses, resident length, normal ZP, stack, ABI and tables preserved. V5 rebuilt from V2 donor, V1 byte-identical.
 - Same-input V2 unsigned means: UDIV16 161.761451->161.758520, UMOD16 198.610557->198.601173 cycles. This is a small strict nonregression on the measured shared corpus, not a new dividing architecture.

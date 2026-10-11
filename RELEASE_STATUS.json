@@ -1013,6 +1013,7 @@
     "source_diff_report_sha256": "3d84e8a054774cfef411a911523a685bf3ab750560a8ab8c0b9c07c495a8e24b",
     "candidate_hybrid_proof_sha256": "a7c2d156c86ae15476865732b28c7779412f9beaf145cc0e9eec306266d011a1",
     "paired_signed_new_report_sha256": "91e750c957459a934d3e00f37bfae14d26eb478c58cd9b678854907d98df85d3",
-    "paired_signed_new_csv_sha256": "42d8a897669ada51c653160e35174e5ebdf2b228da858533da42ad08e4933b1d"
+    "paired_signed_new_csv_sha256": "42d8a897669ada51c653160e35174e5ebdf2b228da858533da42ad08e4933b1d",
+    "v5_umod16_frontend_source_sha256": "842fac2810e32df26677ccf43c9fae645492fc226eba6c34e979bba035b1e2a7"
   }
 }
