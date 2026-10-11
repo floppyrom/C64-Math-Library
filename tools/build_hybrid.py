@@ -1294,7 +1294,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             raise RuntimeError('V1 24/8 donor helper prefix drifted; cannot reclaim V5 narrow island')
         if any(dst[v1_byte8+0x60:v1_byte8+0x80]):
             raise RuntimeError('V1 24/8 helper exceeded its reserved 128-byte V5 reclaim island')
-        dst[v1_byte8:v1_byte8+0x80] = b'\\0' * 0x80
+        dst[v1_byte8:v1_byte8+0x80] = bytes(0x80)
         # The V5 public 24-bit entrypoints are replaced by V2, hence the
         # inherited V1 dispatch is unreachable. Preserve V5's pre-PR61 image
         # exactly, rather than shipping 7 dead-byte changes in that gate.
