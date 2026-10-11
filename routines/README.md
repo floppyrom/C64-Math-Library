@@ -38,4 +38,4 @@ to building target seeking on `MATH_VEC2_NORMALIZE_Q8_8`.
 
 For the fastest overview, start with [`../PERFORMANCE.md`](../PERFORMANCE.md). For every shipped profile row, use [`../benchmarks/PUBLIC_PROFILE_RESULTS.csv`](../benchmarks/PUBLIC_PROFILE_RESULTS.csv). For standalone alternatives, use [`../benchmarks/STANDALONE_RESULTS.csv`](../benchmarks/STANDALONE_RESULTS.csv).
 
-The source catalog contains all **245** shipped callable profile entries plus the separately published standalone alternatives. Profile-local duplication is intentional because each fixed profile remains self-contained.
+The source catalog currently indexes **295 shipped callable profile-entry mirrors** (including profile-specific REU extensions) plus **25 separately benchmarked standalone alternatives**. Profile-local duplication is intentional because each fixed profile remains self-contained. For direct links to recent UDIV/UMOD variants and to distinguish exact mirrors from truly liftable modules, see [the single-routine pickup guide](../docs/INDIVIDUAL_ROUTINE_PICKUP.md).

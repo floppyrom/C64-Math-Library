@@ -1,6 +1,6 @@
 # Quick start
 
-For speed figures, use [`PERFORMANCE.md`](PERFORMANCE.md). For the exact source behind a shipped or standalone benchmark, use [`routines/SOURCE_CATALOG.csv`](routines/SOURCE_CATALOG.csv).
+For speed figures, use [`PERFORMANCE.md`](PERFORMANCE.md). For the exact source behind a shipped or standalone benchmark, use [`routines/SOURCE_CATALOG.csv`](routines/SOURCE_CATALOG.csv). For **one-operation reuse**, including which files are exact audit mirrors versus independently liftable modules, use the [individual routine pickup guide](docs/INDIVIDUAL_ROUTINE_PICKUP.md).
 
 Before publishing a new benchmark/source pair, run:
 

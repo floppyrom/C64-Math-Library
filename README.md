@@ -9,6 +9,7 @@ The library exposes one stable **56-entry public API** across five fixed profile
 - **How fast are the routines?** [`PERFORMANCE.md`](PERFORMANCE.md)
 - **Machine-readable results:** [`benchmarks/PUBLIC_PROFILE_RESULTS.csv`](benchmarks/PUBLIC_PROFILE_RESULTS.csv), [`benchmarks/BEST_PROFILE_RESULTS.csv`](benchmarks/BEST_PROFILE_RESULTS.csv), and [`benchmarks/STANDALONE_RESULTS.csv`](benchmarks/STANDALONE_RESULTS.csv)
 - **Where is the exact source?** [`routines/SOURCE_CATALOG.csv`](routines/SOURCE_CATALOG.csv)
+- **Want just one routine?** [Individual routine pickup guide](docs/INDIVIDUAL_ROUTINE_PICKUP.md) — direct links to V1–V5 source mirrors, resident API use, and portable-module limits
 - **Calling/integration manual:** [`USER_MANUAL.md`](USER_MANUAL.md)
 - **Naming convention:** [`docs/NAMING_STANDARD.md`](docs/NAMING_STANDARD.md)
 - **Repository layout:** [`docs/STRUCTURE.md`](docs/STRUCTURE.md)

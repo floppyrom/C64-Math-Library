@@ -1,3 +1,8 @@
+2026-10-11 ISSUE39 INDIVIDUAL SOURCE PICKUP GUIDE
+- Added docs/INDIVIDUAL_ROUTINE_PICKUP.md and top-level README/QUICK_START/routines index links so any C64 developer can find the exact V1–V5 source mirror and stable API for each recently optimized UDIV/UMOD operation without searching commit history.
+- Clearly distinguish individually indexed executable graph mirrors (not guaranteed one-file drop-ins because shared tables, ZP and private helpers can remain) from curated standalone/liftable modules; document direct per-routine links and minimal resident API example.
+- Corrected stale catalog statement: 295 shipped profile-entry mirrors plus 25 separately benchmarked alternatives, each with source hash and evidence. Documentation-only change; shipped arithmetic PRGs, ABI, REU images, benchmark numbers and resource envelopes unchanged.
+
 2026-10-11 ISSUE39 V1/V5 77-BYTE GUARDED REMAINDER-ONLY UMOD8
 - V1 Balanced and V5 Hybrid gain a source-backed 77-byte non-ZP UMOD8 remainder-only guard at REG_LOW+$0E00. For D>=32, quotient<=7 and at most seven inline subtract-and-compare stages produce R without ever altering MATH_Q; D<32 reuses the existing V1 or imported V2/V5 public wrapper at MATH_UMOD8+3. Inputs and carry preserved, no new zero page, stack or resident PRG span.
 - **262,144 complete paired historical-old/new 6502 calls**, 65,536 exhaustive input pairs per profile, no output/ABI errors. V1 exhaustive mean **65.285156→53.140671** (−18.60%), V5 **64.819153→52.835800** (−18.49%). Same-input common corpus V1 **67.294523→58.439757** (−13.16%), V5 **66.848276→58.129412** (−13.04%).
