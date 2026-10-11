@@ -1,3 +1,10 @@
+2026-10-11 ISSUE39 UNSIGNED SMALL-WIDTH ARCHITECTURE AUDIT
+- Added a new public ABI and cycle gate for 8/16/24-bit UDIV/UMOD: seven same-input classes, 256 operands per class, five resident profiles, 53,760 complete 6502 calls. The corpus demonstrates workload-conditioned V1/V2/V3/V4/V5 trade-offs, particularly V1 16-bit small-divisor efficiency versus V2 24-bit small-divisor efficiency.
+- Rejected widening the V1 24-bit narrow-divisor escape: the seemingly improved canonical mean conceals up to 422-cycle regressions on a dedicated >1,700-case corner suite. A separate deterministic paired negative proof prevents accidentally promoting that unsound performance trade-off.
+- Ran five native OptiSearchV2 executable strategies per 8/16/24 width on 101 vectors. Native timing is NOT a public ABI comparison or an optimality claim; private tool material remains outside the repository.
+- Added documentation and review JSON/CSV with hashes, branch CI audit and publication checks. Resident PRGs, stable ABI addresses, ZP, REU and relocatable arithmetic source remain unchanged. Unsigned DIV/MOD issue39 checkbox remains unchecked.
+- Details: docs/ISSUE39_UNSIGNED_SMALL_WIDTH_WORKLOADS_2026-10-11.md
+
 2026-10-11 ISSUE39 V5 32/32 NARROW-DIVISOR DELEGATION
 - V5-only shared UDIV32_32/UMOD32_32 route when D3=D2=0 reuses the already imported V2-derived 32/16 quotient engine; direct 21-byte helper at REG_LOW+$0D00, 0 new ZP, no public ABI or resident PRG size change. V1 stays untouched (its candidate suffered up to +403 cycles).
 - Same-input V5 UDIV32_32 358.009161→275.013192 cycles (2,729 pairs, 234 faster, 2,486 equal, 9 slower); UMOD32_32 435.224633→302.353079 (1,705 pairs, 234 faster, 1,467 equal, 4 slower). Narrow 16-bit divisor class saves ~934 cycles on average; 17–24-bit divisors pay +10 guard cycles in most cases. Results workload-dependent.

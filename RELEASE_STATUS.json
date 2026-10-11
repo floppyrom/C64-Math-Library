@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 64872,
-    "user_manual_lines": 1864,
-    "user_manual_sha256": "460445232b3685b44b5af489f74e5aa01abb7912b974f424e3cc92c3ba468641"
+    "user_manual_bytes": 65098,
+    "user_manual_lines": 1866,
+    "user_manual_sha256": "194077b2799600210d29e808138500170b784f07b2c9170a53f3b3be377e311f"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -849,5 +849,21 @@
     "all_profile_signed_calls": 364533,
     "same_input_calls": 136335,
     "native_vice_calls_per_version": 80
+  },
+  "issue39_unsigned_small_width_workloads_2026_10_11": {
+    "status": "PASS",
+    "scope": "UDIV8/16/24 and UMOD8/16/24 profile/architecture screen",
+    "public_calls": 53760,
+    "profile_count": 5,
+    "workload_count": 7,
+    "cases_per_workload_per_profile": 256,
+    "data_sha256": "d4bfc663fc1740d4762b1c19868e83abb84698baee682b400fa2475864fae357",
+    "negative_v1_24_narrow_status": "REJECT",
+    "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
+    "resident_prgs_modified": false,
+    "abi_changed": false,
+    "zero_page_growth": 0,
+    "documentation": "docs/ISSUE39_UNSIGNED_SMALL_WIDTH_WORKLOADS_2026-10-11.md",
+    "unsigned_family_complete": false
   }
 }

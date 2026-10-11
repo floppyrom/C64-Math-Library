@@ -141,3 +141,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue #39 V1 32/16 dual-loop quotient unroll: docs/ISSUE39_V1_UDIV32_16_DUAL_LOOP_UNROLL_2026-10-11.md. The unsigned DIV/MOD campaign remains open.
 
 - V5 32/32 narrow-divisor shared fast-32/16 path: docs/ISSUE39_V5_3232_NARROW_DELEGATION_2026-10-11.md; the unsigned DIV/MOD family campaign remains open.
+
+- Issue #39 unsigned 8/16/24 seven-workload audit: docs/ISSUE39_UNSIGNED_SMALL_WIDTH_WORKLOADS_2026-10-11.md; 53,760 public calls, negative V1 24-bit selector proof; no resident changes. Overall family campaign remains open.
