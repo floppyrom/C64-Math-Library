@@ -1,0 +1,112 @@
+name: Issue39 one-shot V1/V5 UMOD8 guarded release
+on:
+  push:
+    branches:
+      - issue39-v1-v5-umod8-remainder-guard
+permissions:
+  contents: write
+jobs:
+  publish:
+    if: "!contains(github.event.head_commit.message, '[issue39-umod8-guard-published]')"
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild V1 reference and alternate source exactly
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/assemble_sources.py --profile v1_balanced --config-kind reference
+          python3 tools/assemble_sources.py --profile v1_balanced --config-kind alternate
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind alternate
+          python3 tools/assemble_sources.py --profile v3_reu_512k --config-kind alternate
+          python3 tools/assemble_sources.py --profile v4_reu_16m --config-kind alternate
+          cp build_source/reference/v1_balanced/math_v1_balanced_source_built.prg \
+            v1_balanced/resident/math_v1_balanced_game_math.prg
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          r=Path('v1_balanced/resident/math_v1_balanced_game_math.prg')
+          assert hashlib.sha256(r.read_bytes()).hexdigest()=='9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62'
+          PY
+      - name: Rebuild guarded V5 reference and relocated alternate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+          cp build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg \
+            v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          p=Path('v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg')
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=='bed1ee986857d045d452036d78d0d6cbdc078dbc3407f8a860a8fd54f8395fa2'
+          PY
+      - name: Execute independent all-profile division and arithmetic proofs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/validate_unsigned_division.py
+          python3 tools/validate_signed_division.py
+          python3 tools/benchmark_unsigned_common_corpus.py
+          python3 tools/audit_issue39_unsigned_small_workloads.py
+          python3 tools/audit_issue39_v1_24narrow_rejection.py
+          python3 tools/audit_v1_udiv24_byte8.py
+          python3 tools/audit_v1_3232_d8_delegate.py
+          python3 tools/audit_issue39_v1v5_umod8_guard.py
+          python3 tools/validate_udiv32_qone_bound.py
+          python3 tools/validate_udiv32_q23_bound.py
+          python3 tools/validate_v1_3216_unroll.py
+          python3 tools/audit_issue39_zero_high_bypass.py
+          python3 tools/audit_v5_3232_narrow_delegate.py
+          python3 tools/benchmark_unsigned_3216_workloads.py
+      - name: Regenerate V1 source mirrors, release rows and both changelogs
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/publish_standalone_sources.py
+          python3 tools/finalize_issue39_umod8_guard.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+      - name: Remove temporary workflow and seal verified package
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f .github/workflows/issue39-umod8-guard-publish.yml
+          rm -rf build_source build_hybrid
+          git add -A
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,hashlib
+          def seal():
+              files=[Path(p) for p in subprocess.check_output(['git','ls-files','-z']).decode().split('\0') if p]
+              files=sorted((p for p in files if p.is_file() and p.name!='SHA256SUMS.txt'),key=str)
+              Path('SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p)+'\n' for p in files))
+          seal()
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess,hashlib
+          def seal():
+              files=[Path(p) for p in subprocess.check_output(['git','ls-files','-z']).decode().split('\0') if p]
+              files=sorted((p for p in files if p.is_file() and p.name!='SHA256SUMS.txt'),key=str)
+              Path('SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p)+'\n' for p in files))
+          seal()
+          PY
+          python3 tools/package_audit.py
+          git add -A
+          git diff --cached --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "[issue39-umod8-guard-published] Publish guarded UMOD8 for V1 and V5 with 262,144-call proof"
+          git push origin HEAD:issue39-v1-v5-umod8-remainder-guard
