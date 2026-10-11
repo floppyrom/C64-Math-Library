@@ -1072,6 +1072,24 @@ def apply_udiv32_32_prechecked_gate(dst: bytearray, vals: dict[str,int]) -> dict
     gate = kernel + 0x1957
     fallback = gate + 0x7C             # reference $59D3
     nz_stub = fallback + 3            # reference $59D6
+    # The source-backed V1 bounded q=1 high-byte shortcut is already
+    # prechecked at the shared early gate. V5 inherits these original source
+    # bytes; do not repurpose the 3-byte gate JMP as a legacy patch trampoline.
+    high_qone = vals['REG_TABLE'] + 0x0810
+    if dst[nz_stub:nz_stub+3] == bytes((0x4C,high_qone&255,high_qone>>8)):
+        expected_call = bytes((0x20,(game+0x150)&255,(game+0x150)>>8))
+        if dst[game+0x30:game+0x33] != expected_call:
+            raise RuntimeError('V5 high-qone source requires prechecked 32/32 nonzero core')
+        guard = bytes((0xAD,(vals['MATH_IO']+0x17)&255,(vals['MATH_IO']+0x17)>>8))
+        if dst[high_qone:high_qone+3] != guard:
+            raise RuntimeError('V5 high-qone source signature missing')
+        return {'source_gate_state':'prechecked_high_qone',
+                'profile':'v5_hybrid_lowzp',
+                'shared_entries':['MATH_UDIV32_32','MATH_UMOD32_32'],
+                'zero_divisor_target':hx(game+0x122),
+                'nonzero_call_target':hx(game+0x150),
+                'high_qone_entry':hx(high_qone),
+                'additional_executable_bytes':0,'additional_zp_bytes':0}
     # V5 is generated from the V1 resident image.  Older V1 images need
     # this transformation; newer V1 images may already carry the very same
     # source-integrated gate.  Accept only entirely old or entirely new

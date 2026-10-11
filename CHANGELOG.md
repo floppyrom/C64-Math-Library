@@ -1,3 +1,11 @@
+2026-10-11 ISSUE39 V1/V5 BOUNDED HIGH-BYTE Q1 32/32 DIV-MOD
+- Added a formally bounded 73-byte high-byte quotient-one shortcut for V1 and V5 shared unsigned 32/32 division and modulo. N>D is prechecked, and D3>=128 or (D3>0 and N3<2*D3) proves N<2D; compute R=N-D and Q=1 directly. Other operands rejoin the exact prior restoring core.
+- Identical-input UDIV32_32 mean **470.755955→370.572004 cycles (−21.28%)** in V1 and V5, 2,729 matched calls per profile. UMOD32_32 **523.279765→444.652199 (−15.03%)**, 1,705 matched calls per profile. 8,868 paired old/new calls; zero arithmetic, carry or input-preservation errors. Some nonqualifying calls pay up to +22 cycles; this is an explicit mean-speed trade-off, not all-input dominance.
+- Source-island reference $6810-$6858, relocated for alternate map. No added normal-ZP, no public ABI relocation, no resident PRG length change. V5 builder recognizes the source-integrated prechecked gate and avoids clobbering the JMP trampoline.
+- Full five-profile 822,050 unsigned, 364,533 signed, and 136,335 identical-input machine-code calls; V1/V5 dedicated 32/32 bounded-q1 parity/sentinel gate, source reference+alternate builds, catalogs, both changelogs, performance/index metadata, checksums and package audits requalified.
+- Manual algebraic range analysis inspired by V1/V5 vs Repose/OptiSearch-derived V2 architectural comparison; **not** a native OptiSearch record. Private optimizer stays private. Wider issue #39 unsigned family remains open.
+- Detail: docs/ISSUE39_UDIV32_32_HIGH_QONE_V1V5_2026-10-11.md
+
 2026-10-11 ISSUE39 V5 UMOD16 REMAINDER-ONLY SOURCE TRANSPLANT
 - Imported 69-byte V2 UMOD16 remainder-only frontend into the 77 bytes remaining in the same already-unoccupied V5 REG_LOW final page after PR #52 UMOD24. Final combined code: $2F00-$2FF7 (248/256); reference UMOD16 $2FB3-$2FF7; alternate $AFB3-$AFF7. No additional normal ZP or resident PRG file bytes, no stable API relocation.
 - V5 UMOD16 identical-input mean 205.028739->198.610557 cycles (−6.418182, −3.13%); 1,705/1,705 V2 matched per-call cycle values, 1,613 faster than old V5, 92 slower by two cycles. UMOD24, UDIV16 and UDIV24 timing unchanged on 9,035 independently paired controls.

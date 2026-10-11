@@ -129,3 +129,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue39 V5 dedicated 24-bit remainder frontend (zero extra ZP; 179 code bytes): docs/ISSUE39_V5_UMOD24_REMAINDER_TRANSPLANT_2026-10-11.md. Unsigned campaign remains open.
 
 - V5 16/24-bit dedicated remainder paths fit within one final-page 256-byte region: docs/ISSUE39_V5_UMOD16_REMAINDER_TRANSPLANT_2026-10-11.md. Unsigned family campaign remains open.
+
+- Issue #39 bounded-high-byte 32/32 V1/V5 q=1 optimization: docs/ISSUE39_UDIV32_32_HIGH_QONE_V1V5_2026-10-11.md. Other unsigned architecture audits remain open.

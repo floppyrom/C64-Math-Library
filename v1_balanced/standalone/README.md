@@ -37,8 +37,8 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | `mod_s32_s16_s16__math_smod32_16.asm` | `MATH_SDIV32_16` | 275 |
 | `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | `muldiv_u16_u16_u16_u32_16.asm` |  | 276 |
 | `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | `muldiv_s16_s16_s16_s32_16.asm` |  | 412 |
-| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | `div_u32_u32_u32_32.asm` |  | 356 |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | `mod_u32_u32_u32__math_umod32_32.asm` | `MATH_UDIV32_32` | 356 |
+| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | `div_u32_u32_u32_32.asm` |  | 385 |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | `mod_u32_u32_u32__math_umod32_32.asm` | `MATH_UDIV32_32` | 385 |
 | `MATH_SDIV32_32` | `div_s32_s32_s32_32` | `div_s32_s32_s32_32.asm` |  | 374 |
 | `MATH_SMOD32_32` | `mod_s32_s32_s32` | `mod_s32_s32_s32__math_smod32_32.asm` | `MATH_SDIV32_32` | 374 |
 | `MATH_UMUL16_SHR8` | `mul_u16_u16_u24_shr8` | `mul_u16_u16_u24_shr8.asm` |  | 111 |

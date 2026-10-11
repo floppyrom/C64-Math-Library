@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 356.
+; Reachable instructions: 385.
 ; NOTE: legacy alias entry; semantic producer is MATH_UDIV32_32.
 !cpu 6510
 
@@ -65,12 +65,46 @@ L59AB:
 L59D3:
     jmp LC222                          ; @59D3 4C 22 C2
 L59D6:
-    jmp LC100                          ; @59D6 4C 00 C1
+    jmp L6810                          ; @59D6 4C 10 68
 ; ---- executable island $5E03 ----
 * = $5E03
 mod_u32_u32_u32:
 MATH_UMOD32_32:
     jmp L5957                          ; @5E03 4C 57 59
+; ---- executable island $6810 ----
+* = $6810
+L6810:
+    lda $C017                          ; @6810 AD 17 C0
+    beq L6856                          ; @6813 F0 41
+    bmi L681F                          ; @6815 30 08
+    asl a                              ; @6817 0A
+    cmp $C013                          ; @6818 CD 13 C0
+    bcc L6856                          ; @681B 90 39
+    beq L6856                          ; @681D F0 37
+L681F:
+    sec                                ; @681F 38
+    lda $C010                          ; @6820 AD 10 C0
+    sbc $C014                          ; @6823 ED 14 C0
+    sta $C01C                          ; @6826 8D 1C C0
+    lda $C011                          ; @6829 AD 11 C0
+    sbc $C015                          ; @682C ED 15 C0
+    sta $C01D                          ; @682F 8D 1D C0
+    lda $C012                          ; @6832 AD 12 C0
+    sbc $C016                          ; @6835 ED 16 C0
+    sta $C01E                          ; @6838 8D 1E C0
+    lda $C013                          ; @683B AD 13 C0
+    sbc $C017                          ; @683E ED 17 C0
+    sta $C01F                          ; @6841 8D 1F C0
+    lda #$01                           ; @6844 A9 01
+    sta $C018                          ; @6846 8D 18 C0
+    lda #$00                           ; @6849 A9 00
+    sta $C019                          ; @684B 8D 19 C0
+    sta $C01A                          ; @684E 8D 1A C0
+    sta $C01B                          ; @6851 8D 1B C0
+    clc                                ; @6854 18
+    rts                                ; @6855 60
+L6856:
+    jmp LC100                          ; @6856 4C 00 C1
 ; ---- executable island $C100 ----
 * = $C100
 LC100:
