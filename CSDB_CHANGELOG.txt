@@ -1,3 +1,6 @@
+2026-10-12 ISSUE39 PR67 HISTORICAL PARENT SHA RECONSTRUCTION
+- Preserve PR57-62 historical tests after the V5 PR67 known-carry improvement: the parent reconstructor verifies and undoes exactly the six SHA-pinned V5 PR67 16-bit branch rewrites before restoring the older UMOD8 guard. The 8,868-call historical zero-high bypass audit and its original pre-PR67, pre-UMOD8 and PR57-era SHA checkpoints are reproduced exactly. No shipped arithmetic bytes or public ABI change.
+
 2026-10-12 ISSUE39 PR67 V5 PAIR-CORPUS FIXTURE REFRESH
 - Removed the obsolete hard-coded 198.610557-cycle V5/ V2 UMOD16 comparison.
 - The permanent 1,705-pair exact V2/V5 public ABI parity test now pins both current shipped resident SHA-256 hashes against the same-input benchmark report and checks each measured mean against the corresponding report metric. This preserves a strict cycle regression check across further source-qualified changes while avoiding stale pre-release literals. All four candidate resident images remain byte-identical to the already staged PR67 release.
