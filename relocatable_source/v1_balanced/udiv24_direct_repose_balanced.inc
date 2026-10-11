@@ -73,6 +73,8 @@ DU24B_low_d2:
  bne DU24B___relax_2
  jmp DU24B_zero
 DU24B___relax_2:
+    ; Reachable only when D2=0 and N2>0, so check narrow Q>=65536.
+    jmp V1LAT_GATE
 DU24B_low_tail0:
  lda MATH_N+0
  sta MATH_R+0
