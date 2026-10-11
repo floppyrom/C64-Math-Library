@@ -70,8 +70,9 @@ DU16F_low_d1_stub
         jmp DU16F_low_d1
 DU16F_low_d1_to_chain
         sec
-        bcc DU16F___relax_3
         jmp DU16F_chain_start
+        nop                     ; preserve instruction locations, never reached
+        nop                     ; fixed 6-byte source-level branch simplification
 DU16F___relax_3:
 DU16F_chain_q2_equal
         lda MATH_R+0
