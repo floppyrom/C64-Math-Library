@@ -163,7 +163,7 @@ DIVISION_REFRESH_INCLUDES={
  'v1_balanced':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_balanced.inc',
   'udiv24_direct_repose_balanced.inc','udiv24_latency_escape_balanced.inc','sdiv16_directout_balanced.inc','sdiv24_directout_balanced.inc',
-  'sdiv32_16_direct_balanced.inc','udiv32_16_loop_unrolled.inc','udiv32_32_early_gate.inc','udiv32_32_high_qone.inc','udiv32_32_high_q23.inc','sdiv32_32_signflow.inc'),
+  'sdiv32_16_direct_balanced.inc','udiv32_16_loop_unrolled.inc','udiv32_32_early_gate.inc','udiv32_32_high_qone.inc','udiv32_32_d8_delegate.inc','udiv32_32_high_q23.inc','sdiv32_32_signflow.inc'),
  'v2_pareto_fast':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_fast.inc',
