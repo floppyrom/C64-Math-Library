@@ -1,0 +1,627 @@
+{
+  "basis": "machine-code 6502 instruction cycles including public entry/RTS; not REU bus wall time",
+  "profile_resident_sha256": {
+    "v1_balanced": "f59e254f5a580f2d2558bdd9e3fb16b7f41b07921b7eeb46c3bb8057b4ad9180",
+    "v2_pareto_fast": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
+    "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
+    "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
+    "v5_hybrid_lowzp": "e8d5769338d309f715afc96859629b75e6cc7239011e7140bb4464e4d502fa51"
+  },
+  "profiles": [
+    "v1_balanced",
+    "v2_pareto_fast",
+    "v3_reu_512k",
+    "v4_reu_16m",
+    "v5_hybrid_lowzp"
+  ],
+  "routines": [
+    "MATH_UDIV32_16",
+    "MATH_UMOD32_16"
+  ],
+  "samples_per_workload": 512,
+  "seed": 3325637142,
+  "status": "PASS",
+  "total_calls": 30720,
+  "workloads": {
+    "numerator_16bit": {
+      "case_sha256": "2ee0a92fec04592381ce61ee99628a9c704ea2c766bc3063d56b1ea264f7e2d7",
+      "cases": 512,
+      "routines": {
+        "MATH_UDIV32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "2fb3c18608420f06676675fedfc53a074b598dabcfed04af4ca1b64b534a5454",
+            "max_cycles": 1635,
+            "mean_cycles": 665.224609375,
+            "median_cycles": 649,
+            "min_cycles": 649,
+            "p95_cycles": 698
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "6ff2f98bc6d82084f8a51fd4468f47d73e477b4b7b63b10d17a34ec2592a92da",
+            "max_cycles": 773,
+            "mean_cycles": 487.884765625,
+            "median_cycles": 473,
+            "min_cycles": 473,
+            "p95_cycles": 522
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "6ff2f98bc6d82084f8a51fd4468f47d73e477b4b7b63b10d17a34ec2592a92da",
+            "max_cycles": 773,
+            "mean_cycles": 487.884765625,
+            "median_cycles": 473,
+            "min_cycles": 473,
+            "p95_cycles": 522
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "6ff2f98bc6d82084f8a51fd4468f47d73e477b4b7b63b10d17a34ec2592a92da",
+            "max_cycles": 773,
+            "mean_cycles": 487.884765625,
+            "median_cycles": 473,
+            "min_cycles": 473,
+            "p95_cycles": 522
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "6ff2f98bc6d82084f8a51fd4468f47d73e477b4b7b63b10d17a34ec2592a92da",
+            "max_cycles": 773,
+            "mean_cycles": 487.884765625,
+            "median_cycles": 473,
+            "min_cycles": 473,
+            "p95_cycles": 522
+          }
+        },
+        "MATH_UMOD32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "858f38871ff5527d8c724c305814d800ccae5a231182e41f52609dff703df84c",
+            "max_cycles": 1638,
+            "mean_cycles": 668.224609375,
+            "median_cycles": 652,
+            "min_cycles": 652,
+            "p95_cycles": 701
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "4d9d3e8f9e1652f858ee63012cd8fb1cfbb0818c46cf4f36492919796eb9898b",
+            "max_cycles": 776,
+            "mean_cycles": 490.884765625,
+            "median_cycles": 476,
+            "min_cycles": 476,
+            "p95_cycles": 525
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "4d9d3e8f9e1652f858ee63012cd8fb1cfbb0818c46cf4f36492919796eb9898b",
+            "max_cycles": 776,
+            "mean_cycles": 490.884765625,
+            "median_cycles": 476,
+            "min_cycles": 476,
+            "p95_cycles": 525
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "4d9d3e8f9e1652f858ee63012cd8fb1cfbb0818c46cf4f36492919796eb9898b",
+            "max_cycles": 776,
+            "mean_cycles": 490.884765625,
+            "median_cycles": 476,
+            "min_cycles": 476,
+            "p95_cycles": 525
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "4d9d3e8f9e1652f858ee63012cd8fb1cfbb0818c46cf4f36492919796eb9898b",
+            "max_cycles": 776,
+            "mean_cycles": 490.884765625,
+            "median_cycles": 476,
+            "min_cycles": 476,
+            "p95_cycles": 525
+          }
+        }
+      }
+    },
+    "numerator_24bit": {
+      "case_sha256": "86f579571bdcffb91fcf237d1ddc7c3d7f9c20bee0a080832c39083001b96a55",
+      "cases": 512,
+      "routines": {
+        "MATH_UDIV32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "ce2175489e983d9f8e76b6601707e8e3979656cecbcb58a396810a656860148c",
+            "max_cycles": 1622,
+            "mean_cycles": 733.880859375,
+            "median_cycles": 733,
+            "min_cycles": 649,
+            "p95_cycles": 796
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "07d4a2f9100bcb4c43dc654a8380389218b111be682d639958505d52b0e84af3",
+            "max_cycles": 785,
+            "mean_cycles": 556.4375,
+            "median_cycles": 557,
+            "min_cycles": 473,
+            "p95_cycles": 620
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "07d4a2f9100bcb4c43dc654a8380389218b111be682d639958505d52b0e84af3",
+            "max_cycles": 785,
+            "mean_cycles": 556.4375,
+            "median_cycles": 557,
+            "min_cycles": 473,
+            "p95_cycles": 620
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "07d4a2f9100bcb4c43dc654a8380389218b111be682d639958505d52b0e84af3",
+            "max_cycles": 785,
+            "mean_cycles": 556.4375,
+            "median_cycles": 557,
+            "min_cycles": 473,
+            "p95_cycles": 620
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "07d4a2f9100bcb4c43dc654a8380389218b111be682d639958505d52b0e84af3",
+            "max_cycles": 785,
+            "mean_cycles": 556.4375,
+            "median_cycles": 557,
+            "min_cycles": 473,
+            "p95_cycles": 620
+          }
+        },
+        "MATH_UMOD32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "7954e1a34e8b8eefa2e061d97ddb2f7ccedeb05ec2801d75cc53664ca689f4f2",
+            "max_cycles": 1625,
+            "mean_cycles": 736.880859375,
+            "median_cycles": 736,
+            "min_cycles": 652,
+            "p95_cycles": 799
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "6546514d5b0db8663d98c6939c7d7a15f9bbb21a7b198e05d945dcac8cddc87f",
+            "max_cycles": 788,
+            "mean_cycles": 559.4375,
+            "median_cycles": 560,
+            "min_cycles": 476,
+            "p95_cycles": 623
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "6546514d5b0db8663d98c6939c7d7a15f9bbb21a7b198e05d945dcac8cddc87f",
+            "max_cycles": 788,
+            "mean_cycles": 559.4375,
+            "median_cycles": 560,
+            "min_cycles": 476,
+            "p95_cycles": 623
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "6546514d5b0db8663d98c6939c7d7a15f9bbb21a7b198e05d945dcac8cddc87f",
+            "max_cycles": 788,
+            "mean_cycles": 559.4375,
+            "median_cycles": 560,
+            "min_cycles": 476,
+            "p95_cycles": 623
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "6546514d5b0db8663d98c6939c7d7a15f9bbb21a7b198e05d945dcac8cddc87f",
+            "max_cycles": 788,
+            "mean_cycles": 559.4375,
+            "median_cycles": 560,
+            "min_cycles": 476,
+            "p95_cycles": 623
+          }
+        }
+      }
+    },
+    "power_of_two_divisors": {
+      "case_sha256": "c8015514b76efc60b3c0bb13d00c5d22e715c555c90d3ec7d4e71259f366e63e",
+      "cases": 512,
+      "routines": {
+        "MATH_UDIV32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "9a0203f0527c460cfeb620d763fcbcad1652718e4acf9ddaf6243d1e19d90f40",
+            "max_cycles": 1869,
+            "mean_cycles": 1494.4921875,
+            "median_cycles": 1675,
+            "min_cycles": 761,
+            "p95_cycles": 1781
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "9b23ba1fe0be6e332defb5b1a1f4b780cda2f5be3d6dd75405ff987d57ea6d2f",
+            "max_cycles": 1634,
+            "mean_cycles": 861.099609375,
+            "median_cycles": 845,
+            "min_cycles": 575,
+            "p95_cycles": 1433
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "9b23ba1fe0be6e332defb5b1a1f4b780cda2f5be3d6dd75405ff987d57ea6d2f",
+            "max_cycles": 1634,
+            "mean_cycles": 861.099609375,
+            "median_cycles": 845,
+            "min_cycles": 575,
+            "p95_cycles": 1433
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "9b23ba1fe0be6e332defb5b1a1f4b780cda2f5be3d6dd75405ff987d57ea6d2f",
+            "max_cycles": 1634,
+            "mean_cycles": 861.099609375,
+            "median_cycles": 845,
+            "min_cycles": 575,
+            "p95_cycles": 1433
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "9b23ba1fe0be6e332defb5b1a1f4b780cda2f5be3d6dd75405ff987d57ea6d2f",
+            "max_cycles": 1634,
+            "mean_cycles": 861.099609375,
+            "median_cycles": 845,
+            "min_cycles": 575,
+            "p95_cycles": 1433
+          }
+        },
+        "MATH_UMOD32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "4b7b21e121c9b5db9c44379fe66288dc0dff2a7c44dfb9d4a39b8bbc52d50c00",
+            "max_cycles": 1872,
+            "mean_cycles": 1497.4921875,
+            "median_cycles": 1678,
+            "min_cycles": 764,
+            "p95_cycles": 1784
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "04704416d2127488f2370454a5b1455016818fb7580610a3066cac227076f4a0",
+            "max_cycles": 1637,
+            "mean_cycles": 864.099609375,
+            "median_cycles": 848,
+            "min_cycles": 578,
+            "p95_cycles": 1436
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "04704416d2127488f2370454a5b1455016818fb7580610a3066cac227076f4a0",
+            "max_cycles": 1637,
+            "mean_cycles": 864.099609375,
+            "median_cycles": 848,
+            "min_cycles": 578,
+            "p95_cycles": 1436
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "04704416d2127488f2370454a5b1455016818fb7580610a3066cac227076f4a0",
+            "max_cycles": 1637,
+            "mean_cycles": 864.099609375,
+            "median_cycles": 848,
+            "min_cycles": 578,
+            "p95_cycles": 1436
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "04704416d2127488f2370454a5b1455016818fb7580610a3066cac227076f4a0",
+            "max_cycles": 1637,
+            "mean_cycles": 864.099609375,
+            "median_cycles": 848,
+            "min_cycles": 578,
+            "p95_cycles": 1436
+          }
+        }
+      }
+    },
+    "quotient_zero_or_one": {
+      "case_sha256": "c15763101a9dd04fbac9f269f0d53af8b78ef0e1a4a0ef912262b95b8d22925c",
+      "cases": 512,
+      "routines": {
+        "MATH_UDIV32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "b862f01e188e1d3958d62c052bb4c042716bf3af19541873a66a8cace5f7d1ca",
+            "max_cycles": 1545,
+            "mean_cycles": 659.978515625,
+            "median_cycles": 649,
+            "min_cycles": 649,
+            "p95_cycles": 670
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "76444faf62ed1c26c9b07b31798691fb0301a1652ee8cd17365e99e7d00aa9a0",
+            "max_cycles": 693,
+            "mean_cycles": 482.658203125,
+            "median_cycles": 473,
+            "min_cycles": 473,
+            "p95_cycles": 494
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "76444faf62ed1c26c9b07b31798691fb0301a1652ee8cd17365e99e7d00aa9a0",
+            "max_cycles": 693,
+            "mean_cycles": 482.658203125,
+            "median_cycles": 473,
+            "min_cycles": 473,
+            "p95_cycles": 494
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "76444faf62ed1c26c9b07b31798691fb0301a1652ee8cd17365e99e7d00aa9a0",
+            "max_cycles": 693,
+            "mean_cycles": 482.658203125,
+            "median_cycles": 473,
+            "min_cycles": 473,
+            "p95_cycles": 494
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "76444faf62ed1c26c9b07b31798691fb0301a1652ee8cd17365e99e7d00aa9a0",
+            "max_cycles": 693,
+            "mean_cycles": 482.658203125,
+            "median_cycles": 473,
+            "min_cycles": 473,
+            "p95_cycles": 494
+          }
+        },
+        "MATH_UMOD32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "cb498b1f581d4c76f50feccce2a73f828b0e21c7160badcb0eefd265126b276e",
+            "max_cycles": 1548,
+            "mean_cycles": 662.978515625,
+            "median_cycles": 652,
+            "min_cycles": 652,
+            "p95_cycles": 673
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "3be769051d33d41485169db252928cd1ca1e034661cfadab62f2b759d55aa6a5",
+            "max_cycles": 696,
+            "mean_cycles": 485.658203125,
+            "median_cycles": 476,
+            "min_cycles": 476,
+            "p95_cycles": 497
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "3be769051d33d41485169db252928cd1ca1e034661cfadab62f2b759d55aa6a5",
+            "max_cycles": 696,
+            "mean_cycles": 485.658203125,
+            "median_cycles": 476,
+            "min_cycles": 476,
+            "p95_cycles": 497
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "3be769051d33d41485169db252928cd1ca1e034661cfadab62f2b759d55aa6a5",
+            "max_cycles": 696,
+            "mean_cycles": 485.658203125,
+            "median_cycles": 476,
+            "min_cycles": 476,
+            "p95_cycles": 497
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "3be769051d33d41485169db252928cd1ca1e034661cfadab62f2b759d55aa6a5",
+            "max_cycles": 696,
+            "mean_cycles": 485.658203125,
+            "median_cycles": 476,
+            "min_cycles": 476,
+            "p95_cycles": 497
+          }
+        }
+      }
+    },
+    "small_divisors": {
+      "case_sha256": "6b0efcaf1a1a7591bb5a348518795f0cfd23c9fd13b05fe9e98eb1833ea74be2",
+      "cases": 512,
+      "routines": {
+        "MATH_UDIV32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "42081479494b315a256ff676b6776e69d6ccd3ae45d2852184c224d9abbb54db",
+            "max_cycles": 1851,
+            "mean_cycles": 1698.74609375,
+            "median_cycles": 1694,
+            "min_cycles": 1600,
+            "p95_cycles": 1777
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "ac7a4dc9d8b4ff2dee3e1080b278ba07cd60227bced351f70c3210e543cb0c9e",
+            "max_cycles": 890,
+            "mean_cycles": 822.96875,
+            "median_cycles": 825,
+            "min_cycles": 780,
+            "p95_cycles": 865
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "ac7a4dc9d8b4ff2dee3e1080b278ba07cd60227bced351f70c3210e543cb0c9e",
+            "max_cycles": 890,
+            "mean_cycles": 822.96875,
+            "median_cycles": 825,
+            "min_cycles": 780,
+            "p95_cycles": 865
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "ac7a4dc9d8b4ff2dee3e1080b278ba07cd60227bced351f70c3210e543cb0c9e",
+            "max_cycles": 890,
+            "mean_cycles": 822.96875,
+            "median_cycles": 825,
+            "min_cycles": 780,
+            "p95_cycles": 865
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "ac7a4dc9d8b4ff2dee3e1080b278ba07cd60227bced351f70c3210e543cb0c9e",
+            "max_cycles": 890,
+            "mean_cycles": 822.96875,
+            "median_cycles": 825,
+            "min_cycles": 780,
+            "p95_cycles": 865
+          }
+        },
+        "MATH_UMOD32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "10241a7e957ecdc170b11225bbb9afa16f406d4550b9fb7b423b398f94f58d3f",
+            "max_cycles": 1854,
+            "mean_cycles": 1701.74609375,
+            "median_cycles": 1697,
+            "min_cycles": 1603,
+            "p95_cycles": 1780
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "2e6f1e717aca9a89164b9f02d5325d39f7e7c84df64d1c8f9f26e213c322f7ca",
+            "max_cycles": 893,
+            "mean_cycles": 825.96875,
+            "median_cycles": 828,
+            "min_cycles": 783,
+            "p95_cycles": 868
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "2e6f1e717aca9a89164b9f02d5325d39f7e7c84df64d1c8f9f26e213c322f7ca",
+            "max_cycles": 893,
+            "mean_cycles": 825.96875,
+            "median_cycles": 828,
+            "min_cycles": 783,
+            "p95_cycles": 868
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "2e6f1e717aca9a89164b9f02d5325d39f7e7c84df64d1c8f9f26e213c322f7ca",
+            "max_cycles": 893,
+            "mean_cycles": 825.96875,
+            "median_cycles": 828,
+            "min_cycles": 783,
+            "p95_cycles": 868
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "2e6f1e717aca9a89164b9f02d5325d39f7e7c84df64d1c8f9f26e213c322f7ca",
+            "max_cycles": 893,
+            "mean_cycles": 825.96875,
+            "median_cycles": 828,
+            "min_cycles": 783,
+            "p95_cycles": 868
+          }
+        }
+      }
+    },
+    "uniform_32x16": {
+      "case_sha256": "77e6856581b2a8393672ca9b58893a1912504528bf2c5a94ccb6a998a4c49065",
+      "cases": 512,
+      "routines": {
+        "MATH_UDIV32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "371352f534e7d0ca1658c0070efddf6b192a86de96b740549089c8430dfbca54",
+            "max_cycles": 1705,
+            "mean_cycles": 861.439453125,
+            "median_cycles": 823,
+            "min_cycles": 690,
+            "p95_cycles": 1105
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "1bba7b2cdcd1496f78ae20ea84c2582617e7ecf36cd83d6c2cfcc6219ceb4e1c",
+            "max_cycles": 1532,
+            "mean_cycles": 662.4609375,
+            "median_cycles": 640,
+            "min_cycles": 514,
+            "p95_cycles": 829
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "1bba7b2cdcd1496f78ae20ea84c2582617e7ecf36cd83d6c2cfcc6219ceb4e1c",
+            "max_cycles": 1532,
+            "mean_cycles": 662.4609375,
+            "median_cycles": 640,
+            "min_cycles": 514,
+            "p95_cycles": 829
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "1bba7b2cdcd1496f78ae20ea84c2582617e7ecf36cd83d6c2cfcc6219ceb4e1c",
+            "max_cycles": 1532,
+            "mean_cycles": 662.4609375,
+            "median_cycles": 640,
+            "min_cycles": 514,
+            "p95_cycles": 829
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "1bba7b2cdcd1496f78ae20ea84c2582617e7ecf36cd83d6c2cfcc6219ceb4e1c",
+            "max_cycles": 1532,
+            "mean_cycles": 662.4609375,
+            "median_cycles": 640,
+            "min_cycles": 514,
+            "p95_cycles": 829
+          }
+        },
+        "MATH_UMOD32_16": {
+          "v1_balanced": {
+            "cases": 512,
+            "cycles_sha256": "87d3b071a079291b0c91e04fd89d004d66db2b35d49acb2abe0d023493d46675",
+            "max_cycles": 1708,
+            "mean_cycles": 864.439453125,
+            "median_cycles": 826,
+            "min_cycles": 693,
+            "p95_cycles": 1108
+          },
+          "v2_pareto_fast": {
+            "cases": 512,
+            "cycles_sha256": "1f941128d952f64378d3cb621b3b4b04db58bed9f389f48cdd17bd0f489cdcb4",
+            "max_cycles": 1535,
+            "mean_cycles": 665.4609375,
+            "median_cycles": 643,
+            "min_cycles": 517,
+            "p95_cycles": 832
+          },
+          "v3_reu_512k": {
+            "cases": 512,
+            "cycles_sha256": "1f941128d952f64378d3cb621b3b4b04db58bed9f389f48cdd17bd0f489cdcb4",
+            "max_cycles": 1535,
+            "mean_cycles": 665.4609375,
+            "median_cycles": 643,
+            "min_cycles": 517,
+            "p95_cycles": 832
+          },
+          "v4_reu_16m": {
+            "cases": 512,
+            "cycles_sha256": "1f941128d952f64378d3cb621b3b4b04db58bed9f389f48cdd17bd0f489cdcb4",
+            "max_cycles": 1535,
+            "mean_cycles": 665.4609375,
+            "median_cycles": 643,
+            "min_cycles": 517,
+            "p95_cycles": 832
+          },
+          "v5_hybrid_lowzp": {
+            "cases": 512,
+            "cycles_sha256": "1f941128d952f64378d3cb621b3b4b04db58bed9f389f48cdd17bd0f489cdcb4",
+            "max_cycles": 1535,
+            "mean_cycles": 665.4609375,
+            "median_cycles": 643,
+            "min_cycles": 517,
+            "p95_cycles": 832
+          }
+        }
+      }
+    }
+  }
+}
