@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 362.
+; Reachable instructions: 356.
 ; NOTE: legacy alias entry; semantic producer is MATH_UDIV32_32.
 !cpu 6510
 
@@ -21,19 +21,19 @@ L5957:
     lda $C013                          ; @5965 AD 13 C0
     cmp $C017                          ; @5968 CD 17 C0
     bcc L59AB                          ; @596B 90 3E
-    bne L59D3                          ; @596D D0 64
+    bne L59D6                          ; @596D D0 67
     lda $C012                          ; @596F AD 12 C0
     cmp $C016                          ; @5972 CD 16 C0
     bcc L59AB                          ; @5975 90 34
-    bne L59D3                          ; @5977 D0 5A
+    bne L59D6                          ; @5977 D0 5D
     lda $C011                          ; @5979 AD 11 C0
     cmp $C015                          ; @597C CD 15 C0
     bcc L59AB                          ; @597F 90 2A
-    bne L59D3                          ; @5981 D0 50
+    bne L59D6                          ; @5981 D0 53
     lda $C010                          ; @5983 AD 10 C0
     cmp $C014                          ; @5986 CD 14 C0
     bcc L59AB                          ; @5989 90 20
-    bne L59D3                          ; @598B D0 46
+    bne L59D6                          ; @598B D0 49
     ldx #$00                           ; @598D A2 00
     lda #$01                           ; @598F A9 01
     sta $C018                          ; @5991 8D 18 C0
@@ -63,7 +63,9 @@ L59AB:
     clc                                ; @59D1 18
     rts                                ; @59D2 60
 L59D3:
-    jmp LC100                          ; @59D3 4C 00 C1
+    jmp LC222                          ; @59D3 4C 22 C2
+L59D6:
+    jmp LC100                          ; @59D6 4C 00 C1
 ; ---- executable island $5E03 ----
 * = $5E03
 mod_u32_u32_u32:
@@ -88,7 +90,7 @@ LC100:
     sta $C046                          ; @C127 8D 46 C0
     lda $C017                          ; @C12A AD 17 C0
     sta $C047                          ; @C12D 8D 47 C0
-    jsr LC23E                          ; @C130 20 3E C2
+    jsr LC250                          ; @C130 20 50 C2
     rts                                ; @C133 60
 ; ---- executable island $C222 ----
 * = $C222
@@ -104,14 +106,8 @@ LC222:
     sta $C01F                          ; @C239 8D 1F C0
     sec                                ; @C23C 38
     rts                                ; @C23D 60
-LC23E:
-    lda $C044                          ; @C23E AD 44 C0
-    ora $C045                          ; @C241 0D 45 C0
-    ora $C046                          ; @C244 0D 46 C0
-    ora $C047                          ; @C247 0D 47 C0
-    bne LC250                          ; @C24A D0 04
-    jsr LC222                          ; @C24C 20 22 C2
-    rts                                ; @C24F 60
+; ---- executable island $C250 ----
+* = $C250
 LC250:
     lda $C047                          ; @C250 AD 47 C0
     beq LC258                          ; @C253 F0 03
