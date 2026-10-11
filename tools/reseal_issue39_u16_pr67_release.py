@@ -38,7 +38,7 @@ def main():
  state['issue39_u16_known_carry_pr67_2026_10_12']['historical_umod8_parent_restore_source_sha256']=digest('tools/issue39_umod8_guard_parent.py')
  state['issue39_u16_known_carry_pr67_2026_10_12']['historical_zero_high_bypass_audit_status']='PASS'
  tag2='2026-10-12 ISSUE39 PR67 HISTORICAL PARENT SHA RECONSTRUCTION'
- note=(tag2+'\\n'
+ note=(tag2+'\n'
        '- Preserve PR57-62 historical tests after the V5 PR67 known-carry improvement: '
        'the parent reconstructor verifies and undoes exactly the six SHA-pinned '
        'V5 PR67 16-bit branch rewrites before restoring the older UMOD8 guard. '
@@ -47,7 +47,7 @@ def main():
        'No shipped arithmetic bytes or public ABI change.\\n')
  for fn in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
   fp=ROOT/fn; content=fp.read_text()
-  if tag2 not in content:fp.write_text(note+'\\n'+content)
+  if tag2 not in content:fp.write_text(note+'\n'+content)
  doc.write_text(json.dumps(state,indent=2)+'\n')
  subprocess.run(['make','clean'],cwd=ROOT,check=True)
  for _ in range(4):
