@@ -32,12 +32,12 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | 725.808594 | 645 | 813 | 1386 | 31 | $02-$20 | 0 | FAST31/V29 native signed quadrant composition; mixed-call-safe public path | current native-signed multiply validation |
 | `MATH_UDIV8` | `div_u8_u8_u8_8` | 59.571976 | 26 | 554 | 297 | 1 | $10 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 132.725857 | 41 | 1535 | 326 | 2 | $10-$11 | 0 | balanced direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UDIV24` | `div_u24_u24_u24_24` | 184.273091 | 56 | 2178 | 1478 | 12 | $10-$1B | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 870.340206 | 182 | 2099 | 311 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
+| `MATH_UDIV24` | `div_u24_u24_u24_24` | 182.050494 | 56 | 2178 | 2494 | 12 | $10-$1B | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
+| `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 802.486430 | 182 | 2034 | 1327 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD8` | `mod_u8_u8_u8` | 67.167555 | 51 | 495 | 83 | 2 | $10-$11 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD16` | `mod_u16_u16_u16` | 184.082421 | 41 | 1535 | 326 | 2 | $10-$11 | 0 | balanced direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD24` | `mod_u24_u24_u24` | 272.880876 | 56 | 2178 | 1478 | 12 | $10-$1B | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD32_16` | `mod_u32_u16_u16` | 971.613651 | 185 | 1978 | 314 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD24` | `mod_u24_u24_u24` | 266.078558 | 56 | 2178 | 2494 | 12 | $10-$1B | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD32_16` | `mod_u32_u16_u16` | 893.618158 | 185 | 1842 | 1330 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 26 | 600 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | 187.131298 | 45 | 1604 | 425 | 6 | $10-$15 | 0 | balanced direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | 313.583206 | 51 | 5583 | 462 | 6 | $10-$15 | 0 | balanced direct-output native signed 24-bit divider | current native-signed division validation |
@@ -46,7 +46,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 229.324910 | 45 | 1604 | 425 | 6 | $10-$15 | 0 | balanced direct-output native signed 16-bit divider | current native-signed division validation |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 427.272924 | 51 | 3502 | 462 | 6 | $10-$15 | 0 | balanced direct-output native signed 24-bit divider | current native-signed division validation |
 | `MATH_SMOD32_16` | `mod_s32_s16_s16` | 1061.083032 | 174 | 2066 | 545 | 12 | $14-$1F | 0 | balanced private signed 32/16 magnitude path | current native-signed division validation |
-| `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | 1289.022331 | 513 | 2300 | 539 | 19 | $09-$1B | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
+| `MATH_UMULDIV16` | `muldiv_u16_u16_u16_u32_16` | 1289.022331 | 513 | 2300 | 1555 | 19 | $09-$1B | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
 | `MATH_SMULDIV16` | `muldiv_s16_s16_s16_s32_16` | 1378.300411 | 490 | 2271 | 821 | 23 | $09-$1F | 0 | profile-selected resident implementation | 2026-10-07 MULDIV16 9,001-case all-profile/map validation |
 | `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 279.014263 | 67 | 2414 | 1137 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_32` | `mod_u32_u32_u32` | 434.486800 | 67 | 2414 | 1137 | 0 | — | 0 | native tiered 32/32 divider with early q=0 gate | 2026-09-20 unsigned division-family validation |
@@ -56,9 +56,9 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMUL16_SHR8` | `mul_s16_s16_s24_shr8` | 313.154093 | 281 | 345 | 278 | 17 | $09-$19 | 0 | FAST17 SMUL16 plus SHR8 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_SHR16` | `mul_u32_u32_u48_shr16` | 779.876404 | 717 | 896 | 380 | 31 | $02-$20 | 0 | FAST31/V29-derived UMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | 812.544371 | 725 | 938 | 1449 | 31 | $02-$20 | 0 | FAST31/V29 SMUL32 producer plus existing SHR16 extraction | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
-| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 770.773617 | 182 | 1807 | 313 | 12 | $10-$1B | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
+| `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 704.090469 | 182 | 1671 | 1329 | 12 | $10-$1B | 0 | fixed-point adapter into selected unsigned 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 846.155071 | 180 | 1893 | 495 | 12 | $14-$1F | 0 | fixed-point adapter into balanced private signed 32/16 divider | current native-signed division validation |
-| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 108.497635 | 41 | 1801 | 637 | 12 | $10-$1B | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
+| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 104.194229 | 41 | 1666 | 1653 | 12 | $10-$1B | 0 | exact reciprocal ladder with selected profile division fallback | 2026-09-20 unsigned division-family validation |
 | `MATH_SIN8` | `sin_u8_s8` | 23.000000 | 23 | 23 | 14 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_COS8` | `cos_u8_s8` | 29.000000 | 29 | 29 | 18 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | 39.000000 | 39 | 39 | 25 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |

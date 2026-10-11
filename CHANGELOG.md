@@ -1,3 +1,10 @@
+2026-10-11 ISSUE39 V1 32/16 DUAL LOOP UNROLL
+- Two V1 32/16 quotient loops unrolled into $1900-$1CF7 (1,016 occupied bytes); 0 additional ZP, no public ABI or resident PRG span growth. Relative branch targets and X=0 at exit preserved.
+- Same-input public UDIV32_16 mean 896.061561→825.873947 (2,729 pairs; 2,578 faster, 151 equal, 0 slower); UMOD32_16 916.280352→843.629912 (1,705 pairs; 1,554 faster, 151 equal, 0 slower). Six independent 512-pair workload classes also show no new regressions, up to 136 cycles saved.
+- 21,156 paired source-executed calls, native full-resident VICE old/new 80+80 calls, V1 unsigned 164,410, signed 97,329, and all-profile 822,050 unsigned, 364,533 signed, 136,335 common and 30,720 workloads pass. Reference/alternate source, V5 hybrid, catalog and checksum publication regenerated.
+- V5 keeps its V2-derived 32/16 core. Earlier table island rejected for V5 ATAN2 overlap. Private OptiSearch is not published; unsigned family campaign remains open.
+- Details: docs/ISSUE39_V1_UDIV32_16_DUAL_LOOP_UNROLL_2026-10-11.md
+
 2026-10-11 ISSUE39 V1/V5 32/32 ZERO-HIGH FALLBACK BYPASS
 - Post-PR56: divisor high byte zero skips the provably impossible q2/q3 gate and jumps directly from qone to the original legacy divider. Three resident byte changes, no ZP/ABI/PRG span growth.
 - Same-input V1/V5: UDIV32_32 359.077684→358.009161 cycles (2,729 calls/profile); UMOD32_32 436.899707→435.224633 (1,705/profile); 243 + 238 faster inputs/profile, exactly 12 cycles saved, no regressions among 8,868 paired calls.

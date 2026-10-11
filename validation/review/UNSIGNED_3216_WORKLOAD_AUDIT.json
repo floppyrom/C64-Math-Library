@@ -1,11 +1,11 @@
 {
   "basis": "machine-code 6502 instruction cycles including public entry/RTS; not REU bus wall time",
   "profile_resident_sha256": {
-    "v1_balanced": "5fb24ad166ecb0f8a3897d8523ce8224dfce947a0d0c5320f287dcefc98f4e6a",
+    "v1_balanced": "97c3e04112335e5958653ac656771b9e11d1d4fede0f5c824b9169aa49b1b564",
     "v2_pareto_fast": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
     "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
     "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
-    "v5_hybrid_lowzp": "f93d8f0cc5163ed00fcdc0ecfe117550131c33c4632bc484c5d30c481040e2d5"
+    "v5_hybrid_lowzp": "6255f93fdfcd35c2aa27085915e32dca86e3f641af96a1160cd38cf951f70d51"
   },
   "profiles": [
     "v1_balanced",
@@ -30,12 +30,12 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "2fb3c18608420f06676675fedfc53a074b598dabcfed04af4ca1b64b534a5454",
-            "max_cycles": 1635,
-            "mean_cycles": 665.224609375,
-            "median_cycles": 649,
-            "min_cycles": 649,
-            "p95_cycles": 698
+            "cycles_sha256": "6256623c6b268a8d37bbf2a59f44545464ce0cdf09c405b3f857b42f0ac664c5",
+            "max_cycles": 1500,
+            "mean_cycles": 600.998046875,
+            "median_cycles": 585,
+            "min_cycles": 585,
+            "p95_cycles": 634
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -77,12 +77,12 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "858f38871ff5527d8c724c305814d800ccae5a231182e41f52609dff703df84c",
-            "max_cycles": 1638,
-            "mean_cycles": 668.224609375,
-            "median_cycles": 652,
-            "min_cycles": 652,
-            "p95_cycles": 701
+            "cycles_sha256": "9d8f0f400ee38f9116b834c478d7eb674c7af82344dd74555e637c94a395709d",
+            "max_cycles": 1503,
+            "mean_cycles": 603.998046875,
+            "median_cycles": 588,
+            "min_cycles": 588,
+            "p95_cycles": 637
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -130,12 +130,12 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "ce2175489e983d9f8e76b6601707e8e3979656cecbcb58a396810a656860148c",
-            "max_cycles": 1622,
-            "mean_cycles": 733.880859375,
-            "median_cycles": 733,
-            "min_cycles": 649,
-            "p95_cycles": 796
+            "cycles_sha256": "f22550aea827e86714a16794be3d73850bf3fa657fb3630d7f02023f728d3412",
+            "max_cycles": 1486,
+            "mean_cycles": 669.412109375,
+            "median_cycles": 668,
+            "min_cycles": 585,
+            "p95_cycles": 731
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -177,12 +177,12 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "7954e1a34e8b8eefa2e061d97ddb2f7ccedeb05ec2801d75cc53664ca689f4f2",
-            "max_cycles": 1625,
-            "mean_cycles": 736.880859375,
-            "median_cycles": 736,
-            "min_cycles": 652,
-            "p95_cycles": 799
+            "cycles_sha256": "78bfb32478762c2d011dfcd3fabf46c39eef4aff5ca48ef597f92f05f90d59fe",
+            "max_cycles": 1489,
+            "mean_cycles": 672.412109375,
+            "median_cycles": 671,
+            "min_cycles": 588,
+            "p95_cycles": 734
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -230,12 +230,12 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "9a0203f0527c460cfeb620d763fcbcad1652718e4acf9ddaf6243d1e19d90f40",
-            "max_cycles": 1869,
-            "mean_cycles": 1494.4921875,
-            "median_cycles": 1675,
-            "min_cycles": 761,
-            "p95_cycles": 1781
+            "cycles_sha256": "07b2e1647cff27f53113bf070efaef3bc7b6fae75b07f5280e541a86221dde1f",
+            "max_cycles": 1733,
+            "mean_cycles": 1378.67578125,
+            "median_cycles": 1540,
+            "min_cycles": 696,
+            "p95_cycles": 1649
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -277,12 +277,12 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "4b7b21e121c9b5db9c44379fe66288dc0dff2a7c44dfb9d4a39b8bbc52d50c00",
-            "max_cycles": 1872,
-            "mean_cycles": 1497.4921875,
-            "median_cycles": 1678,
-            "min_cycles": 764,
-            "p95_cycles": 1784
+            "cycles_sha256": "945ba7a88b9ae674e65e6a0912696222e4da31acf7f445786f2b2a5071416b6c",
+            "max_cycles": 1736,
+            "mean_cycles": 1381.67578125,
+            "median_cycles": 1543,
+            "min_cycles": 699,
+            "p95_cycles": 1652
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -330,12 +330,12 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "b862f01e188e1d3958d62c052bb4c042716bf3af19541873a66a8cace5f7d1ca",
-            "max_cycles": 1545,
-            "mean_cycles": 659.978515625,
-            "median_cycles": 649,
-            "min_cycles": 649,
-            "p95_cycles": 670
+            "cycles_sha256": "6ba5cf640c273d40f227778f907f775ed683558a60b18796fbc39fc4347d4d9e",
+            "max_cycles": 1410,
+            "mean_cycles": 595.83984375,
+            "median_cycles": 585,
+            "min_cycles": 585,
+            "p95_cycles": 606
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -377,12 +377,12 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "cb498b1f581d4c76f50feccce2a73f828b0e21c7160badcb0eefd265126b276e",
-            "max_cycles": 1548,
-            "mean_cycles": 662.978515625,
-            "median_cycles": 652,
-            "min_cycles": 652,
-            "p95_cycles": 673
+            "cycles_sha256": "5ba010e7ba36cabb8d1c63cdfd73553adfa12720eb18545ca817d2b46d2c0014",
+            "max_cycles": 1413,
+            "mean_cycles": 598.83984375,
+            "median_cycles": 588,
+            "min_cycles": 588,
+            "p95_cycles": 609
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -430,12 +430,12 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "42081479494b315a256ff676b6776e69d6ccd3ae45d2852184c224d9abbb54db",
-            "max_cycles": 1851,
-            "mean_cycles": 1698.74609375,
-            "median_cycles": 1694,
-            "min_cycles": 1600,
-            "p95_cycles": 1777
+            "cycles_sha256": "a541e7aa0c9dd392563350af8bdf44ec2da02a8b5d7d7acc4ef5375d047dacef",
+            "max_cycles": 1715,
+            "mean_cycles": 1563.240234375,
+            "median_cycles": 1558,
+            "min_cycles": 1464,
+            "p95_cycles": 1641
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -477,12 +477,12 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "10241a7e957ecdc170b11225bbb9afa16f406d4550b9fb7b423b398f94f58d3f",
-            "max_cycles": 1854,
-            "mean_cycles": 1701.74609375,
-            "median_cycles": 1697,
-            "min_cycles": 1603,
-            "p95_cycles": 1780
+            "cycles_sha256": "2b307a8f234dcedf2e2a2bc25597bb707ba8cbe8c98566d9edb290491b4bf2ba",
+            "max_cycles": 1718,
+            "mean_cycles": 1566.240234375,
+            "median_cycles": 1561,
+            "min_cycles": 1467,
+            "p95_cycles": 1644
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -530,12 +530,12 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "371352f534e7d0ca1658c0070efddf6b192a86de96b740549089c8430dfbca54",
-            "max_cycles": 1705,
-            "mean_cycles": 861.439453125,
-            "median_cycles": 823,
-            "min_cycles": 690,
-            "p95_cycles": 1105
+            "cycles_sha256": "75eb6c7d9d868427bb44bbc9056e5ce14f0f428d737f4801f677480d742a9d88",
+            "max_cycles": 1569,
+            "mean_cycles": 795.41015625,
+            "median_cycles": 759,
+            "min_cycles": 626,
+            "p95_cycles": 1041
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -577,12 +577,12 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "87d3b071a079291b0c91e04fd89d004d66db2b35d49acb2abe0d023493d46675",
-            "max_cycles": 1708,
-            "mean_cycles": 864.439453125,
-            "median_cycles": 826,
-            "min_cycles": 693,
-            "p95_cycles": 1108
+            "cycles_sha256": "7ee21db48dc23556166d88b78b5d0ac82e213f0eddc87d726a9511fc89d5b8fc",
+            "max_cycles": 1572,
+            "mean_cycles": 798.41015625,
+            "median_cycles": 762,
+            "min_cycles": 629,
+            "p95_cycles": 1044
           },
           "v2_pareto_fast": {
             "cases": 512,
