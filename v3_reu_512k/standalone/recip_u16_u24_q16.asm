@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 183.
+; Reachable instructions: 170.
 !cpu 6510
 
 ; ---- executable island $5E1E ----
@@ -17,8 +17,8 @@ MATH_URECIP16_Q16:
 ; ---- executable island $C5BB ----
 * = $C5BB
 LC5BB:
-    lda $C015                          ; @C5BB AD 15 C0
-    cmp #$80                           ; @C5BE C9 80
+    ldx $C015                          ; @C5BB AE 15 C0
+    cpx #$80                           ; @C5BE E0 80
     bcc LC5D0                          ; @C5C0 90 0E
     bne LC5CB                          ; @C5C2 D0 07
     lda $C014                          ; @C5C4 AD 14 C0
@@ -28,159 +28,149 @@ LC5CB:
     lda #$01                           ; @C5CB A9 01
     jmp LC6F6                          ; @C5CD 4C F6 C6
 LC5D0:
-    lda $C015                          ; @C5D0 AD 15 C0
-    cmp #$55                           ; @C5D3 C9 55
-    bcc LC5E5                          ; @C5D5 90 0E
-    bne LC5E0                          ; @C5D7 D0 07
-    lda $C014                          ; @C5D9 AD 14 C0
-    cmp #$56                           ; @C5DC C9 56
-    bcc LC5E5                          ; @C5DE 90 05
-LC5E0:
-    lda #$02                           ; @C5E0 A9 02
-    jmp LC6F6                          ; @C5E2 4C F6 C6
-LC5E5:
-    lda $C015                          ; @C5E5 AD 15 C0
-    cmp #$40                           ; @C5E8 C9 40
-    bcc LC5FA                          ; @C5EA 90 0E
-    bne LC5F5                          ; @C5EC D0 07
-    lda $C014                          ; @C5EE AD 14 C0
-    cmp #$01                           ; @C5F1 C9 01
-    bcc LC5FA                          ; @C5F3 90 05
-LC5F5:
-    lda #$03                           ; @C5F5 A9 03
-    jmp LC6F6                          ; @C5F7 4C F6 C6
-LC5FA:
-    lda $C015                          ; @C5FA AD 15 C0
-    cmp #$33                           ; @C5FD C9 33
-    bcc LC60F                          ; @C5FF 90 0E
-    bne LC60A                          ; @C601 D0 07
-    lda $C014                          ; @C603 AD 14 C0
-    cmp #$34                           ; @C606 C9 34
-    bcc LC60F                          ; @C608 90 05
-LC60A:
-    lda #$04                           ; @C60A A9 04
-    jmp LC6F6                          ; @C60C 4C F6 C6
-LC60F:
-    lda $C015                          ; @C60F AD 15 C0
-    cmp #$2A                           ; @C612 C9 2A
-    bcc LC624                          ; @C614 90 0E
-    bne LC61F                          ; @C616 D0 07
-    lda $C014                          ; @C618 AD 14 C0
-    cmp #$AB                           ; @C61B C9 AB
-    bcc LC624                          ; @C61D 90 05
-LC61F:
-    lda #$05                           ; @C61F A9 05
-    jmp LC6F6                          ; @C621 4C F6 C6
-LC624:
-    lda $C015                          ; @C624 AD 15 C0
-    cmp #$24                           ; @C627 C9 24
-    bcc LC639                          ; @C629 90 0E
-    bne LC634                          ; @C62B D0 07
-    lda $C014                          ; @C62D AD 14 C0
-    cmp #$93                           ; @C630 C9 93
-    bcc LC639                          ; @C632 90 05
-LC634:
-    lda #$06                           ; @C634 A9 06
-    jmp LC6F6                          ; @C636 4C F6 C6
-LC639:
-    lda $C015                          ; @C639 AD 15 C0
-    cmp #$20                           ; @C63C C9 20
+    cpx #$55                           ; @C5D0 E0 55
+    bcc LC5E2                          ; @C5D2 90 0E
+    bne LC5DD                          ; @C5D4 D0 07
+    lda $C014                          ; @C5D6 AD 14 C0
+    cmp #$56                           ; @C5D9 C9 56
+    bcc LC5E2                          ; @C5DB 90 05
+LC5DD:
+    lda #$02                           ; @C5DD A9 02
+    jmp LC6F6                          ; @C5DF 4C F6 C6
+LC5E2:
+    cpx #$40                           ; @C5E2 E0 40
+    bcc LC5F4                          ; @C5E4 90 0E
+    bne LC5EF                          ; @C5E6 D0 07
+    lda $C014                          ; @C5E8 AD 14 C0
+    cmp #$01                           ; @C5EB C9 01
+    bcc LC5F4                          ; @C5ED 90 05
+LC5EF:
+    lda #$03                           ; @C5EF A9 03
+    jmp LC6F6                          ; @C5F1 4C F6 C6
+LC5F4:
+    cpx #$33                           ; @C5F4 E0 33
+    bcc LC606                          ; @C5F6 90 0E
+    bne LC601                          ; @C5F8 D0 07
+    lda $C014                          ; @C5FA AD 14 C0
+    cmp #$34                           ; @C5FD C9 34
+    bcc LC606                          ; @C5FF 90 05
+LC601:
+    lda #$04                           ; @C601 A9 04
+    jmp LC6F6                          ; @C603 4C F6 C6
+LC606:
+    cpx #$2A                           ; @C606 E0 2A
+    bcc LC618                          ; @C608 90 0E
+    bne LC613                          ; @C60A D0 07
+    lda $C014                          ; @C60C AD 14 C0
+    cmp #$AB                           ; @C60F C9 AB
+    bcc LC618                          ; @C611 90 05
+LC613:
+    lda #$05                           ; @C613 A9 05
+    jmp LC6F6                          ; @C615 4C F6 C6
+LC618:
+    cpx #$24                           ; @C618 E0 24
+    bcc LC62A                          ; @C61A 90 0E
+    bne LC625                          ; @C61C D0 07
+    lda $C014                          ; @C61E AD 14 C0
+    cmp #$93                           ; @C621 C9 93
+    bcc LC62A                          ; @C623 90 05
+LC625:
+    lda #$06                           ; @C625 A9 06
+    jmp LC6F6                          ; @C627 4C F6 C6
+LC62A:
+    cpx #$20                           ; @C62A E0 20
+    bcc LC63C                          ; @C62C 90 0E
+    bne LC637                          ; @C62E D0 07
+    lda $C014                          ; @C630 AD 14 C0
+    cmp #$01                           ; @C633 C9 01
+    bcc LC63C                          ; @C635 90 05
+LC637:
+    lda #$07                           ; @C637 A9 07
+    jmp LC6F6                          ; @C639 4C F6 C6
+LC63C:
+    cpx #$1C                           ; @C63C E0 1C
     bcc LC64E                          ; @C63E 90 0E
     bne LC649                          ; @C640 D0 07
     lda $C014                          ; @C642 AD 14 C0
-    cmp #$01                           ; @C645 C9 01
+    cmp #$72                           ; @C645 C9 72
     bcc LC64E                          ; @C647 90 05
 LC649:
-    lda #$07                           ; @C649 A9 07
+    lda #$08                           ; @C649 A9 08
     jmp LC6F6                          ; @C64B 4C F6 C6
 LC64E:
-    lda $C015                          ; @C64E AD 15 C0
-    cmp #$1C                           ; @C651 C9 1C
-    bcc LC663                          ; @C653 90 0E
-    bne LC65E                          ; @C655 D0 07
-    lda $C014                          ; @C657 AD 14 C0
-    cmp #$72                           ; @C65A C9 72
-    bcc LC663                          ; @C65C 90 05
-LC65E:
-    lda #$08                           ; @C65E A9 08
-    jmp LC6F6                          ; @C660 4C F6 C6
-LC663:
-    lda $C015                          ; @C663 AD 15 C0
-    cmp #$19                           ; @C666 C9 19
-    bcc LC678                          ; @C668 90 0E
-    bne LC673                          ; @C66A D0 07
-    lda $C014                          ; @C66C AD 14 C0
-    cmp #$9A                           ; @C66F C9 9A
-    bcc LC678                          ; @C671 90 05
-LC673:
-    lda #$09                           ; @C673 A9 09
-    jmp LC6F6                          ; @C675 4C F6 C6
-LC678:
-    lda $C015                          ; @C678 AD 15 C0
-    cmp #$17                           ; @C67B C9 17
-    bcc LC68D                          ; @C67D 90 0E
-    bne LC688                          ; @C67F D0 07
-    lda $C014                          ; @C681 AD 14 C0
-    cmp #$46                           ; @C684 C9 46
-    bcc LC68D                          ; @C686 90 05
-LC688:
-    lda #$0A                           ; @C688 A9 0A
-    jmp LC6F6                          ; @C68A 4C F6 C6
-LC68D:
-    lda $C015                          ; @C68D AD 15 C0
-    cmp #$15                           ; @C690 C9 15
-    bcc LC6A2                          ; @C692 90 0E
-    bne LC69D                          ; @C694 D0 07
-    lda $C014                          ; @C696 AD 14 C0
-    cmp #$56                           ; @C699 C9 56
-    bcc LC6A2                          ; @C69B 90 05
-LC69D:
-    lda #$0B                           ; @C69D A9 0B
-    jmp LC6F6                          ; @C69F 4C F6 C6
-LC6A2:
-    lda $C015                          ; @C6A2 AD 15 C0
-    cmp #$13                           ; @C6A5 C9 13
-    bcc LC6B7                          ; @C6A7 90 0E
-    bne LC6B2                          ; @C6A9 D0 07
-    lda $C014                          ; @C6AB AD 14 C0
-    cmp #$B2                           ; @C6AE C9 B2
-    bcc LC6B7                          ; @C6B0 90 05
-LC6B2:
-    lda #$0C                           ; @C6B2 A9 0C
-    jmp LC6F6                          ; @C6B4 4C F6 C6
-LC6B7:
-    lda $C015                          ; @C6B7 AD 15 C0
-    cmp #$12                           ; @C6BA C9 12
+    cpx #$19                           ; @C64E E0 19
+    bcc LC660                          ; @C650 90 0E
+    bne LC65B                          ; @C652 D0 07
+    lda $C014                          ; @C654 AD 14 C0
+    cmp #$9A                           ; @C657 C9 9A
+    bcc LC660                          ; @C659 90 05
+LC65B:
+    lda #$09                           ; @C65B A9 09
+    jmp LC6F6                          ; @C65D 4C F6 C6
+LC660:
+    cpx #$17                           ; @C660 E0 17
+    bcc LC672                          ; @C662 90 0E
+    bne LC66D                          ; @C664 D0 07
+    lda $C014                          ; @C666 AD 14 C0
+    cmp #$46                           ; @C669 C9 46
+    bcc LC672                          ; @C66B 90 05
+LC66D:
+    lda #$0A                           ; @C66D A9 0A
+    jmp LC6F6                          ; @C66F 4C F6 C6
+LC672:
+    cpx #$15                           ; @C672 E0 15
+    bcc LC684                          ; @C674 90 0E
+    bne LC67F                          ; @C676 D0 07
+    lda $C014                          ; @C678 AD 14 C0
+    cmp #$56                           ; @C67B C9 56
+    bcc LC684                          ; @C67D 90 05
+LC67F:
+    lda #$0B                           ; @C67F A9 0B
+    jmp LC6F6                          ; @C681 4C F6 C6
+LC684:
+    cpx #$13                           ; @C684 E0 13
+    bcc LC696                          ; @C686 90 0E
+    bne LC691                          ; @C688 D0 07
+    lda $C014                          ; @C68A AD 14 C0
+    cmp #$B2                           ; @C68D C9 B2
+    bcc LC696                          ; @C68F 90 05
+LC691:
+    lda #$0C                           ; @C691 A9 0C
+    jmp LC6F6                          ; @C693 4C F6 C6
+LC696:
+    cpx #$12                           ; @C696 E0 12
+    bcc LC6A8                          ; @C698 90 0E
+    bne LC6A3                          ; @C69A D0 07
+    lda $C014                          ; @C69C AD 14 C0
+    cmp #$4A                           ; @C69F C9 4A
+    bcc LC6A8                          ; @C6A1 90 05
+LC6A3:
+    lda #$0D                           ; @C6A3 A9 0D
+    jmp LC6F6                          ; @C6A5 4C F6 C6
+LC6A8:
+    cpx #$11                           ; @C6A8 E0 11
+    bcc LC6BA                          ; @C6AA 90 0E
+    bne LC6B5                          ; @C6AC D0 07
+    lda $C014                          ; @C6AE AD 14 C0
+    cmp #$12                           ; @C6B1 C9 12
+    bcc LC6BA                          ; @C6B3 90 05
+LC6B5:
+    lda #$0E                           ; @C6B5 A9 0E
+    jmp LC6F6                          ; @C6B7 4C F6 C6
+LC6BA:
+    cpx #$10                           ; @C6BA E0 10
     bcc LC6CC                          ; @C6BC 90 0E
     bne LC6C7                          ; @C6BE D0 07
     lda $C014                          ; @C6C0 AD 14 C0
-    cmp #$4A                           ; @C6C3 C9 4A
+    cmp #$01                           ; @C6C3 C9 01
     bcc LC6CC                          ; @C6C5 90 05
 LC6C7:
-    lda #$0D                           ; @C6C7 A9 0D
+    lda #$0F                           ; @C6C7 A9 0F
     jmp LC6F6                          ; @C6C9 4C F6 C6
 LC6CC:
-    lda $C015                          ; @C6CC AD 15 C0
-    cmp #$11                           ; @C6CF C9 11
-    bcc LC6E1                          ; @C6D1 90 0E
-    bne LC6DC                          ; @C6D3 D0 07
-    lda $C014                          ; @C6D5 AD 14 C0
-    cmp #$12                           ; @C6D8 C9 12
-    bcc LC6E1                          ; @C6DA 90 05
-LC6DC:
-    lda #$0E                           ; @C6DC A9 0E
-    jmp LC6F6                          ; @C6DE 4C F6 C6
-LC6E1:
-    lda $C015                          ; @C6E1 AD 15 C0
-    cmp #$10                           ; @C6E4 C9 10
-    bcc LC703                          ; @C6E6 90 1B
-    bne LC6F1                          ; @C6E8 D0 07
-    lda $C014                          ; @C6EA AD 14 C0
-    cmp #$01                           ; @C6ED C9 01
-    bcc LC703                          ; @C6EF 90 12
-LC6F1:
-    lda #$0F                           ; @C6F1 A9 0F
-    jmp LC6F6                          ; @C6F3 4C F6 C6
+    jmp LC703                          ; @C6CC 4C 03 C7
+; ---- executable island $C6F6 ----
+* = $C6F6
 LC6F6:
     sta $C018                          ; @C6F6 8D 18 C0
     lda #$00                           ; @C6F9 A9 00

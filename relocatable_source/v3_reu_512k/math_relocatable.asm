@@ -4331,8 +4331,8 @@ LC5B4:
     jsr REG_KERNEL+$0E00
     jmp REG_KERNEL+$1DD4
     !byte $60
-    lda MATH_IO+$15
-    cmp #$80
+    ldx MATH_IO+$15
+    cpx #$80
     bcc LC5D0
     bne LC5CB
     lda MATH_IO+$14
@@ -4342,166 +4342,156 @@ LC5CB:
     lda #$01
     jmp REG_GAME+$05F6
 LC5D0:
-    lda MATH_IO+$15
-    cmp #$55
-    bcc LC5E5
-    bne LC5E0
+    cpx #$55
+    bcc LC5E2
+    bne LC5DD
     lda MATH_IO+$14
     cmp #$56
-    bcc LC5E5
-LC5E0:
+    bcc LC5E2
+LC5DD:
     lda #$02
     jmp REG_GAME+$05F6
-LC5E5:
-    lda MATH_IO+$15
-    cmp #$40
-    bcc LC5FA
-    bne LC5F5
+LC5E2:
+    cpx #$40
+    bcc LC5F4
+    bne LC5EF
     lda MATH_IO+$14
     cmp #$01
-    bcc LC5FA
-LC5F5:
+    bcc LC5F4
+LC5EF:
     lda #$03
     jmp REG_GAME+$05F6
-LC5FA:
-    lda MATH_IO+$15
-    cmp #$33
-    bcc LC60F
-    bne LC60A
+LC5F4:
+    cpx #$33
+    bcc LC606
+    bne LC601
     lda MATH_IO+$14
     cmp #$34
-    bcc LC60F
-LC60A:
+    bcc LC606
+LC601:
     lda #$04
     jmp REG_GAME+$05F6
-LC60F:
-    lda MATH_IO+$15
-    cmp #$2A
-    bcc LC624
-    bne LC61F
+LC606:
+    cpx #$2A
+    bcc LC618
+    bne LC613
     lda MATH_IO+$14
     cmp #$AB
-    bcc LC624
-LC61F:
+    bcc LC618
+LC613:
     lda #$05
     jmp REG_GAME+$05F6
-LC624:
-    lda MATH_IO+$15
-    cmp #$24
-    bcc LC639
-    bne LC634
+LC618:
+    cpx #$24
+    bcc LC62A
+    bne LC625
     lda MATH_IO+$14
     cmp #$93
-    bcc LC639
-LC634:
+    bcc LC62A
+LC625:
     lda #$06
     jmp REG_GAME+$05F6
-LC639:
-    lda MATH_IO+$15
-    cmp #$20
+LC62A:
+    cpx #$20
+    bcc LC63C
+    bne LC637
+    lda MATH_IO+$14
+    cmp #$01
+    bcc LC63C
+LC637:
+    lda #$07
+    jmp REG_GAME+$05F6
+LC63C:
+    cpx #$1C
     bcc LC64E
     bne LC649
     lda MATH_IO+$14
-    cmp #$01
+    cmp #$72
     bcc LC64E
 LC649:
-    lda #$07
-    jmp REG_GAME+$05F6
-LC64E:
-    lda MATH_IO+$15
-    cmp #$1C
-    bcc LC663
-    bne LC65E
-    lda MATH_IO+$14
-    cmp #$72
-    bcc LC663
-LC65E:
     lda #$08
     jmp REG_GAME+$05F6
-LC663:
-    lda MATH_IO+$15
-    cmp #$19
-    bcc LC678
-    bne LC673
+LC64E:
+    cpx #$19
+    bcc LC660
+    bne LC65B
     lda MATH_IO+$14
     cmp #$9A
-    bcc LC678
-LC673:
+    bcc LC660
+LC65B:
     lda #$09
     jmp REG_GAME+$05F6
-LC678:
-    lda MATH_IO+$15
-    cmp #$17
-    bcc LC68D
-    bne LC688
+LC660:
+    cpx #$17
+    bcc LC672
+    bne LC66D
     lda MATH_IO+$14
     cmp #$46
-    bcc LC68D
-LC688:
+    bcc LC672
+LC66D:
     lda #$0A
     jmp REG_GAME+$05F6
-LC68D:
-    lda MATH_IO+$15
-    cmp #$15
-    bcc LC6A2
-    bne LC69D
+LC672:
+    cpx #$15
+    bcc LC684
+    bne LC67F
     lda MATH_IO+$14
     cmp #$56
-    bcc LC6A2
-LC69D:
+    bcc LC684
+LC67F:
     lda #$0B
     jmp REG_GAME+$05F6
-LC6A2:
-    lda MATH_IO+$15
-    cmp #$13
-    bcc LC6B7
-    bne LC6B2
+LC684:
+    cpx #$13
+    bcc LC696
+    bne LC691
     lda MATH_IO+$14
     cmp #$B2
-    bcc LC6B7
-LC6B2:
+    bcc LC696
+LC691:
     lda #$0C
     jmp REG_GAME+$05F6
-LC6B7:
-    lda MATH_IO+$15
+LC696:
+    cpx #$12
+    bcc LC6A8
+    bne LC6A3
+    lda MATH_IO+$14
+    cmp #$4A
+    bcc LC6A8
+LC6A3:
+    lda #$0D
+    jmp REG_GAME+$05F6
+LC6A8:
+    cpx #$11
+    bcc LC6BA
+    bne LC6B5
+    lda MATH_IO+$14
     cmp #$12
+    bcc LC6BA
+LC6B5:
+    lda #$0E
+    jmp REG_GAME+$05F6
+LC6BA:
+    cpx #$10
     bcc LC6CC
     bne LC6C7
     lda MATH_IO+$14
-    cmp #$4A
+    cmp #$01
     bcc LC6CC
 LC6C7:
-    lda #$0D
-    jmp REG_GAME+$05F6
-LC6CC:
-    lda MATH_IO+$15
-    cmp #$11
-    bcc LC6E1
-    bne LC6DC
-    lda MATH_IO+$14
-    cmp #$12
-    bcc LC6E1
-LC6DC:
-    lda #$0E
-    jmp REG_GAME+$05F6
-LC6E1:
-    lda MATH_IO+$15
-    cmp #$10
-    bcc LC703
-    bne LC6F1
-    lda MATH_IO+$14
-    cmp #$01
-    bcc LC703
-LC6F1:
     lda #$0F
     jmp REG_GAME+$05F6
+LC6CC:
+    jmp REG_GAME+$0603
+    !byte $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA
+    !byte $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA
+    !byte $EA, $EA, $EA, $EA, $EA, $EA, $EA
     sta MATH_IO+$18
     lda #$00
     sta MATH_IO+$19
     sta MATH_IO+$1A
     clc
     rts
-LC703:
     lda MATH_IO+$14
     ora MATH_IO+$15
     bne LC718

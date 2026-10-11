@@ -47,7 +47,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_SMUL32_SHR16` | `mul_s32_s32_s48_shr16` | `mul_s32_s32_s48_shr16.asm` |  | 668 |
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | `div_u16_u16_u24_16_shl8.asm` |  | 1112 |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | `div_s16_s16_s24_16_shl8.asm` |  | 1167 |
-| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | `recip_u16_u24_q16.asm` |  | 183 |
+| `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | `recip_u16_u24_q16.asm` |  | 170 |
 | `MATH_SIN8` | `sin_u8_s8` | `sin_u8_s8.asm` |  | 6 |
 | `MATH_COS8` | `cos_u8_s8` | `cos_u8_s8.asm` |  | 6 |
 | `MATH_SINCOS8` | `sincos_u8_s8_s8` | `sincos_u8_s8_s8.asm` |  | 8 |

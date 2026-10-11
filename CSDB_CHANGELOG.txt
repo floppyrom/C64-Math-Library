@@ -1,3 +1,10 @@
+2026-10-10 V3/V4 RECIPROCAL X-CACHE (EXHAUSTIVE)
+- MATH_URECIP16_Q16 caches the denominator high byte in X and uses CPX across its 15-entry threshold ladder.
+- Native V3/V4 PRGs and canonical ASM rebuild byte-identically, with no relocation or new ZP/table use.
+- Exhaustive 65,536-denominator mean: 66.233795 -> 57.331436 cycles (-8.902359, -13.44%); code reachable 430 -> 391 bytes.
+- 4,095 REU-backed denominators per profile passed real VICE x64sc fingerprint/oracle checks; deterministic source rebuild passed 8/8.
+- New proof and constraints: docs/URECIP16_X_CACHE_2026-10-10.md. REU DMA bus-time gains are not claimed.
+
 2026-10-10 V3/V4 REU IMMEDIATE-DMA CORRECTION
 - Fixed incorrectly deferred REU fetch/swap/autoload commands in V3/V4 fixed-map PRGs and canonical, relocatable and standalone ASM mirrors. Commands now use $91/$92/$B1 at immediate-result sites.
 - Exact reference/alternate rebuilds pass; P38 VICE native arithmetic and Turbo BEGIN/CALL/END smoke tests pass on fixed builds (see docs/REU_IMMEDIATE_DMA_FIX_2026-10-10.md).

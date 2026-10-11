@@ -714,12 +714,10 @@ sfx_store_sign:
 ; R is deliberately unspecified. d=1 is the sole 17-bit quotient special case.
 ; ---------------------------------------------------------------------------
 urecip16_q16:
-    ; Exact quotient-special ladder. For q=k, d is in
-    ; floor(65536/(k+1))+1 .. floor(65536/k).
-    ; q=1..15 covers 61,439 of 65,536 possible d values.
+    ; The public API documents X as volatile. Cache D1 for the 15 thresholds.
+    ldx D1
 recip_q1_test:
-    lda D1
-    cmp #$80
+    cpx #$80
     bcc recip_q2_test
     bne recip_q1_hit
     lda D0
@@ -729,8 +727,7 @@ recip_q1_hit:
     lda #$01
     jmp recip_small_return
 recip_q2_test:
-    lda D1
-    cmp #$55
+    cpx #$55
     bcc recip_q3_test
     bne recip_q2_hit
     lda D0
@@ -740,8 +737,7 @@ recip_q2_hit:
     lda #$02
     jmp recip_small_return
 recip_q3_test:
-    lda D1
-    cmp #$40
+    cpx #$40
     bcc recip_q4_test
     bne recip_q3_hit
     lda D0
@@ -751,8 +747,7 @@ recip_q3_hit:
     lda #$03
     jmp recip_small_return
 recip_q4_test:
-    lda D1
-    cmp #$33
+    cpx #$33
     bcc recip_q5_test
     bne recip_q4_hit
     lda D0
@@ -762,8 +757,7 @@ recip_q4_hit:
     lda #$04
     jmp recip_small_return
 recip_q5_test:
-    lda D1
-    cmp #$2A
+    cpx #$2A
     bcc recip_q6_test
     bne recip_q5_hit
     lda D0
@@ -773,8 +767,7 @@ recip_q5_hit:
     lda #$05
     jmp recip_small_return
 recip_q6_test:
-    lda D1
-    cmp #$24
+    cpx #$24
     bcc recip_q7_test
     bne recip_q6_hit
     lda D0
@@ -784,8 +777,7 @@ recip_q6_hit:
     lda #$06
     jmp recip_small_return
 recip_q7_test:
-    lda D1
-    cmp #$20
+    cpx #$20
     bcc recip_q8_test
     bne recip_q7_hit
     lda D0
@@ -795,8 +787,7 @@ recip_q7_hit:
     lda #$07
     jmp recip_small_return
 recip_q8_test:
-    lda D1
-    cmp #$1C
+    cpx #$1C
     bcc recip_q9_test
     bne recip_q8_hit
     lda D0
@@ -806,8 +797,7 @@ recip_q8_hit:
     lda #$08
     jmp recip_small_return
 recip_q9_test:
-    lda D1
-    cmp #$19
+    cpx #$19
     bcc recip_q10_test
     bne recip_q9_hit
     lda D0
@@ -817,8 +807,7 @@ recip_q9_hit:
     lda #$09
     jmp recip_small_return
 recip_q10_test:
-    lda D1
-    cmp #$17
+    cpx #$17
     bcc recip_q11_test
     bne recip_q10_hit
     lda D0
@@ -828,8 +817,7 @@ recip_q10_hit:
     lda #$0A
     jmp recip_small_return
 recip_q11_test:
-    lda D1
-    cmp #$15
+    cpx #$15
     bcc recip_q12_test
     bne recip_q11_hit
     lda D0
@@ -839,8 +827,7 @@ recip_q11_hit:
     lda #$0B
     jmp recip_small_return
 recip_q12_test:
-    lda D1
-    cmp #$13
+    cpx #$13
     bcc recip_q13_test
     bne recip_q12_hit
     lda D0
@@ -850,8 +837,7 @@ recip_q12_hit:
     lda #$0C
     jmp recip_small_return
 recip_q13_test:
-    lda D1
-    cmp #$12
+    cpx #$12
     bcc recip_q14_test
     bne recip_q13_hit
     lda D0
@@ -861,8 +847,7 @@ recip_q13_hit:
     lda #$0D
     jmp recip_small_return
 recip_q14_test:
-    lda D1
-    cmp #$11
+    cpx #$11
     bcc recip_q15_test
     bne recip_q14_hit
     lda D0
@@ -872,16 +857,21 @@ recip_q14_hit:
     lda #$0E
     jmp recip_small_return
 recip_q15_test:
-    lda D1
-    cmp #$10
-    bcc recip_fallback
+    cpx #$10
+    bcc recip_ladder_fallback
     bne recip_q15_hit
     lda D0
     cmp #$01
-    bcc recip_fallback
+    bcc recip_ladder_fallback
 recip_q15_hit:
     lda #$0F
     jmp recip_small_return
+recip_ladder_fallback:
+    jmp recip_fallback
+    ; Fill until the unchanged shared-return block. Keep all downstream addresses pinned.
+    !byte $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA
+    !byte $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA, $EA
+    !byte $EA, $EA, $EA, $EA, $EA, $EA, $EA
 recip_small_return:
     sta Q0
     lda #0
