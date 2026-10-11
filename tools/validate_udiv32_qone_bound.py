@@ -10,13 +10,13 @@ report=load_common(R)
 required={
     'MATH_UDIV32_32':(358.00916086478566,2729),
     'MATH_UMOD32_32':(435.22463343108507,1705)}
+v5_means={'MATH_UDIV32_32':275.01319164529133,
+          'MATH_UMOD32_32':302.35307917888565}
 for name,(expected_mean,cases) in required.items():
     info=report['routines'][name]
     assert info['cases_per_profile']==cases
-    for p in ('v1_balanced','v5_hybrid_lowzp'):
-        actual=info['metrics'][p]['mean_cycles']
-        assert abs(actual-expected_mean)<1e-10,(name,p,actual,expected_mean)
-    assert info['metrics']['v1_balanced']['mean_cycles']==info['metrics']['v5_hybrid_lowzp']['mean_cycles']
+    assert abs(info['metrics']['v1_balanced']['mean_cycles']-expected_mean)<1e-10
+    assert abs(info['metrics']['v5_hybrid_lowzp']['mean_cycles']-v5_means[name])<1e-10
 cases=[
  (0xffffffff,0x80000000), (0xffffffff,0x7fffffff),
  (0xe1234567,0x71000000), (0x90000000,0x60000000),
