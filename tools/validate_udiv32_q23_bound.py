@@ -7,8 +7,8 @@ sys.path.insert(0,str(R/'tools'))
 from common_corpus_ranking import load_common
 from validate_unsigned_division import load,wr,rd,expected
 j=load_common(R)
-target={'MATH_UDIV32_32':(359.0776841333822,2729),
-        'MATH_UMOD32_32':(436.899706744868,1705)}
+target={'MATH_UDIV32_32':(358.00916086478566,2729),
+        'MATH_UMOD32_32':(435.22463343108507,1705)}
 for name,(mean,cases) in target.items():
     r=j['routines'][name]
     assert r['cases_per_profile']==cases
