@@ -755,11 +755,12 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "3b7637bee82d873a38508d31e1fc8f992da4493633552b09888e6d42bb68a72f",
+    "report_sha256": "b648336b5e0583c3bf2b74ea421dedf3158ec9f303015c3e27936780120dc446",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
-    "unsigned_family_completed": false
+    "unsigned_family_completed": false,
+    "revalidated_against_v2_d24_resident_sha256": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6"
   },
   "issue39_v1_v5_32_32_q23_high_2026_10_11": {
     "status": "PASS",
