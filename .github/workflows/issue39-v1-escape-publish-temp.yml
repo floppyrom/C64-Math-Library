@@ -1,0 +1,92 @@
+name: One-shot issue39 V1 24-bit latency escape publication
+on:
+  push:
+    branches: [issue39-v1-div24-narrow-escape]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-build changed V1 and inherited V5 residents
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,shutil
+          root=Path('.')
+          p='v1_balanced'
+          src=root/'build_source/reference'/p/f'math_{p}_source_built.prg'
+          expected='1a81ec4f8ded86353c919e531bf4e8030a48cf86cac2f3758fff2878f3ae83b7'
+          assert hashlib.sha256(src.read_bytes()).hexdigest()==expected
+          dst=root/p/'resident'/f'math_{p}_game_math.prg'
+          assert src.stat().st_size==dst.stat().st_size
+          shutil.copy2(src,dst)
+          PY
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,shutil
+          root=Path('.');p='v5_hybrid_lowzp'
+          src=root/'build_hybrid/reference'/p/f'math_{p}_game_math.prg'
+          expected='d3b654f56f7ddfe26ce7130d5e925fdde85e41875e7da4bcd5aafe62440483a7'
+          assert hashlib.sha256(src.read_bytes()).hexdigest()==expected
+          dst=root/p/'resident'/f'math_{p}_game_math.prg'
+          assert src.stat().st_size==dst.stat().st_size
+          shutil.copy2(src,dst)
+          PY
+      - name: Source and alternate map reproducibility
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+          python3 tools/build_hybrid.py --config-kind alternate
+          python3 tools/validate_source_build.py all --build build_source/alternate --out validation/source_relocation
+          python3 tools/verify_deterministic_rebuild.py
+      - name: Republish all reference sources and division regression proofs
+        run: |
+          python3 tools/publish_standalone_sources.py
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/validate_unsigned_division.py
+          python3 tools/validate_signed_division.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+      - name: Revalidate common input benchmarks and publish profile rankings
+        run: |
+          python3 tools/benchmark_unsigned_common_corpus.py
+          python3 tools/finalize_issue39_v1_escape.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Seal package with release status and checksums
+        run: |
+          rm .github/workflows/issue39-v1-escape-publish-temp.yml
+          rm -rf build_source build_hybrid build_hybrid_repeat build_pareto
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,subprocess
+          root=Path('.')
+          def seal():
+            paths=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=str)
+            (root/'SHA256SUMS.txt').write_text(''.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n' for p in paths))
+          for _ in range(5):
+            seal()
+            subprocess.run(['python3','tools/package_audit.py'],check=True)
+          seal()
+          PY
+          python3 tools/package_audit.py
+      - name: Commit reviewed proof and synchronized publication
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Publish V1 Balanced DIV24 escape, common-input proof and package hashes'
+          git push origin HEAD:issue39-v1-div24-narrow-escape
