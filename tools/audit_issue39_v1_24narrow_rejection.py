@@ -13,6 +13,7 @@ from mini6502 import CPU
 from benchmark_unsigned_common_corpus import SPECS,corpus
 from validate_unsigned_division import api,wr,rd,expected
 from audit_issue39_unsigned_small_workloads import pairs
+from issue39_v1_3232_d8_parent import restore_pr61
 PATH=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 OUT=ROOT/'validation/review/ISSUE39_V1_UDIV24_NARROW_REJECTION.json'
 # This negative screen certifies a *historical* rejected dispatch experiment.
