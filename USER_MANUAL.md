@@ -1840,3 +1840,5 @@ The library publishes one readable ASM file for every callable profile routine i
 For binary arithmetic, the canonical source-facing name records operand signedness/width and result geometry. Examples: `mul_u16_u16_u32`, `mul_s8_s8_s16`, `div_u8_u8_u8_8`, and `div_s32_s16_s32_16`. Division names include the remainder width when the public call returns a remainder. The existing `MATH_*` names remain stable aliases at the same addresses, so no existing caller must change. Full rules and mappings are in `docs/NAMING_STANDARD.md`.
 
 - V1 32/32 shared nonzero-divisor gate (issue #39): docs/V1_UDIV32_32_PRECHECKED_GATE_2026-10-11.md; remaining unsigned family audit stays open.
+
+- Issue #39 shared UDIV16/UMOD16 branch transplant: docs/ISSUE39_UDIV16_BRANCH_TRANSPLANT_2026-10-11.md; unsigned family audit remains open.

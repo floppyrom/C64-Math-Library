@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 626.
+; Reachable instructions: 625.
 !cpu 6510
 
 ; ---- executable island $3140 ----
@@ -66,8 +66,9 @@ LB85F:
     jmp LBC02                          ; @B864 4C 02 BC
 LB867:
     sec                                ; @B867 38
-    bcc LB86D                          ; @B868 90 03
-    jmp LB8F5                          ; @B86A 4C F5 B8
+    jmp LB8F5                          ; @B868 4C F5 B8
+; ---- executable island $B86D ----
+* = $B86D
 LB86D:
     lda $C01C                          ; @B86D AD 1C C0
     sbc $C014                          ; @B870 ED 14 C0

@@ -164,7 +164,7 @@
           "signed": "MATH_SDIV16",
           "unsigned": "MATH_UDIV16",
           "signed_instructions": 802,
-          "unsigned_instructions": 626,
+          "unsigned_instructions": 625,
           "shared_instructions": 0,
           "approved_shared_instructions": 0
         },
@@ -272,7 +272,7 @@
           "signed": "MATH_SDIV16",
           "unsigned": "MATH_UDIV16",
           "signed_instructions": 802,
-          "unsigned_instructions": 626,
+          "unsigned_instructions": 625,
           "shared_instructions": 0,
           "approved_shared_instructions": 0
         },
@@ -380,7 +380,7 @@
           "signed": "MATH_SDIV16",
           "unsigned": "MATH_UDIV16",
           "signed_instructions": 802,
-          "unsigned_instructions": 626,
+          "unsigned_instructions": 625,
           "shared_instructions": 0,
           "approved_shared_instructions": 0
         },
@@ -488,7 +488,7 @@
           "signed": "MATH_SDIV16",
           "unsigned": "MATH_UDIV16",
           "signed_instructions": 802,
-          "unsigned_instructions": 626,
+          "unsigned_instructions": 625,
           "shared_instructions": 0,
           "approved_shared_instructions": 0
         },
@@ -1422,7 +1422,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 802,
-        "unsigned_instructions": 626,
+        "unsigned_instructions": 625,
         "shared_instructions": 0,
         "approved_shared": 0,
         "unexpected": []
@@ -1925,7 +1925,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 802,
-        "unsigned_instructions": 626,
+        "unsigned_instructions": 625,
         "shared_instructions": 0,
         "approved_shared": 0,
         "unexpected": []
@@ -2428,7 +2428,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 802,
-        "unsigned_instructions": 626,
+        "unsigned_instructions": 625,
         "shared_instructions": 0,
         "approved_shared": 0,
         "unexpected": []
@@ -2849,7 +2849,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 802,
-        "unsigned_instructions": 626,
+        "unsigned_instructions": 625,
         "shared_instructions": 0,
         "approved_shared": 0,
         "unexpected": []

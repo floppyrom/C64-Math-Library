@@ -14,10 +14,10 @@
   },
   "alternate_prg_sha256": {
     "v1_balanced": "118c47d526a7d6d124cc7e20c19b372b54096462ba2ca21fb40e5b3d1404f18a",
-    "v2_pareto_fast": "09a50708536d5ac21b6a6ba086a5e0d8a26785328bdb11c0017389afd953f08e",
-    "v3_reu_512k": "a3b9d9b7a2de7be0b119e068914a0cb4405f15baf3c6b38eaa54ba08468334cd",
-    "v4_reu_16m": "87d73a21c599aaa8eebc4a8c3fb4762dcc8b22c73c93d56b65037679ebc5ed7e",
-    "v5_hybrid_lowzp": "6c1deab70d6cf1b7bd7132690718e48e11b0f959439e7159f32cbc60c48177ec"
+    "v2_pareto_fast": "2860a647abd59e0da1b7c4a9e3a4103250a61ead602fd519fa91cf72bc0a5934",
+    "v3_reu_512k": "c5e816fda35669f3a7999a51143c3adc9640e5a1e78dbb23b1d4ea77ba3b16ae",
+    "v4_reu_16m": "ae97818ad20bd45fb48433a4965d021670ac2561bc7b26c72a0e242b2464d863",
+    "v5_hybrid_lowzp": "2936bbf2a03039631732596f9ab0e01915582efdea2e70baa9f8a7227c1d150d"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -138,13 +138,13 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 62931,
-    "user_manual_lines": 1842,
-    "user_manual_sha256": "54adb122dccca22c75a2b301d12d3f779af6645fc8cdf4621d330399672e0b86"
+    "user_manual_bytes": 63073,
+    "user_manual_lines": 1844,
+    "user_manual_sha256": "e72120a0f06d8cab126b517f5f92d085d92d9e035b1c383842028581d70a0ca6"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "6c1deab70d6cf1b7bd7132690718e48e11b0f959439e7159f32cbc60c48177ec",
+    "alternate_prg_sha256": "2936bbf2a03039631732596f9ab0e01915582efdea2e70baa9f8a7227c1d150d",
     "common_machine_calls_per_map": 21678,
     "common_public_entries_per_map": 56,
     "config_validation_cases": 8,
@@ -157,7 +157,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "aaa00c4f0919c4619a99a0f66d3c58f7e7c7f3cd8d245b5006472fde51f20339",
+    "reference_prg_sha256": "7a843a703a51f402ec51a6e66f589cff020725784fff9f9cc0d9ef7b9bfbe91b",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "atan2_tables_bytes": 1024
@@ -244,10 +244,10 @@
   ],
   "reference_prg_sha256": {
     "v1_balanced": "00ea3816ee39fac3ee3c04ae05c276bde43f05e3073fbdcc12f7f2fa74f97ad0",
-    "v2_pareto_fast": "1af2033533d68d8a19b289843a7458406063ca638dbeb9f8e2d838470c8273ca",
-    "v3_reu_512k": "cd2919b7e7fbb649e8b1ba54daaffc2e1382caa6d09f6cdfaf1923e1d6c5fefe",
-    "v4_reu_16m": "9343dc21341d8026bec8da915aaa26ab91d32dad485f4ec8c45933d255d39178",
-    "v5_hybrid_lowzp": "2b2fecd504568d1f14a3ed1b4ceb31f25847e19f04b4baac1d252d2c6d956071"
+    "v2_pareto_fast": "016b620bf3f4228238f0377e4b3128c2cc1ec4211a1f69f560f7f2d4bbc520fb",
+    "v3_reu_512k": "77c39d522c7a58856179f4a45187871fcbd940967c055095bc614a065da98425",
+    "v4_reu_16m": "7488a1f93a3237190be40626ac9945801620e86bc7cfeba76fd41fd06f196b70",
+    "v5_hybrid_lowzp": "7a843a703a51f402ec51a6e66f589cff020725784fff9f9cc0d9ef7b9bfbe91b"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -567,5 +567,41 @@
       "MATH_UMOD32_32": 541.401802962009
     },
     "v5_hybrid_inheritance": "validated unchanged V5 reference image; source gate idempotent with all-or-none old/new guard"
+  },
+  "issue39_udiv16_shared_branch_2026_10_11": {
+    "status": "PASS",
+    "documentation": "docs/ISSUE39_UDIV16_BRANCH_TRANSPLANT_2026-10-11.md",
+    "unsigned_family_complete": false,
+    "paired_calls": 25224,
+    "paired_mismatches": 0,
+    "paired_slowdowns": 0,
+    "all_profile_unsigned_calls": 822050,
+    "all_profile_signed_calls": 364533,
+    "changed_prg_sha256": {
+      "v2_pareto_fast": "016b620bf3f4228238f0377e4b3128c2cc1ec4211a1f69f560f7f2d4bbc520fb",
+      "v3_reu_512k": "77c39d522c7a58856179f4a45187871fcbd940967c055095bc614a065da98425",
+      "v4_reu_16m": "7488a1f93a3237190be40626ac9945801620e86bc7cfeba76fd41fd06f196b70",
+      "v5_hybrid_lowzp": "7a843a703a51f402ec51a6e66f589cff020725784fff9f9cc0d9ef7b9bfbe91b"
+    },
+    "new_mean_cycles": {
+      "v2_pareto_fast": {
+        "MATH_UDIV16": 127.7548916473806,
+        "MATH_UMOD16": 195.9311010946555
+      },
+      "v3_reu_512k": {
+        "MATH_UDIV16": 125.4087944456133,
+        "MATH_UMOD16": 196.39278815196394
+      },
+      "v4_reu_16m": {
+        "MATH_UDIV16": 125.60551230801599,
+        "MATH_UMOD16": 195.51191242755957
+      },
+      "v5_hybrid_lowzp": {
+        "MATH_UDIV16": 126.36229749631812,
+        "MATH_UMOD16": 199.8982614294913
+      }
+    },
+    "normal_zp_growth_bytes": 0,
+    "stack_page_reserved_growth_bytes": 0
   }
 }
