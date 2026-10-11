@@ -17,7 +17,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 12918
+      "stable_api_reachable_code_union_bytes": 12903
     },
     {
       "profile": "v2_pareto_fast",
@@ -39,7 +39,7 @@
       "stable_api_zp_union_touched_bytes": 186,
       "stable_api_zp_union_ranges": "$0E-$38;$3D-$42;$4F-$66;$68-$69;$82-$F0",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 17732
+      "stable_api_reachable_code_union_bytes": 17693
     },
     {
       "profile": "v4_reu_16m",
@@ -50,7 +50,7 @@
       "stable_api_zp_union_touched_bytes": 185,
       "stable_api_zp_union_ranges": "$0E-$38;$3D-$42;$4F-$65;$68-$69;$82-$F0",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 17511
+      "stable_api_reachable_code_union_bytes": 17472
     },
     {
       "profile": "v5_hybrid_lowzp",
@@ -717,12 +717,12 @@
       "signedness": "unsigned",
       "operation": "divide",
       "width": "32/32",
-      "mean_cycles": "428.554036",
-      "min_cycles": 90,
-      "max_cycles": 2423,
+      "mean_cycles": "416.861197",
+      "min_cycles": 67,
+      "max_cycles": 2404,
       "cases": 6801,
       "cycle_basis": "2026-09-20 unsigned division-family validation",
-      "reachable_code_bytes": 946,
+      "reachable_code_bytes": 931,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
@@ -740,12 +740,12 @@
       "signedness": "unsigned",
       "operation": "modulo",
       "width": "32/32",
-      "mean_cycles": "552.220863",
-      "min_cycles": 90,
-      "max_cycles": 2423,
+      "mean_cycles": "541.401803",
+      "min_cycles": 67,
+      "max_cycles": 2404,
       "cases": 1553,
       "cycle_basis": "2026-09-20 unsigned division-family validation",
-      "reachable_code_bytes": 946,
+      "reachable_code_bytes": 931,
       "zp_bytes": 0,
       "zp_ranges": "",
       "stack_page_reserved_bytes": 0,
