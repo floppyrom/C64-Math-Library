@@ -1,0 +1,44 @@
+name: Issue39 PR67 U16 source-backed release publication
+
+on:
+  push:
+    branches:
+      - issue39-u16-known-carry-branch-pr67
+    paths:
+      - '.github/workflows/issue39-u16-pr67-publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish-16bit-source-qual:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u16-known-carry-branch-pr67
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-verified V2-V5 production stage and complete 16-bit arithmetic benchmarks
+        run: python3 tools/stage_issue39_u16_pr67_release.py
+      - name: Independent package and source catalog checks
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Seal and commit qualified change on PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish V2-V5 known-carry 16bit PR67 qualified release"
+            git push origin HEAD:issue39-u16-known-carry-branch-pr67
+          fi
