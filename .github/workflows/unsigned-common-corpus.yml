@@ -18,6 +18,7 @@ jobs:
       - name: Recompute identical-input unsigned performance and provenance
         run: |
           python3 tools/benchmark_unsigned_common_corpus.py
+          python3 tools/validate_v5_umod24_frontend.py
           git diff --exit-code -- validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv
       - name: Recompute best profile winners from comparable evidence
         run: |
