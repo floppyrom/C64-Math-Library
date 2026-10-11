@@ -1285,6 +1285,31 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             a = _public_addr(v1man, name)
             dst[a:a + 3] = bytes((0x4C, target & 0xFF, target >> 8))
 
+        # V1's 24/8 specialization occupies REG_LOW+$0D00-$0D53. The
+        # V5 profile replaces BOTH public 24-bit entries with the V2 core,
+        # so that specialization is unreachable here. This island is owned
+        # by the independent V5 UDIV32/32 narrow-divisor helper instead.
+        v1_byte8 = vals['REG_LOW'] + 0x0D00
+        if dst[v1_byte8:v1_byte8+4] != bytes((0xAD, (vals['MATH_IO']+0x10) & 255, ((vals['MATH_IO']+0x10) >> 8) & 255, 0x8D)):
+            raise RuntimeError('V1 24/8 donor helper prefix drifted; cannot reclaim V5 narrow island')
+        if any(dst[v1_byte8+0x60:v1_byte8+0x80]):
+            raise RuntimeError('V1 24/8 helper exceeded its reserved 128-byte V5 reclaim island')
+        dst[v1_byte8:v1_byte8+0x80] = b'\\0' * 0x80
+        # The V5 public 24-bit entrypoints are replaced by V2, hence the
+        # inherited V1 dispatch is unreachable. Preserve V5's pre-PR61 image
+        # exactly, rather than shipping 7 dead-byte changes in that gate.
+        g = vals['REG_TABLE'] + 0x1FA0
+        d0 = vals['MATH_IO'] + 0x14
+        d1 = d0 + 1
+        tail = vals['REG_TABLE'] + 0x1296
+        old_narrow = g + 0x10
+        restore = bytes((0xAD, d1&255, d1>>8, 0xD0, 0x08,
+                         0xEC, d0&255, d0>>8, 0x90, 0x03,
+                         0x4C, old_narrow&255, old_narrow>>8,
+                         0x4C, tail&255, tail>>8))
+        if dst[g:g+3] != restore[:3]:
+            raise RuntimeError('V1 24-bit gate moved: cannot restore inert V5 image')
+        dst[g:g+len(restore)] = restore
         udiv32_32_prechecked = apply_udiv32_32_prechecked_gate(dst, vals)
         udiv32_32_narrow = apply_v5_udiv32_32_narrow(dst, vals, v1man)
 
