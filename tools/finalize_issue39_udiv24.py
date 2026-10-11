@@ -102,7 +102,7 @@ for path in ('README.md','USER_MANUAL.md'):
  if link not in f.read_text(): f.write_text(f.read_text().rstrip()+'\n\n'+link+'\n')
 statusfile=R/'RELEASE_STATUS.json'
 d=json.loads(statusfile.read_text());d['date']='2026-10-11'
-d['reference_prg_sha256']=dict(EXPECT)
+d['reference_prg_sha256']=dict(EXPECTED)
 d['alternate_prg_sha256']={}
 for p in PROFILES[:4]:
  m=R/'build_source/alternate'/p/'source_build_manifest.json'
