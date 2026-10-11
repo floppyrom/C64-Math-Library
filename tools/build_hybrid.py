@@ -1291,9 +1291,16 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             raise RuntimeError('UMOD8 guarded core exceeds its owned 128-byte low island')
         mod8_entry = _public_addr(v1man, 'MATH_UMOD8')
         n0 = vals['MATH_IO'] + 0x10
-        if dst[mod8_entry:mod8_entry + 3] != bytes((0xAD,n0 & 255,n0 >> 8)):
-            raise RuntimeError('V2 UMOD8 fallback wrapper lost its first LDA')
-        dst[mod8_entry:mod8_entry + 3] = bytes((0x4C,mod8_gate & 255,mod8_gate >> 8))
+        current_um8=bytes(dst[mod8_entry:mod8_entry + 3])
+        v2_unoptimized=bytes((0xAD,n0 & 255,n0 >> 8))
+        guarded_jmp=bytes((0x4C,mod8_gate & 255,mod8_gate >> 8))
+        # V2 now directly implements the same source-backed guarded public
+        # entry. Both original and already-transplanted wrappers share the
+        # unmodified +3 small-divisor tail, so V5 must remain byte-identical
+        # to its own independently certified release image.
+        if current_um8 not in (v2_unoptimized,guarded_jmp):
+            raise RuntimeError('V2 UMOD8 donor public wrapper contract drift')
+        dst[mod8_entry:mod8_entry + 3] = guarded_jmp
 
         # V2 COS/SINCOS public ABI slots are JMP stubs. Redirect the V1 slots to
         # the private V2 implementations. SIN8 stays V1 because its timing is equal.
