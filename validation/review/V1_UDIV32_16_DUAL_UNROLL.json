@@ -1,6 +1,6 @@
 {
   "status": "PASS",
-  "candidate_sha256": "795cf2320f1fee8b097641bb87f3e2ff591b3c84329b700f35ec7d4ef9593387",
+  "candidate_sha256": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62",
   "method": "identical source-backed 6502 public cycles, reconstruct parent in memory",
   "island": "$1900-$1CF7",
   "new_code_bytes": 1016,

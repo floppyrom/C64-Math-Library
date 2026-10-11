@@ -53,9 +53,9 @@
       "MATH_UMOD8": {
         "cases": 1313,
         "errors": 0,
-        "mean_cycles": 67.16755521706017,
-        "min_cycles": 51,
-        "max_cycles": 495
+        "mean_cycles": 57.46001523229246,
+        "min_cycles": 35,
+        "max_cycles": 509
       },
       "MATH_UMOD16": {
         "cases": 1553,
@@ -425,9 +425,9 @@
       "MATH_UMOD8": {
         "cases": 1313,
         "errors": 0,
-        "mean_cycles": 68.52322924600152,
-        "min_cycles": 51,
-        "max_cycles": 495
+        "mean_cycles": 59.242955064737245,
+        "min_cycles": 35,
+        "max_cycles": 509
       },
       "MATH_UMOD16": {
         "cases": 1553,

@@ -23,7 +23,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | `div_u16_u16_u16_16.asm` |  | 142 |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | `div_u24_u24_u24_24.asm` |  | 482 |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | `div_u32_u16_u32_16.asm` |  | 726 |
-| `MATH_UMOD8` | `mod_u8_u8_u8` | `mod_u8_u8_u8.asm` |  | 45 |
+| `MATH_UMOD8` | `mod_u8_u8_u8` | `mod_u8_u8_u8.asm` |  | 75 |
 | `MATH_UMOD16` | `mod_u16_u16_u16` | `mod_u16_u16_u16__math_umod16.asm` | `MATH_UDIV16` | 142 |
 | `MATH_UMOD24` | `mod_u24_u24_u24` | `mod_u24_u24_u24__math_umod24.asm` | `MATH_UDIV24` | 482 |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | `mod_u32_u16_u16__math_umod32_16.asm` | `MATH_UDIV32_16` | 727 |

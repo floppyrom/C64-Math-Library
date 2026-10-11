@@ -8,7 +8,7 @@ math_udiv16,div_u16_u16_u16_16,132.725857,41,1535,4753,,0,2026-09-20 unsigned di
 math_udiv24,div_u24_u24_u24_24,175.035136,56,2144,4753,,0,2026-10-11 issue39 V1 exact 24/8 source and full machine-code validation,final shipped resident; deterministic public-ABI corpus
 math_udiv32_16,div_u32_u16_u32_16,870.340206,182,2099,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
 math_umul32_ready,mul_u32_u32_u64_ready,697.175781,642,784,1024,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29 READY entry; requires initialized/bound pointer state
-math_umod8,mod_u8_u8_u8,67.167555,51,495,1313,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
+math_umod8,mod_u8_u8_u8,57.460015,35,509,1313,,0,"2026-10-11 issue39 guarded remainder UMOD8, 65536 full-domain pairs and full public ABI","Source-backed V1 77-byte D>=32 remainder-only path, D<32 original fallback; preserves Q"
 math_umod16,mod_u16_u16_u16,184.082421,41,1535,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
 math_umod24,mod_u24_u24_u24,244.607856,56,2144,1553,,0,2026-10-11 issue39 V1 exact 24/8 source and full machine-code validation,final shipped resident; deterministic public-ABI corpus
 math_umod32_16,mod_u32_u16_u16,971.613651,185,1978,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
