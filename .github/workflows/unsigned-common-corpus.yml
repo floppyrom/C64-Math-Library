@@ -1,0 +1,26 @@
+name: Comparable unsigned performance
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  comparable-unsigned-metrics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recompute identical-input unsigned performance and provenance
+        run: |
+          python3 tools/benchmark_unsigned_common_corpus.py
+          git diff --exit-code -- validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv
+      - name: Recompute best profile winners from comparable evidence
+        run: |
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          git diff --exit-code -- benchmarks/BEST_PROFILE_RESULTS.csv validation/PUBLIC_SOURCE_CATALOG_AUDIT.json

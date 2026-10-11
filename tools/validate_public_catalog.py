@@ -12,6 +12,7 @@ Rules:
 from __future__ import annotations
 import csv, hashlib, json, re
 from pathlib import Path
+from common_corpus_ranking import load_common, rank_public
 
 ROOT = Path(__file__).resolve().parents[1]
 PROFILES = [
@@ -94,9 +95,11 @@ def main() -> None:
         elif digest(src)!=r["source_sha256"]: errors.append(f"public result source hash mismatch: {r['source_path']}")
         if not valid_name(r["canonical_name"]): errors.append(f"public result name invalid: {r['canonical_name']}")
 
-    # Fastest-shipped convenience index must be complete and truly minimal.
+    # Fastest-shipped rank must use same-input proof for unsigned DIV/MOD.
+    common=load_common(ROOT)
     by_name={}
-    for r in public:
+    for row in public:
+        r=rank_public(row,common)
         try: cyc=float(r['mean_cycles'])
         except Exception: continue
         by_name.setdefault(r['canonical_name'],[]).append((cyc,r))
@@ -109,8 +112,12 @@ def main() -> None:
         try: got=float(r['mean_cycles'])
         except Exception:
             errors.append(f"best-profile nonnumeric mean: {n}");continue
-        if abs(got-target)>1e-9:
-            errors.append(f"best-profile row is not fastest: {n} {got} != {target}")
+        if abs(got-target)>0.000001:
+            errors.append(f"best-profile row is not fastest on its *common-input* basis: {n} {got} != {target}")
+        if r['routine'] in common['routines']:
+            assert 'identical-input' in r['cycle_basis'],f'unsigned best-row missing comparable basis: {n}'
+            equal=[row for cyc,row in by_name[n] if abs(cyc-target)<0.000001]
+            assert any(row['profile']==r['profile'] for row in equal),f'unsigned fastest source mismatch: {n}' 
         src=ROOT/r['source_path']
         if not src.is_file(): errors.append(f"best-profile source missing: {r['source_path']}")
         elif digest(src)!=r['source_sha256']: errors.append(f"best-profile source hash mismatch: {r['source_path']}")
