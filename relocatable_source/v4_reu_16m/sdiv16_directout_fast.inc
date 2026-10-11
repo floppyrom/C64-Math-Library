@@ -452,8 +452,9 @@ D16F_low_d1_stub
         jmp D16F_low_d1
 D16F_low_d1_to_chain
         sec
-        bcc D16F___rx6
         jmp D16F_chain_start
+        nop
+        nop                  ; SEC forces C=1, preserving absolute locations
 D16F___rx6:
 D16F_chain_q2_equal
         lda D16F_r0
@@ -468,8 +469,9 @@ D16F_chain_q2_done
 D16F_chain_q2_equal_take
         sta D16F_r0
         !byte $0b,$00
-        bcs D16F___rx5
         jmp D16F_chain_q3_done
+        nop
+        nop                  ; ANC #0 forces C=0, preserve code positions
 D16F___rx5:
 D16F_chain_q3_equal
         lda D16F_r0
@@ -484,8 +486,9 @@ D16F_chain_q3_done
 D16F_chain_q3_equal_take
         sta D16F_r0
         !byte $0b,$00
-        bcs D16F___rx9
         jmp D16F_chain_q4_done
+        nop
+        nop                  ; ANC #0 forces C=0, preserve code positions
 D16F___rx9:
 D16F_chain_q4_equal
         lda D16F_r0
