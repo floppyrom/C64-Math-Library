@@ -1,0 +1,94 @@
+{
+  "base_sha256": "97c3e04112335e5958653ac656771b9e11d1d4fede0f5c824b9169aa49b1b564",
+  "cases_checked": 10844,
+  "change": "skip V1LAT_GATE CPX/D0 BCC legacy, extend delegate to narrow N2<D0",
+  "machine_calls": 21688,
+  "no_source_changes": true,
+  "routines": {
+    "MATH_UDIV24": {
+      "canonical": {
+        "before_mean_cycles": 177.7420576478014,
+        "candidate_mean_cycles": 177.45844729644435,
+        "cases": 4753,
+        "equal": 4669,
+        "faster": 6,
+        "largest_speedup_cycles": 406,
+        "slower": 78,
+        "worst_regression_cycles": 2
+      },
+      "narrow_corner": {
+        "before_mean_cycles": 1498.9328400682982,
+        "candidate_mean_cycles": 1585.954467842914,
+        "cases": 1757,
+        "equal": 4,
+        "faster": 414,
+        "largest_speedup_cycles": 429,
+        "slower": 1339,
+        "worst_regression_cycles": 422
+      },
+      "power_of_two": {
+        "before_mean_cycles": 1179.03515625,
+        "candidate_mean_cycles": 1173.13671875,
+        "cases": 256,
+        "equal": 169,
+        "faster": 6,
+        "largest_speedup_cycles": 357,
+        "slower": 81,
+        "worst_regression_cycles": 2
+      },
+      "small_divisor": {
+        "before_mean_cycles": 1732.37890625,
+        "candidate_mean_cycles": 1614.0,
+        "cases": 256,
+        "equal": 3,
+        "faster": 126,
+        "largest_speedup_cycles": 393,
+        "slower": 127,
+        "worst_regression_cycles": 230
+      }
+    },
+    "MATH_UMOD24": {
+      "canonical": {
+        "before_mean_cycles": 269.7881519639408,
+        "candidate_mean_cycles": 268.9201545396008,
+        "cases": 1553,
+        "equal": 1469,
+        "faster": 6,
+        "largest_speedup_cycles": 406,
+        "slower": 78,
+        "worst_regression_cycles": 2
+      },
+      "narrow_corner": {
+        "before_mean_cycles": 1498.9328400682982,
+        "candidate_mean_cycles": 1585.954467842914,
+        "cases": 1757,
+        "equal": 4,
+        "faster": 414,
+        "largest_speedup_cycles": 429,
+        "slower": 1339,
+        "worst_regression_cycles": 422
+      },
+      "power_of_two": {
+        "before_mean_cycles": 1179.03515625,
+        "candidate_mean_cycles": 1173.13671875,
+        "cases": 256,
+        "equal": 169,
+        "faster": 6,
+        "largest_speedup_cycles": 357,
+        "slower": 81,
+        "worst_regression_cycles": 2
+      },
+      "small_divisor": {
+        "before_mean_cycles": 1732.37890625,
+        "candidate_mean_cycles": 1614.0,
+        "cases": 256,
+        "equal": 3,
+        "faster": 126,
+        "largest_speedup_cycles": 393,
+        "slower": 127,
+        "worst_regression_cycles": 230
+      }
+    }
+  },
+  "status": "REJECT"
+}
