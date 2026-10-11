@@ -44,7 +44,7 @@ def main():
        'V5 PR67 16-bit branch rewrites before restoring the older UMOD8 guard. '
        'The 8,868-call historical zero-high bypass audit and its original '
        'pre-PR67, pre-UMOD8 and PR57-era SHA checkpoints are reproduced exactly. '
-       'No shipped arithmetic bytes or public ABI change.\\n')
+       'No shipped arithmetic bytes or public ABI change.\n')
  for fn in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
   fp=ROOT/fn; content=fp.read_text()
   if tag2 not in content:fp.write_text(note+'\n'+content)
