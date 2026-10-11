@@ -1124,6 +1124,49 @@ def apply_udiv32_32_prechecked_gate(dst: bytearray, vals: dict[str,int]) -> dict
             'additional_executable_bytes':3,'additional_zp_bytes':0}
 
 
+def apply_v5_udiv32_32_narrow(dst: bytearray, vals: dict[str,int], base_man: dict) -> dict:
+    """V5-only D3=D2=0 route through its already imported fast UDIV32/16.
+
+    V1 is NOT modified: its 32/16 low-ZP implementation has adverse worst-case
+    narrow-divisor tails. V5 has the V2 core, which is faster on this workload.
+    The parent 32/32 early gate has already established D!=0 and N>D.
+    """
+    high_zero = vals['REG_TABLE'] + 0x0859
+    game = vals['REG_GAME']
+    old = bytes((0x4C,game&255,game>>8))
+    if dst[high_zero:high_zero+3] != old:
+        raise RuntimeError('V5 32/32 narrow route: parent high-zero fallback not recognized')
+    helper = vals['REG_LOW'] + 0x0D00  # $1D00 reference, after V1 dual unroll $1900-$1CF7
+    io = vals['MATH_IO']
+    u32_16 = _public_addr(base_man, 'MATH_UDIV32_16')
+    src='\n'.join([
+        f'* = {hx(helper)}',
+        'V5_D3232_NARROW:',
+        f'    lda {hx(io+0x16)}', # D2; D3 is already known zero
+        '    bne V5_D3232_LEGACY',
+        f'    jsr {hx(u32_16)}', # returns R0/R1 and all 32 quotient bits
+        '    lda #0',
+        f'    sta {hx(io+0x1e)}',
+        f'    sta {hx(io+0x1f)}',
+        '    clc',
+        '    rts',
+        'V5_D3232_LEGACY:',
+        f'    jmp {hx(game)}',
+    ])+'\n'
+    code,labels,_=Assembler().assemble(src)
+    last=max(code)
+    if min(code)!=helper or last>helper+0x2f:
+        raise RuntimeError('V5 32/32 narrow route exceeded qualified free region')
+    if any(dst[helper:last+1]):
+        raise RuntimeError('V5 32/32 narrow route target is not unowned zero space')
+    for a,b in code.items():dst[a]=b
+    dst[high_zero:high_zero+3]=bytes((0x4C,helper&255,helper>>8))
+    return {'entry':hx(helper),'code_end':hx(last),'code_bytes':len(code),
+            'shared_public_api':['MATH_UDIV32_32','MATH_UMOD32_32'],
+            'normal_zp_growth':0,'resident_prg_growth':0,'v1_unchanged':True,
+            'source':'V5 builder, symbolic relocated private helper'}
+
+
 def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
     # V5 intentionally inherits the V1 normalization backend.  Publish a
     # profile-local standalone source, but require it to remain byte-identical
@@ -1243,6 +1286,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             dst[a:a + 3] = bytes((0x4C, target & 0xFF, target >> 8))
 
         udiv32_32_prechecked = apply_udiv32_32_prechecked_gate(dst, vals)
+        udiv32_32_narrow = apply_v5_udiv32_32_narrow(dst, vals, v1man)
 
         new_hi = max(hi, hbase + HYBRID_BYTES - 1)
         prg = outdir / 'math_v5_hybrid_lowzp_game_math.prg'
@@ -1284,6 +1328,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             'muldiv16_lowzp_fusion': muldiv16_lowzp_detail,
             'shifted_div_recip_direct': shifted_div_recip_detail,
             'udiv32_32_prechecked_nonzero': udiv32_32_prechecked,
+            'udiv32_32_narrow_16bit': udiv32_32_narrow,
             'indirect_beneficiaries': [
                 'MATH_UDIV16_SHL8',
                 'MATH_URECIP16_Q16',
