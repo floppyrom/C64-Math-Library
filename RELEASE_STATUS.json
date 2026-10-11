@@ -14,10 +14,10 @@
   },
   "alternate_prg_sha256": {
     "v1_balanced": "17d4b439abd7817152d250c9dd55d3ff1ea3496ccda5c2fa769348d74b49b9e0",
-    "v2_pareto_fast": "46b24edb293890d0aa7f72675b66a954f61927620d820e90a9459e4d505d4b3a",
-    "v3_reu_512k": "97f174548aa8a1569fd322ff550b630c76ea5afc6f930ee0fc99b3126dea5535",
-    "v4_reu_16m": "d9ee2a1d28f88ede06688338f9aab65b3913620ec162d6597695c98ad4363880",
-    "v5_hybrid_lowzp": "5a56df7f013b2e8cf907ea297edc96893207f0d087a702a44e28cde02674bcec"
+    "v2_pareto_fast": "4b1a1e9be100e095d6a6a7386f1a2ab2799195531ab58d6fc4a5b9e5d5506993",
+    "v3_reu_512k": "840faad7edc824b9b2d0a77816170f38c85d6f70306cbc675ae085c232e5ca0e",
+    "v4_reu_16m": "cb6e2062a49c53a2073bf5eda812ba30e48d45241d8cb2b1ad040e1bba7cf2b9",
+    "v5_hybrid_lowzp": "8f0a5a0a6b6d575385af2a06d9a0b36569a365c20069475fd63fc0e44d46cfaa"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 66047,
-    "user_manual_lines": 1876,
-    "user_manual_sha256": "1b849ed30496b2e0bf11a8047e432232ebe0723169d68963da48c29fa2d408f0"
+    "user_manual_bytes": 66268,
+    "user_manual_lines": 1878,
+    "user_manual_sha256": "28f8361da3850220dbea4179a822428edabffc0cbec2030c903d448e08436911"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -244,10 +244,10 @@
   ],
   "reference_prg_sha256": {
     "v1_balanced": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62",
-    "v2_pareto_fast": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6",
-    "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
-    "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
-    "v5_hybrid_lowzp": "bed1ee986857d045d452036d78d0d6cbdc078dbc3407f8a860a8fd54f8395fa2"
+    "v2_pareto_fast": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138",
+    "v3_reu_512k": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad",
+    "v4_reu_16m": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e",
+    "v5_hybrid_lowzp": "26981cc03b06d1a797917ae34a5d8969db466435fff496a758a262bac75b254b"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "a761f180bd946834e60bba7d9848385574f7f90ea3af09812af16a8fe7d0cb43",
+    "benchmark_sha256": "5aeccd04644f5f9b81e3e8d9ee0245f355bff90c0bc43584be9b552275b69119",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -755,7 +755,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "b648336b5e0583c3bf2b74ea421dedf3158ec9f303015c3e27936780120dc446",
+    "report_sha256": "8b7584b0c15967ffddb173cfeeac4d95527cee311676d96a6de00b421ce6f92a",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -858,7 +858,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "fcbeb987bfbdd8308d74883abd5ae77c3d31d4827b223d42a7805befef869e8e",
+    "data_sha256": "c967f4bbd8f30292384dd31f6c6a2727c9e32f2599770193be8352918b757ba5",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -971,5 +971,48 @@
     "signed_paired_report_sha256": "c7378717f87a2a0da2d9050d81827887af7fbabebe77fd1002a8d81fad675056",
     "signed_paired_csv_sha256": "05ea0de329fd233f25d5033d4812f5f8aaa204f589de1fe4d54e281c4ebec13b",
     "v2_donor_negative_report_sha256": "291bbdd50c9c597bbe2913f56e2c824bec305fa7850de09f4bdc1737f088b85c"
+  },
+  "issue39_u16_known_carry_pr67_2026_10_12": {
+    "status": "PASS",
+    "document": "docs/ISSUE39_PR67_KNOWN_CARRY_16BIT_2026-10-12.md",
+    "unsigned_family_complete": false,
+    "v1_unchanged": true,
+    "changed_profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "old_and_new_resident_sha256": {
+      "v2_pareto_fast": {
+        "old": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6",
+        "new": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138"
+      },
+      "v3_reu_512k": {
+        "old": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
+        "new": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad"
+      },
+      "v4_reu_16m": {
+        "old": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
+        "new": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e"
+      },
+      "v5_hybrid_lowzp": {
+        "old": "bed1ee986857d045d452036d78d0d6cbdc078dbc3407f8a860a8fd54f8395fa2",
+        "new": "26981cc03b06d1a797917ae34a5d8969db466435fff496a758a262bac75b254b"
+      }
+    },
+    "normal_zp_growth": 0,
+    "resident_prg_growth": 0,
+    "public_abi_changed": false,
+    "candidate_source_sites_per_profile": 6,
+    "native_vice_reported_version": "3.10",
+    "native_vice_old_new_public_calls": 8192,
+    "same_input_unsigned_calls": 136335,
+    "paired_signed_public_calls": 54770,
+    "full_unsigned_correctness_calls": 822050,
+    "source_diff_report_sha256": "3d84e8a054774cfef411a911523a685bf3ab750560a8ab8c0b9c07c495a8e24b",
+    "candidate_hybrid_proof_sha256": "a7c2d156c86ae15476865732b28c7779412f9beaf145cc0e9eec306266d011a1",
+    "paired_signed_new_report_sha256": "91e750c957459a934d3e00f37bfae14d26eb478c58cd9b678854907d98df85d3",
+    "paired_signed_new_csv_sha256": "42d8a897669ada51c653160e35174e5ebdf2b228da858533da42ad08e4933b1d"
   }
 }

@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 802.
+; Reachable instructions: 799.
 ; NOTE: legacy alias entry; semantic producer is MATH_SDIV16.
 !cpu 6510
 
@@ -293,8 +293,9 @@ L7C81:
     jmp L7FD2                          ; @7C86 4C D2 7F
 L7C89:
     sec                                ; @7C89 38
-    bcc L7C8F                          ; @7C8A 90 03
-    jmp L7D12                          ; @7C8C 4C 12 7D
+    jmp L7D12                          ; @7C8A 4C 12 7D
+; ---- executable island $7C8F ----
+* = $7C8F
 L7C8F:
     lda $C01C                          ; @7C8F AD 1C C0
     sbc $12                            ; @7C92 E5 12
@@ -308,8 +309,9 @@ L7C97:
 L7CA0:
     sta $C01C                          ; @7CA0 8D 1C C0
     !byte $0B, $00    ; ANC #imm       ; @7CA3 0B 00
-    bcs L7CAA                          ; @7CA5 B0 03
-    jmp L7CB2                          ; @7CA7 4C B2 7C
+    jmp L7CB2                          ; @7CA5 4C B2 7C
+; ---- executable island $7CAA ----
+* = $7CAA
 L7CAA:
     lda $C01C                          ; @7CAA AD 1C C0
     sbc $12                            ; @7CAD E5 12
@@ -323,8 +325,9 @@ L7CB2:
 L7CBB:
     sta $C01C                          ; @7CBB 8D 1C C0
     !byte $0B, $00    ; ANC #imm       ; @7CBE 0B 00
-    bcs L7CC5                          ; @7CC0 B0 03
-    jmp L7CCD                          ; @7CC2 4C CD 7C
+    jmp L7CCD                          ; @7CC0 4C CD 7C
+; ---- executable island $7CC5 ----
+* = $7CC5
 L7CC5:
     lda $C01C                          ; @7CC5 AD 1C C0
     sbc $12                            ; @7CC8 E5 12

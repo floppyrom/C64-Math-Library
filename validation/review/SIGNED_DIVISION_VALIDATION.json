@@ -98,7 +98,7 @@
       "MATH_SDIV16": {
         "cases": 4585,
         "errors": 0,
-        "mean_cycles": 168.39302071973827,
+        "mean_cycles": 168.3175572519084,
         "min_cycles": 54,
         "max_cycles": 1159,
         "mode": "structured_random"
@@ -145,7 +145,7 @@
       "MATH_SMOD16": {
         "cases": 1385,
         "errors": 0,
-        "mean_cycles": 231.872202166065,
+        "mean_cycles": 231.8014440433213,
         "min_cycles": 54,
         "max_cycles": 1159
       },
@@ -183,7 +183,7 @@
       "MATH_SDIV16": {
         "cases": 4585,
         "errors": 0,
-        "mean_cycles": 170.58211559432934,
+        "mean_cycles": 170.50883315158126,
         "min_cycles": 54,
         "max_cycles": 1159,
         "mode": "structured_random"
@@ -230,7 +230,7 @@
       "MATH_SMOD16": {
         "cases": 1385,
         "errors": 0,
-        "mean_cycles": 234.65920577617328,
+        "mean_cycles": 234.5927797833935,
         "min_cycles": 54,
         "max_cycles": 1159
       },
@@ -268,7 +268,7 @@
       "MATH_SDIV16": {
         "cases": 4585,
         "errors": 0,
-        "mean_cycles": 168.74503816793893,
+        "mean_cycles": 168.6730643402399,
         "min_cycles": 54,
         "max_cycles": 1159,
         "mode": "structured_random"
@@ -315,7 +315,7 @@
       "MATH_SMOD16": {
         "cases": 1385,
         "errors": 0,
-        "mean_cycles": 228.24476534296028,
+        "mean_cycles": 228.1682310469314,
         "min_cycles": 54,
         "max_cycles": 1159
       },
@@ -353,7 +353,7 @@
       "MATH_SDIV16": {
         "cases": 4585,
         "errors": 0,
-        "mean_cycles": 170.63118865866957,
+        "mean_cycles": 170.5400218102508,
         "min_cycles": 54,
         "max_cycles": 1159,
         "mode": "structured_random"
@@ -400,7 +400,7 @@
       "MATH_SMOD16": {
         "cases": 1385,
         "errors": 0,
-        "mean_cycles": 231.66714801444044,
+        "mean_cycles": 231.60505415162456,
         "min_cycles": 54,
         "max_cycles": 1159
       },

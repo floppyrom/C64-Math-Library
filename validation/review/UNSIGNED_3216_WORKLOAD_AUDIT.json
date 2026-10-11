@@ -2,10 +2,10 @@
   "basis": "machine-code 6502 instruction cycles including public entry/RTS; not REU bus wall time",
   "profile_resident_sha256": {
     "v1_balanced": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62",
-    "v2_pareto_fast": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6",
-    "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
-    "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
-    "v5_hybrid_lowzp": "bed1ee986857d045d452036d78d0d6cbdc078dbc3407f8a860a8fd54f8395fa2"
+    "v2_pareto_fast": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138",
+    "v3_reu_512k": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad",
+    "v4_reu_16m": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e",
+    "v5_hybrid_lowzp": "26981cc03b06d1a797917ae34a5d8969db466435fff496a758a262bac75b254b"
   },
   "profiles": [
     "v1_balanced",

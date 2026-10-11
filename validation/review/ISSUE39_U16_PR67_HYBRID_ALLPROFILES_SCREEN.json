@@ -1,0 +1,232 @@
+{
+  "status": "PASS",
+  "description": "full resident exact-diff source-built V2-V5 incl V5 imported donor; common corpus correctness/performance. Not yet VICE or release.",
+  "profiles": {
+    "v2_pareto_fast": {
+      "old_sha256": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6",
+      "new_sha256": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138",
+      "sites": [
+        {
+          "resident_address": "0x7c8a",
+          "old": "90034c127d",
+          "new": "4c127deaea"
+        },
+        {
+          "resident_address": "0x7ca5",
+          "old": "b0034cb27c",
+          "new": "4cb27ceaea"
+        },
+        {
+          "resident_address": "0x7cc0",
+          "old": "b0034ccd7c",
+          "new": "4ccd7ceaea"
+        },
+        {
+          "resident_address": "0xb884",
+          "old": "b0034c92b8",
+          "new": "4c92b8eaea"
+        },
+        {
+          "resident_address": "0xb8a0",
+          "old": "b0034caeb8",
+          "new": "4caeb8eaea"
+        },
+        {
+          "resident_address": "0xb8e4",
+          "old": "b0034c76b8",
+          "new": "4c76b8eaea"
+        }
+      ]
+    },
+    "v3_reu_512k": {
+      "old_sha256": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
+      "new_sha256": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad",
+      "sites": [
+        {
+          "resident_address": "0x7d6b",
+          "old": "90034cf37d",
+          "new": "4cf37deaea"
+        },
+        {
+          "resident_address": "0x7d86",
+          "old": "b0034c937d",
+          "new": "4c937deaea"
+        },
+        {
+          "resident_address": "0x7da1",
+          "old": "b0034cae7d",
+          "new": "4cae7deaea"
+        },
+        {
+          "resident_address": "0xb884",
+          "old": "b0034c92b8",
+          "new": "4c92b8eaea"
+        },
+        {
+          "resident_address": "0xb8a0",
+          "old": "b0034caeb8",
+          "new": "4caeb8eaea"
+        },
+        {
+          "resident_address": "0xb8e4",
+          "old": "b0034c76b8",
+          "new": "4c76b8eaea"
+        }
+      ]
+    },
+    "v4_reu_16m": {
+      "old_sha256": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
+      "new_sha256": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e",
+      "sites": [
+        {
+          "resident_address": "0x7d6b",
+          "old": "90034cf37d",
+          "new": "4cf37deaea"
+        },
+        {
+          "resident_address": "0x7d86",
+          "old": "b0034c937d",
+          "new": "4c937deaea"
+        },
+        {
+          "resident_address": "0x7da1",
+          "old": "b0034cae7d",
+          "new": "4cae7deaea"
+        },
+        {
+          "resident_address": "0xb884",
+          "old": "b0034c92b8",
+          "new": "4c92b8eaea"
+        },
+        {
+          "resident_address": "0xb8a0",
+          "old": "b0034caeb8",
+          "new": "4caeb8eaea"
+        },
+        {
+          "resident_address": "0xb8e4",
+          "old": "b0034c76b8",
+          "new": "4c76b8eaea"
+        }
+      ]
+    },
+    "v5_hybrid_lowzp": {
+      "old_sha256": "bed1ee986857d045d452036d78d0d6cbdc078dbc3407f8a860a8fd54f8395fa2",
+      "new_sha256": "26981cc03b06d1a797917ae34a5d8969db466435fff496a758a262bac75b254b",
+      "sites": [
+        {
+          "resident_address": "0xb25f",
+          "old": "90034ce7b2",
+          "new": "4ce7b2eaea"
+        },
+        {
+          "resident_address": "0xb27a",
+          "old": "b0034c87b2",
+          "new": "4c87b2eaea"
+        },
+        {
+          "resident_address": "0xb295",
+          "old": "b0034ca2b2",
+          "new": "4ca2b2eaea"
+        },
+        {
+          "resident_address": "0xb884",
+          "old": "b0034c92b8",
+          "new": "4c92b8eaea"
+        },
+        {
+          "resident_address": "0xb8a0",
+          "old": "b0034caeb8",
+          "new": "4caeb8eaea"
+        },
+        {
+          "resident_address": "0xb8e4",
+          "old": "b0034c76b8",
+          "new": "4c76b8eaea"
+        }
+      ]
+    }
+  },
+  "paired_mean_cycles": {
+    "v1_balanced:MATH_UDIV16": {
+      "calls": 2729,
+      "mean_cycles": 156.3484792964456
+    },
+    "v1_balanced:MATH_UMOD16": {
+      "calls": 1705,
+      "mean_cycles": 189.38357771260996
+    },
+    "v1_balanced:MATH_SDIV16": {
+      "calls": 1200,
+      "mean_cycles": 280.88
+    },
+    "v1_balanced:MATH_SMOD16": {
+      "calls": 1200,
+      "mean_cycles": 280.88
+    },
+    "v2_pareto_fast:MATH_UDIV16": {
+      "calls": 2729,
+      "mean_cycles": 161.75851960425064
+    },
+    "v2_pareto_fast:MATH_UMOD16": {
+      "calls": 1705,
+      "mean_cycles": 198.60117302052785
+    },
+    "v2_pareto_fast:MATH_SDIV16": {
+      "calls": 1200,
+      "mean_cycles": 292.1141666666667
+    },
+    "v2_pareto_fast:MATH_SMOD16": {
+      "calls": 1200,
+      "mean_cycles": 292.1141666666667
+    },
+    "v3_reu_512k:MATH_UDIV16": {
+      "calls": 2729,
+      "mean_cycles": 161.75851960425064
+    },
+    "v3_reu_512k:MATH_UMOD16": {
+      "calls": 1705,
+      "mean_cycles": 198.60117302052785
+    },
+    "v3_reu_512k:MATH_SDIV16": {
+      "calls": 1200,
+      "mean_cycles": 292.11333333333334
+    },
+    "v3_reu_512k:MATH_SMOD16": {
+      "calls": 1200,
+      "mean_cycles": 292.11333333333334
+    },
+    "v4_reu_16m:MATH_UDIV16": {
+      "calls": 2729,
+      "mean_cycles": 161.75851960425064
+    },
+    "v4_reu_16m:MATH_UMOD16": {
+      "calls": 1705,
+      "mean_cycles": 198.60117302052785
+    },
+    "v4_reu_16m:MATH_SDIV16": {
+      "calls": 1200,
+      "mean_cycles": 292.11333333333334
+    },
+    "v4_reu_16m:MATH_SMOD16": {
+      "calls": 1200,
+      "mean_cycles": 292.11333333333334
+    },
+    "v5_hybrid_lowzp:MATH_UDIV16": {
+      "calls": 2729,
+      "mean_cycles": 161.75851960425064
+    },
+    "v5_hybrid_lowzp:MATH_UMOD16": {
+      "calls": 1705,
+      "mean_cycles": 198.60117302052785
+    },
+    "v5_hybrid_lowzp:MATH_SDIV16": {
+      "calls": 1200,
+      "mean_cycles": 292.12666666666667
+    },
+    "v5_hybrid_lowzp:MATH_SMOD16": {
+      "calls": 1200,
+      "mean_cycles": 292.12666666666667
+    }
+  }
+}

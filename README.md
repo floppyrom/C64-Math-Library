@@ -154,3 +154,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue #39 V2 source-backed 101-byte D>=24 UMOD8: [qualification and resource/ABI contract](docs/ISSUE39_V2_UMOD8_D24_RELEASE_2026-10-12.md); V5 remains byte-for-byte unchanged, no additional ZP.
 
 - Issue #39 signed16 identical-input and rejected V2 donor gate architecture: [docs/ISSUE39_SIGNED16_PAIRED_AND_V2_16BIT_DONOR_SCREEN_2026-10-12.md](docs/ISSUE39_SIGNED16_PAIRED_AND_V2_16BIT_DONOR_SCREEN_2026-10-12.md) (no code promotion).
+
+- Issue39 source-verified no-growth V2–V5 16-bit known-carry branch pruning: [docs/ISSUE39_PR67_KNOWN_CARRY_16BIT_2026-10-12.md](docs/ISSUE39_PR67_KNOWN_CARRY_16BIT_2026-10-12.md); V1 unchanged, DIV/MOD campaign open.
