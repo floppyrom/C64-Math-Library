@@ -1,0 +1,94 @@
+name: One-shot issue39 UDIV24 source publication
+on:
+  push:
+    branches: [issue39-udiv24-highbyte-lifetime]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build changed source and replace exact residents
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,shutil
+          root=Path('.')
+          known={
+            'v1_balanced':'759ca1e9d683eba2b56f818e9f3f4f36f5322a832daadf06493380d610f8f0b5',
+            'v2_pareto_fast':'e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd',
+            'v3_reu_512k':'026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc',
+            'v4_reu_16m':'61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7'}
+          for p,digest in known.items():
+            src=root/'build_source/reference'/p/f'math_{p}_source_built.prg'
+            got=hashlib.sha256(src.read_bytes()).hexdigest()
+            assert got==digest,(p,got)
+            dst=root/p/'resident'/f'math_{p}_game_math.prg'
+            assert len(src.read_bytes())==len(dst.read_bytes()),p
+            shutil.copy2(src,dst)
+          PY
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,shutil
+          root=Path('.')
+          p='v5_hybrid_lowzp'
+          src=root/'build_hybrid/reference'/p/f'math_{p}_game_math.prg'
+          assert hashlib.sha256(src.read_bytes()).hexdigest()=='e875c010f1eef2bbf90e6678faf79d3ef641a8e59f3073ccb6b4700e271b1f5c'
+          shutil.copy2(src,root/p/'resident'/f'math_{p}_game_math.prg')
+          PY
+      - name: Relocation, determinism and shared-magnitude validation
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+          python3 tools/build_hybrid.py --config-kind alternate
+          python3 tools/validate_source_build.py all --build build_source/alternate --out validation/source_relocation
+          python3 tools/verify_deterministic_rebuild.py
+      - name: Republish source mirrors and signed and unsigned proof
+        run: |
+          python3 tools/publish_standalone_sources.py
+          python3 tools/publish_native_signed_sources.py
+          python3 tools/validate_unsigned_division.py
+          python3 tools/validate_signed_division.py
+          python3 tools/validate_signed_layout.py
+          python3 tools/validate_published_signed_sources.py
+      - name: Publish performance and source indexes
+        run: |
+          python3 tools/finalize_issue39_udiv24.py
+          python3 tools/generate_consolidated_routine_table.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Seal all packages after transient cleanup
+        run: |
+          rm .github/workflows/issue39-udiv24-finalize.yml
+          rm -rf build_source build_hybrid build_hybrid_repeat build_pareto
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,subprocess
+          root=Path('.')
+          def seal():
+            paths=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=str)
+            (root/'SHA256SUMS.txt').write_text(''.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n' for p in paths))
+          for _ in range(5):
+            seal()
+            subprocess.run(['python3','tools/package_audit.py'],check=True)
+          seal()
+          PY
+          python3 tools/package_audit.py
+      - name: Commit synchronized publication
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git commit -m 'Publish issue39 UDIV24/UMOD24 proof and release manifest'
+          git push origin HEAD:issue39-udiv24-highbyte-lifetime
