@@ -32,46 +32,47 @@ for p in PROFILES:
   entry=ud['profiles'][p][name]
   assert entry['cases']==(4753 if name==NAMES[0] else 1553),(p,name,entry['cases'])
   assert abs(entry['mean_cycles']-mean)<0.000002,(p,name,entry['mean_cycles'],mean)
- # V1–V4 use PUBLIC_PERFORMANCE.csv; V5 has HYBRID_PERFORMANCE.csv.
- # The smaller PUBLIC_PERFORMANCE_GAME_MATH.csv is an extension inventory
- # and does not contain UDIV24/UMOD24; do not silently write to it.
- if p != 'v5_hybrid_lowzp':
-  csvfile=R/p/'PUBLIC_PERFORMANCE.csv'
-  with csvfile.open(newline='') as f: rows=list(csv.DictReader(f))
-  found=set()
-  for row in rows:
-   key=row['operation'].lower()
-   if key in ('math_udiv24','math_umod24'):
-    name=key.upper()
-    t=ud['profiles'][p][name]
-    assert int(row['cases'])==t['cases'],(p,key,row['cases'],t['cases'])
-    row['avg_cycles']=f"{t['mean_cycles']:.6f}"
-    row['min_cycles']=str(t['min_cycles'])
-    row['max_cycles']=str(t['max_cycles'])
-    row['evidence']='2026-10-11 issue39 live-X equal-high paired source validation'
-    found.add(key)
-  assert found=={'math_udiv24','math_umod24'},(p,found)
-  with csvfile.open('w',newline='') as f:
-   w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n')
-   w.writeheader();w.writerows(rows)
- else:
-  csvfile=R/p/'HYBRID_PERFORMANCE.csv'
-  with csvfile.open(newline='') as f:rows=list(csv.DictReader(f))
-  found=set()
-  for row in rows:
-   if row['routine'] in NAMES:
-    name=row['routine']
-    baseline=ud['profiles']['v1_balanced'][name]['mean_cycles']
-    new=ud['profiles'][p][name]['mean_cycles']
-    row['v1_mean_cycles']=f"{baseline:.6f}"
-    row['v5_mean_cycles']=f"{new:.6f}"
-    row['improvement_percent']=f"{(baseline-new)/baseline*100:.6f}"
-    row['provenance']='2026-10-11 issue39 all-profile public-ABI division validation'
-    found.add(name)
-  assert found==set(NAMES),(p,found)
-  with csvfile.open('w',newline='') as f:
-   w=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n')
-   w.writeheader();w.writerows(rows)
+ # Profile performance CSVs have different historical schemas:
+ # V1/V2: per-operation records, V3: three-way profile comparison,
+ # V4: V3/V4 comparison, and V5: hybrid comparison.
+ csvfile=(R/p/'HYBRID_PERFORMANCE.csv' if p=='v5_hybrid_lowzp'
+          else R/p/'PUBLIC_PERFORMANCE.csv')
+ with csvfile.open(newline='') as f:rows=list(csv.DictReader(f))
+ fields=list(rows[0]);found=set()
+ for row in rows:
+  key=row['routine'] if p=='v5_hybrid_lowzp' else row['operation'].lower()
+  if key not in ('math_udiv24','math_umod24','MATH_UDIV24','MATH_UMOD24','udiv24','umod24'):
+   continue
+  name='MATH_'+key.upper().replace('MATH_','')
+  assert name in NAMES,(p,key,name)
+  val=ud['profiles'][p][name]
+  if p in ('v1_balanced','v2_pareto_fast'):
+   assert int(row['cases'])==val['cases'],(p,key,row['cases'],val['cases'])
+   row['avg_cycles']=f"{val['mean_cycles']:.6f}"
+   row['min_cycles']=str(val['min_cycles'])
+   row['max_cycles']=str(val['max_cycles'])
+   row['evidence']='2026-10-11 issue39 live-X equal-high source validation'
+  elif p=='v3_reu_512k':
+   row['v1_balanced_cycles']=f"{ud['profiles']['v1_balanced'][name]['mean_cycles']:.6f}"
+   row['v2_pareto_fast_cycles']=f"{ud['profiles']['v2_pareto_fast'][name]['mean_cycles']:.6f}"
+   row['v3_reu_default_cycles']=f"{val['mean_cycles']:.6f}"
+   row['v3_evidence']='2026-10-11 issue39 4753/1553-call paired source validation'
+  elif p=='v4_reu_16m':
+   row['v3_reu_512k_cycles']=f"{ud['profiles']['v3_reu_512k'][name]['mean_cycles']:.6f}"
+   row['v4_reu_16m_cycles']=f"{val['mean_cycles']:.6f}"
+   row['v4_evidence']='2026-10-11 issue39 4753/1553-call paired source validation'
+  else:
+   before=ud['profiles']['v1_balanced'][name]['mean_cycles']
+   after=val['mean_cycles']
+   row['v1_mean_cycles']=f"{before:.6f}"
+   row['v5_mean_cycles']=f"{after:.6f}"
+   row['improvement_percent']=f"{(before-after)/before*100:.6f}"
+   row['provenance']='2026-10-11 issue39 all-profile public-ABI validation'
+  found.add(name)
+ assert found==set(NAMES),(p,found)
+ with csvfile.open('w',newline='') as f:
+  w=csv.DictWriter(f,fieldnames=fields,lineterminator='\n')
+  w.writeheader();w.writerows(rows)
 from finalize_signed_core_reuse import rebuild_game_math_aggregate
 rebuild_game_math_aggregate()
 perf=R/'PERFORMANCE.md';lines=perf.read_text().splitlines()
