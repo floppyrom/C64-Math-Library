@@ -28,7 +28,7 @@ jobs:
           for kind in ('reference','alternate'):
               d=root/'build_hybrid'/kind/'v5_hybrid_lowzp'
               m=json.loads((d/'source_build_manifest.json').read_text())
-              assert m['udiv32_32_prechecked_gate']['source_gate_state']=='prechecked',m.get('udiv32_32_prechecked_gate')
+              assert m['udiv32_32_prechecked_nonzero']['source_gate_state']=='prechecked',m.get('udiv32_32_prechecked_nonzero')
               target=d/m['output_prg']
               assert hashlib.sha256(target.read_bytes()).hexdigest()==m['output_sha256']
               if kind=='reference':
