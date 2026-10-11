@@ -43,4 +43,4 @@ jobs:
             validation/review/ISSUE39_V2_UMOD8_D24_CANDIDATE.json
             build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg
             build_source/alternate/v2_pareto_fast/math_v2_pareto_fast_source_built.prg
-            build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_source_built.prg
+            build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg
