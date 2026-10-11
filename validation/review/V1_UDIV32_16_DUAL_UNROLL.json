@@ -1,0 +1,144 @@
+{
+  "status": "PASS",
+  "candidate_sha256": "97c3e04112335e5958653ac656771b9e11d1d4fede0f5c824b9169aa49b1b564",
+  "method": "identical source-backed 6502 public cycles, reconstruct parent in memory",
+  "island": "$1900-$1CF7",
+  "new_code_bytes": 1016,
+  "normal_zp_growth": 0,
+  "routines": {
+    "MATH_UDIV32_16": {
+      "common": {
+        "cases": 2729,
+        "mean_parent_cycles": 896.0615610113595,
+        "mean_candidate_cycles": 825.8739465005497,
+        "faster": 2578,
+        "equal": 151,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "uniform_32x16": {
+        "cases": 512,
+        "mean_parent_cycles": 861.439453125,
+        "mean_candidate_cycles": 795.41015625,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "numerator_24bit": {
+        "cases": 512,
+        "mean_parent_cycles": 733.880859375,
+        "mean_candidate_cycles": 669.412109375,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "numerator_16bit": {
+        "cases": 512,
+        "mean_parent_cycles": 665.224609375,
+        "mean_candidate_cycles": 600.998046875,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 135
+      },
+      "small_divisors": {
+        "cases": 512,
+        "mean_parent_cycles": 1698.74609375,
+        "mean_candidate_cycles": 1563.240234375,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "power_of_two_divisors": {
+        "cases": 512,
+        "mean_parent_cycles": 1494.4921875,
+        "mean_candidate_cycles": 1378.67578125,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "quotient_zero_or_one": {
+        "cases": 512,
+        "mean_parent_cycles": 659.978515625,
+        "mean_candidate_cycles": 595.83984375,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 135
+      }
+    },
+    "MATH_UMOD32_16": {
+      "common": {
+        "cases": 1705,
+        "mean_parent_cycles": 916.2803519061583,
+        "mean_candidate_cycles": 843.6299120234604,
+        "faster": 1554,
+        "equal": 151,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "uniform_32x16": {
+        "cases": 512,
+        "mean_parent_cycles": 864.439453125,
+        "mean_candidate_cycles": 798.41015625,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "numerator_24bit": {
+        "cases": 512,
+        "mean_parent_cycles": 736.880859375,
+        "mean_candidate_cycles": 672.412109375,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "numerator_16bit": {
+        "cases": 512,
+        "mean_parent_cycles": 668.224609375,
+        "mean_candidate_cycles": 603.998046875,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 135
+      },
+      "small_divisors": {
+        "cases": 512,
+        "mean_parent_cycles": 1701.74609375,
+        "mean_candidate_cycles": 1566.240234375,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "power_of_two_divisors": {
+        "cases": 512,
+        "mean_parent_cycles": 1497.4921875,
+        "mean_candidate_cycles": 1381.67578125,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 136
+      },
+      "quotient_zero_or_one": {
+        "cases": 512,
+        "mean_parent_cycles": 662.978515625,
+        "mean_candidate_cycles": 598.83984375,
+        "faster": 512,
+        "equal": 0,
+        "slower": 0,
+        "max_speedup_cycles": 135
+      }
+    }
+  },
+  "paired_inputs": 10578,
+  "paired_calls": 21156,
+  "mismatches": 0,
+  "regressions": 0
+}

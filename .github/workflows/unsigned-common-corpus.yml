@@ -22,6 +22,8 @@ jobs:
           python3 tools/validate_v5_umod16_frontend.py
           python3 tools/validate_udiv32_qone_bound.py
           python3 tools/validate_udiv32_q23_bound.py
+          python3 tools/validate_v1_3216_unroll.py
+          git diff --exit-code -- validation/review/V1_UDIV32_16_DUAL_UNROLL.json
           python3 tools/audit_issue39_zero_high_bypass.py
           git diff --exit-code -- validation/review/UDIV32_ZERO_HIGH_BYPASS_PAIRED.json
           python3 tools/benchmark_unsigned_3216_workloads.py

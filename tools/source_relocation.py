@@ -163,7 +163,7 @@ DIVISION_REFRESH_INCLUDES={
  'v1_balanced':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_balanced.inc',
   'udiv24_direct_repose_balanced.inc','udiv24_latency_escape_balanced.inc','sdiv16_directout_balanced.inc','sdiv24_directout_balanced.inc',
-  'sdiv32_16_direct_balanced.inc','udiv32_32_early_gate.inc','udiv32_32_high_qone.inc','udiv32_32_high_q23.inc','sdiv32_32_signflow.inc'),
+  'sdiv32_16_direct_balanced.inc','udiv32_16_loop_unrolled.inc','udiv32_32_early_gate.inc','udiv32_32_high_qone.inc','udiv32_32_high_q23.inc','sdiv32_32_signflow.inc'),
  'v2_pareto_fast':(
   'udiv8_direct_public.inc','umod8_relocatable_public.inc','sdiv8_direct_public.inc','udiv16_direct_fast.inc',
   'udiv24_direct_repose.inc','udiv32_16_split_direct.inc','sdiv16_directout_fast.inc','sdiv24_directout_fast.inc',
@@ -191,7 +191,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x5200,0x52de),(0x5400,0x552c),
   (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x5600,0x5714),(0x5800,0x58b5),
   (0x2590,0x25b1),(0x5c00,0x5d01),
-  (0x5957,0x59d8),(0x5e00,0x5e05),(0x6810,0x685b),(0x6860,0x68e2),(0xc134,0xc221)),
+  (0x1900,0x1cf7),(0x446a,0x446c),(0x4570,0x4572),(0x5957,0x59d8),(0x5e00,0x5e05),(0x6810,0x685b),(0x6860,0x68e2),(0xc134,0xc221)),
  'v2_pareto_fast':(
   (0x5472,0x54d4),
   (0x3120,0x3122),(0x3200,0x3202),(0x4000,0x41ad),
