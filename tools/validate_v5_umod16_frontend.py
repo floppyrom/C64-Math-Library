@@ -25,5 +25,9 @@ for n,d,_ in pairs:
         if i:assert cyc==last,(hex(n),hex(d),cyc,last)
         last=cyc;total[i]+=cyc
 assert total[0]==total[1]
-assert abs(total[0]/1705-198.61055718475075)<1e-9
+for profile in ('v2_pareto_fast','v5_hybrid_lowzp'):
+    image=R/profile/'resident'/f'math_{profile}_game_math.prg'
+    assert hashlib.sha256(image.read_bytes()).hexdigest()==report['sources'][profile]['resident_sha256'],profile
+assert abs(total[0]/len(pairs)-x['metrics']['v2_pareto_fast']['mean_cycles'])<1e-9
+assert abs(total[1]/len(pairs)-x['metrics']['v5_hybrid_lowzp']['mean_cycles'])<1e-9
 print('V5 UMOD16 REMAINDER FRONTEND PASS: 1705 identical V2/V5 cases, exact cycle parity, no errors')
