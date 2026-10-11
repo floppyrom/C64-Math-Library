@@ -14,7 +14,7 @@ AFTER={0x6814:0x44,0x6859:0x4c,0x685B:0xc1}
 j={'status':'PASS','profiles':{},'matched_calls':0,'matched_errors':0}
 for profile in ('v1_balanced','v5_hybrid_lowzp'):
     path=ROOT/profile/'resident'/f'math_{profile}_game_math.prg'
-    blob=path.read_bytes()
+    blob=restore_umod8_parent(profile,path.read_bytes())
     if profile=='v1_balanced':blob=restore_pr61(blob)
     lo=blob[0]|blob[1]<<8
     mem=bytearray(65536);mem[lo:lo+len(blob)-2]=blob[2:]
