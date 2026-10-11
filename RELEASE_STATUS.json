@@ -13,7 +13,7 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "c44f6698400b7571707ad588adcb2fecee35561ef80c5b7d320d0d78e4f366d9",
+    "v1_balanced": "118c47d526a7d6d124cc7e20c19b372b54096462ba2ca21fb40e5b3d1404f18a",
     "v2_pareto_fast": "09a50708536d5ac21b6a6ba086a5e0d8a26785328bdb11c0017389afd953f08e",
     "v3_reu_512k": "a3b9d9b7a2de7be0b119e068914a0cb4405f15baf3c6b38eaa54ba08468334cd",
     "v4_reu_16m": "87d73a21c599aaa8eebc4a8c3fb4762dcc8b22c73c93d56b65037679ebc5ed7e",
@@ -112,7 +112,7 @@
     "wizard": "tools/pareto_wizard.py",
     "zp_guard_iterations": 10000
   },
-  "date": "2026-10-08",
+  "date": "2026-10-11",
   "deterministic_builds_checked": 8,
   "division_refresh": {
     "date": "2026-09-20",
@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 62535,
-    "user_manual_lines": 1840,
-    "user_manual_sha256": "24b5587c7d9e5d9b67c5e08c50011033c4ac352c6e7669fbb3fbb59a2b7b7ab3"
+    "user_manual_bytes": 62931,
+    "user_manual_lines": 1842,
+    "user_manual_sha256": "54adb122dccca22c75a2b301d12d3f779af6645fc8cdf4621d330399672e0b86"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -243,7 +243,7 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "5c9b0824b50d83e01125d2d8e05158baa5872d38d7f68584c92756259752c2ba",
+    "v1_balanced": "00ea3816ee39fac3ee3c04ae05c276bde43f05e3073fbdcc12f7f2fa74f97ad0",
     "v2_pareto_fast": "1af2033533d68d8a19b289843a7458406063ca638dbeb9f8e2d838470c8273ca",
     "v3_reu_512k": "cd2919b7e7fbb649e8b1ba54daaffc2e1382caa6d09f6cdfaf1923e1d6c5fefe",
     "v4_reu_16m": "9343dc21341d8026bec8da915aaa26ab91d32dad485f4ec8c45933d255d39178",
@@ -551,5 +551,21 @@
       "v5_hybrid_lowzp": 572.0058796924469
     },
     "liftable_muldiv16": "routines/muldiv16/README.md"
+  },
+  "issue_39_v1_32_32_prechecked": {
+    "status": "PASS",
+    "whole_unsigned_family_complete": false,
+    "documentation": "docs/V1_UDIV32_32_PRECHECKED_GATE_2026-10-11.md",
+    "reference_prg_sha256": "00ea3816ee39fac3ee3c04ae05c276bde43f05e3073fbdcc12f7f2fa74f97ad0",
+    "paired_calls": 21508,
+    "paired_mismatches": 0,
+    "paired_slowdowns": 0,
+    "unsigned_divmod_calls": 822050,
+    "signed_divmod_calls": 364533,
+    "means": {
+      "MATH_UDIV32_32": 416.8611968828113,
+      "MATH_UMOD32_32": 541.401802962009
+    },
+    "v5_hybrid_inheritance": "validated unchanged V5 reference image; source gate idempotent with all-or-none old/new guard"
   }
 }

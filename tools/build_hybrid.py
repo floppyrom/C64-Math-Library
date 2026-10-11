@@ -1062,10 +1062,22 @@ def apply_udiv32_32_prechecked_gate(dst: bytearray, vals: dict[str,int]) -> dict
     gate = kernel + 0x1957
     fallback = gate + 0x7C             # reference $59D3
     nz_stub = fallback + 3            # reference $59D6
+    # V5 is generated from the V1 resident image.  Older V1 images need
+    # this transformation; newer V1 images may already carry the very same
+    # source-integrated gate.  Accept only entirely old or entirely new
+    # byte states; a partially patched/unrecognized image is a hard error.
+    states = []
     def replace(a: int, old: bytes, new: bytes) -> None:
-        if len(old) != len(new) or dst[a:a+len(old)] != old:
+        current = dst[a:a+len(old)]
+        if len(old) != len(new):
+            raise RuntimeError(f'V5 UDIV32/32 patch length mismatch at {hx(a)}')
+        if current == old:
+            states.append('original')
+            dst[a:a+len(new)] = new
+        elif current == new:
+            states.append('prechecked')
+        else:
             raise RuntimeError(f'V5 UDIV32/32 patch layout mismatch at {hx(a)}')
-        dst[a:a+len(new)] = new
     for offset, old, new in ((0x16,0x64,0x67),(0x20,0x5A,0x5D),
                               (0x2A,0x50,0x53),(0x34,0x46,0x49)):
         a=gate+offset
@@ -1076,7 +1088,10 @@ def apply_udiv32_32_prechecked_gate(dst: bytearray, vals: dict[str,int]) -> dict
     replace(nz_stub,b'\x00\x00\x00',bytes((0x4C,game&255,game>>8)))
     replace(game+0x30,bytes((0x20,(game+0x13E)&255,(game+0x13E)>>8)),
             bytes((0x20,(game+0x150)&255,(game+0x150)>>8)))
-    return {'profile':'v5_hybrid_lowzp','shared_entries':['MATH_UDIV32_32','MATH_UMOD32_32'],
+    if len(set(states)) != 1:
+        raise RuntimeError('V5 UDIV32/32 mixed original/prechecked patch state')
+    return {'source_gate_state':states[0],
+            'profile':'v5_hybrid_lowzp','shared_entries':['MATH_UDIV32_32','MATH_UMOD32_32'],
             'zero_divisor_target':hx(game+0x122),'nonzero_call_target':hx(game+0x150),
             'additional_executable_bytes':3,'additional_zp_bytes':0}
 

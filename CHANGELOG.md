@@ -1,3 +1,11 @@
+2026-10-11 V1 UDIV32/32 + UMOD32/32 NONZERO GATE
+- V5 hybrid builder recognizes a fully source-integrated V1 prechecked gate and refuses mixed original/optimized byte states; both reference and alternate builds are independently revalidated.
+- V1 zero-ZP shared 32/32 divider reuses the prechecked nonzero-divisor decision, avoiding duplicate D!=0 work on N>D.
+- UDIV32/32 428.554036 -> 416.861197 cycles on 6,801 calls; UMOD32/32 552.220863 -> 541.401803 cycles on 1,553 calls.
+- ABI and RAM envelope unchanged; 21,508 paired calls with zero slower paths; full unsigned and signed family regression requalified.
+- Generated mirrors, performance indexes, 2 changelogs, documentation, checksum and package audits updated.
+- The unsigned DIV/MOD family in issue #39 remains open. Full evidence: docs/V1_UDIV32_32_PRECHECKED_GATE_2026-10-11.md.
+
 2026-10-11 V5 ZERO-ZP UDIV32/32 + UMOD32/32 PRECHECKED GATE
 - The V5 early-gate proves D!=0 on N>D paths; the private 32/32 divider previously checked D==0 again after copying operands.
 - Divisor-zero now jumps to the unchanged Q=R=0, carry-set helper; only proven-nonzero branches enter the normal copy and divider dispatch without the redundant check.
