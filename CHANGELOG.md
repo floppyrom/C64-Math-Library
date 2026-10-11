@@ -1,3 +1,12 @@
+2026-10-11 ISSUE39 V1 BALANCED 24/8 EXACT NARROW-DIVISOR DIVMOD
+- Source-backed 84-byte exact V1 24/8 restoring core at REG_LOW+$0D00, fed by an N2>0,D2=D1=0 bounded selector for UDIV24 and shared UMOD24. Quotient shifted into public MATH_Q; 8-bit remainder with ninth carry held in MATH_R. Zero new normal ZP and stack, stable ABI and PRG length.
+- 56,580 same-input old/new public machine-code executions across canonical, seven profile workloads, 4,080 narrow stress, 4,096 wide controls and 1,024 N2=0 controls per API: no wrong outputs or slower calls. Canonical means V1 UDIV24 177.742058→170.726699, UMOD24 269.788152→248.317450 cycles. Independent full-N2/small-D means 1724.909314→1221.545098 (4,080/4,080 faster per API); maximum individual saving 893 cycles.
+- Historical PR60 rejected V1 selector remains reproducible via source-anchored old parent SHA; the negative certificate is not mislabeled as a failure of the new algorithm.
+- V5's imported V2 24-bit cores stay unchanged. V5 build reclaims the V1-only 24/8 island and restores its inherited unreachable selector; **V5 reference resident remains byte-for-byte identical**. Reference/alternate source maps and mixed-call ABI rechecked.
+- V1 164,410 unsigned and all-profile 822,050 unsigned + 364,533 signed + 136,335 common + 53,760 seven-class calls validated. Genuine VICE full-resident 80 old and 80 new calls matched both public APIs. No claim that a private OptiSearch native timing beat the public ABI.
+- Published performance tables, sources, documentation, both changelogs, release/checksums, and CI. Unsigned DIV/MOD campaign remains open.
+- Details: docs/ISSUE39_V1_UDIV24_BYTE8_2026-10-11.md
+
 2026-10-11 ISSUE39 UNSIGNED SMALL-WIDTH ARCHITECTURE AUDIT
 - Added a new public ABI and cycle gate for 8/16/24-bit UDIV/UMOD: seven same-input classes, 256 operands per class, five resident profiles, 53,760 complete 6502 calls. The corpus demonstrates workload-conditioned V1/V2/V3/V4/V5 trade-offs, particularly V1 16-bit small-divisor efficiency versus V2 24-bit small-divisor efficiency.
 - Rejected widening the V1 24-bit narrow-divisor escape: the seemingly improved canonical mean conceals up to 422-cycle regressions on a dedicated >1,700-case corner suite. A separate deterministic paired negative proof prevents accidentally promoting that unsound performance trade-off.

@@ -13,11 +13,11 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "83227d9699faf9d66a64f3dd5b270cd2f718f9d304896d0ba26d5d8148f66efb",
+    "v1_balanced": "b83fc18c13a979848d4266f9b4cb402a66d97b4ecc95f0002ed2052f514edeb0",
     "v2_pareto_fast": "8c77a56c713dd16717a53d6bf60e2a84f83db8df516896de41ce7e5d1a0b763f",
     "v3_reu_512k": "97f174548aa8a1569fd322ff550b630c76ea5afc6f930ee0fc99b3126dea5535",
     "v4_reu_16m": "d9ee2a1d28f88ede06688338f9aab65b3913620ec162d6597695c98ad4363880",
-    "v5_hybrid_lowzp": "fe902d4ad394f73d00b919a5ff18aef8d093ef45eadb5974d181b01fa210c615"
+    "v5_hybrid_lowzp": "29798e2d7fddb40068e59dde6f35f6bbd2bddee62e545a2e10eb74596baa5401"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -138,13 +138,13 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 65098,
-    "user_manual_lines": 1866,
-    "user_manual_sha256": "194077b2799600210d29e808138500170b784f07b2c9170a53f3b3be377e311f"
+    "user_manual_bytes": 65264,
+    "user_manual_lines": 1868,
+    "user_manual_sha256": "f27981dbce39a937adab71d74253ddf13e203ddda0a44be9e8ceb3f68e3b8662"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "fe902d4ad394f73d00b919a5ff18aef8d093ef45eadb5974d181b01fa210c615",
+    "alternate_prg_sha256": "29798e2d7fddb40068e59dde6f35f6bbd2bddee62e545a2e10eb74596baa5401",
     "common_machine_calls_per_map": 21678,
     "common_public_entries_per_map": 56,
     "config_validation_cases": 8,
@@ -243,7 +243,7 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "97c3e04112335e5958653ac656771b9e11d1d4fede0f5c824b9169aa49b1b564",
+    "v1_balanced": "67d709a3006e5529d49b579be20747b292f466679ea42ac24fd5384e4d71879e",
     "v2_pareto_fast": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd",
     "v3_reu_512k": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
     "v4_reu_16m": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "714ace0733cd00f478e200ef65cb0b976ee7775c9e1c368ab3f2c754af558bc3",
+    "benchmark_sha256": "d08070fc30906e5ffad86460289635d7f9af05ca7a8c1bfab64a3a9b20f2c373",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -857,7 +857,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "d4bfc663fc1740d4762b1c19868e83abb84698baee682b400fa2475864fae357",
+    "data_sha256": "0490a3c4b381090f0238aec45fb2f262840a447953a25cfca7aed5fe10f3052e",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -865,5 +865,34 @@
     "zero_page_growth": 0,
     "documentation": "docs/ISSUE39_UNSIGNED_SMALL_WIDTH_WORKLOADS_2026-10-11.md",
     "unsigned_family_complete": false
+  },
+  "issue39_v1_unsigned_24_by_8_2026_10_11": {
+    "status": "PASS",
+    "documentation": "docs/ISSUE39_V1_UDIV24_BYTE8_2026-10-11.md",
+    "unsigned_family_complete": false,
+    "v1_resident_sha256": "67d709a3006e5529d49b579be20747b292f466679ea42ac24fd5384e4d71879e",
+    "v5_resident_sha256_unchanged": "9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2",
+    "normal_zp_growth": 0,
+    "new_low_code_bytes": 84,
+    "public_abi_changed": false,
+    "resident_prg_byte_growth": 0,
+    "paired_old_new_calls": 56580,
+    "paired_regressions": 0,
+    "native_vice_old_new_calls": 160,
+    "all_profile_unsigned_calls": 822050,
+    "all_profile_signed_calls": 364533,
+    "common_input_calls": 136335,
+    "seven_workload_calls": 53760,
+    "v1_old_new_cycles": {
+      "MATH_UDIV24": {
+        "old": 177.7420576478014,
+        "new": 170.72669892699346
+      },
+      "MATH_UMOD24": {
+        "old": 269.7881519639408,
+        "new": 248.31745009658724
+      }
+    },
+    "paired_report_sha256": "595ec7e34a7a233fe01a971011a192da9f726e6f8a91c63ed9559d870771718d"
   }
 }

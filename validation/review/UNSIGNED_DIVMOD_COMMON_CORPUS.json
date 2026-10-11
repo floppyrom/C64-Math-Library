@@ -263,15 +263,15 @@
             "quotient_0": 57.99307958477509,
             "quotient_1": 98.03696682464455,
             "quotient_10_to_255": 777.9669421487604,
-            "quotient_256_plus": 1614.9406779661017,
+            "quotient_256_plus": 1332.364406779661,
             "quotient_2_to_9": 249.04457142857143
           },
-          "max_cycles": 2178,
-          "mean_cycles": 177.7420576478014,
+          "max_cycles": 2144,
+          "mean_cycles": 170.72669892699346,
           "min_cycles": 56,
           "p95_cycles": 733,
           "selection_means": {
-            "edges": 530.9073724007561,
+            "edges": 467.875236294896,
             "random": 135.49755859375,
             "zero": 70.0
           }
@@ -828,15 +828,15 @@
             "quotient_0": 61.918097754293264,
             "quotient_1": 110.6312292358804,
             "quotient_10_to_255": 851.1182795698925,
-            "quotient_256_plus": 1640.8125,
+            "quotient_256_plus": 1343.0982142857142,
             "quotient_2_to_9": 278.2397003745318
           },
-          "max_cycles": 2178,
-          "mean_cycles": 269.7881519639408,
+          "max_cycles": 2144,
+          "mean_cycles": 248.31745009658724,
           "min_cycles": 56,
-          "p95_cycles": 1529,
+          "p95_cycles": 1183,
           "selection_means": {
-            "edges": 530.9073724007561,
+            "edges": 467.875236294896,
             "random": 134.8935546875
           }
         },
@@ -1259,7 +1259,7 @@
   },
   "sources": {
     "v1_balanced": {
-      "resident_sha256": "97c3e04112335e5958653ac656771b9e11d1d4fede0f5c824b9169aa49b1b564"
+      "resident_sha256": "67d709a3006e5529d49b579be20747b292f466679ea42ac24fd5384e4d71879e"
     },
     "v2_pareto_fast": {
       "resident_sha256": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd"

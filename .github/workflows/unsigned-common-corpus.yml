@@ -28,6 +28,8 @@ jobs:
           python3 tools/audit_v5_3232_narrow_delegate.py
           python3 tools/audit_issue39_unsigned_small_workloads.py
           python3 tools/audit_issue39_v1_24narrow_rejection.py
+          python3 tools/audit_v1_udiv24_byte8.py
+          git diff --exit-code -- validation/review/ISSUE39_V1_UDIV24_BYTE8_PAIRED.json
           git diff --exit-code -- validation/review/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.json benchmarks/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.csv validation/review/ISSUE39_V1_UDIV24_NARROW_REJECTION.json
           git diff --exit-code -- validation/review/ISSUE39_V5_32_32_NARROW_DELEGATION.json
           git diff --exit-code -- validation/review/UDIV32_ZERO_HIGH_BYPASS_PAIRED.json

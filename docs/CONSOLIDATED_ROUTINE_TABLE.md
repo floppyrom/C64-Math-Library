@@ -32,11 +32,11 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_SMUL32_READY` | `mul_s32_s32_s64_ready` | 725.808594 | 645 | 813 | 1386 | 31 | $02-$20 | 0 | FAST31/V29 native signed quadrant composition; mixed-call-safe public path | current native-signed multiply validation |
 | `MATH_UDIV8` | `div_u8_u8_u8_8` | 59.571976 | 26 | 554 | 297 | 1 | $10 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 132.725857 | 41 | 1535 | 326 | 2 | $10-$11 | 0 | balanced direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UDIV24` | `div_u24_u24_u24_24` | 182.050494 | 56 | 2178 | 2494 | 12 | $10-$1B | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
+| `MATH_UDIV24` | `div_u24_u24_u24_24` | 175.035136 | 56 | 2144 | 1224 | 3 | $10-$12 | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 802.486430 | 182 | 2034 | 1327 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD8` | `mod_u8_u8_u8` | 67.167555 | 51 | 495 | 83 | 2 | $10-$11 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD16` | `mod_u16_u16_u16` | 184.082421 | 41 | 1535 | 326 | 2 | $10-$11 | 0 | balanced direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD24` | `mod_u24_u24_u24` | 266.078558 | 56 | 2178 | 2494 | 12 | $10-$1B | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD24` | `mod_u24_u24_u24` | 244.607856 | 56 | 2144 | 1224 | 3 | $10-$12 | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 893.618158 | 185 | 1842 | 1330 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 26 | 600 | 533 | 1 | $10 | 0 | direct-output native signed 8-bit divider; executable-disjoint from UDIV8 | current native-signed division validation |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | 187.131298 | 45 | 1604 | 425 | 6 | $10-$15 | 0 | balanced direct-output native signed 16-bit divider | current native-signed division validation |
