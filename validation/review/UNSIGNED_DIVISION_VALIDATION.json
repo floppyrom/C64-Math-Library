@@ -409,9 +409,9 @@
       "MATH_UDIV32_32": {
         "cases": 6801,
         "errors": 0,
-        "mean_cycles": 421.07734156741657,
-        "min_cycles": 90,
-        "max_cycles": 2423,
+        "mean_cycles": 409.6331421849728,
+        "min_cycles": 67,
+        "max_cycles": 2404,
         "mode": "structured_random"
       },
       "MATH_UDIV16_SHL8": {
@@ -453,9 +453,9 @@
       "MATH_UMOD32_32": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 548.0,
-        "min_cycles": 90,
-        "max_cycles": 2423
+        "mean_cycles": 537.2665808113329,
+        "min_cycles": 67,
+        "max_cycles": 2404
       },
       "MATH_URECIP16_Q16": {
         "cases": 65536,

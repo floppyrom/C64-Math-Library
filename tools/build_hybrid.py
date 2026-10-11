@@ -1043,6 +1043,44 @@ def apply_shifted_div_recip_direct(dst: bytearray, vals: dict[str,int],
     }
 
 
+
+def apply_udiv32_32_prechecked_gate(dst: bytearray, vals: dict[str,int]) -> dict:
+    """Eliminate duplicate D==0 test in V5 shared UDIV/UMOD32_32 fallback.
+
+    The V1 early gate in REG_KERNEL+$1957 already tests D==0 and dispatches
+    N<D and N==D without entering the full divider. Its N>D branch goes to
+    REG_GAME, whose old call redundantly retests D==0 after copying operands.
+    Route D==0 to the original zero-answer subroutine (REG_GAME+$122) and
+    N>D via a 3-byte spare island to the existing copy/dispatch block, whose
+    JSR skips the second zero-test. No change to public ABI or ZP ownership.
+
+    The zero-divisor path no longer writes private scratch at V1_SCRATCH;
+    Q, R, carry and public input memory semantics are unchanged.
+    """
+    kernel = vals['REG_KERNEL']
+    game = vals['REG_GAME']
+    gate = kernel + 0x1957
+    fallback = gate + 0x7C             # reference $59D3
+    nz_stub = fallback + 3            # reference $59D6
+    def replace(a: int, old: bytes, new: bytes) -> None:
+        if len(old) != len(new) or dst[a:a+len(old)] != old:
+            raise RuntimeError(f'V5 UDIV32/32 patch layout mismatch at {hx(a)}')
+        dst[a:a+len(new)] = new
+    for offset, old, new in ((0x16,0x64,0x67),(0x20,0x5A,0x5D),
+                              (0x2A,0x50,0x53),(0x34,0x46,0x49)):
+        a=gate+offset
+        if dst[a]!=0xD0: raise RuntimeError(f'expected BNE at {hx(a)}')
+        replace(a+1,bytes([old]),bytes([new]))
+    replace(fallback,bytes((0x4C,game&255,game>>8)),
+            bytes((0x4C,(game+0x122)&255,(game+0x122)>>8)))
+    replace(nz_stub,b'\x00\x00\x00',bytes((0x4C,game&255,game>>8)))
+    replace(game+0x30,bytes((0x20,(game+0x13E)&255,(game+0x13E)>>8)),
+            bytes((0x20,(game+0x150)&255,(game+0x150)>>8)))
+    return {'profile':'v5_hybrid_lowzp','shared_entries':['MATH_UDIV32_32','MATH_UMOD32_32'],
+            'zero_divisor_target':hx(game+0x122),'nonzero_call_target':hx(game+0x150),
+            'additional_executable_bytes':3,'additional_zp_bytes':0}
+
+
 def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
     # V5 intentionally inherits the V1 normalization backend.  Publish a
     # profile-local standalone source, but require it to remain byte-identical
@@ -1142,6 +1180,8 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             a = _public_addr(v1man, name)
             dst[a:a + 3] = bytes((0x4C, target & 0xFF, target >> 8))
 
+        udiv32_32_prechecked = apply_udiv32_32_prechecked_gate(dst, vals)
+
         new_hi = max(hi, hbase + HYBRID_BYTES - 1)
         prg = outdir / 'math_v5_hybrid_lowzp_game_math.prg'
         write_prg(dst, lo, new_hi, prg)
@@ -1179,6 +1219,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             'sdiv24_direct': sdiv24_detail,
             'muldiv16_lowzp_fusion': muldiv16_lowzp_detail,
             'shifted_div_recip_direct': shifted_div_recip_detail,
+            'udiv32_32_prechecked_nonzero': udiv32_32_prechecked,
             'indirect_beneficiaries': [
                 'MATH_UDIV16_SHL8',
                 'MATH_URECIP16_Q16',

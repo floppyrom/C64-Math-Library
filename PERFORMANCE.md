@@ -29,7 +29,7 @@ The V2/V3/V4 UDIV32 live-high core uses four ZP bytes on the wide-divisor hot pa
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 132.725857 | 127.773827 | 125.423943 | 125.625710 | 126.385862 |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 194.156322 | 154.338944 | 161.653272 | 158.507048 | 157.776141 |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 870.340206 | 631.739323 | 632.886598 | 634.698506 | 634.079529 |
-| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 428.554036 | 212.304220 | 203.864138 | 209.625349 | 421.077342 |
+| `MATH_UDIV32_32` | `div_u32_u32_u32_32` | 428.554036 | 212.304220 | 203.864138 | 209.625349 | 409.633142 |
 | `MATH_SDIV8` | `div_s8_s8_s8_8` | 88.372650 | 88.372650 | 88.372650 | 89.009821 | 90.272098 |
 | `MATH_SDIV16` | `div_s16_s16_s16_16` | 187.131298 | 168.393021 | 170.582116 | 168.745038 | 170.631189 |
 | `MATH_SDIV24` | `div_s24_s24_s24_24` | 313.583206 | 248.344384 | 236.810251 | 237.569466 | 253.487023 |
@@ -46,7 +46,7 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 | `MATH_UMOD16` | `mod_u16_u16_u16` | 184.082421 | 195.951706 | 196.414681 | 195.529942 | 199.918867 |
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 303.233097 | 205.325821 | 207.136510 | 205.247263 | 211.248551 |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 971.613651 | 629.783001 | 625.840953 | 626.014810 | 626.658725 |
-| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 552.220863 | 290.452028 | 287.455248 | 285.637476 | 548.000000 |
+| `MATH_UMOD32_32` | `mod_u32_u32_u32` | 552.220863 | 290.452028 | 287.455248 | 285.637476 | 537.266581 |
 | `MATH_SMOD8` | `mod_s8_s8_s8` | 98.157813 | 97.066406 | 97.152344 | 99.020313 | 96.707813 |
 | `MATH_SMOD16` | `mod_s16_s16_s16` | 229.324910 | 231.872202 | 234.659206 | 228.244765 | 231.667148 |
 | `MATH_SMOD24` | `mod_s24_s24_s24` | 427.272924 | 337.075090 | 329.971841 | 326.184838 | 339.607942 |
@@ -59,6 +59,8 @@ V3/V4 `MATH_UDIV8` now uses a quotient-0..3 CPU fast path and falls back to the 
 | `MATH_UDIV16_SHL8` | `div_u16_u16_u24_16_shl8` | 770.773617 | 552.649695 | 553.124974 | 552.577740 | 553.298759 |
 | `MATH_SDIV16_SHL8` | `div_s16_s16_s24_16_shl8` | 846.155071 | 630.032715 | 630.265213 | 628.417884 | 628.885496 |
 | `MATH_URECIP16_Q16` | `recip_u16_u24_q16` | 108.497635 | 94.822998 | 57.331436 | 57.331436 | 95.044128 |
+
+V5 now eliminates a repeated divisor-zero check in its shared 32/32 division/modulo slow path, with no new ZP. Its paired 6,801/1,553-case means are **409.633142/537.266581 cycles** (previously 421.077342/548.000000). See [V5 nonzero-gate proof](docs/V5_UDIV32_32_NONZERO_GATE_2026-10-11.md).
 
 V2/V3/V4 now give `MATH_UMOD16`, `MATH_UMOD24`, and `MATH_UMOD32_32` dedicated remainder-only front ends. Quotient-0/1 (or equality) cases return without materializing quotient bytes; harder cases rejoin the exact existing divider. Signed modulo was measured separately and deliberately left unchanged because the analogous front end was slower.
 

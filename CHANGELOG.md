@@ -1,3 +1,10 @@
+2026-10-11 V5 ZERO-ZP UDIV32/32 + UMOD32/32 PRECHECKED GATE
+- The V5 early-gate proves D!=0 on N>D paths; the private 32/32 divider previously checked D==0 again after copying operands.
+- Divisor-zero now jumps to the unchanged Q=R=0, carry-set helper; only proven-nonzero branches enter the normal copy and divider dispatch without the redundant check.
+- Means (unchanged deterministic division corpora): UDIV32/32 421.077342 -> 409.633142 cycles, UMOD32/32 548.000000 -> 537.266581 cycles. Min/max 90/2423 -> 67/2404. Reachable code 946 -> 931 bytes, normal ZP 0, PRG payload unchanged.
+- 21,508 paired calls (10,754 cases for each alias), no wrong results, no negative deltas; full V5 164,410-call unsigned DIV/MOD validation passed. Source-generated reference bytes match diagnostic patch exactly; alternate-map build and hybrid validation pass.
+- Source-level builder guard, annotated standalone mirrors, regenerated published benchmarks, full proof and checksums included. See docs/V5_UDIV32_32_NONZERO_GATE_2026-10-11.md.
+
 2026-10-10 V3/V4 RECIPROCAL X-CACHE (EXHAUSTIVE)
 - MATH_URECIP16_Q16 caches the denominator high byte in X and uses CPX across its 15-entry threshold ladder.
 - Native V3/V4 PRGs and canonical ASM rebuild byte-identically, with no relocation or new ZP/table use.
