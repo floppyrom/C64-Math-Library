@@ -1,3 +1,9 @@
+2026-10-11 V5 SHARED UDIV32/32 + UMOD32/32 GATE OPTIMIZATION
+- Eliminated redundant nonzero-divisor test in V5's zero-ZP shared 32-bit division, preserving the original public ABI.
+- V5 UDIV32/32 mean 421.077342 -> 409.633142; UMOD32/32 548.000000 -> 537.266581 cycles.
+- Reachable code 946 -> 931 bytes; no extra ZP; reference and alternate source builds pass; 164,410 V5 unsigned DIV/MOD calls verified.
+- See docs/V5_UDIV32_32_NONZERO_GATE_2026-10-11.md.
+
 2026-10-10 V3/V4 RECIPROCAL X-CACHE (EXHAUSTIVE)
 - MATH_URECIP16_Q16 caches the denominator high byte in X and uses CPX across its 15-entry threshold ladder.
 - Native V3/V4 PRGs and canonical ASM rebuild byte-identically, with no relocation or new ZP/table use.
