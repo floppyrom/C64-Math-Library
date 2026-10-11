@@ -6,6 +6,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
 from validate_unsigned_division import wr,rd,expected,api
+from issue39_umod8_guard_parent import restore_umod8_parent
 from benchmark_unsigned_common_corpus import SPECS,corpus
 PROFILE='v5_hybrid_lowzp'
 OLD_SHA='6255f93fdfcd35c2aa27085915e32dca86e3f641af96a1160cd38cf951f70d51'
