@@ -1,0 +1,27 @@
+name: Issue39 exact main snapshot
+on:
+  push:
+    branches: [issue39-main-snapshot-20261011]
+permissions:
+  contents: read
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build reproducible source-only checkout archive
+        run: |
+          git rev-parse HEAD > MAIN_HEAD_SHA.txt
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile
+          with zipfile.ZipFile('/tmp/issue39-main-oct11.zip','w',zipfile.ZIP_DEFLATED,compresslevel=3) as z:
+            for p in sorted(Path('.').rglob('*')):
+              if p.is_file() and '.git' not in p.parts:
+                z.write(p,p.as_posix())
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-main-oct11
+          path: /tmp/issue39-main-oct11.zip
+          retention-days: 7
