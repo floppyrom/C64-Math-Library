@@ -1,0 +1,42 @@
+name: Issue39 16-bit evidence publication (branch only)
+
+on:
+  push:
+    branches:
+      - issue39-udiv16-umod16-signed-paired-audit
+    paths:
+      - .github/workflows/issue39-16bit-publish.yml
+
+permissions:
+  contents: write
+
+jobs:
+  publish-research-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-udiv16-umod16-signed-paired-audit
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recompute 54,770 signed16 calls and V2 donor negative selection
+        run: python3 tools/publish_issue39_16bit_architecture_audit.py
+      - name: Independent package and source catalog audit
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+      - name: Commit sealed research evidence (never commit a candidate routine)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish signed16 paired and V2 donor screen with checksum seal"
+            git push origin HEAD:issue39-udiv16-umod16-signed-paired-audit
+          fi
