@@ -26,6 +26,8 @@ jobs:
           python-version: '3.12'
       - name: Same-input SMOD16 and SDIV16 five-profile 6502 comparisons
         run: python3 tools/audit_issue39_signed16_common.py
+      - name: V2 UDIV16 and UMOD16 V1-donor/threshold selector architecture screen
+        run: python3 tools/screen_issue39_v2_udiv16_donor.py
       - name: Upload paired timing evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -34,5 +36,6 @@ jobs:
           path: |
             validation/review/ISSUE39_SIGNED16_SAME_INPUT_AUDIT.json
             benchmarks/ISSUE39_SIGNED16_SAME_INPUT_AUDIT.csv
+            validation/review/ISSUE39_V2_UDIV16_UMOD16_DONOR_SCREEN.json
           retention-days: 14
           if-no-files-found: warn
