@@ -25,6 +25,9 @@ jobs:
           set -euo pipefail
           python3 tools/assemble_sources.py --profile v1_balanced --config-kind reference
           python3 tools/assemble_sources.py --profile v1_balanced --config-kind alternate
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind alternate
+          python3 tools/assemble_sources.py --profile v3_reu_512k --config-kind alternate
+          python3 tools/assemble_sources.py --profile v4_reu_16m --config-kind alternate
           cp build_source/reference/v1_balanced/math_v1_balanced_source_built.prg \
             v1_balanced/resident/math_v1_balanced_game_math.prg
           python3 - <<'PY'
