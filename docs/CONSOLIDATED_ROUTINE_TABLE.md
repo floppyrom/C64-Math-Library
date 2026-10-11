@@ -34,7 +34,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 132.725857 | 41 | 1535 | 326 | 2 | $10-$11 | 0 | balanced direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 175.035136 | 56 | 2144 | 1224 | 3 | $10-$12 | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 802.486430 | 182 | 2034 | 1327 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD8` | `mod_u8_u8_u8` | 67.167555 | 51 | 495 | 83 | 2 | $10-$11 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD8` | `mod_u8_u8_u8` | 57.460015 | 35 | 509 | 160 | 2 | $10-$11 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD16` | `mod_u16_u16_u16` | 184.082421 | 41 | 1535 | 326 | 2 | $10-$11 | 0 | balanced direct-public 16-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 244.607856 | 56 | 2144 | 1224 | 3 | $10-$12 | 0 | balanced direct-public 24-bit divider | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 893.618158 | 185 | 1842 | 1330 | 12 | $10-$1B | 0 | profile-selected native 32/16 divider | 2026-09-20 unsigned division-family validation |
@@ -293,7 +293,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_UDIV16` | `div_u16_u16_u16_16` | 126.362297 | 41 | 1076 | 1467 | 0 | — | 0 | fast direct-public 16-bit divider; V5 repacked into hybrid private RAM | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV24` | `div_u24_u24_u24_24` | 157.655376 | 56 | 1412 | 3537 | 10 | $10-$19 | 0 | Repose q0-counter/direct-public UDIV24; V5 repacked hybrid copy | 2026-09-20 unsigned division-family validation |
 | `MATH_UDIV32_16` | `div_u32_u16_u32_16` | 634.079529 | 125 | 1738 | 2025 | 10 | $10-$19 | 0 | V2 certified 32/16 divider imported into V5 hybrid private RAM | 2026-09-20 unsigned division-family validation |
-| `MATH_UMOD8` | `mod_u8_u8_u8` | 68.523229 | 51 | 495 | 131 | 2 | $10-$11 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
+| `MATH_UMOD8` | `mod_u8_u8_u8` | 59.242955 | 35 | 509 | 208 | 2 | $10-$11 | 0 | direct-public 8-bit divider; quotient/remainder produced in stable I/O without marshalling | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD16` | `mod_u16_u16_u16` | 192.905344 | 32 | 1075 | 1444 | 0 | — | 0 | fast direct-public 16-bit divider; V5 repacked into hybrid private RAM | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD24` | `mod_u24_u24_u24` | 203.296201 | 42 | 1419 | 3557 | 10 | $10-$19 | 0 | Repose q0-counter/direct-public UDIV24; V5 repacked hybrid copy | 2026-09-20 unsigned division-family validation |
 | `MATH_UMOD32_16` | `mod_u32_u16_u16` | 626.658725 | 128 | 1741 | 2028 | 10 | $10-$19 | 0 | V2 certified 32/16 divider imported into V5 hybrid private RAM | 2026-09-20 unsigned division-family validation |

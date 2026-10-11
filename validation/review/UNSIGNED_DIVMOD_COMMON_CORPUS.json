@@ -1157,25 +1157,25 @@
         "v2_pareto_fast": true,
         "v3_reu_512k": false,
         "v4_reu_16m": false,
-        "v5_hybrid_lowzp": true
+        "v5_hybrid_lowzp": false
       },
       "metrics": {
         "v1_balanced": {
           "class_means": {
-            "divisor_zero": 56.0,
-            "quotient_0": 51.01672535211268,
-            "quotient_1": 59.98518518518519,
-            "quotient_10_to_255": 160.08522727272728,
-            "quotient_2_to_9": 84.32826086956521
+            "divisor_zero": 70.0,
+            "quotient_0": 36.36355633802817,
+            "quotient_1": 47.07962962962963,
+            "quotient_10_to_255": 174.08522727272728,
+            "quotient_2_to_9": 78.20217391304348
           },
-          "max_cycles": 495,
-          "mean_cycles": 67.294523326572,
-          "min_cycles": 51,
-          "p95_cycles": 120,
+          "max_cycles": 509,
+          "mean_cycles": 58.43975659229209,
+          "min_cycles": 35,
+          "p95_cycles": 134,
           "selection_means": {
-            "edges": 79.01384083044982,
-            "random": 66.3466796875,
-            "zero": 56.0
+            "edges": 78.86505190311419,
+            "random": 54.8349609375,
+            "zero": 70.0
           }
         },
         "v2_pareto_fast": {
@@ -1234,20 +1234,20 @@
         },
         "v5_hybrid_lowzp": {
           "class_means": {
-            "divisor_zero": 56.0,
-            "quotient_0": 51.01672535211268,
-            "quotient_1": 59.98518518518519,
-            "quotient_10_to_255": 158.6931818181818,
-            "quotient_2_to_9": 82.4695652173913
+            "divisor_zero": 70.0,
+            "quotient_0": 36.36355633802817,
+            "quotient_1": 47.07962962962963,
+            "quotient_10_to_255": 172.6931818181818,
+            "quotient_2_to_9": 77.07173913043478
           },
-          "max_cycles": 495,
-          "mean_cycles": 66.84827586206896,
-          "min_cycles": 51,
-          "p95_cycles": 115,
+          "max_cycles": 509,
+          "mean_cycles": 58.129411764705885,
+          "min_cycles": 35,
+          "p95_cycles": 129,
           "selection_means": {
-            "edges": 78.49480968858131,
-            "random": 65.8828125,
-            "zero": 56.0
+            "edges": 78.39792387543253,
+            "random": 54.52734375,
+            "zero": 70.0
           }
         }
       },
@@ -1259,7 +1259,7 @@
   },
   "sources": {
     "v1_balanced": {
-      "resident_sha256": "795cf2320f1fee8b097641bb87f3e2ff591b3c84329b700f35ec7d4ef9593387"
+      "resident_sha256": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62"
     },
     "v2_pareto_fast": {
       "resident_sha256": "e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd"
@@ -1271,7 +1271,7 @@
       "resident_sha256": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7"
     },
     "v5_hybrid_lowzp": {
-      "resident_sha256": "9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2"
+      "resident_sha256": "bed1ee986857d045d452036d78d0d6cbdc078dbc3407f8a860a8fd54f8395fa2"
     }
   },
   "status": "PASS",

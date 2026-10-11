@@ -6,14 +6,50 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 69.
+; Reachable instructions: 99.
 !cpu 6510
 
+; ---- executable island $1E00 ----
+* = $1E00
+L1E00:
+    lda $C014                          ; @1E00 AD 14 C0
+    cmp #$20                           ; @1E03 C9 20
+    bcs L1E0D                          ; @1E05 B0 06
+    lda $C010                          ; @1E07 AD 10 C0
+    jmp L3203                          ; @1E0A 4C 03 32
+L1E0D:
+    lda $C010                          ; @1E0D AD 10 C0
+    cmp $C014                          ; @1E10 CD 14 C0
+    bcc L1E48                          ; @1E13 90 33
+    sbc $C014                          ; @1E15 ED 14 C0
+    cmp $C014                          ; @1E18 CD 14 C0
+    bcc L1E48                          ; @1E1B 90 2B
+    sbc $C014                          ; @1E1D ED 14 C0
+    cmp $C014                          ; @1E20 CD 14 C0
+    bcc L1E48                          ; @1E23 90 23
+    sbc $C014                          ; @1E25 ED 14 C0
+    cmp $C014                          ; @1E28 CD 14 C0
+    bcc L1E48                          ; @1E2B 90 1B
+    sbc $C014                          ; @1E2D ED 14 C0
+    cmp $C014                          ; @1E30 CD 14 C0
+    bcc L1E48                          ; @1E33 90 13
+    sbc $C014                          ; @1E35 ED 14 C0
+    cmp $C014                          ; @1E38 CD 14 C0
+    bcc L1E48                          ; @1E3B 90 0B
+    sbc $C014                          ; @1E3D ED 14 C0
+    cmp $C014                          ; @1E40 CD 14 C0
+    bcc L1E48                          ; @1E43 90 03
+    sbc $C014                          ; @1E45 ED 14 C0
+L1E48:
+    sta $C01C                          ; @1E48 8D 1C C0
+    clc                                ; @1E4B 18
+    rts                                ; @1E4C 60
 ; ---- executable island $3200 ----
 * = $3200
 mod_u8_u8_u8:
 MATH_UMOD8:
-    lda $C010                          ; @3200 AD 10 C0
+    jmp L1E00                          ; @3200 4C 00 1E
+L3203:
     sta $10                            ; @3203 85 10
     lda $C014                          ; @3205 AD 14 C0
     sta $11                            ; @3208 85 11

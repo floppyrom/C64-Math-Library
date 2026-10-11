@@ -1868,3 +1868,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue #39 V1 Balanced exact unsigned 24/8 narrow-division fast path: docs/ISSUE39_V1_UDIV24_BYTE8_2026-10-11.md. The wider unsigned DIV/MOD campaign remains open.
 
 - Issue #39 source-backed V1 32/32 guarded narrow-D8 divider: docs/ISSUE39_V1_3232_D8_DELEGATION_2026-10-11.md. The full unsigned DIV/MOD campaign remains open.
+
+- Issue #39 V1/V5 source-backed 77-byte guarded remainder-only UMOD8: docs/ISSUE39_V1V5_UMOD8_GUARDED_REMAINDER_2026-10-11.md; exhaustive old/new V1/V5 validation and no ZP growth.
