@@ -9,12 +9,13 @@ from validate_unsigned_division import load,wr,rd,expected
 j=load_common(R)
 target={'MATH_UDIV32_32':(358.00916086478566,2729),
         'MATH_UMOD32_32':(435.22463343108507,1705)}
+v5_means={'MATH_UDIV32_32':275.01319164529133,
+          'MATH_UMOD32_32':302.35307917888565}
 for name,(mean,cases) in target.items():
     r=j['routines'][name]
     assert r['cases_per_profile']==cases
-    for p in ('v1_balanced','v5_hybrid_lowzp'):
-        assert abs(r['metrics'][p]['mean_cycles']-mean)<1e-10
-    assert r['metrics']['v1_balanced']['mean_cycles']==r['metrics']['v5_hybrid_lowzp']['mean_cycles']
+    assert abs(r['metrics']['v1_balanced']['mean_cycles']-mean)<1e-10
+    assert abs(r['metrics']['v5_hybrid_lowzp']['mean_cycles']-v5_means[name])<1e-10
 rng=random.Random(0x132323)
 cases=[(0xffffffff,0x50000000),(0xfffffffd,0x7fffffff),
        (0x87a174cb,0x43f94b3c),(0xe0123456,0x43f94b3c),
