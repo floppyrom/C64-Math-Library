@@ -12,6 +12,7 @@ from mini6502 import CPU
 from validate_unsigned_division import wr,rd,expected,api
 from benchmark_unsigned_common_corpus import SPECS,corpus
 from issue39_v1_3232_d8_parent import restore_pr61,PR61_SHA
+from issue39_umod8_guard_parent import restore_umod8_parent
 p=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 new=p.read_bytes();old=restore_pr61(new)
 V5_SHA='9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2'
