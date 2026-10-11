@@ -1,3 +1,9 @@
+2026-10-11 ISSUE39 32/16 MULTI-WORKLOAD RANKING AUDIT
+- Added a deterministic 30,720-call six-workload common-operand benchmark for all five 32/16 unsigned DIV/MOD profiles, including median, p95, extrema and input/source hashes. The published weighted-corpus ranking is preserved; workload-conditioned evidence is now separately reproducible and CI-gated.
+- Tested but REJECTED a V1 92-byte q0/q1 shortcut despite an edge-weighted 7.13% UDIV32/16 and 12.27% UMOD32/16 mean improvement: 91% and 86% of calls regressed, up to +51 cycles. Full-width uniform workloads slow by +17 cycles per call, while 16-bit numerators gain substantially. Not a Balanced default.
+- No resident arithmetic or public ABI changes. 164,410 V1 unsigned + 97,329 V1 signed trial correctness calls passed; 30,720 shipped-profile scenario calls pass. Full unsigned issue39 campaign remains open.
+- Detailed evidence: docs/ISSUE39_UDIV32_16_WORKLOAD_DECISION_2026-10-11.md
+
 2026-10-11 ISSUE39 V1/V5 BOUNDED HIGH-BYTE Q1 32/32 DIV-MOD
 - Added a formally bounded 73-byte high-byte quotient-one shortcut for V1 and V5 shared unsigned 32/32 division and modulo. N>D is prechecked, and D3>=128 or (D3>0 and N3<2*D3) proves N<2D; compute R=N-D and Q=1 directly. Other operands rejoin the exact prior restoring core.
 - Identical-input UDIV32_32 mean **470.755955→370.572004 cycles (−21.28%)** in V1 and V5, 2,729 matched calls per profile. UMOD32_32 **523.279765→444.652199 (−15.03%)**, 1,705 matched calls per profile. 8,868 paired old/new calls; zero arithmetic, carry or input-preservation errors. Some nonqualifying calls pay up to +22 cycles; this is an explicit mean-speed trade-off, not all-input dominance.

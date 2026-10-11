@@ -21,6 +21,8 @@ jobs:
           python3 tools/validate_v5_umod24_frontend.py
           python3 tools/validate_v5_umod16_frontend.py
           python3 tools/validate_udiv32_qone_bound.py
+          python3 tools/benchmark_unsigned_3216_workloads.py
+          git diff --exit-code -- validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json benchmarks/UNSIGNED_3216_WORKLOAD_AUDIT.csv
           git diff --exit-code -- validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv
       - name: Recompute best profile winners from comparable evidence
         run: |
