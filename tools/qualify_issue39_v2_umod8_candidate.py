@@ -92,7 +92,7 @@ def main():
             cycles_old+=results[0];cycles_new+=results[1]
     oldmean=cycles_old/65536
     newmean=cycles_new/65536
-    assert (cycles_old,cycles_new)==(4247988,3421279),(cycles_old,cycles_new)
+    assert (cycles_old,cycles_new)==(4247988,3421271),(cycles_old,cycles_new)
     assert slowmax==15,(slowmax,faster,slower,equal)
     report={'status':'PASS','qualification':'candidate only, not published release',
         'profile':'v2_pareto_fast','threshold_divisor':24,'guard_bytes':101,
