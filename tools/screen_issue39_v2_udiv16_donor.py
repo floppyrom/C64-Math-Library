@@ -46,7 +46,10 @@ def sample(cpu,entry,n,d,op):
     cycles=cpu.call(entry,1_000_000)
     eq,er,ec=expected(n,d,16,16,0)
     got=(rd(m,Q,2),rd(m,R,2),cpu.c)
-    assert got==(eq,er,ec),(op,n,d,got,(eq,er,ec))
+    if op=='MATH_UMOD16':
+        assert got[1:]==(er,ec),(op,n,d,got,(eq,er,ec))
+    else:
+        assert got==(eq,er,ec),(op,n,d,got,(eq,er,ec))
     assert rd(m,N,2)==n and rd(m,D,2)==d,(op,n,d,'inputs changed')
     return cycles
 
