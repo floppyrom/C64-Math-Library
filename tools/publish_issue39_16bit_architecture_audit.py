@@ -37,7 +37,8 @@ def main():
         assert abs(vals['v2_pareto_fast']['mean_cycles']-251.54847544276064)<.001
     for op in ('MATH_UDIV16','MATH_UMOD16'):
         t=d['routines'][op]
-        assert all(q['mean_delta_vs_V2']>0 and q['faster']==0 for q in t['all_selectors']),op
+        assert all(q['mean_delta_vs_V2']>0 for q in t['all_selectors']),op
+        assert t['best_selectors'][0]['faster']==0,op
     profiles=['v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp']
     s=x['routines']['MATH_SMOD16']
     means={p:s['profiles'][p]['mean_cycles'] for p in profiles}
@@ -101,8 +102,9 @@ core matches its original entry's cycle counts.
 | UDIV16 | {u['mean_cycles']['V2']:.6f} | {u['best_selectors'][0]['mean_cycles']:.6f} (D-high >= {u['best_selectors'][0]['min_divisor_high']}) | +{u['best_selectors'][0]['mean_delta_vs_V2']:.3f} cycles, rejected |
 | UMOD16 | {m['mean_cycles']['V2']:.6f} | {m['best_selectors'][0]['mean_cycles']:.6f} (D-high >= {m['best_selectors'][0]['min_divisor_high']}) | +{m['best_selectors'][0]['mean_delta_vs_V2']:.3f} cycles, rejected |
 
-All tested threshold gates are slower on every input in the measured
-corpus. The theoretical zero-dispatch, per-case best-of-two *oracle*
+All tested threshold gates have a **slower aggregate mean**. At the
+best threshold for each API, every case is slower. The lower thresholds
+save a few isolated calls but lose substantially more on the remaining inputs. The theoretical zero-dispatch, per-case best-of-two *oracle*
 for UDIV16 is {u['ideal_costless_case_oracle_mean']:.6f} cycles and for
 UMOD16 {m['ideal_costless_case_oracle_mean']:.6f}; those numbers are **not
 achievable measured implementations**. A productive next attempt must
