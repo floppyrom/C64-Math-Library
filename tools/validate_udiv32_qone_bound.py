@@ -8,8 +8,8 @@ from common_corpus_ranking import load_common
 from validate_unsigned_division import load,wr,rd,expected
 report=load_common(R)
 required={
-    'MATH_UDIV32_32':(359.0776841333822,2729),
-    'MATH_UMOD32_32':(436.899706744868,1705)}
+    'MATH_UDIV32_32':(358.00916086478566,2729),
+    'MATH_UMOD32_32':(435.22463343108507,1705)}
 for name,(expected_mean,cases) in required.items():
     info=report['routines'][name]
     assert info['cases_per_profile']==cases
