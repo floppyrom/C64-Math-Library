@@ -1,0 +1,46 @@
+name: Issue39 V2 UMOD8 candidate qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/source_relocation.py'
+      - 'tools/build_hybrid.py'
+      - 'tools/qualify_issue39_v2_umod8_candidate.py'
+      - 'relocatable_source/v2_pareto_fast/v2_umod8_guard_d24.inc'
+      - '.github/workflows/issue39-v2-umod8-candidate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  complete-resident-guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Deterministic source regeneration
+        run: python3 tools/generate_sources.py
+      - name: Assemble V2 reference and alternate relocations
+        run: |
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind alternate
+      - name: Build V5 hybrid against normalized V2 donor
+        run: python3 tools/build_hybrid.py --config-kind reference
+      - name: Qualify both full V2 residents and byte-exact V5 non-regression
+        run: python3 tools/qualify_issue39_v2_umod8_candidate.py
+      - name: Upload independently checkable candidate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v2-umod8-d24-qualification
+          retention-days: 14
+          if-no-files-found: warn
+          path: |
+            validation/review/ISSUE39_V2_UMOD8_D24_CANDIDATE.json
+            build_source/reference/v2_pareto_fast/math_v2_pareto_fast_source_built.prg
+            build_source/alternate/v2_pareto_fast/math_v2_pareto_fast_source_built.prg
+            build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_source_built.prg
