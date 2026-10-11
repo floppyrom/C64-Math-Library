@@ -1,3 +1,11 @@
+2026-10-11 ISSUE39 V1 BALANCED 24-BIT NARROW-DIVISOR LATENCY ESCAPE
+- V1 Balanced UDIV24/UMOD24: route the costly N2>0,D2=0 and Q>=65536 fallback through the existing V1 32/16 division core; preserve original low-quotient path and reuse LAX-provided X=N2. V5 keeps the optimized V2 donor behavior.
+- Paired same-input 4,753 UDIV24 and 1,553 UMOD24 calls: V1 means 189.741847→179.964654 and 306.577592→276.590470 cycles. 162 calls faster, 91 slower (maximum +19), remainder unchanged; the large Q example $FFFFFF/$000001 improves 3235→1986.
+- Explicit Pareto tradeoff; selected for much shorter heavy tail and lower means, not all-input dominance. No new ZP, no PRG length or public ABI relocation, V5 helper placed after signed donor islands at $7FA0.
+- Full V1/V5 164,410 unsigned and 97,329/36,273 signed machine-code validations plus VICE x64sc paired native checks, V1–V4 reference/alternate maps, published all-API and common-input ranking proof requalified. Other profile code unchanged.
+- Benchmarks, source mirrors, profile cross-references, both changelogs, status, checksums and package audit updated. Wider issue #39 unsigned DIV/MOD campaign remains open.
+- Detail: docs/ISSUE39_V1_UDIV24_NARROW_ESCAPE_2026-10-11.md
+
 2026-10-11 ISSUE39 COMMON-INPUT UNSIGNED DIVMOD RANKING AUDIT
 - Corrects a benchmark-methodology issue: the legacy unsigned family validator deliberately varies random input seeds per profile, making its individual cycle means unsuitable for direct V1–V5 ranking.
 - Adds a separate 136,335-call common-input machine-code audit covering 11 public unsigned DIV/MOD APIs and all V1–V5 reference residents, with result/carry/input preservation checks and workload-class, p95, max, mean timings.

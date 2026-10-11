@@ -123,3 +123,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue #39 UDIV24/UMOD24 live-X equal-high optimization: docs/ISSUE39_UDIV24_EQUAL_HIGH_X_LIFETIME_2026-10-11.md. Wider unsigned family campaign not yet complete.
 
 - Issue #39 same-input performance ranking audit: [methodology](docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md), [profile comparison](benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv). Unsigned `BEST_PROFILE_RESULTS.csv` entries are now based on matching operands.
+
+- V1 Balanced UDIV24/UMOD24 narrow-quotient latency escape: docs/ISSUE39_V1_UDIV24_NARROW_ESCAPE_2026-10-11.md (explicit latency/mean trade-off; other issue39 unsigned audits open).

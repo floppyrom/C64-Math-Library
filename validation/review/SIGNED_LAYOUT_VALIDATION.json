@@ -64,7 +64,7 @@
           "signed": "MATH_SDIV24",
           "unsigned": "MATH_UDIV24",
           "signed_instructions": 199,
-          "unsigned_instructions": 445,
+          "unsigned_instructions": 626,
           "shared_instructions": 0,
           "approved_shared_instructions": 0
         },
@@ -940,7 +940,7 @@
       "status": "PASS",
       "detail": {
         "signed_instructions": 199,
-        "unsigned_instructions": 445,
+        "unsigned_instructions": 626,
         "shared_instructions": 0,
         "approved_shared": 0,
         "unexpected": []
