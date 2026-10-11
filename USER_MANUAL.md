@@ -1842,3 +1842,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - V1 32/32 shared nonzero-divisor gate (issue #39): docs/V1_UDIV32_32_PRECHECKED_GATE_2026-10-11.md; remaining unsigned family audit stays open.
 
 - Issue #39 shared UDIV16/UMOD16 branch transplant: docs/ISSUE39_UDIV16_BRANCH_TRANSPLANT_2026-10-11.md; unsigned family audit remains open.
+
+- Issue #39 UDIV24/UMOD24 live-X equal-high optimization: docs/ISSUE39_UDIV24_EQUAL_HIGH_X_LIFETIME_2026-10-11.md. Wider unsigned family campaign not yet complete.
