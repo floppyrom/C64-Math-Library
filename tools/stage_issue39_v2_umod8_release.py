@@ -72,6 +72,7 @@ def main():
     py('validate_unsigned_division')
     py('benchmark_unsigned_common_corpus')
     py('audit_issue39_unsigned_small_workloads')
+    py('benchmark_unsigned_3216_workloads')  # baseline-independent provenance follows new V2 SHA
     full=json.loads((ROOT/'validation/review/UNSIGNED_DIVISION_VALIDATION.json').read_text())
     common=json.loads((ROOT/'validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json').read_text())
     assert full['status']=='PASS' and full['summary']['machine_calls']==822050
@@ -99,11 +100,13 @@ def main():
 
     # Update V2 source ownership and extraction manifest.
     p='v2_pareto_fast/resident/SEGMENTS.csv';rs=rows(p)
-    assert not any(x['segment']=='umod8_guard_d24' for x in rs)
-    entry={k:'' for k in rs[0]}
-    entry.update(segment='umod8_guard_d24',load_address='$5323',bytes='101',
-                 file='integrated PRG',purpose='V2-only source-backed guarded D>=24 remainder-only UMOD8')
-    rs.append(entry)
+    matches=[x for x in rs if x['segment']=='umod8_guard_d24']
+    assert len(matches)<=1
+    if not matches:
+        entry={k:'' for k in rs[0]}
+        entry.update(segment='umod8_guard_d24',load_address='$5323',bytes='101',
+                     file='integrated PRG',purpose='V2-only source-backed guarded D>=24 remainder-only UMOD8')
+        rs.append(entry)
     save_csv(p,rs)
 
     # Regenerate the exact shipped per-entry mirror and benchmark catalog
@@ -212,6 +215,9 @@ handoff on issue #39, and independent PR/main CI checks.
       'v5_resident_unchanged':True,
       'all_profile_unsigned_calls':822050,'same_input_calls':136335,
       'certificate_sha256':digest(ROOT/AUDIT)}
+    if isinstance(state.get('issue39_unsigned_3216_multiworkload_2026_10_11'),dict):
+        state['issue39_unsigned_3216_multiworkload_2026_10_11']['report_sha256']=digest(ROOT/'validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json')
+        state['issue39_unsigned_3216_multiworkload_2026_10_11']['revalidated_against_v2_d24_resident_sha256']=NEW
     for key,filepath,propertyname in (
       ('issue39_unsigned_small_width_workloads_2026_10_11','validation/review/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.json','data_sha256'),
       ('issue39_common_input_unsigned_divmod','validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json','benchmark_sha256')):
