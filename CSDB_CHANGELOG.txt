@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 SIGNED16 PAIRED AND V2 U16 DONOR SCREEN
+- Published exact same-input signed16 DIV/MOD audit: 5,477 operands per routine x 2 routines x 5 initialized resident profiles = 54,770 verified public machine-code calls. For SMOD16/SDIV16, V1 229.477816 vs V2 251.548475 cycles on THIS common signed corpus, not the old profile-varying RNG sample. V2 wins most individual cases but regresses q=2..31 substantially; earlier unsigned-source table rankings remain untouched.
+- Rejected V2 UDIV16/UMOD16 donor + 13-byte high-divisor selector at unused research islands. Best UDIV16 candidate 173.343349 vs V2 161.761451; best UMOD16 216.641056 vs V2 198.610557. No candidate has a faster case; no arithmetic or ABI changes published.
+- Deterministic proof generator, machine-readable evidence and docs: docs/ISSUE39_SIGNED16_PAIRED_AND_V2_16BIT_DONOR_SCREEN_2026-10-12.md. Issue39 unsigned family remains open.
+
 2026-10-12 ISSUE39 V2 GUARDED D24 REMAINDER-ONLY UMOD8
 - V2 UMOD8 public ABI stable, source-backed 101-byte D>=24 guard at REG_KERNEL+$1323; preserves Q/N/D, upper R and divide-by-zero carry. Ten inline subtract/compare stages; original fallback retained for smaller divisors. No normal ZP, stack, resident PRG length or REU growth.
 - 131,072 exhaustive historical parent/new complete-resident CPU calls: 64.819153→52.204453 mean cycles (-19.46%), 58,290 faster / 504 equal / 6,742 slower, worst +15 cycles. 4,096 independent native VICE old/new full-resident calls passed.
