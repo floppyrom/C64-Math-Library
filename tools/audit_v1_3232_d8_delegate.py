@@ -16,7 +16,7 @@ from issue39_umod8_guard_parent import restore_umod8_parent
 p=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 new=restore_umod8_parent('v1_balanced',p.read_bytes());old=restore_pr61(new)
 V5_SHA='9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2'
-assert hashlib.sha256((ROOT/'v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg').read_bytes()).hexdigest()==V5_SHA
+assert hashlib.sha256(restore_umod8_parent('v5_hybrid_lowzp',(ROOT/'v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg').read_bytes())).hexdigest()==V5_SHA
 start=int.from_bytes(new[:2],'little');assert start==0x1000
 cpus=[]
 for image in (old,new):
