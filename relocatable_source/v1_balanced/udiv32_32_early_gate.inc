@@ -13,12 +13,13 @@
 
 * = REG_KERNEL+$1957
 D3232_EARLY_GATE:
-    ; Preserve legacy divide-by-zero handling.
+    ; Separate divide-by-zero from the proven-nonzero N>D path.
+    ; The latter skips the redundant zero test in the private 32/32 core.
     lda MATH_IO+$14
     ora MATH_IO+$15
     ora MATH_IO+$16
     ora MATH_IO+$17
-    beq D3232_LEGACY
+    beq D3232_DIVZERO
 
     ; Unsigned n ? d, most-significant byte first.
     lda MATH_IO+$13
@@ -70,5 +71,7 @@ D3232_QZERO:
     clc
     rts
 
+D3232_DIVZERO:
+    jmp REG_GAME+$0122      ; original Q=R=0, carry-set return
 D3232_LEGACY:
-    jmp REG_GAME
+    jmp REG_GAME            ; guaranteed D!=0; private core skips recheck

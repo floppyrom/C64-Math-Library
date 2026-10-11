@@ -3421,7 +3421,7 @@ L7664:
     sta V1_SCRATCH+$06
     lda MATH_IO+$17
     sta V1_SCRATCH+$07
-    jsr REG_GAME+$013E
+    jsr REG_GAME+$0150
     rts
     !byte $AD, $14, $C0, $0D, $15, $C0, $0D, $16, $C0, $0D, $17, $C0, $D0, $04, $20, $00
     !byte $2A, $60, $AD, $10, $C0, $8D, $40, $C0, $AD, $11, $C0, $8D, $41, $C0, $AD, $12
