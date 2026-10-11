@@ -1077,7 +1077,7 @@ def apply_udiv32_32_prechecked_gate(dst: bytearray, vals: dict[str,int]) -> dict
         elif current == new:
             states.append('prechecked')
         else:
-            raise RuntimeError(f'V5 UDIV32/32 patch layout mismatch at {hx(a)}')
+            raise RuntimeError(f'V5 UDIV32/32 patch layout mismatch at {hx(a)}: found={bytes(current).hex()} expected_old={old.hex()} expected_new={new.hex()}')
     for offset, old, new in ((0x16,0x64,0x67),(0x20,0x5A,0x5D),
                               (0x2A,0x50,0x53),(0x34,0x46,0x49)):
         a=gate+offset
