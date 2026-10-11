@@ -74,4 +74,4 @@ D3232_QZERO:
 D3232_DIVZERO:
     jmp REG_GAME+$0122      ; original Q=R=0, carry-set return
 D3232_LEGACY:
-    jmp REG_GAME            ; guaranteed D!=0; private core skips recheck
+    jmp D3232_HIGH_QONE    ; bounded quotient-one gate; otherwise original core

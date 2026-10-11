@@ -4420,6 +4420,7 @@ LCAFB:
 !source "sdiv24_directout_balanced.inc"
 !source "sdiv32_16_direct_balanced.inc"
 !source "udiv32_32_early_gate.inc"
+!source "udiv32_32_high_qone.inc"
 !source "sdiv32_32_signflow.inc"
 ; END DIVISION REFRESH 2026-09-20
 
