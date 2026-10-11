@@ -7,6 +7,7 @@ sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
 from benchmark_unsigned_common_corpus import SPECS,corpus
 from validate_unsigned_division import wr,rd,expected,api
+from issue39_umod8_guard_parent import restore_umod8_parent
 from issue39_v1_3232_d8_parent import restore_pr61
 BEFORE={0x6814:0x41,0x6859:0,0x685B:0}
 AFTER={0x6814:0x44,0x6859:0x4c,0x685B:0xc1}
