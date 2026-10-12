@@ -1,0 +1,30 @@
+name: Issue39 U16 OptiSearch public ABI profile matrix
+on:
+  push:
+    branches: [issue39-u16-optisearch-public-abi-matrix]
+    paths:
+      - '.github/workflows/issue39-u16-optisearch-public-abi.yml'
+      - 'tools/screen_issue39_u16_optisearch_public_abi.py'
+  pull_request:
+    paths:
+      - '.github/workflows/issue39-u16-optisearch-public-abi.yml'
+      - 'tools/screen_issue39_u16_optisearch_public_abi.py'
+permissions:
+  contents: read
+jobs:
+  u16-public-abi-optisearch-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Smoke-check current resident V1 UDIV16 quotient donor
+        run: python3 tools/screen_issue39_u16_optisearch_public_abi.py --profile v1_balanced --donor biased_2zp --map ram_0800
+      - name: Replay five profiles and both candidate RAM maps
+        run: python3 tools/screen_issue39_u16_optisearch_public_abi.py --out /tmp/issue39_optisearch_u16.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-u16-five-profile-donor-results
+          path: /tmp/issue39_optisearch_u16.json
