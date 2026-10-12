@@ -85,7 +85,7 @@ def main():
  rows=[]
  for p in CHANGED:
   z=proof['profiles'][p]['operations']['MATH_UMOD32_32']
-  rows.append(f"| {p} | {z['paired_cases']:,} | {-z['mean_delta_cycles']:.6f} | {z['faster']:,} | {z['equal']:,} | {z['slower']:,} | {changed_means[p]:.6f} |")
+  rows.append(f"| {p} | {z['case_count']:,} | {-z['mean_delta_cycles']:.6f} | {z['faster']:,} | {z['equal']:,} | {z['slower']:,} | {changed_means[p]:.6f} |")
  document=f"""# Issue39: V2–V4 unsigned 32/32 modulo delayed-zero guard
 
 **2026-10-12** · Source-qualified, native x64sc verified, complete resident-size-neutral
