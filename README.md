@@ -158,3 +158,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue39 source-verified no-growth V2–V5 16-bit known-carry branch pruning: [docs/ISSUE39_PR67_KNOWN_CARRY_16BIT_2026-10-12.md](docs/ISSUE39_PR67_KNOWN_CARRY_16BIT_2026-10-12.md); V1 unchanged, DIV/MOD campaign open.
 
 - Issue #39 [V1 UDIV16/UMOD16 direct q=2 branch](docs/ISSUE39_PR68_V1_U16_DIRECT_Q2_EXIT_2026-10-12.md ): source-backed no-growth in-slot short-quotient improvement. Native VICE and 5-profile validation; unsigned family audit remains open.
+
+- Issue #39 V1 UMOD16 OptiSearch-inspired q0 gate no-gain: [ABI and same-input rejection](docs/ISSUE39_V1_UMOD16_REPOSE_Q0_FRONTEND_REJECTION_2026-10-12.md); current shipped division code unchanged.

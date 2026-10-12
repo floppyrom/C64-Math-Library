@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 66509,
-    "user_manual_lines": 1880,
-    "user_manual_sha256": "25a8b33850651b03a1a40395e875513685851b5b21f139aff157195dd41a0923"
+    "user_manual_bytes": 66709,
+    "user_manual_lines": 1882,
+    "user_manual_sha256": "8fe9748b16758c52699f432752a1ea9e2d573980a6de36d65663cc6de3e3c288"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1045,5 +1045,21 @@
     "native_report_sha256": "000822a3a0932509500674ecf9c4acbf5d4671eb34da0b2458c8cdb9cfc08637",
     "native_v5_report_sha256": "7eac26fa2190c7e4a255edadf8ca2337d031a5a122c8675ca01dde4018ac9f22",
     "parent_reconstruction_source_sha256": "f1192a08aad9ae8ba2b7b2f57b9b89de9d2311f10235fd1c82330d795feb1e2c"
+  },
+  "issue39_v1_umod16_q0_no_gain_2026_10_12": {
+    "status": "REJECT",
+    "document": "docs/ISSUE39_V1_UMOD16_REPOSE_Q0_FRONTEND_REJECTION_2026-10-12.md",
+    "evidence": "validation/review/ISSUE39_V1_UMOD16_Q0_FASTPATH_REJECTED.json",
+    "case_count_official": 1705,
+    "total_public_emulator_calls": 11259,
+    "loose_mean_delta": -2.3976539589442813,
+    "loose_quotient_mismatches": 768,
+    "strict_mean_delta": 2.106744868035191,
+    "strict_faster": 85,
+    "strict_slower": 1620,
+    "new_resident_binaries": false,
+    "unsigned_family_complete": false,
+    "audit_sha256": "cdd1376085bfce158d2e197a9162c03f28c89fc8e505310a1e06cabeab2f3bdf",
+    "screen_source_sha256": "4e69d4d657130d03922e35d4410189d31b5b165961b57deda55e25d5d701d602"
   }
 }
