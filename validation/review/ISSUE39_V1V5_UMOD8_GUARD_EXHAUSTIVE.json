@@ -13,7 +13,7 @@
       "max_speedup_cycles": 20,
       "new_cycle_bytes_sha256": "1b1834f5b3da9c3394895a1211a94be9e777dc97e7d6e7fa0c3ad66d2810bd83",
       "new_mean_cycles": 53.14067077636719,
-      "new_resident_sha256": "28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0",
+      "new_resident_sha256": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
       "new_total_cycles": 3482627,
       "old_cycle_bytes_sha256": "0ea6fd2d08b7e3385b660fe3a328b4f5d4d31a493b8ee30edc2ec74d4505127f",
       "old_mean_cycles": 65.28515625,
