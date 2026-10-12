@@ -14,10 +14,11 @@ from validate_unsigned_division import api,wr,rd,expected
 from benchmark_unsigned_common_corpus import corpus
 from audit_issue39_unsigned_small_workloads import pairs,KINDS
 from issue39_v1_3232_d8_parent import restore_pr61
+from issue39_v1_u16_q2_parent import restore_v1_q2_parent
 BASE_SHA='97c3e04112335e5958653ac656771b9e11d1d4fede0f5c824b9169aa49b1b564'
 P=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 OUT=ROOT/'validation/review/ISSUE39_V1_UDIV24_BYTE8_PAIRED.json'
-new=restore_pr61(P.read_bytes());lo=int.from_bytes(new[:2],'little')
+new=restore_pr61(restore_v1_q2_parent(P.read_bytes()));lo=int.from_bytes(new[:2],'little')
 assert lo==0x1000 and new[2+0x7FA0-lo:2+0x7FA8-lo]==bytes.fromhex('ad15c0d0034c001d')
 assert new[2+0x1D00-lo:2+0x1D03-lo]==bytes.fromhex('ad10c0')
 prior=bytearray(new)
