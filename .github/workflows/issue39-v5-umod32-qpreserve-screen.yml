@@ -22,11 +22,15 @@ jobs:
           python-version: '3.12'
       - name: Test full Q/R/C alias contract on old/new complete V5 resident
         run: python3 tools/screen_issue39_v5_umod32_qpreserving.py
+      - name: Compare strict high-byte-only Q0 shortcut on identical corpus
+        run: python3 tools/screen_issue39_v5_umod32_highbyte.py
       - name: Export bounded variant evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: issue39-v5-umod32-q-preserving-frontend-screen
-          path: validation/review/ISSUE39_V5_UMOD3232_QPRESERVING_FRONTEND_SCREEN.json
+          path: |
+            validation/review/ISSUE39_V5_UMOD3232_QPRESERVING_FRONTEND_SCREEN.json
+            validation/review/ISSUE39_V5_UMOD3232_HIGHBYTE_QZERO_SCREEN.json
           retention-days: 14
           if-no-files-found: warn
