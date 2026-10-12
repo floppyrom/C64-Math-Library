@@ -1,0 +1,48 @@
+name: Issue39 public OptiSearch U32/32 donor A/B
+on:
+  push:
+    branches: [issue39-u3232-optisearch-current-abi]
+    paths:
+      - '.github/workflows/issue39-u3232-optisearch-current-abi.yml'
+      - 'tools/screen_issue39_u3232_optisearch_current_abi.py'
+      - 'tools/finalize_issue39_u3232_optisearch_current_abi.py'
+  pull_request:
+    paths:
+      - '.github/workflows/issue39-u3232-optisearch-current-abi.yml'
+      - 'tools/screen_issue39_u3232_optisearch_current_abi.py'
+      - 'tools/finalize_issue39_u3232_optisearch_current_abi.py'
+permissions:
+  contents: write
+jobs:
+  source-owned-two-RAM-map-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u3232-optisearch-current-abi
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Smoke-test public ABI of aligned zero-ZP OptiSearch source
+        run: python3 tools/screen_issue39_u3232_optisearch_current_abi.py --profile v2_pareto_fast --donor aligned_0zp --map ram_0800 --out /tmp/issue39_u3232_smoke.json
+      - name: Full V1-V5 public ABI replay, published donor sources, two RAM maps
+        run: python3 tools/screen_issue39_u3232_optisearch_current_abi.py --out /tmp/issue39_u3232_optisearch_current.json
+      - name: Seal source-backed research, both changelogs, full hashes
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_u3232_optisearch_current_abi.py /tmp/issue39_u3232_optisearch_current.json
+      - name: Commit research to audit branch, not production math sources
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal OptiSearch U3232 public ABI no-gain evidence'
+          git push origin HEAD:issue39-u3232-optisearch-current-abi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-optisearch-u3232-five-profile-current-main
+          path: |
+            /tmp/issue39_u3232_smoke.json
+            /tmp/issue39_u3232_optisearch_current.json

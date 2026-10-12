@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 OPTISEARCH U32BY32 V1V5 PUBLIC ABI RESOURCE AUDIT
+- Screened three already-public Repose/OptiSearch unsigned 32/32 donor assemblies at two code-RAM origins against exact current V1–V5 resident public UDIV32/32 and UMOD32/32 contracts: 131,330 paired operands / 262,660 complete 6502 calls, zero arithmetic/R/C/N/D/SP/sentinel errors.
+- All donor/profile/API official corpora contain regressing calls. Larger code-RAM and 4 ZP or 4 scratch RAM obligations remain; no fixed-profile default replacement justified. Full per-class SHA-pinned evidence, docs, README/manual references, both changelogs, release metadata and package hashes. No shipped binary/API changes, no native VICE bus timing claim, campaign issue 39 OPEN. docs/ISSUE39_U3232_OPTISEARCH_ABI_RESOURCE_SCREEN_2026-10-12.md
+
 2026-10-12 ISSUE39 114BYTE POW2 32BY16 OPT-IN SPECIALIST
 - Qualified 114-byte caller-opt-in 32/16 D=power-of-two producer, providing both full quotient and remainder public-buffer contracts; 0 new ZP, 0 extra nested JSR frames. Exact five resident profiles, two legal RAM maps, 67,520 matched operands / 135,040 CPU executions, zero Q/R/C/N/D/sentinel/SP/relocation errors.
 - Large gains on the explicit power-of-two workload, with V2–V5 slower cases at high divisor exponents: **no default promotion**. No shipped PRG or public ABI modification. Source, full JSON, README/manual and both changelogs published. Native VICE cycles not claimed. Issue #39 remains OPEN. docs/ISSUE39_U3216_POW2_OPTIN_2026-10-12.md
