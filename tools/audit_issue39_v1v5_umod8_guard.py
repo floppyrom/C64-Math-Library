@@ -25,7 +25,7 @@ for profile in PROFILES:
     # BEFORE independent PR67 16-bit code changes. Reversing those changes
     # is SHA-qualified, and neither affects the UMOD8 operand/cycle path.
     if profile=='v5_hybrid_lowzp':
-        new=restore_v5_pr67_u16_parent(new)
+        new=restore_v5_pr67_u16_parent(restore_v5_q2_parent(new))
     old=restore_umod8_parent(profile,new)
     lo=int.from_bytes(new[:2],'little')
     assert lo==0x1000 and len(new)==len(old)
