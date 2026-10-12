@@ -25,9 +25,9 @@ def donor_source(kern,adapt):
              'INPUT_NUM':0xc010,'INPUT_DIV':0xc014,
              'OUTPUT_QUOT':0xc018,'OUTPUT_REM':0xc01c,
              'TEMP_ZP':0x70}.items():
-  regex=r'(?m)^'+k+r'\s*=\s*\$[0-9A-Fa-f]+
-  s,count=re.subn(regex,k+' = $'+format(v,'04X'),s)
-  assert count==1,(k,count)
+  old_line=next(line for line in s.splitlines() if line.startswith(k+' = $'))
+  s=s.replace(old_line,k+' = $'+format(v,'04X'))
+  assert k+' = $'+format(v,'04X') in s,k
  return s
 
 def run_case(cpu,entry,n,d):
