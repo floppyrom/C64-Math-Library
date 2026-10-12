@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "profile": "v5_hybrid_lowzp",
+  "old_resident_sha256": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02",
+  "native_candidate_sha256": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222",
+  "source_reference_sha256": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222",
+  "source_alternate_sha256": "74a39d0f496fbe5479e6a8980ac4a6805ced6ade0cf678449cd3611fa2656591",
+  "source_reference_and_alternate": "PASS",
+  "byte_changes": 147,
+  "resident_size_growth": 0,
+  "normal_zp_growth": 0,
+  "code_origin": "$5E80",
+  "full_quotient_and_remainder": true,
+  "only_modified_addresses": [
+    "$5E03-$5E05",
+    "$5E80-$5F12"
+  ],
+  "no_release_resident_replaced": true
+}

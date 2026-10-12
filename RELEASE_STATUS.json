@@ -17,7 +17,7 @@
     "v2_pareto_fast": "92a01edba81dd194f7d82d51880cd9025e65b684d4d87cfa4fae7300693b621c",
     "v3_reu_512k": "795e2f30d4e0bbee0fa98f84d796695b8ac6aa3143a983e29ac22fdf71b12e63",
     "v4_reu_16m": "2880c7dcf46108f70e21e6d57d67466b4590b548bcd197164f21410102200664",
-    "v5_hybrid_lowzp": "6c7f438bb2adf69b1967834868d714f46a774dbaf6dd6bb904aac43bb158f19f"
+    "v5_hybrid_lowzp": "74a39d0f496fbe5479e6a8980ac4a6805ced6ade0cf678449cd3611fa2656591"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 66903,
-    "user_manual_lines": 1884,
-    "user_manual_sha256": "85a35b13467674629cf3659c307118b80511c4212bba3999aee396161262323a"
+    "user_manual_bytes": 67125,
+    "user_manual_lines": 1886,
+    "user_manual_sha256": "883bee13ea6764f231266822979ece5fd539e6bbdd17d04a0f188556666230f4"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -247,7 +247,7 @@
     "v2_pareto_fast": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
     "v3_reu_512k": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8",
     "v4_reu_16m": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724",
-    "v5_hybrid_lowzp": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02"
+    "v5_hybrid_lowzp": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "aa21e7039c37b69b36ff900b80a6db0866cfe87d63152c2ac947b9942d8cde1d",
+    "benchmark_sha256": "3a6a68d289313b5487ff2e0e74eb0043a9873f774c7f5a9b2f47aa0081a3d393",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -755,7 +755,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "07b3eb56fbc6f25753818f9afc48f5982c00122c8cc877230e8c306f9f723511",
+    "report_sha256": "3500dd0b82d2f6ec69901d3f0438c26213d0156ca60886794bea5987e09f1397",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -858,7 +858,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "f855e821d5716b7f2216a2aea0de0bad80ccfee2197d168d5ff35d7c6e465c8a",
+    "data_sha256": "59988de997aa23fe6fb37b3fc5aec7da365abac646c7d313437209c7d77a2a21",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -1101,5 +1101,32 @@
       "v3_reu_512k": 279.6199413489736,
       "v4_reu_16m": 279.6199413489736
     }
+  },
+  "issue39_v5_umod32_qcomplete_2026_10_12": {
+    "status": "PASS",
+    "document": "docs/ISSUE39_V5_UMOD32_QPRESERVING_REORDERED_2026-10-12.md",
+    "unsigned_family_complete": false,
+    "changed_profile": "v5_hybrid_lowzp",
+    "unchanged_profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "old_resident_sha256": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02",
+    "new_resident_sha256": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222",
+    "private_code_bytes": 147,
+    "resident_growth": 0,
+    "normal_zp_growth": 0,
+    "public_abi_changed": false,
+    "native_x64sc_old_new_calls": 512,
+    "native_report_sha256": "65b0b5e11dc108b0384777bfdf8c2cc0b44594a649dc3acd53db23d1eb288c8e",
+    "paired_report_sha256": "b4fa07c5e78303d2436ef8be5bf9fbb664602173804966f409c9644bbd1130eb",
+    "source_build_sha256": "b2dafa525a97b1c70a960d6b8de7ffc058b7f8f1e44b8295544889857b189262",
+    "official_corpus_cases": 1705,
+    "official_corpus_mean": 299.582991202346,
+    "full_unsigned_correctness_calls": 822050,
+    "total_unsigned_common_corpus_calls": 136335,
+    "historical_v5_restorer_sha256": "7de3dd6653a34d17b1ff16343e86c67333a42c32d6113fc9d07e5e96e7a5dd5c"
   }
 }

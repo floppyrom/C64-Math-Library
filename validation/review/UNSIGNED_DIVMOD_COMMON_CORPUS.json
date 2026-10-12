@@ -1126,22 +1126,22 @@
         },
         "v5_hybrid_lowzp": {
           "class_means": {
-            "divisor_zero": 67.0,
-            "quotient_0": 95.32105263157895,
-            "quotient_1": 153.29605263157896,
-            "quotient_10_to_255": 843.6476190476191,
-            "quotient_256_plus": 997.1111111111111,
-            "quotient_2_to_9": 652.624
+            "divisor_zero": 90.52980132450331,
+            "quotient_0": 77.32105263157895,
+            "quotient_1": 159.78947368421052,
+            "quotient_10_to_255": 850.6476190476191,
+            "quotient_256_plus": 1004.1111111111111,
+            "quotient_2_to_9": 659.624
           },
-          "max_cycles": 1815,
-          "mean_cycles": 302.35307917888565,
-          "min_cycles": 67,
-          "p95_cycles": 896,
+          "max_cycles": 1822,
+          "mean_cycles": 299.582991202346,
+          "min_cycles": 72,
+          "p95_cycles": 903,
           "selection_means": {
-            "edges": 430.945179584121,
-            "random": 248.9169921875,
-            "stress": 1003.125,
-            "zero": 67.0
+            "edges": 427.2703213610586,
+            "random": 243.5390625,
+            "stress": 1010.125,
+            "zero": 87.0
           }
         }
       },
@@ -1271,7 +1271,7 @@
       "resident_sha256": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724"
     },
     "v5_hybrid_lowzp": {
-      "resident_sha256": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02"
+      "resident_sha256": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222"
     }
   },
   "status": "PASS",

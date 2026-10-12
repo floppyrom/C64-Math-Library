@@ -12,7 +12,7 @@
     "v2_pareto_fast": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
     "v3_reu_512k": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8",
     "v4_reu_16m": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724",
-    "v5_hybrid_lowzp": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02"
+    "v5_hybrid_lowzp": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222"
   },
   "results": {
     "MATH_UDIV16": {
