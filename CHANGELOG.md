@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 114BYTE POW2 32BY16 OPT-IN SPECIALIST
+- Qualified 114-byte caller-opt-in 32/16 D=power-of-two producer, providing both full quotient and remainder public-buffer contracts; 0 new ZP, 0 extra nested JSR frames. Exact five resident profiles, two legal RAM maps, 67,520 matched operands / 135,040 CPU executions, zero Q/R/C/N/D/sentinel/SP/relocation errors.
+- Large gains on the explicit power-of-two workload, with V2–V5 slower cases at high divisor exponents: **no default promotion**. No shipped PRG or public ABI modification. Source, full JSON, README/manual and both changelogs published. Native VICE cycles not claimed. Issue #39 remains OPEN. docs/ISSUE39_U3216_POW2_OPTIN_2026-10-12.md
+
 2026-10-12 ISSUE39 90BYTE POW2 32BY16 OPT-IN SPECIALIST
 - Qualified 90-byte caller-opt-in 32/16 D=power-of-two producer, providing both full quotient and remainder public-buffer contracts; 0 new ZP, 0 extra nested JSR frames. Exact five resident profiles, two legal RAM maps, 67,520 matched operands / 135,040 CPU executions, zero Q/R/C/N/D/sentinel/SP/relocation errors.
 - Large gains on the explicit power-of-two workload, with V2–V5 slower cases at high divisor exponents: **no default promotion**. No shipped PRG or public ABI modification. Source, full JSON, README/manual and both changelogs published. Native VICE cycles not claimed. Issue #39 remains OPEN. docs/ISSUE39_U3216_POW2_OPTIN_2026-10-12.md
