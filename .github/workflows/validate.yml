@@ -29,6 +29,8 @@ jobs:
         run: python3 routines/standalone_lab/portable/verify_aligned_udiv32_common.py
       - name: Zero-ZP direct-chain UMOD16 three-map 5115-call source qualification
         run: python3 routines/standalone_lab/portable/verify_umod16_direct_zerozp.py
+      - name: Issue39 V1 24/8 shared-subtraction paired public-entry screen
+        run: python3 tools/screen_issue39_v1_24by8_shared_subtraction.py
       - name: Lean package and checksum contract
         run: |
           python3 tools/package_audit.py
