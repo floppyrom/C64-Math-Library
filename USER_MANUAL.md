@@ -1876,3 +1876,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue #39 signed16 identical-input and rejected V2 donor gate architecture: [docs/ISSUE39_SIGNED16_PAIRED_AND_V2_16BIT_DONOR_SCREEN_2026-10-12.md](docs/ISSUE39_SIGNED16_PAIRED_AND_V2_16BIT_DONOR_SCREEN_2026-10-12.md) (no code promotion).
 
 - Issue39 source-verified no-growth V2–V5 16-bit known-carry branch pruning: [docs/ISSUE39_PR67_KNOWN_CARRY_16BIT_2026-10-12.md](docs/ISSUE39_PR67_KNOWN_CARRY_16BIT_2026-10-12.md); V1 unchanged, DIV/MOD campaign open.
+
+- Issue #39 [V1 UDIV16/UMOD16 direct q=2 branch](docs/ISSUE39_PR68_V1_U16_DIRECT_Q2_EXIT_2026-10-12.md ): source-backed no-growth in-slot short-quotient improvement. Native VICE and 5-profile validation; unsigned family audit remains open.

@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 142.
+; Reachable instructions: 141.
 ; NOTE: legacy alias entry; semantic producer is MATH_UDIV16.
 !cpu 6510
 
@@ -64,11 +64,11 @@ L4252:
     sbc $C015                          ; @425C ED 15 C0
     cmp $C015                          ; @425F CD 15 C0
     bcc L4270                          ; @4262 90 0C
-    bne L428B                          ; @4264 D0 25
+    bne L428E                          ; @4264 D0 28
     tax                                ; @4266 AA
     lda $C01C                          ; @4267 AD 1C C0
     cmp $C014                          ; @426A CD 14 C0
-    bcs L428A                          ; @426D B0 1B
+    bcs L428D                          ; @426D B0 1E
     txa                                ; @426F 8A
 L4270:
     sta $C01D                          ; @4270 8D 1D C0
@@ -84,25 +84,25 @@ L427E:
     !byte $0B, $00    ; ANC #imm       ; @4284 0B 00
     sta $C019                          ; @4286 8D 19 C0
     rts                                ; @4289 60
-L428A:
-    txa                                ; @428A 8A
-L428B:
-    ldx $C015                          ; @428B AE 15 C0
-    bne L4295                          ; @428E D0 05
-    ldx $C014                          ; @4290 AE 14 C0
-    beq L4236                          ; @4293 F0 A1
-L4295:
-    tay                                ; @4295 A8
-    lda $C01C                          ; @4296 AD 1C C0
-    sbc $C014                          ; @4299 ED 14 C0
-    sta $C01C                          ; @429C 8D 1C C0
-    tya                                ; @429F 98
-    sbc $C015                          ; @42A0 ED 15 C0
-    sta $C01D                          ; @42A3 8D 1D C0
-    cmp $C015                          ; @42A6 CD 15 C0
-    bcs L42AE                          ; @42A9 B0 03
-    jmp L4338                          ; @42AB 4C 38 43
-L42AE:
+; ---- executable island $428D ----
+* = $428D
+L428D:
+    txa                                ; @428D 8A
+L428E:
+    ldx $C015                          ; @428E AE 15 C0
+    bne L4298                          ; @4291 D0 05
+    ldx $C014                          ; @4293 AE 14 C0
+    beq L4236                          ; @4296 F0 9E
+L4298:
+    tay                                ; @4298 A8
+    lda $C01C                          ; @4299 AD 1C C0
+    sbc $C014                          ; @429C ED 14 C0
+    sta $C01C                          ; @429F 8D 1C C0
+    tya                                ; @42A2 98
+    sbc $C015                          ; @42A3 ED 15 C0
+    sta $C01D                          ; @42A6 8D 1D C0
+    cmp $C015                          ; @42A9 CD 15 C0
+    bcc L4329                          ; @42AC 90 7B
     ldx #$FD                           ; @42AE A2 FD
 L42B0:
     lda $C01C                          ; @42B0 AD 1C C0
@@ -163,21 +163,21 @@ L431C:
     rol $C018                          ; @431C 2E 18 C0
     rol $C019                          ; @431F 2E 19 C0
     dex                                ; @4322 CA
-    beq L4329                          ; @4323 F0 04
+    beq L4334                          ; @4323 F0 0F
     lsr $11                            ; @4325 46 11
     bpl L4306                          ; @4327 10 DD
 L4329:
-    lda #$05                           ; @4329 A9 05
-    adc $C018                          ; @432B 6D 18 C0
-    sta $C018                          ; @432E 8D 18 C0
-    bcc L4337                          ; @4331 90 04
-    inc $C019                          ; @4333 EE 19 C0
-    clc                                ; @4336 18
-L4337:
-    rts                                ; @4337 60
-L4338:
-    lda #$02                           ; @4338 A9 02
-    sta $C018                          ; @433A 8D 18 C0
-    !byte $0B, $00    ; ANC #imm       ; @433D 0B 00
-    sta $C019                          ; @433F 8D 19 C0
+    lda #$02                           ; @4329 A9 02
+    sta $C018                          ; @432B 8D 18 C0
+    !byte $0B, $00    ; ANC #imm       ; @432E 0B 00
+    sta $C019                          ; @4330 8D 19 C0
+    rts                                ; @4333 60
+L4334:
+    lda #$05                           ; @4334 A9 05
+    adc $C018                          ; @4336 6D 18 C0
+    sta $C018                          ; @4339 8D 18 C0
+    bcc L4342                          ; @433C 90 04
+    inc $C019                          ; @433E EE 19 C0
+    clc                                ; @4341 18
+L4342:
     rts                                ; @4342 60

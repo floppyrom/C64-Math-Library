@@ -1,11 +1,11 @@
 {
   "basis": "machine-code 6502 instruction cycles including public entry/RTS; not REU bus wall time",
   "profile_resident_sha256": {
-    "v1_balanced": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62",
+    "v1_balanced": "cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f",
     "v2_pareto_fast": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138",
     "v3_reu_512k": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad",
     "v4_reu_16m": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e",
-    "v5_hybrid_lowzp": "26981cc03b06d1a797917ae34a5d8969db466435fff496a758a262bac75b254b"
+    "v5_hybrid_lowzp": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02"
   },
   "profiles": [
     "v1_balanced",

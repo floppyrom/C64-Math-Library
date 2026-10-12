@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "parent_sha256": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62",
+  "source_built_sha256": "cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f",
+  "unchanged_resident_span": 49042,
+  "changed_bytes_inside_323_byte_window": 57,
+  "changed_bytes_outside_window": 0,
+  "old_core_sha256": "f60d4ec80e4285e8bb3b243b3e7f93ae908989c0818ba2e543750d33ed8909eb",
+  "new_core_sha256": "7a1dfb987c2f9f1386cdbf7c4096c1a20cd9f143bce9907550cee209dacc2bc6",
+  "reference_and_alternate_source_assembled": true,
+  "public_entry_points_unchanged": true,
+  "memory_growth": 0,
+  "normal_zero_page_growth": 0,
+  "release_promoted": false
+}
