@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 V2-V5 U16 D-HIGH CUTOFF SWEEP (RESEARCH ONLY)
+- Tested 17 existing-size CPX D1 dispatch cutoffs for UDIV16 and UMOD16 in unchanged V2/V3/V4/V5 images. Exact current resident SHA pins; 4,201 UDIV16 and 3,177 UMOD16 inputs per candidate/profile, preserved Q/R/C, N/D, SP and modulo quotient side effect. 64 combinations (cutoffs 1–14) fail correctness.
+- Cutoff 16: UDIV16 +0.054035 cycles mean (9 faster,10 slower); UMOD16 -0.116147 cycles mean (11 faster,7 slower). No universally zero-regression non-default candidate; retain cutoff 15. Published complete per-class source-backed evidence, manual, both logs and checksums; no resident/source/API change. Issue #39 unsigned campaign OPEN. docs/ISSUE39_V2V5_U16_D1_CUTOFF_SCREEN_2026-10-12.md
+
 2026-10-12 ISSUE39 V1 68-BYTE RAM SMC 24/8 DIVMOD RELEASE
 - V1 bounded 24/8 DIV/MOD producer 61→68 executable bytes, fits existing 84-byte island. Writable executable RAM, no reentrancy/ROM support; prior 61-byte fallback retained. V2–V5 unchanged, no public ABI/ZP/stack/resident-size growth.
 - Paired same-input UDIV24 166.190196→165.228277, UMOD24 234.433355→231.489375; D8 stress 976.350000→927.934314. 48,388 paired public calls, zero regressions; 6,344 portable two-map calls, 384 native VICE full-resident calls (not cycle timings).

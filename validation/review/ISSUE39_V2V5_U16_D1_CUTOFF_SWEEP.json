@@ -1,0 +1,5985 @@
+{
+  "correctness_rejections": [
+    {
+      "class": "canonical_edges",
+      "d": 256,
+      "error": "",
+      "index": 381,
+      "n": 32766,
+      "op": "MATH_UDIV16",
+      "profile": "v2_pareto_fast",
+      "threshold": 1
+    },
+    {
+      "class": "canonical_edges",
+      "d": 1023,
+      "error": "",
+      "index": 383,
+      "n": 32766,
+      "op": "MATH_UDIV16",
+      "profile": "v2_pareto_fast",
+      "threshold": 2
+    },
+    {
+      "class": "canonical_random",
+      "d": 1117,
+      "error": "",
+      "index": 592,
+      "n": 46761,
+      "op": "MATH_UDIV16",
+      "profile": "v2_pareto_fast",
+      "threshold": 4
+    },
+    {
+      "class": "canonical_random",
+      "d": 2958,
+      "error": "",
+      "index": 688,
+      "n": 62167,
+      "op": "MATH_UDIV16",
+      "profile": "v2_pareto_fast",
+      "threshold": 8
+    },
+    {
+      "class": "canonical_random",
+      "d": 2958,
+      "error": "",
+      "index": 688,
+      "n": 62167,
+      "op": "MATH_UDIV16",
+      "profile": "v2_pareto_fast",
+      "threshold": 10
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v2_pareto_fast",
+      "threshold": 12
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v2_pareto_fast",
+      "threshold": 13
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v2_pareto_fast",
+      "threshold": 14
+    },
+    {
+      "class": "canonical_edges",
+      "d": 256,
+      "error": "Q/R/C differs from current",
+      "index": 381,
+      "n": 32766,
+      "op": "MATH_UMOD16",
+      "profile": "v2_pareto_fast",
+      "threshold": 1
+    },
+    {
+      "class": "canonical_edges",
+      "d": 1023,
+      "error": "",
+      "index": 383,
+      "n": 32766,
+      "op": "MATH_UMOD16",
+      "profile": "v2_pareto_fast",
+      "threshold": 2
+    },
+    {
+      "class": "canonical_random",
+      "d": 1690,
+      "error": "",
+      "index": 608,
+      "n": 65351,
+      "op": "MATH_UMOD16",
+      "profile": "v2_pareto_fast",
+      "threshold": 4
+    },
+    {
+      "class": "canonical_random",
+      "d": 2422,
+      "error": "",
+      "index": 661,
+      "n": 56437,
+      "op": "MATH_UMOD16",
+      "profile": "v2_pareto_fast",
+      "threshold": 8
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v2_pareto_fast",
+      "threshold": 10
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v2_pareto_fast",
+      "threshold": 12
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v2_pareto_fast",
+      "threshold": 13
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v2_pareto_fast",
+      "threshold": 14
+    },
+    {
+      "class": "canonical_edges",
+      "d": 256,
+      "error": "",
+      "index": 381,
+      "n": 32766,
+      "op": "MATH_UDIV16",
+      "profile": "v3_reu_512k",
+      "threshold": 1
+    },
+    {
+      "class": "canonical_edges",
+      "d": 1023,
+      "error": "",
+      "index": 383,
+      "n": 32766,
+      "op": "MATH_UDIV16",
+      "profile": "v3_reu_512k",
+      "threshold": 2
+    },
+    {
+      "class": "canonical_random",
+      "d": 1117,
+      "error": "",
+      "index": 592,
+      "n": 46761,
+      "op": "MATH_UDIV16",
+      "profile": "v3_reu_512k",
+      "threshold": 4
+    },
+    {
+      "class": "canonical_random",
+      "d": 2958,
+      "error": "",
+      "index": 688,
+      "n": 62167,
+      "op": "MATH_UDIV16",
+      "profile": "v3_reu_512k",
+      "threshold": 8
+    },
+    {
+      "class": "canonical_random",
+      "d": 2958,
+      "error": "",
+      "index": 688,
+      "n": 62167,
+      "op": "MATH_UDIV16",
+      "profile": "v3_reu_512k",
+      "threshold": 10
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v3_reu_512k",
+      "threshold": 12
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v3_reu_512k",
+      "threshold": 13
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v3_reu_512k",
+      "threshold": 14
+    },
+    {
+      "class": "canonical_edges",
+      "d": 256,
+      "error": "Q/R/C differs from current",
+      "index": 381,
+      "n": 32766,
+      "op": "MATH_UMOD16",
+      "profile": "v3_reu_512k",
+      "threshold": 1
+    },
+    {
+      "class": "canonical_edges",
+      "d": 1023,
+      "error": "",
+      "index": 383,
+      "n": 32766,
+      "op": "MATH_UMOD16",
+      "profile": "v3_reu_512k",
+      "threshold": 2
+    },
+    {
+      "class": "canonical_random",
+      "d": 1690,
+      "error": "",
+      "index": 608,
+      "n": 65351,
+      "op": "MATH_UMOD16",
+      "profile": "v3_reu_512k",
+      "threshold": 4
+    },
+    {
+      "class": "canonical_random",
+      "d": 2422,
+      "error": "",
+      "index": 661,
+      "n": 56437,
+      "op": "MATH_UMOD16",
+      "profile": "v3_reu_512k",
+      "threshold": 8
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v3_reu_512k",
+      "threshold": 10
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v3_reu_512k",
+      "threshold": 12
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v3_reu_512k",
+      "threshold": 13
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v3_reu_512k",
+      "threshold": 14
+    },
+    {
+      "class": "canonical_edges",
+      "d": 256,
+      "error": "",
+      "index": 381,
+      "n": 32766,
+      "op": "MATH_UDIV16",
+      "profile": "v4_reu_16m",
+      "threshold": 1
+    },
+    {
+      "class": "canonical_edges",
+      "d": 1023,
+      "error": "",
+      "index": 383,
+      "n": 32766,
+      "op": "MATH_UDIV16",
+      "profile": "v4_reu_16m",
+      "threshold": 2
+    },
+    {
+      "class": "canonical_random",
+      "d": 1117,
+      "error": "",
+      "index": 592,
+      "n": 46761,
+      "op": "MATH_UDIV16",
+      "profile": "v4_reu_16m",
+      "threshold": 4
+    },
+    {
+      "class": "canonical_random",
+      "d": 2958,
+      "error": "",
+      "index": 688,
+      "n": 62167,
+      "op": "MATH_UDIV16",
+      "profile": "v4_reu_16m",
+      "threshold": 8
+    },
+    {
+      "class": "canonical_random",
+      "d": 2958,
+      "error": "",
+      "index": 688,
+      "n": 62167,
+      "op": "MATH_UDIV16",
+      "profile": "v4_reu_16m",
+      "threshold": 10
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v4_reu_16m",
+      "threshold": 12
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v4_reu_16m",
+      "threshold": 13
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v4_reu_16m",
+      "threshold": 14
+    },
+    {
+      "class": "canonical_edges",
+      "d": 256,
+      "error": "Q/R/C differs from current",
+      "index": 381,
+      "n": 32766,
+      "op": "MATH_UMOD16",
+      "profile": "v4_reu_16m",
+      "threshold": 1
+    },
+    {
+      "class": "canonical_edges",
+      "d": 1023,
+      "error": "",
+      "index": 383,
+      "n": 32766,
+      "op": "MATH_UMOD16",
+      "profile": "v4_reu_16m",
+      "threshold": 2
+    },
+    {
+      "class": "canonical_random",
+      "d": 1690,
+      "error": "",
+      "index": 608,
+      "n": 65351,
+      "op": "MATH_UMOD16",
+      "profile": "v4_reu_16m",
+      "threshold": 4
+    },
+    {
+      "class": "canonical_random",
+      "d": 2422,
+      "error": "",
+      "index": 661,
+      "n": 56437,
+      "op": "MATH_UMOD16",
+      "profile": "v4_reu_16m",
+      "threshold": 8
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v4_reu_16m",
+      "threshold": 10
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v4_reu_16m",
+      "threshold": 12
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v4_reu_16m",
+      "threshold": 13
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v4_reu_16m",
+      "threshold": 14
+    },
+    {
+      "class": "canonical_edges",
+      "d": 256,
+      "error": "",
+      "index": 381,
+      "n": 32766,
+      "op": "MATH_UDIV16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 1
+    },
+    {
+      "class": "canonical_edges",
+      "d": 1023,
+      "error": "",
+      "index": 383,
+      "n": 32766,
+      "op": "MATH_UDIV16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 2
+    },
+    {
+      "class": "canonical_random",
+      "d": 1117,
+      "error": "",
+      "index": 592,
+      "n": 46761,
+      "op": "MATH_UDIV16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 4
+    },
+    {
+      "class": "canonical_random",
+      "d": 2958,
+      "error": "",
+      "index": 688,
+      "n": 62167,
+      "op": "MATH_UDIV16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 8
+    },
+    {
+      "class": "canonical_random",
+      "d": 2958,
+      "error": "",
+      "index": 688,
+      "n": 62167,
+      "op": "MATH_UDIV16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 10
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 12
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 13
+    },
+    {
+      "class": "canonical_random",
+      "d": 3670,
+      "error": "",
+      "index": 1169,
+      "n": 63765,
+      "op": "MATH_UDIV16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 14
+    },
+    {
+      "class": "canonical_edges",
+      "d": 256,
+      "error": "Q/R/C differs from current",
+      "index": 381,
+      "n": 32766,
+      "op": "MATH_UMOD16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 1
+    },
+    {
+      "class": "canonical_edges",
+      "d": 1023,
+      "error": "",
+      "index": 383,
+      "n": 32766,
+      "op": "MATH_UMOD16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 2
+    },
+    {
+      "class": "canonical_random",
+      "d": 1690,
+      "error": "",
+      "index": 608,
+      "n": 65351,
+      "op": "MATH_UMOD16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 4
+    },
+    {
+      "class": "canonical_random",
+      "d": 2422,
+      "error": "",
+      "index": 661,
+      "n": 56437,
+      "op": "MATH_UMOD16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 8
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 10
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 12
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 13
+    },
+    {
+      "class": "canonical_random",
+      "d": 3614,
+      "error": "",
+      "index": 994,
+      "n": 62023,
+      "op": "MATH_UMOD16",
+      "profile": "v5_hybrid_lowzp",
+      "threshold": 14
+    }
+  ],
+  "patch": "LDX D+1; CPX #imm; BCS threshold; exact single opcode operand",
+  "profiles": {
+    "v2_pareto_fast": {
+      "cutoff_operand_address": "0xb8ef",
+      "operations": {
+        "MATH_UDIV16": {
+          "cases": 4201,
+          "corpus_sha256": "1162a0a5acb81989db30752518edc62c8748a91b9d8266d2cdaedcfb1ffcf854",
+          "threshold_results": [
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 256,
+                "error": "",
+                "index": 381,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 1
+            },
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 1023,
+                "error": "",
+                "index": 383,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 2
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 1117,
+                "error": "",
+                "index": 592,
+                "n": 46761
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 4
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2958,
+                "error": "",
+                "index": 688,
+                "n": 62167
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 8
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2958,
+                "error": "",
+                "index": 688,
+                "n": 62167
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 10
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 12
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 13
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 14
+            },
+            {
+              "after_mean": 272.1118781242561,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.03466796875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 460.9453125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 241.8125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4201,
+              "faster": 0,
+              "mean_delta": 0.0,
+              "slower": 0,
+              "status": "PASS",
+              "threshold": 15
+            },
+            {
+              "after_mean": 272.1659128778862,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.05615234375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 458.51953125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 244.953125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4182,
+              "faster": 9,
+              "mean_delta": 0.05403475363008808,
+              "slower": 10,
+              "status": "PASS",
+              "threshold": 16
+            },
+            {
+              "after_mean": 272.2963580099976,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.13427734375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 457.234375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 247.75390625,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4150,
+              "faster": 25,
+              "mean_delta": 0.18447988574149013,
+              "slower": 26,
+              "status": "PASS",
+              "threshold": 18
+            },
+            {
+              "after_mean": 272.61604379909545,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.2109375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.7578125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 251.83203125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 92.28125,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4110,
+              "faster": 45,
+              "mean_delta": 0.504165674839324,
+              "slower": 46,
+              "status": "PASS",
+              "threshold": 20
+            },
+            {
+              "after_mean": 273.6355629611997,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.5751953125,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.31640625,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 265.546875,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 92.64322916666667,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4038,
+              "faster": 71,
+              "mean_delta": 1.523684836943585,
+              "slower": 92,
+              "status": "PASS",
+              "threshold": 24
+            },
+            {
+              "after_mean": 276.224470364199,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 92.18701171875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 94.21614583333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3919,
+              "faster": 90,
+              "mean_delta": 4.112592239942871,
+              "slower": 192,
+              "status": "PASS",
+              "threshold": 32
+            },
+            {
+              "after_mean": 278.5248750297548,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 96.30029296875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 97.4453125,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3807,
+              "faster": 90,
+              "mean_delta": 6.412996905498691,
+              "slower": 304,
+              "status": "PASS",
+              "threshold": 48
+            },
+            {
+              "after_mean": 280.82980242799334,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 100.11181640625,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 102.33333333333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3708,
+              "faster": 90,
+              "mean_delta": 8.717924303737206,
+              "slower": 403,
+              "status": "PASS",
+              "threshold": 64
+            },
+            {
+              "after_mean": 283.78528921685313,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 105.8212890625,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 104.21614583333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3584,
+              "faster": 90,
+              "mean_delta": 11.673411092597,
+              "slower": 527,
+              "status": "PASS",
+              "threshold": 96
+            }
+          ]
+        },
+        "MATH_UMOD16": {
+          "cases": 3177,
+          "corpus_sha256": "10aed5830b01bc82f41747d5422271bd1b163c1070ebd66363ccd524a916cd5c",
+          "threshold_results": [
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 256,
+                "error": "Q/R/C differs from current",
+                "index": 381,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 1
+            },
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 1023,
+                "error": "",
+                "index": 383,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 2
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 1690,
+                "error": "",
+                "index": 608,
+                "n": 65351
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 4
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2422,
+                "error": "",
+                "index": 661,
+                "n": 56437
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 8
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 10
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 12
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 13
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 14
+            },
+            {
+              "after_mean": 321.47529115517784,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.490234375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 425.234375,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 232.65625,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.62760416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3177,
+              "faster": 0,
+              "mean_delta": 0.0,
+              "slower": 0,
+              "status": "PASS",
+              "threshold": 15
+            },
+            {
+              "after_mean": 321.35914384639597,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.41015625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 422.34765625,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 234.625,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.4921875,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3159,
+              "faster": 11,
+              "mean_delta": -0.11614730878186968,
+              "slower": 7,
+              "status": "PASS",
+              "threshold": 16
+            },
+            {
+              "after_mean": 321.687755744413,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.6865234375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 420.9921875,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 238.7734375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.61197916666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3136,
+              "faster": 19,
+              "mean_delta": 0.21246458923512748,
+              "slower": 22,
+              "status": "PASS",
+              "threshold": 18
+            },
+            {
+              "after_mean": 321.9590808939251,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 81.1552734375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 418.07421875,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 242.546875,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 81.03645833333333,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3100,
+              "faster": 35,
+              "mean_delta": 0.48378973874724585,
+              "slower": 42,
+              "status": "PASS",
+              "threshold": 20
+            },
+            {
+              "after_mean": 322.9852061693421,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 82.1787109375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 416.43359375,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 252.0234375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 81.57291666666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3047,
+              "faster": 55,
+              "mean_delta": 1.5099150141643058,
+              "slower": 75,
+              "status": "PASS",
+              "threshold": 24
+            },
+            {
+              "after_mean": 326.04123386842934,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 84.6767578125,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 83.37239583333333,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2938,
+              "faster": 74,
+              "mean_delta": 4.565942713251495,
+              "slower": 165,
+              "status": "PASS",
+              "threshold": 32
+            },
+            {
+              "after_mean": 327.71576959395657,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 88.4638671875,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 87.12760416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2876,
+              "faster": 74,
+              "mean_delta": 6.240478438778722,
+              "slower": 227,
+              "status": "PASS",
+              "threshold": 48
+            },
+            {
+              "after_mean": 329.63456090651556,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 92.9462890625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.04947916666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2807,
+              "faster": 74,
+              "mean_delta": 8.15926975133774,
+              "slower": 296,
+              "status": "PASS",
+              "threshold": 64
+            },
+            {
+              "after_mean": 331.8007554296506,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 97.7744140625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 96.09635416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2741,
+              "faster": 74,
+              "mean_delta": 10.325464274472774,
+              "slower": 362,
+              "status": "PASS",
+              "threshold": 96
+            }
+          ]
+        }
+      },
+      "original_cutoff": 15,
+      "resident_sha256": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d"
+    },
+    "v3_reu_512k": {
+      "cutoff_operand_address": "0xb8ef",
+      "operations": {
+        "MATH_UDIV16": {
+          "cases": 4201,
+          "corpus_sha256": "1162a0a5acb81989db30752518edc62c8748a91b9d8266d2cdaedcfb1ffcf854",
+          "threshold_results": [
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 256,
+                "error": "",
+                "index": 381,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 1
+            },
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 1023,
+                "error": "",
+                "index": 383,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 2
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 1117,
+                "error": "",
+                "index": 592,
+                "n": 46761
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 4
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2958,
+                "error": "",
+                "index": 688,
+                "n": 62167
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 8
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2958,
+                "error": "",
+                "index": 688,
+                "n": 62167
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 10
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 12
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 13
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 14
+            },
+            {
+              "after_mean": 272.1118781242561,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.03466796875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 460.9453125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 241.8125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4201,
+              "faster": 0,
+              "mean_delta": 0.0,
+              "slower": 0,
+              "status": "PASS",
+              "threshold": 15
+            },
+            {
+              "after_mean": 272.1659128778862,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.05615234375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 458.51953125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 244.953125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4182,
+              "faster": 9,
+              "mean_delta": 0.05403475363008808,
+              "slower": 10,
+              "status": "PASS",
+              "threshold": 16
+            },
+            {
+              "after_mean": 272.2963580099976,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.13427734375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 457.234375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 247.75390625,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4150,
+              "faster": 25,
+              "mean_delta": 0.18447988574149013,
+              "slower": 26,
+              "status": "PASS",
+              "threshold": 18
+            },
+            {
+              "after_mean": 272.61604379909545,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.2109375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.7578125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 251.83203125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 92.28125,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4110,
+              "faster": 45,
+              "mean_delta": 0.504165674839324,
+              "slower": 46,
+              "status": "PASS",
+              "threshold": 20
+            },
+            {
+              "after_mean": 273.6355629611997,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.5751953125,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.31640625,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 265.546875,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 92.64322916666667,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4038,
+              "faster": 71,
+              "mean_delta": 1.523684836943585,
+              "slower": 92,
+              "status": "PASS",
+              "threshold": 24
+            },
+            {
+              "after_mean": 276.224470364199,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 92.18701171875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 94.21614583333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3919,
+              "faster": 90,
+              "mean_delta": 4.112592239942871,
+              "slower": 192,
+              "status": "PASS",
+              "threshold": 32
+            },
+            {
+              "after_mean": 278.5248750297548,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 96.30029296875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 97.4453125,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3807,
+              "faster": 90,
+              "mean_delta": 6.412996905498691,
+              "slower": 304,
+              "status": "PASS",
+              "threshold": 48
+            },
+            {
+              "after_mean": 280.82980242799334,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 100.11181640625,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 102.33333333333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3708,
+              "faster": 90,
+              "mean_delta": 8.717924303737206,
+              "slower": 403,
+              "status": "PASS",
+              "threshold": 64
+            },
+            {
+              "after_mean": 283.78528921685313,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 105.8212890625,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 104.21614583333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3584,
+              "faster": 90,
+              "mean_delta": 11.673411092597,
+              "slower": 527,
+              "status": "PASS",
+              "threshold": 96
+            }
+          ]
+        },
+        "MATH_UMOD16": {
+          "cases": 3177,
+          "corpus_sha256": "10aed5830b01bc82f41747d5422271bd1b163c1070ebd66363ccd524a916cd5c",
+          "threshold_results": [
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 256,
+                "error": "Q/R/C differs from current",
+                "index": 381,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 1
+            },
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 1023,
+                "error": "",
+                "index": 383,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 2
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 1690,
+                "error": "",
+                "index": 608,
+                "n": 65351
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 4
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2422,
+                "error": "",
+                "index": 661,
+                "n": 56437
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 8
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 10
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 12
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 13
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 14
+            },
+            {
+              "after_mean": 321.47529115517784,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.490234375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 425.234375,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 232.65625,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.62760416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3177,
+              "faster": 0,
+              "mean_delta": 0.0,
+              "slower": 0,
+              "status": "PASS",
+              "threshold": 15
+            },
+            {
+              "after_mean": 321.35914384639597,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.41015625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 422.34765625,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 234.625,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.4921875,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3159,
+              "faster": 11,
+              "mean_delta": -0.11614730878186968,
+              "slower": 7,
+              "status": "PASS",
+              "threshold": 16
+            },
+            {
+              "after_mean": 321.687755744413,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.6865234375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 420.9921875,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 238.7734375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.61197916666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3136,
+              "faster": 19,
+              "mean_delta": 0.21246458923512748,
+              "slower": 22,
+              "status": "PASS",
+              "threshold": 18
+            },
+            {
+              "after_mean": 321.9590808939251,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 81.1552734375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 418.07421875,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 242.546875,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 81.03645833333333,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3100,
+              "faster": 35,
+              "mean_delta": 0.48378973874724585,
+              "slower": 42,
+              "status": "PASS",
+              "threshold": 20
+            },
+            {
+              "after_mean": 322.9852061693421,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 82.1787109375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 416.43359375,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 252.0234375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 81.57291666666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3047,
+              "faster": 55,
+              "mean_delta": 1.5099150141643058,
+              "slower": 75,
+              "status": "PASS",
+              "threshold": 24
+            },
+            {
+              "after_mean": 326.04123386842934,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 84.6767578125,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 83.37239583333333,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2938,
+              "faster": 74,
+              "mean_delta": 4.565942713251495,
+              "slower": 165,
+              "status": "PASS",
+              "threshold": 32
+            },
+            {
+              "after_mean": 327.71576959395657,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 88.4638671875,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 87.12760416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2876,
+              "faster": 74,
+              "mean_delta": 6.240478438778722,
+              "slower": 227,
+              "status": "PASS",
+              "threshold": 48
+            },
+            {
+              "after_mean": 329.63456090651556,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 92.9462890625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.04947916666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2807,
+              "faster": 74,
+              "mean_delta": 8.15926975133774,
+              "slower": 296,
+              "status": "PASS",
+              "threshold": 64
+            },
+            {
+              "after_mean": 331.8007554296506,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 97.7744140625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 96.09635416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2741,
+              "faster": 74,
+              "mean_delta": 10.325464274472774,
+              "slower": 362,
+              "status": "PASS",
+              "threshold": 96
+            }
+          ]
+        }
+      },
+      "original_cutoff": 15,
+      "resident_sha256": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8"
+    },
+    "v4_reu_16m": {
+      "cutoff_operand_address": "0xb8ef",
+      "operations": {
+        "MATH_UDIV16": {
+          "cases": 4201,
+          "corpus_sha256": "1162a0a5acb81989db30752518edc62c8748a91b9d8266d2cdaedcfb1ffcf854",
+          "threshold_results": [
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 256,
+                "error": "",
+                "index": 381,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 1
+            },
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 1023,
+                "error": "",
+                "index": 383,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 2
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 1117,
+                "error": "",
+                "index": 592,
+                "n": 46761
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 4
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2958,
+                "error": "",
+                "index": 688,
+                "n": 62167
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 8
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2958,
+                "error": "",
+                "index": 688,
+                "n": 62167
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 10
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 12
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 13
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 14
+            },
+            {
+              "after_mean": 272.1118781242561,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.03466796875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 460.9453125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 241.8125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4201,
+              "faster": 0,
+              "mean_delta": 0.0,
+              "slower": 0,
+              "status": "PASS",
+              "threshold": 15
+            },
+            {
+              "after_mean": 272.1659128778862,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.05615234375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 458.51953125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 244.953125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4182,
+              "faster": 9,
+              "mean_delta": 0.05403475363008808,
+              "slower": 10,
+              "status": "PASS",
+              "threshold": 16
+            },
+            {
+              "after_mean": 272.2963580099976,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.13427734375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 457.234375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 247.75390625,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4150,
+              "faster": 25,
+              "mean_delta": 0.18447988574149013,
+              "slower": 26,
+              "status": "PASS",
+              "threshold": 18
+            },
+            {
+              "after_mean": 272.61604379909545,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.2109375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.7578125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 251.83203125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 92.28125,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4110,
+              "faster": 45,
+              "mean_delta": 0.504165674839324,
+              "slower": 46,
+              "status": "PASS",
+              "threshold": 20
+            },
+            {
+              "after_mean": 273.6355629611997,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.5751953125,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.31640625,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 265.546875,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 92.64322916666667,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4038,
+              "faster": 71,
+              "mean_delta": 1.523684836943585,
+              "slower": 92,
+              "status": "PASS",
+              "threshold": 24
+            },
+            {
+              "after_mean": 276.224470364199,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 92.18701171875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 94.21614583333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3919,
+              "faster": 90,
+              "mean_delta": 4.112592239942871,
+              "slower": 192,
+              "status": "PASS",
+              "threshold": 32
+            },
+            {
+              "after_mean": 278.5248750297548,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 96.30029296875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 97.4453125,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3807,
+              "faster": 90,
+              "mean_delta": 6.412996905498691,
+              "slower": 304,
+              "status": "PASS",
+              "threshold": 48
+            },
+            {
+              "after_mean": 280.82980242799334,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 100.11181640625,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 102.33333333333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3708,
+              "faster": 90,
+              "mean_delta": 8.717924303737206,
+              "slower": 403,
+              "status": "PASS",
+              "threshold": 64
+            },
+            {
+              "after_mean": 283.78528921685313,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 105.8212890625,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 104.21614583333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3584,
+              "faster": 90,
+              "mean_delta": 11.673411092597,
+              "slower": 527,
+              "status": "PASS",
+              "threshold": 96
+            }
+          ]
+        },
+        "MATH_UMOD16": {
+          "cases": 3177,
+          "corpus_sha256": "10aed5830b01bc82f41747d5422271bd1b163c1070ebd66363ccd524a916cd5c",
+          "threshold_results": [
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 256,
+                "error": "Q/R/C differs from current",
+                "index": 381,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 1
+            },
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 1023,
+                "error": "",
+                "index": 383,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 2
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 1690,
+                "error": "",
+                "index": 608,
+                "n": 65351
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 4
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2422,
+                "error": "",
+                "index": 661,
+                "n": 56437
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 8
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 10
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 12
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 13
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 14
+            },
+            {
+              "after_mean": 321.47529115517784,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.490234375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 425.234375,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 232.65625,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.62760416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3177,
+              "faster": 0,
+              "mean_delta": 0.0,
+              "slower": 0,
+              "status": "PASS",
+              "threshold": 15
+            },
+            {
+              "after_mean": 321.35914384639597,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.41015625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 422.34765625,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 234.625,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.4921875,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3159,
+              "faster": 11,
+              "mean_delta": -0.11614730878186968,
+              "slower": 7,
+              "status": "PASS",
+              "threshold": 16
+            },
+            {
+              "after_mean": 321.687755744413,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.6865234375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 420.9921875,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 238.7734375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.61197916666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3136,
+              "faster": 19,
+              "mean_delta": 0.21246458923512748,
+              "slower": 22,
+              "status": "PASS",
+              "threshold": 18
+            },
+            {
+              "after_mean": 321.9590808939251,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 81.1552734375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 418.07421875,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 242.546875,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 81.03645833333333,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3100,
+              "faster": 35,
+              "mean_delta": 0.48378973874724585,
+              "slower": 42,
+              "status": "PASS",
+              "threshold": 20
+            },
+            {
+              "after_mean": 322.9852061693421,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 82.1787109375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 416.43359375,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 252.0234375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 81.57291666666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3047,
+              "faster": 55,
+              "mean_delta": 1.5099150141643058,
+              "slower": 75,
+              "status": "PASS",
+              "threshold": 24
+            },
+            {
+              "after_mean": 326.04123386842934,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 84.6767578125,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 83.37239583333333,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2938,
+              "faster": 74,
+              "mean_delta": 4.565942713251495,
+              "slower": 165,
+              "status": "PASS",
+              "threshold": 32
+            },
+            {
+              "after_mean": 327.71576959395657,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 88.4638671875,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 87.12760416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2876,
+              "faster": 74,
+              "mean_delta": 6.240478438778722,
+              "slower": 227,
+              "status": "PASS",
+              "threshold": 48
+            },
+            {
+              "after_mean": 329.63456090651556,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 92.9462890625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.04947916666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2807,
+              "faster": 74,
+              "mean_delta": 8.15926975133774,
+              "slower": 296,
+              "status": "PASS",
+              "threshold": 64
+            },
+            {
+              "after_mean": 331.8007554296506,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 97.7744140625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 96.09635416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2741,
+              "faster": 74,
+              "mean_delta": 10.325464274472774,
+              "slower": 362,
+              "status": "PASS",
+              "threshold": 96
+            }
+          ]
+        }
+      },
+      "original_cutoff": 15,
+      "resident_sha256": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724"
+    },
+    "v5_hybrid_lowzp": {
+      "cutoff_operand_address": "0xb8ef",
+      "operations": {
+        "MATH_UDIV16": {
+          "cases": 4201,
+          "corpus_sha256": "1162a0a5acb81989db30752518edc62c8748a91b9d8266d2cdaedcfb1ffcf854",
+          "threshold_results": [
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 256,
+                "error": "",
+                "index": 381,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 1
+            },
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 1023,
+                "error": "",
+                "index": 383,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 2
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 1117,
+                "error": "",
+                "index": 592,
+                "n": 46761
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 4
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2958,
+                "error": "",
+                "index": 688,
+                "n": 62167
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 8
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2958,
+                "error": "",
+                "index": 688,
+                "n": 62167
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 10
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 12
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 13
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3670,
+                "error": "",
+                "index": 1169,
+                "n": 63765
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 14
+            },
+            {
+              "after_mean": 272.1118781242561,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.03466796875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 460.9453125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 241.8125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4201,
+              "faster": 0,
+              "mean_delta": 0.0,
+              "slower": 0,
+              "status": "PASS",
+              "threshold": 15
+            },
+            {
+              "after_mean": 272.1659128778862,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.05615234375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 458.51953125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 244.953125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4182,
+              "faster": 9,
+              "mean_delta": 0.05403475363008808,
+              "slower": 10,
+              "status": "PASS",
+              "threshold": 16
+            },
+            {
+              "after_mean": 272.2963580099976,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.13427734375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 457.234375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 247.75390625,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.59375,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4150,
+              "faster": 25,
+              "mean_delta": 0.18447988574149013,
+              "slower": 26,
+              "status": "PASS",
+              "threshold": 18
+            },
+            {
+              "after_mean": 272.61604379909545,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.2109375,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.7578125,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 251.83203125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 92.28125,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4110,
+              "faster": 45,
+              "mean_delta": 0.504165674839324,
+              "slower": 46,
+              "status": "PASS",
+              "threshold": 20
+            },
+            {
+              "after_mean": 273.6355629611997,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 89.5751953125,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.31640625,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 265.546875,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 92.64322916666667,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 4038,
+              "faster": 71,
+              "mean_delta": 1.523684836943585,
+              "slower": 92,
+              "status": "PASS",
+              "threshold": 24
+            },
+            {
+              "after_mean": 276.224470364199,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 92.18701171875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 94.21614583333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3919,
+              "faster": 90,
+              "mean_delta": 4.112592239942871,
+              "slower": 192,
+              "status": "PASS",
+              "threshold": 32
+            },
+            {
+              "after_mean": 278.5248750297548,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 96.30029296875,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 97.4453125,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3807,
+              "faster": 90,
+              "mean_delta": 6.412996905498691,
+              "slower": 304,
+              "status": "PASS",
+              "threshold": 48
+            },
+            {
+              "after_mean": 280.82980242799334,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 100.11181640625,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 102.33333333333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3708,
+              "faster": 90,
+              "mean_delta": 8.717924303737206,
+              "slower": 403,
+              "status": "PASS",
+              "threshold": 64
+            },
+            {
+              "after_mean": 283.78528921685313,
+              "before_mean": 272.1118781242561,
+              "cases": 4201,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 422.5992438563327,
+                  "before_mean": 422.5992438563327,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 105.8212890625,
+                  "before_mean": 89.03466796875,
+                  "cases": 2048
+                },
+                "canonical_stress": {
+                  "after_mean": 896.0416666666666,
+                  "before_mean": 896.0416666666666,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 109.65625,
+                  "before_mean": 109.65625,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 110.0,
+                  "before_mean": 110.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 991.51953125,
+                  "before_mean": 991.51953125,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 456.1484375,
+                  "before_mean": 460.9453125,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 284.9453125,
+                  "before_mean": 241.8125,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 881.859375,
+                  "before_mean": 881.859375,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 104.21614583333333,
+                  "before_mean": 91.59375,
+                  "cases": 384
+                }
+              },
+              "equal": 3584,
+              "faster": 90,
+              "mean_delta": 11.673411092597,
+              "slower": 527,
+              "status": "PASS",
+              "threshold": 96
+            }
+          ]
+        },
+        "MATH_UMOD16": {
+          "cases": 3177,
+          "corpus_sha256": "10aed5830b01bc82f41747d5422271bd1b163c1070ebd66363ccd524a916cd5c",
+          "threshold_results": [
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 256,
+                "error": "Q/R/C differs from current",
+                "index": 381,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 1
+            },
+            {
+              "first_failure": {
+                "class": "canonical_edges",
+                "d": 1023,
+                "error": "",
+                "index": 383,
+                "n": 32766
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 2
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 1690,
+                "error": "",
+                "index": 608,
+                "n": 65351
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 4
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 2422,
+                "error": "",
+                "index": 661,
+                "n": 56437
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 8
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 10
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 12
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 13
+            },
+            {
+              "first_failure": {
+                "class": "canonical_random",
+                "d": 3614,
+                "error": "",
+                "index": 994,
+                "n": 62023
+              },
+              "status": "REJECT_CORRECTNESS",
+              "threshold": 14
+            },
+            {
+              "after_mean": 321.47529115517784,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.490234375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 425.234375,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 232.65625,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.62760416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3177,
+              "faster": 0,
+              "mean_delta": 0.0,
+              "slower": 0,
+              "status": "PASS",
+              "threshold": 15
+            },
+            {
+              "after_mean": 321.35914384639597,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.41015625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 422.34765625,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 234.625,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.4921875,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3159,
+              "faster": 11,
+              "mean_delta": -0.11614730878186968,
+              "slower": 7,
+              "status": "PASS",
+              "threshold": 16
+            },
+            {
+              "after_mean": 321.687755744413,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 80.6865234375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 420.9921875,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 238.7734375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 80.61197916666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3136,
+              "faster": 19,
+              "mean_delta": 0.21246458923512748,
+              "slower": 22,
+              "status": "PASS",
+              "threshold": 18
+            },
+            {
+              "after_mean": 321.9590808939251,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 81.1552734375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 418.07421875,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 242.546875,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 81.03645833333333,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3100,
+              "faster": 35,
+              "mean_delta": 0.48378973874724585,
+              "slower": 42,
+              "status": "PASS",
+              "threshold": 20
+            },
+            {
+              "after_mean": 322.9852061693421,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 82.1787109375,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 416.43359375,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 252.0234375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 81.57291666666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 3047,
+              "faster": 55,
+              "mean_delta": 1.5099150141643058,
+              "slower": 75,
+              "status": "PASS",
+              "threshold": 24
+            },
+            {
+              "after_mean": 326.04123386842934,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 84.6767578125,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 83.37239583333333,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2938,
+              "faster": 74,
+              "mean_delta": 4.565942713251495,
+              "slower": 165,
+              "status": "PASS",
+              "threshold": 32
+            },
+            {
+              "after_mean": 327.71576959395657,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 88.4638671875,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 87.12760416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2876,
+              "faster": 74,
+              "mean_delta": 6.240478438778722,
+              "slower": 227,
+              "status": "PASS",
+              "threshold": 48
+            },
+            {
+              "after_mean": 329.63456090651556,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 92.9462890625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 91.04947916666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2807,
+              "faster": 74,
+              "mean_delta": 8.15926975133774,
+              "slower": 296,
+              "status": "PASS",
+              "threshold": 64
+            },
+            {
+              "after_mean": 331.8007554296506,
+              "before_mean": 321.47529115517784,
+              "cases": 3177,
+              "classes": {
+                "canonical_edges": {
+                  "after_mean": 417.4423440453686,
+                  "before_mean": 417.4423440453686,
+                  "cases": 529
+                },
+                "canonical_random": {
+                  "after_mean": 97.7744140625,
+                  "before_mean": 80.490234375,
+                  "cases": 1024
+                },
+                "canonical_stress": {
+                  "after_mean": 893.9583333333334,
+                  "before_mean": 893.9583333333334,
+                  "cases": 24
+                },
+                "canonical_zero": {
+                  "after_mean": 108.6796875,
+                  "before_mean": 108.6796875,
+                  "cases": 128
+                },
+                "divide_zero": {
+                  "after_mean": 109.0,
+                  "before_mean": 109.0,
+                  "cases": 64
+                },
+                "divisor8": {
+                  "after_mean": 993.4140625,
+                  "before_mean": 993.4140625,
+                  "cases": 256
+                },
+                "quotient_10_31": {
+                  "after_mean": 415.83203125,
+                  "before_mean": 425.234375,
+                  "cases": 256
+                },
+                "quotient_2_9": {
+                  "after_mean": 277.859375,
+                  "before_mean": 232.65625,
+                  "cases": 256
+                },
+                "quotient_32_255": {
+                  "after_mean": 867.34765625,
+                  "before_mean": 867.34765625,
+                  "cases": 256
+                },
+                "uniform": {
+                  "after_mean": 96.09635416666667,
+                  "before_mean": 80.62760416666667,
+                  "cases": 384
+                }
+              },
+              "equal": 2741,
+              "faster": 74,
+              "mean_delta": 10.325464274472774,
+              "slower": 362,
+              "status": "PASS",
+              "threshold": 96
+            }
+          ]
+        }
+      },
+      "original_cutoff": 15,
+      "resident_sha256": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222"
+    }
+  },
+  "publication_decision": "no promotion from a single weighted mean",
+  "scope": "research-only no stable source/PRG changes",
+  "status": "PASS",
+  "thresholds": [
+    1,
+    2,
+    4,
+    8,
+    10,
+    12,
+    13,
+    14,
+    15,
+    16,
+    18,
+    20,
+    24,
+    32,
+    48,
+    64,
+    96
+  ]
+}
