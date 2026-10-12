@@ -1,4 +1,5 @@
 name: Issue39 power-of-two 32by16 opt-in qualification
+# 114-byte byte-shift optimized candidate (no public arithmetic changes).
 on:
   push:
     branches: [issue39-u3216-pow2-optin-specialist]
