@@ -78,6 +78,8 @@ def main():
  py('benchmark_unsigned_3216_workloads')
  py('validate_signed_division')
  py('validate_v5_umod16_frontend')
+ # With PR70 V2 source now published, the historical replay helpers accept only
+ # SHA-qualified image restorations; never label a newer release as old.
  # Preserve the exact historical report bytes through SHA-qualified parent
  # reconstruction. The current V5 includes a new independent 147-byte island.
  frozen=sha('validation/review/ISSUE39_V1V5_UMOD8_GUARD_EXHAUSTIVE.json')
