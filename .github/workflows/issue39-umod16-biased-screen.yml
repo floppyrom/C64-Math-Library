@@ -6,6 +6,7 @@ on:
       - issue39-umod16-biased-resident-screen
     paths:
       - '.github/workflows/issue39-umod16-biased-screen.yml'
+      - 'tools/screen_issue39_umod16_biased_standalone.py'
   pull_request:
     paths:
       - 'tools/screen_issue39_umod16_biased_standalone.py'
