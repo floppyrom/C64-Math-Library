@@ -28,9 +28,18 @@ U3216_POW2_OPTIN:
     sta $C01B
     lda $C014
     bne LOW_BYTE
+    ; Divisor >=256: quotient gets a full byte shift, not 8 LSR loops.
+    lda $C019
+    sta $C018
+    lda $C01A
+    sta $C019
+    lda $C01B
+    sta $C01A
+    lda #0
+    sta $C01B
     lda $C015
-    ldx #8
-    bne SCAN
+    ldx #0
+    jmp SCAN
 LOW_BYTE:
     ldx #0
 SCAN:
