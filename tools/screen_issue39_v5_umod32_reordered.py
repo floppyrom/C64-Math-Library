@@ -77,4 +77,5 @@ V5_RM32R_DIVZERO:
     jmp $C222
 """
 a.OUT=a.ROOT/'validation/review/ISSUE39_V5_UMOD3232_REORDERED_SHARED_GATE_SCREEN.json'
+a.EXPORT_PRG='validation/review/ISSUE39_V5_UMOD32_REORDERED_CANDIDATE.prg'
 if __name__=='__main__':a.main()
