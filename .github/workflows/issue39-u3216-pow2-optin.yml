@@ -6,6 +6,7 @@ on:
   pull_request:
     paths:
       - 'tools/qualify_issue39_u3216_pow2_optin.py'
+      - 'tools/finalize_issue39_u3216_pow2_optin.py'
       - 'routines/standalone_lab/library_dependent/div_u32_u16_pow2_optin.asm'
       - '.github/workflows/issue39-u3216-pow2-optin.yml'
 permissions:
