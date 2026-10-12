@@ -13,7 +13,7 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "4719179aa1ae860dd1bd1ca267e38322c0e54f9148a969753aba413313c313aa",
+    "v1_balanced": "d0c9f57d6cba2acdfd97aec7da5dc38444185091db5123747473aa8062b32d5a",
     "v2_pareto_fast": "92a01edba81dd194f7d82d51880cd9025e65b684d4d87cfa4fae7300693b621c",
     "v3_reu_512k": "795e2f30d4e0bbee0fa98f84d796695b8ac6aa3143a983e29ac22fdf71b12e63",
     "v4_reu_16m": "2880c7dcf46108f70e21e6d57d67466b4590b548bcd197164f21410102200664",
@@ -138,13 +138,13 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 67125,
-    "user_manual_lines": 1886,
-    "user_manual_sha256": "883bee13ea6764f231266822979ece5fd539e6bbdd17d04a0f188556666230f4"
+    "user_manual_bytes": 67265,
+    "user_manual_lines": 1888,
+    "user_manual_sha256": "10877bb168b4933f673958fb24c725e887d7160949a818fa06e70ba1f26fd349"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "5a56df7f013b2e8cf907ea297edc96893207f0d087a702a44e28cde02674bcec",
+    "alternate_prg_sha256": "74a39d0f496fbe5479e6a8980ac4a6805ced6ade0cf678449cd3611fa2656591",
     "common_machine_calls_per_map": 21678,
     "common_public_entries_per_map": 56,
     "config_validation_cases": 8,
@@ -157,7 +157,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "bed1ee986857d045d452036d78d0d6cbdc078dbc3407f8a860a8fd54f8395fa2",
+    "reference_prg_sha256": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "atan2_tables_bytes": 1024
@@ -243,7 +243,7 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f",
+    "v1_balanced": "28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0",
     "v2_pareto_fast": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
     "v3_reu_512k": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8",
     "v4_reu_16m": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "3a6a68d289313b5487ff2e0e74eb0043a9873f774c7f5a9b2f47aa0081a3d393",
+    "benchmark_sha256": "b214354eab4aa17a3b688c578c9b8e4eed6108d43a09e3576d93bff48019e49a",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -858,7 +858,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "59988de997aa23fe6fb37b3fc5aec7da365abac646c7d313437209c7d77a2a21",
+    "data_sha256": "436cdde9a3ed530b6b6ac089f71351f4697e4738283bd20d68930a3f04d8d2c1",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -1128,5 +1128,22 @@
     "full_unsigned_correctness_calls": 822050,
     "total_unsigned_common_corpus_calls": 136335,
     "historical_v5_restorer_sha256": "7de3dd6653a34d17b1ff16343e86c67333a42c32d6113fc9d07e5e96e7a5dd5c"
+  },
+  "issue39_v1_sharedsub24_2026_10_12": {
+    "status": "PASS",
+    "document": "docs/ISSUE39_V1_UDIV24_SHARED_SUBTRACTION_RELEASE_2026-10-12.md",
+    "resident_sha256": "28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0",
+    "old_code_bytes": 84,
+    "new_code_bytes": 69,
+    "normal_zp_growth": 0,
+    "stack_growth": 0,
+    "paired_public_calls": 48388,
+    "paired_regressions": 0,
+    "native_vice_old_new_calls": 256,
+    "unsigned_validation_calls": 822050,
+    "signed_validation_calls": 364533,
+    "common_input_calls": 136335,
+    "small_workload_calls": 53760,
+    "unsigned_family_complete": false
   }
 }

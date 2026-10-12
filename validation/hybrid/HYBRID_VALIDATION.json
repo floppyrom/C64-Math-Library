@@ -54,7 +54,8 @@
       },
       "MATH_UMOD8": {
         "cases": 65536,
-        "cycle_vector_equal_to_v2_sampled": true,
+        "cycle_vector_equal_to_v2_sampled": false,
+        "cycle_parity_required": false,
         "exhaustive_correctness": true
       },
       "MATH_COS8": {
@@ -108,5 +109,5 @@
       "status": "PASS"
     }
   },
-  "elapsed_seconds": 10.493
+  "elapsed_seconds": 19.704
 }

@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 V1 24/8 SHARED-SUBTRACTION RELEASE
+- Source-backed V1 UDIV24/UMOD24 84→69 byte carry-aware shared-subtract kernel, no new ZP/stack, ABI or resident-byte growth; V2–V5 unchanged.
+- Identical-input means UDIV24 170.726699→170.238165 and UMOD24 248.317450→246.822279; 48,388 old/new calls with no slower result; 256 native x64sc correctness calls. Full unsigned/signed, comparable and seven-workload checks passed.
+- Refreshed standalone mirrors, public tables, release metadata and checksums. Issue #39 remains open. docs/ISSUE39_V1_UDIV24_SHARED_SUBTRACTION_RELEASE_2026-10-12.md.
+
 2026-10-12 ISSUE39 V1 24/8 SHARED-SUBTRACTION EXPERIMENT (NO RESIDENT CHANGE)
 - Added 69-byte in-memory V1 24/8 candidate vs shipped 84-byte loop, source-backed paired public UDIV24/UMOD24 ABI regression veto and seven-workload/stress screen; 0 extra ZP/stack, no shipped bytes or ABI altered. OptiSearch/manual synthesis remains open. See docs/ISSUE39_V1_UDIV24_SHARED_SUBTRACTION_SCREEN_2026-10-12.md.
 

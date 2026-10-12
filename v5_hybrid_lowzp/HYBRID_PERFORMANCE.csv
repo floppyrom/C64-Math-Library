@@ -1,10 +1,10 @@
 routine,canonical_name,v1_mean_cycles,v5_mean_cycles,improvement_percent,provenance
 MATH_UDIV16,div_u16_u16_u16_16,132.725857,126.385862,4.77676,2026-09-20 final division-family public-ABI validation
-MATH_UDIV24,div_u24_u24_u24_24,170.726699,157.851462,7.541431,2026-10-11 issue39 exact same-input V1 24/8 proof; V5 unchanged V2-derived core
+MATH_UDIV24,div_u24_u24_u24_24,170.238165,157.851462,7.276102,2026-10-12 Issue39 shared-subtraction V1 only; V5 resident unchanged
 MATH_UDIV32_16,div_u32_u16_u32_16,825.873947,617.202638,25.266726,Issue39 same-input V1 dual-loop unroll; V5 keeps V2-derived 32/16 core
 MATH_UMOD8,mod_u8_u8_u8,58.439757,58.129412,0.531051,"2026-10-11 issue39 exact same-input guarded remainder UMOD8: 65536 per profile, no added ZP"
 MATH_UMOD16,mod_u16_u16_u16,189.383578,198.610557,-4.872112,2026-10-11 issue39 identical-input 1705-case V1/V5 benchmark
-MATH_UMOD24,mod_u24_u24_u24,248.317450,207.490663,16.441368,2026-10-11 issue39 exact same-input V1 24/8 proof; V5 unchanged V2-derived core
+MATH_UMOD24,mod_u24_u24_u24,246.822279,207.490663,15.935197,2026-10-12 Issue39 shared-subtraction V1 only; V5 resident unchanged
 MATH_UMOD32_16,mod_u32_u16_u16,843.629912,591.943109,29.833793,Issue39 same-input V1 dual-loop unroll; V5 keeps V2-derived 32/16 core
 MATH_COS8,cos_u8_s8,29,23,20.6897,V2 direct import; exhaustive phase/cycle parity
 MATH_SINCOS8,sincos_u8_s8_s8,39,31,20.5128,V2 direct import; exhaustive phase/cycle parity

@@ -164,3 +164,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue #39 V2/V3/V4 UMOD32/32 equality-only divide-by-zero test: [source/VICE/public-ABI proof](docs/ISSUE39_V234_UMOD32_LATE_ZERO_2026-10-12.md); size and ZP unchanged, family campaign open.
 
 - Issue #39 V5 UMOD32/32 full-Q remainder front end: [source/native verified delayed-zero comparator](docs/ISSUE39_V5_UMOD32_QPRESERVING_REORDERED_2026-10-12.md); V1–V4 unchanged, unsigned family campaign remains open.
+
+- V1 24/8 shared-subtraction DIV/MOD improvement: docs/ISSUE39_V1_UDIV24_SHARED_SUBTRACTION_RELEASE_2026-10-12.md. Issue #39 remains open.

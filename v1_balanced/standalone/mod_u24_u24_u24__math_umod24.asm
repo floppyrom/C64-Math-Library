@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 482.
+; Reachable instructions: 477.
 ; NOTE: legacy alias entry; semantic producer is MATH_UDIV24.
 !cpu 6510
 
@@ -27,27 +27,22 @@ L1D19:
     rol $C019                          ; @1D1C 2E 19 C0
     rol $C01A                          ; @1D1F 2E 1A C0
     rol $C01C                          ; @1D22 2E 1C C0
-    bcs L1D3B                          ; @1D25 B0 14
-    lda $C01C                          ; @1D27 AD 1C C0
+    lda $C01C                          ; @1D25 AD 1C C0
+    bcs L1D2F                          ; @1D28 B0 05
     cmp $C014                          ; @1D2A CD 14 C0
-    bcc L1D47                          ; @1D2D 90 18
+    bcc L1D38                          ; @1D2D 90 09
+L1D2F:
     sbc $C014                          ; @1D2F ED 14 C0
     sta $C01C                          ; @1D32 8D 1C C0
     inc $C018                          ; @1D35 EE 18 C0
-    jmp L1D47                          ; @1D38 4C 47 1D
-L1D3B:
-    lda $C01C                          ; @1D3B AD 1C C0
-    sbc $C014                          ; @1D3E ED 14 C0
-    sta $C01C                          ; @1D41 8D 1C C0
-    inc $C018                          ; @1D44 EE 18 C0
-L1D47:
-    dex                                ; @1D47 CA
-    bne L1D19                          ; @1D48 D0 CF
-    lda #$00                           ; @1D4A A9 00
-    sta $C01D                          ; @1D4C 8D 1D C0
-    sta $C01E                          ; @1D4F 8D 1E C0
-    clc                                ; @1D52 18
-    rts                                ; @1D53 60
+L1D38:
+    dex                                ; @1D38 CA
+    bne L1D19                          ; @1D39 D0 DE
+    lda #$00                           ; @1D3B A9 00
+    sta $C01D                          ; @1D3D 8D 1D C0
+    sta $C01E                          ; @1D40 8D 1E C0
+    clc                                ; @1D43 18
+    rts                                ; @1D44 60
 ; ---- executable island $3223 ----
 * = $3223
 mod_u24_u24_u24:
