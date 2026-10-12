@@ -1,0 +1,20 @@
+name: Issue39 export V1 accumulated DIV/MOD resident for native VICE QA
+on:
+  push:
+    branches:
+      - issue39-v1-accumulator-native-export
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Save exact merged PR81 release resident and address map
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-pr81-v1-resident-native-vice-test
+          path: |
+            v1_balanced/resident/math_v1_balanced_game_math.prg
+            v1_balanced/resident/math_api.inc
+          if-no-files-found: error
