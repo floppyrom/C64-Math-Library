@@ -33,16 +33,12 @@ V1LAT_8_LOOP:
     rol MATH_Q+1
     rol MATH_Q+2
     rol MATH_R+0
-    bcs V1LAT_8_SUB_HI
+    ; Keep the ninth remainder bit in carry across the shared load.
     lda MATH_R+0
+    bcs V1LAT_8_SUB
     cmp MATH_D+0
     bcc V1LAT_8_NEXT
-    sbc MATH_D+0
-    sta MATH_R+0
-    inc MATH_Q+0
-    jmp V1LAT_8_NEXT
-V1LAT_8_SUB_HI:
-    lda MATH_R+0
+V1LAT_8_SUB:
     sbc MATH_D+0
     sta MATH_R+0
     inc MATH_Q+0
@@ -54,3 +50,5 @@ V1LAT_8_NEXT:
     sta MATH_R+2
     clc
     rts
+    ; Pad the old reserved 84-byte island so source-build matches the screened image.
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
