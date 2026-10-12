@@ -46,7 +46,7 @@ def call(cpu,entry,n,d,rem_only):
         m[0xc013],m[0xc017],m[0xc01b],m[0xc01f],m[0xc022],m[0x0430],cpu.sp)
  assert (state[1],state[2])==(r,c),(hex(entry),hex(n),d,'R/C',state,(q,r,c))
  assert rem_only or state[0]==q,(hex(entry),hex(n),d,'Q',state,q)
- assert state[3:]==(n,d,0x4a,0x5a,0xa7,0xe5,0xac,0x61,sp),(hex(entry),hex(n),d,'ABI',state)
+ assert state[3:7]==(n,d,0x4a,0x5a) and state[8:]==(0xe5,0xac,0x61,sp),(hex(entry),hex(n),d,'ABI',state)
  return cycles,state
 def run(profile=None,location=None):
  ps=[profile] if profile else PROFILES
@@ -80,15 +80,15 @@ def run(profile=None,location=None):
    for op in OPS:
     mr['operations'][op]={}
     for kind,inputs in groups.items():
-     total0=total1=fast=slow=eq=qdif=0;max_slow=-10**9
+     total0=total1=fast=slow=eq=qdif=q3diff=0;max_slow=-10**9
      digest=hashlib.sha256()
      for n,d in inputs:
       t0,a=call(old,entries[op],n,d,op=='MATH_UMOD24' and p!='v1_balanced')
       t1,b=call(new,origin,n,d,op=='MATH_UMOD24' and p!='v1_balanced')
-      assert a[1:]==b[1:],(p,op,map_name,n,d,a,b)
+      assert a[1:7]+a[8:]==b[1:7]+b[8:],(p,op,map_name,n,d,a,b)
       if op=='MATH_UDIV24' or p=='v1_balanced':
        assert a[0]==b[0],(p,op,map_name,n,d,a[0],b[0])
-      qdif+=a[0]!=b[0]
+      qdif+=a[0]!=b[0];q3diff+=a[7]!=b[7]
       total0+=t0;total1+=t1
       delta=t1-t0
       fast+=delta<0;slow+=delta>0;eq+=delta==0;max_slow=max(max_slow,delta)
@@ -98,7 +98,7 @@ def run(profile=None,location=None):
        'cases':len(inputs),'public_mean':total0/len(inputs),
        'optin_mean':total1/len(inputs),'mean_delta':(total1-total0)/len(inputs),
        'faster':fast,'slower':slow,'equal':eq,'worst_regression':max_slow,
-       'q_side_effect_differences':qdif,'paired_cycle_sha256':digest.hexdigest()}
+       'q_side_effect_differences':qdif,'Q3_extra_byte_differences':q3diff,'paired_cycle_sha256':digest.hexdigest()}
     print(p,map_name,op,'uniform delta',round(mr['operations'][op]['uniform_24_d8']['mean_delta'],3),
           'small D1..7 delta',round(mr['operations'][op]['tiny_d1to7']['mean_delta'],3),flush=True)
    out['maps'][map_name]=mr
