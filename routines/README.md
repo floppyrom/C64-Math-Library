@@ -43,3 +43,5 @@ The source catalog currently indexes **295 shipped callable profile-entry mirror
 ## Standalone fast-kernel collection
 
 [The Issue #39 standalone fast-kernel lab](standalone_lab/README.md) publishes independently callable, source-backed fixed-map 6502 routines that can be useful even when they lose or cannot fit in a V1-V5 resident. Each candidate documents its ABI, memory ownership, comparable cycles and proof status. This is separate from the stable public API mirrors and fully curated standalone-results catalog.
+
+The standalone lab also offers [individually configurable relocation modules](standalone_lab/portable/README.md), with machine-code-tested buffer/ZP remapping and native VICE result checks. These are independent alternatives, not integrated-profile replacements.

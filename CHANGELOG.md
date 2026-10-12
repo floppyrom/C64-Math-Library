@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 STANDALONE FAST-KERNEL RELOCATION AND NATIVE VICE
+- Added individually editable/readdressable UDIV16, carry-corrected UMOD16 and specialist UDIV32 sources under routines/standalone_lab/portable. Test coverage: 9,657 independent emulator calls across three RAM/ZP layouts, plus 576 native x64sc correctness calls across two RAM layouts. New CI gate recompiles and checks quotient, remainder, carry, unchanged N/D, stack and code.
+- Corrected a duplicated internal UDIV32 source label without changing any generated opcode, 544-byte machine code or published timing. The original fixed-map modules and records remain available. The isolated kernel cycle costs are layout-specific; no new V1-V5 public resident implementation or stable profile performance ranking is changed. Issue39 standalone inventory remains open.
+
 2026-10-12 ISSUE39 STANDALONE FAST-KERNEL COLLECTION
 - Published standalone_lab UDIV16, carry-corrected UMOD16 and specialized UDIV32 ZP-tail symbolic assembly with explicit fixed-map ABI, 7163-call reproducible emulator gate, resource limits, provenance and future candidate backlog.
 - Stable V1-V5 resident binaries and official benchmark ranks unchanged. Native VICE and arbitrary relocation still need qualification for these standalone sources; unsigned family campaign remains open.

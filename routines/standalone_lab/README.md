@@ -17,3 +17,7 @@ For the corrected modulo implementation, include `mod_u16_biased_carry.asm` in a
 **Evidence:** `python3 routines/standalone_lab/verify.py` uses only the repository's bundled `tools/mini6502.py`. It independently assembles each symbolic source, confirms original generated segment SHA-256 hashes, reproduces the exact current-main public benchmark case SHA-256 values, and validates 7,163 calls (Q/R/C/N/D and stack). Means include entry through RTS, not caller JSR or real C64 bus/DMA. Native VICE and relocation into other maps are **not** claimed for these exact standalone variants. These results are not yet qualified for the official `STANDALONE_RESULTS.csv` catalog.
 
 See [the candidate backlog](CANDIDATE_BACKLOG.csv) for other Repose outputs and unpromoted approaches. Credit: **Repose / OptiSearch** for the generated 6502 donor strategies; the modulo carry correction and verification here are C64ML adaptations. No OptiSearch private engine source or binaries are included.
+
+## Configurable relocation and native VICE
+
+The new [portable standalone modules](portable/README.md) have editable code, buffer, and ZP addresses. Unlike the original fixed-map donors, they have passed 9,657 emulator calls across three disjoint memory maps and 576 native x64sc correctness calls across two maps. Cycle numbers remain specific to each compiled placement. The original fixed-map sources and segment SHA provenance are retained; a duplicate *internal* UDIV32 symbol was renamed without changing machine code.

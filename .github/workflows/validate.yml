@@ -21,6 +21,8 @@ jobs:
           python-version: '3.12'
       - name: Standalone fast-kernel 7163-call source validation
         run: python3 routines/standalone_lab/verify.py
+      - name: Three-map standalone relocation, 9657 machine-code calls
+        run: python3 routines/standalone_lab/portable/verify.py
       - name: Lean package and checksum contract
         run: |
           python3 tools/package_audit.py
