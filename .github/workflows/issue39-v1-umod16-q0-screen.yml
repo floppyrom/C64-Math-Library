@@ -1,0 +1,32 @@
+name: Issue39 V1 UMOD16 Q0 ABI negative screen
+on:
+  push:
+    branches:
+      - issue39-umod16-optisearch-public-abi-no-gain
+    paths:
+      - '.github/workflows/issue39-v1-umod16-q0-screen.yml'
+      - 'tools/screen_issue39_v1_umod16_q0_rejection.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixed-abi-no-gain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute unchanged, loose and strict modulo layouts on identical inputs
+        run: python3 tools/screen_issue39_v1_umod16_q0_rejection.py
+      - name: Upload negative result, never publish candidate PRG
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v1-umod16-strict-vs-loose-result
+          path: validation/review/ISSUE39_V1_UMOD16_Q0_FASTPATH_REJECTED.json
+          retention-days: 14
+          if-no-files-found: warn
