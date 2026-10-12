@@ -11,6 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 PROFILES=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
 OLD='9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62'
 NEW='cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f'
+NEW_V5='634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02'
 DOC='docs/ISSUE39_PR68_V1_U16_DIRECT_Q2_EXIT_2026-10-12.md'
 TAG='2026-10-12 ISSUE39 PR68 V1 16BIT DIRECT Q2 EXIT'
 NATIVE='validation/review/ISSUE39_V1_U16_Q2_NATIVE_VICE.json'
@@ -52,9 +53,19 @@ def main():
  assert hashlib.sha256(candidate.read_bytes()).hexdigest()==NEW
  shutil.copyfile(candidate,ROOT/rpath('v1_balanced'))
  assert sha(rpath('v1_balanced'))==NEW
- for p in PROFILES[1:]:assert sha(rpath(p))==oldhash[p],p
+ # V5 inherits the canonical V1 323-byte source core. Stage the precise
+ # same 57-byte change in V5 only after verifying the unchanged rest.
+ inherited=ROOT/'build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg'
+ assert hashlib.sha256(inherited.read_bytes()).hexdigest()==NEW_V5
+ old_v5=(ROOT/rpath('v5_hybrid_lowzp')).read_bytes()
+ v5new=inherited.read_bytes();assert len(old_v5)==len(v5new)
+ offset=2+0x4200-0x1000
+ assert old_v5[:offset]==v5new[:offset] and old_v5[offset+323:]==v5new[offset+323:]
+ assert sum(a!=b for a,b in zip(old_v5,v5new))==57
+ shutil.copyfile(inherited,ROOT/rpath('v5_hybrid_lowzp'))
+ for p in PROFILES[1:4]:assert sha(rpath(p))==oldhash[p],p
  # Confirm that all sources rebuild deterministically against now-installed
- # reference residents. V5's imported donor must remain entirely unchanged.
+ # V1 reference and V5 hybrid source-derived residents.
  py('generate_sources')
  for config in ('reference','alternate'):
   py('assemble_sources','--profile','all','--config-kind',config)
@@ -64,7 +75,7 @@ def main():
   if p=='v5_hybrid_lowzp':
    q=ROOT/'build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg'
   else:q=ROOT/'build_source/reference'/p/f'math_{p}_source_built.prg'
-  assert hashlib.sha256(q.read_bytes()).hexdigest()==oldhash[p],p
+  assert hashlib.sha256(q.read_bytes()).hexdigest()==(NEW_V5 if p=='v5_hybrid_lowzp' else oldhash[p]),p
  # Permanent arithmetic correctness and comparable workloads (V1 refreshed).
  py('validate_unsigned_division')
  py('benchmark_unsigned_common_corpus')
@@ -149,8 +160,9 @@ the high-quotient shift/subtract loop's original page phases and placement.
 
 ### Release, provenance and future
 
-Only V1 resident and its direct source change. The V2/V3/V4/V5 binaries
-remain byte-identical. The helper `tools/issue39_v1_u16_q2_parent.py`
+Only V1's direct source changes. V5 imports the same V1 private 323-byte
+core and inherits exactly the same size-neutral 57-byte change. V2/V3/V4
+binaries remain byte-identical. The helper `tools/issue39_v1_u16_q2_parent.py`
 restores the exact previous V1 bytes when auditing archived PR57-62 experiments
 so frozen evidence does not silently drift to a later resident hash. No private
 OptiSearch generator or unpublished Repose program was copied into the release.
@@ -167,7 +179,7 @@ claimed to be globally optimal.
   f=ROOT/name;ss=f.read_text()
   if blurb not in ss:f.write_text(ss.rstrip()+'\n\n'+blurb+'\n')
  log=f"""{TAG}
-- V1 shared UDIV16/UMOD16 core: put q=2 return into short BCC range and move cold 3-byte alignment padding after RTS, preserving the $4200-$4342 323-byte envelope and long quotient loop page phase. 57 in-core byte changes; no V2-V5 resident modification or normal ZP, stack, code-span, API change.
+- V1 shared UDIV16/UMOD16 core: put q=2 return into short BCC range and move cold 3-byte alignment padding after RTS, preserving the $4200-$4342 323-byte envelope and long quotient loop page phase. 57 in-core byte changes; no V2-V4 resident modification and the same 57-byte inherited V5 change or normal ZP, stack, code-span, API change.
 - 13,559 same-input quotient-stratified/edge/random cases per V1 16-bit public API: 8,255 faster, 5,304 equal, zero slower, 0.608821 fewer mean cycles. Native VICE 1,024 old/new public calls all correct. Reference/alternate relocation, 5-profile unsigned correctness and paired corpus, signed correctness, stable historical PR57-62 SHA reconstructions validated.
 - Common-input V1 UDIV16 mean 156.348479->{new_means['MATH_UDIV16']['v1_balanced']:.6f}; UMOD16 189.383578->{new_means['MATH_UMOD16']['v1_balanced']:.6f} cycles. Performance tables, standalone source mirrors, README/manual, changelogs, release metadata, checksums refreshed. Unsigned family campaign remains OPEN. {DOC}
 """
@@ -180,7 +192,8 @@ claimed to be globally optimal.
  state['alternate_prg_sha256']['v5_hybrid_lowzp']=json.loads((ROOT/'build_hybrid/alternate/v5_hybrid_lowzp/source_build_manifest.json').read_text())['output_sha256']
  state['issue39_v1_u16_q2_short_branch_2026_10_12']={
   'status':'PASS','documentation':DOC,'unsigned_family_complete':False,
-  'changed_profile':'v1_balanced','others_byte_identical':True,
+  'changed_profiles':['v1_balanced','v5_hybrid_lowzp'],'v2_v3_v4_byte_identical':True,
+  'old_v5_sha256':oldhash['v5_hybrid_lowzp'],'new_v5_sha256':NEW_V5,
   'old_v1_sha256':OLD,'new_v1_sha256':NEW,
   'resident_byte_growth':0,'normal_zp_growth':0,'stack_growth':0,
   'public_abi_changed':False,'source_changed_bytes_inside_core':57,
