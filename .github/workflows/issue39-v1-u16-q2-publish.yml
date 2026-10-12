@@ -1,0 +1,41 @@
+name: Issue39 V1 U16 Q2 source-backed release publication
+on:
+  push:
+    branches:
+      - issue39-v1-u16-short-quotient-exit
+    paths:
+      - '.github/workflows/issue39-v1-u16-q2-publish.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v1-u16-short-quotient-exit
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Full source and all-profile correctness and checksum-sealed publication
+        run: python3 tools/stage_issue39_v1_u16_q2_release.py
+      - name: Verify released package and source catalogs
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Commit fully qualified release to PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish source-qualified V1 UDIV16/UMOD16 q2 branch layout"
+            git push origin HEAD:issue39-v1-u16-short-quotient-exit
+          fi
