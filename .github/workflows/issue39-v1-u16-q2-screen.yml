@@ -1,0 +1,41 @@
+name: Issue39 V1 U16 short quotient source candidate
+on:
+  push:
+    branches:
+      - issue39-v1-u16-short-quotient-exit
+    paths:
+      - '.github/workflows/issue39-v1-u16-q2-screen.yml'
+      - 'tools/screen_issue39_v1_u16_q2_layout.py'
+      - 'relocatable_source/v1_balanced/udiv16_direct_balanced.inc'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate sources, reference/alternate V1 assembly
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile v1_balanced --config-kind reference
+          python3 tools/assemble_sources.py --profile v1_balanced --config-kind alternate
+      - name: Verify exact 323-byte V1 placement and no other byte changes
+        run: python3 tools/screen_issue39_v1_u16_q2_layout.py
+      - name: Export runnable source-built V1 resident
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v1-u16-q2-source-candidate
+          path: |
+            build_source/reference/v1_balanced/math_v1_balanced_source_built.prg
+            build_source/alternate/v1_balanced/math_v1_balanced_source_built.prg
+            validation/review/ISSUE39_V1_U16_Q2_LAYOUT_SOURCE_SCREEN.json
+          retention-days: 14
+          if-no-files-found: warn
