@@ -9,7 +9,7 @@ on:
       - 'tools/screen_issue39_v2_umod8_guard_thresholds.py'
       - '.github/workflows/issue39-v2-umod8-guard-threshold-sweep.yml'
 permissions:
-  contents: read
+  contents: write
 jobs:
   exhaustive-v2-umod8-guard:
     runs-on: ubuntu-latest
@@ -18,10 +18,16 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: issue39-v2-umod8-guard-threshold-sweep
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - name: Full domain two-path threshold sweep, ABI and replay
         run: python3 tools/screen_issue39_v2_umod8_guard_thresholds.py --out /tmp/issue39_v2_umod8_guard.json
+      - name: Finalize no-gain certificate and package
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_v2_umod8_guard_thresholds.py /tmp/issue39_v2_umod8_guard.json
       - uses: actions/upload-artifact@v4
         with:
           name: issue39-v2-umod8-exhaustive-guard-sweep
