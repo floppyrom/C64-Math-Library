@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "scope": "native x64sc public-entry V1 resident old/new quotient remainder carry N/D",
+  "no_native_cycle_timing_claim": true,
+  "original_sha256": "cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f",
+  "candidate_sha256": "28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0",
+  "cases_per_api": 64,
+  "calls": 256,
+  "results": {
+    "MATH_UDIV24": {
+      "cases": 64,
+      "matched_independent_oracle": true,
+      "old_new_output_sha256": "5f983455d5e535bcb6dce6d8334d57e3e1c65b82e3fcbf2d0cf282e6e64d981a"
+    },
+    "MATH_UMOD24": {
+      "cases": 64,
+      "matched_independent_oracle": true,
+      "old_new_output_sha256": "5f983455d5e535bcb6dce6d8334d57e3e1c65b82e3fcbf2d0cf282e6e64d981a"
+    }
+  }
+}

@@ -12,22 +12,37 @@ from audit_issue39_unsigned_small_workloads import pairs,KINDS
 PRG=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 SOURCE=ROOT/'tools/candidates/issue39_v1_24by8_shared_subtraction.asm'
 CURRENT_SHA='cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f'
-original=PRG.read_bytes()
-assert hashlib.sha256(original).hexdigest()==CURRENT_SHA,"Main V1 changed: rebaseline"
-load=int.from_bytes(original[:2],'little'); assert load==0x1000
+RELEASE_SHA='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0'
+live=PRG.read_bytes()
+nowsha=hashlib.sha256(live).hexdigest()
+assert nowsha in (CURRENT_SHA,RELEASE_SHA),('unknown V1 source baseline',nowsha)
+load=int.from_bytes(live[:2],'little'); assert load==0x1000
 entry=0x1d00; off=2+entry-load
 oldhex='ad10c08d18c0ad11c08d19c0ad12c08d1ac0a9008d1cc0a2180e18c02e19c02e1ac02e1cc0b014ad1cc0cd14c09018ed14c08d1cc0ee18c04c471dad1cc0ed14c08d1cc0ee18c0cad0cfa9008d1dc08d1ec01860'
-assert original[off:off+84]==bytes.fromhex(oldhex),"V1 original loop drift"
-assert original[2+0x7fa0-load:2+0x7fa8-load]==bytes.fromhex('ad15c0d0034c001d')
+oldcode=bytes.fromhex(oldhex)
+assert live[2+0x7fa0-load:2+0x7fa8-load]==bytes.fromhex('ad15c0d0034c001d')
 image,labels,_=Assembler().assemble(SOURCE.read_text())
 assert len(image)==69 and labels['V1LAT_24_BY_8']==entry
 assert set(image)==set(range(entry,entry+69))
-assert bytes(image[i] for i in range(entry,entry+17))==original[off:off+17]
-replacement=bytearray(original)
-for addr,byte in image.items():replacement[2+addr-load]=byte
-replacement[off+69:off+84]=bytes(15)
+assert bytes(image[i] for i in range(entry,entry+17))==oldcode[:17]
+# Reconstruct the archived old resident after release. Preserve the A/B proof.
+if nowsha==RELEASE_SHA:
+    replacement=bytearray(live)
+    original=bytearray(live)
+    original[off:off+84]=oldcode
+else:
+    original=bytearray(live)
+    assert original[off:off+84]==oldcode
+    replacement=bytearray(live)
+    for addr,byte in image.items():replacement[2+addr-load]=byte
+    replacement[off+69:off+84]=bytes(15)
+assert bytes(replacement[off:off+69])==bytes(image[i] for i in range(entry,entry+69))
+assert replacement[off+69:off+84]==bytes(15)
+assert hashlib.sha256(original).hexdigest()==CURRENT_SHA
+assert hashlib.sha256(replacement).hexdigest()==RELEASE_SHA
 assert len(replacement)==len(original)
 assert replacement[:off]==original[:off] and replacement[off+84:]==original[off+84:]
+
 cpus=[]
 for data in (original,replacement):
  m=bytearray(65536);m[load:load+len(data)-2]=data[2:]

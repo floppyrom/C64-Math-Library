@@ -295,20 +295,15 @@ L1D19:
     rol MATH_IO+$19
     rol MATH_IO+$1A
     rol MATH_IO+$1C
-    bcs L1D3B
     lda MATH_IO+$1C
+    bcs L1D2F
     cmp MATH_IO+$14
-    bcc L1D47
+    bcc L1D38
+L1D2F:
     sbc MATH_IO+$14
     sta MATH_IO+$1C
     inc MATH_IO+$18
-    jmp REG_LOW+$0D47
-L1D3B:
-    lda MATH_IO+$1C
-    sbc MATH_IO+$14
-    sta MATH_IO+$1C
-    inc MATH_IO+$18
-L1D47:
+L1D38:
     dex
     bne L1D19
     lda #$00
@@ -318,7 +313,8 @@ L1D47:
     rts
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     lda MATH_IO+$16
     ora MATH_IO+$15
     bne L1D95

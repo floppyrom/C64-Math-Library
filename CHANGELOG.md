@@ -1,3 +1,10 @@
+2026-10-12 ISSUE39 V1 24/8 SHARED-SUBTRACTION DIVMOD CORE 69 BYTES
+- Source-backed V1 UDIV24/UMOD24 shared 24÷8 producer: 84->69 bytes; merged carry-aware subtraction path and cleared the 15 freed trailing bytes. No extra ZP/stack or change to ABI, public addresses, resident PRG length, or V2-V5 binaries.
+- 48,388 paired prior/live full-public-entry machine calls, zero arithmetic or carry failures and zero slower cases. Canonical UDIV24 170.726699->170.238165, UMOD24 248.317450->246.822279 cycles; 4,080 N2/D8 targeted cases 1220.796->1202.297 with 3,779 faster, none slower per operation.
+- Independent native VICE x64sc 256 old/new resident calls verify Q/R/C and preserved inputs against mathematical oracle; not native cycle timing. All-profile unsigned 822,050, signed 364,533, common 136,335 and seven-class 53,760 machine-code tests pass.
+- Generated reference/alternate sources, stable executable mirrors, public rankings, docs, release metadata and checksums synchronized. V5 reference remains byte-identical at SHA256 5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222. Issue39 overall unsigned DIV/MOD campaign stays OPEN.
+- Details: docs/ISSUE39_V1_UDIV24_SHARED_SUBTRACTION_RELEASE_2026-10-12.md
+
 2026-10-12 ISSUE39 V1 24/8 SHARED-SUBTRACTION EXPERIMENT (NO RESIDENT CHANGE)
 - Added 69-byte in-memory V1 24/8 candidate vs shipped 84-byte loop, source-backed paired public UDIV24/UMOD24 ABI regression veto and seven-workload/stress screen; 0 extra ZP/stack, no shipped bytes or ABI altered. OptiSearch/manual synthesis remains open. See docs/ISSUE39_V1_UDIV24_SHARED_SUBTRACTION_SCREEN_2026-10-12.md.
 
