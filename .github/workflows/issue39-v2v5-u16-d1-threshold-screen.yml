@@ -1,0 +1,27 @@
+name: Issue39 16-bit D-high cutoff research
+on:
+  push:
+    branches: [issue39-v2v5-u16-d1-threshold-screen]
+    paths: [ '.github/workflows/issue39-v2v5-u16-d1-threshold-screen.yml' ]
+  pull_request:
+    paths: 
+      - 'tools/screen_issue39_v2v5_u16_d1_threshold.py'
+      - '.github/workflows/issue39-v2v5-u16-d1-threshold-screen.yml'
+permissions:
+  contents: read
+jobs:
+  source-backed-d1-threshold-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Sweep immutable-shape D-high cutoff across 4 public resident profiles
+        run: python3 tools/screen_issue39_v2v5_u16_d1_threshold.py --out /tmp/u16_gate_sweep.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-u16-gate-sweep-research
+          path: /tmp/u16_gate_sweep.json
