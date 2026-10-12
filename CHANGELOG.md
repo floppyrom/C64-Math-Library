@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 N16 DELEGATE U32BY16 FIVE-PROFILE SCREEN
+- Tested 26-byte ephemeral N16->UDIV16 producer reuse on V1–V5 exact resident public UDIV32/16 and UMOD32/16 entries; 79,130 input pairs, 158,260 old/new calls, no Q/R/C/input/stack mismatches.
+- V1 N16-target ~469 cycles faster and N16/D8 ~542 faster; V2–V5 N16-target ~366 faster but N16/D8 ~292 slower; all full-width-uniform operands +17. Reject default, preserve candidate/source-backed detailed report. Ephemeral E100 code not native-ROM/bank qualified. No binary change. Campaign #39 open. docs/ISSUE39_U3216_N16_DELEGATE_CURRENT_MAIN_2026-10-12.md
+
 2026-10-12 ISSUE39 V2 UMOD8 GUARD D24 EXHAUSTIVE SCREEN
 - Full-domain 65,536 N/D calls, 59,136 two-route checks, 2,277 direct candidate calls. V2 D>=24 guard gives the lowest measured mean: 52.204453; D>=25 52.274643, D>=32 52.845413. All higher cutoffs lose overall; no default binary/ABI/ZP/stack change. Source/data, docs and SHA256SUMS updated; issue #39 open. docs/ISSUE39_V2_UMOD8_GUARD_THRESHOLD_SWEEP_2026-10-12.md
 
