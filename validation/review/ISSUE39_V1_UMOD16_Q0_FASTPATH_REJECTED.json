@@ -1,0 +1,581 @@
+{
+  "affected_public_entry": "0x3220",
+  "candidate_kind": "hand-written, in-memory low-quotient bypass inspired by Repose UMOD16; not a copied OptiSearch binary",
+  "conclusion": "Do not promote: loose remainder-only ABI mismatch; strict full-Q alternative slows current common corpus and consumes additional code.",
+  "date": "2026-10-12",
+  "ephemeral_code_origin": "0x1e80",
+  "loose_bytes": 34,
+  "operation": "MATH_UMOD16",
+  "paired_input_sets": {},
+  "profile": "v1_balanced",
+  "rationale": "V1 UMOD16 historically aliases UDIV16 and writes both Q16 and R16; a bare remainder-only fast path loses the Q16 side effect",
+  "resident_files_modified": false,
+  "resident_sha256": "cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f",
+  "stable_api_changed": false,
+  "status": "REJECT",
+  "strict_bytes": 42,
+  "total_calls": 11259,
+  "udiv16_unchanged_calls": 768,
+  "workloads": {
+    "divide_by_zero": {
+      "baseline_mean_cycles": 80.9375,
+      "candidate": {
+        "loose": {
+          "classes": {
+            "divisor_zero": {
+              "best_saving": -2,
+              "cases": 256,
+              "max_slowdown": 12,
+              "mean_delta": 2.0390625
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -2,
+          "mean_delta_cycles": 2.0390625,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 12
+        },
+        "strict": {
+          "classes": {
+            "divisor_zero": {
+              "best_saving": -2,
+              "cases": 256,
+              "max_slowdown": 12,
+              "mean_delta": 2.0390625
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -2,
+          "mean_delta_cycles": 2.0390625,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 12
+        }
+      },
+      "cases": 256
+    },
+    "official_shared_1705": {
+      "baseline_mean_cycles": 189.12785923753665,
+      "candidate": {
+        "loose": {
+          "classes": {
+            "divisor_zero": {
+              "best_saving": -2,
+              "cases": 151,
+              "max_slowdown": 12,
+              "mean_delta": 2.9271523178807946
+            },
+            "quotient_0": {
+              "best_saving": 11,
+              "cases": 768,
+              "max_slowdown": -9,
+              "mean_delta": -9.221354166666666
+            },
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 291,
+              "max_slowdown": 12,
+              "mean_delta": 3.3402061855670104
+            },
+            "quotient_10_to_255": {
+              "best_saving": -2,
+              "cases": 123,
+              "max_slowdown": 12,
+              "mean_delta": 4.1138211382113825
+            },
+            "quotient_256_plus": {
+              "best_saving": -2,
+              "cases": 100,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 272,
+              "max_slowdown": 12,
+              "mean_delta": 3.213235294117647
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 768,
+          "faster": 768,
+          "input_errors": 0,
+          "max_speedup": 11,
+          "mean_delta_cycles": -2.3976539589442813,
+          "q_mismatches": 768,
+          "r_c_errors": 0,
+          "slower": 937,
+          "worst_slowdown": 12
+        },
+        "strict": {
+          "classes": {
+            "divisor_zero": {
+              "best_saving": -2,
+              "cases": 151,
+              "max_slowdown": 12,
+              "mean_delta": 2.9271523178807946
+            },
+            "quotient_0": {
+              "best_saving": 1,
+              "cases": 768,
+              "max_slowdown": 1,
+              "mean_delta": 0.7786458333333334
+            },
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 291,
+              "max_slowdown": 12,
+              "mean_delta": 3.3402061855670104
+            },
+            "quotient_10_to_255": {
+              "best_saving": -2,
+              "cases": 123,
+              "max_slowdown": 12,
+              "mean_delta": 4.1138211382113825
+            },
+            "quotient_256_plus": {
+              "best_saving": -2,
+              "cases": 100,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 272,
+              "max_slowdown": 12,
+              "mean_delta": 3.213235294117647
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 85,
+          "input_errors": 0,
+          "max_speedup": 1,
+          "mean_delta_cycles": 2.106744868035191,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 1620,
+          "worst_slowdown": 12
+        }
+      },
+      "cases": 1705
+    },
+    "power_of_two": {
+      "baseline_mean_cycles": 797.7265625,
+      "candidate": {
+        "loose": {
+          "classes": {
+            "quotient_0": {
+              "best_saving": 9,
+              "cases": 10,
+              "max_slowdown": -9,
+              "mean_delta": -9.0
+            },
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 16,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_10_to_255": {
+              "best_saving": -2,
+              "cases": 75,
+              "max_slowdown": 12,
+              "mean_delta": 2.2666666666666666
+            },
+            "quotient_256_plus": {
+              "best_saving": -2,
+              "cases": 117,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 38,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 10,
+          "faster": 10,
+          "input_errors": 0,
+          "max_speedup": 9,
+          "mean_delta_cycles": 1.6484375,
+          "q_mismatches": 10,
+          "r_c_errors": 0,
+          "slower": 246,
+          "worst_slowdown": 12
+        },
+        "strict": {
+          "classes": {
+            "quotient_0": {
+              "best_saving": -1,
+              "cases": 10,
+              "max_slowdown": 1,
+              "mean_delta": 1.0
+            },
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 16,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_10_to_255": {
+              "best_saving": -2,
+              "cases": 75,
+              "max_slowdown": 12,
+              "mean_delta": 2.2666666666666666
+            },
+            "quotient_256_plus": {
+              "best_saving": -2,
+              "cases": 117,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 38,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -1,
+          "mean_delta_cycles": 2.0390625,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 12
+        }
+      },
+      "cases": 256
+    },
+    "quotient_2_to_7": {
+      "baseline_mean_cycles": 221.03515625,
+      "candidate": {
+        "loose": {
+          "classes": {
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 256,
+              "max_slowdown": 12,
+              "mean_delta": 2.078125
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -2,
+          "mean_delta_cycles": 2.078125,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 12
+        },
+        "strict": {
+          "classes": {
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 256,
+              "max_slowdown": 12,
+              "mean_delta": 2.078125
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -2,
+          "mean_delta_cycles": 2.078125,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 12
+        }
+      },
+      "cases": 256
+    },
+    "quotient_one": {
+      "baseline_mean_cycles": 64.17578125,
+      "candidate": {
+        "loose": {
+          "classes": {
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 256,
+              "max_slowdown": 12,
+              "mean_delta": 2.3515625
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -2,
+          "mean_delta_cycles": 2.3515625,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 12
+        },
+        "strict": {
+          "classes": {
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 256,
+              "max_slowdown": 12,
+              "mean_delta": 2.3515625
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -2,
+          "mean_delta_cycles": 2.3515625,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 12
+        }
+      },
+      "cases": 256
+    },
+    "quotient_zero": {
+      "baseline_mean_cycles": 41.1640625,
+      "candidate": {
+        "loose": {
+          "classes": {
+            "quotient_0": {
+              "best_saving": 11,
+              "cases": 256,
+              "max_slowdown": -9,
+              "mean_delta": -9.0234375
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 256,
+          "faster": 256,
+          "input_errors": 0,
+          "max_speedup": 11,
+          "mean_delta_cycles": -9.0234375,
+          "q_mismatches": 256,
+          "r_c_errors": 0,
+          "slower": 0,
+          "worst_slowdown": -9
+        },
+        "strict": {
+          "classes": {
+            "quotient_0": {
+              "best_saving": 1,
+              "cases": 256,
+              "max_slowdown": 1,
+              "mean_delta": 0.9765625
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 3,
+          "input_errors": 0,
+          "max_speedup": 1,
+          "mean_delta_cycles": 0.9765625,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 253,
+          "worst_slowdown": 1
+        }
+      },
+      "cases": 256
+    },
+    "small_divisor": {
+      "baseline_mean_cycles": 912.40234375,
+      "candidate": {
+        "loose": {
+          "classes": {
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 1,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_10_to_255": {
+              "best_saving": -2,
+              "cases": 122,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_256_plus": {
+              "best_saving": -2,
+              "cases": 128,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 5,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -2,
+          "mean_delta_cycles": 2.0,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 2
+        },
+        "strict": {
+          "classes": {
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 1,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_10_to_255": {
+              "best_saving": -2,
+              "cases": 122,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_256_plus": {
+              "best_saving": -2,
+              "cases": 128,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 5,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -2,
+          "mean_delta_cycles": 2.0,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 2
+        }
+      },
+      "cases": 256
+    },
+    "uniform": {
+      "baseline_mean_cycles": 100.80078125,
+      "candidate": {
+        "loose": {
+          "classes": {
+            "quotient_0": {
+              "best_saving": 9,
+              "cases": 128,
+              "max_slowdown": -9,
+              "mean_delta": -9.0
+            },
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 70,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_10_to_255": {
+              "best_saving": -2,
+              "cases": 10,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_256_plus": {
+              "best_saving": -2,
+              "cases": 1,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 47,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 128,
+          "faster": 128,
+          "input_errors": 0,
+          "max_speedup": 9,
+          "mean_delta_cycles": -3.5,
+          "q_mismatches": 128,
+          "r_c_errors": 0,
+          "slower": 128,
+          "worst_slowdown": 2
+        },
+        "strict": {
+          "classes": {
+            "quotient_0": {
+              "best_saving": -1,
+              "cases": 128,
+              "max_slowdown": 1,
+              "mean_delta": 1.0
+            },
+            "quotient_1": {
+              "best_saving": -2,
+              "cases": 70,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_10_to_255": {
+              "best_saving": -2,
+              "cases": 10,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_256_plus": {
+              "best_saving": -2,
+              "cases": 1,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            },
+            "quotient_2_to_9": {
+              "best_saving": -2,
+              "cases": 47,
+              "max_slowdown": 2,
+              "mean_delta": 2.0
+            }
+          },
+          "equal": 0,
+          "exact_q_r_c_errors": 0,
+          "faster": 0,
+          "input_errors": 0,
+          "max_speedup": -1,
+          "mean_delta_cycles": 1.5,
+          "q_mismatches": 0,
+          "r_c_errors": 0,
+          "slower": 256,
+          "worst_slowdown": 2
+        }
+      },
+      "cases": 256
+    }
+  }
+}
