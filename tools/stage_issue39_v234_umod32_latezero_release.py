@@ -22,13 +22,13 @@ def checksum():
  fs=sorted((p for p in ROOT.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p.relative_to(ROOT)))
  (ROOT/'SHA256SUMS.txt').write_text(''.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(ROOT)}\n' for p in fs))
 def perf(op,stats):
- p=ROOT/'PERFORMANCE.md';ls=p.read_text().splitlines()
+ dest=ROOT/'PERFORMANCE.md';ls=dest.read_text().splitlines()
  inds=[i for i,s in enumerate(ls) if s.startswith('| `'+op+'` |')]
  assert len(inds)==1
  cols=ls[inds[0]].split('|')
- for k,p in enumerate(ALL):cols[3+k]=f' {stats[p]:.6f} '
+ for k,profile in enumerate(ALL):cols[3+k]=f' {stats[profile]:.6f} '
  ls[inds[0]]='|'.join(cols)
- p.write_text('\n'.join(ls)+'\n')
+ dest.write_text('\n'.join(ls)+'\n')
 def main():
  status=ROOT/'RELEASE_STATUS.json';state=json.loads(status.read_text())
  old={p:digest(path(p)) for p in ALL}
