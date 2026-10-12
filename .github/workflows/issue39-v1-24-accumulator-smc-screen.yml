@@ -1,18 +1,21 @@
-name: Issue39 V1 24/8 accumulator SMC screen
+name: Issue39 V1 24/8 RAM SMC vs released 61-byte screen
 
 on:
   push:
-    branches:
-      - issue39-v1-24by8-accumulator-smc-screen
+    branches: [issue39-v1-24by8-accumulator-smc-screen]
+    paths: ['.github/workflows/issue39-v1-24-accumulator-smc-screen.yml']
   pull_request:
     paths:
       - 'tools/candidates/issue39_v1_24by8_accumulator_selfmod.asm'
       - 'tools/screen_issue39_v1_24by8_accumulator_selfmod.py'
+      - 'tools/verify_issue39_v1_24by8_accumulator_selfmod_portable.py'
+      - 'routines/standalone_lab/portable/div_u24_by_u8_selfmod.asm'
       - '.github/workflows/issue39-v1-24-accumulator-smc-screen.yml'
 
 permissions:
   contents: read
-
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
 jobs:
   source-backed-smc-screen:
     runs-on: ubuntu-latest
@@ -20,7 +23,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Compare RAM SMC with exact released 61-byte V1 public entries
+        run: python3 tools/screen_issue39_v1_24by8_accumulator_selfmod.py --out /tmp/smc_vs61.json
+      - name: Check independent portable SMC at two different RAM addresses
+        run: python3 tools/verify_issue39_v1_24by8_accumulator_selfmod_portable.py --out /tmp/smc_portable.json
+      - uses: actions/upload-artifact@v4
         with:
-          python-version: '3.12'
-      - name: RAM-only SMC complete V1 public-entry same-input test
-        run: python3 tools/screen_issue39_v1_24by8_accumulator_selfmod.py
+          name: issue39-v1-smc-vs61-proofs
+          path: |
+            /tmp/smc_vs61.json
+            /tmp/smc_portable.json

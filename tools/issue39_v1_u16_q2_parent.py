@@ -5,6 +5,7 @@ Only for reproducing pre-PR68 historical V1 benchmark certificates. Never
 change the shipped resident during normal public API calls.
 """
 import hashlib
+from issue39_v1_24by8_accumulator_parent import restore_pr78
 BEFORE='9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62'
 AFTER='cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f'
 BEFORE_V5='26981cc03b06d1a797917ae34a5d8969db466435fff496a758a262bac75b254b'
@@ -18,6 +19,7 @@ V1_24BY8_RELEASE='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4
 V1_24BY8_69_SHA='dfed82b3441ba19b83a4f3d465e36966eeadc968ac80c474cf05c18e98cd6097'
 V1_24BY8_OLD_BYTES=bytes.fromhex('ad10c08d18c0ad11c08d19c0ad12c08d1ac0a9008d1cc0a2180e18c02e19c02e1ac02e1cc0b014ad1cc0cd14c09018ed14c08d1cc0ee18c04c471dad1cc0ed14c08d1cc0ee18c0cad0cfa9008d1dc08d1ec01860')
 def restore_v1_24by8_release(prg:bytes)->bytes:
+    prg=restore_pr78(prg)
     if sha(prg)!=V1_24BY8_RELEASE:return prg
     lo=int.from_bytes(prg[:2],'little');assert lo==0x1000
     off=2+0x1d00-lo

@@ -33,3 +33,5 @@ The [source-backed zero-ZP aligned UDIV32 alternative](portable/div_u32_aligned_
 ## Sixth unique OptiSearch implementation recovered
 
 [Direct-chain UMOD16 with zero zero-page use](portable/UMOD16_DIRECT_PICKUP.md) is preserved as a memory-specialist candidate: 976 code+data bytes, 2 ordinary scratch RAM bytes and 2 nested stack bytes. Its official full-corpus average is **209.868 cycles**, *slower* than V2-V5's 198.601; it is published for zero-ZP resource-constrained users, not as a universal fastest routine. The three-map emulator proof covers 5,115 calls and the independent native VICE campaign covers 192 correctness calls. This gives source-backed coverage of all six distinct generators from Repose's October 11 comparison bundle; individual performance and ABI qualification still apply.
+
+Current V2–V5 UMOD16 biased public-ABI/identical-input screen: [docs/ISSUE39_UMOD16_BIASED_CURRENT_MAIN_DECISION_2026-10-12.md](../../docs/ISSUE39_UMOD16_BIASED_CURRENT_MAIN_DECISION_2026-10-12.md). The 185.826-cycle corpus mean hides 1,391/1,705 slower cases and extra RAM/ZP/stack; no resident promotion.

@@ -11,11 +11,13 @@ from mini6502 import Assembler,CPU
 from validate_unsigned_division import api,wr,rd,expected
 from benchmark_unsigned_common_corpus import corpus
 from audit_issue39_unsigned_small_workloads import pairs,KINDS
+from issue39_v1_24by8_accumulator_parent import restore_pr78
 
 OLD_SHA='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0'
 PRG=R/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 SOURCE=R/'tools/candidates/issue39_v1_24by8_accumulator.asm'
-b=PRG.read_bytes()
+live=PRG.read_bytes()
+b=restore_pr78(live)
 assert hashlib.sha256(b).hexdigest()==OLD_SHA, 'unexpected PR78 base'
 load=int.from_bytes(b[:2], 'little')
 assert load==0x1000
@@ -29,6 +31,8 @@ patched=bytearray(b)
 for addr,byte in candidate.items():patched[2+addr-load]=byte
 patched[off+61:off+84]=bytes(23)
 assert len(b)==len(patched) and patched[:off]==b[:off] and patched[off+84:]==b[off+84:]
+assert live in (b,bytes(patched)), 'live image must be exact PR78 or released accumulator candidate'
+
 cpus=[]
 for raw in (b,patched):
  m=bytearray(65536)

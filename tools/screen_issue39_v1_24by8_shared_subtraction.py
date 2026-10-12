@@ -8,12 +8,13 @@ from mini6502 import Assembler,CPU
 from validate_unsigned_division import api,wr,rd,expected
 from benchmark_unsigned_common_corpus import corpus
 from audit_issue39_unsigned_small_workloads import pairs,KINDS
+from issue39_v1_24by8_accumulator_parent import restore_pr78
 
 PRG=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 SOURCE=ROOT/'tools/candidates/issue39_v1_24by8_shared_subtraction.asm'
 CURRENT_SHA='cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f'
 RELEASE_SHA='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0'
-live=PRG.read_bytes()
+live=restore_pr78(PRG.read_bytes())
 nowsha=hashlib.sha256(live).hexdigest()
 assert nowsha in (CURRENT_SHA,RELEASE_SHA),('unknown V1 source baseline',nowsha)
 load=int.from_bytes(live[:2],'little'); assert load==0x1000

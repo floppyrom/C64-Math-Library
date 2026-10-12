@@ -1,7 +1,16 @@
-2026-10-12 ISSUE39 V1 24/8 WRITABLE-RAM SMC ACCUMULATOR CANDIDATE SCREEN (NO RESIDENT CHANGE)
-- PR #80 (part of #39) independently screens the 68-byte accumulator-remainder with per-call self-modified CMP/SBC immediate operands; the 61-byte non-self-modifying candidate from PR #79 remains separately available. Requires executable writable RAM, no concurrent/re-entrant use; NOT ROM-compatible.
-- Full old-vs-candidate public-entry 48,388 6502 calls pass, zero arithmetic/flag/input/stack errors or slower cases; official mean UDIV24 170.238165->165.228277 and UMOD24 246.822279->231.489375. D8 stress 1202.660784->927.934314 cycles, all 4,080 pairs faster per API. Separate 128 native VICE isolated-core calls matched independent oracle.
-- Shipped PR #78 69-byte implementation, official performance rankings and five resident PRGs remain unchanged by this candidate-only PR; full integrated/native V5 relocation certification still required. Issue #39 remains OPEN. See docs/ISSUE39_V1_UDIV24_ACCUMULATOR_SMC_SCREEN_2026-10-12.md.
+2026-10-12 ISSUE39 V1 ACCUMULATOR FULL-RESIDENT NATIVE VICE 384-CALL CERTIFICATE
+- Native VICE x64sc full-resident proof supplements the earlier isolated source-kernel test: exact SHA-pinned PR78 versus released PR81 V1 residents, MATH_INIT plus true MATH_UDIV24/UMOD24 public-entry JSRs, 96 same-input pairs per API per resident, 384 native calls total, zero oracle, flag, input preservation, stack or old/new output errors.
+- Full-resident result applies to Q/R/C and public ABI correctness only, NOT VICE cycle counts. No source code, public API, code size, profile binary, standalone pickup or ranking changed. Detail: docs/ISSUE39_V1_24BY8_FULL_RESIDENT_NATIVE_VICE_2026-10-12.md, evidence: validation/review/ISSUE39_V1_24BY8_ACCUMULATOR_FULL_RESIDENT_NATIVE_VICE.json. Issue #39 and unsigned family stage remain OPEN.
+
+2026-10-12 ISSUE39 UMOD16 BIASED OPTISEARCH DONOR CURRENT-MAIN SCREEN
+- Independently re-screened Repose/OptiSearch standalone UMOD16 biased donor against current V2–V5 UMOD16 complete entries: 27,280 same-input emulator calls across two RAM layouts, exact remainder/carry, inputs and stack.
+- Overall 198.601173→185.826393 cycle mean but 1,391/1,705 inputs slower, random input 80.490234→111.772461 and 667 Q16 differences; +262 code RAM, +2 ZP and nested JSR stack. Retain as a standalone specialist, NOT default resident replacement.
+- Report docs/ISSUE39_UMOD16_BIASED_CURRENT_MAIN_DECISION_2026-10-12.md; no resident binaries, public performance rankings or stable ABI modified. Issue #39 remains open.
+
+2026-10-12 ISSUE39 V1 ACCUMULATOR-REMAINDER 61-BYTE 24/8 DIVMOD RELEASE
+- V1 shared UDIV24/UMOD24 short-divisor kernel: keep partial R in A across all 24 iterations, 69→61 bytes, 23 padded bytes in the original 84-byte owned island. Zero new normal ZP/stack, stable API/addresses and resident size, V2–V5 byte-identical.
+- 48,388 paired prior/new complete public CPU calls, no ABI errors or slower pairs; canonical same-input UDIV24 170.238165→166.190196, UMOD24 246.822279→234.433355. Native x64sc 128 isolated source-kernel correctness calls; full-resident native not claimed.
+- Five-profile unsigned 822,050 and signed 364,533 calls; 136,335 same-input and 53,760 small-workload calls; historical parent reproducibility, reference/alternate source relocation, V5 isolation. Standalone mirrors, performance tables, release/checksums and docs refreshed. Campaign #39 remains OPEN. docs/ISSUE39_V1_UDIV24_ACCUMULATOR_RELEASE_2026-10-12.md
 
 2026-10-12 ISSUE39 V1 24/8 ACCUMULATOR-REMAINDER CANDIDATE SCREEN (NO RESIDENT CHANGE)
 - PR #79 (part of #39) screens a 61-byte accumulator-resident partial remainder against the merged PR #78 69-byte shared-subtraction V1 24/8 core. Zero additional ZP/stack, all public entry addresses and shipped binaries unchanged.

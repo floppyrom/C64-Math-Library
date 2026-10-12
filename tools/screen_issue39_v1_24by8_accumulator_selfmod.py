@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Issue39: exact public ABI old/new screen for 68-byte self-modifying accumulator 24÷8 engine.
 
-Runs on current post-PR78 main WITHOUT modifying any release image or API.
+Runs on the exact released PR81 61-byte resident WITHOUT modifying release bytes.
 """
 from pathlib import Path
 import argparse, hashlib, json, random, sys
@@ -12,15 +12,15 @@ from validate_unsigned_division import api,wr,rd,expected
 from benchmark_unsigned_common_corpus import corpus
 from audit_issue39_unsigned_small_workloads import pairs,KINDS
 
-OLD_SHA='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0'
+CURRENT_SHA='cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd'
 PRG=R/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 SOURCE=R/'tools/candidates/issue39_v1_24by8_accumulator_selfmod.asm'
 b=PRG.read_bytes()
-assert hashlib.sha256(b).hexdigest()==OLD_SHA, 'unexpected PR78 base'
+assert hashlib.sha256(b).hexdigest()==CURRENT_SHA, 'unexpected released V1 source'
 load=int.from_bytes(b[:2], 'little')
 assert load==0x1000
 entry=0x1d00;off=2+entry-load
-old=bytes(b[off:off+84]);assert old[69:]==bytes(15), 'old island not fully zeroed'
+old=bytes(b[off:off+84]);assert old[61:]==bytes(23), 'released 61-byte island not fully zeroed'
 candidate,labels,_=Assembler().assemble(SOURCE.read_text())
 assert labels['V1LAT_24_BY_8']==entry and len(candidate)==68
 assert sorted(candidate)==list(range(entry,entry+68))
@@ -41,9 +41,9 @@ wide=[(rng.randrange(1<<24),rng.randrange(256,1<<24)) for _ in range(2048)]
 small=[(rng.randrange(1<<16),rng.randrange(1,256)) for _ in range(1024)]
 other={k:pairs(24,k) for k in KINDS}
 other.update(full_n24_d8=stress,wide_divisor_control=wide,n2_zero_control=small)
-report={'status':'PASS','original_v1_sha256':OLD_SHA,'new_v1_sha256':hashlib.sha256(patched).hexdigest(),
+report={'status':'PASS','original_v1_sha256':CURRENT_SHA,'new_v1_sha256':hashlib.sha256(patched).hexdigest(),
  'source':'tools/candidates/issue39_v1_24by8_accumulator_selfmod.asm','scope':'RAM-only, self-modifying in-memory candidate; NOT shipped, NOT ROM-safe',
- 'old_core_bytes':69,'new_core_bytes':68,'normal_zp_growth':0,'stack_growth':0,'abi_changed':False,
+ 'old_core_bytes':61,'new_core_bytes':68,'normal_zp_growth':0,'stack_growth':0,'abi_changed':False,
  'paired_machine_calls':0,'regressions':0,'routines':{}}
 for routine,count in (('MATH_UDIV24',4096),('MATH_UMOD24',1024)):
  groups={'canonical':[(n,d) for n,d,_ in corpus(routine,24,24,0,count)[1]],**other}

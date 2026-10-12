@@ -1,0 +1,44 @@
+name: Issue39 seal native x64sc full V1 24/8 resident proof
+
+on:
+  push:
+    branches:
+      - issue39-v1-24by8-full-resident-native-vice-proof
+    paths:
+      - '.github/workflows/issue39-v1-accumulator-full-native-seal.yml'
+
+permissions:
+  contents: write
+
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
+jobs:
+  publish-certificate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v1-24by8-full-resident-native-vice-proof
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify SHA-bound native evidence and seal release docs
+        run: python3 tools/finalize_issue39_v1_accumulator_full_native_certificate.py
+      - name: Verify package, checksum and standalone source consistency
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Commit qualified native evidence on certificate branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish full-resident VICE x64sc V1 accumulator proof"
+            git push origin HEAD:issue39-v1-24by8-full-resident-native-vice-proof
+          fi
