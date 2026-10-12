@@ -1,0 +1,48 @@
+name: Issue39 UDIV8 source-prefix profile sweep
+on:
+  push:
+    branches: [issue39-u8-prefix-perprofile-sweep]
+    paths:
+      - '.github/workflows/issue39-u8-prefix-perprofile-sweep.yml'
+      - 'tools/screen_issue39_u8_prefix_source_sweep.py'
+      - 'tools/finalize_issue39_u8_prefix_source_sweep.py'
+  pull_request:
+    paths:
+      - '.github/workflows/issue39-u8-prefix-perprofile-sweep.yml'
+      - 'tools/screen_issue39_u8_prefix_source_sweep.py'
+      - 'tools/finalize_issue39_u8_prefix_source_sweep.py'
+permissions:
+  contents: write
+jobs:
+  u8-public-abi-architecture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u8-prefix-perprofile-sweep
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Smoke-check synthesized K12 against exact V1 resident
+        run: python3 tools/screen_issue39_u8_prefix_source_sweep.py --profile v1_balanced --K 12 --map ram_0800 --out /tmp/issue39_u8_smoke.json
+      - name: Five-profile two RAM-map K8-28 architecture corpus
+        run: python3 tools/screen_issue39_u8_prefix_source_sweep.py --out /tmp/issue39_u8_sweep.json
+      - name: Seal benchmark and release documentation
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_u8_prefix_source_sweep.py /tmp/issue39_u8_sweep.json
+      - name: Commit independently reproducible evidence
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: publish bounded U8 source-prefix profile audit'
+          git push origin HEAD:issue39-u8-prefix-perprofile-sweep
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-u8-prefix-public-profile-source-sweep
+          path: |
+            /tmp/issue39_u8_smoke.json
+            /tmp/issue39_u8_sweep.json
