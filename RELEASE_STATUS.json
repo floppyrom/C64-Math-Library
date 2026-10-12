@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 68075,
-    "user_manual_lines": 1896,
-    "user_manual_sha256": "3016dfda83e096bcac2fd701a317eb8dff94e32e3eb0cfac3317615b56f6508b"
+    "user_manual_bytes": 68235,
+    "user_manual_lines": 1898,
+    "user_manual_sha256": "5e5d03dc6a403f552a05ee6d58155dfd33cd9f2590c67f5bb82036a5dd592cdb"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1294,5 +1294,87 @@
         "v5_hybrid_lowzp": 207.49066323245333
       }
     }
+  },
+  "issue39_u16_dhigh_threshold_sweep_2026_10_12": {
+    "status": "PASS_RESEARCH_NO_PROMOTION",
+    "documentation": "docs/ISSUE39_V2V5_U16_D1_CUTOFF_SCREEN_2026-10-12.md",
+    "source_report": "validation/review/ISSUE39_V2V5_U16_D1_CUTOFF_SWEEP.json",
+    "source_report_sha256": "46dc15184035a9cd59c4d607b204885e6b10ddbcb4c9eb59d42d8a3baf68ee46",
+    "checked_profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "correctness_rejections": 64,
+    "default_cutoff": 15,
+    "binary_abi_source_changed": false,
+    "per_profile": {
+      "v2_pareto_fast": {
+        "MATH_UDIV16": {
+          "cases": 4201,
+          "baseline_mean": 272.1118781242561,
+          "best_mean": 272.1118781242561,
+          "best_cutoff": 15,
+          "best_regression_count": 0
+        },
+        "MATH_UMOD16": {
+          "cases": 3177,
+          "baseline_mean": 321.47529115517784,
+          "best_mean": 321.35914384639597,
+          "best_cutoff": 16,
+          "best_regression_count": 7
+        }
+      },
+      "v3_reu_512k": {
+        "MATH_UDIV16": {
+          "cases": 4201,
+          "baseline_mean": 272.1118781242561,
+          "best_mean": 272.1118781242561,
+          "best_cutoff": 15,
+          "best_regression_count": 0
+        },
+        "MATH_UMOD16": {
+          "cases": 3177,
+          "baseline_mean": 321.47529115517784,
+          "best_mean": 321.35914384639597,
+          "best_cutoff": 16,
+          "best_regression_count": 7
+        }
+      },
+      "v4_reu_16m": {
+        "MATH_UDIV16": {
+          "cases": 4201,
+          "baseline_mean": 272.1118781242561,
+          "best_mean": 272.1118781242561,
+          "best_cutoff": 15,
+          "best_regression_count": 0
+        },
+        "MATH_UMOD16": {
+          "cases": 3177,
+          "baseline_mean": 321.47529115517784,
+          "best_mean": 321.35914384639597,
+          "best_cutoff": 16,
+          "best_regression_count": 7
+        }
+      },
+      "v5_hybrid_lowzp": {
+        "MATH_UDIV16": {
+          "cases": 4201,
+          "baseline_mean": 272.1118781242561,
+          "best_mean": 272.1118781242561,
+          "best_cutoff": 15,
+          "best_regression_count": 0
+        },
+        "MATH_UMOD16": {
+          "cases": 3177,
+          "baseline_mean": 321.47529115517784,
+          "best_mean": 321.35914384639597,
+          "best_cutoff": 16,
+          "best_regression_count": 7
+        }
+      }
+    },
+    "unsigned_family_complete": false
   }
 }
