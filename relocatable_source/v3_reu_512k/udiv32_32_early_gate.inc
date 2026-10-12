@@ -13,13 +13,8 @@
 
 * = REG_KERNEL+$1957
 D3232_EARLY_GATE:
-    ; Preserve legacy divide-by-zero handling.
-    lda MATH_IO+$14
-    ora MATH_IO+$15
-    ora MATH_IO+$16
-    ora MATH_IO+$17
-    beq D3232_LEGACY
-
+    ; Check n against d first; n<d proves d!=0.
+    ; Any n>d case goes to the original divider with its own D=0 guard.
     ; Unsigned n ? d, most-significant byte first.
     lda MATH_IO+$13
     cmp MATH_IO+$17
@@ -38,7 +33,17 @@ D3232_EARLY_GATE:
     bcc D3232_QZERO
     bne D3232_LEGACY
 
-    ; n == d -> q=1, r=0.
+    ; n == d: d might be zero ONLY when n is also zero.
+    ; For n<d the divisor is mathematically nonzero, and for n>d the
+    ; legacy divider already owns divide-by-zero handling. Deferring
+    ; the zero check to equality saves 18 6510 cycles on other paths.
+    lda MATH_IO+$14
+    ora MATH_IO+$15
+    ora MATH_IO+$16
+    ora MATH_IO+$17
+    beq D3232_LEGACY
+
+    ; Proven n=d!=0 -> q=1, r=0.
     ldx #$00
     lda #$01
     sta MATH_IO+$18
