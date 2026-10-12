@@ -27,7 +27,10 @@ for profile in PROFILES:
     # is SHA-qualified, and neither affects the UMOD8 operand/cycle path.
     if profile=='v5_hybrid_lowzp':
         new=restore_v5_pr67_u16_parent(restore_v5_q2_parent(new))
-    old=restore_umod8_parent(profile,new)
+    # Historical PR67/Q2 rollback is already applied to 'new' above.
+    # Reconstruct the UMOD8 parent from the *live* SHA-pinned image instead,
+    # otherwise restore_umod8_parent would undo PR67/Q2 a second time.
+    old=restore_umod8_parent(profile,name.read_bytes())
     lo=int.from_bytes(new[:2],'little')
     assert lo==0x1000 and len(new)==len(old)
     assert hashlib.sha256(old).hexdigest()==PARENT_SHA[profile]
