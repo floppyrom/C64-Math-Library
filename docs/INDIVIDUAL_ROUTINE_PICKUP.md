@@ -66,3 +66,5 @@ Read [the machine-readable source catalog](../routines/SOURCE_CATALOG.csv) befor
 ## Experimental standalone math kernels
 
 The [standalone fast-kernel lab](../routines/standalone_lab/README.md) preserves three OptiSearch-derived NMOS 6510 division/modulo candidates with independent source, fixed-map entrypoints, reproducible 7,163-case emulator tests and a backlog of screened alternatives. These are not yet certified as arbitrarily relocatable or usable alongside BASIC.
+
+For independently callable UDIV16, UMOD16 and specialist UDIV32 kernels with **editable assembly origins, operand buffers and zero-page allocation**, start at the [standalone portable pickup guide](../routines/standalone_lab/portable/README.md). It includes tested layouts, arithmetic and carry semantics, and native VICE correctness proof. These isolated variants are not general-purpose BASIC-resident add-ons.

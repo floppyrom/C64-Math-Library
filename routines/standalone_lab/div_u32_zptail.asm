@@ -152,7 +152,7 @@ L072A:
 
 ; segment $2000 (219 bytes)
 * = $2000
-FAST_UDIV32_ZPTAIL_T1:
+FAST_UDIV32_INTERNAL_TAIL:
 L2000:
     lda  INPUT_DIV
     sta  TEMP_ZP
