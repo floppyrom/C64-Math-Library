@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 ZERO-ZP UMOD32 RANDOM-WIDE-DIVISOR STANDALONE SPECIALIST
+- Published individually configurable Repose aligned UMOD32 donor (475 executable bytes) plus 21-byte public carry adapter. Uses zero ZP but four bytes of ordinary RAM scratch and an additional JSR frame. Q32 remains untouched; R32, carry and N/D are exact.
+- Original donor segment SHA parity and official 1,705-pair same-input corpus checked across two RAM maps (3,410 source-executed calls), plus extended three-map standalone integration validator and 192 local native VICE correctness calls.
+- Default standalone RAM placement: 190.867 average cycles on the 1,024 random-input subset (V2-V4 199.833), but 476.938 across the full 1,705-case benchmark (V2-V4 279.620). This is NOT a general-purpose winner; no resident profile/ABI/REU artifacts changed.
+
 2026-10-12 ISSUE39 STANDALONE FAST-KERNEL RELOCATION AND NATIVE VICE
 - Added individually editable/readdressable UDIV16, carry-corrected UMOD16 and specialist UDIV32 sources under routines/standalone_lab/portable. Test coverage: 9,657 independent emulator calls across three RAM/ZP layouts, plus 576 native x64sc correctness calls across two RAM layouts. New CI gate recompiles and checks quotient, remainder, carry, unchanged N/D, stack and code.
 - Corrected a duplicated internal UDIV32 source label without changing any generated opcode, 544-byte machine code or published timing. The original fixed-map modules and records remain available. The isolated kernel cycle costs are layout-specific; no new V1-V5 public resident implementation or stable profile performance ranking is changed. Issue39 standalone inventory remains open.
