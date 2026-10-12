@@ -55,8 +55,7 @@ def main():
    cases=[(n,d) for n,d,_ in common]
    rng=random.Random(0x39000000+PROFILES.index(p)*257+count)
    # D=0 with both n=0 and n!=0, q=1, q>=256, q0 near D boundary.
-   cases+= [(0,0),(0xffffffff,0),(0x80000000,0),(1,0),
-      (d,d) for d in []] if False else []
+   # Additional deterministic quotient and divide-by-zero boundary cases.
    cases.extend((x,0) for x in [0,1,2,255,65535,0x80000000,0xffffffff])
    cases.extend((d,d) for d in [0,1,2,3,7,255,256,65535,0x7fffffff,0x80000000,0xffffffff])
    for _ in range(256):
