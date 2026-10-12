@@ -8,7 +8,7 @@ on:
       - 'tools/screen_issue39_v2v5_u16_d1_threshold.py'
       - '.github/workflows/issue39-v2v5-u16-d1-threshold-screen.yml'
 permissions:
-  contents: read
+  contents: write
 jobs:
   source-backed-d1-threshold-screen:
     runs-on: ubuntu-latest
@@ -17,10 +17,31 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: issue39-v2v5-u16-d1-threshold-screen
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - name: Sweep immutable-shape D-high cutoff across 4 public resident profiles
         run: python3 tools/screen_issue39_v2v5_u16_d1_threshold.py --out /tmp/u16_gate_sweep.json
+      - name: Seal screen report documentation changelogs and source evidence
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_u16_d1_cutoff.py /tmp/u16_gate_sweep.json
+      - name: Verify publication and checksum manifest
+        if: github.event_name == 'push'
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+      - name: Commit qualified evidence to research branch only
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish V2-V5 U16 high-divisor cutoff no-gain screen"
+            git push origin HEAD:issue39-v2v5-u16-d1-threshold-screen
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: issue39-u16-gate-sweep-research
