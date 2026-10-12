@@ -1,0 +1,41 @@
+name: Issue39 power-of-two 32by16 opt-in qualification
+on:
+  push:
+    branches: [issue39-u3216-pow2-optin-specialist]
+    paths: ['.github/workflows/issue39-u3216-pow2-optin.yml']
+  pull_request:
+    paths:
+      - 'tools/qualify_issue39_u3216_pow2_optin.py'
+      - 'routines/standalone_lab/library_dependent/div_u32_u16_pow2_optin.asm'
+      - '.github/workflows/issue39-u3216-pow2-optin.yml'
+permissions:
+  contents: write
+jobs:
+  five-profile-two-location-optin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u3216-pow2-optin-specialist
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Test 16 exact powers of two, both APIs, 5 profile residents at 2 origins
+        run: python3 tools/qualify_issue39_u3216_pow2_optin.py --out /tmp/issue39_u3216_pow2.json
+      - name: Publish conditional specialist evidence and reseal release metadata
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_u3216_pow2_optin.py /tmp/issue39_u3216_pow2.json
+      - name: Commit exact resident-scoped evidence and changelogs
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: publish pow2 32by16 opt-in benchmark and release evidence'
+          git push origin HEAD:issue39-u3216-pow2-optin-specialist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-u3216-pow2-optin-screen
+          path: /tmp/issue39_u3216_pow2.json
