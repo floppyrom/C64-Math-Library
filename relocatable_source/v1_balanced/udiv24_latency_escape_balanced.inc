@@ -25,6 +25,9 @@ V1LAT_24_BY_8:
     sta MATH_Q+1
     lda MATH_N+2
     sta MATH_Q+2
+    lda MATH_D+0
+    sta V1LAT_CMP+1
+    sta V1LAT_SBC+1
     lda #0
     ; Accumulator carries the 8-bit partial remainder across all 24 bits.
     ; Ninth bit is in carry from ROL A; CMP supplies the subtraction carry.
@@ -35,10 +38,12 @@ V1LAT_8_LOOP:
     rol MATH_Q+2
     rol a
     bcs V1LAT_8_SUB
-    cmp MATH_D+0
+V1LAT_CMP:
+    cmp #$00
     bcc V1LAT_8_NEXT
 V1LAT_8_SUB:
-    sbc MATH_D+0
+V1LAT_SBC:
+    sbc #$00
     inc MATH_Q+0
 V1LAT_8_NEXT:
     dex
@@ -50,6 +55,5 @@ V1LAT_8_NEXT:
     clc
     rts
     ; Preserve the entire 84-byte source-owned V1 island.
-    ; The 61-byte engine leaves 23 explicitly zero-filled trailing bytes.
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00
+    ; The 68-byte RAM SMC engine leaves 16 explicitly zero-filled trailing bytes.
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
