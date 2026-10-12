@@ -1,0 +1,30 @@
+name: Issue39 current 24by8 RAM-SMC caller-optin A/B
+on:
+  push:
+    branches: [issue39-u24-d8-smc-current-screen]
+    paths:
+      - '.github/workflows/issue39-u24-d8-smc-current.yml'
+      - 'tools/screen_issue39_u24_d8_smc_current.py'
+  pull_request:
+    paths:
+      - '.github/workflows/issue39-u24-d8-smc-current.yml'
+      - 'tools/screen_issue39_u24_d8_smc_current.py'
+permissions:
+  contents: read
+jobs:
+  current-resident-smc-ab:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Smoke test V2 at reference RAM origin
+        run: python3 tools/screen_issue39_u24_d8_smc_current.py --profile v2_pareto_fast --map ram_0800
+      - name: Paired full five-profile two-RAM-origin current resident screen
+        run: python3 tools/screen_issue39_u24_d8_smc_current.py --out /tmp/issue39_u24_d8_smc.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-u24-d8-smc-current-public
+          path: /tmp/issue39_u24_d8_smc.json
