@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 68915,
-    "user_manual_lines": 1908,
-    "user_manual_sha256": "c5abb6f9faf40c008f257b3aa0b1aef84d9399d2bc63271d7da7e70b0606ff4d"
+    "user_manual_bytes": 69087,
+    "user_manual_lines": 1910,
+    "user_manual_sha256": "2343b951f8fa43b7dce13a6667801bb67ad94e52006e13f19963786c39800514"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1522,6 +1522,24 @@
     "profile_count": 5,
     "candidate_bytes": 30,
     "temporary_stack_bytes": 4,
+    "released_residents_changed": false,
+    "public_api_changed": false,
+    "unsigned_family_complete": false
+  },
+  "issue39_u3216_pow2_optin_2026_10_12": {
+    "status": "PASS_OPTIN_NOT_DEFAULT",
+    "source": "routines/standalone_lab/library_dependent/div_u32_u16_pow2_optin.asm",
+    "source_sha256": "7d14a0278c99aa0b06c05a437314e720c1d735f1469f14720ad6719cd1f722c6",
+    "validation": "validation/review/ISSUE39_U3216_POW2_OPTIN_SCREEN.json",
+    "validation_sha256": "ce1aa18b4a2edbe04c6581cfa8351f728b3a0374d620d2047f28adddc38f37c1",
+    "documentation": "docs/ISSUE39_U3216_POW2_OPTIN_2026-10-12.md",
+    "code_bytes": 114,
+    "extra_normal_zp": 0,
+    "extra_nested_jsr_stack": 0,
+    "precondition": "D16 is exactly a power of two, between 1 and 32768",
+    "paired_inputs": 67520,
+    "cpu_calls": 135040,
+    "native_vice_calls": 0,
     "released_residents_changed": false,
     "public_api_changed": false,
     "unsigned_family_complete": false

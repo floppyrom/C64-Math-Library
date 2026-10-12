@@ -186,3 +186,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue39 12-byte N16 32/16 opt-in helper: docs/ISSUE39_U3216_N16_12BYTE_OPTIN_2026-10-12.md. Uses installed UDIV16; caller owns memory.
 
 - Issue39 N24->UDIV24 donor no-gain research: docs/ISSUE39_N24_TO_U24_DONOR_SCREEN_2026-10-12.md. Existing 32/16 defaults retained.
+
+- Issue39 32/16 power-of-two caller-opt-in specialist: docs/ISSUE39_U3216_POW2_OPTIN_2026-10-12.md. The divisor precondition is mandatory; public defaults stay unchanged.

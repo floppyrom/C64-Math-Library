@@ -1,3 +1,11 @@
+2026-10-12 ISSUE39 114BYTE POW2 32BY16 OPT-IN SPECIALIST
+- Qualified 114-byte caller-opt-in 32/16 D=power-of-two producer, providing both full quotient and remainder public-buffer contracts; 0 new ZP, 0 extra nested JSR frames. Exact five resident profiles, two legal RAM maps, 67,520 matched operands / 135,040 CPU executions, zero Q/R/C/N/D/sentinel/SP/relocation errors.
+- Large gains on the explicit power-of-two workload, with V2–V5 slower cases at high divisor exponents: **no default promotion**. No shipped PRG or public ABI modification. Source, full JSON, README/manual and both changelogs published. Native VICE cycles not claimed. Issue #39 remains OPEN. docs/ISSUE39_U3216_POW2_OPTIN_2026-10-12.md
+
+2026-10-12 ISSUE39 90BYTE POW2 32BY16 OPT-IN SPECIALIST
+- Qualified 90-byte caller-opt-in 32/16 D=power-of-two producer, providing both full quotient and remainder public-buffer contracts; 0 new ZP, 0 extra nested JSR frames. Exact five resident profiles, two legal RAM maps, 67,520 matched operands / 135,040 CPU executions, zero Q/R/C/N/D/sentinel/SP/relocation errors.
+- Large gains on the explicit power-of-two workload, with V2–V5 slower cases at high divisor exponents: **no default promotion**. No shipped PRG or public ABI modification. Source, full JSON, README/manual and both changelogs published. Native VICE cycles not claimed. Issue #39 remains OPEN. docs/ISSUE39_U3216_POW2_OPTIN_2026-10-12.md
+
 2026-10-12 ISSUE39 N24 TO U24 DONOR NO-GAIN AUDIT
 - Five exact-profile research screen of N24->resident UDIV24 reuse for 32/16 quotient and modulo: 30-byte RAM helper, two RAM maps, 11,580 identical operands / 23,160 complete CPU calls, zero arithmetic/Q/R/C/input/SP/sentinel errors.
 - N24 with D>=256 loses in all five profiles on 128 seeded operands per API; Q0/N16 niche wins do not justify universal promotion and 12-byte N16 opt-in is already available. Research only, no production code, API, ZP or PRG changes. Native VICE not claimed.
