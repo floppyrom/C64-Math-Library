@@ -100,6 +100,11 @@ DU16B_small_done
         sta MATH_Q+1
         rts
 
+        ; Three unreachable alignment bytes preserve the original $42B0+
+        ; small-chain/long-division page phase. These follow the RTS of the
+        ; quotient-5 fast exit and cannot execute on any successful path.
+        !byte $ea,$ea,$ea
+
 DU16B_qge2_x
         txa                       ; restore high remainder in A
 DU16B_qge2
@@ -123,10 +128,12 @@ DU16B_qge2_nonzero
         ; q=2 is common enough to warrant a dedicated return.  CMP supplies
         ; C=1 for the first q>=3 trial; moving LDX below the branch makes that
         ; specialization free on every q>=3 path.
+        ; The q=2 exit has been repacked ahead of the bias tail,
+        ; bringing it into the 6502's signed 8-bit branch range. For q>=3
+        ; the untaken BCC falls straight into LDX, saving one cycle; q=2
+        ; avoids the former absolute JMP while keeping the core 323 bytes.
         cmp MATH_D+1
-        bcs DU16B___r0
-        jmp DU16B_qtwo
-DU16B___r0:
+        bcc DU16B_qtwo
         ldx #$fd                  ; q-K = 2-5 for the q>=3 chain
 
 DU16B_small_chain
@@ -219,6 +226,16 @@ DU16B_no_take
         lsr ZP_MAIN+$0F
         bpl DU16B_shift_low             ; guaranteed: LSR always clears N
 
+DU16B_qtwo
+        ; The guaranteed second subtraction already committed the remainder.
+        ; This cold 11-byte exit is placed before the final quotient-bias tail
+        ; so its BCC from the second-subtraction test is in native branch range.
+        lda #2
+        sta MATH_Q+0
+        !byte $0b,$00             ; ANC #0: A=0 and success C=0
+        sta MATH_Q+1
+        rts
+
 DU16B_bits_done
         ; q = t + K. C is provably zero after the final ROL MATH_Q+1.
         lda #5
@@ -229,14 +246,6 @@ DU16B_bits_done
         clc                       ; only rare carry path needs normalization
 
 DU16B_bias_done
-        rts
-
-DU16B_qtwo
-        ; The guaranteed second subtraction already committed the remainder.
-        lda #2
-        sta MATH_Q+0
-        !byte $0b,$00             ; ANC #0: A=0 and success C=0
-        sta MATH_Q+1
         rts
 DU16B_cg_code_end:
 
