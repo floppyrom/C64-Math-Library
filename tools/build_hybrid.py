@@ -1167,6 +1167,41 @@ def apply_v5_udiv32_32_narrow(dst: bytearray, vals: dict[str,int], base_man: dic
             'source':'V5 builder, symbolic relocated private helper'}
 
 
+def apply_v5_umod32_32_quotient_preserving(dst: bytearray, vals: dict[str,int]) -> dict:
+    """Install V5 UMOD32_32 front end with complete Q32/R32 public semantics.
+
+    V1/V5 document modulo as a division alias: Q32 is an observable output.
+    This distinct 147-byte gate defers D==0 for the common N<D result and
+    routes N>D to the previously certified $6810 high-qone handler while
+    preserving compare A/C across the zero check (PHA/PLA).
+    """
+    from v5_umod32_qpreserving_source import source as frontend_source
+    from mini6502 import Assembler
+    base=vals['REG_GAME_API']
+    gate=vals['REG_KERNEL']+0x1957
+    out=base+0x80
+    public=base+0x03
+    high=vals['REG_TABLE']+0x0810
+    zero=vals['REG_GAME']+0x0122
+    expect=bytes((0x4c,gate&255,gate>>8))
+    if dst[public:public+3]!=expect:
+        raise RuntimeError('V5 UMOD32 alias public gate changed: refuse patch')
+    src=frontend_source(out,vals['MATH_IO'],high,zero)
+    code,labels,_=Assembler().assemble(src)
+    if min(code)!=out or len(code)!=147 or max(code)>=out+0xC0:
+        raise RuntimeError('V5 UMOD32 qpreserving code extent unexpected')
+    if any(dst[p] for p in code):
+        raise RuntimeError('V5 UMOD32 candidate would overwrite nonzero owned bytes')
+    for p,value in code.items():dst[p]=value
+    dst[public:public+3]=bytes((0x4c,out&255,out>>8))
+    return {'entry':hx(out),'code_end':hx(max(code)),
+            'code_bytes':len(code),'normal_zp_growth':0,
+            'resident_prg_growth':0,
+            'public_Q32_R32_preserved':True,
+            'fallback_high_qone':hx(high),
+            'divzero_handler':hx(zero),
+            'source':'tools/v5_umod32_qpreserving_source.py'}
+
 def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
     # V5 intentionally inherits the V1 normalization backend.  Publish a
     # profile-local standalone source, but require it to remain byte-identical
@@ -1358,6 +1393,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
         dst[high_zero:high_zero+3] = bytes((0x4C,game&255,game>>8))
         udiv32_32_prechecked = apply_udiv32_32_prechecked_gate(dst, vals)
         udiv32_32_narrow = apply_v5_udiv32_32_narrow(dst, vals, v1man)
+        umod32_32_qcomplete = apply_v5_umod32_32_quotient_preserving(dst, vals)
 
         new_hi = max(hi, hbase + HYBRID_BYTES - 1)
         prg = outdir / 'math_v5_hybrid_lowzp_game_math.prg'
@@ -1400,6 +1436,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
             'shifted_div_recip_direct': shifted_div_recip_detail,
             'udiv32_32_prechecked_nonzero': udiv32_32_prechecked,
             'udiv32_32_narrow_16bit': udiv32_32_narrow,
+            'umod32_32_qcomplete':umod32_32_qcomplete,
             'indirect_beneficiaries': [
                 'MATH_UDIV16_SHL8',
                 'MATH_URECIP16_Q16',
@@ -1415,6 +1452,7 @@ def build(config: Path, outdir: Path, include_atan2_fast: bool = True) -> dict:
                 'UDIV24 narrow-divisor tail calls the same relocated UDIV32/16 engine through the V2 latency helper; no additional ZP is required.',
                 'V5 UMOD24 imports the V2 remainder-only frontend into the final free REG_LOW page and rejoins the same relocated 24-bit quotient core.',
                 'V5 UMOD16 now also imports its V2 remainder-only frontend; UMOD32/16 remains a compact quotient-core alias.',
+                'V5 UMOD32/32 retains Q32+R32 and uses a distinct in-resident delayed-zero front end; UDIV32/32 keeps the original path.',
                 'HYBRID_CODE is private implementation storage and may be relocated at build time.',
                 'Reference HYBRID_CODE=$A000 lives under BASIC ROM; RAM must be visible while executing imported routines.',
             ],
