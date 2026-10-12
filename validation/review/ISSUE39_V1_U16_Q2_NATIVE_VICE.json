@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "date": "2026-10-12",
+  "emulator": "native VICE x64sc supplied 3.13.2 executable (runtime reports 3.10 internally)",
+  "machine": "C64 PAL 6510",
+  "old_resident_sha256": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62",
+  "new_resident_sha256": "cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f",
+  "apis": {
+    "MATH_UDIV16": {
+      "entry": "$3140",
+      "pairs": 256,
+      "calls_original": 256,
+      "calls_candidate": 256,
+      "arithmetic_errors": 0,
+      "carry_mismatches": 0,
+      "old_new_differences": 0,
+      "input_output_sha256": "8b5e9651b643b0e4341be8a1bdda2f1211753cb9d420c10f27b97401b36e0f92"
+    },
+    "MATH_UMOD16": {
+      "entry": "$3220",
+      "pairs": 256,
+      "calls_original": 256,
+      "calls_candidate": 256,
+      "arithmetic_errors": 0,
+      "carry_mismatches": 0,
+      "old_new_differences": 0,
+      "input_output_sha256": "8b5e9651b643b0e4341be8a1bdda2f1211753cb9d420c10f27b97401b36e0f92"
+    }
+  },
+  "total_calls": 1024,
+  "code_window": "$4200-$4342",
+  "public_entry_points_unchanged": true,
+  "full_v1_resident": true,
+  "init_and_io_bankout": true,
+  "notes": "Native VICE is an independent arithmetic/ABI check; cycle savings were measured using OptiSearch Reduced6502. REU is irrelevant to V1."
+}
