@@ -1,3 +1,6 @@
+2026-10-12 ISSUE39 V1 24/8 SHARED-SUBTRACTION EXPERIMENT (NO RESIDENT CHANGE)
+- Added 69-byte in-memory V1 24/8 candidate vs shipped 84-byte loop, source-backed paired public UDIV24/UMOD24 ABI regression veto and seven-workload/stress screen; 0 extra ZP/stack, no shipped bytes or ABI altered. OptiSearch/manual synthesis remains open. See docs/ISSUE39_V1_UDIV24_SHARED_SUBTRACTION_SCREEN_2026-10-12.md.
+
 2026-10-12 ISSUE39 STANDALONE DIRECT-CHAIN UMOD16 ZERO-ZP SPECIALIST
 - Published self-contained symbolic Repose/OptiSearch UMOD16 direct-chain donor with C64ML success/zero carry normalization and quotient-buffer preservation; zero ZP, 976 bytes code/data, two ordinary RAM scratch bytes, two nested stack bytes.
 - Official 1,705-pair identical-input mean 209.868 cycles (V2-V5 198.601); therefore a memory-budget alternative, not a speed winner. Three relocations/5,115 emulator calls and 192 native x64sc correctness calls pass; native cycle timings not claimed. Source, independent CI proof, standalone pickup, backlog and checksum/package records synchronized.
