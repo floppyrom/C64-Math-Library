@@ -99,13 +99,13 @@ def run_one(cpu,entry,n,d):
  mem=cpu.mem
  wr(mem,N,n,1);wr(mem,D,d,1)
  wr(mem,Q,0xa79b6c58,4);wr(mem,R,0xe47b9256,4)
- mem[0xc012]=0xab;mem[0xc016]=0xcd;mem[0xc020]=0x72
+ mem[0xc012]=0xab;mem[0xc016]=0xcd;mem[0xc024]=0x72
  cpu.d=0;cpu.c=1;sp=cpu.sp
  cycles=cpu.call(entry,1_000_000)
  q,r,c=expected(n,d,8,8)
  got=(mem[Q],mem[R],cpu.c,mem[N],mem[D],
       bytes(mem[Q+1:Q+4]).hex(),bytes(mem[R+1:R+4]).hex(),
-      mem[0xc012],mem[0xc016],mem[0xc020],cpu.sp)
+      mem[0xc012],mem[0xc016],mem[0xc024],cpu.sp)
  assert got==(q,r,c,n,d,bytes.fromhex('6c9ba7').hex(),
   bytes.fromhex('927be4').hex(),0xab,0xcd,0x72,sp),(entry,n,d,got,q,r,c)
  return cycles
