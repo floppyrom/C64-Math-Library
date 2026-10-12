@@ -23,8 +23,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Public old/new ABI screen and canonical source + alternate rebuild
-        run: python3 tools/screen_issue39_v234_32_32_latezero.py --stage-images
+      - name: Build modified source reference and alternate layouts
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+      - name: Exact source-byte gate proof and old/new public ABI
+        run: python3 tools/screen_issue39_v234_32_32_latezero.py
       - name: Export source-built candidate plus complete evidence
         if: always()
         uses: actions/upload-artifact@v4
