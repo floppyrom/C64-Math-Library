@@ -9,7 +9,7 @@ on:
       - 'routines/standalone_lab/library_dependent/div_u32_u16_n16_optin.asm'
       - '.github/workflows/issue39-u3216-n16-optin.yml'
 permissions:
-  contents: read
+  contents: write
 jobs:
   paired-public-two-ram-maps:
     runs-on: ubuntu-latest
@@ -17,10 +17,24 @@ jobs:
     env: {PYTHONDONTWRITEBYTECODE: '1'}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: issue39-u3216-n16-optin-12byte-helper
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - name: 12-byte opt-in profile public ABI & placement proof
         run: python3 tools/qualify_issue39_u3216_n16_optin.py --out /tmp/issue39_optin_12byte.json
+      - name: Seal qualified opt-in code, docs, logs, hashes
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_u3216_n16_optin.py /tmp/issue39_optin_12byte.json
+      - name: Commit sealed research artifacts to opt-in branch
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: publish 12-byte opt-in N16 helper verified artifact'
+          git push origin HEAD:issue39-u3216-n16-optin-12byte-helper
       - uses: actions/upload-artifact@v4
         with:
           name: issue39-n16-optin-and-five-current-residents
