@@ -28,6 +28,14 @@ jobs:
       - name: Finalize no-gain certificate and package
         if: github.event_name == 'push'
         run: python3 tools/finalize_issue39_v2_umod8_guard_thresholds.py /tmp/issue39_v2_umod8_guard.json
+      - name: Publish sealed evidence
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: certify V2 UMOD8 exhaustive D24 threshold no gain'
+          git push origin HEAD:issue39-v2-umod8-guard-threshold-sweep
       - uses: actions/upload-artifact@v4
         with:
           name: issue39-v2-umod8-exhaustive-guard-sweep
