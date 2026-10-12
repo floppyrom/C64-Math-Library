@@ -13,7 +13,7 @@ on:
       - '.github/workflows/issue39-umod16-biased-screen.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   same-input-resident-comparison:
@@ -30,3 +30,20 @@ jobs:
         with:
           name: issue39-umod16-biased-current-main-screen
           path: /tmp/issue39_umod16_biased.json
+      - name: Publish qualified research finding and seal source package
+        run: python3 tools/finalize_issue39_umod16_biased_screen.py /tmp/issue39_umod16_biased.json
+      - name: Independently verify package and source catalogs
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Commit qualified research assets to this branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: certify UMOD16 biased current-main no-default screen"
+            git push origin HEAD:issue39-umod16-biased-resident-screen
+          fi
