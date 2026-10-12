@@ -15,6 +15,7 @@ NEW_V5='634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02'
 DOC='docs/ISSUE39_PR68_V1_U16_DIRECT_Q2_EXIT_2026-10-12.md'
 TAG='2026-10-12 ISSUE39 PR68 V1 16BIT DIRECT Q2 EXIT'
 NATIVE='validation/review/ISSUE39_V1_U16_Q2_NATIVE_VICE.json'
+NATIVE_V5='validation/review/ISSUE39_V5_INHERITED_U16_Q2_NATIVE_VICE.json'
 SOURCE='validation/review/ISSUE39_V1_U16_Q2_LAYOUT_SOURCE_SCREEN.json'
 def sha(p):return hashlib.sha256((ROOT/p).read_bytes()).hexdigest()
 def run(*args):
@@ -44,6 +45,8 @@ def main():
  assert oldhash==state['reference_prg_sha256']
  native=json.loads((ROOT/NATIVE).read_text())
  assert native['status']=='PASS' and native['total_calls']==1024 and native['new_resident_sha256']==NEW
+ inherited_native=json.loads((ROOT/NATIVE_V5).read_text())
+ assert inherited_native['status']=='PASS' and inherited_native['total_calls']==1024 and inherited_native['new_resident_sha256']==NEW_V5
  py('generate_sources')
  for config in ('reference','alternate'):
   py('assemble_sources','--profile','all','--config-kind',config)
@@ -147,6 +150,8 @@ the high-quotient shift/subtract loop's original page phases and placement.
 - Native VICE x64sc: complete V1 old/new residents (MATH_INIT, RAM banked in),
   256 operand pairs each for UDIV16 and UMOD16, 1,024 old+new public calls,
   no differences and no mathematical/flag errors. Evidence: `{NATIVE}`.
+- Native VICE V5: 1,024 additional old/new UDIV16/UMOD16 public calls
+  passed with no mathematical/flag differences. Evidence: `{NATIVE_V5}`.
 - Source assembly: independent 323-byte expected SHA-256 matches the rebuilt
   reference code at $4200..$4342; **57 changed bytes in that window, 0
   changed elsewhere**. Alternate relocation compiles successfully. Resident
@@ -180,7 +185,7 @@ claimed to be globally optimal.
   if blurb not in ss:f.write_text(ss.rstrip()+'\n\n'+blurb+'\n')
  log=f"""{TAG}
 - V1 shared UDIV16/UMOD16 core: put q=2 return into short BCC range and move cold 3-byte alignment padding after RTS, preserving the $4200-$4342 323-byte envelope and long quotient loop page phase. 57 in-core byte changes; no V2-V4 resident modification and the same 57-byte inherited V5 change or normal ZP, stack, code-span, API change.
-- 13,559 same-input quotient-stratified/edge/random cases per V1 16-bit public API: 8,255 faster, 5,304 equal, zero slower, 0.608821 fewer mean cycles. Native VICE 1,024 old/new public calls all correct. Reference/alternate relocation, 5-profile unsigned correctness and paired corpus, signed correctness, stable historical PR57-62 SHA reconstructions validated.
+- 13,559 same-input quotient-stratified/edge/random cases per V1 16-bit public API: 8,255 faster, 5,304 equal, zero slower, 0.608821 fewer mean cycles. Native VICE 2,048 V1/V5 old/new public calls all correct. Reference/alternate relocation, 5-profile unsigned correctness and paired corpus, signed correctness, stable historical PR57-62 SHA reconstructions validated.
 - Common-input V1 UDIV16 mean 156.348479->{new_means['MATH_UDIV16']['v1_balanced']:.6f}; UMOD16 189.383578->{new_means['MATH_UMOD16']['v1_balanced']:.6f} cycles. Performance tables, standalone source mirrors, README/manual, changelogs, release metadata, checksums refreshed. Unsigned family campaign remains OPEN. {DOC}
 """
  for name in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
@@ -197,10 +202,11 @@ claimed to be globally optimal.
   'old_v1_sha256':OLD,'new_v1_sha256':NEW,
   'resident_byte_growth':0,'normal_zp_growth':0,'stack_growth':0,
   'public_abi_changed':False,'source_changed_bytes_inside_core':57,
-  'native_vice_old_new_calls':1024,'paired_stress_calls':27118,
+  'native_vice_old_new_calls':2048,'paired_stress_calls':27118,
   'common_input_unsigned_all_profile_calls':common['total_calls'],
   'unsigned_full_correctness_calls':unsigned['summary']['machine_calls'],
   'native_report_sha256':sha(NATIVE),
+  'native_v5_report_sha256':sha(NATIVE_V5),
   'parent_reconstruction_source_sha256':sha('tools/issue39_v1_u16_q2_parent.py')}
  for key,path,field in (
   ('issue39_common_input_unsigned_divmod','validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json','benchmark_sha256'),
