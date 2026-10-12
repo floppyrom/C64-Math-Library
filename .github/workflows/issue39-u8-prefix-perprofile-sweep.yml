@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/issue39-u8-prefix-perprofile-sweep.yml'
       - 'tools/screen_issue39_u8_prefix_source_sweep.py'
+      - 'tools/qualify_issue39_u8_k8_exhaustive.py'
       - 'tools/diagnose_issue39_udiv8_reu_carry.py'
       - 'tools/finalize_issue39_u8_prefix_source_sweep.py'
   pull_request:
@@ -32,6 +33,8 @@ jobs:
         run: python3 tools/screen_issue39_u8_prefix_source_sweep.py --profile v1_balanced --K 12 --map ram_0800 --out /tmp/issue39_u8_smoke.json
       - name: Five-profile two RAM-map K8-28 architecture corpus
         run: python3 tools/screen_issue39_u8_prefix_source_sweep.py --out /tmp/issue39_u8_sweep.json
+      - name: Exhaustive 8x8 public profile ABI and cycle count for K8
+        run: python3 tools/qualify_issue39_u8_k8_exhaustive.py --out /tmp/issue39_u8_k8_exhaustive.json
       - name: Seal benchmark and release documentation
         if: github.event_name == 'push'
         run: python3 tools/finalize_issue39_u8_prefix_source_sweep.py /tmp/issue39_u8_sweep.json
@@ -49,3 +52,4 @@ jobs:
           path: |
             /tmp/issue39_u8_smoke.json
             /tmp/issue39_u8_sweep.json
+            /tmp/issue39_u8_k8_exhaustive.json
