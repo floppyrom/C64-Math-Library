@@ -1,0 +1,40 @@
+name: Issue39 32by16 N16 divisor-gated qualification
+on:
+  push:
+    branches: [issue39-u3216-divisor-gated-screen]
+    paths: ['.github/workflows/issue39-u3216-divisor-gated-screen.yml']
+  pull_request:
+    paths:
+      - 'tools/screen_issue39_u3216_divisor_gated.py'
+      - '.github/workflows/issue39-u3216-divisor-gated-screen.yml'
+permissions:
+  contents: write
+jobs:
+  public-abi-gated-divisor-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u3216-divisor-gated-screen
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Full public ABI compared on 5 profiles and 4 safe D-high cutoffs
+        run: python3 tools/screen_issue39_u3216_divisor_gated.py --out /tmp/issue39_dhi_screen.json
+      - name: Certify and stage same-input results with changelogs
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_u3216_n16_dhi.py /tmp/issue39_dhi_screen.json
+      - name: Publish qualified research (not a resident engine)
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal four-threshold five-profile N16-DHI donor evidence'
+          git push origin HEAD:issue39-u3216-divisor-gated-screen
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-u3216-n16-divisor-gated-screen
+          path: /tmp/issue39_dhi_screen.json
