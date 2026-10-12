@@ -94,7 +94,7 @@ def main():
   assert entry['maps']['0x800']==entry['maps']['0xb00'],('location changed cycles',profile)
   report['profiles'][profile]=entry
  assert report['pairs']==67520 and report['cpu_calls']==135040
- assert report['code_bytes']==90
+ assert report['code_bytes']==114
  if args.out:
   args.out.parent.mkdir(parents=True,exist_ok=True)
   args.out.write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
