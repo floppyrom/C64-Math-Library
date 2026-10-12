@@ -1,0 +1,238 @@
+{
+  "candidate_sha256": "28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0",
+  "machine_calls": 48388,
+  "new_core_bytes": 69,
+  "normal_zp_growth": 0,
+  "old_core_bytes": 84,
+  "original_v1_sha256": "cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f",
+  "public_abi_changed": false,
+  "resident_file_size_growth": 0,
+  "routines": {
+    "MATH_UDIV24": {
+      "canonical": {
+        "after_mean": 170.23816536924048,
+        "before_mean": 170.72669892699346,
+        "best_gain": -72,
+        "cases": 4753,
+        "equal": 4671,
+        "faster": 82,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "divide_by_zero": {
+        "after_mean": 69.9921875,
+        "before_mean": 69.9921875,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "full_n24_d8": {
+        "after_mean": 1202.2968137254902,
+        "before_mean": 1220.7960784313725,
+        "best_gain": -54,
+        "cases": 4080,
+        "equal": 301,
+        "faster": 3779,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "n2_zero_control": {
+        "after_mean": 1228.2998046875,
+        "before_mean": 1228.2998046875,
+        "best_gain": 0,
+        "cases": 1024,
+        "equal": 1024,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "power_of_two": {
+        "after_mean": 1032.15234375,
+        "before_mean": 1042.9453125,
+        "best_gain": -48,
+        "cases": 256,
+        "equal": 169,
+        "faster": 87,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "quotient_2_to_7": {
+        "after_mean": 330.71484375,
+        "before_mean": 330.71484375,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "quotient_one": {
+        "after_mean": 93.0703125,
+        "before_mean": 93.0703125,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "quotient_zero": {
+        "after_mean": 56.1875,
+        "before_mean": 56.1875,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "small_divisor": {
+        "after_mean": 1204.6484375,
+        "before_mean": 1222.84765625,
+        "best_gain": -45,
+        "cases": 256,
+        "equal": 12,
+        "faster": 244,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "uniform": {
+        "after_mean": 124.05859375,
+        "before_mean": 124.05859375,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "wide_divisor_control": {
+        "after_mean": 134.51513671875,
+        "before_mean": 134.51513671875,
+        "best_gain": 0,
+        "cases": 2048,
+        "equal": 2048,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      }
+    },
+    "MATH_UMOD24": {
+      "canonical": {
+        "after_mean": 246.8222794591114,
+        "before_mean": 248.31745009658724,
+        "best_gain": -72,
+        "cases": 1553,
+        "equal": 1471,
+        "faster": 82,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "divide_by_zero": {
+        "after_mean": 69.9921875,
+        "before_mean": 69.9921875,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "full_n24_d8": {
+        "after_mean": 1202.2968137254902,
+        "before_mean": 1220.7960784313725,
+        "best_gain": -54,
+        "cases": 4080,
+        "equal": 301,
+        "faster": 3779,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "n2_zero_control": {
+        "after_mean": 1228.2998046875,
+        "before_mean": 1228.2998046875,
+        "best_gain": 0,
+        "cases": 1024,
+        "equal": 1024,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "power_of_two": {
+        "after_mean": 1032.15234375,
+        "before_mean": 1042.9453125,
+        "best_gain": -48,
+        "cases": 256,
+        "equal": 169,
+        "faster": 87,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "quotient_2_to_7": {
+        "after_mean": 330.71484375,
+        "before_mean": 330.71484375,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "quotient_one": {
+        "after_mean": 93.0703125,
+        "before_mean": 93.0703125,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "quotient_zero": {
+        "after_mean": 56.1875,
+        "before_mean": 56.1875,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "small_divisor": {
+        "after_mean": 1204.6484375,
+        "before_mean": 1222.84765625,
+        "best_gain": -45,
+        "cases": 256,
+        "equal": 12,
+        "faster": 244,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "uniform": {
+        "after_mean": 124.05859375,
+        "before_mean": 124.05859375,
+        "best_gain": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      },
+      "wide_divisor_control": {
+        "after_mean": 134.51513671875,
+        "before_mean": 134.51513671875,
+        "best_gain": 0,
+        "cases": 2048,
+        "equal": 2048,
+        "faster": 0,
+        "slower": 0,
+        "worst_regression": 0
+      }
+    }
+  },
+  "source": "tools/candidates/issue39_v1_24by8_shared_subtraction.asm",
+  "status": "PASS"
+}
