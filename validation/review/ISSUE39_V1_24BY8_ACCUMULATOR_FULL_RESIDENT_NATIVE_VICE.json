@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "date": "2026-10-12",
+  "emulator": "VICE x64sc (native NMOS 6510 execution)",
+  "scope": "full resident PR78 versus merged PR81 complete public API entries, native correctness not cycle timing",
+  "pr78_sha256": "28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0",
+  "pr81_sha256": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
+  "pr78_reconstruction": "replace exactly the 84-byte V1 $1D00 island using merged PR78 69-byte core, followed by 15 zero padding, verify exact SHA-256",
+  "pr81_source": "v1_balanced/resident/math_v1_balanced_game_math.prg",
+  "core_bytes_before": 69,
+  "core_bytes_after": 61,
+  "opcodes_executed": "JSR MATH_INIT at $3280 and public JSR MATH_UDIV24=$3170 or MATH_UMOD24=$3223",
+  "test_seed": "0x202610121924",
+  "input_pairs_per_api": 96,
+  "old_new_pairs_per_api": 96,
+  "native_calls_per_api": 192,
+  "total_native_full_resident_calls": 384,
+  "input_classes": [
+    "zero divisors",
+    "D0 1..255 and nonzero 24-bit N2",
+    "D16",
+    "D24",
+    "N<65536",
+    "fully random 24/24"
+  ],
+  "compared_outputs": [
+    "Q0-Q2",
+    "R0-R2",
+    "C flag",
+    "N0-N2 untouched",
+    "D0-D2 untouched",
+    "Q3 untouched sentinel $A5",
+    "R3 untouched sentinel $5A",
+    "stack-pointer balance"
+  ],
+  "results": {
+    "MATH_UDIV24": {
+      "input_pairs": 96,
+      "native_calls_old_plus_new": 192,
+      "errors": 0,
+      "old_new_differences": 0
+    },
+    "MATH_UMOD24": {
+      "input_pairs": 96,
+      "native_calls_old_plus_new": 192,
+      "errors": 0,
+      "old_new_differences": 0
+    }
+  },
+  "native_cycle_timing_measured": false,
+  "harness_script_sha256": "2a107ef5b8c23d9ac62ad79cd7092175cd5c47e3be81715da6f44d9f62f9d82a",
+  "harness_executable_bundle": "Issue39_PR81_V1_FullResident_Native_VICE_Proof_2026-10-12.zip",
+  "certified_by": "independent native x64sc local run on exact GitHub Actions-exported PR81 binary"
+}
