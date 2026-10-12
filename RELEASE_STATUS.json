@@ -1016,6 +1016,8 @@
     "paired_signed_new_csv_sha256": "42d8a897669ada51c653160e35174e5ebdf2b228da858533da42ad08e4933b1d",
     "v5_umod16_frontend_source_sha256": "842fac2810e32df26677ccf43c9fae645492fc226eba6c34e979bba035b1e2a7",
     "historical_umod8_parent_restore_source_sha256": "e4473ee9edba4f8f035aba936fb4153d5b5135d39b5c7b08bb6bf2ad80892cb8",
-    "historical_zero_high_bypass_audit_status": "PASS"
+    "historical_zero_high_bypass_audit_status": "PASS",
+    "historical_umod8_exhaustive_status": "PASS: 262144 paired calls, frozen report SHA",
+    "historical_umod8_exhaustive_audit_source_sha256": "0c9e462cbe5e1204d336524559f4258f4bd7a1724c7cbffca8304b1fabafe17a"
   }
 }
