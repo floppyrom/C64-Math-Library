@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 69397,
-    "user_manual_lines": 1914,
-    "user_manual_sha256": "ba69b9136a4356f20e79d9bc7c7fdf311bfb20ca8db156764a2933765ec3c1a0"
+    "user_manual_bytes": 69567,
+    "user_manual_lines": 1916,
+    "user_manual_sha256": "4af261c0e6d6d617f5f9cee0739cd231028e4e0138a2d760a5d28c2ed7b09011"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1979,5 +1979,137 @@
     "resident_binaries_changed": false,
     "public_api_changed": false,
     "unsigned_divmod_campaign_complete": false
+  },
+  "issue39_u24_d8_smc_current_2026_10_13": {
+    "status": "PASS_SPECIALIST_OPTIN_NOT_DEFAULT",
+    "source": "routines/standalone_lab/portable/div_u24_by_u8_selfmod.asm",
+    "source_sha256": "f6cbb69ab17360efa4ab69df365763a78f5d0ecf2b6c0eed9c89ffdc27bb09a1",
+    "report": "validation/review/ISSUE39_U24_D8_SMC_CURRENT_PUBLIC_SCREEN.json",
+    "report_sha256": "afdc31ff78ad298490b6b8d1759f61cf5f8b59170a91e17e1814b532a5744c8b",
+    "doc": "docs/ISSUE39_U24_D8_RAM_SMC_CURRENT_OPTIN_2026-10-13.md",
+    "precondition": "N24>=65536; D24=1..255 (high divisor bytes zero)",
+    "paired_inputs": 65080,
+    "cpu_calls": 130160,
+    "normal_zp_growth": 0,
+    "native_vice_calls": 0,
+    "two_source_reassembled_ram_maps": [
+      "ram_0800",
+      "ram_0851"
+    ],
+    "profile_summary": {
+      "v1_balanced": {
+        "MATH_UDIV24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -46.0,
+          "eligible_cases": 2048,
+          "eligible_faster": 2048,
+          "eligible_slower": 0,
+          "Q3_extra_byte_differences": 0,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -46.0
+        },
+        "MATH_UMOD24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -46.0,
+          "eligible_cases": 2048,
+          "eligible_faster": 2048,
+          "eligible_slower": 0,
+          "Q3_extra_byte_differences": 0,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -46.0
+        }
+      },
+      "v2_pareto_fast": {
+        "MATH_UDIV24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -17.712890625,
+          "eligible_cases": 2048,
+          "eligible_faster": 1937,
+          "eligible_slower": 71,
+          "Q3_extra_byte_differences": 2048,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -17.7890625
+        },
+        "MATH_UMOD24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -22.712890625,
+          "eligible_cases": 2048,
+          "eligible_faster": 2024,
+          "eligible_slower": 24,
+          "Q3_extra_byte_differences": 2048,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -22.7890625
+        }
+      },
+      "v3_reu_512k": {
+        "MATH_UDIV24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -17.712890625,
+          "eligible_cases": 2048,
+          "eligible_faster": 1937,
+          "eligible_slower": 71,
+          "Q3_extra_byte_differences": 2048,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -17.7890625
+        },
+        "MATH_UMOD24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -22.712890625,
+          "eligible_cases": 2048,
+          "eligible_faster": 2024,
+          "eligible_slower": 24,
+          "Q3_extra_byte_differences": 2048,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -22.7890625
+        }
+      },
+      "v4_reu_16m": {
+        "MATH_UDIV24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -17.712890625,
+          "eligible_cases": 2048,
+          "eligible_faster": 1937,
+          "eligible_slower": 71,
+          "Q3_extra_byte_differences": 2048,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -17.7890625
+        },
+        "MATH_UMOD24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -22.712890625,
+          "eligible_cases": 2048,
+          "eligible_faster": 2024,
+          "eligible_slower": 24,
+          "Q3_extra_byte_differences": 2048,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -22.7890625
+        }
+      },
+      "v5_hybrid_lowzp": {
+        "MATH_UDIV24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -17.712890625,
+          "eligible_cases": 2048,
+          "eligible_faster": 1937,
+          "eligible_slower": 71,
+          "Q3_extra_byte_differences": 2048,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -17.7890625
+        },
+        "MATH_UMOD24": {
+          "code_bytes": 68,
+          "uniform_eligible_mean_delta": -22.712890625,
+          "eligible_cases": 2048,
+          "eligible_faster": 2024,
+          "eligible_slower": 24,
+          "Q3_extra_byte_differences": 2048,
+          "modulo_Q24_side_effect_differences": 0,
+          "tiny_divisor_mean_delta": -22.7890625
+        }
+      }
+    },
+    "resident_binaries_changed": false,
+    "public_api_changed": false,
+    "unsigned_divmod_family_complete": false
   }
 }
