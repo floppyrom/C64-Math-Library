@@ -1,0 +1,26 @@
+name: Issue39 V1 24/8 accumulator SMC screen
+
+on:
+  push:
+    branches:
+      - issue39-v1-24by8-accumulator-smc-screen
+  pull_request:
+    paths:
+      - 'tools/candidates/issue39_v1_24by8_accumulator_selfmod.asm'
+      - 'tools/screen_issue39_v1_24by8_accumulator_selfmod.py'
+      - '.github/workflows/issue39-v1-24-accumulator-smc-screen.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  source-backed-smc-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: RAM-only SMC complete V1 public-entry same-input test
+        run: python3 tools/screen_issue39_v1_24by8_accumulator_selfmod.py
