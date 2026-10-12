@@ -27,7 +27,7 @@ assert sorted(candidate)==list(range(entry,entry+68))
 assert old[:17]==bytes(candidate[i] for i in range(entry,entry+17)), 'entry/state setup has unexpectedly changed'
 patched=bytearray(b)
 for addr,byte in candidate.items():patched[2+addr-load]=byte
-patched[off+68:off+84]=bytes(23)
+patched[off+68:off+84]=bytes(16)
 assert len(b)==len(patched) and patched[:off]==b[:off] and patched[off+84:]==b[off+84:]
 cpus=[]
 for raw in (b,patched):
