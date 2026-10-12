@@ -68,9 +68,10 @@ def main():
    lines.append(f"| {p} | {op} | {s['delta_mean']:+.3f} | {s['faster']} | {s['slower']} |")
  lines+=['',
   'The means are for this explicit **power-of-two-only** distribution,',
-  'not the library-wide public leaderboard. V2–V5 have a real slower',
-  'tail for larger k and small numerators; callers must profile their',
-  'specific divisor/numerator mix. Do not substitute this for the',
+  'not the library-wide public leaderboard. The V2–V5 slower tail is',
+  '30 edge cases per API with k=2..7 and small numerator values;',
+  'none of the tested uniform-random cases regressed. Callers must',
+  'profile their own divisor/numerator mix. Do not substitute for the',
   'default resident. Crucially, there is **no fast path dispatch tax**',
   'on arbitrary divisors, because the caller opts in knowingly.',
   '',
