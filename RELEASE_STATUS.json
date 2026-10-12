@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 67459,
-    "user_manual_lines": 1890,
-    "user_manual_sha256": "953ffd01fe7972ecbd4bb1a21d7512fb322fe77740184eb33a5a082197d25afe"
+    "user_manual_bytes": 67646,
+    "user_manual_lines": 1892,
+    "user_manual_sha256": "920e1f1502c1cb84491d30c928058e75df767b9fccc6b59e59f3c1e885e7848c"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1216,6 +1216,22 @@
     "inputs_slower": 1391,
     "Q16_output_different_cases": 667,
     "resident_prgs_changed": false,
+    "unsigned_family_complete": false
+  },
+  "issue39_v1_24by8_accumulator_full_resident_native_vice_2026_10_12": {
+    "status": "PASS",
+    "documentation": "docs/ISSUE39_V1_24BY8_FULL_RESIDENT_NATIVE_VICE_2026-10-12.md",
+    "evidence": "validation/review/ISSUE39_V1_24BY8_ACCUMULATOR_FULL_RESIDENT_NATIVE_VICE.json",
+    "evidence_sha256": "a3c0935af713adca424c2b3531a99cb1528b90c286d364b344bee3f28212f6d5",
+    "harness_script_sha256": "2a107ef5b8c23d9ac62ad79cd7092175cd5c47e3be81715da6f44d9f62f9d82a",
+    "resident_sha256": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
+    "old_resident_sha256": "28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0",
+    "native_public_entry_calls": 384,
+    "pairs_per_api": 96,
+    "oracle_errors": 0,
+    "old_new_differences": 0,
+    "native_cycle_timing_claim": false,
+    "resident_source_or_binary_changed": false,
     "unsigned_family_complete": false
   }
 }
