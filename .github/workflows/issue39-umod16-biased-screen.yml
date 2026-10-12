@@ -15,6 +15,9 @@ on:
 permissions:
   contents: write
 
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+
 jobs:
   same-input-resident-comparison:
     runs-on: ubuntu-latest
@@ -31,6 +34,7 @@ jobs:
           name: issue39-umod16-biased-current-main-screen
           path: /tmp/issue39_umod16_biased.json
       - name: Publish qualified research finding and seal source package
+        if: github.event_name == 'push'
         run: python3 tools/finalize_issue39_umod16_biased_screen.py /tmp/issue39_umod16_biased.json
       - name: Independently verify package and source catalogs
         run: |
@@ -38,6 +42,7 @@ jobs:
           python3 tools/validate_public_catalog.py
           python3 tools/validate_standalone_sources.py
       - name: Commit qualified research assets to this branch
+        if: github.event_name == 'push'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
