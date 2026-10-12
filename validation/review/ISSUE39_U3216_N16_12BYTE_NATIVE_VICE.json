@@ -1,0 +1,49 @@
+{
+  "status": "PASS_REPRESENTATIVE_PROFILES_ONLY",
+  "date": "2026-10-12",
+  "scope": "Exact current SHA-pinned V1 and V2 full-resident x64sc execution; V3-V5 have two-map machine-CPU proof but were not tested here in native VICE.",
+  "kernel_bytes": 12,
+  "kernel_hex": "204031a9008d1ac08d1bc060",
+  "optin_entry": "$0800",
+  "resident_public_entry_untouched": true,
+  "full_resident_sha256": {
+    "v1_balanced": "d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a",
+    "v2_pareto_fast": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d"
+  },
+  "compared_ops": [
+    "MATH_UDIV32_16",
+    "MATH_UMOD32_16"
+  ],
+  "pairs_per_profile_per_op": 32,
+  "old_new_native_calls": 256,
+  "native_cycle_timing_measured": false,
+  "decimal_mode": false,
+  "bank_selection": "$01=$34 (all RAM), interrupts disabled",
+  "compared_fields": "Q32, full R32 (including preserved high R sentinels), carry, N32, D16, two D-high sentinels, stack pointer",
+  "zero_divisor_and_small_divisor_cases_included": true,
+  "noncarry_status_register_bits_may_differ": true,
+  "normalized_output_record_sha256": "ee570f3881052e9255ae6bf16e785560594ca537334d160eedd29d2bc3b6137b",
+  "profiles": {
+    "v1_balanced": {
+      "MATH_UDIV32_16": {
+        "pairs": 32,
+        "errors": 0
+      },
+      "MATH_UMOD32_16": {
+        "pairs": 32,
+        "errors": 0
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_UDIV32_16": {
+        "pairs": 32,
+        "errors": 0
+      },
+      "MATH_UMOD32_16": {
+        "pairs": 32,
+        "errors": 0
+      }
+    }
+  },
+  "native_report_limit": "Do not extrapolate native VICE claims to V3/V4/V5 or infer any native cycle savings."
+}
