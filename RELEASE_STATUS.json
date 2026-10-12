@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 68348,
-    "user_manual_lines": 1900,
-    "user_manual_sha256": "e22603b281450cce5892f6201a6a23d3d92ce72b7249e37422454fd36f8de523"
+    "user_manual_bytes": 68487,
+    "user_manual_lines": 1902,
+    "user_manual_sha256": "f1fce6da17665602ed30c79f64da764b0379e6baa2f7e2b32b0b4d9e9654c833"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1387,6 +1387,18 @@
     "best_guard": 24,
     "best_mean": 52.20445251464844,
     "binary_changed": false,
+    "unsigned_family_complete": false
+  },
+  "issue39_u3216_n16_donor_2026_10_12": {
+    "status": "PASS_RESEARCH_NO_PROMOTION",
+    "report": "validation/review/ISSUE39_U3216_N16_DELEGATE_CURRENT_MAIN.json",
+    "report_sha256": "2addc257a8ff05a1e8ab29b54c9df504d882d45fcc4c080af2e4981f3be75316",
+    "documentation": "docs/ISSUE39_U3216_N16_DELEGATE_CURRENT_MAIN_2026-10-12.md",
+    "candidate": "tools/candidates/issue39_u3216_n16_delegate_research.asm",
+    "paired_machine_calls": 158260,
+    "native_vice_calls": 0,
+    "default_kernal_rom_placement_unsafe": true,
+    "production_changed": false,
     "unsigned_family_complete": false
   }
 }

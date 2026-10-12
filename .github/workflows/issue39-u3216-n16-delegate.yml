@@ -1,0 +1,38 @@
+name: Issue39 32-by-16 bounded numerator donor A-B
+on:
+  push:
+    branches: [issue39-u3216-n16-delegate-public-screen]
+    paths: ['.github/workflows/issue39-u3216-n16-delegate.yml']
+  pull_request:
+    paths: ['tools/screen_issue39_u3216_n16_delegate.py','.github/workflows/issue39-u3216-n16-delegate.yml']
+permissions:
+  contents: write
+jobs:
+  paired-32by16-n16-public-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u3216-n16-delegate-public-screen
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Profile complete public API and operand side-effect screen
+        run: python3 tools/screen_issue39_u3216_n16_delegate.py --out /tmp/issue39_n16_3216.json
+      - name: Seal source-backed research with release metadata
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_u3216_n16_delegate.py /tmp/issue39_n16_3216.json
+      - name: Commit validated A-B evidence on research branch
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: archive 158260-call 32/16 N16 donor research'
+          git push origin HEAD:issue39-u3216-n16-delegate-public-screen
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-u3216-n16-delegate-screen
+          path: /tmp/issue39_n16_3216.json
