@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 V2-V4 UMOD32 LATE ZERO CHECK
+- Improved V2/V3/V4 MATH_UMOD32_32: move 14-byte divisor-zero check from entry to N=D equality branch. 54-byte fixed-size active remainder frontend at $5472; exactly 50 changed bytes per resident, no resident/ZP/stack/API or REU growth. V1/V5 unmodified. UDIV32_32 cycles and outputs unchanged.
+- Same-input 2,491-pair profile screens: savings V2=13.599358, V3=13.594540, V4=13.599358 cycles per public call; 36,036 total old/new 6502 calls, zero ABI errors. Native VICE 1,536 old/new calls also correct (not a timing claim). Full five-profile unsigned and signed validation, sources, alternate build, docs, checksums sealed. See docs/ISSUE39_V234_UMOD32_LATE_ZERO_2026-10-12.md. Unsigned family still OPEN.
+
 2026-10-12 ISSUE39 V1 UMOD16 OPTISEARCH Q0 ABI NO-GAIN
 - Rejected V1 UMOD16 remainder-only q=0 frontend under existing Q16+R16 alias contract. Hand-written 34-byte shortcut seems 2.397654 cycles faster on 1,705 shared inputs but leaves incorrect Q16 in 768 cases; compliant 42-byte variant is 2.106745 cycles slower with 1,620 regressions and only 85 wins. Seven additional quotient-class workloads screened: 11,259 total public calls, strict output/flags/input exact, unchanged UDIV16. Repose's original binary not imported. No resident binaries or stable source changed, the unsigned family audit remains open. Details: docs/ISSUE39_V1_UMOD16_REPOSE_Q0_FRONTEND_REJECTION_2026-10-12.md.
 

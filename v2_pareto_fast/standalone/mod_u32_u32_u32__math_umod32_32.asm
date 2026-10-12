@@ -1291,27 +1291,27 @@ L52CB:
 ; ---- executable island $5472 ----
 * = $5472
 L5472:
-    lda $C014                          ; @5472 AD 14 C0
-    ora $C015                          ; @5475 0D 15 C0
-    ora $C016                          ; @5478 0D 16 C0
-    ora $C017                          ; @547B 0D 17 C0
-    beq L54D2                          ; @547E F0 52
-    lda $C013                          ; @5480 AD 13 C0
-    cmp $C017                          ; @5483 CD 17 C0
-    bcc L54B8                          ; @5486 90 30
-    bne L54D2                          ; @5488 D0 48
-    lda $C012                          ; @548A AD 12 C0
-    cmp $C016                          ; @548D CD 16 C0
-    bcc L54B8                          ; @5490 90 26
-    bne L54D2                          ; @5492 D0 3E
-    lda $C011                          ; @5494 AD 11 C0
-    cmp $C015                          ; @5497 CD 15 C0
-    bcc L54B8                          ; @549A 90 1C
-    bne L54D2                          ; @549C D0 34
-    lda $C010                          ; @549E AD 10 C0
-    cmp $C014                          ; @54A1 CD 14 C0
-    bcc L54B8                          ; @54A4 90 12
-    bne L54D2                          ; @54A6 D0 2A
+    lda $C013                          ; @5472 AD 13 C0
+    cmp $C017                          ; @5475 CD 17 C0
+    bcc L54B8                          ; @5478 90 3E
+    bne L54D2                          ; @547A D0 56
+    lda $C012                          ; @547C AD 12 C0
+    cmp $C016                          ; @547F CD 16 C0
+    bcc L54B8                          ; @5482 90 34
+    bne L54D2                          ; @5484 D0 4C
+    lda $C011                          ; @5486 AD 11 C0
+    cmp $C015                          ; @5489 CD 15 C0
+    bcc L54B8                          ; @548C 90 2A
+    bne L54D2                          ; @548E D0 42
+    lda $C010                          ; @5490 AD 10 C0
+    cmp $C014                          ; @5493 CD 14 C0
+    bcc L54B8                          ; @5496 90 20
+    bne L54D2                          ; @5498 D0 38
+    lda $C014                          ; @549A AD 14 C0
+    ora $C015                          ; @549D 0D 15 C0
+    ora $C016                          ; @54A0 0D 16 C0
+    ora $C017                          ; @54A3 0D 17 C0
+    beq L54D2                          ; @54A6 F0 2A
     lda #$00                           ; @54A8 A9 00
     sta $C01C                          ; @54AA 8D 1C C0
     sta $C01D                          ; @54AD 8D 1D C0

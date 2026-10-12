@@ -58,12 +58,9 @@ RM16U_QZERO:
 ; ---------------------------------------------------------------------------
 * = REG_KERNEL+$1472
 RM3232U_ENTRY:
-    lda MATH_D+0
-    ora MATH_D+1
-    ora MATH_D+2
-    ora MATH_D+3
-    beq RM3232U_LEGACY
-
+    ; Compare first. If N<D, D cannot be zero; if N>D, the legacy
+    ; divider retains its own zero-divisor guard. Only N=D can
+    ; contain the unresolved 0/0 case, so defer the 32-bit OR test.
     lda MATH_N+3
     cmp MATH_D+3
     bcc RM3232U_QZERO
@@ -80,6 +77,15 @@ RM3232U_ENTRY:
     cmp MATH_D+0
     bcc RM3232U_QZERO
     bne RM3232U_LEGACY
+
+    ; Equality: distinguish 0/0 from nonzero N=D. This is a
+    ; relocation-safe permutation of the same 54 bytes of code,
+    ; saving 18 cycles on the non-equality cases with no growth.
+    lda MATH_D+0
+    ora MATH_D+1
+    ora MATH_D+2
+    ora MATH_D+3
+    beq RM3232U_LEGACY
 
     lda #0
     sta MATH_R+0

@@ -14,9 +14,9 @@
   },
   "alternate_prg_sha256": {
     "v1_balanced": "4719179aa1ae860dd1bd1ca267e38322c0e54f9148a969753aba413313c313aa",
-    "v2_pareto_fast": "4b1a1e9be100e095d6a6a7386f1a2ab2799195531ab58d6fc4a5b9e5d5506993",
-    "v3_reu_512k": "840faad7edc824b9b2d0a77816170f38c85d6f70306cbc675ae085c232e5ca0e",
-    "v4_reu_16m": "cb6e2062a49c53a2073bf5eda812ba30e48d45241d8cb2b1ad040e1bba7cf2b9",
+    "v2_pareto_fast": "92a01edba81dd194f7d82d51880cd9025e65b684d4d87cfa4fae7300693b621c",
+    "v3_reu_512k": "795e2f30d4e0bbee0fa98f84d796695b8ac6aa3143a983e29ac22fdf71b12e63",
+    "v4_reu_16m": "2880c7dcf46108f70e21e6d57d67466b4590b548bcd197164f21410102200664",
     "v5_hybrid_lowzp": "6c7f438bb2adf69b1967834868d714f46a774dbaf6dd6bb904aac43bb158f19f"
   },
   "alternate_reu_sha256": {
@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 66709,
-    "user_manual_lines": 1882,
-    "user_manual_sha256": "8fe9748b16758c52699f432752a1ea9e2d573980a6de36d65663cc6de3e3c288"
+    "user_manual_bytes": 66903,
+    "user_manual_lines": 1884,
+    "user_manual_sha256": "85a35b13467674629cf3659c307118b80511c4212bba3999aee396161262323a"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -244,9 +244,9 @@
   ],
   "reference_prg_sha256": {
     "v1_balanced": "cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f",
-    "v2_pareto_fast": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138",
-    "v3_reu_512k": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad",
-    "v4_reu_16m": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e",
+    "v2_pareto_fast": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
+    "v3_reu_512k": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8",
+    "v4_reu_16m": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724",
     "v5_hybrid_lowzp": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02"
   },
   "reference_reu_sha256": {
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "17314ab55b22c0e3ac0f97984c9bad97ca028d977d3737be1a6fcc63f201fc76",
+    "benchmark_sha256": "aa21e7039c37b69b36ff900b80a6db0866cfe87d63152c2ac947b9942d8cde1d",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -755,7 +755,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "9e6d3d48df57357d8da6573b50482e215e2867f10b653a2b26c80c198c6a830e",
+    "report_sha256": "07b3eb56fbc6f25753818f9afc48f5982c00122c8cc877230e8c306f9f723511",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -858,7 +858,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "db4a9427fd1be3eaed6f5000bdc8462864224d915ce1e8c887e29c486dc95d4e",
+    "data_sha256": "f855e821d5716b7f2216a2aea0de0bad80ccfee2197d168d5ff35d7c6e465c8a",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -1061,5 +1061,45 @@
     "unsigned_family_complete": false,
     "audit_sha256": "cdd1376085bfce158d2e197a9162c03f28c89fc8e505310a1e06cabeab2f3bdf",
     "screen_source_sha256": "4e69d4d657130d03922e35d4410189d31b5b165961b57deda55e25d5d701d602"
+  },
+  "issue39_v234_umod32_latezero_2026_10_12": {
+    "status": "PASS",
+    "document": "docs/ISSUE39_V234_UMOD32_LATE_ZERO_2026-10-12.md",
+    "unsigned_family_complete": false,
+    "changed_profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "unchanged_profiles": [
+      "v1_balanced",
+      "v5_hybrid_lowzp"
+    ],
+    "old_reference_sha256": {
+      "v2_pareto_fast": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138",
+      "v3_reu_512k": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad",
+      "v4_reu_16m": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e"
+    },
+    "new_reference_sha256": {
+      "v2_pareto_fast": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
+      "v3_reu_512k": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8",
+      "v4_reu_16m": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724"
+    },
+    "changed_bytes_per_profile": 50,
+    "resident_growth": 0,
+    "normal_zp_growth": 0,
+    "public_abi_changed": false,
+    "public_old_new_emulated_calls": 36036,
+    "native_x64sc_old_new_calls": 1536,
+    "native_report_sha256": "5ace5d0cf09c07de53da849ab6e2559d5296c988a9c7fd365ec748f9380a27c7",
+    "paired_report_sha256": "ba456bebcb9f2144f611c5c46c22de334159485c2acdd7bfaf02b6c6ccdb358c",
+    "same_input_all_unsigned_calls": 136335,
+    "unsigned_correctness_calls": 822050,
+    "signed_correctness_profiles": 5,
+    "new_official_umod3232_means": {
+      "v2_pareto_fast": 279.6199413489736,
+      "v3_reu_512k": 279.6199413489736,
+      "v4_reu_16m": 279.6199413489736
+    }
   }
 }

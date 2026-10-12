@@ -1,0 +1,42 @@
+name: Issue39 V2-V4 UMOD32 late-zero qualified release
+on:
+  push:
+    branches:
+      - issue39-v234-umod32-late-zero-release
+    paths:
+      - '.github/workflows/issue39-v234-umod32-latezero-publish.yml'
+      - 'tools/stage_issue39_v234_umod32_latezero_release.py'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v234-umod32-late-zero-release
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exact source/native qualification, full 5-profile regressions and checksum-sealed publication
+        run: python3 tools/stage_issue39_v234_umod32_latezero_release.py
+      - name: Independently recheck public release seal
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Commit validated V2-V4 UMOD32/32 release on PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish V2-V4 UMOD32 delayed zero source-verified release"
+            git push origin HEAD:issue39-v234-umod32-late-zero-release
+          fi
