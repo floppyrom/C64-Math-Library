@@ -1,0 +1,19 @@
+name: Issue39 scratch source export
+on:
+  push:
+    branches: [issue39-v1-div24-scratch-export]
+permissions:
+  contents: read
+jobs:
+  export-current:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create code archive
+        run: |
+          tar --exclude-vcs -czf /tmp/c64-current-main-source.tar.gz .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-current-source
+          path: /tmp/c64-current-main-source.tar.gz
+          retention-days: 1
