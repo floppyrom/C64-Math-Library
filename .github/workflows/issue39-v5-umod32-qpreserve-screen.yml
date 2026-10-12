@@ -24,6 +24,8 @@ jobs:
         run: python3 tools/screen_issue39_v5_umod32_qpreserving.py
       - name: Compare strict high-byte-only Q0 shortcut on identical corpus
         run: python3 tools/screen_issue39_v5_umod32_highbyte.py
+      - name: Check V5 direct 32-bit gate with reordered D zero and preserved high-qone A
+        run: python3 tools/screen_issue39_v5_umod32_reordered.py
       - name: Export bounded variant evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -32,5 +34,6 @@ jobs:
           path: |
             validation/review/ISSUE39_V5_UMOD3232_QPRESERVING_FRONTEND_SCREEN.json
             validation/review/ISSUE39_V5_UMOD3232_HIGHBYTE_QZERO_SCREEN.json
+            validation/review/ISSUE39_V5_UMOD3232_REORDERED_SHARED_GATE_SCREEN.json
           retention-days: 14
           if-no-files-found: warn
