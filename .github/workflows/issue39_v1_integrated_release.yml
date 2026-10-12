@@ -1,0 +1,76 @@
+name: Issue39 V1 24-by-8 integrated release builder
+on:
+  push:
+    branches:
+      - issue39-v1-24by8-integrated-release
+permissions:
+  contents: write
+jobs:
+  build-and-publish:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild exact V1 core and all unchanged profiles
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+      - name: Paired public-entry and full ABI gates
+        run: |
+          python3 tools/screen_issue39_v1_24by8_shared_subtraction.py --out validation/review/ISSUE39_V1_24BY8_SHARED_SUBTRACTION_PAIRED.json
+          python3 tools/validate_unsigned_division.py
+          python3 tools/validate_signed_division.py
+          python3 tools/benchmark_unsigned_common_corpus.py
+          python3 tools/audit_issue39_unsigned_small_workloads.py
+      - name: Generate release records, mirrors, and publication metadata
+        run: |
+          python3 tools/finalize_issue39_v1_shared24_release.py
+          python3 tools/publish_standalone_sources.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+          python3 tools/validate_source_build.py all --build build_source/alternate --out validation/source_relocation
+          python3 tools/validate_hybrid.py
+      - name: Remove temporary builder and seal complete package
+        run: |
+          rm -f .github/workflows/issue39_v1_integrated_release.yml
+          rm -rf build_source build_hybrid build_hybrid_repeat build_pareto
+          find . -type d -name __pycache__ -prune -exec rm -rf {} +
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          paths=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:p.as_posix())
+          Path('SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.as_posix()+'\n' for p in paths))
+          print('FIRST SHA256 SEAL',len(paths))
+          PY
+          python3 tools/package_audit.py
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          paths=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:p.as_posix())
+          Path('SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.as_posix()+'\n' for p in paths))
+          print('FINAL SHA256 SEAL',len(paths))
+          PY
+          python3 tools/package_audit.py
+      - name: Commit source-generated release on this branch
+        run: |
+          git config user.name "issue39-release-bot"
+          git config user.email "issue39-release-bot@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git diff --cached --quiet && { echo "No release diff"; exit 1; }
+          git commit -m "issue39: release V1 24/8 shared-subtraction across source, binaries, mirrors, benchmarks and checksum seal"
+          git push origin HEAD:issue39-v1-24by8-integrated-release
