@@ -1888,3 +1888,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue #39 V1 Balanced 69-byte 24/8 shared-subtraction DIV/MOD release: docs/ISSUE39_V1_UDIV24_SHARED_SUBTRACTION_RELEASE_2026-10-12.md. The unsigned campaign remains open.
 
 - Issue #39 V1 accumulator 61-byte 24/8 shared DIV/MOD release: docs/ISSUE39_V1_UDIV24_ACCUMULATOR_RELEASE_2026-10-12.md. The unsigned campaign remains open.
+
+- Issue #39 full-resident native VICE x64sc V1 24/8 verification: docs/ISSUE39_V1_24BY8_FULL_RESIDENT_NATIVE_VICE_2026-10-12.md; 384 correct old/new public calls, no native cycle claim.

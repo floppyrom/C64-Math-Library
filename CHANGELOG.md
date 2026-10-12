@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 V1 ACCUMULATOR FULL-RESIDENT NATIVE VICE 384-CALL CERTIFICATE
+- Native VICE x64sc full-resident proof supplements the earlier isolated source-kernel test: exact SHA-pinned PR78 versus released PR81 V1 residents, MATH_INIT plus true MATH_UDIV24/UMOD24 public-entry JSRs, 96 same-input pairs per API per resident, 384 native calls total, zero oracle, flag, input preservation, stack or old/new output errors.
+- Full-resident result applies to Q/R/C and public ABI correctness only, NOT VICE cycle counts. No source code, public API, code size, profile binary, standalone pickup or ranking changed. Detail: docs/ISSUE39_V1_24BY8_FULL_RESIDENT_NATIVE_VICE_2026-10-12.md, evidence: validation/review/ISSUE39_V1_24BY8_ACCUMULATOR_FULL_RESIDENT_NATIVE_VICE.json. Issue #39 and unsigned family stage remain OPEN.
+
 2026-10-12 ISSUE39 UMOD16 BIASED OPTISEARCH DONOR CURRENT-MAIN SCREEN
 - Independently re-screened Repose/OptiSearch standalone UMOD16 biased donor against current V2–V5 UMOD16 complete entries: 27,280 same-input emulator calls across two RAM layouts, exact remainder/carry, inputs and stack.
 - Overall 198.601173→185.826393 cycle mean but 1,391/1,705 inputs slower, random input 80.490234→111.772461 and 667 Q16 differences; +262 code RAM, +2 ZP and nested JSR stack. Retain as a standalone specialist, NOT default resident replacement.
