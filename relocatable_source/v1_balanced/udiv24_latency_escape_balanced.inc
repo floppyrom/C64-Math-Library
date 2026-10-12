@@ -33,16 +33,12 @@ V1LAT_8_LOOP:
     rol MATH_Q+1
     rol MATH_Q+2
     rol MATH_R+0
-    bcs V1LAT_8_SUB_HI
+    ; LDA preserves ninth-remainder-bit carry; CMP success also sets carry.
     lda MATH_R+0
+    bcs V1LAT_8_SUB
     cmp MATH_D+0
     bcc V1LAT_8_NEXT
-    sbc MATH_D+0
-    sta MATH_R+0
-    inc MATH_Q+0
-    jmp V1LAT_8_NEXT
-V1LAT_8_SUB_HI:
-    lda MATH_R+0
+V1LAT_8_SUB:
     sbc MATH_D+0
     sta MATH_R+0
     inc MATH_Q+0
@@ -54,3 +50,5 @@ V1LAT_8_NEXT:
     sta MATH_R+2
     clc
     rts
+    ; Original 84-byte reserved code island: pad the freed 15 bytes with zero.
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
