@@ -111,11 +111,19 @@ def main():
  for p in PROFILES:
   old=res(p).read_bytes();assert sha(old)==OLD[p],('incorrect baseline',p,sha(old))
   new,changes=patch(old);patched[p]=new
+  # The production include (remainder_fast_v2.inc) must compile to the
+  # precise fixed-address patch, rather than a coincidentally identical
+  # experimental resident. Independently assemble alternate maps too.
+  built=ROOT/'build_source/reference'/p/f'math_{p}_source_built.prg'
+  assert built.read_bytes()==new,('source did not reproduce exact 54-byte patch',p,sha(built.read_bytes()),sha(new))
+  alternate=ROOT/'build_source/alternate'/p/f'math_{p}_source_built.prg'
+  assert alternate.exists() and alternate.stat().st_size==len(new),('alternate source not built',p)
   probe=machine_probe(p,old,new)
   result['profiles'][p]={'old_sha256':sha(old),'new_sha256':sha(new),'changed_bytes':changes,
    'in_place_code_window':'$5472-$54A7','operations':probe}
   result['total_old_new_calls']+=2*sum(x['case_count'] for x in probe.values())
  assert result['total_old_new_calls']>20000
+ result['source_reference_alternate_checked']=True
  if args.stage_images:
   for p in PROFILES:res(p).write_bytes(patched[p])
   def run(*argv):
