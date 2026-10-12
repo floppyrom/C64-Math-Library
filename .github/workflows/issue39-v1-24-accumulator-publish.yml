@@ -1,0 +1,44 @@
+name: Issue39 V1 61-byte accumulator integrated release
+
+on:
+  push:
+    branches:
+      - issue39-v1-24by8-accumulator-integrated
+    paths:
+      - '.github/workflows/issue39-v1-24-accumulator-publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  source-backed-publication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v1-24by8-accumulator-integrated
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify and stage complete source-built release
+        run: python3 tools/stage_issue39_v1_24by8_accumulator_release.py
+      - name: Verify reproducible lean release
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Publish qualified release on PR branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish 61-byte V1 accumulator DIV/MOD integrated release"
+            git push origin HEAD:issue39-v1-24by8-accumulator-integrated
+          fi
