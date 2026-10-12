@@ -1,0 +1,36 @@
+{
+  "status": "PASS",
+  "kind": "standalone fixed-map emulator evidence, not V1-V5 integration",
+  "suite": "routines/standalone_lab/verify.py",
+  "published_main_baseline": "5308c226cc7f006124def0ba35286959975354a5",
+  "machine_calls": 7163,
+  "candidates": [
+    {
+      "source": "div_u16_biased.asm",
+      "cases": 2729,
+      "mean_cycles": 152.44301942103334,
+      "code_bytes": 323,
+      "zp_bytes": 2,
+      "corpus_sha256": "0cfe5cf7650dbde591f626dbad83b545ff4fc771420005b5270d29298fbb9078"
+    },
+    {
+      "source": "mod_u16_biased_carry.asm",
+      "cases": 1705,
+      "mean_cycles": 187.0017595307918,
+      "code_bytes": 262,
+      "zp_bytes": 2,
+      "extra_stack_bytes": 2,
+      "corpus_sha256": "b60581213496cddefb57554035b6cf1c6b46b8655caac240fe0a6791844e56f1"
+    },
+    {
+      "source": "div_u32_zptail.asm",
+      "cases": 2729,
+      "mean_cycles": 380.6984243312569,
+      "random_selection_mean_cycles": 188.3984375,
+      "code_bytes": 544,
+      "zp_bytes": 4,
+      "extra_stack_bytes": 2,
+      "corpus_sha256": "3d0cb9fef736fbf7967246f397c18deaa199d33f9ef6a095fcde9c504a0aeaee"
+    }
+  ]
+}

@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 STANDALONE FAST-KERNEL COLLECTION
+- Published standalone_lab UDIV16, carry-corrected UMOD16 and specialized UDIV32 ZP-tail symbolic assembly with explicit fixed-map ABI, 7163-call reproducible emulator gate, resource limits, provenance and future candidate backlog.
+- Stable V1-V5 resident binaries and official benchmark ranks unchanged. Native VICE and arbitrary relocation still need qualification for these standalone sources; unsigned family campaign remains open.
+
 2026-10-12 ISSUE39 V5 UMOD32 QUOTIENT-PRESERVING SOURCE FRONTEND
 - V5 MATH_UMOD32_32 new 147-byte Q32+R32-compatible delayed-zero front end in previously free $5E80 island, public JMP redirected at $5E03. Existing MATH_UDIV32_32 untouched. No resident, normal-ZP, API or other profile growth. Native VICE 512 old/new calls passed.
 - Official 1,705-pair identical-input common corpus: 2.770088 cycles faster, V5 mean 302.353079->299.582991; full 4,314-pair quotient-stratified stress mix saves 0.493278 cycles but includes some slower high-quotient/zero-divisor cases. Source and alternate V5 hybrid builds reproduce candidate. Full unsigned/signed corpus and historical audit checks, standalone source catalogs, changelogs, checksums refreshed. Issue39 unsigned family remains open. docs/ISSUE39_V5_UMOD32_QPRESERVING_REORDERED_2026-10-12.md

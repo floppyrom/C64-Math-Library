@@ -62,3 +62,7 @@ python3 tools/validate_standalone_sources.py
 ```
 
 Read [the machine-readable source catalog](../routines/SOURCE_CATALOG.csv) before comparing cycle means across profiles. Same-input statistics and per-workload tradeoffs matter; faster-average dispatches can add a few cycles to unqualified cases. **An exact source mirror is available separately; a guaranteed one-file, location-independent plug-in for every public entry is not yet claimed.**
+
+## Experimental standalone math kernels
+
+The [standalone fast-kernel lab](../routines/standalone_lab/README.md) preserves three OptiSearch-derived NMOS 6510 division/modulo candidates with independent source, fixed-map entrypoints, reproducible 7,163-case emulator tests and a backlog of screened alternatives. These are not yet certified as arbitrarily relocatable or usable alongside BASIC.

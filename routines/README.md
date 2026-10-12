@@ -39,3 +39,7 @@ to building target seeking on `MATH_VEC2_NORMALIZE_Q8_8`.
 For the fastest overview, start with [`../PERFORMANCE.md`](../PERFORMANCE.md). For every shipped profile row, use [`../benchmarks/PUBLIC_PROFILE_RESULTS.csv`](../benchmarks/PUBLIC_PROFILE_RESULTS.csv). For standalone alternatives, use [`../benchmarks/STANDALONE_RESULTS.csv`](../benchmarks/STANDALONE_RESULTS.csv).
 
 The source catalog currently indexes **295 shipped callable profile-entry mirrors** (including profile-specific REU extensions) plus **25 separately benchmarked standalone alternatives**. Profile-local duplication is intentional because each fixed profile remains self-contained. For direct links to recent UDIV/UMOD variants and to distinguish exact mirrors from truly liftable modules, see [the single-routine pickup guide](../docs/INDIVIDUAL_ROUTINE_PICKUP.md).
+
+## Standalone fast-kernel collection
+
+[The Issue #39 standalone fast-kernel lab](standalone_lab/README.md) publishes independently callable, source-backed fixed-map 6502 routines that can be useful even when they lose or cannot fit in a V1-V5 resident. Each candidate documents its ABI, memory ownership, comparable cycles and proof status. This is separate from the stable public API mirrors and fully curated standalone-results catalog.
