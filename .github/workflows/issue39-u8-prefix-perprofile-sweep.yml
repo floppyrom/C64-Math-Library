@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/issue39-u8-prefix-perprofile-sweep.yml'
       - 'tools/screen_issue39_u8_prefix_source_sweep.py'
+      - 'tools/diagnose_issue39_udiv8_reu_carry.py'
       - 'tools/finalize_issue39_u8_prefix_source_sweep.py'
   pull_request:
     paths:
@@ -25,6 +26,8 @@ jobs:
           persist-credentials: true
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
+      - name: Diagnose carry-on-entry across all exact released profiles
+        run: python3 tools/diagnose_issue39_udiv8_reu_carry.py
       - name: Smoke-check synthesized K12 against exact V1 resident
         run: python3 tools/screen_issue39_u8_prefix_source_sweep.py --profile v1_balanced --K 12 --map ram_0800 --out /tmp/issue39_u8_smoke.json
       - name: Five-profile two RAM-map K8-28 architecture corpus
