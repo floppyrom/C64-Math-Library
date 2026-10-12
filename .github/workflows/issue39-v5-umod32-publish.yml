@@ -1,0 +1,41 @@
+name: Issue39 V5 UMOD32 quotient-complete release publication
+on:
+  push:
+    branches:
+      - issue39-v5-umod32-qpreserve-fastfront
+    paths:
+      - '.github/workflows/issue39-v5-umod32-publish.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  stage-verified-release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v5-umod32-qpreserve-fastfront
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Stage source qualified V5 candidate through full arithmetic and package gates
+        run: python3 tools/stage_issue39_v5_umod32_release.py
+      - name: Verify source and sealed release independently
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Commit passing release on PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish certified V5 UMOD32 full-Q delayed-zero source frontend"
+            git push origin HEAD:issue39-v5-umod32-qpreserve-fastfront
+          fi
