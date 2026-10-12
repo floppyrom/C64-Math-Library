@@ -61,7 +61,7 @@ def main():
   for location in MAPS:
    source=SRC.read_text().replace('* = $0800','* = $'+format(location,'04X'))
    code,labels,_=Assembler().assemble(source)
-   assert len(code)==90 and labels['U3216_POW2_OPTIN']==location
+   assert len(code)==114 and labels['U3216_POW2_OPTIN']==location
    old,old_api=load(profile);new,new_api=load(profile)
    assert old_api==new_api
    assert all(new.mem[address]==0 for address in code),(profile,location,'occupied RAM')
