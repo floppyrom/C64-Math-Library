@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "emulator": "native VICE x64sc (headless remote monitor; built executable reports version 3.10)",
+  "date": "2026-10-12",
+  "old_resident_sha256": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02",
+  "new_resident_sha256": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222",
+  "operation": "MATH_UMOD32_32",
+  "public_entry": "$5E03",
+  "new_private_code": "$5E80",
+  "input_pairs": 256,
+  "old_new_calls": 512,
+  "result_abi": "both Q32 and R32, carry, zero-divisor and random/edge inputs",
+  "output_sha256": "f22f2ced5b83e1ad1e10f2704b87b4d3b04b10fda781874a3ee4243fbb32121f",
+  "errors": 0,
+  "code_size_bytes": 147,
+  "notes": "Headless monitor run from full old/new V5 resident images. Uses SEI, CLD, RAM bankout $01=$34 and MATH_INIT at $3280; batches of 128; harness uses absolute JMP not out-of-range relative branch. Does not test hardware REU DMA or provide native cycle timing."
+}
