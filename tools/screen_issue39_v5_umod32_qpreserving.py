@@ -101,7 +101,7 @@ def main():
  for n in [0,1,2,255,65535,0x80000000,0xffffffff]:
   for d in [0,1,2,255,65535,0x80000000,0xffffffff]:
    cases.append((n,d,'boundary'))
- diff=[];cats=defaultdict(list);failures=[];groups=Counter();initialQ=0xCBA98765;initialR=0x6A558137
+ diff=[];cats=defaultdict(list);by_corpus=defaultdict(list);failures=[];groups=Counter();initialQ=0xCBA98765;initialR=0x6A558137
  for n,d,k in cases:
   eq,er,ec=expected(n,d,32,32)
   observed=[]
@@ -113,7 +113,7 @@ def main():
   want=(eq,er,ec,n,d,0xA5)
   if observed[0][1]!=want or observed[1][1]!=want:
    if len(failures)<6:failures.append({'n':hex(n),'d':hex(d),'got':observed,'want':want})
-  x=observed[1][0]-observed[0][0];diff.append(x);cats[band(n,d,0)].append(x)
+  x=observed[1][0]-observed[0][0];diff.append(x);cats[band(n,d,0)].append(x);by_corpus[k].append(x)
   groups['faster' if x<0 else 'tie' if x==0 else 'slower']+=1
  assert not failures,failures
  assert len(diff)==len(cases)
@@ -126,6 +126,8 @@ def main():
   'mean_delta_cycles':sum(diff)/len(diff),'mean_saving_cycles':-sum(diff)/len(diff),
   'counts':dict(groups),'tested_cases':len(diff),'total_old_new_calls':2*len(diff),
   'official_case_count':len(common),'errors':0,
+  'corpus_means':{k:{'cases':len(v),'mean_delta':sum(v)/len(v),
+    'faster':sum(t<0 for t in v),'slower':sum(t>0 for t in v)} for k,v in by_corpus.items()},
   'classes':{key:{'cases':len(v),'mean_delta':sum(v)/len(v),
        'faster':sum(i<0 for i in v),'slower':sum(i>0 for i in v),
        'max_regression':max(v),'best_saving':-min(v)} for key,v in cats.items()},
