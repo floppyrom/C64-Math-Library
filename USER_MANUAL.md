@@ -1908,3 +1908,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue39 N24->UDIV24 donor no-gain research: docs/ISSUE39_N24_TO_U24_DONOR_SCREEN_2026-10-12.md. Existing 32/16 defaults retained.
 
 - Issue39 32/16 power-of-two caller-opt-in specialist: docs/ISSUE39_U3216_POW2_OPTIN_2026-10-12.md. The divisor precondition is mandatory; public defaults stay unchanged.
+
+- Issue39 current-resident OptiSearch unsigned 32/32 donor resource audit: docs/ISSUE39_U3232_OPTISEARCH_ABI_RESOURCE_SCREEN_2026-10-12.md. No default promotion.
