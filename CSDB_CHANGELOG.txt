@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 V1 24/8 ACCUMULATOR-REMAINDER CANDIDATE SCREEN (NO RESIDENT CHANGE)
+- PR #79 (part of #39) screens a 61-byte accumulator-resident partial remainder against the merged PR #78 69-byte shared-subtraction V1 24/8 core. Zero additional ZP/stack, all public entry addresses and shipped binaries unchanged.
+- Reproducible 48,388 old/new complete public UDIV24/UMOD24 6502 calls, no incorrect Q/R/C/N/D/stack and zero slower cases. Official UDIV24 170.238165->166.190196; UMOD24 246.822279->234.433355; 4,080 full-N24/D8 pairs 1202.660784->976.350000, all faster. These are candidate results, not new release rankings.
+- Native x64sc and full integrated source/release, historical proof, checksum and main-CI gates remain necessary before any routine promotion. Full issue #39 family campaign remains open. Documentation: docs/ISSUE39_V1_UDIV24_ACCUMULATOR_SCREEN_2026-10-12.md.
+
 2026-10-12 ISSUE39 V1 24/8 SHARED-SUBTRACTION DIVMOD CORE 69 BYTES
 - Source-backed V1 UDIV24/UMOD24 shared 24÷8 producer: 84->69 bytes; merged carry-aware subtraction path and cleared the 15 freed trailing bytes. No extra ZP/stack or change to ABI, public addresses, resident PRG length, or V2-V5 binaries.
 - 48,388 paired prior/live full-public-entry machine calls, zero arithmetic or carry failures and zero slower cases. Canonical UDIV24 170.726699->170.238165, UMOD24 248.317450->246.822279 cycles; 4,080 N2/D8 targeted cases 1220.796->1202.297 with 3,779 faster, none slower per operation.

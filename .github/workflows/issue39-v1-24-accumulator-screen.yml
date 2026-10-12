@@ -1,0 +1,26 @@
+name: Issue39 V1 24/8 accumulator screen
+
+on:
+  push:
+    branches:
+      - issue39-v1-24by8-accumulator-screen
+  pull_request:
+    paths:
+      - 'tools/candidates/issue39_v1_24by8_accumulator.asm'
+      - 'tools/screen_issue39_v1_24by8_accumulator.py'
+      - '.github/workflows/issue39-v1-24-accumulator-screen.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-public-entry-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Same-input complete resident 24/8 division and modulo
+        run: python3 tools/screen_issue39_v1_24by8_accumulator.py
