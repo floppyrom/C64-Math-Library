@@ -1,0 +1,45 @@
+name: Issue39 PR67 V5 hybrid and all-profile cycle screen
+
+on:
+  push:
+    branches:
+      - issue39-u16-known-carry-branch-pr67
+    paths:
+      - '.github/workflows/issue39-u16-pr67-hybrid.yml'
+      - 'tools/screen_issue39_u16_pr67_hybrid.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  hybrid-math-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Full source generate, reference and alternate
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+      - name: Exact 6-site source/normal-ZP geometry proof V2-V4
+        run: python3 tools/screen_issue39_u16_pr67_source.py
+      - name: V5 imported donor and all five profile public-entry ABI/cycles
+        run: python3 tools/screen_issue39_u16_pr67_hybrid.py
+      - name: Upload all-profile candidate evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-pr67-v5-hybrid-proof
+          path: |
+            validation/review/ISSUE39_U16_PR67_SOURCE_DIFF_SCREEN.json
+            validation/review/ISSUE39_U16_PR67_HYBRID_ALLPROFILES_SCREEN.json
+            build_hybrid/reference/v5_hybrid_lowzp/*.prg
+          retention-days: 14
+          if-no-files-found: warn

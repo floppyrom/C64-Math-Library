@@ -1,0 +1,48 @@
+name: Issue39 PR67 signed and unsigned 16-bit source patch screen
+
+on:
+  push:
+    branches:
+      - issue39-u16-known-carry-branch-pr67
+    paths:
+      - '.github/workflows/issue39-u16-pr67-screen.yml'
+      - 'tools/screen_issue39_u16_pr67_source.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-branch-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate exact source and assemble all reference layouts
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+      - name: Assemble independent alternate relocations
+        run: python3 tools/assemble_sources.py --profile all --config-kind alternate
+      - name: Reject any unanticipated resident byte mutation
+        run: python3 tools/screen_issue39_u16_pr67_source.py
+      - name: Upload source build proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-pr67-source-diff-screen
+          path: |
+            validation/review/ISSUE39_U16_PR67_SOURCE_DIFF_SCREEN.json
+            build_source/reference/v2_pareto_fast/*.prg
+            build_source/reference/v3_reu_512k/*.prg
+            build_source/reference/v4_reu_16m/*.prg
+            build_source/alternate/v2_pareto_fast/*.prg
+            build_source/alternate/v3_reu_512k/*.prg
+            build_source/alternate/v4_reu_16m/*.prg
+          retention-days: 14
+          if-no-files-found: warn

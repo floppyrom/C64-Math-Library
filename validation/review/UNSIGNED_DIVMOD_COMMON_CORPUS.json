@@ -52,15 +52,15 @@
             "quotient_1": 91.92226148409894,
             "quotient_10_to_255": 634.5681818181819,
             "quotient_256_plus": 1009.3366336633663,
-            "quotient_2_to_9": 217.7165991902834
+            "quotient_2_to_9": 217.7004048582996
           },
           "max_cycles": 1076,
-          "mean_cycles": 161.76145108098206,
+          "mean_cycles": 161.75851960425064,
           "min_cycles": 41,
           "p95_cycles": 971,
           "selection_means": {
-            "edges": 422.61058601134215,
-            "random": 89.03564453125,
+            "edges": 422.5992438563327,
+            "random": 89.03466796875,
             "stress": 896.0416666666666,
             "zero": 109.65625
           }
@@ -72,15 +72,15 @@
             "quotient_1": 91.92226148409894,
             "quotient_10_to_255": 634.5681818181819,
             "quotient_256_plus": 1009.3366336633663,
-            "quotient_2_to_9": 217.7165991902834
+            "quotient_2_to_9": 217.7004048582996
           },
           "max_cycles": 1076,
-          "mean_cycles": 161.76145108098206,
+          "mean_cycles": 161.75851960425064,
           "min_cycles": 41,
           "p95_cycles": 971,
           "selection_means": {
-            "edges": 422.61058601134215,
-            "random": 89.03564453125,
+            "edges": 422.5992438563327,
+            "random": 89.03466796875,
             "stress": 896.0416666666666,
             "zero": 109.65625
           }
@@ -92,15 +92,15 @@
             "quotient_1": 91.92226148409894,
             "quotient_10_to_255": 634.5681818181819,
             "quotient_256_plus": 1009.3366336633663,
-            "quotient_2_to_9": 217.7165991902834
+            "quotient_2_to_9": 217.7004048582996
           },
           "max_cycles": 1076,
-          "mean_cycles": 161.76145108098206,
+          "mean_cycles": 161.75851960425064,
           "min_cycles": 41,
           "p95_cycles": 971,
           "selection_means": {
-            "edges": 422.61058601134215,
-            "random": 89.03564453125,
+            "edges": 422.5992438563327,
+            "random": 89.03466796875,
             "stress": 896.0416666666666,
             "zero": 109.65625
           }
@@ -112,15 +112,15 @@
             "quotient_1": 91.92226148409894,
             "quotient_10_to_255": 634.5681818181819,
             "quotient_256_plus": 1009.3366336633663,
-            "quotient_2_to_9": 217.7165991902834
+            "quotient_2_to_9": 217.7004048582996
           },
           "max_cycles": 1076,
-          "mean_cycles": 161.76145108098206,
+          "mean_cycles": 161.75851960425064,
           "min_cycles": 41,
           "p95_cycles": 971,
           "selection_means": {
-            "edges": 422.61058601134215,
-            "random": 89.03564453125,
+            "edges": 422.5992438563327,
+            "random": 89.03466796875,
             "stress": 896.0416666666666,
             "zero": 109.65625
           }
@@ -733,15 +733,15 @@
             "quotient_1": 107.31615120274914,
             "quotient_10_to_255": 723.69918699187,
             "quotient_256_plus": 1008.16,
-            "quotient_2_to_9": 279.43014705882354
+            "quotient_2_to_9": 279.37132352941177
           },
           "max_cycles": 1075,
-          "mean_cycles": 198.61055718475075,
+          "mean_cycles": 198.60117302052785,
           "min_cycles": 32,
           "p95_cycles": 984,
           "selection_means": {
-            "edges": 417.45368620037806,
-            "random": 80.5,
+            "edges": 417.4423440453686,
+            "random": 80.490234375,
             "stress": 893.9583333333334,
             "zero": 108.6796875
           }
@@ -753,15 +753,15 @@
             "quotient_1": 107.31615120274914,
             "quotient_10_to_255": 723.69918699187,
             "quotient_256_plus": 1008.16,
-            "quotient_2_to_9": 279.43014705882354
+            "quotient_2_to_9": 279.37132352941177
           },
           "max_cycles": 1075,
-          "mean_cycles": 198.61055718475075,
+          "mean_cycles": 198.60117302052785,
           "min_cycles": 32,
           "p95_cycles": 984,
           "selection_means": {
-            "edges": 417.45368620037806,
-            "random": 80.5,
+            "edges": 417.4423440453686,
+            "random": 80.490234375,
             "stress": 893.9583333333334,
             "zero": 108.6796875
           }
@@ -773,15 +773,15 @@
             "quotient_1": 107.31615120274914,
             "quotient_10_to_255": 723.69918699187,
             "quotient_256_plus": 1008.16,
-            "quotient_2_to_9": 279.43014705882354
+            "quotient_2_to_9": 279.37132352941177
           },
           "max_cycles": 1075,
-          "mean_cycles": 198.61055718475075,
+          "mean_cycles": 198.60117302052785,
           "min_cycles": 32,
           "p95_cycles": 984,
           "selection_means": {
-            "edges": 417.45368620037806,
-            "random": 80.5,
+            "edges": 417.4423440453686,
+            "random": 80.490234375,
             "stress": 893.9583333333334,
             "zero": 108.6796875
           }
@@ -793,15 +793,15 @@
             "quotient_1": 107.31615120274914,
             "quotient_10_to_255": 723.69918699187,
             "quotient_256_plus": 1008.16,
-            "quotient_2_to_9": 279.43014705882354
+            "quotient_2_to_9": 279.37132352941177
           },
           "max_cycles": 1075,
-          "mean_cycles": 198.61055718475075,
+          "mean_cycles": 198.60117302052785,
           "min_cycles": 32,
           "p95_cycles": 984,
           "selection_means": {
-            "edges": 417.45368620037806,
-            "random": 80.5,
+            "edges": 417.4423440453686,
+            "random": 80.490234375,
             "stress": 893.9583333333334,
             "zero": 108.6796875
           }
@@ -1262,16 +1262,16 @@
       "resident_sha256": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62"
     },
     "v2_pareto_fast": {
-      "resident_sha256": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6"
+      "resident_sha256": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138"
     },
     "v3_reu_512k": {
-      "resident_sha256": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc"
+      "resident_sha256": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad"
     },
     "v4_reu_16m": {
-      "resident_sha256": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7"
+      "resident_sha256": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e"
     },
     "v5_hybrid_lowzp": {
-      "resident_sha256": "bed1ee986857d045d452036d78d0d6cbdc078dbc3407f8a860a8fd54f8395fa2"
+      "resident_sha256": "26981cc03b06d1a797917ae34a5d8969db466435fff496a758a262bac75b254b"
     }
   },
   "status": "PASS",

@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 616.
+; Reachable instructions: 613.
 ; NOTE: legacy alias entry; semantic producer is MATH_UDIV16.
 !cpu 6510
 
@@ -78,8 +78,9 @@ LB876:
 LB87F:
     sta $C01C                          ; @B87F 8D 1C C0
     !byte $0B, $00    ; ANC #imm       ; @B882 0B 00
-    bcs LB889                          ; @B884 B0 03
-    jmp LB892                          ; @B886 4C 92 B8
+    jmp LB892                          ; @B884 4C 92 B8
+; ---- executable island $B889 ----
+* = $B889
 LB889:
     lda $C01C                          ; @B889 AD 1C C0
     sbc $C014                          ; @B88C ED 14 C0
@@ -93,8 +94,9 @@ LB892:
 LB89B:
     sta $C01C                          ; @B89B 8D 1C C0
     !byte $0B, $00    ; ANC #imm       ; @B89E 0B 00
-    bcs LB8A5                          ; @B8A0 B0 03
-    jmp LB8AE                          ; @B8A2 4C AE B8
+    jmp LB8AE                          ; @B8A0 4C AE B8
+; ---- executable island $B8A5 ----
+* = $B8A5
 LB8A5:
     lda $C01C                          ; @B8A5 AD 1C C0
     sbc $C014                          ; @B8A8 ED 14 C0
@@ -128,8 +130,9 @@ LB8DC:
     sta $C01C                          ; @B8DC 8D 1C C0
     !byte $0B, $00    ; ANC #imm       ; @B8DF 0B 00
     sta $C019                          ; @B8E1 8D 19 C0
-    bcs LB8E9                          ; @B8E4 B0 03
-    jmp LB876                          ; @B8E6 4C 76 B8
+    jmp LB876                          ; @B8E4 4C 76 B8
+; ---- executable island $B8E9 ----
+* = $B8E9
 LB8E9:
     beq LB8BF                          ; @B8E9 F0 D4
     ldx $C015                          ; @B8EB AE 15 C0

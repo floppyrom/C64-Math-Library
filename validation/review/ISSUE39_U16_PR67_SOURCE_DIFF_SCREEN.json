@@ -1,0 +1,123 @@
+{
+  "status": "PASS",
+  "scope": "PR67 source generated, not installed as shipped binary",
+  "profiles": {
+    "v2_pareto_fast": {
+      "reference_old_sha256": "28fc6e653a05b170a80cd7eb50636d755895c5ebb7aab133262ed560fa465dd6",
+      "reference_new_sha256": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138",
+      "alternate_sha256": "4b1a1e9be100e095d6a6a7386f1a2ab2799195531ab58d6fc4a5b9e5d5506993",
+      "length": 49042,
+      "changes": [
+        {
+          "address": "0x7c8a",
+          "original": "90034c127d",
+          "candidate": "4c127deaea"
+        },
+        {
+          "address": "0x7ca5",
+          "original": "b0034cb27c",
+          "candidate": "4cb27ceaea"
+        },
+        {
+          "address": "0x7cc0",
+          "original": "b0034ccd7c",
+          "candidate": "4ccd7ceaea"
+        },
+        {
+          "address": "0xb884",
+          "original": "b0034c92b8",
+          "candidate": "4c92b8eaea"
+        },
+        {
+          "address": "0xb8a0",
+          "original": "b0034caeb8",
+          "candidate": "4caeb8eaea"
+        },
+        {
+          "address": "0xb8e4",
+          "original": "b0034c76b8",
+          "candidate": "4c76b8eaea"
+        }
+      ],
+      "source_compilation_reference_and_alternate": "PASS"
+    },
+    "v3_reu_512k": {
+      "reference_old_sha256": "026243976c2156b68ddc7527c6b1f1a4420cd4973026dd90d60cd4fef04f77bc",
+      "reference_new_sha256": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad",
+      "alternate_sha256": "840faad7edc824b9b2d0a77816170f38c85d6f70306cbc675ae085c232e5ca0e",
+      "length": 49042,
+      "changes": [
+        {
+          "address": "0x7d6b",
+          "original": "90034cf37d",
+          "candidate": "4cf37deaea"
+        },
+        {
+          "address": "0x7d86",
+          "original": "b0034c937d",
+          "candidate": "4c937deaea"
+        },
+        {
+          "address": "0x7da1",
+          "original": "b0034cae7d",
+          "candidate": "4cae7deaea"
+        },
+        {
+          "address": "0xb884",
+          "original": "b0034c92b8",
+          "candidate": "4c92b8eaea"
+        },
+        {
+          "address": "0xb8a0",
+          "original": "b0034caeb8",
+          "candidate": "4caeb8eaea"
+        },
+        {
+          "address": "0xb8e4",
+          "original": "b0034c76b8",
+          "candidate": "4c76b8eaea"
+        }
+      ],
+      "source_compilation_reference_and_alternate": "PASS"
+    },
+    "v4_reu_16m": {
+      "reference_old_sha256": "61d2f5bc88e5394035c51a7be9cf6b99e329dfea37419ae7f1c72d97262470b7",
+      "reference_new_sha256": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e",
+      "alternate_sha256": "cb6e2062a49c53a2073bf5eda812ba30e48d45241d8cb2b1ad040e1bba7cf2b9",
+      "length": 49042,
+      "changes": [
+        {
+          "address": "0x7d6b",
+          "original": "90034cf37d",
+          "candidate": "4cf37deaea"
+        },
+        {
+          "address": "0x7d86",
+          "original": "b0034c937d",
+          "candidate": "4c937deaea"
+        },
+        {
+          "address": "0x7da1",
+          "original": "b0034cae7d",
+          "candidate": "4cae7deaea"
+        },
+        {
+          "address": "0xb884",
+          "original": "b0034c92b8",
+          "candidate": "4c92b8eaea"
+        },
+        {
+          "address": "0xb8a0",
+          "original": "b0034caeb8",
+          "candidate": "4caeb8eaea"
+        },
+        {
+          "address": "0xb8e4",
+          "original": "b0034c76b8",
+          "candidate": "4c76b8eaea"
+        }
+      ],
+      "source_compilation_reference_and_alternate": "PASS"
+    }
+  }
+}

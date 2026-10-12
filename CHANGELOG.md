@@ -1,3 +1,15 @@
+2026-10-12 ISSUE39 PR67 HISTORICAL PARENT SHA RECONSTRUCTION
+- Preserve PR57-62 historical tests after the V5 PR67 known-carry improvement: the parent reconstructor verifies and undoes exactly the six SHA-pinned V5 PR67 16-bit branch rewrites before restoring the older UMOD8 guard. The 8,868-call historical zero-high bypass audit and its original pre-PR67, pre-UMOD8 and PR57-era SHA checkpoints are reproduced exactly. No shipped arithmetic bytes or public ABI change.
+
+2026-10-12 ISSUE39 PR67 V5 PAIR-CORPUS FIXTURE REFRESH
+- Removed the obsolete hard-coded 198.610557-cycle V5/ V2 UMOD16 comparison.
+- The permanent 1,705-pair exact V2/V5 public ABI parity test now pins both current shipped resident SHA-256 hashes against the same-input benchmark report and checks each measured mean against the corresponding report metric. This preserves a strict cycle regression check across further source-qualified changes while avoiding stale pre-release literals. All four candidate resident images remain byte-identical to the already staged PR67 release.
+
+2026-10-12 ISSUE39 PR67 KNOWN-CARRY 16BIT DIV/MOD
+- Source-backed V2/V3/V4 UDIV16/UMOD16/SDIV16/SMOD16: replace three carry-proven unreachable conditional-plus-JMP pairs per unsigned and signed private divider by direct JMP with two never-executed padding NOPs. Exact instruction addresses, resident length, normal ZP, stack, ABI and tables preserved. V5 rebuilt from V2 donor, V1 byte-identical.
+- Same-input V2 unsigned means: UDIV16 161.761451->161.758520, UMOD16 198.610557->198.601173 cycles. This is a small strict nonregression on the measured shared corpus, not a new dividing architecture.
+- Public five-profile 16-bit candidate checks, V2–V4 reference/alternate builds, exact six-rewrite resident binary diff V2–V5, all-profile signed/unsigned regression and old/new native VICE full-resident 8,192 public calls passed. New paired signed benchmark published without overwriting PR66 historical evidence. Documentation and packaged checksums refreshed. Unsigned family audit remains open. Details: docs/ISSUE39_PR67_KNOWN_CARRY_16BIT_2026-10-12.md.
+
 2026-10-12 ISSUE39 SIGNED16 PAIRED AND V2 U16 DONOR SCREEN
 - Published exact same-input signed16 DIV/MOD audit: 5,477 operands per routine x 2 routines x 5 initialized resident profiles = 54,770 verified public machine-code calls. For SMOD16/SDIV16, V1 229.477816 vs V2 251.548475 cycles on THIS common signed corpus, not the old profile-varying RNG sample. V2 wins most individual cases but regresses q=2..31 substantially; earlier unsigned-source table rankings remain untouched.
 - Rejected V2 UDIV16/UMOD16 donor + 13-byte high-divisor selector at unused research islands. Best UDIV16 candidate 173.343349 vs V2 161.761451; best UMOD16 216.641056 vs V2 198.610557. No candidate has a faster case; no arithmetic or ABI changes published.
