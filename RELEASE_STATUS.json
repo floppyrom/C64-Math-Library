@@ -1194,5 +1194,28 @@
         "v5_hybrid_lowzp": 207.49066323245333
       }
     }
+  },
+  "issue39_umod16_biased_current_main_2026_10_12": {
+    "status": "PASS_STANDALONE_NO_RESIDENT_PROMOTION",
+    "documentation": "docs/ISSUE39_UMOD16_BIASED_CURRENT_MAIN_DECISION_2026-10-12.md",
+    "evidence": "validation/review/ISSUE39_UMOD16_BIASED_CURRENT_MAIN.json",
+    "evidence_sha256": "1393c1081484622a944efb046a259a035ca66d87caa9e4b352040612dd5b5a47",
+    "paired_emulator_calls": 27280,
+    "profiles_evaluated": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "placements": [
+      "aligned_e000",
+      "unaligned_e108"
+    ],
+    "mean_resident_cycles": 198.60117302052785,
+    "mean_standalone_cycles": 185.82639296187682,
+    "inputs_slower": 1391,
+    "Q16_output_different_cases": 667,
+    "resident_prgs_changed": false,
+    "unsigned_family_complete": false
   }
 }

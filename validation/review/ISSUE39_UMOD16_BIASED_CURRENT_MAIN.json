@@ -1,0 +1,277 @@
+{
+  "candidate_source": "routines/standalone_lab/portable/mod_u16_biased_carry.asm",
+  "corpus_size_per_profile": 1705,
+  "external_code_ram_required": 262,
+  "extra_zp_bytes": 2,
+  "method": "identical input complete-call NMOS 6502 emulator cycles",
+  "nested_jsr_stack_bytes": 2,
+  "profiles": {
+    "v2_pareto_fast": {
+      "aligned_e000": {
+        "Q16_output_different_cases": 667,
+        "cases": 1705,
+        "class_means": {
+          "edges": {
+            "count": 529,
+            "resident_mean": 417.4423440453686,
+            "standalone_mean": 316.38563327032136
+          },
+          "random": {
+            "count": 1024,
+            "resident_mean": 80.490234375,
+            "standalone_mean": 111.7724609375
+          },
+          "stress": {
+            "count": 24,
+            "resident_mean": 893.9583333333334,
+            "standalone_mean": 926.125
+          },
+          "zero": {
+            "count": 128,
+            "resident_mean": 108.6796875,
+            "standalone_mean": 99.875
+          }
+        },
+        "delta_mean": -12.774780058651027,
+        "equal": 0,
+        "faster": 314,
+        "resident_mean": 198.60117302052785,
+        "slower": 1391,
+        "standalone_mean": 185.82639296187682
+      },
+      "unaligned_e108": {
+        "Q16_output_different_cases": 667,
+        "cases": 1705,
+        "class_means": {
+          "edges": {
+            "count": 529,
+            "resident_mean": 417.4423440453686,
+            "standalone_mean": 316.38563327032136
+          },
+          "random": {
+            "count": 1024,
+            "resident_mean": 80.490234375,
+            "standalone_mean": 111.7724609375
+          },
+          "stress": {
+            "count": 24,
+            "resident_mean": 893.9583333333334,
+            "standalone_mean": 926.125
+          },
+          "zero": {
+            "count": 128,
+            "resident_mean": 108.6796875,
+            "standalone_mean": 99.875
+          }
+        },
+        "delta_mean": -12.774780058651027,
+        "equal": 0,
+        "faster": 314,
+        "resident_mean": 198.60117302052785,
+        "slower": 1391,
+        "standalone_mean": 185.82639296187682
+      }
+    },
+    "v3_reu_512k": {
+      "aligned_e000": {
+        "Q16_output_different_cases": 667,
+        "cases": 1705,
+        "class_means": {
+          "edges": {
+            "count": 529,
+            "resident_mean": 417.4423440453686,
+            "standalone_mean": 316.38563327032136
+          },
+          "random": {
+            "count": 1024,
+            "resident_mean": 80.490234375,
+            "standalone_mean": 111.7724609375
+          },
+          "stress": {
+            "count": 24,
+            "resident_mean": 893.9583333333334,
+            "standalone_mean": 926.125
+          },
+          "zero": {
+            "count": 128,
+            "resident_mean": 108.6796875,
+            "standalone_mean": 99.875
+          }
+        },
+        "delta_mean": -12.774780058651027,
+        "equal": 0,
+        "faster": 314,
+        "resident_mean": 198.60117302052785,
+        "slower": 1391,
+        "standalone_mean": 185.82639296187682
+      },
+      "unaligned_e108": {
+        "Q16_output_different_cases": 667,
+        "cases": 1705,
+        "class_means": {
+          "edges": {
+            "count": 529,
+            "resident_mean": 417.4423440453686,
+            "standalone_mean": 316.38563327032136
+          },
+          "random": {
+            "count": 1024,
+            "resident_mean": 80.490234375,
+            "standalone_mean": 111.7724609375
+          },
+          "stress": {
+            "count": 24,
+            "resident_mean": 893.9583333333334,
+            "standalone_mean": 926.125
+          },
+          "zero": {
+            "count": 128,
+            "resident_mean": 108.6796875,
+            "standalone_mean": 99.875
+          }
+        },
+        "delta_mean": -12.774780058651027,
+        "equal": 0,
+        "faster": 314,
+        "resident_mean": 198.60117302052785,
+        "slower": 1391,
+        "standalone_mean": 185.82639296187682
+      }
+    },
+    "v4_reu_16m": {
+      "aligned_e000": {
+        "Q16_output_different_cases": 667,
+        "cases": 1705,
+        "class_means": {
+          "edges": {
+            "count": 529,
+            "resident_mean": 417.4423440453686,
+            "standalone_mean": 316.38563327032136
+          },
+          "random": {
+            "count": 1024,
+            "resident_mean": 80.490234375,
+            "standalone_mean": 111.7724609375
+          },
+          "stress": {
+            "count": 24,
+            "resident_mean": 893.9583333333334,
+            "standalone_mean": 926.125
+          },
+          "zero": {
+            "count": 128,
+            "resident_mean": 108.6796875,
+            "standalone_mean": 99.875
+          }
+        },
+        "delta_mean": -12.774780058651027,
+        "equal": 0,
+        "faster": 314,
+        "resident_mean": 198.60117302052785,
+        "slower": 1391,
+        "standalone_mean": 185.82639296187682
+      },
+      "unaligned_e108": {
+        "Q16_output_different_cases": 667,
+        "cases": 1705,
+        "class_means": {
+          "edges": {
+            "count": 529,
+            "resident_mean": 417.4423440453686,
+            "standalone_mean": 316.38563327032136
+          },
+          "random": {
+            "count": 1024,
+            "resident_mean": 80.490234375,
+            "standalone_mean": 111.7724609375
+          },
+          "stress": {
+            "count": 24,
+            "resident_mean": 893.9583333333334,
+            "standalone_mean": 926.125
+          },
+          "zero": {
+            "count": 128,
+            "resident_mean": 108.6796875,
+            "standalone_mean": 99.875
+          }
+        },
+        "delta_mean": -12.774780058651027,
+        "equal": 0,
+        "faster": 314,
+        "resident_mean": 198.60117302052785,
+        "slower": 1391,
+        "standalone_mean": 185.82639296187682
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "aligned_e000": {
+        "Q16_output_different_cases": 667,
+        "cases": 1705,
+        "class_means": {
+          "edges": {
+            "count": 529,
+            "resident_mean": 417.4423440453686,
+            "standalone_mean": 316.38563327032136
+          },
+          "random": {
+            "count": 1024,
+            "resident_mean": 80.490234375,
+            "standalone_mean": 111.7724609375
+          },
+          "stress": {
+            "count": 24,
+            "resident_mean": 893.9583333333334,
+            "standalone_mean": 926.125
+          },
+          "zero": {
+            "count": 128,
+            "resident_mean": 108.6796875,
+            "standalone_mean": 99.875
+          }
+        },
+        "delta_mean": -12.774780058651027,
+        "equal": 0,
+        "faster": 314,
+        "resident_mean": 198.60117302052785,
+        "slower": 1391,
+        "standalone_mean": 185.82639296187682
+      },
+      "unaligned_e108": {
+        "Q16_output_different_cases": 667,
+        "cases": 1705,
+        "class_means": {
+          "edges": {
+            "count": 529,
+            "resident_mean": 417.4423440453686,
+            "standalone_mean": 316.38563327032136
+          },
+          "random": {
+            "count": 1024,
+            "resident_mean": 80.490234375,
+            "standalone_mean": 111.7724609375
+          },
+          "stress": {
+            "count": 24,
+            "resident_mean": 893.9583333333334,
+            "standalone_mean": 926.125
+          },
+          "zero": {
+            "count": 128,
+            "resident_mean": 108.6796875,
+            "standalone_mean": 99.875
+          }
+        },
+        "delta_mean": -12.774780058651027,
+        "equal": 0,
+        "faster": 314,
+        "resident_mean": 198.60117302052785,
+        "slower": 1391,
+        "standalone_mean": 185.82639296187682
+      }
+    }
+  },
+  "resident_changes": false,
+  "status": "PASS",
+  "total_calls": 27280
+}
