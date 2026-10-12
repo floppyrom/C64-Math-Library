@@ -1,0 +1,40 @@
+name: Issue39 V1 UMOD16 public ABI no-gain publication
+on:
+  push:
+    branches:
+      - issue39-umod16-optisearch-public-abi-no-gain
+    paths:
+      - '.github/workflows/issue39-v1-umod16-q0-publish.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-umod16-optisearch-public-abi-no-gain
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rerun public ABI no-gain proof and publish release docs/seal
+        run: python3 tools/publish_issue39_v1_umod16_q0_rejection.py
+      - name: Independent package audit
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+      - name: Commit documented no-gain result on isolated PR branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: publish ABI-exact V1 UMOD16 no-gain after OptiSearch screen"
+            git push origin HEAD:issue39-umod16-optisearch-public-abi-no-gain
+          fi
