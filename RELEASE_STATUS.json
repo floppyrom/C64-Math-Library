@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 69250,
-    "user_manual_lines": 1912,
-    "user_manual_sha256": "bba78c9915924a69a33d9fb0b993a68c73a719697e32a8fc2ac8a702217653cd"
+    "user_manual_bytes": 69397,
+    "user_manual_lines": 1914,
+    "user_manual_sha256": "ba69b9136a4356f20e79d9bc7c7fdf311bfb20ca8db156764a2933765ec3c1a0"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1784,5 +1784,200 @@
     "shipped_resident_changed": false,
     "public_api_changed": false,
     "unsigned_family_complete": false
+  },
+  "issue39_u16_optisearch_public_abi_2026_10_13": {
+    "status": "PASS_NO_DEFAULT_PROMOTION",
+    "report": "validation/review/ISSUE39_U16_OPTISEARCH_PUBLIC_ABI_MATRIX.json",
+    "report_sha256": "5047de65821ff32f29f18f3c7c61b6d40220eeb4ed1e62f5e60daf4b5f85ba9d",
+    "documentation": "docs/ISSUE39_U16_OPTISEARCH_PUBLIC_ABI_MATRIX_2026-10-13.md",
+    "reproducer": "tools/screen_issue39_u16_optisearch_public_abi.py",
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "donor_source_classes": [
+      "biased_2zp",
+      "direct_mod_0zp"
+    ],
+    "paired_inputs": 86652,
+    "cpu_calls": 173304,
+    "native_vice_calls": 0,
+    "source_reassembled_code_maps": [
+      "ram_0800",
+      "ram_0851"
+    ],
+    "findings_by_profile": {
+      "v1_balanced": {
+        "biased_2zp_MATH_UDIV16": {
+          "official_delta": -2.2216929278123856,
+          "official_faster": 2475,
+          "official_slower": 218,
+          "uniform_delta": -2.8515625,
+          "narrow_d8_delta": 5.6484375,
+          "official_mod_quotient_side_effect_differences": 0,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "biased_2zp_MATH_UMOD16": {
+          "official_delta": -1.8357771260997067,
+          "official_faster": 1511,
+          "official_slower": 182,
+          "uniform_delta": -2.671875,
+          "narrow_d8_delta": 5.484375,
+          "official_mod_quotient_side_effect_differences": 0,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "direct_mod_0zp": "incompatible with V1 UMOD16 quotient-output contract"
+      },
+      "v2_pareto_fast": {
+        "biased_2zp_MATH_UDIV16": {
+          "official_delta": -7.892634664712348,
+          "official_faster": 2306,
+          "official_slower": 423,
+          "uniform_delta": 7.8203125,
+          "narrow_d8_delta": -66.96875,
+          "official_mod_quotient_side_effect_differences": 0,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "biased_2zp_MATH_UMOD16": {
+          "official_delta": -11.309090909090909,
+          "official_faster": 400,
+          "official_slower": 1305,
+          "uniform_delta": 24.5546875,
+          "narrow_d8_delta": -75.21875,
+          "official_mod_quotient_side_effect_differences": 1038,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "direct_mod_0zp_MATH_UMOD16": {
+          "official_delta": 11.266862170087977,
+          "official_faster": 22,
+          "official_slower": 1682,
+          "uniform_delta": 22.8359375,
+          "narrow_d8_delta": 1.0703125,
+          "official_mod_quotient_side_effect_differences": 667,
+          "code_and_data_bytes": 976,
+          "extra_normal_zp": 0,
+          "extra_temp_ram": 2
+        }
+      },
+      "v3_reu_512k": {
+        "biased_2zp_MATH_UDIV16": {
+          "official_delta": -7.892634664712348,
+          "official_faster": 2306,
+          "official_slower": 423,
+          "uniform_delta": 7.8203125,
+          "narrow_d8_delta": -66.96875,
+          "official_mod_quotient_side_effect_differences": 0,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "biased_2zp_MATH_UMOD16": {
+          "official_delta": -11.309090909090909,
+          "official_faster": 400,
+          "official_slower": 1305,
+          "uniform_delta": 24.5546875,
+          "narrow_d8_delta": -75.21875,
+          "official_mod_quotient_side_effect_differences": 1038,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "direct_mod_0zp_MATH_UMOD16": {
+          "official_delta": 11.266862170087977,
+          "official_faster": 22,
+          "official_slower": 1682,
+          "uniform_delta": 22.8359375,
+          "narrow_d8_delta": 1.0703125,
+          "official_mod_quotient_side_effect_differences": 667,
+          "code_and_data_bytes": 976,
+          "extra_normal_zp": 0,
+          "extra_temp_ram": 2
+        }
+      },
+      "v4_reu_16m": {
+        "biased_2zp_MATH_UDIV16": {
+          "official_delta": -7.892634664712348,
+          "official_faster": 2306,
+          "official_slower": 423,
+          "uniform_delta": 7.8203125,
+          "narrow_d8_delta": -66.96875,
+          "official_mod_quotient_side_effect_differences": 0,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "biased_2zp_MATH_UMOD16": {
+          "official_delta": -11.309090909090909,
+          "official_faster": 400,
+          "official_slower": 1305,
+          "uniform_delta": 24.5546875,
+          "narrow_d8_delta": -75.21875,
+          "official_mod_quotient_side_effect_differences": 1038,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "direct_mod_0zp_MATH_UMOD16": {
+          "official_delta": 11.266862170087977,
+          "official_faster": 22,
+          "official_slower": 1682,
+          "uniform_delta": 22.8359375,
+          "narrow_d8_delta": 1.0703125,
+          "official_mod_quotient_side_effect_differences": 667,
+          "code_and_data_bytes": 976,
+          "extra_normal_zp": 0,
+          "extra_temp_ram": 2
+        }
+      },
+      "v5_hybrid_lowzp": {
+        "biased_2zp_MATH_UDIV16": {
+          "official_delta": -7.892634664712348,
+          "official_faster": 2306,
+          "official_slower": 423,
+          "uniform_delta": 7.8203125,
+          "narrow_d8_delta": -66.96875,
+          "official_mod_quotient_side_effect_differences": 0,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "biased_2zp_MATH_UMOD16": {
+          "official_delta": -11.309090909090909,
+          "official_faster": 400,
+          "official_slower": 1305,
+          "uniform_delta": 24.5546875,
+          "narrow_d8_delta": -75.21875,
+          "official_mod_quotient_side_effect_differences": 1038,
+          "code_and_data_bytes": 323,
+          "extra_normal_zp": 2,
+          "extra_temp_ram": 0
+        },
+        "direct_mod_0zp_MATH_UMOD16": {
+          "official_delta": 11.266862170087977,
+          "official_faster": 22,
+          "official_slower": 1682,
+          "uniform_delta": 22.8359375,
+          "narrow_d8_delta": 1.0703125,
+          "official_mod_quotient_side_effect_differences": 667,
+          "code_and_data_bytes": 976,
+          "extra_normal_zp": 0,
+          "extra_temp_ram": 2
+        }
+      }
+    },
+    "resident_binaries_changed": false,
+    "public_api_changed": false,
+    "unsigned_divmod_campaign_complete": false
   }
 }

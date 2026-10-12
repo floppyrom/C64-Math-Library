@@ -1,0 +1,3379 @@
+{
+  "cpu_calls": 173304,
+  "cycle_basis": "full public 6502 instruction cycles, no VIC/REU bus cost",
+  "donors": {
+    "biased_2zp": {
+      "code_and_data_bytes": 323,
+      "extra_zero_page_bytes": 2,
+      "scratch_ram_bytes": 0,
+      "sha256": "d3552fa94cc70272c0794570d6e46ba9c0887ad958f2c98205ba2586677d3240",
+      "source": "routines/standalone_lab/portable/div_u16_biased.asm"
+    },
+    "direct_mod_0zp": {
+      "code_and_data_bytes": 976,
+      "extra_zero_page_bytes": 0,
+      "scratch_ram_bytes": 2,
+      "sha256": "ea8df5ae56b174511980bef12506561543871529dac131624e9b33eac2faf291",
+      "source": "routines/standalone_lab/portable/mod_u16_direct_zerozp.asm"
+    }
+  },
+  "input_classes": {
+    "MATH_UDIV16": {
+      "d0": {
+        "cases": 128,
+        "sha256": "e9709ea31d72367aca2c56f43180cb02e32acebe05c560b29edab317a3ec958d"
+      },
+      "narrow_d8": {
+        "cases": 128,
+        "sha256": "d0aa2975d276c4e196a2b8ca204cab075ccd253e44abd991ff031a29b0e7448b"
+      },
+      "official": {
+        "cases": 2729,
+        "sha256": "8a5a5a647cb35325b7cfc861329f3ede6cafea0c96822a145ba937b418540b1f"
+      },
+      "powers2": {
+        "cases": 128,
+        "sha256": "34ef29afe32250a8b06bd043167cfb98e60a363bb909f54d5edee191cff13f67"
+      },
+      "q2to7": {
+        "cases": 128,
+        "sha256": "25971d749322ac7e5d5cae2d416c7fe8c75997cdc94f1d4444b117e458f1fd1e"
+      },
+      "qone": {
+        "cases": 128,
+        "sha256": "3e31f6f13d51ac783e699a206b81af90fcc4d93aead251f5ab836725a06de196"
+      },
+      "qzero": {
+        "cases": 128,
+        "sha256": "a390013f06ab724141330ae7c3569dccf45bfc896e267df071fdfb756e21d9f8"
+      },
+      "tiny_d4": {
+        "cases": 128,
+        "sha256": "25bd3917a012724f0aad465d1ef24fa0e9d71450f6fbe246474a8429ede40a16"
+      },
+      "uniform16": {
+        "cases": 128,
+        "sha256": "0cfb0092dde008949d3ddd0e13b879fcf03b2829d51da697d8bd7de61c0b6885"
+      }
+    },
+    "MATH_UMOD16": {
+      "d0": {
+        "cases": 128,
+        "sha256": "292ab0b43ad24415222fbc4555c25b35788c1fdfb425f887c5c4d3133567b1cb"
+      },
+      "narrow_d8": {
+        "cases": 128,
+        "sha256": "f6bb24ffaf7d7996e1f2de69bb0e50704387b510dab778bd81f806c37c3466b7"
+      },
+      "official": {
+        "cases": 1705,
+        "sha256": "7b181a9ae1a5fe4319bc34265a9c7efb2ca4bf4f18eaff2009d6ad8164654f75"
+      },
+      "powers2": {
+        "cases": 128,
+        "sha256": "d4d93e0675a14ca3a32c030e208cb17542683bbb99dcdeed73c4e021e5c0650a"
+      },
+      "q2to7": {
+        "cases": 128,
+        "sha256": "669e36f0bfbfe35f5693e8bba5b679d821e5d75380f45c6a27428098c19c7a63"
+      },
+      "qone": {
+        "cases": 128,
+        "sha256": "667fc4262a46cde9f9c0ef221a5967230a5ea5814589a429175b84ef9c9028bc"
+      },
+      "qzero": {
+        "cases": 128,
+        "sha256": "5ed2b424e4fb66bf79d021182c9a09150fe5d0e014bb497679e38873f9d9310f"
+      },
+      "tiny_d4": {
+        "cases": 128,
+        "sha256": "599bf4d6565b7b084ef20418b7ee9ba4ae15eac2f5fcccb7218f576f6c11206c"
+      },
+      "uniform16": {
+        "cases": 128,
+        "sha256": "933a664d566051a6f293aee2b685afcd84c59c9be5c96f22e8bcae0fe472f118"
+      }
+    }
+  },
+  "native_vice_calls": 0,
+  "paired_inputs": 86652,
+  "profiles": {
+    "v1_balanced": {
+      "donors": {
+        "biased_2zp": {
+          "ram_0800": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "297578cf520cf203e001865d584269e28c1e80141ec14be51aed3bc17a8f694e",
+                  "delta_mean": -1.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 81.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -1
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "52a7d84f9501c837c6b11c01e7829061cf01c6181b41d184a9723e451f834c7a",
+                  "delta_mean": 5.6484375,
+                  "equal": 2,
+                  "faster": 0,
+                  "mean_donor": 930.171875,
+                  "mean_resident": 924.5234375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 126,
+                  "worst_regression_cycles": 13
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "36bd7c0c0398cc3e0e9c156ecc7f5c89b5a8c25c4b4148b0b1d3974ea3572a0d",
+                  "delta_mean": -2.2216929278123856,
+                  "equal": 36,
+                  "faster": 2475,
+                  "mean_donor": 153.8658849395383,
+                  "mean_resident": 156.0875778673507,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 218,
+                  "worst_regression_cycles": 13
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c9fafb69113a239fdc9de5f547a0b4559454f9c985ce2d9ce3b2c821bbda8ef8",
+                  "delta_mean": 3.7421875,
+                  "equal": 6,
+                  "faster": 34,
+                  "mean_donor": 730.203125,
+                  "mean_resident": 726.4609375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 88,
+                  "worst_regression_cycles": 13
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "25e13b2bc7255accb5124f427ad9bce34861ece2c6600ae27229f4838cada218",
+                  "delta_mean": -2.234375,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 224.3515625,
+                  "mean_resident": 226.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -1
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "cf630f8a84396a0601377926efe6e99696159c80f2e3d29835c60d88e07b20e4",
+                  "delta_mean": -3.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 64.125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -3
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "3060401503719dd1ba18dc34a3ca23acd7818503bd023550d4feea2ee04e675c",
+                  "delta_mean": -3.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 55.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -3
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "0865a7c317d9f5923a090353bce5cb1ba811888579703c402f92ac4c73dc66f8",
+                  "delta_mean": 9.328125,
+                  "equal": 0,
+                  "faster": 1,
+                  "mean_donor": 1228.1875,
+                  "mean_resident": 1218.859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 127,
+                  "worst_regression_cycles": 13
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "845dc915214d5fa19d1e62d07efa5b5484ec451afa45ec770dc709389e941b2e",
+                  "delta_mean": -2.8515625,
+                  "equal": 2,
+                  "faster": 120,
+                  "mean_donor": 91.1640625,
+                  "mean_resident": 94.015625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 6,
+                  "worst_regression_cycles": 5
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "297578cf520cf203e001865d584269e28c1e80141ec14be51aed3bc17a8f694e",
+                  "delta_mean": -1.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 81.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -1
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "ab1a8a7f452f46ca0d49dfb2f486ec4abb264942768bbc9c4d8f80b90bb13f2d",
+                  "delta_mean": 5.484375,
+                  "equal": 0,
+                  "faster": 7,
+                  "mean_donor": 912.8125,
+                  "mean_resident": 907.328125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 121,
+                  "worst_regression_cycles": 12
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "bc175c0d98e295446c2f1bd351a45fbab1b681095bd79eb79c4b6e65d77488d9",
+                  "delta_mean": -1.8357771260997067,
+                  "equal": 12,
+                  "faster": 1511,
+                  "mean_donor": 187.29208211143694,
+                  "mean_resident": 189.12785923753665,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 182,
+                  "worst_regression_cycles": 13
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "7367b6f1720fba1fbfc8d0ef9ea678a3010439d5f7f790da7128cd0e94701410",
+                  "delta_mean": 3.984375,
+                  "equal": 5,
+                  "faster": 29,
+                  "mean_donor": 766.8203125,
+                  "mean_resident": 762.8359375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 94,
+                  "worst_regression_cycles": 13
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "0ee467a3533d299593ccea303f3bb911b0d23ae1bc352191ac872663728f2979",
+                  "delta_mean": -2.28125,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 221.1953125,
+                  "mean_resident": 223.4765625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -1
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "8ec618e0b3d287424951d1b680e666dc4f9c9984acf84c0145f699061633016b",
+                  "delta_mean": -3.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.453125,
+                  "mean_resident": 64.453125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -3
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "3060401503719dd1ba18dc34a3ca23acd7818503bd023550d4feea2ee04e675c",
+                  "delta_mean": -3.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 55.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -3
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "35b12206411737cc688cf748887b83922811636b7689d97c81364a5e0b4cf153",
+                  "delta_mean": 9.5,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 1238.625,
+                  "mean_resident": 1229.125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 128,
+                  "worst_regression_cycles": 13
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "5dcbd4662ff96bcdcfee9cab6c87843554a2a3dfddc8de5dd7a173e07a34be15",
+                  "delta_mean": -2.671875,
+                  "equal": 3,
+                  "faster": 120,
+                  "mean_donor": 98.2109375,
+                  "mean_resident": 100.8828125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 5,
+                  "worst_regression_cycles": 4
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          },
+          "ram_0851": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "297578cf520cf203e001865d584269e28c1e80141ec14be51aed3bc17a8f694e",
+                  "delta_mean": -1.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 81.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -1
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "18afb0e4b4bccbd4cceb7e94321c1cb9f36575dfeaac9d80c284c54fa703d65d",
+                  "delta_mean": -9.1328125,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 915.390625,
+                  "mean_resident": 924.5234375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -4
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "0f20eabd4fc99766403414e435d815a352187110ff18f5ed5f050eb169ad1833",
+                  "delta_mean": -3.372663979479663,
+                  "equal": 191,
+                  "faster": 2538,
+                  "mean_donor": 152.714913887871,
+                  "mean_resident": 156.0875778673507,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": 0
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "2be735a16446d156a85d1604fd0981014ecae0366cae9525157189fb795f348f",
+                  "delta_mean": -7.375,
+                  "equal": 6,
+                  "faster": 122,
+                  "mean_donor": 719.0859375,
+                  "mean_resident": 726.4609375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": 0
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "dbc567ce2c5c5e134c8d38e873920fb9d764b8ac9e2e6dca87ca5a95ea1aee33",
+                  "delta_mean": -1.4453125,
+                  "equal": 73,
+                  "faster": 55,
+                  "mean_donor": 225.140625,
+                  "mean_resident": 226.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": 0
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "cf630f8a84396a0601377926efe6e99696159c80f2e3d29835c60d88e07b20e4",
+                  "delta_mean": -3.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 64.125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -3
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "3060401503719dd1ba18dc34a3ca23acd7818503bd023550d4feea2ee04e675c",
+                  "delta_mean": -3.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 55.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -3
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "58330afc9c92c7846dc8616a52a9862d727624358470cdc9b143c6a334261b06",
+                  "delta_mean": -12.7890625,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 1206.0703125,
+                  "mean_resident": 1218.859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -3
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "73681d4af30550d5870921bd1dcc505c1b3e14135ef7065002d1d7518652e04d",
+                  "delta_mean": -3.1640625,
+                  "equal": 7,
+                  "faster": 121,
+                  "mean_donor": 90.8515625,
+                  "mean_resident": 94.015625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": 0
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "297578cf520cf203e001865d584269e28c1e80141ec14be51aed3bc17a8f694e",
+                  "delta_mean": -1.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 81.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -1
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "371b9b70991ba610cc4197fad2b677fe8914dfdca91e3ccac6d6150ef818a06b",
+                  "delta_mean": -8.8671875,
+                  "equal": 3,
+                  "faster": 125,
+                  "mean_donor": 898.4609375,
+                  "mean_resident": 907.328125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": 0
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "e6ae86b40aff20421b58f1c4bbac747dd98c1cd41450507a118c61e7092f7985",
+                  "delta_mean": -3.55366568914956,
+                  "equal": 106,
+                  "faster": 1599,
+                  "mean_donor": 185.5741935483871,
+                  "mean_resident": 189.12785923753665,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": 0
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "2b28bcc44335f6d825b73ef164b03ab137723032e79da8b2dc3807b728311aaa",
+                  "delta_mean": -7.4765625,
+                  "equal": 7,
+                  "faster": 121,
+                  "mean_donor": 755.359375,
+                  "mean_resident": 762.8359375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": 0
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fad8d7cdc7e031caa0ef663664b0a75c0bc1a5eafc3e55416e23fc3f4e28f52d",
+                  "delta_mean": -1.5546875,
+                  "equal": 69,
+                  "faster": 59,
+                  "mean_donor": 221.921875,
+                  "mean_resident": 223.4765625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": 0
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "0ef412846f16b7e64d59af52e84da5a9af77595d6399f7ae60e660d564f935a4",
+                  "delta_mean": -2.9921875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.4609375,
+                  "mean_resident": 64.453125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -2
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "3060401503719dd1ba18dc34a3ca23acd7818503bd023550d4feea2ee04e675c",
+                  "delta_mean": -3.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 55.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -3
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "e55482166052fbeb906ebe828664c5debd9073dcaab88d28c4000b9ff520822c",
+                  "delta_mean": -12.671875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 1216.453125,
+                  "mean_resident": 1229.125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -8
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "24c5e8f12cd99f369a1467294aba10644e33e745349094a7ab182c1f20c05b41",
+                  "delta_mean": -2.875,
+                  "equal": 12,
+                  "faster": 116,
+                  "mean_donor": 98.0078125,
+                  "mean_resident": 100.8828125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": 0
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          }
+        },
+        "direct_mod_0zp": {
+          "skipped": "V1 UMOD16 quotient output is promised: remainder-only donor incompatible"
+        }
+      },
+      "resident_sha256": "d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a"
+    },
+    "v2_pareto_fast": {
+      "donors": {
+        "biased_2zp": {
+          "ram_0800": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c2a835aae8f320e6ce766f4c473a058b78c593cbb563b79351e50689930e900b",
+                  "delta_mean": -30.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 110.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -30
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "aa2ffa82120da1811a6135f7641b107a90012c8299f4bfbf6c84c142d26a9617",
+                  "delta_mean": -66.96875,
+                  "equal": 0,
+                  "faster": 92,
+                  "mean_donor": 930.171875,
+                  "mean_resident": 997.140625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 36,
+                  "worst_regression_cycles": 499
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "349c1776e617a94f1ea4fee5b9d4b0bfbc961148b05e957f0e00b909f3e6a8a0",
+                  "delta_mean": -7.892634664712348,
+                  "equal": 0,
+                  "faster": 2306,
+                  "mean_donor": 153.8658849395383,
+                  "mean_resident": 161.75851960425064,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 423,
+                  "worst_regression_cycles": 531
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "7b9cfd0682553c4e79ce47c3b969d3ed03f3e9cf59a237aaab4dda1af9308bce",
+                  "delta_mean": 96.9453125,
+                  "equal": 0,
+                  "faster": 53,
+                  "mean_donor": 730.203125,
+                  "mean_resident": 633.2578125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 75,
+                  "worst_regression_cycles": 492
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "4444bb790feef3ece1e5f8a9a3603e2550ae958a8d82ac333ab223be488f3cf0",
+                  "delta_mean": 24.3046875,
+                  "equal": 0,
+                  "faster": 29,
+                  "mean_donor": 224.3515625,
+                  "mean_resident": 200.046875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 99,
+                  "worst_regression_cycles": 130
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b6677456ff9075d5a4db114ae95e1f12cb873002c01d1c4ff14ee97f712b71df",
+                  "delta_mean": -2.046875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 63.171875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -2
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b80296cc33e1094db0e4ca6385a80eb9172f9ff3d498d44eda066c9aa61853cf",
+                  "delta_mean": -4.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 56.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -4
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b567e40fe9cb8ae69f96f0fbe7f763c6caffe4418caf71caa6c8c8a5f0d9f767",
+                  "delta_mean": 225.6171875,
+                  "equal": 0,
+                  "faster": 6,
+                  "mean_donor": 1228.1875,
+                  "mean_resident": 1002.5703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 122,
+                  "worst_regression_cycles": 485
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "5e1ad1ac527b92a581238f9dbfa24b729bdd5ece2cc0300c47f63642f1aae1ca",
+                  "delta_mean": 7.8203125,
+                  "equal": 0,
+                  "faster": 114,
+                  "mean_donor": 91.1640625,
+                  "mean_resident": 83.34375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 14,
+                  "worst_regression_cycles": 306
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "9ec0fffc8f42a9a1abb4e72e2e31a9b01e4bc3c9237d8a46db64c9362a2d5e91",
+                  "delta_mean": -29.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -29
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1f9649a19829cf26bb32572450d9a2bbc716869b5e38c6e5e4a0a6015b690a6a",
+                  "delta_mean": -75.21875,
+                  "equal": 0,
+                  "faster": 94,
+                  "mean_donor": 912.8125,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 34,
+                  "worst_regression_cycles": 408
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "063f3f29e39491222e29ef5f34542897cfaa7024f5c5ac307d1b2d227022f78c",
+                  "delta_mean": -11.309090909090909,
+                  "equal": 0,
+                  "faster": 400,
+                  "mean_donor": 187.29208211143694,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 1038,
+                  "slower": 1305,
+                  "worst_regression_cycles": 532
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "e237471ce3534269d4eafa62a507a56d3b475f705fd730e7c94529fa516ae70f",
+                  "delta_mean": 141.875,
+                  "equal": 0,
+                  "faster": 24,
+                  "mean_donor": 766.8203125,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 10,
+                  "slower": 104,
+                  "worst_regression_cycles": 479
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "df55278a2648877f7232e47abf4b7acd137d0cd23371d103d793ff8cd2a73ed3",
+                  "delta_mean": 19.609375,
+                  "equal": 0,
+                  "faster": 33,
+                  "mean_donor": 221.1953125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 95,
+                  "worst_regression_cycles": 131
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "36a689c3f1ef734571b4e497aa3eb83e1c77d309cb9e83e05363d423b4bbcdae",
+                  "delta_mean": 3.8046875,
+                  "equal": 0,
+                  "faster": 5,
+                  "mean_donor": 61.453125,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 123,
+                  "slower": 123,
+                  "worst_regression_cycles": 11
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fa5ef87f2795ac523b49755d6a7ca3ce81c58a257d50af706b3b8bf0042df14b",
+                  "delta_mean": 7.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 52.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 7
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "59a8d552fb44b98cec323418dde74ad4f792c93fad2b87d1767f0504a3146165",
+                  "delta_mean": 228.921875,
+                  "equal": 0,
+                  "faster": 9,
+                  "mean_donor": 1238.625,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 119,
+                  "worst_regression_cycles": 500
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "10efc231753d5bfb6cc81ac2970e2f1d3fed4d25e7235e377e02bb62bfeb091b",
+                  "delta_mean": 24.5546875,
+                  "equal": 0,
+                  "faster": 4,
+                  "mean_donor": 98.2109375,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 101,
+                  "slower": 124,
+                  "worst_regression_cycles": 404
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          },
+          "ram_0851": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c2a835aae8f320e6ce766f4c473a058b78c593cbb563b79351e50689930e900b",
+                  "delta_mean": -30.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 110.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -30
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "0654c26fcfe06a510b0cd7e6ae314c75b6aee992542ec7e933921ecb96b76683",
+                  "delta_mean": -81.75,
+                  "equal": 0,
+                  "faster": 95,
+                  "mean_donor": 915.390625,
+                  "mean_resident": 997.140625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 33,
+                  "worst_regression_cycles": 471
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "3cc7fa26550c510b316348ad2c0fbbee2b60563cfb9cff98a328c4cb33ce9f97",
+                  "delta_mean": -9.043605716379627,
+                  "equal": 0,
+                  "faster": 2306,
+                  "mean_donor": 152.714913887871,
+                  "mean_resident": 161.75851960425064,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 423,
+                  "worst_regression_cycles": 503
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "da94e894cf4bd1ae8b078650be34c5468f7c79058f525ab5923b315a5f6d0395",
+                  "delta_mean": 85.828125,
+                  "equal": 0,
+                  "faster": 57,
+                  "mean_donor": 719.0859375,
+                  "mean_resident": 633.2578125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 71,
+                  "worst_regression_cycles": 464
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "36b61d54153d7fdd4447cfe25a175af093471f2e71978633cb8b49b99447d40e",
+                  "delta_mean": 25.09375,
+                  "equal": 0,
+                  "faster": 29,
+                  "mean_donor": 225.140625,
+                  "mean_resident": 200.046875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 99,
+                  "worst_regression_cycles": 129
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b6677456ff9075d5a4db114ae95e1f12cb873002c01d1c4ff14ee97f712b71df",
+                  "delta_mean": -2.046875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 63.171875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -2
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b80296cc33e1094db0e4ca6385a80eb9172f9ff3d498d44eda066c9aa61853cf",
+                  "delta_mean": -4.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 56.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -4
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d834c07886b571c566c0f552d4db79279b4ae4c461d1dd6cd1b5ff2a7e2ff327",
+                  "delta_mean": 203.5,
+                  "equal": 0,
+                  "faster": 6,
+                  "mean_donor": 1206.0703125,
+                  "mean_resident": 1002.5703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 122,
+                  "worst_regression_cycles": 457
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "7b7613f531bb93ceb7662d18c92645d9ff33a80eb9921f4e23f16b0cf139b8ff",
+                  "delta_mean": 7.5078125,
+                  "equal": 0,
+                  "faster": 114,
+                  "mean_donor": 90.8515625,
+                  "mean_resident": 83.34375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 14,
+                  "worst_regression_cycles": 298
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "9ec0fffc8f42a9a1abb4e72e2e31a9b01e4bc3c9237d8a46db64c9362a2d5e91",
+                  "delta_mean": -29.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -29
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "3a56544af36ea11e0ecc850cccb43fecb706377ff23695828593db5442a2ed67",
+                  "delta_mean": -89.5703125,
+                  "equal": 0,
+                  "faster": 96,
+                  "mean_donor": 898.4609375,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 32,
+                  "worst_regression_cycles": 382
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "023bedc946263b1f02ddce0e70c49509a81ec4c23a3195a81e539e52e2b2e9d9",
+                  "delta_mean": -13.026979472140763,
+                  "equal": 2,
+                  "faster": 398,
+                  "mean_donor": 185.5741935483871,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 1038,
+                  "slower": 1305,
+                  "worst_regression_cycles": 504
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "bab1869bf40ec564a4c8339ac879efcd3d41893e0ad7baf40a9ec2035a9ffc02",
+                  "delta_mean": 130.4140625,
+                  "equal": 0,
+                  "faster": 26,
+                  "mean_donor": 755.359375,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 10,
+                  "slower": 102,
+                  "worst_regression_cycles": 451
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "808bc6c2c3ed904edd87a052c2577d0d58971b56a6593298b421006bceb85dcb",
+                  "delta_mean": 20.3359375,
+                  "equal": 10,
+                  "faster": 23,
+                  "mean_donor": 221.921875,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 95,
+                  "worst_regression_cycles": 129
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "67de62aacbe6a8005c6e2170551dd7a92725e99a3c523d9a06c43facc4bf0cec",
+                  "delta_mean": 3.8125,
+                  "equal": 0,
+                  "faster": 5,
+                  "mean_donor": 61.4609375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 123,
+                  "slower": 123,
+                  "worst_regression_cycles": 11
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fa5ef87f2795ac523b49755d6a7ca3ce81c58a257d50af706b3b8bf0042df14b",
+                  "delta_mean": 7.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 52.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 7
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "5ee2747c174a4cdf74f4526021e2f14df2b8945befcf62bdbd52ee136e67d862",
+                  "delta_mean": 206.75,
+                  "equal": 0,
+                  "faster": 9,
+                  "mean_donor": 1216.453125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 119,
+                  "worst_regression_cycles": 472
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fb734b28460618cae8c8f92deb8bfefd4138f92c19c8ae8ed285a433807dbcb8",
+                  "delta_mean": 24.3515625,
+                  "equal": 0,
+                  "faster": 4,
+                  "mean_donor": 98.0078125,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 101,
+                  "slower": 124,
+                  "worst_regression_cycles": 394
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          }
+        },
+        "direct_mod_0zp": {
+          "ram_0800": {
+            "extra_zp": 0,
+            "operations": {
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b876eb10761654d14ea5a4551f7c8b040981dedc70af44554bd5f5370996c1cc",
+                  "delta_mean": 9.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 118.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 9
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "68492136317b2f5dd5eaf57039c6a9457cfb8e8dba4883945c588acef259175f",
+                  "delta_mean": 1.0703125,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 989.1015625,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 10
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "b7c39f4fe20cf868f1c689025700e508bfee7a8146ad11687b1635c09d0e1d73",
+                  "delta_mean": 11.266862170087977,
+                  "equal": 1,
+                  "faster": 22,
+                  "mean_donor": 209.86803519061584,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 667,
+                  "slower": 1682,
+                  "worst_regression_cycles": 97
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d2b64b5d989f6d2ff74071b8504fed95f481fdf179757a98f1cd3ccdf7504b9d",
+                  "delta_mean": 8.90625,
+                  "equal": 1,
+                  "faster": 5,
+                  "mean_donor": 633.8515625,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 118,
+                  "slower": 122,
+                  "worst_regression_cycles": 97
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1245ace5e4bf8259d351fd8698385da37614af5cd0763ddf71350d6041061966",
+                  "delta_mean": 12.859375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 214.4453125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 51
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "24e59290e96e935f1844fb37b8df34bb081b5de4fea2c032858f73e9c59e01b3",
+                  "delta_mean": 22.5,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 80.1484375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 5,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "61e75b69e5a7662d27c0da3561267e0b2633ffc3eaee7fd0cbbff0e33b939751",
+                  "delta_mean": 23.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 68.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b58fc03eb8534146a0e691fbe1a33e899bee4110ff0a6326aff7bd326e6ffd5c",
+                  "delta_mean": 1.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 1010.703125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 1
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "950e06725a6e57bfd8b27efb661a2d343c07f638f36d0383fdbc5c7de8af0a94",
+                  "delta_mean": 22.8359375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 96.4921875,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 27,
+                  "slower": 128,
+                  "worst_regression_cycles": 94
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 2,
+            "source_bytes": 976
+          },
+          "ram_0851": {
+            "extra_zp": 0,
+            "operations": {
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b876eb10761654d14ea5a4551f7c8b040981dedc70af44554bd5f5370996c1cc",
+                  "delta_mean": 9.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 118.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 9
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "68492136317b2f5dd5eaf57039c6a9457cfb8e8dba4883945c588acef259175f",
+                  "delta_mean": 1.0703125,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 989.1015625,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 10
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "36867b0c920f410d105c56b14569536ebdbb9ea639c717621e788b3484b966ff",
+                  "delta_mean": 11.30674486803519,
+                  "equal": 1,
+                  "faster": 22,
+                  "mean_donor": 209.90791788856305,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 667,
+                  "slower": 1682,
+                  "worst_regression_cycles": 97
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c7a54109a367e698e8da128ccf0404f6c2b56e4b053f0a6977caa5bde7fe9645",
+                  "delta_mean": 8.9375,
+                  "equal": 1,
+                  "faster": 5,
+                  "mean_donor": 633.8828125,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 118,
+                  "slower": 122,
+                  "worst_regression_cycles": 97
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d37621238c7923acdbdc2ff1ea3eacedea1d28ed1f3eafde91d33a65eb77f133",
+                  "delta_mean": 12.8671875,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 214.453125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 52
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "24e59290e96e935f1844fb37b8df34bb081b5de4fea2c032858f73e9c59e01b3",
+                  "delta_mean": 22.5,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 80.1484375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 5,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "61e75b69e5a7662d27c0da3561267e0b2633ffc3eaee7fd0cbbff0e33b939751",
+                  "delta_mean": 23.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 68.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b58fc03eb8534146a0e691fbe1a33e899bee4110ff0a6326aff7bd326e6ffd5c",
+                  "delta_mean": 1.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 1010.703125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 1
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1540cd9c6650cba9634abfc9de0144466147b2d484f358b967039f01d1c8d35b",
+                  "delta_mean": 22.8359375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 96.4921875,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 27,
+                  "slower": 128,
+                  "worst_regression_cycles": 94
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 2,
+            "source_bytes": 976
+          }
+        }
+      },
+      "resident_sha256": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d"
+    },
+    "v3_reu_512k": {
+      "donors": {
+        "biased_2zp": {
+          "ram_0800": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c2a835aae8f320e6ce766f4c473a058b78c593cbb563b79351e50689930e900b",
+                  "delta_mean": -30.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 110.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -30
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "aa2ffa82120da1811a6135f7641b107a90012c8299f4bfbf6c84c142d26a9617",
+                  "delta_mean": -66.96875,
+                  "equal": 0,
+                  "faster": 92,
+                  "mean_donor": 930.171875,
+                  "mean_resident": 997.140625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 36,
+                  "worst_regression_cycles": 499
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "349c1776e617a94f1ea4fee5b9d4b0bfbc961148b05e957f0e00b909f3e6a8a0",
+                  "delta_mean": -7.892634664712348,
+                  "equal": 0,
+                  "faster": 2306,
+                  "mean_donor": 153.8658849395383,
+                  "mean_resident": 161.75851960425064,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 423,
+                  "worst_regression_cycles": 531
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "7b9cfd0682553c4e79ce47c3b969d3ed03f3e9cf59a237aaab4dda1af9308bce",
+                  "delta_mean": 96.9453125,
+                  "equal": 0,
+                  "faster": 53,
+                  "mean_donor": 730.203125,
+                  "mean_resident": 633.2578125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 75,
+                  "worst_regression_cycles": 492
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "4444bb790feef3ece1e5f8a9a3603e2550ae958a8d82ac333ab223be488f3cf0",
+                  "delta_mean": 24.3046875,
+                  "equal": 0,
+                  "faster": 29,
+                  "mean_donor": 224.3515625,
+                  "mean_resident": 200.046875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 99,
+                  "worst_regression_cycles": 130
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b6677456ff9075d5a4db114ae95e1f12cb873002c01d1c4ff14ee97f712b71df",
+                  "delta_mean": -2.046875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 63.171875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -2
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b80296cc33e1094db0e4ca6385a80eb9172f9ff3d498d44eda066c9aa61853cf",
+                  "delta_mean": -4.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 56.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -4
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b567e40fe9cb8ae69f96f0fbe7f763c6caffe4418caf71caa6c8c8a5f0d9f767",
+                  "delta_mean": 225.6171875,
+                  "equal": 0,
+                  "faster": 6,
+                  "mean_donor": 1228.1875,
+                  "mean_resident": 1002.5703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 122,
+                  "worst_regression_cycles": 485
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "5e1ad1ac527b92a581238f9dbfa24b729bdd5ece2cc0300c47f63642f1aae1ca",
+                  "delta_mean": 7.8203125,
+                  "equal": 0,
+                  "faster": 114,
+                  "mean_donor": 91.1640625,
+                  "mean_resident": 83.34375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 14,
+                  "worst_regression_cycles": 306
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "9ec0fffc8f42a9a1abb4e72e2e31a9b01e4bc3c9237d8a46db64c9362a2d5e91",
+                  "delta_mean": -29.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -29
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1f9649a19829cf26bb32572450d9a2bbc716869b5e38c6e5e4a0a6015b690a6a",
+                  "delta_mean": -75.21875,
+                  "equal": 0,
+                  "faster": 94,
+                  "mean_donor": 912.8125,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 34,
+                  "worst_regression_cycles": 408
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "063f3f29e39491222e29ef5f34542897cfaa7024f5c5ac307d1b2d227022f78c",
+                  "delta_mean": -11.309090909090909,
+                  "equal": 0,
+                  "faster": 400,
+                  "mean_donor": 187.29208211143694,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 1038,
+                  "slower": 1305,
+                  "worst_regression_cycles": 532
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "e237471ce3534269d4eafa62a507a56d3b475f705fd730e7c94529fa516ae70f",
+                  "delta_mean": 141.875,
+                  "equal": 0,
+                  "faster": 24,
+                  "mean_donor": 766.8203125,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 10,
+                  "slower": 104,
+                  "worst_regression_cycles": 479
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "df55278a2648877f7232e47abf4b7acd137d0cd23371d103d793ff8cd2a73ed3",
+                  "delta_mean": 19.609375,
+                  "equal": 0,
+                  "faster": 33,
+                  "mean_donor": 221.1953125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 95,
+                  "worst_regression_cycles": 131
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "36a689c3f1ef734571b4e497aa3eb83e1c77d309cb9e83e05363d423b4bbcdae",
+                  "delta_mean": 3.8046875,
+                  "equal": 0,
+                  "faster": 5,
+                  "mean_donor": 61.453125,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 123,
+                  "slower": 123,
+                  "worst_regression_cycles": 11
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fa5ef87f2795ac523b49755d6a7ca3ce81c58a257d50af706b3b8bf0042df14b",
+                  "delta_mean": 7.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 52.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 7
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "59a8d552fb44b98cec323418dde74ad4f792c93fad2b87d1767f0504a3146165",
+                  "delta_mean": 228.921875,
+                  "equal": 0,
+                  "faster": 9,
+                  "mean_donor": 1238.625,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 119,
+                  "worst_regression_cycles": 500
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "10efc231753d5bfb6cc81ac2970e2f1d3fed4d25e7235e377e02bb62bfeb091b",
+                  "delta_mean": 24.5546875,
+                  "equal": 0,
+                  "faster": 4,
+                  "mean_donor": 98.2109375,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 101,
+                  "slower": 124,
+                  "worst_regression_cycles": 404
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          },
+          "ram_0851": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c2a835aae8f320e6ce766f4c473a058b78c593cbb563b79351e50689930e900b",
+                  "delta_mean": -30.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 110.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -30
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "0654c26fcfe06a510b0cd7e6ae314c75b6aee992542ec7e933921ecb96b76683",
+                  "delta_mean": -81.75,
+                  "equal": 0,
+                  "faster": 95,
+                  "mean_donor": 915.390625,
+                  "mean_resident": 997.140625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 33,
+                  "worst_regression_cycles": 471
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "3cc7fa26550c510b316348ad2c0fbbee2b60563cfb9cff98a328c4cb33ce9f97",
+                  "delta_mean": -9.043605716379627,
+                  "equal": 0,
+                  "faster": 2306,
+                  "mean_donor": 152.714913887871,
+                  "mean_resident": 161.75851960425064,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 423,
+                  "worst_regression_cycles": 503
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "da94e894cf4bd1ae8b078650be34c5468f7c79058f525ab5923b315a5f6d0395",
+                  "delta_mean": 85.828125,
+                  "equal": 0,
+                  "faster": 57,
+                  "mean_donor": 719.0859375,
+                  "mean_resident": 633.2578125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 71,
+                  "worst_regression_cycles": 464
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "36b61d54153d7fdd4447cfe25a175af093471f2e71978633cb8b49b99447d40e",
+                  "delta_mean": 25.09375,
+                  "equal": 0,
+                  "faster": 29,
+                  "mean_donor": 225.140625,
+                  "mean_resident": 200.046875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 99,
+                  "worst_regression_cycles": 129
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b6677456ff9075d5a4db114ae95e1f12cb873002c01d1c4ff14ee97f712b71df",
+                  "delta_mean": -2.046875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 63.171875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -2
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b80296cc33e1094db0e4ca6385a80eb9172f9ff3d498d44eda066c9aa61853cf",
+                  "delta_mean": -4.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 56.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -4
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d834c07886b571c566c0f552d4db79279b4ae4c461d1dd6cd1b5ff2a7e2ff327",
+                  "delta_mean": 203.5,
+                  "equal": 0,
+                  "faster": 6,
+                  "mean_donor": 1206.0703125,
+                  "mean_resident": 1002.5703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 122,
+                  "worst_regression_cycles": 457
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "7b7613f531bb93ceb7662d18c92645d9ff33a80eb9921f4e23f16b0cf139b8ff",
+                  "delta_mean": 7.5078125,
+                  "equal": 0,
+                  "faster": 114,
+                  "mean_donor": 90.8515625,
+                  "mean_resident": 83.34375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 14,
+                  "worst_regression_cycles": 298
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "9ec0fffc8f42a9a1abb4e72e2e31a9b01e4bc3c9237d8a46db64c9362a2d5e91",
+                  "delta_mean": -29.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -29
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "3a56544af36ea11e0ecc850cccb43fecb706377ff23695828593db5442a2ed67",
+                  "delta_mean": -89.5703125,
+                  "equal": 0,
+                  "faster": 96,
+                  "mean_donor": 898.4609375,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 32,
+                  "worst_regression_cycles": 382
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "023bedc946263b1f02ddce0e70c49509a81ec4c23a3195a81e539e52e2b2e9d9",
+                  "delta_mean": -13.026979472140763,
+                  "equal": 2,
+                  "faster": 398,
+                  "mean_donor": 185.5741935483871,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 1038,
+                  "slower": 1305,
+                  "worst_regression_cycles": 504
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "bab1869bf40ec564a4c8339ac879efcd3d41893e0ad7baf40a9ec2035a9ffc02",
+                  "delta_mean": 130.4140625,
+                  "equal": 0,
+                  "faster": 26,
+                  "mean_donor": 755.359375,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 10,
+                  "slower": 102,
+                  "worst_regression_cycles": 451
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "808bc6c2c3ed904edd87a052c2577d0d58971b56a6593298b421006bceb85dcb",
+                  "delta_mean": 20.3359375,
+                  "equal": 10,
+                  "faster": 23,
+                  "mean_donor": 221.921875,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 95,
+                  "worst_regression_cycles": 129
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "67de62aacbe6a8005c6e2170551dd7a92725e99a3c523d9a06c43facc4bf0cec",
+                  "delta_mean": 3.8125,
+                  "equal": 0,
+                  "faster": 5,
+                  "mean_donor": 61.4609375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 123,
+                  "slower": 123,
+                  "worst_regression_cycles": 11
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fa5ef87f2795ac523b49755d6a7ca3ce81c58a257d50af706b3b8bf0042df14b",
+                  "delta_mean": 7.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 52.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 7
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "5ee2747c174a4cdf74f4526021e2f14df2b8945befcf62bdbd52ee136e67d862",
+                  "delta_mean": 206.75,
+                  "equal": 0,
+                  "faster": 9,
+                  "mean_donor": 1216.453125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 119,
+                  "worst_regression_cycles": 472
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fb734b28460618cae8c8f92deb8bfefd4138f92c19c8ae8ed285a433807dbcb8",
+                  "delta_mean": 24.3515625,
+                  "equal": 0,
+                  "faster": 4,
+                  "mean_donor": 98.0078125,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 101,
+                  "slower": 124,
+                  "worst_regression_cycles": 394
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          }
+        },
+        "direct_mod_0zp": {
+          "ram_0800": {
+            "extra_zp": 0,
+            "operations": {
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b876eb10761654d14ea5a4551f7c8b040981dedc70af44554bd5f5370996c1cc",
+                  "delta_mean": 9.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 118.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 9
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "68492136317b2f5dd5eaf57039c6a9457cfb8e8dba4883945c588acef259175f",
+                  "delta_mean": 1.0703125,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 989.1015625,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 10
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "b7c39f4fe20cf868f1c689025700e508bfee7a8146ad11687b1635c09d0e1d73",
+                  "delta_mean": 11.266862170087977,
+                  "equal": 1,
+                  "faster": 22,
+                  "mean_donor": 209.86803519061584,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 667,
+                  "slower": 1682,
+                  "worst_regression_cycles": 97
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d2b64b5d989f6d2ff74071b8504fed95f481fdf179757a98f1cd3ccdf7504b9d",
+                  "delta_mean": 8.90625,
+                  "equal": 1,
+                  "faster": 5,
+                  "mean_donor": 633.8515625,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 118,
+                  "slower": 122,
+                  "worst_regression_cycles": 97
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1245ace5e4bf8259d351fd8698385da37614af5cd0763ddf71350d6041061966",
+                  "delta_mean": 12.859375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 214.4453125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 51
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "24e59290e96e935f1844fb37b8df34bb081b5de4fea2c032858f73e9c59e01b3",
+                  "delta_mean": 22.5,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 80.1484375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 5,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "61e75b69e5a7662d27c0da3561267e0b2633ffc3eaee7fd0cbbff0e33b939751",
+                  "delta_mean": 23.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 68.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b58fc03eb8534146a0e691fbe1a33e899bee4110ff0a6326aff7bd326e6ffd5c",
+                  "delta_mean": 1.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 1010.703125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 1
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "950e06725a6e57bfd8b27efb661a2d343c07f638f36d0383fdbc5c7de8af0a94",
+                  "delta_mean": 22.8359375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 96.4921875,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 27,
+                  "slower": 128,
+                  "worst_regression_cycles": 94
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 2,
+            "source_bytes": 976
+          },
+          "ram_0851": {
+            "extra_zp": 0,
+            "operations": {
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b876eb10761654d14ea5a4551f7c8b040981dedc70af44554bd5f5370996c1cc",
+                  "delta_mean": 9.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 118.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 9
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "68492136317b2f5dd5eaf57039c6a9457cfb8e8dba4883945c588acef259175f",
+                  "delta_mean": 1.0703125,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 989.1015625,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 10
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "36867b0c920f410d105c56b14569536ebdbb9ea639c717621e788b3484b966ff",
+                  "delta_mean": 11.30674486803519,
+                  "equal": 1,
+                  "faster": 22,
+                  "mean_donor": 209.90791788856305,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 667,
+                  "slower": 1682,
+                  "worst_regression_cycles": 97
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c7a54109a367e698e8da128ccf0404f6c2b56e4b053f0a6977caa5bde7fe9645",
+                  "delta_mean": 8.9375,
+                  "equal": 1,
+                  "faster": 5,
+                  "mean_donor": 633.8828125,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 118,
+                  "slower": 122,
+                  "worst_regression_cycles": 97
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d37621238c7923acdbdc2ff1ea3eacedea1d28ed1f3eafde91d33a65eb77f133",
+                  "delta_mean": 12.8671875,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 214.453125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 52
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "24e59290e96e935f1844fb37b8df34bb081b5de4fea2c032858f73e9c59e01b3",
+                  "delta_mean": 22.5,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 80.1484375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 5,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "61e75b69e5a7662d27c0da3561267e0b2633ffc3eaee7fd0cbbff0e33b939751",
+                  "delta_mean": 23.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 68.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b58fc03eb8534146a0e691fbe1a33e899bee4110ff0a6326aff7bd326e6ffd5c",
+                  "delta_mean": 1.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 1010.703125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 1
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1540cd9c6650cba9634abfc9de0144466147b2d484f358b967039f01d1c8d35b",
+                  "delta_mean": 22.8359375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 96.4921875,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 27,
+                  "slower": 128,
+                  "worst_regression_cycles": 94
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 2,
+            "source_bytes": 976
+          }
+        }
+      },
+      "resident_sha256": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8"
+    },
+    "v4_reu_16m": {
+      "donors": {
+        "biased_2zp": {
+          "ram_0800": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c2a835aae8f320e6ce766f4c473a058b78c593cbb563b79351e50689930e900b",
+                  "delta_mean": -30.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 110.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -30
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "aa2ffa82120da1811a6135f7641b107a90012c8299f4bfbf6c84c142d26a9617",
+                  "delta_mean": -66.96875,
+                  "equal": 0,
+                  "faster": 92,
+                  "mean_donor": 930.171875,
+                  "mean_resident": 997.140625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 36,
+                  "worst_regression_cycles": 499
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "349c1776e617a94f1ea4fee5b9d4b0bfbc961148b05e957f0e00b909f3e6a8a0",
+                  "delta_mean": -7.892634664712348,
+                  "equal": 0,
+                  "faster": 2306,
+                  "mean_donor": 153.8658849395383,
+                  "mean_resident": 161.75851960425064,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 423,
+                  "worst_regression_cycles": 531
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "7b9cfd0682553c4e79ce47c3b969d3ed03f3e9cf59a237aaab4dda1af9308bce",
+                  "delta_mean": 96.9453125,
+                  "equal": 0,
+                  "faster": 53,
+                  "mean_donor": 730.203125,
+                  "mean_resident": 633.2578125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 75,
+                  "worst_regression_cycles": 492
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "4444bb790feef3ece1e5f8a9a3603e2550ae958a8d82ac333ab223be488f3cf0",
+                  "delta_mean": 24.3046875,
+                  "equal": 0,
+                  "faster": 29,
+                  "mean_donor": 224.3515625,
+                  "mean_resident": 200.046875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 99,
+                  "worst_regression_cycles": 130
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b6677456ff9075d5a4db114ae95e1f12cb873002c01d1c4ff14ee97f712b71df",
+                  "delta_mean": -2.046875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 63.171875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -2
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b80296cc33e1094db0e4ca6385a80eb9172f9ff3d498d44eda066c9aa61853cf",
+                  "delta_mean": -4.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 56.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -4
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b567e40fe9cb8ae69f96f0fbe7f763c6caffe4418caf71caa6c8c8a5f0d9f767",
+                  "delta_mean": 225.6171875,
+                  "equal": 0,
+                  "faster": 6,
+                  "mean_donor": 1228.1875,
+                  "mean_resident": 1002.5703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 122,
+                  "worst_regression_cycles": 485
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "5e1ad1ac527b92a581238f9dbfa24b729bdd5ece2cc0300c47f63642f1aae1ca",
+                  "delta_mean": 7.8203125,
+                  "equal": 0,
+                  "faster": 114,
+                  "mean_donor": 91.1640625,
+                  "mean_resident": 83.34375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 14,
+                  "worst_regression_cycles": 306
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "9ec0fffc8f42a9a1abb4e72e2e31a9b01e4bc3c9237d8a46db64c9362a2d5e91",
+                  "delta_mean": -29.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -29
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1f9649a19829cf26bb32572450d9a2bbc716869b5e38c6e5e4a0a6015b690a6a",
+                  "delta_mean": -75.21875,
+                  "equal": 0,
+                  "faster": 94,
+                  "mean_donor": 912.8125,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 34,
+                  "worst_regression_cycles": 408
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "063f3f29e39491222e29ef5f34542897cfaa7024f5c5ac307d1b2d227022f78c",
+                  "delta_mean": -11.309090909090909,
+                  "equal": 0,
+                  "faster": 400,
+                  "mean_donor": 187.29208211143694,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 1038,
+                  "slower": 1305,
+                  "worst_regression_cycles": 532
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "e237471ce3534269d4eafa62a507a56d3b475f705fd730e7c94529fa516ae70f",
+                  "delta_mean": 141.875,
+                  "equal": 0,
+                  "faster": 24,
+                  "mean_donor": 766.8203125,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 10,
+                  "slower": 104,
+                  "worst_regression_cycles": 479
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "df55278a2648877f7232e47abf4b7acd137d0cd23371d103d793ff8cd2a73ed3",
+                  "delta_mean": 19.609375,
+                  "equal": 0,
+                  "faster": 33,
+                  "mean_donor": 221.1953125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 95,
+                  "worst_regression_cycles": 131
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "36a689c3f1ef734571b4e497aa3eb83e1c77d309cb9e83e05363d423b4bbcdae",
+                  "delta_mean": 3.8046875,
+                  "equal": 0,
+                  "faster": 5,
+                  "mean_donor": 61.453125,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 123,
+                  "slower": 123,
+                  "worst_regression_cycles": 11
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fa5ef87f2795ac523b49755d6a7ca3ce81c58a257d50af706b3b8bf0042df14b",
+                  "delta_mean": 7.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 52.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 7
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "59a8d552fb44b98cec323418dde74ad4f792c93fad2b87d1767f0504a3146165",
+                  "delta_mean": 228.921875,
+                  "equal": 0,
+                  "faster": 9,
+                  "mean_donor": 1238.625,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 119,
+                  "worst_regression_cycles": 500
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "10efc231753d5bfb6cc81ac2970e2f1d3fed4d25e7235e377e02bb62bfeb091b",
+                  "delta_mean": 24.5546875,
+                  "equal": 0,
+                  "faster": 4,
+                  "mean_donor": 98.2109375,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 101,
+                  "slower": 124,
+                  "worst_regression_cycles": 404
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          },
+          "ram_0851": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c2a835aae8f320e6ce766f4c473a058b78c593cbb563b79351e50689930e900b",
+                  "delta_mean": -30.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 110.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -30
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "0654c26fcfe06a510b0cd7e6ae314c75b6aee992542ec7e933921ecb96b76683",
+                  "delta_mean": -81.75,
+                  "equal": 0,
+                  "faster": 95,
+                  "mean_donor": 915.390625,
+                  "mean_resident": 997.140625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 33,
+                  "worst_regression_cycles": 471
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "3cc7fa26550c510b316348ad2c0fbbee2b60563cfb9cff98a328c4cb33ce9f97",
+                  "delta_mean": -9.043605716379627,
+                  "equal": 0,
+                  "faster": 2306,
+                  "mean_donor": 152.714913887871,
+                  "mean_resident": 161.75851960425064,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 423,
+                  "worst_regression_cycles": 503
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "da94e894cf4bd1ae8b078650be34c5468f7c79058f525ab5923b315a5f6d0395",
+                  "delta_mean": 85.828125,
+                  "equal": 0,
+                  "faster": 57,
+                  "mean_donor": 719.0859375,
+                  "mean_resident": 633.2578125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 71,
+                  "worst_regression_cycles": 464
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "36b61d54153d7fdd4447cfe25a175af093471f2e71978633cb8b49b99447d40e",
+                  "delta_mean": 25.09375,
+                  "equal": 0,
+                  "faster": 29,
+                  "mean_donor": 225.140625,
+                  "mean_resident": 200.046875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 99,
+                  "worst_regression_cycles": 129
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b6677456ff9075d5a4db114ae95e1f12cb873002c01d1c4ff14ee97f712b71df",
+                  "delta_mean": -2.046875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 63.171875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -2
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b80296cc33e1094db0e4ca6385a80eb9172f9ff3d498d44eda066c9aa61853cf",
+                  "delta_mean": -4.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 56.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -4
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d834c07886b571c566c0f552d4db79279b4ae4c461d1dd6cd1b5ff2a7e2ff327",
+                  "delta_mean": 203.5,
+                  "equal": 0,
+                  "faster": 6,
+                  "mean_donor": 1206.0703125,
+                  "mean_resident": 1002.5703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 122,
+                  "worst_regression_cycles": 457
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "7b7613f531bb93ceb7662d18c92645d9ff33a80eb9921f4e23f16b0cf139b8ff",
+                  "delta_mean": 7.5078125,
+                  "equal": 0,
+                  "faster": 114,
+                  "mean_donor": 90.8515625,
+                  "mean_resident": 83.34375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 14,
+                  "worst_regression_cycles": 298
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "9ec0fffc8f42a9a1abb4e72e2e31a9b01e4bc3c9237d8a46db64c9362a2d5e91",
+                  "delta_mean": -29.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -29
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "3a56544af36ea11e0ecc850cccb43fecb706377ff23695828593db5442a2ed67",
+                  "delta_mean": -89.5703125,
+                  "equal": 0,
+                  "faster": 96,
+                  "mean_donor": 898.4609375,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 32,
+                  "worst_regression_cycles": 382
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "023bedc946263b1f02ddce0e70c49509a81ec4c23a3195a81e539e52e2b2e9d9",
+                  "delta_mean": -13.026979472140763,
+                  "equal": 2,
+                  "faster": 398,
+                  "mean_donor": 185.5741935483871,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 1038,
+                  "slower": 1305,
+                  "worst_regression_cycles": 504
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "bab1869bf40ec564a4c8339ac879efcd3d41893e0ad7baf40a9ec2035a9ffc02",
+                  "delta_mean": 130.4140625,
+                  "equal": 0,
+                  "faster": 26,
+                  "mean_donor": 755.359375,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 10,
+                  "slower": 102,
+                  "worst_regression_cycles": 451
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "808bc6c2c3ed904edd87a052c2577d0d58971b56a6593298b421006bceb85dcb",
+                  "delta_mean": 20.3359375,
+                  "equal": 10,
+                  "faster": 23,
+                  "mean_donor": 221.921875,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 95,
+                  "worst_regression_cycles": 129
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "67de62aacbe6a8005c6e2170551dd7a92725e99a3c523d9a06c43facc4bf0cec",
+                  "delta_mean": 3.8125,
+                  "equal": 0,
+                  "faster": 5,
+                  "mean_donor": 61.4609375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 123,
+                  "slower": 123,
+                  "worst_regression_cycles": 11
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fa5ef87f2795ac523b49755d6a7ca3ce81c58a257d50af706b3b8bf0042df14b",
+                  "delta_mean": 7.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 52.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 7
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "5ee2747c174a4cdf74f4526021e2f14df2b8945befcf62bdbd52ee136e67d862",
+                  "delta_mean": 206.75,
+                  "equal": 0,
+                  "faster": 9,
+                  "mean_donor": 1216.453125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 119,
+                  "worst_regression_cycles": 472
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fb734b28460618cae8c8f92deb8bfefd4138f92c19c8ae8ed285a433807dbcb8",
+                  "delta_mean": 24.3515625,
+                  "equal": 0,
+                  "faster": 4,
+                  "mean_donor": 98.0078125,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 101,
+                  "slower": 124,
+                  "worst_regression_cycles": 394
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          }
+        },
+        "direct_mod_0zp": {
+          "ram_0800": {
+            "extra_zp": 0,
+            "operations": {
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b876eb10761654d14ea5a4551f7c8b040981dedc70af44554bd5f5370996c1cc",
+                  "delta_mean": 9.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 118.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 9
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "68492136317b2f5dd5eaf57039c6a9457cfb8e8dba4883945c588acef259175f",
+                  "delta_mean": 1.0703125,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 989.1015625,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 10
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "b7c39f4fe20cf868f1c689025700e508bfee7a8146ad11687b1635c09d0e1d73",
+                  "delta_mean": 11.266862170087977,
+                  "equal": 1,
+                  "faster": 22,
+                  "mean_donor": 209.86803519061584,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 667,
+                  "slower": 1682,
+                  "worst_regression_cycles": 97
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d2b64b5d989f6d2ff74071b8504fed95f481fdf179757a98f1cd3ccdf7504b9d",
+                  "delta_mean": 8.90625,
+                  "equal": 1,
+                  "faster": 5,
+                  "mean_donor": 633.8515625,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 118,
+                  "slower": 122,
+                  "worst_regression_cycles": 97
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1245ace5e4bf8259d351fd8698385da37614af5cd0763ddf71350d6041061966",
+                  "delta_mean": 12.859375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 214.4453125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 51
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "24e59290e96e935f1844fb37b8df34bb081b5de4fea2c032858f73e9c59e01b3",
+                  "delta_mean": 22.5,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 80.1484375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 5,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "61e75b69e5a7662d27c0da3561267e0b2633ffc3eaee7fd0cbbff0e33b939751",
+                  "delta_mean": 23.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 68.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b58fc03eb8534146a0e691fbe1a33e899bee4110ff0a6326aff7bd326e6ffd5c",
+                  "delta_mean": 1.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 1010.703125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 1
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "950e06725a6e57bfd8b27efb661a2d343c07f638f36d0383fdbc5c7de8af0a94",
+                  "delta_mean": 22.8359375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 96.4921875,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 27,
+                  "slower": 128,
+                  "worst_regression_cycles": 94
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 2,
+            "source_bytes": 976
+          },
+          "ram_0851": {
+            "extra_zp": 0,
+            "operations": {
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b876eb10761654d14ea5a4551f7c8b040981dedc70af44554bd5f5370996c1cc",
+                  "delta_mean": 9.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 118.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 9
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "68492136317b2f5dd5eaf57039c6a9457cfb8e8dba4883945c588acef259175f",
+                  "delta_mean": 1.0703125,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 989.1015625,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 10
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "36867b0c920f410d105c56b14569536ebdbb9ea639c717621e788b3484b966ff",
+                  "delta_mean": 11.30674486803519,
+                  "equal": 1,
+                  "faster": 22,
+                  "mean_donor": 209.90791788856305,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 667,
+                  "slower": 1682,
+                  "worst_regression_cycles": 97
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c7a54109a367e698e8da128ccf0404f6c2b56e4b053f0a6977caa5bde7fe9645",
+                  "delta_mean": 8.9375,
+                  "equal": 1,
+                  "faster": 5,
+                  "mean_donor": 633.8828125,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 118,
+                  "slower": 122,
+                  "worst_regression_cycles": 97
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d37621238c7923acdbdc2ff1ea3eacedea1d28ed1f3eafde91d33a65eb77f133",
+                  "delta_mean": 12.8671875,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 214.453125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 52
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "24e59290e96e935f1844fb37b8df34bb081b5de4fea2c032858f73e9c59e01b3",
+                  "delta_mean": 22.5,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 80.1484375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 5,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "61e75b69e5a7662d27c0da3561267e0b2633ffc3eaee7fd0cbbff0e33b939751",
+                  "delta_mean": 23.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 68.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b58fc03eb8534146a0e691fbe1a33e899bee4110ff0a6326aff7bd326e6ffd5c",
+                  "delta_mean": 1.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 1010.703125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 1
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1540cd9c6650cba9634abfc9de0144466147b2d484f358b967039f01d1c8d35b",
+                  "delta_mean": 22.8359375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 96.4921875,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 27,
+                  "slower": 128,
+                  "worst_regression_cycles": 94
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 2,
+            "source_bytes": 976
+          }
+        }
+      },
+      "resident_sha256": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724"
+    },
+    "v5_hybrid_lowzp": {
+      "donors": {
+        "biased_2zp": {
+          "ram_0800": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c2a835aae8f320e6ce766f4c473a058b78c593cbb563b79351e50689930e900b",
+                  "delta_mean": -30.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 110.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -30
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "aa2ffa82120da1811a6135f7641b107a90012c8299f4bfbf6c84c142d26a9617",
+                  "delta_mean": -66.96875,
+                  "equal": 0,
+                  "faster": 92,
+                  "mean_donor": 930.171875,
+                  "mean_resident": 997.140625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 36,
+                  "worst_regression_cycles": 499
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "349c1776e617a94f1ea4fee5b9d4b0bfbc961148b05e957f0e00b909f3e6a8a0",
+                  "delta_mean": -7.892634664712348,
+                  "equal": 0,
+                  "faster": 2306,
+                  "mean_donor": 153.8658849395383,
+                  "mean_resident": 161.75851960425064,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 423,
+                  "worst_regression_cycles": 531
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "7b9cfd0682553c4e79ce47c3b969d3ed03f3e9cf59a237aaab4dda1af9308bce",
+                  "delta_mean": 96.9453125,
+                  "equal": 0,
+                  "faster": 53,
+                  "mean_donor": 730.203125,
+                  "mean_resident": 633.2578125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 75,
+                  "worst_regression_cycles": 492
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "4444bb790feef3ece1e5f8a9a3603e2550ae958a8d82ac333ab223be488f3cf0",
+                  "delta_mean": 24.3046875,
+                  "equal": 0,
+                  "faster": 29,
+                  "mean_donor": 224.3515625,
+                  "mean_resident": 200.046875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 99,
+                  "worst_regression_cycles": 130
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b6677456ff9075d5a4db114ae95e1f12cb873002c01d1c4ff14ee97f712b71df",
+                  "delta_mean": -2.046875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 63.171875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -2
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b80296cc33e1094db0e4ca6385a80eb9172f9ff3d498d44eda066c9aa61853cf",
+                  "delta_mean": -4.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 56.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -4
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b567e40fe9cb8ae69f96f0fbe7f763c6caffe4418caf71caa6c8c8a5f0d9f767",
+                  "delta_mean": 225.6171875,
+                  "equal": 0,
+                  "faster": 6,
+                  "mean_donor": 1228.1875,
+                  "mean_resident": 1002.5703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 122,
+                  "worst_regression_cycles": 485
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "5e1ad1ac527b92a581238f9dbfa24b729bdd5ece2cc0300c47f63642f1aae1ca",
+                  "delta_mean": 7.8203125,
+                  "equal": 0,
+                  "faster": 114,
+                  "mean_donor": 91.1640625,
+                  "mean_resident": 83.34375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 14,
+                  "worst_regression_cycles": 306
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "9ec0fffc8f42a9a1abb4e72e2e31a9b01e4bc3c9237d8a46db64c9362a2d5e91",
+                  "delta_mean": -29.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -29
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1f9649a19829cf26bb32572450d9a2bbc716869b5e38c6e5e4a0a6015b690a6a",
+                  "delta_mean": -75.21875,
+                  "equal": 0,
+                  "faster": 94,
+                  "mean_donor": 912.8125,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 34,
+                  "worst_regression_cycles": 408
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "063f3f29e39491222e29ef5f34542897cfaa7024f5c5ac307d1b2d227022f78c",
+                  "delta_mean": -11.309090909090909,
+                  "equal": 0,
+                  "faster": 400,
+                  "mean_donor": 187.29208211143694,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 1038,
+                  "slower": 1305,
+                  "worst_regression_cycles": 532
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "e237471ce3534269d4eafa62a507a56d3b475f705fd730e7c94529fa516ae70f",
+                  "delta_mean": 141.875,
+                  "equal": 0,
+                  "faster": 24,
+                  "mean_donor": 766.8203125,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 10,
+                  "slower": 104,
+                  "worst_regression_cycles": 479
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "df55278a2648877f7232e47abf4b7acd137d0cd23371d103d793ff8cd2a73ed3",
+                  "delta_mean": 19.609375,
+                  "equal": 0,
+                  "faster": 33,
+                  "mean_donor": 221.1953125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 95,
+                  "worst_regression_cycles": 131
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "36a689c3f1ef734571b4e497aa3eb83e1c77d309cb9e83e05363d423b4bbcdae",
+                  "delta_mean": 3.8046875,
+                  "equal": 0,
+                  "faster": 5,
+                  "mean_donor": 61.453125,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 123,
+                  "slower": 123,
+                  "worst_regression_cycles": 11
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fa5ef87f2795ac523b49755d6a7ca3ce81c58a257d50af706b3b8bf0042df14b",
+                  "delta_mean": 7.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 52.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 7
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "59a8d552fb44b98cec323418dde74ad4f792c93fad2b87d1767f0504a3146165",
+                  "delta_mean": 228.921875,
+                  "equal": 0,
+                  "faster": 9,
+                  "mean_donor": 1238.625,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 119,
+                  "worst_regression_cycles": 500
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "10efc231753d5bfb6cc81ac2970e2f1d3fed4d25e7235e377e02bb62bfeb091b",
+                  "delta_mean": 24.5546875,
+                  "equal": 0,
+                  "faster": 4,
+                  "mean_donor": 98.2109375,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 101,
+                  "slower": 124,
+                  "worst_regression_cycles": 404
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          },
+          "ram_0851": {
+            "extra_zp": 2,
+            "operations": {
+              "MATH_UDIV16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c2a835aae8f320e6ce766f4c473a058b78c593cbb563b79351e50689930e900b",
+                  "delta_mean": -30.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 110.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -30
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "0654c26fcfe06a510b0cd7e6ae314c75b6aee992542ec7e933921ecb96b76683",
+                  "delta_mean": -81.75,
+                  "equal": 0,
+                  "faster": 95,
+                  "mean_donor": 915.390625,
+                  "mean_resident": 997.140625,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 33,
+                  "worst_regression_cycles": 471
+                },
+                "official": {
+                  "cases": 2729,
+                  "cycle_pair_sha256": "3cc7fa26550c510b316348ad2c0fbbee2b60563cfb9cff98a328c4cb33ce9f97",
+                  "delta_mean": -9.043605716379627,
+                  "equal": 0,
+                  "faster": 2306,
+                  "mean_donor": 152.714913887871,
+                  "mean_resident": 161.75851960425064,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 423,
+                  "worst_regression_cycles": 503
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "da94e894cf4bd1ae8b078650be34c5468f7c79058f525ab5923b315a5f6d0395",
+                  "delta_mean": 85.828125,
+                  "equal": 0,
+                  "faster": 57,
+                  "mean_donor": 719.0859375,
+                  "mean_resident": 633.2578125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 71,
+                  "worst_regression_cycles": 464
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "36b61d54153d7fdd4447cfe25a175af093471f2e71978633cb8b49b99447d40e",
+                  "delta_mean": 25.09375,
+                  "equal": 0,
+                  "faster": 29,
+                  "mean_donor": 225.140625,
+                  "mean_resident": 200.046875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 99,
+                  "worst_regression_cycles": 129
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b6677456ff9075d5a4db114ae95e1f12cb873002c01d1c4ff14ee97f712b71df",
+                  "delta_mean": -2.046875,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 61.125,
+                  "mean_resident": 63.171875,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -2
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b80296cc33e1094db0e4ca6385a80eb9172f9ff3d498d44eda066c9aa61853cf",
+                  "delta_mean": -4.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 52.0,
+                  "mean_resident": 56.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -4
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d834c07886b571c566c0f552d4db79279b4ae4c461d1dd6cd1b5ff2a7e2ff327",
+                  "delta_mean": 203.5,
+                  "equal": 0,
+                  "faster": 6,
+                  "mean_donor": 1206.0703125,
+                  "mean_resident": 1002.5703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 122,
+                  "worst_regression_cycles": 457
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "7b7613f531bb93ceb7662d18c92645d9ff33a80eb9921f4e23f16b0cf139b8ff",
+                  "delta_mean": 7.5078125,
+                  "equal": 0,
+                  "faster": 114,
+                  "mean_donor": 90.8515625,
+                  "mean_resident": 83.34375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 14,
+                  "worst_regression_cycles": 298
+                }
+              },
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "9ec0fffc8f42a9a1abb4e72e2e31a9b01e4bc3c9237d8a46db64c9362a2d5e91",
+                  "delta_mean": -29.0,
+                  "equal": 0,
+                  "faster": 128,
+                  "mean_donor": 80.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 0,
+                  "worst_regression_cycles": -29
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "3a56544af36ea11e0ecc850cccb43fecb706377ff23695828593db5442a2ed67",
+                  "delta_mean": -89.5703125,
+                  "equal": 0,
+                  "faster": 96,
+                  "mean_donor": 898.4609375,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 32,
+                  "worst_regression_cycles": 382
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "023bedc946263b1f02ddce0e70c49509a81ec4c23a3195a81e539e52e2b2e9d9",
+                  "delta_mean": -13.026979472140763,
+                  "equal": 2,
+                  "faster": 398,
+                  "mean_donor": 185.5741935483871,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 1038,
+                  "slower": 1305,
+                  "worst_regression_cycles": 504
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "bab1869bf40ec564a4c8339ac879efcd3d41893e0ad7baf40a9ec2035a9ffc02",
+                  "delta_mean": 130.4140625,
+                  "equal": 0,
+                  "faster": 26,
+                  "mean_donor": 755.359375,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 10,
+                  "slower": 102,
+                  "worst_regression_cycles": 451
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "808bc6c2c3ed904edd87a052c2577d0d58971b56a6593298b421006bceb85dcb",
+                  "delta_mean": 20.3359375,
+                  "equal": 10,
+                  "faster": 23,
+                  "mean_donor": 221.921875,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 95,
+                  "worst_regression_cycles": 129
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "67de62aacbe6a8005c6e2170551dd7a92725e99a3c523d9a06c43facc4bf0cec",
+                  "delta_mean": 3.8125,
+                  "equal": 0,
+                  "faster": 5,
+                  "mean_donor": 61.4609375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 123,
+                  "slower": 123,
+                  "worst_regression_cycles": 11
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fa5ef87f2795ac523b49755d6a7ca3ce81c58a257d50af706b3b8bf0042df14b",
+                  "delta_mean": 7.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 52.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 7
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "5ee2747c174a4cdf74f4526021e2f14df2b8945befcf62bdbd52ee136e67d862",
+                  "delta_mean": 206.75,
+                  "equal": 0,
+                  "faster": 9,
+                  "mean_donor": 1216.453125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 119,
+                  "worst_regression_cycles": 472
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "fb734b28460618cae8c8f92deb8bfefd4138f92c19c8ae8ed285a433807dbcb8",
+                  "delta_mean": 24.3515625,
+                  "equal": 0,
+                  "faster": 4,
+                  "mean_donor": 98.0078125,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 101,
+                  "slower": 124,
+                  "worst_regression_cycles": 394
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 0,
+            "source_bytes": 323
+          }
+        },
+        "direct_mod_0zp": {
+          "ram_0800": {
+            "extra_zp": 0,
+            "operations": {
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b876eb10761654d14ea5a4551f7c8b040981dedc70af44554bd5f5370996c1cc",
+                  "delta_mean": 9.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 118.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 9
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "68492136317b2f5dd5eaf57039c6a9457cfb8e8dba4883945c588acef259175f",
+                  "delta_mean": 1.0703125,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 989.1015625,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 10
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "b7c39f4fe20cf868f1c689025700e508bfee7a8146ad11687b1635c09d0e1d73",
+                  "delta_mean": 11.266862170087977,
+                  "equal": 1,
+                  "faster": 22,
+                  "mean_donor": 209.86803519061584,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 667,
+                  "slower": 1682,
+                  "worst_regression_cycles": 97
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d2b64b5d989f6d2ff74071b8504fed95f481fdf179757a98f1cd3ccdf7504b9d",
+                  "delta_mean": 8.90625,
+                  "equal": 1,
+                  "faster": 5,
+                  "mean_donor": 633.8515625,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 118,
+                  "slower": 122,
+                  "worst_regression_cycles": 97
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1245ace5e4bf8259d351fd8698385da37614af5cd0763ddf71350d6041061966",
+                  "delta_mean": 12.859375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 214.4453125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 51
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "24e59290e96e935f1844fb37b8df34bb081b5de4fea2c032858f73e9c59e01b3",
+                  "delta_mean": 22.5,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 80.1484375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 5,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "61e75b69e5a7662d27c0da3561267e0b2633ffc3eaee7fd0cbbff0e33b939751",
+                  "delta_mean": 23.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 68.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b58fc03eb8534146a0e691fbe1a33e899bee4110ff0a6326aff7bd326e6ffd5c",
+                  "delta_mean": 1.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 1010.703125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 1
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "950e06725a6e57bfd8b27efb661a2d343c07f638f36d0383fdbc5c7de8af0a94",
+                  "delta_mean": 22.8359375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 96.4921875,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 27,
+                  "slower": 128,
+                  "worst_regression_cycles": 94
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 2,
+            "source_bytes": 976
+          },
+          "ram_0851": {
+            "extra_zp": 0,
+            "operations": {
+              "MATH_UMOD16": {
+                "d0": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b876eb10761654d14ea5a4551f7c8b040981dedc70af44554bd5f5370996c1cc",
+                  "delta_mean": 9.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 118.0,
+                  "mean_resident": 109.0,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 9
+                },
+                "narrow_d8": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "68492136317b2f5dd5eaf57039c6a9457cfb8e8dba4883945c588acef259175f",
+                  "delta_mean": 1.0703125,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 989.1015625,
+                  "mean_resident": 988.03125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 10
+                },
+                "official": {
+                  "cases": 1705,
+                  "cycle_pair_sha256": "36867b0c920f410d105c56b14569536ebdbb9ea639c717621e788b3484b966ff",
+                  "delta_mean": 11.30674486803519,
+                  "equal": 1,
+                  "faster": 22,
+                  "mean_donor": 209.90791788856305,
+                  "mean_resident": 198.60117302052785,
+                  "quotient_side_effect_differences": 667,
+                  "slower": 1682,
+                  "worst_regression_cycles": 97
+                },
+                "powers2": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "c7a54109a367e698e8da128ccf0404f6c2b56e4b053f0a6977caa5bde7fe9645",
+                  "delta_mean": 8.9375,
+                  "equal": 1,
+                  "faster": 5,
+                  "mean_donor": 633.8828125,
+                  "mean_resident": 624.9453125,
+                  "quotient_side_effect_differences": 118,
+                  "slower": 122,
+                  "worst_regression_cycles": 97
+                },
+                "q2to7": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "d37621238c7923acdbdc2ff1ea3eacedea1d28ed1f3eafde91d33a65eb77f133",
+                  "delta_mean": 12.8671875,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 214.453125,
+                  "mean_resident": 201.5859375,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 52
+                },
+                "qone": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "24e59290e96e935f1844fb37b8df34bb081b5de4fea2c032858f73e9c59e01b3",
+                  "delta_mean": 22.5,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 80.1484375,
+                  "mean_resident": 57.6484375,
+                  "quotient_side_effect_differences": 5,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "qzero": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "61e75b69e5a7662d27c0da3561267e0b2633ffc3eaee7fd0cbbff0e33b939751",
+                  "delta_mean": 23.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 68.0,
+                  "mean_resident": 45.0,
+                  "quotient_side_effect_differences": 0,
+                  "slower": 128,
+                  "worst_regression_cycles": 23
+                },
+                "tiny_d4": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "b58fc03eb8534146a0e691fbe1a33e899bee4110ff0a6326aff7bd326e6ffd5c",
+                  "delta_mean": 1.0,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 1010.703125,
+                  "mean_resident": 1009.703125,
+                  "quotient_side_effect_differences": 128,
+                  "slower": 128,
+                  "worst_regression_cycles": 1
+                },
+                "uniform16": {
+                  "cases": 128,
+                  "cycle_pair_sha256": "1540cd9c6650cba9634abfc9de0144466147b2d484f358b967039f01d1c8d35b",
+                  "delta_mean": 22.8359375,
+                  "equal": 0,
+                  "faster": 0,
+                  "mean_donor": 96.4921875,
+                  "mean_resident": 73.65625,
+                  "quotient_side_effect_differences": 27,
+                  "slower": 128,
+                  "worst_regression_cycles": 94
+                }
+              }
+            },
+            "requires_caller_owned_code_ram": true,
+            "scratch_ram": 2,
+            "source_bytes": 976
+          }
+        }
+      },
+      "resident_sha256": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222"
+    }
+  },
+  "public_entries_patched": false,
+  "ram_maps": [
+    "ram_0800",
+    "ram_0851"
+  ],
+  "resident_changed": false,
+  "status": "PASS_SOURCE_BACKED_PUBLIC_ABI_NO_DEFAULT_PROMOTION"
+}
