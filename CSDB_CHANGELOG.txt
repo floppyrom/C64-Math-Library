@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 V1 24/8 WRITABLE-RAM SMC ACCUMULATOR CANDIDATE SCREEN (NO RESIDENT CHANGE)
+- PR #80 (part of #39) independently screens the 68-byte accumulator-remainder with per-call self-modified CMP/SBC immediate operands; the 61-byte non-self-modifying candidate from PR #79 remains separately available. Requires executable writable RAM, no concurrent/re-entrant use; NOT ROM-compatible.
+- Full old-vs-candidate public-entry 48,388 6502 calls pass, zero arithmetic/flag/input/stack errors or slower cases; official mean UDIV24 170.238165->165.228277 and UMOD24 246.822279->231.489375. D8 stress 1202.660784->927.934314 cycles, all 4,080 pairs faster per API. Separate 128 native VICE isolated-core calls matched independent oracle.
+- Shipped PR #78 69-byte implementation, official performance rankings and five resident PRGs remain unchanged by this candidate-only PR; full integrated/native V5 relocation certification still required. Issue #39 remains OPEN. See docs/ISSUE39_V1_UDIV24_ACCUMULATOR_SMC_SCREEN_2026-10-12.md.
+
 2026-10-12 ISSUE39 V1 24/8 ACCUMULATOR-REMAINDER CANDIDATE SCREEN (NO RESIDENT CHANGE)
 - PR #79 (part of #39) screens a 61-byte accumulator-resident partial remainder against the merged PR #78 69-byte shared-subtraction V1 24/8 core. Zero additional ZP/stack, all public entry addresses and shipped binaries unchanged.
 - Reproducible 48,388 old/new complete public UDIV24/UMOD24 6502 calls, no incorrect Q/R/C/N/D/stack and zero slower cases. Official UDIV24 170.238165->166.190196; UMOD24 246.822279->234.433355; 4,080 full-N24/D8 pairs 1202.660784->976.350000, all faster. These are candidate results, not new release rankings.
