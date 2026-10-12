@@ -5,6 +5,7 @@ import hashlib,json,subprocess,sys
 R=Path(__file__).resolve().parents[1]
 REP=R/'validation/review/ISSUE39_UDIV8_PREFIX_PUBLIC_ABI_SWEEP.json'
 DOC=R/'docs/ISSUE39_UDIV8_PREFIX_PERPROFILE_SCREEN_2026-10-13.md'
+EXREP=R/'validation/review/ISSUE39_UDIV8_K8_EXHAUSTIVE_ABI.json'
 PS=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
 KS=(8,12,16,20,24,28)
 MAPS=('ram_0800','ram_0851')
@@ -16,6 +17,12 @@ def seal():
  (R/'SHA256SUMS.txt').write_text(''.join(sha(p)+'  '+str(p.relative_to(R))+'\n' for p in files))
 def main():
  j=json.loads(Path(sys.argv[1]).read_text())
+ exhaust=json.loads(Path(sys.argv[2]).read_text())
+ assert exhaust['status']=='PASS_EXHAUSTIVE_PUBLIC_ABI_K8_SOURCE'
+ assert (exhaust['paired_inputs'],exhaust['cpu_calls'])==(655360,1310720)
+ assert set(exhaust['variants'])==set(PS)
+ assert exhaust['code_origin_maps']==list(MAPS)
+ EXREP.write_text(json.dumps(exhaust,sort_keys=True,indent=2)+'\n')
  state=json.loads((R/'RELEASE_STATUS.json').read_text())
  assert j['status']=='PASS_BOUNDED_PREFIX_SCREEN_RESEARCH_ONLY'
  assert j['K_values']==list(KS) and j['locations']==list(MAPS)
@@ -26,10 +33,25 @@ def main():
  assert len(j['corpus'])==9
  rows=[]
  record={}
+ exhaustive_rows=[]
+ exhaustive_stats={}
  for p in PS:
   pg=j['profiles'][p]
   assert sha(R/p/'resident'/f'math_{p}_game_math.prg')==pg['resident_sha256']==state['reference_prg_sha256'][p],p
   assert set(pg['variants'])==set(map(str,KS))
+  ex=exhaust['variants'][p]
+  assert ex['resident_sha256']==pg['resident_sha256']
+  assert set(ex['maps'])==set(MAPS)
+  xb=ex['maps']['ram_0800'];xa=ex['maps']['ram_0851']
+  assert (xb['cases'],xa['cases'])==(65536,65536)
+  assert xb['code_bytes']==xa['code_bytes']==229
+  assert abs(xb['delta_mean']-xa['delta_mean'])<1e-8
+  exhaustive_rows.append(f"| {p} | {xb['current_mean']:.6f} | {xb['K8_mean']:.6f} | {xb['delta_mean']:+.6f} | {xb['faster']} / {xb['slower']} | {xb['code_bytes']} |")
+  exhaustive_stats[p]={'current_mean':xb['current_mean'],'K8_mean':xb['K8_mean'],
+     'delta_mean':xb['delta_mean'],'full_domain_cases':65536,
+     'faster':xb['faster'],'slower':xb['slower'],
+     'cycle_pair_sha256':xb['cycle_pair_sha256']}
+  assert xb['delta_mean']>0,(p,'exhaustive K8 beats current; reconsider promotion')
   candidates=[]
   for k in KS:
    maps=pg['variants'][str(k)]
@@ -84,6 +106,20 @@ def main():
  'as a workload-neutral optimization; also compare extra code and',
  'scratch byte versus the resident normal-ZP budgets.',
  '',
+ '**Important separate full-domain validation:** an additional',
+ f"**{exhaust['paired_inputs']:,} old/new operand pairs and {exhaust['cpu_calls']:,} full CPU executions**",
+ 'exhaustively cover ALL 65,536 N8/D8 pairs, at both RAM origins',
+ 'in every profile for K=8. The K8 candidate is *slower* on the',
+ 'unweighted complete input domain despite winning the official',
+ 'weighted mean in V1/V2/V5. Do not promote K8 as a default.',
+ '',
+ '| Profile | Current exhaustive cycles | K8 exhaustive cycles | Delta | Faster / slower pairs | Candidate bytes |',
+ '|---|---:|---:|---:|---:|---:|']+exhaustive_rows+[
+ '',
+ 'Full-domain reproducible JSON:',
+ 'validation/review/ISSUE39_UDIV8_K8_EXHAUSTIVE_ABI.json',
+ 'Reproducer: tools/qualify_issue39_u8_k8_exhaustive.py',
+ '',
  'Best K by this corpus within the six SOURCE-GENERATED variants:',
  ]+[f"- {p}: K={record[p]['official_best_K']}, candidate {record[p]['official_best_candidate_cycles']:.3f} cycles vs current public {record[p]['official_public_mean']:.3f} cycles." for p in PS]+[
  '',
@@ -106,6 +142,7 @@ def main():
  DOC.write_text('\n'.join(lines)+'\n')
  log=f"""{MARK}
 - Source-synthesized six established 8-bit compare/SBC quotient prefixes (K8/12/16/20/24/28) in two caller-owned RAM maps; validated exact full public Q8/R8/carry/ownership/stack against the current SHA-pinned V1–V5 resident UDIV8. {j['paired_inputs']:,} identical paired operands and {j['cpu_calls']:,} complete CPU calls, 9 workloads, 0 mathematical or promised-ABI errors.
+- Independent 65,536-operand complete-domain K8 vs current UDIV8 checks at both code locations and all profiles: 655,360 pairs / 1,310,720 CPU calls, correct Q/R/C/N/D/sentinels/stack, with K8 slower on the exhaustive mean despite weighted-corpus/smaller-byte gains. Source K8 is NOT promoted. Published exact per-class/full-domain cycle SHA and resource figures.
 - Published profile-specific code-byte, mean/tail cycle and workload fingerprints and bounded manual/OptiSearch-informed architecture ranking. Candidates need caller-owned RAM and 1 scratch ZP, not resident source-owned code resources; no default source/binary/API/normal ZP change or native-VICE timing claim. README/manual, both changelogs, release-status metadata and checksum seal updated. Issue #39 OPEN. {DOC.relative_to(R)}
 """
  for name in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
@@ -121,7 +158,12 @@ def main():
   'reproducer':'tools/screen_issue39_u8_prefix_source_sweep.py',
   'documentation':str(DOC.relative_to(R)),
   'current_residents_sha256':{p:j['profiles'][p]['resident_sha256'] for p in PS},
-  'profile_results':record,'K_values':list(KS),'RAM_maps':list(MAPS),
+  'profile_results':record,'exhaustive_K8_results':exhaustive_stats,
+  'exhaustive_K8_report':str(EXREP.relative_to(R)),
+  'exhaustive_K8_report_sha256':sha(EXREP),
+  'exhaustive_K8_paired_inputs':exhaust['paired_inputs'],
+  'exhaustive_K8_cpu_calls':exhaust['cpu_calls'],
+  'K_values':list(KS),'RAM_maps':list(MAPS),
   'paired_operands':j['paired_inputs'],'cpu_calls':j['cpu_calls'],
   'normal_ZP_growth':0,'caller_extra_ZP':1,'native_vice_calls':0,
   'production_binaries_changed':False,'public_api_changed':False,
