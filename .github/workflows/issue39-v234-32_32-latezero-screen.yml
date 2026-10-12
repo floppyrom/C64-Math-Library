@@ -1,0 +1,44 @@
+name: Issue39 V2–V4 32-bit delayed-zero source screen
+on:
+  push:
+    branches:
+      - issue39-v234-32_32-late-zero-check
+    paths:
+      - '.github/workflows/issue39-v234-32_32-latezero-screen.yml'
+      - 'tools/screen_issue39_v234_32_32_latezero.py'
+      - 'relocatable_source/v2_pareto_fast/udiv32_32_early_gate.inc'
+      - 'relocatable_source/v3_reu_512k/udiv32_32_early_gate.inc'
+      - 'relocatable_source/v4_reu_16m/udiv32_32_early_gate.inc'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  public-abi-paired:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate all references and independently relocate alternate sources
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+      - name: Screen V2/V3/V4 full resident public 32-bit DIV/MOD
+        run: python3 tools/screen_issue39_v234_32_32_latezero.py
+      - name: Export source-built candidate plus complete evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v234-3232-delayed-zero-source-proof
+          path: |
+            validation/review/ISSUE39_V234_32_32_LATEZERO_PAIRED.json
+            build_source/reference/v2_pareto_fast/*.prg
+            build_source/reference/v3_reu_512k/*.prg
+            build_source/reference/v4_reu_16m/*.prg
+          retention-days: 14
+          if-no-files-found: warn
