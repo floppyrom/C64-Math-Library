@@ -21,7 +21,7 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 174.54660214601304,
+        "mean_cycles": 170.4986324426678,
         "min_cycles": 56,
         "max_cycles": 2144,
         "mode": "structured_random"
@@ -67,7 +67,7 @@
       "MATH_UMOD24": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 243.11268512556342,
+        "mean_cycles": 230.7237604636188,
         "min_cycles": 56,
         "max_cycles": 2144
       },

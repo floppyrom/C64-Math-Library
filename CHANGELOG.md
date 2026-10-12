@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 V1 ACCUMULATOR-REMAINDER 61-BYTE 24/8 DIVMOD RELEASE
+- V1 shared UDIV24/UMOD24 short-divisor kernel: keep partial R in A across all 24 iterations, 69→61 bytes, 23 padded bytes in the original 84-byte owned island. Zero new normal ZP/stack, stable API/addresses and resident size, V2–V5 byte-identical.
+- 48,388 paired prior/new complete public CPU calls, no ABI errors or slower pairs; canonical same-input UDIV24 170.238165→166.190196, UMOD24 246.822279→234.433355. Native x64sc 128 isolated source-kernel correctness calls; full-resident native not claimed.
+- Five-profile unsigned 822,050 and signed 364,533 calls; 136,335 same-input and 53,760 small-workload calls; historical parent reproducibility, reference/alternate source relocation, V5 isolation. Standalone mirrors, performance tables, release/checksums and docs refreshed. Campaign #39 remains OPEN. docs/ISSUE39_V1_UDIV24_ACCUMULATOR_RELEASE_2026-10-12.md
+
 2026-10-12 ISSUE39 V1 24/8 ACCUMULATOR-REMAINDER CANDIDATE SCREEN (NO RESIDENT CHANGE)
 - PR #79 (part of #39) screens a 61-byte accumulator-resident partial remainder against the merged PR #78 69-byte shared-subtraction V1 24/8 core. Zero additional ZP/stack, all public entry addresses and shipped binaries unchanged.
 - Reproducible 48,388 old/new complete public UDIV24/UMOD24 6502 calls, no incorrect Q/R/C/N/D/stack and zero slower cases. Official UDIV24 170.238165->166.190196; UMOD24 246.822279->234.433355; 4,080 full-N24/D8 pairs 1202.660784->976.350000, all faster. These are candidate results, not new release rankings.

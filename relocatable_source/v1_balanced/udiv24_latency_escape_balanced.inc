@@ -26,29 +26,30 @@ V1LAT_24_BY_8:
     lda MATH_N+2
     sta MATH_Q+2
     lda #0
-    sta MATH_R+0
+    ; Accumulator carries the 8-bit partial remainder across all 24 bits.
+    ; Ninth bit is in carry from ROL A; CMP supplies the subtraction carry.
     ldx #24
 V1LAT_8_LOOP:
     asl MATH_Q+0
     rol MATH_Q+1
     rol MATH_Q+2
-    rol MATH_R+0
-    ; LDA preserves ninth-remainder-bit carry; CMP success also sets carry.
-    lda MATH_R+0
+    rol a
     bcs V1LAT_8_SUB
     cmp MATH_D+0
     bcc V1LAT_8_NEXT
 V1LAT_8_SUB:
     sbc MATH_D+0
-    sta MATH_R+0
     inc MATH_Q+0
 V1LAT_8_NEXT:
     dex
     bne V1LAT_8_LOOP
+    sta MATH_R+0
     lda #0
     sta MATH_R+1
     sta MATH_R+2
     clc
     rts
-    ; Original 84-byte reserved code island: pad the freed 15 bytes with zero.
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    ; Preserve the entire 84-byte source-owned V1 island.
+    ; The 61-byte engine leaves 23 explicitly zero-filled trailing bytes.
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00
