@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "name": "UMOD16 zero-ZP direct-chain standalone",
+  "source_sha256": "ea8df5ae56b174511980bef12506561543871529dac131624e9b33eac2faf291",
+  "same_input_corpus_sha256": "b60581213496cddefb57554035b6cf1c6b46b8655caac240fe0a6791844e56f1",
+  "emulator_calls": 5115,
+  "native_vice_correctness_calls": 192,
+  "code_and_data_bytes": 976,
+  "zp_bytes": 0,
+  "ordinary_scratch_ram_bytes": 2,
+  "additional_hardware_stack_bytes": 2,
+  "means_by_layout": {
+    "aligned_8000": 209.86803519061584,
+    "unaligned_7123": 209.9208211143695,
+    "unaligned_830f": 209.8674486803519
+  },
+  "current_resident_mean_v1": 189.12785923753665,
+  "current_resident_mean_v2_v5": 198.60117302052785,
+  "qualification": "memory-specialist, not overall speed winner; native cycle timing not measured"
+}

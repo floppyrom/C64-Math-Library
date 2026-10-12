@@ -29,3 +29,7 @@ The [configurable zero-ZP aligned UMOD32 source](portable/mod_u32_aligned_carry.
 ## Another 0-ZP option: aligned 32-bit quotient + remainder
 
 The [source-backed zero-ZP aligned UDIV32 alternative](portable/div_u32_aligned_nozp.asm) is individually configurable and fully arithmetic/flag-checked. It uses 576 code bytes and four ordinary scratch RAM bytes, with **no ZP allocation**. Its full 2,729-pair mean is **408.012 cycles** (V2-V4 resident 242.549), and its random 2,048-pair mean is **196.890** (resident 193.660). It is therefore a *memory-constraint specialist*, not a new global fastest divider. [Provenance, relocation and benchmarks](portable/README.md). Source-assembled verification: 8,187 current-corpus calls at three maps and 192 native VICE correctness calls at two maps.
+
+## Sixth unique OptiSearch implementation recovered
+
+[Direct-chain UMOD16 with zero zero-page use](portable/UMOD16_DIRECT_PICKUP.md) is preserved as a memory-specialist candidate: 976 code+data bytes, 2 ordinary scratch RAM bytes and 2 nested stack bytes. Its official full-corpus average is **209.868 cycles**, *slower* than V2-V5's 198.601; it is published for zero-ZP resource-constrained users, not as a universal fastest routine. The three-map emulator proof covers 5,115 calls and the independent native VICE campaign covers 192 correctness calls. This gives source-backed coverage of all six distinct generators from Repose's October 11 comparison bundle; individual performance and ABI qualification still apply.
