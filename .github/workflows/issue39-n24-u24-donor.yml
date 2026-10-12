@@ -1,0 +1,42 @@
+name: Issue39 N24-to-UDIV24 32by16 donor research
+on:
+  push:
+    branches: [issue39-n24-u24-donor-audit]
+    paths:
+      - '.github/workflows/issue39-n24-u24-donor.yml'
+  pull_request:
+    paths:
+      - 'tools/screen_issue39_n24_u24_donor.py'
+      - 'tools/finalize_issue39_n24_u24_donor.py'
+      - '.github/workflows/issue39-n24-u24-donor.yml'
+permissions:
+  contents: write
+jobs:
+  five-profile-two-map-public-abi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-n24-u24-donor-audit
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Five SHA-pinned V1-V5 residents; both 32by16 public APIs and two RAM maps
+        run: python3 tools/screen_issue39_n24_u24_donor.py --out /tmp/issue39_n24_u24_donor.json
+      - name: Seal no-gain decision, both changelogs, release metadata and hashes
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_n24_u24_donor.py /tmp/issue39_n24_u24_donor.json
+      - name: Commit research evidence to PR branch
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal N24-to-U24 no-gain research'
+          git push origin HEAD:issue39-n24-u24-donor-audit
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-n24-u24-five-profile-research
+          path: /tmp/issue39_n24_u24_donor.json

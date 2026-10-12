@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 68782,
-    "user_manual_lines": 1906,
-    "user_manual_sha256": "31b6c26cc63a502854ab9569c875b30a1079b9321fcf2e2e9aa0698bcac9e304"
+    "user_manual_bytes": 68915,
+    "user_manual_lines": 1908,
+    "user_manual_sha256": "c5abb6f9faf40c008f257b3aa0b1aef84d9399d2bc63271d7da7e70b0606ff4d"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1508,6 +1508,22 @@
     "signedness": "unsigned",
     "requires_n16": true,
     "v2v5_prefer_d_ge_256": true,
+    "unsigned_family_complete": false
+  },
+  "issue39_n24_u24_architecture_screen_2026_10_12": {
+    "status": "PASS_RESEARCH_NO_DEFAULT_PROMOTION",
+    "source": "tools/screen_issue39_n24_u24_donor.py",
+    "validation": "validation/review/ISSUE39_N24_U24_DONOR_SCREEN.json",
+    "validation_sha256": "38dbb1f7ac72cfbad5536063262ab7b170c8370b5ddd30899d138e7547bdcfac",
+    "documentation": "docs/ISSUE39_N24_TO_U24_DONOR_SCREEN_2026-10-12.md",
+    "paired_inputs": 11580,
+    "cpu_calls": 23160,
+    "native_vice_calls": 0,
+    "profile_count": 5,
+    "candidate_bytes": 30,
+    "temporary_stack_bytes": 4,
+    "released_residents_changed": false,
+    "public_api_changed": false,
     "unsigned_family_complete": false
   }
 }
