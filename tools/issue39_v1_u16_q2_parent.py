@@ -36,4 +36,5 @@ def restore_v1_q2_parent(prg:bytes)->bytes:
     return restore_u16_q2_parent(prg,'v1_balanced')
 
 def restore_v5_q2_parent(prg:bytes)->bytes:
-    return restore_u16_q2_parent(prg,'v5_hybrid_lowzp')
+    from issue39_v5_umod32_parent import restore_v5_umod32_parent
+    return restore_u16_q2_parent(restore_v5_umod32_parent(prg),'v5_hybrid_lowzp')
