@@ -1,0 +1,34 @@
+{
+  "cases_per_map": 3172,
+  "core_bytes": 68,
+  "core_normal_zp": 0,
+  "failures": 0,
+  "full_calls": 6344,
+  "maps": {
+    "8000": {
+      "cases": 3172,
+      "code_sha256_initial": "f7da79de6560bffd66171f53372e7cccced70bb7d9da428e2c0aa2439dbdc008",
+      "max_cycles": 997,
+      "mean_cycles": 881.751261034048,
+      "min_cycles": 836,
+      "patched_opcode_operands": [
+        "802C",
+        "8030"
+      ]
+    },
+    "830F": {
+      "cases": 3172,
+      "code_sha256_initial": "b017438e27270e5221b3bc610db2d56ffbe1d958ff5bb53b07557019db5cdfb4",
+      "max_cycles": 997,
+      "mean_cycles": 881.751261034048,
+      "min_cycles": 836,
+      "patched_opcode_operands": [
+        "833B",
+        "833F"
+      ]
+    }
+  },
+  "scope": "precondition-only portable writable-RAM selfmod",
+  "stack_growth": 0,
+  "status": "PASS"
+}
