@@ -23,6 +23,8 @@ jobs:
         run: python3 routines/standalone_lab/verify.py
       - name: Three-map standalone relocation, 9657 machine-code calls
         run: python3 routines/standalone_lab/portable/verify.py
+      - name: Repose 0-ZP UMOD32 donor byte parity and 3410 full-corpus calls
+        run: python3 routines/standalone_lab/portable/verify_umod32_common.py
       - name: Lean package and checksum contract
         run: |
           python3 tools/package_audit.py

@@ -21,3 +21,7 @@ See [the candidate backlog](CANDIDATE_BACKLOG.csv) for other Repose outputs and 
 ## Configurable relocation and native VICE
 
 The new [portable standalone modules](portable/README.md) have editable code, buffer, and ZP addresses. Unlike the original fixed-map donors, they have passed 9,657 emulator calls across three disjoint memory maps and 576 native x64sc correctness calls across two maps. Cycle numbers remain specific to each compiled placement. The original fixed-map sources and segment SHA provenance are retained; a duplicate *internal* UDIV32 symbol was renamed without changing machine code.
+
+## New 0-ZP 32-bit modulo specialist
+
+The [configurable zero-ZP aligned UMOD32 source](portable/mod_u32_aligned_carry.asm) is independently assembled and tested. It needs four ordinary scratch-RAM bytes plus the public carry adapter. On 1,024 identical random wide-divisor inputs it averages **190.867 cycles** versus the published V2-V4 UMOD32 average **199.833**, but its full-spectrum mean is far worse (**476.938 vs 279.620**). It belongs in the isolated-specialist collection, **not** the general-purpose profile ranking. See [portable README](portable/README.md) and `portable/verify_umod32_common.py`.
