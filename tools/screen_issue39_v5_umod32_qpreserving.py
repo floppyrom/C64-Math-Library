@@ -87,6 +87,15 @@ def main():
  assert bytes(cpu.mem[API:API+3])==bytes.fromhex('4c5759'),('public stub changed')
  alt.mem[API:API+3]=bytes((0x4C,DST&255,DST>>8))
  for pc,value in code.items():alt.mem[pc]=value
+ if globals().get('EXPORT_PRG'):
+  # Only the explicitly chosen quotient-preserving version exports a PRG
+  # for external native VICE testing; shipped residents remain untouched.
+  blob=bytearray(oldimg);origin=int.from_bytes(blob[:2],'little')
+  blob[2+API-origin:2+API-origin+3]=bytes((0x4C,DST&255,DST>>8))
+  for pc,value in code.items():blob[2+pc-origin]=value
+  export=ROOT/globals()['EXPORT_PRG'];export.parent.mkdir(parents=True,exist_ok=True)
+  export.write_bytes(blob)
+  assert len(blob)==len(oldimg)
  _,common=corpus('MATH_UMOD32_32',32,32,0,1024)
  cases=[(n,d,'official') for n,d,_ in common]
  rnd=random.Random(0x39883232)
