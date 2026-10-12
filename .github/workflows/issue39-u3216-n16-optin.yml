@@ -1,0 +1,33 @@
+name: Issue39 12-byte 32/16 N16 opt-in proof
+on:
+  push:
+    branches: [issue39-u3216-n16-optin-12byte-helper]
+    paths: ['.github/workflows/issue39-u3216-n16-optin.yml']
+  pull_request:
+    paths:
+      - 'tools/qualify_issue39_u3216_n16_optin.py'
+      - 'routines/standalone_lab/library_dependent/div_u32_u16_n16_optin.asm'
+      - '.github/workflows/issue39-u3216-n16-optin.yml'
+permissions:
+  contents: read
+jobs:
+  paired-public-two-ram-maps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: 12-byte opt-in profile public ABI & placement proof
+        run: python3 tools/qualify_issue39_u3216_n16_optin.py --out /tmp/issue39_optin_12byte.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-n16-optin-and-five-current-residents
+          path: |
+            /tmp/issue39_optin_12byte.json
+            v1_balanced/resident/math_v1_balanced_game_math.prg
+            v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg
+            v3_reu_512k/resident/math_v3_reu_512k_game_math.prg
+            v4_reu_16m/resident/math_v4_reu_16m_game_math.prg
+            v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg
