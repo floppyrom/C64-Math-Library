@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 68235,
-    "user_manual_lines": 1898,
-    "user_manual_sha256": "5e5d03dc6a403f552a05ee6d58155dfd33cd9f2590c67f5bb82036a5dd592cdb"
+    "user_manual_bytes": 68348,
+    "user_manual_lines": 1900,
+    "user_manual_sha256": "e22603b281450cce5892f6201a6a23d3d92ce72b7249e37422454fd36f8de523"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1375,6 +1375,18 @@
         }
       }
     },
+    "unsigned_family_complete": false
+  },
+  "issue39_v2_umod8_guard_cutoff_2026_10_12": {
+    "status": "PASS_NO_PROMOTION",
+    "report": "validation/review/ISSUE39_V2_UMOD8_GUARD_THRESHOLD_SWEEP.json",
+    "report_sha256": "4af1b444f736cde382e273d34a9742eb99fb007132af1d74dabc2ff7742dbb1d",
+    "documentation": "docs/ISSUE39_V2_UMOD8_GUARD_THRESHOLD_SWEEP_2026-10-12.md",
+    "tested_cutoffs": 20,
+    "exact_cases": 65536,
+    "best_guard": 24,
+    "best_mean": 52.20445251464844,
+    "binary_changed": false,
     "unsigned_family_complete": false
   }
 }

@@ -1896,3 +1896,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue #39 V1 RAM SMC 68-byte shared 24/8 release: docs/ISSUE39_V1_24BY8_SMC_INTEGRATED_RELEASE_2026-10-12.md. Requires writable RAM and non-reentrant execution; 61-byte fallback is retained; family-wide audit remains open.
 
 - Issue #39 V2–V5 UDIV16/UMOD16 D-high gate microarchitecture audit: docs/ISSUE39_V2V5_U16_D1_CUTOFF_SCREEN_2026-10-12.md. Keep #15; no family-wide signoff.
+
+- Issue #39 V2 UMOD8 exact-D24 guard no-gain screen: docs/ISSUE39_V2_UMOD8_GUARD_THRESHOLD_SWEEP_2026-10-12.md.

@@ -1,3 +1,6 @@
+2026-10-12 ISSUE39 V2 UMOD8 GUARD D24 EXHAUSTIVE SCREEN
+- Full-domain 65,536 N/D calls, 59,136 two-route checks, 2,277 direct candidate calls. V2 D>=24 guard gives the lowest measured mean: 52.204453; D>=25 52.274643, D>=32 52.845413. All higher cutoffs lose overall; no default binary/ABI/ZP/stack change. Source/data, docs and SHA256SUMS updated; issue #39 open. docs/ISSUE39_V2_UMOD8_GUARD_THRESHOLD_SWEEP_2026-10-12.md
+
 2026-10-12 ISSUE39 V2-V5 U16 D-HIGH CUTOFF SWEEP (RESEARCH ONLY)
 - Tested 17 existing-size CPX D1 dispatch cutoffs for UDIV16 and UMOD16 in unchanged V2/V3/V4/V5 images. Exact current resident SHA pins; 4,201 UDIV16 and 3,177 UMOD16 inputs per candidate/profile, preserved Q/R/C, N/D, SP and modulo quotient side effect. 64 combinations (cutoffs 1–14) fail correctness.
 - Cutoff 16: UDIV16 +0.054035 cycles mean (9 faster,10 slower); UMOD16 -0.116147 cycles mean (11 faster,7 slower). No universally zero-regression non-default candidate; retain cutoff 15. Published complete per-class source-backed evidence, manual, both logs and checksums; no resident/source/API change. Issue #39 unsigned campaign OPEN. docs/ISSUE39_V2V5_U16_D1_CUTOFF_SCREEN_2026-10-12.md
