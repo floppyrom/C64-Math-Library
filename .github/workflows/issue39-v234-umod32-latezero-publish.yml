@@ -5,6 +5,7 @@ on:
       - issue39-v234-umod32-late-zero-release
     paths:
       - '.github/workflows/issue39-v234-umod32-latezero-publish.yml'
+      - 'tools/stage_issue39_v234_umod32_latezero_release.py'
   workflow_dispatch:
 permissions:
   contents: write
