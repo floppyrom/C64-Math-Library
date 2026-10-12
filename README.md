@@ -194,3 +194,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue39 current-resident 16-bit OptiSearch donor ABI matrix: docs/ISSUE39_U16_OPTISEARCH_PUBLIC_ABI_MATRIX_2026-10-13.md. No default promotion.
 
 - Issue39 24÷8 writable-RAM caller-opt-in current resident screen: docs/ISSUE39_U24_D8_RAM_SMC_CURRENT_OPTIN_2026-10-13.md. Mandatory operand guard; no default change.
+
+- Issue39 current-resident UDIV8 quotient-prefix source architecture sweep: docs/ISSUE39_UDIV8_PREFIX_PERPROFILE_SCREEN_2026-10-13.md. No default API/binary change.

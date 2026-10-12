@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 69567,
-    "user_manual_lines": 1916,
-    "user_manual_sha256": "4af261c0e6d6d617f5f9cee0739cd231028e4e0138a2d760a5d28c2ed7b09011"
+    "user_manual_bytes": 69733,
+    "user_manual_lines": 1918,
+    "user_manual_sha256": "692f1010824fcb6389d7cdf73e0db58b857f00c8aa2f6ac8e3af18dbb56f45ee"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -2111,5 +2111,106 @@
     "resident_binaries_changed": false,
     "public_api_changed": false,
     "unsigned_divmod_family_complete": false
+  },
+  "issue39_udiv8_prefix_source_screen_2026_10_13": {
+    "status": "PASS_RESEARCH_NO_DEFAULT_PROMOTION",
+    "evidence": "validation/review/ISSUE39_UDIV8_PREFIX_PUBLIC_ABI_SWEEP.json",
+    "evidence_sha256": "c6d10acf17b299d2510c89e30bfba30f339a4860b121c3c6a767d0e27948d8cb",
+    "reproducer": "tools/screen_issue39_u8_prefix_source_sweep.py",
+    "documentation": "docs/ISSUE39_UDIV8_PREFIX_PERPROFILE_SCREEN_2026-10-13.md",
+    "current_residents_sha256": {
+      "v1_balanced": "d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a",
+      "v2_pareto_fast": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
+      "v3_reu_512k": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8",
+      "v4_reu_16m": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724",
+      "v5_hybrid_lowzp": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222"
+    },
+    "profile_results": {
+      "v1_balanced": {
+        "official_best_K": 8,
+        "official_best_candidate_cycles": 64.72251521298175,
+        "official_public_mean": 65.09330628803245,
+        "all_tested_K_source_sizes": {
+          "8": 229,
+          "12": 297,
+          "16": 365,
+          "20": 433,
+          "24": 501,
+          "28": 569
+        }
+      },
+      "v2_pareto_fast": {
+        "official_best_K": 8,
+        "official_best_candidate_cycles": 64.72251521298175,
+        "official_public_mean": 65.20608519269777,
+        "all_tested_K_source_sizes": {
+          "8": 229,
+          "12": 297,
+          "16": 365,
+          "20": 433,
+          "24": 501,
+          "28": 569
+        }
+      },
+      "v3_reu_512k": {
+        "official_best_K": 8,
+        "official_best_candidate_cycles": 64.72251521298175,
+        "official_public_mean": 52.22799188640974,
+        "all_tested_K_source_sizes": {
+          "8": 229,
+          "12": 297,
+          "16": 365,
+          "20": 433,
+          "24": 501,
+          "28": 569
+        }
+      },
+      "v4_reu_16m": {
+        "official_best_K": 8,
+        "official_best_candidate_cycles": 64.72251521298175,
+        "official_public_mean": 52.22799188640974,
+        "all_tested_K_source_sizes": {
+          "8": 229,
+          "12": 297,
+          "16": 365,
+          "20": 433,
+          "24": 501,
+          "28": 569
+        }
+      },
+      "v5_hybrid_lowzp": {
+        "official_best_K": 8,
+        "official_best_candidate_cycles": 64.72251521298175,
+        "official_public_mean": 65.20608519269777,
+        "all_tested_K_source_sizes": {
+          "8": 229,
+          "12": 297,
+          "16": 365,
+          "20": 433,
+          "24": 501,
+          "28": 569
+        }
+      }
+    },
+    "K_values": [
+      8,
+      12,
+      16,
+      20,
+      24,
+      28
+    ],
+    "RAM_maps": [
+      "ram_0800",
+      "ram_0851"
+    ],
+    "paired_operands": 357720,
+    "cpu_calls": 715440,
+    "normal_ZP_growth": 0,
+    "caller_extra_ZP": 1,
+    "native_vice_calls": 0,
+    "production_binaries_changed": false,
+    "public_api_changed": false,
+    "unsigned_family_complete": false
   }
 }
