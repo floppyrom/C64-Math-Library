@@ -1,0 +1,240 @@
+{
+  "abi_changed": false,
+  "new_core_bytes": 68,
+  "new_v1_sha256": "d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a",
+  "normal_zp_growth": 0,
+  "old_core_bytes": 61,
+  "original_v1_sha256": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
+  "paired_machine_calls": 48388,
+  "regressions": 0,
+  "routines": {
+    "MATH_UDIV24": {
+      "canonical": {
+        "after_mean": 165.2282768777614,
+        "before_mean": 166.19019566589523,
+        "best_delta": -84,
+        "cases": 4753,
+        "equal": 4669,
+        "faster": 84,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "divide_by_zero": {
+        "after_mean": 69.9921875,
+        "before_mean": 69.9921875,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "full_n24_d8": {
+        "after_mean": 927.9343137254901,
+        "before_mean": 976.35,
+        "best_delta": -70,
+        "cases": 4080,
+        "equal": 0,
+        "faster": 4080,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "n2_zero_control": {
+        "after_mean": 1222.3203125,
+        "before_mean": 1222.3203125,
+        "best_delta": 0,
+        "cases": 1024,
+        "equal": 1024,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "power_of_two": {
+        "after_mean": 933.08203125,
+        "before_mean": 952.51171875,
+        "best_delta": -68,
+        "cases": 256,
+        "equal": 169,
+        "faster": 87,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "quotient_2_to_7": {
+        "after_mean": 330.71484375,
+        "before_mean": 330.71484375,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "quotient_one": {
+        "after_mean": 93.0703125,
+        "before_mean": 93.0703125,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "quotient_zero": {
+        "after_mean": 56.1875,
+        "before_mean": 56.1875,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "small_divisor": {
+        "after_mean": 933.796875,
+        "before_mean": 981.5078125,
+        "best_delta": -66,
+        "cases": 256,
+        "equal": 3,
+        "faster": 253,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "uniform": {
+        "after_mean": 124.05859375,
+        "before_mean": 124.05859375,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "wide_divisor_control": {
+        "after_mean": 142.5439453125,
+        "before_mean": 142.5439453125,
+        "best_delta": 0,
+        "cases": 2048,
+        "equal": 2048,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      }
+    },
+    "MATH_UMOD24": {
+      "canonical": {
+        "after_mean": 231.48937540244688,
+        "before_mean": 234.43335479716677,
+        "best_delta": -84,
+        "cases": 1553,
+        "equal": 1469,
+        "faster": 84,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "divide_by_zero": {
+        "after_mean": 69.9921875,
+        "before_mean": 69.9921875,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "full_n24_d8": {
+        "after_mean": 927.9343137254901,
+        "before_mean": 976.35,
+        "best_delta": -70,
+        "cases": 4080,
+        "equal": 0,
+        "faster": 4080,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "n2_zero_control": {
+        "after_mean": 1222.3203125,
+        "before_mean": 1222.3203125,
+        "best_delta": 0,
+        "cases": 1024,
+        "equal": 1024,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "power_of_two": {
+        "after_mean": 933.08203125,
+        "before_mean": 952.51171875,
+        "best_delta": -68,
+        "cases": 256,
+        "equal": 169,
+        "faster": 87,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "quotient_2_to_7": {
+        "after_mean": 330.71484375,
+        "before_mean": 330.71484375,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "quotient_one": {
+        "after_mean": 93.0703125,
+        "before_mean": 93.0703125,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "quotient_zero": {
+        "after_mean": 56.1875,
+        "before_mean": 56.1875,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "small_divisor": {
+        "after_mean": 933.796875,
+        "before_mean": 981.5078125,
+        "best_delta": -66,
+        "cases": 256,
+        "equal": 3,
+        "faster": 253,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "uniform": {
+        "after_mean": 124.05859375,
+        "before_mean": 124.05859375,
+        "best_delta": 0,
+        "cases": 256,
+        "equal": 256,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      },
+      "wide_divisor_control": {
+        "after_mean": 142.5439453125,
+        "before_mean": 142.5439453125,
+        "best_delta": 0,
+        "cases": 2048,
+        "equal": 2048,
+        "faster": 0,
+        "slower": 0,
+        "worst_delta": 0
+      }
+    }
+  },
+  "scope": "RAM-only, self-modifying in-memory candidate; NOT shipped, NOT ROM-safe",
+  "source": "tools/candidates/issue39_v1_24by8_accumulator_selfmod.asm",
+  "stack_growth": 0,
+  "status": "PASS"
+}

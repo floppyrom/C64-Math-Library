@@ -1,0 +1,58 @@
+name: Issue39 V1 24/8 RAM SMC vs released 61-byte screen
+
+on:
+  push:
+    branches: [issue39-v1-24by8-accumulator-smc-screen]
+    paths: ['.github/workflows/issue39-v1-24-accumulator-smc-screen.yml']
+  pull_request:
+    paths:
+      - 'tools/candidates/issue39_v1_24by8_accumulator_selfmod.asm'
+      - 'tools/screen_issue39_v1_24by8_accumulator_selfmod.py'
+      - 'tools/verify_issue39_v1_24by8_accumulator_selfmod_portable.py'
+      - 'routines/standalone_lab/portable/div_u24_by_u8_selfmod.asm'
+      - '.github/workflows/issue39-v1-24-accumulator-smc-screen.yml'
+
+permissions:
+  contents: write
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-backed-smc-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v1-24by8-accumulator-smc-screen
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Compare RAM SMC with exact released 61-byte V1 public entries
+        run: python3 tools/screen_issue39_v1_24by8_accumulator_selfmod.py --out /tmp/smc_vs61.json
+      - name: Check independent portable SMC at two different RAM addresses
+        run: python3 tools/verify_issue39_v1_24by8_accumulator_selfmod_portable.py --out /tmp/smc_portable.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v1-smc-vs61-proofs
+          path: |
+            /tmp/smc_vs61.json
+            /tmp/smc_portable.json
+      - name: Stage source backed standalone release, docs, changelogs and checksums
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_v1_24by8_smc_specialist.py /tmp/smc_vs61.json /tmp/smc_portable.json
+      - name: Independently verify sealed catalogs
+        run: |
+          python3 tools/package_audit.py
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Commit qualified publication to SMC branch only
+        if: github.event_name == 'push'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          if ! git diff --cached --quiet; then
+            git commit -m "issue39: certify standalone RAM-only 68-byte SMC candidate vs released 61-byte V1"
+            git push origin HEAD:issue39-v1-24by8-accumulator-smc-screen
+          fi

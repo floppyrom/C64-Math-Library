@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 67646,
-    "user_manual_lines": 1892,
-    "user_manual_sha256": "920e1f1502c1cb84491d30c928058e75df767b9fccc6b59e59f3c1e885e7848c"
+    "user_manual_bytes": 67849,
+    "user_manual_lines": 1894,
+    "user_manual_sha256": "255a31a4e987ca25cd45ecc0cbcb3112b2b86b36d50eeae1113cbc6d649791d2"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1232,6 +1232,28 @@
     "old_new_differences": 0,
     "native_cycle_timing_claim": false,
     "resident_source_or_binary_changed": false,
+    "unsigned_family_complete": false
+  },
+  "issue39_v1_24by8_ram_smc_specialist_2026_10_12": {
+    "status": "PASS_RESEARCH_ONLY_NOT_RESIDENT",
+    "documentation": "docs/ISSUE39_V1_UDIV24_ACCUMULATOR_SMC_SCREEN_2026-10-12.md",
+    "resident_61_sha256": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
+    "paired_public_calls": 48388,
+    "portable_standalone_calls": 6344,
+    "paired_regressions": 0,
+    "smc_code_bytes": 68,
+    "released_code_bytes": 61,
+    "normal_zp_growth": 0,
+    "stack_growth": 0,
+    "evidence": {
+      "validation/review/ISSUE39_V1_24BY8_SMC_VS_61_PAIRED.json": "ee0b48a51858bc0cfa7a10fc97cbdbd997f29e926e15f0b1724d0f2a7ccbf544",
+      "validation/review/ISSUE39_V1_24BY8_SMC_PORTABLE.json": "f62235cf13d42b62dc00ce238ee70dc1125c64d98072d5ef567b52b27e51f2d3"
+    },
+    "official_candidate_means": {
+      "MATH_UDIV24": 165.2282768777614,
+      "MATH_UMOD24": 231.48937540244688
+    },
+    "installed_binary_changed": false,
     "unsigned_family_complete": false
   }
 }
