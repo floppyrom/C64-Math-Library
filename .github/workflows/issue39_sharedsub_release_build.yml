@@ -20,6 +20,7 @@ jobs:
         run: |
           set -euxo pipefail
           make reference
+          cp build_source/reference/v1_balanced/math_v1_balanced_source_built.prg v1_balanced/resident/math_v1_balanced_game_math.prg
           make alternate
           python3 tools/validate_source_build.py all --build build_source/alternate --out validation/source_relocation
           python3 tools/build_hybrid.py --config-kind reference
