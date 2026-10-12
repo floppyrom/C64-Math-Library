@@ -103,6 +103,6 @@ def main():
     tag=name[:-4]+"_"+mp["name"]
     res=check(mem,labels[label],bits,mp,tag,7440+ri*2+mi,folder,mod_only)
     rows.append(res);print(tag,"NATIVE VICE PASS",res["cases"],flush=True)
- assert sum(r["cases"] for r in rows)==768
- print("NATIVE VICE STANDALONE RELOCATION PASS 768")
+ assert sum(r["cases"] for r in rows)==960
+ print("NATIVE VICE STANDALONE RELOCATION PASS 960")
 if __name__=="__main__":main()

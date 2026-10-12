@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 ZERO-ZP ALIGNED UDIV32 STANDALONE PICKUP
+- Recovered Repose's independently assembleable aligned UDIV32 quotient+remainder engine: 325-byte entry + 251-byte tail, 576 code bytes, zero ZP and four ordinary scratch RAM bytes. Source-only, not a resident change. Public ABI Q/R/C and preserved N/D/stack validated at three address/ordinary RAM placements.
+- Paired current-main 2,729-input corpus: mean 408.012 cycles overall, 196.890 on 2,048 uniform random operands; V2-V4 resident is 242.549 overall, 193.660 random. Explicitly a zero-ZP memory-saving option, NOT a speed winner. Three-map 8,187-call source/corpus verifier with original generated segment SHA proof, plus 192 native x64sc correctness calls. Expanded generic standalone CI to five kernels, 16,095 calls, and native VICE reproducer to 960 calls.
+- Updated standalone picker/backlog, pickup docs, both changelogs, checksum package audit. Unchanged V1-V5 residents, REU images, stable API, and canonical benchmark ranks. Issue39 recovery campaign remains open.
+
 2026-10-12 ISSUE39 ZERO-ZP UMOD32 RANDOM-WIDE-DIVISOR STANDALONE SPECIALIST
 - Published individually configurable Repose aligned UMOD32 donor (475 executable bytes) plus 21-byte public carry adapter. Uses zero ZP but four bytes of ordinary RAM scratch and an additional JSR frame. Q32 remains untouched; R32, carry and N/D are exact.
 - Original donor segment SHA parity and official 1,705-pair same-input corpus checked across two RAM maps (3,410 source-executed calls), plus extended three-map standalone integration validator and 192 local native VICE correctness calls.

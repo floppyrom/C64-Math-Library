@@ -25,3 +25,7 @@ The new [portable standalone modules](portable/README.md) have editable code, bu
 ## New 0-ZP 32-bit modulo specialist
 
 The [configurable zero-ZP aligned UMOD32 source](portable/mod_u32_aligned_carry.asm) is independently assembled and tested. It needs four ordinary scratch-RAM bytes plus the public carry adapter. On 1,024 identical random wide-divisor inputs it averages **190.867 cycles** versus the published V2-V4 UMOD32 average **199.833**, but its full-spectrum mean is far worse (**476.938 vs 279.620**). It belongs in the isolated-specialist collection, **not** the general-purpose profile ranking. See [portable README](portable/README.md) and `portable/verify_umod32_common.py`.
+
+## Another 0-ZP option: aligned 32-bit quotient + remainder
+
+The [source-backed zero-ZP aligned UDIV32 alternative](portable/div_u32_aligned_nozp.asm) is individually configurable and fully arithmetic/flag-checked. It uses 576 code bytes and four ordinary scratch RAM bytes, with **no ZP allocation**. Its full 2,729-pair mean is **408.012 cycles** (V2-V4 resident 242.549), and its random 2,048-pair mean is **196.890** (resident 193.660). It is therefore a *memory-constraint specialist*, not a new global fastest divider. [Provenance, relocation and benchmarks](portable/README.md). Source-assembled verification: 8,187 current-corpus calls at three maps and 192 native VICE correctness calls at two maps.
