@@ -1,0 +1,74 @@
+{
+  "status": "PASS",
+  "scope": "complete resident native VICE old vs source-built candidate 32bit public ABI; no claimed VICE cycle timings",
+  "date": "2026-10-12",
+  "case_count_per_api_profile": 128,
+  "resident_variants": 2,
+  "api_entries": {
+    "MATH_UDIV32_32": "$5E00",
+    "MATH_UMOD32_32": "$5E03"
+  },
+  "profiles": {
+    "v2_pareto_fast": {
+      "old_sha256": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138",
+      "new_sha256": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
+      "ops": {
+        "MATH_UDIV32_32": {
+          "cases": 128,
+          "old_new_calls": 256,
+          "output_differences": 0,
+          "errors": [],
+          "output_sha256": "2b93ef3793a468f122756fb7ca2ff2b2ee084ed9021d2dcd4fa4d5d4cc3a229d"
+        },
+        "MATH_UMOD32_32": {
+          "cases": 128,
+          "old_new_calls": 256,
+          "output_differences": 0,
+          "errors": [],
+          "output_sha256": "45521a5b495021da39c33bf176ee40ffcd38feb5c2c230cd40746e36ed83628b"
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "old_sha256": "d65979b93be27710b4688e0ad7ed86d4ef539692601d446a922ecf04d2573bad",
+      "new_sha256": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8",
+      "ops": {
+        "MATH_UDIV32_32": {
+          "cases": 128,
+          "old_new_calls": 256,
+          "output_differences": 0,
+          "errors": [],
+          "output_sha256": "2b93ef3793a468f122756fb7ca2ff2b2ee084ed9021d2dcd4fa4d5d4cc3a229d"
+        },
+        "MATH_UMOD32_32": {
+          "cases": 128,
+          "old_new_calls": 256,
+          "output_differences": 0,
+          "errors": [],
+          "output_sha256": "45521a5b495021da39c33bf176ee40ffcd38feb5c2c230cd40746e36ed83628b"
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "old_sha256": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e",
+      "new_sha256": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724",
+      "ops": {
+        "MATH_UDIV32_32": {
+          "cases": 128,
+          "old_new_calls": 256,
+          "output_differences": 0,
+          "errors": [],
+          "output_sha256": "2b93ef3793a468f122756fb7ca2ff2b2ee084ed9021d2dcd4fa4d5d4cc3a229d"
+        },
+        "MATH_UMOD32_32": {
+          "cases": 128,
+          "old_new_calls": 256,
+          "output_differences": 0,
+          "errors": [],
+          "output_sha256": "45521a5b495021da39c33bf176ee40ffcd38feb5c2c230cd40746e36ed83628b"
+        }
+      }
+    }
+  },
+  "total_calls": 1536
+}
