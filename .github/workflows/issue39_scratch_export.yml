@@ -3,17 +3,17 @@ on:
   push:
     branches: [issue39-v1-div24-scratch-export]
 permissions:
-  contents: read
+  contents: write
 jobs:
   export-current:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Create code archive
+      - name: Verify branch write permission
         run: |
-          tar --exclude-vcs -czf /tmp/c64-current-main-source.tar.gz .
-      - uses: actions/upload-artifact@v4
-        with:
-          name: issue39-current-source
-          path: /tmp/c64-current-main-source.tar.gz
-          retention-days: 1
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          echo "Issue39 scratch GitHub Actions write capability verified" > .github/ISSUE39_SCRATCH_WRITE_PROOF.txt
+          git add .github/ISSUE39_SCRATCH_WRITE_PROOF.txt
+          git commit -m "scratch: check CI branch write permission"
+          git push origin HEAD:issue39-v1-div24-scratch-export
