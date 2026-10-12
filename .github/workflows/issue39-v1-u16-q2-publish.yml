@@ -22,7 +22,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Full V1+V5 source inheritance, ABI correctness and checksum-sealed publication
+      - name: Full V1+V5 inherited source and frozen historical ABI certification
         run: python3 tools/stage_issue39_v1_u16_q2_release.py
       - name: Verify released package and source catalogs
         run: |
