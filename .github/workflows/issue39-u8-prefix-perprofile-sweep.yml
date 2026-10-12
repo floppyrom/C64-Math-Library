@@ -37,7 +37,7 @@ jobs:
         run: python3 tools/qualify_issue39_u8_k8_exhaustive.py --out /tmp/issue39_u8_k8_exhaustive.json
       - name: Seal benchmark and release documentation
         if: github.event_name == 'push'
-        run: python3 tools/finalize_issue39_u8_prefix_source_sweep.py /tmp/issue39_u8_sweep.json
+        run: python3 tools/finalize_issue39_u8_prefix_source_sweep.py /tmp/issue39_u8_sweep.json /tmp/issue39_u8_k8_exhaustive.json
       - name: Commit independently reproducible evidence
         if: github.event_name == 'push'
         run: |
