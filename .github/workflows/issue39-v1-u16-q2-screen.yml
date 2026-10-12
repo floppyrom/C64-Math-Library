@@ -26,6 +26,10 @@ jobs:
           python3 tools/generate_sources.py
           python3 tools/assemble_sources.py --profile v1_balanced --config-kind reference
           python3 tools/assemble_sources.py --profile v1_balanced --config-kind alternate
+      - name: Build inherited V5 hybrid reference and alternate images
+        run: |
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
       - name: Verify exact 323-byte V1 placement and no other byte changes
         run: python3 tools/screen_issue39_v1_u16_q2_layout.py
       - name: Export runnable source-built V1 resident
@@ -37,5 +41,7 @@ jobs:
             build_source/reference/v1_balanced/math_v1_balanced_source_built.prg
             build_source/alternate/v1_balanced/math_v1_balanced_source_built.prg
             validation/review/ISSUE39_V1_U16_Q2_LAYOUT_SOURCE_SCREEN.json
+            build_hybrid/reference/v5_hybrid_lowzp/*.prg
+            build_hybrid/alternate/v5_hybrid_lowzp/*.prg
           retention-days: 14
           if-no-files-found: warn
