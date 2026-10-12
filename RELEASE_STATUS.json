@@ -2192,6 +2192,57 @@
         }
       }
     },
+    "exhaustive_K8_results": {
+      "v1_balanced": {
+        "current_mean": 59.57197570800781,
+        "K8_mean": 60.11808776855469,
+        "delta_mean": 0.546112060546875,
+        "full_domain_cases": 65536,
+        "faster": 1938,
+        "slower": 1576,
+        "cycle_pair_sha256": "ce16803e7df97ff8fb0f5d4b8f21708e52070fde2109bdf76732a2f478877067"
+      },
+      "v2_pareto_fast": {
+        "current_mean": 59.38301086425781,
+        "K8_mean": 60.11808776855469,
+        "delta_mean": 0.735076904296875,
+        "full_domain_cases": 65536,
+        "faster": 1364,
+        "slower": 2150,
+        "cycle_pair_sha256": "584bbb4c7b76dd293e9441be2964db160ad376dcd07015c652a19dac9e268d11"
+      },
+      "v3_reu_512k": {
+        "current_mean": 52.852264404296875,
+        "K8_mean": 60.11808776855469,
+        "delta_mean": 7.2658233642578125,
+        "full_domain_cases": 65536,
+        "faster": 58837,
+        "slower": 3968,
+        "cycle_pair_sha256": "111e805fc2e82a347a44192769c2187cb0104d7e620e9e060496ff8ecb990c21"
+      },
+      "v4_reu_16m": {
+        "current_mean": 52.852264404296875,
+        "K8_mean": 60.11808776855469,
+        "delta_mean": 7.2658233642578125,
+        "full_domain_cases": 65536,
+        "faster": 58837,
+        "slower": 3968,
+        "cycle_pair_sha256": "111e805fc2e82a347a44192769c2187cb0104d7e620e9e060496ff8ecb990c21"
+      },
+      "v5_hybrid_lowzp": {
+        "current_mean": 59.38301086425781,
+        "K8_mean": 60.11808776855469,
+        "delta_mean": 0.735076904296875,
+        "full_domain_cases": 65536,
+        "faster": 1364,
+        "slower": 2150,
+        "cycle_pair_sha256": "584bbb4c7b76dd293e9441be2964db160ad376dcd07015c652a19dac9e268d11"
+      }
+    },
+    "exhaustive_K8_report": "validation/review/ISSUE39_UDIV8_K8_EXHAUSTIVE_ABI.json",
+    "exhaustive_K8_report_sha256": "aa4d00f310324a3fa61cd5a1f06fda26dceaf789b01fc4d39b9e62a56d8b039c",
+    "exhaustive_K8_paired_inputs": 655360,
+    "exhaustive_K8_cpu_calls": 1310720,
     "K_values": [
       8,
       12,

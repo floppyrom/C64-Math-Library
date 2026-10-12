@@ -63,6 +63,25 @@ that particular class only. Do not treat weighted benchmark means
 as a workload-neutral optimization; also compare extra code and
 scratch byte versus the resident normal-ZP budgets.
 
+**Important separate full-domain validation:** an additional
+**655,360 old/new operand pairs and 1,310,720 full CPU executions**
+exhaustively cover ALL 65,536 N8/D8 pairs, at both RAM origins
+in every profile for K=8. The K8 candidate is *slower* on the
+unweighted complete input domain despite winning the official
+weighted mean in V1/V2/V5. Do not promote K8 as a default.
+
+| Profile | Current exhaustive cycles | K8 exhaustive cycles | Delta | Faster / slower pairs | Candidate bytes |
+|---|---:|---:|---:|---:|---:|
+| v1_balanced | 59.571976 | 60.118088 | +0.546112 | 1938 / 1576 | 229 |
+| v2_pareto_fast | 59.383011 | 60.118088 | +0.735077 | 1364 / 2150 | 229 |
+| v3_reu_512k | 52.852264 | 60.118088 | +7.265823 | 58837 / 3968 | 229 |
+| v4_reu_16m | 52.852264 | 60.118088 | +7.265823 | 58837 / 3968 | 229 |
+| v5_hybrid_lowzp | 59.383011 | 60.118088 | +0.735077 | 1364 / 2150 | 229 |
+
+Full-domain reproducible JSON:
+validation/review/ISSUE39_UDIV8_K8_EXHAUSTIVE_ABI.json
+Reproducer: tools/qualify_issue39_u8_k8_exhaustive.py
+
 Best K by this corpus within the six SOURCE-GENERATED variants:
 - v1_balanced: K=8, candidate 64.723 cycles vs current public 65.093 cycles.
 - v2_pareto_fast: K=8, candidate 64.723 cycles vs current public 65.206 cycles.
