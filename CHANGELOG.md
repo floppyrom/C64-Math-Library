@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 STANDALONE DIRECT-CHAIN UMOD16 ZERO-ZP SPECIALIST
+- Published self-contained symbolic Repose/OptiSearch UMOD16 direct-chain donor with C64ML success/zero carry normalization and quotient-buffer preservation; zero ZP, 976 bytes code/data, two ordinary RAM scratch bytes, two nested stack bytes.
+- Official 1,705-pair identical-input mean 209.868 cycles (V2-V5 198.601); therefore a memory-budget alternative, not a speed winner. Three relocations/5,115 emulator calls and 192 native x64sc correctness calls pass; native cycle timings not claimed. Source, independent CI proof, standalone pickup, backlog and checksum/package records synchronized.
+
 2026-10-12 ISSUE39 ZERO-ZP ALIGNED UDIV32 STANDALONE PICKUP
 - Recovered Repose's independently assembleable aligned UDIV32 quotient+remainder engine: 325-byte entry + 251-byte tail, 576 code bytes, zero ZP and four ordinary scratch RAM bytes. Source-only, not a resident change. Public ABI Q/R/C and preserved N/D/stack validated at three address/ordinary RAM placements.
 - Paired current-main 2,729-input corpus: mean 408.012 cycles overall, 196.890 on 2,048 uniform random operands; V2-V4 resident is 242.549 overall, 193.660 random. Explicitly a zero-ZP memory-saving option, NOT a speed winner. Three-map 8,187-call source/corpus verifier with original generated segment SHA proof, plus 192 native x64sc correctness calls. Expanded generic standalone CI to five kernels, 16,095 calls, and native VICE reproducer to 960 calls.
