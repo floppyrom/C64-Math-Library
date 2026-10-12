@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 68644,
-    "user_manual_lines": 1904,
-    "user_manual_sha256": "7b6d911a34dcbbcc06b43faf9e6fee8239bd5af07a9491ffc59c2aa8d65e4e59"
+    "user_manual_bytes": 68782,
+    "user_manual_lines": 1906,
+    "user_manual_sha256": "31b6c26cc63a502854ab9569c875b30a1079b9321fcf2e2e9aa0698bcac9e304"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1487,6 +1487,27 @@
     "native_vice_runs": 0,
     "helper_requires_real_ram_relocation": true,
     "source_or_shipped_binary_changed": false,
+    "unsigned_family_complete": false
+  },
+  "issue39_u3216_n16_optin12_2026_10_12": {
+    "status": "PASS_OPT_IN_NOT_DEFAULT",
+    "routine_bytes": 12,
+    "source": "routines/standalone_lab/library_dependent/div_u32_u16_n16_optin.asm",
+    "source_sha256": "319a66e9301b2f56d3ab97906accadbec87d0a122abda2142faede0858d4caf1",
+    "validation": "validation/review/ISSUE39_U3216_N16_12BYTE_OPTIN.json",
+    "validation_sha256": "a8bf07bbe7388f24a5ca5b0de8b4c0f21aeaa1e24d7fd7282673e3741d94b9ad",
+    "native_vice": "validation/review/ISSUE39_U3216_N16_12BYTE_NATIVE_VICE.json",
+    "native_sha256": "0de0258a571001ff89bbba92ac915bde9f92d033b4dc0663b5784d070b26503b",
+    "documentation": "docs/ISSUE39_U3216_N16_12BYTE_OPTIN_2026-10-12.md",
+    "cpu_executions": 113360,
+    "native_executions_v1v2": 256,
+    "released_residents_changed": false,
+    "public_api_changed": false,
+    "normal_zp_growth": 0,
+    "additional_return_stack_bytes": 2,
+    "signedness": "unsigned",
+    "requires_n16": true,
+    "v2v5_prefer_d_ge_256": true,
     "unsigned_family_complete": false
   }
 }

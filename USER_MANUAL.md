@@ -1902,3 +1902,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue39 five-profile 32/16 N16 delegate A/B research: docs/ISSUE39_U3216_N16_DELEGATE_CURRENT_MAIN_2026-10-12.md. No default promotion.
 
 - Issue39 32/16 N16 divisor-high-aware donor research: docs/ISSUE39_U3216_N16_DHI_GATED_SCREEN_2026-10-12.md. No default engine changed; family audit open.
+
+- Issue39 12-byte N16 32/16 opt-in helper: docs/ISSUE39_U3216_N16_12BYTE_OPTIN_2026-10-12.md. Uses installed UDIV16; caller owns memory.

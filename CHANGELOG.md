@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 12BYTE N16 OPTIN 32BY16 SPECIALIST
+- Validated 12-byte opt-in 32/16 specialization for known N16, depending on installed UDIV16; no public redirect, no full-width latency tax. Five-profile two-map paired 56,680 operands / 113,360 6502 calls, zero Q/R/C/inputs/SP mismatches.
+- V1 N16 D>=256 about 478/481 cycles faster; V2–V5 about 381/384 faster. V2–V5 D8 about 274 cycles slower, so preserve the precondition for performance. Native x64sc 256 old/new calls on current V1/V2 full resident pass; no native timing or V3–V5 native claim.
+- Published individually liftable library-dependent assembly, reproducible test/provenance, both changelogs, docs, release status and checksums; no shipped PRG/API or ZP budget modification. Issue #39 remains OPEN. docs/ISSUE39_U3216_N16_12BYTE_OPTIN_2026-10-12.md
+
 2026-10-12 ISSUE39 U3216 N16 DHI-GATED DONOR FIVE-PROFILE SCREEN
 - Compared 33-byte in-memory divisor-high-gated 32/16 N16->16/16 reuse on exact V1–V5 residents, public UDIV32/16 and UMOD32/16, four D1 thresholds (1,4,16,64): 79,130 old/new operand pairs / 395,650 public CPU executions, zero Q/R/C/input/SP errors.
 - Narrow-divisor reuse is filtered out; full-width numerator controls still incur +17 cycles. Research-only library-dependent donor, additional 2 stack bytes on delegation, $E100 under KERNAL ROM unqualified. Exact per-profile workload and input proof, source, docs, release metadata, both changelogs, SHA256SUMS published, **no production binary/ABI changes**. #39 stays OPEN. docs/ISSUE39_U3216_N16_DHI_GATED_SCREEN_2026-10-12.md
