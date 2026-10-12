@@ -6,6 +6,7 @@ zero 128-byte REG_LOW+$0E00 island. This source-backed reversible capsule
 keeps earlier PR57/59/60/61/62 correctness/timing proofs historically valid.
 """
 import hashlib
+from issue39_v1_u16_q2_parent import restore_v1_q2_parent,restore_v5_q2_parent
 # PR67 changes six five-byte 16-bit branch slots in the V5 hybrid donor.
 # To validate PR57/59/60/61/62's historically frozen SHA and cycle vectors,
 # undo only those six SHA-pinned edits before restoring the older UMOD8 guard.
@@ -38,7 +39,8 @@ PARENT_SHA={
  'v1_balanced':'795cf2320f1fee8b097641bb87f3e2ff591b3c84329b700f35ec7d4ef9593387',
  'v5_hybrid_lowzp':'9f59d7f8eb8d5cd78d0f01867418e77db5e867e06b9b43afe34df36ccea82dc2'}
 def restore_umod8_parent(profile,prg):
- if profile=='v5_hybrid_lowzp':prg=restore_v5_pr67_u16_parent(prg)
+ if profile=='v1_balanced':prg=restore_v1_q2_parent(prg)
+ if profile=='v5_hybrid_lowzp':prg=restore_v5_pr67_u16_parent(restore_v5_q2_parent(prg))
  expected=PARENT_SHA[profile]
  if hashlib.sha256(prg).hexdigest()==expected:return prg
  lo=int.from_bytes(prg[:2],'little')

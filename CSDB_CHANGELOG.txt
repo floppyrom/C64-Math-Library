@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 PR68 V1 16BIT DIRECT Q2 EXIT
+- V1 shared UDIV16/UMOD16 core: put q=2 return into short BCC range and move cold 3-byte alignment padding after RTS, preserving the $4200-$4342 323-byte envelope and long quotient loop page phase. 57 in-core byte changes; no V2-V4 resident modification and the same 57-byte inherited V5 change or normal ZP, stack, code-span, API change.
+- 13,559 same-input quotient-stratified/edge/random cases per V1 16-bit public API: 8,255 faster, 5,304 equal, zero slower, 0.608821 fewer mean cycles. Native VICE 2,048 V1/V5 old/new public calls all correct. Reference/alternate relocation, 5-profile unsigned correctness and paired corpus, signed correctness, stable historical PR57-62 SHA reconstructions validated.
+- Common-input V1 UDIV16 mean 156.348479->156.087578; UMOD16 189.383578->189.127859 cycles. Performance tables, standalone source mirrors, README/manual, changelogs, release metadata, checksums refreshed. Unsigned family campaign remains OPEN. docs/ISSUE39_PR68_V1_U16_DIRECT_Q2_EXIT_2026-10-12.md
+
 2026-10-12 ISSUE39 PR67 HISTORICAL PARENT SHA RECONSTRUCTION
 - Preserve PR57-62 historical tests after the V5 PR67 known-carry improvement: the parent reconstructor verifies and undoes exactly the six SHA-pinned V5 PR67 16-bit branch rewrites before restoring the older UMOD8 guard. The 8,868-call historical zero-high bypass audit and its original pre-PR67, pre-UMOD8 and PR57-era SHA checkpoints are reproduced exactly. No shipped arithmetic bytes or public ABI change.
 

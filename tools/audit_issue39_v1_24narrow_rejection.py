@@ -14,12 +14,13 @@ from benchmark_unsigned_common_corpus import SPECS,corpus
 from validate_unsigned_division import api,wr,rd,expected
 from audit_issue39_unsigned_small_workloads import pairs
 from issue39_v1_3232_d8_parent import restore_pr61
+from issue39_v1_u16_q2_parent import restore_v1_q2_parent
 PATH=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 OUT=ROOT/'validation/review/ISSUE39_V1_UDIV24_NARROW_REJECTION.json'
 # This negative screen certifies a *historical* rejected dispatch experiment.
 # Reconstruct the exact PR60 parent after the newer 24/8 specialization:
 # old selector restored; formerly empty low 128-byte island zeroed.
-current=restore_pr61(PATH.read_bytes());lo=current[0]|current[1]<<8
+current=restore_pr61(restore_v1_q2_parent(PATH.read_bytes()));lo=current[0]|current[1]<<8
 assert current[2+0x7FA0-lo:2+0x7FA8-lo]==bytes.fromhex('ad15c0d0034c001d')
 prior=bytearray(current)
 prior[2+0x7FA0-lo:2+0x7FA0-lo+16]=bytes.fromhex('ad15c0d008ec14c090034cb07f4c9672')

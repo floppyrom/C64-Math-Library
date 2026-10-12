@@ -12,6 +12,7 @@ sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
 from validate_unsigned_division import expected,api
 from issue39_umod8_guard_parent import restore_umod8_parent,restore_v5_pr67_u16_parent,PARENT_SHA
+from issue39_v1_u16_q2_parent import restore_v1_q2_parent,restore_v5_q2_parent
 PROFILES=('v1_balanced','v5_hybrid_lowzp')
 OUT=ROOT/'validation/review/ISSUE39_V1V5_UMOD8_GUARD_EXHAUSTIVE.json'
 j={'status':'PASS','guard_minimum_divisor':32,'bytes_of_new_code':77,
@@ -25,7 +26,7 @@ for profile in PROFILES:
     # BEFORE independent PR67 16-bit code changes. Reversing those changes
     # is SHA-qualified, and neither affects the UMOD8 operand/cycle path.
     if profile=='v5_hybrid_lowzp':
-        new=restore_v5_pr67_u16_parent(new)
+        new=restore_v5_pr67_u16_parent(restore_v5_q2_parent(new))
     old=restore_umod8_parent(profile,new)
     lo=int.from_bytes(new[:2],'little')
     assert lo==0x1000 and len(new)==len(old)

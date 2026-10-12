@@ -8,9 +8,10 @@ from mini6502 import CPU
 from benchmark_unsigned_common_corpus import SPECS,corpus
 from benchmark_unsigned_3216_workloads import WORKLOADS,pairs
 from validate_unsigned_division import wr,rd,expected,api
+from issue39_v1_u16_q2_parent import restore_v1_q2_parent
 OPNAMES=('MATH_UDIV32_16','MATH_UMOD32_16')
 PRG=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
-b=PRG.read_bytes();lo=b[0]|b[1]<<8
+b=restore_v1_q2_parent(PRG.read_bytes());lo=b[0]|b[1]<<8
 assert b[2+0x446a-lo:2+0x446d-lo] == bytes.fromhex('4c 6d 1b')
 assert b[2+0x4570-lo:2+0x4573-lo] == bytes.fromhex('4c 00 19')
 assert (0x1cf7-0x1900+1)==1016

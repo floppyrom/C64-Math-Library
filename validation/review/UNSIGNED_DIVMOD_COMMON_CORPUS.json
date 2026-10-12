@@ -30,18 +30,18 @@
             "divisor_zero": 79.51655629139073,
             "quotient_0": 42.02659145850121,
             "quotient_1": 64.74381625441696,
-            "quotient_10_to_255": 658.3409090909091,
-            "quotient_256_plus": 1215.09900990099,
-            "quotient_2_to_9": 176.67004048582996
+            "quotient_10_to_255": 657.4886363636364,
+            "quotient_256_plus": 1214.09900990099,
+            "quotient_2_to_9": 175.73684210526315
           },
-          "max_cycles": 1535,
-          "mean_cycles": 156.3484792964456,
+          "max_cycles": 1534,
+          "mean_cycles": 156.0875778673507,
           "min_cycles": 41,
-          "p95_cycles": 800,
+          "p95_cycles": 799,
           "selection_means": {
-            "edges": 341.8998109640832,
-            "random": 102.564453125,
-            "stress": 1058.5833333333333,
+            "edges": 341.6219281663516,
+            "random": 102.298828125,
+            "stress": 1057.7083333333333,
             "zero": 80.875
           }
         },
@@ -711,18 +711,18 @@
             "divisor_zero": 79.51655629139073,
             "quotient_0": 42.549479166666664,
             "quotient_1": 65.31958762886597,
-            "quotient_10_to_255": 699.2520325203252,
-            "quotient_256_plus": 1215.14,
-            "quotient_2_to_9": 190.01470588235293
+            "quotient_10_to_255": 698.4634146341464,
+            "quotient_256_plus": 1214.14,
+            "quotient_2_to_9": 189.1360294117647
           },
-          "max_cycles": 1535,
-          "mean_cycles": 189.38357771260996,
+          "max_cycles": 1534,
+          "mean_cycles": 189.12785923753665,
           "min_cycles": 41,
-          "p95_cycles": 953,
+          "p95_cycles": 952,
           "selection_means": {
-            "edges": 341.8998109640832,
-            "random": 103.78515625,
-            "stress": 1058.5833333333333,
+            "edges": 341.6219281663516,
+            "random": 103.5234375,
+            "stress": 1057.7083333333333,
             "zero": 80.875
           }
         },
@@ -1259,7 +1259,7 @@
   },
   "sources": {
     "v1_balanced": {
-      "resident_sha256": "9afa30ffd24c1ce9566e7ef21e4032396fbdea7d4c3da5b68e137fc12ec41b62"
+      "resident_sha256": "cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f"
     },
     "v2_pareto_fast": {
       "resident_sha256": "83f78f48f34b19d605b131ec54cfa5c89af11e0cc9bff0b73787de53664e8138"
@@ -1271,7 +1271,7 @@
       "resident_sha256": "5a5dca8e9023db7f3e23e3cfde54d419ea44d4c6212f2f4ff49496c84b3ea66e"
     },
     "v5_hybrid_lowzp": {
-      "resident_sha256": "26981cc03b06d1a797917ae34a5d8969db466435fff496a758a262bac75b254b"
+      "resident_sha256": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02"
     }
   },
   "status": "PASS",

@@ -13,9 +13,9 @@
       "MATH_UDIV16": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 132.72585735325057,
+        "mean_cycles": 132.47191247633074,
         "min_cycles": 41,
-        "max_cycles": 1535,
+        "max_cycles": 1534,
         "mode": "structured_random"
       },
       "MATH_UDIV24": {
@@ -60,9 +60,9 @@
       "MATH_UMOD16": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 184.0824211204121,
+        "mean_cycles": 183.82743077913716,
         "min_cycles": 41,
-        "max_cycles": 1535
+        "max_cycles": 1534
       },
       "MATH_UMOD24": {
         "cases": 1553,

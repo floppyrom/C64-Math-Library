@@ -1,0 +1,30 @@
+{
+  "status": "PASS",
+  "date": "2026-10-12",
+  "emulator": "native VICE x64sc (runtime internal version 3.10)",
+  "old_resident_sha256": "26981cc03b06d1a797917ae34a5d8969db466435fff496a758a262bac75b254b",
+  "new_resident_sha256": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02",
+  "APIs": {
+    "MATH_UDIV16": {
+      "entry": "$3140",
+      "pairs": 256,
+      "old_new_full_resident_calls": 512,
+      "arithmetic_errors": 0,
+      "carry_mismatches": 0,
+      "different_outputs": 0,
+      "paired_output_sha256": "6fdf1109e53b32d4715238c54200feaf85998959d7483b39d3e8ef329b3109a2"
+    },
+    "MATH_UMOD16": {
+      "entry": "$3220",
+      "pairs": 256,
+      "old_new_full_resident_calls": 512,
+      "arithmetic_errors": 0,
+      "carry_mismatches": 0,
+      "different_outputs": 0,
+      "paired_output_sha256": "d5fbc735f3fee24c92fdbd65a1e4abceaa8c8c1dc50df0d6642b00be308c97dd"
+    }
+  },
+  "total_calls": 1024,
+  "source_inheritance": "V5 imports V1 code; exactly 57 changed bytes $4200–$4342, no other resident changes",
+  "notes": "Native old/new arithmetic and flags, not a cycle benchmark or REU-DMA stress test. Both public APIs appear unaffected by this private donor change."
+}
