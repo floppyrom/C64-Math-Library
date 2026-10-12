@@ -5,6 +5,7 @@ on:
       - issue39-v5-umod32-qpreserve-fastfront
     paths:
       - '.github/workflows/issue39-v5-umod32-publish.yml'
+      - 'tools/stage_issue39_v5_umod32_release.py'
   workflow_dispatch:
 permissions:
   contents: write
