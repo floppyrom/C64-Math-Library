@@ -8,7 +8,7 @@
     "v5_hybrid_lowzp"
   ],
   "resident_sha256": {
-    "v1_balanced": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
+    "v1_balanced": "d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a",
     "v2_pareto_fast": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
     "v3_reu_512k": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8",
     "v4_reu_16m": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724",
@@ -382,10 +382,10 @@
         "cases_sha256": "ba32ac666ad5de4c3d4902dff7870e855846185d27810d4820cf1067bbbc7a59",
         "per_profile": {
           "v1_balanced": {
-            "cycles_sha256": "5e1a4467e5d6886851dd9ce029629b0328f8504895d374e328a73c332e33c98e",
+            "cycles_sha256": "377098e2f049ffb98a234d23d36c2687717798c939ee2cbb630582fcb0ef768f",
             "max_cycles": 1969,
-            "mean_cycles": 952.51171875,
-            "median_cycles": 1001,
+            "mean_cycles": 933.08203125,
+            "median_cycles": 947,
             "min_cycles": 56,
             "p95_cycles": 1769
           },
@@ -562,12 +562,12 @@
         "cases_sha256": "e1844f1cafabd54db4849f465cd81a9a91b940fedd08366e346b1c04dca670ab",
         "per_profile": {
           "v1_balanced": {
-            "cycles_sha256": "072b89d8067b25c2951567ea9d17ecb8d96de3ca09478e2f4e4b6f1020abe304",
+            "cycles_sha256": "534101b3152dff6d0ebc10f51aa3a453d0d14b7cd41e9d01bc38115b0a6ff865",
             "max_cycles": 1927,
-            "mean_cycles": 981.5078125,
-            "median_cycles": 974,
-            "min_cycles": 936,
-            "p95_cycles": 1019
+            "mean_cycles": 933.796875,
+            "median_cycles": 924,
+            "min_cycles": 896,
+            "p95_cycles": 959
           },
           "v2_pareto_fast": {
             "cycles_sha256": "34e743e3b09f51928d1bd983d4afdee7b60e0829ebb502e17f07e97ae3db9f3c",
@@ -1333,10 +1333,10 @@
         "cases_sha256": "ba32ac666ad5de4c3d4902dff7870e855846185d27810d4820cf1067bbbc7a59",
         "per_profile": {
           "v1_balanced": {
-            "cycles_sha256": "5e1a4467e5d6886851dd9ce029629b0328f8504895d374e328a73c332e33c98e",
+            "cycles_sha256": "377098e2f049ffb98a234d23d36c2687717798c939ee2cbb630582fcb0ef768f",
             "max_cycles": 1969,
-            "mean_cycles": 952.51171875,
-            "median_cycles": 1001,
+            "mean_cycles": 933.08203125,
+            "median_cycles": 947,
             "min_cycles": 56,
             "p95_cycles": 1769
           },
@@ -1513,12 +1513,12 @@
         "cases_sha256": "e1844f1cafabd54db4849f465cd81a9a91b940fedd08366e346b1c04dca670ab",
         "per_profile": {
           "v1_balanced": {
-            "cycles_sha256": "072b89d8067b25c2951567ea9d17ecb8d96de3ca09478e2f4e4b6f1020abe304",
+            "cycles_sha256": "534101b3152dff6d0ebc10f51aa3a453d0d14b7cd41e9d01bc38115b0a6ff865",
             "max_cycles": 1927,
-            "mean_cycles": 981.5078125,
-            "median_cycles": 974,
-            "min_cycles": 936,
-            "p95_cycles": 1019
+            "mean_cycles": 933.796875,
+            "median_cycles": 924,
+            "min_cycles": 896,
+            "p95_cycles": 959
           },
           "v2_pareto_fast": {
             "cycles_sha256": "752762d8ec30d9c60e929598c745b7c85fdb134e4c554533e456f772ef0d9c79",

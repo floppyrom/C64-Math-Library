@@ -287,22 +287,25 @@ MATH_R = MATH_IO+$1C
     sta MATH_IO+$19
     lda MATH_IO+$12
     sta MATH_IO+$1A
+    lda MATH_IO+$14
+    sta REG_LOW+$0D2C
+    sta REG_LOW+$0D30
     lda #$00
     ldx #$18
-L1D16:
+L1D1F:
     asl MATH_IO+$18
     rol MATH_IO+$19
     rol MATH_IO+$1A
     rol
-    bcs L1D27
-    cmp MATH_IO+$14
-    bcc L1D2D
-L1D27:
-    sbc MATH_IO+$14
+    bcs L1D2F
+    cmp #$00
+    bcc L1D34
+L1D2F:
+    sbc #$00
     inc MATH_IO+$18
-L1D2D:
+L1D34:
     dex
-    bne L1D16
+    bne L1D1F
     sta MATH_IO+$1C
     lda #$00
     sta MATH_IO+$1D
@@ -312,8 +315,7 @@ L1D2D:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     lda MATH_IO+$16
     ora MATH_IO+$15
     bne L1D95

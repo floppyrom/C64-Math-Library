@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 475.
+; Reachable instructions: 478.
 ; NOTE: legacy alias entry; semantic producer is MATH_UDIV24.
 !cpu 6510
 
@@ -19,28 +19,31 @@ L1D00:
     sta $C019                          ; @1D09 8D 19 C0
     lda $C012                          ; @1D0C AD 12 C0
     sta $C01A                          ; @1D0F 8D 1A C0
-    lda #$00                           ; @1D12 A9 00
-    ldx #$18                           ; @1D14 A2 18
-L1D16:
-    asl $C018                          ; @1D16 0E 18 C0
-    rol $C019                          ; @1D19 2E 19 C0
-    rol $C01A                          ; @1D1C 2E 1A C0
-    rol a                              ; @1D1F 2A
-    bcs L1D27                          ; @1D20 B0 05
-    cmp $C014                          ; @1D22 CD 14 C0
-    bcc L1D2D                          ; @1D25 90 06
-L1D27:
-    sbc $C014                          ; @1D27 ED 14 C0
-    inc $C018                          ; @1D2A EE 18 C0
-L1D2D:
-    dex                                ; @1D2D CA
-    bne L1D16                          ; @1D2E D0 E6
-    sta $C01C                          ; @1D30 8D 1C C0
-    lda #$00                           ; @1D33 A9 00
-    sta $C01D                          ; @1D35 8D 1D C0
-    sta $C01E                          ; @1D38 8D 1E C0
-    clc                                ; @1D3B 18
-    rts                                ; @1D3C 60
+    lda $C014                          ; @1D12 AD 14 C0
+    sta $1D2C                          ; @1D15 8D 2C 1D
+    sta $1D30                          ; @1D18 8D 30 1D
+    lda #$00                           ; @1D1B A9 00
+    ldx #$18                           ; @1D1D A2 18
+L1D1F:
+    asl $C018                          ; @1D1F 0E 18 C0
+    rol $C019                          ; @1D22 2E 19 C0
+    rol $C01A                          ; @1D25 2E 1A C0
+    rol a                              ; @1D28 2A
+    bcs L1D2F                          ; @1D29 B0 04
+    cmp #$00                           ; @1D2B C9 00
+    bcc L1D34                          ; @1D2D 90 05
+L1D2F:
+    sbc #$00                           ; @1D2F E9 00
+    inc $C018                          ; @1D31 EE 18 C0
+L1D34:
+    dex                                ; @1D34 CA
+    bne L1D1F                          ; @1D35 D0 E8
+    sta $C01C                          ; @1D37 8D 1C C0
+    lda #$00                           ; @1D3A A9 00
+    sta $C01D                          ; @1D3C 8D 1D C0
+    sta $C01E                          ; @1D3F 8D 1E C0
+    clc                                ; @1D42 18
+    rts                                ; @1D43 60
 ; ---- executable island $3223 ----
 * = $3223
 mod_u24_u24_u24:

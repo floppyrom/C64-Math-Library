@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 V1 68-BYTE RAM SMC 24/8 DIVMOD RELEASE
+- V1 bounded 24/8 DIV/MOD producer 61→68 executable bytes, fits existing 84-byte island. Writable executable RAM, no reentrancy/ROM support; prior 61-byte fallback retained. V2–V5 unchanged, no public ABI/ZP/stack/resident-size growth.
+- Paired same-input UDIV24 166.190196→165.228277, UMOD24 234.433355→231.489375; D8 stress 976.350000→927.934314. 48,388 paired public calls, zero regressions; 6,344 portable two-map calls, 384 native VICE full-resident calls (not cycle timings).
+- Complete five-profile unsigned/signed, common benchmark, reference/alternate relocation and binary isolation; both changelogs, performance tables, release metadata, and SHA checksums rebuilt. #39 remains OPEN. docs/ISSUE39_V1_24BY8_SMC_INTEGRATED_RELEASE_2026-10-12.md
+
 2026-10-12 ISSUE39 V1 24/8 RAM SELF-MOD SPECIALIST CURRENT-61-SCREEN AND PORTABLE SOURCE
 - Source-backed 68-byte writable-RAM/self-modifying optional V1 24/8 producer tested against actual released 61-byte core, not the older PR78 69-byte baseline. 48,388 full public 6502 old/new calls and 6,344 independent two-map standalone calls pass, zero arithmetic/flag/input/stack errors or slower pairs.
 - Canonical UDIV24 166.190196->165.228277, UMOD24 234.433355->231.489375; 4080-pair N24/D8 976.350000->927.934314. Retain in standalone portfolio, **NOT** shipped resident, requires writable RAM/exclusive non-reentrant code and N2>0,D1=D2=0,D0>0. Both changelogs, research evidence, catalog, documentation, SHA256SUMS updated; no profile binary changes. Issue #39 stays OPEN. docs/ISSUE39_V1_UDIV24_ACCUMULATOR_SMC_SCREEN_2026-10-12.md
