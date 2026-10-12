@@ -6,7 +6,7 @@ ROOT=Path(__file__).resolve().parents[3]
 sys.path.insert(0,str(ROOT/"tools"))
 from mini6502 import Assembler,CPU
 HERE=Path(__file__).resolve().parent
-CASES=(("div_u16_biased.asm",16,False,323,"FAST_UDIV16_BIASED"),("mod_u16_biased_carry.asm",16,True,262,"FAST_UMOD16_PUBLIC"),("div_u32_zptail.asm",32,False,544,"FAST_UDIV32_PUBLIC"),("mod_u32_aligned_carry.asm",32,True,496,"FAST_UMOD32_ALIGNED_PUBLIC"))
+CASES=(("div_u16_biased.asm",16,False,323,"FAST_UDIV16_BIASED"),("mod_u16_biased_carry.asm",16,True,262,"FAST_UMOD16_PUBLIC"),("div_u32_zptail.asm",32,False,544,"FAST_UDIV32_PUBLIC"),("mod_u32_aligned_carry.asm",32,True,496,"FAST_UMOD32_ALIGNED_PUBLIC"),("div_u32_aligned_nozp.asm",32,False,576,"FAST_UDIV32_PUBLIC"))
 MAPS=(
 {"name":"aligned_8000","KERNEL_CODE":0x8000,"KERNEL_ADAPTER":0x8400,"KERNEL_AUX":0x9000,"INPUT_NUM":0xc010,"INPUT_DIV":0xc014,"OUTPUT_QUOT":0xc018,"OUTPUT_REM":0xc01c,"TEMP_ZP":0x50,"TEMP_RAM":0xc020},
 {"name":"unaligned_7123","KERNEL_CODE":0x7123,"KERNEL_ADAPTER":0x7607,"KERNEL_AUX":0x9507,"INPUT_NUM":0xc040,"INPUT_DIV":0xc044,"OUTPUT_QUOT":0xc048,"OUTPUT_REM":0xc04c,"TEMP_ZP":0x60,"TEMP_RAM":0xc050},
@@ -51,6 +51,6 @@ def main():
    assert bytes(cpu.mem[a] for a in sorted(image))==original,(name,"code overwritten")
    total+=len(cycles)
    print(name,mp["name"],"PASS",len(cycles),"avg",round(sum(cycles)/len(cycles),3),flush=True)
- assert total==12876
+ assert total==16095
  print("RELOCATABLE STANDALONE PASS",total)
 if __name__=="__main__":main()

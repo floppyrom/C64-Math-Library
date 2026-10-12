@@ -47,3 +47,5 @@ The source catalog currently indexes **295 shipped callable profile-entry mirror
 The standalone lab also offers [individually configurable relocation modules](standalone_lab/portable/README.md), with machine-code-tested buffer/ZP remapping and native VICE result checks. These are independent alternatives, not integrated-profile replacements.
 
 The isolated collection now also includes a [zero-ZP UMOD32 random-divisor specialist](standalone_lab/portable/mod_u32_aligned_carry.asm) with its full-spectrum performance caveat and ordinary-RAM scratch allocation.
+
+A [zero-zero-page UDIV32 alternative](standalone_lab/portable/div_u32_aligned_nozp.asm) is included for projects that can spare four ordinary RAM bytes but have no free ZP. It is slower than the published V2-V4 resident on full and random workloads; read its [resource/performance qualifications](standalone_lab/portable/README.md) before pickup.

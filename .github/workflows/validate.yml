@@ -21,10 +21,12 @@ jobs:
           python-version: '3.12'
       - name: Standalone fast-kernel 7163-call source validation
         run: python3 routines/standalone_lab/verify.py
-      - name: Three-map standalone relocation, 9657 machine-code calls
+      - name: Five standalone kernels x three RAM maps, 16095 machine-code calls
         run: python3 routines/standalone_lab/portable/verify.py
       - name: Repose 0-ZP UMOD32 donor byte parity and 3410 full-corpus calls
         run: python3 routines/standalone_lab/portable/verify_umod32_common.py
+      - name: Repose zero-ZP UDIV32 byte parity and 8187 identical-corpus calls
+        run: python3 routines/standalone_lab/portable/verify_aligned_udiv32_common.py
       - name: Lean package and checksum contract
         run: |
           python3 tools/package_audit.py
