@@ -35,5 +35,6 @@ jobs:
             validation/review/ISSUE39_V5_UMOD3232_QPRESERVING_FRONTEND_SCREEN.json
             validation/review/ISSUE39_V5_UMOD3232_HIGHBYTE_QZERO_SCREEN.json
             validation/review/ISSUE39_V5_UMOD3232_REORDERED_SHARED_GATE_SCREEN.json
+            validation/review/ISSUE39_V5_UMOD32_REORDERED_CANDIDATE.prg
           retention-days: 14
           if-no-files-found: warn
