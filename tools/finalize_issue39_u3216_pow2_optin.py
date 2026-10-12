@@ -8,7 +8,7 @@ REP=R/'validation/review/ISSUE39_U3216_POW2_OPTIN_SCREEN.json'
 DOC=R/'docs/ISSUE39_U3216_POW2_OPTIN_2026-10-12.md'
 OPS=('MATH_UDIV32_16','MATH_UMOD32_16')
 PROFILES=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m','v5_hybrid_lowzp')
-MARK='2026-10-12 ISSUE39 90BYTE POW2 32BY16 OPT-IN SPECIALIST'
+MARK='2026-10-12 ISSUE39 114BYTE POW2 32BY16 OPT-IN SPECIALIST'
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def seal():
  paths=sorted((p for p in R.rglob('*') if p.is_file()
@@ -20,7 +20,7 @@ def main():
  state=json.loads((R/'RELEASE_STATUS.json').read_text())
  assert j['status']=='PASS_OPTIN_NOT_DEFAULT'
  assert j['precondition'].startswith('D16 is exactly')
- assert j['code_bytes']==90 and j['normal_zp_growth']==0 and j['nested_stack_growth']==0
+ assert j['code_bytes']==114 and j['normal_zp_growth']==0 and j['nested_stack_growth']==0
  assert j['pairs']==67520 and j['cpu_calls']==135040
  assert not j['resident_changed'] and not j['public_entries_patched']
  assert j['origin_maps']==['0x800','0xb00']
@@ -34,11 +34,11 @@ def main():
    s=maps['0x800'][op]['summary']
    assert s['cases']==3376 and s['faster']>2000 and s['delta_mean'] < -100
  REP.write_text(json.dumps(j,sort_keys=True,indent=2)+'\n')
- lines=['# Issue #39 — 90-byte power-of-two 32÷16 caller-opt-in specialization','',
+ lines=['# Issue #39 — 114-byte power-of-two 32÷16 caller-opt-in specialization','',
   '12 October 2026. Source-backed, optional specialist; **no change to defaults**.','',
   'When the caller already knows **D16 is exactly 2^k (k=0..15)**,',
-  'division can be replaced with an unsigned 32-bit right shift and a',
-  'remainder mask. This 90-byte routine computes Q32 and R16 in the',
+  'division can be replaced with byte-plus-bit unsigned shifts and a',
+  'remainder mask. This 114-byte routine computes Q32 and R16 in the',
   'existing library buffers, returns carry clear, preserves original',
   'N32/D16, the high R bytes, sentinel memory and SP. It does **not**',
   'detect invalid divisors; calling it on zero or a non-power-of-two',
@@ -86,7 +86,7 @@ def main():
   'not a complete unsigned DIV/MOD profile/OptiSearch audit.']
  DOC.write_text('\n'.join(lines)+'\n')
  log=f"""{MARK}
-- Qualified 90-byte caller-opt-in 32/16 D=power-of-two producer, providing both full quotient and remainder public-buffer contracts; 0 new ZP, 0 extra nested JSR frames. Exact five resident profiles, two legal RAM maps, 67,520 matched operands / 135,040 CPU executions, zero Q/R/C/N/D/sentinel/SP/relocation errors.
+- Qualified 114-byte caller-opt-in 32/16 D=power-of-two producer, providing both full quotient and remainder public-buffer contracts; 0 new ZP, 0 extra nested JSR frames. Exact five resident profiles, two legal RAM maps, 67,520 matched operands / 135,040 CPU executions, zero Q/R/C/N/D/sentinel/SP/relocation errors.
 - Large gains on the explicit power-of-two workload, with V2–V5 slower cases at high divisor exponents: **no default promotion**. No shipped PRG or public ABI modification. Source, full JSON, README/manual and both changelogs published. Native VICE cycles not claimed. Issue #39 remains OPEN. {DOC.relative_to(R)}
 """
  for name in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
@@ -101,7 +101,7 @@ def main():
   'source':str(ASM.relative_to(R)),'source_sha256':sha(ASM),
   'validation':str(REP.relative_to(R)),'validation_sha256':sha(REP),
   'documentation':str(DOC.relative_to(R)),
-  'code_bytes':90,'extra_normal_zp':0,'extra_nested_jsr_stack':0,
+  'code_bytes':114,'extra_normal_zp':0,'extra_nested_jsr_stack':0,
   'precondition':'D16 is exactly a power of two, between 1 and 32768',
   'paired_inputs':67520,'cpu_calls':135040,'native_vice_calls':0,
   'released_residents_changed':False,'public_api_changed':False,
