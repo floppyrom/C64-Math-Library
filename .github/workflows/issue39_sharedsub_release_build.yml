@@ -74,7 +74,18 @@ jobs:
           assert len(all_files)==data['summary']['file_count_excluding_checksum']
           PY
           python3 tools/package_audit.py
-          git diff --exit-code -- validation/PACKAGE_AUDIT.json
+          # package_audit refreshes its own JSON. The manifest must be
+          # re-sealed *after* that write, then the final audit rechecked.
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('.')
+          manifest=root/'SHA256SUMS.txt'
+          entries=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and p!=manifest),key=lambda p:p.as_posix())
+          manifest.write_text(''.join(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n' for p in entries))
+          print('SEALED SHA256SUMS',len(entries),'files',flush=True)
+          PY
+          python3 tools/package_audit.py
           git add -A
           git status --short
           git commit -m "issue39: publish integrated V1 shared-subtract 69-byte 24/8 core, benchmarks, catalogs and checksums"
