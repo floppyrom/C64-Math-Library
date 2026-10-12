@@ -23,13 +23,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Generate all references and independently relocate alternate sources
-        run: |
-          python3 tools/generate_sources.py
-          python3 tools/assemble_sources.py --profile all --config-kind reference
-          python3 tools/assemble_sources.py --profile all --config-kind alternate
-      - name: Screen V2/V3/V4 full resident public 32-bit DIV/MOD
-        run: python3 tools/screen_issue39_v234_32_32_latezero.py
+      - name: Public old/new ABI screen and canonical source + alternate rebuild
+        run: python3 tools/screen_issue39_v234_32_32_latezero.py --stage-images
       - name: Export source-built candidate plus complete evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -40,5 +35,8 @@ jobs:
             build_source/reference/v2_pareto_fast/*.prg
             build_source/reference/v3_reu_512k/*.prg
             build_source/reference/v4_reu_16m/*.prg
+            relocatable_source/v2_pareto_fast/math_relocatable.asm
+            relocatable_source/v3_reu_512k/math_relocatable.asm
+            relocatable_source/v4_reu_16m/math_relocatable.asm
           retention-days: 14
           if-no-files-found: warn
