@@ -1912,3 +1912,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Issue39 current-resident OptiSearch unsigned 32/32 donor resource audit: docs/ISSUE39_U3232_OPTISEARCH_ABI_RESOURCE_SCREEN_2026-10-12.md. No default promotion.
 
 - Issue39 current-resident 16-bit OptiSearch donor ABI matrix: docs/ISSUE39_U16_OPTISEARCH_PUBLIC_ABI_MATRIX_2026-10-13.md. No default promotion.
+
+- Issue39 24÷8 writable-RAM caller-opt-in current resident screen: docs/ISSUE39_U24_D8_RAM_SMC_CURRENT_OPTIN_2026-10-13.md. Mandatory operand guard; no default change.
