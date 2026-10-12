@@ -1,3 +1,8 @@
+2026-10-12 ISSUE39 N24 TO U24 DONOR NO-GAIN AUDIT
+- Five exact-profile research screen of N24->resident UDIV24 reuse for 32/16 quotient and modulo: 30-byte RAM helper, two RAM maps, 11,580 identical operands / 23,160 complete CPU calls, zero arithmetic/Q/R/C/input/SP/sentinel errors.
+- N24 with D>=256 loses in all five profiles on 128 seeded operands per API; Q0/N16 niche wins do not justify universal promotion and 12-byte N16 opt-in is already available. Research only, no production code, API, ZP or PRG changes. Native VICE not claimed.
+- Source-backed JSON, docs, release-status and checksums; issue #39 unsigned family remains OPEN. docs/ISSUE39_N24_TO_U24_DONOR_SCREEN_2026-10-12.md
+
 2026-10-12 ISSUE39 12BYTE N16 OPTIN 32BY16 SPECIALIST
 - Validated 12-byte opt-in 32/16 specialization for known N16, depending on installed UDIV16; no public redirect, no full-width latency tax. Five-profile two-map paired 56,680 operands / 113,360 6502 calls, zero Q/R/C/inputs/SP mismatches.
 - V1 N16 D>=256 about 478/481 cycles faster; V2–V5 about 381/384 faster. V2–V5 D8 about 274 cycles slower, so preserve the precondition for performance. Native x64sc 256 old/new calls on current V1/V2 full resident pass; no native timing or V3–V5 native claim.
