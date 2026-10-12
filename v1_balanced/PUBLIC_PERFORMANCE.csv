@@ -5,10 +5,10 @@ math_umul24,mul_u24_u24_u48,474.042329,444,530,10324,,0,2026-10-06 UMUL24 direct
 math_umul32,mul_u32_u32_u64,712.235367,652,831,2409,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29-derived private q0 producer; mixed-call-safe public binder
 math_udiv8,div_u8_u8_u8_8,59.571976,26,554,65536,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
 math_udiv16,div_u16_u16_u16_16,132.471912,41,1534,4753,,0,2026-10-12 PR68 exact source-backed V1 q=2 branch public ABI audit,final shipped resident; deterministic public-ABI corpus
-math_udiv24,div_u24_u24_u24_24,170.498632,56,2144,4753,,0,2026-10-12 issue39 61-byte accumulator 24/8 source-built resident,final shipped resident; deterministic public-ABI corpus
+math_udiv24,div_u24_u24_u24_24,169.536714,56,2144,4753,,0,2026-10-12 issue39 61-byte accumulator 24/8 source-built resident,final shipped resident; deterministic public-ABI corpus
 math_udiv32_16,div_u32_u16_u32_16,870.340206,182,2099,4753,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus
 math_umul32_ready,mul_u32_u32_u64_ready,697.175781,642,784,1024,,0,2026-09-20 multiply-refresh deterministic cross-profile corpus,FAST31/V29 READY entry; requires initialized/bound pointer state
 math_umod8,mod_u8_u8_u8,57.460015,35,509,1313,,0,"2026-10-11 issue39 guarded remainder UMOD8, 65536 full-domain pairs and full public ABI","Source-backed V1 77-byte D>=32 remainder-only path, D<32 original fallback; preserves Q"
 math_umod16,mod_u16_u16_u16,183.827431,41,1534,1553,,0,2026-10-12 PR68 exact source-backed V1 q=2 branch public ABI audit,final shipped resident; deterministic public-ABI corpus
-math_umod24,mod_u24_u24_u24,230.723760,56,2144,1553,,0,2026-10-12 issue39 61-byte accumulator 24/8 source-built resident,final shipped resident; deterministic public-ABI corpus
+math_umod24,mod_u24_u24_u24,227.779781,56,2144,1553,,0,2026-10-12 issue39 61-byte accumulator 24/8 source-built resident,final shipped resident; deterministic public-ABI corpus
 math_umod32_16,mod_u32_u16_u16,971.613651,185,1978,1553,,0,2026-09-20 unsigned division-family validation,final shipped resident; deterministic public-ABI corpus

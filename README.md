@@ -172,3 +172,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue #39 full-resident native VICE x64sc V1 24/8 verification: docs/ISSUE39_V1_24BY8_FULL_RESIDENT_NATIVE_VICE_2026-10-12.md; 384 correct old/new public calls, no native cycle claim.
 
 - Issue #39 published SMC specialist vs 61-byte V1 resident: docs/ISSUE39_V1_UDIV24_ACCUMULATOR_SMC_SCREEN_2026-10-12.md. The 68-byte RAM-only routine remains independent and is not shipped in V1–V5.
+
+- Issue #39 V1 RAM SMC 68-byte shared 24/8 release: docs/ISSUE39_V1_24BY8_SMC_INTEGRATED_RELEASE_2026-10-12.md. Requires writable RAM and non-reentrant execution; 61-byte fallback is retained; family-wide audit remains open.

@@ -13,7 +13,7 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "598c1bbaaf170b485ae54eb807aed65221169fa0acfedba92d882c600701e306",
+    "v1_balanced": "5ed4c91f86a838b9dc142f30a6b4fce942a770e0964fd50d21575ae346bd3458",
     "v2_pareto_fast": "92a01edba81dd194f7d82d51880cd9025e65b684d4d87cfa4fae7300693b621c",
     "v3_reu_512k": "795e2f30d4e0bbee0fa98f84d796695b8ac6aa3143a983e29ac22fdf71b12e63",
     "v4_reu_16m": "2880c7dcf46108f70e21e6d57d67466b4590b548bcd197164f21410102200664",
@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 67849,
-    "user_manual_lines": 1894,
-    "user_manual_sha256": "255a31a4e987ca25cd45ecc0cbcb3112b2b86b36d50eeae1113cbc6d649791d2"
+    "user_manual_bytes": 68075,
+    "user_manual_lines": 1896,
+    "user_manual_sha256": "3016dfda83e096bcac2fd701a317eb8dff94e32e3eb0cfac3317615b56f6508b"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -243,7 +243,7 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
+    "v1_balanced": "d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a",
     "v2_pareto_fast": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
     "v3_reu_512k": "00a64179f701208d963dc8c23abb7b000dc28b155d414d2d9c6f8f333282bce8",
     "v4_reu_16m": "595f9d6559204fc20f11dcd5987f765c00ec5f4b8f860f632cd8e1b29105d724",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "105bb19bcdf35200b03d9f23d4abbfe8fc0c68d729b03b0b9e2b52f7d51e6b55",
+    "benchmark_sha256": "2b98f61cb5baf80cf47e31dbc0af8bdd21422bb6d06e75be143015bc01a518d9",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -755,7 +755,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "64bf128bc973ca83a6c5c134b91d089b83940b4d11cd67bbebfa993fac4dc411",
+    "report_sha256": "1cd017db9d5f06a343b9fffef315cc89089fd8156faa32dc4ccf338c04675d34",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -858,7 +858,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "07ee70abecf0e9263e437812e69ae32153e85deea8c831831c9231dac6b322af",
+    "data_sha256": "203a96418b58b09a13a0f33457c36826442e9c0f7ef7d979d0209690fec920f1",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -1235,7 +1235,7 @@
     "unsigned_family_complete": false
   },
   "issue39_v1_24by8_ram_smc_specialist_2026_10_12": {
-    "status": "PASS_RESEARCH_ONLY_NOT_RESIDENT",
+    "status": "PASS_PROMOTED_V1_RAM_ONLY",
     "documentation": "docs/ISSUE39_V1_UDIV24_ACCUMULATOR_SMC_SCREEN_2026-10-12.md",
     "resident_61_sha256": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
     "paired_public_calls": 48388,
@@ -1253,7 +1253,46 @@
       "MATH_UDIV24": 165.2282768777614,
       "MATH_UMOD24": 231.48937540244688
     },
-    "installed_binary_changed": false,
+    "installed_binary_changed": true,
     "unsigned_family_complete": false
+  },
+  "issue39_v1_24by8_smc_integrated_release_2026_10_12": {
+    "status": "PASS",
+    "documentation": "docs/ISSUE39_V1_24BY8_SMC_INTEGRATED_RELEASE_2026-10-12.md",
+    "unsigned_family_complete": false,
+    "prior_v1_sha256": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
+    "new_v1_sha256": "d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a",
+    "unchanged_v5_sha256": "5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222",
+    "public_abi_changed": false,
+    "code_bytes_old": 61,
+    "code_bytes_new": 68,
+    "normal_zp_growth": 0,
+    "stack_growth": 0,
+    "resident_prg_growth": 0,
+    "paired_old_new_calls": 48388,
+    "paired_regressions": 0,
+    "native_isolated_calls": 128,
+    "native_full_resident_calls": 384,
+    "requires_writable_ram": true,
+    "reentrant": false,
+    "five_profile_unsigned_calls": 822050,
+    "five_profile_signed_calls": 364533,
+    "common_input_calls": 136335,
+    "official_means": {
+      "MATH_UDIV24": {
+        "v1_balanced": 165.2282768777614,
+        "v2_pareto_fast": 157.8514622343783,
+        "v3_reu_512k": 157.8514622343783,
+        "v4_reu_16m": 157.8514622343783,
+        "v5_hybrid_lowzp": 157.8514622343783
+      },
+      "MATH_UMOD24": {
+        "v1_balanced": 231.48937540244688,
+        "v2_pareto_fast": 207.49066323245333,
+        "v3_reu_512k": 207.49066323245333,
+        "v4_reu_16m": 207.49066323245333,
+        "v5_hybrid_lowzp": 207.49066323245333
+      }
+    }
   }
 }

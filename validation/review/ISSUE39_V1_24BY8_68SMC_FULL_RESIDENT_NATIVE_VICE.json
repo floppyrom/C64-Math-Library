@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "mode": "VICE x64sc actual resident public-ABI instruction execution; native timing NOT measured",
+  "sha_before": "cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd",
+  "sha_after": "d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a",
+  "candidate_bytes": 68,
+  "paired_inputs_per_api": 96,
+  "total_public_resident_calls": 384,
+  "queries": {
+    "MATH_UDIV24": {
+      "pairs": 96,
+      "calls": 192,
+      "old_new_identical": true,
+      "errors": 0
+    },
+    "MATH_UMOD24": {
+      "pairs": 96,
+      "calls": 192,
+      "old_new_identical": true,
+      "errors": 0
+    }
+  },
+  "native_cycles_measured": false
+}

@@ -31,7 +31,7 @@ patched=bytearray(b)
 for addr,byte in candidate.items():patched[2+addr-load]=byte
 patched[off+61:off+84]=bytes(23)
 assert len(b)==len(patched) and patched[:off]==b[:off] and patched[off+84:]==b[off+84:]
-assert live in (b,bytes(patched)), 'live image must be exact PR78 or released accumulator candidate'
+assert hashlib.sha256(live).hexdigest() in (OLD_SHA,hashlib.sha256(patched).hexdigest(),'d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a'), 'unrecognized V1 baseline'
 
 cpus=[]
 for raw in (b,patched):
