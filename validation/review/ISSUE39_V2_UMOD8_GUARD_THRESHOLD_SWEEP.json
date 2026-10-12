@@ -1,0 +1,977 @@
+{
+  "baseline_cycle_vector_sha256": "cd1b93d344bebb494fc7980c4d1a2cf540c121774202afc023571f43df2ee44f",
+  "baseline_guard_cutoff": 24,
+  "basis": "6502 complete current resident public API cycles; no physical bus/REU timing",
+  "code_resource_changes": 0,
+  "decision": "candidate research only; per-call regressions and workload sensitivity must be considered",
+  "dual_route_pairs": 59136,
+  "fully_real_direct_threshold_spot_checks": 2277,
+  "input_sha256": "68e419472d25e0b85e9917ccf692fd58245c5e95e9a46f07d1df81d2e9da246b",
+  "resident_sha256": "0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d",
+  "sample_count": 65536,
+  "source": "tools/screen_issue39_v2_umod8_guard_thresholds.py",
+  "source_offset": "0x5327",
+  "status": "PASS",
+  "thresholds": {
+    "128": {
+      "cycles": 4190708,
+      "delta_cycles_per_call": 11.740676879882812,
+      "equal": 38912,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 63.94512939453125,
+      "slower": 26536,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 365736,
+          "after_mean": 89.291015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 339962,
+          "after_mean": 82.99853515625,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 1223383,
+          "after_mean": 74.66937255859375,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 769437,
+      "worst_regression": 34
+    },
+    "160": {
+      "cycles": 4432868,
+      "delta_cycles_per_call": 15.435745239257812,
+      "equal": 30720,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 67.64019775390625,
+      "slower": 34728,
+      "strata": {
+        "D_128_254": {
+          "after": 1462630,
+          "after_mean": 44.98738927165354,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 365736,
+          "after_mean": 89.291015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 339962,
+          "after_mean": 82.99853515625,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 1223383,
+          "after_mean": 74.66937255859375,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 1011597,
+      "worst_regression": 34
+    },
+    "192": {
+      "cycles": 4676052,
+      "delta_cycles_per_call": 19.146438598632812,
+      "equal": 22528,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 71.35089111328125,
+      "slower": 42920,
+      "strata": {
+        "D_128_254": {
+          "after": 1705814,
+          "after_mean": 52.467212106299215,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 365736,
+          "after_mean": 89.291015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 339962,
+          "after_mean": 82.99853515625,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 1223383,
+          "after_mean": 74.66937255859375,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 1254781,
+      "worst_regression": 34
+    },
+    "224": {
+      "cycles": 4920260,
+      "delta_cycles_per_call": 22.872756958007812,
+      "equal": 14336,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 75.07720947265625,
+      "slower": 51112,
+      "strata": {
+        "D_128_254": {
+          "after": 1950022,
+          "after_mean": 59.97853100393701,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 365736,
+          "after_mean": 89.291015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 339962,
+          "after_mean": 82.99853515625,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 1223383,
+          "after_mean": 74.66937255859375,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 1498989,
+      "worst_regression": 34
+    },
+    "24": {
+      "cycles": 3421271,
+      "delta_cycles_per_call": 0.0,
+      "equal": 65536,
+      "faster": 0,
+      "maximum_saving": 0,
+      "mean_cycles": 52.20445251464844,
+      "slower": 0,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 157486,
+          "after_mean": 76.8974609375,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 258000,
+          "after_mean": 62.98828125,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 0,
+      "worst_regression": 0
+    },
+    "25": {
+      "cycles": 3425871,
+      "delta_cycles_per_call": 0.0701904296875,
+      "equal": 65280,
+      "faster": 24,
+      "maximum_saving": 1,
+      "mean_cycles": 52.27464294433594,
+      "slower": 232,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 162086,
+          "after_mean": 79.1435546875,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 258000,
+          "after_mean": 62.98828125,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 4600,
+      "worst_regression": 34
+    },
+    "255": {
+      "cycles": 5157813,
+      "delta_cycles_per_call": 26.497528076171875,
+      "equal": 6400,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 78.70198059082031,
+      "slower": 59048,
+      "strata": {
+        "D_128_254": {
+          "after": 2187575,
+          "after_mean": 67.28515625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 365736,
+          "after_mean": 89.291015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 339962,
+          "after_mean": 82.99853515625,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 1223383,
+          "after_mean": 74.66937255859375,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 1736542,
+      "worst_regression": 34
+    },
+    "26": {
+      "cycles": 3430652,
+      "delta_cycles_per_call": 0.1431427001953125,
+      "equal": 65024,
+      "faster": 49,
+      "maximum_saving": 1,
+      "mean_cycles": 52.34759521484375,
+      "slower": 463,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 166867,
+          "after_mean": 81.47802734375,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 258000,
+          "after_mean": 62.98828125,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 9381,
+      "worst_regression": 34
+    },
+    "28": {
+      "cycles": 3440793,
+      "delta_cycles_per_call": 0.297882080078125,
+      "equal": 64512,
+      "faster": 84,
+      "maximum_saving": 1,
+      "mean_cycles": 52.50233459472656,
+      "slower": 940,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 177008,
+          "after_mean": 86.4296875,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 258000,
+          "after_mean": 62.98828125,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 19522,
+      "worst_regression": 34
+    },
+    "30": {
+      "cycles": 3451713,
+      "delta_cycles_per_call": 0.464508056640625,
+      "equal": 64000,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 52.66896057128906,
+      "slower": 1448,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 187928,
+          "after_mean": 91.76171875,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 258000,
+          "after_mean": 62.98828125,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 30442,
+      "worst_regression": 34
+    },
+    "31": {
+      "cycles": 3457417,
+      "delta_cycles_per_call": 0.551544189453125,
+      "equal": 63744,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 52.75599670410156,
+      "slower": 1704,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 193632,
+          "after_mean": 94.546875,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 258000,
+          "after_mean": 62.98828125,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 36146,
+      "worst_regression": 34
+    },
+    "32": {
+      "cycles": 3463277,
+      "delta_cycles_per_call": 0.640960693359375,
+      "equal": 63488,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 52.84541320800781,
+      "slower": 1960,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 258000,
+          "after_mean": 62.98828125,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 42006,
+      "worst_regression": 34
+    },
+    "33": {
+      "cycles": 3469293,
+      "delta_cycles_per_call": 0.732757568359375,
+      "equal": 63232,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 52.93721008300781,
+      "slower": 2216,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 264016,
+          "after_mean": 64.45703125,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 48022,
+      "worst_regression": 34
+    },
+    "34": {
+      "cycles": 3475425,
+      "delta_cycles_per_call": 0.826324462890625,
+      "equal": 62976,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 53.03077697753906,
+      "slower": 2472,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 270148,
+          "after_mean": 65.9541015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 54154,
+      "worst_regression": 34
+    },
+    "36": {
+      "cycles": 3488037,
+      "delta_cycles_per_call": 1.018768310546875,
+      "equal": 62464,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 53.22322082519531,
+      "slower": 2984,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 282760,
+          "after_mean": 69.033203125,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 66766,
+      "worst_regression": 34
+    },
+    "40": {
+      "cycles": 3514503,
+      "delta_cycles_per_call": 1.422607421875,
+      "equal": 61440,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 53.62705993652344,
+      "slower": 4008,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 309226,
+          "after_mean": 75.49462890625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 93232,
+      "worst_regression": 34
+    },
+    "48": {
+      "cycles": 3571013,
+      "delta_cycles_per_call": 2.284881591796875,
+      "equal": 59392,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 54.48933410644531,
+      "slower": 6056,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 365736,
+          "after_mean": 89.291015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 218740,
+          "after_mean": 53.4033203125,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 149742,
+      "worst_regression": 34
+    },
+    "64": {
+      "cycles": 3692235,
+      "delta_cycles_per_call": 4.13458251953125,
+      "equal": 55296,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 56.33903503417969,
+      "slower": 10152,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 365736,
+          "after_mean": 89.291015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 339962,
+          "after_mean": 82.99853515625,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 724910,
+          "after_mean": 44.2449951171875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 270964,
+      "worst_regression": 34
+    },
+    "80": {
+      "cycles": 3817883,
+      "delta_cycles_per_call": 6.05181884765625,
+      "equal": 51200,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 58.25627136230469,
+      "slower": 14248,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 365736,
+          "after_mean": 89.291015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 339962,
+          "after_mean": 82.99853515625,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 850558,
+          "after_mean": 51.9139404296875,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 396612,
+      "worst_regression": 34
+    },
+    "96": {
+      "cycles": 3944292,
+      "delta_cycles_per_call": 7.9806671142578125,
+      "equal": 47104,
+      "faster": 88,
+      "maximum_saving": 1,
+      "mean_cycles": 60.18511962890625,
+      "slower": 18344,
+      "strata": {
+        "D_128_254": {
+          "after": 1220470,
+          "after_mean": 37.5390625,
+          "before": 1220470,
+          "before_mean": 37.5390625,
+          "cases": 32512
+        },
+        "D_24_31": {
+          "after": 199492,
+          "after_mean": 97.408203125,
+          "before": 157486,
+          "before_mean": 76.8974609375,
+          "cases": 2048
+        },
+        "D_32_47": {
+          "after": 365736,
+          "after_mean": 89.291015625,
+          "before": 258000,
+          "before_mean": 62.98828125,
+          "cases": 4096
+        },
+        "D_48_63": {
+          "after": 339962,
+          "after_mean": 82.99853515625,
+          "before": 218740,
+          "before_mean": 53.4033203125,
+          "cases": 4096
+        },
+        "D_64_127": {
+          "after": 976967,
+          "after_mean": 59.62933349609375,
+          "before": 724910,
+          "before_mean": 44.2449951171875,
+          "cases": 16384
+        }
+      },
+      "total_delta_cycles": 523021,
+      "worst_regression": 34
+    }
+  }
+}
