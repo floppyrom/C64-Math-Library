@@ -1,3 +1,7 @@
+2026-10-12 ISSUE39 U3216 N16 DHI-GATED DONOR FIVE-PROFILE SCREEN
+- Compared 33-byte in-memory divisor-high-gated 32/16 N16->16/16 reuse on exact V1–V5 residents, public UDIV32/16 and UMOD32/16, four D1 thresholds (1,4,16,64): 79,130 old/new operand pairs / 395,650 public CPU executions, zero Q/R/C/input/SP errors.
+- Narrow-divisor reuse is filtered out; full-width numerator controls still incur +17 cycles. Research-only library-dependent donor, additional 2 stack bytes on delegation, $E100 under KERNAL ROM unqualified. Exact per-profile workload and input proof, source, docs, release metadata, both changelogs, SHA256SUMS published, **no production binary/ABI changes**. #39 stays OPEN. docs/ISSUE39_U3216_N16_DHI_GATED_SCREEN_2026-10-12.md
+
 2026-10-12 ISSUE39 N16 DELEGATE U32BY16 FIVE-PROFILE SCREEN
 - Tested 26-byte ephemeral N16->UDIV16 producer reuse on V1–V5 exact resident public UDIV32/16 and UMOD32/16 entries; 79,130 input pairs, 158,260 old/new calls, no Q/R/C/input/stack mismatches.
 - V1 N16-target ~469 cycles faster and N16/D8 ~542 faster; V2–V5 N16-target ~366 faster but N16/D8 ~292 slower; all full-width-uniform operands +17. Reject default, preserve candidate/source-backed detailed report. Ephemeral E100 code not native-ROM/bank qualified. No binary change. Campaign #39 open. docs/ISSUE39_U3216_N16_DELEGATE_CURRENT_MAIN_2026-10-12.md

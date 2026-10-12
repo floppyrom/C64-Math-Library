@@ -180,3 +180,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue #39 V2 UMOD8 exact-D24 guard no-gain screen: docs/ISSUE39_V2_UMOD8_GUARD_THRESHOLD_SWEEP_2026-10-12.md.
 
 - Issue39 five-profile 32/16 N16 delegate A/B research: docs/ISSUE39_U3216_N16_DELEGATE_CURRENT_MAIN_2026-10-12.md. No default promotion.
+
+- Issue39 32/16 N16 divisor-high-aware donor research: docs/ISSUE39_U3216_N16_DHI_GATED_SCREEN_2026-10-12.md. No default engine changed; family audit open.

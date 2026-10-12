@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 68487,
-    "user_manual_lines": 1902,
-    "user_manual_sha256": "f1fce6da17665602ed30c79f64da764b0379e6baa2f7e2b32b0b4d9e9654c833"
+    "user_manual_bytes": 68644,
+    "user_manual_lines": 1904,
+    "user_manual_sha256": "7b6d911a34dcbbcc06b43faf9e6fee8239bd5af07a9491ffc59c2aa8d65e4e59"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -1399,6 +1399,94 @@
     "native_vice_calls": 0,
     "default_kernal_rom_placement_unsafe": true,
     "production_changed": false,
+    "unsigned_family_complete": false
+  },
+  "issue39_u3216_n16_dhi_screen_2026_10_12": {
+    "status": "PASS_RESEARCH_NO_PROMOTION",
+    "report": "validation/review/ISSUE39_U3216_N16_DHI_GATED_SCREEN.json",
+    "report_sha256": "8901c40a1dd6efad2687a35ac2c9d91f12a1def8966399d4756af16954f59b6c",
+    "documentation": "docs/ISSUE39_U3216_N16_DHI_GATED_SCREEN_2026-10-12.md",
+    "candidate_assembly": "tools/candidates/issue39_u3216_n16_dhi_guard_research.asm",
+    "paired_inputs": 79130,
+    "cpu_calls": 395650,
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "candidate_divisor_high_minimums": [
+      1,
+      4,
+      16,
+      64
+    ],
+    "best_weighted_candidate_by_profile_api": {
+      "v1_balanced": {
+        "MATH_UDIV32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -12.742762916819348,
+          "slow_calls_best_official": 2569
+        },
+        "MATH_UMOD32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -30.605865102639296,
+          "slow_calls_best_official": 1545
+        }
+      },
+      "v2_pareto_fast": {
+        "MATH_UDIV32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -6.17478930010993,
+          "slow_calls_best_official": 2569
+        },
+        "MATH_UMOD32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -20.09325513196481,
+          "slow_calls_best_official": 1545
+        }
+      },
+      "v3_reu_512k": {
+        "MATH_UDIV32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -6.17478930010993,
+          "slow_calls_best_official": 2569
+        },
+        "MATH_UMOD32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -20.09325513196481,
+          "slow_calls_best_official": 1545
+        }
+      },
+      "v4_reu_16m": {
+        "MATH_UDIV32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -6.17478930010993,
+          "slow_calls_best_official": 2569
+        },
+        "MATH_UMOD32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -20.09325513196481,
+          "slow_calls_best_official": 1545
+        }
+      },
+      "v5_hybrid_lowzp": {
+        "MATH_UDIV32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -6.17478930010993,
+          "slow_calls_best_official": 2569
+        },
+        "MATH_UMOD32_16": {
+          "best_official_cutoff_d1": 1,
+          "best_official_delta": -20.09325513196481,
+          "slow_calls_best_official": 1545
+        }
+      }
+    },
+    "native_vice_runs": 0,
+    "helper_requires_real_ram_relocation": true,
+    "source_or_shipped_binary_changed": false,
     "unsigned_family_complete": false
   }
 }
