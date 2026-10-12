@@ -453,9 +453,9 @@
       "MATH_UMOD32_32": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 303.84095299420477,
-        "min_cycles": 67,
-        "max_cycles": 1815
+        "mean_cycles": 299.05924018029623,
+        "min_cycles": 72,
+        "max_cycles": 1822
       },
       "MATH_URECIP16_Q16": {
         "cases": 65536,

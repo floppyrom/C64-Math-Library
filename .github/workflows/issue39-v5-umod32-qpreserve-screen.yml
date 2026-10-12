@@ -1,0 +1,40 @@
+name: Issue39 V5 UMOD32 quotient-preserving candidate screen
+on:
+  push:
+    branches:
+      - issue39-v5-umod32-qpreserve-fastfront
+    paths:
+      - '.github/workflows/issue39-v5-umod32-qpreserve-screen.yml'
+      - 'tools/screen_issue39_v5_umod32_qpreserving.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-verified-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test full Q/R/C alias contract on old/new complete V5 resident
+        run: python3 tools/screen_issue39_v5_umod32_qpreserving.py
+      - name: Compare strict high-byte-only Q0 shortcut on identical corpus
+        run: python3 tools/screen_issue39_v5_umod32_highbyte.py
+      - name: Check V5 direct 32-bit gate with reordered D zero and preserved high-qone A
+        run: python3 tools/screen_issue39_v5_umod32_reordered.py
+      - name: Export bounded variant evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v5-umod32-q-preserving-frontend-screen
+          path: |
+            validation/review/ISSUE39_V5_UMOD3232_QPRESERVING_FRONTEND_SCREEN.json
+            validation/review/ISSUE39_V5_UMOD3232_HIGHBYTE_QZERO_SCREEN.json
+            validation/review/ISSUE39_V5_UMOD3232_REORDERED_SHARED_GATE_SCREEN.json
+            validation/review/ISSUE39_V5_UMOD32_REORDERED_CANDIDATE.prg
+          retention-days: 14
+          if-no-files-found: warn

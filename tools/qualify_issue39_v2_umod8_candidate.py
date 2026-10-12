@@ -52,9 +52,22 @@ def main():
         old[2+ENTRY-lo:2+ENTRY-lo+3]=bytes((0xAD,0x10,0xC0))
         old[2+HELPER-lo:2+END-lo]=bytes(101)
         oldbytes=bytes(old)
+    elif sha(parentbytes)=='0510d469e1ff3bf136395e49b2e5055b9ab485fd87c4741ab5d0cbfc8fdf013d':
+        # PR70's published resident relocates only the independent 32/32
+        # modulo gate. Audit the pre-UMOD8 101-byte helper against *this*
+        # SHA-qualified parent, without pretending it is the 2026-10-11 PRG.
+        lo=int.from_bytes(parentbytes[:2],'little')
+        old=bytearray(parentbytes)
+        assert old[2+ENTRY-lo:2+ENTRY-lo+3]==bytes((0x4C,0x23,0x53))
+        old[2+ENTRY-lo:2+ENTRY-lo+3]=bytes((0xAD,0x10,0xC0))
+        old[2+HELPER-lo:2+END-lo]=bytes(101)
+        oldbytes=bytes(old)
+        assert sha(oldbytes)=='2a5f17aa3eabff7c53d75f46335dcbec1aa34d2343bf36d53f909bf109eec0a3'
     else:
         raise AssertionError('unrecognized V2 historical/release resident SHA')
-    assert sha(oldbytes)=='e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd'
+    assert sha(oldbytes) in (
+        'e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd',
+        '2a5f17aa3eabff7c53d75f46335dcbec1aa34d2343bf36d53f909bf109eec0a3')
     assert oldbytes[:2]==newbytes[:2], 'load address changed'
     assert len(oldbytes)==len(newbytes), 'resident length changed'
     oldmem,lo=memof(oldbytes)
@@ -72,8 +85,14 @@ def main():
     altmem,_=memof(alt)
     assert altmem[0xB200:0xB203]==bytes((0x4C,0x23,0x33))
     assert altmem[0x3323:0x3328]==bytes((0xAD,0x14,0xC8,0xC9,0x18))
-    assert sha(V5.read_bytes())==sha(V5_NEW.read_bytes()), \
-        'V5 compiled donor changed certified resident bytes'
+    # PR71 intentionally changes only V5's Q-preserving UMOD32/32 gate.
+    # Verify the source-built V5 against either its published pre-PR71
+    # resident (after SHA-qualified reversal) or the promoted candidate.
+    from issue39_v5_umod32_parent import restore_v5_umod32_parent
+    v5_live=V5.read_bytes()
+    v5_source=V5_NEW.read_bytes()
+    assert v5_live in (v5_source, restore_v5_umod32_parent(v5_source)), \
+        'V5 contains changes outside SHA-certified PR71 UMOD32/32 frontend'
 
     before=cpubuild(oldbytes)
     after=cpubuild(newbytes)
@@ -118,7 +137,8 @@ def main():
         'old_cycle_stream_sha256':hashes[0].hexdigest(),
         'new_cycle_stream_sha256':hashes[1].hexdigest(),
         'delta_addresses':len(diffs),
-        'v5_resident_byte_identical':True,
+        'v5_resident_byte_identical':v5_live==v5_source,
+        'v5_source_diff_is_sha_certified_pr71_gate':True,
         'reference_and_alternate_relocation_validated':True}
     OUT.parent.mkdir(parents=True,exist_ok=True)
     OUT.write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')

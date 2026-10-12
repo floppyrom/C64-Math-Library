@@ -10,7 +10,7 @@ j=load_common(R)
 target={'MATH_UDIV32_32':(335.8255771344815,2729),
         'MATH_UMOD32_32':(399.6768328445748,1705)}
 v5_means={'MATH_UDIV32_32':275.01319164529133,
-          'MATH_UMOD32_32':302.35307917888565}
+          'MATH_UMOD32_32':299.58299120234600}
 for name,(mean,cases) in target.items():
     r=j['routines'][name]
     assert r['cases_per_profile']==cases

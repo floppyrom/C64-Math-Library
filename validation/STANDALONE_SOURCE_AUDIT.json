@@ -2184,7 +2184,7 @@
           "file": "mod_u32_u32_u32__math_umod32_32.asm",
           "alias_of": "MATH_UDIV32_32",
           "entry_address": "$5E03",
-          "reachable_instructions": 1566
+          "reachable_instructions": 1574
         },
         {
           "legacy_api": "MATH_SDIV32_32",

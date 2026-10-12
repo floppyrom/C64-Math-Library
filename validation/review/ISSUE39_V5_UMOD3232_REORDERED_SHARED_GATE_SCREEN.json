@@ -1,0 +1,121 @@
+{
+  "alias_Q32_R32_written": true,
+  "candidate_length_bytes": 147,
+  "classes": {
+    "divisor_zero": {
+      "best_saving": -20,
+      "cases": 670,
+      "faster": 0,
+      "max_regression": 56,
+      "mean_delta": 21.035820895522388,
+      "slower": 670
+    },
+    "quotient_0": {
+      "best_saving": 18,
+      "cases": 1518,
+      "faster": 1518,
+      "max_regression": -18,
+      "mean_delta": -18.0,
+      "slower": 0
+    },
+    "quotient_1": {
+      "best_saving": 0,
+      "cases": 1473,
+      "faster": 0,
+      "max_regression": 7,
+      "mean_delta": 4.433808553971486,
+      "slower": 933
+    },
+    "quotient_10_to_255": {
+      "best_saving": -7,
+      "cases": 132,
+      "faster": 0,
+      "max_regression": 7,
+      "mean_delta": 7.0,
+      "slower": 132
+    },
+    "quotient_256_plus": {
+      "best_saving": -7,
+      "cases": 148,
+      "faster": 0,
+      "max_regression": 7,
+      "mean_delta": 7.0,
+      "slower": 148
+    },
+    "quotient_2_to_9": {
+      "best_saving": -7,
+      "cases": 373,
+      "faster": 0,
+      "max_regression": 7,
+      "mean_delta": 7.0,
+      "slower": 373
+    }
+  },
+  "corpus_means": {
+    "boundary": {
+      "cases": 49,
+      "faster": 21,
+      "mean_delta": 0.5714285714285714,
+      "slower": 22
+    },
+    "divide_zero": {
+      "cases": 512,
+      "faster": 0,
+      "mean_delta": 20.0,
+      "slower": 512
+    },
+    "equality": {
+      "cases": 512,
+      "faster": 0,
+      "mean_delta": 0.0,
+      "slower": 0
+    },
+    "official": {
+      "cases": 1705,
+      "faster": 760,
+      "mean_delta": -2.7700879765395894,
+      "slower": 923
+    },
+    "qone_or_more": {
+      "cases": 512,
+      "faster": 0,
+      "mean_delta": 7.0,
+      "slower": 512
+    },
+    "qzero": {
+      "cases": 512,
+      "faster": 512,
+      "mean_delta": -18.0,
+      "slower": 0
+    },
+    "random": {
+      "cases": 512,
+      "faster": 225,
+      "mean_delta": -3.986328125,
+      "slower": 287
+    }
+  },
+  "counts": {
+    "faster": 1518,
+    "slower": 2256,
+    "tie": 540
+  },
+  "entry": "0x5e03",
+  "ephemeral_source_program": "* = $5E80\nV5_RM32R_ENTRY:\n    lda $C013\n    cmp $C017\n    bcc V5_RM32R_QZERO\n    bne V5_RM32R_GREATER\n    lda $C012\n    cmp $C016\n    bcc V5_RM32R_QZERO\n    bne V5_RM32R_GREATER\n    lda $C011\n    cmp $C015\n    bcc V5_RM32R_QZERO\n    bne V5_RM32R_GREATER\n    lda $C010\n    cmp $C014\n    bcc V5_RM32R_QZERO\n    bne V5_RM32R_GREATER\n    ; N=D: only 0/0 needs the original divide-zero handler.\n    lda $C014\n    ora $C015\n    ora $C016\n    ora $C017\n    beq V5_RM32R_DIVZERO\n    ldx #0\n    lda #1\n    sta $C018\n    stx $C019\n    stx $C01A\n    stx $C01B\n    stx $C01C\n    stx $C01D\n    stx $C01E\n    stx $C01F\n    clc\n    rts\nV5_RM32R_QZERO:\n    ldx #0\n    stx $C018\n    stx $C019\n    stx $C01A\n    stx $C01B\n    lda $C010\n    sta $C01C\n    lda $C011\n    sta $C01D\n    lda $C012\n    sta $C01E\n    lda $C013\n    sta $C01F\n    clc\n    rts\nV5_RM32R_GREATER:\n    ; The original V5 high-qone helper at $6810 stores incoming A\n    ; immediately, so preserve the compare-stage A across the D==0 guard.\n    pha\n    lda $C014\n    ora $C015\n    ora $C016\n    ora $C017\n    beq V5_RM32R_ZEROPOP\n    pla\n    jmp $6810\nV5_RM32R_ZEROPOP:\n    pla\nV5_RM32R_DIVZERO:\n    jmp $C222\n",
+  "errors": 0,
+  "fallback": "0x5957",
+  "full_resident_sha256": "634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02",
+  "last_byte": "0x5f12",
+  "mean_delta_cycles": -0.49327770050996755,
+  "mean_saving_cycles": 0.49327770050996755,
+  "new_entry": "0x5e80",
+  "next_gate": "If candidate is useful, source-qualify V5 hybrid builder relocation & native x64sc; never merge unvalidated research.",
+  "no_shipped_bytes_modified": true,
+  "normal_zp_growth": 0,
+  "official_case_count": 1705,
+  "operation": "MATH_UMOD32_32",
+  "profile": "v5_hybrid_lowzp",
+  "status": "PASS",
+  "tested_cases": 4314,
+  "total_old_new_calls": 8628
+}

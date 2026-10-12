@@ -61,7 +61,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 19329
+      "stable_api_reachable_code_union_bytes": 19476
     }
   ],
   "rows": [
@@ -5892,12 +5892,12 @@
       "signedness": "unsigned",
       "operation": "modulo",
       "width": "32/32",
-      "mean_cycles": "303.840953",
-      "min_cycles": 67,
-      "max_cycles": 1815,
+      "mean_cycles": "299.059240",
+      "min_cycles": 72,
+      "max_cycles": 1822,
       "cases": 1553,
       "cycle_basis": "2026-10-11 V5 prechecked nonzero divisor optimization",
-      "reachable_code_bytes": 3183,
+      "reachable_code_bytes": 3200,
       "zp_bytes": 10,
       "zp_ranges": "$10-$19",
       "stack_page_reserved_bytes": 0,

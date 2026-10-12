@@ -1,0 +1,44 @@
+name: Issue39 V5 UMOD32 source relocation certification
+on:
+  push:
+    branches:
+      - issue39-v5-umod32-qpreserve-fastfront
+    paths:
+      - '.github/workflows/issue39-v5-umod32-source.yml'
+      - 'tools/screen_issue39_v5_umod32_source.py'
+      - 'tools/build_hybrid.py'
+      - 'tools/v5_umod32_qpreserving_source.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source generated reference and alternate parent builds
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+      - name: Exact source/direct-public ABI candidate image proof
+        run: python3 tools/screen_issue39_v5_umod32_source.py
+      - name: Preserve bounded source build proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v5-umod32-source-proof
+          path: |
+            validation/review/ISSUE39_V5_UMOD32_SOURCE_QUALIFIED.json
+            build_hybrid/reference/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg
+            build_hybrid/alternate/v5_hybrid_lowzp/math_v5_hybrid_lowzp_game_math.prg
+          retention-days: 14
+          if-no-files-found: warn
