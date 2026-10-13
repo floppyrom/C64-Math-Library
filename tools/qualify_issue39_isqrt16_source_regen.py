@@ -35,15 +35,18 @@ def main():
     with tempfile.TemporaryDirectory(prefix='issue39_isqrt16_source_regen_') as temp:
         tmp=Path(temp)
         expected={}
+        candidate_paths={}
         lengths={p:image(p).stat().st_size for p in PROFILES}
         for p in ROOT_PROFILES:
             out,man=assembly(p,'reference',tmp/'original'/p)
             expected[p]=man['output_sha256']
+            candidate_paths[p]=out
             assert filehash(out)!=before[p],(p,'no speed change assembled')
             assert out.stat().st_size==lengths[p],(p,'resident size expanded')
         assert filehash(image(V4))==before[V4]
         out,man=hybrid('reference',tmp/'original'/V5)
         expected[V5]=man['output_sha256']
+        candidate_paths[V5]=out
         assert filehash(out)!=before[V5],('V5 did not inherit V1 source change')
         assert out.stat().st_size==lengths[V5],('V5 size expansion')
         expected[V4]=before[V4]
@@ -51,7 +54,7 @@ def main():
         # this disposable checkout. A later release script must still separately
         # stage and verify all artifacts before commit.
         for p in (*ROOT_PROFILES,V5):
-            shutil.copyfile(tmp/'original'/p/('math_'+p+'_source_built.prg'),image(p))
+            shutil.copyfile(candidate_paths[p],image(p))
         print('STAGED TEMP RESIDENTS',expected,flush=True)
         subprocess.run([sys.executable,str(ROOT/'tools/generate_sources.py')],
                        cwd=ROOT,check=True)
