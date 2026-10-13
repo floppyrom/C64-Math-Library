@@ -1,4 +1,5 @@
 {
+  "issue39_umul16_umul24_optisearch_resource_audit_2026_10_13": {"status":"RESEARCH_ONLY_NO_DEFAULT_PROMOTION","document":"docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md","evidence":"validation/review/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT.json","production_prgs_changed":false,"public_api_changed":false,"private_optisearch_source_published":false,"umul16_public_abi_qualified":false,"umul24_paired_qualifed":false,"issue39_complete":false},
   "acme": {
     "historical_assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
     "historical_checks": 8,

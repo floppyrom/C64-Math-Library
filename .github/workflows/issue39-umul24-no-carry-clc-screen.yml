@@ -1,0 +1,28 @@
+name: Issue39 UMUL24 two-cycle no-carry RTS research screen
+on:
+  push:
+    branches: [issue39-umul16-umul24-abi-resource-audit]
+    paths:
+      - tools/screen_issue39_umul24_no_carry_clc.py
+      - .github/workflows/issue39-umul24-no-carry-clc-screen.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-paired-no-carry-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-build reference and alternate V2-V4 original/candidate; replay unsigned and signed mixed calls
+        run: python3 tools/screen_issue39_umul24_no_carry_clc.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-umul24-no-carry-clc-research-screen
+          path: validation/review/ISSUE39_UMUL24_NO_CARRY_CLC_SCREEN.json
