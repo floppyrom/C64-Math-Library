@@ -9,9 +9,9 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 
 | Legacy API | Canonical name | File | Alias of | Reachable instructions |
 |---|---|---|---|---:|
-| `MATH_UMUL8` | `mul_u8_u8_u16` | `mul_u8_u8_u16.asm` |  | 26 |
+| `MATH_UMUL8` | `mul_u8_u8_u16` | `mul_u8_u8_u16.asm` |  | 24 |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | `mul_u16_u16_u32.asm` |  | 83 |
-| `MATH_UMUL24` | `mul_u24_u24_u48` | `mul_u24_u24_u48.asm` |  | 1379 |
+| `MATH_UMUL24` | `mul_u24_u24_u48` | `mul_u24_u24_u48.asm` |  | 172 |
 | `MATH_UMUL32` | `mul_u32_u32_u64` | `mul_u32_u32_u64.asm` |  | 151 |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | `mul_u32_u32_u64_ready.asm` |  | 151 |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | `mul_s8_s8_s16.asm` |  | 19 |
