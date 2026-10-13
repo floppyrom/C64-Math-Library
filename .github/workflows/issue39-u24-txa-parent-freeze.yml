@@ -1,0 +1,31 @@
+name: Issue39 preserve archived pre-TXA resident parent proof
+on:
+  push:
+    branches: [issue39-u24-live-x-resident-integration]
+    paths:
+      - '.github/workflows/issue39-u24-txa-parent-freeze.yml'
+      - 'tools/freeze_issue39_u24_txa_parent.py'
+permissions:
+  contents: write
+jobs:
+  freeze-old-parent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u24-live-x-resident-integration
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Reconstruct and certify all 5 immutable parent residents offline
+        run: python3 tools/freeze_issue39_u24_txa_parent.py
+      - name: Publish only verified historical reconstruction data
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: freeze reversible historical parent patches for V1-V5'
+          git push origin HEAD:issue39-u24-live-x-resident-integration

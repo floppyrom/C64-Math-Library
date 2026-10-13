@@ -198,3 +198,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - Issue39 current-resident UDIV8 quotient-prefix source architecture sweep: docs/ISSUE39_UDIV8_PREFIX_PERPROFILE_SCREEN_2026-10-13.md. No default API/binary change.
 
 - Generic 24-bit live-X high-quotient source proof: docs/ISSUE39_U24_HIGHGT_LIVE_X_2026-10-13.md. Not promoted to stable residents.
+
+- Source-integrated general-purpose UDIV24 live-X optimization: docs/ISSUE39_U24_TXA_SOURCE_INTEGRATION_2026-10-13.md. Native VICE full-resident 960-call correctness verified; family campaign open.

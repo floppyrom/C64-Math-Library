@@ -10,6 +10,7 @@ import hashlib,sys
 R=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(R/'tools'))
 from mini6502 import Assembler
+from issue39_u24_txa_historical_parent import restore_pre_txa
 PR78='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0'
 OLD_SOURCE=R/'tools/candidates/issue39_v1_24by8_shared_subtraction.asm'
 NEW_SOURCE=R/'tools/candidates/issue39_v1_24by8_accumulator.asm'
@@ -19,6 +20,7 @@ SMC='d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a'
 
 def sha(b):return hashlib.sha256(b).hexdigest()
 def restore_pr78(prg:bytes)->bytes:
+    prg=restore_pre_txa('v1_balanced',prg)
     if sha(prg)==PR78:return prg
     lo=int.from_bytes(prg[:2],'little')
     assert lo==0x1000

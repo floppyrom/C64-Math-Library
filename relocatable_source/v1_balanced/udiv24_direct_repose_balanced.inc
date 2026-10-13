@@ -104,7 +104,7 @@ DU24B_high_gt:
  lda MATH_N+1
  sbc MATH_D+1
  sta MATH_R+1
- lda MATH_N+2
+ txa
  sbc MATH_D+2
  ldx #0
  stx MATH_Q+1

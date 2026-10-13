@@ -1,0 +1,83 @@
+name: Issue39 reseal comparable historical unsigned provenance
+on:
+  push:
+    branches: [issue39-u24-live-x-resident-integration]
+    paths:
+      - '.github/workflows/issue39-u24-reseal-unsigned.yml'
+permissions:
+  contents: write
+jobs:
+  historical-unsigned-provenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 32
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u24-live-x-resident-integration
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Recompute entire historical unsigned regression chain on new SHA-pinned resident
+        run: |
+          set -euo pipefail
+          python3 tools/benchmark_unsigned_common_corpus.py
+          python3 tools/validate_v5_umod24_frontend.py
+          python3 tools/validate_v5_umod16_frontend.py
+          python3 tools/validate_udiv32_qone_bound.py
+          python3 tools/validate_udiv32_q23_bound.py
+          python3 tools/validate_v1_3216_unroll.py
+          python3 tools/audit_issue39_zero_high_bypass.py
+          python3 tools/audit_v5_3232_narrow_delegate.py
+          python3 tools/audit_issue39_unsigned_small_workloads.py
+          python3 tools/audit_issue39_v1_24narrow_rejection.py
+          python3 tools/audit_v1_udiv24_byte8.py
+          python3 tools/audit_v1_3232_d8_delegate.py
+          python3 tools/audit_issue39_v1v5_umod8_guard.py
+          python3 tools/benchmark_unsigned_3216_workloads.py
+          python3 tools/generate_public_indexes.py
+          python3 tools/validate_public_catalog.py
+          git diff --stat
+      - name: Repair SHA provenance for remeasured immutable operands without changing output semantics
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,hashlib
+          R=Path('.')
+          p=R/'RELEASE_STATUS.json'
+          state=json.loads(p.read_text())
+          targets=[
+            ('issue39_common_input_unsigned_divmod','validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json','benchmark_sha256'),
+            ('issue39_unsigned_small_width_workloads_2026_10_11','validation/review/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.json','data_sha256'),
+            ('issue39_unsigned_3216_multiworkload_2026_10_11','validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json','report_sha256'),
+          ]
+          for key,file,field in targets:
+            if isinstance(state.get(key),dict):state[key][field]=hashlib.sha256((R/file).read_bytes()).hexdigest()
+          stage=state['issue39_u24_txa_production_source_2026_10_13']
+          assert stage['status']=='PASS_SOURCE_AND_NATIVE_VICE_QUALIFIED'
+          stage['historical_unsigned_provenance_revalidated']=True
+          stage['historical_umod8_certificate']='validation/review/ISSUE39_V1V5_UMOD8_GUARD_EXHAUSTIVE.json'
+          stage['historical_umod8_certificate_sha256']=hashlib.sha256((R/stage['historical_umod8_certificate']).read_bytes()).hexdigest()
+          p.write_text(json.dumps(state,indent=2)+'\n')
+          PY
+      - name: Reseal SHA256SUMS and original package inventory
+        run: |
+          make clean
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,subprocess
+          root=Path('.')
+          for _ in range(4):
+            files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and '__pycache__' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda x:str(x))
+            (root/'SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p)+'\n' for p in files))
+            subprocess.run(['python3','tools/package_audit.py'],check=True)
+          PY
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Commit only validated benchmark provenance and checksum changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: reseal historical unsigned provenance against source-promoted U24 residents'
+          git push origin HEAD:issue39-u24-live-x-resident-integration

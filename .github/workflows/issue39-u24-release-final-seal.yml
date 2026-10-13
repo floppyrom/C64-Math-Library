@@ -1,0 +1,46 @@
+name: Issue39 U24 release final package reseal
+on:
+  push:
+    branches: [issue39-u24-live-x-resident-integration]
+    paths:
+      - '.github/workflows/issue39-u24-release-final-seal.yml'
+      - 'tools/validate_v5_umod24_frontend.py'
+permissions:
+  contents: write
+jobs:
+  pin-verified-official-mean:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u24-live-x-resident-integration
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Current-SHA exact V2-V5 UMOD24 per-input cycle/ABI parity
+        run: python3 tools/validate_v5_umod24_frontend.py
+      - name: Reseal exact final archive and package-audit fingerprints
+        run: |
+          make clean
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, subprocess
+          root=Path('.')
+          def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
+          for _ in range(4):
+            files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts and '__pycache__' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda p:str(p))
+            (root/'SHA256SUMS.txt').write_text(''.join(sha(p)+'  '+str(p)+'\n' for p in files))
+            subprocess.run(['python3','tools/package_audit.py'],check=True)
+          assert all(line.split('  ',1)[0]==sha(root/line.split('  ',1)[1].strip()) for line in (root/'SHA256SUMS.txt').read_text().splitlines())
+          PY
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Commit current mean parity contract and sealed package
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal SHA-current V2 V5 modulo parity and release package'
+          git push origin HEAD:issue39-u24-live-x-resident-integration
