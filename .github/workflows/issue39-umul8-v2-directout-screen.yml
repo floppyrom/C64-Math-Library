@@ -1,0 +1,27 @@
+name: Issue39 V2 UMUL8 public direct-output architecture screen
+on:
+  push:
+    branches: [issue39-umul8-direct-output-public-screen]
+    paths:
+      - tools/screen_issue39_umul8_v2_public_directout.py
+      - .github/workflows/issue39-umul8-v2-directout-screen.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exhaustive-umul8-abi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Exhaustive 65,536 exact UMUL8 pairs plus interleaved UMUL16
+        run: python3 tools/screen_issue39_umul8_v2_public_directout.py --out /tmp/issue39_v2_umul8_public_directout.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v2-umul8-public-direct-output
+          path: /tmp/issue39_v2_umul8_public_directout.json
