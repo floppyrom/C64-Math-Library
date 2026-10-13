@@ -1,3 +1,6 @@
+2026-10-14 ISSUE39 V1V5 UMUL24 RARECARRY NATIVE SOURCE VALIDATION
+- Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V1/V5: 384 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_V1V5_UMUL24_RARECARRY_NATIVE_2026-10-14.json.
+
 2026-10-14 ISSUE39 V1V5 UMUL24 RARE-CARRY CLC
 - Source-integrated V1/V5 rare-carry CLC: -1 CPU-model cycle on all 10,324 matched unsigned calls/profile; 466.042329 -> 465.042329; V2-V4 unchanged, zero ZP/resident growth.
 - Signed and mixed-call, relocation, standalone and package checks pass at staging; native VICE and PR/main CI pending. docs/ISSUE39_V1V5_UMUL24_RARECARRY_RELEASE_2026-10-14.md

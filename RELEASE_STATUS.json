@@ -2747,7 +2747,7 @@
     "issue39_complete": false
   },
   "issue39_umul24_v1v5_rare_carry_clc_2026_10_14": {
-    "status": "PASS_STAGED_NATIVE_VICE_PENDING",
+    "status": "PASS_NATIVE_VICE_PR_CI_PENDING",
     "proof": "validation/review/ISSUE39_V1V5_UMUL24_RARECARRY_RELEASE_2026-10-14.json",
     "doc": "docs/ISSUE39_V1V5_UMUL24_RARECARRY_RELEASE_2026-10-14.md",
     "new_sha256": {
@@ -2767,6 +2767,9 @@
     "gain_cycles_every_case": 8,
     "normal_ZP_growth": 0,
     "resident_growth": 0,
-    "issue39_complete": false
+    "issue39_complete": false,
+    "native_vice_calls": 384,
+    "native_vice_evidence": "validation/review/ISSUE39_V1V5_UMUL24_RARECARRY_NATIVE_2026-10-14.json",
+    "native_vice_evidence_sha256": "2855c172c3df34670f0623ac0ef8bad5b4ff238f705e79daa6465d3e59bcdb52"
   }
 }
