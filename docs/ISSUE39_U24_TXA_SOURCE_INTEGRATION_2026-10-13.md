@@ -43,3 +43,9 @@ These are native correctness calls, not native cycle-time or real
 REU/VIC bus-load performance measurements.
 
 The other unsigned DIV/MOD classes and issue #39 remain OPEN.
+
+Historical 24/8 regression checks use a SHA-verified **offline parent
+restoration ledger** in validation/review/ISSUE39_U24_TXA_PARENT_RESTORATION.json.
+It reconstructs the exact pre-optimization complete residents from the
+new shipped ones, preserving the original PR78/PR81 benchmark tests;
+the historical test is never simply disabled or reinterpreted.

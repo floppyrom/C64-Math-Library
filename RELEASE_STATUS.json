@@ -2357,6 +2357,9 @@
     "native_vice_report": "validation/review/ISSUE39_U24_TXA_NATIVE_VICE.json",
     "native_vice_report_sha256": "fd4e7d06edbd628fc6ae721498554ee966b9acdc164c89204bd69d55f1bba8c5",
     "native_vice_package": "VICE headlessvice_3.10+r46274.deb",
-    "native_vice_package_sha256": "5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a"
+    "native_vice_package_sha256": "5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a",
+    "historical_parent_restoration_report": "validation/review/ISSUE39_U24_TXA_PARENT_RESTORATION.json",
+    "historical_parent_restoration_sha256": "9130aa3d4d302e7fced28dfbff53b1cc6da1b911c8a807affafea0bc7b1ea1af",
+    "historical_parent_restoration_status": "PASS_ALL_FIVE_EXACT_PARENT_SHAS"
   }
 }
