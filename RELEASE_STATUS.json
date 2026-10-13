@@ -2686,7 +2686,14 @@
     "issue39_complete": false
   },
   "issue39_v2v4_umul24_nocarry_clc_2026_10_13": {
-    "status": "PASS_NATIVE_VICE_PR_CI_PENDING",
+    "status": "MERGED_MAIN_ALL_POSTMERGE_CI_PASS",
+    "merged_pr": 114,
+    "merge_sha": "eafb2b45e15542242925602e2bee21e063d559c3",
+    "postmerge_main_workflows": {
+      "full_library_validation": 38475292294,
+      "comparable_unsigned": 38475292291,
+      "turbo32_integration": 38475292298
+    },
     "proof": "validation/review/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_RELEASE.json",
     "doc": "docs/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_2026-10-13.md",
     "baseline": {
