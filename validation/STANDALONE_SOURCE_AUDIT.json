@@ -12,7 +12,7 @@
           "file": "mul_u8_u8_u16.asm",
           "alias_of": "",
           "entry_address": "$3000",
-          "reachable_instructions": 27
+          "reachable_instructions": 25
         },
         {
           "legacy_api": "MATH_UMUL16",
@@ -1952,7 +1952,7 @@
           "file": "mul_u8_u8_u16.asm",
           "alias_of": "",
           "entry_address": "$3000",
-          "reachable_instructions": 27
+          "reachable_instructions": 25
         },
         {
           "legacy_api": "MATH_UMUL16",

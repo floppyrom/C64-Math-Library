@@ -113,7 +113,8 @@ MULTIPLY_REFRESH_INCLUDES={
  'v1_balanced':(
   'smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
   'smul24_fast24_composed.inc','umul24_fast24_shared.inc',
-  'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc'),
+  'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc',
+  'umul8_directout.inc'),
  'v2_pareto_fast':(
   'umul8_directout_trial.inc','../multiply/umul16_directout.asm','../multiply/umul16_shr8_reg_return.asm','../multiply/umul24_directout.asm','smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
   'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
