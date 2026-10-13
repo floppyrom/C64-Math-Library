@@ -1,0 +1,18 @@
+{
+  "all_guaranteed_public_results_identical": true,
+  "native_calls": 128,
+  "native_cycles_measured": false,
+  "new_dump_sha256": "51b808a0aafe1b4bed0b11391ae602d90769b579be86645882ec1ea676177fe2",
+  "new_native_calls": 64,
+  "new_sha256": "71648ececccba3186a1b186144dbace5e345a9a0967d397ec1db0655cef31c04",
+  "noncarry_flags_volatile_per_USER_MANUAL": true,
+  "noncarry_status_flag_differences": 46,
+  "old_dump_sha256": "ce21cb0cfb228f8165a26905115c17c0940f593a43be43104431505e9732a350",
+  "old_native_calls": 64,
+  "old_sha256": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92",
+  "paired_operands": 64,
+  "parent_commit": "ed0d0330c8130cb0adb6c7e8d3d62b9ca8bb9ab7",
+  "public_entry": "0x3000",
+  "source_profile": "v2_pareto_fast",
+  "status": "PASS_NATIVE_VICE_V2_UMUL8_PUBLIC_DIRECT_OUTPUT"
+}

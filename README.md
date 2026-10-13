@@ -207,4 +207,4 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 
 - Root optimization release-stage evidence: docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md (native VICE: 768 old/new full-resident calls PASS; PR #102 merged; PR/main CI green).
 
-- V2 UMUL8 public direct-result source release: docs/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_2026-10-13.md (native VICE pending).
+- V2 UMUL8 public direct-result source release: docs/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_2026-10-13.md (native x64sc 128 old/new public calls PASS; independent PR/main CI pending).
