@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 UMUL32/READY COMPARABLE-INPUT AUDIT
+- Verified current V1–V5 public UMUL32 and UMUL32_READY on the identical ordered 2,409-pair corpus per profile (24,090 CPU-model public entries). Complete 64-bit products, input preservation and carry passed. READY saves 22 cycles/pair in V1/V5; V2/V3/V4 show zero paired difference. Earlier published 2,409 vs 1,024-case means were not comparable. No implementation, public ABI, resident, ZP or REU change. Issue #39 remains open. See docs/ISSUE39_UMUL32_READY_PAIRED_AUDIT_2026-10-13.md and validation/review/ISSUE39_UMUL32_READY_PAIRED_AUDIT.json.
+
 2026-10-13 ISSUE39 V1V5 UMUL24 NATIVE SOURCE VALIDATION
 - Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V1/V5: 384 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_NATIVE_2026-10-13.json.
 
