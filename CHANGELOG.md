@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 UMUL24 NONCARRY CLEAR-FLAG REMOVAL PRODUCTION
+- V2/V3/V4 UMUL24 no-carry CLC/RTS to RTS/NOP: 7,789/10,324 calls -2 cycles and 2,535 unchanged; mean 417.783224 cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.
+- Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE/PR/main pending. docs/ISSUE39_UMUL24_NO_CARRY_RTS_2026-10-13.md
+
 2026-10-13 ISSUE39 UMUL16/UMUL24 OPTISEARCH RESOURCE SCREEN (RESEARCH ONLY)
 - Compared full public UMUL16 benchmarks to a verified arithmetic-only private near-page candidate, and reviewed the public 24-ZP FAST24 carry-transfer record against a retained private 27-ZP record. Timings are NOT ABI/CPU-model comparable; candidate relies on executable ZP and stack-page code. No production gain promoted; source and resident PRGs unchanged. Issue #39 remains open. See docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md.
 

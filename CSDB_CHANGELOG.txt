@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 UMUL24 NONCARRY CLEAR-FLAG REMOVAL PRODUCTION
+- V2/V3/V4 UMUL24 no-carry CLC/RTS to RTS/NOP: 7,789/10,324 calls -2 cycles and 2,535 unchanged; mean 417.783224 cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.
+- Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE/PR/main pending. docs/ISSUE39_UMUL24_NO_CARRY_RTS_2026-10-13.md
+
 2026-10-13 ISSUE39 UMUL16/UMUL24 OPTISEARCH RESOURCE SCREEN (RESEARCH ONLY)
 - Public 16/24-bit multiply resource-class audit against private OptiSearch metadata. Existing direct-output/carry-transfer optimizations confirmed, no new ABI-compatible improvement qualified. No source/binary/ZP/profile changes. Issue #39 OPEN. docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md
 

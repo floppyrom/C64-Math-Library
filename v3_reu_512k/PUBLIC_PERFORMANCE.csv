@@ -1,7 +1,7 @@
 operation,canonical_name,v1_balanced_cycles,v2_pareto_fast_cycles,v3_reu_default_cycles,v3_evidence
 umul8,mul_u8_u8_u16,90.494644,78.494614,69.0,REU transport model
 umul16,mul_u16_u16_u32,273.8372,216.980037,216.980037,2026-10-06 UMUL16 direct-output validation
-umul24,mul_u24_u24_u48,474.042329,419.292135,419.292135,2026-10-13 source-built UMUL24 fast return
+umul24,mul_u24_u24_u48,474.042329,417.783224,417.783224,2026-10-13 source-built UMUL24 fast return
 umul32,mul_u32_u32_u64,712.235367,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
 udiv8,div_u8_u8_u8_8,59.571976,59.383011,52.852264,2026-10-06 exhaustive REU UDIV8 hybrid validation
 udiv16,div_u16_u16_u16_16,132.471912,127.751525,125.402903,2026-10-12 issue39 PR67 public-entry arithmetic audit
