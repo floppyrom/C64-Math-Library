@@ -7,5 +7,3 @@ The common result-completion path writes product bytes four and five directly in
 In the paired 10,324-case public corpus, 7,789 calls save three cycles and 2,535 are unchanged, with no regressions. Official mean 421.555502 -> 419.292135 cycles.
 
 No new ZP or table data, no new resident bytes, stable public API, V1/V5 unchanged; reference/alternate and hybrid source validated. No private OptiSearch code is published. Issue #39 remains open.
-
-Native VICE validates both unsigned and signed public entries on three resident profiles, original and candidate, with exact products, input preservation, carry and sentinel parity. It does not measure cycles. See validation/review/ISSUE39_UMUL24_TAIL_NATIVE_2026-10-13.json.

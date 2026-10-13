@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 UMUL24 NONCARRY FALLTHROUGH PRODUCTION
+- V2/V3/V4 UMUL24 source direct return: 7,789/10,324 calls -3 cycles and 2,535 unchanged; mean 419.292135 cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.
+- Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE/PR/main pending. docs/ISSUE39_UMUL24_TAIL_FALLTHROUGH_2026-10-13.md
+
 2026-10-13 ISSUE39 V2 UMUL8 SOURCE-RELEASE NATIVE VICE
 - 128 actual x64sc old/new source-installed V2 UMUL8 public calls (64 identical operands per image), exact Q16/input/carry/stack/sentinel outputs. Non-carry status bits (N/Z/V) are explicitly volatile and their differences are recorded. No native cycle-timing assertion; six-cycle saving is from exhaustive same-input model. V2-only, no resource growth. See validation/review/ISSUE39_V2_UMUL8_DIRECTOUT_NATIVE.json. Issue #39 remains OPEN.
 
