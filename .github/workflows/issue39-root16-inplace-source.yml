@@ -11,6 +11,7 @@ on:
       - 'relocatable_source/v2_pareto_fast/math_relocatable.asm'
       - 'relocatable_source/v3_reu_512k/math_relocatable.asm'
       - 'tools/screen_issue39_isqrt16_inplace_source.py'
+      - 'tools/screen_issue39_isqrt16_v5_inherit.py'
       - '.github/workflows/issue39-root16-inplace-source.yml'
   workflow_dispatch:
 permissions:
@@ -34,3 +35,22 @@ jobs:
         with:
           name: issue39-root16-source-build-proof
           path: /tmp/ISSUE39_ISQRT16_SOURCE_TRIAL.json
+
+  v5-hybrid-inheritance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild V5 from V1/V2 experimental sources and compare both root public APIs
+        run: |
+          python3 tools/screen_issue39_isqrt16_v5_inherit.py --out /tmp/ISSUE39_V5_ROOT_INHERITANCE.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v5-root-inheritance
+          path: /tmp/ISSUE39_V5_ROOT_INHERITANCE.json
