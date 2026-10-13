@@ -1,0 +1,29 @@
+name: Issue39 V1/V5 UMUL24 fast24 public tailcall research
+on:
+  push:
+    branches: [issue39-v1v5-umul24-tailcall-screen]
+    paths:
+      - relocatable_source/v1_balanced/umul24_fast24_shared.inc
+      - tools/screen_issue39_v1v5_umul24_tailcall.py
+      - .github/workflows/issue39-v1v5-umul24-tailcall.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-paired-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare source-built V1 and V5 reference and alternate public UMUL24 and SMUL24
+        run: python3 tools/screen_issue39_v1v5_umul24_tailcall.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v1v5-fast24-tailcall-research
+          path: validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_RESEARCH.json
