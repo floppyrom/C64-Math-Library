@@ -170,14 +170,16 @@ U24_v12:    adc #0
         inc U24_v13+1
 U24_column3:
 U24_v21:    adc #0
-        tay
+        ; The signed producer is disjoint; public unsigned z3 is final here.
+        ; Writing it now lets the public adapter tail-call this private core.
+        sta MATH_IO+$0B
 U24_v13:    lda #0
 U24_v22:    adc #0
         bcs U24_final
-        rts
+        jmp U24_FAST24_public_tail
 U24_final:
         inx
-        rts
+        jmp U24_FAST24_public_tail
 U24_c2_1:
         clc
         adc (U24_p5),y
@@ -225,10 +227,12 @@ U24_FAST24_public_impl:
         lda MATH_IO+$05
         sta U24_y1
         ldy MATH_IO+$06
-        jsr U24_umult
+        ; Replace JSR/RTS with direct jump into the private arithmetic core.
+        ; Both core exits jump here after depositing z3.
+        jmp U24_umult
+U24_FAST24_public_tail:
         sta MATH_IO+$0C
         stx MATH_IO+$0D
-        sty MATH_IO+$0B
         clc
         rts
 
