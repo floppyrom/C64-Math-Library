@@ -21,7 +21,9 @@ LIMITS={'v1_balanced':(0xC8DB,0xCA24),
         'v2_pareto_fast':(0xC836,0xC966),
         'v3_reu_512k':(0xC841,0xC971)}
 def sha(b):return hashlib.sha256(b).hexdigest()
-def sample(cpu,entry,n,width):
+def sample(cpu,entry,n,width,io=0xC000):
+    N=io+0x10
+    Z=io+0x08
     count=width//8
     wr(cpu.mem,N,n,count)
     inp=bytes(cpu.mem[N:N+count])
@@ -88,7 +90,7 @@ def main():
                 for width,values,entry in ((16,cases16,api16),(32,cases32,api32)):
                     totals=[0,0]
                     for n in values:
-                        a,actual=sample(test,entry,n,width)
+                        a,actual=sample(test,entry,n,width,io)
                         totals[1]+=a
                         if mode=='reference':
                             b,expected=sample(base,entries['MATH_ISQRT16' if width==16 else 'MATH_ISQRT32'],n,width)
