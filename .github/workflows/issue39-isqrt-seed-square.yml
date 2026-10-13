@@ -31,8 +31,12 @@ jobs:
           name: issue39-root-seed-screen
           path: /tmp/issue39_root_seed_screen.json
 
-  exhaustive-v2-isqrt16:
+  exhaustive-stock-isqrt16:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [v1_balanced, v2_pareto_fast, v3_reu_512k, v5_hybrid_lowzp]
     timeout-minutes: 40
     env:
       PYTHONDONTWRITEBYTECODE: '1'
@@ -41,11 +45,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Exhaustively compare 65536 rooted operands on exact V2 resident public entry
+      - name: Exhaustively compare 65536 rooted operands on exact stock resident public entry
         run: |
-          python3 tools/screen_issue39_isqrt16_seed_square.py --profile v2_pareto_fast --exhaustive16 --random32 0 --out /tmp/issue39_isqrt16_exhaustive_v2.json
+          python3 tools/screen_issue39_isqrt16_seed_square.py --profile ${{ matrix.profile }} --exhaustive16 --random32 0 --out /tmp/issue39_isqrt16_exhaustive.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: issue39-isqrt16-exhaustive-v2
-          path: /tmp/issue39_isqrt16_exhaustive_v2.json
+          name: issue39-isqrt16-exhaustive-${{ matrix.profile }}
+          path: /tmp/issue39_isqrt16_exhaustive.json
