@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 V1V5 UMUL24 NATIVE SOURCE VALIDATION
+- Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V1/V5: 384 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_NATIVE_2026-10-13.json.
+
 2026-10-13 ISSUE39 V1V5 UMUL24 PRIVATE CORE TAILCALL
 - Source-integrated V1/V5 UMUL24 tail-call: -8 cycles on all 10,324 official pairs, 474.042329 -> 466.042329 cycles; V2–V4 unchanged. No additional resource footprint.
 - Signed/mixed calls, relocated source, standalone publication and checksum/package evidence validated; native VICE pending. docs/ISSUE39_V1V5_UMUL24_PRIVATE_TAILCALL_2026-10-13.md

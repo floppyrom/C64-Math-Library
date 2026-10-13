@@ -2510,7 +2510,7 @@
     "native_vice_evidence_sha256": "9889c4a5c2b62f6e627d656677db7bc19f146e02ca2184d330bf915ee3f5ce01"
   },
   "issue39_umul24_v1v5_tailcall_2026_10_13": {
-    "status": "PASS_STAGED_NATIVE_VICE_PENDING",
+    "status": "PASS_NATIVE_VICE_PR_CI_PENDING",
     "proof": "validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_RELEASE_2026-10-13.json",
     "doc": "docs/ISSUE39_V1V5_UMUL24_PRIVATE_TAILCALL_2026-10-13.md",
     "new_sha256": {
@@ -2530,6 +2530,9 @@
     "gain_cycles_every_case": 8,
     "normal_ZP_growth": 0,
     "resident_growth": 0,
-    "issue39_complete": false
+    "issue39_complete": false,
+    "native_vice_calls": 384,
+    "native_vice_evidence": "validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_NATIVE_2026-10-13.json",
+    "native_vice_evidence_sha256": "2855c172c3df34670f0623ac0ef8bad5b4ff238f705e79daa6465d3e59bcdb52"
   }
 }
