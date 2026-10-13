@@ -13,11 +13,11 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "0dc63c2996458c64b933d56c035cda6a1a8dc30f3421ec6451b3a0b8c628aee1",
+    "v1_balanced": "8c64e7cff2a8557be96c32979b9627e0a3ca0da2a693d81040de399462cf18c6",
     "v2_pareto_fast": "d1a4294f3df18334e31e53b396481d38d24b9f166813bf5a7c6a2ea5057c01c0",
     "v3_reu_512k": "89cdacee2e460c00c73941a7ef25da69dcda91b8960bb21965003103f0684874",
     "v4_reu_16m": "5529fb337b49826aa373726c319903f86532721630985747b38e207f61e641e3",
-    "v5_hybrid_lowzp": "b255c1ccd651134259bccd26a7a9849669d0ed5e8fb57dbff95fbbddd0e7abca"
+    "v5_hybrid_lowzp": "bd3fb137c8fc6dbff0fb9e7166467987bd7d2fcb185331ac9683f48b16dd0cf5"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -243,11 +243,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "41d744c2aaf06a5d40cfece1c16255576950a8e6e3328d5fe4196c0ac753171e",
+    "v1_balanced": "03d2e67a399c31ce7b8456521bcd9cb30a48ef051baa6a9ac50c23cf0bfd0829",
     "v2_pareto_fast": "9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7",
     "v3_reu_512k": "973c14dc9c188cac46596960386c594b906c30e6aa408d6a284e117711ab9ee7",
     "v4_reu_16m": "8a525a7b7c75d394b3fca7b1282255c77eecf3e6e96b47a04b5944c59b9a3faa",
-    "v5_hybrid_lowzp": "b27e0885c7241dd7bdc3b2e25be6b2c616685cb426436a3c2b8260eff7a21ebb"
+    "v5_hybrid_lowzp": "e7546665bc68faf3d6021db91a77bcdf4d32b4d800530264840f443066ad8ffb"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "895ffa783f5952b4fd85b291d513e3d0a82b52276dc6593e38b6921efd668226",
+    "benchmark_sha256": "c408960925545cbbf8f16f8a6dabd01d3eb4c6981dfd55a053d63a08aaf34483",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -755,7 +755,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "ddc9c8a9e5d769f553e9e6566fb12b3e6d0417e05f4f778bf913423ef5f85610",
+    "report_sha256": "0d0c7c298484d5c56f7dd8d66f56c460171ede4d3d579ca3d147446537198672",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -858,7 +858,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "335647c9dd04d5c424e6f74ed1f3f8fbe45713760f8b99adf2c2736ce02890d2",
+    "data_sha256": "57f115541449da97cc72cc50a518089a9bb025aeb52a1a76b9af5b835d6c6da4",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -2566,5 +2566,31 @@
     "native_vice_calls": 576,
     "native_vice_evidence": "validation/review/ISSUE39_UMUL24_TAIL_NATIVE_2026-10-13.json",
     "native_vice_evidence_sha256": "661d8455182da7c1a741fb736980a15972f45db56c169e292d90d55cd0bd6d04"
+  },
+  "issue39_umul24_v1v5_tailcall_2026_10_13": {
+    "status": "PASS_NATIVE_VICE_PR_CI_PENDING",
+    "proof": "validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_RELEASE_2026-10-13.json",
+    "doc": "docs/ISSUE39_V1V5_UMUL24_PRIVATE_TAILCALL_2026-10-13.md",
+    "new_sha256": {
+      "v1_balanced": "03d2e67a399c31ce7b8456521bcd9cb30a48ef051baa6a9ac50c23cf0bfd0829",
+      "v2_pareto_fast": "9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7",
+      "v3_reu_512k": "973c14dc9c188cac46596960386c594b906c30e6aa408d6a284e117711ab9ee7",
+      "v4_reu_16m": "8a525a7b7c75d394b3fca7b1282255c77eecf3e6e96b47a04b5944c59b9a3faa",
+      "v5_hybrid_lowzp": "e7546665bc68faf3d6021db91a77bcdf4d32b4d800530264840f443066ad8ffb"
+    },
+    "old_sha256": {
+      "v1_balanced": "41d744c2aaf06a5d40cfece1c16255576950a8e6e3328d5fe4196c0ac753171e",
+      "v2_pareto_fast": "9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7",
+      "v3_reu_512k": "973c14dc9c188cac46596960386c594b906c30e6aa408d6a284e117711ab9ee7",
+      "v4_reu_16m": "8a525a7b7c75d394b3fca7b1282255c77eecf3e6e96b47a04b5944c59b9a3faa",
+      "v5_hybrid_lowzp": "b27e0885c7241dd7bdc3b2e25be6b2c616685cb426436a3c2b8260eff7a21ebb"
+    },
+    "gain_cycles_every_case": 8,
+    "normal_ZP_growth": 0,
+    "resident_growth": 0,
+    "issue39_complete": false,
+    "native_vice_calls": 384,
+    "native_vice_evidence": "validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_NATIVE_2026-10-13.json",
+    "native_vice_evidence_sha256": "2855c172c3df34670f0623ac0ef8bad5b4ff238f705e79daa6465d3e59bcdb52"
   }
 }

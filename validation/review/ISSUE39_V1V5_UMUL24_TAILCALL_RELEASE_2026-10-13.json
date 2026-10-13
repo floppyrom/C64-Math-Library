@@ -1,0 +1,40 @@
+{
+  "alternate_sha256": {
+    "v1_balanced": "8c64e7cff2a8557be96c32979b9627e0a3ca0da2a693d81040de399462cf18c6",
+    "v2_pareto_fast": "d1a4294f3df18334e31e53b396481d38d24b9f166813bf5a7c6a2ea5057c01c0",
+    "v3_reu_512k": "89cdacee2e460c00c73941a7ef25da69dcda91b8960bb21965003103f0684874",
+    "v4_reu_16m": "5529fb337b49826aa373726c319903f86532721630985747b38e207f61e641e3",
+    "v5_hybrid_lowzp": "bd3fb137c8fc6dbff0fb9e7166467987bd7d2fcb185331ac9683f48b16dd0cf5"
+  },
+  "cycle_deltas": {
+    "-8": 10324
+  },
+  "issue39_complete": false,
+  "mean_cycles_after": 466.0423285548237,
+  "mean_cycles_before": 474.0423285548237,
+  "mean_saving": 8,
+  "native_vice_calls": 0,
+  "new_sha256": {
+    "v1_balanced": "03d2e67a399c31ce7b8456521bcd9cb30a48ef051baa6a9ac50c23cf0bfd0829",
+    "v2_pareto_fast": "9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7",
+    "v3_reu_512k": "973c14dc9c188cac46596960386c594b906c30e6aa408d6a284e117711ab9ee7",
+    "v4_reu_16m": "8a525a7b7c75d394b3fca7b1282255c77eecf3e6e96b47a04b5944c59b9a3faa",
+    "v5_hybrid_lowzp": "e7546665bc68faf3d6021db91a77bcdf4d32b4d800530264840f443066ad8ffb"
+  },
+  "old_sha256": {
+    "v1_balanced": "41d744c2aaf06a5d40cfece1c16255576950a8e6e3328d5fe4196c0ac753171e",
+    "v2_pareto_fast": "9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7",
+    "v3_reu_512k": "973c14dc9c188cac46596960386c594b906c30e6aa408d6a284e117711ab9ee7",
+    "v4_reu_16m": "8a525a7b7c75d394b3fca7b1282255c77eecf3e6e96b47a04b5944c59b9a3faa",
+    "v5_hybrid_lowzp": "b27e0885c7241dd7bdc3b2e25be6b2c616685cb426436a3c2b8260eff7a21ebb"
+  },
+  "profiles_modified": [
+    "v1_balanced",
+    "v5_hybrid_lowzp"
+  ],
+  "resident_growth": 0,
+  "status": "PASS_SOURCE_STAGED_NATIVE_PENDING",
+  "tested_calls_per_profile": 10324,
+  "unchanged_V2_V3_V4": true,
+  "zero_page_growth": 0
+}
