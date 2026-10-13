@@ -4,10 +4,11 @@ on:
     branches: [issue39-v1v5-umul24-tailcall-screen]
     paths:
       - tools/native_issue39_v1v5_umul24_tailcall.py
+      - tools/finalize_issue39_v1v5_umul24_native.py
       - .github/workflows/issue39-v1v5-umul24-native.yml
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   native-old-new:
     runs-on: ubuntu-latest
@@ -16,7 +17,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: issue39-v1v5-umul24-tailcall-screen
           fetch-depth: 0
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - name: Install SHA-pinned headless VICE x64sc
@@ -28,6 +31,15 @@ jobs:
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
       - name: Execute 384 V1 V5 old/new real VICE UMUL24 and SMUL24 public calls
         run: python3 tools/native_issue39_v1v5_umul24_tailcall.py
+      - name: Validate native proof and reseal V1/V5 resident metadata
+        run: python3 tools/finalize_issue39_v1v5_umul24_native.py
+      - name: Commit native evidence after all seal checks pass
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: certify native V1 V5 UMUL24 private tailcall and seal package'
+          git push origin HEAD:issue39-v1v5-umul24-tailcall-screen
       - uses: actions/upload-artifact@v4
         if: always()
         with:
