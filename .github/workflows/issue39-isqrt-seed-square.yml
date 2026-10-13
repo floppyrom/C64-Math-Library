@@ -1,0 +1,29 @@
+name: Issue39 ISQRT16/32 manual seed-table research
+on:
+  push:
+    branches: [issue39-integer-roots-seedtable-screen]
+    paths:
+      - 'tools/screen_issue39_isqrt16_seed_square.py'
+      - '.github/workflows/issue39-isqrt-seed-square.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  square-root-public-abi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify published square planes, public ISQRT16 and ISQRT32 caller composition
+        run: |
+          python3 tools/screen_issue39_isqrt16_seed_square.py --out /tmp/issue39_root_seed_screen.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-root-seed-screen
+          path: /tmp/issue39_root_seed_screen.json
