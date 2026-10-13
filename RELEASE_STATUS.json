@@ -2764,7 +2764,7 @@
       "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
       "v5_hybrid_lowzp": "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"
     },
-    "gain_cycles_every_case": 8,
+    "gain_cycles_every_case": 1,
     "normal_ZP_growth": 0,
     "resident_growth": 0,
     "issue39_complete": false,
@@ -2772,4 +2772,4 @@
     "native_vice_evidence": "validation/review/ISSUE39_V1V5_UMUL24_RARECARRY_NATIVE_2026-10-14.json",
     "native_vice_evidence_sha256": "2855c172c3df34670f0623ac0ef8bad5b4ff238f705e79daa6465d3e59bcdb52"
   }
-}
+}\n
