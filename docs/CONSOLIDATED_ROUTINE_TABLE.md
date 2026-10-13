@@ -22,7 +22,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 90.494644 | 88 | 93 | 55 | 5 | $10-$14 | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | canonical harness |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 273.837200 | 262 | 297 | 208 | 17 | $09-$19 | 0 | 17-ZP qualified record-derived fused quarter-square resident kernel | 2026-09-14 record-upgrade deterministic comparison corpus |
-| `MATH_UMUL24` | `mul_u24_u24_u48` | 474.042329 | 444 | 530 | 357 | 24 | $09-$20 | 0 | FAST24 private 24-ZP carry producer; direct z0-z2 public output | 2026-10-06 UMUL24 direct-output validation |
+| `MATH_UMUL24` | `mul_u24_u24_u48` | 466.042329 | 436 | 522 | 360 | 24 | $09-$20 | 0 | FAST24 private 24-ZP carry producer; direct z0-z2 public output | 2026-10-06 UMUL24 direct-output validation |
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 712.235367 | 652 | 831 | 336 | 31 | $02-$20 | 0 | FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $02-$20 | 0 | FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
@@ -281,7 +281,7 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 |---|---|---:|---:|---:|---:|---:|---|---:|---|---|
 | `MATH_UMUL8` | `mul_u8_u8_u16` | 90.494644 | 88 | 93 | 55 | 5 | $10-$14 | 0 | profile-selected existing UMUL8 path; refreshed ZP record candidate rejected by profile resource contract | V5 documented v1_balanced path; canonical harness |
 | `MATH_UMUL16` | `mul_u16_u16_u32` | 273.837200 | 262 | 297 | 208 | 17 | $09-$19 | 0 | 17-ZP qualified record-derived fused quarter-square resident kernel | V5 documented v1_balanced path; 2026-09-14 record-upgrade deterministic comparison corpus |
-| `MATH_UMUL24` | `mul_u24_u24_u48` | 474.042329 | 444 | 530 | 357 | 24 | $09-$20 | 0 | FAST24 private 24-ZP carry producer; direct z0-z2 public output | 2026-10-06 UMUL24 direct-output validation |
+| `MATH_UMUL24` | `mul_u24_u24_u48` | 466.042329 | 436 | 522 | 360 | 24 | $09-$20 | 0 | FAST24 private 24-ZP carry producer; direct z0-z2 public output | 2026-10-06 UMUL24 direct-output validation |
 | `MATH_UMUL32` | `mul_u32_u32_u64` | 712.235367 | 652 | 831 | 336 | 31 | $02-$20 | 0 | FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_UMUL32_READY` | `mul_u32_u32_u64_ready` | 697.175781 | 642 | 784 | 320 | 31 | $02-$20 | 0 | FAST31/V29-derived private q0 unsigned producer; mixed-call-safe public binder | 2026-09-20 multiply-refresh deterministic cross-profile corpus |
 | `MATH_SMUL8` | `mul_s8_s8_s16` | 67.992188 | 66 | 70 | 46 | 0 | — | 0 | direct signed-domain quarter-square kernel with private signed-sum planes | 2026-09-20 multiply-refresh deterministic cross-profile corpus |

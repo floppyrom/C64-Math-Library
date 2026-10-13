@@ -6,15 +6,15 @@
     "v1_balanced": {
       "reference": {
         "cases": 10324,
-        "mean_cycles": 474.0423285548237,
-        "min_cycles": 444,
-        "max_cycles": 530
+        "mean_cycles": 466.0423285548237,
+        "min_cycles": 436,
+        "max_cycles": 522
       },
       "alternate": {
         "cases": 10324,
-        "mean_cycles": 474.0423285548237,
-        "min_cycles": 444,
-        "max_cycles": 530
+        "mean_cycles": 466.0423285548237,
+        "min_cycles": 436,
+        "max_cycles": 522
       }
     },
     "v2_pareto_fast": {
@@ -62,15 +62,15 @@
     "v5_hybrid_lowzp": {
       "reference": {
         "cases": 10324,
-        "mean_cycles": 474.0423285548237,
-        "min_cycles": 444,
-        "max_cycles": 530
+        "mean_cycles": 466.0423285548237,
+        "min_cycles": 436,
+        "max_cycles": 522
       },
       "alternate": {
         "cases": 10324,
-        "mean_cycles": 474.0423285548237,
-        "min_cycles": 444,
-        "max_cycles": 530
+        "mean_cycles": 466.0423285548237,
+        "min_cycles": 436,
+        "max_cycles": 522
       }
     }
   }
