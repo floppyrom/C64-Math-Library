@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 V1/V5 UMUL8 DIRECT-OUTPUT RESEARCH (NOT RELEASED)
+- Source-only candidate to write the unsigned 8x8 low product byte directly into MATH_Z and shorten the public return: exhaustive current-main CPU-model screen covers 65,536 operand pairs each in V1/V5 and checks product, carry, public inputs, stack and output sentinels; uniform 6-cycle paired improvement expected. Research include is not selected by the production builder; no shipped binaries or stable API changed.
+- Archived-reference source/V5 hybrid preflight preserved PRG size and changed 11 bytes; 256 native x64sc old/new calls preserved public invariants. Non-carry flags volatile, native cycle timing not measured. Full current-main source, mixed-call, VICE and release qualification still required. docs/ISSUE39_V1V5_UMUL8_DIRECTOUT_RESEARCH_2026-10-13.md. Issue #39 remains OPEN.
+
 2026-10-13 ISSUE39 UMUL32/READY COMPARABLE-INPUT AUDIT
 - Verified current V1–V5 public UMUL32 and UMUL32_READY on the identical ordered 2,409-pair corpus per profile (24,090 CPU-model public entries). Complete 64-bit products, input preservation and carry passed. READY saves 22 cycles/pair in V1/V5; V2/V3/V4 show zero paired difference. Earlier published 2,409 vs 1,024-case means were not comparable. No implementation, public ABI, resident, ZP or REU change. Issue #39 remains open. See docs/ISSUE39_UMUL32_READY_PAIRED_AUDIT_2026-10-13.md and validation/review/ISSUE39_UMUL32_READY_PAIRED_AUDIT.json.
 
