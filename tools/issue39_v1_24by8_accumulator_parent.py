@@ -26,9 +26,16 @@ def undo_v1_3216_coldpath_for_historical_audit(prg: bytes) -> bytes:
     rather than accepting a current V1 image with unrelated later 32/16 bytes.
     Verify that the inverse maps back to the immutable prior main digest.
     """
-    trial='9af44deda4a1527a0ea5ecc09a48e1ec4927a45099f7b2e26ced0f618274c0a4'
-    old='2567dccbc4e01f3d606e80126c8150c58e4f30b8b726ff38e116c6aaec644178'
-    if sha(prg)!=trial:return prg
+    parents={
+        # V1 uses the optimized 32/16 arithmetic directly; V5 retains the
+        # source-backed V1 island even while its public API uses a V2 donor.
+        '9af44deda4a1527a0ea5ecc09a48e1ec4927a45099f7b2e26ced0f618274c0a4':
+          '2567dccbc4e01f3d606e80126c8150c58e4f30b8b726ff38e116c6aaec644178',
+        '0662a9644ee4ebb6df7a06f9c77a40ffb5308b69ecd5e6bc9c7d6250b5bd5750':
+          '431824532ef218423b77bfc8353ccac8e380847c824f040aeffa5c7903c0ea2d',
+    }
+    old=parents.get(sha(prg))
+    if old is None:return prg
     lo=int.from_bytes(prg[:2],'little')
     assert lo==0x1000
     off=lambda addr: 2+addr-lo
