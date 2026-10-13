@@ -1,4 +1,5 @@
 name: Issue39 V1 32-16 full source-built release staging
+# Resubmit from current head after incorporating the native-release verifier.
 on:
   push:
     branches: [issue39-v1-3216-ool-source-trial]
