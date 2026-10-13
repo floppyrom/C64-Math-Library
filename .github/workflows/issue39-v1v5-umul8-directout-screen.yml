@@ -47,7 +47,7 @@ jobs:
           for profile in ("v1_balanced","v5_hybrid_lowzp"):
             for kind in ("reference","alternate"):
               root="build_umul8"
-              f=f"math_{profile}_source_built.prg"
+              f=("math_v5_hybrid_lowzp_game_math.prg" if profile=="v5_hybrid_lowzp" else f"math_{profile}_source_built.prg")
               before=Path(root+"_before")/kind/profile/f
               after=Path(root+"_after")/kind/profile/f
               assert before.exists() and after.exists(),(before,after)
@@ -68,8 +68,8 @@ jobs:
           name: issue39-umul8-current-source-native-preflight
           path: |
             build_umul8_before/**/math_v1_balanced_source_built.prg
-            build_umul8_before/**/math_v5_hybrid_lowzp_source_built.prg
+            build_umul8_before/**/math_v5_hybrid_lowzp_game_math.prg
             build_umul8_after/**/math_v1_balanced_source_built.prg
-            build_umul8_after/**/math_v5_hybrid_lowzp_source_built.prg
+            build_umul8_after/**/math_v5_hybrid_lowzp_game_math.prg
             build_umul8_after/**/source_build_manifest.json
           if-no-files-found: error
