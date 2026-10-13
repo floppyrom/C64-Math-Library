@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 V1 32/16 RELOCATABLE ZERO-HANDLER PRODUCTION
+- Production-staged symbolic V1 32/16 cold zero-handler source: source generator, reference/alternate maps and V5 hybrid refreshed. Main success path -1 cycle in paired CPU model, divide-by-zero +2. 56 stable APIs and resident lengths unchanged; no normal ZP growth.
+- Full 822,050 unsigned, 364,533 signed and 136,335 same-input public calls passed. Source-built installed-image native VICE must still pass before merge. Issue #39 remains OPEN. docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md
+
 2026-10-13 ISSUE39 V1 UDIV32/16 RARE-ZERO OUT-OF-LINE RESEARCH
 - Research-only V1 32/16 optimization: move seven-byte divide-zero cleanup to verified empty $44F0, invert branch, shift 111-byte low-word continuation and adjust $1B6A unrolled-loop backlink. No installed resident/API/normal-ZP changes.
 - 15,826 identical operand pairs / 31,652 CPU-model public calls: every tested nonzero divisor saves 1 cycle; divide-zero adds 2 cycles, explicit tradeoff. Official weighted deltas UDIV32/16 -0.834005 and UMOD32/16 -0.734311. Actual native VICE x64sc 192 complete old/new calls passed with exact outputs. Source/alternate/hybrid production integration NOT yet qualified; issue #39 remains OPEN. docs/ISSUE39_V1_3216_RARE_ZERO_OUTOFLINE_2026-10-13.md
