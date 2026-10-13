@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 UMUL16/UMUL24 OPTISEARCH RESOURCE SCREEN (RESEARCH ONLY)
+- Public 16/24-bit multiply resource-class audit against private OptiSearch metadata. Existing direct-output/carry-transfer optimizations confirmed, no new ABI-compatible improvement qualified. No source/binary/ZP/profile changes. Issue #39 OPEN. docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md
+
 2026-10-13 ISSUE39 V1/V5 UMUL8 POSTMERGE RELEASE CERTIFICATION
 - V1/V5 UMUL8 PR #109 is merged on main as f754cc87d0ba3518377a4e2d19a9e8fc6ac0d75a. Independent PR qualification and post-merge main checks passed: full validation #38463930923, comparable unsigned #38463930890, and Turbo32 #38463930880. No change to the measured six-cycle same-input CPU-model win, ABI, ZP or resident size; issue #39 remains open for the rest of the multiply campaign. Native VICE invariant replay: 256 calls; native cycle timing not measured.
 
