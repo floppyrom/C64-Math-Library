@@ -10,6 +10,15 @@
 IS16_FAST_START:
     ldx MATH_N+$01
     ldy IS16_FAST_SEED,x
+    ; Tiny-N branch: for N<64 the exact root is in 0..7,
+    ; otherwise N1=0 means root 8..15. This makes the maximum
+    ; downward correction seven rather than fifteen.
+    txa
+    bne IS16_FAST_TRY
+    lda MATH_N+$00
+    cmp #$40
+    bcs IS16_FAST_TRY
+    ldy #$07
 IS16_FAST_TRY:
     lda MATH_N+$01
     cmp REG_TABLE+$3900,y
@@ -18,15 +27,15 @@ IS16_FAST_TRY:
     lda MATH_N+$00
     cmp REG_TABLE+$3800,y
     bcc IS16_FAST_DECREMENT
+IS16_FAST_DECREMENT:
+    dey
+    bne IS16_FAST_TRY ; if Y reaches zero, sqrt(N)=0 is exact
 IS16_FAST_STORE:
     sty MATH_Z+$00
     lda #$00
     sta MATH_Z+$01
     clc
     rts
-IS16_FAST_DECREMENT:
-    dey
-    jmp IS16_FAST_TRY
 IS16_FAST_SEED:
     !byte $0F, $16, $1B, $1F, $23, $27, $2A, $2D, $2F, $32, $35, $37, $39, $3B, $3D, $3F
     !byte $41, $43, $45, $47, $49, $4B, $4C, $4E, $4F, $51, $53, $54, $56, $57, $59, $5A
