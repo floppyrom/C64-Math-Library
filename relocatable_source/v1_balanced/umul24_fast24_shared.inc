@@ -175,11 +175,13 @@ U24_v21:    adc #0
         sta MATH_IO+$0B
 U24_v13:    lda #0
 U24_v22:    adc #0
-        bcs U24_final
-        jmp U24_FAST24_public_tail
-U24_final:
+        bcc U24_no_overflow
         inx
+        clc
+U24_no_overflow:
         jmp U24_FAST24_public_tail
+        nop
+        nop
 U24_c2_1:
         clc
         adc (U24_p5),y
@@ -233,7 +235,6 @@ U24_FAST24_public_impl:
 U24_FAST24_public_tail:
         sta MATH_IO+$0C
         stx MATH_IO+$0D
-        clc
         rts
 
 *= MATH_UMUL24
