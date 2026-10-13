@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage V2–V4 UMUL24 -3-cycle hot tail; NEVER merge without native/PR/main CI."""
+"""Stage V2–V4 UMUL24 -3-cycle hot tail against PR104 main; NEVER merge without native/PR/main CI."""
 from pathlib import Path
 import hashlib,csv,json,shutil,subprocess,sys
 R=Path(__file__).resolve().parents[1]
