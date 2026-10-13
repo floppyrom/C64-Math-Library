@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 UNSIGNED DIVMOD COMPLETION MATRIX (DOC-ONLY)
+- Published exact per-family evidence/disposition and remaining closure requirements after PR #97, prioritizing unrestricted 32/16 architecture and preventing caller-opt-in specialists from being misrepresented as universal defaults.
+- No arithmetic source, resident binary, profile, public ABI, timing measurement or resource allocation changed. No new native VICE qualification claimed; issue #39 and its unsigned-family checkbox remain OPEN. docs/ISSUE39_UNSIGNED_DIVMOD_COMPLETION_MATRIX_2026-10-13.md
+
 2026-10-13 ISSUE39 NATIVE VICE GENERIC U24 TXA PUBLIC RESIDENT
 - Ran 960 true x64sc native emulator calls: 48 identical inputs per old and new complete resident, UDIV24/UMOD24 in all five profiles, zero Q where promised, R, carry, input/high sentinel errors. V5 executed RAM under BASIC ROM. No native cycles or REU/VIC wall-time measured.
 - Pinned official headless VICE r46274 package SHA, source harness, operand/output digest evidence, both changelogs, docs, status and checksums; full 822,050 unsigned and 364,533 signed emulated validation already passed. Issue39 unsigned family OPEN. docs/ISSUE39_U24_TXA_SOURCE_INTEGRATION_2026-10-13.md
