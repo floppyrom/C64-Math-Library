@@ -2000,23 +2000,23 @@
       "v1_balanced": {
         "MATH_UDIV24": {
           "code_bytes": 68,
-          "uniform_eligible_mean_delta": -46.0,
+          "uniform_eligible_mean_delta": -46,
           "eligible_cases": 2048,
           "eligible_faster": 2048,
           "eligible_slower": 0,
           "Q3_extra_byte_differences": 0,
           "modulo_Q24_side_effect_differences": 0,
-          "tiny_divisor_mean_delta": -46.0
+          "tiny_divisor_mean_delta": -46
         },
         "MATH_UMOD24": {
           "code_bytes": 68,
-          "uniform_eligible_mean_delta": -46.0,
+          "uniform_eligible_mean_delta": -46,
           "eligible_cases": 2048,
           "eligible_faster": 2048,
           "eligible_slower": 0,
           "Q3_extra_byte_differences": 0,
           "modulo_Q24_side_effect_differences": 0,
-          "tiny_divisor_mean_delta": -46.0
+          "tiny_divisor_mean_delta": -46
         }
       },
       "v2_pareto_fast": {
@@ -2364,5 +2364,25 @@
     "historical_unsigned_provenance_revalidated": true,
     "historical_umod8_certificate": "validation/review/ISSUE39_V1V5_UMOD8_GUARD_EXHAUSTIVE.json",
     "historical_umod8_certificate_sha256": "53975411d75d4a43cfb584352c6c04b814f08b7f35cd526109c4e5c9de713769"
+  },
+  "issue39_v1_3216_rare_zero_outofline_2026_10_13": {
+    "status": "PASS_RESEARCH_ONLY_NOT_PROMOTED",
+    "documentation": "docs/ISSUE39_V1_3216_RARE_ZERO_OUTOFLINE_2026-10-13.md",
+    "source_pin_v1_reference_sha256": "2567dccbc4e01f3d606e80126c8150c58e4f30b8b726ff38e116c6aaec644178",
+    "paired_operand_tests": 15826,
+    "cpu_model_public_calls": 31652,
+    "native_x64sc_full_resident_calls": 192,
+    "native_cycle_timing_measured": false,
+    "normal_zero_page_growth": 0,
+    "current_resident_changed": false,
+    "cold_handler_address": "$44F0",
+    "moved_low_word_bytes": 111,
+    "v1_udiv32_16_official_mean_delta_cycles": -0.834005,
+    "v1_umod32_16_official_mean_delta_cycles": -0.734311,
+    "valid_divisor_cycle_delta": -1,
+    "zero_divisor_cycle_delta": 2,
+    "alternate_map_source_build_qualified": false,
+    "v5_hybrid_source_build_qualified": false,
+    "unsigned_divmod_campaign_complete": false
   }
 }

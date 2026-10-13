@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 V1 UDIV32/16 RARE-ZERO OUT-OF-LINE RESEARCH
+- Research-only V1 32/16 optimization: move seven-byte divide-zero cleanup to verified empty $44F0, invert branch, shift 111-byte low-word continuation and adjust $1B6A unrolled-loop backlink. No installed resident/API/normal-ZP changes.
+- 15,826 identical operand pairs / 31,652 CPU-model public calls: every tested nonzero divisor saves 1 cycle; divide-zero adds 2 cycles, explicit tradeoff. Official weighted deltas UDIV32/16 -0.834005 and UMOD32/16 -0.734311. Actual native VICE x64sc 192 complete old/new calls passed with exact outputs. Source/alternate/hybrid production integration NOT yet qualified; issue #39 remains OPEN. docs/ISSUE39_V1_3216_RARE_ZERO_OUTOFLINE_2026-10-13.md
+
 2026-10-13 ISSUE39 UNSIGNED DIVMOD COMPLETION MATRIX (DOC-ONLY)
 - Published exact per-family evidence/disposition and remaining closure requirements after PR #97, prioritizing unrestricted 32/16 architecture and preventing caller-opt-in specialists from being misrepresented as universal defaults.
 - No arithmetic source, resident binary, profile, public ABI, timing measurement or resource allocation changed. No new native VICE qualification claimed; issue #39 and its unsigned-family checkbox remain OPEN. docs/ISSUE39_UNSIGNED_DIVMOD_COMPLETION_MATRIX_2026-10-13.md
