@@ -19,7 +19,7 @@ jobs:
         with:
           name: issue39-umul8-v1v5-research
           path: ${{ runner.temp }}/issue39_umul8_directout_screen.json
-- name: Current-main V1/V5 source-build promotion preflight (working copy only)
+      - name: Current-main V1/V5 source-build promotion preflight (working copy only)
         run: |
           python3 tools/generate_sources.py
           for k in reference alternate; do
