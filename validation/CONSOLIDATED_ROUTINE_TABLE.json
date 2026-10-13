@@ -17,7 +17,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 14065
+      "stable_api_reachable_code_union_bytes": 14068
     },
     {
       "profile": "v2_pareto_fast",
@@ -61,7 +61,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 19238
+      "stable_api_reachable_code_union_bytes": 19241
     }
   ],
   "rows": [
@@ -119,12 +119,12 @@
       "signedness": "unsigned",
       "operation": "multiply",
       "width": "24",
-      "mean_cycles": "474.042329",
-      "min_cycles": 444,
-      "max_cycles": 530,
+      "mean_cycles": "466.042329",
+      "min_cycles": 436,
+      "max_cycles": 522,
       "cases": 10324,
       "cycle_basis": "2026-10-06 UMUL24 direct-output validation",
-      "reachable_code_bytes": 357,
+      "reachable_code_bytes": 360,
       "zp_bytes": 24,
       "zp_ranges": "$09-$20",
       "stack_page_reserved_bytes": 0,
@@ -5271,12 +5271,12 @@
       "signedness": "unsigned",
       "operation": "multiply",
       "width": "24",
-      "mean_cycles": "474.042329",
-      "min_cycles": 444,
-      "max_cycles": 530,
+      "mean_cycles": "466.042329",
+      "min_cycles": 436,
+      "max_cycles": 522,
       "cases": 10324,
       "cycle_basis": "2026-10-06 UMUL24 direct-output validation",
-      "reachable_code_bytes": 357,
+      "reachable_code_bytes": 360,
       "zp_bytes": 24,
       "zp_ranges": "$09-$20",
       "stack_page_reserved_bytes": 0,

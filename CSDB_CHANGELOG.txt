@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 V1V5 UMUL24 PRIVATE CORE TAILCALL
+- Source-integrated V1/V5 UMUL24 tail-call: -8 cycles on all 10,324 official pairs, 474.042329 -> 466.042329 cycles; V2–V4 unchanged. No additional resource footprint.
+- Signed/mixed calls, relocated source, standalone publication and checksum/package evidence validated; native VICE pending. docs/ISSUE39_V1V5_UMUL24_PRIVATE_TAILCALL_2026-10-13.md
+
 2026-10-13 ISSUE39 INTEGER ROOTS POSTMERGE MAIN VALIDATION
 - Integer roots PR #102 merged; main workflows Validate library #38389399637, Comparable unsigned #38389399688 and Turbo32 #38389399617 all SUCCESS on b179436082933d4edd80bca0256c11fc09d143be. No resident arithmetic, ABI, resource, size or cycles changed by this metadata closeout. Source/native checksums preserved; release status and user documentation synchronized, issue #39 still OPEN. docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md
 

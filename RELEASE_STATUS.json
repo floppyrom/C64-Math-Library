@@ -13,11 +13,11 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "0dc63c2996458c64b933d56c035cda6a1a8dc30f3421ec6451b3a0b8c628aee1",
+    "v1_balanced": "8c64e7cff2a8557be96c32979b9627e0a3ca0da2a693d81040de399462cf18c6",
     "v2_pareto_fast": "062f0e6a08be5570bc03aa3195be39beb45b7c867e0539e1b5026da136f4b0f1",
     "v3_reu_512k": "02ef44f1046dab0ab014d1ead69ea06bb346a81be9414bc38aaf22de9c05141f",
     "v4_reu_16m": "a4c3062cfafec053f3aef414debae621686cdf297a0ca573fe3f311a0513307b",
-    "v5_hybrid_lowzp": "b255c1ccd651134259bccd26a7a9849669d0ed5e8fb57dbff95fbbddd0e7abca"
+    "v5_hybrid_lowzp": "bd3fb137c8fc6dbff0fb9e7166467987bd7d2fcb185331ac9683f48b16dd0cf5"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -243,11 +243,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "41d744c2aaf06a5d40cfece1c16255576950a8e6e3328d5fe4196c0ac753171e",
+    "v1_balanced": "03d2e67a399c31ce7b8456521bcd9cb30a48ef051baa6a9ac50c23cf0bfd0829",
     "v2_pareto_fast": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92",
     "v3_reu_512k": "52565df27dc892be9da8e12b8ac6267179debbd3d521331d7cd3d0a49ced2755",
     "v4_reu_16m": "3e2b745e9cd81512f6c3aa4e5cc029528981bb7f6d56abd117e663994685f913",
-    "v5_hybrid_lowzp": "b27e0885c7241dd7bdc3b2e25be6b2c616685cb426436a3c2b8260eff7a21ebb"
+    "v5_hybrid_lowzp": "e7546665bc68faf3d6021db91a77bcdf4d32b4d800530264840f443066ad8ffb"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "68b23f0ab235f76f019339eb5d86941245e7cffda494f481da3132f6ec5a2be0",
+    "benchmark_sha256": "6d3028300531f9ab9a71a97dfbe616138841b6072f3ab0bab9489695b864e12c",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -755,7 +755,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "1d237a72cfe437568bf91ef271c6934dd627001391c272daf2d098fe4f192a47",
+    "report_sha256": "ff19d8e8363aea3225d63c9dcdc9876da15b4979f2e10cac11413d389411a45b",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -858,7 +858,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "0551e4afced2ead0fbecba5feeacd9412daf427e3075d74d8046ff0a712d475f",
+    "data_sha256": "b3790be4f808b0ce7d346db921fafaff06af44406990d0c2f5db2ab76b104ff0",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -2508,5 +2508,28 @@
       }
     },
     "native_vice_evidence_sha256": "9889c4a5c2b62f6e627d656677db7bc19f146e02ca2184d330bf915ee3f5ce01"
+  },
+  "issue39_umul24_v1v5_tailcall_2026_10_13": {
+    "status": "PASS_STAGED_NATIVE_VICE_PENDING",
+    "proof": "validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_RELEASE_2026-10-13.json",
+    "doc": "docs/ISSUE39_V1V5_UMUL24_PRIVATE_TAILCALL_2026-10-13.md",
+    "new_sha256": {
+      "v1_balanced": "03d2e67a399c31ce7b8456521bcd9cb30a48ef051baa6a9ac50c23cf0bfd0829",
+      "v2_pareto_fast": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92",
+      "v3_reu_512k": "52565df27dc892be9da8e12b8ac6267179debbd3d521331d7cd3d0a49ced2755",
+      "v4_reu_16m": "3e2b745e9cd81512f6c3aa4e5cc029528981bb7f6d56abd117e663994685f913",
+      "v5_hybrid_lowzp": "e7546665bc68faf3d6021db91a77bcdf4d32b4d800530264840f443066ad8ffb"
+    },
+    "old_sha256": {
+      "v1_balanced": "41d744c2aaf06a5d40cfece1c16255576950a8e6e3328d5fe4196c0ac753171e",
+      "v2_pareto_fast": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92",
+      "v3_reu_512k": "52565df27dc892be9da8e12b8ac6267179debbd3d521331d7cd3d0a49ced2755",
+      "v4_reu_16m": "3e2b745e9cd81512f6c3aa4e5cc029528981bb7f6d56abd117e663994685f913",
+      "v5_hybrid_lowzp": "b27e0885c7241dd7bdc3b2e25be6b2c616685cb426436a3c2b8260eff7a21ebb"
+    },
+    "gain_cycles_every_case": 8,
+    "normal_ZP_growth": 0,
+    "resident_growth": 0,
+    "issue39_complete": false
   }
 }
