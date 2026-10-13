@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 70402,
+    "user_manual_bytes": 70441,
     "user_manual_lines": 1926,
-    "user_manual_sha256": "85fc10224f0a939f8b2f0acece5a3ad509aa1caaf7792a3f45aa2c6affb29c18"
+    "user_manual_sha256": "2719905a336f8ddd1c6e830d135c64bb3850dc02301a2d081eca2e5f4861633c"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -2458,7 +2458,7 @@
     "unsigned_family_complete": false
   },
   "issue39_integer_roots_source_release_2026_10_13": {
-    "status": "PASS_NATIVE_VICE_SOURCE_INSTALLED_PR_CI_PENDING",
+    "status": "PASS_MERGED_POSTMERGE_MAIN_CI",
     "root16_exact_domain_per_optimized_profile": 65536,
     "isqrt32_same_input_cases_per_profile": 4130,
     "optimized_profiles": [
@@ -2489,6 +2489,24 @@
     "proof": "validation/review/ISSUE39_ROOTS_SAME_INPUT_2026-10-13.json",
     "issue39_complete": false,
     "native_vice_evidence": "validation/review/ISSUE39_ROOTS_NATIVE_VICE_2026-10-13.json",
-    "native_cycles_measured": false
+    "native_cycles_measured": false,
+    "integer_roots_family_complete": true,
+    "source_pr_number": 102,
+    "source_pr_merge_sha": "b179436082933d4edd80bca0256c11fc09d143be",
+    "post_merge_workflow_runs": {
+      "Validate library": {
+        "id": 38389399637,
+        "conclusion": "success"
+      },
+      "Comparable unsigned performance": {
+        "id": 38389399688,
+        "conclusion": "success"
+      },
+      "Turbo32 integration proof": {
+        "id": 38389399617,
+        "conclusion": "success"
+      }
+    },
+    "native_vice_evidence_sha256": "9889c4a5c2b62f6e627d656677db7bc19f146e02ca2184d330bf915ee3f5ce01"
   }
 }
