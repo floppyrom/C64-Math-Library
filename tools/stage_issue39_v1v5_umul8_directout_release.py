@@ -44,21 +44,24 @@ def build():
         py("build_hybrid","--config-kind",kind)
 def integrate_generator():
     p=R/"tools/source_relocation.py";s=p.read_text()
-    old="'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc'),"
-    new="'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc',\n  'umul8_directout.inc'),"
-    # The preceding CI preflight temporarily installs the research include
-    # into the same working copy; the production stage replaces either pristine
-    # baseline or the ephemeral preflight marker with the canonical include.
-    preview=old[:-2]+",\\n  'umul8_directout_trial.inc'),"
-    assert s.count(new)==0 and s.count(old)+s.count(preview)==1, (
-        "ambiguous generator overlay",s.count(old),s.count(preview))
+    begin=s.index("'v1_balanced':(",s.index("MULTIPLY_REFRESH_INCLUDES"))
+    end=s.index("'v2_pareto_fast':(",begin)
+    region=s[begin:end]
+    assert "'umul8_directout.inc'" not in region,"already integrated"
+    if "'umul8_directout_trial.inc'" in region:
+        updated=region.replace("'umul8_directout_trial.inc'","'umul8_directout.inc'",1)
+    else:
+        tail="'umul16_shr8_reg_return.inc'),"
+        assert region.count(tail)==1,repr(region)
+        updated=region.replace(tail,tail[:-2]+",\\n  'umul8_directout.inc'),")
+    s=s[:begin]+updated+s[end:]
     trial=R/"relocatable_source/v1_balanced/umul8_directout_trial.inc"
     assert trial.is_file()
     canon=trial.with_name("umul8_directout.inc")
     assert not canon.exists(), "production include already exists unexpectedly"
     canon.write_text("; Canonical zero-growth V1/V5 UMUL8 direct public result.\n"
                      + "\n".join(trial.read_text().splitlines()[2:])+"\n")
-    p.write_text(s.replace(preview if preview in s else old,new))
+    p.write_text(s)
 def update_csv(result):
     p=R/"v1_balanced/PUBLIC_PERFORMANCE.csv"
     with p.open(newline="") as f:rows=list(csv.DictReader(f))
