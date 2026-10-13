@@ -2360,6 +2360,9 @@
     "native_vice_package_sha256": "5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a",
     "historical_parent_restoration_report": "validation/review/ISSUE39_U24_TXA_PARENT_RESTORATION.json",
     "historical_parent_restoration_sha256": "9130aa3d4d302e7fced28dfbff53b1cc6da1b911c8a807affafea0bc7b1ea1af",
-    "historical_parent_restoration_status": "PASS_ALL_FIVE_EXACT_PARENT_SHAS"
+    "historical_parent_restoration_status": "PASS_ALL_FIVE_EXACT_PARENT_SHAS",
+    "historical_unsigned_provenance_revalidated": true,
+    "historical_umod8_certificate": "validation/review/ISSUE39_V1V5_UMOD8_GUARD_EXHAUSTIVE.json",
+    "historical_umod8_certificate_sha256": "53975411d75d4a43cfb584352c6c04b814f08b7f35cd526109c4e5c9de713769"
   }
 }
