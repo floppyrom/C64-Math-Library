@@ -1,0 +1,43 @@
+name: Issue39 generic U24 high-gt live X research
+on:
+  push:
+    branches: [issue39-u24-live-x-highgt-replay]
+    paths:
+      - .github/workflows/issue39-u24-highgt-txa.yml
+      - tools/screen_issue39_u24_highgt_txa.py
+      - tools/finalize_issue39_u24_highgt_txa.py
+  pull_request:
+    paths:
+      - .github/workflows/issue39-u24-highgt-txa.yml
+      - tools/screen_issue39_u24_highgt_txa.py
+permissions:
+  contents: write
+jobs:
+  generic-u24-live-x:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u24-live-x-highgt-replay
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Source-reassemble full V1 and V2 public residents and replay
+        run: python3 tools/screen_issue39_u24_highgt_txa.py --out /tmp/issue39_u24_highgt_txa.json
+      - name: Seal source-backed proof, documentation and hashes
+        if: github.event_name == 'push'
+        run: python3 tools/finalize_issue39_u24_highgt_txa.py /tmp/issue39_u24_highgt_txa.json
+      - name: Commit SHA-pinned no-default research conclusion
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal generic U24 high-gt live X architecture proof'
+          git push origin HEAD:issue39-u24-live-x-highgt-replay
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-generic-u24-txa-research
+          path: /tmp/issue39_u24_highgt_txa.json
