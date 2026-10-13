@@ -2542,7 +2542,7 @@
     "native_cycles_measured": false
   },
   "issue39_umul24_fallthrough_2026_10_13": {
-    "status": "PASS_NATIVE_VICE_PR_CI_PENDING",
+    "status": "PASS_POSTMERGE_MAIN_GREEN",
     "proof": "validation/review/ISSUE39_UMUL24_TAIL_RELEASE_2026-10-13.json",
     "doc": "docs/ISSUE39_UMUL24_TAIL_FALLTHROUGH_2026-10-13.md",
     "baseline": {
@@ -2565,10 +2565,19 @@
     "issue39_complete": false,
     "native_vice_calls": 576,
     "native_vice_evidence": "validation/review/ISSUE39_UMUL24_TAIL_NATIVE_2026-10-13.json",
-    "native_vice_evidence_sha256": "661d8455182da7c1a741fb736980a15972f45db56c169e292d90d55cd0bd6d04"
+    "native_vice_evidence_sha256": "661d8455182da7c1a741fb736980a15972f45db56c169e292d90d55cd0bd6d04",
+    "merged_pr": 105,
+    "merge_commit_sha": "d1688725c8f9e7f35e6de4d36815d2a6d0265b40",
+    "postmerge_main_checks": {
+      "Validate library": 38402703856,
+      "Comparable unsigned performance": 38402703783,
+      "Turbo32 integration proof": 38402703796
+    },
+    "postmerge_main_checks_status": "SUCCESS",
+    "publication_metadata_only": true
   },
   "issue39_umul24_v1v5_tailcall_2026_10_13": {
-    "status": "PASS_NATIVE_VICE_PR_CI_PENDING",
+    "status": "PASS_POSTMERGE_MAIN_GREEN",
     "proof": "validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_RELEASE_2026-10-13.json",
     "doc": "docs/ISSUE39_V1V5_UMUL24_PRIVATE_TAILCALL_2026-10-13.md",
     "new_sha256": {
@@ -2591,7 +2600,16 @@
     "issue39_complete": false,
     "native_vice_calls": 384,
     "native_vice_evidence": "validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_NATIVE_2026-10-13.json",
-    "native_vice_evidence_sha256": "2855c172c3df34670f0623ac0ef8bad5b4ff238f705e79daa6465d3e59bcdb52"
+    "native_vice_evidence_sha256": "2855c172c3df34670f0623ac0ef8bad5b4ff238f705e79daa6465d3e59bcdb52",
+    "merged_pr": 106,
+    "merge_commit_sha": "335185f3ad0233763d4aafdad91301f6261604b3",
+    "postmerge_main_checks": {
+      "Validate library": 38410138207,
+      "Comparable unsigned performance": 38410137785,
+      "Turbo32 integration proof": 38410137989
+    },
+    "postmerge_main_checks_status": "SUCCESS",
+    "publication_metadata_only": true
   },
   "issue39_umul32_ready_paired_audit_2026_10_13": {
     "status": "PASS_CI_PAIRED_MODEL",
