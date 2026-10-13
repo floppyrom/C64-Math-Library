@@ -43,8 +43,7 @@ STORE:
     rts
 PREVIOUS:
     dey
-    bpl TRY_SQUARE
-    brk
+    jmp TRY_SQUARE   ; DEY may leave N=1 for candidate roots >=128
 """
 BYTES,LABELS,_=Assembler().assemble(CODE_SRC)
 assert min(BYTES)==CODE and max(BYTES)<SEED and LABELS['ISQRT16_SEED_REFINE']==CODE
