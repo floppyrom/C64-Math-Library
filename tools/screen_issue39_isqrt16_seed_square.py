@@ -101,7 +101,10 @@ def sample(cpu,entry,n,width):
     wr(cpu.mem,Z,0xA6B5D4C3,4)
     cpu.d=0
     sp=cpu.sp
-    cy=cpu.call(entry,2_000_000)
+    try:
+        cy=cpu.call(entry,20000)
+    except RuntimeError as exc:
+        raise RuntimeError((width,hex(n),'pc',hex(cpu.pc),'x',cpu.x,'y',cpu.y,'sp',cpu.sp,'page_e1',bytes(cpu.mem[0xe100:0xe128]).hex(),'seed',cpu.mem[0xe200+(n>>8 if width==16 else 0)],'underlying',str(exc))) from exc
     got=rd(cpu.mem,Z,2)
     assert got==math.isqrt(n),(width,hex(n),got,math.isqrt(n))
     assert bytes(cpu.mem[N:N+nn])==before,('N overwritten',hex(n))
