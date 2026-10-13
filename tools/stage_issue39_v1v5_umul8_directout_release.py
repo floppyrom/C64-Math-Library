@@ -46,14 +46,19 @@ def integrate_generator():
     p=R/"tools/source_relocation.py";s=p.read_text()
     old="'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc'),"
     new="'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc',\n  'umul8_directout.inc'),"
-    assert s.count(old)==1 and s.count(new)==0, "ambiguous generator overlay"
+    # The preceding CI preflight temporarily installs the research include
+    # into the same working copy; the production stage replaces either pristine
+    # baseline or the ephemeral preflight marker with the canonical include.
+    preview=old[:-2]+",\\n  'umul8_directout_trial.inc'),"
+    assert s.count(new)==0 and s.count(old)+s.count(preview)==1, (
+        "ambiguous generator overlay",s.count(old),s.count(preview))
     trial=R/"relocatable_source/v1_balanced/umul8_directout_trial.inc"
     assert trial.is_file()
     canon=trial.with_name("umul8_directout.inc")
     assert not canon.exists(), "production include already exists unexpectedly"
     canon.write_text("; Canonical zero-growth V1/V5 UMUL8 direct public result.\n"
                      + "\n".join(trial.read_text().splitlines()[2:])+"\n")
-    p.write_text(s.replace(old,new))
+    p.write_text(s.replace(preview if preview in s else old,new))
 def update_csv(result):
     p=R/"v1_balanced/PUBLIC_PERFORMANCE.csv"
     with p.open(newline="") as f:rows=list(csv.DictReader(f))
