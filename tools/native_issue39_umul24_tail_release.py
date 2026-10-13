@@ -119,8 +119,8 @@ def main():
    rel=f"{p}/resident/math_{p}_game_math.prg"
    old=subprocess.check_output(["git","show",f"{PARENT}:{rel}"],cwd=ROOT)
    new=(ROOT/rel).read_bytes()
-   assert sha(old)==row["old_sha256"][p]
-   assert sha(new)==row["new_sha256"][p]==state["reference_prg_sha256"][p]
+   assert sha(old)==row["baseline"][p]
+   assert sha(new)==row["candidate"][p]==state["reference_prg_sha256"][p]
    entries={}
    for i,api in enumerate(APIS):
     label=p+"_"+api
