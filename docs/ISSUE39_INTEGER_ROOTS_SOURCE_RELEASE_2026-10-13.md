@@ -1,6 +1,6 @@
 # Issue39 — integer square roots source integration (release stage)
 
-13 October 2026. Source installed and native VICE old/new checked (768 full-resident calls); PR/main CI not yet qualified.
+13 October 2026. Released in PR #102 (main b179436082933d4edd80bca0256c11fc09d143be); 768 native VICE old/new calls and three independent post-merge main workflows all passed.
 
 A manually implemented exact ISQRT16 upper-bound table seeds the root from the radicand high byte, then compares candidate-square bytes against the existing two resident square planes and decreases the candidate until the floor root is exact. The 294-byte executable + 256-byte seed table occupies the original 304-byte V2/V3 root-search island (V1 had 329 bytes), replacing code rather than growing the resident. No extra normal ZP or additional RAM table pages.
 
@@ -18,4 +18,6 @@ ISQRT16 timing is an actual exhaustive 65,536-case public-entry 6502 instruction
 
 V1/V2/V3/V5 source reference/alternate regeneration passed. V4 untouched. Stable public ABI, input ownership, stack and carry preserved. OptiSearch source remains private and is NOT included or transcribed into this repository.
 
-**Native VICE PASS:** 768 full-resident old/new public calls, including both ISQRT16 and ISQRT32, verified on V1/V2/V3/V5; source-built PRG and exact historical baseline pinned by SHA-256. This test does not claim measured hardware cycle times. **Pending:** independent PR tests and post-merge main CI. Issue #39 remains OPEN; unrelated unsigned closure also remains unchecked until documented.
+**Native VICE PASS:** 768 full-resident old/new public calls, including both ISQRT16 and ISQRT32, verified on V1/V2/V3/V5; source-built PRG and exact historical baseline pinned by SHA-256. This test does not claim measured hardware cycle times. **Release complete:** independent PR checks and post-merge main validation passed. The broader issue #39 remains open. Issue #39 remains OPEN; unrelated unsigned closure also remains unchecked until documented.
+
+**Worst-case caveat:** Although exhaustive-domain mean ISQRT16 cycles fell by about 72–74%, the new correction loop can take **471 cycles** on rare inputs. Raster-critical callers should benchmark worst-case latency, not only averages.

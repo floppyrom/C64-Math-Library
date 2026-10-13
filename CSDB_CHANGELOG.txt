@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 INTEGER ROOTS POSTMERGE MAIN VALIDATION
+- Integer roots PR #102 merged; main workflows Validate library #38389399637, Comparable unsigned #38389399688 and Turbo32 #38389399617 all SUCCESS on b179436082933d4edd80bca0256c11fc09d143be. No resident arithmetic, ABI, resource, size or cycles changed by this metadata closeout. Source/native checksums preserved; release status and user documentation synchronized, issue #39 still OPEN. docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md
+
 2026-10-13 ISSUE39 ROOT RELEASE HISTORIC DIV/MOD HASH RESEAL
 - Replayed all comparable unsigned proofs with exactly the same division code. Historical reports updated only their full-resident provenance hashes for the ISQRT16-only byte-island release; numeric results, ABI, operands and cycle-stream hashes remained unchanged. validation/review/ISSUE39_ROOTS_LEGACY_PROVENANCE_RESEAL.json.
 
