@@ -4497,3 +4497,6 @@ LCAFB:
 
 ; V1 direct shifted DIV adapters.
 !source "../game_math/shifted_div_direct_balanced.inc"
+
+; EXPERIMENTAL Issue39 V1 32/16 source-backed cold-path relocation (unpromoted)
+!source "udiv32_16_ool_zero_trial.inc"
