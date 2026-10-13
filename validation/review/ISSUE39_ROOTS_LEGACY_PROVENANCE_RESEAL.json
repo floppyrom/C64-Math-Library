@@ -1,0 +1,36 @@
+{
+  "status": "PASS_ONLY_SHA_PIN_CHANGES",
+  "source_modified_root_profiles": [
+    "v1_balanced",
+    "v2_pareto_fast",
+    "v3_reu_512k",
+    "v5_hybrid_lowzp"
+  ],
+  "replayed_proof_tools": [
+    "benchmark_unsigned_common_corpus",
+    "validate_v5_umod24_frontend",
+    "validate_v5_umod16_frontend",
+    "validate_udiv32_qone_bound",
+    "validate_udiv32_q23_bound",
+    "validate_v1_3216_unroll",
+    "audit_issue39_zero_high_bypass",
+    "audit_v5_3232_narrow_delegate",
+    "audit_issue39_unsigned_small_workloads",
+    "audit_issue39_v1_24narrow_rejection",
+    "audit_v1_udiv24_byte8",
+    "audit_v1_3232_d8_delegate",
+    "audit_issue39_v1v5_umod8_guard",
+    "benchmark_unsigned_3216_workloads",
+    "generate_public_indexes",
+    "validate_public_catalog"
+  ],
+  "reproduced_reports": [
+    {
+      "file": "validation/review/ISSUE39_V1V5_UMOD8_GUARD_EXHAUSTIVE.json",
+      "sha256_before": "dcfad05478fc2fdf6cd45ee9a317a4a4293770d89fa306566fee5f0a7b14556b",
+      "sha256_after": "70bbc430f03d0fe096c337c59f3bf049a739c5fbbe528f3b298ed3c857cdee4b",
+      "root_sha_only_changes": 1
+    }
+  ],
+  "arithmetic_binary_change_since_root_release": false
+}

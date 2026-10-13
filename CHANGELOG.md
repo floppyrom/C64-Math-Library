@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 ROOT RELEASE HISTORIC DIV/MOD HASH RESEAL
+- Replayed all comparable unsigned proofs with exactly the same division code. Historical reports updated only their full-resident provenance hashes for the ISQRT16-only byte-island release; numeric results, ABI, operands and cycle-stream hashes remained unchanged. validation/review/ISSUE39_ROOTS_LEGACY_PROVENANCE_RESEAL.json.
+
 2026-10-13 ISSUE39 INTEGER ROOT NATIVE VICE RELEASE PROOF
 - Native x64sc old/new full-resident ISQRT16 and ISQRT32 validation: 768 calls across V1/V2/V3/V5, exact public output, input, carry, return-path sentinels and stack invariants. Full root proof: validation/review/ISSUE39_ROOTS_NATIVE_VICE_2026-10-13.json. V4 unchanged; cycle counts from the independent mini6502 proof only. Issue #39 remains OPEN.
 
