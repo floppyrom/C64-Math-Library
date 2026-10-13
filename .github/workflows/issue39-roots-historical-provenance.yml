@@ -1,0 +1,37 @@
+name: Issue39 integer-root historical provenance exact replay
+on:
+  push:
+    branches: [issue39-integer-roots-seedtable-screen]
+    paths:
+      - tools/finalize_issue39_roots_historical_provenance.py
+      - .github/workflows/issue39-roots-historical-provenance.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  replay-and-seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-integer-roots-seedtable-screen
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Replay historical unsigned proofs, verify only complete-resident root hash changes
+        run: python3 tools/finalize_issue39_roots_historical_provenance.py
+      - name: Commit reproduced SHA-only reports and package checksum ledger
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: reseal unchanged unsigned proofs after ISQRT16-only resident upgrade'
+          git push origin HEAD:issue39-integer-roots-seedtable-screen
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-roots-historical-unsigned-sha-only-proof
+          path: validation/review/ISSUE39_ROOTS_LEGACY_PROVENANCE_RESEAL.json
