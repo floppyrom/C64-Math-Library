@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 V1 32/16 TRANSITIVE 32/32 PERFORMANCE PUBLICATION
+- Source V1 32/16 hot-path relocation also accelerates 32/32 fallback for a bounded class. Under exact current same-input corpus, V1 UDIV32_32 mean 335.825577 -> 335.750824 and UMOD32_32 399.676833 -> 399.557185. V5 donor remains unchanged. Updated PERFORMANCE.md, V5 HYBRID_PERFORMANCE.csv and SHA-pinned bound checks, no production binary change. Keep issue #39 OPEN.
+
 2026-10-13 ISSUE39 HISTORICAL DIV/MOD REPLAY PINNING AFTER V1 32/16 SOURCE PROMOTION
 - Recovered exact prior PR99 V1 resident bytes from SHA-pinned current V1 by reversing ONLY the new 7-byte cold handler, 111-byte 32/16 continuation displacement and unroll return JMP; verify reverse SHA equals immutable prior main before playing historical PR78/PR81 24/8 proofs.
 - Updated V2 UMOD8 history against exact SHA-pinned current V2, restoring only the 104 changed wrapper/helper bytes for the original exhaustive 65536-case paired A/B. V5 unchanged-source check short-circuits before invoking historical PR71 inverse. Historical tests and general profile correctness remain independent; issue #39 OPEN. docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md

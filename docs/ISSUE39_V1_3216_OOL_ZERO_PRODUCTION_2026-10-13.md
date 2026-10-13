@@ -15,3 +15,7 @@ Full 822,050 unsigned, 364,533 signed and 136,335 shared-input public calls pass
 
 ## Historical proof compatibility after source promotion
 Older 24/8 and UMOD8 replay scripts previously assumed only archived resident SHA values. The V1 24/8 replay now reverses the **exact known** V1 32/16 transformation and asserts the recovered pre-PR100 SHA before running its original comparisons. The V2 UMOD8 replay uses the SHA-pinned current V2 resident, reverses only the original 104-byte UMOD8 guard, and requires all other bytes to match. The V5 unchanged-source comparison short-circuits, avoiding unnecessary historical PR71 inversion. These changes do not modify production arithmetic or relax arbitrary-hash checks.
+
+## Transitive 32/32 public-entry timing
+
+The 32/32 public frontends still call the V1 32/16 continuation in some bounded cases. On the identical-input audit, V1 UDIV32_32 changes from 335.825577 to **335.750824** cycles (2,729 inputs), and V1 UMOD32_32 from 399.676833 to **399.557185** (1,705 inputs). These gains are not claimed for V5, which retains the V2 donor. The historical QONE/Q23 source validators are pinned to these exact per-image means.

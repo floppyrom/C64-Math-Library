@@ -2424,5 +2424,23 @@
     "inverse_strict": true,
     "production_arithmetic_changed": false,
     "issue39_unsigned_family_complete": false
+  },
+  "issue39_v1_3216_ool_transitive_3232_2026_10_13": {
+    "status": "PASS_COMPARABLE_SAME_INPUT_PUBLISHED",
+    "means": {
+      "MATH_UDIV32_32": {
+        "v1": 335.7508244778307,
+        "v5": 275.01319164529133,
+        "cases": 2729
+      },
+      "MATH_UMOD32_32": {
+        "v1": 399.55718475073314,
+        "v5": 299.582991202346,
+        "cases": 1705
+      }
+    },
+    "native_vice_for_3232_not_newly_measured": true,
+    "V1_resident_changed": false,
+    "unsigned_campaign_complete": false
   }
 }
