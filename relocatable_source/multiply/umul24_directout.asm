@@ -188,8 +188,11 @@ R24_v22:    adc #0
         ; existing jump and cycle profile; no new scratch or caller contract.
         sta MATH_IO+$0C
         stx MATH_IO+$0D
-        clc
+        ; BCS above fell through with C=0. STA/STX preserve carry.
+        ; Place RTS before the replaced CLC and pad with unreachable NOP
+        ; to preserve every following branch target and code-island byte.
         rts
+        nop
 R24_final:
         inx
         jmp R24_public_tail
