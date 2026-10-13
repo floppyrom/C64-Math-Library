@@ -112,7 +112,7 @@ def native(prg,op,tag,port,folder,vice):
 def main():
  ap=argparse.ArgumentParser();ap.add_argument("--out",type=Path);args=ap.parse_args()
  state=json.loads((R/"RELEASE_STATUS.json").read_text())
- assert state["issue39_integer_roots_source_release_2026_10_13"]["status"]=="PASS_STAGED_NATIVE_VICE_PENDING"
+ assert state["issue39_integer_roots_source_release_2026_10_13"]["status"] in ("PASS_STAGED_NATIVE_VICE_PENDING","PASS_NATIVE_VICE_SOURCE_INSTALLED_PR_CI_PENDING")
  vice=os.environ.get("VICE_WRAPPER","x64sc")
  report={"status":"PASS_NATIVE_VICE_SOURCE_INSTALLED_ROOTS",
          "native_cycles_measured":False,"profiles":{},"native_calls":0,
