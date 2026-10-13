@@ -31,8 +31,8 @@ def main():
                native_vice_evidence_sha256=sha(p))
     STATUS.write_text(json.dumps(st,indent=2)+"\n")
     s=DOC.read_text()
-    s=s.replace("Native VICE and PR/main CI not yet complete.",
-                "Native VICE passed: 576 real full resident old/new calls; PR/main CI pending.")
+    s=s.replace("Staged 13 October 2026. NOT RELEASED until native VICE/PR/main CI.",
+                "Native VICE passed: 576 real full-resident old/new calls; PR/main CI pending.")
     s+="\nNative VICE validates both unsigned and signed public entries on three resident profiles, original and candidate, with exact products, input preservation, carry and sentinel parity. It does not measure cycles. See "+EVIDENCE+".\n"
     DOC.write_text(s)
     note=(STAMP+"\n- Pinned real x64sc old/new public UMUL24 and SMUL24 verified"
