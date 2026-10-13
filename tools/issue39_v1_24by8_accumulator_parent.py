@@ -56,6 +56,17 @@ def undo_v1_3216_coldpath_for_historical_audit(prg: bytes) -> bytes:
     return bytes(raw)
 
 def restore_pr78(prg:bytes)->bytes:
+    # Historical PR78/PR81 proofs are deliberately replayed against the
+    # exact pre-rare-carry V1 resident. The later UMUL24 optimization is
+    # separately certified on the live product; never add arbitrary
+    # current-image hashes to this historical reconstruction.
+    if sha(prg)=='f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7':
+        import subprocess
+        prg=subprocess.check_output([
+            'git','show',
+            'fa5457729d764ffc9c24f8cb5bde2e5790eb79fe:v1_balanced/resident/math_v1_balanced_game_math.prg'
+        ],cwd=R)
+        assert sha(prg)=='6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0'
     prg=undo_umul24_tailcall('v1_balanced',prg)
     prg=undo_root_release('v1_balanced',prg)
     prg=undo_v1_3216_coldpath_for_historical_audit(prg)
