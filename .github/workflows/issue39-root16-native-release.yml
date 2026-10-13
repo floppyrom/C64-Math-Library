@@ -4,10 +4,11 @@ on:
     branches: [issue39-integer-roots-seedtable-screen]
     paths:
       - tools/native_issue39_isqrt16_source_release.py
+      - tools/finalize_issue39_roots_native_release.py
       - .github/workflows/issue39-root16-native-release.yml
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   actual-x64sc-roots:
     runs-on: ubuntu-latest
@@ -30,9 +31,19 @@ jobs:
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
       - name: Compare 768 full resident native ISQRT16 and ISQRT32 public calls old/new
         run: |
-          python3 tools/native_issue39_isqrt16_source_release.py --out /tmp/ISSUE39_ROOTS_NATIVE_VICE.json
+          python3 tools/native_issue39_isqrt16_source_release.py --out validation/review/ISSUE39_ROOTS_NATIVE_VICE_2026-10-13.json
+      - name: Strict native proof checks and package/release reseal
+        run: |
+          python3 tools/finalize_issue39_roots_native_release.py
+      - name: Commit signed-off native evidence and resealed publication
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: certify source-installed roots native x64sc and seal release'
+          git push origin HEAD:issue39-integer-roots-seedtable-screen
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: issue39-root16-root32-native-release-proof
-          path: /tmp/ISSUE39_ROOTS_NATIVE_VICE.json
+          path: validation/review/ISSUE39_ROOTS_NATIVE_VICE_2026-10-13.json
