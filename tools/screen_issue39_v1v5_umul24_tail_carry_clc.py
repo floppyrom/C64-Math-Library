@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Bounded V1/V5 FAST24 public tail carry-clear specialization, research only.
 
-Carry=0 at the no-overflow BCS fallthrough. Move shared public-tail CLC
-into the rare carry branch (after INX), keeping caller carry=0 in both cases.
+Branch-stable source rewrite: invert BCS to local BCC over INX/CLC,
+then join a common JMP tail and pad with unreachable NOP/NOP. This keeps
+every following code address fixed while moving public-tail CLC into the
+rare carry path. Carry=0 and public ABI hold for both exits.
 Proof runs original and mutated canonical sources on reference/alternate maps;
 never changes the repository's released PRGs.
 """
@@ -18,13 +20,22 @@ from validate_umul24_directout import corpus
 PROFILES=('v1_balanced','v5_hybrid_lowzp')
 MAPS=('reference','alternate')
 SOURCE=ROOT/'relocatable_source/v1_balanced/umul24_fast24_shared.inc'
-OLD_RARE="""U24_final:
+OLD_RARE="""U24_v22:    adc #0
+        bcs U24_final
+        jmp U24_FAST24_public_tail
+U24_final:
         inx
-        jmp U24_FAST24_public_tail"""
-NEW_RARE="""U24_final:
+        jmp U24_FAST24_public_tail
+U24_c2_1:"""
+NEW_RARE="""U24_v22:    adc #0
+        bcc U24_no_overflow
         inx
         clc
-        jmp U24_FAST24_public_tail"""
+U24_no_overflow:
+        jmp U24_FAST24_public_tail
+        nop
+        nop
+U24_c2_1:"""
 OLD_TAIL="""U24_FAST24_public_tail:
         sta MATH_IO+$0C
         stx MATH_IO+$0D
