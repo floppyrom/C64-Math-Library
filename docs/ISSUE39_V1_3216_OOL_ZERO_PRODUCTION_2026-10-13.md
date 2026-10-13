@@ -11,4 +11,4 @@ Full 822,050 unsigned, 364,533 signed and 136,335 shared-input public calls pass
 | MATH_UDIV32_16 | 825.873946 | 825.039941 |
 | MATH_UMOD32_16 | 843.629912 | 842.895601 |
 
-**Release gate still outstanding:** actual native VICE of the staged source-installed image, independent PR CI and post-merge main CI. Do not close #39. The candidate is not global Pareto: divide-by-zero is 2 cycles slower, valid divisor is 1 faster.
+**Native VICE release gate passed:** 384 complete V1/V5 original/candidate public calls in pinned x64sc, covering both 32/16 aliases. No native cycle timings measured. Remaining gates: independent PR CI and post-merge main CI. Do not close #39. The candidate is not global Pareto: divide-by-zero is 2 cycles slower, valid divisor is 1 faster.

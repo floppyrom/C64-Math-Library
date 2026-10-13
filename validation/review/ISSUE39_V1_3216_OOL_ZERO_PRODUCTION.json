@@ -14,7 +14,9 @@
     "v5_hybrid_lowzp": "0662a9644ee4ebb6df7a06f9c77a40ffb5308b69ecd5e6bc9c7d6250b5bd5750"
   },
   "issue39_unsigned_family_complete": false,
-  "native_source_built_calls": 0,
+  "native_cycles_measured": false,
+  "native_report": "validation/review/ISSUE39_V1_3216_OOL_RELEASE_NATIVE.json",
+  "native_source_built_calls": 384,
   "normal_zp_growth": 0,
   "official_same_input_mean_cycles": {
     "MATH_UDIV32_16": {
@@ -44,6 +46,6 @@
   "resident_size_growth": 0,
   "same_input_calls": 136335,
   "signed_calls": 364533,
-  "status": "PASS_STAGED_NATIVE_VICE_GATE_PENDING",
+  "status": "PASS_NATIVE_SOURCE_INSTALLED_PR_PENDING",
   "unsigned_calls": 822050
 }

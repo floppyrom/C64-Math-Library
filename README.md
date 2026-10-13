@@ -203,4 +203,4 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 
 - Issue #39 V1 32÷16 rare divide-zero path research (not installed by default): [verified paired emulator and native VICE evidence](docs/ISSUE39_V1_3216_RARE_ZERO_OUTOFLINE_2026-10-13.md). Full source/alternate/hybrid promotion remains open.
 
-- Source-staged V1 32/16 cold zero-handler release: docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md (pending native VICE and independent PR/main CI).
+- Source-staged V1 32/16 cold zero-handler release: docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md (384 native VICE full-resident calls passed; independent PR/main CI pending).

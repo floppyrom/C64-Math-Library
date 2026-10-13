@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 70223,
+    "user_manual_bytes": 70251,
     "user_manual_lines": 1924,
-    "user_manual_sha256": "bd208c0f54ad7481e2ff2c12fd5e0d3d7aa2af700883ae0c9f5c0b49524b6a32"
+    "user_manual_sha256": "e4ed40fb22381374226dc96f362553e1278775ee51bf8ba294950579f938cb23"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -2386,7 +2386,7 @@
     "unsigned_divmod_campaign_complete": false
   },
   "issue39_v1_3216_ool_zero_source_production_2026_10_13": {
-    "status": "PASS_STAGED_NATIVE_VICE_PENDING",
+    "status": "PASS_NATIVE_SOURCE_INSTALLED_WAITING_PR_AND_MAIN_CI",
     "doc": "docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md",
     "evidence": "validation/review/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION.json",
     "V1_old": "2567dccbc4e01f3d606e80126c8150c58e4f30b8b726ff38e116c6aaec644178",
@@ -2410,7 +2410,9 @@
       }
     },
     "reference_alternate_built": true,
-    "native_vice_source_built_calls": 0,
-    "unsigned_family_complete": false
+    "native_vice_source_built_calls": 384,
+    "unsigned_family_complete": false,
+    "native_release_proof": "validation/review/ISSUE39_V1_3216_OOL_RELEASE_NATIVE.json",
+    "native_release_proof_sha256": "99961a993bca480ab07dd02192c3ee6f2825407887014fb77755e6b0cc5388a1"
   }
 }

@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 V1 32/16 SOURCE INSTALLED NATIVE VICE GATE
+- Pinned real x64sc executed 384 old/new complete resident calls across V1 and V5, two public 32/16 aliases and 48 matching operands each. No Q32/R16/carry/N/D/ROM-underlay or output-dump differences. V5 32/16 donor behavior unchanged. Native cycle timing NOT measured.
+- Source-built reference/alternate maps, 56 stable APIs, full 822,050 unsigned / 364,533 signed, comparable 136,335, and package/standalone checks passed. Exact source/PRG SHA evidence and native report sealed. Issue #39 still OPEN. docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md
+
 2026-10-13 ISSUE39 V1 32/16 RELOCATABLE ZERO-HANDLER PRODUCTION
 - Production-staged symbolic V1 32/16 cold zero-handler source: source generator, reference/alternate maps and V5 hybrid refreshed. Main success path -1 cycle in paired CPU model, divide-by-zero +2. 56 stable APIs and resident lengths unchanged; no normal ZP growth.
 - Full 822,050 unsigned, 364,533 signed and 136,335 same-input public calls passed. Source-built installed-image native VICE must still pass before merge. Issue #39 remains OPEN. docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md
