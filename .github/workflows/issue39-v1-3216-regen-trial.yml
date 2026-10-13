@@ -1,0 +1,27 @@
+name: Issue39 V1 32-16 canonical source regeneration roundtrip
+on:
+  push:
+    branches: [issue39-v1-3216-ool-source-trial]
+    paths:
+      - tools/source_relocation.py
+      - tools/qualify_issue39_v1_3216_regen_trial.py
+      - relocatable_source/v1_balanced/udiv32_16_ool_zero_trial.inc
+      - relocatable_source/v1_balanced/math_relocatable.asm
+      - .github/workflows/issue39-v1-3216-regen-trial.yml
+  workflow_dispatch:
+jobs:
+  no-commit-roundtrip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Rebuild V1, V5 and both maps after canonical source regeneration
+        run: python3 tools/qualify_issue39_v1_3216_regen_trial.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v1-3216-regenerated-source-report
+          path: validation/review/ISSUE39_V1_3216_OOL_REGENERATION_TRIAL.json
