@@ -1,0 +1,28 @@
+name: Issue39 V1 32-16 rare-zero research screen
+on:
+  push:
+    branches:
+      - issue39-v1-3216-rare-zero-outofline-screen
+  pull_request:
+    paths:
+      - tools/screen_issue39_v1_3216_outofline_zero.py
+      - .github/workflows/issue39-v1-3216-rare-zero.yml
+  workflow_dispatch:
+
+jobs:
+  paired-public-resident:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-backtracked V1 32/16 public-entry paired ABI and timing screen
+        run: |
+          PYTHONDONTWRITEBYTECODE=1 python3 tools/screen_issue39_v1_3216_outofline_zero.py --out /tmp/issue39_v1_3216_zero_ool.json
+      - name: Upload research metrics
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v1-3216-rare-zero-report
+          path: /tmp/issue39_v1_3216_zero_ool.json
