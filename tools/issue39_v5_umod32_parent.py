@@ -4,10 +4,14 @@
 Only for frozen pre-PR71 audits. Never undo resident bytes for release use.
 """
 from hashlib import sha256
+from issue39_u24_txa_historical_parent import restore_pre_txa
 OLD='634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02'
 NEW='5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222'
 def digest(b):return sha256(b).hexdigest()
 def restore_v5_umod32_parent(prg:bytes)->bytes:
+    # Normalize only the exact SHA-pinned post-PR97 resident; retain every
+    # frozen PR68/PR71 historical parent comparison byte-for-byte.
+    prg=restore_pre_txa('v5_hybrid_lowzp',prg)
     current=digest(prg)
     if current==OLD:return prg
     assert current==NEW,('unrecognized V5 UMOD32 parent image',current)
