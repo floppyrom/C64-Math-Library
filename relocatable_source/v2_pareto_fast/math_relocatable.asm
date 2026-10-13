@@ -4823,3 +4823,6 @@ ZCE4:
 
 ; V2 reciprocal constant-numerator fallback.
 !source "../game_math/recip16_direct_fast_v2.inc"
+
+; Research-only ISQRT16 code+seed built inside the retired ISQRT16 island.
+!source "isqrt16_seed_square_trial.inc"
