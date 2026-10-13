@@ -49,6 +49,9 @@ def main():
         'inverse_strict':True,'production_arithmetic_changed':False,
         'issue39_unsigned_family_complete':False}
     s.write_text(json.dumps(state,indent=2)+'\n')
+    # The historical V2/V5 proofs intentionally assemble build_source and
+    # build_hybrid scratch trees; the lean publication contract excludes them.
+    subprocess.run(['make','clean'],cwd=ROOT,check=True)
     for _ in range(2):
         reseal()
         subprocess.run([sys.executable,str(ROOT/'tools/package_audit.py')],cwd=ROOT,check=True)
