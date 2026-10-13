@@ -27,12 +27,19 @@ def run():
             b=(R/profile/'resident'/f'math_{profile}_game_math.prg').read_bytes()
             lo=int.from_bytes(b[:2],'little')
             index=2+ADDR-lo
-            assert lo==0x1000 and b[index:index+2]==OLD,(profile,'baseline mismatch')
-            changed=b[:index]+NEW+b[index+2:]
-            assert len(b)==len(changed)
-            entry={'before_sha256':sha(b),'after_sha256':sha(changed),'entries':{}}
+            assert lo==0x1000 and b[index:index+2] in (OLD,NEW),(profile,'resident tail mismatch')
+            if b[index:index+2]==NEW:
+                # When released, reconstruct the exact historical two-byte
+                # resident in memory; never change the tracked candidate.
+                old=b[:index]+OLD+b[index+2:]
+                changed=b
+            else:
+                old=b
+                changed=b[:index]+NEW+b[index+2:]
+            assert len(old)==len(changed)
+            entry={'before_sha256':sha(old),'after_sha256':sha(changed),'entries':{}}
             for kind in ('MATH_UMUL24','MATH_SMUL24'):
-                before=native(b,kind,profile+'_'+kind+'_old',port,wd,exe)
+                before=native(old,kind,profile+'_'+kind+'_old',port,wd,exe)
                 port+=1
                 after=native(changed,kind,profile+'_'+kind+'_new',port,wd,exe)
                 port+=1

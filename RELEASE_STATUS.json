@@ -1,5 +1,4 @@
 {
-  "issue39_umul16_umul24_optisearch_resource_audit_2026_10_13": {"status":"RESEARCH_ONLY_NO_DEFAULT_PROMOTION","document":"docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md","evidence":"validation/review/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT.json","production_prgs_changed":false,"public_api_changed":false,"private_optisearch_source_published":false,"umul16_public_abi_qualified":false,"umul24_paired_qualifed":false,"issue39_complete":false},
   "acme": {
     "historical_assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
     "historical_checks": 8,
@@ -15,9 +14,9 @@
   },
   "alternate_prg_sha256": {
     "v1_balanced": "214311002e66c7d2a5541014232e551b191340e93c454306b0382211a994ec35",
-    "v2_pareto_fast": "d1a4294f3df18334e31e53b396481d38d24b9f166813bf5a7c6a2ea5057c01c0",
-    "v3_reu_512k": "89cdacee2e460c00c73941a7ef25da69dcda91b8960bb21965003103f0684874",
-    "v4_reu_16m": "5529fb337b49826aa373726c319903f86532721630985747b38e207f61e641e3",
+    "v2_pareto_fast": "ff8a4ebf38b49f0605a98a4a1df973d6c6a9df09739669212a4e30e518c69cb5",
+    "v3_reu_512k": "fc4e814bef0cec7445243394c34a1dd8ddc536487a041a6e31ac5bd5eb62ec2e",
+    "v4_reu_16m": "fdb2b822be8d2d0b2fbc49faed02774bc2ec94131cf34d1dc389c0a7284ae272",
     "v5_hybrid_lowzp": "d1c3d9e04c73c5fd2f30b839e0f5e247dd1aec05b0c77a13ed1b39c04946bf7c"
   },
   "alternate_reu_sha256": {
@@ -245,9 +244,9 @@
   ],
   "reference_prg_sha256": {
     "v1_balanced": "6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0",
-    "v2_pareto_fast": "9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7",
-    "v3_reu_512k": "973c14dc9c188cac46596960386c594b906c30e6aa408d6a284e117711ab9ee7",
-    "v4_reu_16m": "8a525a7b7c75d394b3fca7b1282255c77eecf3e6e96b47a04b5944c59b9a3faa",
+    "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
+    "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
+    "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
     "v5_hybrid_lowzp": "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"
   },
   "reference_reu_sha256": {
@@ -658,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "80ae7c03dbda90a761522b18e8478f0aceb664eec3825f311268752309a55e92",
+    "benchmark_sha256": "43a0c92c09252a782dddf0d6bcd81f1fcefeef5ca344b610ae22ff0135effb7b",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -756,7 +755,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "e350738fca599361272a235beb0b2ad086a3e2f3de912ba79ded21e3602d6221",
+    "report_sha256": "803b53ec994882acabe6ef5bd9e8432701c31893dbe1ed483960b3ab4fd2adc7",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -859,7 +858,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "0b0c49eed2644c2da6450cdd6166325874ff511d246660253d8852d476fefc4f",
+    "data_sha256": "d4c4443abc2a0daf46ab43fbc3c94266cefc9d3619ed5431f0aa0b173ca7f70d",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -2646,7 +2645,11 @@
     "date": "2026-10-13",
     "merged_pr": 109,
     "merge_sha": "f754cc87d0ba3518377a4e2d19a9e8fc6ac0d75a",
-    "postmerge_workflow_runs": {"validate_library": 38463930923, "comparable_unsigned": 38463930890, "turbo32": 38463930880},
+    "postmerge_workflow_runs": {
+      "validate_library": 38463930923,
+      "comparable_unsigned": 38463930890,
+      "turbo32": 38463930880
+    },
     "profiles_modified": [
       "v1_balanced",
       "v5_hybrid_lowzp"
@@ -2681,5 +2684,32 @@
       "v5_hybrid_lowzp": "d1c3d9e04c73c5fd2f30b839e0f5e247dd1aec05b0c77a13ed1b39c04946bf7c"
     },
     "issue39_complete": false
-  }
+  },
+  "issue39_v2v4_umul24_nocarry_clc_2026_10_13": {
+    "status": "PASS_NATIVE_VICE_PR_CI_PENDING",
+    "proof": "validation/review/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_RELEASE.json",
+    "doc": "docs/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_2026-10-13.md",
+    "baseline": {
+      "v1_balanced": "6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0",
+      "v2_pareto_fast": "9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7",
+      "v3_reu_512k": "973c14dc9c188cac46596960386c594b906c30e6aa408d6a284e117711ab9ee7",
+      "v4_reu_16m": "8a525a7b7c75d394b3fca7b1282255c77eecf3e6e96b47a04b5944c59b9a3faa",
+      "v5_hybrid_lowzp": "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"
+    },
+    "candidate": {
+      "v1_balanced": "6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0",
+      "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
+      "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
+      "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
+      "v5_hybrid_lowzp": "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"
+    },
+    "new_mean_cycles": 417.78322355676096,
+    "zero_page_growth": 0,
+    "resident_growth": 0,
+    "issue39_complete": false,
+    "native_vice_calls": 576,
+    "native_vice_evidence": "validation/review/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_NATIVE_2026-10-13.json",
+    "native_vice_evidence_sha256": "661d8455182da7c1a741fb736980a15972f45db56c169e292d90d55cd0bd6d04"
+  },
+  "issue39_umul16_umul24_optisearch_resource_audit_2026_10_13": {"status":"RESEARCH_ONLY_NO_DEFAULT_PROMOTION","document":"docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md","evidence":"validation/review/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT.json","production_prgs_changed":false,"public_api_changed":false,"private_optisearch_source_published":false,"umul16_public_abi_qualified":false,"umul24_paired_qualifed":false,"issue39_complete":false}
 }

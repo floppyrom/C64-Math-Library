@@ -9,9 +9,9 @@
   ],
   "resident_sha256": {
     "v1_balanced": "6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0",
-    "v2_pareto_fast": "9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7",
-    "v3_reu_512k": "973c14dc9c188cac46596960386c594b906c30e6aa408d6a284e117711ab9ee7",
-    "v4_reu_16m": "8a525a7b7c75d394b3fca7b1282255c77eecf3e6e96b47a04b5944c59b9a3faa",
+    "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
+    "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
+    "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
     "v5_hybrid_lowzp": "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"
   },
   "results": {

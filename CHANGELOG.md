@@ -1,3 +1,10 @@
+2026-10-13 ISSUE39 V2V4 UMUL24 NOCARRY CLC NATIVE VALIDATION
+- Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V2/V3/V4: 576 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_NATIVE_2026-10-13.json.
+
+2026-10-13 ISSUE39 UMUL24 NONCARRY CLC PRODUCTION
+- V2/V3/V4 UMUL24 redundant CLC removal: 7,789/10,324 calls -2 cycles and 2,535 unchanged; mean 417.783224 cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.
+- Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE/PR/main pending. docs/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_2026-10-13.md
+
 2026-10-13 ISSUE39 UMUL16/UMUL24 OPTISEARCH RESOURCE SCREEN (RESEARCH ONLY)
 - Compared full public UMUL16 benchmarks to a verified arithmetic-only private near-page candidate, and reviewed the public 24-ZP FAST24 carry-transfer record against a retained private 27-ZP record. Timings are NOT ABI/CPU-model comparable; candidate relies on executable ZP and stack-page code. No production gain promoted; source and resident PRGs unchanged. Issue #39 remains open. See docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md.
 
