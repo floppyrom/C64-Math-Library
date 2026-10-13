@@ -59,6 +59,8 @@ def main():
         py("validate_umul24_directout")
         evidence=json.loads((R/PROOF).read_text())
         assert evidence["mean_saving"]==1 and evidence["tested_calls_per_profile"]==10324
+        # Packaging audits must never see transient generated source trees.
+        subprocess.run(["make","clean"],cwd=R,check=True)
         for _ in range(3):
             reseal()
             py("package_audit")
