@@ -1,0 +1,39 @@
+name: Issue39 integer-root small input latency Pareto research
+on:
+  push:
+    branches: [issue39-isqrt16-small-input-tail-screen]
+    paths:
+      - 'relocatable_source/game_math/isqrt16_seed_square_trial.inc'
+      - 'tools/screen_issue39_isqrt16_smalln_tail.py'
+      - '.github/workflows/issue39-root16-smalln-tail.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-domain-tail:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Exact 65536 root16 and 2000+ root32 same-input old/new cycle audit
+        run: python3 tools/screen_issue39_isqrt16_smalln_tail.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-smalln-isqrt16-pareto
+          path: validation/review/ISSUE39_ISQRT16_SMALLN_TAIL_RESEARCH.json
+  relocated-and-hybrid:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Source-assemble stock root islands at both relocation maps
+        run: python3 tools/screen_issue39_isqrt16_inplace_source.py
+      - name: Check V5 hybrid root inherit at both relocation maps
+        run: python3 tools/screen_issue39_isqrt16_v5_inherit.py
