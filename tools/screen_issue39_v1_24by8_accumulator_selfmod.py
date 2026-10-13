@@ -11,13 +11,14 @@ from mini6502 import Assembler,CPU
 from validate_unsigned_division import api,wr,rd,expected
 from benchmark_unsigned_common_corpus import corpus
 from audit_issue39_unsigned_small_workloads import pairs,KINDS
+from issue39_u24_txa_historical_parent import restore_pre_txa
 
 CURRENT_SHA='cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd'
 SMC_SHA='d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a'
 PORTABLE=R/'tools/candidates/issue39_v1_24by8_accumulator.asm'
 PRG=R/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 SOURCE=R/'tools/candidates/issue39_v1_24by8_accumulator_selfmod.asm'
-b=PRG.read_bytes()
+b=restore_pre_txa('v1_balanced',PRG.read_bytes())
 assert hashlib.sha256(b).hexdigest() in (CURRENT_SHA,SMC_SHA), 'unexpected released V1 source'
 if hashlib.sha256(b).hexdigest()==SMC_SHA:
   prior,_,_=Assembler().assemble(PORTABLE.read_text())
