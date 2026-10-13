@@ -63,11 +63,11 @@ def main():
   assert (R/'relocatable_source'/V2/'math_relocatable.asm').read_text().count('umul8_directout_trial.inc')==1
   maps={}
   for kind in ('reference','alternate'):
-   rebuilt,meta=assemble(kind,tmp/'rebuilt')
+   rebuilt,meta=assemble(kind,tmp/'rebuilt'/kind)
    if kind=='reference':assert sha(rebuilt)==EXPECTED
    v=validate.validate(V2,tmp/'rebuilt'/kind)
    assert v['status']=='PASS' and v['public_entries_executed']>=56
-   vv,_=build5(kind,tmp/'v5')
+   vv,_=build5(kind,tmp/'v5'/kind)
    if kind=='reference':assert sha(vv)==V5_EXPECT,'V5 changed unexpectedly'
    maps[kind]={'sha256':sha(rebuilt),'public_calls':v['machine_calls'],
       'public_entries':v['public_entries_executed'],'v5_sha256':sha(vv)}
