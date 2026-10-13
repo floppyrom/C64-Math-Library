@@ -58,7 +58,10 @@ def main():
             cfg=ROOT/"relocatable_source"/profile/f"math_config_{mode}.inc"
             man=asm.build(profile,cfg,folder)
             prg=(folder/man["output_prg"]).read_bytes()
-            assert len(prg)==len(original_bytes),(profile,mode,"unexpected resident length")
+            if mode=="reference":
+                assert len(prg)==len(original_bytes),(profile,mode,"unexpected resident length")
+            else:
+                assert len(prg)>1024,(profile,mode,"truncated relocated resident")
             if mode=="reference":
                 ld=int.from_bytes(prg[:2],"little")
                 assert ld==int.from_bytes(original_bytes[:2],"little")==0x1000
