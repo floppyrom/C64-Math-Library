@@ -48,7 +48,7 @@ jobs:
           from pathlib import Path
           import hashlib, subprocess
           paths = sorted(p.decode('utf-8') for p in
-              subprocess.check_output(['git','ls-files','-z']).split(b'\\0') if p)
+              subprocess.check_output(['git','ls-files','-z']).split(b'\0') if p)
           assert 'SHA256SUMS.txt' in paths
           def seal():
               rows=[]
@@ -56,7 +56,7 @@ jobs:
                   if item=='SHA256SUMS.txt': continue
                   b=Path(item).read_bytes()
                   rows.append(hashlib.sha256(b).hexdigest()+'  '+item)
-              Path('SHA256SUMS.txt').write_text('\\n'.join(rows)+'\\n')
+              Path('SHA256SUMS.txt').write_text('\n'.join(rows)+'\n')
           seal()
           subprocess.run(['python3','tools/package_audit.py'],check=True)
           seal()
