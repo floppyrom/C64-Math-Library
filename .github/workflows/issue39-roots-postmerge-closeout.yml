@@ -1,0 +1,34 @@
+name: Issue39 integer roots postmerge release closeout
+on:
+  push:
+    branches: [issue39-root-release-postmerge-status]
+    paths:
+      - tools/finalize_issue39_roots_postmerge_main.py
+      - .github/workflows/issue39-roots-postmerge-closeout.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify-and-seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-root-release-postmerge-status
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact root resident SHA/native proof and seal finished main CI status
+        run: python3 tools/finalize_issue39_roots_postmerge_main.py
+      - name: Commit checked metadata, both changelogs and package checksum audit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'release(issue39): seal main-green integer roots family closeout'
+          git push origin HEAD:issue39-root-release-postmerge-status
