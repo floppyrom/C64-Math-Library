@@ -7,11 +7,13 @@ historical baseline. No git/network or mutable base reference needed.
 """
 from pathlib import Path
 from issue39_root_historical_parent import undo_root_release
+from issue39_umul24_v1v5_historical_parent import undo_umul24_tailcall
 import hashlib,json
 R=Path(__file__).resolve().parents[1]
 LEDGER=R/'validation/review/ISSUE39_U24_TXA_PARENT_RESTORATION.json'
 def sha(data):return hashlib.sha256(data).hexdigest()
 def restore_pre_txa(profile,prg):
+    prg=undo_umul24_tailcall(profile,prg)
     prg=undo_root_release(profile,prg)
     record=json.loads(LEDGER.read_text())
     assert record['status']=='PASS_REVERSIBLE_SHA_PINNED_PARENT_DELTA'
