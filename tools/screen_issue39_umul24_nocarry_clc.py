@@ -54,10 +54,19 @@ def run_profile(profile,mode,pairs):
     adr=ADDRESS[mode]
     lo=int.from_bytes(old_blob[:2],'little')
     off=2+adr-lo
-    assert old_blob[off:off+2]==OLD,(profile,mode,hex(adr),old_blob[off:off+2].hex())
-    new.mem[adr:adr+2]=NEW
-    candidate=old_blob[:off]+NEW+old_blob[off+2:]
-    changed=[lo+j for j,(a,b) in enumerate(zip(old_blob[2:],candidate[2:])) if a!=b]
+    installed=old_blob[off:off+2]
+    assert installed in (OLD,NEW),(profile,mode,hex(adr),installed.hex())
+    if installed==NEW:
+        # The release is installed: reverse only the two proven bytes in
+        # transient model memory, never change the shipped resident image.
+        old.mem[adr:adr+2]=OLD
+        historical=old_blob[:off]+OLD+old_blob[off+2:]
+        candidate=old_blob
+    else:
+        historical=old_blob
+        new.mem[adr:adr+2]=NEW
+        candidate=old_blob[:off]+NEW+old_blob[off+2:]
+    changed=[lo+j for j,(a,b) in enumerate(zip(historical[2:],candidate[2:])) if a!=b]
     assert changed==[adr,adr+1],(profile,mode,changed)
     hist=Counter();signed_calls=0
     for i,(x,y) in enumerate(pairs):
@@ -77,7 +86,7 @@ def run_profile(profile,mode,pairs):
     return dict(cases=len(pairs),cycle_delta_histogram={str(k):v for k,v in sorted(hist.items())},
        mean_saving_cycles=-sum(k*v for k,v in hist.items())/len(pairs),
        signed_mixed_cases=signed_calls,changed_addresses=[hex(v) for v in changed],
-       original_sha256=sha(old_blob),candidate_sha256=sha(candidate))
+       original_sha256=sha(historical),candidate_sha256=sha(candidate))
 
 def source_alt(profile,folder):
     cfg=R/'relocatable_source'/profile/'math_config_alternate.inc'
@@ -93,10 +102,17 @@ def run_alternate(profile,folder,pairs):
     adr=ADDRESS['alternate']
     lo=int.from_bytes(old_blob[:2],'little')
     off=2+adr-lo
-    assert old_blob[off:off+2]==OLD,(profile,hex(adr),old_blob[off:off+2].hex())
-    b.mem[adr:adr+2]=NEW
-    patched=old_blob[:off]+NEW+old_blob[off+2:]
-    changed=[lo+j for j,(x,y) in enumerate(zip(old_blob[2:],patched[2:])) if x!=y]
+    installed=old_blob[off:off+2]
+    assert installed in (OLD,NEW),(profile,hex(adr),installed.hex())
+    if installed==NEW:
+        a.mem[adr:adr+2]=OLD
+        historical=old_blob[:off]+OLD+old_blob[off+2:]
+        patched=old_blob
+    else:
+        historical=old_blob
+        b.mem[adr:adr+2]=NEW
+        patched=old_blob[:off]+NEW+old_blob[off+2:]
+    changed=[lo+j for j,(x,y) in enumerate(zip(historical[2:],patched[2:])) if x!=y]
     assert changed==[adr,adr+1]
     hist=Counter();signed_calls=0
     for i,(x,y) in enumerate(pairs):
@@ -113,7 +129,7 @@ def run_alternate(profile,folder,pairs):
     return dict(cases=len(pairs),cycle_delta_histogram={str(k):v for k,v in sorted(hist.items())},
                 mean_saving_cycles=-sum(k*v for k,v in hist.items())/len(pairs),
                 signed_mixed_cases=signed_calls,changed_addresses=[hex(v) for v in changed],
-                original_sha256=sha(old_blob),candidate_sha256=sha(patched))
+                original_sha256=sha(historical),candidate_sha256=sha(patched))
 
 def main():
     pairs=corpus()
