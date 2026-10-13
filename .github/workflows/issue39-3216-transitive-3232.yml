@@ -1,0 +1,32 @@
+name: Issue39 V1 32-16 transitive 32-32 benchmark publication
+on:
+  push:
+    branches: [issue39-v1-3216-ool-source-trial]
+    paths:
+      - tools/finalize_issue39_3216_transitive_3232.py
+      - .github/workflows/issue39-3216-transitive-3232.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  correct-metrics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v1-3216-ool-source-trial
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Republish transitive V1 32-32 means from SHA-pinned common input data
+        run: python3 tools/finalize_issue39_3216_transitive_3232.py
+      - name: Commit corrected public metrics and fully sealed package
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: publish and seal exact V1 32/32 transitive timing'
+          git push origin HEAD:issue39-v1-3216-ool-source-trial

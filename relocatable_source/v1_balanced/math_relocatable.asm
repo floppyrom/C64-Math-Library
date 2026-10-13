@@ -255,7 +255,7 @@ MATH_R = MATH_IO+$1C
     !byte $0B, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $38, $26, $1A, $26, $1B
     !byte $26, $16, $2A, $B0, $18, $C5, $13, $90, $1F, $D0, $06, $A4, $16, $C4, $12, $90
     !byte $17, $A8, $A5, $16, $E5, $12, $85, $16, $98, $E5, $13, $B0, $0B, $A8, $A5, $16
-    !byte $E5, $12, $85, $16, $98, $E5, $13, $38, $A2, $00, $4C, $73, $45, $06, $14, $26
+    !byte $E5, $12, $85, $16, $98, $E5, $13, $38, $A2, $00, $4C, $6C, $45, $06, $14, $26
     !byte $15, $26, $16, $26, $17, $38, $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90
     !byte $06, $85, $17, $84, $16, $E6, $14, $06, $14, $26, $15, $26, $16, $26, $17, $38
     !byte $A5, $16, $E5, $12, $A8, $A5, $17, $E5, $13, $90, $06, $85, $17, $84, $16, $E6
@@ -1411,15 +1411,15 @@ L446F:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00
-    jsr REG_KERNEL+$0400
-    bcc L450C
+L44F0:
     lda #$00
     sta ZP_MAIN+$18
     sta ZP_MAIN+$19
     rts
-L450C:
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00
+    jsr REG_KERNEL+$0400
+    bcs L44F0
     lda ZP_MAIN+$16
     sta ZP_MAIN+$18
     lda ZP_MAIN+$17
@@ -1429,22 +1429,22 @@ L450C:
     rol ZP_MAIN+$19
     rol ZP_MAIN+$14
     rol
-    bcs L4537
+    bcs L4530
     cmp ZP_MAIN+$11
-    bcc L4542
-    bne L452B
+    bcc L453B
+    bne L4524
     ldy ZP_MAIN+$14
     cpy ZP_MAIN+$10
-    bcc L4542
-L452B:
+    bcc L453B
+L4524:
     tay
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     tya
     sbc ZP_MAIN+$11
-    bcs L4542
-L4537:
+    bcs L453B
+L4530:
     tay
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -1452,28 +1452,28 @@ L4537:
     tya
     sbc ZP_MAIN+$11
     sec
-L4542:
+L453B:
     ldx #$0F
     rol ZP_MAIN+$18
     rol ZP_MAIN+$19
     rol ZP_MAIN+$14
     rol
-    bcs L4565
+    bcs L455E
     cmp ZP_MAIN+$11
-    bcc L4570
-    bne L4559
+    bcc L4569
+    bne L4552
     ldy ZP_MAIN+$14
     cpy ZP_MAIN+$10
-    bcc L4570
-L4559:
+    bcc L4569
+L4552:
     tay
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
     sta ZP_MAIN+$14
     tya
     sbc ZP_MAIN+$11
-    bcs L4570
-L4565:
+    bcs L4569
+L455E:
     tay
     lda ZP_MAIN+$14
     sbc ZP_MAIN+$10
@@ -1481,11 +1481,11 @@ L4565:
     tya
     sbc ZP_MAIN+$11
     sec
-    !byte $4C, $00, $19
+L4569:
+    jmp REG_LOW+$0900
     rol ZP_MAIN+$18
     rol ZP_MAIN+$19
-    sta ZP_MAIN+$15
-    clc
+    !byte $85, $17, $18
     rts
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
@@ -1495,7 +1495,7 @@ L4565:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
 L4600:
     cpx #$01
     bcc L460E
@@ -4478,6 +4478,7 @@ LCAFB:
 !source "sdiv24_directout_balanced.inc"
 !source "sdiv32_16_direct_balanced.inc"
 !source "udiv32_16_loop_unrolled.inc"
+!source "udiv32_16_ool_zero_trial.inc"
 !source "udiv32_32_early_gate.inc"
 !source "udiv32_32_high_qone.inc"
 !source "udiv32_32_d8_delegate.inc"

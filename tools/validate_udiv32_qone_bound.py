@@ -8,8 +8,11 @@ from common_corpus_ranking import load_common
 from validate_unsigned_division import load,wr,rd,expected
 report=load_common(R)
 required={
-    'MATH_UDIV32_32':(335.8255771344815,2729),
-    'MATH_UMOD32_32':(399.6768328445748,1705)}
+    # PR100 V1 32/16 hot-path fallthrough is invoked by bounded 32/32
+    # fallback calls. Recompute on exactly the official same-input corpus;
+    # V5 keeps its independent V2 donor and therefore its original means.
+    'MATH_UDIV32_32':(335.7508244778307,2729),
+    'MATH_UMOD32_32':(399.55718475073314,1705)}
 v5_means={'MATH_UDIV32_32':275.01319164529133,
           'MATH_UMOD32_32':299.58299120234600}
 for name,(expected_mean,cases) in required.items():

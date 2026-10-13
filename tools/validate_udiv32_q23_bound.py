@@ -7,8 +7,11 @@ sys.path.insert(0,str(R/'tools'))
 from common_corpus_ranking import load_common
 from validate_unsigned_division import load,wr,rd,expected
 j=load_common(R)
-target={'MATH_UDIV32_32':(335.8255771344815,2729),
-        'MATH_UMOD32_32':(399.6768328445748,1705)}
+target={
+    # These public 32/32 aliases can reach V1's relocated 32/16 helper.
+    # Source-installed PR100 exact same-input means, not historical PR86 means.
+    'MATH_UDIV32_32':(335.7508244778307,2729),
+    'MATH_UMOD32_32':(399.55718475073314,1705)}
 v5_means={'MATH_UDIV32_32':275.01319164529133,
           'MATH_UMOD32_32':299.58299120234600}
 for name,(mean,cases) in target.items():

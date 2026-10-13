@@ -1,3 +1,18 @@
+2026-10-13 ISSUE39 V1 32/16 TRANSITIVE 32/32 PERFORMANCE PUBLICATION
+- Source V1 32/16 hot-path relocation also accelerates 32/32 fallback for a bounded class. Under exact current same-input corpus, V1 UDIV32_32 mean 335.825577 -> 335.750824 and UMOD32_32 399.676833 -> 399.557185. V5 donor remains unchanged. Updated PERFORMANCE.md, V5 HYBRID_PERFORMANCE.csv and SHA-pinned bound checks, no production binary change. Keep issue #39 OPEN.
+
+2026-10-13 ISSUE39 HISTORICAL DIV/MOD REPLAY PINNING AFTER V1 32/16 SOURCE PROMOTION
+- Recovered exact prior PR99 V1 resident bytes from SHA-pinned current V1 by reversing ONLY the new 7-byte cold handler, 111-byte 32/16 continuation displacement and unroll return JMP; verify reverse SHA equals immutable prior main before playing historical PR78/PR81 24/8 proofs.
+- Updated V2 UMOD8 history against exact SHA-pinned current V2, restoring only the 104 changed wrapper/helper bytes for the original exhaustive 65536-case paired A/B. V5 unchanged-source check short-circuits before invoking historical PR71 inverse. Historical tests and general profile correctness remain independent; issue #39 OPEN. docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md
+
+2026-10-13 ISSUE39 V1 32/16 SOURCE INSTALLED NATIVE VICE GATE
+- Pinned real x64sc executed 384 old/new complete resident calls across V1 and V5, two public 32/16 aliases and 48 matching operands each. No Q32/R16/carry/N/D/ROM-underlay or output-dump differences. V5 32/16 donor behavior unchanged. Native cycle timing NOT measured.
+- Source-built reference/alternate maps, 56 stable APIs, full 822,050 unsigned / 364,533 signed, comparable 136,335, and package/standalone checks passed. Exact source/PRG SHA evidence and native report sealed. Issue #39 still OPEN. docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md
+
+2026-10-13 ISSUE39 V1 32/16 RELOCATABLE ZERO-HANDLER PRODUCTION
+- Production-staged symbolic V1 32/16 cold zero-handler source: source generator, reference/alternate maps and V5 hybrid refreshed. Main success path -1 cycle in paired CPU model, divide-by-zero +2. 56 stable APIs and resident lengths unchanged; no normal ZP growth.
+- Full 822,050 unsigned, 364,533 signed and 136,335 same-input public calls passed. Source-built installed-image native VICE must still pass before merge. Issue #39 remains OPEN. docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md
+
 2026-10-13 ISSUE39 V1 UDIV32/16 RARE-ZERO OUT-OF-LINE RESEARCH
 - Research-only V1 32/16 optimization: move seven-byte divide-zero cleanup to verified empty $44F0, invert branch, shift 111-byte low-word continuation and adjust $1B6A unrolled-loop backlink. No installed resident/API/normal-ZP changes.
 - 15,826 identical operand pairs / 31,652 CPU-model public calls: every tested nonzero divisor saves 1 cycle; divide-zero adds 2 cycles, explicit tradeoff. Official weighted deltas UDIV32/16 -0.834005 and UMOD32/16 -0.734311. Actual native VICE x64sc 192 complete old/new calls passed with exact outputs. Source/alternate/hybrid production integration NOT yet qualified; issue #39 remains OPEN. docs/ISSUE39_V1_3216_RARE_ZERO_OUTOFLINE_2026-10-13.md

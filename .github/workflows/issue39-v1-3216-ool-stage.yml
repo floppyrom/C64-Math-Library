@@ -1,0 +1,39 @@
+name: Issue39 V1 32-16 full source-built release staging
+# Resubmit from current head after incorporating the native-release verifier.
+on:
+  push:
+    branches: [issue39-v1-3216-ool-source-trial]
+    paths:
+      - 'tools/stage_issue39_v1_3216_ool_release.py'
+      - '.github/workflows/issue39-v1-3216-ool-stage.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  stage-not-merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v1-3216-ool-source-trial
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Full V1/V5 release staging with exact source and all-profile public validators
+        run: python3 tools/stage_issue39_v1_3216_ool_release.py
+      - name: Commit staged release only if every gate succeeded
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: stage V1 32/16 source-installed cold-zero release (native gate pending)'
+          git push origin HEAD:issue39-v1-3216-ool-source-trial
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v1-3216-source-release-stage
+          path: validation/review/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION.json

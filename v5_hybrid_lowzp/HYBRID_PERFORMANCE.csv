@@ -1,14 +1,14 @@
 routine,canonical_name,v1_mean_cycles,v5_mean_cycles,improvement_percent,provenance
 MATH_UDIV16,div_u16_u16_u16_16,132.725857,126.385862,4.77676,2026-09-20 final division-family public-ABI validation
 MATH_UDIV24,div_u24_u24_u24_24,164.369661,156.996423,4.485766,2026-10-13 exact same-input U24 TXA source promotion
-MATH_UDIV32_16,div_u32_u16_u32_16,825.873947,617.202638,25.266726,Issue39 same-input V1 dual-loop unroll; V5 keeps V2-derived 32/16 core
+MATH_UDIV32_16,div_u32_u16_u32_16,825.039941,617.202638,25.191181,2026-10-13 Issue39 same-input V1 32/16 OOL-zero source
 MATH_UMOD8,mod_u8_u8_u8,58.439757,58.129412,0.531051,"2026-10-11 issue39 exact same-input guarded remainder UMOD8: 65536 per profile, no added ZP"
 MATH_UMOD16,mod_u16_u16_u16,189.383578,198.610557,-4.872112,2026-10-11 issue39 identical-input 1705-case V1/V5 benchmark
 MATH_UMOD24,mod_u24_u24_u24,230.804894,207.493883,10.099877,2026-10-13 exact same-input U24 TXA source promotion
-MATH_UMOD32_16,mod_u32_u16_u16,843.629912,591.943109,29.833793,Issue39 same-input V1 dual-loop unroll; V5 keeps V2-derived 32/16 core
+MATH_UMOD32_16,mod_u32_u16_u16,842.895601,591.943109,29.772666,2026-10-13 Issue39 same-input V1 32/16 OOL-zero source
 MATH_COS8,cos_u8_s8,29,23,20.6897,V2 direct import; exhaustive phase/cycle parity
 MATH_SINCOS8,sincos_u8_s8_s8,39,31,20.5128,V2 direct import; exhaustive phase/cycle parity
 MATH_ATAN2_8,atan2_s8_s8_u8,48.447189,44.962814,7.1911,"V2 sum-fast signed-log import; exhaustive 65,536-vector result/cycle parity; <=1 phase-unit error"
 MATH_VEC2_NORMALIZE_Q8_8,normalize_s16_s16_s16_s16_q8_8_to_q1_15,160.150080,160.150080,0,2026-09-21 size refresh; four-page logarithmic ratio; no per-case slowdown
-MATH_UDIV32_32,div_u32_u32_u32_32,335.825577,275.013192,18.108325,2026-10-11 issue39 V1 D8 32/32 paired benchmark; V5 byte-identical
-MATH_UMOD32_32,mod_u32_u32_u32,399.676833,302.353079,24.350612,2026-10-11 issue39 V1 D8 32/32 paired benchmark; V5 byte-identical
+MATH_UDIV32_32,div_u32_u32_u32_32,335.750824,275.013192,18.090092,2026-10-13 source-installed V1 32/16 transitive public 32/32 identical-input benchmark
+MATH_UMOD32_32,mod_u32_u32_u32,399.557185,299.582991,25.021248,2026-10-13 source-installed V1 32/16 transitive public 32/32 identical-input benchmark

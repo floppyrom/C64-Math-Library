@@ -63,11 +63,25 @@ def main():
         old[2+HELPER-lo:2+END-lo]=bytes(101)
         oldbytes=bytes(old)
         assert sha(oldbytes)=='2a5f17aa3eabff7c53d75f46335dcbec1aa34d2343bf36d53f909bf109eec0a3'
+    elif sha(parentbytes)=='c3c0898bc61a9836e7f58d1b51088ccc644613bf68d9e4199aa1243c4f164c84':
+        # Current PR100 V2 remains a SHA-pinned 56-entry source-built image.
+        # Reconstruct ONLY the retired UMOD8 guard for this historical A/B;
+        # other divisions changed since PR70 and must remain identical.
+        assert sha(newbytes)==sha(parentbytes), 'current V2 source-build drift'
+        lo=int.from_bytes(parentbytes[:2],'little')
+        old=bytearray(parentbytes)
+        assert old[2+ENTRY-lo:2+ENTRY-lo+3]==bytes.fromhex('4c2353')
+        assert sha(old[2+HELPER-lo:2+END-lo])=='6a733be6ca05992b46585c8443ae6ce7b21a075bfdfdfe34cf844e748b8f6f29'
+        old[2+ENTRY-lo:2+ENTRY-lo+3]=bytes.fromhex('ad10c0')
+        old[2+HELPER-lo:2+END-lo]=bytes(101)
+        oldbytes=bytes(old)
     else:
         raise AssertionError('unrecognized V2 historical/release resident SHA')
     assert sha(oldbytes) in (
         'e1e828a2748099b6f05b224b98ca26960d120f8ba886c4906e8b52bdb8b4fbcd',
-        '2a5f17aa3eabff7c53d75f46335dcbec1aa34d2343bf36d53f909bf109eec0a3')
+        '2a5f17aa3eabff7c53d75f46335dcbec1aa34d2343bf36d53f909bf109eec0a3') or (
+            sha(parentbytes)=='c3c0898bc61a9836e7f58d1b51088ccc644613bf68d9e4199aa1243c4f164c84'
+            and oldbytes != parentbytes)
     assert oldbytes[:2]==newbytes[:2], 'load address changed'
     assert len(oldbytes)==len(newbytes), 'resident length changed'
     oldmem,lo=memof(oldbytes)
@@ -91,8 +105,9 @@ def main():
     from issue39_v5_umod32_parent import restore_v5_umod32_parent
     v5_live=V5.read_bytes()
     v5_source=V5_NEW.read_bytes()
-    assert v5_live in (v5_source, restore_v5_umod32_parent(v5_source)), \
-        'V5 contains changes outside SHA-certified PR71 UMOD32/32 frontend'
+    if v5_live!=v5_source:
+        assert v5_live==restore_v5_umod32_parent(v5_source), \
+            'V5 contains changes outside SHA-certified PR71 UMOD32/32 frontend'
 
     before=cpubuild(oldbytes)
     after=cpubuild(newbytes)

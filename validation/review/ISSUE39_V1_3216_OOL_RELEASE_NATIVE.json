@@ -1,0 +1,44 @@
+{
+  "full_native_calls": 384,
+  "native_cycles_measured": false,
+  "profiles": {
+    "v1_balanced": {
+      "old_sha256": "2567dccbc4e01f3d606e80126c8150c58e4f30b8b726ff38e116c6aaec644178",
+      "operations": {
+        "MATH_UDIV32_16": {
+          "exact_match": true,
+          "new_dump_sha256": "64e263ce10aa9d9648b5f930c15c4e3ceeb603cc3dd6450e82cdc27892010410",
+          "old_dump_sha256": "64e263ce10aa9d9648b5f930c15c4e3ceeb603cc3dd6450e82cdc27892010410",
+          "paired_operands": 48
+        },
+        "MATH_UMOD32_16": {
+          "exact_match": true,
+          "new_dump_sha256": "64e263ce10aa9d9648b5f930c15c4e3ceeb603cc3dd6450e82cdc27892010410",
+          "old_dump_sha256": "64e263ce10aa9d9648b5f930c15c4e3ceeb603cc3dd6450e82cdc27892010410",
+          "paired_operands": 48
+        }
+      },
+      "source_built_sha256": "9af44deda4a1527a0ea5ecc09a48e1ec4927a45099f7b2e26ced0f618274c0a4"
+    },
+    "v5_hybrid_lowzp": {
+      "old_sha256": "431824532ef218423b77bfc8353ccac8e380847c824f040aeffa5c7903c0ea2d",
+      "operations": {
+        "MATH_UDIV32_16": {
+          "exact_match": true,
+          "new_dump_sha256": "0c33341bba88f975f624f40219a029731493ad2fc2b02127f8e1449f101b2697",
+          "old_dump_sha256": "0c33341bba88f975f624f40219a029731493ad2fc2b02127f8e1449f101b2697",
+          "paired_operands": 48
+        },
+        "MATH_UMOD32_16": {
+          "exact_match": true,
+          "new_dump_sha256": "0c33341bba88f975f624f40219a029731493ad2fc2b02127f8e1449f101b2697",
+          "old_dump_sha256": "0c33341bba88f975f624f40219a029731493ad2fc2b02127f8e1449f101b2697",
+          "paired_operands": 48
+        }
+      },
+      "source_built_sha256": "0662a9644ee4ebb6df7a06f9c77a40ffb5308b69ecd5e6bc9c7d6250b5bd5750"
+    }
+  },
+  "resident_images_were_source_built": true,
+  "status": "PASS_STAGED_NATIVE_VICE"
+}

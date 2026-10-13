@@ -19,7 +19,42 @@ PR81='cdc2ca502d664055f896d7ad1601e8dd994b61be33e24bde3e25fc0dcbee1cdd'
 SMC='d6e013740a8c1ac8f35fa895b69afb8bf6226cde99f491a470b4518a7c6dfa9a'
 
 def sha(b):return hashlib.sha256(b).hexdigest()
+def undo_v1_3216_coldpath_for_historical_audit(prg: bytes) -> bytes:
+    """Reverse ONLY the exact SHA-pinned PR100 V1 32/16 code displacement.
+
+    Historical PR78/PR81 UDIV24 proofs must replay their true old binary
+    rather than accepting a current V1 image with unrelated later 32/16 bytes.
+    Verify that the inverse maps back to the immutable prior main digest.
+    """
+    parents={
+        # V1 uses the optimized 32/16 arithmetic directly; V5 retains the
+        # source-backed V1 island even while its public API uses a V2 donor.
+        '9af44deda4a1527a0ea5ecc09a48e1ec4927a45099f7b2e26ced0f618274c0a4':
+          '2567dccbc4e01f3d606e80126c8150c58e4f30b8b726ff38e116c6aaec644178',
+        '0662a9644ee4ebb6df7a06f9c77a40ffb5308b69ecd5e6bc9c7d6250b5bd5750':
+          '431824532ef218423b77bfc8353ccac8e380847c824f040aeffa5c7903c0ea2d',
+    }
+    old=parents.get(sha(prg))
+    if old is None:return prg
+    lo=int.from_bytes(prg[:2],'little')
+    assert lo==0x1000
+    off=lambda addr: 2+addr-lo
+    raw=bytearray(prg)
+    assert raw[off(0x4503):off(0x4505)]==bytes((0xb0,0xeb))
+    assert raw[off(0x1b6a):off(0x1b6d)]==bytes.fromhex('4c6c45')
+    cold=bytes(raw[off(0x44f0):off(0x44f7)])
+    assert cold==bytes.fromhex('a900851a851b60')
+    body=bytes(raw[off(0x4505):off(0x4574)])
+    assert len(body)==111
+    raw[off(0x450c):off(0x457b)]=body
+    raw[off(0x4503):off(0x450c)]=bytes.fromhex('9007a900851a851b60')
+    raw[off(0x44f0):off(0x44f7)]=bytes(7)
+    raw[off(0x1b6a):off(0x1b6d)]=bytes.fromhex('4c7345')
+    assert sha(raw)==old,('historical V1 32/16 inverse drift',sha(raw))
+    return bytes(raw)
+
 def restore_pr78(prg:bytes)->bytes:
+    prg=undo_v1_3216_coldpath_for_historical_audit(prg)
     prg=restore_pre_txa('v1_balanced',prg)
     if sha(prg)==PR78:return prg
     lo=int.from_bytes(prg[:2],'little')

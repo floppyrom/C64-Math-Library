@@ -1,0 +1,49 @@
+name: Issue39 3216 historical replays and publication reseal
+on:
+  push:
+    branches: [issue39-v1-3216-ool-source-trial]
+    paths:
+      - '.github/workflows/issue39-3216-historical-reseal.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  finalize-historical-and-seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v1-3216-ool-source-trial
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate independent V2 source builds and current V5 comparison
+        run: |
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind alternate
+          python3 tools/build_hybrid.py --config-kind reference
+      - name: Recheck SHA-pinned historical V1/V2 proofs
+        run: |
+          python3 tools/screen_issue39_v1_24by8_shared_subtraction.py --out /tmp/v1_24by8_historical.json
+          python3 tools/qualify_issue39_v2_umod8_candidate.py
+      - name: Seal changelogs release hashes and package ledger
+        run: python3 tools/finalize_issue39_3216_historical_replay.py
+      - name: Commit only fully sealed research and historical proof
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: reseal V1 3216 native release and historical benchmark evidence'
+          git push origin HEAD:issue39-v1-3216-ool-source-trial
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-3216-historical-reseal
+          path: |
+            /tmp/v1_24by8_historical.json
+            validation/review/ISSUE39_V2_UMOD8_D24_CANDIDATE.json
