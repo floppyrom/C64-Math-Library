@@ -56,7 +56,7 @@ def main():
     if sha(parentbytes)=='9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7':
         import subprocess
         assert sha(newbytes)==sha(parentbytes), 'PR105 source-built V2 resident drift'
-        source='ed0d0330c8130cb0adb6c7e8d3d62b9ca8bb9ab7'
+        source='f7164dd07223f2f1761dfe6260293af3420357fa'
         rel='v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg'
         historical=subprocess.check_output(['git','show',source+':'+rel],cwd=ROOT)
         assert sha(historical)=='c3c0898bc61a9836e7f58d1b51088ccc644613bf68d9e4199aa1243c4f164c84', \
