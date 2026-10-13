@@ -1,0 +1,30 @@
+name: Issue39 UMUL24 public tail fall-through source screen
+on:
+  push:
+    branches: [issue39-umul24-tail-fallthrough-screen]
+    paths:
+      - relocatable_source/multiply/umul24_directout.asm
+      - tools/screen_issue39_umul24_tail_fallthrough.py
+      - .github/workflows/issue39-umul24-tail-screen.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  paired-public-source-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare original source-built UMUL24 and new tail path across V2 V3 V4, two maps
+        run: |
+          python3 tools/screen_issue39_umul24_tail_fallthrough.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-umul24-tail-public-abi-screen
+          path: validation/review/ISSUE39_UMUL24_TAIL_FALLTHROUGH_SCREEN.json
