@@ -17,7 +17,7 @@ def main():
  a=json.loads(Path(sys.argv[1]).read_text())
  state=json.loads((ROOT/'RELEASE_STATUS.json').read_text())
  assert a['status']=='PASS_SOURCE_BACKED_HIGHGT_LIVE_X_RESEARCH'
- assert (a['paired_inputs'],a['cpu_calls'])==(29992,59984)
+ assert (a['paired_inputs'],a['cpu_calls'])==(34088,68176)
  assert set(a['profiles'])==set(PROFILES)
  assert not a['resident_changed'] and not a['public_api_changed']
  assert a['normal_zp_growth']==a['native_vice_calls']==0
@@ -57,7 +57,7 @@ def main():
  'memory exactly matched current SHA-pinned V1/V2 resident program bytes.',
  'The candidate retained all stable public API addresses.',
  '',
- '**29,992 identical-input pairs, 59,984 emulated 6502 executions**,',
+ '**34,088 identical-input pairs, 68,176 emulated 6502 executions**,',
  'zero promised Q/R/carry/operand/high-R/scratch/stack discrepancies.',
  'Tests included official same-input pairs, N2>D2, N2=D2, N2<D2,',
  'nonzero D8/high N2, uniform operands, structured edges, zero divisor.',
@@ -88,8 +88,8 @@ def main():
  ]
  DOC.write_text('\n'.join(doc)+'\n')
  log=(TAG+'\n'
- '- Source-reassembled V1/V2 unrestricted UDIV24 high-byte subtract using prior LAX-held X: LDA N2 -> TXA, saving 2 cycles and 2 code bytes on reached high_gt path. V1 UDIV24 official -0.761922, UMOD24 -0.684482; V2 UDIV24 -0.760813 and dedicated UMOD24 +0.003220 layout tradeoff.\n'
- '- 29,992 identical input pairs / 59,984 full CPU executions, zero Q24/R24/carry/ownership/stack errors in all tested scenarios. No production resident/API/normal ZP edits or native timing claims; V3/V4/V5 source-build qualification remains pending. Source/operand/cycle SHA evidence, both changelogs, docs, manual, release metadata/hashes updated; issue #39 OPEN. '+str(DOC.relative_to(ROOT))+'\n\n')
+ '- Source-reassembled V1/V2 unrestricted UDIV24 high-byte subtraction with preserved prior LAX-held X: LDA N2 -> TXA, saving 2 CPU cycles and 2 instruction bytes on reached high_gt path. '+str(concise)+'\n'
+ '- '+format(a['paired_inputs'],',')+' identical input pairs / '+format(a['cpu_calls'],',')+' full CPU calls, source-built original matched current resident SHA; zero Q24/R24/carry/input/high sentinel/stack mismatches. No resident/API/normal-ZP changes or native timing claims. V3/V4/V5 builds pending source promotion. Both changelogs, docs, release metadata/hashes updated; issue #39 OPEN. '+str(DOC.relative_to(ROOT))+'\n\n')
  for name in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
   p=ROOT/name
   if TAG not in p.read_text():p.write_text(log+p.read_text())
