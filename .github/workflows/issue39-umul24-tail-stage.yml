@@ -1,0 +1,40 @@
+name: Issue39 UMUL24 direct-result-tail release stage
+on:
+  push:
+    branches: [issue39-umul24-tail-fallthrough-screen]
+    paths:
+      - tools/stage_issue39_umul24_tail_release.py
+      - .github/workflows/issue39-umul24-tail-stage.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  full-source-stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-umul24-tail-fallthrough-screen
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Stage source-built V2/V3/V4 UMUL24 with full validations
+        run: |
+          python3 tools/stage_issue39_umul24_tail_release.py
+      - name: Commit release-stage files only after all gates succeed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: stage V2-V4 public UMUL24 direct tail release'
+          git push origin HEAD:issue39-umul24-tail-fallthrough-screen
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-umul24-tail-source-stage
+          path: validation/review/ISSUE39_UMUL24_TAIL_RELEASE_2026-10-13.json
