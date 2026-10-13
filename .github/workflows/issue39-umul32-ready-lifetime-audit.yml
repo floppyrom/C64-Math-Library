@@ -1,0 +1,32 @@
+name: Issue39 UMUL32 READY mixed-call pointer lifetime research
+on:
+  push:
+    branches: [issue39-umul32-ready-lifetime-audit]
+    paths:
+      - tools/issue39_umul32_ready_lifetime_audit.py
+      - .github/workflows/issue39-umul32-ready-lifetime-audit.yml
+  pull_request:
+    paths:
+      - tools/issue39_umul32_ready_lifetime_audit.py
+      - .github/workflows/issue39-umul32-ready-lifetime-audit.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mixed-call-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test V1/V5 UMUL32 ordinary and READY after mixed public routines
+        run: python3 tools/issue39_umul32_ready_lifetime_audit.py --output /tmp/issue39-umul32-ready-lifetime.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-umul32-ready-pointer-lifetime
+          path: /tmp/issue39-umul32-ready-lifetime.json
