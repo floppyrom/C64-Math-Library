@@ -13,7 +13,8 @@ def main():
     proof=json.loads((ROOT/NATIVE).read_text())
     assert proof['status']=='PASS_NATIVE_VICE_V2_UMUL8_PUBLIC_DIRECT_OUTPUT'
     assert proof['native_calls']==128 and proof['paired_operands']==64
-    assert proof['all_public_results_identical'] is True
+    assert proof['all_guaranteed_public_results_identical'] is True
+    assert proof['noncarry_flags_volatile_per_USER_MANUAL'] is True
     assert proof['native_cycles_measured'] is False
     statusfile=ROOT/'RELEASE_STATUS.json'
     state=json.loads(statusfile.read_text())
@@ -25,19 +26,20 @@ def main():
     assert sha(ROOT/PROFILE/'resident'/f'math_{PROFILE}_game_math.prg')==row['new_sha256']
     row.update(status='PASS_NATIVE_VICE_SOURCE_INSTALLED_PR_CI_PENDING',
        native_vice_calls=128,native_evidence=NATIVE,
+       volatile_status_differences=proof['noncarry_status_flag_differences'],
        native_evidence_sha256=sha(ROOT/NATIVE),native_cycles_measured=False)
     f=ROOT/DOC
     s=f.read_text().replace(
         'staged release; native VICE and PR/main CI pending',
         'native-qualified source release; independent PR/main CI pending')
     s=s.replace('**Pending**: native x64sc comparison on actual source-installed V2 resident, full PR CI and post-merge main CI.',
-        '**Native x64sc PASS:** 128 actual full-resident old/new calls over 64 fixed/edge/random operand pairs. Public output, caller inputs, carry, stack and sentinels agree with the pinned pre-release image. Native cycle timing was not measured. **Pending:** independent PR and post-merge main CI.')
+        '**Native x64sc PASS:** 128 actual full-resident old/new calls over 64 fixed/edge/random operand pairs. Guaranteed public output, caller inputs, carry, stack and sentinels agree with the pinned pre-release image. Non-carry N/Z/V status flags are explicitly volatile per USER_MANUAL.md; the observed status differences are recorded in the native report. Native cycle timing was not measured. **Pending:** independent PR and post-merge main CI.')
     assert '**Native x64sc PASS:**' in s
     f.write_text(s)
     note=(MARK+'\n'
       '- 128 actual x64sc old/new source-installed V2 UMUL8 public calls'
       ' (64 identical operands per image), exact Q16/input/carry/stack/sentinel'
-      ' outputs. No native cycle-timing assertion; six-cycle saving is from'
+      ' outputs. Non-carry status bits (N/Z/V) are explicitly volatile and their differences are recorded. No native cycle-timing assertion; six-cycle saving is from'
       ' exhaustive same-input model. V2-only, no resource growth.'
       ' See '+NATIVE+'. Issue #39 remains OPEN.\n\n')
     for fn in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
