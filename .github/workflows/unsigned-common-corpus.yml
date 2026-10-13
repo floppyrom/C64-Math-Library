@@ -12,6 +12,8 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Immutable pre-root main commit needed by exact old/new provenance tests
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
