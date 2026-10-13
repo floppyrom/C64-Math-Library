@@ -1,3 +1,8 @@
+2026-10-14 ISSUE39 UNSIGNED MULTIPLY FAMILY COMPLETE
+- UMUL8/16/24/32 and stateful READY: five-profile ABI, reference/alternate source-build and deterministic mixed-call review completed. UMUL8 exhaustive 65,536; UMUL16 10,169; UMUL24 10,324; UMUL32/READY 2,409 matched inputs/profile.
+- V1/V5 UMUL24 uniform -1 CPU-model cycle (466.042329 to 465.042329), 384 native x64sc old/new calls; no extra resident/ZP bytes. Normal UMUL32 pointer repair retained; private OptiSearch candidates not promoted without ABI/resource proof.
+- Postmerge main 33f364cfe0465a4df92e82dec1d94039ec2e1d5d full CI 38486190274, comparable 38486190247; family gate 38485318288. Other Issue39 families and REU Turbo/QS remain OPEN.
+
 2026-10-14 ISSUE39 V1V5 UMUL24 RARECARRY NATIVE SOURCE VALIDATION
 - Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V1/V5: 384 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_V1V5_UMUL24_RARECARRY_NATIVE_2026-10-14.json.
 

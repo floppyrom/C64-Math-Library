@@ -1,0 +1,34 @@
+{
+  "UMUL16_pairs_per_profile_per_map": 10169,
+  "UMUL24_pairs_per_profile_per_map": 10324,
+  "UMUL24_rarecarry_uniform_saving_cycles": 1,
+  "UMUL32_normal_lowzp_pointer_repair_preserved": true,
+  "UMUL32_ready_shared_pairs_per_profile": 2409,
+  "UMUL32_unqualified_ready_wrong_per_lowzp_profile": 312,
+  "UMUL8_exhaustive_pairs_per_lowzp_profile": 65536,
+  "compiled_profile_sha256": {
+    "v1_balanced": "f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7",
+    "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
+    "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
+    "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
+    "v5_hybrid_lowzp": "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90"
+  },
+  "issue39_complete": false,
+  "main_comparable_unsigned_run": 38486190247,
+  "main_full_library_run": 38486190274,
+  "main_sha": "33f364cfe0465a4df92e82dec1d94039ec2e1d5d",
+  "native_VICE_calls": 384,
+  "native_cycle_timing_measured": false,
+  "premerge_family_run": 38485318288,
+  "private_optisearch_source_published": false,
+  "routines": [
+    "MATH_UMUL8",
+    "MATH_UMUL16",
+    "MATH_UMUL24",
+    "MATH_UMUL32",
+    "MATH_UMUL32_READY"
+  ],
+  "separate_reu_multiply_step_pending": true,
+  "status": "PASS_POSTMERGE_MAIN_GREEN",
+  "unsigned_multiply_family_complete": true
+}

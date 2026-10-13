@@ -2,6 +2,8 @@
 
 **Scope:** MATH_UMUL8, MATH_UMUL16, MATH_UMUL24, MATH_UMUL32, MATH_UMUL32_READY. This review closes the **basic unsigned multiplication implementation family only after** the production candidate's exact-head and post-merge main checks pass. It does not certify the separately scheduled REU Turbo16/Turbo32 or V4 QS16 optimization families, signed multiply, or shifted-output multipliers.
 
+**Completion certification (14 October 2026):** The basic unsigned multiply implementation family is complete. The merged V1/V5 rare-carry change, independent full-source five-profile family gate, checksummed package and post-merge main library/performance checks passed. Issue #39 stays open for remaining families.
+
 ## Compatible source/ABI decisions
 
 | Family | Release selection and evidence | Resolution |
