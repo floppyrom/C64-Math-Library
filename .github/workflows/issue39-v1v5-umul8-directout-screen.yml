@@ -19,3 +19,57 @@ jobs:
         with:
           name: issue39-umul8-v1v5-research
           path: ${{ runner.temp }}/issue39_umul8_directout_screen.json
+- name: Current-main V1/V5 source-build promotion preflight (working copy only)
+        run: |
+          python3 tools/generate_sources.py
+          for k in reference alternate; do
+            python3 tools/assemble_sources.py --profile v1_balanced --config-kind "$k" --out build_umul8_before
+            python3 tools/build_hybrid.py --config-kind "$k" --out build_umul8_before
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          path=Path("tools/source_relocation.py")
+          s=path.read_text()
+          old="'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc'),"
+          new="'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc',\n  'umul8_directout_trial.inc'),"
+          assert s.count(old)==1, "current source generator layout changed"
+          assert Path("relocatable_source/v1_balanced/umul8_directout_trial.inc").exists()
+          path.write_text(s.replace(old,new))
+          PY
+          python3 tools/generate_sources.py
+          for k in reference alternate; do
+            python3 tools/assemble_sources.py --profile v1_balanced --config-kind "$k" --out build_umul8_after
+            python3 tools/build_hybrid.py --config-kind "$k" --out build_umul8_after
+          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          for profile in ("v1_balanced","v5_hybrid_lowzp"):
+            for kind in ("reference","alternate"):
+              root="build_umul8"
+              f=f"math_{profile}_source_built.prg"
+              before=Path(root+"_before")/kind/profile/f
+              after=Path(root+"_after")/kind/profile/f
+              assert before.exists() and after.exists(),(before,after)
+              b=before.read_bytes();a=after.read_bytes()
+              assert len(a)==len(b) and a[:2]==b[:2],(profile,kind,"resident span")
+              load=int.from_bytes(a[:2],"little")
+              diff={load+i for i,(v,w) in enumerate(zip(b[2:],a[2:])) if v!=w}
+              assert len(diff)==11,(profile,kind,len(diff),sorted(map(hex,diff)))
+              manifest=json.loads((Path(root+"_after")/kind/profile/"source_build_manifest.json").read_text())
+              assert len(manifest["public_entries"])==56,(profile,kind,"API")
+              print(profile,kind,"exact 11-byte delta, unchanged PRG span, 56 stable API entries",flush=True)
+          PY
+          python3 tools/validate_source_build.py v1_balanced --build build_umul8_after/reference --out "$RUNNER_TEMP/umul8-v1-ref"
+          python3 tools/validate_source_build.py v1_balanced --build build_umul8_after/alternate --out "$RUNNER_TEMP/umul8-v1-alt"
+      - name: Upload current-source before/after residents and manifests (not released)
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-umul8-current-source-native-preflight
+          path: |
+            build_umul8_before/**/math_v1_balanced_source_built.prg
+            build_umul8_before/**/math_v5_hybrid_lowzp_source_built.prg
+            build_umul8_after/**/math_v1_balanced_source_built.prg
+            build_umul8_after/**/math_v5_hybrid_lowzp_source_built.prg
+            build_umul8_after/**/source_build_manifest.json
+          if-no-files-found: error
