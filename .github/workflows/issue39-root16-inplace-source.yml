@@ -1,0 +1,36 @@
+name: Issue39 root16 in-island source build feasibility
+on:
+  push:
+    branches: [issue39-integer-roots-seedtable-screen]
+    paths:
+      - 'relocatable_source/game_math/isqrt16_seed_square_trial.inc'
+      - 'relocatable_source/v1_balanced/isqrt16_seed_square_trial.inc'
+      - 'relocatable_source/v2_pareto_fast/isqrt16_seed_square_trial.inc'
+      - 'relocatable_source/v3_reu_512k/isqrt16_seed_square_trial.inc'
+      - 'relocatable_source/v1_balanced/math_relocatable.asm'
+      - 'relocatable_source/v2_pareto_fast/math_relocatable.asm'
+      - 'relocatable_source/v3_reu_512k/math_relocatable.asm'
+      - 'tools/screen_issue39_isqrt16_inplace_source.py'
+      - '.github/workflows/issue39-root16-inplace-source.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reference-alternate-source-roots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build V1 V2 V3 on both maps, assert all source changes fit old ISQRT16 island, test API
+        run: |
+          python3 tools/screen_issue39_isqrt16_inplace_source.py --out /tmp/ISSUE39_ISQRT16_SOURCE_TRIAL.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-root16-source-build-proof
+          path: /tmp/ISSUE39_ISQRT16_SOURCE_TRIAL.json
