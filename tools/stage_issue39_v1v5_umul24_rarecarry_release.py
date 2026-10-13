@@ -52,7 +52,7 @@ def main():
             "PASS_POSTMERGE_MAIN_GREEN"),existing["status"]
         assert existing["normal_ZP_growth"]==existing["resident_growth"]==0
         existing["gain_cycles_every_case"]=1
-        stpath.write_text(json.dumps(st,indent=2)+"\\n")
+        stpath.write_text(json.dumps(st,indent=2)+"\n")
         # The generated source/alternate build output is not tracked.
         # Recreate it on fresh CI runners before comparing public calls.
         build()
