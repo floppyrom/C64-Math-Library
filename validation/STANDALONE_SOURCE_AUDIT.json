@@ -356,7 +356,7 @@
           "file": "isqrt_u16_u16.asm",
           "alias_of": "",
           "entry_address": "$5E2D",
-          "reachable_instructions": 113
+          "reachable_instructions": 17
         },
         {
           "legacy_api": "MATH_ISQRT32",
@@ -364,7 +364,7 @@
           "file": "isqrt_u32_u16.asm",
           "alias_of": "",
           "entry_address": "$5E30",
-          "reachable_instructions": 199
+          "reachable_instructions": 103
         },
         {
           "legacy_api": "MATH_DIST8_FAST",
@@ -811,7 +811,7 @@
           "file": "isqrt_u16_u16.asm",
           "alias_of": "",
           "entry_address": "$5E2D",
-          "reachable_instructions": 113
+          "reachable_instructions": 17
         },
         {
           "legacy_api": "MATH_ISQRT32",
@@ -819,7 +819,7 @@
           "file": "isqrt_u32_u16.asm",
           "alias_of": "",
           "entry_address": "$5E30",
-          "reachable_instructions": 199
+          "reachable_instructions": 103
         },
         {
           "legacy_api": "MATH_DIST8_FAST",
@@ -1266,7 +1266,7 @@
           "file": "isqrt_u16_u16.asm",
           "alias_of": "",
           "entry_address": "$5E2D",
-          "reachable_instructions": 113
+          "reachable_instructions": 17
         },
         {
           "legacy_api": "MATH_ISQRT32",
@@ -1274,7 +1274,7 @@
           "file": "isqrt_u32_u16.asm",
           "alias_of": "",
           "entry_address": "$5E30",
-          "reachable_instructions": 199
+          "reachable_instructions": 103
         },
         {
           "legacy_api": "MATH_DIST8_FAST",
@@ -2296,7 +2296,7 @@
           "file": "isqrt_u16_u16.asm",
           "alias_of": "",
           "entry_address": "$5E2D",
-          "reachable_instructions": 113
+          "reachable_instructions": 17
         },
         {
           "legacy_api": "MATH_ISQRT32",
@@ -2304,7 +2304,7 @@
           "file": "isqrt_u32_u16.asm",
           "alias_of": "",
           "entry_address": "$5E30",
-          "reachable_instructions": 199
+          "reachable_instructions": 103
         },
         {
           "legacy_api": "MATH_DIST8_FAST",

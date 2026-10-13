@@ -4172,139 +4172,28 @@ LC86E:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00
-    lda #$00
-    sta V1_SCRATCH+$13
-    lda V1_SCRATCH+$13
-    ora #$80
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC8FD
-    bne LC900
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC8FD
-    beq LC8FD
-    jmp REG_GAME+$0800
-LC8FD:
-    stx V1_SCRATCH+$13
-LC900:
-    lda V1_SCRATCH+$13
-    ora #$40
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC91D
-    bne LC920
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC91D
-    beq LC91D
-    jmp REG_GAME+$0820
-LC91D:
-    stx V1_SCRATCH+$13
-LC920:
-    lda V1_SCRATCH+$13
-    ora #$20
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC93D
-    bne LC940
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC93D
-    beq LC93D
-    jmp REG_GAME+$0840
-LC93D:
-    stx V1_SCRATCH+$13
-LC940:
-    lda V1_SCRATCH+$13
-    ora #$10
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC95D
-    bne LC960
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC95D
-    beq LC95D
-    jmp REG_GAME+$0860
-LC95D:
-    stx V1_SCRATCH+$13
-LC960:
-    lda V1_SCRATCH+$13
-    ora #$08
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC97D
-    bne LC980
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC97D
-    beq LC97D
-    jmp REG_GAME+$0880
-LC97D:
-    stx V1_SCRATCH+$13
-LC980:
-    lda V1_SCRATCH+$13
-    ora #$04
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC99D
-    bne LC9A0
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC99D
-    beq LC99D
-    jmp REG_GAME+$08A0
-LC99D:
-    stx V1_SCRATCH+$13
-LC9A0:
-    lda V1_SCRATCH+$13
-    ora #$02
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC9BD
-    bne LC9C0
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC9BD
-    beq LC9BD
-    jmp REG_GAME+$08C0
-LC9BD:
-    stx V1_SCRATCH+$13
-LC9C0:
-    lda V1_SCRATCH+$13
-    ora #$01
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC9DD
-    bne LC9E0
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC9DD
-    beq LC9DD
-    jmp REG_GAME+$08E0
-LC9DD:
-    stx V1_SCRATCH+$13
-LC9E0:
-    lda V1_SCRATCH+$13
-    sta MATH_IO+$08
-    lda #$00
-    sta MATH_IO+$09
-    clc
-    rts
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $AE, $11, $C0, $BC, $01, $C9, $AD
+    !byte $11, $C0, $D9, $00, $99, $90, $14, $D0, $08, $AD, $10, $C0, $D9, $00, $98, $90
+    !byte $0A, $8C, $08, $C0, $A9, $00, $8D, $09, $C0, $18, $60, $88, $4C, $E1, $C8, $0F
+    !byte $16, $1B, $1F, $23, $27, $2A, $2D, $2F, $32, $35, $37, $39, $3B, $3D, $3F, $41
+    !byte $43, $45, $47, $49, $4B, $4C, $4E, $4F, $51, $53, $54, $56, $57, $59, $5A, $5B
+    !byte $5D, $5E, $5F, $61, $62, $63, $65, $66, $67, $68, $6A, $6B, $6C, $6D, $6E, $6F
+    !byte $71, $72, $73, $74, $75, $76, $77, $78, $79, $7A, $7B, $7C, $7D, $7E, $7F, $80
+    !byte $81, $82, $83, $84, $85, $86, $87, $88, $89, $8A, $8B, $8C, $8D, $8E, $8F, $8F
+    !byte $90, $91, $92, $93, $94, $95, $96, $96, $97, $98, $99, $9A, $9B, $9B, $9C, $9D
+    !byte $9E, $9F, $9F, $A0, $A1, $A2, $A3, $A3, $A4, $A5, $A6, $A7, $A7, $A8, $A9, $AA
+    !byte $AA, $AB, $AC, $AD, $AD, $AE, $AF, $AF, $B0, $B1, $B2, $B2, $B3, $B4, $B5, $B5
+    !byte $B6, $B7, $B7, $B8, $B9, $B9, $BA, $BB, $BB, $BC, $BD, $BD, $BE, $BF, $BF, $C0
+    !byte $C1, $C1, $C2, $C3, $C3, $C4, $C5, $C5, $C6, $C7, $C7, $C8, $C9, $C9, $CA, $CB
+    !byte $CB, $CC, $CC, $CD, $CE, $CE, $CF, $CF, $D0, $D1, $D1, $D2, $D3, $D3, $D4, $D4
+    !byte $D5, $D6, $D6, $D7, $D7, $D8, $D9, $D9, $DA, $DA, $DB, $DB, $DC, $DD, $DD, $DE
+    !byte $DE, $DF, $DF, $E0, $E1, $E1, $E2, $E2, $E3, $E3, $E4, $E5, $E5, $E6, $E6, $E7
+    !byte $E7, $E8, $E8, $E9, $EA, $EA, $EB, $EB, $EC, $EC, $ED, $ED, $EE, $EE, $EF, $EF
+    !byte $F0, $F1, $F1, $F2, $F2, $F3, $F3, $F4, $F4, $F5, $F5, $F6, $F6, $F7, $F7, $F8
+    !byte $F8, $F9, $F9, $FA, $FA, $FB, $FB, $FC, $FC, $FD, $FD, $FE, $FE, $FF, $FF, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00
     ldy #$04
 LCA26:
     txa
@@ -4485,6 +4374,9 @@ LCAFB:
 !source "udiv32_32_high_q23.inc"
 !source "sdiv32_32_signflow.inc"
 ; END DIVISION REFRESH 2026-09-20
+
+; Issue39 exact ISQRT16 code+seed replaces retired eight-trial island.
+!source "isqrt16_seed_square_trial.inc"
 
 ; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,
 ; code islands and object state (final ownership of those bytes).

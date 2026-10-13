@@ -12,6 +12,7 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
+from issue39_root_historical_parent import undo_root_release
 
 NAME='v2_pareto_fast'
 ENTRY=0x3200
@@ -41,6 +42,11 @@ def cpubuild(blob):
 def main():
     parentbytes=PARENT.read_bytes()
     newbytes=NEW.read_bytes()
+    # This is a historical UMOD8 A/B proof. The independent root-only
+    # source replacement must be reversed in BOTH source-built residents,
+    # preserving exactly the original candidate/control arithmetic bytes.
+    parentbytes=undo_root_release(NAME,parentbytes)
+    newbytes=undo_root_release(NAME,newbytes)
     # Before publication the resident is the historical old image. After
     # publication reconstruct that *exact* historical image from the
     # SHA-certified 104 changed addresses, without altering the new code.

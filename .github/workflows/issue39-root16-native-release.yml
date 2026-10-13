@@ -1,0 +1,52 @@
+name: Issue39 source-installed roots native VICE certification
+on:
+  push:
+    branches: [issue39-integer-roots-seedtable-screen]
+    paths:
+      - tools/native_issue39_isqrt16_source_release.py
+      - tools/finalize_issue39_roots_native_release.py
+      - tools/qualify_issue39_v2_umod8_candidate.py
+      - tools/issue39_v5_umod32_parent.py
+      - tools/issue39_root_historical_parent.py
+      - .github/workflows/issue39-root16-native-release.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  actual-x64sc-roots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify pinned official VICE r46274 Linux package
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Compare 768 full resident native ISQRT16 and ISQRT32 public calls old/new
+        run: |
+          python3 tools/native_issue39_isqrt16_source_release.py --out validation/review/ISSUE39_ROOTS_NATIVE_VICE_2026-10-13.json
+      - name: Strict native proof checks and package/release reseal
+        run: |
+          python3 tools/finalize_issue39_roots_native_release.py
+      - name: Commit signed-off native evidence and resealed publication
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: certify source-installed roots native x64sc and seal release'
+          git push origin HEAD:issue39-integer-roots-seedtable-screen
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-root16-root32-native-release-proof
+          path: validation/review/ISSUE39_ROOTS_NATIVE_VICE_2026-10-13.json

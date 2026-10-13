@@ -9,37 +9,37 @@
       "profile": "v1_balanced",
       "status": "PASS",
       "cases": 5097,
-      "mean_cycles": 1380.7045320776926,
-      "min_cycles": 1189,
-      "max_cycles": 1656,
-      "resident_prg_sha256": "ffbed4dc89c914856b09587ef76f605d81a6535ce8f6ae83a3da40bb5ad5c57b"
+      "mean_cycles": 1223.1848145968218,
+      "min_cycles": 1025,
+      "max_cycles": 1871,
+      "resident_prg_sha256": "41d744c2aaf06a5d40cfece1c16255576950a8e6e3328d5fe4196c0ac753171e"
     },
     {
       "profile": "v2_pareto_fast",
       "status": "PASS",
       "cases": 5097,
-      "mean_cycles": 1200.0986855012752,
-      "min_cycles": 1050,
-      "max_cycles": 1428,
-      "resident_prg_sha256": "aa2ec8dadf3c445e0d142cba1b2842c58b987791a47ab8cbcb63660d6fc06b6e"
+      "mean_cycles": 1056.889935256033,
+      "min_cycles": 896,
+      "max_cycles": 1654,
+      "resident_prg_sha256": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92"
     },
     {
       "profile": "v3_reu_512k",
       "status": "PASS",
       "cases": 5097,
-      "mean_cycles": 1199.3396115361977,
-      "min_cycles": 1049,
-      "max_cycles": 1428,
-      "resident_prg_sha256": "9872691b15f5718ba195cb45f0aa22118bc9aeaca1a8da598eb55869cf2684a4"
+      "mean_cycles": 1056.9332940945653,
+      "min_cycles": 896,
+      "max_cycles": 1654,
+      "resident_prg_sha256": "52565df27dc892be9da8e12b8ac6267179debbd3d521331d7cd3d0a49ced2755"
     },
     {
       "profile": "v4_reu_16m",
       "status": "PASS",
       "cases": 5097,
-      "mean_cycles": 1047.7716303708064,
-      "min_cycles": 899,
-      "max_cycles": 1237,
-      "resident_prg_sha256": "e50241725d74b2a18c1090ea41e013f2c9947672f93016e3fc096b4821ebcf99"
+      "mean_cycles": 918.2399450657249,
+      "min_cycles": 806,
+      "max_cycles": 1074,
+      "resident_prg_sha256": "3e2b745e9cd81512f6c3aa4e5cc029528981bb7f6d56abd117e663994685f913"
     }
   ]
 }

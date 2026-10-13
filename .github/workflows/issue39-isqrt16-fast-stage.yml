@@ -1,0 +1,41 @@
+name: Issue39 integer roots protected production staging
+on:
+  push:
+    branches: [issue39-integer-roots-seedtable-screen]
+    paths:
+      - tools/stage_issue39_isqrt16_fast_release.py
+      - .github/workflows/issue39-isqrt16-fast-stage.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  stage-all-roots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-integer-roots-seedtable-screen
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-build V1/V2/V3/V5 with exhaustive ISQRT16 and 4130-case ISQRT32 verification
+        run: python3 tools/stage_issue39_isqrt16_fast_release.py
+      - name: Commit release-stage files only after validators and checksums pass
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: stage source-built fast ISQRT16 and inherited ISQRT32 release'
+          git push origin HEAD:issue39-integer-roots-seedtable-screen
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-root-release-stage
+          path: |
+            validation/review/ISSUE39_ISQRT16_EXHAUSTIVE_2026-10-13.json
+            validation/review/ISSUE39_ROOTS_SAME_INPUT_2026-10-13.json

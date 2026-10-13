@@ -6,25 +6,25 @@
     {
       "profile": "v1_balanced",
       "cases": 4130,
-      "mean_cycles": 1378.9009685230023,
-      "min_cycles": 1193,
-      "max_cycles": 1656,
+      "mean_cycles": 1219.2605326876512,
+      "min_cycles": 1025,
+      "max_cycles": 1871,
       "errors": 0
     },
     {
       "profile": "v2_pareto_fast",
       "cases": 4130,
-      "mean_cycles": 1198.619612590799,
-      "min_cycles": 1052,
-      "max_cycles": 1428,
+      "mean_cycles": 1053.2845036319613,
+      "min_cycles": 896,
+      "max_cycles": 1654,
       "errors": 0
     },
     {
       "profile": "v3_reu_512k",
       "cases": 4130,
-      "mean_cycles": 1197.8593220338983,
-      "min_cycles": 1051,
-      "max_cycles": 1428,
+      "mean_cycles": 1053.3259079903148,
+      "min_cycles": 896,
+      "max_cycles": 1654,
       "errors": 0
     },
     {

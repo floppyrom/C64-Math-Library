@@ -11,6 +11,7 @@ R=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(R/'tools'))
 from mini6502 import Assembler
 from issue39_u24_txa_historical_parent import restore_pre_txa
+from issue39_root_historical_parent import undo_root_release
 PR78='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0'
 OLD_SOURCE=R/'tools/candidates/issue39_v1_24by8_shared_subtraction.asm'
 NEW_SOURCE=R/'tools/candidates/issue39_v1_24by8_accumulator.asm'
@@ -54,6 +55,7 @@ def undo_v1_3216_coldpath_for_historical_audit(prg: bytes) -> bytes:
     return bytes(raw)
 
 def restore_pr78(prg:bytes)->bytes:
+    prg=undo_root_release('v1_balanced',prg)
     prg=undo_v1_3216_coldpath_for_historical_audit(prg)
     prg=restore_pre_txa('v1_balanced',prg)
     if sha(prg)==PR78:return prg

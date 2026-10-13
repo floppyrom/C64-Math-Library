@@ -228,7 +228,24 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0xc100,0xc102),(0xc1fe,0xc496)),
 }
 
+# Issue39 private-root technique independently reimplemented in source:
+# the new 294-byte ISQRT16 executable+immutable seed occupies the retired
+# eight-trial root16 island; generated disassembly never owns this interval.
+# V4 retains the native faster REU root lookup.
+ROOT_SOURCE_OWNED={
+ 'v1_balanced':(0xC8DB,0xCA23),
+ 'v2_pareto_fast':(0xC836,0xC965),
+ 'v3_reu_512k':(0xC841,0xC970),
+}
+ROOT_SOURCE_INCLUDES={
+ 'v1_balanced':'isqrt16_seed_square_trial.inc',
+ 'v2_pareto_fast':'isqrt16_seed_square_trial.inc',
+ 'v3_reu_512k':'isqrt16_seed_square_trial.inc',
+}
 def in_division_refresh(profile,a):
+ if profile in ROOT_SOURCE_OWNED:
+  start,end=ROOT_SOURCE_OWNED[profile]
+  if start<=a<=end:return True
  return any(s<=a<=e for s,e in DIVISION_REFRESH_DECODE_EXCLUDE.get(profile,()))
 
 
@@ -522,6 +539,9 @@ def generate_source(profile,outpath:Path):
   lines += ['', '; BEGIN DIVISION REFRESH 2026-09-20']
   lines += [f'!source "{name}"' for name in DIVISION_REFRESH_INCLUDES[profile]]
   lines += ['; END DIVISION REFRESH 2026-09-20']
+ if profile in ROOT_SOURCE_INCLUDES:
+  lines += ['', '; Issue39 exact ISQRT16 code+seed replaces retired eight-trial island.',
+            f'!source "{ROOT_SOURCE_INCLUDES[profile]}"']
  if profile in REU:
   lines += ['', '; Canonical optimized Turbo16 public CALL wrapper.',
             '!source "../turbo/turbo16_runtime.asm"',
