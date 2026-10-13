@@ -42,6 +42,25 @@ def main():
     stpath=R/"RELEASE_STATUS.json";st=json.loads(stpath.read_text())
     before={p:sha(prg(p)) for p in P}
     assert st["reference_prg_sha256"]==before
+    # A repeated stage runs against already-published binaries. Do not
+    # require the old PRG hashes again, and preserve later native evidence.
+    existing=st.get("issue39_umul24_v1v5_rare_carry_clc_2026_10_14")
+    if isinstance(existing,dict) and before==existing.get("new_sha256"):
+        assert existing["status"] in (
+            "PASS_STAGED_NATIVE_VICE_PENDING",
+            "PASS_NATIVE_VICE_PR_CI_PENDING",
+            "PASS_POSTMERGE_MAIN_GREEN"),existing["status"]
+        assert existing["normal_ZP_growth"]==existing["resident_growth"]==0
+        existing["gain_cycles_every_case"]=1
+        stpath.write_text(json.dumps(st,indent=2)+"\\n")
+        py("validate_umul24_directout")
+        evidence=json.loads((R/PROOF).read_text())
+        assert evidence["mean_saving"]==1 and evidence["tested_calls_per_profile"]==10324
+        for _ in range(3):
+            reseal()
+            py("package_audit")
+        print("V1/V5 UMUL24 RARE-CARRY REPEAT STAGE RESEALED",flush=True)
+        return
     lengths={p:prg(p).stat().st_size for p in P}
     build()
     new={p:sha(output(p,"reference")[0]) for p in P}
@@ -111,7 +130,7 @@ def main():
     st["issue39_umul24_v1v5_rare_carry_clc_2026_10_14"]={
        "status":"PASS_STAGED_NATIVE_VICE_PENDING","proof":PROOF,"doc":DOC,
        "new_sha256":new,"old_sha256":before,
-       "gain_cycles_every_case":8,"normal_ZP_growth":0,"resident_growth":0,
+       "gain_cycles_every_case":1,"normal_ZP_growth":0,"resident_growth":0,
        "issue39_complete":False}
     for key,path,field in (
        ("issue39_common_input_unsigned_divmod","validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json","benchmark_sha256"),
@@ -122,5 +141,5 @@ def main():
     subprocess.run(["make","clean"],cwd=R,check=True)
     for _ in range(3):
         reseal();py("package_audit")
-    print("V1/V5 UMUL24 PRIVATE TAILCALL RELEASE STAGED, NATIVE PENDING",flush=True)
+    print("V1/V5 UMUL24 RARE-CARRY RELEASE STAGED, NATIVE PENDING",flush=True)
 if __name__=="__main__":main()
