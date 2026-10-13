@@ -1,0 +1,57 @@
+name: Issue39 historical U24 parent replay and package seal
+on:
+  push:
+    branches: [issue39-u24-live-x-resident-integration]
+    paths:
+      - '.github/workflows/issue39-u24-parent-replay.yml'
+      - 'tools/issue39_u24_txa_historical_parent.py'
+      - 'tools/issue39_v1_24by8_accumulator_parent.py'
+      - 'tools/screen_issue39_v1_24by8_accumulator.py'
+      - 'tools/screen_issue39_v1_24by8_accumulator_selfmod.py'
+permissions:
+  contents: write
+jobs:
+  historic-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-u24-live-x-resident-integration
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Verify exact SHA-parent reconstruction for all five profiles
+        run: |
+          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m v5_hybrid_lowzp; do
+            python3 tools/issue39_u24_txa_historical_parent.py "$p"
+          done
+      - name: Replay historical PR78 shared-subtraction public ABI
+        run: python3 tools/screen_issue39_v1_24by8_shared_subtraction.py
+      - name: Replay historical PR81 accumulator predecessor proof
+        run: python3 tools/screen_issue39_v1_24by8_accumulator.py
+      - name: Replay historical 68-byte SMC predecessor proof
+        run: python3 tools/screen_issue39_v1_24by8_accumulator_selfmod.py
+      - name: Reseal updated historical source archive and package metadata
+        run: |
+          make clean
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          R=Path('.')
+          for _ in range(3):
+            files=sorted((p for p in R.rglob('*') if p.is_file() and '.git' not in p.parts and '__pycache__' not in p.parts and p.name!='SHA256SUMS.txt'),key=lambda x:str(x))
+            (R/'SHA256SUMS.txt').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p)+'\n' for p in files))
+            import subprocess
+            subprocess.run(['python3','tools/package_audit.py'],check=True)
+          PY
+          python3 tools/validate_public_catalog.py
+          python3 tools/validate_standalone_sources.py
+      - name: Commit verified offline historical regression and checksums
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: certify historical U24 parent replay on promoted residents'
+          git push origin HEAD:issue39-u24-live-x-resident-integration
