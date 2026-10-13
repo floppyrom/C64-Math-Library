@@ -1,0 +1,45 @@
+name: Issue39 unsigned multiply family completion publication
+on:
+  push:
+    branches: [issue39-unsigned-multiply-family-final-20261014]
+    paths:
+      - tools/finalize_issue39_unsigned_multiply_family.py
+      - .github/workflows/issue39-unsigned-multiply-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  release-publication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-unsigned-multiply-family-final-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Seal family after verified main full and comparable checks
+        run: |
+          python3 tools/finalize_issue39_unsigned_multiply_family.py \
+            --main-sha 33f364cfe0465a4df92e82dec1d94039ec2e1d5d \
+            --full-ci 38486190274 --comparable-ci 38486190247 \
+            --family-ci 38485318288
+      - name: Commit all checksum-sealed publication updates to branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: publish certified unsigned multiply family completion'
+          git push origin HEAD:issue39-unsigned-multiply-family-final-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-unsigned-multiply-completion-publication
+          path: |
+            RELEASE_STATUS.json
+            docs/ISSUE39_UNSIGNED_MULTIPLY_FAMILY_REVIEW_2026-10-14.md
