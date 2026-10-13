@@ -183,7 +183,13 @@ R24_v21:    adc #0
 R24_v13:    lda #0
 R24_v22:    adc #0
         bcs R24_final
-        jmp R24_public_tail
+        ; The overwhelmingly common no-carry result can complete here
+        ; instead of jumping to the public tail. Rare overflow retains its
+        ; existing jump and cycle profile; no new scratch or caller contract.
+        sta MATH_IO+$0C
+        stx MATH_IO+$0D
+        clc
+        rts
 R24_final:
         inx
         jmp R24_public_tail

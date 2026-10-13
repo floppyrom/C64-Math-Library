@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 26.
+; Reachable instructions: 24.
 !cpu 6510
 
 ; ---- executable island $3000 ----
@@ -15,31 +15,29 @@ mul_u8_u8_u16:
 MATH_UMUL8:
     ldx $C000                          ; @3000 AE 00 C0
     ldy $C004                          ; @3003 AC 04 C0
-    jsr L5300                          ; @3006 20 00 53
+    jsr L52FE                          ; @3006 20 FE 52
     sta $C009                          ; @3009 8D 09 C0
-    lda $3D                            ; @300C A5 3D
-    sta $C008                          ; @300E 8D 08 C0
-    clc                                ; @3011 18
-    rts                                ; @3012 60
-; ---- executable island $5300 ----
-* = $5300
-L5300:
-    sec                                ; @5300 38
-    stx $39                            ; @5301 86 39
-    stx $3B                            ; @5303 86 3B
-    tya                                ; @5305 98
-    sbc $39                            ; @5306 E5 39
-    tax                                ; @5308 AA
-    lda ($39),y                        ; @5309 B1 39
-    bcc L5318                          ; @530B 90 0B
-    sbc $6800,x                        ; @530D FD 00 68
-    sta $3D                            ; @5310 85 3D
-    lda ($3B),y                        ; @5312 B1 3B
-    sbc $6A00,x                        ; @5314 FD 00 6A
-    rts                                ; @5317 60
-L5318:
-    sbc $6C00,x                        ; @5318 FD 00 6C
-    sta $3D                            ; @531B 85 3D
+    clc                                ; @300C 18
+    rts                                ; @300D 60
+; ---- executable island $52FE ----
+* = $52FE
+L52FE:
+    sec                                ; @52FE 38
+    stx $39                            ; @52FF 86 39
+    stx $3B                            ; @5301 86 3B
+    tya                                ; @5303 98
+    sbc $39                            ; @5304 E5 39
+    tax                                ; @5306 AA
+    lda ($39),y                        ; @5307 B1 39
+    bcc L5317                          ; @5309 90 0C
+    sbc $6800,x                        ; @530B FD 00 68
+    sta $C008                          ; @530E 8D 08 C0
+    lda ($3B),y                        ; @5311 B1 3B
+    sbc $6A00,x                        ; @5313 FD 00 6A
+    rts                                ; @5316 60
+L5317:
+    sbc $6C00,x                        ; @5317 FD 00 6C
+    sta $C008                          ; @531A 8D 08 C0
     lda ($3B),y                        ; @531D B1 3B
     sbc $6D00,x                        ; @531F FD 00 6D
     rts                                ; @5322 60

@@ -115,7 +115,7 @@ MULTIPLY_REFRESH_INCLUDES={
   'smul24_fast24_composed.inc','umul24_fast24_shared.inc',
   'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc'),
  'v2_pareto_fast':(
-  '../multiply/umul16_directout.asm','../multiply/umul16_shr8_reg_return.asm','../multiply/umul24_directout.asm','smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
+  'umul8_directout_trial.inc','../multiply/umul16_directout.asm','../multiply/umul16_shr8_reg_return.asm','../multiply/umul24_directout.asm','smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
   'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
  'v3_reu_512k':(
   '../multiply/umul16_directout.asm','../multiply/umul16_shr8_reg_return.asm','../multiply/umul24_directout.asm','smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
@@ -132,11 +132,12 @@ _REFRESH_COMMON=((0x30b0,0x30b2),(0x30c0,0x30c2),(0x3b80,0x3bad),
 MULTIPLY_REFRESH_DECODE_EXCLUDE={
  'v1_balanced':_REFRESH_COMMON+(
   (0x5e0c,0x5e0e),(0xc51e,0xc534),
-  (0x2700,0x275a),(0x2d00,0x2e1a),(0x3060,0x3062),(0x3bb0,0x3bed),
+  (0x2700,0x275a),(0x2d00,0x2e14),(0x3060,0x3062),(0x3bb0,0x3bed),
   (0x4c00,0x4cfa),(0x4d00,0x4d56),(0x6532,0x6625),(0x6700,0x680c),
   (0x6900,0x69fa),(0x6a41,0x6a76),(0x6b7c,0x6c8b),(0x7100,0x7140),
   (0xcc00,0xcc73)),
  'v2_pareto_fast':_REFRESH_COMMON+(
+  (0x3000,0x3012),(0x52FE,0x5322),
   (0x3020,0x3045),(0x53ec,0x5471),(0x34c0,0x34fa),(0x5649,0x5784),
   (0x5e0c,0x5e0e),(0xc4b5,0xc4cb),
   (0x2300,0x2376),(0x3500,0x35fa),(0x397c,0x3a8b),(0x5500,0x5648),

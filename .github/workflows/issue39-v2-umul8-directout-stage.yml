@@ -1,0 +1,37 @@
+name: Issue39 V2 UMUL8 zero-growth protected release staging
+on:
+  push:
+    branches: [issue39-umul8-direct-output-public-screen]
+    paths:
+      - tools/stage_issue39_v2_umul8_directout_release.py
+      - .github/workflows/issue39-v2-umul8-directout-stage.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  stage-candidate-not-main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-umul8-direct-output-public-screen
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Stage V2 source-installed resident, exact full-domain performance and library/package publication
+        run: python3 tools/stage_issue39_v2_umul8_directout_release.py
+      - name: Commit stage only if independent source, CPU, SHA and package gates all pass
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: stage V2 UMUL8 public direct-output -6 cycle source release'
+          git push origin HEAD:issue39-umul8-direct-output-public-screen
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v2-umul8-release-stage
+          path: validation/review/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_RELEASE.json
