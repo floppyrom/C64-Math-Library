@@ -1,0 +1,21 @@
+name: Issue39 V1/V5 UMUL8 direct output research
+on:
+  pull_request:
+  push:
+    branches:
+      - issue39-v1v5-umul8-directout-research-screen
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exhaustive V1 and V5 same-input CPU-model screen
+        run: |
+          python3 tools/screen_issue39_v1v5_umul8_directout.py --output "$RUNNER_TEMP/issue39_umul8_directout_screen.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue39-umul8-v1v5-research
+          path: ${{ runner.temp }}/issue39_umul8_directout_screen.json
