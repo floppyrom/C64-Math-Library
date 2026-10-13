@@ -1,0 +1,30 @@
+{
+  "candidate_sha256": "71648ececccba3186a1b186144dbace5e345a9a0967d397ec1db0655cef31c04",
+  "exhaustive": {
+    "cases": 65536,
+    "max_cycles": 74,
+    "mean_cycles": 72.494140625,
+    "min_cycles": 71
+  },
+  "issue39_complete": false,
+  "maps": {
+    "alternate": {
+      "public_calls": 21678,
+      "public_entries": 56,
+      "sha256": "1249b3d3b4eab112f90eee8e450a820d912ef5bea33da6a25001b6a987a9d8cb",
+      "v5_sha256": "b255c1ccd651134259bccd26a7a9849669d0ed5e8fb57dbff95fbbddd0e7abca"
+    },
+    "reference": {
+      "public_calls": 21678,
+      "public_entries": 56,
+      "sha256": "71648ececccba3186a1b186144dbace5e345a9a0967d397ec1db0655cef31c04",
+      "v5_sha256": "b27e0885c7241dd7bdc3b2e25be6b2c616685cb426436a3c2b8260eff7a21ebb"
+    }
+  },
+  "native_vice_calls": 0,
+  "normal_zp_growth": 0,
+  "original_sha256": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92",
+  "resident_prg_byte_growth": 0,
+  "status": "PASS_STAGED_NATIVE_VICE_PENDING",
+  "v5_still_previous": true
+}

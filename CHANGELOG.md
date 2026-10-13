@@ -1,3 +1,9 @@
+2026-10-13 ISSUE39 V2 UMUL8 SOURCE-RELEASE NATIVE VICE
+- 128 actual x64sc old/new source-installed V2 UMUL8 public calls (64 identical operands per image), exact Q16/input/carry/stack/sentinel outputs. Non-carry status bits (N/Z/V) are explicitly volatile and their differences are recorded. No native cycle-timing assertion; six-cycle saving is from exhaustive same-input model. V2-only, no resource growth. See validation/review/ISSUE39_V2_UMUL8_DIRECTOUT_NATIVE.json. Issue #39 remains OPEN.
+
+2026-10-13 ISSUE39 UMUL8 DIRECT OUTPUT SOURCE RELEASE
+- V2 UMUL8 source-owned public direct output: -6 cycles on all 65,536 tested 8x8 inputs (78.494141 to 72.494141), zero ZP/resident growth, no change to V1/V3/V4/V5. Both source maps and complete public ABI regression pass. Native VICE pending. docs/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_2026-10-13.md
+
 2026-10-13 ISSUE39 INTEGER ROOTS POSTMERGE MAIN VALIDATION
 - Integer roots PR #102 merged; main workflows Validate library #38389399637, Comparable unsigned #38389399688 and Turbo32 #38389399617 all SUCCESS on b179436082933d4edd80bca0256c11fc09d143be. No resident arithmetic, ABI, resource, size or cycles changed by this metadata closeout. Source/native checksums preserved; release status and user documentation synchronized, issue #39 still OPEN. docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md
 
