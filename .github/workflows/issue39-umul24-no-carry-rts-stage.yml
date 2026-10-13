@@ -31,6 +31,8 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
           git diff --cached --quiet || git commit -m 'issue39: stage V2-V4 no-carry RTS optimization and synchronized release indexes'
+          git fetch origin issue39-umul24-rts-no-clc-production
+          git rebase origin/issue39-umul24-rts-no-clc-production
           git push origin HEAD:issue39-umul24-rts-no-clc-production
       - uses: actions/upload-artifact@v4
         if: always()
