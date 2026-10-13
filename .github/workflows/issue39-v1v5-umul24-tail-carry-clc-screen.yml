@@ -1,0 +1,32 @@
+name: Issue39 V1-V5 UMUL24 rare-carry-only CLC research
+on:
+  push:
+    branches: [issue39-v1v5-umul24-rare-carry-clc-research]
+    paths:
+      - tools/screen_issue39_v1v5_umul24_tail_carry_clc.py
+      - .github/workflows/issue39-v1v5-umul24-tail-carry-clc-screen.yml
+  pull_request:
+    paths:
+      - tools/screen_issue39_v1v5_umul24_tail_carry_clc.py
+      - .github/workflows/issue39-v1v5-umul24-tail-carry-clc-screen.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  paired-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare public V1/V5 24bit multiplication on reference and alternate maps
+        run: python3 tools/screen_issue39_v1v5_umul24_tail_carry_clc.py --output /tmp/issue39-v1v5-tail-carry-clc.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v1v5-umul24-carry-clc-research
+          path: /tmp/issue39-v1v5-tail-carry-clc.json
