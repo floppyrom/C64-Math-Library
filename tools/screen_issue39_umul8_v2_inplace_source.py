@@ -63,7 +63,11 @@ def trial():
             dest=root/kind/P
             man=asm.build(P,cfg,dest)
             prg=(dest/man['output_prg']).read_bytes()
-            assert len(prg)==len(oldprg),('resident grew',kind,len(prg),len(oldprg))
+            if kind=='reference':
+                assert len(prg)==len(oldprg),('reference resident grew',len(prg),len(oldprg))
+            # The alternate map has a different final load extent; compare
+            # address ownership with its own REG_KERNEL/REG_API, not V2's
+            # published reference PRG byte count.
             expanded=asm.preprocess(ROOT/'relocatable_source'/P/'math_relocatable.asm',cfg)
             _,lab,const=asm.Assembler().assemble(expanded)
             assert lab['UMUL8_DIRECT_PRIVATE_END']-lab['UMUL8_DIRECT_PRIVATE']==37
