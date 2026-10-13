@@ -116,7 +116,11 @@ def main():
         folder=Path(td)
         base=native(old,'v2_old_umul8',7712,folder,exe)
         trial=native(new,'v2_new_umul8',7713,folder,exe)
-        assert base['records']==trial['records'],'native public old/new mismatch'
+        if base['records']!=trial['records']:
+            differences=[(i,pairs()[i],[(hex(FIELDS[j]),a[j],b[j]) for j in range(len(FIELDS)) if a[j]!=b[j]])
+                for i,(a,b) in enumerate(zip(base['records'],trial['records'])) if a!=b]
+            print('NATIVE DIFFERENT FIELDS',differences[:12],flush=True)
+            raise AssertionError(('native public old/new mismatch',len(differences),differences[:3]))
     result={'status':'PASS_NATIVE_VICE_V2_UMUL8_PUBLIC_DIRECT_OUTPUT',
        'old_sha256':OLD_SHA,'new_sha256':NEW_SHA,'public_entry':hex(ENTRY),
        'old_native_calls':COUNT,'new_native_calls':COUNT,
