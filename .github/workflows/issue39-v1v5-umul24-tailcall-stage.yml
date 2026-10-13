@@ -4,6 +4,7 @@ on:
     branches: [issue39-v1v5-umul24-tailcall-screen]
     paths:
       - tools/stage_issue39_v1v5_umul24_tailcall_release.py
+      - tools/source_relocation.py
       - .github/workflows/issue39-v1v5-umul24-tailcall-stage.yml
   workflow_dispatch:
 permissions:
