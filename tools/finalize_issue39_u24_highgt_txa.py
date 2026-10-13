@@ -31,7 +31,7 @@ def main():
    groups=data['routines'][op]
    assert len(groups)==8
    c=groups['official_common'];h=groups['n2_greater_d2']
-   assert c['cases']==(2729 if op==OPS[0] else 1705)
+   assert c['cases']==(4753 if op==OPS[0] else 1553)
    assert c['max_regression']<=3
    if p=='v1_balanced' or op==OPS[0]:
     assert c['slower']==0 and c['delta_mean']<0
