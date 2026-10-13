@@ -1,0 +1,37 @@
+{
+  "schema": "c64ml.issue39.resource_class_audit.v1",
+  "date": "2026-10-13",
+  "status": "RESEARCH_ONLY_NO_DEFAULT_PROMOTION",
+  "production_abi_changed": false,
+  "production_prg_changed": false,
+  "issue39_complete": false,
+  "private_source_published": false,
+  "umul16": {
+    "corpus_pairs": 10169,
+    "public_reference_alternate_match": true,
+    "public_model_means": {
+      "V1_V5": 273.98003736847284,
+      "V2_V3_V4": 216.9800373684728
+    },
+    "private_candidate_correct": 10169,
+    "private_candidate_errors": 0,
+    "private_candidate_model_mean": 156.3854852984561,
+    "private_candidate_executable_zp": 95,
+    "private_candidate_executable_stack_page": 81,
+    "private_candidate_tables": 2044,
+    "private_candidate_public_abi_qualified": false,
+    "native_vice_candidate_calls": 0,
+    "comparison_qualified": false
+  },
+  "umul24": {
+    "public_record_sample_mean": 357.041715026,
+    "public_record_zp": 24,
+    "public_record_code": 307,
+    "private_retained_mean": 361.041715026,
+    "private_retained_zp": 27,
+    "private_retained_code": 311,
+    "table_bytes_both": 2044,
+    "paired_comparison_qualified": false
+  },
+  "documentation": "docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md"
+}
