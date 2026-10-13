@@ -20,7 +20,7 @@ IS16_FAST_START:
     bcs IS16_FAST_TRY
     ldy #$07
 IS16_FAST_TRY:
-    lda MATH_N+$01
+    txa ; X retains the public high byte for every lookup iteration
     cmp REG_TABLE+$3900,y
     bcc IS16_FAST_DECREMENT
     bne IS16_FAST_STORE
