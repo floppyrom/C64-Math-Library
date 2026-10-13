@@ -12,3 +12,6 @@ Full 822,050 unsigned, 364,533 signed and 136,335 shared-input public calls pass
 | MATH_UMOD32_16 | 843.629912 | 842.895601 |
 
 **Native VICE release gate passed:** 384 complete V1/V5 original/candidate public calls in pinned x64sc, covering both 32/16 aliases. No native cycle timings measured. Remaining gates: independent PR CI and post-merge main CI. Do not close #39. The candidate is not global Pareto: divide-by-zero is 2 cycles slower, valid divisor is 1 faster.
+
+## Historical proof compatibility after source promotion
+Older 24/8 and UMOD8 replay scripts previously assumed only archived resident SHA values. The V1 24/8 replay now reverses the **exact known** V1 32/16 transformation and asserts the recovered pre-PR100 SHA before running its original comparisons. The V2 UMOD8 replay uses the SHA-pinned current V2 resident, reverses only the original 104-byte UMOD8 guard, and requires all other bytes to match. The V5 unchanged-source comparison short-circuits, avoiding unnecessary historical PR71 inversion. These changes do not modify production arithmetic or relax arbitrary-hash checks.
