@@ -40,7 +40,7 @@ def main():
         ref,manifest=src_build(V1,'reference',td)
         assert sha_file(ref)=='9af44deda4a1527a0ea5ecc09a48e1ec4927a45099f7b2e26ced0f618274c0a4'
         v5,man5=hybrid_build('reference',td)
-        print('V5 trial source registration produced',sha_file(v5),'prior standalone trial was 0662a9644ee4ebb6df7a06f9c77a40ffb5308b69ecd5e6bc9d4250b5bd5750',flush=True)
+        assert sha_file(v5)=='0662a9644ee4ebb6df7a06f9c77a40ffb5308b69ecd5e6bc9c7d6250b5bd5750', 'V5 source-built reference digest drift'
         shutil.copyfile(ref,shipped(V1))
         shutil.copyfile(v5,shipped(V5))
         run(sys.executable,ROOT/'tools/generate_sources.py')
