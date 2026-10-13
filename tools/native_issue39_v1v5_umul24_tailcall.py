@@ -109,7 +109,7 @@ def native(prg,api,label,port,folder,exe):
 def main():
  state=json.loads((ROOT/"RELEASE_STATUS.json").read_text())
  row=state["issue39_umul24_v1v5_tailcall_2026_10_13"]
- assert row["status"]=="PASS_STAGED_NATIVE_VICE_PENDING"
+ assert row["status"] in ("PASS_STAGED_NATIVE_VICE_PENDING","PASS_NATIVE_VICE_PR_CI_PENDING")
  result={"status":"PASS_NATIVE_SOURCE_INSTALLED_NOT_YET_MERGED",
          "native_calls":0,"native_cycle_timing_measured":False,"profiles":{}}
  exe=os.getenv("VICE_WRAPPER","x64sc")
