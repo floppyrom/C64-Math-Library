@@ -83,7 +83,7 @@ def call(cpu,entry,n,d,quotient):
  got=(rd(m,Q,3),rd(m,R,3),cpu.c,rd(m,N,3),rd(m,D,3),m[Q+3],m[R+3],m[0xc020],cpu.sp)
  assert (got[1],got[2])==(er,ec),(hex(entry),n,d,'R/C',got,eq,er,ec)
  assert (not quotient or got[0]==eq),(hex(entry),n,d,'Q',got,eq)
- assert got[3:5]==(n,d) and got[7:]==(0xe7,0x38,sp),(hex(entry),n,d,'preservation',got)
+ assert got[3:5]==(n,d) and got[6:]==(0xe7,0x38,sp),(hex(entry),n,d,'preservation',got)
  return ticks,got
 def run(profile=None):
  chosen=[profile] if profile else PROFILES
@@ -108,10 +108,10 @@ def run(profile=None):
      quotient=(op==OPS[0] or p=='v1_balanced')
      t0,o0=call(old,entries[op],n,d,quotient)
      t1,o1=call(new,entries[op],n,d,quotient)
-     assert o0[1:6]+o0[7:]==o1[1:6]+o1[7:],(p,op,kind,n,d,'R/C and ABI',o0,o1)
+     assert o0[1:5]+o0[6:]==o1[1:5]+o1[6:],(p,op,kind,n,d,'R/C and ABI',o0,o1)
      if quotient: assert o0[0]==o1[0],(p,op,kind,n,d,'Q',o0,o1)
      qside+=o0[0]!=o1[0]
-     q3side+=o0[6]!=o1[6]
+     q3side+=o0[5]!=o1[5]
      delta=t1-t0
      oldsum+=t0;newsum+=t1
      fast+=delta<0;slow+=delta>0;eq+=delta==0
