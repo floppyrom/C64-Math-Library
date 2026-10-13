@@ -4714,3 +4714,6 @@ ZCE4:
 
 ; V2 reciprocal constant-numerator fallback.
 !source "../game_math/recip16_direct_fast_v2.inc"
+
+; Research source-owned two-byte-backshifted UMUL8 public direct-output trial
+!source "umul8_directout_trial.inc"
