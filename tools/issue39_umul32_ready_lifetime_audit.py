@@ -29,7 +29,7 @@ def snapshot(cpu):
 def result(cpu,addr,x,y):
     setinputs(cpu,x,y)
     cpu.d=0
-    cycles=cpu.call(addr,2_000_000)
+    cycles=cpu.call(addr,30_000)
     out=rd(cpu.mem,X+8,8)
     good=(out==x*y and cpu.c==0 and rd(cpu.mem,X,4)==x and rd(cpu.mem,X+4,4)==y)
     return good,cycles,out
@@ -63,7 +63,12 @@ def audit(profile,states):
                 ca=copy.deepcopy(cpu)
                 cb=copy.deepcopy(cpu)
                 ga,cyca,va=result(ca,api['MATH_UMUL32'],u,v)
-                gb,cycb,vb=result(cb,api['MATH_UMUL32_READY'],u,v)
+                try:
+                    gb,cycb,vb=result(cb,api['MATH_UMUL32_READY'],u,v)
+                    reason='incorrect_product_or_contract' if not gb else None
+                except RuntimeError as exc:
+                    gb,cycb,vb=False,None,0
+                    reason='READY_exception_'+str(exc)
                 assert ga,(profile,op,index,'normal UMUL32 invalid',hex(u),hex(v),hex(va))
                 safe_count+=1;ready_count+=1
                 if not gb:
@@ -71,7 +76,7 @@ def audit(profile,states):
                     if mismatch is None:
                         mismatch=dict(x=hex(u),y=hex(v),ready_product=hex(vb),
                                       expected_product=hex(u*v),cycles_ordinary=cyca,
-                                      cycles_ready=cycb)
+                                      cycles_ready=cycb,reason=reason)
             rows.append(dict(prior_op=op,state=index,pointer_high_bytes_changed=affected,
                  pointer_high_before=[hex(v) for v in intact],
                  pointer_high_after=[hex(v) for v in after],
