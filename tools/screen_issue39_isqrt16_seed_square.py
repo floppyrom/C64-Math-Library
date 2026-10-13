@@ -135,10 +135,13 @@ def compare(baseline,candidate,entry,cases,width):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument('--random16',type=int,default=2304)
+    p.add_argument('--exhaustive16',action='store_true')
+    p.add_argument('--profile',choices=PROFILES)
     p.add_argument('--random32',type=int,default=720)
     p.add_argument('--out',type=Path)
     args=p.parse_args()
-    v16=samples16(args.random16);v32=samples32(args.random32)
+    v16=list(range(65536)) if args.exhaustive16 else samples16(args.random16)
+    v32=samples32(args.random32)
     report={
       'status':'PASS_RESEARCH_ONLY_NOT_PROMOTED',
       'source':str(Path(__file__).relative_to(ROOT)),
@@ -150,7 +153,7 @@ def main():
       'hardware_bus_timing_measured':False,
       'profiles':{},'old_new_6502_calls':0,
     }
-    for profile in PROFILES:
+    for profile in ([args.profile] if args.profile else PROFILES):
         baseline,candidate,h=load_both(profile)
         u16=compare(baseline,candidate,IS16,v16,16)
         u32=compare(baseline,candidate,IS32,v32,32)
