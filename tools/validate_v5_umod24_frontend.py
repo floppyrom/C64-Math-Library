@@ -27,6 +27,11 @@ for n,d,_ in pairs:
         if idx==0:ref_cycles=cycles
         else:assert cycles==ref_cycles,(hex(n),hex(d),ref_cycles,cycles)
         total[idx]+=cycles
-assert abs(total[0]/len(pairs)-207.49066323245333)<1e-9
-assert total[0]==total[1]
+assert report['status']=='PASS'
+assert report['sources']['v2_pareto_fast']['resident_sha256']==hashlib.sha256((R/'v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg').read_bytes()).hexdigest()
+assert report['sources']['v5_hybrid_lowzp']['resident_sha256']==hashlib.sha256((R/'v5_hybrid_lowzp/resident/math_v5_hybrid_lowzp_game_math.prg').read_bytes()).hexdigest()
+assert total[0]==total[1],('V2/V5 exact per-operand cycle parity',total)
+for profile,total_cycles in (('v2_pareto_fast',total[0]),('v5_hybrid_lowzp',total[1])):
+    published=datum['metrics'][profile]['mean_cycles']
+    assert abs(total_cycles/len(pairs)-published)<1e-9,(profile,total_cycles,published)
 print('V5 UMOD24 SOURCE TRANSPLANT PASS: 1553 identical operands; zero mismatches, exact V2/V5 cycle parity')
