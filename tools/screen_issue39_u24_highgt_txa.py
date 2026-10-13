@@ -48,7 +48,7 @@ def compile_pair(p):
   'extra_zero_page_bytes':0,'api_addresses_changed':False}
 def inputs(op):
  nbits=24
- count=2048 if op==OPS[0] else 1024
+ count=4096 if op==OPS[0] else 1024
  _meta,official=corpus(op,nbits,nbits,0,count)
  rng=random.Random(0xC6392417+(op==OPS[1]))
  edge=(0,1,2,7,255,256,65535,65536,65537,0xfffffe,0xffffff)
