@@ -30,7 +30,7 @@ def check(cpu,api,io,x,y,signed=False):
     a=api[name]
     wr(cpu.mem,io,x,3);wr(cpu.mem,io+4,y,3)
     before=bytes(cpu.mem[io:io+3]+cpu.mem[io+4:io+7])
-    cpu.mem[io+8:io+14]=b'\\x91'*6
+    cpu.mem[io+8:io+14]=bytes([0x91])*6
     cpu.mem[io+0x30]=0xa6
     sp=cpu.sp
     cpu.d=0
@@ -140,6 +140,6 @@ def main():
     if '--output' in sys.argv:
         path=Path(sys.argv[sys.argv.index('--output')+1])
         path.parent.mkdir(parents=True,exist_ok=True)
-        path.write_text(json.dumps(report,indent=2,sort_keys=True)+'\\n')
+        path.write_text(json.dumps(report,indent=2,sort_keys=True)+chr(10))
     print('ISSUE39 UMUL24 NONCARRY CLC SCREEN PASS',report['paired_unsigned_calls'],report['paired_signed_calls'])
 if __name__=='__main__':main()
