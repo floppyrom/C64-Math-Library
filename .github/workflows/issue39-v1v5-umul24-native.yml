@@ -5,6 +5,7 @@ on:
     paths:
       - tools/native_issue39_v1v5_umul24_tailcall.py
       - tools/finalize_issue39_v1v5_umul24_native.py
+      - tools/qualify_issue39_v2_umod8_candidate.py
       - .github/workflows/issue39-v1v5-umul24-native.yml
   workflow_dispatch:
 permissions:
