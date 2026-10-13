@@ -1,0 +1,89 @@
+{
+  "status": "PASS_AUDIT_RESEARCH_ONLY",
+  "date": "2026-10-13",
+  "scope": "v1_balanced,v5_hybrid_lowzp",
+  "modified_production_prgs": false,
+  "modified_production_sources": false,
+  "issue39_complete": false,
+  "corpus": {
+    "other_public_operations": 14,
+    "states_per_operation": 4,
+    "states_per_profile": 56,
+    "umult32_pairs_per_state": 26,
+    "ordinary_calls_per_profile": 1456,
+    "ready_calls_per_profile": 1456,
+    "seed": "0xC6393224"
+  },
+  "other_ops": [
+    "MATH_UMUL8",
+    "MATH_UMUL16",
+    "MATH_UMUL24",
+    "MATH_SMUL8",
+    "MATH_SMUL16",
+    "MATH_SMUL24",
+    "MATH_SMUL32",
+    "MATH_UDIV8",
+    "MATH_UDIV16",
+    "MATH_UDIV24",
+    "MATH_ISQRT16",
+    "MATH_ISQRT32",
+    "MATH_ATAN2_8",
+    "MATH_UMUL32_SHR16"
+  ],
+  "result_by_profile": {
+    "v1_balanced": {
+      "pointer_dirty_states": 12,
+      "normal_public_valid_calls": 1456,
+      "unqualified_ready_invalid_calls": 312,
+      "ready_valid_calls": 1144,
+      "affected_ops": [
+        "MATH_UMUL24",
+        "MATH_SMUL16",
+        "MATH_SMUL24"
+      ],
+      "affected_pointer_high_bytes": [
+        "0x09",
+        "0x0b",
+        "0x0d"
+      ],
+      "zero_product_witness": {
+        "op": "MATH_UMUL24",
+        "x": "0x0",
+        "y": "0x0",
+        "actual_ready": "0x10100fefdff",
+        "expected": "0x0"
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "pointer_dirty_states": 12,
+      "normal_public_valid_calls": 1456,
+      "unqualified_ready_invalid_calls": 312,
+      "ready_valid_calls": 1144,
+      "affected_ops": [
+        "MATH_UMUL24",
+        "MATH_SMUL16",
+        "MATH_SMUL24"
+      ],
+      "affected_pointer_high_bytes": [
+        "0x09",
+        "0x0b",
+        "0x0d"
+      ],
+      "zero_product_witness": {
+        "op": "MATH_UMUL24",
+        "x": "0x0",
+        "y": "0x0",
+        "actual_ready": "0xa9535352aa000000",
+        "expected": "0x0"
+      }
+    }
+  },
+  "rejected_optimization": "Replace ordinary V1/V5 UMUL32 public entry with READY body, assuming pointer highs survive mixed calls",
+  "proof": "Mixed-call witnesses break public semantics even though ordinary UMUL32 remains correct; READY prerequisite violated",
+  "workflow_run": 38477039930,
+  "full_ci_artifact_sha256": "e1a61c031b2a15e66d7983c38e3d8fdd2ce2d7d8a622098c37094a889c504cee",
+  "full_ci_artifact_bytes": 85001,
+  "full_ci_artifact_name": "issue39-umul32-ready-lifetime.json",
+  "native_vice_calls": 0,
+  "note": "Research-only rejection of a shortcut; does not close the full unsigned multiply campaign"
+}
