@@ -45,9 +45,14 @@ def build():
 def integrate_generator():
     p=R/"tools/source_relocation.py";s=p.read_text()
     old="'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc'),"
-    new="'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc',\n  'umul8_directout_trial.inc'),"
+    new="'smul16_fast17_composed.inc','smul16_shr8_selected.inc','umul16_shr8_reg_return.inc',\n  'umul8_directout.inc'),"
     assert s.count(old)==1 and s.count(new)==0, "ambiguous generator overlay"
-    assert (R/"relocatable_source/v1_balanced/umul8_directout_trial.inc").is_file()
+    trial=R/"relocatable_source/v1_balanced/umul8_directout_trial.inc"
+    assert trial.is_file()
+    canon=trial.with_name("umul8_directout.inc")
+    assert not canon.exists(), "production include already exists unexpectedly"
+    canon.write_text("; Canonical zero-growth V1/V5 UMUL8 direct public result.\n"
+                     + "\n".join(trial.read_text().splitlines()[2:])+"\n")
     p.write_text(s.replace(old,new))
 def update_csv(result):
     p=R/"v1_balanced/PUBLIC_PERFORMANCE.csv"
