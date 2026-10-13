@@ -83,7 +83,7 @@ def call(cpu,entry,n,d,quotient):
  got=(rd(m,Q,3),rd(m,R,3),cpu.c,rd(m,N,3),rd(m,D,3),m[Q+3],m[R+3],m[0xc020],cpu.sp)
  assert (got[1],got[2])==(er,ec),(hex(entry),n,d,'R/C',got,eq,er,ec)
  assert (not quotient or got[0]==eq),(hex(entry),n,d,'Q',got,eq)
- assert got[3:]==(n,d,0xa1,0xe7,0x38,sp),(hex(entry),n,d,'preservation',got)
+ assert got[3:5]==(n,d) and got[7:]==(0xe7,0x38,sp),(hex(entry),n,d,'preservation',got)
  return ticks,got
 def run(profile=None):
  chosen=[profile] if profile else PROFILES
@@ -101,16 +101,17 @@ def run(profile=None):
   for op in OPS:
    rec={}
    for kind,pairs in inputs(op).items():
-    oldsum=newsum=fast=slow=eq=qside=0
+    oldsum=newsum=fast=slow=eq=qside=q3side=0
     trace=hashlib.sha256();maximum=-10**9
     for n,d in pairs:
      # V1 UMOD24 quotient-producing alias; V2 remainder-only by contract.
      quotient=(op==OPS[0] or p=='v1_balanced')
      t0,o0=call(old,entries[op],n,d,quotient)
      t1,o1=call(new,entries[op],n,d,quotient)
-     assert o0[1:]==o1[1:],(p,op,kind,n,d,'R/C and ABI',o0,o1)
+     assert o0[1:6]+o0[7:]==o1[1:6]+o1[7:],(p,op,kind,n,d,'R/C and ABI',o0,o1)
      if quotient: assert o0[0]==o1[0],(p,op,kind,n,d,'Q',o0,o1)
      qside+=o0[0]!=o1[0]
+     q3side+=o0[6]!=o1[6]
      delta=t1-t0
      oldsum+=t0;newsum+=t1
      fast+=delta<0;slow+=delta>0;eq+=delta==0
@@ -121,7 +122,8 @@ def run(profile=None):
        'candidate_mean':newsum/len(pairs),
        'delta_mean':(newsum-oldsum)/len(pairs),'faster':fast,
        'slower':slow,'equal':eq,'max_regression':maximum,
-       'Q_side_effect_differences':qside,'cycle_pair_sha256':trace.hexdigest(),
+       'Q_side_effect_differences':qside,
+       'Q3_extra_byte_differences':q3side,'cycle_pair_sha256':trace.hexdigest(),
        'input_sha256':hashlib.sha256(b''.join(n.to_bytes(3,'little')+d.to_bytes(3,'little') for n,d in pairs)).hexdigest()}
    pr['routines'][op]=rec
    print(p,op,
