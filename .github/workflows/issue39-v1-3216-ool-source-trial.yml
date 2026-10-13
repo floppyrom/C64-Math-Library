@@ -1,0 +1,32 @@
+name: Issue39 V1 32-16 symbolic source and V5 hybrid research gate
+on:
+  push:
+    branches: [issue39-v1-3216-ool-source-trial]
+    paths:
+      - 'relocatable_source/v1_balanced/math_relocatable.asm'
+      - 'relocatable_source/v1_balanced/udiv32_16_ool_zero_trial.inc'
+      - 'tools/qualify_issue39_v1_3216_ool_source_trial.py'
+      - '.github/workflows/issue39-v1-3216-ool-source-trial.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  relocated-source-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Native symbolic V1 image reproduction and V5 reference/alternate hybrid check
+        run: |
+          python3 tools/qualify_issue39_v1_3216_ool_source_trial.py
+      - name: Export research-only proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v1-3216-source-build-trial
+          path: validation/review/ISSUE39_V1_3216_OOL_SOURCE_TRIAL.json
