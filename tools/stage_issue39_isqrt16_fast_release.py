@@ -100,10 +100,14 @@ def main():
     st=json.loads(statuspath.read_text());old=st['reference_prg_sha256']
     assert {p:h(prg(p)) for p in PROFILES}==old,'begin from exact merged main'
     oldroot16={};oldroot32={}
-    for p in PROFILES:
+    for p in (*SOURCES,V4):
         rs=rows(p+'/PUBLIC_PERFORMANCE_GAME_MATH.csv')
         oldroot16[p]=float(next(x['mean_cycles'] for x in rs if x['routine']=='ISQRT16'))
         oldroot32[p]=float(next(x['mean_cycles'] for x in rs if x['routine']=='ISQRT32'))
+    # V5 is a source-built V1 hybrid, not a fifth stock performance CSV.
+    # The published root16/root32 means equal the V1 donor before this release.
+    oldroot16['v5_hybrid_lowzp']=oldroot16['v1_balanced']
+    oldroot32['v5_hybrid_lowzp']=oldroot32['v1_balanced']
     before={p:prg(p).stat().st_size for p in PROFILES}
     with tempfile.TemporaryDirectory(prefix='issue39_root16_staging_') as td:
         t=Path(td); paths={}
@@ -148,11 +152,12 @@ def main():
     for p in MODIFIED:
         v=root16_benchmark(p)
         result['profiles'][p]=v
-        rs=rows(p+'/PUBLIC_PERFORMANCE_GAME_MATH.csv')
-        item=next(x for x in rs if x['routine']=='ISQRT16')
-        item.update(cases='65536',mean_cycles=str(v['mean_cycles']),
-                    min_cycles=str(v['min_cycles']),max_cycles=str(v['max_cycles']))
-        save_rows(p+'/PUBLIC_PERFORMANCE_GAME_MATH.csv',rs)
+        if p in SOURCES:
+            rs=rows(p+'/PUBLIC_PERFORMANCE_GAME_MATH.csv')
+            item=next(x for x in rs if x['routine']=='ISQRT16')
+            item.update(cases='65536',mean_cycles=str(v['mean_cycles']),
+                        min_cycles=str(v['min_cycles']),max_cycles=str(v['max_cycles']))
+            save_rows(p+'/PUBLIC_PERFORMANCE_GAME_MATH.csv',rs)
         print(p,'EXHAUSTIVE ROOT16',v['mean_cycles'],v['min_cycles'],v['max_cycles'],flush=True)
     # V4's exact REU lookup remains published with its original proof.
     row=ROOT/RESULT
@@ -161,11 +166,7 @@ def main():
     py('validate_isqrt32_fast')
     py('benchmark_isqrt32_fast')
     v5_32=root32_benchmark('v5_hybrid_lowzp')
-    rs=rows('v5_hybrid_lowzp/PUBLIC_PERFORMANCE_GAME_MATH.csv')
-    item=next(x for x in rs if x['routine']=='ISQRT32')
-    item.update(cases='4130',mean_cycles=str(v5_32['mean_cycles']),
-                min_cycles=str(v5_32['min_cycles']),max_cycles=str(v5_32['max_cycles']))
-    save_rows('v5_hybrid_lowzp/PUBLIC_PERFORMANCE_GAME_MATH.csv',rs)
+    # V5 root32 is benchmarked here independently; no profile-local CSV exists.
     root32=json.loads((ROOT/'validation/review/ISQRT32_FAST_PERFORMANCE_4130.json').read_text())
     r32={x['profile']:x for x in root32['profiles']}
     r32['v5_hybrid_lowzp']=v5_32
