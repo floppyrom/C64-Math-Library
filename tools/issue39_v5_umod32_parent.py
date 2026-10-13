@@ -11,6 +11,11 @@ def digest(b):return sha256(b).hexdigest()
 def restore_v5_umod32_parent(prg:bytes)->bytes:
     # Normalize only the exact SHA-pinned post-PR97 resident; retain every
     # frozen PR68/PR71 historical parent comparison byte-for-byte.
+    # The source-installed PR100 V5 base inherits V1's relocated private
+    # 32/16 island, even though V5's public 32/16 calls use the V2 donor.
+    # Undo exactly that disjoint SHA-checked delta before replaying PR71.
+    from issue39_v1_24by8_accumulator_parent import undo_v1_3216_coldpath_for_historical_audit
+    prg=undo_v1_3216_coldpath_for_historical_audit(prg)
     prg=restore_pre_txa('v5_hybrid_lowzp',prg)
     current=digest(prg)
     if current==OLD:return prg
