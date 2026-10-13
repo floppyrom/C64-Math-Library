@@ -14,6 +14,7 @@ PRG=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 SOURCE=ROOT/'tools/candidates/issue39_v1_24by8_shared_subtraction.asm'
 CURRENT_SHA='cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f'
 RELEASE_SHA='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0'
+# The shared historical-parent adapter independently pins released baselines.
 live=restore_pr78(PRG.read_bytes())
 nowsha=hashlib.sha256(live).hexdigest()
 assert nowsha in (CURRENT_SHA,RELEASE_SHA),('unknown V1 source baseline',nowsha)

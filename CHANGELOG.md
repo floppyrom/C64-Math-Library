@@ -1,3 +1,10 @@
+2026-10-14 ISSUE39 V1V5 UMUL24 RARECARRY NATIVE SOURCE VALIDATION
+- Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V1/V5: 384 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_V1V5_UMUL24_RARECARRY_NATIVE_2026-10-14.json.
+
+2026-10-14 ISSUE39 V1V5 UMUL24 RARE-CARRY CLC
+- Source-integrated V1/V5 rare-carry CLC: -1 CPU-model cycle on all 10,324 matched unsigned calls/profile; 466.042329 -> 465.042329; V2-V4 unchanged, zero ZP/resident growth.
+- Signed and mixed-call, relocation, standalone and package checks pass at staging; native VICE and PR/main CI pending. docs/ISSUE39_V1V5_UMUL24_RARECARRY_RELEASE_2026-10-14.md
+
 2026-10-13 ISSUE39 UMUL32 READY MIXED-CALL POINTER LIFETIME (RESEARCH-ONLY)
 - Tested V1/V5 ordinary and READY 32x32 public entries after 14 other APIs x 4 operand states: 56 states/profile, 1,456 ordinary and 1,456 READY arithmetic/ABI probes per profile. Ordinary passed every probe; READY was wrong on 312/profile after UMUL24, SMUL16 and SMUL24 overwrote pointer-high bytes $09/$0B/$0D. No resident, source, ZP or API change; 22-cycle bypass is unsafe without valid READY state. docs/ISSUE39_UMUL32_READY_POINTER_LIFETIME_2026-10-13.md
 

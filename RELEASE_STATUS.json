@@ -1,5 +1,21 @@
 {
-  "issue39_umul32_ready_pointer_lifetime_2026_10_13": {"status":"PASS_RESEARCH_REJECT_UNQUALIFIED_READY_BYPASS","evidence":"validation/review/ISSUE39_UMUL32_READY_POINTER_LIFETIME.json","document":"docs/ISSUE39_UMUL32_READY_POINTER_LIFETIME_2026-10-13.md","all_normal_calls_valid":true,"normal_calls_per_profile":1456,"ready_invalid_per_profile":312,"invalidators":["MATH_UMUL24","MATH_SMUL16","MATH_SMUL24"],"zero_page_growth":0,"resident_prgs_changed":false,"private_optisearch_published":false,"issue39_complete":false},
+  "issue39_umul32_ready_pointer_lifetime_2026_10_13": {
+    "status": "PASS_RESEARCH_REJECT_UNQUALIFIED_READY_BYPASS",
+    "evidence": "validation/review/ISSUE39_UMUL32_READY_POINTER_LIFETIME.json",
+    "document": "docs/ISSUE39_UMUL32_READY_POINTER_LIFETIME_2026-10-13.md",
+    "all_normal_calls_valid": true,
+    "normal_calls_per_profile": 1456,
+    "ready_invalid_per_profile": 312,
+    "invalidators": [
+      "MATH_UMUL24",
+      "MATH_SMUL16",
+      "MATH_SMUL24"
+    ],
+    "zero_page_growth": 0,
+    "resident_prgs_changed": false,
+    "private_optisearch_published": false,
+    "issue39_complete": false
+  },
   "acme": {
     "historical_assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
     "historical_checks": 8,
@@ -14,11 +30,11 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "214311002e66c7d2a5541014232e551b191340e93c454306b0382211a994ec35",
+    "v1_balanced": "0aa5520a1ae89e3847a85acf668fbbf8a1a80d0f2536febca2560f7ca8447da3",
     "v2_pareto_fast": "ff8a4ebf38b49f0605a98a4a1df973d6c6a9df09739669212a4e30e518c69cb5",
     "v3_reu_512k": "fc4e814bef0cec7445243394c34a1dd8ddc536487a041a6e31ac5bd5eb62ec2e",
     "v4_reu_16m": "fdb2b822be8d2d0b2fbc49faed02774bc2ec94131cf34d1dc389c0a7284ae272",
-    "v5_hybrid_lowzp": "d1c3d9e04c73c5fd2f30b839e0f5e247dd1aec05b0c77a13ed1b39c04946bf7c"
+    "v5_hybrid_lowzp": "89f957cfacca3bdbd2b744374ff640fcbf9b437d95846a52fd0fb81e8fe9a59b"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -244,11 +260,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0",
+    "v1_balanced": "f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7",
     "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
     "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
     "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
-    "v5_hybrid_lowzp": "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"
+    "v5_hybrid_lowzp": "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -658,7 +674,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "43a0c92c09252a782dddf0d6bcd81f1fcefeef5ca344b610ae22ff0135effb7b",
+    "benchmark_sha256": "2b116a68c9272ccdad1887961176f1f9fe5b68cea0053dd9e4b2f99919e552c7",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -756,7 +772,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "803b53ec994882acabe6ef5bd9e8432701c31893dbe1ed483960b3ab4fd2adc7",
+    "report_sha256": "148706b50a9d30f36d4b66f0e1a6198e53b51e1206f618e0406d6f4168c41c91",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -859,7 +875,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "d4c4443abc2a0daf46ab43fbc3c94266cefc9d3619ed5431f0aa0b173ca7f70d",
+    "data_sha256": "f1a15c49b8317f8ea0ba2bf6fd167aee1e7d705964fb848e923634c68dd9205b",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -2719,5 +2735,41 @@
     "native_vice_evidence": "validation/review/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_NATIVE_2026-10-13.json",
     "native_vice_evidence_sha256": "661d8455182da7c1a741fb736980a15972f45db56c169e292d90d55cd0bd6d04"
   },
-  "issue39_umul16_umul24_optisearch_resource_audit_2026_10_13": {"status":"RESEARCH_ONLY_NO_DEFAULT_PROMOTION","document":"docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md","evidence":"validation/review/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT.json","production_prgs_changed":false,"public_api_changed":false,"private_optisearch_source_published":false,"umul16_public_abi_qualified":false,"umul24_paired_qualifed":false,"issue39_complete":false}
+  "issue39_umul16_umul24_optisearch_resource_audit_2026_10_13": {
+    "status": "RESEARCH_ONLY_NO_DEFAULT_PROMOTION",
+    "document": "docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md",
+    "evidence": "validation/review/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT.json",
+    "production_prgs_changed": false,
+    "public_api_changed": false,
+    "private_optisearch_source_published": false,
+    "umul16_public_abi_qualified": false,
+    "umul24_paired_qualifed": false,
+    "issue39_complete": false
+  },
+  "issue39_umul24_v1v5_rare_carry_clc_2026_10_14": {
+    "status": "PASS_NATIVE_VICE_PR_CI_PENDING",
+    "proof": "validation/review/ISSUE39_V1V5_UMUL24_RARECARRY_RELEASE_2026-10-14.json",
+    "doc": "docs/ISSUE39_V1V5_UMUL24_RARECARRY_RELEASE_2026-10-14.md",
+    "new_sha256": {
+      "v1_balanced": "f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7",
+      "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
+      "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
+      "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
+      "v5_hybrid_lowzp": "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90"
+    },
+    "old_sha256": {
+      "v1_balanced": "6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0",
+      "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
+      "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
+      "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
+      "v5_hybrid_lowzp": "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"
+    },
+    "gain_cycles_every_case": 1,
+    "normal_ZP_growth": 0,
+    "resident_growth": 0,
+    "issue39_complete": false,
+    "native_vice_calls": 384,
+    "native_vice_evidence": "validation/review/ISSUE39_V1V5_UMUL24_RARECARRY_NATIVE_2026-10-14.json",
+    "native_vice_evidence_sha256": "2855c172c3df34670f0623ac0ef8bad5b4ff238f705e79daa6465d3e59bcdb52"
+  }
 }

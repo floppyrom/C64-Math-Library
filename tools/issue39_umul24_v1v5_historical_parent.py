@@ -53,7 +53,33 @@ def undo_umul8_release(profile:str,blob:bytes)->bytes:
     assert sha(restored)==previous,(profile,"UMUL8 historical inverse drift",sha(restored))
     return restored
 
+# Each research inverse is exactly pinned to the final pre-PR118 main
+# resident. It may only affect frozen historical test replay; no PRGs change.
+RARECARRY_PARENT="fa5457729d764ffc9c24f8cb5bde2e5790eb79fe"
+RARECARRY_IMAGES={
+    "v1_balanced":(
+        "f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7",
+        "6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0"),
+    "v5_hybrid_lowzp":(
+        "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90",
+        "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"),
+}
+def undo_rarecarry_release(profile:str,blob:bytes)->bytes:
+    row=RARECARRY_IMAGES.get(profile)
+    if row is None or sha(blob)!=row[0]:return blob
+    rel=f"{profile}/resident/math_{profile}_game_math.prg"
+    old=subprocess.check_output(["git","show",f"{RARECARRY_PARENT}:{rel}"],cwd=ROOT)
+    assert sha(old)==row[1],(profile,"rarecarry parent SHA drift")
+    assert len(blob)==len(old) and blob[:2]==old[:2]
+    start=int.from_bytes(blob[:2],"little")
+    assert start==0x1000
+    delta=[start+i for i,(a,b) in enumerate(zip(old[2:],blob[2:])) if a!=b]
+    assert delta and all(0x2700<=pc<0x3000 for pc in delta),(
+        profile,"rarecarry changed outside FAST24",list(map(hex,delta[:24])))
+    return old
+
 def undo_umul24_tailcall(profile:str,blob:bytes)->bytes:
+    blob=undo_rarecarry_release(profile,blob)
     blob=undo_umul8_release(profile,blob)
     if profile not in PUBLISHED:return blob
     previous,candidate=PUBLISHED[profile]
