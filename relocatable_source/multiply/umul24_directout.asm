@@ -188,8 +188,11 @@ R24_v22:    adc #0
         ; existing jump and cycle profile; no new scratch or caller contract.
         sta MATH_IO+$0C
         stx MATH_IO+$0D
-        clc
+        ; Fallthrough from BCS guarantees C=0; STA/STX preserve C.
+        ; RTS/NOP preserves all subsequent resident addresses while removing
+        ; two redundant CLC cycles in the no-carry case.
         rts
+        nop
 R24_final:
         inx
         jmp R24_public_tail
