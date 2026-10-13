@@ -4498,3 +4498,6 @@ LCAFB:
 
 ; V1 direct shifted DIV adapters.
 !source "../game_math/shifted_div_direct_balanced.inc"
+
+; Research-only ISQRT16 code+seed built inside the retired ISQRT16 island.
+!source "isqrt16_seed_square_trial.inc"
