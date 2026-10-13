@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Protected V1/V5 public UMUL24 FAST24 tail-call source release staging.
+"""Protected V1/V5 public UMUL24 FAST24 tail-call source release staging after V2-V4 candidate integration.
 
 Original fast24 arithmetic is independent of signed producer. One public JSR
 and inner RTS disappear, final z3 is directly stored, and ordinary V1/V5
