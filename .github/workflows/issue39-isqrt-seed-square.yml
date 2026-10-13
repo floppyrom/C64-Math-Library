@@ -4,6 +4,7 @@ on:
     branches: [issue39-integer-roots-seedtable-screen]
     paths:
       - 'tools/screen_issue39_isqrt16_seed_square.py'
+      - 'tools/research_issue39_root_memory_pages.py'
       - '.github/workflows/issue39-isqrt-seed-square.yml'
   workflow_dispatch:
 permissions:
