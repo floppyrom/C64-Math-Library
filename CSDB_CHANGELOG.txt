@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 UMUL32 READY MIXED-CALL POINTER LIFETIME (RESEARCH-ONLY)
+- Tested V1/V5 ordinary and READY 32x32 public entries after 14 other APIs x 4 operand states: 56 states/profile, 1,456 ordinary and 1,456 READY arithmetic/ABI probes per profile. Ordinary passed every probe; READY was wrong on 312/profile after UMUL24, SMUL16 and SMUL24 overwrote pointer-high bytes $09/$0B/$0D. No resident, source, ZP or API change; 22-cycle bypass is unsafe without valid READY state. docs/ISSUE39_UMUL32_READY_POINTER_LIFETIME_2026-10-13.md
+
 2026-10-13 ISSUE39 UMUL24 V2/V3/V4 POSTMERGE RELEASE CERTIFICATION
 - Production PR #114 merged into main as eafb2b45e15542242925602e2bee21e063d559c3. All seven head-SHA push/PR workflows passed, plus post-merge main Validate library #38475292294, Comparable unsigned #38475292291, and Turbo32 #38475292298. 576 native x64sc calls passed product/carry/input/stack invariant checks (native cycle timing not measured).
 - Public UMUL24 V2/V3/V4 same-input mean 419.292135 -> 417.783224 cycles; 7,789/10,324 calls save exactly 2 cycles, 2,535 unchanged, none slower. Exactly two code-byte changes per target resident, zero resident/ZP growth; V1/V5 unchanged. Issue #39 remains OPEN. docs/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_2026-10-13.md
