@@ -98,7 +98,7 @@ def main():
  note=(STAMP+"\n"
   "- V2/V3/V4 UMUL24 source direct return: 7,789/10,324 calls -3"
   " cycles and 2,535 unchanged; mean "+format(expected["mean_cycles"],".6f")
-  " cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.\n"
+  + " cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.\n"
   "- Signed/mixed regression, standalone source, alternate maps and"
   " package checked. Native VICE/PR/main pending. "+DOC+"\n\n")
  for name in ("CHANGELOG.md","CSDB_CHANGELOG.txt"):
