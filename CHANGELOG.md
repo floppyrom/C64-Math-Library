@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 INTEGER ROOT NATIVE VICE RELEASE PROOF
+- Native x64sc old/new full-resident ISQRT16 and ISQRT32 validation: 768 calls across V1/V2/V3/V5, exact public output, input, carry, return-path sentinels and stack invariants. Full root proof: validation/review/ISSUE39_ROOTS_NATIVE_VICE_2026-10-13.json. V4 unchanged; cycle counts from the independent mini6502 proof only. Issue #39 remains OPEN.
+
 2026-10-13 ISSUE39 INTEGER ROOTS SAME-ISLAND FAST SEED
 - ISQRT16 exact floor-root public source upgrade on V1/V2/V3/V5: 294 bytes total replacement of existing ISQRT16 code island, includes 256-byte upper seed table and reuses $9800/$9900 squares. No PRG length/ZP changes. V4 REU root unchanged.
 - Rebenchmarked all 65536 ISQRT16 operands and 4130 common ISQRT32 operands, with exact source reference/alternate and V5 hybrid regeneration, standalone/public catalog and all-family ABI checks. Native VICE pending. Issue #39 remains OPEN. docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md

@@ -2458,7 +2458,7 @@
     "unsigned_family_complete": false
   },
   "issue39_integer_roots_source_release_2026_10_13": {
-    "status": "PASS_STAGED_NATIVE_VICE_PENDING",
+    "status": "PASS_NATIVE_VICE_SOURCE_INSTALLED_PR_CI_PENDING",
     "root16_exact_domain_per_optimized_profile": 65536,
     "isqrt32_same_input_cases_per_profile": 4130,
     "optimized_profiles": [
@@ -2484,9 +2484,11 @@
       "v4_reu_16m": "a4c3062cfafec053f3aef414debae621686cdf297a0ca573fe3f311a0513307b",
       "v5_hybrid_lowzp": "b255c1ccd651134259bccd26a7a9849669d0ed5e8fb57dbff95fbbddd0e7abca"
     },
-    "native_vice_calls": 0,
+    "native_vice_calls": 768,
     "document": "docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md",
     "proof": "validation/review/ISSUE39_ROOTS_SAME_INPUT_2026-10-13.json",
-    "issue39_complete": false
+    "issue39_complete": false,
+    "native_vice_evidence": "validation/review/ISSUE39_ROOTS_NATIVE_VICE_2026-10-13.json",
+    "native_cycles_measured": false
   }
 }
