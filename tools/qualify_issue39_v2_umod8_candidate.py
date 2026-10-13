@@ -47,6 +47,22 @@ def main():
     # preserving exactly the original candidate/control arithmetic bytes.
     parentbytes=undo_root_release(NAME,parentbytes)
     newbytes=undo_root_release(NAME,newbytes)
+    # The public V2 resident advanced independently (V2 UMUL8 and UMUL24).
+    # Confirm BOTH modern control and regenerated source image are the exact
+    # SHA-pinned PR105 image, then replay the frozen UMOD8 historical A/B on
+    # its original audited V2 arithmetic image. This neither introduces an
+    # unrelated UMUL24 difference into the 104-byte UMOD8 candidate delta nor
+    # accepts an arbitrary changed V2 binary.
+    if sha(parentbytes)=='9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7':
+        import subprocess
+        assert sha(newbytes)==sha(parentbytes), 'PR105 source-built V2 resident drift'
+        source='ed0d0330c8130cb0adb6c7e8d3d62b9ca8bb9ab7'
+        rel='v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg'
+        historical=subprocess.check_output(['git','show',source+':'+rel],cwd=ROOT)
+        assert sha(historical)=='c3c0898bc61a9836e7f58d1b51088ccc644613bf68d9e4199aa1243c4f164c84', \
+            'frozen pre-UMUL8/UMUL24 V2 replay source drift'
+        parentbytes=historical
+        newbytes=historical
     # Before publication the resident is the historical old image. After
     # publication reconstruct that *exact* historical image from the
     # SHA-certified 104 changed addresses, without altering the new code.
