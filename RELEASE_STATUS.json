@@ -2623,5 +2623,21 @@
     "original_different_corpora_warning": true,
     "native_vice_cycle_timing_claimed": false,
     "issue39_complete": false
+  },
+  "issue39_v1v5_umul8_directout_research_2026_10_13": {
+    "status": "RESEARCH_ONLY_NOT_PROMOTED",
+    "documentation": "docs/ISSUE39_V1V5_UMUL8_DIRECTOUT_RESEARCH_2026-10-13.md",
+    "source_candidate": "relocatable_source/v1_balanced/umul8_directout_trial.inc",
+    "screen": "tools/screen_issue39_v1v5_umul8_directout.py",
+    "full_pairs_per_profile": 65536,
+    "profiles": [
+      "v1_balanced",
+      "v5_hybrid_lowzp"
+    ],
+    "model_paired_saving_cycles_each": 6,
+    "archived_native_vice_calls": 256,
+    "current_main_native_vice_pass": false,
+    "selected_by_production_builder": false,
+    "issue39_complete": false
   }
 }
