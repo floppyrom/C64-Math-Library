@@ -5,6 +5,9 @@
 - V2/V3/V4 UMUL24 redundant CLC removal: 7,789/10,324 calls -2 cycles and 2,535 unchanged; mean 417.783224 cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.
 - Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE/PR/main pending. docs/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_2026-10-13.md
 
+2026-10-13 ISSUE39 UMUL16/UMUL24 OPTISEARCH RESOURCE SCREEN (RESEARCH ONLY)
+- Compared full public UMUL16 benchmarks to a verified arithmetic-only private near-page candidate, and reviewed the public 24-ZP FAST24 carry-transfer record against a retained private 27-ZP record. Timings are NOT ABI/CPU-model comparable; candidate relies on executable ZP and stack-page code. No production gain promoted; source and resident PRGs unchanged. Issue #39 remains open. See docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md.
+
 2026-10-13 ISSUE39 V1/V5 UMUL8 POSTMERGE RELEASE CERTIFICATION
 - V1/V5 UMUL8 PR #109 is merged on main as f754cc87d0ba3518377a4e2d19a9e8fc6ac0d75a. Independent PR qualification and post-merge main checks passed: full validation #38463930923, comparable unsigned #38463930890, and Turbo32 #38463930880. No change to the measured six-cycle same-input CPU-model win, ABI, ZP or resident size; issue #39 remains open for the rest of the multiply campaign. Native VICE invariant replay: 256 calls; native cycle timing not measured.
 
