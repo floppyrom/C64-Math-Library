@@ -11,7 +11,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"tools"))
 from native_issue39_u24_txa_resident import command
 PROFILE=("v1_balanced","v5_hybrid_lowzp")
-PARENT="ed0d0330c8130cb0adb6c7e8d3d62b9ca8bb9ab7"
+PARENT="c9acb83a7e33a6af43fafb0eddf868af6311499f"
 APIS={"MATH_UMUL24":0x3060,"MATH_SMUL24":0x3BF0}
 H=0x0b00;INPUT=0x0400;OUTPUT=0x0600;STRIDE=64;COUNT=48;IO=0xc000
 FIELDS=[IO+8+i for i in range(6)]+[IO+i for i in range(3)]+[IO+4+i for i in range(3)]+[0xc030,0xc024,0xc032]
