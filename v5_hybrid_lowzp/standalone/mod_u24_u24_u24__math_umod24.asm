@@ -54,12 +54,12 @@ L2F50:
     ldx #$00                           ; @2F50 A2 00
     stx $C019                          ; @2F52 8E 19 C0
     stx $C01A                          ; @2F55 8E 1A C0
-    jmp LA714                          ; @2F58 4C 14 A7
+    jmp LA712                          ; @2F58 4C 12 A7
 L2F5B:
     ldx #$00                           ; @2F5B A2 00
     stx $C019                          ; @2F5D 8E 19 C0
     stx $C01A                          ; @2F60 8E 1A C0
-    jmp LA717                          ; @2F63 4C 17 A7
+    jmp LA715                          ; @2F63 4C 15 A7
 L2F66:
     lda $C016                          ; @2F66 AD 16 C0
     bne L2F6E                          ; @2F69 D0 03
@@ -887,429 +887,429 @@ LA6AD:
     sta $C01D                          ; @A6C1 8D 1D C0
     stx $C01E                          ; @A6C4 8E 1E C0
     rts                                ; @A6C7 60
-; ---- executable island $A714 ----
-* = $A714
-LA714:
-    sta $C01E                          ; @A714 8D 1E C0
-LA717:
-    lda $C01C                          ; @A717 AD 1C C0
-    sbc $C014                          ; @A71A ED 14 C0
-    sta $C01C                          ; @A71D 8D 1C C0
-    lda $C01D                          ; @A720 AD 1D C0
-    sbc $C015                          ; @A723 ED 15 C0
-    sta $C01D                          ; @A726 8D 1D C0
-    lda $C01E                          ; @A729 AD 1E C0
-    sbc $C016                          ; @A72C ED 16 C0
-    cmp $C016                          ; @A72F CD 16 C0
-    bcc LA751                          ; @A732 90 1D
-    bne LA75A                          ; @A734 D0 24
-    sta $C01E                          ; @A736 8D 1E C0
-    lda $C01D                          ; @A739 AD 1D C0
-    cmp $C015                          ; @A73C CD 15 C0
-    bcc LA74B                          ; @A73F 90 0A
-    bne LA75D                          ; @A741 D0 1A
-    lda $C01C                          ; @A743 AD 1C C0
-    cmp $C014                          ; @A746 CD 14 C0
-    bcs LA75D                          ; @A749 B0 12
-LA74B:
-    lda #$02                           ; @A74B A9 02
-    sta $C018                          ; @A74D 8D 18 C0
-    rts                                ; @A750 60
-LA751:
-    sta $C01E                          ; @A751 8D 1E C0
-    lda #$02                           ; @A754 A9 02
-    sta $C018                          ; @A756 8D 18 C0
-    rts                                ; @A759 60
-LA75A:
-    sta $C01E                          ; @A75A 8D 1E C0
-LA75D:
-    lda $C01C                          ; @A75D AD 1C C0
-    sbc $C014                          ; @A760 ED 14 C0
-    sta $C01C                          ; @A763 8D 1C C0
-    lda $C01D                          ; @A766 AD 1D C0
-    sbc $C015                          ; @A769 ED 15 C0
-    sta $C01D                          ; @A76C 8D 1D C0
-    lda $C01E                          ; @A76F AD 1E C0
-    sbc $C016                          ; @A772 ED 16 C0
-    sta $C01E                          ; @A775 8D 1E C0
-    lda $C016                          ; @A778 AD 16 C0
-    cmp #$0D                           ; @A77B C9 0D
-    bcs LA787                          ; @A77D B0 08
-    lda #$03                           ; @A77F A9 03
-    sta $AFAA                          ; @A781 8D AA AF
-    jmp LAF1E                          ; @A784 4C 1E AF
-LA787:
-    lda $C01E                          ; @A787 AD 1E C0
-    cmp $C016                          ; @A78A CD 16 C0
-    bcc LA7A3                          ; @A78D 90 14
-    bne LA7A9                          ; @A78F D0 18
-    lda $C01D                          ; @A791 AD 1D C0
-    cmp $C015                          ; @A794 CD 15 C0
-    bcc LA7A3                          ; @A797 90 0A
-    bne LA7A9                          ; @A799 D0 0E
-    lda $C01C                          ; @A79B AD 1C C0
-    cmp $C014                          ; @A79E CD 14 C0
-    bcs LA7A9                          ; @A7A1 B0 06
-LA7A3:
-    lda #$03                           ; @A7A3 A9 03
-    sta $C018                          ; @A7A5 8D 18 C0
-    rts                                ; @A7A8 60
-LA7A9:
-    lda $C01C                          ; @A7A9 AD 1C C0
-    sbc $C014                          ; @A7AC ED 14 C0
-    sta $C01C                          ; @A7AF 8D 1C C0
-    lda $C01D                          ; @A7B2 AD 1D C0
-    sbc $C015                          ; @A7B5 ED 15 C0
-    sta $C01D                          ; @A7B8 8D 1D C0
-    lda $C01E                          ; @A7BB AD 1E C0
-    sbc $C016                          ; @A7BE ED 16 C0
-    tax                                ; @A7C1 AA
-    cmp $C016                          ; @A7C2 CD 16 C0
-    bcc LA7DB                          ; @A7C5 90 14
-    bne LA7E4                          ; @A7C7 D0 1B
-    lda $C01D                          ; @A7C9 AD 1D C0
-    cmp $C015                          ; @A7CC CD 15 C0
-    bcc LA7DB                          ; @A7CF 90 0A
-    bne LA7E4                          ; @A7D1 D0 11
-    lda $C01C                          ; @A7D3 AD 1C C0
-    cmp $C014                          ; @A7D6 CD 14 C0
-    bcs LA7E4                          ; @A7D9 B0 09
-LA7DB:
-    stx $C01E                          ; @A7DB 8E 1E C0
-    lda #$04                           ; @A7DE A9 04
-    sta $C018                          ; @A7E0 8D 18 C0
-    rts                                ; @A7E3 60
-LA7E4:
-    lda $C01C                          ; @A7E4 AD 1C C0
-    sbc $C014                          ; @A7E7 ED 14 C0
-    sta $C01C                          ; @A7EA 8D 1C C0
-    lda $C01D                          ; @A7ED AD 1D C0
-    sbc $C015                          ; @A7F0 ED 15 C0
-    sta $C01D                          ; @A7F3 8D 1D C0
-    txa                                ; @A7F6 8A
-    sbc $C016                          ; @A7F7 ED 16 C0
-    tax                                ; @A7FA AA
-    cmp $C016                          ; @A7FB CD 16 C0
-    bcc LA814                          ; @A7FE 90 14
-    bne LA81D                          ; @A800 D0 1B
-    lda $C01D                          ; @A802 AD 1D C0
-    cmp $C015                          ; @A805 CD 15 C0
-    bcc LA814                          ; @A808 90 0A
-    bne LA81D                          ; @A80A D0 11
-    lda $C01C                          ; @A80C AD 1C C0
-    cmp $C014                          ; @A80F CD 14 C0
-    bcs LA81D                          ; @A812 B0 09
-LA814:
-    stx $C01E                          ; @A814 8E 1E C0
-    lda #$05                           ; @A817 A9 05
-    sta $C018                          ; @A819 8D 18 C0
-    rts                                ; @A81C 60
-LA81D:
-    lda $C01C                          ; @A81D AD 1C C0
-    sbc $C014                          ; @A820 ED 14 C0
-    sta $C01C                          ; @A823 8D 1C C0
-    lda $C01D                          ; @A826 AD 1D C0
-    sbc $C015                          ; @A829 ED 15 C0
-    sta $C01D                          ; @A82C 8D 1D C0
-    txa                                ; @A82F 8A
-    sbc $C016                          ; @A830 ED 16 C0
-    tax                                ; @A833 AA
-    cmp $C016                          ; @A834 CD 16 C0
-    bcc LA84D                          ; @A837 90 14
-    bne LA856                          ; @A839 D0 1B
-    lda $C01D                          ; @A83B AD 1D C0
-    cmp $C015                          ; @A83E CD 15 C0
-    bcc LA84D                          ; @A841 90 0A
-    bne LA856                          ; @A843 D0 11
-    lda $C01C                          ; @A845 AD 1C C0
-    cmp $C014                          ; @A848 CD 14 C0
-    bcs LA856                          ; @A84B B0 09
-LA84D:
-    stx $C01E                          ; @A84D 8E 1E C0
-    lda #$06                           ; @A850 A9 06
-    sta $C018                          ; @A852 8D 18 C0
-    rts                                ; @A855 60
-LA856:
-    lda $C01C                          ; @A856 AD 1C C0
-    sbc $C014                          ; @A859 ED 14 C0
-    sta $C01C                          ; @A85C 8D 1C C0
-    lda $C01D                          ; @A85F AD 1D C0
-    sbc $C015                          ; @A862 ED 15 C0
-    sta $C01D                          ; @A865 8D 1D C0
-    txa                                ; @A868 8A
-    sbc $C016                          ; @A869 ED 16 C0
-    tax                                ; @A86C AA
-    cmp $C016                          ; @A86D CD 16 C0
-    bcc LA886                          ; @A870 90 14
-    bne LA88F                          ; @A872 D0 1B
-    lda $C01D                          ; @A874 AD 1D C0
-    cmp $C015                          ; @A877 CD 15 C0
-    bcc LA886                          ; @A87A 90 0A
-    bne LA88F                          ; @A87C D0 11
-    lda $C01C                          ; @A87E AD 1C C0
-    cmp $C014                          ; @A881 CD 14 C0
-    bcs LA88F                          ; @A884 B0 09
-LA886:
-    stx $C01E                          ; @A886 8E 1E C0
-    lda #$07                           ; @A889 A9 07
-    sta $C018                          ; @A88B 8D 18 C0
-    rts                                ; @A88E 60
-LA88F:
-    lda $C01C                          ; @A88F AD 1C C0
-    sbc $C014                          ; @A892 ED 14 C0
-    sta $C01C                          ; @A895 8D 1C C0
-    lda $C01D                          ; @A898 AD 1D C0
-    sbc $C015                          ; @A89B ED 15 C0
-    sta $C01D                          ; @A89E 8D 1D C0
-    txa                                ; @A8A1 8A
-    sbc $C016                          ; @A8A2 ED 16 C0
-    tax                                ; @A8A5 AA
-    cmp $C016                          ; @A8A6 CD 16 C0
-    bcc LA8BF                          ; @A8A9 90 14
-    bne LA8C8                          ; @A8AB D0 1B
-    lda $C01D                          ; @A8AD AD 1D C0
-    cmp $C015                          ; @A8B0 CD 15 C0
-    bcc LA8BF                          ; @A8B3 90 0A
-    bne LA8C8                          ; @A8B5 D0 11
-    lda $C01C                          ; @A8B7 AD 1C C0
-    cmp $C014                          ; @A8BA CD 14 C0
-    bcs LA8C8                          ; @A8BD B0 09
-LA8BF:
-    stx $C01E                          ; @A8BF 8E 1E C0
-    lda #$08                           ; @A8C2 A9 08
-    sta $C018                          ; @A8C4 8D 18 C0
-    rts                                ; @A8C7 60
-LA8C8:
-    lda $C01C                          ; @A8C8 AD 1C C0
-    sbc $C014                          ; @A8CB ED 14 C0
-    sta $C01C                          ; @A8CE 8D 1C C0
-    lda $C01D                          ; @A8D1 AD 1D C0
-    sbc $C015                          ; @A8D4 ED 15 C0
-    sta $C01D                          ; @A8D7 8D 1D C0
-    txa                                ; @A8DA 8A
-    sbc $C016                          ; @A8DB ED 16 C0
-    tax                                ; @A8DE AA
-    cmp $C016                          ; @A8DF CD 16 C0
-    bcc LA8F8                          ; @A8E2 90 14
-    bne LA901                          ; @A8E4 D0 1B
-    lda $C01D                          ; @A8E6 AD 1D C0
-    cmp $C015                          ; @A8E9 CD 15 C0
-    bcc LA8F8                          ; @A8EC 90 0A
-    bne LA901                          ; @A8EE D0 11
-    lda $C01C                          ; @A8F0 AD 1C C0
-    cmp $C014                          ; @A8F3 CD 14 C0
-    bcs LA901                          ; @A8F6 B0 09
-LA8F8:
-    stx $C01E                          ; @A8F8 8E 1E C0
-    lda #$09                           ; @A8FB A9 09
-    sta $C018                          ; @A8FD 8D 18 C0
-    rts                                ; @A900 60
-LA901:
-    lda $C01C                          ; @A901 AD 1C C0
-    sbc $C014                          ; @A904 ED 14 C0
-    sta $C01C                          ; @A907 8D 1C C0
-    lda $C01D                          ; @A90A AD 1D C0
-    sbc $C015                          ; @A90D ED 15 C0
-    sta $C01D                          ; @A910 8D 1D C0
-    txa                                ; @A913 8A
-    sbc $C016                          ; @A914 ED 16 C0
-    tax                                ; @A917 AA
-    cmp $C016                          ; @A918 CD 16 C0
-    bcc LA931                          ; @A91B 90 14
-    bne LA93A                          ; @A91D D0 1B
-    lda $C01D                          ; @A91F AD 1D C0
-    cmp $C015                          ; @A922 CD 15 C0
-    bcc LA931                          ; @A925 90 0A
-    bne LA93A                          ; @A927 D0 11
-    lda $C01C                          ; @A929 AD 1C C0
-    cmp $C014                          ; @A92C CD 14 C0
-    bcs LA93A                          ; @A92F B0 09
-LA931:
-    stx $C01E                          ; @A931 8E 1E C0
-    lda #$0A                           ; @A934 A9 0A
-    sta $C018                          ; @A936 8D 18 C0
-    rts                                ; @A939 60
-LA93A:
-    lda $C01C                          ; @A93A AD 1C C0
-    sbc $C014                          ; @A93D ED 14 C0
-    sta $C01C                          ; @A940 8D 1C C0
-    lda $C01D                          ; @A943 AD 1D C0
-    sbc $C015                          ; @A946 ED 15 C0
-    sta $C01D                          ; @A949 8D 1D C0
-    txa                                ; @A94C 8A
-    sbc $C016                          ; @A94D ED 16 C0
-    tax                                ; @A950 AA
-    cmp $C016                          ; @A951 CD 16 C0
-    bcc LA96A                          ; @A954 90 14
-    bne LA973                          ; @A956 D0 1B
-    lda $C01D                          ; @A958 AD 1D C0
-    cmp $C015                          ; @A95B CD 15 C0
-    bcc LA96A                          ; @A95E 90 0A
-    bne LA973                          ; @A960 D0 11
-    lda $C01C                          ; @A962 AD 1C C0
-    cmp $C014                          ; @A965 CD 14 C0
-    bcs LA973                          ; @A968 B0 09
-LA96A:
-    stx $C01E                          ; @A96A 8E 1E C0
-    lda #$0B                           ; @A96D A9 0B
-    sta $C018                          ; @A96F 8D 18 C0
-    rts                                ; @A972 60
-LA973:
-    lda $C01C                          ; @A973 AD 1C C0
-    sbc $C014                          ; @A976 ED 14 C0
-    sta $C01C                          ; @A979 8D 1C C0
-    lda $C01D                          ; @A97C AD 1D C0
-    sbc $C015                          ; @A97F ED 15 C0
-    sta $C01D                          ; @A982 8D 1D C0
-    txa                                ; @A985 8A
-    sbc $C016                          ; @A986 ED 16 C0
-    tax                                ; @A989 AA
-    cmp $C016                          ; @A98A CD 16 C0
-    bcc LA9A3                          ; @A98D 90 14
-    bne LA9AC                          ; @A98F D0 1B
-    lda $C01D                          ; @A991 AD 1D C0
-    cmp $C015                          ; @A994 CD 15 C0
-    bcc LA9A3                          ; @A997 90 0A
-    bne LA9AC                          ; @A999 D0 11
-    lda $C01C                          ; @A99B AD 1C C0
-    cmp $C014                          ; @A99E CD 14 C0
-    bcs LA9AC                          ; @A9A1 B0 09
-LA9A3:
-    stx $C01E                          ; @A9A3 8E 1E C0
-    lda #$0C                           ; @A9A6 A9 0C
-    sta $C018                          ; @A9A8 8D 18 C0
-    rts                                ; @A9AB 60
-LA9AC:
-    lda $C01C                          ; @A9AC AD 1C C0
-    sbc $C014                          ; @A9AF ED 14 C0
-    sta $C01C                          ; @A9B2 8D 1C C0
-    lda $C01D                          ; @A9B5 AD 1D C0
-    sbc $C015                          ; @A9B8 ED 15 C0
-    sta $C01D                          ; @A9BB 8D 1D C0
-    txa                                ; @A9BE 8A
-    sbc $C016                          ; @A9BF ED 16 C0
-    ldx #$0D                           ; @A9C2 A2 0D
-    stx $C018                          ; @A9C4 8E 18 C0
-    tax                                ; @A9C7 AA
-    cmp $C016                          ; @A9C8 CD 16 C0
-    bcc LA9E1                          ; @A9CB 90 14
-    bne LA9E5                          ; @A9CD D0 16
-    lda $C01D                          ; @A9CF AD 1D C0
-    cmp $C015                          ; @A9D2 CD 15 C0
-    bcc LA9E1                          ; @A9D5 90 0A
-    bne LA9E5                          ; @A9D7 D0 0C
-    lda $C01C                          ; @A9D9 AD 1C C0
-    cmp $C014                          ; @A9DC CD 14 C0
-    bcs LA9E5                          ; @A9DF B0 04
-LA9E1:
-    stx $C01E                          ; @A9E1 8E 1E C0
-    rts                                ; @A9E4 60
-LA9E5:
-    lda $C01C                          ; @A9E5 AD 1C C0
-    sbc $C014                          ; @A9E8 ED 14 C0
-    sta $C01C                          ; @A9EB 8D 1C C0
-    lda $C01D                          ; @A9EE AD 1D C0
-    sbc $C015                          ; @A9F1 ED 15 C0
-    sta $C01D                          ; @A9F4 8D 1D C0
-    txa                                ; @A9F7 8A
-    sbc $C016                          ; @A9F8 ED 16 C0
-    inc $C018                          ; @A9FB EE 18 C0
-    tax                                ; @A9FE AA
-    cmp $C016                          ; @A9FF CD 16 C0
-    bcc LAA18                          ; @AA02 90 14
-    bne LAA1C                          ; @AA04 D0 16
-    lda $C01D                          ; @AA06 AD 1D C0
-    cmp $C015                          ; @AA09 CD 15 C0
-    bcc LAA18                          ; @AA0C 90 0A
-    bne LAA1C                          ; @AA0E D0 0C
-    lda $C01C                          ; @AA10 AD 1C C0
-    cmp $C014                          ; @AA13 CD 14 C0
-    bcs LAA1C                          ; @AA16 B0 04
-LAA18:
-    stx $C01E                          ; @AA18 8E 1E C0
-    rts                                ; @AA1B 60
-LAA1C:
-    lda $C01C                          ; @AA1C AD 1C C0
-    sbc $C014                          ; @AA1F ED 14 C0
-    sta $C01C                          ; @AA22 8D 1C C0
-    lda $C01D                          ; @AA25 AD 1D C0
-    sbc $C015                          ; @AA28 ED 15 C0
-    sta $C01D                          ; @AA2B 8D 1D C0
-    txa                                ; @AA2E 8A
-    sbc $C016                          ; @AA2F ED 16 C0
-    inc $C018                          ; @AA32 EE 18 C0
-    tax                                ; @AA35 AA
-    cmp $C016                          ; @AA36 CD 16 C0
-    bcc LAA4F                          ; @AA39 90 14
-    bne LAA53                          ; @AA3B D0 16
-    lda $C01D                          ; @AA3D AD 1D C0
-    cmp $C015                          ; @AA40 CD 15 C0
-    bcc LAA4F                          ; @AA43 90 0A
-    bne LAA53                          ; @AA45 D0 0C
-    lda $C01C                          ; @AA47 AD 1C C0
-    cmp $C014                          ; @AA4A CD 14 C0
-    bcs LAA53                          ; @AA4D B0 04
-LAA4F:
-    stx $C01E                          ; @AA4F 8E 1E C0
-    rts                                ; @AA52 60
-LAA53:
-    lda $C01C                          ; @AA53 AD 1C C0
-    sbc $C014                          ; @AA56 ED 14 C0
-    sta $C01C                          ; @AA59 8D 1C C0
-    lda $C01D                          ; @AA5C AD 1D C0
-    sbc $C015                          ; @AA5F ED 15 C0
-    sta $C01D                          ; @AA62 8D 1D C0
-    txa                                ; @AA65 8A
-    sbc $C016                          ; @AA66 ED 16 C0
-    inc $C018                          ; @AA69 EE 18 C0
-    tax                                ; @AA6C AA
-    cmp $C016                          ; @AA6D CD 16 C0
-    bcc LAA86                          ; @AA70 90 14
-    bne LAA8A                          ; @AA72 D0 16
-    lda $C01D                          ; @AA74 AD 1D C0
-    cmp $C015                          ; @AA77 CD 15 C0
-    bcc LAA86                          ; @AA7A 90 0A
-    bne LAA8A                          ; @AA7C D0 0C
-    lda $C01C                          ; @AA7E AD 1C C0
-    cmp $C014                          ; @AA81 CD 14 C0
-    bcs LAA8A                          ; @AA84 B0 04
-LAA86:
-    stx $C01E                          ; @AA86 8E 1E C0
-    rts                                ; @AA89 60
-LAA8A:
-    lda $C01C                          ; @AA8A AD 1C C0
-    sbc $C014                          ; @AA8D ED 14 C0
-    sta $C01C                          ; @AA90 8D 1C C0
-    lda $C01D                          ; @AA93 AD 1D C0
-    sbc $C015                          ; @AA96 ED 15 C0
-    sta $C01D                          ; @AA99 8D 1D C0
-    txa                                ; @AA9C 8A
-    sbc $C016                          ; @AA9D ED 16 C0
-    inc $C018                          ; @AAA0 EE 18 C0
-    sta $C01E                          ; @AAA3 8D 1E C0
-    cmp $C016                          ; @AAA6 CD 16 C0
-    bcc LAABF                          ; @AAA9 90 14
-    bne LAAC0                          ; @AAAB D0 13
-    lda $C01D                          ; @AAAD AD 1D C0
-    cmp $C015                          ; @AAB0 CD 15 C0
-    bcc LAABF                          ; @AAB3 90 0A
-    bne LAAC0                          ; @AAB5 D0 09
-    lda $C01C                          ; @AAB7 AD 1C C0
-    cmp $C014                          ; @AABA CD 14 C0
-    bcs LAAC0                          ; @AABD B0 01
-LAABF:
-    rts                                ; @AABF 60
-LAAC0:
-    lda $C01C                          ; @AAC0 AD 1C C0
-    sbc $C014                          ; @AAC3 ED 14 C0
-    sta $C01C                          ; @AAC6 8D 1C C0
-    lda $C01D                          ; @AAC9 AD 1D C0
-    sbc $C015                          ; @AACC ED 15 C0
-    sta $C01D                          ; @AACF 8D 1D C0
-    lda $C01E                          ; @AAD2 AD 1E C0
-    sbc $C016                          ; @AAD5 ED 16 C0
-    inc $C018                          ; @AAD8 EE 18 C0
-    jmp LAEE1                          ; @AADB 4C E1 AE
+; ---- executable island $A712 ----
+* = $A712
+LA712:
+    sta $C01E                          ; @A712 8D 1E C0
+LA715:
+    lda $C01C                          ; @A715 AD 1C C0
+    sbc $C014                          ; @A718 ED 14 C0
+    sta $C01C                          ; @A71B 8D 1C C0
+    lda $C01D                          ; @A71E AD 1D C0
+    sbc $C015                          ; @A721 ED 15 C0
+    sta $C01D                          ; @A724 8D 1D C0
+    lda $C01E                          ; @A727 AD 1E C0
+    sbc $C016                          ; @A72A ED 16 C0
+    cmp $C016                          ; @A72D CD 16 C0
+    bcc LA74F                          ; @A730 90 1D
+    bne LA758                          ; @A732 D0 24
+    sta $C01E                          ; @A734 8D 1E C0
+    lda $C01D                          ; @A737 AD 1D C0
+    cmp $C015                          ; @A73A CD 15 C0
+    bcc LA749                          ; @A73D 90 0A
+    bne LA75B                          ; @A73F D0 1A
+    lda $C01C                          ; @A741 AD 1C C0
+    cmp $C014                          ; @A744 CD 14 C0
+    bcs LA75B                          ; @A747 B0 12
+LA749:
+    lda #$02                           ; @A749 A9 02
+    sta $C018                          ; @A74B 8D 18 C0
+    rts                                ; @A74E 60
+LA74F:
+    sta $C01E                          ; @A74F 8D 1E C0
+    lda #$02                           ; @A752 A9 02
+    sta $C018                          ; @A754 8D 18 C0
+    rts                                ; @A757 60
+LA758:
+    sta $C01E                          ; @A758 8D 1E C0
+LA75B:
+    lda $C01C                          ; @A75B AD 1C C0
+    sbc $C014                          ; @A75E ED 14 C0
+    sta $C01C                          ; @A761 8D 1C C0
+    lda $C01D                          ; @A764 AD 1D C0
+    sbc $C015                          ; @A767 ED 15 C0
+    sta $C01D                          ; @A76A 8D 1D C0
+    lda $C01E                          ; @A76D AD 1E C0
+    sbc $C016                          ; @A770 ED 16 C0
+    sta $C01E                          ; @A773 8D 1E C0
+    lda $C016                          ; @A776 AD 16 C0
+    cmp #$0D                           ; @A779 C9 0D
+    bcs LA785                          ; @A77B B0 08
+    lda #$03                           ; @A77D A9 03
+    sta $AFAA                          ; @A77F 8D AA AF
+    jmp LAF1E                          ; @A782 4C 1E AF
+LA785:
+    lda $C01E                          ; @A785 AD 1E C0
+    cmp $C016                          ; @A788 CD 16 C0
+    bcc LA7A1                          ; @A78B 90 14
+    bne LA7A7                          ; @A78D D0 18
+    lda $C01D                          ; @A78F AD 1D C0
+    cmp $C015                          ; @A792 CD 15 C0
+    bcc LA7A1                          ; @A795 90 0A
+    bne LA7A7                          ; @A797 D0 0E
+    lda $C01C                          ; @A799 AD 1C C0
+    cmp $C014                          ; @A79C CD 14 C0
+    bcs LA7A7                          ; @A79F B0 06
+LA7A1:
+    lda #$03                           ; @A7A1 A9 03
+    sta $C018                          ; @A7A3 8D 18 C0
+    rts                                ; @A7A6 60
+LA7A7:
+    lda $C01C                          ; @A7A7 AD 1C C0
+    sbc $C014                          ; @A7AA ED 14 C0
+    sta $C01C                          ; @A7AD 8D 1C C0
+    lda $C01D                          ; @A7B0 AD 1D C0
+    sbc $C015                          ; @A7B3 ED 15 C0
+    sta $C01D                          ; @A7B6 8D 1D C0
+    lda $C01E                          ; @A7B9 AD 1E C0
+    sbc $C016                          ; @A7BC ED 16 C0
+    tax                                ; @A7BF AA
+    cmp $C016                          ; @A7C0 CD 16 C0
+    bcc LA7D9                          ; @A7C3 90 14
+    bne LA7E2                          ; @A7C5 D0 1B
+    lda $C01D                          ; @A7C7 AD 1D C0
+    cmp $C015                          ; @A7CA CD 15 C0
+    bcc LA7D9                          ; @A7CD 90 0A
+    bne LA7E2                          ; @A7CF D0 11
+    lda $C01C                          ; @A7D1 AD 1C C0
+    cmp $C014                          ; @A7D4 CD 14 C0
+    bcs LA7E2                          ; @A7D7 B0 09
+LA7D9:
+    stx $C01E                          ; @A7D9 8E 1E C0
+    lda #$04                           ; @A7DC A9 04
+    sta $C018                          ; @A7DE 8D 18 C0
+    rts                                ; @A7E1 60
+LA7E2:
+    lda $C01C                          ; @A7E2 AD 1C C0
+    sbc $C014                          ; @A7E5 ED 14 C0
+    sta $C01C                          ; @A7E8 8D 1C C0
+    lda $C01D                          ; @A7EB AD 1D C0
+    sbc $C015                          ; @A7EE ED 15 C0
+    sta $C01D                          ; @A7F1 8D 1D C0
+    txa                                ; @A7F4 8A
+    sbc $C016                          ; @A7F5 ED 16 C0
+    tax                                ; @A7F8 AA
+    cmp $C016                          ; @A7F9 CD 16 C0
+    bcc LA812                          ; @A7FC 90 14
+    bne LA81B                          ; @A7FE D0 1B
+    lda $C01D                          ; @A800 AD 1D C0
+    cmp $C015                          ; @A803 CD 15 C0
+    bcc LA812                          ; @A806 90 0A
+    bne LA81B                          ; @A808 D0 11
+    lda $C01C                          ; @A80A AD 1C C0
+    cmp $C014                          ; @A80D CD 14 C0
+    bcs LA81B                          ; @A810 B0 09
+LA812:
+    stx $C01E                          ; @A812 8E 1E C0
+    lda #$05                           ; @A815 A9 05
+    sta $C018                          ; @A817 8D 18 C0
+    rts                                ; @A81A 60
+LA81B:
+    lda $C01C                          ; @A81B AD 1C C0
+    sbc $C014                          ; @A81E ED 14 C0
+    sta $C01C                          ; @A821 8D 1C C0
+    lda $C01D                          ; @A824 AD 1D C0
+    sbc $C015                          ; @A827 ED 15 C0
+    sta $C01D                          ; @A82A 8D 1D C0
+    txa                                ; @A82D 8A
+    sbc $C016                          ; @A82E ED 16 C0
+    tax                                ; @A831 AA
+    cmp $C016                          ; @A832 CD 16 C0
+    bcc LA84B                          ; @A835 90 14
+    bne LA854                          ; @A837 D0 1B
+    lda $C01D                          ; @A839 AD 1D C0
+    cmp $C015                          ; @A83C CD 15 C0
+    bcc LA84B                          ; @A83F 90 0A
+    bne LA854                          ; @A841 D0 11
+    lda $C01C                          ; @A843 AD 1C C0
+    cmp $C014                          ; @A846 CD 14 C0
+    bcs LA854                          ; @A849 B0 09
+LA84B:
+    stx $C01E                          ; @A84B 8E 1E C0
+    lda #$06                           ; @A84E A9 06
+    sta $C018                          ; @A850 8D 18 C0
+    rts                                ; @A853 60
+LA854:
+    lda $C01C                          ; @A854 AD 1C C0
+    sbc $C014                          ; @A857 ED 14 C0
+    sta $C01C                          ; @A85A 8D 1C C0
+    lda $C01D                          ; @A85D AD 1D C0
+    sbc $C015                          ; @A860 ED 15 C0
+    sta $C01D                          ; @A863 8D 1D C0
+    txa                                ; @A866 8A
+    sbc $C016                          ; @A867 ED 16 C0
+    tax                                ; @A86A AA
+    cmp $C016                          ; @A86B CD 16 C0
+    bcc LA884                          ; @A86E 90 14
+    bne LA88D                          ; @A870 D0 1B
+    lda $C01D                          ; @A872 AD 1D C0
+    cmp $C015                          ; @A875 CD 15 C0
+    bcc LA884                          ; @A878 90 0A
+    bne LA88D                          ; @A87A D0 11
+    lda $C01C                          ; @A87C AD 1C C0
+    cmp $C014                          ; @A87F CD 14 C0
+    bcs LA88D                          ; @A882 B0 09
+LA884:
+    stx $C01E                          ; @A884 8E 1E C0
+    lda #$07                           ; @A887 A9 07
+    sta $C018                          ; @A889 8D 18 C0
+    rts                                ; @A88C 60
+LA88D:
+    lda $C01C                          ; @A88D AD 1C C0
+    sbc $C014                          ; @A890 ED 14 C0
+    sta $C01C                          ; @A893 8D 1C C0
+    lda $C01D                          ; @A896 AD 1D C0
+    sbc $C015                          ; @A899 ED 15 C0
+    sta $C01D                          ; @A89C 8D 1D C0
+    txa                                ; @A89F 8A
+    sbc $C016                          ; @A8A0 ED 16 C0
+    tax                                ; @A8A3 AA
+    cmp $C016                          ; @A8A4 CD 16 C0
+    bcc LA8BD                          ; @A8A7 90 14
+    bne LA8C6                          ; @A8A9 D0 1B
+    lda $C01D                          ; @A8AB AD 1D C0
+    cmp $C015                          ; @A8AE CD 15 C0
+    bcc LA8BD                          ; @A8B1 90 0A
+    bne LA8C6                          ; @A8B3 D0 11
+    lda $C01C                          ; @A8B5 AD 1C C0
+    cmp $C014                          ; @A8B8 CD 14 C0
+    bcs LA8C6                          ; @A8BB B0 09
+LA8BD:
+    stx $C01E                          ; @A8BD 8E 1E C0
+    lda #$08                           ; @A8C0 A9 08
+    sta $C018                          ; @A8C2 8D 18 C0
+    rts                                ; @A8C5 60
+LA8C6:
+    lda $C01C                          ; @A8C6 AD 1C C0
+    sbc $C014                          ; @A8C9 ED 14 C0
+    sta $C01C                          ; @A8CC 8D 1C C0
+    lda $C01D                          ; @A8CF AD 1D C0
+    sbc $C015                          ; @A8D2 ED 15 C0
+    sta $C01D                          ; @A8D5 8D 1D C0
+    txa                                ; @A8D8 8A
+    sbc $C016                          ; @A8D9 ED 16 C0
+    tax                                ; @A8DC AA
+    cmp $C016                          ; @A8DD CD 16 C0
+    bcc LA8F6                          ; @A8E0 90 14
+    bne LA8FF                          ; @A8E2 D0 1B
+    lda $C01D                          ; @A8E4 AD 1D C0
+    cmp $C015                          ; @A8E7 CD 15 C0
+    bcc LA8F6                          ; @A8EA 90 0A
+    bne LA8FF                          ; @A8EC D0 11
+    lda $C01C                          ; @A8EE AD 1C C0
+    cmp $C014                          ; @A8F1 CD 14 C0
+    bcs LA8FF                          ; @A8F4 B0 09
+LA8F6:
+    stx $C01E                          ; @A8F6 8E 1E C0
+    lda #$09                           ; @A8F9 A9 09
+    sta $C018                          ; @A8FB 8D 18 C0
+    rts                                ; @A8FE 60
+LA8FF:
+    lda $C01C                          ; @A8FF AD 1C C0
+    sbc $C014                          ; @A902 ED 14 C0
+    sta $C01C                          ; @A905 8D 1C C0
+    lda $C01D                          ; @A908 AD 1D C0
+    sbc $C015                          ; @A90B ED 15 C0
+    sta $C01D                          ; @A90E 8D 1D C0
+    txa                                ; @A911 8A
+    sbc $C016                          ; @A912 ED 16 C0
+    tax                                ; @A915 AA
+    cmp $C016                          ; @A916 CD 16 C0
+    bcc LA92F                          ; @A919 90 14
+    bne LA938                          ; @A91B D0 1B
+    lda $C01D                          ; @A91D AD 1D C0
+    cmp $C015                          ; @A920 CD 15 C0
+    bcc LA92F                          ; @A923 90 0A
+    bne LA938                          ; @A925 D0 11
+    lda $C01C                          ; @A927 AD 1C C0
+    cmp $C014                          ; @A92A CD 14 C0
+    bcs LA938                          ; @A92D B0 09
+LA92F:
+    stx $C01E                          ; @A92F 8E 1E C0
+    lda #$0A                           ; @A932 A9 0A
+    sta $C018                          ; @A934 8D 18 C0
+    rts                                ; @A937 60
+LA938:
+    lda $C01C                          ; @A938 AD 1C C0
+    sbc $C014                          ; @A93B ED 14 C0
+    sta $C01C                          ; @A93E 8D 1C C0
+    lda $C01D                          ; @A941 AD 1D C0
+    sbc $C015                          ; @A944 ED 15 C0
+    sta $C01D                          ; @A947 8D 1D C0
+    txa                                ; @A94A 8A
+    sbc $C016                          ; @A94B ED 16 C0
+    tax                                ; @A94E AA
+    cmp $C016                          ; @A94F CD 16 C0
+    bcc LA968                          ; @A952 90 14
+    bne LA971                          ; @A954 D0 1B
+    lda $C01D                          ; @A956 AD 1D C0
+    cmp $C015                          ; @A959 CD 15 C0
+    bcc LA968                          ; @A95C 90 0A
+    bne LA971                          ; @A95E D0 11
+    lda $C01C                          ; @A960 AD 1C C0
+    cmp $C014                          ; @A963 CD 14 C0
+    bcs LA971                          ; @A966 B0 09
+LA968:
+    stx $C01E                          ; @A968 8E 1E C0
+    lda #$0B                           ; @A96B A9 0B
+    sta $C018                          ; @A96D 8D 18 C0
+    rts                                ; @A970 60
+LA971:
+    lda $C01C                          ; @A971 AD 1C C0
+    sbc $C014                          ; @A974 ED 14 C0
+    sta $C01C                          ; @A977 8D 1C C0
+    lda $C01D                          ; @A97A AD 1D C0
+    sbc $C015                          ; @A97D ED 15 C0
+    sta $C01D                          ; @A980 8D 1D C0
+    txa                                ; @A983 8A
+    sbc $C016                          ; @A984 ED 16 C0
+    tax                                ; @A987 AA
+    cmp $C016                          ; @A988 CD 16 C0
+    bcc LA9A1                          ; @A98B 90 14
+    bne LA9AA                          ; @A98D D0 1B
+    lda $C01D                          ; @A98F AD 1D C0
+    cmp $C015                          ; @A992 CD 15 C0
+    bcc LA9A1                          ; @A995 90 0A
+    bne LA9AA                          ; @A997 D0 11
+    lda $C01C                          ; @A999 AD 1C C0
+    cmp $C014                          ; @A99C CD 14 C0
+    bcs LA9AA                          ; @A99F B0 09
+LA9A1:
+    stx $C01E                          ; @A9A1 8E 1E C0
+    lda #$0C                           ; @A9A4 A9 0C
+    sta $C018                          ; @A9A6 8D 18 C0
+    rts                                ; @A9A9 60
+LA9AA:
+    lda $C01C                          ; @A9AA AD 1C C0
+    sbc $C014                          ; @A9AD ED 14 C0
+    sta $C01C                          ; @A9B0 8D 1C C0
+    lda $C01D                          ; @A9B3 AD 1D C0
+    sbc $C015                          ; @A9B6 ED 15 C0
+    sta $C01D                          ; @A9B9 8D 1D C0
+    txa                                ; @A9BC 8A
+    sbc $C016                          ; @A9BD ED 16 C0
+    ldx #$0D                           ; @A9C0 A2 0D
+    stx $C018                          ; @A9C2 8E 18 C0
+    tax                                ; @A9C5 AA
+    cmp $C016                          ; @A9C6 CD 16 C0
+    bcc LA9DF                          ; @A9C9 90 14
+    bne LA9E3                          ; @A9CB D0 16
+    lda $C01D                          ; @A9CD AD 1D C0
+    cmp $C015                          ; @A9D0 CD 15 C0
+    bcc LA9DF                          ; @A9D3 90 0A
+    bne LA9E3                          ; @A9D5 D0 0C
+    lda $C01C                          ; @A9D7 AD 1C C0
+    cmp $C014                          ; @A9DA CD 14 C0
+    bcs LA9E3                          ; @A9DD B0 04
+LA9DF:
+    stx $C01E                          ; @A9DF 8E 1E C0
+    rts                                ; @A9E2 60
+LA9E3:
+    lda $C01C                          ; @A9E3 AD 1C C0
+    sbc $C014                          ; @A9E6 ED 14 C0
+    sta $C01C                          ; @A9E9 8D 1C C0
+    lda $C01D                          ; @A9EC AD 1D C0
+    sbc $C015                          ; @A9EF ED 15 C0
+    sta $C01D                          ; @A9F2 8D 1D C0
+    txa                                ; @A9F5 8A
+    sbc $C016                          ; @A9F6 ED 16 C0
+    inc $C018                          ; @A9F9 EE 18 C0
+    tax                                ; @A9FC AA
+    cmp $C016                          ; @A9FD CD 16 C0
+    bcc LAA16                          ; @AA00 90 14
+    bne LAA1A                          ; @AA02 D0 16
+    lda $C01D                          ; @AA04 AD 1D C0
+    cmp $C015                          ; @AA07 CD 15 C0
+    bcc LAA16                          ; @AA0A 90 0A
+    bne LAA1A                          ; @AA0C D0 0C
+    lda $C01C                          ; @AA0E AD 1C C0
+    cmp $C014                          ; @AA11 CD 14 C0
+    bcs LAA1A                          ; @AA14 B0 04
+LAA16:
+    stx $C01E                          ; @AA16 8E 1E C0
+    rts                                ; @AA19 60
+LAA1A:
+    lda $C01C                          ; @AA1A AD 1C C0
+    sbc $C014                          ; @AA1D ED 14 C0
+    sta $C01C                          ; @AA20 8D 1C C0
+    lda $C01D                          ; @AA23 AD 1D C0
+    sbc $C015                          ; @AA26 ED 15 C0
+    sta $C01D                          ; @AA29 8D 1D C0
+    txa                                ; @AA2C 8A
+    sbc $C016                          ; @AA2D ED 16 C0
+    inc $C018                          ; @AA30 EE 18 C0
+    tax                                ; @AA33 AA
+    cmp $C016                          ; @AA34 CD 16 C0
+    bcc LAA4D                          ; @AA37 90 14
+    bne LAA51                          ; @AA39 D0 16
+    lda $C01D                          ; @AA3B AD 1D C0
+    cmp $C015                          ; @AA3E CD 15 C0
+    bcc LAA4D                          ; @AA41 90 0A
+    bne LAA51                          ; @AA43 D0 0C
+    lda $C01C                          ; @AA45 AD 1C C0
+    cmp $C014                          ; @AA48 CD 14 C0
+    bcs LAA51                          ; @AA4B B0 04
+LAA4D:
+    stx $C01E                          ; @AA4D 8E 1E C0
+    rts                                ; @AA50 60
+LAA51:
+    lda $C01C                          ; @AA51 AD 1C C0
+    sbc $C014                          ; @AA54 ED 14 C0
+    sta $C01C                          ; @AA57 8D 1C C0
+    lda $C01D                          ; @AA5A AD 1D C0
+    sbc $C015                          ; @AA5D ED 15 C0
+    sta $C01D                          ; @AA60 8D 1D C0
+    txa                                ; @AA63 8A
+    sbc $C016                          ; @AA64 ED 16 C0
+    inc $C018                          ; @AA67 EE 18 C0
+    tax                                ; @AA6A AA
+    cmp $C016                          ; @AA6B CD 16 C0
+    bcc LAA84                          ; @AA6E 90 14
+    bne LAA88                          ; @AA70 D0 16
+    lda $C01D                          ; @AA72 AD 1D C0
+    cmp $C015                          ; @AA75 CD 15 C0
+    bcc LAA84                          ; @AA78 90 0A
+    bne LAA88                          ; @AA7A D0 0C
+    lda $C01C                          ; @AA7C AD 1C C0
+    cmp $C014                          ; @AA7F CD 14 C0
+    bcs LAA88                          ; @AA82 B0 04
+LAA84:
+    stx $C01E                          ; @AA84 8E 1E C0
+    rts                                ; @AA87 60
+LAA88:
+    lda $C01C                          ; @AA88 AD 1C C0
+    sbc $C014                          ; @AA8B ED 14 C0
+    sta $C01C                          ; @AA8E 8D 1C C0
+    lda $C01D                          ; @AA91 AD 1D C0
+    sbc $C015                          ; @AA94 ED 15 C0
+    sta $C01D                          ; @AA97 8D 1D C0
+    txa                                ; @AA9A 8A
+    sbc $C016                          ; @AA9B ED 16 C0
+    inc $C018                          ; @AA9E EE 18 C0
+    sta $C01E                          ; @AAA1 8D 1E C0
+    cmp $C016                          ; @AAA4 CD 16 C0
+    bcc LAABD                          ; @AAA7 90 14
+    bne LAABE                          ; @AAA9 D0 13
+    lda $C01D                          ; @AAAB AD 1D C0
+    cmp $C015                          ; @AAAE CD 15 C0
+    bcc LAABD                          ; @AAB1 90 0A
+    bne LAABE                          ; @AAB3 D0 09
+    lda $C01C                          ; @AAB5 AD 1C C0
+    cmp $C014                          ; @AAB8 CD 14 C0
+    bcs LAABE                          ; @AABB B0 01
+LAABD:
+    rts                                ; @AABD 60
+LAABE:
+    lda $C01C                          ; @AABE AD 1C C0
+    sbc $C014                          ; @AAC1 ED 14 C0
+    sta $C01C                          ; @AAC4 8D 1C C0
+    lda $C01D                          ; @AAC7 AD 1D C0
+    sbc $C015                          ; @AACA ED 15 C0
+    sta $C01D                          ; @AACD 8D 1D C0
+    lda $C01E                          ; @AAD0 AD 1E C0
+    sbc $C016                          ; @AAD3 ED 16 C0
+    inc $C018                          ; @AAD6 EE 18 C0
+    jmp LAEE1                          ; @AAD9 4C E1 AE
 ; ---- executable island $AC00 ----
 * = $AC00
 LAC00:

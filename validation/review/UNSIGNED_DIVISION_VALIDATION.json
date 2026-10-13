@@ -21,7 +21,7 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 169.53671365453397,
+        "mean_cycles": 168.66652640437619,
         "min_cycles": 56,
         "max_cycles": 2144,
         "mode": "structured_random"
@@ -67,7 +67,7 @@
       "MATH_UMOD24": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 227.7797810688989,
+        "mean_cycles": 227.1146168705731,
         "min_cycles": 56,
         "max_cycles": 2144
       },
@@ -114,7 +114,7 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 154.21817799284662,
+        "mean_cycles": 153.35998316852513,
         "min_cycles": 56,
         "max_cycles": 1412,
         "mode": "structured_random"
@@ -160,7 +160,7 @@
       "MATH_UMOD24": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 205.32582099162912,
+        "mean_cycles": 205.32646490663234,
         "min_cycles": 42,
         "max_cycles": 1419
       },
@@ -207,7 +207,7 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 161.53334735956238,
+        "mean_cycles": 160.67410056806227,
         "min_cycles": 56,
         "max_cycles": 1412,
         "mode": "structured_random"
@@ -253,7 +253,7 @@
       "MATH_UMOD24": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 207.13650998068255,
+        "mean_cycles": 207.137797810689,
         "min_cycles": 42,
         "max_cycles": 1419
       },
@@ -300,7 +300,7 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 158.38501998737638,
+        "mean_cycles": 157.511466442247,
         "min_cycles": 56,
         "max_cycles": 1412,
         "mode": "structured_random"
@@ -346,7 +346,7 @@
       "MATH_UMOD24": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 205.24726336123632,
+        "mean_cycles": 205.2537025112685,
         "min_cycles": 42,
         "max_cycles": 1419
       },
@@ -393,7 +393,7 @@
       "MATH_UDIV24": {
         "cases": 4753,
         "errors": 0,
-        "mean_cycles": 157.65537555228278,
+        "mean_cycles": 156.80959394066906,
         "min_cycles": 56,
         "max_cycles": 1412,
         "mode": "structured_random"
@@ -439,7 +439,7 @@
       "MATH_UMOD24": {
         "cases": 1553,
         "errors": 0,
-        "mean_cycles": 203.296200901481,
+        "mean_cycles": 203.2987765614939,
         "min_cycles": 42,
         "max_cycles": 1419
       },

@@ -5,9 +5,9 @@ umul24,mul_u24_u24_u48,429.555502,429.555502,2026-10-06 UMUL24 direct-output val
 umul32,mul_u32_u32_u64,712.235367,712.235367,2026-09-20 multiply-refresh deterministic cross-profile corpus
 udiv8,div_u8_u8_u8_8,52.852264,52.852264,2026-10-06 exhaustive REU UDIV8 hybrid validation
 udiv16,div_u16_u16_u16_16,125.402903,125.601304,2026-10-12 issue39 PR67 public-entry arithmetic audit
-udiv24,div_u24_u24_u24_24,161.533347,158.385020,2026-10-11 issue39 4753/1553-call paired source validation
+udiv24,div_u24_u24_u24_24,160.674101,157.511466,2026-10-13 live-X generic U24 source integration
 udiv32_16,div_u32_u16_u32_16,755.944246,757.480328,2026-09-20 unsigned division-family validation
 umod8,mod_u8_u8_u8,49.71211,49.725819,2026-09-20 unsigned division-family validation
 umod16,mod_u16_u16_u16,196.385061,195.499034,2026-10-12 issue39 PR67 public-entry arithmetic audit
-umod24,mod_u24_u24_u24,207.136510,205.247263,2026-10-11 issue39 4753/1553-call paired source validation
+umod24,mod_u24_u24_u24,207.137798,205.253703,2026-10-13 live-X generic U24 source integration
 umod32_16,mod_u32_u16_u16,789.650998,789.841597,2026-09-20 unsigned division-family validation
