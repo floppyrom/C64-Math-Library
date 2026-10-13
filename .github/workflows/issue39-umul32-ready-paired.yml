@@ -1,0 +1,30 @@
+name: Issue39 paired UMUL32 READY audit
+
+on:
+  push:
+    branches:
+      - issue39-umul32-ready-paired-audit
+  pull_request:
+    paths:
+      - tools/issue39_umul32_ready_same_input.py
+      - .github/workflows/issue39-umul32-ready-paired.yml
+  workflow_dispatch:
+
+jobs:
+  paired-public-multiply:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: All five current resident profiles; 2,409 common operand pairs each
+        run: python3 tools/issue39_umul32_ready_same_input.py --output validation/review/ISSUE39_UMUL32_READY_PAIRED_AUDIT.json
+      - name: Upload reproducible machine report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-umul32-ready-paired-audit
+          path: validation/review/ISSUE39_UMUL32_READY_PAIRED_AUDIT.json
+          if-no-files-found: ignore

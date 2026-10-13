@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 UMUL32/READY COMPARABLE-INPUT AUDIT
+- Verified current V1–V5 public UMUL32 and UMUL32_READY on the identical ordered 2,409-pair corpus per profile (24,090 CPU-model public entries). Complete 64-bit products, input preservation and carry passed. READY saves 22 cycles/pair in V1/V5; V2/V3/V4 show zero paired difference. Earlier published 2,409 vs 1,024-case means were not comparable. No implementation, public ABI, resident, ZP or REU change. Issue #39 remains open. See docs/ISSUE39_UMUL32_READY_PAIRED_AUDIT_2026-10-13.md and validation/review/ISSUE39_UMUL32_READY_PAIRED_AUDIT.json.
+
 2026-10-13 ISSUE39 UMUL24 PR105/PR106 POSTMERGE MAIN VALIDATION
 - PR #105 (V2/V3/V4 UMUL24 noncarry tail) merged as d1688725c8f9e7f35e6de4d36815d2a6d0265b40; postmerge main: Validate library #38402703856, Comparable unsigned #38402703783, Turbo32 #38402703796 — all SUCCESS.
 - PR #106 (V1/V5 UMUL24 private tail-call) merged as 335185f3ad0233763d4aafdad91301f6261604b3; postmerge main: Validate library #38410138207, Comparable unsigned #38410137785, Turbo32 #38410137989 — all SUCCESS.

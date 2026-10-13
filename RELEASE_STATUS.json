@@ -2610,5 +2610,18 @@
     },
     "postmerge_main_checks_status": "SUCCESS",
     "publication_metadata_only": true
+  },
+  "issue39_umul32_ready_paired_audit_2026_10_13": {
+    "status": "PASS_CI_PAIRED_MODEL",
+    "description": "Benchmark comparability correction only; no resident code changes",
+    "documentation": "docs/ISSUE39_UMUL32_READY_PAIRED_AUDIT_2026-10-13.md",
+    "proof": "validation/review/ISSUE39_UMUL32_READY_PAIRED_AUDIT.json",
+    "pairs_per_profile": 2409,
+    "profile_count": 5,
+    "ready_savings_v1_v5_cycles": 22,
+    "ready_savings_v2_v3_v4_cycles": 0,
+    "original_different_corpora_warning": true,
+    "native_vice_cycle_timing_claimed": false,
+    "issue39_complete": false
   }
 }
