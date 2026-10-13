@@ -42,7 +42,7 @@ def main():
     stpath=R/"RELEASE_STATUS.json";st=json.loads(stpath.read_text())
     before={p:sha(prg(p)) for p in P}
     assert st["reference_prg_sha256"]==before
-    # A repeated stage runs against already-published binaries. Do not
+    # Repeats also seal the five-profile unsigned-multiply family audit.\n    # A repeated stage runs against already-published binaries. Do not
     # require the old PRG hashes again, and preserve later native evidence.
     existing=st.get("issue39_umul24_v1v5_rare_carry_clc_2026_10_14")
     if isinstance(existing,dict) and before==existing.get("new_sha256"):
