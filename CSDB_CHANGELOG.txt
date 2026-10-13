@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 UMUL24 NONCARRY FALLTHROUGH PRODUCTION
+- V2/V3/V4 UMUL24 source direct return: 7,789/10,324 calls -3 cycles and 2,535 unchanged; mean 419.292135 cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.
+- Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE/PR/main pending. docs/ISSUE39_UMUL24_TAIL_FALLTHROUGH_2026-10-13.md
+
 2026-10-13 ISSUE39 INTEGER ROOTS POSTMERGE MAIN VALIDATION
 - Integer roots PR #102 merged; main workflows Validate library #38389399637, Comparable unsigned #38389399688 and Turbo32 #38389399617 all SUCCESS on b179436082933d4edd80bca0256c11fc09d143be. No resident arithmetic, ABI, resource, size or cycles changed by this metadata closeout. Source/native checksums preserved; release status and user documentation synchronized, issue #39 still OPEN. docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md
 
