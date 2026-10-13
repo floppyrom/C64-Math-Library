@@ -1,0 +1,36 @@
+name: Issue39 V2 UMUL8 postmerge main release closeout
+on:
+  push:
+    branches: [issue39-v2-umul8-postmerge-closeout]
+    paths:
+      - tools/finalize_issue39_v2_umul8_postmerge.py
+      - .github/workflows/issue39-v2-umul8-postmerge-closeout.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  no-binary-closeout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v2-umul8-postmerge-closeout
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Verify released V2/other residents and native proof, close metadata and reseal
+        run: python3 tools/finalize_issue39_v2_umul8_postmerge.py
+      - name: Reject any production resident binary drift
+        run: |
+          ! git diff --name-only | grep -E '(^v[1-5].*/resident/.*\.(prg|reu)$|^relocatable_source/)'
+      - name: Commit docs and checksum changes after package audit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal V2 UMUL8 PR104 postmerge main-green release'
+          git push origin HEAD:issue39-v2-umul8-postmerge-closeout
