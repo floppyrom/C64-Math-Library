@@ -1,9 +1,13 @@
+2026-10-13 ISSUE39 UMUL24 V2/V3/V4 POSTMERGE RELEASE CERTIFICATION
+- Production PR #114 merged into main as eafb2b45e15542242925602e2bee21e063d559c3. All seven head-SHA push/PR workflows passed, plus post-merge main Validate library #38475292294, Comparable unsigned #38475292291, and Turbo32 #38475292298. 576 native x64sc calls passed product/carry/input/stack invariant checks (native cycle timing not measured).
+- Public UMUL24 V2/V3/V4 same-input mean 419.292135 -> 417.783224 cycles; 7,789/10,324 calls save exactly 2 cycles, 2,535 unchanged, none slower. Exactly two code-byte changes per target resident, zero resident/ZP growth; V1/V5 unchanged. Issue #39 remains OPEN. docs/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_2026-10-13.md
+
 2026-10-13 ISSUE39 V2V4 UMUL24 NOCARRY CLC NATIVE VALIDATION
 - Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V2/V3/V4: 576 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_NATIVE_2026-10-13.json.
 
 2026-10-13 ISSUE39 UMUL24 NONCARRY CLC PRODUCTION
 - V2/V3/V4 UMUL24 redundant CLC removal: 7,789/10,324 calls -2 cycles and 2,535 unchanged; mean 417.783224 cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.
-- Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE/PR/main pending. docs/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_2026-10-13.md
+- Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE and all PR/post-merge main checks passed. docs/ISSUE39_V2V4_UMUL24_NOCARRY_CLC_2026-10-13.md
 
 2026-10-13 ISSUE39 UMUL16/UMUL24 OPTISEARCH RESOURCE SCREEN (RESEARCH ONLY)
 - Public 16/24-bit multiply resource-class audit against private OptiSearch metadata. Existing direct-output/carry-transfer optimizations confirmed, no new ABI-compatible improvement qualified. No source/binary/ZP/profile changes. Issue #39 OPEN. docs/ISSUE39_UMUL16_UMUL24_OPTISEARCH_RESOURCE_AUDIT_2026-10-13.md
