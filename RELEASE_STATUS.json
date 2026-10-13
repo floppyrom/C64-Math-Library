@@ -2697,7 +2697,7 @@
     "issue39_complete": false
   },
   "issue39_umul24_no_carry_rts_2026_10_13": {
-    "status": "PASS_STAGED_NATIVE_VICE_PENDING",
+    "status": "PASS_NATIVE_VICE_PR_CI_PENDING",
     "proof": "validation/review/ISSUE39_UMUL24_NO_CARRY_RTS_RELEASE_2026-10-13.json",
     "doc": "docs/ISSUE39_UMUL24_NO_CARRY_RTS_2026-10-13.md",
     "baseline": {
@@ -2717,6 +2717,9 @@
     "new_mean_cycles": 417.78322355676096,
     "zero_page_growth": 0,
     "resident_growth": 0,
-    "issue39_complete": false
+    "issue39_complete": false,
+    "native_vice_calls": 576,
+    "native_vice_evidence": "validation/review/ISSUE39_UMUL24_NO_CARRY_RTS_NATIVE_2026-10-13.json",
+    "native_vice_evidence_sha256": "661d8455182da7c1a741fb736980a15972f45db56c169e292d90d55cd0bd6d04"
   }
 }

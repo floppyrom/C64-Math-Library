@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 UMUL24 NO-CARRY RTS NATIVE VALIDATION
+- Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V2/V3/V4: 576 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_UMUL24_NO_CARRY_RTS_NATIVE_2026-10-13.json.
+
 2026-10-13 ISSUE39 UMUL24 NONCARRY CLEAR-FLAG REMOVAL PRODUCTION
 - V2/V3/V4 UMUL24 no-carry CLC/RTS to RTS/NOP: 7,789/10,324 calls -2 cycles and 2,535 unchanged; mean 417.783224 cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.
 - Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE/PR/main pending. docs/ISSUE39_UMUL24_NO_CARRY_RTS_2026-10-13.md
