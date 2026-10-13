@@ -199,4 +199,4 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 
 - Generic 24-bit live-X high-quotient source proof: docs/ISSUE39_U24_HIGHGT_LIVE_X_2026-10-13.md. Not promoted to stable residents.
 
-- Source-integrated general-purpose UDIV24 live-X optimization: docs/ISSUE39_U24_TXA_SOURCE_INTEGRATION_2026-10-13.md. Native VICE must be qualified separately; family campaign open.
+- Source-integrated general-purpose UDIV24 live-X optimization: docs/ISSUE39_U24_TXA_SOURCE_INTEGRATION_2026-10-13.md. Native VICE full-resident 960-call correctness verified; family campaign open.

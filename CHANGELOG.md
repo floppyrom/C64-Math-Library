@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 NATIVE VICE GENERIC U24 TXA PUBLIC RESIDENT
+- Ran 960 true x64sc native emulator calls: 48 identical inputs per old and new complete resident, UDIV24/UMOD24 in all five profiles, zero Q where promised, R, carry, input/high sentinel errors. V5 executed RAM under BASIC ROM. No native cycles or REU/VIC wall-time measured.
+- Pinned official headless VICE r46274 package SHA, source harness, operand/output digest evidence, both changelogs, docs, status and checksums; full 822,050 unsigned and 364,533 signed emulated validation already passed. Issue39 unsigned family OPEN. docs/ISSUE39_U24_TXA_SOURCE_INTEGRATION_2026-10-13.md
+
 2026-10-13 ISSUE39 GENERIC U24 HIGH-GT LIVE-X PRODUCTION SOURCE
 - Source-installed generic 24-bit N2>D2 live-X high-byte subtraction LDA N2 -> TXA for V1/V2/V3/V4; V5 inherited donor code refreshed by source builder. Stable 56-entry API, resident PRG lengths, REU images and normal ZP unchanged. Full source reference/alternate maps and paired current-resident full public ABI qualified; V2–V5 dedicated UMOD24 layout-phase tradeoff recorded.
 - Full five-profile 822,050 unsigned, 364,533 signed and 136,335 same-input performance calls passed. Documentation, independent/full-input ranking tables, standalone sources, both changelogs, release-status PRG hashes and checksums regenerated. No native VICE calls have yet been claimed; require separate native proof before production merge. Issue #39 OPEN. docs/ISSUE39_U24_TXA_SOURCE_INTEGRATION_2026-10-13.md

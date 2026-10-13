@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 70050,
+    "user_manual_bytes": 70065,
     "user_manual_lines": 1922,
-    "user_manual_sha256": "9f6424f2442c3424c03988691ec1be9ed063f1bf670cf5064ff77dcd7c13f6c7"
+    "user_manual_sha256": "be63635c805615a7b27f3cc92534d0bb606c76a379b77ce0a8c1957eae48f8dd"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -2309,7 +2309,7 @@
     "unsigned_family_complete": false
   },
   "issue39_u24_txa_production_source_2026_10_13": {
-    "status": "PASS_STAGED_NATIVE_VICE_GATE_PENDING",
+    "status": "PASS_SOURCE_AND_NATIVE_VICE_QUALIFIED",
     "doc": "docs/ISSUE39_U24_TXA_SOURCE_INTEGRATION_2026-10-13.md",
     "evidence": "validation/review/ISSUE39_U24_TXA_SOURCE_INTEGRATION.json",
     "evidence_sha256": "826741dccbe7fb0090bb99651e0eedb417f07cabe8e0cac6e07dd0a076484c08",
@@ -2352,7 +2352,11 @@
     },
     "resident_size_growth": 0,
     "normal_zp_growth": 0,
-    "native_vice_calls": 0,
-    "unsigned_family_complete": false
+    "native_vice_calls": 960,
+    "unsigned_family_complete": false,
+    "native_vice_report": "validation/review/ISSUE39_U24_TXA_NATIVE_VICE.json",
+    "native_vice_report_sha256": "fd4e7d06edbd628fc6ae721498554ee966b9acdc164c89204bd69d55f1bba8c5",
+    "native_vice_package": "VICE headlessvice_3.10+r46274.deb",
+    "native_vice_package_sha256": "5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a"
   }
 }

@@ -32,8 +32,14 @@ The exact reference/alternate qualified input/cycle vectors and
 full SHA-pinned image evidence are retained in
 validation/review/ISSUE39_U24_TXA_SOURCE_INTEGRATION.json.
 
-**Native VICE verification is still a separate gate.** No emulator
-native call or VIC/REU DMA timing is claimed by this staged proof.
-Do not merge solely on this script if native evidence is required.
+**Native VICE x64sc correctness passed.** Old and new complete resident
+UDIV24/UMOD24 programs were run with 48 identical operands in each of
+five profiles: **960 native emulator calls** with zero failures in
+contracted Q, R, carry, N/D preservation, and high-R sentinel.
+The 48-input vectors include zero divisors and full/high-width cases.
+V5 was tested with RAM visible under BASIC ROM. All exact input and
+output fingerprints are recorded in the companion native VICE JSON.
+These are native correctness calls, not native cycle-time or real
+REU/VIC bus-load performance measurements.
 
 The other unsigned DIV/MOD classes and issue #39 remain OPEN.
