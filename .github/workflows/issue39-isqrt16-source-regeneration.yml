@@ -1,0 +1,28 @@
+name: Issue39 roots canonical source-regeneration roundtrip
+on:
+  push:
+    branches: [issue39-integer-roots-seedtable-screen]
+    paths:
+      - 'tools/source_relocation.py'
+      - 'tools/qualify_issue39_isqrt16_source_regen.py'
+      - '.github/workflows/issue39-isqrt16-source-regeneration.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  all-profiles-root-source-regeneration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Rebuild V1 V2 V3 V4 V5 from reference and alternate maps after canonical source regeneration
+        run: |
+          python3 tools/qualify_issue39_isqrt16_source_regen.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-root-source-regeneration-trial
+          path: validation/review/ISSUE39_ISQRT16_SOURCE_REGEN_TRIAL.json
