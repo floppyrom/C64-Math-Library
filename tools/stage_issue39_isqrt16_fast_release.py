@@ -190,6 +190,11 @@ def main():
         lines[matches[0]]='|'.join(cells)
     perf.write_text('\n'.join(lines)+'\n')
 
+    # Refresh all source-SHA-pinned unsigned comparisons even though only roots
+    # changed; profile public ranking explicitly verifies resident SHA identity.
+    py('benchmark_unsigned_common_corpus')
+    py('benchmark_unsigned_3216_workloads')
+    py('audit_issue39_unsigned_small_workloads')
     py('publish_standalone_sources')
     py('generate_consolidated_routine_table')
     py('generate_public_indexes')
@@ -251,6 +256,14 @@ def main():
         if link not in path.read_text():path.write_text(path.read_text().rstrip()+'\n'+link)
     st['reference_prg_sha256']=new
     st['alternate_prg_sha256']=alt
+    # Keep historical review pins explicit while updating CURRENT resident
+    # provenance of replayable unsigned reports. Preserve numeric measurements.
+    for key,path,field in (
+        ('issue39_common_input_unsigned_divmod','validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json','benchmark_sha256'),
+        ('issue39_unsigned_3216_multiworkload_2026_10_11','validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json','report_sha256'),
+        ('issue39_unsigned_small_width_workloads_2026_10_11','validation/review/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.json','data_sha256')):
+        if isinstance(st.get(key),dict) and (ROOT/path).exists():
+            st[key][field]=h(ROOT/path)
     st['issue39_integer_roots_source_release_2026_10_13']={
       'status':'PASS_STAGED_NATIVE_VICE_PENDING',
       'root16_exact_domain_per_optimized_profile':65536,
