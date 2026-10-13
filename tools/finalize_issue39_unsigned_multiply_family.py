@@ -51,6 +51,30 @@ def main():
       "reference_prg_sha256":residents,
       "separate_campaign":"REU Turbo16/Turbo32/QS16 multiply and remaining Issue39 families"}
     stfile.write_text(json.dumps(status,indent=2)+"\n")
+    certificate={
+       "status":"PASS_POSTMERGE_MAIN_GREEN",
+       "issue39_complete":False,
+       "unsigned_multiply_family_complete":True,
+       "routines":status["issue39_unsigned_multiply_family_2026_10_14"]["routines"],
+       "compiled_profile_sha256":residents,
+       "UMUL8_exhaustive_pairs_per_lowzp_profile":65536,
+       "UMUL16_pairs_per_profile_per_map":10169,
+       "UMUL24_pairs_per_profile_per_map":10324,
+       "UMUL32_ready_shared_pairs_per_profile":2409,
+       "UMUL32_normal_lowzp_pointer_repair_preserved":True,
+       "UMUL32_unqualified_ready_wrong_per_lowzp_profile":312,
+       "UMUL24_rarecarry_uniform_saving_cycles":1,
+       "native_VICE_calls":384,
+       "native_cycle_timing_measured":False,
+       "private_optisearch_source_published":False,
+       "main_sha":a.main_sha,
+       "main_full_library_run":a.full_ci,
+       "main_comparable_unsigned_run":a.comparable_ci,
+       "premerge_family_run":a.family_ci,
+       "separate_reu_multiply_step_pending":True
+    }
+    target=R/"validation/review/ISSUE39_UNSIGNED_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json"
+    target.write_text(json.dumps(certificate,indent=2,sort_keys=True)+"\n")
     doc=DOC.read_text()
     statement=("**Completion certification (14 October 2026):** The basic unsigned "
        "multiply implementation family is complete. The merged V1/V5 rare-carry "
