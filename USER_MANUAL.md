@@ -1925,4 +1925,4 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 
 - Root optimization release-stage evidence: docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md (native VICE: 768 old/new full-resident calls PASS; PR #102 merged; PR/main CI green).
 
-- V2 UMUL8 public direct-result source release: docs/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_2026-10-13.md (native x64sc 128 old/new public calls PASS; independent PR/main CI pending).
+- V2 UMUL8 public direct-result source release: docs/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_2026-10-13.md (PR #104 merged; native x64sc 128 old/new calls and PR/main CI PASS).

@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 V2 UMUL8 POSTMERGE MAIN VALIDATION
+- V2 UMUL8 PR #104 merged to main b50b4fe60bc7a0640ce36473f12ddead28e07848. Post-merge Validate library #38397621683, Comparable unsigned #38397621692, Turbo32 #38397621687 all SUCCESS. Exact native x64sc 128 old/new calls PASS guaranteed ABI, with 46/64 volatile N/Z/V differences disclosed. V2 public UMUL8 78.494141 -> 72.494141 cycles on 65,536 paired operands (6 saved). Source resident, ABI addresses, normal ZP, other profiles unchanged by this METADATA closeout. Issue #39 and remaining unsigned multiply campaign OPEN. docs/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_2026-10-13.md
+
 2026-10-13 ISSUE39 V2 UMUL8 SOURCE-RELEASE NATIVE VICE
 - 128 actual x64sc old/new source-installed V2 UMUL8 public calls (64 identical operands per image), exact Q16/input/carry/stack/sentinel outputs. Non-carry status bits (N/Z/V) are explicitly volatile and their differences are recorded. No native cycle-timing assertion; six-cycle saving is from exhaustive same-input model. V2-only, no resource growth. See validation/review/ISSUE39_V2_UMUL8_DIRECTOUT_NATIVE.json. Issue #39 remains OPEN.
 

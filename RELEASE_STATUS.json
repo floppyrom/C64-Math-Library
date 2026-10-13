@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 70618,
+    "user_manual_bytes": 70610,
     "user_manual_lines": 1928,
-    "user_manual_sha256": "71dd80766c3c98ccf44249c534bbb91c6898f3cdae35f804f3356415cba001ef"
+    "user_manual_sha256": "460d38eec5278f6ee945e0894962c80529f5b520919c665f69a862743e77a091"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -2510,7 +2510,7 @@
     "native_vice_evidence_sha256": "9889c4a5c2b62f6e627d656677db7bc19f146e02ca2184d330bf915ee3f5ce01"
   },
   "issue39_v2_umul8_directout_2026_10_13": {
-    "status": "PASS_NATIVE_VICE_SOURCE_INSTALLED_PR_CI_PENDING",
+    "status": "PASS_MERGED_POSTMERGE_MAIN_CI",
     "old_sha256": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92",
     "new_sha256": "71648ececccba3186a1b186144dbace5e345a9a0967d397ec1db0655cef31c04",
     "public_mean_cycles": 72.494140625,
@@ -2539,6 +2539,24 @@
     "native_evidence": "validation/review/ISSUE39_V2_UMUL8_DIRECTOUT_NATIVE.json",
     "volatile_status_differences": 46,
     "native_evidence_sha256": "fcb8e9766e3ca4ee67882200c8094e0bc9f81f8f7adebe50a518c11bfd49aefe",
-    "native_cycles_measured": false
+    "native_cycles_measured": false,
+    "v2_umul8_substep_complete": true,
+    "unsigned_multiply_family_complete": false,
+    "source_pr_number": 104,
+    "source_pr_merge_sha": "b50b4fe60bc7a0640ce36473f12ddead28e07848",
+    "post_merge_workflow_runs": {
+      "Validate library": {
+        "id": 38397621683,
+        "conclusion": "success"
+      },
+      "Comparable unsigned performance": {
+        "id": 38397621692,
+        "conclusion": "success"
+      },
+      "Turbo32 integration proof": {
+        "id": 38397621687,
+        "conclusion": "success"
+      }
+    }
   }
 }
