@@ -1,0 +1,27 @@
+name: Issue39 V2 UMUL8 protected regeneration trial
+on:
+  push:
+    branches: [issue39-umul8-direct-output-public-screen]
+    paths:
+      - tools/source_relocation.py
+      - tools/qualify_issue39_v2_umul8_regen.py
+      - .github/workflows/issue39-umul8-v2-regen.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  canonical-source-roundtrip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Exact V2 source-regeneration, V5 hybrid donor and two-map public ABI
+        run: python3 tools/qualify_issue39_v2_umul8_regen.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v2-umul8-source-regeneration
+          path: validation/review/ISSUE39_V2_UMUL8_SOURCE_REGEN_TRIAL.json
