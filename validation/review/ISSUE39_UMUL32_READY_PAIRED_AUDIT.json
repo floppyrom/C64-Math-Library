@@ -1,0 +1,67 @@
+{
+  "status": "PASS",
+  "scope": "CPU-model public-entry including RTS, excluding caller JSR / stores",
+  "legacy_warning": "UMUL32 and READY published averages used different corpora; do not directly compare those published means",
+  "corpus": "benchmark_multiply_refresh.CORPORA[32]",
+  "corpus_sha256_le32x2": "a53c473ea26290c4f7623c9599eeabc9158e56065222f3f695b8fe84ee2e0496",
+  "input_pairs": 2409,
+  "full_corpus": true,
+  "profiles": [
+    {
+      "profile": "v1_balanced",
+      "paired_cases": 2409,
+      "ordinary_mean_cycles": 712.2353673723537,
+      "ready_mean_cycles": 690.2353673723537,
+      "mean_ready_saving_cycles": 22,
+      "paired_saving_histogram": {
+        "22": 2409
+      },
+      "product_carry_and_input_preservation": "PASS"
+    },
+    {
+      "profile": "v2_pareto_fast",
+      "paired_cases": 2409,
+      "ordinary_mean_cycles": 690.2353673723537,
+      "ready_mean_cycles": 690.2353673723537,
+      "mean_ready_saving_cycles": 0,
+      "paired_saving_histogram": {
+        "0": 2409
+      },
+      "product_carry_and_input_preservation": "PASS"
+    },
+    {
+      "profile": "v3_reu_512k",
+      "paired_cases": 2409,
+      "ordinary_mean_cycles": 690.2353673723537,
+      "ready_mean_cycles": 690.2353673723537,
+      "mean_ready_saving_cycles": 0,
+      "paired_saving_histogram": {
+        "0": 2409
+      },
+      "product_carry_and_input_preservation": "PASS"
+    },
+    {
+      "profile": "v4_reu_16m",
+      "paired_cases": 2409,
+      "ordinary_mean_cycles": 690.2353673723537,
+      "ready_mean_cycles": 690.2353673723537,
+      "mean_ready_saving_cycles": 0,
+      "paired_saving_histogram": {
+        "0": 2409
+      },
+      "product_carry_and_input_preservation": "PASS"
+    },
+    {
+      "profile": "v5_hybrid_lowzp",
+      "paired_cases": 2409,
+      "ordinary_mean_cycles": 712.2353673723537,
+      "ready_mean_cycles": 690.2353673723537,
+      "mean_ready_saving_cycles": 22,
+      "paired_saving_histogram": {
+        "22": 2409
+      },
+      "product_carry_and_input_preservation": "PASS"
+    }
+  ],
+  "ready_contract": "Distinct READY state prerequisites; equality of mathematical outputs is not interchangeability proof"
+}
