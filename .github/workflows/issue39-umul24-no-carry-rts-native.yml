@@ -1,0 +1,51 @@
+name: Issue39 UMUL24 no-carry RTS native x64sc release proof
+on:
+  push:
+    branches: [issue39-umul24-rts-no-clc-production]
+    paths:
+      - tools/native_issue39_umul24_no_carry_rts_release.py
+      - tools/finalize_issue39_umul24_no_carry_rts_native.py
+      - .github/workflows/issue39-umul24-no-carry-rts-native.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  native-v2v4-resident-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-umul24-rts-no-clc-production
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned VICE headless r46274 for native x64sc proof
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Native VICE full resident old/new V2 V3 V4 UMUL24 and SMUL24 calls
+        run: python3 tools/native_issue39_umul24_no_carry_rts_release.py
+      - name: Seal VICE report, release state, docs and package SHA ledger
+        run: python3 tools/finalize_issue39_umul24_no_carry_rts_native.py
+      - name: Commit real 6510 proof and reconciled package to production branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal 576 VICE full resident no-carry 24bit multiply calls'
+          git fetch origin issue39-umul24-rts-no-clc-production
+          git rebase origin/issue39-umul24-rts-no-clc-production
+          git push origin HEAD:issue39-umul24-rts-no-clc-production
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-umul24-no-carry-rts-native
+          path: validation/review/ISSUE39_UMUL24_NO_CARRY_RTS_NATIVE_2026-10-13.json
