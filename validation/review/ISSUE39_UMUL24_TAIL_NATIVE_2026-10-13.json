@@ -1,0 +1,43 @@
+{
+  "native_calls": 576,
+  "native_cycle_timing_measured": false,
+  "profiles": {
+    "v2_pareto_fast": {
+      "MATH_SMUL24": {
+        "new_sha256": "99c2b264866346cfdd86a6421b8ae03719d6d90815b0e63d5d66197d43a28542",
+        "old_sha256": "99c2b264866346cfdd86a6421b8ae03719d6d90815b0e63d5d66197d43a28542",
+        "paired_inputs": 48
+      },
+      "MATH_UMUL24": {
+        "new_sha256": "232fb38c29fd14d83f61502ec25f74595192b3380b6f9d4cbf43f1816044d572",
+        "old_sha256": "232fb38c29fd14d83f61502ec25f74595192b3380b6f9d4cbf43f1816044d572",
+        "paired_inputs": 48
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_SMUL24": {
+        "new_sha256": "99c2b264866346cfdd86a6421b8ae03719d6d90815b0e63d5d66197d43a28542",
+        "old_sha256": "99c2b264866346cfdd86a6421b8ae03719d6d90815b0e63d5d66197d43a28542",
+        "paired_inputs": 48
+      },
+      "MATH_UMUL24": {
+        "new_sha256": "232fb38c29fd14d83f61502ec25f74595192b3380b6f9d4cbf43f1816044d572",
+        "old_sha256": "232fb38c29fd14d83f61502ec25f74595192b3380b6f9d4cbf43f1816044d572",
+        "paired_inputs": 48
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_SMUL24": {
+        "new_sha256": "99c2b264866346cfdd86a6421b8ae03719d6d90815b0e63d5d66197d43a28542",
+        "old_sha256": "99c2b264866346cfdd86a6421b8ae03719d6d90815b0e63d5d66197d43a28542",
+        "paired_inputs": 48
+      },
+      "MATH_UMUL24": {
+        "new_sha256": "232fb38c29fd14d83f61502ec25f74595192b3380b6f9d4cbf43f1816044d572",
+        "old_sha256": "232fb38c29fd14d83f61502ec25f74595192b3380b6f9d4cbf43f1816044d572",
+        "paired_inputs": 48
+      }
+    }
+  },
+  "status": "PASS_NATIVE_SOURCE_INSTALLED_NOT_YET_MERGED"
+}
