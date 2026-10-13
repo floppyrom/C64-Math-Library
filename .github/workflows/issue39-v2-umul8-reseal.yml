@@ -1,0 +1,41 @@
+name: Issue39 V2 UMUL8 historical inverse and checksum reseal
+on:
+  push:
+    branches: [issue39-umul8-direct-output-public-screen]
+    paths:
+      - .github/workflows/issue39-v2-umul8-reseal.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  verify-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-umul8-direct-output-public-screen
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Exact SHA-pinned historical V2 UMUL8 inverse
+        run: python3 tools/issue39_v2_umul8_parent.py
+      - name: Seal checksum manifest and package audit after historic proof updates
+        run: |
+          python3 - <<'PY'
+          import subprocess,sys
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,'tools/package_audit.py'],check=True)
+          print('ISSUE39 V2 UMUL8 HISTORIC PROVENANCE CHECKSUM SEALED')
+          PY
+      - name: Commit only SHA-consistent release provenance
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal V2 UMUL8 historic exact-inverse evidence and checksum manifest'
+          git push origin HEAD:issue39-umul8-direct-output-public-screen
