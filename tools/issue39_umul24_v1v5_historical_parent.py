@@ -19,7 +19,42 @@ PUBLISHED={
       "e7546665bc68faf3d6021db91a77bcdf4d32b4d800530264840f443066ad8ffb")
 }
 def sha(blob:bytes)->str:return hashlib.sha256(blob).hexdigest()
+# Production UMUL8 was released after the frozen UMUL24/roots certificates.
+# Historical audits require their *exact* old input image. Undo only the 11
+# SHA-pinned bytes in the two disjoint UMUL8 islands, never a production PRG.
+UMUL8_RELEASE_IMAGES={
+    "v1_balanced":(
+      "03d2e67a399c31ce7b8456521bcd9cb30a48ef051baa6a9ac50c23cf0bfd0829",
+      "6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0"),
+    "v5_hybrid_lowzp":(
+      "e7546665bc68faf3d6021db91a77bcdf4d32b4d800530264840f443066ad8ffb",
+      "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"),
+}
+UMUL8_OLD_PUBLIC=bytes.fromhex("a5 14 8d 08 c0 18 60")
+UMUL8_NEW_PUBLIC=bytes.fromhex("18 60 8d 08 c0 18 60")
+UMUL8_OLD_CORE=bytes.fromhex("85 14 b1 12 fd 00 82 60 00")
+UMUL8_NEW_CORE=bytes.fromhex("8d 08 c0 b1 12 fd 00 82 60")
+
+def undo_umul8_release(profile:str,blob:bytes)->bytes:
+    if profile not in UMUL8_RELEASE_IMAGES:return blob
+    previous,current=UMUL8_RELEASE_IMAGES[profile]
+    digest=sha(blob)
+    if digest==previous:return blob
+    if digest!=current:return blob
+    lo=int.from_bytes(blob[:2],'little')
+    assert lo==0x1000 and len(blob)==49042,(profile,"unexpected resident geometry")
+    at=lambda addr: 2+addr-lo
+    assert blob[at(0x3014):at(0x301b)]==UMUL8_NEW_PUBLIC,(profile,"UMUL8 public tail drift")
+    assert blob[at(0x4714):at(0x471d)]==UMUL8_NEW_CORE,(profile,"UMUL8 core drift")
+    old=bytearray(blob)
+    old[at(0x3014):at(0x301b)]=UMUL8_OLD_PUBLIC
+    old[at(0x4714):at(0x471d)]=UMUL8_OLD_CORE
+    restored=bytes(old)
+    assert sha(restored)==previous,(profile,"UMUL8 historical inverse drift",sha(restored))
+    return restored
+
 def undo_umul24_tailcall(profile:str,blob:bytes)->bytes:
+    blob=undo_umul8_release(profile,blob)
     if profile not in PUBLISHED:return blob
     previous,candidate=PUBLISHED[profile]
     digest=sha(blob)

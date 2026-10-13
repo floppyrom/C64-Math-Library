@@ -923,11 +923,9 @@ L2CF7:
     ldy MATH_IO+$04
     jsr REG_KERNEL+$0700
     sta MATH_IO+$09
-    lda ZP_MAIN+$12
-    sta MATH_IO+$08
     clc
     rts
-    !byte $00, $00, $00, $00, $00
+    !byte $8D, $08, $C0, $18, $60, $00, $00, $00, $00, $00
     lda #>REG_TABLE+$2400
     sta ZP_MAIN+$08
     sta ZP_MAIN+$10
@@ -1565,7 +1563,7 @@ L470E:
     tax
     lda (ZP_MAIN+$0E),y
     sbc REG_TABLE+$2000,x
-    sta ZP_MAIN+$12
+    sta MATH_IO+$08
     lda (ZP_MAIN+$10),y
     sbc REG_TABLE+$2200,x
     rts
@@ -1581,7 +1579,7 @@ L470E:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     lda ZP_MAIN+$07
     sta ZP_MAIN+$0B
     eor #$FF
@@ -4354,6 +4352,7 @@ LCAFB:
 !source "smul16_fast17_composed.inc"
 !source "smul16_shr8_selected.inc"
 !source "umul16_shr8_reg_return.inc"
+!source "umul8_directout.inc"
 ; END MULTIPLY REFRESH 2026-09-20
 
 ; BEGIN DIVISION REFRESH 2026-09-20

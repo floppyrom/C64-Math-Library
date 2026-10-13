@@ -1,0 +1,38 @@
+{
+  "alternate_sha256": {
+    "v1_balanced": "214311002e66c7d2a5541014232e551b191340e93c454306b0382211a994ec35",
+    "v5_hybrid_lowzp": "d1c3d9e04c73c5fd2f30b839e0f5e247dd1aec05b0c77a13ed1b39c04946bf7c"
+  },
+  "changed_bytes_per_profile": {
+    "v1_balanced": 11,
+    "v5_hybrid_lowzp": 11
+  },
+  "date": "2026-10-13",
+  "exhaustive_pairs_per_profile": 65536,
+  "extra_normal_zp": 0,
+  "issue39_complete": false,
+  "native_vice_current_source_calls": 256,
+  "native_vice_cycles_measured": false,
+  "new_sha256": {
+    "v1_balanced": "6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0",
+    "v5_hybrid_lowzp": "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"
+  },
+  "old_sha256": {
+    "v1_balanced": "03d2e67a399c31ce7b8456521bcd9cb30a48ef051baa6a9ac50c23cf0bfd0829",
+    "v5_hybrid_lowzp": "e7546665bc68faf3d6021db91a77bcdf4d32b4d800530264840f443066ad8ffb"
+  },
+  "paired_cycles_after": 84.490234375,
+  "paired_cycles_before": 90.490234375,
+  "paired_savings_each": 6,
+  "profiles_modified": [
+    "v1_balanced",
+    "v5_hybrid_lowzp"
+  ],
+  "resident_size_growth": 0,
+  "status": "SOURCE_STAGED_CURRENT_NATIVE_256_PASS_PR_CI_PENDING",
+  "unchanged_profiles": [
+    "v2_pareto_fast",
+    "v3_reu_512k",
+    "v4_reu_16m"
+  ]
+}
