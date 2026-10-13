@@ -29,7 +29,9 @@
     "v5_hybrid_lowzp"
   ],
   "resident_size_growth": 0,
-  "status": "SOURCE_STAGED_CURRENT_NATIVE_256_PASS_PR_CI_PENDING",
+  "status": "MERGED_MAIN_ALL_POSTMERGE_CI_PASS",
+  "merge_sha": "f754cc87d0ba3518377a4e2d19a9e8fc6ac0d75a",
+  "postmerge_workflow_runs": {"validate_library": 38463930923, "comparable_unsigned": 38463930890, "turbo32": 38463930880},
   "unchanged_profiles": [
     "v2_pareto_fast",
     "v3_reu_512k",
