@@ -25,15 +25,26 @@ def screen(profile):
     old,api=load(profile)
     new,api2=load(profile)
     assert api==api2 and api["MATH_UMUL8"]==0x3000
-    assert bytes(old.mem[0x3014:0x301b])==OLD_PUBLIC
-    assert bytes(old.mem[0x4714:0x471d])==OLD_CORE
-    assert bytes(new.mem[0x3014:0x301b])==OLD_PUBLIC
+    # Retain the same independent old-vs-new control after the candidate
+    # becomes the shipped resident: reconstruct the frozen pre-promotion tail
+    # in the CPU-model baseline only. Do not modify the published PRG.
+    pub=bytes(old.mem[0x3014:0x301b])
+    kernel=bytes(old.mem[0x4714:0x471d])
+    legacy=(pub==OLD_PUBLIC and kernel==OLD_CORE)
+    if not legacy:
+        assert pub[:2]==bytes.fromhex("18 60"),(profile,"public tail drift",pub.hex())
+        assert kernel==bytes.fromhex("8d 08 c0 b1 12 fd 00 82 60"),(profile,"core drift",kernel.hex())
+        old.mem[0x3014:0x301b]=OLD_PUBLIC
+        old.mem[0x4714:0x471d]=OLD_CORE
     src=(ROOT/"relocatable_source/v1_balanced/umul8_directout_trial.inc").read_text()
     config="MATH_UMUL8=$3000\nREG_KERNEL=$4000\nREG_TABLE=$6000\nMATH_Z=$C008\nZP_MAIN=$02\n"
     patch,_,_=Assembler().assemble(config+src)
     assert set(patch)==PATCH_EXPECTED,(profile,"unexpected candidate footprint",sorted(patch))
-    for addr,value in patch.items():
-        new.mem[addr]=value
+    if legacy:
+        for addr,value in patch.items():
+            new.mem[addr]=value
+    else:
+        assert all(new.mem[addr]==value for addr,value in patch.items()),"current-source patch differs"
     assert bytes(new.mem[0x3014:0x3016])==bytes.fromhex("18 60")
     assert bytes(new.mem[0x4714:0x471d])==bytes.fromhex("8d 08 c0 b1 12 fd 00 82 60")
     hist={}
