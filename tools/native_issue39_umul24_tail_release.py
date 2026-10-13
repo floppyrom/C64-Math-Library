@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Native x64sc original/candidate V2/V3/V4 UMUL24 + SMUL24 full-resident test.
+"""Native x64sc original/candidate V2/V3/V4 UMUL24 + SMUL24 full-resident test after V2 UMUL8 merged baseline.
 
 3 profiles × 2 public entries × 48 vectors × 2 complete original/candidate
 images = 576 actual 6510 calls. Validates product, input, carry and sentinels.
