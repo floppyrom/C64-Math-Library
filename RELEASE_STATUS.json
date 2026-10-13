@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 69733,
-    "user_manual_lines": 1918,
-    "user_manual_sha256": "692f1010824fcb6389d7cdf73e0db58b857f00c8aa2f6ac8e3af18dbb56f45ee"
+    "user_manual_bytes": 69866,
+    "user_manual_lines": 1920,
+    "user_manual_sha256": "93ba0ac0a4ed66ce1ac82c3ef52ed08a0c7326dd3960c6a39ad026bada485de5"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -2262,6 +2262,50 @@
     "native_vice_calls": 0,
     "production_binaries_changed": false,
     "public_api_changed": false,
+    "unsigned_family_complete": false
+  },
+  "issue39_u24_live_x_highgt_2026_10_13": {
+    "status": "PASS_SOURCE_PROOF_NOT_PROMOTED",
+    "report": "validation/review/ISSUE39_U24_HIGHGT_LIVE_X_SCREEN.json",
+    "report_sha256": "8ed2c81a88c74e9e7f03e1e0ab9de1d25758477c9ce0efc9b05587fb9945bba8",
+    "documentation": "docs/ISSUE39_U24_HIGHGT_LIVE_X_2026-10-13.md",
+    "reproducer": "tools/screen_issue39_u24_highgt_txa.py",
+    "paired_inputs": 34088,
+    "cpu_calls": 68176,
+    "profiles": {
+      "v1_balanced": {
+        "MATH_UDIV24": {
+          "official_delta": -0.8586156111929307,
+          "official_faster": 2035,
+          "official_slower": 0,
+          "highgt_delta": -1.998046875
+        },
+        "MATH_UMOD24": {
+          "official_delta": -0.6844816484224082,
+          "official_faster": 530,
+          "official_slower": 0,
+          "highgt_delta": -1.9833984375
+        }
+      },
+      "v2_pareto_fast": {
+        "MATH_UDIV24": {
+          "official_delta": -0.8550389227856091,
+          "official_faster": 2035,
+          "official_slower": 0,
+          "highgt_delta": -1.9892578125
+        },
+        "MATH_UMOD24": {
+          "official_delta": 0.003219575016097875,
+          "official_faster": 13,
+          "official_slower": 18,
+          "highgt_delta": 0.0078125
+        }
+      }
+    },
+    "normal_zp_growth": 0,
+    "native_vice_calls": 0,
+    "resident_images_changed": false,
+    "stable_API_changed": false,
     "unsigned_family_complete": false
   }
 }
