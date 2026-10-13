@@ -1,6 +1,6 @@
 # Issue39 — V2–V4 UMUL24 no-carry direct result tail
 
-Staged 13 October 2026. NOT RELEASED until native VICE/PR/main CI.
+Merged in PR #105 on 13 October 2026 (d1688725c8f9e7f35e6de4d36815d2a6d0265b40). Native VICE PASS: 576 real full-resident old/new calls. All postmerge main workflows green: Validate library #38402703856, Comparable unsigned #38402703783, Turbo32 #38402703796.
 
 The common result-completion path writes product bytes four and five directly instead of jumping to the existing public tail. Rare final carry continues through the old branch. The signed producer is unchanged.
 
