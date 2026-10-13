@@ -1,0 +1,43 @@
+name: Issue39 U24 TXA source-built profile/hybrid qualification
+on:
+  push:
+    branches: [issue39-u24-live-x-resident-integration]
+    paths:
+      - '.github/workflows/issue39-u24-txa-integration.yml'
+      - 'relocatable_source/**/udiv24_direct_repose*.inc'
+      - 'tools/qualify_issue39_u24_txa_integration.py'
+  pull_request:
+    paths:
+      - '.github/workflows/issue39-u24-txa-integration.yml'
+      - 'relocatable_source/**/udiv24_direct_repose*.inc'
+      - 'tools/qualify_issue39_u24_txa_integration.py'
+permissions: {contents: read}
+jobs:
+  source-builtin:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env: {PYTHONDONTWRITEBYTECODE: '1'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Source-build all V1–V4 at the canonical reference map
+        run: python3 tools/assemble_sources.py --profile all --config-kind reference --out build_source
+      - name: Build hybrid V5 from new V1 and V2 sources
+        run: python3 tools/build_hybrid.py --config-kind reference
+      - name: Rebuild all V1–V4 source at alternate addresses
+        run: python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_source
+      - name: Build hybrid V5 using alternate region addresses
+        run: python3 tools/build_hybrid.py --config-kind alternate
+      - name: Strict candidate-versus-resident public U24 oracle and resource screen
+        run: python3 tools/qualify_issue39_u24_txa_integration.py --out /tmp/issue39_u24_txa_integration.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-u24-txa-profile-build-and-oracle
+          path: |
+            /tmp/issue39_u24_txa_integration.json
+            build_source/reference/**/source_build_manifest.json
+            build_source/alternate/**/source_build_manifest.json
+            build_hybrid/reference/**/source_build_manifest.json
+            build_hybrid/alternate/**/source_build_manifest.json
