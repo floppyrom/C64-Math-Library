@@ -10,8 +10,8 @@
     {
       "profile": "v2_pareto_fast",
       "source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
-      "reachable_instructions": 8007,
-      "source_sha256": "9f0c0c7d2f3afd4d95db0673ce1b5f167d0e7472a596dea4a6ae71322176c1a7"
+      "reachable_instructions": 8005,
+      "source_sha256": "5736e774171149eafc5f45938fb2330f3a983b456b6a5eb372d1fc9fa551113d"
     },
     {
       "profile": "v3_reu_512k",

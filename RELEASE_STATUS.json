@@ -14,7 +14,7 @@
   },
   "alternate_prg_sha256": {
     "v1_balanced": "0dc63c2996458c64b933d56c035cda6a1a8dc30f3421ec6451b3a0b8c628aee1",
-    "v2_pareto_fast": "062f0e6a08be5570bc03aa3195be39beb45b7c867e0539e1b5026da136f4b0f1",
+    "v2_pareto_fast": "1249b3d3b4eab112f90eee8e450a820d912ef5bea33da6a25001b6a987a9d8cb",
     "v3_reu_512k": "02ef44f1046dab0ab014d1ead69ea06bb346a81be9414bc38aaf22de9c05141f",
     "v4_reu_16m": "a4c3062cfafec053f3aef414debae621686cdf297a0ca573fe3f311a0513307b",
     "v5_hybrid_lowzp": "b255c1ccd651134259bccd26a7a9849669d0ed5e8fb57dbff95fbbddd0e7abca"
@@ -138,9 +138,9 @@
     "manual_scope": "V1-V5 fixed profiles; 56-entry stable API; multiplication/division refresh; standalone native signed/vector sources; Custom Pareto Builder; V5 hybrid; build/relocation; REU; Turbo16/Turbo32; V4 QS16; exact seek DDA movement; integration/troubleshooting",
     "reu_guide_vice_filename_correction": true,
     "turbo_plain_english_section": true,
-    "user_manual_bytes": 70441,
-    "user_manual_lines": 1926,
-    "user_manual_sha256": "2719905a336f8ddd1c6e830d135c64bb3850dc02301a2d081eca2e5f4861633c"
+    "user_manual_bytes": 70563,
+    "user_manual_lines": 1928,
+    "user_manual_sha256": "0ecb709451ae2520f594f9583e72a76e9b9b300db85389f822433f685cd525f5"
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
@@ -244,7 +244,7 @@
   ],
   "reference_prg_sha256": {
     "v1_balanced": "41d744c2aaf06a5d40cfece1c16255576950a8e6e3328d5fe4196c0ac753171e",
-    "v2_pareto_fast": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92",
+    "v2_pareto_fast": "71648ececccba3186a1b186144dbace5e345a9a0967d397ec1db0655cef31c04",
     "v3_reu_512k": "52565df27dc892be9da8e12b8ac6267179debbd3d521331d7cd3d0a49ced2755",
     "v4_reu_16m": "3e2b745e9cd81512f6c3aa4e5cc029528981bb7f6d56abd117e663994685f913",
     "v5_hybrid_lowzp": "b27e0885c7241dd7bdc3b2e25be6b2c616685cb426436a3c2b8260eff7a21ebb"
@@ -657,7 +657,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "68b23f0ab235f76f019339eb5d86941245e7cffda494f481da3132f6ec5a2be0",
+    "benchmark_sha256": "1435b765c506155fed86d05325b9373f5cc396a0e7eb0e032c931216fb34c0bb",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -755,7 +755,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "1d237a72cfe437568bf91ef271c6934dd627001391c272daf2d098fe4f192a47",
+    "report_sha256": "29410e1421b188993337693927b79f1b1a3594ed00eca6b3b1d509add3e685f4",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -858,7 +858,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "0551e4afced2ead0fbecba5feeacd9412daf427e3075d74d8046ff0a712d475f",
+    "data_sha256": "a17b90667d34621e14b150f53b5eb5cab8d9dcfebe4168c8e840973b81058078",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -2508,5 +2508,33 @@
       }
     },
     "native_vice_evidence_sha256": "9889c4a5c2b62f6e627d656677db7bc19f146e02ca2184d330bf915ee3f5ce01"
+  },
+  "issue39_v2_umul8_directout_2026_10_13": {
+    "status": "PASS_STAGED_NATIVE_VICE_PENDING",
+    "old_sha256": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92",
+    "new_sha256": "71648ececccba3186a1b186144dbace5e345a9a0967d397ec1db0655cef31c04",
+    "public_mean_cycles": 72.494140625,
+    "full_domain_cases": 65536,
+    "source_maps": {
+      "reference": {
+        "sha256": "71648ececccba3186a1b186144dbace5e345a9a0967d397ec1db0655cef31c04",
+        "public_calls": 21678,
+        "public_entries": 56,
+        "v5_sha256": "b27e0885c7241dd7bdc3b2e25be6b2c616685cb426436a3c2b8260eff7a21ebb"
+      },
+      "alternate": {
+        "sha256": "1249b3d3b4eab112f90eee8e450a820d912ef5bea33da6a25001b6a987a9d8cb",
+        "public_calls": 21678,
+        "public_entries": 56,
+        "v5_sha256": "b255c1ccd651134259bccd26a7a9849669d0ed5e8fb57dbff95fbbddd0e7abca"
+      }
+    },
+    "normal_zp_growth": 0,
+    "resident_size_growth": 0,
+    "V5_changed": false,
+    "native_vice_calls": 0,
+    "document": "docs/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_2026-10-13.md",
+    "evidence": "validation/review/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_RELEASE.json",
+    "issue39_complete": false
   }
 }

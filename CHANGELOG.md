@@ -1,3 +1,6 @@
+2026-10-13 ISSUE39 UMUL8 DIRECT OUTPUT SOURCE RELEASE
+- V2 UMUL8 source-owned public direct output: -6 cycles on all 65,536 tested 8x8 inputs (78.494141 to 72.494141), zero ZP/resident growth, no change to V1/V3/V4/V5. Both source maps and complete public ABI regression pass. Native VICE pending. docs/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_2026-10-13.md
+
 2026-10-13 ISSUE39 INTEGER ROOTS POSTMERGE MAIN VALIDATION
 - Integer roots PR #102 merged; main workflows Validate library #38389399637, Comparable unsigned #38389399688 and Turbo32 #38389399617 all SUCCESS on b179436082933d4edd80bca0256c11fc09d143be. No resident arithmetic, ABI, resource, size or cycles changed by this metadata closeout. Source/native checksums preserved; release status and user documentation synchronized, issue #39 still OPEN. docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md
 
