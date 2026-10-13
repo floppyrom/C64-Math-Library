@@ -33,7 +33,7 @@ def main():
     s=DOC.read_text()
     s=s.replace("Native VICE and PR/main CI pending.",
                 "Native VICE passed: 384 real full resident old/new calls; PR/main CI pending.")
-    s+="\nNative VICE validates both unsigned and signed public entries on three resident profiles, original and candidate, with exact products, input preservation, carry and sentinel parity. It does not measure cycles. See "+EVIDENCE+".\n"
+    s+="\nNative VICE validates both unsigned and signed public entries on two resident profiles, original and candidate, with exact products, input preservation, carry and sentinel parity. It does not measure cycles. See "+EVIDENCE+".\n"
     DOC.write_text(s)
     note=(STAMP+"\n- Pinned real x64sc old/new public UMUL24 and SMUL24 verified"
       " on V1/V5: 384 calls, identical products, preserved inputs,"
@@ -46,5 +46,5 @@ def main():
         reseal()
         subprocess.run([sys.executable,str(R/"tools/package_audit.py")],
                        cwd=R,check=True)
-    print("ISSUE39 UMUL24 V2-V4 NATIVE VICE PROOF SEALED 384; ISSUE39 OPEN")
+    print("ISSUE39 UMUL24 V1-V5 NATIVE VICE PROOF SEALED 384; ISSUE39 OPEN")
 if __name__=="__main__":main()
