@@ -1,19 +1,24 @@
 2026-10-13 ISSUE39 UMUL32/READY COMPARABLE-INPUT AUDIT
 - Verified current V1–V5 public UMUL32 and UMUL32_READY on the identical ordered 2,409-pair corpus per profile (24,090 CPU-model public entries). Complete 64-bit products, input preservation and carry passed. READY saves 22 cycles/pair in V1/V5; V2/V3/V4 show zero paired difference. Earlier published 2,409 vs 1,024-case means were not comparable. No implementation, public ABI, resident, ZP or REU change. Issue #39 remains open. See docs/ISSUE39_UMUL32_READY_PAIRED_AUDIT_2026-10-13.md and validation/review/ISSUE39_UMUL32_READY_PAIRED_AUDIT.json.
 
+2026-10-13 ISSUE39 UMUL24 PR105/PR106 POSTMERGE MAIN VALIDATION
+- PR #105 (V2/V3/V4 UMUL24 noncarry tail) merged as d1688725c8f9e7f35e6de4d36815d2a6d0265b40; postmerge main: Validate library #38402703856, Comparable unsigned #38402703783, Turbo32 #38402703796 — all SUCCESS.
+- PR #106 (V1/V5 UMUL24 private tail-call) merged as 335185f3ad0233763d4aafdad91301f6261604b3; postmerge main: Validate library #38410138207, Comparable unsigned #38410137785, Turbo32 #38410137989 — all SUCCESS.
+- Both releases retain their native x64sc proof, public ABI, normal zero-page and resident size. Publication metadata-only closeout; no executable, performance measurements or resident images changed; issue #39 remains OPEN.
+
 2026-10-13 ISSUE39 V1V5 UMUL24 NATIVE SOURCE VALIDATION
 - Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V1/V5: 384 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_NATIVE_2026-10-13.json.
 
 2026-10-13 ISSUE39 V1V5 UMUL24 PRIVATE CORE TAILCALL
 - Source-integrated V1/V5 UMUL24 tail-call: -8 cycles on all 10,324 official pairs, 474.042329 -> 466.042329 cycles; V2–V4 unchanged. No additional resource footprint.
-- Signed/mixed calls, relocated source, standalone publication and checksum/package evidence validated; native VICE pending. docs/ISSUE39_V1V5_UMUL24_PRIVATE_TAILCALL_2026-10-13.md
+- Signed/mixed calls, relocated source, standalone publication, native VICE and checksum/package evidence validated; PR #106 and postmerge main CI PASS (see closeout above). docs/ISSUE39_V1V5_UMUL24_PRIVATE_TAILCALL_2026-10-13.md
 
 2026-10-13 ISSUE39 UMUL24 NATIVE SOURCE RESIDENT VALIDATION
 - Pinned real x64sc old/new public UMUL24 and SMUL24 verified on V2/V3/V4: 576 calls, identical products, preserved inputs, carry and sentinels; unchanged signed private executable. Native cycles were NOT measured. validation/review/ISSUE39_UMUL24_TAIL_NATIVE_2026-10-13.json.
 
 2026-10-13 ISSUE39 UMUL24 NONCARRY FALLTHROUGH PRODUCTION
 - V2/V3/V4 UMUL24 source direct return: 7,789/10,324 calls -3 cycles and 2,535 unchanged; mean 419.292135 cycles; 0 extra resident/ZP bytes. V1/V5 unchanged.
-- Signed/mixed regression, standalone source, alternate maps and package checked. Native VICE/PR/main pending. docs/ISSUE39_UMUL24_TAIL_FALLTHROUGH_2026-10-13.md
+- Signed/mixed regression, standalone source, alternate maps, native VICE and package checked. PR #105 and postmerge main CI PASS (see closeout above). docs/ISSUE39_UMUL24_TAIL_FALLTHROUGH_2026-10-13.md
 
 2026-10-13 ISSUE39 V2 UMUL8 SOURCE-RELEASE NATIVE VICE
 - 128 actual x64sc old/new source-installed V2 UMUL8 public calls (64 identical operands per image), exact Q16/input/carry/stack/sentinel outputs. Non-carry status bits (N/Z/V) are explicitly volatile and their differences are recorded. No native cycle-timing assertion; six-cycle saving is from exhaustive same-input model. V2-only, no resource growth. See validation/review/ISSUE39_V2_UMUL8_DIRECTOUT_NATIVE.json. Issue #39 remains OPEN.
