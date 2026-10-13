@@ -33,7 +33,8 @@ def main():
     s=DOC.read_text()
     s=s.replace("Native VICE and PR/main CI pending.",
                 "Native VICE passed: 384 real full resident old/new calls; PR/main CI pending.")
-    s+="\nNative VICE validates both unsigned and signed public entries on two resident profiles, original and candidate, with exact products, input preservation, carry and sentinel parity. It does not measure cycles. See "+EVIDENCE+".\n"
+    native_line="\nNative VICE validates both unsigned and signed public entries on two resident profiles, original and candidate, with exact products, input preservation, carry and sentinel parity. It does not measure cycles. See "+EVIDENCE+".\n"
+    if native_line not in s:s+=native_line
     DOC.write_text(s)
     note=(STAMP+"\n- Pinned real x64sc old/new public UMUL24 and SMUL24 verified"
       " on V1/V5: 384 calls, identical products, preserved inputs,"
