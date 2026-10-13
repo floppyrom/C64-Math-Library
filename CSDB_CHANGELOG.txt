@@ -1,5 +1,8 @@
+2026-10-13 ISSUE39 V1/V5 UMUL8 POSTMERGE RELEASE CERTIFICATION
+- V1/V5 UMUL8 PR #109 is merged on main as f754cc87d0ba3518377a4e2d19a9e8fc6ac0d75a. Independent PR qualification and post-merge main checks passed: full validation #38463930923, comparable unsigned #38463930890, and Turbo32 #38463930880. No change to the measured six-cycle same-input CPU-model win, ABI, ZP or resident size; issue #39 remains open for the rest of the multiply campaign. Native VICE invariant replay: 256 calls; native cycle timing not measured.
+
 2026-10-13 ISSUE39 V1/V5 UMUL8 DIRECT-OUTPUT SOURCE PRODUCTION
-- V1 and V5 UMUL8 low-result direct store: exhaustive public same-input six-cycle gain, 90.490234375 to 84.490234375 cycles; current-source 256-call native VICE public replay passed. Eleven byte substitutions per resident, no resource growth, V2-V4 unchanged. Full PR/main CI pending. docs/ISSUE39_V1V5_UMUL8_DIRECT_OUTPUT_PRODUCTION_2026-10-13.md
+- V1 and V5 UMUL8 low-result direct store: exhaustive public same-input six-cycle gain, 90.490234375 to 84.490234375 cycles; current-source 256-call native VICE public replay passed. Eleven byte substitutions per resident, no resource growth, V2-V4 unchanged. PR #109 merged and all three post-merge main checks passed. docs/ISSUE39_V1V5_UMUL8_DIRECT_OUTPUT_PRODUCTION_2026-10-13.md
 
 2026-10-13 ISSUE39 V1/V5 UMUL8 DIRECT-OUTPUT RESEARCH (NOT RELEASED)
 - Source-only candidate to write the unsigned 8x8 low product byte directly into MATH_Z and shorten the public return: exhaustive current-main CPU-model screen covers 65,536 operand pairs each in V1/V5 and checks product, carry, public inputs, stack and output sentinels; uniform 6-cycle paired improvement expected. Research include is not selected by the production builder; no shipped binaries or stable API changed.
