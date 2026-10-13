@@ -1,4 +1,5 @@
 name: Issue39 UMUL32 READY lifetime audit publication reseal
+# Reseal reconciled PR114 main publication plus mixed-call audit.
 on:
   push:
     branches: [issue39-umul32-ready-lifetime-audit]
