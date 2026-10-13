@@ -5,6 +5,10 @@ on:
     paths:
       - tools/native_issue39_v1v5_umul24_tailcall.py
       - tools/finalize_issue39_v1v5_umul24_native.py
+      - tools/issue39_umul24_v1v5_historical_parent.py
+      - tools/issue39_v1_24by8_accumulator_parent.py
+      - tools/issue39_v5_umod32_parent.py
+      - tools/issue39_u24_txa_historical_parent.py
       - tools/qualify_issue39_v2_umod8_candidate.py
       - .github/workflows/issue39-v1v5-umul24-native.yml
   workflow_dispatch:
