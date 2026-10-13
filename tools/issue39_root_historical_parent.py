@@ -42,6 +42,8 @@ def historical_image(profile:str):
     assert sha(old)==expected_old,("historical root donor SHA drift",profile,sha(old))
     return old
 def undo_root_release(profile:str,blob:bytes)->bytes:
+    from issue39_umul24_v1v5_historical_parent import undo_umul8_release
+    blob=undo_umul8_release(profile,blob)
     # V2 public UMUL8 changed independently after the root release. Revert
     # its exact source-owned byte islands before historical root/div replay.
     if profile=='v2_pareto_fast':
