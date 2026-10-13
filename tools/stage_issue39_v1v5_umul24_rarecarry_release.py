@@ -53,6 +53,9 @@ def main():
         assert existing["normal_ZP_growth"]==existing["resident_growth"]==0
         existing["gain_cycles_every_case"]=1
         stpath.write_text(json.dumps(st,indent=2)+"\\n")
+        # The generated source/alternate build output is not tracked.
+        # Recreate it on fresh CI runners before comparing public calls.
+        build()
         py("validate_umul24_directout")
         evidence=json.loads((R/PROOF).read_text())
         assert evidence["mean_saving"]==1 and evidence["tested_calls_per_profile"]==10324
