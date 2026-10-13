@@ -5,6 +5,9 @@ on:
     paths:
       - tools/native_issue39_isqrt16_source_release.py
       - tools/finalize_issue39_roots_native_release.py
+      - tools/qualify_issue39_v2_umod8_candidate.py
+      - tools/issue39_v5_umod32_parent.py
+      - tools/issue39_root_historical_parent.py
       - .github/workflows/issue39-root16-native-release.yml
   workflow_dispatch:
 permissions:
