@@ -116,18 +116,32 @@ def main():
         folder=Path(td)
         base=native(old,'v2_old_umul8',7712,folder,exe)
         trial=native(new,'v2_new_umul8',7713,folder,exe)
-        if base['records']!=trial['records']:
-            differences=[(i,pairs()[i],[(hex(FIELDS[j]),a[j],b[j]) for j in range(len(FIELDS)) if a[j]!=b[j]])
-                for i,(a,b) in enumerate(zip(base['records'],trial['records'])) if a!=b]
-            print('NATIVE DIFFERENT FIELDS',differences[:12],flush=True)
-            raise AssertionError(('native public old/new mismatch',len(differences),differences[:3]))
+        # USER_MANUAL.md: N/Z/V flags and A/X/Y are explicitly volatile;
+        # Carry is the ONLY guaranteed result flag. The historical wrapper
+        # ends with LDA old-ZP-product-low, the direct-output version with
+        # STA public-product-high, so their final N/Z flag values differ.
+        # Verify *all* documented fields, and quantify that difference.
+        contract=lambda row: tuple(row[j] if j!=8 else row[j]&1
+                                   for j in range(len(row)))
+        differences=[(i,pairs()[i],[(hex(FIELDS[j]),a[j],b[j]) for j in range(len(FIELDS))
+                       if (a[j] if j!=8 else a[j]&1)!=(b[j] if j!=8 else b[j]&1)])
+                     for i,(a,b) in enumerate(zip(base['records'],trial['records']))
+                     if contract(a)!=contract(b)]
+        assert not differences,('native guaranteed public ABI drift',len(differences),differences[:3])
+        volatile_status_differences=sum(a[8]!=b[8] for a,b in
+              zip(base['records'],trial['records']))
+        print('NATIVE ABI PASS; volatile N/Z/V status differences',
+              volatile_status_differences,'/',COUNT,flush=True)
     result={'status':'PASS_NATIVE_VICE_V2_UMUL8_PUBLIC_DIRECT_OUTPUT',
        'old_sha256':OLD_SHA,'new_sha256':NEW_SHA,'public_entry':hex(ENTRY),
        'old_native_calls':COUNT,'new_native_calls':COUNT,
        'native_calls':2*COUNT,'paired_operands':COUNT,
        'old_dump_sha256':base['dump_sha256'],
        'new_dump_sha256':trial['dump_sha256'],
-       'all_public_results_identical':True,'native_cycles_measured':False,
+       'all_guaranteed_public_results_identical':True,
+       'noncarry_status_flag_differences':volatile_status_differences,
+       'noncarry_flags_volatile_per_USER_MANUAL':True,
+       'native_cycles_measured':False,
        'source_profile':PROFILE,'parent_commit':PARENT}
     proof=ROOT/'validation/review/ISSUE39_V2_UMUL8_DIRECTOUT_NATIVE.json'
     proof.parent.mkdir(parents=True,exist_ok=True)
