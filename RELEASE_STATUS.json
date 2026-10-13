@@ -2625,7 +2625,7 @@
     "issue39_complete": false
   },
   "issue39_v1v5_umul8_directout_research_2026_10_13": {
-    "status": "PROMOTED_AS_SOURCE_STAGED_PR_CI_PENDING",
+    "status": "RESEARCH_STAGE_PROMOTED_TO_RELEASED_EQUIVALENT",
     "documentation": "docs/ISSUE39_V1V5_UMUL8_DIRECTOUT_RESEARCH_2026-10-13.md",
     "source_candidate": "relocatable_source/v1_balanced/umul8_directout_trial.inc",
     "screen": "tools/screen_issue39_v1v5_umul8_directout.py",
@@ -2636,13 +2636,16 @@
     ],
     "model_paired_saving_cycles_each": 6,
     "archived_native_vice_calls": 256,
-    "current_main_native_vice_pass": false,
+    "current_main_native_vice_pass": true,
     "selected_by_production_builder": false,
     "issue39_complete": false
   },
   "issue39_v1v5_umul8_directout_production_2026_10_13": {
-    "status": "SOURCE_STAGED_CURRENT_NATIVE_256_PASS_PR_CI_PENDING",
+    "status": "MERGED_MAIN_ALL_POSTMERGE_CI_PASS",
     "date": "2026-10-13",
+    "merged_pr": 109,
+    "merge_sha": "f754cc87d0ba3518377a4e2d19a9e8fc6ac0d75a",
+    "postmerge_workflow_runs": {"validate_library": 38463930923, "comparable_unsigned": 38463930890, "turbo32": 38463930880},
     "profiles_modified": [
       "v1_balanced",
       "v5_hybrid_lowzp"
