@@ -1,0 +1,39 @@
+name: Issue39 V1/V5 UMUL24 private tailcall release staging
+on:
+  push:
+    branches: [issue39-v1v5-umul24-tailcall-screen]
+    paths:
+      - tools/stage_issue39_v1v5_umul24_tailcall_release.py
+      - .github/workflows/issue39-v1v5-umul24-tailcall-stage.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  protected-source-stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v1v5-umul24-tailcall-screen
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build V1/V5 private-core tailcall and complete five-profile validation
+        run: python3 tools/stage_issue39_v1v5_umul24_tailcall_release.py
+      - name: Commit staged release only after complete validation
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: stage V1 V5 UMUL24 private tailcall source release'
+          git push origin HEAD:issue39-v1v5-umul24-tailcall-screen
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v1v5-umul24-tailcall-release-stage
+          path: validation/review/ISSUE39_V1V5_UMUL24_TAILCALL_RELEASE_2026-10-13.json
