@@ -1,0 +1,48 @@
+name: Issue39 UMUL32 READY lifetime audit publication reseal
+on:
+  push:
+    branches: [issue39-umul32-ready-lifetime-audit]
+    paths:
+      - .github/workflows/issue39-umul32-ready-lifetime-seal.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  seal-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-umul32-ready-lifetime-audit
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reproduce public READY lifetime witness cases
+        run: python3 tools/issue39_umul32_ready_lifetime_audit.py --output /tmp/issue39-umul32-ready-lifetime.json
+      - name: Seal complete repository checksum and package inventory
+        run: |
+          python3 - <<'PY'
+          import sys, subprocess
+          sys.path.insert(0,'tools')
+          from stage_issue39_v1_3216_ool_release import reseal
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable, 'tools/package_audit.py'], check=True)
+          PY
+      - name: Commit ledger only if all gates pass
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json
+          git diff --cached --quiet || git commit -m 'issue39: reseal UMUL32 READY mixed-call audit evidence'
+          git push origin HEAD:issue39-umul32-ready-lifetime-audit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-umul32-ready-pointer-lifetime-sealed
+          path: /tmp/issue39-umul32-ready-lifetime.json
