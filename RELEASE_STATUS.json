@@ -1,4 +1,5 @@
 {
+  "issue39_umul32_ready_pointer_lifetime_2026_10_13": {"status":"PASS_RESEARCH_REJECT_UNQUALIFIED_READY_BYPASS","evidence":"validation/review/ISSUE39_UMUL32_READY_POINTER_LIFETIME.json","document":"docs/ISSUE39_UMUL32_READY_POINTER_LIFETIME_2026-10-13.md","all_normal_calls_valid":true,"normal_calls_per_profile":1456,"ready_invalid_per_profile":312,"invalidators":["MATH_UMUL24","MATH_SMUL16","MATH_SMUL24"],"zero_page_growth":0,"resident_prgs_changed":false,"private_optisearch_published":false,"issue39_complete":false},
   "acme": {
     "historical_assembler": "This is ACME, release 0.97 (\"Zem\"), 28 June 2020",
     "historical_checks": 8,
