@@ -1,0 +1,29 @@
+name: Issue39 V2 UMUL8 in-place source and full public ABI
+on:
+  push:
+    branches: [issue39-umul8-direct-output-public-screen]
+    paths:
+      - relocatable_source/v2_pareto_fast/umul8_directout_trial.inc
+      - relocatable_source/v2_pareto_fast/math_relocatable.asm
+      - tools/screen_issue39_umul8_v2_inplace_source.py
+      - .github/workflows/issue39-umul8-v2-inplace-source.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reference-alternate-source-and-exhaust:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - name: Rebuild both maps, verify source-owned kernel, exhaust 8x8 and validate all public APIs
+        run: python3 tools/screen_issue39_umul8_v2_inplace_source.py --out /tmp/ISSUE39_V2_UMUL8_INPLACE_SOURCE_SCREEN.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v2-umul8-source-directout-proof
+          path: /tmp/ISSUE39_V2_UMUL8_INPLACE_SOURCE_SCREEN.json
