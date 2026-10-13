@@ -83,7 +83,7 @@ def run():
     original = SOURCE.read_text()
     assert original.count(ORIGINAL) == 1, "missing or duplicate UMUL24 no-carry tail"
     modified = original.replace(ORIGINAL, CANDIDATE)
-    assert len(modified) == len(original) + 8, "trial changes must be opcode-size neutral"
+    assert len(modified) == len(original), "trial text is length-neutral"
     pairs = corpus()
     assert len(pairs) == 10324
     rng = random.Random(0xC6392402)
@@ -131,7 +131,7 @@ def run():
                 diffs = [i for i, (a, b) in enumerate(zip(before, after)) if a != b]
                 assert len(diffs) == 2 and diffs[1] == diffs[0] + 1, (p, mode, diffs)
                 i = diffs[0]
-                assert before[i:i+2] == b"\\x18\\x60" and after[i:i+2] == b"\\x60\\xea", (p, mode, "unexpected instruction edit")
+                assert before[i:i+2] == bytes((0x18, 0x60)) and after[i:i+2] == bytes((0x60, 0xea)), (p, mode, "unexpected instruction edit")
                 old_cpu, old_api, old_io, _, _ = buildcheck.load(p, root / "old" / mode)
                 new_cpu, new_api, new_io, _, _ = buildcheck.load(p, root / "new" / mode)
                 assert old_api == new_api and old_io == new_io
