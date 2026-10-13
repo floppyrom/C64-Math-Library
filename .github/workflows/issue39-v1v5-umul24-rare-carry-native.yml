@@ -1,0 +1,39 @@
+name: Issue39 V1-V5 UMUL24 rare-carry CLC native x64sc research
+on:
+  push:
+    branches: [issue39-v1v5-umul24-rare-carry-clc-research]
+    paths:
+      - tools/native_issue39_v1v5_umul24_rare_carry_clc.py
+      - .github/workflows/issue39-v1v5-umul24-rare-carry-native.yml
+  pull_request:
+    paths:
+      - tools/native_issue39_v1v5_umul24_rare_carry_clc.py
+      - .github/workflows/issue39-v1v5-umul24-rare-carry-native.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-6510-paired:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install verified native x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Execute real 6510 old/new source-built UMUL24 and SMUL24 on V1/V5
+        run: python3 tools/native_issue39_v1v5_umul24_rare_carry_clc.py --output /tmp/issue39-v1v5-native-carry.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v1v5-umul24-rare-carry-native
+          path: /tmp/issue39-v1v5-native-carry.json
