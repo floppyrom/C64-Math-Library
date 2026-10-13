@@ -14,7 +14,19 @@ PRG=ROOT/'v1_balanced/resident/math_v1_balanced_game_math.prg'
 SOURCE=ROOT/'tools/candidates/issue39_v1_24by8_shared_subtraction.asm'
 CURRENT_SHA='cae2afdf0271da338d110f2104a8530374214ef915d88a803c508bce9679bb4f'
 RELEASE_SHA='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0'
-live=restore_pr78(PRG.read_bytes())
+# The archived PR78 comparison is pinned to its historical pre-rare-carry
+# resident. Current published UMUL24 changes are independently tested by
+# native/public-ABI gates; they must not invalidate an old DIV24 proof.
+installed=PRG.read_bytes()
+if hashlib.sha256(installed).hexdigest()=='f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7':
+    import subprocess
+    installed=subprocess.check_output([
+        'git','show',
+        'fa5457729d764ffc9c24f8cb5bde2e5790eb79fe:v1_balanced/resident/math_v1_balanced_game_math.prg'
+    ],cwd=ROOT)
+    assert hashlib.sha256(installed).hexdigest()==(
+        '6057085c39e6fbe777ceea09e78cf4bcd05cc1606dffcbc5ee8e3ae2d32e56e0')
+live=restore_pr78(installed)
 nowsha=hashlib.sha256(live).hexdigest()
 assert nowsha in (CURRENT_SHA,RELEASE_SHA),('unknown V1 source baseline',nowsha)
 load=int.from_bytes(live[:2],'little'); assert load==0x1000
