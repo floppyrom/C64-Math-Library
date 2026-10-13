@@ -1,0 +1,186 @@
+{
+  "baseline_main_span": [
+    "0x4e00",
+    "0x50de"
+  ],
+  "baseline_profile": "v2_pareto_fast",
+  "baseline_resident_sha256": "c3c0898bc61a9836e7f58d1b51088ccc644613bf68d9e4199aa1243c4f164c84",
+  "d8_island_start": "0x5272",
+  "hardware_bus_timing_measured": false,
+  "native_vice_calls": 0,
+  "needs_native_source_and_alt_map_for_any_promotion": true,
+  "no_extra_zp": true,
+  "nonregressing_offsets": [],
+  "pairwise_6502_public_calls": 0,
+  "recommended_promotion": false,
+  "rejected_candidate_count": 14,
+  "source": "tools/screen_issue39_v2_3216_pagephase.py",
+  "status": "PASS_RESEARCH_ONLY_NO_DEFAULT_CHANGE",
+  "validated_candidate_count": 0,
+  "variants": {
+    "+0": {
+      "main_start": "0x4e00",
+      "operations": {
+        "MATH_UDIV32_16": {
+          "numerator_16bit": {
+            "cases": 512,
+            "input_sha256": "1f5d03e119d9cf9cc1c0480bec9358c1c6c2f1bbe365f50e3799aa42c8103faf",
+            "mean_delta": 0.0
+          },
+          "numerator_24bit": {
+            "cases": 512,
+            "input_sha256": "0950f5eb0adcf80094e88ec1bd5ae88d41c8655f3e8a3f24547230e98ac55a06",
+            "mean_delta": 0.0
+          },
+          "official": {
+            "cases": 2729,
+            "input_sha256": "73c988fccccb346fe56d1333ff30a79321823dcba15f8cf5d05d4a01a1094db2",
+            "mean_delta": 0.0
+          },
+          "power_of_two_divisors": {
+            "cases": 512,
+            "input_sha256": "2b1610adddb774842f40954adf88556b95b8dd54e787eae05ff82cf686cade8c",
+            "mean_delta": 0.0
+          },
+          "quotient_zero_or_one": {
+            "cases": 512,
+            "input_sha256": "996a567778bde00c0d0b7539adb2ce80b029460fd900bbec7f767e99aae49dbb",
+            "mean_delta": 0.0
+          },
+          "small_divisors": {
+            "cases": 512,
+            "input_sha256": "d35e5c62f194f6a1b8da91baa1f706dd2777313fec2bc1e9fdf9b5160e04fccf",
+            "mean_delta": 0.0
+          },
+          "uniform_32x16": {
+            "cases": 512,
+            "input_sha256": "f000839d2ba2512a554cb12b9834b1bd6cb5479599894c0901dd2b3b95a717b8",
+            "mean_delta": 0.0
+          }
+        },
+        "MATH_UMOD32_16": {
+          "numerator_16bit": {
+            "cases": 512,
+            "input_sha256": "1f5d03e119d9cf9cc1c0480bec9358c1c6c2f1bbe365f50e3799aa42c8103faf",
+            "mean_delta": 0.0
+          },
+          "numerator_24bit": {
+            "cases": 512,
+            "input_sha256": "0950f5eb0adcf80094e88ec1bd5ae88d41c8655f3e8a3f24547230e98ac55a06",
+            "mean_delta": 0.0
+          },
+          "official": {
+            "cases": 1705,
+            "input_sha256": "02d5a932f857bd65200b62d8ffbeb020c84fece5766f7ab512623beac278a926",
+            "mean_delta": 0.0
+          },
+          "power_of_two_divisors": {
+            "cases": 512,
+            "input_sha256": "2b1610adddb774842f40954adf88556b95b8dd54e787eae05ff82cf686cade8c",
+            "mean_delta": 0.0
+          },
+          "quotient_zero_or_one": {
+            "cases": 512,
+            "input_sha256": "996a567778bde00c0d0b7539adb2ce80b029460fd900bbec7f767e99aae49dbb",
+            "mean_delta": 0.0
+          },
+          "small_divisors": {
+            "cases": 512,
+            "input_sha256": "d35e5c62f194f6a1b8da91baa1f706dd2777313fec2bc1e9fdf9b5160e04fccf",
+            "mean_delta": 0.0
+          },
+          "uniform_32x16": {
+            "cases": 512,
+            "input_sha256": "f000839d2ba2512a554cb12b9834b1bd6cb5479599894c0901dd2b3b95a717b8",
+            "mean_delta": 0.0
+          }
+        }
+      },
+      "status": "BASELINE"
+    },
+    "+12": {
+      "main_start": "0x4e0c",
+      "offset_bytes": 12,
+      "reason": "('no empty placement', '0x50de')",
+      "status": "REJECTED"
+    },
+    "+16": {
+      "main_start": "0x4e10",
+      "offset_bytes": 16,
+      "reason": "('no empty placement', '0x50de')",
+      "status": "REJECTED"
+    },
+    "+24": {
+      "main_start": "0x4e18",
+      "offset_bytes": 24,
+      "reason": "('no empty placement', '0x50de')",
+      "status": "REJECTED"
+    },
+    "+32": {
+      "main_start": "0x4e20",
+      "offset_bytes": 32,
+      "reason": "('no empty placement', '0x50de')",
+      "status": "REJECTED"
+    },
+    "+4": {
+      "main_start": "0x4e04",
+      "offset_bytes": 4,
+      "reason": "('no empty placement', '0x50de')",
+      "status": "REJECTED"
+    },
+    "+48": {
+      "main_start": "0x4e30",
+      "offset_bytes": 48,
+      "reason": "('no empty placement', '0x50de')",
+      "status": "REJECTED"
+    },
+    "+8": {
+      "main_start": "0x4e08",
+      "offset_bytes": 8,
+      "reason": "('no empty placement', '0x50de')",
+      "status": "REJECTED"
+    },
+    "-12": {
+      "main_start": "0x4df4",
+      "offset_bytes": -12,
+      "reason": "('no empty placement', '0x4df4')",
+      "status": "REJECTED"
+    },
+    "-16": {
+      "main_start": "0x4df0",
+      "offset_bytes": -16,
+      "reason": "('no empty placement', '0x4df0')",
+      "status": "REJECTED"
+    },
+    "-24": {
+      "main_start": "0x4de8",
+      "offset_bytes": -24,
+      "reason": "('no empty placement', '0x4de8')",
+      "status": "REJECTED"
+    },
+    "-32": {
+      "main_start": "0x4de0",
+      "offset_bytes": -32,
+      "reason": "('no empty placement', '0x4de0')",
+      "status": "REJECTED"
+    },
+    "-4": {
+      "main_start": "0x4dfc",
+      "offset_bytes": -4,
+      "reason": "('no empty placement', '0x4dfc')",
+      "status": "REJECTED"
+    },
+    "-48": {
+      "main_start": "0x4dd0",
+      "offset_bytes": -48,
+      "reason": "('no empty placement', '0x4dd0')",
+      "status": "REJECTED"
+    },
+    "-8": {
+      "main_start": "0x4df8",
+      "offset_bytes": -8,
+      "reason": "('no empty placement', '0x4df8')",
+      "status": "REJECTED"
+    }
+  }
+}

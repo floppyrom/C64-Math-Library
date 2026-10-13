@@ -1,3 +1,7 @@
+2026-10-13 ISSUE39 V2 UDIV32/16 PAGE PHASE SOURCE OWNERSHIP AUDIT
+- Bounded source-assembled V2–V5 shared 32/16 kernel page-phase screen: 14 isolated +/-4..48-byte origin shifts rejected because neighbouring source-owned bytes were occupied. No candidate qualified for timing; this is a geometry no-gain only, not a global optimality claim.
+- No PRG, public ABI, ZP, stack, runtime cycles or profile defaults changed. Full exact source baseline and rejected origins recorded in docs/ISSUE39_V2_3216_PAGE_PHASE_FEASIBILITY_2026-10-13.md and validation/review/ISSUE39_V2_3216_PAGE_PHASE_RESEARCH.json. Issue #39 remains OPEN.
+
 2026-10-13 ISSUE39 V1 32/16 TRANSITIVE 32/32 PERFORMANCE PUBLICATION
 - Source V1 32/16 hot-path relocation also accelerates 32/32 fallback for a bounded class. Under exact current same-input corpus, V1 UDIV32_32 mean 335.825577 -> 335.750824 and UMOD32_32 399.676833 -> 399.557185. V5 donor remains unchanged. Updated PERFORMANCE.md, V5 HYBRID_PERFORMANCE.csv and SHA-pinned bound checks, no production binary change. Keep issue #39 OPEN.
 

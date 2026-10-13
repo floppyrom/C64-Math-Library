@@ -1,0 +1,40 @@
+name: Issue39 V2 32-16 page-phase bounded publication
+on:
+  push:
+    branches: [issue39-v2-3216-pagephase-research]
+    paths:
+      - tools/finalize_issue39_v2_3216_pagephase.py
+      - .github/workflows/issue39-v2-3216-pagephase-seal.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  bound-and-seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-v2-3216-pagephase-research
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Strict V2 page-phase source-ownership audit and package reseal
+        run: |
+          python3 tools/finalize_issue39_v2_3216_pagephase.py
+      - name: Commit generated documentation and checksums
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: publish bounded V2 32-16 phase layout rejection'
+          git push origin HEAD:issue39-v2-3216-pagephase-research
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v2-3216-page-phase-sealed
+          path: validation/review/ISSUE39_V2_3216_PAGE_PHASE_RESEARCH.json

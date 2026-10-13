@@ -1,0 +1,30 @@
+name: Issue39 V2 32/16 page-phase source research
+on:
+  push:
+    branches: [issue39-v2-3216-pagephase-research]
+    paths:
+      - tools/screen_issue39_v2_3216_pagephase.py
+      - .github/workflows/issue39-v2-3216-pagephase.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-public-page-phase:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source assembled V2 32/16 branch-page sweep with exact paired ABI
+        run: |
+          python3 tools/screen_issue39_v2_3216_pagephase.py --out /tmp/ISSUE39_V2_3216_PAGE_PHASE_RESEARCH.json
+      - name: Keep raw research evidence separate from release status
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-v2-3216-page-phase-research
+          path: /tmp/ISSUE39_V2_3216_PAGE_PHASE_RESEARCH.json
