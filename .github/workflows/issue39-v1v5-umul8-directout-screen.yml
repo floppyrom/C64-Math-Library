@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - issue39-v1v5-umul8-directout-research-screen
+permissions:
+  contents: write
 jobs:
   screen:
     runs-on: ubuntu-latest
@@ -73,3 +75,13 @@ jobs:
             build_umul8_after/**/math_v5_hybrid_lowzp_game_math.prg
             build_umul8_after/**/source_build_manifest.json
           if-no-files-found: error
+      - name: Stage V1/V5 UMUL8 production on draft PR branch
+        if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+        run: |
+          python3 tools/stage_issue39_v1v5_umul8_directout_release.py
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --stat
+          git commit -m "Issue39: stage current-source V1/V5 UMUL8 production binaries and evidence"
+          git push origin HEAD:issue39-v1v5-umul8-directout-research-screen
