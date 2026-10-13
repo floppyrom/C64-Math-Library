@@ -2,12 +2,19 @@ name: Issue39 native VICE V1 32-16 out-of-line zero screen
 on:
   push:
     branches: [issue39-v1-3216-rare-zero-outofline-screen]
+    paths:
+      - tools/screen_issue39_v1_3216_outofline_zero.py
+      - tools/native_issue39_v1_3216_outofline_zero.py
+      - .github/workflows/issue39-v1-3216-rare-zero-native.yml
   pull_request:
     paths:
       - 'tools/native_issue39_v1_3216_outofline_zero.py'
       - 'tools/screen_issue39_v1_3216_outofline_zero.py'
       - '.github/workflows/issue39-v1-3216-rare-zero-native.yml'
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   native-v1-full-residents:
@@ -17,6 +24,10 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: issue39-v1-3216-rare-zero-outofline-screen
+          fetch-depth: 0
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -30,6 +41,32 @@ jobs:
       - name: Full resident native V1 old/new public 32/16 checks
         run: |
           python3 tools/native_issue39_v1_3216_outofline_zero.py --out /tmp/issue39_v1_3216_native_vice.json
+      - name: Reseal research-only documentation, checksums and package audit
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, subprocess
+          paths = sorted(p.decode('utf-8') for p in
+              subprocess.check_output(['git','ls-files','-z']).split(b'\\0') if p)
+          assert 'SHA256SUMS.txt' in paths
+          def seal():
+              rows=[]
+              for item in paths:
+                  if item=='SHA256SUMS.txt': continue
+                  b=Path(item).read_bytes()
+                  rows.append(hashlib.sha256(b).hexdigest()+'  '+item)
+              Path('SHA256SUMS.txt').write_text('\\n'.join(rows)+'\\n')
+          seal()
+          subprocess.run(['python3','tools/package_audit.py'],check=True)
+          seal()
+          subprocess.run(['python3','tools/package_audit.py'],check=True)
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal V1 32/16 research report and package audit'
+          git push origin HEAD:issue39-v1-3216-rare-zero-outofline-screen
       - uses: actions/upload-artifact@v4
         if: always()
         with:
