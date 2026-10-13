@@ -1,0 +1,47 @@
+{
+  "additional_zero_page_bytes": 0,
+  "expected_exact_domain": 65536,
+  "native_vice_calls": 0,
+  "profiles": {
+    "v1_balanced": {
+      "cases": 65536,
+      "errors": 0,
+      "max_cycles": 471,
+      "mean_cycles": 57.878997802734375,
+      "min_cycles": 42,
+      "profile": "v1_balanced",
+      "resident_sha256": "41d744c2aaf06a5d40cfece1c16255576950a8e6e3328d5fe4196c0ac753171e"
+    },
+    "v2_pareto_fast": {
+      "cases": 65536,
+      "errors": 0,
+      "max_cycles": 471,
+      "mean_cycles": 58.234466552734375,
+      "min_cycles": 42,
+      "profile": "v2_pareto_fast",
+      "resident_sha256": "8b52fe47c4d6aff5331a5d3a4aca73e34d84696a5aa83dba14c48f62a4ee9d92"
+    },
+    "v3_reu_512k": {
+      "cases": 65536,
+      "errors": 0,
+      "max_cycles": 471,
+      "mean_cycles": 58.277435302734375,
+      "min_cycles": 42,
+      "profile": "v3_reu_512k",
+      "resident_sha256": "52565df27dc892be9da8e12b8ac6267179debbd3d521331d7cd3d0a49ced2755"
+    },
+    "v5_hybrid_lowzp": {
+      "cases": 65536,
+      "errors": 0,
+      "max_cycles": 471,
+      "mean_cycles": 57.878997802734375,
+      "min_cycles": 42,
+      "profile": "v5_hybrid_lowzp",
+      "resident_sha256": "b27e0885c7241dd7bdc3b2e25be6b2c616685cb426436a3c2b8260eff7a21ebb"
+    }
+  },
+  "resident_size_growth": 0,
+  "source_owned_code_plus_seed_bytes": 294,
+  "status": "PASS_SOURCE_STAGED_NATIVE_VICE_PENDING",
+  "unchanged_V4": true
+}

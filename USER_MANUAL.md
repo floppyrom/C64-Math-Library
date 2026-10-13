@@ -1922,3 +1922,5 @@ For binary arithmetic, the canonical source-facing name records operand signedne
 - Source-integrated general-purpose UDIV24 live-X optimization: docs/ISSUE39_U24_TXA_SOURCE_INTEGRATION_2026-10-13.md. Native VICE full-resident 960-call correctness verified; family campaign open.
 
 - Source-staged V1 32/16 cold zero-handler release: docs/ISSUE39_V1_3216_OOL_ZERO_PRODUCTION_2026-10-13.md (384 native VICE full-resident calls passed; independent PR/main CI pending).
+
+- Root optimization release-stage evidence: docs/ISSUE39_INTEGER_ROOTS_SOURCE_RELEASE_2026-10-13.md (native VICE and independent PR/main CI pending).

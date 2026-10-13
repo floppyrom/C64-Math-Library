@@ -4422,138 +4422,26 @@ LC7D3:
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    lda #$00
-    sta ZP_MAIN+$64
-    lda ZP_MAIN+$64
-    ora #$80
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC856
-    bne LC858
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC856
-    beq LC856
-    jmp REG_GAME+$0758
-LC856:
-    stx ZP_MAIN+$64
-LC858:
-    lda ZP_MAIN+$64
-    ora #$40
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC874
-    bne LC876
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC874
-    beq LC874
-    jmp REG_GAME+$0776
-LC874:
-    stx ZP_MAIN+$64
-LC876:
-    lda ZP_MAIN+$64
-    ora #$20
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC892
-    bne LC894
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC892
-    beq LC892
-    jmp REG_GAME+$0794
-LC892:
-    stx ZP_MAIN+$64
-LC894:
-    lda ZP_MAIN+$64
-    ora #$10
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC8B0
-    bne LC8B2
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC8B0
-    beq LC8B0
-    jmp REG_GAME+$07B2
-LC8B0:
-    stx ZP_MAIN+$64
-LC8B2:
-    lda ZP_MAIN+$64
-    ora #$08
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC8CE
-    bne LC8D0
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC8CE
-    beq LC8CE
-    jmp REG_GAME+$07D0
-LC8CE:
-    stx ZP_MAIN+$64
-LC8D0:
-    lda ZP_MAIN+$64
-    ora #$04
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC8EC
-    bne LC8EE
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC8EC
-    beq LC8EC
-    jmp REG_GAME+$07EE
-LC8EC:
-    stx ZP_MAIN+$64
-LC8EE:
-    lda ZP_MAIN+$64
-    ora #$02
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC90A
-    bne LC90C
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC90A
-    beq LC90A
-    jmp REG_GAME+$080C
-LC90A:
-    stx ZP_MAIN+$64
-LC90C:
-    lda ZP_MAIN+$64
-    ora #$01
-    tax
-    lda REG_TABLE+$3900,x
-    cmp MATH_IO+$11
-    bcc LC928
-    bne LC92A
-    lda REG_TABLE+$3800,x
-    cmp MATH_IO+$10
-    bcc LC928
-    beq LC928
-    jmp REG_GAME+$082A
-LC928:
-    stx ZP_MAIN+$64
-LC92A:
-    lda ZP_MAIN+$64
-    sta MATH_IO+$08
-    lda #$00
-    sta MATH_IO+$09
-    clc
-    rts
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    !byte $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $AE
+    !byte $11, $C0, $BC, $5C, $C8, $AD, $11, $C0, $D9, $00, $99, $90, $14, $D0, $08, $AD
+    !byte $10, $C0, $D9, $00, $98, $90, $0A, $8C, $08, $C0, $A9, $00, $8D, $09, $C0, $18
+    !byte $60, $88, $4C, $3C, $C8, $0F, $16, $1B, $1F, $23, $27, $2A, $2D, $2F, $32, $35
+    !byte $37, $39, $3B, $3D, $3F, $41, $43, $45, $47, $49, $4B, $4C, $4E, $4F, $51, $53
+    !byte $54, $56, $57, $59, $5A, $5B, $5D, $5E, $5F, $61, $62, $63, $65, $66, $67, $68
+    !byte $6A, $6B, $6C, $6D, $6E, $6F, $71, $72, $73, $74, $75, $76, $77, $78, $79, $7A
+    !byte $7B, $7C, $7D, $7E, $7F, $80, $81, $82, $83, $84, $85, $86, $87, $88, $89, $8A
+    !byte $8B, $8C, $8D, $8E, $8F, $8F, $90, $91, $92, $93, $94, $95, $96, $96, $97, $98
+    !byte $99, $9A, $9B, $9B, $9C, $9D, $9E, $9F, $9F, $A0, $A1, $A2, $A3, $A3, $A4, $A5
+    !byte $A6, $A7, $A7, $A8, $A9, $AA, $AA, $AB, $AC, $AD, $AD, $AE, $AF, $AF, $B0, $B1
+    !byte $B2, $B2, $B3, $B4, $B5, $B5, $B6, $B7, $B7, $B8, $B9, $B9, $BA, $BB, $BB, $BC
+    !byte $BD, $BD, $BE, $BF, $BF, $C0, $C1, $C1, $C2, $C3, $C3, $C4, $C5, $C5, $C6, $C7
+    !byte $C7, $C8, $C9, $C9, $CA, $CB, $CB, $CC, $CC, $CD, $CE, $CE, $CF, $CF, $D0, $D1
+    !byte $D1, $D2, $D3, $D3, $D4, $D4, $D5, $D6, $D6, $D7, $D7, $D8, $D9, $D9, $DA, $DA
+    !byte $DB, $DB, $DC, $DD, $DD, $DE, $DE, $DF, $DF, $E0, $E1, $E1, $E2, $E2, $E3, $E3
+    !byte $E4, $E5, $E5, $E6, $E6, $E7, $E7, $E8, $E8, $E9, $EA, $EA, $EB, $EB, $EC, $EC
+    !byte $ED, $ED, $EE, $EE, $EF, $EF, $F0, $F1, $F1, $F2, $F2, $F3, $F3, $F4, $F4, $F5
+    !byte $F5, $F6, $F6, $F7, $F7, $F8, $F8, $F9, $F9, $FA, $FA, $FB, $FB, $FC, $FC, $FD
+    !byte $FD, $FE, $FE, $FF, $FF, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     ldy #$04
 LC968:
     txa
@@ -4807,6 +4695,9 @@ ZCE4:
 !source "../division/remainder_fast_v2.inc"
 ; END DIVISION REFRESH 2026-09-20
 
+; Issue39 exact ISQRT16 code+seed replaces retired eight-trial island.
+!source "isqrt16_seed_square_trial.inc"
+
 ; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,
 ; code islands and object state (final ownership of those bytes).
 !source "../../v2_pareto_fast/resident/movement/native/seek_dda.asm"
@@ -4823,6 +4714,3 @@ ZCE4:
 
 ; V2 reciprocal constant-numerator fallback.
 !source "../game_math/recip16_direct_fast_v2.inc"
-
-; Research-only ISQRT16 code+seed built inside the retired ISQRT16 island.
-!source "isqrt16_seed_square_trial.inc"
