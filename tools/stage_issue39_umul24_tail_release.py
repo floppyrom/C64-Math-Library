@@ -26,12 +26,22 @@ def maps():
 def csvupdate(p,row):
  path=R/p/"PUBLIC_PERFORMANCE.csv"
  with path.open(newline="") as f: data=list(csv.DictReader(f))
- hit=[v for v in data if v["operation"]=="math_umul24"]
- assert len(hit)==1
- hit[0].update(avg_cycles=format(row["mean_cycles"],".6f"),
-               min_cycles=str(row["min_cycles"]),max_cycles=str(row["max_cycles"]),
-               cases=str(row["cases"]),
-               evidence="2026-10-13 source-built 24-bit fast public return")
+ hit=[v for v in data if v["operation"] in ("math_umul24","umul24")]
+ assert len(hit)==1,(p,hit)
+ if p=="v2_pareto_fast":
+  hit[0].update(avg_cycles=format(row["mean_cycles"],".6f"),
+                min_cycles=str(row["min_cycles"]),max_cycles=str(row["max_cycles"]),
+                cases=str(row["cases"]),
+                evidence="2026-10-13 source-built 24-bit fast public return")
+ elif p=="v3_reu_512k":
+  hit[0].update(v2_pareto_fast_cycles=format(row["mean_cycles"],".6f"),
+                v3_reu_default_cycles=format(row["mean_cycles"],".6f"),
+                v3_evidence="2026-10-13 source-built UMUL24 fast return")
+ elif p=="v4_reu_16m":
+  hit[0].update(v3_reu_512k_cycles=format(row["mean_cycles"],".6f"),
+                v4_reu_16m_cycles=format(row["mean_cycles"],".6f"),
+                v4_evidence="2026-10-13 source-built UMUL24 fast return")
+ else: raise AssertionError(("unexpected UMUL24 profile",p))
  with path.open("w",newline="") as f:
   w=csv.DictWriter(f,fieldnames=list(data[0]),lineterminator="\n")
   w.writeheader();w.writerows(data)
