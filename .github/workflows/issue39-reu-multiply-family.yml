@@ -1,0 +1,46 @@
+name: Issue39 permanent REU Turbo16 Turbo32 QS16 family public ABI qualification
+on:
+  push:
+    branches: [main]
+    paths:
+      - tools/issue39_reu_multiply_family_certification.py
+      - tools/issue39_reu_multiply_family_audit.py
+      - relocatable_source/v4_reu_16m/v4_qs16_relocatable.asm
+      - relocatable_source/v4_reu_16m/math_relocatable.asm
+      - validation/review/ISSUE39_REU_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json
+      - RELEASE_STATUS.json
+      - .github/workflows/issue39-reu-multiply-family.yml
+  pull_request:
+    paths:
+      - tools/issue39_reu_multiply_family_certification.py
+      - tools/issue39_reu_multiply_family_audit.py
+      - relocatable_source/v4_reu_16m/v4_qs16_relocatable.asm
+      - relocatable_source/v4_reu_16m/math_relocatable.asm
+      - validation/review/ISSUE39_REU_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json
+      - RELEASE_STATUS.json
+      - .github/workflows/issue39-reu-multiply-family.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  qualify-reu-public-family:
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify permanent resident/REU 120-native-call and 57759-model-call certification
+        run: python3 tools/issue39_reu_multiply_family_certification.py
+      - name: Rebuild and recheck 3 REU modes on all source relocation maps
+        run: python3 tools/issue39_reu_multiply_family_audit.py --all-maps --output /tmp/issue39-reu-multiply-current.json
+      - name: Verify distributed release is checksum-clean
+        run: python3 tools/package_audit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-reu-family-current-public-abi
+          path: /tmp/issue39-reu-multiply-current.json
