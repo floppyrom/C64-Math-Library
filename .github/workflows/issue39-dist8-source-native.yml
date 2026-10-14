@@ -5,6 +5,7 @@ on:
     paths:
       - .github/workflows/issue39-dist8-source-native.yml
       - tools/native_issue39_dist8_source.py
+      - tools/source_relocation.py
   workflow_dispatch:
 permissions:
   contents: write
@@ -23,8 +24,9 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Assemble source-backed reference maps and V5 hybrid
+      - name: Regenerate source from unchanged shipped images and assemble the optimized candidate
         run: |
+          python3 tools/generate_sources.py
           python3 tools/assemble_sources.py --profile all --config-kind reference
           python3 tools/build_hybrid.py --config-kind reference
       - name: Install SHA-pinned VICE headless
