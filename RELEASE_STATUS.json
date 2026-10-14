@@ -2808,8 +2808,8 @@
     "separate_campaign": "REU Turbo16/Turbo32/QS16 multiply and remaining Issue39 families"
   },
   "issue39_signed_multiply_family_2026_10_14": {
-    "status": "PASS_NATIVE_VICE_PR_MAIN_CI_PENDING",
-    "family_complete": false,
+    "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
+    "family_complete": true,
     "issue39_remains_open": true,
     "profiles": [
       "v1_balanced",
@@ -2854,6 +2854,11 @@
       "Trig",
       "Distance",
       "Seek"
-    ]
+    ],
+    "release_main_sha": "3f4da1ab061ad56f3745e3742a45b838321cf410",
+    "postmerge_full_ci_run": 38522745848,
+    "postmerge_comparable_ci_run": 38522745889,
+    "postmerge_signed_family_ci_run": 38522745760,
+    "premerge_native_ci_run": 38521685765
   }
 }

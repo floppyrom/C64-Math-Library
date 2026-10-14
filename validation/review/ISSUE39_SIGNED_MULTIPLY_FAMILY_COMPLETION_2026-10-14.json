@@ -1,0 +1,38 @@
+{
+  "baseline_profile_sha256": {
+    "v1_balanced": "f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7",
+    "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
+    "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
+    "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
+    "v5_hybrid_lowzp": "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90"
+  },
+  "full_signed_8bit_cases_all_5_profiles": 327680,
+  "issue39_complete": false,
+  "legacy_signed_model_calls": 264999,
+  "main_comparable_unsigned_run": 38522745889,
+  "main_full_library_run": 38522745848,
+  "main_sha": "3f4da1ab061ad56f3745e3742a45b838321cf410",
+  "main_signed_family_gate_run": 38522745760,
+  "native_cycle_timing_measured": false,
+  "native_public_calls": 600,
+  "native_ready_setup_calls": 120,
+  "pending_campaign": [
+    "Fixed multiply outputs",
+    "REU Turbo/QS multiply modes",
+    "Trig/angle",
+    "Distance/normalization",
+    "Seek movement"
+  ],
+  "premerge_native_vice_run": 38521685765,
+  "private_optisearch_source_published": false,
+  "production_binaries_changed": false,
+  "ready_lowzp_25_cycles_faster_per_pair": true,
+  "ready_lowzp_360_ordinary_valid_180_unqualified_wrong_per_profile": true,
+  "ready_other_3_cycles_slower_per_pair": true,
+  "signed16_pairs_per_profile": 4457,
+  "signed24_pairs_per_profile": 2409,
+  "signed32_ready_paired_pairs_per_profile": 2409,
+  "signed_family_complete": true,
+  "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
+  "unsigned_family_unchanged": true
+}

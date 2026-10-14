@@ -1,0 +1,47 @@
+name: Issue39 signed multiply family final postmerge release seal
+on:
+  push:
+    branches: [issue39-signed-multiply-final-20261014]
+    paths:
+      - tools/finalize_issue39_signed_multiply_family.py
+      - .github/workflows/issue39-signed-multiply-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  certify-completed-signed-family:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-signed-multiply-final-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Seal signed multiply completion against all green postmerge main checks
+        run: |
+          python3 tools/finalize_issue39_signed_multiply_family.py \
+            --main-sha 3f4da1ab061ad56f3745e3742a45b838321cf410 \
+            --full-ci 38522745848 \
+            --comparable-ci 38522745889 \
+            --family-ci 38522745760 \
+            --native-ci 38521685765
+      - name: Commit final publication manifest and certificates
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: publish fully certified signed multiply completion'
+          git push origin HEAD:issue39-signed-multiply-final-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-signed-multiply-completion-certificate
+          path: |
+            RELEASE_STATUS.json
+            validation/review/ISSUE39_SIGNED_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json
