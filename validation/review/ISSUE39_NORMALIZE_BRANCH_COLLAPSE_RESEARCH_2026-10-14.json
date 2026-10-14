@@ -1,0 +1,135 @@
+{
+  "REU_images_modified": false,
+  "candidate": "eight two-branch index paths reduced to one BEQ per stock implementation",
+  "native_vice_candidate_baseline_calls": 320,
+  "new_normal_zp": 0,
+  "new_public_model_calls": 1073960,
+  "precision_cells": 723073,
+  "private_optisearch_source_published": false,
+  "profiles": {
+    "v1_balanced": {
+      "alternate": {
+        "candidate_mean_cycles": 159.12879436850534,
+        "code_bytes": 865,
+        "new_max_cycles": 301,
+        "new_min_cycles": 84,
+        "old_max_cycles": 302,
+        "old_mean_cycles": 160.1500800774703,
+        "old_min_cycles": 84,
+        "output_sha256": "f54d6f80e391906a9374cbf6a5a5f112da4b4da0b489f423a7642647fbf1b745",
+        "saved_mean_cycles": 1.0212857089649674
+      },
+      "reference": {
+        "candidate_mean_cycles": 159.12879436850534,
+        "code_bytes": 865,
+        "new_max_cycles": 301,
+        "new_min_cycles": 84,
+        "old_max_cycles": 302,
+        "old_mean_cycles": 160.1500800774703,
+        "old_min_cycles": 84,
+        "output_sha256": "f54d6f80e391906a9374cbf6a5a5f112da4b4da0b489f423a7642647fbf1b745",
+        "saved_mean_cycles": 1.0212857089649674
+      }
+    },
+    "v2_pareto_fast": {
+      "alternate": {
+        "candidate_mean_cycles": 159.12879436850534,
+        "code_bytes": 865,
+        "new_max_cycles": 301,
+        "new_min_cycles": 84,
+        "old_max_cycles": 302,
+        "old_mean_cycles": 160.1500800774703,
+        "old_min_cycles": 84,
+        "output_sha256": "f54d6f80e391906a9374cbf6a5a5f112da4b4da0b489f423a7642647fbf1b745",
+        "saved_mean_cycles": 1.0212857089649674
+      },
+      "reference": {
+        "candidate_mean_cycles": 159.12879436850534,
+        "code_bytes": 865,
+        "new_max_cycles": 301,
+        "new_min_cycles": 84,
+        "old_max_cycles": 302,
+        "old_mean_cycles": 160.1500800774703,
+        "old_min_cycles": 84,
+        "output_sha256": "f54d6f80e391906a9374cbf6a5a5f112da4b4da0b489f423a7642647fbf1b745",
+        "saved_mean_cycles": 1.0212857089649674
+      }
+    },
+    "v3_reu_512k": {
+      "alternate": {
+        "candidate_mean_cycles": 156.6611978099743,
+        "code_bytes": 849,
+        "new_max_cycles": 298,
+        "new_min_cycles": 84,
+        "old_max_cycles": 298,
+        "old_mean_cycles": 156.6611978099743,
+        "old_min_cycles": 84,
+        "output_sha256": "5d3b74afebc3efa14c84db221b8dd32fbbd0a369ed5f0dd4a944445d46a0a785",
+        "saved_mean_cycles": 0.0
+      },
+      "reference": {
+        "candidate_mean_cycles": 156.6611978099743,
+        "code_bytes": 849,
+        "new_max_cycles": 298,
+        "new_min_cycles": 84,
+        "old_max_cycles": 298,
+        "old_mean_cycles": 156.6611978099743,
+        "old_min_cycles": 84,
+        "output_sha256": "5d3b74afebc3efa14c84db221b8dd32fbbd0a369ed5f0dd4a944445d46a0a785",
+        "saved_mean_cycles": 0.0
+      }
+    },
+    "v4_reu_16m": {
+      "alternate": {
+        "candidate_mean_cycles": 156.6611978099743,
+        "code_bytes": 849,
+        "new_max_cycles": 298,
+        "new_min_cycles": 84,
+        "old_max_cycles": 298,
+        "old_mean_cycles": 156.6611978099743,
+        "old_min_cycles": 84,
+        "output_sha256": "5d3b74afebc3efa14c84db221b8dd32fbbd0a369ed5f0dd4a944445d46a0a785",
+        "saved_mean_cycles": 0.0
+      },
+      "reference": {
+        "candidate_mean_cycles": 156.6611978099743,
+        "code_bytes": 849,
+        "new_max_cycles": 298,
+        "new_min_cycles": 84,
+        "old_max_cycles": 298,
+        "old_mean_cycles": 156.6611978099743,
+        "old_min_cycles": 84,
+        "output_sha256": "5d3b74afebc3efa14c84db221b8dd32fbbd0a369ed5f0dd4a944445d46a0a785",
+        "saved_mean_cycles": 0.0
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "alternate": {
+        "candidate_mean_cycles": 159.12879436850534,
+        "code_bytes": 865,
+        "new_max_cycles": 301,
+        "new_min_cycles": 84,
+        "old_max_cycles": 302,
+        "old_mean_cycles": 160.1500800774703,
+        "old_min_cycles": 84,
+        "output_sha256": "f54d6f80e391906a9374cbf6a5a5f112da4b4da0b489f423a7642647fbf1b745",
+        "saved_mean_cycles": 1.0212857089649674
+      },
+      "reference": {
+        "candidate_mean_cycles": 159.12879436850534,
+        "code_bytes": 865,
+        "new_max_cycles": 301,
+        "new_min_cycles": 84,
+        "old_max_cycles": 302,
+        "old_mean_cycles": 160.1500800774703,
+        "old_min_cycles": 84,
+        "output_sha256": "f54d6f80e391906a9374cbf6a5a5f112da4b4da0b489f423a7642647fbf1b745",
+        "saved_mean_cycles": 1.0212857089649674
+      }
+    }
+  },
+  "shipped_prgs_modified": false,
+  "status": "PASS_LOG_BRANCH_COLLAPSE_RESEARCH_NOT_RELEASED",
+  "stock_code_bytes_before": 881,
+  "stock_code_bytes_candidate": 865
+}

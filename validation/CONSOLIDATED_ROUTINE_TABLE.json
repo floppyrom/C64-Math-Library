@@ -17,7 +17,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 14056
+      "stable_api_reachable_code_union_bytes": 14040
     },
     {
       "profile": "v2_pareto_fast",
@@ -28,7 +28,7 @@
       "stable_api_zp_union_touched_bytes": 189,
       "stable_api_zp_union_ranges": "$0E-$42;$4F-$65;$68-$69;$82-$F0",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 17614
+      "stable_api_reachable_code_union_bytes": 17598
     },
     {
       "profile": "v3_reu_512k",
@@ -61,7 +61,7 @@
       "stable_api_zp_union_touched_bytes": 31,
       "stable_api_zp_union_ranges": "$02-$20",
       "stable_api_stack_page_reserved_union_bytes": 0,
-      "stable_api_reachable_code_union_bytes": 19229
+      "stable_api_reachable_code_union_bytes": 19213
     }
   ],
   "rows": [
@@ -1154,12 +1154,12 @@
       "signedness": "signed",
       "operation": "vector normalize",
       "width": "2xs16 Q8.8 -> 2xs16 Q1.15",
-      "mean_cycles": "160.150080",
+      "mean_cycles": "159.128794",
       "min_cycles": 84,
-      "max_cycles": 302,
+      "max_cycles": 301,
       "cases": 107396,
       "cycle_basis": "2026-09-21 normalize profile-parity deterministic corpus",
-      "reachable_code_bytes": 881,
+      "reachable_code_bytes": 865,
       "zp_bytes": 4,
       "zp_ranges": "$1A-$1D",
       "stack_page_reserved_bytes": 0,
@@ -2442,12 +2442,12 @@
       "signedness": "signed",
       "operation": "vector normalize",
       "width": "2xs16 Q8.8 -> 2xs16 Q1.15",
-      "mean_cycles": "160.150080",
+      "mean_cycles": "159.128794",
       "min_cycles": 84,
-      "max_cycles": 302,
+      "max_cycles": 301,
       "cases": 107396,
       "cycle_basis": "2026-09-21 normalize profile-parity deterministic corpus",
-      "reachable_code_bytes": 881,
+      "reachable_code_bytes": 865,
       "zp_bytes": 4,
       "zp_ranges": "$1A-$1D",
       "stack_page_reserved_bytes": 0,
@@ -6306,12 +6306,12 @@
       "signedness": "signed",
       "operation": "vector normalize",
       "width": "2xs16 Q8.8 -> 2xs16 Q1.15",
-      "mean_cycles": "160.150080",
+      "mean_cycles": "159.128794",
       "min_cycles": 84,
-      "max_cycles": 302,
+      "max_cycles": 301,
       "cases": 107396,
       "cycle_basis": "2026-09-21 normalize profile-parity deterministic corpus",
-      "reachable_code_bytes": 881,
+      "reachable_code_bytes": 865,
       "zp_bytes": 4,
       "zp_ranges": "$1A-$1D",
       "stack_page_reserved_bytes": 0,

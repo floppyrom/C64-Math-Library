@@ -10,7 +10,7 @@ With 8-bit coordinates, setup is 6–16x cheaper than normalize + scale + arriva
 bookkeeping, and the whole move is 1.4–2x cheaper. Both families stay within
 0.5 px of the line and land exactly on the target. The normalize pipeline drifts
 up to 3.6 px and misses by up to 4 px. Both seek families together take 1,288
-code bytes; the normalizer alone takes 3,441. Keep this routine for real direction vectors:
+code bytes; the normalizer alone takes 3,425. Keep this routine for real direction vectors:
 thrust, reflections, physics, lighting.
 
 **Input range.** The Q8.8 label does not limit the usable range to +/-128.
@@ -86,21 +86,23 @@ Stock outputs change from the preceding five-page logarithmic implementation whi
 
 ## Profile implementations
 
+**October 14, 2026 update:** Eight redundant BNE/BEQ lookup dispatch pairs in V1/V2/V5 are now single BEQ branches. This reduces their mean from 160.150080 to 159.128794 CPU-model cycles and their code from 881 to 865 bytes, without changing any of the 107,396 tested signed outputs per profile/map, the certified full-domain precision envelope, four-byte ZP contract or public ABI. V3/V4 remain byte-identical. Evidence: [source-backed release audit](ISSUE39_NORMALIZE_BRANCH_RELEASE_2026-10-14.md).
+
 The sign quadrant is selected once at entry. Each path performs magnitude reduction and writes signed components directly. Stock profiles use four logarithmic ratio-index pages; REU profiles retain their direct ratio-index lookup. Small vectors pass the minor byte directly to the lookup. Each stock quadrant stays within one code page to avoid branch-crossing penalties.
 
-| Profile | Previous mean | New mean cycles | Reduction | Min–max | Code bytes | Table bytes in C64 RAM |
+| Profile | Original baseline mean | Current mean cycles | Total reduction | Min–max | Code bytes | Table bytes in C64 RAM |
 |---|---:|---:|---:|---:|---:|---:|
-| V1 Balanced | 161.332256 | **160.150080** | 0.73% | 84–302 | 881 | 2,560 |
-| V2 Pareto-Fast | 161.332256 | **160.150080** | 0.73% | 84–302 | 881 | 2,560 |
+| V1 Balanced | 161.332256 | **159.128794** | 1.37% | 84–301 | 865 | 2,560 |
+| V2 Pareto-Fast | 161.332256 | **159.128794** | 1.37% | 84–301 | 865 | 2,560 |
 | V3 REU 512K | 157.552684 | **156.661198** | 0.57% | 84–298 | 849 | 1,024 |
 | V4 REU 16M | 157.552684 | **156.661198** | 0.57% | 84–298 | 849 | 1,024 |
-| V5 Hybrid Low-ZP | 161.332256 | **160.150080** | 0.73% | 84–302 | 881 | 2,560 |
+| V5 Hybrid Low-ZP | 161.332256 | **159.128794** | 1.37% | 84–301 | 865 | 2,560 |
 
 These are emulator public-call cycles over the unchanged deterministic 107,396-vector corpus, including the entry JMP and RTS, excluding caller JSR/input stores and video/IRQ contention. The comparison baseline is commit `7a74e75`; no individual tested call becomes slower. Reference and alternate maps have identical output and cycle vectors. Code counts include the three-byte public JMP; table counts exclude the existing 32 KiB REU ratio table.
 
 ### RAM and integration tradeoff
 
-This refresh saves **290 occupied bytes** per stock normalizer: 34 code bytes and one 256-byte ratio page. V3/V4 save **18 code bytes** each. Stock normalizer code plus tables falls from 3,731 to 3,441 bytes (7.77%). The old stock reciprocal multiply's shared quarter-square tables remain available to other routines.
+The cumulative optimization saves **306 occupied bytes** per stock normalizer versus the original baseline: 50 code bytes and one 256-byte ratio page. The October 2026 branch collapse contributes the last 16 code bytes (881 to 865). V3/V4 retain their earlier **18-code-byte** saving. Stock normalizer code plus tables falls from 3,731 to 3,425 bytes (8.20%). The old stock reciprocal multiply's shared quarter-square tables remain available to other routines.
 
 All reference PRGs retain their existing **$1000** load address and file span. The saved bytes reduce the occupied code/table islands; fixed gaps in the integrated PRG mean the file itself does not shrink. The stock normalizer frees `REG_LOW+$0900..+$09FF`, but the full profile still reserves its enclosing region. REU images are unchanged. See [the size-refresh note](SIZE_OPTIMIZATION_2026-09-21.md) for the complete comparison.
 

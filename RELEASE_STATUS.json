@@ -30,11 +30,11 @@
     "previous_assembler": "This is ACME, release 0.97 (\"Zem\"), 31 Jan 2021"
   },
   "alternate_prg_sha256": {
-    "v1_balanced": "774fbd82ca560fe1994160d814ba60e11debaa4555d161d1e009d88cb03a24f8",
-    "v2_pareto_fast": "5529ba28e3fe4571e12c3fc7a7808ba849fa4c1f88fd342e2f7e8dd490424f58",
+    "v1_balanced": "9eaf19a7b97abaf288551a2157e91930f5f60d67c62a8d3a7a9d7cc3c0d4567f",
+    "v2_pareto_fast": "92c833e703a2f82df41b4bfb9f45b35e4c60eb2bca1035f6a029761ca832aefd",
     "v3_reu_512k": "0234465a439648d0166f697bcfeb91685a31f5b831934ae8d0f76b79dc533c71",
     "v4_reu_16m": "e1a4ce28216ebc7a06712d180ac72a042dfbbf62439b827526bfe299d1e291e8",
-    "v5_hybrid_lowzp": "7be602c91f949f84943a7ac4233a9b59798dcc693a485d858a08254318dd77ca"
+    "v5_hybrid_lowzp": "de37f0498d61f857d01a37f9e7e74f51c4df4ad25fb7bf286e6be173ee7b0a6c"
   },
   "alternate_reu_sha256": {
     "v3_reu_512k": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
@@ -161,7 +161,7 @@
   },
   "hybrid_v5": {
     "alternate_hybrid_code": "$E000-$FDFF",
-    "alternate_prg_sha256": "7be602c91f949f84943a7ac4233a9b59798dcc693a485d858a08254318dd77ca",
+    "alternate_prg_sha256": "de37f0498d61f857d01a37f9e7e74f51c4df4ad25fb7bf286e6be173ee7b0a6c",
     "common_machine_calls_per_map": 21678,
     "common_public_entries_per_map": 56,
     "config_validation_cases": 8,
@@ -174,7 +174,7 @@
     "outside_zp_bytes_proven_unchanged": 225,
     "reference_hybrid_code": "$A000-$BDFF",
     "reference_normal_zp": "$02-$20",
-    "reference_prg_sha256": "0c58ec4b91bc5696e830c0db238b2a2f5dabd8991e8c960c5e4f8d5681d09acb",
+    "reference_prg_sha256": "cb7c69e0ba8a12b65a311dc60c0ad7f4e036121c45d1a88e7cdd9263584134cb",
     "status": "PASS",
     "umod8_exhaustive_cases": 65536,
     "atan2_tables_bytes": 1024
@@ -260,11 +260,11 @@
     "v5_hybrid_lowzp"
   ],
   "reference_prg_sha256": {
-    "v1_balanced": "d45c2922b93cdf786e40ade87ae6f9d187a3cd26baeea5b34fa203707a01ba3c",
-    "v2_pareto_fast": "f02f8928dcc6d6f7660eb1309d68a180277160278f2033e8c9c00ffd01f82f06",
+    "v1_balanced": "fce456e15cb35cc18ad01815b974194343ade40d1a2c0a3127aa002619b4443d",
+    "v2_pareto_fast": "3c7fd7a7f011751af06ae6995c12eba982f007218c1e5f99198f950f58c4ba17",
     "v3_reu_512k": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
     "v4_reu_16m": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
-    "v5_hybrid_lowzp": "0c58ec4b91bc5696e830c0db238b2a2f5dabd8991e8c960c5e4f8d5681d09acb"
+    "v5_hybrid_lowzp": "cb7c69e0ba8a12b65a311dc60c0ad7f4e036121c45d1a88e7cdd9263584134cb"
   },
   "reference_reu_sha256": {
     "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
@@ -347,11 +347,11 @@
       "max_component_lsb": 200
     },
     "mean_cycles": {
-      "v1_balanced": 160.1500800774703,
-      "v2_pareto_fast": 160.1500800774703,
+      "v1_balanced": 159.12879436850534,
+      "v2_pareto_fast": 159.12879436850534,
       "v3_reu_512k": 156.6611978099743,
       "v4_reu_16m": 156.6611978099743,
-      "v5_hybrid_lowzp": 160.1500800774703
+      "v5_hybrid_lowzp": 159.12879436850534
     },
     "native_sources": {
       "fixed_profiles_include_native_source_directly": true,
@@ -366,7 +366,8 @@
       "v5_inherited_backend_drift_guard": true,
       "validation": "validation/normalize/NATIVE_SOURCE_VALIDATION.json",
       "validation_checks": 16,
-      "machine_code_changed_by_optimization": true
+      "machine_code_changed_by_optimization": true,
+      "stock_code_bytes": 865
     },
     "precision_contract": {
       "max_angle_deg": 0.3621,
@@ -674,7 +675,7 @@
     "arithmetic_binaries_changed": true,
     "documentation": "docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md",
     "benchmark_proof": "validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json",
-    "benchmark_sha256": "47062982db69013a1ce3b9bf7c498cf5f8ee2fa2a939a5791e8ffacead1d70e9",
+    "benchmark_sha256": "c14a0ee1c86f41ca2f0a807f9fd65b03dde51020f13d24c094aeb5d6ee74b4d2",
     "common_best_profile_ranking": true,
     "unsigned_family_completed": false
   },
@@ -772,7 +773,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "18b5e7e3cdd305e306f913427e099319a22964089bd6ddb6116fae2cba934d16",
+    "report_sha256": "95abdab3ed425d71c44b226453ff40f585fcfc35ad5bcf3bbc3295c19ae9611d",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
@@ -875,7 +876,7 @@
     "profile_count": 5,
     "workload_count": 7,
     "cases_per_workload_per_profile": 256,
-    "data_sha256": "4c79775f256191aa4bb110feec41665a928a535122ce5efab599aca44a3197cb",
+    "data_sha256": "9d87fb761eac43a48dbbd87268a860cd88531892c9b8c52313275756c7898e06",
     "negative_v1_24_narrow_status": "REJECT",
     "negative_report_sha256": "a7be59cd7a74b28f6d25ae0dbe9d7b91a85230b94dcd17d71dde6608d86a66ee",
     "resident_prgs_modified": false,
@@ -3150,5 +3151,41 @@
     "postmerge_comparable_ci_run": 38573248208,
     "postmerge_fixed_multiply_ci_run": 38573248172,
     "postmerge_turbo32_ci_run": 38573248117
+  },
+  "issue39_normalize_branch_collapse_2026_10_14": {
+    "status": "PASS_STAGED_PR_MAIN_CI_PENDING",
+    "public_api": "MATH_VEC2_NORMALIZE_Q8_8",
+    "stock_profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v5_hybrid_lowzp"
+    ],
+    "unchanged_reu_profiles": [
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "old_resident_sha256": {
+      "v1_balanced": "d45c2922b93cdf786e40ade87ae6f9d187a3cd26baeea5b34fa203707a01ba3c",
+      "v2_pareto_fast": "f02f8928dcc6d6f7660eb1309d68a180277160278f2033e8c9c00ffd01f82f06",
+      "v3_reu_512k": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
+      "v4_reu_16m": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
+      "v5_hybrid_lowzp": "0c58ec4b91bc5696e830c0db238b2a2f5dabd8991e8c960c5e4f8d5681d09acb"
+    },
+    "new_resident_sha256": {
+      "v1_balanced": "fce456e15cb35cc18ad01815b974194343ade40d1a2c0a3127aa002619b4443d",
+      "v2_pareto_fast": "3c7fd7a7f011751af06ae6995c12eba982f007218c1e5f99198f950f58c4ba17",
+      "v3_reu_512k": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
+      "v4_reu_16m": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
+      "v5_hybrid_lowzp": "cb7c69e0ba8a12b65a311dc60c0ad7f4e036121c45d1a88e7cdd9263584134cb"
+    },
+    "reversible_parent_bytes": "validation/review/ISSUE39_NORMALIZE_PREVIOUS_PRG_BYTES_2026-10-14.json",
+    "model_calls": 1073960,
+    "native_x64sc_old_new_calls": 320,
+    "stock_code_bytes_before": 881,
+    "stock_code_bytes_after": 865,
+    "normal_zp_growth": 0,
+    "reu_changed": false,
+    "normalization_family_complete": false,
+    "issue39_open": true
   }
 }

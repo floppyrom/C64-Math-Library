@@ -1,0 +1,74 @@
+name: Issue39 normalize historical provenance and checksum seal
+on:
+  push:
+    branches: [issue39-normalize-source-production-20261014]
+    paths:
+      - .github/workflows/issue39-normalize-archive-seal.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  certify-reversible-signed-normalize-parent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-normalize-source-production-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify all five current/archived PRGs and chained DIST8 parent hashes
+        run: |
+          python3 - <<'PY'
+          import json,hashlib,sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from issue39_normalize_provenance import pre_normalize_bytes
+          from issue39_dist8_provenance import pre_dist8_bytes
+          st=json.loads(Path("RELEASE_STATUS.json").read_text())
+          norm=st["issue39_normalize_branch_collapse_2026_10_14"]
+          dist=st["issue39_dist8_shared_register_swap_2026_10_14"]
+          h=lambda b:hashlib.sha256(b).hexdigest()
+          for p in norm["new_resident_sha256"]:
+              data=(Path(p)/"resident"/("math_"+p+"_game_math.prg")).read_bytes()
+              assert h(data)==st["reference_prg_sha256"][p]
+              original=pre_normalize_bytes(p,data)
+              assert h(original)==norm["old_resident_sha256"][p]==dist["new_production_prgs"][p]
+              archived=pre_dist8_bytes(p,data)
+              assert h(archived)==dist["old_production_prgs"][p]
+              print("NORM+DIST8 ARCHIVED PROVENANCE PASS",p)
+          PY
+      - name: Confirm public normalizer documentation matches compiled release
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          doc=Path("docs/VEC2_NORMALIZE_Q8_8.md").read_text()
+          assert "159.128794" in doc and "3,425" in doc
+          for p in ("v1_balanced","v2_pareto_fast","v5_hybrid_lowzp"):
+              readme=(Path(p)/"resident/vector/native/README.md").read_text()
+              assert "159.128794 cycles mean" in readme
+              assert "**865 bytes**" in readme
+          print("ISSUE39 NORMALIZE PUBLIC DOCUMENTATION PASS")
+          PY
+      - name: Reseal all tracked assets and verify package thrice
+        run: |
+          python3 - <<'PY'
+          import subprocess,sys
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          subprocess.run(["make","clean"],check=True)
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,"tools/package_audit.py"],check=True)
+          PY
+      - name: Commit strictly verified historical compatibility
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: certify normalizer archived SHA replay and reseal publication'
+          git push origin HEAD:issue39-normalize-source-production-20261014

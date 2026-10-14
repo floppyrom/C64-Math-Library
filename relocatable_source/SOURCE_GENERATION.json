@@ -4,14 +4,14 @@
     {
       "profile": "v1_balanced",
       "source": "relocatable_source/v1_balanced/math_relocatable.asm",
-      "reachable_instructions": 6288,
-      "source_sha256": "8bb86d425ee6094985849fe21fe9e9266ee87bda5a63a58fc607eb79f43dac51"
+      "reachable_instructions": 6280,
+      "source_sha256": "7242b85e5e05746db391b176f164cffedc182a7b476f56d54db5bc951cd2c186"
     },
     {
       "profile": "v2_pareto_fast",
       "source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
-      "reachable_instructions": 8001,
-      "source_sha256": "cd68870fe75c3e9bf30c73fc58329bef0243c620461d5784353061765087c1fe"
+      "reachable_instructions": 7993,
+      "source_sha256": "7e2e0600f47dd407b875228d35e9b8545c30c1651d056bed943bf1d69830e333"
     },
     {
       "profile": "v3_reu_512k",
