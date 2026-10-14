@@ -24,9 +24,12 @@ jobs:
           import ast
           ast.parse(open('tools/issue144_shr16_independent_clone.py').read())
           ast.parse(open('tools/native_issue144_shr16_independent_clone.py').read())
+          ast.parse(open('tools/issue144_shr16_public_entry_optin.py').read())
           PY
       - name: Source-assembled relocated independent 32x32 core, three profiles and interleaved calls
         run: python3 tools/issue144_shr16_independent_clone.py --limit 2409
+      - name: Verify original public entry survives two-byte JMP redirection
+        run: python3 tools/issue144_shr16_public_entry_optin.py --limit 2409
       - name: Install checksum-pinned native VICE
         run: |
           curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
@@ -43,4 +46,5 @@ jobs:
           path: |
             validation/review/ISSUE144_SHR16_STANDALONE_CLONE_CPU_MODEL.json
             validation/review/ISSUE144_SHR16_INDEPENDENT_CLONE_NATIVE_VICE.json
+            validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_OPTIN_CPU_MODEL.json
           if-no-files-found: warn
