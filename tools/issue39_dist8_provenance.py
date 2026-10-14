@@ -8,12 +8,14 @@ The returned bytes are for historical proof replay ONLY, not redistribution.
 """
 from pathlib import Path
 import hashlib,json
+from issue39_normalize_provenance import pre_normalize_bytes, KEY as NORMALIZE_KEY
 R=Path(__file__).resolve().parents[1]
 KEY="issue39_dist8_shared_register_swap_2026_10_14"
 RESEARCH=R/"validation/review/ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json"
 def sha(data):return hashlib.sha256(data).hexdigest()
 def pre_dist8_bytes(profile:str,current:bytes)->bytes:
     state=json.loads((R/"RELEASE_STATUS.json").read_text())
+    current=pre_normalize_bytes(profile,current)
     if KEY not in state:
         assert sha(current)==state["reference_prg_sha256"][profile],(profile,"unknown pre-DIST8 image")
         return current
@@ -25,7 +27,9 @@ def pre_dist8_bytes(profile:str,current:bytes)->bytes:
     old_sha=record["old_production_prgs"][profile]
     new_sha=record["new_production_prgs"][profile]
     assert old_sha==research["baseline_prg_sha256"]
-    assert new_sha==state["reference_prg_sha256"][profile]
+    reference_sha=(state[NORMALIZE_KEY]["old_resident_sha256"][profile]
+                   if NORMALIZE_KEY in state else state["reference_prg_sha256"][profile])
+    assert new_sha==reference_sha,(profile,"DIST8 parent after normalization reconstruction mismatch")
     assert sha(current)==new_sha,(profile,"unknown current DIST8 binary")
     loc=int(research["patch_address"][1:],16)
     start=loc-int.from_bytes(current[:2],"little")+2
