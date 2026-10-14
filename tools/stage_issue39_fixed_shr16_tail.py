@@ -6,6 +6,7 @@ bytes per resident, unchanged resident span, public ABI and resource budgets.
 Native x64sc and independent PR/main CI are STILL required.
 Historical-test-only normalization pins the parent release by SHA and checks
 that the two fixed-output tail bytes are the only displaced production bytes.
+Archived UMOD8 provenance is replayed on its exact pre-SHR16 V1 image.
 """
 from __future__ import annotations
 from pathlib import Path
