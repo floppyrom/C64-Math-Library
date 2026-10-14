@@ -1,0 +1,54 @@
+{
+  "status": "PASS_NATIVE_VICE_MIXED_SEEK_DIVMOD",
+  "native_cycle_timing_measured": false,
+  "private_optisearch_published": false,
+  "public_calls": 325,
+  "profiles": {
+    "v1_balanced": {
+      "candidate_prg_sha256": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+      "expected_path_frames": 10,
+      "native_calls": 65,
+      "native_seeking_calls": 13,
+      "source_output_sha256": "35088a132a0f19e2593da33f40ea2d47a4ebf2a9dc226a9d8e09dcb704d08aa0",
+      "stack_pointer": 253
+    },
+    "v2_pareto_fast": {
+      "candidate_prg_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+      "expected_path_frames": 10,
+      "native_calls": 65,
+      "native_seeking_calls": 13,
+      "source_output_sha256": "35088a132a0f19e2593da33f40ea2d47a4ebf2a9dc226a9d8e09dcb704d08aa0",
+      "stack_pointer": 253
+    },
+    "v3_reu_512k": {
+      "candidate_prg_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+      "expected_path_frames": 10,
+      "native_calls": 65,
+      "native_seeking_calls": 13,
+      "source_output_sha256": "35088a132a0f19e2593da33f40ea2d47a4ebf2a9dc226a9d8e09dcb704d08aa0",
+      "stack_pointer": 253
+    },
+    "v4_reu_16m": {
+      "candidate_prg_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "expected_path_frames": 10,
+      "native_calls": 65,
+      "native_seeking_calls": 13,
+      "source_output_sha256": "35088a132a0f19e2593da33f40ea2d47a4ebf2a9dc226a9d8e09dcb704d08aa0",
+      "stack_pointer": 253
+    },
+    "v5_hybrid_lowzp": {
+      "candidate_prg_sha256": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2",
+      "expected_path_frames": 10,
+      "native_calls": 65,
+      "native_seeking_calls": 13,
+      "source_output_sha256": "35088a132a0f19e2593da33f40ea2d47a4ebf2a9dc226a9d8e09dcb704d08aa0",
+      "stack_pointer": 253
+    }
+  },
+  "provenance": {
+    "github_actions_run": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38606739891",
+    "artifact_id": 11915259804,
+    "source": "tools/native_issue136_seek_divmod_mixed.py",
+    "candidate_sha_pinned": true
+  }
+}
