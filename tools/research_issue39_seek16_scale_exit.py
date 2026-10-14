@@ -61,7 +61,7 @@ def main():
         if kind=="reference":
           assert man["output_sha256"]!=hashlib.sha256(orig).hexdigest(),(p,"stale source")
         delta_hist={}
-        before_total=after_total=cases=4cycle=0
+        before_total=after_total=cases=fourcycle=0
         outsha=hashlib.sha256()
         for m in testcases:
           for speed in SP:
