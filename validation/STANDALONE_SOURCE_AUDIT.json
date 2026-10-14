@@ -388,7 +388,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 413
+          "reachable_instructions": 405
         },
         {
           "legacy_api": "MATH_SEEK8_INIT",
@@ -843,7 +843,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 413
+          "reachable_instructions": 405
         },
         {
           "legacy_api": "MATH_SEEK8_INIT",
@@ -2328,7 +2328,7 @@
           "file": "normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm",
           "alias_of": "",
           "entry_address": "$5E39",
-          "reachable_instructions": 413
+          "reachable_instructions": 405
         },
         {
           "legacy_api": "MATH_SEEK8_INIT",

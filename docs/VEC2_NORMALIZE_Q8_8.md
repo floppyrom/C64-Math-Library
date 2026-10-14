@@ -1,3 +1,5 @@
+**Issue39 logarithmic-branch optimization (14 October 2026):** V1/V2/V5 reduce eight unconditional branch-pair decisions to eight single BEQ tests, shrinking stock code 881→865 bytes and saving 1.021286 model cycles per 107,396-input public call while keeping exact signed outputs, precision and four-byte ZP union. Native x64sc baseline/candidate proof covers 320 calls. V3/V4 REU backend is byte-identical. Independent PR/main CI pending.
+
 # `MATH_VEC2_NORMALIZE_Q8_8`
 
 `MATH_VEC2_NORMALIZE_Q8_8` is the 46th stable C64 Math Library entry (the seek movement entries 47–54 followed it). It normalizes an arbitrary signed two-dimensional Q8.8 vector and returns a signed Q1.15 unit direction.
@@ -90,11 +92,11 @@ The sign quadrant is selected once at entry. Each path performs magnitude reduct
 
 | Profile | Previous mean | New mean cycles | Reduction | Min–max | Code bytes | Table bytes in C64 RAM |
 |---|---:|---:|---:|---:|---:|---:|
-| V1 Balanced | 161.332256 | **160.150080** | 0.73% | 84–302 | 881 | 2,560 |
-| V2 Pareto-Fast | 161.332256 | **160.150080** | 0.73% | 84–302 | 881 | 2,560 |
+| V1 Balanced | 161.332256 | **159.128794** | 1.37% | 84–301 | 865 | 2,560 |
+| V2 Pareto-Fast | 161.332256 | **159.128794** | 1.37% | 84–301 | 865 | 2,560 |
 | V3 REU 512K | 157.552684 | **156.661198** | 0.57% | 84–298 | 849 | 1,024 |
 | V4 REU 16M | 157.552684 | **156.661198** | 0.57% | 84–298 | 849 | 1,024 |
-| V5 Hybrid Low-ZP | 161.332256 | **160.150080** | 0.73% | 84–302 | 881 | 2,560 |
+| V5 Hybrid Low-ZP | 161.332256 | **159.128794** | 1.37% | 84–301 | 865 | 2,560 |
 
 These are emulator public-call cycles over the unchanged deterministic 107,396-vector corpus, including the entry JMP and RTS, excluding caller JSR/input stores and video/IRQ contention. The comparison baseline is commit `7a74e75`; no individual tested call becomes slower. Reference and alternate maps have identical output and cycle vectors. Code counts include the three-byte public JMP; table counts exclude the existing 32 KiB REU ratio table.
 
