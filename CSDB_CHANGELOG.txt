@@ -1,3 +1,6 @@
+2026-10-14 ISSUE39 FIXED SHR16 TWO-CYCLE NATIVE VICE CONFIRMATION
+- Installed x64sc old/new signed/unsigned UMUL32_SHR16/SMUL32_SHR16: 480 public calls across five profiles, complete bytewise identical output/flags/stack snapshots. The 2-cycle saving is from paired CPU model, not VICE timing. No new code memory or ZP. Independent PR/main CI pending.
+
 2026-10-14 ISSUE39 FIXED OUTPUT SHR16 REDUNDANT CARRY TAIL
 - 32-bit fixed-output UMUL32_SHR16 and SMUL32_SHR16: removed redundant CLC following C=0 full-product producer. Matched -2 CPU-model cycles for all 4,361 cases per operation/profile/map; five profiles, both relocations, exactly four code-byte substitutions/profile; no resident, ABI, ZP or persistent stack growth. Native VICE and postmerge checks PENDING.
 - UMUL16_SHR8 and SMUL16_SHR8 retained the existing qualified register-output adapters without code changes. docs/ISSUE39_FIXED_SHR16_RETURN_TAIL_2026-10-14.md

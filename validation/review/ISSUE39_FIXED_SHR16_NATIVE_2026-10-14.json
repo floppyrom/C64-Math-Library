@@ -1,0 +1,114 @@
+{
+  "native_cycle_timing_measured": false,
+  "original_and_candidate_public_calls": 480,
+  "profile_count": 5,
+  "results": {
+    "v1_balanced": {
+      "changed_bytes": 4,
+      "entries": {
+        "MATH_SMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432"
+        },
+        "MATH_UMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b"
+        }
+      }
+    },
+    "v2_pareto_fast": {
+      "changed_bytes": 4,
+      "entries": {
+        "MATH_SMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432"
+        },
+        "MATH_UMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b"
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "changed_bytes": 4,
+      "entries": {
+        "MATH_SMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432"
+        },
+        "MATH_UMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b"
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "changed_bytes": 4,
+      "entries": {
+        "MATH_SMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432"
+        },
+        "MATH_UMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b"
+        }
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "changed_bytes": 4,
+      "entries": {
+        "MATH_SMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432"
+        },
+        "MATH_UMUL32_SHR16": {
+          "after_calls": 24,
+          "before_calls": 24,
+          "bytewise_identical_native_records": true,
+          "candidate_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+          "carry_clear_inputs_and_stack_preserved": true,
+          "old_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b"
+        }
+      }
+    }
+  },
+  "source_main_baseline_sha": "bfc43c2f6643a893304799683f73396e0eba3096",
+  "status": "PASS_NATIVE_VICE_INSTALLED_FIXED_SHR16"
+}

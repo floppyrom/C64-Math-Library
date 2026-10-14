@@ -2862,7 +2862,7 @@
     "premerge_native_ci_run": 38521685765
   },
   "issue39_fixed_shr16_clc_2026_10_14": {
-    "status": "PASS_STAGED_NATIVE_CI_PENDING",
+    "status": "PASS_NATIVE_VICE_PR_MAIN_CI_PENDING",
     "gain_cpu_cycles_per_call": 2,
     "source_paired_gain_every_case": 2,
     "matched_inputs_per_profile_per_map": 4361,
@@ -2889,8 +2889,11 @@
     "abi_growth": 0,
     "normal_ZP_growth": 0,
     "resident_growth": 0,
-    "native_VICE_calls": 0,
+    "native_VICE_calls": 480,
     "document": "docs/ISSUE39_FIXED_SHR16_RETURN_TAIL_2026-10-14.md",
-    "proof": "validation/review/ISSUE39_FIXED_SHR16_RETURN_TAIL_PRODUCTION_2026-10-14.json"
+    "proof": "validation/review/ISSUE39_FIXED_SHR16_RETURN_TAIL_PRODUCTION_2026-10-14.json",
+    "native_evidence": "validation/review/ISSUE39_FIXED_SHR16_NATIVE_2026-10-14.json",
+    "native_cycle_timing_measured": false,
+    "public_NZV_flags_unchanged": true
   }
 }
