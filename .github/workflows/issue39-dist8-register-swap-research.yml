@@ -4,6 +4,7 @@ on:
     branches: [issue39-dist8-shared-swap-research-20261014]
     paths:
       - .github/workflows/issue39-dist8-register-swap-research.yml
+      - tools/research_issue39_dist8_register_swap.py
   workflow_dispatch:
 permissions:
   contents: write
