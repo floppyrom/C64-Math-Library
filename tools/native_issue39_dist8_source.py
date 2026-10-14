@@ -21,6 +21,7 @@ def candidate(p):
 def main():
     exe=os.getenv("VICE_WRAPPER","x64sc")
     status=json.loads((R/"RELEASE_STATUS.json").read_text())
+    research=json.loads((R/"validation/review/ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json").read_text())
     out={"status":"PASS_NATIVE_DIST8_OLD_NEW_SOURCE_MATCH",
          "native_cycle_timing_measured":False,
          "source_build_not_published":True,"public_calls":0,
@@ -30,6 +31,19 @@ def main():
         for pi,p in enumerate(PROFILES):
             original=original_prg(p);optimized=candidate(p);reu=original_reu(p)
             assert sha(original)==status["reference_prg_sha256"][p]
+            assert sha(original)!=sha(optimized),(p,"stale unoptimized native candidate")
+            row=research["profiles"][p]
+            loc=int(row["patch_address"][1:],16)
+            load=int.from_bytes(original[:2],"little")
+            start=loc-load+2
+            before=bytes.fromhex(row["original_swap_bytes"])
+            after=bytes.fromhex(row["replacement_swap_bytes"])
+            assert len(original)==len(optimized)
+            assert original[start:start+len(before)]==before
+            assert optimized[start:start+len(after)]==after
+            changed=[i for i,(b,c) in enumerate(zip(original,optimized)) if b!=c]
+            assert len(changed) in (8,10) and all(start<=i<start+len(before) for i in changed),(
+                p,"changes outside DIST8 swap",changed[:24])
             if reu: assert sha(reu.read_bytes())==status["reference_reu_sha256"][p]
             out["profiles"][p]={}
             for oi,op in enumerate(OPS):
@@ -42,7 +56,10 @@ def main():
                    "optimized_native_output_sha256":after["native_output_sha256"],
                    "native_calls_each_image":before["cases"],
                    "output_flags_and_stack_equal":True,
-                   "new_prg_sha256":sha(optimized)}
+                   "new_prg_sha256":sha(optimized),
+                   "old_prg_sha256":sha(original),
+                   "changed_swap_bytes":len(changed),
+                   "candidate_differs_from_baseline":True}
                 out["public_calls"]+=before["cases"]+after["cases"]
                 print("DIST8 NATIVE VICE",p,op,"baseline/candidate PASS",flush=True)
     assert out["public_calls"]==480
