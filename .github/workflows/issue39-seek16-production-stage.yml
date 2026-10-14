@@ -5,11 +5,6 @@ on:
     paths:
       - tools/stage_issue39_seek16_scale_release.py
       - .github/workflows/issue39-seek16-production-stage.yml
-  pull_request:
-    branches: [main]
-    paths:
-      - tools/stage_issue39_seek16_scale_release.py
-      - .github/workflows/issue39-seek16-production-stage.yml
   workflow_dispatch:
 permissions:
   contents: write
