@@ -4,6 +4,8 @@ on:
     branches: [issue39-reu-multiply-modes-audit-20261014]
     paths:
       - tools/stage_issue39_reu_multiply_modes.py
+      - tools/source_relocation.py
+      - relocatable_source/v4_reu_16m/v4_qs16_relocatable.asm
       - .github/workflows/issue39-reu-multiply-stage.yml
   workflow_dispatch:
 permissions:
