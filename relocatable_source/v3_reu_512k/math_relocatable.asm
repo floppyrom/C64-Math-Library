@@ -4894,3 +4894,6 @@ ZCE4:
 
 ; Shifted DIV/reciprocal optimization campaign overlay.
 !source "../game_math/shifted_div_direct_fast.inc"
+
+; Issue39 DIST8 source-backed, fixed-width register swap.
+!source "../game_math/dist8_swap_v3_reu_512k.inc"

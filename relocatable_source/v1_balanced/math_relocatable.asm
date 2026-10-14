@@ -4389,3 +4389,6 @@ LCAFB:
 
 ; V1 direct shifted DIV adapters.
 !source "../game_math/shifted_div_direct_balanced.inc"
+
+; Issue39 DIST8 source-backed, fixed-width register swap.
+!source "../game_math/dist8_swap_v1_balanced.inc"

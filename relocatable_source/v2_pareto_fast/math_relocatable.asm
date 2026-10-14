@@ -4690,3 +4690,6 @@ ZCE4:
 
 ; V2 reciprocal constant-numerator fallback.
 !source "../game_math/recip16_direct_fast_v2.inc"
+
+; Issue39 DIST8 source-backed, fixed-width register swap.
+!source "../game_math/dist8_swap_v2_pareto_fast.inc"

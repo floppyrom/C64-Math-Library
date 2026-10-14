@@ -4867,7 +4867,6 @@ ZCE4:
 !source "umul32_v29_shared.inc"
 !source "smul24_fast24_composed.inc"
 !source "smul16_shr8_selected.inc"
-; V4 QS16 BEGIN/CALL/END relocatable module: fixes alternate IO/ZP/bank map.
 !source "v4_qs16_relocatable.asm"
 ; END MULTIPLY REFRESH 2026-09-20
 
@@ -4908,3 +4907,6 @@ ZCE4:
 
 ; Shifted DIV/reciprocal optimization campaign overlay.
 !source "../game_math/shifted_div_direct_fast.inc"
+
+; Issue39 DIST8 source-backed, fixed-width register swap.
+!source "../game_math/dist8_swap_v4_reu_16m.inc"
