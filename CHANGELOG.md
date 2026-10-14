@@ -1,3 +1,6 @@
+2026-10-14 ISSUE39 CAMPAIGN MAIN POSTMERGE CERTIFICATION
+- Completed the full Issue #39 audit: all eight SEEK8/16 public operations qualified with V1-V5 reference/alternate sources, native VICE/REU checks and 408-byte mixed-state safety. Three independent main push workflows green at d296ace693543025f8aba582a0c933c867939a3a (full library, comparable unsigned, fixed multiply). No additional unqualified shortcut, no public ABI/PRG/REU/ZP changes; rejected V2 memory overlap documented, private OptiSearch excluded. Final status, evidence and package SHA256 sealed. validation/review/ISSUE39_SEEK_FAMILY_POSTMERGE_MAIN_CERT_2026-10-14.json
+
 2026-10-14 ISSUE39 SEEK8/16 COMPLETE FAMILY AUDIT
 - Final audited all eight SEEK8/16 public APIs. 480 INIT / 246,480 STEP CPU-model calls across all slots/maps, 40 INIT / 640 STEP native x64sc calls with V3/V4 REU. V2 k0=1 shortcut rejected: foreign resident bytes at $19F0 and table $1A00, not an available code island. No new qualified speed winner; shipped binaries, REU, public ABI and ZP remain unchanged. Prior SEEK16_INIT optimization remains in release. Main CI required for Issue #39 closeout. docs/ISSUE39_SEEK_FAMILY_COMPLETION_2026-10-14.md
 
