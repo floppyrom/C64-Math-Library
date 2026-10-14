@@ -35,9 +35,16 @@ def verify_output(old,new,profile):
   if row==16:
    assert all((old[row*STRIDE+i]&1)==(new[row*STRIDE+i]&1)==0
               for i in range(COUNT)),(profile,"carry mismatch")
+  elif row==17:
+   # Independent native VICE processes need not enter the harness
+   # at the same absolute SP. run_native() proves stack remains stable
+   # within each run; compare that invariant, not startup values.
+   a=[old[row*STRIDE+i] for i in range(COUNT)]
+   b=[new[row*STRIDE+i] for i in range(COUNT)]
+   assert len(set(a))==len(set(b))==1,(profile,"native stack drift")
   else:
    assert old[row*STRIDE:(row+1)*STRIDE]==new[row*STRIDE:(row+1)*STRIDE],(
-      profile,row,"native output input or stack mismatch")
+      profile,row,"native output or input mismatch")
 
 def main():
  original,copy,labels,source,changes=assemble()
