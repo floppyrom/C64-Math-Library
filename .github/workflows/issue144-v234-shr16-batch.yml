@@ -1,0 +1,43 @@
+name: Issue144 V2-V4 direct-slice opt-in batch research
+on:
+  push:
+    branches: [issue144-v234-shr16-batch-generalize-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  matched-cpu-and-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Python syntax and installed reference source integrity
+        run: |
+          python3 -m py_compile tools/issue144_v234_shr16_batch.py tools/native_issue144_v234_shr16_batch.py
+          python3 tools/package_audit.py
+      - name: V2 V3 V4 exact matching 2409-pair arithmetic and cycles
+        run: python3 tools/issue144_v234_shr16_batch.py --limit 2409
+      - name: Install pinned VICE x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: V2 V3 V4 actual native assembly BEGIN CALL END correctness
+        run: python3 tools/native_issue144_v234_shr16_batch.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-v234-batch-research
+          path: |
+            validation/review/ISSUE144_V234_SHR16_BATCH_CPU_MODEL.json
+            validation/review/ISSUE144_V234_SHR16_BATCH_NATIVE_VICE.json
+          if-no-files-found: warn
