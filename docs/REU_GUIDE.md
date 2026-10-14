@@ -21,7 +21,7 @@ bank 7  reciprocal high
 
 This makes UMUL8, UDIV8 and UMOD8 direct REU services rather than resident arithmetic loops.
 
-In the reference build Turbo16 swaps a 113-byte kernel into `$003E-$00AE`; Turbo32 swaps the stack-free 135-byte `ram135` record-family overlay into `$000A-$0090`. These are no longer fixed: `TURBO16_ZP_BASE`/`TURBO32_ZP_BASE` choose the ZP origins and `REU_TURBO16_BANK`/`REU_TURBO32_BANK` choose the storage banks. Turbo32's optimized public CALL measures 684.185 cycles versus 690.235 for normal UMUL32; with 326-cycle BEGIN and 371-cycle END, the batch crossover is 116 products. The overlays are assembled from source for the selected map, so there is no runtime relocation pass. The release model charges one clock/byte for one-way transfers and two clocks/byte for SWAP, plus the normal 6510 instructions used to program the REC.
+In the reference build Turbo16 swaps a 122-byte kernel into `$003E-$00AE`; Turbo32 swaps the stack-free 135-byte `ram135` record-family overlay into `$000A-$0090`. These are no longer fixed: `TURBO16_ZP_BASE`/`TURBO32_ZP_BASE` choose the ZP origins and `REU_TURBO16_BANK`/`REU_TURBO32_BANK` choose the storage banks. On the same 2,192-input corpus Turbo32 CALL measures 676.185 model cycles versus normal UMUL32 693.453; with 326-cycle BEGIN and 371-cycle END, the first strictly profitable batch is 41 products. These means are corpus-specific. The overlays are assembled from source for the selected map, so there is no runtime relocation pass. The release model charges one clock/byte for one-way transfers and two clocks/byte for SWAP, plus the normal 6510 instructions used to program the REC.
 
 ## V4: 16 MiB
 
@@ -43,15 +43,20 @@ xy = Q(x+y) - Q(abs(x-y))
 
 is exact because both indices have the same parity. Two four-byte REU record fetches plus subtraction replace four 8x8 partial products.
 
-Current UMUL16 speed guidance:
+Current matched-input speed guidance (14 October 2026, same public-call corpus):
 
 ```text
-small/medium batches   public MATH_UMUL16
-43+ products           Turbo16 BEGIN / repeated CALL / END
-QS16                    supported specialized mode; not selected for speed
+normal UMUL16             216.734 model cycles per call (2,097 pairs)
+Turbo16 CALL              197.046 model cycles; BEGIN + END = 645
+Turbo16 batch crossover   33+ products, strictly faster in the model
+normal UMUL32             693.453 model cycles per call (2,192 pairs)
+Turbo32 CALL              676.185 model cycles; BEGIN + END = 697
+Turbo32 batch crossover   41+ products, strictly faster in the model
+QS16 CALL                 281.727 model cycles; BEGIN + END = 36
+QS16 batch crossover      none; specialized functional option only
 ```
 
-Current measured means are about 225.84 cycles for public UMUL16, 211.54 cycles for a Turbo16 CALL (plus 609 cycles per BEGIN/END lifecycle), and 281.54 cycles for a QS16 CALL (plus 36 cycles per lifecycle). QS16 therefore has no speed crossover in the current release.
+These are same-corpus CPU-model results, **not native raster-time measurements**. See [REU multiply family review](ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md).
 
 ## VICE examples
 

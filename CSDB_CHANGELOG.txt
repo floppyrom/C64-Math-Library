@@ -1,3 +1,10 @@
+2026-10-14 ISSUE39 REU MULTIPLY NATIVE VICE AND V4 QS16 RELOCATION
+- Actual VICE x64sc with 512-KiB/16-MiB REU images qualified 120 Turbo16/Turbo32/QS16 BEGIN/CALL/END calls. Carry, products, operands, output sentinels and stack passed; native cycle timing was NOT measured. V4 QS16 alternate relocation now uses symbolic MATH_IO, REU_SCRATCH, ZP_MAIN and REU_QS16_BASE_BANK. Reference PRG/REU bytes unchanged; same-corpus Turbo16 batch crossover 33 and Turbo32 41, QS16 no crossover. Exact PR/main CI pending.
+
+2026-10-14 ISSUE39 REU MULTIPLY MODES THREE-MODE PUBLIC PROFILE AUDIT
+- Same-input REU multiply architecture: V3/V4 Turbo16 197.046 public model cycles vs ordinary 216.734, 645 lifecycle cycles, 33-call crossover; Turbo32 676.185 vs 693.453, 697 lifecycle, 41-call crossover; V4 QS16 281.727 vs 216.734, no speed crossover. 57,759 public product calls across installed/reference/alternate V3/V4, plus prior 17,196 Turbo relocation API and 3,556 boundary calls. No resident/REU/ABI/stack/ZP growth, no private source publication. Native VICE REU and full PR/main qualification pending.
+- docs/ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md
+
 2026-10-14 ISSUE39 FIXED MULTIPLY OUTPUTS FINAL PUBLICATION
 - UMUL16_SHR8 and SMUL16_SHR8 unchanged, existing 10,196-case all-profile reference/alternate register-return qualification. UMUL32_SHR16 and SMUL32_SHR16 source-integrated -2 CPU-model cycles on all 4,361 matched calls/entry/profile/map, no code span/ZP/stack growth. 480 native original/new installed public calls identical; native cycle timing NOT measured.
 - Postmerge main ce4e7bcf785f8b0fb292be1b044adce9fa3c1978: full 38529409135, comparable 38529409155, Turbo32 38529409200. REU Turbo/QS and other Issue39 families remain OPEN.

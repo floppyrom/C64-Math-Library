@@ -1,0 +1,64 @@
+name: Issue39 REU native verified publication checksum reseal
+on:
+  push:
+    branches: [issue39-reu-multiply-modes-audit-20261014]
+    paths:
+      - .github/workflows/issue39-reu-native-reseal.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  seal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-reu-multiply-modes-audit-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify existing 120 actual VICE calls and immutable binary fingerprints
+        run: |
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          s=json.loads(Path("RELEASE_STATUS.json").read_text())
+          row=s["issue39_reu_multiply_modes_2026_10_14"]
+          n=json.loads(Path(row["native_evidence"]).read_text())
+          p=json.loads(Path(row["evidence"]).read_text())
+          assert row["status"]=="PASS_NATIVE_VICE_PR_MAIN_CI_PENDING" and n["status"]=="PASS_NATIVE_VICE_REU_MODES"
+          assert n["total_public_calls"]==120 and p["total_public_product_calls"]==57759
+          assert p["profiles"]["v4_reu_16m"]["alternate"]["v4_qs16"]["mode"]["arithmetic_carry_stack_inputs"]=="PASS"
+          assert row["v4_QS16_alternate_relocation_fixed"] and row["byte_identical_reference_QS16_retained"]
+          for profile in ("v3_reu_512k","v4_reu_16m"):
+              fp=Path(profile)/"resident"/f"math_{profile}_game_math.prg"
+              assert hashlib.sha256(fp.read_bytes()).hexdigest()==s["reference_prg_sha256"][profile]
+              filename="c64_math_v3_512k_game_math.reu" if profile.startswith("v3") else "c64_math_v4_16m_game_math.reu"
+              rp=Path(profile)/"reu"/filename
+              assert hashlib.sha256(rp.read_bytes()).hexdigest()==s["reference_reu_sha256"][profile]
+          print("NATIVE REU AND RELOCATION SOURCE VERIFIED")
+          PY
+      - name: Reseal complete source package including native-harness diagnostic
+        run: |
+          make clean
+          python3 - <<'PY'
+          import sys,subprocess
+          from pathlib import Path
+          sys.path.insert(0,str(Path("tools").resolve()))
+          from stage_issue39_v1_3216_ool_release import reseal
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,"tools/package_audit.py"],check=True)
+          PY
+      - name: Publish complete binary-unchanged checksum manifest
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json
+          git diff --cached --quiet || git commit -m 'issue39: reseal qualified REU native diagnostic and QS16 relocation evidence'
+          git push origin HEAD:issue39-reu-multiply-modes-audit-20261014

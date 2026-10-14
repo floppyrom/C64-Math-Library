@@ -1,0 +1,20 @@
+name: Issue39 native-shaped REU harness model diagnosis
+on:
+  push:
+    branches: [issue39-reu-multiply-modes-audit-20261014]
+    paths:
+      - tools/diagnose_issue39_native_reu_harness.py
+      - .github/workflows/issue39-reu-native-model-diagnosis.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  simulate-native-shape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 tools/diagnose_issue39_native_reu_harness.py

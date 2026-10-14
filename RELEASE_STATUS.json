@@ -2938,5 +2938,48 @@
     "source_proof": "validation/review/ISSUE39_FIXED_SHR16_RETURN_TAIL_PRODUCTION_2026-10-14.json",
     "native_proof": "validation/review/ISSUE39_FIXED_SHR16_NATIVE_2026-10-14.json",
     "separate_remaining_steps": "REU Turbo/QS, trig, distance, seek"
+  },
+  "issue39_reu_multiply_modes_2026_10_14": {
+    "status": "PASS_NATIVE_VICE_PR_MAIN_CI_PENDING",
+    "family_complete": false,
+    "modes": [
+      "MATH_REU_UMUL16",
+      "MATH_REU_UMUL32",
+      "MATH_REU_QS16"
+    ],
+    "profiles": [
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "cpu_model_product_calls": 57759,
+    "prior_relocation_api_calls": 17196,
+    "prior_boundary_product_calls": 3556,
+    "turbo16_crossover_calls": 33,
+    "turbo32_crossover_calls": 41,
+    "v4_qs16_speed_crossover": null,
+    "source_maps": [
+      "published",
+      "reference",
+      "alternate"
+    ],
+    "native_cycle_timing_measured": false,
+    "private_optisearch_source_published": false,
+    "resident_or_reu_image_modified": false,
+    "ABI_or_ZP_growth": 0,
+    "published_prg_sha256": {
+      "v3_reu_512k": "987b86cccf29e13d381655bd2da7c9a31d195a72bbe0be54085f2ec282ec71e1",
+      "v4_reu_16m": "240b0f3a4ee7f9e49f842cd192528eeaa60eb46f5338ecb186a805bd332b7539"
+    },
+    "published_reu_sha256": {
+      "v3_reu_512k": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
+      "v4_reu_16m": "f745ab4021518d0277e75b42ece6b3bd747d852bc75a1c2138d47f0a32c65a73"
+    },
+    "documentation": "docs/ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md",
+    "evidence": "validation/review/ISSUE39_REU_MULTIPLY_MATCHED_CORPUS_2026-10-14.json",
+    "issue39_remains_open": true,
+    "native_VICE_calls": 120,
+    "native_evidence": "validation/review/ISSUE39_REU_MULTIPLY_NATIVE_2026-10-14.json",
+    "v4_QS16_alternate_relocation_fixed": true,
+    "byte_identical_reference_QS16_retained": true
   }
 }

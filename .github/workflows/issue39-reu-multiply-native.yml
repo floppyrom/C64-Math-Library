@@ -1,0 +1,46 @@
+name: Issue39 REU multiply installed native x64sc lifecycle qualification
+on:
+  push:
+    branches: [issue39-reu-multiply-modes-audit-20261014]
+    paths:
+      - tools/native_issue39_reu_multiply_modes.py
+      - .github/workflows/issue39-reu-multiply-native.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  v3-v4-reu-mode-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-reu-multiply-modes-audit-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install SHA-pinned native VICE x64sc 3.10+ r46274
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Qualify native REU 512 KiB and 16 MiB BEGIN CALL END public paths
+        run: python3 tools/native_issue39_reu_multiply_modes.py
+      - name: Commit native proof if and only if all 120 calls passed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add validation/review/ISSUE39_REU_MULTIPLY_NATIVE_2026-10-14.json
+          git diff --cached --quiet || git commit -m 'issue39: record native VICE REU Turbo16 Turbo32 QS16 correctness'
+          git push origin HEAD:issue39-reu-multiply-modes-audit-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-reu-native-vice
+          path: validation/review/ISSUE39_REU_MULTIPLY_NATIVE_2026-10-14.json
