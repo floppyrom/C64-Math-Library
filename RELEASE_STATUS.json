@@ -3048,7 +3048,7 @@
     "premerge_native_vice_run": 38548516375
   },
   "issue39_dist8_shared_register_swap_2026_10_14": {
-    "status": "PASS_STAGED_NATIVE_VICE_PR_MAIN_CI_PENDING",
+    "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
     "public_diffs_only_in_DIST8_swap": true,
     "new_production_prgs": {
       "v1_balanced": "d45c2922b93cdf786e40ade87ae6f9d187a3cd26baeea5b34fa203707a01ba3c",
@@ -3143,6 +3143,12 @@
       }
     },
     "distance_normalization_family_complete": false,
-    "issue39_remains_open": true
+    "issue39_remains_open": true,
+    "dist8_production_complete": true,
+    "certified_main_sha": "44fc91813d945c05194d2f4962bb89f9d5f88449",
+    "postmerge_full_library_ci_run": 38573248160,
+    "postmerge_comparable_ci_run": 38573248208,
+    "postmerge_fixed_multiply_ci_run": 38573248172,
+    "postmerge_turbo32_ci_run": 38573248117
   }
 }
