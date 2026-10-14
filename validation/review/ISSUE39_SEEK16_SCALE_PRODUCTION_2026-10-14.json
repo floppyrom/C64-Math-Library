@@ -159,5 +159,8 @@
       "old_mean_cycles": 399.55718475073314,
       "profile": "v1_balanced"
     }
-  }
+  },
+  "issue136_native_mixed_public_calls": 325,
+  "issue136_native_mixed_proof": "validation/review/ISSUE136_SEEK_DIVMOD_NATIVE_VICE.json",
+  "native_mixed_result": "PASS_VICE_ALL_FIVE_REAL_REU"
 }
