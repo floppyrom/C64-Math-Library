@@ -4,6 +4,7 @@ on:
     branches: [issue39-dist8-source-transplant-20261014]
     paths:
       - .github/workflows/issue39-dist8-compat-seal.yml
+      - 'tools/**'
   workflow_dispatch:
 permissions:
   contents: write
