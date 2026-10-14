@@ -159,7 +159,12 @@ def check_model(p,prg,reu,data):
         c.call(A["MATH_SEEK16_INIT"],200000)
         for j,addr in enumerate(fld):
             got=data[j*STRIDE+i]
-            if addr==0xc030:expected=c.status()
+            if addr==0xc030:
+                # Hardware PHP sets B; the harness runs SEI and has a different
+                # pre-call N/Z history. The paired native images compare *all*
+                # actual status bits; the independent model asserts carry.
+                assert (got & 1)==c.c,(p,i,'native carry',got,c.c)
+                continue
             elif addr==0xc032:expected=0xfc # saved caller X index is on stack
             elif addr==0xc033:expected=SLOT
             else:expected=c.mem[addr]
