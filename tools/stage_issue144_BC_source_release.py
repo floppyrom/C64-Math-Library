@@ -8,6 +8,7 @@ from stage_issue39_v1_3216_ool_release import reseal
 from validate_unsigned_division import PROFILES
 SRC_B="optional/issue144_pow2_mod32_16/mod32_16_pow2_remainder_only.asm"
 SRC_C="optional/issue144_isqrt32_u16/low16_dispatch.asm"
+SRC_S="optional/issue144_pow2_smod32_16/smod32_16_r_only.asm"
 NATIVE="validation/review/ISSUE144_BC_SPECIALISTS_NATIVE_VICE.json"
 DOC="docs/ISSUE144_BC_DOMAIN_SPECIALIST_PARETO_2026-10-15.md"
 STAMP="2026-10-15 ISSUE144 B/C DOMAIN-QUALIFIED OPTIONAL SOURCES"
@@ -26,7 +27,10 @@ def main():
   x=data(p)
   assert x["status"]=="PASS_CPU_MODEL_DOMAIN_SCREEN_ONLY"
   assert x["profile"]==profile
-  b=x["mod_pow2"];c=x["isqrt_low16"]
+  b=x["mod_pow2"];c=x["isqrt_low16"];signed=x["signed_mod_pow2"]
+  assert signed["status"]=="PASS_SIGNED_POW2_RONLY_NOT_QUOTIENT"
+  assert signed["source_sha256"]==sha(SRC_S)
+  assert signed["saved"]["min_cycles"]>0
   assert b["status"]=="PASS_RONLY_POW2_CONTRACT"
   assert b["code_bytes"]==25 and b["specialist"]["mean_cycles"]==38
   assert b["public_alias_produces_quotient_but_specialist_does_not"]
@@ -37,9 +41,13 @@ def main():
   assert c["workloads"]["full32"]["guard_savings"]["mean_cycles"]<0
   assert native["profiles"][profile]["mod_pow2"]["results_and_carry_equal"]
   assert native["profiles"][profile]["isqrt_low16"]["results_and_carry_equal"]
+  assert native["profiles"][profile]["signed_mod_pow2"]["results_and_carry_equal"]
   path=f"{profile}/resident/math_{profile}_game_math.prg"
   assert sha(path)==original[profile],("resident changed",profile)
-  rows[profile]={"mod_stock":b["stock"]["mean_cycles"],
+  rows[profile]={"smod_stock":signed["stock"]["mean_cycles"],
+   "smod_fast":signed["specialist"]["mean_cycles"],
+   "smod_gain":signed["saved"]["mean_cycles"],
+   "mod_stock":b["stock"]["mean_cycles"],
    "mod_fast":b["specialist"]["mean_cycles"],
    "mod_gain":b["saved"]["mean_cycles"],
    "sqrt_stock":c["workloads"]["low16"]["timings"]["baseline"]["mean_cycles"],
@@ -89,6 +97,31 @@ def main():
   "|---|---:|---:|---:|"]
  for p in PROFILES:
   a=rows[p];lines.append(f"| {p} | {a['sqrt_stock']:.3f} | {a['sqrt_fast']:.3f} | {a['sqrt_gain']:.3f} |")
+
+ lines += [
+  "",
+  "## B2: signed 32/16 remainder-only positive-power-of-two divisor",
+  "",
+  "Input N32 may be **any signed 32-bit value**, including negatives.",
+  "D16 must be positive and exactly one bit set (1..16384).",
+  "The 6510 kernel forms signed remainder correctly for truncation",
+  "toward zero: if N is negative and the masked positive remainder",
+  "is nonzero, subtract D to obtain the negative signed R16.",
+  "Q32 is again untouched: NOT a drop-in signed modulo alias.",
+  "It uses no normal ZP or lookup tables and preserves X, Y and SP.",
+  "",
+  "| Profile | Stock signed modulo | Signed R-only | Saved cycles |",
+  "|---|---:|---:|---:|"]
+ for p in PROFILES:
+  a=rows[p]
+  lines.append(f"| {p} | {a['smod_stock']:.3f} | {a['smod_fast']:.3f} | {a['smod_gain']:.3f} |")
+ lines += [
+  "",
+  "15 nonzero positive powers of two x 165 operand vectors including",
+  "negative edges and seeded random data: 2,475 model calls/profile,",
+  "12,375 matched checks across all V1–V5, plus real native VICE",
+  "baseline/specialist comparisons for signed-negative numerators.",
+  "Source: "+SRC_S]
  lines += [
   "",
   "There is also an AUTO selector that checks upper input bytes. It is",
@@ -140,11 +173,11 @@ def main():
   "sqrt_domain":"N32 high word zero","native_vice_correctness":True,
   "native_cycles_measured":False,"v4_native_real_reu_image":True,
   "published_default_prgs_changed":False,"normal_zp_added":0,
-  "documentation":DOC,"sources":[SRC_B,SRC_C],
+  "documentation":DOC,"sources":[SRC_B,SRC_C,SRC_S],
   "model_prefix":"validation/review/ISSUE144_BC_DOMAIN_",
   "native_record":NATIVE,"paired_performance":rows}
  (R/"RELEASE_STATUS.json").write_text(json.dumps(status,indent=2)+"\n")
- note=STAMP+"\n- Source-only opt-in B/C specialists, no installed library change: power-of-two D16 remainder-only 25 bytes/38 cycles (NOT quotient-producing); low16 ISQRT32 via existing ISQRT16; five-profile CPU/native proof including real V4 REU image. An all-input guard and quotient-complete pow2 selector remain research-only. Regular library binaries, ZP, public API and PERFORMANCE leaderboard unchanged. "+DOC+"\n\n"
+ note=STAMP+"\n- Source-only opt-in B/C specialists, no installed library change: unsigned and signed power-of-two 32/16 remainder-only (NOT quotient-producing); low16 ISQRT32 via existing ISQRT16; five-profile CPU/native proof including real V4 REU image. An all-input guard and quotient-complete pow2 selector remain research-only. Regular library binaries, ZP, public API and PERFORMANCE leaderboard unchanged. "+DOC+"\n\n"
  for fname in ("CHANGELOG.md","CSDB_CHANGELOG.txt"):
   f=R/fname
   if STAMP not in f.read_text():f.write_text(note+f.read_text())
