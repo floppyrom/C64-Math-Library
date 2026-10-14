@@ -23,6 +23,8 @@ jobs:
         run: python3 tools/issue144_signed_shr16_hybrid_research.py --limit 256
       - name: Full 2409 operand pairs on all three profiles
         run: python3 tools/issue144_signed_shr16_hybrid_research.py --limit 2409
+      - name: Signed nonnegative specialist full same-input screen
+        run: python3 tools/issue144_signed_nonnegative_shr16_optin.py --limit 2409
       - name: Install checksum-pinned headless VICE x64sc
         run: |
           curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
@@ -32,6 +34,8 @@ jobs:
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
       - name: Real x64sc baseline and both signed source variants, V2 V3 V4
         run: python3 tools/native_issue144_signed_shr16_hybrid.py
+      - name: Native x64sc nonnegative signed 32-bit SHR16 public entry proof
+        run: python3 tools/native_issue144_signed_nonnegative_shr16.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -39,4 +43,6 @@ jobs:
           path: |
             validation/review/ISSUE144_SIGNED_SHR16_HYBRID_RESEARCH.json
             validation/review/ISSUE144_SIGNED_SHR16_HYBRID_NATIVE_VICE.json
+            validation/review/ISSUE144_SIGNED_NONNEGATIVE_SHR16_OPTIN_MODEL.json
+            validation/review/ISSUE144_SIGNED_NONNEGATIVE_SHR16_NATIVE_VICE.json
           if-no-files-found: warn
