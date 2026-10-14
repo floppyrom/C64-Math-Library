@@ -123,7 +123,7 @@ MULTIPLY_REFRESH_INCLUDES={
   'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
  'v4_reu_16m':(
   '../multiply/umul16_directout.asm','../multiply/umul16_shr8_reg_return.asm','../multiply/umul24_directout.asm','smul8_direct_signed.inc','smul32_fast31_v29.inc','umul32_v29_shared.inc',
-  'smul24_fast24_composed.inc','smul16_shr8_selected.inc'),
+  'smul24_fast24_composed.inc','smul16_shr8_selected.inc','v4_qs16_relocatable.asm'),
 }
 
 _REFRESH_COMMON=((0x30b0,0x30b2),(0x30c0,0x30c2),(0x3b80,0x3bad),
