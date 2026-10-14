@@ -1,0 +1,41 @@
+{
+  "both_source_maps_qualified": true,
+  "checks": {
+    "main_comparable_unsigned": 38540701196,
+    "main_fixed_multiply": 38540701127,
+    "main_full_library": 38540701276,
+    "main_turbo_relocation": 38540701380
+  },
+  "evidence": {
+    "cpu": "validation/review/ISSUE39_REU_MULTIPLY_MATCHED_CORPUS_2026-10-14.json",
+    "documentation": "docs/ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md",
+    "native": "validation/review/ISSUE39_REU_MULTIPLY_NATIVE_2026-10-14.json"
+  },
+  "family_complete": true,
+  "issue39_complete": false,
+  "main_sha": "03ba4fc98893968c88e223682a1a7d09aa80b123",
+  "matched_public_products": 57759,
+  "native_cycle_timing_measured": false,
+  "native_installed_x64sc_calls": 120,
+  "operations": [
+    "MATH_REU_UMUL16",
+    "MATH_REU_UMUL32",
+    "MATH_REU_QS16"
+  ],
+  "private_optisearch_source_published": false,
+  "profiles": [
+    "v3_reu_512k",
+    "v4_reu_16m"
+  ],
+  "public_abi_code_span_normal_ZP_growth": 0,
+  "remaining_issue39_families": [
+    "Trig / angle",
+    "Distance / normalization",
+    "Seek movement"
+  ],
+  "source_reference_images_unchanged": true,
+  "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
+  "turbo16_profit_batch_from": 33,
+  "turbo32_profit_batch_from": 41,
+  "v4_qs16_has_speed_crossover": false
+}

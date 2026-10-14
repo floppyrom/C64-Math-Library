@@ -1,3 +1,7 @@
+2026-10-14 ISSUE39 REU MULTIPLY FAMILY FINAL PUBLICATION
+- REU Turbo16/32 and V4 QS16 family complete with source/public matched 57,759 product calls, 120 native x64sc REU calls, and V4 QS16 alternate REU-bank/I/O/ZP relocation correction. Turbo16 same-corpus 33-call and Turbo32 41-call crossover; QS16 has no speed crossover. Installed binaries, interface and resource allocation unchanged. CPU model timing only; no native raster timing.
+- Postmerge main 03ba4fc98893968c88e223682a1a7d09aa80b123: full 38540701276, comparable 38540701196, Turbo32 38540701380, fixed-output 38540701127. Issue #39 stays open for trig/distance/seek.
+
 2026-10-14 ISSUE39 REU MULTIPLY NATIVE VICE AND V4 QS16 RELOCATION
 - Actual VICE x64sc with 512-KiB/16-MiB REU images qualified 120 Turbo16/Turbo32/QS16 BEGIN/CALL/END calls. Carry, products, operands, output sentinels and stack passed; native cycle timing was NOT measured. V4 QS16 alternate relocation now uses symbolic MATH_IO, REU_SCRATCH, ZP_MAIN and REU_QS16_BASE_BANK. Reference PRG/REU bytes unchanged; same-corpus Turbo16 batch crossover 33 and Turbo32 41, QS16 no crossover. Exact PR/main CI pending.
 
