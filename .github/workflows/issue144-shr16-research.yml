@@ -31,9 +31,9 @@ jobs:
       - name: Verify research script is syntactically complete
         run: python3 -m py_compile tools/issue144_shr16_direct_slice_overlay_research.py
       - name: Same-operands and direct-slice patch comparison, CPU model
-        run: python3 tools/issue144_shr16_direct_slice_overlay_research.py --limit 1024
+        run: python3 tools/issue144_shr16_direct_slice_overlay_research.py --limit 2409
       - name: Verify source-backed exclusive batch setup restore and break-even
-        run: python3 tools/qualify_issue144_v2_shr16_batch.py --limit 1024
+        run: python3 tools/qualify_issue144_v2_shr16_batch.py --limit 2409
       - uses: actions/upload-artifact@v4
         if: always()
         with:
