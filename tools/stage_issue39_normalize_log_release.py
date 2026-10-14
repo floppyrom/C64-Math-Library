@@ -162,7 +162,10 @@ def main():
     for p in STOCK:
         metric=next(row["reference"] for row in new_parity["profiles"] if row["profile"]==p)
         rewrite_rows(R/p/"PUBLIC_PERFORMANCE_GAME_MATH.csv",p,metric)
-        rewrite_rows(R/"docs/PERFORMANCE_GAME_MATH_FINAL.csv",p,metric)
+        # The consolidated game-math CSV is V1–V4 only; V5 is represented
+        # by the full PERFORMANCE.md and generated public indexes.
+        if p!=P[4]:
+            rewrite_rows(R/"docs/PERFORMANCE_GAME_MATH_FINAL.csv",p,metric)
     perfpath=R/"PERFORMANCE.md"
     perf=perfpath.read_text()
     row=next(line for line in perf.splitlines() if line.startswith("| `"+OP+"` |"))
