@@ -43,40 +43,53 @@ def prg(p,kind):
     d=ROOT/("build_hybrid" if p==P[-1] else "build_source")/kind/p
     m=json.loads((d/"source_build_manifest.json").read_text())
     return (d/m["output_prg"]).read_bytes()
-def setup_image(blob,profile):
+def setup_image(blob,profile,kind,is_candidate):
+    from validate_smul24_directout import parse_inc
     mem=bytearray(65536)
     load=int.from_bytes(blob[:2],"little")
     mem[load:load+len(blob)-2]=blob[2:]
-    reu=None
-    if profile=="v3_reu_512k":reu=bytearray((ROOT/"v3_reu_512k/reu/c64_math_v3_512k_game_math.reu").read_bytes())
-    if profile=="v4_reu_16m":reu=bytearray((ROOT/"v4_reu_16m/reu/c64_math_v4_16m_game_math.reu").read_bytes())
-    cpu=CPU(mem,reu=reu);cpu.d=0;cpu.call(0x3280,2_000_000)
-    from benchmark_multiply_refresh import api
-    return cpu,api(ROOT/profile/"resident/math_api.inc")
+    if is_candidate:
+        d=ROOT/("build_hybrid" if profile==P[-1] else "build_source")/kind/profile
+        m=json.loads((d/"source_build_manifest.json").read_text())
+        api=parse_inc(d/"math_api.inc")
+        reu=bytearray((d/m["reu_image"]["file"]).read_bytes()) if m.get("reu_image") else None
+    else:
+        api=parse_inc(ROOT/profile/"resident"/"math_api.inc")
+        reu=None
+        if profile=="v3_reu_512k":
+            reu=bytearray((ROOT/"v3_reu_512k/reu/c64_math_v3_512k_game_math.reu").read_bytes())
+        if profile=="v4_reu_16m":
+            reu=bytearray((ROOT/"v4_reu_16m/reu/c64_math_v4_16m_game_math.reu").read_bytes())
+    cpu=CPU(mem,reu=reu);cpu.d=0;cpu.call(api["MATH_INIT"],2_000_000)
+    return cpu,api
 def run_call(cpu,api,op,x,y,signed):
+    X,Y,Z=api["MATH_X"],api["MATH_Y"],api["MATH_Z"]
     for i in range(4):
-        cpu.mem[0xc000+i]=(x>>(8*i))&255
-        cpu.mem[0xc004+i]=(y>>(8*i))&255
-        cpu.mem[0xc008+i]=0xa7
-    bx=bytes(cpu.mem[0xc000:0xc004]);by=bytes(cpu.mem[0xc004:0xc008])
+        cpu.mem[X+i]=(x>>(8*i))&255
+        cpu.mem[Y+i]=(y>>(8*i))&255
+    for i in range(6):cpu.mem[Z+i]=0xa7
+    bx=bytes(cpu.mem[X:X+4]);by=bytes(cpu.mem[Y:Y+4])
     cpu.c=x&1
     cyc=cpu.call(api[op],2_000_000)
-    s=lambda t:(t-(1<<32)) if t&(1<<31) else t
-    a,b=(s(x),s(y)) if signed else (x,y)
+    signed32=lambda t:(t-(1<<32)) if t&(1<<31) else t
+    a,b=(signed32(x),signed32(y)) if signed else (x,y)
     exp=((a*b)>>16)&((1<<48)-1)
-    result=int.from_bytes(cpu.mem[0xc008:0xc00e],"little")
-    assert result==exp and cpu.c==0 and cpu.sp==0xfd and bytes(cpu.mem[0xc000:0xc004])==bx and bytes(cpu.mem[0xc004:0xc008])==by,(op,hex(x),hex(y),hex(result),hex(exp))
+    result=int.from_bytes(cpu.mem[Z:Z+6],"little")
+    assert (result==exp and cpu.c==0 and cpu.sp==0xfd and
+            bytes(cpu.mem[X:X+4])==bx and bytes(cpu.mem[Y:Y+4])==by),(
+            op,hex(x),hex(y),hex(result),hex(exp),cpu.c)
     return cyc,result
+
 def paired(profile,kind,original,candidate,cases):
-    before,api=setup_image(original,profile)
-    after,apic=setup_image(candidate,profile)
-    assert api==apic
+    before,api=setup_image(original,profile,'reference',False)
+    after,apic=setup_image(candidate,profile,kind,True)
+    assert set(api)==set(apic)
     entries={}
     for _,op,signed in OPS:
         old_total=new_total=0;delta={};vector=hashlib.sha256()
         for x,y in cases:
             o,product=run_call(before,api,op,x,y,signed)
-            n,other=run_call(after,api,op,x,y,signed)
+            n,other=run_call(after,apic,op,x,y,signed)
             assert product==other
             d=n-o;delta[str(d)]=delta.get(str(d),0)+1
             old_total+=o;new_total+=n
