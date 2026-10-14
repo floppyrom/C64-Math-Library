@@ -1,0 +1,41 @@
+name: Issue39 REU native and V4 QS16 relocatable release seal
+on:
+  push:
+    branches: [issue39-reu-multiply-modes-audit-20261014]
+    paths:
+      - tools/stage_issue39_reu_native_release.py
+      - .github/workflows/issue39-reu-native-release.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sealed-reu-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-reu-multiply-modes-audit-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify pinned VICE and three-mode source map proofs, reseal checksum
+        run: python3 tools/stage_issue39_reu_native_release.py
+      - name: Commit signed research evidence only on success
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: publish native VICE REU multiplier proof and QS16 relocation fix'
+          git push origin HEAD:issue39-reu-multiply-modes-audit-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-reu-multiply-native-release
+          path: |
+            validation/review/ISSUE39_REU_MULTIPLY_NATIVE_2026-10-14.json
+            docs/ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md
