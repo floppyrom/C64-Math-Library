@@ -2,7 +2,7 @@
 """Seal Issue39 REU multiplication source-map fix after native x64sc passed.
 
 Do NOT close Issue #39 or mark REU family complete until independent exact-PR
-and post-merge main qualification. This is source-only QS16 relocation.
+and post-merge main qualification. This is source-only QS16 relocation. Historical V2 UMOD8 qualification is SHA-pinned to its pre-multiply-era source for exact reproducibility.
 """
 from pathlib import Path
 import hashlib,json,subprocess,sys
