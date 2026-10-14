@@ -1,0 +1,34 @@
+name: Issue39 SEEK16 Euclidean init paired research
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/qualify_issue39_seek16_scale_loop.py
+      - .github/workflows/issue39-seek16-scale-research.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  paired-seek16-source-maps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check Python and qualification script
+        run: python3 -m py_compile tools/qualify_issue39_seek16_scale_loop.py
+      - name: Rebuild stock and candidate source maps; paired public CPU/state proof
+        run: python3 tools/qualify_issue39_seek16_scale_loop.py
+      - name: Upload research evidence without modifying shipped binaries
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue39-seek16-scale-branch-research
+          if-no-files-found: warn
+          path: |
+            validation/review/ISSUE39_SEEK16_SCALE_LOOP_RESEARCH_2026-10-14.json
+            tools/qualify_issue39_seek16_scale_loop.py
