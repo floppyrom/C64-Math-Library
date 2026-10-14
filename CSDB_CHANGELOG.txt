@@ -1,3 +1,7 @@
+2026-10-14 ISSUE39 FIXED OUTPUT SHR16 REDUNDANT CARRY TAIL
+- 32-bit fixed-output UMUL32_SHR16 and SMUL32_SHR16: removed redundant CLC following C=0 full-product producer. Matched -2 CPU-model cycles for all 4,361 cases per operation/profile/map; five profiles, both relocations, exactly four code-byte substitutions/profile; no resident, ABI, ZP or persistent stack growth. Native VICE and postmerge checks PENDING.
+- UMUL16_SHR8 and SMUL16_SHR8 retained the existing qualified register-output adapters without code changes. docs/ISSUE39_FIXED_SHR16_RETURN_TAIL_2026-10-14.md
+
 2026-10-14 ISSUE39 SIGNED MULTIPLY FAMILY FINAL MAIN CERTIFICATION
 - Five stable SMUL8/16/24/32 + conditional SMUL32_READY implementations retained after public-ABI manual and private OptiSearch resource screen. Exhaustive SMUL8 all five profiles (327,680 calls); SMUL16 4,457 and SMUL24/32 2,409 matched pairs/profile; READY same-input 2,409 pairs/profile. V1/V5 READY -25 cycles; V2-V4 READY +3 for stable redirect; normal low-ZP entry must remain mixed-call safe.
 - 600 native VICE signed calls and 120 READY preparation calls qualified, native timing not measured; no PRG, public ABI, ZP or persistent stack growth.
