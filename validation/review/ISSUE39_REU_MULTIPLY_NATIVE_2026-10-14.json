@@ -1,0 +1,57 @@
+{
+  "native_VICE_reu_flags": true,
+  "native_cycle_timing_measured": false,
+  "profiles": {
+    "v3_reu_512k": {
+      "MATH_REU_UMUL16": {
+        "calls": 24,
+        "correct_products_inputs_carry_stack": true,
+        "installed_reu_image_sha256": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
+        "native_cycle_timing_measured": false,
+        "native_reu_profile": "512 KiB",
+        "result_dump_sha256": "4a76c15d5b5e8dc42960b982bfcb07d58bbe34b8e38018e5747c9992af8b3af8",
+        "same_stack_pointer": 252
+      },
+      "MATH_REU_UMUL32": {
+        "calls": 24,
+        "correct_products_inputs_carry_stack": true,
+        "installed_reu_image_sha256": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
+        "native_cycle_timing_measured": false,
+        "native_reu_profile": "512 KiB",
+        "result_dump_sha256": "ee8cd2f0f6ad08697fb81b8deb9c568239efe53f1e8d46f21a1e9aa705c30b33",
+        "same_stack_pointer": 252
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_REU_QS16": {
+        "calls": 24,
+        "correct_products_inputs_carry_stack": true,
+        "installed_reu_image_sha256": "f745ab4021518d0277e75b42ece6b3bd747d852bc75a1c2138d47f0a32c65a73",
+        "native_cycle_timing_measured": false,
+        "native_reu_profile": "16384 KiB",
+        "result_dump_sha256": "ee6f22b63c2b63d49418ccb95bcdcfb9d48fbee0c1532e19540c7d1e72e22e47",
+        "same_stack_pointer": 252
+      },
+      "MATH_REU_UMUL16": {
+        "calls": 24,
+        "correct_products_inputs_carry_stack": true,
+        "installed_reu_image_sha256": "f745ab4021518d0277e75b42ece6b3bd747d852bc75a1c2138d47f0a32c65a73",
+        "native_cycle_timing_measured": false,
+        "native_reu_profile": "16384 KiB",
+        "result_dump_sha256": "4a76c15d5b5e8dc42960b982bfcb07d58bbe34b8e38018e5747c9992af8b3af8",
+        "same_stack_pointer": 252
+      },
+      "MATH_REU_UMUL32": {
+        "calls": 24,
+        "correct_products_inputs_carry_stack": true,
+        "installed_reu_image_sha256": "f745ab4021518d0277e75b42ece6b3bd747d852bc75a1c2138d47f0a32c65a73",
+        "native_cycle_timing_measured": false,
+        "native_reu_profile": "16384 KiB",
+        "result_dump_sha256": "ee8cd2f0f6ad08697fb81b8deb9c568239efe53f1e8d46f21a1e9aa705c30b33",
+        "same_stack_pointer": 252
+      }
+    }
+  },
+  "status": "PASS_NATIVE_VICE_REU_MODES",
+  "total_public_calls": 120
+}
