@@ -1,0 +1,50 @@
+name: Issue39 eight-slot SEEK family public ABI research
+on:
+  push:
+    branches: [issue39-seek-all-slots-public-audit-20261014]
+    paths:
+      - tools/validate_issue39_seek_all_slots.py
+      - .github/workflows/issue39-seek-all-slots.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/validate_issue39_seek_all_slots.py
+      - .github/workflows/issue39-seek-all-slots.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  all-slots-five-profiles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify canonical generated SEEK sources
+        run: |
+          python3 -m py_compile tools/validate_issue39_seek_all_slots.py
+          python3 tools/generate_seek_sources.py --check
+      - name: Build all five profiles in reference and alternate relocation
+        run: |
+          python3 tools/generate_sources.py
+          for kind in reference alternate; do
+            python3 tools/assemble_sources.py --profile all --config-kind "$kind"
+            python3 tools/build_hybrid.py --config-kind "$kind"
+          done
+      - name: Interleave eight SEEK8/16 objects across all four public entries
+        run: |
+          python3 tools/validate_issue39_seek_all_slots.py
+      - name: Verify mixed DIV/MOD coexistence and no write into other islands
+        run: |
+          python3 tools/validate_issue136_seek_divmod_mixed.py
+          python3 tools/validate_seek_placement.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-seek-eight-slots-research
+          if-no-files-found: warn
+          path: validation/review/ISSUE39_SEEK_ALL_SLOTS_RESEARCH_2026-10-14.json
