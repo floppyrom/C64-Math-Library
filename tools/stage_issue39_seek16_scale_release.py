@@ -92,8 +92,13 @@ def main():
   print('ISSUE136 DIAG',who,'q',q,'r',rem,'carry',c.c,'cycles',n,
         'visited',visited[:25], 'jmp4569',m[0x4569:0x456c].hex(),
         'jmp4570',m[0x4570:0x4573].hex(),'low4',m[0x4d80:0x4d88].hex(),flush=True)
- diag_udiv32(resident(P[0]).read_bytes(),'old')
- diag_udiv32(generated(P[0],'reference').read_bytes(),'candidate')
+ old_blob=resident(P[0]).read_bytes();new_blob=generated(P[0],'reference').read_bytes()
+ old_block=old_blob[0x1900-0x1000+2:0x1b6d-0x1000+2]
+ new_block=new_blob[0x4d80-0x1000+2:0x4fed-0x1000+2]
+ mism=[(hex(i),hex(x),hex(y)) for i,(x,y) in enumerate(zip(old_block,new_block)) if x!=y]
+ print('ISSUE136 LOW BYTE ALIGN',len(old_block),len(new_block),'mismatches',len(mism),'first',mism[:32],flush=True)
+ diag_udiv32(old_blob,'old')
+ diag_udiv32(new_blob,'candidate')
  # Both independently relocatable source maps and all foreign-access
  # memory-island checks must pass before touching a published PRG.
  for k in K:
