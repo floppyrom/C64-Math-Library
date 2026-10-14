@@ -1,0 +1,47 @@
+name: Issue39 fixed multiply family postmerge publication seal
+on:
+  push:
+    branches: [issue39-fixed-multiply-family-final-20261014]
+    paths:
+      - tools/finalize_issue39_fixed_multiply_family.py
+      - .github/workflows/issue39-fixed-multiply-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  certify-public-fixed-output-family:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-fixed-multiply-family-final-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Seal fixed multiply four-output postmerge green certificate
+        run: |
+          python3 tools/finalize_issue39_fixed_multiply_family.py \
+            --main-sha ce4e7bcf785f8b0fb292be1b044adce9fa3c1978 \
+            --full-ci 38529409135 --comparable-ci 38529409155 \
+            --turbo-ci 38529409200 --native-ci 38526588099
+      - name: Verify four public fixed multiply ABI implementations before publication
+        run: python3 tools/issue39_fixed_multiply_family_audit.py --output /tmp/fixed-multiply-family-certificate.json
+      - name: Commit SHA-pinned complete status, docs, changelogs, release checksums
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal four-output fixed multiply completion evidence'
+          git push origin HEAD:issue39-fixed-multiply-family-final-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fixed-multiply-family-release-certificate
+          path: |
+            validation/review/ISSUE39_FIXED_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json
+            /tmp/fixed-multiply-family-certificate.json
