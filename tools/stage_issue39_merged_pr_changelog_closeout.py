@@ -95,7 +95,14 @@ def main():
         if title not in original:
             # CSDB is plain text but Markdown remains legible as a text ledger;
             # links are explicit and the PR number is searchable.
-            path.write_text(content + original)
+            path.write_text(content.replace(chr(92) + chr(96), chr(96)) + original)
+        else:
+            # Fix escaped inline backticks in the freshly generated merge
+            # closeout only; do not alter historical changelog content.
+            boundary = "2026-10-14 ISSUE39 REU MULTIPLY NATIVE VICE AND V4 QS16 RELOCATION"
+            head, marker, historical = original.partition(boundary)
+            assert marker and head.count(title) == 1
+            path.write_text(head.replace(chr(92) + chr(96), chr(96)) + marker + historical)
         assert path.read_text().count(title) == 1
         for pr, *_ in ROWS:
             assert f"PR #{pr}" in path.read_text()
