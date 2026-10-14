@@ -4,11 +4,15 @@ on:
     branches: [issue144-shr16-direct-slice-overlay-research-20261014]
     paths:
       - tools/native_issue144_shr16_overlay.py
+      - tools/native_issue144_shr16_batch_source.py
+      - optional/issue144_v2_umul32_shr16_exclusive/overlay_begin_end.asm
       - .github/workflows/issue144-shr16-native-research.yml
   pull_request:
     branches: [main]
     paths:
       - tools/native_issue144_shr16_overlay.py
+      - tools/native_issue144_shr16_batch_source.py
+      - optional/issue144_v2_umul32_shr16_exclusive/overlay_begin_end.asm
       - .github/workflows/issue144-shr16-native-research.yml
   workflow_dispatch:
 permissions:
@@ -35,9 +39,13 @@ jobs:
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
       - name: Native x64sc baseline vs exclusive patched SHR16 output
         run: python3 tools/native_issue144_shr16_overlay.py
+      - name: Execute source-assembled BEGIN/END in native x64sc
+        run: python3 tools/native_issue144_shr16_batch_source.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: issue144-native-shr16-specialist-research
-          path: validation/review/ISSUE144_SHR16_OVERLAY_NATIVE_VICE_RESEARCH.json
+          path: |
+            validation/review/ISSUE144_SHR16_OVERLAY_NATIVE_VICE_RESEARCH.json
+            validation/review/ISSUE144_V2_SHR16_BEGIN_END_NATIVE_VICE.json
           if-no-files-found: warn
