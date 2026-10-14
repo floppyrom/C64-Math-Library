@@ -1,0 +1,83 @@
+{
+  "default_library_abi_changed": false,
+  "extra_code_RAM_and_shared_ZP": true,
+  "interrupt_reentrant_safe": false,
+  "native_calls_total": 216,
+  "native_cpu_cycles_measured": false,
+  "resident_prgs_changed": false,
+  "resident_reu_changed": false,
+  "results": {
+    "v2_pareto_fast": {
+      "baseline": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432",
+      "variants": {
+        "correct_all": {
+          "native_cycles_measured": false,
+          "native_signed_pairs": 24,
+          "only_two_public_jmp_operands_patched_in_disposable_copy": true,
+          "original_signed_producer_bytes_patched": false,
+          "public_entry_retained": "$5E15",
+          "redirected_target": "0xe50",
+          "status": "PASS_SIX_BYTES_FLAGS_INPUT_AND_STACK"
+        },
+        "negative_pair_fallback": {
+          "native_cycles_measured": false,
+          "native_signed_pairs": 24,
+          "only_two_public_jmp_operands_patched_in_disposable_copy": true,
+          "original_signed_producer_bytes_patched": false,
+          "public_entry_retained": "$5E15",
+          "redirected_target": "0xeb0",
+          "status": "PASS_SIX_BYTES_FLAGS_INPUT_AND_STACK"
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "baseline": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432",
+      "variants": {
+        "correct_all": {
+          "native_cycles_measured": false,
+          "native_signed_pairs": 24,
+          "only_two_public_jmp_operands_patched_in_disposable_copy": true,
+          "original_signed_producer_bytes_patched": false,
+          "public_entry_retained": "$5E15",
+          "redirected_target": "0xe50",
+          "status": "PASS_SIX_BYTES_FLAGS_INPUT_AND_STACK"
+        },
+        "negative_pair_fallback": {
+          "native_cycles_measured": false,
+          "native_signed_pairs": 24,
+          "only_two_public_jmp_operands_patched_in_disposable_copy": true,
+          "original_signed_producer_bytes_patched": false,
+          "public_entry_retained": "$5E15",
+          "redirected_target": "0xeb0",
+          "status": "PASS_SIX_BYTES_FLAGS_INPUT_AND_STACK"
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "baseline": "95a44e55286b197c3d1e6f0553fc719b7d8202761623181c17fef746d6965432",
+      "variants": {
+        "correct_all": {
+          "native_cycles_measured": false,
+          "native_signed_pairs": 24,
+          "only_two_public_jmp_operands_patched_in_disposable_copy": true,
+          "original_signed_producer_bytes_patched": false,
+          "public_entry_retained": "$5E15",
+          "redirected_target": "0xe50",
+          "status": "PASS_SIX_BYTES_FLAGS_INPUT_AND_STACK"
+        },
+        "negative_pair_fallback": {
+          "native_cycles_measured": false,
+          "native_signed_pairs": 24,
+          "only_two_public_jmp_operands_patched_in_disposable_copy": true,
+          "original_signed_producer_bytes_patched": false,
+          "public_entry_retained": "$5E15",
+          "redirected_target": "0xeb0",
+          "status": "PASS_SIX_BYTES_FLAGS_INPUT_AND_STACK"
+        }
+      }
+    }
+  },
+  "source_sha256": "b92a6911bce77ddc1416a1c17e3fe828f9afcf9efba217656b6c5851076d7e9c",
+  "status": "PASS_NATIVE_SIGNED_SHR16_OPTIONAL_SOURCE_CORRECTNESS",
+  "unsigned_clone_sha256": "962823fd4caa1c1e6e40b541840ac4facd03a9af42dade4deea3197f8afefe4a"
+}

@@ -1,0 +1,37 @@
+{
+  "alias_unsigned_clone": "0xe03",
+  "default_prgs_reu_unchanged": true,
+  "native_calls": 144,
+  "native_cpu_cycles_measured": false,
+  "ordinary_signed_producer_unchanged": true,
+  "precondition": "x>=0 and y>=0 as signed 32-bit integers",
+  "profiles": {
+    "v2_pareto_fast": {
+      "baseline_calls": 24,
+      "inputs_carry_and_stack_preserved": true,
+      "nonnegative_pairs": 24,
+      "optimized_calls": 24,
+      "signed_six_output_bytes_equal": true,
+      "status": "PASS_NATIVE_PRECONDITIONED_PUBLIC_ENTRY"
+    },
+    "v3_reu_512k": {
+      "baseline_calls": 24,
+      "inputs_carry_and_stack_preserved": true,
+      "nonnegative_pairs": 24,
+      "optimized_calls": 24,
+      "signed_six_output_bytes_equal": true,
+      "status": "PASS_NATIVE_PRECONDITIONED_PUBLIC_ENTRY"
+    },
+    "v4_reu_16m": {
+      "baseline_calls": 24,
+      "inputs_carry_and_stack_preserved": true,
+      "nonnegative_pairs": 24,
+      "optimized_calls": 24,
+      "signed_six_output_bytes_equal": true,
+      "status": "PASS_NATIVE_PRECONDITIONED_PUBLIC_ENTRY"
+    }
+  },
+  "signed_public_address": "$5E15",
+  "status": "PASS_NATIVE_NONNEGATIVE_SIGNED_SHR16_OPTIN",
+  "unsigned_clone_source_sha256": "962823fd4caa1c1e6e40b541840ac4facd03a9af42dade4deea3197f8afefe4a"
+}
