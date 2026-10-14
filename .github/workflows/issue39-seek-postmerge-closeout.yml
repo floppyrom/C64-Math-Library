@@ -1,0 +1,82 @@
+name: Issue39 final postmerge main certification and release seal
+on:
+  push:
+    branches: [issue39-seek-postmerge-closeout-20261014]
+    paths:
+      - .github/workflows/issue39-seek-postmerge-closeout.yml
+      - tools/stage_issue39_seek_postmerge_closeout.py
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+  actions: read
+jobs:
+  certify-main-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      GH_API_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-seek-postmerge-closeout-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify closeout syntax
+        run: python3 -m py_compile tools/stage_issue39_seek_postmerge_closeout.py
+      - name: Wait only for the exact main commit's three postmerge checks
+        if: github.event_name == 'push'
+        run: |
+          python3 - <<'PY'
+          import json,os,time,urllib.request
+          sha='d296ace693543025f8aba582a0c933c867939a3a'
+          runs=[38633755150,38633755164,38633754914]
+          for attempt in range(105):
+              statuses=[]
+              for rid in runs:
+                  req=urllib.request.Request(
+                      f'https://api.github.com/repos/floppyrom/C64-Math-Library/actions/runs/{rid}',
+                      headers={'Accept':'application/vnd.github+json',
+                               'Authorization':'Bearer '+os.environ['GH_API_TOKEN'],
+                               'User-Agent':'Issue39-Postmerge-Cert/1'})
+                  with urllib.request.urlopen(req,timeout=25) as conn:
+                      data=json.load(conn)
+                  assert data['head_sha']==sha and data['event']=='push'
+                  statuses.append((data['status'],data['conclusion']))
+              if all(x==('completed','success') for x in statuses):
+                  print('MAIN POSTMERGE CHECKS VERIFIED',list(zip(runs,statuses)),flush=True)
+                  break
+              if any(st=='completed' and c not in ('success',None)
+                     for st,c in statuses):
+                  raise RuntimeError(('Main CI failed',list(zip(runs,statuses))))
+              if attempt%5==0:
+                  print('MAIN CI still running',list(zip(runs,statuses)),flush=True)
+              time.sleep(12)
+          else:
+              raise RuntimeError('Main postmerge checks did not complete in the bounded CI watch')
+          PY
+      - name: Certify exact main checks and seal both changelogs/package manifest
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue39_seek_postmerge_closeout.py
+      - name: Commit only certified final Issue39 release metadata
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add RELEASE_STATUS.json CHANGELOG.md CSDB_CHANGELOG.txt \
+            docs/ISSUE39_SEEK_FAMILY_COMPLETION_2026-10-14.md \
+            validation/review/ISSUE39_SEEK_FAMILY_POSTMERGE_MAIN_CERT_2026-10-14.json \
+            SHA256SUMS.txt validation/PACKAGE_AUDIT.json
+          git diff --cached --quiet || git commit -m 'issue39: certify completed main and seal entire campaign closeout'
+          git push origin HEAD:issue39-seek-postmerge-closeout-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-postmerge-campaign-closeout
+          if-no-files-found: warn
+          path: validation/review/ISSUE39_SEEK_FAMILY_POSTMERGE_MAIN_CERT_2026-10-14.json
