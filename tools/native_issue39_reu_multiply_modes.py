@@ -18,7 +18,7 @@ def build(api,entry,bits):
     b=bytearray()
     def emit(*data):b.extend(data)
     def absop(op,addr):emit(op,addr&255,addr>>8)
-    emit(0x78,0xD8,0xA9,0x34,0x85,0x01)   # SEI/CLD, RAM under ROM
+    emit(0x78,0xD8,0xA9,0x35,0x85,0x01)   # SEI/CLD: resident RAM visible, $D000-$DFFF I/O visible for REU DMA
     absop(0x20,api["MATH_INIT"])
     absop(0x20,api[entry+"_BEGIN"])
     emit(0xA2,0x00)
@@ -75,7 +75,7 @@ def run(profile,entry,bits,port,tmp,exe,prg,reu):
                     break
                 except (ConnectionRefusedError,TimeoutError):time.sleep(.075)
             if sock is None:raise RuntimeError((profile,entry,"VICE remote unavailable",log.read_text()[-1500:]))
-            sock.settimeout(1)
+            sock.settimeout(.35)
             try:
                 command(sock,'load "'+str(image)+'" 0',"Loading")
                 command(sock,"break "+format(stop,"04x"),"BREAK:")
