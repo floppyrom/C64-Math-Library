@@ -1,0 +1,80 @@
+name: Issue39 DIST8 exact unsigned 3216 provenance refresh
+on:
+  push:
+    branches: [issue39-dist8-source-transplant-20261014]
+    paths:
+      - .github/workflows/issue39-dist8-3216-provenance.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  reseal-unchanged-divmod-workloads:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-dist8-source-transplant-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebench 30720 UDIV32/16 UMOD32/16 cases and prove numerical invariance
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,csv,json,subprocess,sys
+          report=Path("validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json")
+          table=Path("benchmarks/UNSIGNED_3216_WORKLOAD_AUDIT.csv")
+          prior=json.loads(report.read_text())
+          with table.open(newline="") as f:
+              prior_csv=list(csv.DictReader(f))
+          subprocess.run([sys.executable,"tools/benchmark_unsigned_3216_workloads.py"],check=True)
+          updated=json.loads(report.read_text())
+          with table.open(newline="") as f:
+              updated_csv=list(csv.DictReader(f))
+          assert prior["status"]==updated["status"]=="PASS"
+          assert prior["total_calls"]==updated["total_calls"]==30720
+          assert prior["profiles"]==updated["profiles"]
+          assert updated["workloads"]==prior["workloads"],"DIST8 changed unsigned division benchmark values"
+          assert len(prior_csv)==len(updated_csv)==60
+          for old,new in zip(prior_csv,updated_csv):
+              assert old.keys()==new.keys()
+              assert {k:v for k,v in old.items() if k!="resident_sha256"}=={
+                  k:v for k,v in new.items() if k!="resident_sha256"},(old,new)
+          state_path=Path("RELEASE_STATUS.json")
+          state=json.loads(state_path.read_text())
+          for profile,digest in updated["profile_resident_sha256"].items():
+              assert state["reference_prg_sha256"][profile]==digest,(profile,"new resident mismatch")
+              assert state["issue39_dist8_shared_register_swap_2026_10_14"]["old_production_prgs"][profile]==prior["profile_resident_sha256"][profile]
+          state["issue39_unsigned_3216_multiworkload_2026_10_11"]["report_sha256"]=hashlib.sha256(report.read_bytes()).hexdigest()
+          state_path.write_text(json.dumps(state,indent=2)+"\n")
+          print("UNSIGNED 3216 30720 CALLS MATCH ALL NUMERIC METRICS; ONLY PROVENANCE UPDATED")
+          PY
+      - name: Rebuild checksum ledger and verify package without altering PRGs
+        run: |
+          python3 - <<'PY'
+          import subprocess,sys
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          subprocess.run(["make","clean"],check=True)
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,"tools/package_audit.py"],check=True)
+          PY
+      - name: Commit validated report and checksum ledger
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: refresh unchanged 3216 workload provenance on DIST8 optimized PRGs'
+          git push origin HEAD:issue39-dist8-source-transplant-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-dist8-unsigned-3216-provenance
+          path: |
+            validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json
+            benchmarks/UNSIGNED_3216_WORKLOAD_AUDIT.csv
