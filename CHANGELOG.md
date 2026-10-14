@@ -1,3 +1,9 @@
+2026-10-14 ISSUE39 TRIG ANGLE NATIVE VICE VALIDATION
+- 480 installed x64sc public calls in all five profiles covering SIN8/COS8/SINCOS8/ATAN2; compared exact outputs against independent model, preserved operands, carry clear and stable stack. V3/V4 REU image tested. No native cycle measurement; source, standalone, ZP and public ABI unchanged. Final PR/main CI pending.
+
+2026-10-14 ISSUE39 TRIG ANGLE PUBLIC TABLE AUDIT RESEARCH
+- SIN8/COS8/SINCOS8 qualified on all 256 phases, 7,680 five-profile/two-map CPU calls; SINCOS outputs equal separate operations. Existing ATAN2 exhaustive 655,360-call public dispatch proof retained. V1 SINCOS 39 cycles, 13 saved vs two separate; V2-V5 31 cycles, 15 saved. No public ABI, resident binary, table/ZP or private OptiSearch source changes. Native VICE and final CI pending; Issue39 trig remains OPEN. docs/ISSUE39_TRIG_ANGLE_FAMILY_REVIEW_2026-10-14.md
+
 ## 2026-10-14 ISSUE39 REU MULTIPLY FAMILY FINAL CERTIFICATION
 
 **Completed:** Turbo16, Turbo32 and V4 QS16; merged source and relocation fix PR #124. Published reference PRGs and REU images unchanged. CPU-model comparison uses the same operands and includes deterministic REU transfer costs: Turbo16 197.046 versus normal 216.734, batch crossover 33; Turbo32 676.185 versus normal 693.453, batch crossover 41. V4 QS16 281.727 versus 216.734, no speed crossover. Exact 57,759 public model products, earlier 17,196 relocation API calls/3,556 boundary products, and 120 native VICE calls with real 512 KiB/16 MiB REU images passed. Native cycle timing **not measured**. Alternate V4 QS16 REU bank $30 is corrected.

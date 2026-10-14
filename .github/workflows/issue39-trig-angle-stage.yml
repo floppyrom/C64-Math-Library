@@ -1,0 +1,49 @@
+name: Issue39 trig angle published source and no-gain record seal
+on:
+  push:
+    branches: [issue39-trig-angle-family-20261014]
+    paths:
+      - tools/stage_issue39_trig_angle_family.py
+      - .github/workflows/issue39-trig-angle-stage.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  seal-public-trig-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-trig-angle-family-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild reference and alternate public source maps
+        run: |
+          for k in reference alternate; do
+            python3 tools/assemble_sources.py --profile all --config-kind "$k"
+            python3 tools/build_hybrid.py --config-kind "$k"
+          done
+      - name: Capture exhaustive sine cosine combined validation
+        run: python3 tools/issue39_trig_angle_family_audit.py --output validation/review/ISSUE39_TRIG_ANGLE_FAMILY_SOURCE_AUDIT_2026-10-14.json
+      - name: Stage existing ABI and checksum sealed research (no binary changes)
+        run: python3 tools/stage_issue39_trig_angle_family.py
+      - name: Commit research evidence to branch after all checks
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: publish five-profile exhaustive trig public ABI research'
+          git push origin HEAD:issue39-trig-angle-family-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-trig-public-source-audit
+          path: |
+            validation/review/ISSUE39_TRIG_ANGLE_FAMILY_SOURCE_AUDIT_2026-10-14.json
+            docs/ISSUE39_TRIG_ANGLE_FAMILY_REVIEW_2026-10-14.md

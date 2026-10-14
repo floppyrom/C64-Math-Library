@@ -2985,5 +2985,62 @@
     "completion_full_library_ci_run": 38545214940,
     "completion_comparable_ci_run": 38545214835,
     "premerge_native_vice_run": 38539477409
+  },
+  "issue39_trig_angle_family_2026_10_14": {
+    "status": "PASS_NATIVE_VICE_PR_MAIN_CI_PENDING",
+    "family_complete": false,
+    "native_vice_calls": 480,
+    "native_validation": "validation/review/ISSUE39_TRIG_ANGLE_NATIVE_2026-10-14.json",
+    "routines": [
+      "MATH_SIN8",
+      "MATH_COS8",
+      "MATH_SINCOS8",
+      "MATH_ATAN2_8"
+    ],
+    "five_profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "reference_and_alternate_maps": true,
+    "new_sin_cos_sincos_model_calls": 7680,
+    "prior_atan2_model_calls": 655360,
+    "combined_sincos_profile_means": {
+      "v1_balanced": {
+        "combined_mean_cycles": 39.0,
+        "mean_gain_vs_separate_public_calls": 13.0
+      },
+      "v2_pareto_fast": {
+        "combined_mean_cycles": 31.0,
+        "mean_gain_vs_separate_public_calls": 15.0
+      },
+      "v3_reu_512k": {
+        "combined_mean_cycles": 31.0,
+        "mean_gain_vs_separate_public_calls": 15.0
+      },
+      "v4_reu_16m": {
+        "combined_mean_cycles": 31.0,
+        "mean_gain_vs_separate_public_calls": 15.0
+      },
+      "v5_hybrid_lowzp": {
+        "combined_mean_cycles": 31.0,
+        "mean_gain_vs_separate_public_calls": 15.0
+      }
+    },
+    "production_resident_changed": false,
+    "private_optisearch_source_published": false,
+    "native_cycle_timing_measured": false,
+    "baseline_prg_sha256": {
+      "v1_balanced": "1ec65b1fcf87b7424325cc64a410401698f51ed04fb8c1fba861fa41457f9a82",
+      "v2_pareto_fast": "d1aeaa3b3bfa4d635bce126f6e0c44fa8992bbdfcceb4b386f8bb5654dff3458",
+      "v3_reu_512k": "987b86cccf29e13d381655bd2da7c9a31d195a72bbe0be54085f2ec282ec71e1",
+      "v4_reu_16m": "240b0f3a4ee7f9e49f842cd192528eeaa60eb46f5338ecb186a805bd332b7539",
+      "v5_hybrid_lowzp": "2ca2e91a494c806d60e705ac0c3ec49fc3f85c0c967a3c405eb5b0b46bd2afcc"
+    },
+    "documentation": "docs/ISSUE39_TRIG_ANGLE_FAMILY_REVIEW_2026-10-14.md",
+    "evidence": "validation/review/ISSUE39_TRIG_ANGLE_FAMILY_SOURCE_AUDIT_2026-10-14.json",
+    "issue39_remains_open": true
   }
 }
