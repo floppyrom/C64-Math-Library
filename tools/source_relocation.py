@@ -572,6 +572,12 @@ def generate_source(profile,outpath:Path):
  if profile=='v2_pareto_fast':
   lines += ['', '; V2 reciprocal constant-numerator fallback.',
             '!source "../game_math/recip16_direct_fast_v2.inc"']
+ # The original resident PRG is an immutable provenance input. Emit the
+ # verified signed DIST8 magnitude-ordering swap as an explicit final-owner
+ # source module instead of modifying historical PRGs or flattening an
+ # untracked byte-patch into the generated code.
+ lines += ['', '; Issue39 DIST8 source-backed, fixed-width register swap.',
+           f'!source "../game_math/dist8_swap_{profile}.inc"']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 
