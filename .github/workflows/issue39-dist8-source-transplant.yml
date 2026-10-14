@@ -1,0 +1,38 @@
+name: Issue39 DIST8 source-backed transplant qualification
+on:
+  push:
+    branches: [issue39-dist8-source-transplant-20261014]
+    paths:
+      - .github/workflows/issue39-dist8-source-transplant.yml
+      - tools/source_relocation.py
+      - relocatable_source/game_math/dist8_swap_*.inc
+      - tools/issue39_dist8_source_transplant_audit.py
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-relocation-and-public-parity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate canonical source from unchanged provenance PRGs
+        run: python3 tools/generate_sources.py
+      - name: Assemble reference and alternate maps
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+          python3 tools/build_hybrid.py --config-kind alternate
+      - name: Validate integrated DIST8 dual-map public ABI
+        run: python3 tools/issue39_dist8_source_transplant_audit.py --output /tmp/issue39_dist8_source_transplant.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-dist8-relocatable-public-parity
+          path: /tmp/issue39_dist8_source_transplant.json
