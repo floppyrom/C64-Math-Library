@@ -78,6 +78,12 @@ def full_cpu_cycles(p,expected):
         print(p,op,"released CPU cycles",mean,low,high,flush=True)
     return out
 def main():
+    # A direct standalone invocation must not silently use a stale
+    # generated assembly tree. Regenerate and rebuild before touching PRGs.
+    subprocess_py("generate_sources.py")
+    for _kind in ("reference","alternate"):
+        subprocess_py("assemble_sources.py","--profile","all","--config-kind",_kind)
+        subprocess_py("build_hybrid.py","--config-kind",_kind)
     stp=R/"RELEASE_STATUS.json"
     st=json.loads(stp.read_text())
     research=json.loads((R/EVID).read_text())
