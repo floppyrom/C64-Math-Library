@@ -534,13 +534,13 @@ s16i_euclid:
         sta SK_EMIN
         lda SK_DMAJL
         ldy SK_T
-s16i_scale:
         beq s16i_scaled
+s16i_scale:
         lsr SK_T
         ror
         lsr SK_EMIN
         ldy SK_T
-        jmp s16i_scale
+        bne s16i_scale
 s16i_scaled:
         sta SK_EMAJ
         jsr seek_euclid_speed   ; A = integer, Y = fraction
