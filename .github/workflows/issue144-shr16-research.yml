@@ -4,11 +4,15 @@ on:
     branches: [issue144-shr16-direct-slice-overlay-research-20261014]
     paths:
       - tools/issue144_shr16_direct_slice_overlay_research.py
+      - tools/qualify_issue144_v2_shr16_batch.py
+      - optional/issue144_v2_umul32_shr16_exclusive/overlay_begin_end.asm
       - .github/workflows/issue144-shr16-research.yml
   pull_request:
     branches: [main]
     paths:
       - tools/issue144_shr16_direct_slice_overlay_research.py
+      - tools/qualify_issue144_v2_shr16_batch.py
+      - optional/issue144_v2_umul32_shr16_exclusive/overlay_begin_end.asm
       - .github/workflows/issue144-shr16-research.yml
   workflow_dispatch:
 permissions:
@@ -28,9 +32,13 @@ jobs:
         run: python3 -m py_compile tools/issue144_shr16_direct_slice_overlay_research.py
       - name: Same-operands and direct-slice patch comparison, CPU model
         run: python3 tools/issue144_shr16_direct_slice_overlay_research.py --limit 1024
+      - name: Verify source-backed exclusive batch setup restore and break-even
+        run: python3 tools/qualify_issue144_v2_shr16_batch.py --limit 1024
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: issue144-shr16-direct-slice-candidate
-          path: validation/review/ISSUE144_SHR16_DIRECT_SLICE_OVERLAY_RESEARCH.json
+          path: |
+            validation/review/ISSUE144_SHR16_DIRECT_SLICE_OVERLAY_RESEARCH.json
+            validation/review/ISSUE144_V2_SHR16_BATCH_BREAK_EVEN.json
           if-no-files-found: warn
