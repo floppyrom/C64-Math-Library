@@ -25,10 +25,11 @@ jobs:
       - name: Reverse exact SEEK release for all five historical profiles
         run: |
           python3 - <<'PY'
-          import hashlib,json
+          import hashlib,json,sys
           from pathlib import Path
-          from tools.issue39_normalize_provenance import pre_seek_division_bytes,pre_normalize_bytes
-          from tools.issue39_dist8_provenance import pre_dist8_bytes
+          sys.path.insert(0,str(Path('tools').resolve()))
+          from issue39_normalize_provenance import pre_seek_division_bytes,pre_normalize_bytes
+          from issue39_dist8_provenance import pre_dist8_bytes
           R=Path('.')
           state=json.loads((R/'RELEASE_STATUS.json').read_text())
           parent=state['issue39_seek16_euclid_scale_2026_10_14']
