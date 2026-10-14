@@ -147,9 +147,25 @@ def main():
     # and public catalog indexes instead of editing one textual listing.
     subprocess_py("publish_standalone_sources.py")
     subprocess_py("generate_consolidated_routine_table.py")
+    # Division binaries are untouched; nevertheless the existing common-corpus
+    # certificate pins whole-PRG SHA256. Re-run the exact 136335-call corpus
+    # on the newly shipped images and insist on bit-identical numerical proof.
+    common_path=R/"validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json"
+    prior_common=json.loads(common_path.read_text())
+    subprocess_py("benchmark_unsigned_common_corpus.py")
+    new_common=json.loads(common_path.read_text())
+    assert new_common["routines"]==prior_common["routines"],(
+        "DIST8 affected unsigned DIV/MOD benchmark semantics")
+    assert new_common["total_calls"]==prior_common["total_calls"]==136335
+    assert new_common["profile_order"]==prior_common["profile_order"]
+    for p in PROFILES:
+        assert prior_common["sources"][p]["resident_sha256"]==original[p]
+        assert new_common["sources"][p]["resident_sha256"]==candidate[p]
     subprocess_py("generate_public_indexes.py")
     st["reference_prg_sha256"]=candidate
     st["alternate_prg_sha256"]=alt
+    if isinstance(st.get("issue39_common_input_unsigned_divmod"),dict):
+        st["issue39_common_input_unsigned_divmod"]["benchmark_sha256"]=file_sha(common_path)
     if isinstance(st.get("hybrid_v5"),dict):
         st["hybrid_v5"]["reference_prg_sha256"]=candidate["v5_hybrid_lowzp"]
         st["hybrid_v5"]["alternate_prg_sha256"]=alt["v5_hybrid_lowzp"]
