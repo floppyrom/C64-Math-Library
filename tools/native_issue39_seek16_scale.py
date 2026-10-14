@@ -186,7 +186,16 @@ def main():
             if reu:assert sha(reu.read_bytes())==status["reference_reu_sha256"][p]
             a=native(p,old,reu,11000+pi*4,tmp,exe)
             b=native(p,new,reu,11001+pi*4,tmp,exe)
-            assert a==b,(p,"native old/new differ",sha(a),sha(b))
+            if a!=b:
+                labels=fields(api(p)); dif=[]
+                for j,addr in enumerate(labels):
+                    for i in range(COUNT):
+                        va=a[j*STRIDE+i];vb=b[j*STRIDE+i]
+                        if va!=vb:
+                            dif.append((i,hex(addr),va,vb))
+                            if len(dif)>=16:break
+                    if len(dif)>=16:break
+                raise AssertionError((p,"native old/new differ",sha(a),sha(b),dif))
             check_model(p,old,reu,a)
             check_model(p,new,reu,b)
             report["profiles"][p]={"cases_per_image":COUNT,"output_sha256":sha(a),
