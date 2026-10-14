@@ -31,7 +31,7 @@ def candidate(p,kind):
     d=ROOT/("build_hybrid" if p=="v5_hybrid_lowzp" else "build_source")/kind/p
     c,a,io,m,_=source_load(p,d.parent)
     symbols=seek_symbols(d)
-    return c,{**a,**symbols},m["output_sha256"]
+    return c,{**a,**symbols,"MATH_X":io},m["output_sha256"]
 def generate():
     ms=corpus(320)
     wide=[(0,0,32767,199),(32767,199,0,0),(9000,255,3,0),
