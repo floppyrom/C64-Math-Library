@@ -2862,7 +2862,7 @@
     "premerge_native_ci_run": 38521685765
   },
   "issue39_fixed_shr16_clc_2026_10_14": {
-    "status": "PASS_NATIVE_VICE_PR_MAIN_CI_PENDING",
+    "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
     "gain_cpu_cycles_per_call": 2,
     "source_paired_gain_every_case": 2,
     "matched_inputs_per_profile_per_map": 4361,
@@ -2894,6 +2894,49 @@
     "proof": "validation/review/ISSUE39_FIXED_SHR16_RETURN_TAIL_PRODUCTION_2026-10-14.json",
     "native_evidence": "validation/review/ISSUE39_FIXED_SHR16_NATIVE_2026-10-14.json",
     "native_cycle_timing_measured": false,
-    "public_NZV_flags_unchanged": true
+    "public_NZV_flags_unchanged": true,
+    "complete": true,
+    "postmerge_main_sha": "ce4e7bcf785f8b0fb292be1b044adce9fa3c1978",
+    "postmerge_full_ci_run": 38529409135,
+    "postmerge_comparable_ci_run": 38529409155,
+    "postmerge_turbo_ci_run": 38529409200,
+    "premerge_native_ci_run": 38526588099
+  },
+  "issue39_fixed_multiply_family_2026_10_14": {
+    "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
+    "family_complete": true,
+    "issue39_remains_open": true,
+    "routines": [
+      "MATH_UMUL16_SHR8",
+      "MATH_SMUL16_SHR8",
+      "MATH_UMUL32_SHR16",
+      "MATH_SMUL32_SHR16"
+    ],
+    "two_32bit_entries_gain_cycles_each_input": 2,
+    "signed_unsigned_32bit_matched_pairs_per_profile_per_map": 4361,
+    "all_5_profiles_and_both_source_maps": true,
+    "signed_unsigned_16bit_register_return_pairs_per_profile_per_map": 10196,
+    "native_original_and_optimized_calls": 480,
+    "native_cycle_timing_measured": false,
+    "normal_zp_growth": 0,
+    "resident_span_growth": 0,
+    "reserved_stack_growth": 0,
+    "public_abi_changed": false,
+    "private_optisearch_source_published": false,
+    "compiled_profile_sha256": {
+      "v1_balanced": "1ec65b1fcf87b7424325cc64a410401698f51ed04fb8c1fba861fa41457f9a82",
+      "v2_pareto_fast": "d1aeaa3b3bfa4d635bce126f6e0c44fa8992bbdfcceb4b386f8bb5654dff3458",
+      "v3_reu_512k": "987b86cccf29e13d381655bd2da7c9a31d195a72bbe0be54085f2ec282ec71e1",
+      "v4_reu_16m": "240b0f3a4ee7f9e49f842cd192528eeaa60eb46f5338ecb186a805bd332b7539",
+      "v5_hybrid_lowzp": "2ca2e91a494c806d60e705ac0c3ec49fc3f85c0c967a3c405eb5b0b46bd2afcc"
+    },
+    "postmerge_main_sha": "ce4e7bcf785f8b0fb292be1b044adce9fa3c1978",
+    "full_library_main_run": 38529409135,
+    "comparable_unsigned_main_run": 38529409155,
+    "turbo32_main_run": 38529409200,
+    "native_old_new_run": 38526588099,
+    "source_proof": "validation/review/ISSUE39_FIXED_SHR16_RETURN_TAIL_PRODUCTION_2026-10-14.json",
+    "native_proof": "validation/review/ISSUE39_FIXED_SHR16_NATIVE_2026-10-14.json",
+    "separate_remaining_steps": "REU Turbo/QS, trig, distance, seek"
   }
 }
