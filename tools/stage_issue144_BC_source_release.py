@@ -137,8 +137,8 @@ def main():
  lines += [
   "",
   "All five profiles pass deterministic common-input model tests",
-  "and native x64sc arithmetic/carry comparisons (240 native calls",
-  "total for both specialist families). The V4 sqrt native test",
+  "and native x64sc arithmetic/carry comparisons (720 native calls",
+  "total for three specialist families). The V4 sqrt native test",
   "loads the actual 16-MiB REU file. VICE native cycles, VIC-II",
   "bus effects and REU DMA time are **not** claimed.",
   "",
