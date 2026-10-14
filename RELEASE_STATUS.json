@@ -3266,5 +3266,18 @@
     "native_mixed_seek_divmod_public_calls": 325,
     "native_mixed_seek_divmod_proof": "validation/review/ISSUE136_SEEK_DIVMOD_NATIVE_VICE.json",
     "native_mixed_seek_divmod_run": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38606739891"
+  },
+  "issue39_seek_native_all_modes_2026_10_14": {
+    "status": "PASS_NATIVE_RESEARCH_MAIN_CI_PENDING",
+    "native_public_init_calls": 40,
+    "native_public_step_calls": 640,
+    "all_eight_public_modes": true,
+    "all_five_resident_profiles": true,
+    "reu_v3_v4_used": true,
+    "native_cycle_timing_measured": false,
+    "unchanged_production_binaries": true,
+    "source": "validation/review/ISSUE39_SEEK_ALL_MODES_NATIVE_VICE_2026-10-14.json",
+    "doc": "docs/ISSUE39_SEEK_NATIVE_ALL_MODES_2026-10-14.md",
+    "family_campaign_complete": false
   }
 }

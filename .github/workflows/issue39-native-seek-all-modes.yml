@@ -1,0 +1,66 @@
+name: Issue39 native all SEEK public modes, V1-V5
+on:
+  push:
+    branches: [issue39-native-seek-all-steppers-20261014]
+    paths:
+      - tools/native_issue39_seek_all_modes.py
+      - tools/stage_issue39_seek_native_all_modes.py
+      - .github/workflows/issue39-native-seek-all-modes.yml
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  native-seek:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-native-seek-all-steppers-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - name: Merge the published eight-slot source audit from main
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin main
+          git merge --no-edit origin/main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Confirm canonical public source and native test syntax
+        run: |
+          python3 -m py_compile tools/native_issue39_seek_all_modes.py
+          python3 tools/generate_seek_sources.py --check
+      - name: Install SHA-256-pinned headless VICE x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Execute all eight public SEEK8/16 modes in hardware-level x64sc
+        run: python3 tools/native_issue39_seek_all_modes.py
+      - name: Seal native evidence, release record, changelogs and checksums
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue39_seek_native_all_modes.py
+      - name: Commit verified native evidence to research branch
+        if: github.event_name == 'push'
+        run: |
+          git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json \
+            validation/review/ISSUE39_SEEK_ALL_MODES_NATIVE_VICE_2026-10-14.json \
+            docs/ISSUE39_SEEK_NATIVE_ALL_MODES_2026-10-14.md \
+            RELEASE_STATUS.json CHANGELOG.md CSDB_CHANGELOG.txt
+          git diff --cached --quiet || git commit -m 'issue39: publish native all-mode x64sc proof and release metadata'
+          git push origin HEAD:issue39-native-seek-all-steppers-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-native-seek-all-modes
+          if-no-files-found: warn
+          path: validation/review/ISSUE39_SEEK_ALL_MODES_NATIVE_VICE_2026-10-14.json
