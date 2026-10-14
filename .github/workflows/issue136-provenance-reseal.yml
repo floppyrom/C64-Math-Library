@@ -50,6 +50,13 @@ jobs:
               assert historical and normalized
               print('REVERSE HISTORICAL',profile,'PASS',len(restored),flush=True)
           PY
+      - name: Refresh deterministic unsigned-workload proof for relocated V1 division
+        run: |
+          python3 tools/audit_issue39_unsigned_small_workloads.py
+          python3 tools/benchmark_unsigned_3216_workloads.py
+          python3 tools/benchmark_unsigned_common_corpus.py
+          python3 tools/validate_udiv32_qone_bound.py
+          python3 tools/validate_udiv32_q23_bound.py
       - name: Reseal checksum and deterministic package audit
         run: |
           python3 - <<'PY'
@@ -63,7 +70,13 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json
+          git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json \
+            validation/review/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.json \
+            benchmarks/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.csv \
+            validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json \
+            benchmarks/UNSIGNED_3216_WORKLOAD_AUDIT.csv \
+            validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json \
+            benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv
           git diff --cached --quiet || git commit -m 'issue136: seal reversible SEEK and division historic proof in package manifest'
           git push origin HEAD:issue39-seek16-euclid-scale-source-release-20261014
       - uses: actions/upload-artifact@v4
