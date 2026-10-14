@@ -1,0 +1,43 @@
+name: Issue39 merged PR #118-124 changelog release closeout
+on:
+  push:
+    branches: [issue39-merged-pr-changelog-closeout-20261014]
+    paths:
+      - tools/stage_issue39_merged_pr_changelog_closeout.py
+      - .github/workflows/issue39-merged-pr-changelog-closeout.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  closeout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-merged-pr-changelog-closeout-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build exact merge ledger, verify published binary SHA and reseal archive
+        run: python3 tools/stage_issue39_merged_pr_changelog_closeout.py
+      - name: Commit documented PR closeouts and package checksums together
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'docs(issue39): close out merged PRs 118-124 in both changelogs'
+          git push origin HEAD:issue39-merged-pr-changelog-closeout-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-merged-pr-changelog-archive
+          path: |
+            CHANGELOG.md
+            CSDB_CHANGELOG.txt
+            SHA256SUMS.txt
+            validation/PACKAGE_AUDIT.json
