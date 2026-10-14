@@ -1,0 +1,3 @@
+# V2 UMUL32_SHR16 exclusive overlay (research opt-in)
+
+Requires the SHA-pinned stock V2 resident and a prior MATH_INIT call. Assemble overlay_begin_end.asm at a free RAM origin, then invoke MUL32_SHR16_BEGIN, make a batch of at least four MATH_UMUL32_SHR16 calls, and invoke MUL32_SHR16_END. **Do not call normal UMUL32 or any shared-producer consumer during the active interval, including from IRQ/NMI.** The BEGIN/END code patches 13 bytes of the installed shared executable and is non-reentrant. Production profiles remain unchanged. Read ../../docs/ISSUE144_V2_SHR16_EXCLUSIVE_BATCH_RESEARCH.md for actual proof and limits.

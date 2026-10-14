@@ -1,0 +1,336 @@
+{
+  "convention": "public entry through RTS excluding caller JSR and input setup",
+  "kind": "CPU-model public-call corpus and exclusive overlay experiment",
+  "native_vice_candidate_qualified": false,
+  "operand_vector_sha256": "a53c473ea26290c4f7623c9599eeabc9158e56065222f3f695b8fe84ee2e0496",
+  "overlay": {
+    "baseline": {
+      "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+      "max_cycles": 872,
+      "mean_cycles": 753.2353673723537,
+      "median_cycles": 753,
+      "min_cycles": 693,
+      "p95_cycles": 797
+    },
+    "candidate": {
+      "cycle_vector_sha256": "15e2c77825dde500cf1598924ce4e485a3895cffcddd83da1061a2d129ef8b44",
+      "max_cycles": 819,
+      "mean_cycles": 700.2353673723537,
+      "median_cycles": 700,
+      "min_cycles": 640,
+      "p95_cycles": 744
+    },
+    "clean_unmodified_normal_path_rechecked": true,
+    "live_patch_bytes": 13,
+    "native_vice_candidate_qualified": false,
+    "patches": {
+      "586E": {
+        "new": "eaeaea",
+        "old": "8d09c0"
+      },
+      "587F": {
+        "new": "08",
+        "old": "0a"
+      },
+      "5894": {
+        "new": "09",
+        "old": "0b"
+      },
+      "58A8": {
+        "new": "0a",
+        "old": "0c"
+      },
+      "58B5": {
+        "new": "0b",
+        "old": "0d"
+      },
+      "58BC": {
+        "new": "0c",
+        "old": "0e"
+      },
+      "58C3": {
+        "new": "0d",
+        "old": "0f"
+      },
+      "58C7": {
+        "new": "18eaea",
+        "old": "8d08c0"
+      },
+      "C4E3": {
+        "new": "4c",
+        "old": "20"
+      }
+    },
+    "per_call_savings": {
+      "cycle_vector_sha256": "8ef186f3a61df3f7731cfe317dc20f47118b1cda0f76450fd6187766fc3929be",
+      "max_cycles": 53,
+      "mean_cycles": 53.0,
+      "median_cycles": 53,
+      "min_cycles": 53,
+      "p95_cycles": 53
+    },
+    "regular_mixed_call_abi_qualified": false,
+    "savings_histogram": {
+      "53": 2409
+    },
+    "status": "PASS_EXCLUSIVE_OVERLAY_ONLY",
+    "warning": "Shared UMUL32 producer is altered. Mixed normal UMUL32 calls are not valid while the overlay is active; this is NOT a drop-in library routine. Setup/restore cycles excluded."
+  },
+  "pairs_per_profile": 2409,
+  "private_optisearch_published": false,
+  "profile_means": {
+    "v1_balanced": {
+      "MATH_SMUL32": {
+        "cycle_vector_sha256": "cb95bba53419448c8138f24fc778e0c1c3c4265dc4562d10fc42dcd9b2a46d6e",
+        "max_cycles": 873,
+        "mean_cycles": 743.6089663760897,
+        "median_cycles": 748,
+        "min_cycles": 660,
+        "p95_cycles": 795
+      },
+      "MATH_SMUL32_SHR16": {
+        "cycle_vector_sha256": "a0322fb2e5008833b335f3cd8996ab5edd9514203bac44c9b385bd60eb8ed717",
+        "max_cycles": 936,
+        "mean_cycles": 806.6089663760897,
+        "median_cycles": 811,
+        "min_cycles": 723,
+        "p95_cycles": 858,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      },
+      "MATH_UMUL32": {
+        "cycle_vector_sha256": "ca63a77e354390b462254c876775a1e2b68f612e60b952e1ce10902121c59fcb",
+        "max_cycles": 831,
+        "mean_cycles": 712.2353673723537,
+        "median_cycles": 712,
+        "min_cycles": 652,
+        "p95_cycles": 756
+      },
+      "MATH_UMUL32_SHR16": {
+        "cycle_vector_sha256": "22076028fcfa9c5a90d9a6b82a8d5531cc99d1266f0c7896fae68734fff1bf21",
+        "max_cycles": 894,
+        "mean_cycles": 775.2353673723537,
+        "median_cycles": 775,
+        "min_cycles": 715,
+        "p95_cycles": 819,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_SMUL32": {
+        "cycle_vector_sha256": "e1ecbb966ab0eaabd31e2d97177a3204654449ee1d7de3cfef28451dc65ca768",
+        "max_cycles": 838,
+        "mean_cycles": 711.64300539643,
+        "median_cycles": 715,
+        "min_cycles": 630,
+        "p95_cycles": 763
+      },
+      "MATH_SMUL32_SHR16": {
+        "cycle_vector_sha256": "ac96d9c394121008cd2246921a5c74bf81f52693d61080611a137de714d45815",
+        "max_cycles": 901,
+        "mean_cycles": 774.64300539643,
+        "median_cycles": 778,
+        "min_cycles": 693,
+        "p95_cycles": 826,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      },
+      "MATH_UMUL32": {
+        "cycle_vector_sha256": "46de24f51c5e4b4cb377f89e078af550824f24eade6bdfd47a5705d981ab0af0",
+        "max_cycles": 809,
+        "mean_cycles": 690.2353673723537,
+        "median_cycles": 690,
+        "min_cycles": 630,
+        "p95_cycles": 734
+      },
+      "MATH_UMUL32_SHR16": {
+        "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+        "max_cycles": 872,
+        "mean_cycles": 753.2353673723537,
+        "median_cycles": 753,
+        "min_cycles": 693,
+        "p95_cycles": 797,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_SMUL32": {
+        "cycle_vector_sha256": "e1ecbb966ab0eaabd31e2d97177a3204654449ee1d7de3cfef28451dc65ca768",
+        "max_cycles": 838,
+        "mean_cycles": 711.64300539643,
+        "median_cycles": 715,
+        "min_cycles": 630,
+        "p95_cycles": 763
+      },
+      "MATH_SMUL32_SHR16": {
+        "cycle_vector_sha256": "ac96d9c394121008cd2246921a5c74bf81f52693d61080611a137de714d45815",
+        "max_cycles": 901,
+        "mean_cycles": 774.64300539643,
+        "median_cycles": 778,
+        "min_cycles": 693,
+        "p95_cycles": 826,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      },
+      "MATH_UMUL32": {
+        "cycle_vector_sha256": "46de24f51c5e4b4cb377f89e078af550824f24eade6bdfd47a5705d981ab0af0",
+        "max_cycles": 809,
+        "mean_cycles": 690.2353673723537,
+        "median_cycles": 690,
+        "min_cycles": 630,
+        "p95_cycles": 734
+      },
+      "MATH_UMUL32_SHR16": {
+        "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+        "max_cycles": 872,
+        "mean_cycles": 753.2353673723537,
+        "median_cycles": 753,
+        "min_cycles": 693,
+        "p95_cycles": 797,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_SMUL32": {
+        "cycle_vector_sha256": "e1ecbb966ab0eaabd31e2d97177a3204654449ee1d7de3cfef28451dc65ca768",
+        "max_cycles": 838,
+        "mean_cycles": 711.64300539643,
+        "median_cycles": 715,
+        "min_cycles": 630,
+        "p95_cycles": 763
+      },
+      "MATH_SMUL32_SHR16": {
+        "cycle_vector_sha256": "ac96d9c394121008cd2246921a5c74bf81f52693d61080611a137de714d45815",
+        "max_cycles": 901,
+        "mean_cycles": 774.64300539643,
+        "median_cycles": 778,
+        "min_cycles": 693,
+        "p95_cycles": 826,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      },
+      "MATH_UMUL32": {
+        "cycle_vector_sha256": "46de24f51c5e4b4cb377f89e078af550824f24eade6bdfd47a5705d981ab0af0",
+        "max_cycles": 809,
+        "mean_cycles": 690.2353673723537,
+        "median_cycles": 690,
+        "min_cycles": 630,
+        "p95_cycles": 734
+      },
+      "MATH_UMUL32_SHR16": {
+        "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+        "max_cycles": 872,
+        "mean_cycles": 753.2353673723537,
+        "median_cycles": 753,
+        "min_cycles": 693,
+        "p95_cycles": 797,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "MATH_SMUL32": {
+        "cycle_vector_sha256": "cb95bba53419448c8138f24fc778e0c1c3c4265dc4562d10fc42dcd9b2a46d6e",
+        "max_cycles": 873,
+        "mean_cycles": 743.6089663760897,
+        "median_cycles": 748,
+        "min_cycles": 660,
+        "p95_cycles": 795
+      },
+      "MATH_SMUL32_SHR16": {
+        "cycle_vector_sha256": "a0322fb2e5008833b335f3cd8996ab5edd9514203bac44c9b385bd60eb8ed717",
+        "max_cycles": 936,
+        "mean_cycles": 806.6089663760897,
+        "median_cycles": 811,
+        "min_cycles": 723,
+        "p95_cycles": 858,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      },
+      "MATH_UMUL32": {
+        "cycle_vector_sha256": "ca63a77e354390b462254c876775a1e2b68f612e60b952e1ce10902121c59fcb",
+        "max_cycles": 831,
+        "mean_cycles": 712.2353673723537,
+        "median_cycles": 712,
+        "min_cycles": 652,
+        "p95_cycles": 756
+      },
+      "MATH_UMUL32_SHR16": {
+        "cycle_vector_sha256": "22076028fcfa9c5a90d9a6b82a8d5531cc99d1266f0c7896fae68734fff1bf21",
+        "max_cycles": 894,
+        "mean_cycles": 775.2353673723537,
+        "median_cycles": 775,
+        "min_cycles": 715,
+        "p95_cycles": 819,
+        "same_operand_overhead_vs_full": {
+          "histogram": {
+            "63": 2409
+          },
+          "max": 63,
+          "mean": 63.0,
+          "min": 63
+        }
+      }
+    }
+  },
+  "public_abi_replacement": false,
+  "resident_prg_modified": false,
+  "status": "PASS"
+}

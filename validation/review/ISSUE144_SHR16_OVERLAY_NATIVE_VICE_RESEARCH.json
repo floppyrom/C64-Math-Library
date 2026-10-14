@@ -1,0 +1,32 @@
+{
+  "baseline_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+  "baseline_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+  "candidate_dump_sha256": "cfa4852bf6664ecfe9817da2ea40d2da70e4d91512cd49587422d20bc4e9cb14",
+  "changed_memory_byte_indices": [
+    18544,
+    18545,
+    18546,
+    18561,
+    18582,
+    18602,
+    18615,
+    18622,
+    18629,
+    18633,
+    18634,
+    18635,
+    46309
+  ],
+  "entry": "MATH_UMUL32_SHR16",
+  "first_six_output_bytes_carry_inputs_and_stack_match": true,
+  "last_two_output_bytes_outside_public_shr16_contract": true,
+  "mixed_normal_UMUL32_calls_permitted_with_overlay": false,
+  "native_candidate_expected_output_correct": true,
+  "native_cycle_timing_measured": false,
+  "native_reentry_and_patch_setup_cost_qualified": false,
+  "native_vice_calls": 48,
+  "no_public_prg_binary_changed": true,
+  "profile": "v2_pareto_fast",
+  "research_candidate_sha256": "d570d2c91658318a467238d4efe20b9fd0afa37acc4eaef09c39f5e18f26f3dc",
+  "status": "PASS_NATIVE_VICE_EXCLUSIVE_OVERLAY_ONLY"
+}
