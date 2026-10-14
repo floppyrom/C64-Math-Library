@@ -3262,6 +3262,9 @@
       "v5_hybrid_lowzp": "cb7c69e0ba8a12b65a311dc60c0ad7f4e036121c45d1a88e7cdd9263584134cb"
     },
     "reversible_parent_bytes": "validation/review/ISSUE136_SEEK_DIVISION_REVERSIBLE_PARENT_BYTES.json",
-    "historical_inverse_contract": "SHA256-checked exact byte restore to immediately preceding resident images"
+    "historical_inverse_contract": "SHA256-checked exact byte restore to immediately preceding resident images",
+    "native_mixed_seek_divmod_public_calls": 325,
+    "native_mixed_seek_divmod_proof": "validation/review/ISSUE136_SEEK_DIVMOD_NATIVE_VICE.json",
+    "native_mixed_seek_divmod_run": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38606739891"
   }
 }
