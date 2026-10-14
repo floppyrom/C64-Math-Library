@@ -96,7 +96,8 @@ def main():
   assert abs(reference["mean_cycles"]-research["profiles"][p]["reference"]["candidate_mean_cycles"])<1e-9
   means[p]={"mean":reference["mean_cycles"],"min":reference["min_cycles"],"max":reference["max_cycles"]}
   if p in STOCK:
-   refresh_csv(R/p/"PUBLIC_PERFORMANCE_GAME_MATH.csv",p,means[p])
+   if (R/p/"PUBLIC_PERFORMANCE_GAME_MATH.csv").exists():
+    refresh_csv(R/p/"PUBLIC_PERFORMANCE_GAME_MATH.csv",p,means[p])
    refresh_csv(R/"docs/PERFORMANCE_GAME_MATH_FINAL.csv",p,means[p])
  perf=R/"PERFORMANCE.md";s=perf.read_text()
  row=next(x for x in s.splitlines() if "MATH_VEC2_NORMALIZE_Q8_8" in x and x.startswith("|"))
