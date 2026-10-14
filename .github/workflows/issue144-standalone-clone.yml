@@ -25,6 +25,7 @@ jobs:
           ast.parse(open('tools/issue144_shr16_independent_clone.py').read())
           ast.parse(open('tools/native_issue144_shr16_independent_clone.py').read())
           ast.parse(open('tools/issue144_shr16_public_entry_optin.py').read())
+          ast.parse(open('tools/native_issue144_shr16_public_entry_optin.py').read())
           PY
       - name: Source-assembled relocated independent 32x32 core, three profiles and interleaved calls
         run: python3 tools/issue144_shr16_independent_clone.py --limit 2409
@@ -39,6 +40,8 @@ jobs:
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
       - name: Native VICE three profile original and clone public result proof
         run: python3 tools/native_issue144_shr16_independent_clone.py
+      - name: Native x64sc proof of original $5E12 entry with clone redirect
+        run: python3 tools/native_issue144_shr16_public_entry_optin.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -47,4 +50,5 @@ jobs:
             validation/review/ISSUE144_SHR16_STANDALONE_CLONE_CPU_MODEL.json
             validation/review/ISSUE144_SHR16_INDEPENDENT_CLONE_NATIVE_VICE.json
             validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_OPTIN_CPU_MODEL.json
+            validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_OPTIN_NATIVE_VICE.json
           if-no-files-found: warn
