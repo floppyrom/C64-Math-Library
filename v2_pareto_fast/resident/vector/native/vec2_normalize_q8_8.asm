@@ -89,7 +89,6 @@ pp_x_shift:
 pp_x_ratio:
     ldx ZP_MAIN+$1B
 pp_x_index:
-    bne pp_x_log
     beq pp_x_output
 pp_x_log:
     lda REG_LOW+$0400,y
@@ -126,7 +125,6 @@ pp_y_shift:
 pp_y_ratio:
     ldx ZP_MAIN+$19
 pp_y_index:
-    bne pp_y_log
     beq pp_y_output
 pp_y_log:
     lda REG_LOW+$0400,y
@@ -208,7 +206,6 @@ pn_x_shift:
 pn_x_ratio:
     ldx ZP_MAIN+$1B
 pn_x_index:
-    bne pn_x_log
     beq pn_x_output
 pn_x_log:
     lda REG_LOW+$0400,y
@@ -247,7 +244,6 @@ pn_y_shift:
 pn_y_ratio:
     ldx ZP_MAIN+$19
 pn_y_index:
-    bne pn_y_log
     beq pn_y_output
 pn_y_log:
     lda REG_LOW+$0400,y
@@ -331,7 +327,6 @@ np_x_shift:
 np_x_ratio:
     ldx ZP_MAIN+$1B
 np_x_index:
-    bne np_x_log
     beq np_x_output
 np_x_log:
     lda REG_LOW+$0400,y
@@ -370,7 +365,6 @@ np_y_shift:
 np_y_ratio:
     ldx ZP_MAIN+$19
 np_y_index:
-    bne np_y_log
     beq np_y_output
 np_y_log:
     lda REG_LOW+$0400,y
@@ -459,7 +453,6 @@ nn_x_shift:
 nn_x_ratio:
     ldx ZP_MAIN+$1B
 nn_x_index:
-    bne nn_x_log
     beq nn_x_output
 nn_x_log:
     lda REG_LOW+$0400,y
@@ -501,7 +494,6 @@ nn_y_shift:
 nn_y_ratio:
     ldx ZP_MAIN+$19
 nn_y_index:
-    bne nn_y_log
     beq nn_y_output
 nn_y_log:
     lda REG_LOW+$0400,y
