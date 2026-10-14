@@ -1,3 +1,6 @@
+2026-10-14 ISSUE39 SEEK16 EUCLIDEAN INIT LOOP RELEASE
+- SEEK16 Euclidean INIT scale loop: one byte smaller, faster on CPU-model paired calls, unchanged major-axis INIT and SEEK8/STEP paths. Five profiles, two relocation maps, 240 baseline/candidate native VICE public calls. Repaired Issue #136 V1/V5 UDIV32/SEEK state collision by moving the low-round island to $4D80-$4FEC, preserving the public ABI. Passed 18,280 mixed DIV/MOD public calls and 13,580 SEEK steps. Rebenchmarked transitive V1 timing; unchanged REU/ZP. Standalone mirrors, performance, package audit and checksums regenerated. PR/main CI pending; Issue #39 still open for SEEK family. docs/ISSUE39_SEEK16_EUCLIDEAN_INIT_RELEASE_2026-10-14.md
+
 ## 2026-10-14 ISSUE39 NORMALIZE POSTMERGE FINAL CERTIFICATION
 
 Confirmed PR #132 installed the 865-byte V1/V2/V5 normalizer with 16 fewer code bytes and identical signed results. Mean CPU-model cycles 160.150080 -> 159.128794. Verified 1,073,960 paired-map model calls, 320 real x64sc old/new calls, 723,073-cell precision certificate, unchanged four-byte scratch, public API and V3/V4 REU. Native VICE cycle timing was not measured. The fully qualified distance/normalization family is complete; Issue #39 remains OPEN for SEEK8/16 INIT/STEP. Both changelogs and checksum ledger sealed.

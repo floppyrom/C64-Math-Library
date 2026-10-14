@@ -136,20 +136,20 @@ L19CA:
     sta $54                            ; @19D0 85 54
     lda $60                            ; @19D2 A5 60
     ldy $5F                            ; @19D4 A4 5F
-L19D6:
-    beq L19E2                          ; @19D6 F0 0A
+    beq L19E1                          ; @19D6 F0 09
+L19D8:
     lsr $5F                            ; @19D8 46 5F
     ror a                              ; @19DA 6A
     lsr $54                            ; @19DB 46 54
     ldy $5F                            ; @19DD A4 5F
-    jmp L19D6                          ; @19DF 4C D6 19
-L19E2:
-    sta $53                            ; @19E2 85 53
-    jsr L3D23                          ; @19E4 20 23 3D
-    sta $9158,x                        ; @19E7 9D 58 91
-    tya                                ; @19EA 98
-    sta $9150,x                        ; @19EB 9D 50 91
-    jmp L1981                          ; @19EE 4C 81 19
+    bne L19D8                          ; @19DF D0 F7
+L19E1:
+    sta $53                            ; @19E1 85 53
+    jsr L3D23                          ; @19E3 20 23 3D
+    sta $9158,x                        ; @19E6 9D 58 91
+    tya                                ; @19E9 98
+    sta $9150,x                        ; @19EA 9D 50 91
+    jmp L1981                          ; @19ED 4C 81 19
 ; ---- executable island $3D23 ----
 * = $3D23
 L3D23:
