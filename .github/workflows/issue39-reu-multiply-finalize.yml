@@ -1,0 +1,45 @@
+name: Issue39 REU multiply postmerge completion certificate and package
+on:
+  push:
+    branches: [issue39-reu-multiply-family-final-20261014]
+    paths:
+      - .github/workflows/issue39-reu-multiply-finalize.yml
+      - tools/finalize_issue39_reu_multiply_family.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  finalize-reu-family:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-reu-multiply-family-final-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Finalize REU Turbo16 Turbo32 and V4 QS16 after four verified main checks
+        run: |
+          python3 tools/finalize_issue39_reu_multiply_family.py \
+            --main-sha 03ba4fc98893968c88e223682a1a7d09aa80b123 \
+            --full-ci 38540701276 --comparable-ci 38540701196 \
+            --turbo-ci 38540701380 --fixed-ci 38540701127
+      - name: Permanently verify three REU multiply modes and no deployed-image changes
+        run: python3 tools/issue39_reu_multiply_family_certification.py
+      - name: Publish checksum-matched report, status, docs and changelogs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: certify REU multiply family complete after main green'
+          git push origin HEAD:issue39-reu-multiply-family-final-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-reu-final-certificate
+          path: validation/review/ISSUE39_REU_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json
