@@ -98,6 +98,8 @@ def main():
         old=published(p).read_bytes();fresh=new_prg(p).read_bytes()
         row=research["profiles"][p]
         assert sha(old)==row["baseline_prg_sha256"]==st["reference_prg_sha256"][p]
+        assert native["profiles"][p]["MATH_DIST8_FAST"]["candidate_differs_from_baseline"],(p,"native proof used unoptimized candidate")
+        assert native["profiles"][p]["MATH_DIST8_FAST"]["changed_swap_bytes"]==(10 if p in ("v1_balanced","v5_hybrid_lowzp") else 8)
         assert sha(fresh)==native["profiles"][p]["MATH_DIST8_FAST"]["new_prg_sha256"]
         assert old[:2]==fresh[:2] and len(old)==len(fresh)
         load=int.from_bytes(old[:2],"little")
