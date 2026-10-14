@@ -1,0 +1,45 @@
+name: Issue39 trig-angle completed family certification
+on:
+  push:
+    branches: [issue39-trig-angle-final-20261014]
+    paths:
+      - .github/workflows/issue39-trig-angle-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  final-trig-publication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-trig-angle-final-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Certify from verified green main and native evidence
+        run: |
+          python3 tools/finalize_issue39_trig_angle_family.py \
+            --main-sha 50b75c5eeeec6ea170ba1940ca4e0ac4176b7089 \
+            --full-ci 38550154962 \
+            --comparable-ci 38550155125 \
+            --native-ci 38548516375
+      - name: Commit resealed documentation, certificate and checksums
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal trig-angle family after main green and native proof'
+          git push origin HEAD:issue39-trig-angle-final-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-trig-final-publication
+          path: |
+            validation/review/ISSUE39_TRIG_ANGLE_FAMILY_COMPLETION_2026-10-14.json
+            docs/ISSUE39_TRIG_ANGLE_FAMILY_REVIEW_2026-10-14.md

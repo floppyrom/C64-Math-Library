@@ -1,3 +1,11 @@
+## 2026-10-14 ISSUE39 TRIG ANGLE FAMILY FINAL CERTIFICATION
+
+**Complete:** SIN8/COS8/SINCOS8 plus ATAN2_8, all five profiles, both source relocations. 7,680 CPU-model SIN/COS/SINCOS public calls; 655,360 exhaustive signed ATAN2 public calls; 480 real x64sc native calls (including V3/V4 REU image). V1 SINCOS 39 model cycles vs combined two-call saving 13; V2–V5 SINCOS 31 and saving 15. All combined outputs equal separate calls. No production PRG, ABI, ZP, table or reserved stack change, no private OptiSearch source. Native cycles were **not** measured.
+
+Certified main `50b75c5eeeec6ea170ba1940ca4e0ac4176b7089`; full library [#38550154962](https://github.com/floppyrom/C64-Math-Library/actions/runs/38550154962), comparable [#38550155125](https://github.com/floppyrom/C64-Math-Library/actions/runs/38550155125), native [#38548516375](https://github.com/floppyrom/C64-Math-Library/actions/runs/38548516375). See `validation/review/ISSUE39_TRIG_ANGLE_FAMILY_COMPLETION_2026-10-14.json`. Issue #39 OPEN for distance and seek.
+
+---
+
 2026-10-14 ISSUE39 TRIG ANGLE NATIVE VICE VALIDATION
 - 480 installed x64sc public calls in all five profiles covering SIN8/COS8/SINCOS8/ATAN2; compared exact outputs against independent model, preserved operands, carry clear and stable stack. V3/V4 REU image tested. No native cycle measurement; source, standalone, ZP and public ABI unchanged. Final PR/main CI pending.
 

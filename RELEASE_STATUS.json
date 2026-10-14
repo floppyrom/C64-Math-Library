@@ -2987,8 +2987,8 @@
     "premerge_native_vice_run": 38539477409
   },
   "issue39_trig_angle_family_2026_10_14": {
-    "status": "PASS_NATIVE_VICE_PR_MAIN_CI_PENDING",
-    "family_complete": false,
+    "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
+    "family_complete": true,
     "native_vice_calls": 480,
     "native_validation": "validation/review/ISSUE39_TRIG_ANGLE_NATIVE_2026-10-14.json",
     "routines": [
@@ -3041,6 +3041,10 @@
     },
     "documentation": "docs/ISSUE39_TRIG_ANGLE_FAMILY_REVIEW_2026-10-14.md",
     "evidence": "validation/review/ISSUE39_TRIG_ANGLE_FAMILY_SOURCE_AUDIT_2026-10-14.json",
-    "issue39_remains_open": true
+    "issue39_remains_open": true,
+    "certified_main_sha": "50b75c5eeeec6ea170ba1940ca4e0ac4176b7089",
+    "postmerge_full_library_ci_run": 38550154962,
+    "postmerge_comparable_ci_run": 38550155125,
+    "premerge_native_vice_run": 38548516375
   }
 }
