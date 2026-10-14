@@ -1,3 +1,6 @@
+2026-10-14 ISSUE39 SEEK8/16 COMPLETE FAMILY AUDIT
+- Final audited all eight SEEK8/16 public APIs. 480 INIT / 246,480 STEP CPU-model calls across all slots/maps, 40 INIT / 640 STEP native x64sc calls with V3/V4 REU. V2 k0=1 shortcut rejected: foreign resident bytes at $19F0 and table $1A00, not an available code island. No new qualified speed winner; shipped binaries, REU, public ABI and ZP remain unchanged. Prior SEEK16_INIT optimization remains in release. Main CI required for Issue #39 closeout. docs/ISSUE39_SEEK_FAMILY_COMPLETION_2026-10-14.md
+
 2026-10-14 ISSUE39 SEEK8/16 ALL-MODE NATIVE VICE CERTIFICATION
 - Native x64sc executes all eight SEEK8/16 INIT/STEP, STEP_INT and STEP1 public modes on V1–V5, 40 INIT and 640 STEP calls; checks movement, arrival carry, X, stack and post-arrival stability against independent model, using real V3/V4 REU images. No native cycle timing claimed. No production binary/API/REU/ZP changes; main certification and full SEEK family closeout still pending. docs/ISSUE39_SEEK_NATIVE_ALL_MODES_2026-10-14.md
 

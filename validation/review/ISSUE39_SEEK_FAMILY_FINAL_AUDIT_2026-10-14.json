@@ -1,0 +1,144 @@
+{
+  "abi_unchanged": true,
+  "audit_scope": "all 8 existing SEEK8/16 INIT, STEP, STEP_INT and STEP1 APIs",
+  "binary_unchanged": true,
+  "family_test_evidence": {
+    "all_slots": "validation/review/ISSUE39_SEEK_ALL_SLOTS_RESEARCH_2026-10-14.json",
+    "mixed_divmod": "validation/review/ISSUE136_SEEK_DIVMOD_MIXED_PROOF.json",
+    "native": "validation/review/ISSUE39_SEEK_ALL_MODES_NATIVE_VICE_2026-10-14.json",
+    "placement": "validation/movement/SEEK_PLACEMENT.json",
+    "public_benchmark": "validation/movement/SEEK_PROFILE_BENCHMARK.json"
+  },
+  "issue39_closeout_status": "PENDING_POSTMERGE_MAIN_CI",
+  "k1_fastpath_research": {
+    "all_v1_to_v5_current_islands_overflow": true,
+    "k1_equal_deltas_safe_fallback": true,
+    "not_claimed_cycle_improvement": true,
+    "production_promoted": false,
+    "proof_type": "assembled code size and entry-layout resource gate only"
+  },
+  "native_cycle_timing_measured": false,
+  "not_a_global_optimality_proof": true,
+  "optimization_conclusion": "retain qualified existing STEPs and INITs; proposed K1 shortcut fails all five actual resident memory-island budgets",
+  "private_optisearch_code_published": false,
+  "public_resident_prg_sha256": {
+    "v1_balanced": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+    "v2_pareto_fast": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+    "v3_reu_512k": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+    "v4_reu_16m": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+    "v5_hybrid_lowzp": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2"
+  },
+  "resource_screening": {
+    "v1_balanced": {
+      "current_bytes": 311,
+      "profile_resource_class": "v1_balanced",
+      "same_island_headroom_bytes": 1,
+      "single_island_capacity_bytes": 312,
+      "source_maps": {
+        "alternate": {
+          "candidate_assembled": true,
+          "candidate_bytes": 337,
+          "candidate_growth_bytes": 26,
+          "fits_existing_island": false,
+          "old_start": "0xb723"
+        },
+        "reference": {
+          "candidate_assembled": true,
+          "candidate_bytes": 337,
+          "candidate_growth_bytes": 26,
+          "fits_existing_island": false,
+          "old_start": "0x3723"
+        }
+      }
+    },
+    "v2_pareto_fast": {
+      "current_bytes": 270,
+      "profile_resource_class": "v2_pareto_fast",
+      "same_island_headroom_bytes": 0,
+      "single_island_capacity_bytes": 270,
+      "source_maps": {
+        "alternate": {
+          "candidate_assembled": true,
+          "candidate_bytes": 291,
+          "candidate_growth_bytes": 21,
+          "fits_existing_island": false,
+          "old_start": "0x98e2"
+        },
+        "reference": {
+          "candidate_assembled": true,
+          "candidate_bytes": 291,
+          "candidate_growth_bytes": 21,
+          "fits_existing_island": false,
+          "old_start": "0x18e2"
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "current_bytes": 270,
+      "profile_resource_class": "v3_reu_512k",
+      "same_island_headroom_bytes": 3,
+      "single_island_capacity_bytes": 273,
+      "source_maps": {
+        "alternate": {
+          "candidate_assembled": true,
+          "candidate_bytes": 291,
+          "candidate_growth_bytes": 21,
+          "fits_existing_island": false,
+          "old_start": "0xb600"
+        },
+        "reference": {
+          "candidate_assembled": true,
+          "candidate_bytes": 291,
+          "candidate_growth_bytes": 21,
+          "fits_existing_island": false,
+          "old_start": "0x3600"
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "current_bytes": 270,
+      "profile_resource_class": "v4_reu_16m",
+      "same_island_headroom_bytes": 3,
+      "single_island_capacity_bytes": 273,
+      "source_maps": {
+        "alternate": {
+          "candidate_assembled": true,
+          "candidate_bytes": 291,
+          "candidate_growth_bytes": 21,
+          "fits_existing_island": false,
+          "old_start": "0xb600"
+        },
+        "reference": {
+          "candidate_assembled": true,
+          "candidate_bytes": 291,
+          "candidate_growth_bytes": 21,
+          "fits_existing_island": false,
+          "old_start": "0x3600"
+        }
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "current_bytes": 311,
+      "profile_resource_class": "v1_balanced",
+      "same_island_headroom_bytes": 1,
+      "single_island_capacity_bytes": 312,
+      "source_maps": {
+        "alternate": {
+          "candidate_assembled": true,
+          "candidate_bytes": 337,
+          "candidate_growth_bytes": 26,
+          "fits_existing_island": false,
+          "old_start": "0xb723"
+        },
+        "reference": {
+          "candidate_assembled": true,
+          "candidate_bytes": 337,
+          "candidate_growth_bytes": 26,
+          "fits_existing_island": false,
+          "old_start": "0x3723"
+        }
+      }
+    }
+  },
+  "status": "PASS_FAMILY_AUDIT_WITH_NO_NEW_PRODUCTION_CANDIDATE"
+}
