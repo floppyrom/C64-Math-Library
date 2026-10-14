@@ -1,0 +1,158 @@
+{
+  "isqrt_low16": {
+    "V4_REU_bus_or_DMA_time_measured": false,
+    "code_bytes": 17,
+    "guard_not_default_recommended": true,
+    "precondition_for_low16_only": "upper 16 input bits zero",
+    "source_sha256": "f805be158b1fafb4c919b8fa14e2a789d3fb218b3876f8da3ba155c6b9da9bab",
+    "status": "PASS_LOW16_AND_ALL_DOMAIN_GUARDED_CORRECTNESS",
+    "workloads": {
+      "full32": {
+        "cases": 1600,
+        "corpus_sha256": "eacec14378ccaf5ee86e3556c160497570878a68cccf50b6ede1c9fe34affc6f",
+        "guard_savings": {
+          "cycle_vector_sha256": "353277f601d0b9ef229f6e7a8f29524f8a2e85042c6fd857251b64ad38611c5c",
+          "max_cycles": -14,
+          "mean_cycles": -14.0,
+          "median_cycles": -14.0,
+          "min_cycles": -14,
+          "p95_cycles": -14
+        },
+        "timings": {
+          "baseline": {
+            "cycle_vector_sha256": "95c3f60e5f54cb1d2069cadfeca333a9bf321bd3f657975889bf5ee59a4dd18a",
+            "max_cycles": 1032,
+            "mean_cycles": 915.62875,
+            "median_cycles": 914.0,
+            "min_cycles": 806,
+            "p95_cycles": 986
+          },
+          "guarded": {
+            "cycle_vector_sha256": "847e4a30b359f4ec26cf5e78b6a20a07cfdc191ec883360bc73276f6136c53fd",
+            "max_cycles": 1046,
+            "mean_cycles": 929.62875,
+            "median_cycles": 928.0,
+            "min_cycles": 820,
+            "p95_cycles": 1000
+          }
+        }
+      },
+      "low16": {
+        "cases": 1312,
+        "corpus_sha256": "a3378ee00ebea8ed2e1dadb37d2f0dd448a6591b293154b5def3647863cdfcfa",
+        "guard_savings": {
+          "cycle_vector_sha256": "7fed1e09d849dacb2cc75290943c34daa9dea09c3e25f5ab085043ef3cb75489",
+          "max_cycles": 1007,
+          "mean_cycles": 904.625,
+          "median_cycles": 908.0,
+          "min_cycles": 799,
+          "p95_cycles": 967
+        },
+        "low16_only_savings": {
+          "cycle_vector_sha256": "8f3fc3ab78b10d7fa5b0e0d3a433c8d0d27f9de20c40de31b46c4ee91c904b65",
+          "max_cycles": 1017,
+          "mean_cycles": 914.625,
+          "median_cycles": 918.0,
+          "min_cycles": 809,
+          "p95_cycles": 977
+        },
+        "timings": {
+          "baseline": {
+            "cycle_vector_sha256": "379a77add82e8dae5b41747b5d4e5ce04ceec3e6291e0e939ccb4f58ef234601",
+            "max_cycles": 1074,
+            "mean_cycles": 971.625,
+            "median_cycles": 975.0,
+            "min_cycles": 866,
+            "p95_cycles": 1034
+          },
+          "guarded": {
+            "cycle_vector_sha256": "c98bd12bc7d593b408b4a41af072f6f33c8a022187f4f14b9d0ceabd65637702",
+            "max_cycles": 67,
+            "mean_cycles": 67.0,
+            "median_cycles": 67.0,
+            "min_cycles": 67,
+            "p95_cycles": 67
+          },
+          "low16_only": {
+            "cycle_vector_sha256": "68bd98b196618b5f8704cd3f84991625b0f85a0a3080e1cf2e3c5c6e81f34423",
+            "max_cycles": 57,
+            "mean_cycles": 57.0,
+            "median_cycles": 57.0,
+            "min_cycles": 57,
+            "p95_cycles": 57
+          }
+        }
+      },
+      "mixed_10pct": {
+        "cases": 1600,
+        "corpus_sha256": "f314e8d3609ae4f1971d49389b23eced669d9226bc96dc7fd3dfb2d123af280a",
+        "guard_savings": {
+          "cycle_vector_sha256": "ee9a6fd6e776a5288e33f2a85f256212b3428c44ee2138c304ac07a6de76dde4",
+          "max_cycles": 997,
+          "mean_cycles": 77.649375,
+          "median_cycles": -14.0,
+          "min_cycles": -14,
+          "p95_cycles": 905
+        },
+        "timings": {
+          "baseline": {
+            "cycle_vector_sha256": "67b28cc2e003e67156227d4ca6326216cfcfea7156a2d59ba345431bf0fb071a",
+            "max_cycles": 1067,
+            "mean_cycles": 921.4525,
+            "median_cycles": 914.0,
+            "min_cycles": 806,
+            "p95_cycles": 996
+          },
+          "guarded": {
+            "cycle_vector_sha256": "4f9ffc596142a51da03df6e1dda22274364e442dc5f49c949e20c96dc71a71e9",
+            "max_cycles": 1046,
+            "mean_cycles": 843.803125,
+            "median_cycles": 928.0,
+            "min_cycles": 70,
+            "p95_cycles": 1000
+          }
+        }
+      }
+    }
+  },
+  "mod_pow2": {
+    "X_Y_stack_and_inputs_preserved": true,
+    "cases": 2752,
+    "code_bytes": 25,
+    "operand_sha256": "3d84a7770392f59b018ed5181002f5fe427e5aacd8041976d7377cb4f68fc78e",
+    "public_alias_produces_quotient_but_specialist_does_not": true,
+    "required_d_nonzero_power_two": true,
+    "saved": {
+      "cycle_vector_sha256": "55e12e93c0c09c776fa52b7954720224f0d41b825e88b5fdd35d0015a2836612",
+      "max_cycles": 1703,
+      "mean_cycles": 813.1420784883721,
+      "median_cycles": 815.0,
+      "min_cycles": 110,
+      "p95_cycles": 1380
+    },
+    "source_sha256": "c85633388081926888546989e80fec273b29a50aad841468162f68bdd3629152",
+    "specialist": {
+      "cycle_vector_sha256": "c3142223804db0701d89937e56af2483bb555342f03dcc2e2b5288aa23d3e7d6",
+      "max_cycles": 38,
+      "mean_cycles": 38.0,
+      "median_cycles": 38.0,
+      "min_cycles": 38,
+      "p95_cycles": 38
+    },
+    "status": "PASS_RONLY_POW2_CONTRACT",
+    "stock": {
+      "cycle_vector_sha256": "703a240ae76872414916ad6331f1f70c2046942fd25451ecdbd446d0a7ee27d7",
+      "max_cycles": 1741,
+      "mean_cycles": 851.1420784883721,
+      "median_cycles": 853.0,
+      "min_cycles": 148,
+      "p95_cycles": 1418
+    }
+  },
+  "native_vice_cycles_measured": false,
+  "not_general_promotion": true,
+  "profile": "v4_reu_16m",
+  "published_binaries_altered": false,
+  "status": "PASS_CPU_MODEL_DOMAIN_SCREEN_ONLY",
+  "zero_page_added": 0
+}

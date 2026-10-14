@@ -3460,5 +3460,82 @@
     "cpu_proof": "validation/review/ISSUE144_SIGNED_NONNEGATIVE_SHR16_OPTIN_MODEL.json",
     "native_proof": "validation/review/ISSUE144_SIGNED_NONNEGATIVE_SHR16_NATIVE_VICE.json",
     "installer_proof": "validation/review/ISSUE144_SIGNED_NONNEGATIVE_INSTALLER_MODEL.json"
+  },
+  "issue144_bc_domain_optins_2026_10_15": {
+    "status": "PASS_SOURCE_CPU_NATIVE_OPTIN_ONLY",
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "pow2_mod_result_contract": "R16/C only, not quotient",
+    "power_two_requirement": "D16 nonzero and exact power of two",
+    "sqrt_domain": "N32 high word zero",
+    "native_vice_correctness": true,
+    "native_cycles_measured": false,
+    "v4_native_real_reu_image": true,
+    "published_default_prgs_changed": false,
+    "normal_zp_added": 0,
+    "documentation": "docs/ISSUE144_BC_DOMAIN_SPECIALIST_PARETO_2026-10-15.md",
+    "sources": [
+      "optional/issue144_pow2_mod32_16/mod32_16_pow2_remainder_only.asm",
+      "optional/issue144_isqrt32_u16/low16_dispatch.asm"
+    ],
+    "model_prefix": "validation/review/ISSUE144_BC_DOMAIN_",
+    "native_record": "validation/review/ISSUE144_BC_SPECIALISTS_NATIVE_VICE.json",
+    "paired_performance": {
+      "v1_balanced": {
+        "mod_stock": 1351.1940406976744,
+        "mod_fast": 38.0,
+        "mod_gain": 1313.1940406976744,
+        "sqrt_stock": 1712.8368902439024,
+        "sqrt_fast": 89.2858231707317,
+        "sqrt_gain": 1623.5510670731708,
+        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_mixed10_gain": 152.803125
+      },
+      "v2_pareto_fast": {
+        "mod_stock": 851.1420784883721,
+        "mod_fast": 38.0,
+        "mod_gain": 813.1420784883721,
+        "sqrt_stock": 1530.4176829268292,
+        "sqrt_fast": 89.54420731707317,
+        "sqrt_gain": 1440.873475609756,
+        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_mixed10_gain": 134.24
+      },
+      "v3_reu_512k": {
+        "mod_stock": 851.1420784883721,
+        "mod_fast": 38.0,
+        "mod_gain": 813.1420784883721,
+        "sqrt_stock": 1530.4176829268292,
+        "sqrt_fast": 89.56478658536585,
+        "sqrt_gain": 1440.8528963414635,
+        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_mixed10_gain": 134.236875
+      },
+      "v4_reu_16m": {
+        "mod_stock": 851.1420784883721,
+        "mod_fast": 38.0,
+        "mod_gain": 813.1420784883721,
+        "sqrt_stock": 971.625,
+        "sqrt_fast": 57.0,
+        "sqrt_gain": 914.625,
+        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_mixed10_gain": 77.649375
+      },
+      "v5_hybrid_lowzp": {
+        "mod_stock": 851.1420784883721,
+        "mod_fast": 38.0,
+        "mod_gain": 813.1420784883721,
+        "sqrt_stock": 1712.8368902439024,
+        "sqrt_fast": 89.2858231707317,
+        "sqrt_gain": 1623.5510670731708,
+        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_mixed10_gain": 152.803125
+      }
+    }
   }
 }

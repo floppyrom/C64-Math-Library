@@ -1,0 +1,89 @@
+{
+  "V4_sqrt_real_REU_image_loaded": true,
+  "native_cycle_timing_measured": false,
+  "profiles": {
+    "v1_balanced": {
+      "isqrt_low16": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "f805be158b1fafb4c919b8fa14e2a789d3fb218b3876f8da3ba155c6b9da9bab",
+        "specialist_native": 24
+      },
+      "mod_pow2": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "c85633388081926888546989e80fec273b29a50aad841468162f68bdd3629152",
+        "specialist_native": 24
+      }
+    },
+    "v2_pareto_fast": {
+      "isqrt_low16": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "f805be158b1fafb4c919b8fa14e2a789d3fb218b3876f8da3ba155c6b9da9bab",
+        "specialist_native": 24
+      },
+      "mod_pow2": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "c85633388081926888546989e80fec273b29a50aad841468162f68bdd3629152",
+        "specialist_native": 24
+      }
+    },
+    "v3_reu_512k": {
+      "isqrt_low16": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "f805be158b1fafb4c919b8fa14e2a789d3fb218b3876f8da3ba155c6b9da9bab",
+        "specialist_native": 24
+      },
+      "mod_pow2": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "c85633388081926888546989e80fec273b29a50aad841468162f68bdd3629152",
+        "specialist_native": 24
+      }
+    },
+    "v4_reu_16m": {
+      "isqrt_low16": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "f805be158b1fafb4c919b8fa14e2a789d3fb218b3876f8da3ba155c6b9da9bab",
+        "specialist_native": 24
+      },
+      "mod_pow2": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "c85633388081926888546989e80fec273b29a50aad841468162f68bdd3629152",
+        "specialist_native": 24
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "isqrt_low16": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "f805be158b1fafb4c919b8fa14e2a789d3fb218b3876f8da3ba155c6b9da9bab",
+        "specialist_native": 24
+      },
+      "mod_pow2": {
+        "cases_each": 24,
+        "original_native": 24,
+        "results_and_carry_equal": true,
+        "source_sha256": "c85633388081926888546989e80fec273b29a50aad841468162f68bdd3629152",
+        "specialist_native": 24
+      }
+    }
+  },
+  "quotient_from_remainder_only_producer": false,
+  "status": "PASS_NATIVE_VICE_BC_DOMAIN_SPECIALISTS",
+  "stock_resident_binaries_changed": false
+}
