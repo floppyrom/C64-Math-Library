@@ -1,0 +1,52 @@
+name: Issue39 released-main SEEK state execution trace
+on:
+  push:
+    branches: [issue39-seek16-init-scale-qualify-20261014]
+    paths:
+      - .github/workflows/issue39-seek-main-pc-trace.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  identify-executing-routine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: aea9f8d045c9cbeec6210d1dd9c1b7c960ce3c7b
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build original released main and log which public routine enters the seek state range
+        run: |
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          import mini6502
+          import validate_source_build as v
+          from validate_seek_placement import seek_ranges
+          c,st,sc,labels,config=seek_ranges("v1_balanced",Path("relocatable_source/v1_balanced/math_config_reference.inc"))
+          print("BASELINE SEEK8_STATE",hex(labels["SEEK8_STATE"]),"LEN",160,"SEGMENT",hex(min(st)),hex(max(st)),flush=True)
+          prior=mini6502.CPU.call
+          orig=mini6502.CPU.step
+          def call(self,entry,*args,**kwargs):
+              self._audit_active=entry
+              return prior(self,entry,*args,**kwargs)
+          def step(self):
+              if self.pc in st:
+                  print("DETECTED UNEXPECTED SEEK8 STATE EXECUTION",
+                        "PC",hex(self.pc),
+                        "PUBLIC ENTRY",hex(getattr(self,"_audit_active",-1)),
+                        "OPCODE",hex(self.mem[self.pc]),
+                        "STATE",hex(min(st)),hex(max(st)),flush=True)
+                  raise SystemExit(0)
+              return orig(self)
+          mini6502.CPU.call=call
+          mini6502.CPU.step=step
+          v.validate("v1_balanced",Path("build_source/reference"))
+          print("BASELINE NO SEEK8-STATE EXECUTION",flush=True)
+          PY
