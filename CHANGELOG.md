@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 V2-V4 EXCLUSIVE MULTIPLY SHR16 RESEARCH
+- Source-backed optional V2/V3/V4 UMUL32_SHR16 exclusive batch saves 53 CPU-model cycles on 7,227 matched operand pairs; BEGIN/END 76/80 cycles, four-call crossover including caller JSRs. 144 native x64sc old/new calls pass. Shared UMUL32 core is unsafe for other calls while patched; no default PRG, REU, ZP or public ABI modification. See docs/ISSUE144_V234_SHR16_EXCLUSIVE_BATCH_2026-10-15.md
+
 2026-10-14 ISSUE144 V2 EXCLUSIVE SHR16 DIRECT-SLICE RESEARCH
 - Research-only opt-in V2 unsigned 32x32 SHR16 direct-result-slice overlay measured 53 CPU-model cycles faster for all 2,409 paired operands; BEGIN/END overhead 76/80 cycles, four-call full-program crossover. Native VICE baseline/overlay and assembled BEGIN/CALL/END both passed 48 calls. Affects shared UMUL32 producer while active; ordinary public mixed-call ABI NOT qualified, no resident PRG/REU/default profile changed and no automatic promotion. See docs/ISSUE144_V2_SHR16_EXCLUSIVE_BATCH_RESEARCH.md
 

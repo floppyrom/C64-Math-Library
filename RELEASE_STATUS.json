@@ -3343,5 +3343,31 @@
       "native_probe": "validation/review/ISSUE144_SHR16_OVERLAY_NATIVE_VICE_RESEARCH.json",
       "native_batch": "validation/review/ISSUE144_V2_SHR16_BEGIN_END_NATIVE_VICE.json"
     }
+  },
+  "issue144_v234_umul32_shr16_exclusive_2026_10_15": {
+    "status": "PASS_RESEARCH_ONLY_EXCLUSIVE_NATIVE_MODEL",
+    "profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "pairs_per_profile": 2409,
+    "paired_calls_total": 7227,
+    "savings_per_public_call_cycles": 53,
+    "begin_cycles": 76,
+    "end_cycles": 80,
+    "minimum_batch_size_including_jsr": 4,
+    "native_baseline_candidate_calls_total": 144,
+    "native_cycles_measured": false,
+    "reu_bus_timing_measured": false,
+    "normal_umul32_usable_while_patch_active": false,
+    "regular_public_api_promoted": false,
+    "normal_resident_prgs_modified": false,
+    "normal_reu_images_modified": false,
+    "optisearch_private_source_published": false,
+    "source": "optional/issue144_v234_umul32_shr16_exclusive/overlay_begin_end.asm",
+    "documentation": "docs/ISSUE144_V234_SHR16_EXCLUSIVE_BATCH_2026-10-15.md",
+    "model_proof": "validation/review/ISSUE144_V234_SHR16_BATCH_CPU_MODEL.json",
+    "native_proof": "validation/review/ISSUE144_V234_SHR16_BATCH_NATIVE_VICE.json"
   }
 }
