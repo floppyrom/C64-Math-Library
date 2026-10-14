@@ -103,25 +103,23 @@ def installed_mem(cpu,transformed):
 
 def profile_proof(profile,old,clone,pairs):
  cpu,api=load(profile)
- external,entries=load(profile)
  ref,baseline=load(profile)
  clone_sha=installed_mem(cpu,clone)
  installed_sha=sha(before_blob(profile,old))
  cloned_api=dict(api);cloned_api["MATH_UMUL32_SHR16"]=ENTRY_CLONE
- original_snapshot=bytes(cpu.mem[ORIGINAL:LAST+1])
  regular=[];independent=[]
  for i,(x,y) in enumerate(pairs):
   normal,out1=run(ref,baseline,"MATH_UMUL32_SHR16",x,y)
   # Random-equivalent normal -> clone -> normal / signed interleaving.
   x2,y2=pairs[(i*109+17)%len(pairs)]
   run(cpu,api,"MATH_UMUL32",x2,y2)
+  stock_before_clone=bytes(cpu.mem[ORIGINAL:LAST+1])
   candidate,out2=run(cpu,cloned_api,"MATH_UMUL32_SHR16",x,y)
+  assert bytes(cpu.mem[ORIGINAL:LAST+1])==stock_before_clone,(
+      profile,i,"clone modified original resident code")
   assert out1==out2,("mismatch to ordinary public adapter",profile,i)
   run(cpu,api,"MATH_UMUL32",x2,y2)
   if i%7==0:run(cpu,api,"MATH_SMUL32",x2,y2)
-  # Note original ordinary code can self-modify while called; clone must NOT.
-  for pc in (0x5856,0x5861,0x582c,0x5834,0x582f,0x5837):
-   assert cpu.mem[CLONE+(pc-ORIGINAL)]==external.mem[CLONE+(pc-ORIGINAL)] if False else True
   regular.append(normal);independent.append(candidate)
   if i%300==0:print("CLONE",profile,"progress",i,flush=True)
  gains=[a-b for a,b in zip(regular,independent)]
