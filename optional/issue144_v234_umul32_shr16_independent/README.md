@@ -1,0 +1,3 @@
+# Independent SHR16 unsigned 32-bit clone (V2/V3/V4)
+
+Opt-in source with fixed RAM placement $0D05–$0E49 and entry $0E03. Assemble standalone_clone.asm into free application RAM and call MATH_INIT on the SHA-pinned V2/V3/V4 library resident before use. Pass operands as for normal MATH_UMUL32_SHR16; use JSR $0E03. This uses the shared normal ZP scratch and resident lookup tables—sequential calls only, NO reentrancy, IRQ/NMI concurrent users, or arbitrary relocation without new verification. Ordinary UMUL32 and SMUL32 are safe between calls on the tested profiles. Source and proof: ../../docs/ISSUE144_UMUL32_SHR16_SEQUENTIAL_CLONE_2026-10-15.md.

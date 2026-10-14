@@ -1,0 +1,61 @@
+{
+  "entry_address": "0x5e12",
+  "native_calls_total": 144,
+  "native_cycle_timing_measured": false,
+  "normal_UMUL32_core_unchanged": true,
+  "published_prgs_unchanged": true,
+  "redirected_destination": "0xe03",
+  "regular_default_profile_promoted": false,
+  "results": {
+    "v2_pareto_fast": {
+      "baseline_calls": 24,
+      "baseline_original_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+      "entry_preserved": "0x5e12",
+      "extra_ram_clone_required": true,
+      "native_cycle_timing_measured": false,
+      "native_six_bytes_carry_inputs_and_stack_equal": true,
+      "only_stock_prg_byte_changes_in_disposable_candidate": [
+        19989,
+        19990
+      ],
+      "optin_calls": 24,
+      "ordinary_core_not_patched": true,
+      "status": "PASS_NATIVE_PUBLIC_ADDRESS_UNCHANGED",
+      "temporary_candidate_sha256": "26ca4cd157f7da90b9090f2119333d5d9b4625ee68b866b4b8dc1a9ae10f31d1"
+    },
+    "v3_reu_512k": {
+      "baseline_calls": 24,
+      "baseline_original_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+      "entry_preserved": "0x5e12",
+      "extra_ram_clone_required": true,
+      "native_cycle_timing_measured": false,
+      "native_six_bytes_carry_inputs_and_stack_equal": true,
+      "only_stock_prg_byte_changes_in_disposable_candidate": [
+        19989,
+        19990
+      ],
+      "optin_calls": 24,
+      "ordinary_core_not_patched": true,
+      "status": "PASS_NATIVE_PUBLIC_ADDRESS_UNCHANGED",
+      "temporary_candidate_sha256": "400670a04ed4a2c77531847d4d093a207bea4e8879c5832a71104ff74024b5b9"
+    },
+    "v4_reu_16m": {
+      "baseline_calls": 24,
+      "baseline_original_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "entry_preserved": "0x5e12",
+      "extra_ram_clone_required": true,
+      "native_cycle_timing_measured": false,
+      "native_six_bytes_carry_inputs_and_stack_equal": true,
+      "only_stock_prg_byte_changes_in_disposable_candidate": [
+        19989,
+        19990
+      ],
+      "optin_calls": 24,
+      "ordinary_core_not_patched": true,
+      "status": "PASS_NATIVE_PUBLIC_ADDRESS_UNCHANGED",
+      "temporary_candidate_sha256": "f46ffb20a98e9a17160fad80134880dcb1e097074f02ef690657bbd0c6c7031a"
+    }
+  },
+  "source_sha256": "962823fd4caa1c1e6e40b541840ac4facd03a9af42dade4deea3197f8afefe4a",
+  "status": "PASS_NATIVE_OPTIN_STABLE_PUBLIC_ENTRY_32_SHR16"
+}

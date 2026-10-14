@@ -1,0 +1,137 @@
+{
+  "cases_per_profile": 2409,
+  "change_summary": {
+    "asm": 2,
+    "header_refs": 10,
+    "high": 6,
+    "low": 2
+  },
+  "native_test_pending": true,
+  "ordinary_library_symbols_unchanged": true,
+  "profiles": {
+    "v2_pareto_fast": {
+      "baseline": {
+        "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+        "max_cycles": 872,
+        "mean_cycles": 753.2353673723537,
+        "median_cycles": 753,
+        "min_cycles": 693,
+        "p95_cycles": 797
+      },
+      "clone_blob_sha256": "24313df03ac3f16deca9f1ce1fbee6bc32bc59a64aaaf10181ca28dd6d8ab282",
+      "clone_bytes_generated": 317,
+      "clone_entry": "0xe03",
+      "clone_origin": "0xd05",
+      "independent_clone": {
+        "cycle_vector_sha256": "59a7293cf99d01ec851c62354ad8c4ae63955c1f1f04ffd850a8f16b1903bc3c",
+        "max_cycles": 810,
+        "mean_cycles": 691.2353673723537,
+        "median_cycles": 691,
+        "min_cycles": 631,
+        "p95_cycles": 735
+      },
+      "native_vice_candidate_qualified": false,
+      "new_ordinary_public_entry_integrated": false,
+      "ordinary_UMUL32_and_SMUL32_interleaved": true,
+      "original_public_core_unchanged_in_release_prg": true,
+      "pairs": 2409,
+      "profile": "v2_pareto_fast",
+      "reu_dma_cycles_claimed": false,
+      "savings": {
+        "cycle_vector_sha256": "16bf27664682887a6a6b4715f18ad5b1bc1e3d55020184cc528312c108be9121",
+        "max_cycles": 62,
+        "mean_cycles": 62.0,
+        "median_cycles": 62,
+        "min_cycles": 62,
+        "p95_cycles": 62
+      },
+      "scratch_not_interrupt_safe": true,
+      "source_installed_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+      "status": "PASS_SEQUENTIAL_COMPOSABLE_MODEL"
+    },
+    "v3_reu_512k": {
+      "baseline": {
+        "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+        "max_cycles": 872,
+        "mean_cycles": 753.2353673723537,
+        "median_cycles": 753,
+        "min_cycles": 693,
+        "p95_cycles": 797
+      },
+      "clone_blob_sha256": "24313df03ac3f16deca9f1ce1fbee6bc32bc59a64aaaf10181ca28dd6d8ab282",
+      "clone_bytes_generated": 317,
+      "clone_entry": "0xe03",
+      "clone_origin": "0xd05",
+      "independent_clone": {
+        "cycle_vector_sha256": "59a7293cf99d01ec851c62354ad8c4ae63955c1f1f04ffd850a8f16b1903bc3c",
+        "max_cycles": 810,
+        "mean_cycles": 691.2353673723537,
+        "median_cycles": 691,
+        "min_cycles": 631,
+        "p95_cycles": 735
+      },
+      "native_vice_candidate_qualified": false,
+      "new_ordinary_public_entry_integrated": false,
+      "ordinary_UMUL32_and_SMUL32_interleaved": true,
+      "original_public_core_unchanged_in_release_prg": true,
+      "pairs": 2409,
+      "profile": "v3_reu_512k",
+      "reu_dma_cycles_claimed": false,
+      "savings": {
+        "cycle_vector_sha256": "16bf27664682887a6a6b4715f18ad5b1bc1e3d55020184cc528312c108be9121",
+        "max_cycles": 62,
+        "mean_cycles": 62.0,
+        "median_cycles": 62,
+        "min_cycles": 62,
+        "p95_cycles": 62
+      },
+      "scratch_not_interrupt_safe": true,
+      "source_installed_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+      "status": "PASS_SEQUENTIAL_COMPOSABLE_MODEL"
+    },
+    "v4_reu_16m": {
+      "baseline": {
+        "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+        "max_cycles": 872,
+        "mean_cycles": 753.2353673723537,
+        "median_cycles": 753,
+        "min_cycles": 693,
+        "p95_cycles": 797
+      },
+      "clone_blob_sha256": "24313df03ac3f16deca9f1ce1fbee6bc32bc59a64aaaf10181ca28dd6d8ab282",
+      "clone_bytes_generated": 317,
+      "clone_entry": "0xe03",
+      "clone_origin": "0xd05",
+      "independent_clone": {
+        "cycle_vector_sha256": "59a7293cf99d01ec851c62354ad8c4ae63955c1f1f04ffd850a8f16b1903bc3c",
+        "max_cycles": 810,
+        "mean_cycles": 691.2353673723537,
+        "median_cycles": 691,
+        "min_cycles": 631,
+        "p95_cycles": 735
+      },
+      "native_vice_candidate_qualified": false,
+      "new_ordinary_public_entry_integrated": false,
+      "ordinary_UMUL32_and_SMUL32_interleaved": true,
+      "original_public_core_unchanged_in_release_prg": true,
+      "pairs": 2409,
+      "profile": "v4_reu_16m",
+      "reu_dma_cycles_claimed": false,
+      "savings": {
+        "cycle_vector_sha256": "16bf27664682887a6a6b4715f18ad5b1bc1e3d55020184cc528312c108be9121",
+        "max_cycles": 62,
+        "mean_cycles": 62.0,
+        "median_cycles": 62,
+        "min_cycles": 62,
+        "p95_cycles": 62
+      },
+      "scratch_not_interrupt_safe": true,
+      "source_installed_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "status": "PASS_SEQUENTIAL_COMPOSABLE_MODEL"
+    }
+  },
+  "public_production_prgs_unchanged": true,
+  "source_mirror": "v2_pareto_fast/standalone/mul_u32_u32_u48_shr16.asm",
+  "source_sha256": "962823fd4caa1c1e6e40b541840ac4facd03a9af42dade4deea3197f8afefe4a",
+  "status": "PASS_RESEARCH_SEQUENTIAL_CLONE_CPU_MODEL"
+}

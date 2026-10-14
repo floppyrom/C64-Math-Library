@@ -1,0 +1,47 @@
+{
+  "native_vice_cycle_timing_measured": false,
+  "normal_production_prgs_unchanged": true,
+  "results": {
+    "v2_pareto_fast": {
+      "all_public_results_correct": true,
+      "fast_math_calls": 256,
+      "installed_clone_entry": "0xe03",
+      "normal_full_UMUL32_mixed_calls": 256,
+      "original_unsigned_producer_unpatched": true,
+      "public_entry_opcode_preserved": true,
+      "restore_cycles_excl_jsr": 44,
+      "restored_math_calls": 256,
+      "setup_cycles_excl_jsr": 44,
+      "source_installer_bytes": 70,
+      "status": "PASS_CORRECT_PUBLIC_JMP_RESTORATION"
+    },
+    "v3_reu_512k": {
+      "all_public_results_correct": true,
+      "fast_math_calls": 256,
+      "installed_clone_entry": "0xe03",
+      "normal_full_UMUL32_mixed_calls": 256,
+      "original_unsigned_producer_unpatched": true,
+      "public_entry_opcode_preserved": true,
+      "restore_cycles_excl_jsr": 44,
+      "restored_math_calls": 256,
+      "setup_cycles_excl_jsr": 44,
+      "source_installer_bytes": 70,
+      "status": "PASS_CORRECT_PUBLIC_JMP_RESTORATION"
+    },
+    "v4_reu_16m": {
+      "all_public_results_correct": true,
+      "fast_math_calls": 256,
+      "installed_clone_entry": "0xe03",
+      "normal_full_UMUL32_mixed_calls": 256,
+      "original_unsigned_producer_unpatched": true,
+      "public_entry_opcode_preserved": true,
+      "restore_cycles_excl_jsr": 44,
+      "restored_math_calls": 256,
+      "setup_cycles_excl_jsr": 44,
+      "source_installer_bytes": 70,
+      "status": "PASS_CORRECT_PUBLIC_JMP_RESTORATION"
+    }
+  },
+  "source_sha256": "bd050556b4cae6ea4d8dcb2484e5f8687c4bcbe3dede495f7d46e0df353bdc85",
+  "status": "PASS_SOURCE_INSTALL_RESTORE_MODEL"
+}
