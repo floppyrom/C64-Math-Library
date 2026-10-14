@@ -2806,5 +2806,54 @@
       "v5_hybrid_lowzp": "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90"
     },
     "separate_campaign": "REU Turbo16/Turbo32/QS16 multiply and remaining Issue39 families"
+  },
+  "issue39_signed_multiply_family_2026_10_14": {
+    "status": "PASS_NATIVE_VICE_PR_MAIN_CI_PENDING",
+    "family_complete": false,
+    "issue39_remains_open": true,
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "routines": [
+      "MATH_SMUL8",
+      "MATH_SMUL16",
+      "MATH_SMUL24",
+      "MATH_SMUL32",
+      "MATH_SMUL32_READY"
+    ],
+    "signed_public_cpu_model_calls_prior_suite": 264999,
+    "new_exhaustive_smul8_pairs_per_profile": 65536,
+    "new_smul16_pairs_per_profile": 4457,
+    "new_smul24_pairs_per_profile": 2409,
+    "new_smul32_and_ready_paired_cases_per_profile": 2409,
+    "native_public_calls": 600,
+    "native_ready_setup_calls": 120,
+    "native_cycle_timing_measured": false,
+    "normal_public_abi_changed": false,
+    "resident_prg_changed": false,
+    "normal_ZP_or_persistent_stack_growth": 0,
+    "private_optisearch_source_published": false,
+    "unqualified_native_candidates_promoted": false,
+    "model_validation": "validation/review/ISSUE39_SIGNED_MULTIPLY_FAMILY_AUDIT_2026-10-14.json",
+    "native_validation": "validation/review/ISSUE39_SIGNED_MULTIPLY_NATIVE_2026-10-14.json",
+    "documentation": "docs/ISSUE39_SIGNED_MULTIPLY_FAMILY_2026-10-14.md",
+    "prg_sha256": {
+      "v1_balanced": "f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7",
+      "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
+      "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
+      "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
+      "v5_hybrid_lowzp": "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90"
+    },
+    "separate_pending": [
+      "Fixed multiply outputs",
+      "REU Turbo and QS multiply",
+      "Trig",
+      "Distance",
+      "Seek"
+    ]
   }
 }
