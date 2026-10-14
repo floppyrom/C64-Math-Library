@@ -6,6 +6,7 @@ results, with resource growth, native VICE provenance and source relocation
 audited separately. No private OptiSearch binary or source imported.
 """
 from pathlib import Path
+from issue39_dist8_provenance import pre_dist8_bytes
 import argparse,hashlib,json,subprocess,sys
 ROOT=Path(__file__).resolve().parents[1]
 P=("v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m","v5_hybrid_lowzp")
@@ -23,7 +24,12 @@ def check():
     small=read("validation/multiply_refresh/MUL16_SHR8_REGISTER_VALIDATION.json")
     bench=read("validation/multiply_refresh/MULTIPLY_REFRESH_BENCHMARK.json")
     assert proof["status"]=="PASS_SOURCE_PRODUCTION_NATIVE_PENDING"
-    assert proof["after_prg_sha256"]==installed
+    historical={p:hashlib.sha256(pre_dist8_bytes(
+        p,(ROOT/p/"resident"/("math_"+p+"_game_math.prg")).read_bytes()
+    )).hexdigest() for p in P}
+    # Historical four-output proof predates the DIST8-only production
+    # improvement. Pin its exact restored parent, not an unverified new SHA.
+    assert proof["after_prg_sha256"]==historical
     assert proof["mean_gain_each_call_cycles"]==2
     assert proof["source_same_operand"]["pairs_per_profile_per_op_per_map"]==4361
     assert proof["resource_growth_ZP"]==proof["resident_span_growth"]==proof["stack_growth"]==0

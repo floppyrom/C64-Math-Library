@@ -13,6 +13,7 @@ from mini6502 import Assembler
 from issue39_u24_txa_historical_parent import restore_pre_txa
 from issue39_root_historical_parent import undo_root_release
 from issue39_umul24_v1v5_historical_parent import undo_umul24_tailcall,undo_fixed_shr16_release
+from issue39_dist8_provenance import pre_dist8_bytes
 PR78='28c7039614f77a2b3c9dd4d3b6ea4743b4e839eaee280bf6ee12285b18cad4b0'
 OLD_SOURCE=R/'tools/candidates/issue39_v1_24by8_shared_subtraction.asm'
 NEW_SOURCE=R/'tools/candidates/issue39_v1_24by8_accumulator.asm'
@@ -56,6 +57,14 @@ def undo_v1_3216_coldpath_for_historical_audit(prg: bytes) -> bytes:
     return bytes(raw)
 
 def restore_pr78(prg:bytes)->bytes:
+    # Historical PR78/PR81 screens may be called directly with the current
+    # resident. Invert the independently certified DIST8-only bytes BEFORE
+    # reconstructing prior arithmetic; leave already-historical blobs alone.
+    import json
+    release=json.loads((R/"RELEASE_STATUS.json").read_text())
+    if (release.get("issue39_dist8_shared_register_swap_2026_10_14")
+            and sha(prg)==release["reference_prg_sha256"]["v1_balanced"]):
+        prg=pre_dist8_bytes("v1_balanced",prg)
     # Frozen historical arithmetic is replayed against the pre-SHR16 parent.\n    prg=undo_fixed_shr16_release('v1_balanced',prg)\n    # Historical PR78/PR81 proofs are deliberately replayed against the
     # exact pre-rare-carry V1 resident. The later UMUL24 optimization is
     # separately certified on the live product; never add arbitrary

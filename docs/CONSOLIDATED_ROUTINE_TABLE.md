@@ -65,8 +65,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 47.462814 | 33 | 50 | 97 | 0 | — | 0 | compact_opt signed-log kernel; two table pages; exact parity with prior compact outputs | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 57.878998 | 42 | 471 | 41 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1219.260533 | 1025 | 1871 | 260 | 0 | — | 0 | profile-selected resident implementation | current deterministic 4,130-case ISQRT32 benchmark |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 81.550583 | 68 | 95 | 64 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 87.550583 | 74 | 101 | 69 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 84 | 302 | 881 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
 | `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 601.746936 | 147 | 995 | 454 | 0 | — | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in V1_SCRATCH RAM | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
@@ -126,8 +126,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 43.970627 | 31 | 45 | 88 | 0 | — | 0 | sum_fast carry-clearing signed-log kernel; four table pages; exact parity with prior fast outputs | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 58.234467 | 42 | 471 | 41 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1053.284504 | 896 | 1654 | 222 | 9 | $54-$5C | 0 | profile-selected resident implementation | current deterministic 4,130-case ISQRT32 benchmark |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.570038 | 64 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.570038 | 70 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 75.538910 | 64 | 87 | 56 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 81.538910 | 70 | 93 | 61 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 84 | 302 | 881 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
 | `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 543.965482 | 137 | 888 | 392 | 14 | $53-$5F;$65 | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in game-scratch ZP | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
@@ -187,8 +187,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 43.970627 | 31 | 45 | 88 | 0 | — | 0 | sum_fast carry-clearing signed-log kernel; four table pages; exact parity with prior fast outputs | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 58.277435 | 42 | 471 | 41 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1053.325908 | 896 | 1654 | 222 | 9 | $54-$5C | 0 | profile-selected resident implementation | current deterministic 4,130-case ISQRT32 benchmark |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 75.038910 | 63 | 87 | 56 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 81.038910 | 69 | 93 | 61 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 156.661198 | 84 | 298 | 849 | 4 | $1A-$1D | 0 | quadrant-specific paths; existing REU ratio-index lookup | 2026-09-21 normalize profile-parity deterministic corpus |
 | `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 544.686887 | 137 | 890 | 392 | 14 | $53-$5F;$65 | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in game-scratch ZP | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
@@ -254,8 +254,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 48.000000 | 48 | 48 | 33 | 0 | — | 0 | exact signed-byte phase plane in REU bank 8 | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 54.000000 | 54 | 54 | 38 | 0 | — | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 917.317433 | 806 | 1067 | 236 | 8 | $54-$5B | 0 | exact 4 MiB REU prefix accelerator plus restoring low-bit refinement | current deterministic 4,130-case ISQRT32 benchmark |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 79.070038 | 63 | 95 | 58 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 85.070038 | 69 | 101 | 63 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 75.038910 | 63 | 87 | 56 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 81.038910 | 69 | 93 | 61 | 2 | $5D-$5E | 0 | profile-selected resident implementation | current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 156.661198 | 84 | 298 | 849 | 4 | $1A-$1D | 0 | quadrant-specific paths; existing REU ratio-index lookup | 2026-09-21 normalize profile-parity deterministic corpus |
 | `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 544.686887 | 137 | 890 | 392 | 14 | $53-$5F;$65 | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in game-scratch ZP | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
@@ -324,8 +324,8 @@ Generated from the shipped reference images by `tools/generate_consolidated_rout
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | 43.970627 | 31 | 45 | 88 | 0 | — | 0 | V2 sum_fast kernel imported into V5 with four private table pages | 2026-10-06 exhaustive ATAN2 dispatch validation |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | 57.878998 | 42 | 471 | 41 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_ISQRT32` | `isqrt_u32_u16` | 1219.260533 | 1025 | 1871 | 260 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current deterministic 4,130-case ISQRT32 benchmark |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 86.085602 | 68 | 104 | 67 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 92.085602 | 74 | 110 | 72 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | 81.550583 | 68 | 95 | 64 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | 87.550583 | 74 | 101 | 69 | 0 | — | 0 | profile-selected resident implementation | V5 documented v1_balanced path; current exhaustive/profile game-math benchmark |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | 160.150080 | 84 | 302 | 881 | 4 | $1A-$1D | 0 | quadrant-specific paths; certified logarithmic ratio tables | 2026-09-21 normalize profile-parity deterministic corpus |
 | `MATH_SEEK8_INIT` | `seek_u8_u8_init` | 601.746936 | 147 | 995 | 454 | 0 | — | 0 | exact bulk-Bresenham DDA setup; no multiply/divide; init scratch in V1_SCRATCH RAM | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |
 | `MATH_SEEK8_STEP` | `seek_u8_u8_step` | 87.136511 | 77 | 91 | 176 | 0 | — | 0 | X-indexed per-slot state; carries pre-biased into stored deltas; exact arrival | 2026-09-25 seek profile benchmark (408 moves x speeds; every frame verified) |

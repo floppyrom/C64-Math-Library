@@ -4266,12 +4266,12 @@ LCAE5:
     sta V1_SCRATCH+$0B
     cmp V1_SCRATCH+$0A
     bcc LCAFB
+    tax
     lda V1_SCRATCH+$0A
-    pha
-    lda V1_SCRATCH+$0B
-    sta V1_SCRATCH+$0A
-    pla
     sta V1_SCRATCH+$0B
+    stx V1_SCRATCH+$0A
+    rts
+    !byte $EA, $EA, $EA
 LCAFB:
     rts
     jsr REG_GAME+$09CC
@@ -4389,3 +4389,6 @@ LCAFB:
 
 ; V1 direct shifted DIV adapters.
 !source "../game_math/shifted_div_direct_balanced.inc"
+
+; Issue39 DIST8 source-backed, fixed-width register swap.
+!source "../game_math/dist8_swap_v1_balanced.inc"

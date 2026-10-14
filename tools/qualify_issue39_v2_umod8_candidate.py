@@ -13,6 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tools'))
 from mini6502 import CPU
 from issue39_root_historical_parent import undo_root_release
+from issue39_dist8_provenance import pre_dist8_bytes
 
 NAME='v2_pareto_fast'
 ENTRY=0x3200
@@ -40,8 +41,8 @@ def cpubuild(blob):
     return cpu
 
 def main():
-    parentbytes=PARENT.read_bytes()
-    newbytes=NEW.read_bytes()
+    parentbytes=pre_dist8_bytes(NAME,PARENT.read_bytes())
+    newbytes=pre_dist8_bytes(NAME,NEW.read_bytes())
     # This historical isolated candidate predates unrelated public multiply
     # integration. Permit ONLY the exact, currently shipped V2 PRG as a
     # replay source, never an arbitrary unrecognized binary.
@@ -135,8 +136,8 @@ def main():
     # Verify the source-built V5 against either its published pre-PR71
     # resident (after SHA-qualified reversal) or the promoted candidate.
     from issue39_v5_umod32_parent import restore_v5_umod32_parent
-    v5_live=V5.read_bytes()
-    v5_source=V5_NEW.read_bytes()
+    v5_live=pre_dist8_bytes("v5_hybrid_lowzp",V5.read_bytes())
+    v5_source=pre_dist8_bytes("v5_hybrid_lowzp",V5_NEW.read_bytes())
     if v5_live!=v5_source:
         assert v5_live==restore_v5_umod32_parent(v5_source), \
             'V5 contains changes outside SHA-certified PR71 UMOD32/32 frontend'

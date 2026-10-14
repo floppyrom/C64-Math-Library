@@ -1,0 +1,48 @@
+name: Issue39 DIST8 guarded source production release
+on:
+  push:
+    branches: [issue39-dist8-source-transplant-20261014]
+    paths:
+      - .github/workflows/issue39-dist8-production.yml
+      - tools/stage_issue39_dist8_production.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  stage-certified-source-production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-dist8-source-transplant-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild all source maps and V5
+        run: |
+          python3 tools/generate_sources.py
+          for kind in reference alternate; do
+            python3 tools/assemble_sources.py --profile all --config-kind "$kind"
+            python3 tools/build_hybrid.py --config-kind "$kind"
+          done
+      - name: Guardedly publish exact-byte DIST8 source improvement
+        run: python3 tools/stage_issue39_dist8_production.py
+      - name: Commit production binary, standalone, benchmark, release/changelog and checksum seal
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: source-publish optimized DIST8 both public APIs across five profiles'
+          git push origin HEAD:issue39-dist8-source-transplant-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-dist8-production-certificate
+          path: |
+            validation/review/ISSUE39_DIST8_PRODUCTION_2026-10-14.json
+            docs/ISSUE39_DIST8_REGISTER_SWAP_RELEASE_2026-10-14.md

@@ -4,6 +4,9 @@
 Only for frozen pre-PR71 audits. Never undo resident bytes for release use.
 """
 from hashlib import sha256
+from pathlib import Path
+import json
+from issue39_dist8_provenance import pre_dist8_bytes
 from issue39_u24_txa_historical_parent import restore_pre_txa
 from issue39_root_historical_parent import undo_root_release
 from issue39_umul24_v1v5_historical_parent import undo_umul24_tailcall
@@ -11,6 +14,12 @@ OLD='634e58f536374bc12877e692515f68ab5c5f38954caf5c189a8f67d356289d02'
 NEW='5191e44263c24c617a4d5ddc490b3d5fbe7f87c5ac0835af28294fdbc6f9d222'
 def digest(b):return sha256(b).hexdigest()
 def restore_v5_umod32_parent(prg:bytes)->bytes:
+    # Support published DIST8-only V5 resident without compromising the
+    # archived PR71 hash checks. Unknown binaries still fail closed.
+    release=json.loads((Path(__file__).resolve().parents[1]/"RELEASE_STATUS.json").read_text())
+    if (release.get("issue39_dist8_shared_register_swap_2026_10_14")
+            and digest(prg)==release["reference_prg_sha256"]["v5_hybrid_lowzp"]):
+        prg=pre_dist8_bytes("v5_hybrid_lowzp",prg)
     # Normalize only the exact SHA-pinned post-PR97 resident; retain every
     # frozen PR68/PR71 historical parent comparison byte-for-byte.
     # The source-installed PR100 V5 base inherits V1's relocated private

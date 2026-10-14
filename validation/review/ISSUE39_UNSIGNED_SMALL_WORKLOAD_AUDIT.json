@@ -8,11 +8,11 @@
     "v5_hybrid_lowzp"
   ],
   "resident_sha256": {
-    "v1_balanced": "1ec65b1fcf87b7424325cc64a410401698f51ed04fb8c1fba861fa41457f9a82",
-    "v2_pareto_fast": "d1aeaa3b3bfa4d635bce126f6e0c44fa8992bbdfcceb4b386f8bb5654dff3458",
-    "v3_reu_512k": "987b86cccf29e13d381655bd2da7c9a31d195a72bbe0be54085f2ec282ec71e1",
-    "v4_reu_16m": "240b0f3a4ee7f9e49f842cd192528eeaa60eb46f5338ecb186a805bd332b7539",
-    "v5_hybrid_lowzp": "2ca2e91a494c806d60e705ac0c3ec49fc3f85c0c967a3c405eb5b0b46bd2afcc"
+    "v1_balanced": "d45c2922b93cdf786e40ade87ae6f9d187a3cd26baeea5b34fa203707a01ba3c",
+    "v2_pareto_fast": "f02f8928dcc6d6f7660eb1309d68a180277160278f2033e8c9c00ffd01f82f06",
+    "v3_reu_512k": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
+    "v4_reu_16m": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
+    "v5_hybrid_lowzp": "0c58ec4b91bc5696e830c0db238b2a2f5dabd8991e8c960c5e4f8d5681d09acb"
   },
   "results": {
     "MATH_UDIV16": {

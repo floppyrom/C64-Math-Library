@@ -4694,12 +4694,12 @@ LCA0B:
     sta ZP_MAIN+$5C
     cmp ZP_MAIN+$5B
     bcc LCA1B
+    tax
     lda ZP_MAIN+$5B
-    pha
-    lda ZP_MAIN+$5C
-    sta ZP_MAIN+$5B
-    pla
     sta ZP_MAIN+$5C
+    stx ZP_MAIN+$5B
+    rts
+    !byte $EA, $EA
 LCA1B:
     rts
     jsr REG_GAME+$08F3
@@ -4894,3 +4894,6 @@ ZCE4:
 
 ; Shifted DIV/reciprocal optimization campaign overlay.
 !source "../game_math/shifted_div_direct_fast.inc"
+
+; Issue39 DIST8 source-backed, fixed-width register swap.
+!source "../game_math/dist8_swap_v3_reu_512k.inc"
