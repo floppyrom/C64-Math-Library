@@ -19,10 +19,23 @@ from validate_smul24_directout import parse_inc
 PROFILES=("v1_balanced","v2_pareto_fast","v3_reu_512k",
           "v4_reu_16m","v5_hybrid_lowzp")
 OPS=("MATH_DIST8_FAST","MATH_DIST8_ACCURATE")
-# Common resident scratch S10/S11, absolute C64 locations C04A/C04B.
-OLD=bytes.fromhex("ad4ac048ad4bc08d4ac0688d4bc0")
-NEW=bytes.fromhex("aaad4ac08d4bc08e4ac060eaeaea")
-assert len(OLD)==len(NEW)==14
+# Two real resource classes: V1/V5 use C04A/C04B absolute scratch;
+# V2/V3/V4 use $5D/$5E zero-page scratch. Both need the preexisting
+# BCC-to-original-RTS displacement preserved, so insert NOPs AFTER an
+# early RTS on the swap path. Carry and stack behavior must match exactly.
+ABS_OLD=bytes.fromhex("ad4ac048ad4bc08d4ac0688d4bc0")
+ABS_NEW=bytes.fromhex("aaad4ac08d4bc08e4ac060eaeaea")
+ZP_OLD=bytes.fromhex("a55d48a55e855d68855e")
+ZP_NEW=bytes.fromhex("aaa55d855e865d60eaea")
+assert len(ABS_OLD)==len(ABS_NEW)==14
+assert len(ZP_OLD)==len(ZP_NEW)==10
+PATCH={
+ "v1_balanced":(ABS_OLD,ABS_NEW,0xC04A,9),
+ "v2_pareto_fast":(ZP_OLD,ZP_NEW,0x5D,8),
+ "v3_reu_512k":(ZP_OLD,ZP_NEW,0x5D,8),
+ "v4_reu_16m":(ZP_OLD,ZP_NEW,0x5D,8),
+ "v5_hybrid_lowzp":(ABS_OLD,ABS_NEW,0xC04A,9),
+}
 def loaded(profile):
     path=ROOT/profile/"resident"/("math_"+profile+"_game_math.prg")
     prg=path.read_bytes()
@@ -42,21 +55,22 @@ def make_cpu(memory,reu,names):
     return cpu
 def run(profile):
     mem,reu,names,prg_hash=loaded(profile)
-    count=mem.count(0) # irrelevant, verifies usable memory exists
-    assert len(mem)==65536 and count>=0
-    matches=[i for i in range(65536-len(OLD)+1) if mem[i:i+len(OLD)]==OLD]
+    assert len(mem)==65536
+    old_bytes,new_bytes,scratch_address,swap_saving=PATCH[profile]
+    matches=[i for i in range(65536-len(old_bytes)+1) if mem[i:i+len(old_bytes)]==old_bytes]
     assert len(matches)==1,(profile,"expected exactly one complete shared swap",matches)
     at=matches[0]
     # Verify the 6502 carry-branch targets the first RTS after the 14-byte span.
-    assert mem[at-2]==0x90 and (at+((mem[at-1]+128)%256-128)+0)==at+14, (profile,hex(at),mem[at-2:at].hex())
-    assert mem[at+14]==0x60,(profile,"shared RTS missing",hex(at))
+    assert mem[at-2]==0x90 and (at+((mem[at-1]+128)%256-128))==at+len(old_bytes), (profile,hex(at),mem[at-2:at].hex())
+    assert mem[at+len(old_bytes)]==0x60,(profile,"shared RTS missing",hex(at))
     patched=bytearray(mem)
-    patched[at:at+14]=NEW
+    patched[at:at+len(new_bytes)]=new_bytes
     old_cpu=make_cpu(mem,reu,names)
     new_cpu=make_cpu(patched,reu,names)
     I=names["MATH_X"]; J=names["MATH_Y"]; Z=names["MATH_Z"]
     profile_out={"status":"PASS","patch_address":f"${at:04X}",
-                 "original_14_bytes":OLD.hex(),"replacement_14_bytes":NEW.hex(),
+                 "original_swap_bytes":old_bytes.hex(),"replacement_swap_bytes":new_bytes.hex(),
+                 "scratch_address":f"${scratch_address:04X}","swap_saving_cycles":swap_saving,
                  "baseline_prg_sha256":prg_hash,"routines":{}}
     for opname in OPS:
         entry=names[opname]
@@ -78,13 +92,13 @@ def run(profile):
                     assert cpu.mem[I]==ax and cpu.mem[J]==ay
                     assert cpu.mem[Z+1]==0x5A
                     assert cpu.c==0 and cpu.sp==0xfd
-                    scratch=bytes(cpu.mem[0xC04A:0xC04C])
+                    scratch=bytes(cpu.mem[scratch_address:scratch_address+2])
                     digest.update(bytes([cpu.mem[Z],*scratch]))
                     vals.append((cycles,cpu.mem[Z],scratch))
                 b,a=vals
                 assert b[1:]==a[1:],(profile,opname,ax,ay,b,a)
                 delta=b[0]-a[0]
-                assert delta==9*swap,(profile,opname,ax,ay,delta,swap)
+                assert delta==swap_saving*swap,(profile,opname,ax,ay,delta,swap)
                 total_old+=b[0];total_new+=a[0];swaps+=swap
                 min_delta=min(min_delta,delta);max_delta=max(max_delta,delta)
                 cases+=1
