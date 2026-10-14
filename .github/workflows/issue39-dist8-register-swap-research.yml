@@ -26,6 +26,28 @@ jobs:
       - name: Compare original and in-memory patched public distance calls
         run: |
           python3 tools/research_issue39_dist8_register_swap.py --output validation/review/ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json
+      - name: Record candidate-only results in both public changelogs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          stamp='2026-10-14 ISSUE39 DIST8 SHARED SWAP RESEARCH — NOT RELEASED'
+          note=(stamp+'\\n'
+            '- In-memory same-address DIST8_FAST/DIST8_ACCURATE swap candidate '
+            'exhaustively passed 655,360 paired public operand cases across '
+            'all five profiles (1,310,720 original/candidate CPU-model calls). '
+            'All output/scratch bytes, inputs, carry and stack agree; '
+            'V1/V5 save 4.535019 mean modeled cycles per public call, '
+            'V2/V3/V4 save 4.031128. Native cycle timing NOT measured. '
+            'No production binaries, ABI, ZP, standalone sources or REU '
+            'changed. This is NOT a shipped optimization; further source '
+            'integration, relocation, native VICE and full release checks '
+            'remain. Evidence: validation/review/'
+            'ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json\\n\\n')
+          for name in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
+              file=Path(name)
+              old=file.read_text()
+              if stamp not in old:file.write_text(note+old)
+          PY
       - name: Seal public research/checksum files without modifying binaries
         run: |
           python3 - <<'PY'
