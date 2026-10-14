@@ -64,7 +64,39 @@ RARECARRY_IMAGES={
         "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90",
         "a29e07795b0dd4e6817ca1adb164603a2afabb4b413b7928ec0da5d753609f01"),
 }
+# Later fixed-output SHR16 producer changes are confined to two cold
+# carry-clear tails. Historical UDIV24/UMOD24 research replays the immutable
+# pre-SHR16 parent; never alter the new deployable resident.
+FIXED_SHR16_PARENT="bfc43c2f6643a893304799683f73396e0eba3096"
+FIXED_SHR16_IMAGES={
+    "v1_balanced":(
+      "1ec65b1fcf87b7424325cc64a410401698f51ed04fb8c1fba861fa41457f9a82",
+      "f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7",
+      (0xc573,0xc574,0xc59c,0xc59d)),
+    "v5_hybrid_lowzp":(
+      "2ca2e91a494c806d60e705ac0c3ec49fc3f85c0c967a3c405eb5b0b46bd2afcc",
+      "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90",
+      (0xc573,0xc574,0xc59c,0xc59d))
+}
+def undo_fixed_shr16_release(profile:str,blob:bytes)->bytes:
+    row=FIXED_SHR16_IMAGES.get(profile)
+    if row is None or sha(blob)!=row[0]:return blob
+    rel=f"{profile}/resident/math_{profile}_game_math.prg"
+    old=subprocess.check_output(["git","show",f"{FIXED_SHR16_PARENT}:{rel}"],cwd=ROOT)
+    assert sha(old)==row[1],(profile,"fixed-shift old resident hash drift")
+    assert len(blob)==len(old) and blob[:2]==old[:2]
+    start=int.from_bytes(blob[:2],"little")
+    assert start==0x1000
+    deltas=tuple(start+i for i,(a,b) in enumerate(zip(old[2:],blob[2:])) if a!=b)
+    assert deltas==row[2],(profile,"fixed-shift changed outside two return tails",deltas)
+    for index,addr in enumerate(deltas):
+        k=2+addr-start
+        assert old[k]==(0x18 if index%2==0 else 0x60)
+        assert blob[k]==(0x60 if index%2==0 else 0xea)
+    return old
+
 def undo_rarecarry_release(profile:str,blob:bytes)->bytes:
+    blob=undo_fixed_shr16_release(profile,blob)
     row=RARECARRY_IMAGES.get(profile)
     if row is None or sha(blob)!=row[0]:return blob
     rel=f"{profile}/resident/math_{profile}_game_math.prg"
