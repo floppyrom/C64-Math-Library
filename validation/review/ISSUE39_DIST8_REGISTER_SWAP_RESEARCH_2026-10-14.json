@@ -1,0 +1,186 @@
+{
+  "branch_scope": "in-memory patched public ABI, not published code",
+  "native_vice_cycles_measured": false,
+  "private_optisearch_source_published": false,
+  "production_binaries_changed": false,
+  "profiles": {
+    "v1_balanced": {
+      "baseline_prg_sha256": "1ec65b1fcf87b7424325cc64a410401698f51ed04fb8c1fba861fa41457f9a82",
+      "original_swap_bytes": "ad4ac048ad4bc08d4ac0688d4bc0",
+      "patch_address": "$CAED",
+      "replacement_swap_bytes": "aaad4ac08d4bc08e4ac060eaeaea",
+      "routines": {
+        "MATH_DIST8_ACCURATE": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 9,
+          "mean_candidate_cpu_model_cycles": 87.55058288574219,
+          "mean_cpu_model_cycles_saved": 4.5350189208984375,
+          "mean_old_cpu_model_cycles": 92.08560180664062,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "fb2878c054b3ceb74dc4143754cebc1c6da274c261d74bd9271c82e290889366",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        },
+        "MATH_DIST8_FAST": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 9,
+          "mean_candidate_cpu_model_cycles": 81.55058288574219,
+          "mean_cpu_model_cycles_saved": 4.5350189208984375,
+          "mean_old_cpu_model_cycles": 86.08560180664062,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "31ebb86a8980c4c9f7654265ba348f51e9b9cf9a7c6018b406d923c2264aa08a",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        }
+      },
+      "scratch_address": "$C04A",
+      "status": "PASS",
+      "swap_saving_cycles": 9
+    },
+    "v2_pareto_fast": {
+      "baseline_prg_sha256": "d1aeaa3b3bfa4d635bce126f6e0c44fa8992bbdfcceb4b386f8bb5654dff3458",
+      "original_swap_bytes": "a55d48a55e855d68855e",
+      "patch_address": "$CA06",
+      "replacement_swap_bytes": "aaa55d855e865d60eaea",
+      "routines": {
+        "MATH_DIST8_ACCURATE": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 8,
+          "mean_candidate_cpu_model_cycles": 81.53890991210938,
+          "mean_cpu_model_cycles_saved": 4.0311279296875,
+          "mean_old_cpu_model_cycles": 85.57003784179688,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "fb2878c054b3ceb74dc4143754cebc1c6da274c261d74bd9271c82e290889366",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        },
+        "MATH_DIST8_FAST": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 8,
+          "mean_candidate_cpu_model_cycles": 75.53890991210938,
+          "mean_cpu_model_cycles_saved": 4.0311279296875,
+          "mean_old_cpu_model_cycles": 79.57003784179688,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "31ebb86a8980c4c9f7654265ba348f51e9b9cf9a7c6018b406d923c2264aa08a",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        }
+      },
+      "scratch_address": "$005D",
+      "status": "PASS",
+      "swap_saving_cycles": 8
+    },
+    "v3_reu_512k": {
+      "baseline_prg_sha256": "987b86cccf29e13d381655bd2da7c9a31d195a72bbe0be54085f2ec282ec71e1",
+      "original_swap_bytes": "a55d48a55e855d68855e",
+      "patch_address": "$CA11",
+      "replacement_swap_bytes": "aaa55d855e865d60eaea",
+      "routines": {
+        "MATH_DIST8_ACCURATE": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 8,
+          "mean_candidate_cpu_model_cycles": 81.03890991210938,
+          "mean_cpu_model_cycles_saved": 4.0311279296875,
+          "mean_old_cpu_model_cycles": 85.07003784179688,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "fb2878c054b3ceb74dc4143754cebc1c6da274c261d74bd9271c82e290889366",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        },
+        "MATH_DIST8_FAST": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 8,
+          "mean_candidate_cpu_model_cycles": 75.03890991210938,
+          "mean_cpu_model_cycles_saved": 4.0311279296875,
+          "mean_old_cpu_model_cycles": 79.07003784179688,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "31ebb86a8980c4c9f7654265ba348f51e9b9cf9a7c6018b406d923c2264aa08a",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        }
+      },
+      "scratch_address": "$005D",
+      "status": "PASS",
+      "swap_saving_cycles": 8
+    },
+    "v4_reu_16m": {
+      "baseline_prg_sha256": "240b0f3a4ee7f9e49f842cd192528eeaa60eb46f5338ecb186a805bd332b7539",
+      "original_swap_bytes": "a55d48a55e855d68855e",
+      "patch_address": "$C8D0",
+      "replacement_swap_bytes": "aaa55d855e865d60eaea",
+      "routines": {
+        "MATH_DIST8_ACCURATE": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 8,
+          "mean_candidate_cpu_model_cycles": 81.03890991210938,
+          "mean_cpu_model_cycles_saved": 4.0311279296875,
+          "mean_old_cpu_model_cycles": 85.07003784179688,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "fb2878c054b3ceb74dc4143754cebc1c6da274c261d74bd9271c82e290889366",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        },
+        "MATH_DIST8_FAST": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 8,
+          "mean_candidate_cpu_model_cycles": 75.03890991210938,
+          "mean_cpu_model_cycles_saved": 4.0311279296875,
+          "mean_old_cpu_model_cycles": 79.07003784179688,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "31ebb86a8980c4c9f7654265ba348f51e9b9cf9a7c6018b406d923c2264aa08a",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        }
+      },
+      "scratch_address": "$005D",
+      "status": "PASS",
+      "swap_saving_cycles": 8
+    },
+    "v5_hybrid_lowzp": {
+      "baseline_prg_sha256": "2ca2e91a494c806d60e705ac0c3ec49fc3f85c0c967a3c405eb5b0b46bd2afcc",
+      "original_swap_bytes": "ad4ac048ad4bc08d4ac0688d4bc0",
+      "patch_address": "$CAED",
+      "replacement_swap_bytes": "aaad4ac08d4bc08e4ac060eaeaea",
+      "routines": {
+        "MATH_DIST8_ACCURATE": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 9,
+          "mean_candidate_cpu_model_cycles": 87.55058288574219,
+          "mean_cpu_model_cycles_saved": 4.5350189208984375,
+          "mean_old_cpu_model_cycles": 92.08560180664062,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "fb2878c054b3ceb74dc4143754cebc1c6da274c261d74bd9271c82e290889366",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        },
+        "MATH_DIST8_FAST": {
+          "bytewise_equal": true,
+          "cases": 65536,
+          "max_saved": 9,
+          "mean_candidate_cpu_model_cycles": 81.55058288574219,
+          "mean_cpu_model_cycles_saved": 4.5350189208984375,
+          "mean_old_cpu_model_cycles": 86.08560180664062,
+          "min_saved": 0,
+          "output_and_scratch_sha256": "31ebb86a8980c4c9f7654265ba348f51e9b9cf9a7c6018b406d923c2264aa08a",
+          "public_input_carry_stack_preserved": true,
+          "swap_path_cases": 33023
+        }
+      },
+      "scratch_address": "$C04A",
+      "status": "PASS",
+      "swap_saving_cycles": 9
+    }
+  },
+  "required_next": "check reference+alternate relocation, native VICE, standalone, signed edge cases, mixed calls, integrate in binary/source safely, full release CI",
+  "source": "shipped reference resident images",
+  "status": "PASS_EXHAUSTIVE_RESEARCH_NOT_PRODUCTION"
+}
