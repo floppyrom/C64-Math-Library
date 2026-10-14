@@ -1,0 +1,38 @@
+{
+  "assembly_sha256": "bba20c9886f98309dde59ff3b193d765318d2d4537e7dda4f10079274283558c",
+  "code_range": [
+    "0xc00",
+    "0xc45"
+  ],
+  "compiler_emitted_bytes": 70,
+  "guaranteed_nonnegative_operands_required": true,
+  "only_signed_public_entry_target_touched": true,
+  "production_images_written": false,
+  "profiles": {
+    "v2_pareto_fast": {
+      "enable_disable_source_executed": true,
+      "enabled_public_entry": "$5E15 -> $0E03",
+      "nonnegative_calls_each_phase": 80,
+      "restored_public_entry": "$5E15 -> $C50C",
+      "signed_and_unsigned_calls_while_enabled": true,
+      "status": "PASS"
+    },
+    "v3_reu_512k": {
+      "enable_disable_source_executed": true,
+      "enabled_public_entry": "$5E15 -> $0E03",
+      "nonnegative_calls_each_phase": 80,
+      "restored_public_entry": "$5E15 -> $C50C",
+      "signed_and_unsigned_calls_while_enabled": true,
+      "status": "PASS"
+    },
+    "v4_reu_16m": {
+      "enable_disable_source_executed": true,
+      "enabled_public_entry": "$5E15 -> $0E03",
+      "nonnegative_calls_each_phase": 80,
+      "restored_public_entry": "$5E15 -> $C50C",
+      "signed_and_unsigned_calls_while_enabled": true,
+      "status": "PASS"
+    }
+  },
+  "status": "PASS_SIGNED_NONNEGATIVE_INSTALL_RESTORE_MODEL"
+}

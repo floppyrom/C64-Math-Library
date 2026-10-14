@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 SIGNED SHR16 NONNEGATIVE SPECIALIST AND QUADRANT RESEARCH
+- Domain-qualified optional signed 32x32 SHR16 public-entry alias for nonnegative input pairs: 58.372 CPU-model cycles saved on 715 paired cases/profile V2-V4, 144 native x64sc baseline/alias calls PASS, reversible source-assembled signed JMP enable/disable. General all-sign hybrid screened: 16.438 mean saved but negative-quadrant regressions, NOT promoted. Stock PRGs, REU, ABI, normal ZP and regular leaderboard unchanged. docs/ISSUE144_SIGNED_SHR16_SPECIALISTS_2026-10-15.md
+
 2026-10-15 ISSUE144 INDEPENDENT SHR16 MULTIPLY CLONE PARETO POINT
 - Opt-in original-source-derived unsigned 32x32 SHR16 separate-RAM producer saves exactly 62 CPU-model cycles on 7,227 common pairs V2/V3/V4, with 144 native x64sc baseline/clone correctness calls passing. Interleaves ordinary UMUL32 and SMUL32, unlike prior exclusive overlay. Uses separate $0D05–$0E49 RAM and shared ZP/tables; NOT reentrant, no shipped code/REU, normal ABI change, no private OptiSearch redistribution. docs/ISSUE144_UMUL32_SHR16_SEQUENTIAL_CLONE_2026-10-15.md
 

@@ -3403,5 +3403,62 @@
     "public_entry_model_proof": "validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_OPTIN_CPU_MODEL.json",
     "public_entry_native_proof": "validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_OPTIN_NATIVE_VICE.json",
     "installer_proof": "validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_INSTALLER_CPU_MODEL.json"
+  },
+  "issue144_signed_shr16_nonnegative_optin_2026_10_15": {
+    "status": "PASS_NATIVE_MODEL_PRECONDITIONED_OPTIN_NOT_DEFAULT",
+    "supported_profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "precondition": "both signed 32-bit operands nonnegative",
+    "total_cpu_model_nonnegative_pairs": 2145,
+    "total_native_nonnegative_old_new_calls": 144,
+    "general_signed_hybrid_unpromoted": true,
+    "general_signed_cpu_model_calls": 7227,
+    "general_signed_native_calls": 216,
+    "public_entry_address": "$5E15",
+    "clone_entry": "$0E03",
+    "extra_code_ram": true,
+    "shared_existing_zero_page": true,
+    "nonreentrant": true,
+    "default_resident_binary_changed": false,
+    "native_cycles_measured": false,
+    "metrics": {
+      "v2_pareto_fast": {
+        "stock_all_signed": 774.64300539643,
+        "hybrid_all_signed": 758.2050643420506,
+        "hybrid_mean_saving": 16.43794105437941,
+        "hybrid_worst_regression": 18,
+        "stock_nonnegative": 739.3370629370629,
+        "optin_nonnegative": 680.965034965035,
+        "nonnegative_mean_saving": 58.37202797202797,
+        "nonnegative_min_saving": 55
+      },
+      "v3_reu_512k": {
+        "stock_all_signed": 774.64300539643,
+        "hybrid_all_signed": 758.2050643420506,
+        "hybrid_mean_saving": 16.43794105437941,
+        "hybrid_worst_regression": 18,
+        "stock_nonnegative": 739.3370629370629,
+        "optin_nonnegative": 680.965034965035,
+        "nonnegative_mean_saving": 58.37202797202797,
+        "nonnegative_min_saving": 55
+      },
+      "v4_reu_16m": {
+        "stock_all_signed": 774.64300539643,
+        "hybrid_all_signed": 758.2050643420506,
+        "hybrid_mean_saving": 16.43794105437941,
+        "hybrid_worst_regression": 18,
+        "stock_nonnegative": 739.3370629370629,
+        "optin_nonnegative": 680.965034965035,
+        "nonnegative_mean_saving": 58.37202797202797,
+        "nonnegative_min_saving": 55
+      }
+    },
+    "doc": "docs/ISSUE144_SIGNED_SHR16_SPECIALISTS_2026-10-15.md",
+    "cpu_proof": "validation/review/ISSUE144_SIGNED_NONNEGATIVE_SHR16_OPTIN_MODEL.json",
+    "native_proof": "validation/review/ISSUE144_SIGNED_NONNEGATIVE_SHR16_NATIVE_VICE.json",
+    "installer_proof": "validation/review/ISSUE144_SIGNED_NONNEGATIVE_INSTALLER_MODEL.json"
   }
 }
