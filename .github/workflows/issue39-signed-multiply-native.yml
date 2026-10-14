@@ -5,6 +5,7 @@ on:
     paths:
       - tools/native_issue39_signed_multiply_family.py
       - tools/stage_issue39_signed_multiply_family.py
+      - docs/ISSUE39_SIGNED_MULTIPLY_FAMILY_2026-10-14.md
       - .github/workflows/issue39-signed-multiply-native.yml
   workflow_dispatch:
 permissions:
