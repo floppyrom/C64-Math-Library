@@ -1,3 +1,6 @@
+2026-10-14 ISSUE39 DIST8 SHARED SWAP RESEARCH — NOT RELEASED
+- In-memory same-address DIST8_FAST/DIST8_ACCURATE swap candidate exhaustively passed 655,360 paired public operand cases across all five profiles (1,310,720 original/candidate CPU-model calls). All output/scratch bytes, inputs, carry and stack agree; V1/V5 save 4.535019 mean modeled cycles per public call, V2/V3/V4 save 4.031128. Native cycle timing NOT measured. No production binaries, ABI, ZP, standalone sources or REU changed. This is NOT a shipped optimization; further source integration, relocation, native VICE and full release checks remain. Evidence: validation/review/ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json
+
 ## 2026-10-14 ISSUE39 TRIG ANGLE FAMILY FINAL CERTIFICATION
 
 **Complete:** SIN8/COS8/SINCOS8 plus ATAN2_8, all five profiles, both source relocations. 7,680 CPU-model SIN/COS/SINCOS public calls; 655,360 exhaustive signed ATAN2 public calls; 480 real x64sc native calls (including V3/V4 REU image). V1 SINCOS 39 model cycles vs combined two-call saving 13; V2–V5 SINCOS 31 and saving 15. All combined outputs equal separate calls. No production PRG, ABI, ZP, table or reserved stack change, no private OptiSearch source. Native cycles were **not** measured.

@@ -1,0 +1,77 @@
+name: Issue39 DIST8 shared register swap paired research
+on:
+  push:
+    branches: [issue39-dist8-shared-swap-research-20261014]
+    paths:
+      - .github/workflows/issue39-dist8-register-swap-research.yml
+      - tools/research_issue39_dist8_register_swap.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  exhaustive-shared-swap:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-dist8-shared-swap-research-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare original and in-memory patched public distance calls
+        run: |
+          python3 tools/research_issue39_dist8_register_swap.py --output validation/review/ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json
+      - name: Record candidate-only results in both public changelogs
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          stamp='2026-10-14 ISSUE39 DIST8 SHARED SWAP RESEARCH — NOT RELEASED'
+          note=(stamp+'\n'
+            '- In-memory same-address DIST8_FAST/DIST8_ACCURATE swap candidate '
+            'exhaustively passed 655,360 paired public operand cases across '
+            'all five profiles (1,310,720 original/candidate CPU-model calls). '
+            'All output/scratch bytes, inputs, carry and stack agree; '
+            'V1/V5 save 4.535019 mean modeled cycles per public call, '
+            'V2/V3/V4 save 4.031128. Native cycle timing NOT measured. '
+            'No production binaries, ABI, ZP, standalone sources or REU '
+            'changed. This is NOT a shipped optimization; further source '
+            'integration, relocation, native VICE and full release checks '
+            'remain. Evidence: validation/review/'
+            'ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json\n\n')
+          for name in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
+              file=Path(name)
+              old=file.read_text()
+              if stamp not in old:file.write_text(note+old)
+          PY
+      - name: Seal public research/checksum files without modifying binaries
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,subprocess,sys
+          from pathlib import Path
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          p=Path('validation/review/ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json')
+          report=json.loads(p.read_text())
+          assert report['status']=='PASS_EXHAUSTIVE_RESEARCH_NOT_PRODUCTION'
+          assert all(all(v['cases']==65536 and v['bytewise_equal'] for v in x['routines'].values()) for x in report['profiles'].values())
+          subprocess.run(['make','clean'],check=True)
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,'tools/package_audit.py'],check=True)
+          PY
+      - name: Commit exhaustive evidence only after every case passes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: record exhaustive DIST8 swap in-memory proof and reseal'
+          git push origin HEAD:issue39-dist8-shared-swap-research-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-dist8-register-swap-research
+          path: validation/review/ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json
