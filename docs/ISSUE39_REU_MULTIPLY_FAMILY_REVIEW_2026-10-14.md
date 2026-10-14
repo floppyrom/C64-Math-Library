@@ -33,3 +33,9 @@ The normal multiply-family optimization already screened OptiSearch native quart
 ### Publication criterion
 
 This research review and same-input CPU proof do not by themselves certify native REU behaviour. Keep Issue #39's REU multiply checkbox **open until** native x64sc V3/V4 and QS16 mode proof, exact-head full CI and comparable benchmarks, checksum seal and postmerge main qualification have passed. Remaining trig/distance/seek families remain open irrespective of REU completion.
+
+## Native VICE x64sc proof
+
+The published V3 512-KiB and V4 16-MiB REU images passed **120 real x64sc public product calls**, each inside the required BEGIN/CALL/END lifecycle. Turbo16/32 passed in both profiles; V4 QS16 passed in the installed reference map. The native smoke test checks public products, carry, input/stack preservation and sentinel output bytes. Native cycles were **not** measured. The V4 QS16 *alternate* map is source-built and CPU-model-qualified on all 2,097 same operands; its relocation fixes symbolic public I/O, ZP scratch and the REU quarter-square base bank, while the installed reference-mode PRG/REU images remain byte-for-byte unchanged.
+
+**Next qualification:** independent exact-head full-library, comparable unsigned and Turbo32 checks; post-merge main checks before checking off REU multiply in Issue #39.
