@@ -14,6 +14,7 @@ sys.path.insert(0,str(R/"tools"))
 from mini6502 import Assembler
 from validate_unsigned_division import PROFILES,api
 from native_issue39_u24_txa_resident import command
+from validate_signed_division import div_expected
 N=24; IN=0x0400; OUT=0x0700; H=0x0B00
 TESTS={
  "mod_pow2":{"source":"optional/issue144_pow2_mod32_16/mod32_16_pow2_remainder_only.asm",
@@ -21,6 +22,11 @@ TESTS={
     "public":"MATH_UMOD32_16","result":0xC01C,
     "vectors":[(x&0xFFFFFFFF,1<<k) for k in range(16) for x in
               [0xFFFFFFFF,0x12345678,0x00010001]][::2][:N]},
+ "signed_mod_pow2":{"source":"optional/issue144_pow2_smod32_16/smod32_16_r_only.asm",
+    "label":"MATH_SMOD32_16_POSPOW2_RONLY","entry":0x0C80,
+    "public":"MATH_SMOD32_16","result":0xC01C,
+    "vectors":[(n&0xFFFFFFFF,1<<k) for k in range(12) for n in
+              [0xFFFFFFFF,0x80000001]][:N]},
  "isqrt_low16":{"source":"optional/issue144_isqrt32_u16/low16_dispatch.asm",
     "label":"MATH_ISQRT32_LOW16_ONLY","entry":0x0C40,
     "public":"MATH_ISQRT32","result":0xC008,
@@ -95,7 +101,9 @@ def execute(p,t,optional,temp,port,exe):
  if not dump.exists():raise RuntimeError((p,t["public"],log.read_text()[-1200:]))
  raw=dump.read_bytes();assert len(raw)==192
  for i,(n,d) in enumerate(t["vectors"]):
-  expected=(n&(d-1)) if t["public"]=="MATH_UMOD32_16" else math.isqrt(n)
+  expected=((n&(d-1)) if t["public"]=="MATH_UMOD32_16" else
+            div_expected(n,32,d,16,32,16)[1] if t["public"]=="MATH_SMOD32_16"
+            else math.isqrt(n))
   value=raw[i]|raw[64+i]<<8
   assert value==expected,(p,t["public"],optional,i,value,expected)
   assert raw[128+i]&1==0,(p,t["public"],optional,"carry")
