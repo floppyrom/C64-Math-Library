@@ -15,3 +15,5 @@ Transitive V1 division timing changes on the same-input corpus: {"MATH_UDIV16_SH
 | v5_hybrid_lowzp | 1036.462418 | 1036.246732 | 0.215686 |
 
 Production stage requires full PR/main green CI. SEEK family audit and OptiSearch candidate review remain open.
+
+Additional native x64sc mixed-operation proof: 325 actual public calls across all five profiles, including real V3/V4 REU images, interleaving four unsigned DIV/MOD entries with SEEK16 STEP; identical expected movement, quotients, remainders, carry and stack. See `validation/review/ISSUE136_SEEK_DIVMOD_NATIVE_VICE.json` and PR #138. Native cycles were not measured.
