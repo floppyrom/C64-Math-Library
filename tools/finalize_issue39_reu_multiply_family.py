@@ -26,6 +26,19 @@ def main():
     stfile=ROOT/"RELEASE_STATUS.json"
     st=json.loads(stfile.read_text())
     row=st["issue39_reu_multiply_modes_2026_10_14"]
+    if row["status"]=="PASS_COMPLETED_POSTMERGE_MAIN_GREEN":
+        # Idempotent reseal after adding new permanent CI workflow or
+        # documentation; never alter the already qualified published binaries.
+        completed=json.loads((ROOT/CERT).read_text())
+        assert completed["status"]==row["status"] and completed["family_complete"]
+        assert completed["main_sha"]==args.main_sha
+        assert row["family_complete"]
+        subprocess.run(["make","clean"],cwd=ROOT,check=True)
+        for _ in range(3):
+            reseal()
+            subprocess.run([sys.executable,str(ROOT/"tools/package_audit.py")],cwd=ROOT,check=True)
+        print("ISSUE39 REU COMPLETION REPEAT PACKAGE SEAL PASS")
+        return
     assert row["status"]=="PASS_NATIVE_VICE_PR_MAIN_CI_PENDING"
     assert not row["family_complete"]
     proof=json.loads((ROOT/row["evidence"]).read_text())
