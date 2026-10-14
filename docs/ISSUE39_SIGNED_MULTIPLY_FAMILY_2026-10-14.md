@@ -18,6 +18,26 @@ The baseline `validation/review/SIGNED_MULTIPLY_VALIDATION.json` contains **264,
 
 Only *same-input, same-model, same-ABI* vectors support runtime gain claims. The original `validate_signed_multiply.py` uses profile-specific signed operand seeds, so its sub-cycle differences between V2/V3/V4 must not be called hardware/profile penalties. The private OptiSearch record timings above have different entry, resource, operand and/or table contracts; a raw native-vs-public subtraction is meaningless.
 
+## Verified identical-corpus profile means (CPU-model cycles)
+
+These are public-entry measurements on **the same operand vectors for every profile**, including RTS and excluding caller JSR or input stores. They are not the older profile-dependent-seed means in `PERFORMANCE.md`.
+
+| Routine | V1 / V5 | V2 / V3 / V4 | Cases/profile |
+| --- | ---: | ---: | ---: |
+| SMUL8 | 67.992188 | 67.992188 | 65,536 exhaustive |
+| SMUL16 | 282.066637 | 245.854835 | 4,457 |
+| SMUL24 | 507.362391 | 463.362391 | 2,409 |
+| SMUL32 normal | 744.484848 | 712.426318 | 2,409 |
+| SMUL32_READY, prepared | 719.484848 | 715.426318 | same 2,409 |
+
+READY is **exactly 25 cycles faster** than ordinary in V1/V5 on all 2,409 matching operands, but **exactly 3 cycles slower** in V2/V3/V4. This is explained by the profile layout: V2/V3/V4 ordinary SMUL32 starts directly at the dispatcher, while stable `SMUL32_READY` lives at a separate ABI address and executes a 3-cycle JMP to that same dispatcher. There is no optional pointer repair left to skip in those profiles. Replacing the READY redirect with a duplicate dispatcher would consume distinct code space, require a new placed branch/source design, and has not demonstrated a net public-call win under the frozen code geometry. **Do not advertise READY as faster for every profile.**
+
+The V1/V5 bounded mixed-call check exercised **360 ordinary and 360 unqualified READY calls per profile** following 18 interleaving states. Normal returned correct results 360/360; READY was wrong 180/360 where preceding operations invalidated its required table-pointer state. This is a misuse witness, not a violation of the documented READY contract.
+
+## Installed-resident native x64sc qualification
+
+The SHA-256-pinned production residents for all five profiles passed **600 public calls** (24 each for SMUL8, SMUL16, SMUL24, SMUL32 and SMUL32_READY), plus **120 additional ordinary SMUL32 calls** used to prepare READY's valid state. Checked exact signed products, carry clear, input preservation, higher output sentinel bytes and stable stack pointer. No native cycle timing is claimed. The existing 264,999 public-CPU regression remains retained. No production PRG, stable entry, resource envelope or private OptiSearch code was changed.
+
 ### Stable release acceptance
 
 1. No shipped resident byte or public ABI change and no ZP/stack/table growth unless a superior **compatible** implementation is fully qualified.
