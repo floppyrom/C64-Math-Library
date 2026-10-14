@@ -16,6 +16,10 @@ from issue144_shr16_independent_clone import assemble,patched_assembly,PROFILES,
 
 CPU="validation/review/ISSUE144_SHR16_STANDALONE_CLONE_CPU_MODEL.json"
 VICE="validation/review/ISSUE144_SHR16_INDEPENDENT_CLONE_NATIVE_VICE.json"
+PUBLIC_CPU="validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_OPTIN_CPU_MODEL.json"
+PUBLIC_VICE="validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_OPTIN_NATIVE_VICE.json"
+INSTALLER="validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_INSTALLER_CPU_MODEL.json"
+PATCH_SOURCE="optional/issue144_v234_umul32_shr16_independent/public_entry_redirect.asm"
 ASM="optional/issue144_v234_umul32_shr16_independent/standalone_clone.asm"
 README="optional/issue144_v234_umul32_shr16_independent/README.md"
 DOC="docs/ISSUE144_UMUL32_SHR16_SEQUENTIAL_CLONE_2026-10-15.md"
@@ -23,12 +27,19 @@ STAMP="2026-10-15 ISSUE144 INDEPENDENT SHR16 MULTIPLY CLONE PARETO POINT"
 def read(p):return json.loads((R/p).read_text())
 def sha(p):return hashlib.sha256((R/p).read_bytes()).hexdigest()
 def main():
- cpu=read(CPU);native=read(VICE);sp=R/"RELEASE_STATUS.json";status=read("RELEASE_STATUS.json")
+ cpu=read(CPU);native=read(VICE);pubcpu=read(PUBLIC_CPU)
+ pubnative=read(PUBLIC_VICE);installer=read(INSTALLER)
+ sp=R/"RELEASE_STATUS.json";status=read("RELEASE_STATUS.json")
  assert cpu["status"]=="PASS_RESEARCH_SEQUENTIAL_CLONE_CPU_MODEL"
  assert native["status"]=="PASS_NATIVE_VICE_INDEPENDENT_SHR16_CLONE"
  assert cpu["cases_per_profile"]==2409
  assert native["native_pairs_total"]==144
- assert set(cpu["profiles"])==set(native["results"])==set(PROFILES)
+ assert pubcpu["status"]=="PASS_UMUL32_SHR16_STABLE_PUBLIC_ENTRY_CPU_MODEL"
+ assert pubnative["status"]=="PASS_NATIVE_OPTIN_STABLE_PUBLIC_ENTRY_32_SHR16"
+ assert installer["status"]=="PASS_SOURCE_INSTALL_RESTORE_MODEL"
+ assert pubcpu["cases_each"]==2409 and pubnative["native_calls_total"]==144
+ assert installer["source_sha256"]==sha(PATCH_SOURCE)
+ assert set(cpu["profiles"])==set(native["results"])==set(pubcpu["profiles"])==set(pubnative["results"])==set(installer["results"])==set(PROFILES)
  old,clone,labels,source,changed=assemble()
  assert labels["MATH_UMUL32_SHR16_CLONE"]==ENTRY_CLONE
  assert min(clone)==CLONE and max(clone)==CLONE+(LAST-ORIGINAL)
@@ -43,6 +54,11 @@ def main():
   assert q["status"]=="PASS_SEQUENTIAL_COMPOSABLE_MODEL"
   assert q["pairs"]==2409
   assert q["savings"]["min_cycles"]==q["savings"]["max_cycles"]==62
+  p=pubcpu["profiles"][p]
+  assert p["savings_every_pair"]==59
+  assert p["paired_savings"]["min_cycles"]==p["paired_savings"]["max_cycles"]==59
+  assert pubnative["results"][p["profile"]]["status"]=="PASS_NATIVE_PUBLIC_ADDRESS_UNCHANGED"
+  assert installer["results"][p["profile"]]["status"]=="PASS_CORRECT_PUBLIC_JMP_RESTORATION"
   assert q["native_vice_candidate_qualified"] is False
   assert q["ordinary_UMUL32_and_SMUL32_interleaved"]
   assert native["results"][p]["status"]=="PASS_NATIVE_INDEPENDENT_SHR16_PUBLIC_RESULT"
@@ -57,7 +73,14 @@ def main():
  doc=[
   "# Issue #144 — independent sequential SHR16 multiplier clone",
   "",
-  "**Validated opt-in Pareto source, NOT an installed public replacement.**",
+  "**Validated opt-in Pareto source, NOT an installed default profile replacement.**",
+  "",
+  "The same separate-RAM clone is qualified for two call conventions:",
+  "direct JSR $0E03 saves 62 cycles; preserving the installed public",
+  "JSR $5E12 entry while replacing its JMP target saves 59 cycles.",
+  "The public-entry adaptation changes only two JMP operand bytes",
+  "at $5E13/$5E14 and can be reversed by the provided patch source.",
+  "It does NOT patch the stock core, unlike the exclusive batches.",
   "",
   "Instead of temporarily modifying the standard library's shared",
   "unsigned 32-bit multiplier (PRs #145–#146), this variant clones",
@@ -85,7 +108,12 @@ def main():
   "MATH_SMUL32 calls were executed before and after each clone call;",
   "the clone did not overwrite the stock executable core. Native",
   "x64sc executes 144 baseline/clone cases across all three profiles.",
-  "**62 CPU-model cycles are saved per call on every input tested.**",
+  "**62 CPU-model cycles are saved per direct call on every input tested.**",
+  "With the original public $5E12 entry retained, the same 7,227",
+  "paired inputs save exactly 59 cycles each. An additional 144",
+  "native x64sc baseline/retargeted-public-entry calls pass, and",
+  "the reversible public JMP installer is source-assembled, checked",
+  "in each profile and restores the legacy destination correctly.",
   "Native emulator timing is NOT measured; only correctness is native.",
   "",
   "## Exact resource and linking contract",
@@ -112,7 +140,11 @@ def main():
   "Current production PRGs, REU images, normal ZP budgets and API",
   "addresses are unchanged. No private OptiSearch source is present.",
   "",
-  "Source: "+ASM,
+  "Independent producer source: "+ASM,
+  "Optional public-entry enable/disable source: "+PATCH_SOURCE,
+  "Public-entry CPU proof: "+PUBLIC_CPU,
+  "Public-entry native proof: "+PUBLIC_VICE,
+  "Source-assembled patch/restore proof: "+INSTALLER,
   "Model/test generator: tools/issue144_shr16_independent_clone.py",
   "Native x64sc: tools/native_issue144_shr16_independent_clone.py",
   "Model evidence: "+CPU,
@@ -133,8 +165,12 @@ def main():
  status["issue144_sequential_independent_shr16_clone_2026_10_15"]={
   "status":"PASS_NATIVE_CPU_MODEL_OPTIN_NO_DEFAULT_PROMOTION",
   "supported_profiles":list(PROFILES),"model_paired_calls":7227,
-  "saved_cpu_model_cycles_per_call":62,
-  "native_old_candidate_public_calls":144,
+  "saved_cpu_model_cycles_per_direct_call":62,
+  "saved_cpu_model_cycles_per_original_public_entry":59,
+  "legacy_public_entry_retained":"$5E12",
+  "native_old_candidate_direct_calls":144,
+  "native_old_candidate_redirected_entry_calls":144,
+  "public_installer_source_proven":True,
   "executable_reserved_range":"$0D05-$0E49",
   "clone_entry":"$0E03","emitted_executable_bytes":len(clone),
   "normal_signed_unsigned_interleaving_verified":True,
@@ -143,7 +179,10 @@ def main():
   "native_cycles_measured":False,"native_reu_bus_timing_measured":False,
   "public_production_prgs_changed":False,
   "default_public_abi_changed":False,"private_optisearch_published":False,
-  "source":ASM,"documentation":DOC,"model_proof":CPU,"native_proof":VICE}
+  "source":ASM,"public_redirect_source":PATCH_SOURCE,
+  "documentation":DOC,"model_proof":CPU,"native_proof":VICE,
+  "public_entry_model_proof":PUBLIC_CPU,"public_entry_native_proof":PUBLIC_VICE,
+  "installer_proof":INSTALLER}
  sp.write_text(json.dumps(status,indent=2)+"\n")
  note=(STAMP+"\n- Opt-in original-source-derived unsigned 32x32"
        " SHR16 separate-RAM producer saves exactly 62 CPU-model"
