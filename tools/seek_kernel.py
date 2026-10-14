@@ -540,7 +540,7 @@ s16i_scale:
         ror
         lsr SK_EMIN
         ldy SK_T
-        jmp s16i_scale
+        bne s16i_scale          ; after first pass, use countdown Z; skip redundant JMP+BEQ
 s16i_scaled:
         sta SK_EMAJ
         jsr seek_euclid_speed   ; A = integer, Y = fraction
