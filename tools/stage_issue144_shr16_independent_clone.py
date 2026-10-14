@@ -54,11 +54,11 @@ def main():
   assert q["status"]=="PASS_SEQUENTIAL_COMPOSABLE_MODEL"
   assert q["pairs"]==2409
   assert q["savings"]["min_cycles"]==q["savings"]["max_cycles"]==62
-  p=pubcpu["profiles"][p]
-  assert p["savings_every_pair"]==59
-  assert p["paired_savings"]["min_cycles"]==p["paired_savings"]["max_cycles"]==59
-  assert pubnative["results"][p["profile"]]["status"]=="PASS_NATIVE_PUBLIC_ADDRESS_UNCHANGED"
-  assert installer["results"][p["profile"]]["status"]=="PASS_CORRECT_PUBLIC_JMP_RESTORATION"
+  public_row=pubcpu["profiles"][p]
+  assert public_row["savings_every_pair"]==59
+  assert public_row["paired_savings"]["min_cycles"]==public_row["paired_savings"]["max_cycles"]==59
+  assert pubnative["results"][p]["status"]=="PASS_NATIVE_PUBLIC_ADDRESS_UNCHANGED"
+  assert installer["results"][p]["status"]=="PASS_CORRECT_PUBLIC_JMP_RESTORATION"
   assert q["native_vice_candidate_qualified"] is False
   assert q["ordinary_UMUL32_and_SMUL32_interleaved"]
   assert native["results"][p]["status"]=="PASS_NATIVE_INDEPENDENT_SHR16_PUBLIC_RESULT"
