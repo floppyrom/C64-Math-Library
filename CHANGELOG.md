@@ -1,3 +1,8 @@
+2026-10-14 ISSUE39 SIGNED MULTIPLY FAMILY FINAL MAIN CERTIFICATION
+- Five stable SMUL8/16/24/32 + conditional SMUL32_READY implementations retained after public-ABI manual and private OptiSearch resource screen. Exhaustive SMUL8 all five profiles (327,680 calls); SMUL16 4,457 and SMUL24/32 2,409 matched pairs/profile; READY same-input 2,409 pairs/profile. V1/V5 READY -25 cycles; V2-V4 READY +3 for stable redirect; normal low-ZP entry must remain mixed-call safe.
+- 600 native VICE signed calls and 120 READY preparation calls qualified, native timing not measured; no PRG, public ABI, ZP or persistent stack growth.
+- PR #120 main 3f4da1ab061ad56f3745e3742a45b838321cf410 full CI 38522745848, comparable 38522745889, signed family 38522745760. Issue #39 remains open for fixed outputs, REU, trig, distance and seek.
+
 2026-10-14 ISSUE39 SIGNED MULTIPLY FAMILY ABI RESOURCE QUALIFICATION
 - Completed per-implementation audit of five stable SMUL8/16/24/32 and conditional SMUL32_READY APIs. Exhaustive SMUL8 65,536 each of V1-V5; 16/24/32 matched corpora 4,457/2,409/2,409; independent ordinary/READY paired 2,409 per profile, V1/V5 dirty-pointer interleavings. The existing 264,999-call signed regression and both relocation maps remain release gates.
 - 600 installed-resident native x64sc calls plus 120 READY state preparation calls, exact product/carry/inputs/output sentinels/stack. Native cycles NOT measured. Private OptiSearch sign-first/probability layout, conditional carry, centered tables and SMUL32 compact126 screened; no demonstrable compatible full public ABI gain; no code or resident/ZP/stack/table growth.

@@ -2,6 +2,8 @@
 
 **Date:** 14 October 2026. **Scope:** the five resident public profiles, SMUL8, SMUL16, SMUL24, SMUL32 and SMUL32_READY. Separate shifted-result SMUL16_SHR8/SMUL32_SHR16 and REU Turbo/QS families retain their later Issue #39 campaign steps. Private OptiSearch files remain unpublished.
 
+**Completion certification (14 October 2026):** The signed multiplication implementation family has completed the public ABI/resource audit, native installed VICE qualification and post-merge main CI. The existing implementations are retained because no screened alternative achieved a compatible full-API gain. Issue #39 remains open for the other families.
+
 ## Frozen public choices, manual architecture pass
 
 | Family | Actual public architecture | Compatible search decision |
