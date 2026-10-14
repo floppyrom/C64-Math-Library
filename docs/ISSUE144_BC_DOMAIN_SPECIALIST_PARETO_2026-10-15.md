@@ -45,6 +45,30 @@ Requires the resident original MATH_INIT and table data.
 | v4_reu_16m | 971.625 | 57.000 | 914.625 |
 | v5_hybrid_lowzp | 1712.837 | 89.286 | 1623.551 |
 
+## B2: signed 32/16 remainder-only positive-power-of-two divisor
+
+Input N32 may be **any signed 32-bit value**, including negatives.
+D16 must be positive and exactly one bit set (1..16384).
+The 6510 kernel forms signed remainder correctly for truncation
+toward zero: if N is negative and the masked positive remainder
+is nonzero, subtract D to obtain the negative signed R16.
+Q32 is again untouched: NOT a drop-in signed modulo alias.
+It uses no normal ZP or lookup tables and preserves X, Y and SP.
+
+| Profile | Stock signed modulo | Signed R-only | Saved cycles |
+|---|---:|---:|---:|
+| v1_balanced | 1528.435 | 60.210 | 1468.225 |
+| v2_pareto_fast | 910.119 | 60.210 | 849.909 |
+| v3_reu_512k | 910.119 | 60.210 | 849.909 |
+| v4_reu_16m | 910.119 | 60.210 | 849.909 |
+| v5_hybrid_lowzp | 904.119 | 60.210 | 843.909 |
+
+15 nonzero positive powers of two x 165 operand vectors including
+negative edges and seeded random data: 2,475 model calls/profile,
+12,375 matched checks across all V1–V5, plus real native VICE
+baseline/specialist comparisons for signed-negative numerators.
+Source: optional/issue144_pow2_smod32_16/smod32_16_r_only.asm
+
 There is also an AUTO selector that checks upper input bytes. It is
 exact on arbitrary 32-bit inputs, but its branch tax slows full-width
 calls. **Not promoted as a default:** choose only after measuring

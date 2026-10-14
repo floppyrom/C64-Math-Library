@@ -153,6 +153,40 @@
   "not_general_promotion": true,
   "profile": "v5_hybrid_lowzp",
   "published_binaries_altered": false,
+  "signed_mod_pow2": {
+    "X_Y_stack_preserved": true,
+    "cases": 2475,
+    "code_bytes": 57,
+    "negative_numerators_qualified": true,
+    "precondition": "signed positive power of two divisor (1..16384)",
+    "public_alias_quotient_contract_not_equivalent": true,
+    "saved": {
+      "cycle_vector_sha256": "da7d69248bc4fa67a803fbdadfb24ec5b8de4f4fa3521e16ef5b0858aed31463",
+      "max_cycles": 1778,
+      "mean_cycles": 843.9086868686869,
+      "median_cycles": 838,
+      "min_cycles": 123,
+      "p95_cycles": 1410
+    },
+    "source_sha256": "f133314bc56dab7d0fe1b6376b9f6c4db5a19afe3e299bfcd83975d05409a0a9",
+    "specialist": {
+      "cycle_vector_sha256": "8c29320a45a790369a72249c9ca727482aa0aa101da4c9bbd48daa160eec14eb",
+      "max_cycles": 80,
+      "mean_cycles": 60.21010101010101,
+      "median_cycles": 45,
+      "min_cycles": 45,
+      "p95_cycles": 80
+    },
+    "status": "PASS_SIGNED_POW2_RONLY_NOT_QUOTIENT",
+    "stock": {
+      "cycle_vector_sha256": "e85c28ea6f2b14b0c93e7261fd5ce3a0107224679e6710c235ea0dbdcdeb57b1",
+      "max_cycles": 1858,
+      "mean_cycles": 904.1187878787879,
+      "median_cycles": 888,
+      "min_cycles": 168,
+      "p95_cycles": 1455
+    }
+  },
   "status": "PASS_CPU_MODEL_DOMAIN_SCREEN_ONLY",
   "zero_page_added": 0
 }

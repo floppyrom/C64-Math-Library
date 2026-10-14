@@ -153,6 +153,40 @@
   "not_general_promotion": true,
   "profile": "v1_balanced",
   "published_binaries_altered": false,
+  "signed_mod_pow2": {
+    "X_Y_stack_preserved": true,
+    "cases": 2475,
+    "code_bytes": 57,
+    "negative_numerators_qualified": true,
+    "precondition": "signed positive power of two divisor (1..16384)",
+    "public_alias_quotient_contract_not_equivalent": true,
+    "saved": {
+      "cycle_vector_sha256": "6485acebe9bdaa054b7ab3dc8020da93784b09aa6f8a0ad524490a7088e4f5fd",
+      "max_cycles": 2011,
+      "mean_cycles": 1468.2246464646464,
+      "median_cycles": 1658,
+      "min_cycles": 633,
+      "p95_cycles": 1798
+    },
+    "source_sha256": "f133314bc56dab7d0fe1b6376b9f6c4db5a19afe3e299bfcd83975d05409a0a9",
+    "specialist": {
+      "cycle_vector_sha256": "8c29320a45a790369a72249c9ca727482aa0aa101da4c9bbd48daa160eec14eb",
+      "max_cycles": 80,
+      "mean_cycles": 60.21010101010101,
+      "median_cycles": 45,
+      "min_cycles": 45,
+      "p95_cycles": 80
+    },
+    "status": "PASS_SIGNED_POW2_RONLY_NOT_QUOTIENT",
+    "stock": {
+      "cycle_vector_sha256": "22dd629fc84dd284b9fb2a5bdccd59623bfb3f6c11cc96da375d6bb56d97829a",
+      "max_cycles": 2066,
+      "mean_cycles": 1528.4347474747474,
+      "median_cycles": 1716,
+      "min_cycles": 678,
+      "p95_cycles": 1868
+    }
+  },
   "status": "PASS_CPU_MODEL_DOMAIN_SCREEN_ONLY",
   "zero_page_added": 0
 }
