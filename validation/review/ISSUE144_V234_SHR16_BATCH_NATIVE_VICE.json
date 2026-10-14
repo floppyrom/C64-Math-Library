@@ -1,0 +1,51 @@
+{
+  "native_cycle_timing_measured": false,
+  "normal_public_abi_promoted": false,
+  "output_bytes_six_correct": true,
+  "private_optisearch_source_published": false,
+  "profiles": {
+    "v2_pareto_fast": {
+      "baseline_calls": 24,
+      "baseline_record_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+      "candidate_calls": 24,
+      "candidate_record_sha256": "cfa4852bf6664ecfe9817da2ea40d2da70e4d91512cd49587422d20bc4e9cb14",
+      "native_cycle_timing_measured": false,
+      "normal_umul32_mixed_call_safe": false,
+      "output_carry_inputs_stack_equal": true,
+      "resident_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+      "reu_assist_used": false,
+      "source_sha256": "6eda405e61b7dc514616b115ac8d6f6ac97dbf4794f30837eb76f8e283289849",
+      "status": "PASS_NATIVE_EXCLUSIVE_SOURCE_BEGIN_END"
+    },
+    "v3_reu_512k": {
+      "baseline_calls": 24,
+      "baseline_record_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+      "candidate_calls": 24,
+      "candidate_record_sha256": "cfa4852bf6664ecfe9817da2ea40d2da70e4d91512cd49587422d20bc4e9cb14",
+      "native_cycle_timing_measured": false,
+      "normal_umul32_mixed_call_safe": false,
+      "output_carry_inputs_stack_equal": true,
+      "resident_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+      "reu_assist_used": false,
+      "source_sha256": "6eda405e61b7dc514616b115ac8d6f6ac97dbf4794f30837eb76f8e283289849",
+      "status": "PASS_NATIVE_EXCLUSIVE_SOURCE_BEGIN_END"
+    },
+    "v4_reu_16m": {
+      "baseline_calls": 24,
+      "baseline_record_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+      "candidate_calls": 24,
+      "candidate_record_sha256": "cfa4852bf6664ecfe9817da2ea40d2da70e4d91512cd49587422d20bc4e9cb14",
+      "native_cycle_timing_measured": false,
+      "normal_umul32_mixed_call_safe": false,
+      "output_carry_inputs_stack_equal": true,
+      "resident_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "reu_assist_used": false,
+      "source_sha256": "6eda405e61b7dc514616b115ac8d6f6ac97dbf4794f30837eb76f8e283289849",
+      "status": "PASS_NATIVE_EXCLUSIVE_SOURCE_BEGIN_END"
+    }
+  },
+  "reu_dma_timing_measured": false,
+  "signed_umul32_unaffected_outside_exclusive_period": true,
+  "status": "PASS_NATIVE_VICE_V234_EXCLUSIVE_BATCH",
+  "total_native_calls": 144
+}
