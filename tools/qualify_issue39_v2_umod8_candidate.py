@@ -42,6 +42,11 @@ def cpubuild(blob):
 def main():
     parentbytes=PARENT.read_bytes()
     newbytes=NEW.read_bytes()
+    # This historical isolated candidate predates unrelated public multiply
+    # integration. Permit ONLY the exact, currently shipped V2 PRG as a
+    # replay source, never an arbitrary unrecognized binary.
+    shipped_v2_sha=sha(parentbytes)
+    source_v2_sha=sha(newbytes)
     # This is a historical UMOD8 A/B proof. The independent root-only
     # source replacement must be reversed in BOTH source-built residents,
     # preserving exactly the original candidate/control arithmetic bytes.
@@ -53,7 +58,10 @@ def main():
     # its original audited V2 arithmetic image. This neither introduces an
     # unrelated UMUL24 difference into the 104-byte UMOD8 candidate delta nor
     # accepts an arbitrary changed V2 binary.
-    if sha(parentbytes)=='9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7':
+    if (sha(parentbytes)=='9e9bdadcef366bbba0161ff0107ce95890a4f147927066f85b78d1d24f2795d7' or
+        (shipped_v2_sha=='d1aeaa3b3bfa4d635bce126f6e0c44fa8992bbdfcceb4b386f8bb5654dff3458'
+         and source_v2_sha==shipped_v2_sha
+         and sha(parentbytes)==sha(newbytes))):
         import subprocess
         assert sha(newbytes)==sha(parentbytes), 'PR105 source-built V2 resident drift'
         source='f7164dd07223f2f1761dfe6260293af3420357fa'
@@ -63,6 +71,8 @@ def main():
             'frozen pre-UMUL8/UMUL24 V2 replay source drift'
         parentbytes=historical
         newbytes=historical
+    # Exact archived A/B uses only the SHA-pinned historical UMOD8 code,
+    # not later public UMUL32/SHR16/UMUL24 source changes.
     # Before publication the resident is the historical old image. After
     # publication reconstruct that *exact* historical image from the
     # SHA-certified 104 changed addresses, without altering the new code.
