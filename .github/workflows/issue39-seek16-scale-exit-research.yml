@@ -51,7 +51,7 @@ jobs:
           git diff --cached --quiet || git commit -m 'research(issue39): certify SEEK16 INIT scale exit cycles without publishing binaries'
           git push origin HEAD:issue39-seek16-euclid-exit-optimization-20261014
       - uses: actions/upload-artifact@v4
-        if: always
+        if: always()
         with:
           name: issue39-seek16-scale-exit-research
           path: validation/review/ISSUE39_SEEK16_SCALE_EXIT_RESEARCH_2026-10-14.json
