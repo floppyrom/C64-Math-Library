@@ -212,3 +212,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 The standard unsigned multiply family (UMUL8/16/24/32 and stateful READY) is [qualified and complete](docs/ISSUE39_UNSIGNED_MULTIPLY_FAMILY_REVIEW_2026-10-14.md). REU Turbo/QS multiply modes are separate.
 
 For the signed SMUL8/16/24/32 and conditional SMUL32_READY profiles see the [Issue #39 signed multiply ABI/resource and OptiSearch audit](docs/ISSUE39_SIGNED_MULTIPLY_FAMILY_2026-10-14.md).
+
+The [REU Turbo16/Turbo32 and V4 QS16 matched-input multiply audit](docs/ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md) documents batch break-even, pointer ownership and REU-specific hardware caveats.

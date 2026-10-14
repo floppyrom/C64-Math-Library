@@ -1,0 +1,510 @@
+{
+  "mean_cycle_basis": "CPU model including deterministic REU DMA, public entry through RTS, caller JSR/input preparation excluded",
+  "native_raster_timing_measured": false,
+  "no_code_or_resource_change": true,
+  "private_optisearch_source_published": false,
+  "profiles": {
+    "v3_reu_512k": {
+      "alternate": {
+        "turbo16": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 33,
+            "lifecycle_cycles": 645,
+            "normal_minus_mode_per_call_cycles": 19.687649022412955
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 300,
+            "cases": 2097,
+            "cycle_vector_sha256": "9a701c952c833d15afe5dedc3069f40387c0e531a171f8f093b5066e093a5a1c",
+            "end_cycles": 345,
+            "installed_overlay_sha256": "a5fa1594ac0844775175b17f50d6a8ce278f52aa9de57ef6595e31e5810587df",
+            "max_cycles": 220,
+            "mean_cycles": 197.04625655698618,
+            "min_cycles": 185,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 300,
+            "second_end_cycles": 345,
+            "zp_bytes_owned": 122
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2097,
+            "cycle_vector_sha256": "fad109f5256f05d125032bedbf4d69309e38a47429234a28b3d9151f6aab9d5e",
+            "max_cycles": 240,
+            "mean_cycles": 216.73390557939913,
+            "min_cycles": 205
+          }
+        },
+        "turbo32": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 41,
+            "lifecycle_cycles": 697,
+            "normal_minus_mode_per_call_cycles": 17.26824817518252
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 326,
+            "cases": 2192,
+            "cycle_vector_sha256": "77ced8636640d6dd8cda3cf2d25e148b1a8640f9ab00b855b68591ff767fa569",
+            "end_cycles": 371,
+            "installed_overlay_sha256": "145504142950e62585eb993e99f07611214f6513109b6675a86059f6a64ae8ba",
+            "max_cycles": 788,
+            "mean_cycles": 676.1852189781022,
+            "min_cycles": 613,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 326,
+            "second_end_cycles": 371,
+            "zp_bytes_owned": 135
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2192,
+            "cycle_vector_sha256": "cd1abeff1213946e40abd348e6e089535232989847b2253a04aa2a3c4846dc05",
+            "max_cycles": 809,
+            "mean_cycles": 693.4534671532847,
+            "min_cycles": 630
+          }
+        }
+      },
+      "published": {
+        "turbo16": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 33,
+            "lifecycle_cycles": 645,
+            "normal_minus_mode_per_call_cycles": 19.687649022412955
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 300,
+            "cases": 2097,
+            "cycle_vector_sha256": "9a701c952c833d15afe5dedc3069f40387c0e531a171f8f093b5066e093a5a1c",
+            "end_cycles": 345,
+            "installed_overlay_sha256": "8723c75c287fe17054785c15f0a10f9b6cd43c6b321266a3e2a00d131c92766c",
+            "max_cycles": 220,
+            "mean_cycles": 197.04625655698618,
+            "min_cycles": 185,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 300,
+            "second_end_cycles": 345,
+            "zp_bytes_owned": 122
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2097,
+            "cycle_vector_sha256": "fad109f5256f05d125032bedbf4d69309e38a47429234a28b3d9151f6aab9d5e",
+            "max_cycles": 240,
+            "mean_cycles": 216.73390557939913,
+            "min_cycles": 205
+          }
+        },
+        "turbo32": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 41,
+            "lifecycle_cycles": 697,
+            "normal_minus_mode_per_call_cycles": 17.26824817518252
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 326,
+            "cases": 2192,
+            "cycle_vector_sha256": "77ced8636640d6dd8cda3cf2d25e148b1a8640f9ab00b855b68591ff767fa569",
+            "end_cycles": 371,
+            "installed_overlay_sha256": "0d99581ef21c7e0e815a8dacb1a79a5323718f73d325c3572634ed07bec51a1e",
+            "max_cycles": 788,
+            "mean_cycles": 676.1852189781022,
+            "min_cycles": 613,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 326,
+            "second_end_cycles": 371,
+            "zp_bytes_owned": 135
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2192,
+            "cycle_vector_sha256": "cd1abeff1213946e40abd348e6e089535232989847b2253a04aa2a3c4846dc05",
+            "max_cycles": 809,
+            "mean_cycles": 693.4534671532847,
+            "min_cycles": 630
+          }
+        }
+      },
+      "reference": {
+        "turbo16": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 33,
+            "lifecycle_cycles": 645,
+            "normal_minus_mode_per_call_cycles": 19.687649022412955
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 300,
+            "cases": 2097,
+            "cycle_vector_sha256": "9a701c952c833d15afe5dedc3069f40387c0e531a171f8f093b5066e093a5a1c",
+            "end_cycles": 345,
+            "installed_overlay_sha256": "8723c75c287fe17054785c15f0a10f9b6cd43c6b321266a3e2a00d131c92766c",
+            "max_cycles": 220,
+            "mean_cycles": 197.04625655698618,
+            "min_cycles": 185,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 300,
+            "second_end_cycles": 345,
+            "zp_bytes_owned": 122
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2097,
+            "cycle_vector_sha256": "fad109f5256f05d125032bedbf4d69309e38a47429234a28b3d9151f6aab9d5e",
+            "max_cycles": 240,
+            "mean_cycles": 216.73390557939913,
+            "min_cycles": 205
+          }
+        },
+        "turbo32": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 41,
+            "lifecycle_cycles": 697,
+            "normal_minus_mode_per_call_cycles": 17.26824817518252
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 326,
+            "cases": 2192,
+            "cycle_vector_sha256": "77ced8636640d6dd8cda3cf2d25e148b1a8640f9ab00b855b68591ff767fa569",
+            "end_cycles": 371,
+            "installed_overlay_sha256": "0d99581ef21c7e0e815a8dacb1a79a5323718f73d325c3572634ed07bec51a1e",
+            "max_cycles": 788,
+            "mean_cycles": 676.1852189781022,
+            "min_cycles": 613,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 326,
+            "second_end_cycles": 371,
+            "zp_bytes_owned": 135
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2192,
+            "cycle_vector_sha256": "cd1abeff1213946e40abd348e6e089535232989847b2253a04aa2a3c4846dc05",
+            "max_cycles": 809,
+            "mean_cycles": 693.4534671532847,
+            "min_cycles": 630
+          }
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "alternate": {
+        "turbo16": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 33,
+            "lifecycle_cycles": 645,
+            "normal_minus_mode_per_call_cycles": 19.687649022412955
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 300,
+            "cases": 2097,
+            "cycle_vector_sha256": "9a701c952c833d15afe5dedc3069f40387c0e531a171f8f093b5066e093a5a1c",
+            "end_cycles": 345,
+            "installed_overlay_sha256": "a5fa1594ac0844775175b17f50d6a8ce278f52aa9de57ef6595e31e5810587df",
+            "max_cycles": 220,
+            "mean_cycles": 197.04625655698618,
+            "min_cycles": 185,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 300,
+            "second_end_cycles": 345,
+            "zp_bytes_owned": 122
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2097,
+            "cycle_vector_sha256": "fad109f5256f05d125032bedbf4d69309e38a47429234a28b3d9151f6aab9d5e",
+            "max_cycles": 240,
+            "mean_cycles": 216.73390557939913,
+            "min_cycles": 205
+          }
+        },
+        "turbo32": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 41,
+            "lifecycle_cycles": 697,
+            "normal_minus_mode_per_call_cycles": 17.26824817518252
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 326,
+            "cases": 2192,
+            "cycle_vector_sha256": "77ced8636640d6dd8cda3cf2d25e148b1a8640f9ab00b855b68591ff767fa569",
+            "end_cycles": 371,
+            "installed_overlay_sha256": "145504142950e62585eb993e99f07611214f6513109b6675a86059f6a64ae8ba",
+            "max_cycles": 788,
+            "mean_cycles": 676.1852189781022,
+            "min_cycles": 613,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 326,
+            "second_end_cycles": 371,
+            "zp_bytes_owned": 135
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2192,
+            "cycle_vector_sha256": "cd1abeff1213946e40abd348e6e089535232989847b2253a04aa2a3c4846dc05",
+            "max_cycles": 809,
+            "mean_cycles": 693.4534671532847,
+            "min_cycles": 630
+          }
+        },
+        "v4_qs16": {
+          "batch_vs_normal": {
+            "beneficial": false,
+            "crossover_calls": null,
+            "lifecycle_cycles": 36,
+            "normal_minus_mode_per_call_cycles": -64.99284692417743
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 18,
+            "cases": 2097,
+            "cycle_vector_sha256": "0034212f293078e15405bdccb17495781ba0f8e5c4768812321211385fb2fc84",
+            "end_cycles": 18,
+            "max_cycles": 293,
+            "mean_cycles": 281.72675250357656,
+            "min_cycles": 279,
+            "reu_mode_restored": true
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2097,
+            "cycle_vector_sha256": "fad109f5256f05d125032bedbf4d69309e38a47429234a28b3d9151f6aab9d5e",
+            "max_cycles": 240,
+            "mean_cycles": 216.73390557939913,
+            "min_cycles": 205
+          }
+        }
+      },
+      "published": {
+        "turbo16": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 33,
+            "lifecycle_cycles": 645,
+            "normal_minus_mode_per_call_cycles": 19.687649022412955
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 300,
+            "cases": 2097,
+            "cycle_vector_sha256": "9a701c952c833d15afe5dedc3069f40387c0e531a171f8f093b5066e093a5a1c",
+            "end_cycles": 345,
+            "installed_overlay_sha256": "8723c75c287fe17054785c15f0a10f9b6cd43c6b321266a3e2a00d131c92766c",
+            "max_cycles": 220,
+            "mean_cycles": 197.04625655698618,
+            "min_cycles": 185,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 300,
+            "second_end_cycles": 345,
+            "zp_bytes_owned": 122
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2097,
+            "cycle_vector_sha256": "fad109f5256f05d125032bedbf4d69309e38a47429234a28b3d9151f6aab9d5e",
+            "max_cycles": 240,
+            "mean_cycles": 216.73390557939913,
+            "min_cycles": 205
+          }
+        },
+        "turbo32": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 41,
+            "lifecycle_cycles": 697,
+            "normal_minus_mode_per_call_cycles": 17.26824817518252
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 326,
+            "cases": 2192,
+            "cycle_vector_sha256": "77ced8636640d6dd8cda3cf2d25e148b1a8640f9ab00b855b68591ff767fa569",
+            "end_cycles": 371,
+            "installed_overlay_sha256": "0d99581ef21c7e0e815a8dacb1a79a5323718f73d325c3572634ed07bec51a1e",
+            "max_cycles": 788,
+            "mean_cycles": 676.1852189781022,
+            "min_cycles": 613,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 326,
+            "second_end_cycles": 371,
+            "zp_bytes_owned": 135
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2192,
+            "cycle_vector_sha256": "cd1abeff1213946e40abd348e6e089535232989847b2253a04aa2a3c4846dc05",
+            "max_cycles": 809,
+            "mean_cycles": 693.4534671532847,
+            "min_cycles": 630
+          }
+        },
+        "v4_qs16": {
+          "batch_vs_normal": {
+            "beneficial": false,
+            "crossover_calls": null,
+            "lifecycle_cycles": 36,
+            "normal_minus_mode_per_call_cycles": -64.99284692417743
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 18,
+            "cases": 2097,
+            "cycle_vector_sha256": "0034212f293078e15405bdccb17495781ba0f8e5c4768812321211385fb2fc84",
+            "end_cycles": 18,
+            "max_cycles": 293,
+            "mean_cycles": 281.72675250357656,
+            "min_cycles": 279,
+            "reu_mode_restored": true
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2097,
+            "cycle_vector_sha256": "fad109f5256f05d125032bedbf4d69309e38a47429234a28b3d9151f6aab9d5e",
+            "max_cycles": 240,
+            "mean_cycles": 216.73390557939913,
+            "min_cycles": 205
+          }
+        }
+      },
+      "reference": {
+        "turbo16": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 33,
+            "lifecycle_cycles": 645,
+            "normal_minus_mode_per_call_cycles": 19.687649022412955
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 300,
+            "cases": 2097,
+            "cycle_vector_sha256": "9a701c952c833d15afe5dedc3069f40387c0e531a171f8f093b5066e093a5a1c",
+            "end_cycles": 345,
+            "installed_overlay_sha256": "8723c75c287fe17054785c15f0a10f9b6cd43c6b321266a3e2a00d131c92766c",
+            "max_cycles": 220,
+            "mean_cycles": 197.04625655698618,
+            "min_cycles": 185,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 300,
+            "second_end_cycles": 345,
+            "zp_bytes_owned": 122
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2097,
+            "cycle_vector_sha256": "fad109f5256f05d125032bedbf4d69309e38a47429234a28b3d9151f6aab9d5e",
+            "max_cycles": 240,
+            "mean_cycles": 216.73390557939913,
+            "min_cycles": 205
+          }
+        },
+        "turbo32": {
+          "batch_vs_normal": {
+            "beneficial": true,
+            "crossover_calls": 41,
+            "lifecycle_cycles": 697,
+            "normal_minus_mode_per_call_cycles": 17.26824817518252
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 326,
+            "cases": 2192,
+            "cycle_vector_sha256": "77ced8636640d6dd8cda3cf2d25e148b1a8640f9ab00b855b68591ff767fa569",
+            "end_cycles": 371,
+            "installed_overlay_sha256": "0d99581ef21c7e0e815a8dacb1a79a5323718f73d325c3572634ed07bec51a1e",
+            "max_cycles": 788,
+            "mean_cycles": 676.1852189781022,
+            "min_cycles": 613,
+            "saved_ZP_exactly_restored": true,
+            "second_batch_calls": 1,
+            "second_batch_valid": true,
+            "second_begin_cycles": 326,
+            "second_end_cycles": 371,
+            "zp_bytes_owned": 135
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2192,
+            "cycle_vector_sha256": "cd1abeff1213946e40abd348e6e089535232989847b2253a04aa2a3c4846dc05",
+            "max_cycles": 809,
+            "mean_cycles": 693.4534671532847,
+            "min_cycles": 630
+          }
+        },
+        "v4_qs16": {
+          "batch_vs_normal": {
+            "beneficial": false,
+            "crossover_calls": null,
+            "lifecycle_cycles": 36,
+            "normal_minus_mode_per_call_cycles": -64.99284692417743
+          },
+          "mode": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "begin_cycles": 18,
+            "cases": 2097,
+            "cycle_vector_sha256": "0034212f293078e15405bdccb17495781ba0f8e5c4768812321211385fb2fc84",
+            "end_cycles": 18,
+            "max_cycles": 293,
+            "mean_cycles": 281.72675250357656,
+            "min_cycles": 279,
+            "reu_mode_restored": true
+          },
+          "normal": {
+            "arithmetic_carry_stack_inputs": "PASS",
+            "cases": 2097,
+            "cycle_vector_sha256": "fad109f5256f05d125032bedbf4d69309e38a47429234a28b3d9151f6aab9d5e",
+            "max_cycles": 240,
+            "mean_cycles": 216.73390557939913,
+            "min_cycles": 205
+          }
+        }
+      }
+    }
+  },
+  "reproducible_turbo_boundary_prior_calls": 3556,
+  "reproducible_turbo_relocation_prior_calls": 17196,
+  "source_kinds": [
+    "published",
+    "reference",
+    "alternate"
+  ],
+  "status": "PASS_PUBLIC_REU_MULTIPLY_MODES",
+  "total_public_product_calls": 57759
+}
