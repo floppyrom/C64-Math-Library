@@ -24,7 +24,8 @@ QS="MATH_REU_QS16"
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def take(profile,kind):
     if kind=="published":
-        cpu,api=load_published(profile)
+        cpu,_=load_published(profile)
+        api=parse_inc(ROOT/profile/'resident/math_api.inc')
         return cpu,api,None
     base=ROOT/"build_source"/kind/profile
     inc=parse_inc(base/"math_api.inc")
