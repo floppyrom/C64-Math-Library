@@ -1,3 +1,5 @@
+**Final certification (14 October 2026):** SIN8, COS8, SINCOS8 and ATAN2_8 all passed exhaustive public CPU-model checks, 480 native VICE calls and post-merge main qualification. No public ABI/resource-compatible new speed gain was demonstrated; the existing V1 memory-saving and V2-V5 speed-first implementations are retained. Issue #39 stays open.
+
 # Issue #39 — Trigonometric and angular routine public audit
 
 **Research stage, not yet a final family release.** Audited MATH_SIN8, MATH_COS8, MATH_SINCOS8, MATH_ATAN2_8 on all five public profiles and both source relocations. Private OptiSearch source is not redistributed.
