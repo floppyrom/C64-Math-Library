@@ -91,7 +91,6 @@ def main():
         print("PRODUCTION PREINSTALL A/B",p,"PASS",len(corpus),"per operation and relocation",flush=True)
     # Validate source-generated reference/alternate 16-bit SHR8 adapters unchanged.
     run("validate_mul16_shr8_register")
-    for p in P:shutil.copyfile(ROOT/"build_hybrid/reference"/p/"math_"+p+"_game_math.prg" if False else "/dev/null","/dev/null") if False else None
     for p in P:resident(p).write_bytes(candidate[p])
     run("generate_sources")
     build()
