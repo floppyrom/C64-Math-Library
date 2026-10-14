@@ -4,6 +4,8 @@
 Requires successful source A/B research. Enforces exactly four rewritten
 bytes per resident, unchanged resident span, public ABI and resource budgets.
 Native x64sc and independent PR/main CI are STILL required.
+Historical-test-only normalization pins the parent release by SHA and checks
+that the two fixed-output tail bytes are the only displaced production bytes.
 """
 from __future__ import annotations
 from pathlib import Path
