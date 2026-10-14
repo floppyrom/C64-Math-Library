@@ -1,0 +1,74 @@
+name: Issue144 independent unsigned 32bit SHR16 producer research
+on:
+  push:
+    branches: [issue144-shr16-fast-public-release-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  clone-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue144-shr16-fast-public-release-20261015
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check generation syntax
+        run: |
+          python3 - <<'PY'
+          import ast
+          ast.parse(open('tools/issue144_shr16_independent_clone.py').read())
+          ast.parse(open('tools/native_issue144_shr16_independent_clone.py').read())
+          ast.parse(open('tools/issue144_shr16_public_entry_optin.py').read())
+          ast.parse(open('tools/native_issue144_shr16_public_entry_optin.py').read())
+          ast.parse(open('tools/issue144_shr16_entry_patch_installer.py').read())
+          ast.parse(open('tools/stage_issue144_shr16_independent_clone.py').read())
+          PY
+      - name: Source-assembled relocated independent 32x32 core, three profiles and interleaved calls
+        run: python3 tools/issue144_shr16_independent_clone.py --limit 2409
+      - name: Verify original public entry survives two-byte JMP redirection
+        run: python3 tools/issue144_shr16_public_entry_optin.py --limit 2409
+      - name: Prove source-backed public entry JMP installer and restore
+        run: python3 tools/issue144_shr16_entry_patch_installer.py
+      - name: Install checksum-pinned native VICE
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Native VICE three profile original and clone public result proof
+        run: python3 tools/native_issue144_shr16_independent_clone.py
+      - name: Native x64sc proof of original $5E12 entry with clone redirect
+        run: python3 tools/native_issue144_shr16_public_entry_optin.py
+      - name: Seal opt-in producer, stable public entry, exact proof records and both changelogs
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue144_shr16_independent_clone.py
+      - name: Commit the qualified specialist without changing production resident binaries
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: seal 62-cycle standalone clone and 59-cycle stable public entry specialist'
+          git push origin HEAD:issue144-shr16-fast-public-release-20261015
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-independent-clone-cpu-qualification
+          path: |
+            validation/review/ISSUE144_SHR16_STANDALONE_CLONE_CPU_MODEL.json
+            validation/review/ISSUE144_SHR16_INDEPENDENT_CLONE_NATIVE_VICE.json
+            validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_OPTIN_CPU_MODEL.json
+            validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_OPTIN_NATIVE_VICE.json
+            validation/review/ISSUE144_SHR16_PUBLIC_ENTRY_INSTALLER_CPU_MODEL.json
+          if-no-files-found: warn

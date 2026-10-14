@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 INDEPENDENT SHR16 MULTIPLY CLONE PARETO POINT
+- Opt-in original-source-derived unsigned 32x32 SHR16 separate-RAM producer saves exactly 62 CPU-model cycles on 7,227 common pairs V2/V3/V4, with 144 native x64sc baseline/clone correctness calls passing. Interleaves ordinary UMUL32 and SMUL32, unlike prior exclusive overlay. Uses separate $0D05–$0E49 RAM and shared ZP/tables; NOT reentrant, no shipped code/REU, normal ABI change, no private OptiSearch redistribution. docs/ISSUE144_UMUL32_SHR16_SEQUENTIAL_CLONE_2026-10-15.md
+
 2026-10-15 ISSUE144 V2-V4 EXCLUSIVE MULTIPLY SHR16 RESEARCH
 - Source-backed optional V2/V3/V4 UMUL32_SHR16 exclusive batch saves 53 CPU-model cycles on 7,227 matched operand pairs; BEGIN/END 76/80 cycles, four-call crossover including caller JSRs. 144 native x64sc old/new calls pass. Shared UMUL32 core is unsafe for other calls while patched; no default PRG, REU, ZP or public ABI modification. See docs/ISSUE144_V234_SHR16_EXCLUSIVE_BATCH_2026-10-15.md
 

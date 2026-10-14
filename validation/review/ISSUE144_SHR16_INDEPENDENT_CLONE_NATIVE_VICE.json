@@ -1,0 +1,47 @@
+{
+  "cloned_code_bytes": 317,
+  "cloned_core_origin": "0xd05",
+  "cloned_entry": "0xe03",
+  "native_cycle_timing_measured": false,
+  "native_pairs_total": 144,
+  "normal_public_abi_replaced": false,
+  "normal_resident_images_modified": false,
+  "normal_reu_images_modified": false,
+  "results": {
+    "v2_pareto_fast": {
+      "baseline_calls": 24,
+      "clone_calls": 24,
+      "clone_dump_sha256": "cfa4852bf6664ecfe9817da2ea40d2da70e4d91512cd49587422d20bc4e9cb14",
+      "clone_executed_from_separate_RAM": true,
+      "correct_result_carry_inputs_and_stack": true,
+      "original_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+      "resident_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+      "same_primary_ZP_scratch_shared_non_reentrant": true,
+      "status": "PASS_NATIVE_INDEPENDENT_SHR16_PUBLIC_RESULT"
+    },
+    "v3_reu_512k": {
+      "baseline_calls": 24,
+      "clone_calls": 24,
+      "clone_dump_sha256": "cfa4852bf6664ecfe9817da2ea40d2da70e4d91512cd49587422d20bc4e9cb14",
+      "clone_executed_from_separate_RAM": true,
+      "correct_result_carry_inputs_and_stack": true,
+      "original_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+      "resident_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+      "same_primary_ZP_scratch_shared_non_reentrant": true,
+      "status": "PASS_NATIVE_INDEPENDENT_SHR16_PUBLIC_RESULT"
+    },
+    "v4_reu_16m": {
+      "baseline_calls": 24,
+      "clone_calls": 24,
+      "clone_dump_sha256": "cfa4852bf6664ecfe9817da2ea40d2da70e4d91512cd49587422d20bc4e9cb14",
+      "clone_executed_from_separate_RAM": true,
+      "correct_result_carry_inputs_and_stack": true,
+      "original_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+      "resident_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "same_primary_ZP_scratch_shared_non_reentrant": true,
+      "status": "PASS_NATIVE_INDEPENDENT_SHR16_PUBLIC_RESULT"
+    }
+  },
+  "source_sha256": "962823fd4caa1c1e6e40b541840ac4facd03a9af42dade4deea3197f8afefe4a",
+  "status": "PASS_NATIVE_VICE_INDEPENDENT_SHR16_CLONE"
+}

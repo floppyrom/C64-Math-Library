@@ -1,0 +1,142 @@
+{
+  "candidate_source_sha256": "962823fd4caa1c1e6e40b541840ac4facd03a9af42dade4deea3197f8afefe4a",
+  "cases_each": 2409,
+  "clone_entry": "0xe03",
+  "direct_clone_vs_public_redirect_overhead_cycles": 3,
+  "native_cycle_timing_claimed": false,
+  "optin_not_default": true,
+  "profiles": {
+    "v2_pareto_fast": {
+      "baseline": {
+        "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+        "max_cycles": 872,
+        "mean_cycles": 753.2353673723537,
+        "median_cycles": 753,
+        "min_cycles": 693,
+        "p95_cycles": 797
+      },
+      "entry_patch_only_two_bytes": true,
+      "extra_ram_required": true,
+      "library_other_public_addresses_unchanged": true,
+      "native_vice_pending": true,
+      "new_JMP_target": "0xe03",
+      "normal_library_ZP_growth": 0,
+      "normal_library_binary_written": false,
+      "old_JMP_target": "0xc4e3",
+      "optin_entry": {
+        "cycle_vector_sha256": "c563756d98ccc5f3cc227086044b13d9708448ee12deddd980574acd476695d7",
+        "max_cycles": 813,
+        "mean_cycles": 694.2353673723537,
+        "median_cycles": 694,
+        "min_cycles": 634,
+        "p95_cycles": 738
+      },
+      "ordinary_path_restored_and_verified": true,
+      "ordinary_umul32_signed_smul32_interleaved": true,
+      "paired_savings": {
+        "cycle_vector_sha256": "b79d932a547b156ff5ac19d87d6493d13c3f0a0ac1ce839ec96717133224d285",
+        "max_cycles": 59,
+        "mean_cycles": 59.0,
+        "median_cycles": 59,
+        "min_cycles": 59,
+        "p95_cycles": 59
+      },
+      "pairs": 2409,
+      "profile": "v2_pareto_fast",
+      "public_address": "0x5e12",
+      "resident_original_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+      "savings_every_pair": 59,
+      "shared_core_unchanged_during_fast_call": true,
+      "status": "PASS_STABLE_PUBLIC_ENTRY_RESEARCH"
+    },
+    "v3_reu_512k": {
+      "baseline": {
+        "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+        "max_cycles": 872,
+        "mean_cycles": 753.2353673723537,
+        "median_cycles": 753,
+        "min_cycles": 693,
+        "p95_cycles": 797
+      },
+      "entry_patch_only_two_bytes": true,
+      "extra_ram_required": true,
+      "library_other_public_addresses_unchanged": true,
+      "native_vice_pending": true,
+      "new_JMP_target": "0xe03",
+      "normal_library_ZP_growth": 0,
+      "normal_library_binary_written": false,
+      "old_JMP_target": "0xc4e3",
+      "optin_entry": {
+        "cycle_vector_sha256": "c563756d98ccc5f3cc227086044b13d9708448ee12deddd980574acd476695d7",
+        "max_cycles": 813,
+        "mean_cycles": 694.2353673723537,
+        "median_cycles": 694,
+        "min_cycles": 634,
+        "p95_cycles": 738
+      },
+      "ordinary_path_restored_and_verified": true,
+      "ordinary_umul32_signed_smul32_interleaved": true,
+      "paired_savings": {
+        "cycle_vector_sha256": "b79d932a547b156ff5ac19d87d6493d13c3f0a0ac1ce839ec96717133224d285",
+        "max_cycles": 59,
+        "mean_cycles": 59.0,
+        "median_cycles": 59,
+        "min_cycles": 59,
+        "p95_cycles": 59
+      },
+      "pairs": 2409,
+      "profile": "v3_reu_512k",
+      "public_address": "0x5e12",
+      "resident_original_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+      "savings_every_pair": 59,
+      "shared_core_unchanged_during_fast_call": true,
+      "status": "PASS_STABLE_PUBLIC_ENTRY_RESEARCH"
+    },
+    "v4_reu_16m": {
+      "baseline": {
+        "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+        "max_cycles": 872,
+        "mean_cycles": 753.2353673723537,
+        "median_cycles": 753,
+        "min_cycles": 693,
+        "p95_cycles": 797
+      },
+      "entry_patch_only_two_bytes": true,
+      "extra_ram_required": true,
+      "library_other_public_addresses_unchanged": true,
+      "native_vice_pending": true,
+      "new_JMP_target": "0xe03",
+      "normal_library_ZP_growth": 0,
+      "normal_library_binary_written": false,
+      "old_JMP_target": "0xc4e3",
+      "optin_entry": {
+        "cycle_vector_sha256": "c563756d98ccc5f3cc227086044b13d9708448ee12deddd980574acd476695d7",
+        "max_cycles": 813,
+        "mean_cycles": 694.2353673723537,
+        "median_cycles": 694,
+        "min_cycles": 634,
+        "p95_cycles": 738
+      },
+      "ordinary_path_restored_and_verified": true,
+      "ordinary_umul32_signed_smul32_interleaved": true,
+      "paired_savings": {
+        "cycle_vector_sha256": "b79d932a547b156ff5ac19d87d6493d13c3f0a0ac1ce839ec96717133224d285",
+        "max_cycles": 59,
+        "mean_cycles": 59.0,
+        "median_cycles": 59,
+        "min_cycles": 59,
+        "p95_cycles": 59
+      },
+      "pairs": 2409,
+      "profile": "v4_reu_16m",
+      "public_address": "0x5e12",
+      "resident_original_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "savings_every_pair": 59,
+      "shared_core_unchanged_during_fast_call": true,
+      "status": "PASS_STABLE_PUBLIC_ENTRY_RESEARCH"
+    }
+  },
+  "public_entry": "0x5e12",
+  "published_regular_prg_unchanged": true,
+  "status": "PASS_UMUL32_SHR16_STABLE_PUBLIC_ENTRY_CPU_MODEL"
+}
