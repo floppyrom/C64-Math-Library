@@ -2,9 +2,11 @@ name: Issue144 signed SHR16 quadrant screen (research only)
 on:
   push:
     branches: [issue144-signed-shr16-hybrid-screen-20261015]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   signed-shr16-model:
     runs-on: ubuntu-latest
@@ -25,6 +27,8 @@ jobs:
         run: python3 tools/issue144_signed_shr16_hybrid_research.py --limit 2409
       - name: Signed nonnegative specialist full same-input screen
         run: python3 tools/issue144_signed_nonnegative_shr16_optin.py --limit 2409
+      - name: Source-assemble signed public entry installer and prove reversible patch
+        run: python3 tools/issue144_signed_nonnegative_install_restore.py
       - name: Install checksum-pinned headless VICE x64sc
         run: |
           curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
@@ -36,6 +40,17 @@ jobs:
         run: python3 tools/native_issue144_signed_shr16_hybrid.py
       - name: Native x64sc nonnegative signed 32-bit SHR16 public entry proof
         run: python3 tools/native_issue144_signed_nonnegative_shr16.py
+      - name: Stage only native-qualified signed specialist and rejected research, seal release
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue144_signed_shr16.py
+      - name: Commit evidence, both changelogs and package seal
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: seal domain-qualified signed SHR16 optional and research'
+          git push origin HEAD:issue144-signed-shr16-hybrid-screen-20261015
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -45,4 +60,5 @@ jobs:
             validation/review/ISSUE144_SIGNED_SHR16_HYBRID_NATIVE_VICE.json
             validation/review/ISSUE144_SIGNED_NONNEGATIVE_SHR16_OPTIN_MODEL.json
             validation/review/ISSUE144_SIGNED_NONNEGATIVE_SHR16_NATIVE_VICE.json
+            validation/review/ISSUE144_SIGNED_NONNEGATIVE_INSTALLER_MODEL.json
           if-no-files-found: warn
