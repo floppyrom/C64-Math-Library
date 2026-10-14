@@ -49,6 +49,7 @@ jobs:
       - name: Seal evidence, both changelogs and deterministic package manifests
         run: python3 tools/stage_issue39_seek_all_slots_research.py
       - name: Commit green research audit only
+        if: github.event_name == 'push'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
