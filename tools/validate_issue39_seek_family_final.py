@@ -62,8 +62,18 @@ def body():
    match=re.search(r"^\| seek16_init \|[^|]+\| \$([0-9A-Fa-f]{4})-\$([0-9A-Fa-f]{4}) \| (\d+) \|$",readme,re.M)
    assert match,(profile,"readme drift")
    historical_length=int(match.group(3))
-   available_bytes=312 if base=="v1_balanced" else (
-       542 if base=="v2_pareto_fast" else 273)
+   # The V2 SEEK16 block ends at $19EF, but $19F0 is an unrelated
+   # nonzero resident byte and $1A00 begins existing initialized data.
+   # The distance to SEEK8_INIT at $1B00 is NOT a free 542-byte island.
+   # Preserve *all* existing installed bytes outside this init block.
+   if base=="v2_pareto_fast":
+    orig=(ROOT/"v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg").read_bytes()
+    load=int.from_bytes(orig[:2],"little")
+    assert orig[0x19F0-load+2]==0x19
+    assert orig[0x1A00-load+2]==0xFC
+    available_bytes=270
+   else:
+    available_bytes=312 if base=="v1_balanced" else 273
    row={"current_bytes":historical_length,
         "single_island_capacity_bytes":available_bytes,
         "same_island_headroom_bytes":available_bytes-historical_length,
@@ -121,6 +131,7 @@ def main():
   # A proposed fast path which requires moving the occupied V1/V3 islands
   # is NOT promotable as a universal public ABI/resource-neutral change.
  assert not screening["v1_balanced"]["source_maps"]["reference"]["fits_existing_island"]
+ assert not screening["v2_pareto_fast"]["source_maps"]["reference"]["fits_existing_island"]
  assert not screening["v3_reu_512k"]["source_maps"]["reference"]["fits_existing_island"]
  assert not screening["v4_reu_16m"]["source_maps"]["reference"]["fits_existing_island"]
  report={
@@ -139,9 +150,9 @@ def main():
     "proof_type":"assembled code size and entry-layout resource gate only",
     "k1_equal_deltas_safe_fallback":True,
     "not_claimed_cycle_improvement":True,
-    "v1_v3_v4_current_islands_overflow":True,
+    "all_v1_to_v5_current_islands_overflow":True,
     "production_promoted":False},
-  "optimization_conclusion":"retain qualified existing STEPs and INITs; no universally ABI/resource-compatible new speed winner certified in this screened family",
+  "optimization_conclusion":"retain qualified existing STEPs and INITs; proposed K1 shortcut fails all five actual resident memory-island budgets",
   "not_a_global_optimality_proof":True,
   "native_cycle_timing_measured":False,
   "private_optisearch_code_published":False,
