@@ -204,12 +204,19 @@ def main():
   'native_public_calls':240,'resource_growth_bytes':0,'reu_modified':False,
   'native_cycle_timing_measured':False,'seek_family_complete':False,
   'issue39_open':True,'document':DOC,'certificate':CERT,
+  'issue136_v1v5_division_seek_collision_repaired':True,
+  'issue136_relocation':'UDIV32 low $1900-$1B6C -> $4D80-$4FEC',
+  'mixed_seek_divmod_proof':'validation/review/ISSUE136_SEEK_DIVMOD_MIXED_PROOF.json',
+  'transitive_v1_division_timing_deltas':timing_deltas,
   'private_optisearch_source_published':False}
  sfile.write_text(json.dumps(status,indent=2)+'\n')
  cert={'status':'PASS_NATIVE_VICE_STAGED_PR_MAIN_CI_PENDING',
   'profiles':measured,'image_delta':delta,'native_calls':240,'baseline_prgs':old,
   'candidate_prgs':new,'alternate_prgs':alt,'model_all_steps_exact':True,
-  'no_reu_change':True,'no_zp_growth':True,'issue39_remains_open':True}
+  'no_reu_change':True,'no_zp_growth':True,'issue39_remains_open':True,
+  'issue136_collision_repaired':True,
+  'transitive_v1_division_timing_deltas':timing_deltas,
+  'mixed_seek_divmod_public_calls':18280,'mixed_seek_step_calls':13580}
  (R/CERT).write_text(json.dumps(cert,indent=2,sort_keys=True)+'\n')
  table='| Profile | Before Euclidean INIT | After | Saved cycles |\n|---|---:|---:|---:|\n'
  table+=''.join(f"| {p} | {q['before_eucl']:.6f} | {q['after_eucl']:.6f} | {q['eucl_savings']:.6f} |\n" for p,q in measured.items())
@@ -217,13 +224,23 @@ def main():
   'Source-backed conditional-loop optimization for V1–V5. Native x64sc old/new: '
   '240 public calls, real REU images for V3/V4; no hardware cycles timed. '
   'Official 408-move per-profile corpus confirms every frame, unchanged other '
-  'SEEK operations and non-Euclidean INIT; same public ABI/ZP/resources.\n\n'+table+
+  'SEEK operations and non-Euclidean INIT; same public ABI/ZP/resources.\n\n'+
+  'Issue #136 safety repair: V1/V5 UDIV32/16 low-round code was moved from '
+  '$1900-$1B6C to shared free $4D80-$4FEC, preserving public SEEK position '
+  'arrays and all API addresses. Full 408-byte movement state survived '
+  '18,280 interleaved DIV/MOD public calls and 13,580 SEEK steps in the '
+  'CPU-model regression (not native timing).\n\n'+
+  'Transitive V1 division timing changes on the same-input corpus: '+
+  json.dumps(timing_deltas,sort_keys=True)+'\n\n'+table+
   '\nProduction stage requires full PR/main green CI. SEEK family audit and '
   'OptiSearch candidate review remain open.\n')
  note=(STAMP+'\n- SEEK16 Euclidean INIT scale loop: one byte smaller, '
    'faster on CPU-model paired calls, unchanged major-axis INIT and SEEK8/STEP paths. '
    'Five profiles, two relocation maps, 240 baseline/candidate native VICE '
-   'public calls, unchanged REU/ZP/ABI. Standalone mirrors, performance, '
+   'public calls. Repaired Issue #136 V1/V5 UDIV32/SEEK state collision '
+   'by moving the low-round island to $4D80-$4FEC, preserving the public ABI. '
+   'Passed 18,280 mixed DIV/MOD public calls and 13,580 SEEK steps. '
+   'Rebenchmarked transitive V1 timing; unchanged REU/ZP. Standalone mirrors, performance, '
    'package audit and checksums regenerated. PR/main CI pending; Issue #39 '
    'still open for SEEK family. '+DOC+'\n\n')
  for name in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
