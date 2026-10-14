@@ -1,7 +1,7 @@
 name: Issue39 unsigned multiply family public ABI and OptiSearch resource gate
 on:
   push:
-    branches: [issue39-v1v5-umul24-rarecarry-production-20261014]
+    branches: [main, issue39-v1v5-umul24-rarecarry-production-20261014, issue39-unsigned-multiply-family-final-20261014]
     paths:
       - tools/issue39_unsigned_multiply_completion_audit.py
       - docs/ISSUE39_UNSIGNED_MULTIPLY_FAMILY_REVIEW_2026-10-14.md
