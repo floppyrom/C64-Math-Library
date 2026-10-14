@@ -1,3 +1,10 @@
+## 2026-10-14 ISSUE39 DIST8 POSTMERGE FINAL CERTIFICATION
+
+Final certification of shipped DIST8_FAST/DIST8_ACCURATE optimization after PR #130 merge, four green main checks. 1,310,720 paired CPU-model baseline/candidate calls, 655,360 new shipped benchmarks, 119,220 reference/alternate calls and 480 native VICE baseline/candidate public calls on SHA-distinct PRGs. Exact 8/10-byte source-backed swap only; no ABI, resident size, normal ZP or REU changes. VICE cycle timing not measured. Both changelogs and SHA256 resealed. Issue #39 remains open for VEC2 normalization and seek. Main `44fc91813d945c05194d2f4962bb89f9d5f88449`; full [#38573248160](https://github.com/floppyrom/C64-Math-Library/actions/runs/38573248160), comparable [#38573248208](https://github.com/floppyrom/C64-Math-Library/actions/runs/38573248208), fixed [#38573248172](https://github.com/floppyrom/C64-Math-Library/actions/runs/38573248172), Turbo32 [#38573248117](https://github.com/floppyrom/C64-Math-Library/actions/runs/38573248117).
+Certificate `validation/review/ISSUE39_DIST8_POSTMERGE_COMPLETION_2026-10-14.json`.
+
+---
+
 ## 2026-10-14 ISSUE39 DIST8 SHARED REGISTER-SWAP SOURCE RELEASE
 
 Source-integrated DIST8_FAST/DIST8_ACCURATE common stack-swap elimination (TAX/LDA/STA/STX) for V1–V5. Exact 1,310,720 old/new emulator calls; 119,220 reference/alternate model calls; 480 native x64sc baseline/candidate calls; production exhaustive 655,360 calls. Saves 9 cycles on the swap branch in V1/V5 and 8 in V2–V4 (CPU model, not VICE timing). PRG lengths, stable ABI, REU and ZP unchanged. Standalone, metrics and package checksums synchronized. Independent PR/main CI pending; Issue39 still open for normalization and seek. See `docs/ISSUE39_DIST8_REGISTER_SWAP_RELEASE_2026-10-14.md`.

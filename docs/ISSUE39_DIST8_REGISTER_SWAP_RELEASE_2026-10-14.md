@@ -1,3 +1,5 @@
+**Post-merge final certification (14 October 2026):** PR #130 merged as `44fc91813d945c05194d2f4962bb89f9d5f88449`; all four independent main validation workflows passed. Both DIST8 public APIs are now released in V1–V5. Normalization and seek are still open.
+
 # Issue #39 — source-backed DIST8 shared ordering optimization
 
 DIST8_FAST and DIST8_ACCURATE reuse a magnitude-ordering exchange. The old stack-based PHA/PLA swap has been replaced by TAX/LDA/STA/STX/an early RTS with fixed-width NOP padding; the no-swap BCC still targets the previous RTS. Four architecture-specific relocatable modules cover V1/V5 absolute scratch and V2/V3/V4 zero page.

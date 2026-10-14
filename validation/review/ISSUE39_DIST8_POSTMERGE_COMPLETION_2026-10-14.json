@@ -1,0 +1,36 @@
+{
+  "certified_main_sha": "44fc91813d945c05194d2f4962bb89f9d5f88449",
+  "dist8_production_complete": true,
+  "distance_normalization_family_complete": false,
+  "dual_map_cpu_model_calls": 119220,
+  "issue39_complete": false,
+  "native_cycle_timing_measured": false,
+  "native_vice_baseline_candidate_calls": 480,
+  "new_shipped_cpu_model_calls": 655360,
+  "normal_zp_growth": 0,
+  "paired_cpu_model_calls": 1310720,
+  "postmerge_comparable_unsigned_ci_run": 38573248208,
+  "postmerge_fixed_multiply_ci_run": 38573248172,
+  "postmerge_full_library_ci_run": 38573248160,
+  "postmerge_turbo32_ci_run": 38573248117,
+  "public_abi_changed": false,
+  "published_optisearch_private_code": false,
+  "remaining": [
+    "MATH_VEC2_NORMALIZE_Q8_8",
+    "SEEK8/16 INIT, STEP, STEP_INT, STEP1"
+  ],
+  "resident_lengths_changed": false,
+  "reu_images_changed": false,
+  "routines": [
+    "MATH_DIST8_FAST",
+    "MATH_DIST8_ACCURATE"
+  ],
+  "shipped_resident_sha256": {
+    "v1_balanced": "d45c2922b93cdf786e40ade87ae6f9d187a3cd26baeea5b34fa203707a01ba3c",
+    "v2_pareto_fast": "f02f8928dcc6d6f7660eb1309d68a180277160278f2033e8c9c00ffd01f82f06",
+    "v3_reu_512k": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
+    "v4_reu_16m": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
+    "v5_hybrid_lowzp": "0c58ec4b91bc5696e830c0db238b2a2f5dabd8991e8c960c5e4f8d5681d09acb"
+  },
+  "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN"
+}
