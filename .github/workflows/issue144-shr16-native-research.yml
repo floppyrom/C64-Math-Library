@@ -5,6 +5,7 @@ on:
     paths:
       - tools/native_issue144_shr16_overlay.py
       - tools/native_issue144_shr16_batch_source.py
+      - tools/stage_issue144_shr16_research.py
       - optional/issue144_v2_umul32_shr16_exclusive/overlay_begin_end.asm
       - .github/workflows/issue144-shr16-native-research.yml
   pull_request:
@@ -12,19 +13,24 @@ on:
     paths:
       - tools/native_issue144_shr16_overlay.py
       - tools/native_issue144_shr16_batch_source.py
+      - tools/stage_issue144_shr16_research.py
       - optional/issue144_v2_umul32_shr16_exclusive/overlay_begin_end.asm
       - .github/workflows/issue144-shr16-native-research.yml
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   native-specialist:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 65
     env:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: issue144-shr16-direct-slice-overlay-research-20261014
+          fetch-depth: 0
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -37,15 +43,32 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y /tmp/headlessvice.deb
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Record complete 2409-pair four-operation baseline and direct-slice result
+        run: python3 tools/issue144_shr16_direct_slice_overlay_research.py --limit 2409
+      - name: Verify ASM batch setup/restore and actual crossover
+        run: python3 tools/qualify_issue144_v2_shr16_batch.py --limit 2409
       - name: Native x64sc baseline vs exclusive patched SHR16 output
         run: python3 tools/native_issue144_shr16_overlay.py
       - name: Execute source-assembled BEGIN/END in native x64sc
         run: python3 tools/native_issue144_shr16_batch_source.py
+      - name: Publish validated V2 specialist opt-in source and both changelogs
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue144_shr16_research.py
+      - name: Commit only research artifacts and package seal
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: publish native-proven 53-cycle exclusive SHR16 prototype and audit'
+          git push origin HEAD:issue144-shr16-direct-slice-overlay-research-20261014
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: issue144-native-shr16-specialist-research
           path: |
+            validation/review/ISSUE144_SHR16_DIRECT_SLICE_OVERLAY_RESEARCH.json
+            validation/review/ISSUE144_V2_SHR16_BATCH_BREAK_EVEN.json
             validation/review/ISSUE144_SHR16_OVERLAY_NATIVE_VICE_RESEARCH.json
             validation/review/ISSUE144_V2_SHR16_BEGIN_END_NATIVE_VICE.json
           if-no-files-found: warn
