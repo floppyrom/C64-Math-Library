@@ -578,6 +578,17 @@ def generate_source(profile,outpath:Path):
  # untracked byte-patch into the generated code.
  lines += ['', '; Issue39 DIST8 source-backed, fixed-width register swap.',
            f'!source "../game_math/dist8_swap_{profile}.inc"']
+ # Issue #136: V1/V5 SEEK state and historical $1900 UDIV32 low rounds
+ # were overlapping. The original monolith contains an additional direct
+ # JMP at $4569, besides the $4570 symbolic redirect in the included module.
+ # Repoint that *one* instruction during the first source regeneration from
+ # the original published image. Future images already encode the new target.
+ if profile=='v1_balanced':
+  stale='    jmp REG_LOW+$0900'
+  updated='    jmp REG_KERNEL+$0D80'
+  count=lines.count(stale)
+  assert count<=1,('unexpected duplicate stale V1 UDIV32 jump',count)
+  if count:lines=[updated if line==stale else line for line in lines]
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 
