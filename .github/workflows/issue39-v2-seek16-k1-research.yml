@@ -1,0 +1,38 @@
+name: Issue39 V2 SEEK16 speed-one source candidate research
+on:
+  push:
+    branches: [issue39-v2-seek16-k1-fastpath-research-20261014]
+    paths:
+      - tools/qualify_issue39_v2_seek16_k1.py
+      - .github/workflows/issue39-v2-seek16-k1-research.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/qualify_issue39_v2_seek16_k1.py
+      - .github/workflows/issue39-v2-seek16-k1-research.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  v2-public-candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check public candidate and all generated sources
+        run: |
+          python3 -m py_compile tools/qualify_issue39_v2_seek16_k1.py
+          python3 tools/generate_seek_sources.py --check
+      - name: Screen temporary V2 speed-one inline source via paired public ABI and full corpus
+        run: python3 tools/qualify_issue39_v2_seek16_k1.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-v2-seek16-k1-research
+          if-no-files-found: warn
+          path: validation/review/ISSUE39_V2_SEEK16_K1_RESEARCH_2026-10-14.json
