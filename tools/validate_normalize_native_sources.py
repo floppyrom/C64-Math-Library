@@ -11,11 +11,11 @@ from assemble_sources import parse_config, expand_source_file
 
 ENTRY_OFFSET=0x39
 ROUTINE_BYTES={
- 'v1_balanced':881,
- 'v2_pareto_fast':881,
+ 'v1_balanced':865,
+ 'v2_pareto_fast':865,
  'v3_reu_512k':849,
  'v4_reu_16m':849,
- 'v5_hybrid_lowzp':881,
+ 'v5_hybrid_lowzp':865,
 }
 FIXED=('v1_balanced','v2_pareto_fast','v3_reu_512k','v4_reu_16m')
 ALL=FIXED+('v5_hybrid_lowzp',)
