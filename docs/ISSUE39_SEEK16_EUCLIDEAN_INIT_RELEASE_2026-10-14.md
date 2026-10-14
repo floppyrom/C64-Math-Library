@@ -17,3 +17,18 @@ Transitive V1 division timing changes on the same-input corpus: {"MATH_UDIV16_SH
 Production stage requires full PR/main green CI. SEEK family audit and OptiSearch candidate review remain open.
 
 Additional native x64sc mixed-operation proof: 325 actual public calls across all five profiles, including real V3/V4 REU images, interleaving four unsigned DIV/MOD entries with SEEK16 STEP; identical expected movement, quotients, remainders, carry and stack. See `validation/review/ISSUE136_SEEK_DIVMOD_NATIVE_VICE.json` and PR #138. Native cycles were not measured.
+
+## Secondary unsigned-division validation after division-code relocation
+
+The full `tools/validate_unsigned_division.py` structured-random/exhaustive regression reports zero arithmetic errors; the following V1 CPU-model mean-cycle changes are from that regression's **own** operand distribution, distinct from the same-input common corpus. No native hardware cycles were timed.
+
+| Operation | Previous mean cycles | Relocated mean cycles |
+|---|---:|---:|
+| UDIV32/16 | 801.581738 | 801.587418 |
+| UDIV32/32 | 271.008675 | 271.012939 |
+| UDIV16_SHL8 | 703.185777 | 703.187040 |
+| UMOD32/16 | 892.662589 | 892.698004 |
+| UMOD32/32 | 399.311011 | 399.329684 |
+| URECIP16_Q16 | 104.131760 | 104.137344 |
+
+The largest observed average increase in this validator is 0.035416 cycles/call. All six exact values are pinned in `validation/review/UNSIGNED_DIVISION_VALIDATION.json` and checked again by full-library CI. This is a safety-driven memory-layout repair rather than a division-speed optimization.
