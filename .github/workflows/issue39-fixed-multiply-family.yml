@@ -1,0 +1,38 @@
+name: Issue39 fixed multiply four-output public ABI qualification
+on:
+  push:
+    branches: [main]
+    paths:
+      - tools/issue39_fixed_multiply_family_audit.py
+      - validation/review/ISSUE39_FIXED_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json
+      - RELEASE_STATUS.json
+      - .github/workflows/issue39-fixed-multiply-family.yml
+  pull_request:
+    paths:
+      - tools/issue39_fixed_multiply_family_audit.py
+      - validation/review/ISSUE39_FIXED_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json
+      - RELEASE_STATUS.json
+      - .github/workflows/issue39-fixed-multiply-family.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  all-four-public-abi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify signed and unsigned 16/32 shifted-result public ABI, matched CPU and native provenance
+        run: python3 tools/issue39_fixed_multiply_family_audit.py --output /tmp/issue39-fixed-multiply-final.json
+      - name: Verify sealed release archive
+        run: python3 tools/package_audit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-fixed-multiply-public-abi
+          path: /tmp/issue39-fixed-multiply-final.json

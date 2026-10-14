@@ -1,3 +1,7 @@
+2026-10-14 ISSUE39 FIXED MULTIPLY OUTPUTS FINAL PUBLICATION
+- UMUL16_SHR8 and SMUL16_SHR8 unchanged, existing 10,196-case all-profile reference/alternate register-return qualification. UMUL32_SHR16 and SMUL32_SHR16 source-integrated -2 CPU-model cycles on all 4,361 matched calls/entry/profile/map, no code span/ZP/stack growth. 480 native original/new installed public calls identical; native cycle timing NOT measured.
+- Postmerge main ce4e7bcf785f8b0fb292be1b044adce9fa3c1978: full 38529409135, comparable 38529409155, Turbo32 38529409200. REU Turbo/QS and other Issue39 families remain OPEN.
+
 2026-10-14 ISSUE39 FIXED SHR16 TWO-CYCLE NATIVE VICE CONFIRMATION
 - Installed x64sc old/new signed/unsigned UMUL32_SHR16/SMUL32_SHR16: 480 public calls across five profiles, complete bytewise identical output/flags/stack snapshots. The 2-cycle saving is from paired CPU model, not VICE timing. No new code memory or ZP. Independent PR/main CI pending.
 

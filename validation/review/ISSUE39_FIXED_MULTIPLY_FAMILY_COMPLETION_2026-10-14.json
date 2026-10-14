@@ -1,0 +1,33 @@
+{
+  "16bit_register_return_adapters_unchanged": true,
+  "baseline_profiles": {
+    "v1_balanced": "1ec65b1fcf87b7424325cc64a410401698f51ed04fb8c1fba861fa41457f9a82",
+    "v2_pareto_fast": "d1aeaa3b3bfa4d635bce126f6e0c44fa8992bbdfcceb4b386f8bb5654dff3458",
+    "v3_reu_512k": "987b86cccf29e13d381655bd2da7c9a31d195a72bbe0be54085f2ec282ec71e1",
+    "v4_reu_16m": "240b0f3a4ee7f9e49f842cd192528eeaa60eb46f5338ecb186a805bd332b7539",
+    "v5_hybrid_lowzp": "2ca2e91a494c806d60e705ac0c3ec49fc3f85c0c967a3c405eb5b0b46bd2afcc"
+  },
+  "checks": {
+    "main_comparable": 38529409155,
+    "main_full": 38529409135,
+    "main_turbo32": 38529409200,
+    "native": 38526588099
+  },
+  "fixed_multiply_family_complete": true,
+  "issue39_complete": false,
+  "main_sha": "ce4e7bcf785f8b0fb292be1b044adce9fa3c1978",
+  "model_saving_per_32bit_call_cycles": 2,
+  "native_cycle_timing_measured": false,
+  "native_old_new_calls": 480,
+  "operations": [
+    "MATH_UMUL16_SHR8",
+    "MATH_SMUL16_SHR8",
+    "MATH_UMUL32_SHR16",
+    "MATH_SMUL32_SHR16"
+  ],
+  "private_optisearch_source_published": false,
+  "resource_and_public_abi_growth": 0,
+  "separate_remaining_steps": "REU Turbo/QS, trig, distance, seek",
+  "source_paired_calls_per_32bit_entry_per_profile_per_map": 4361,
+  "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN"
+}
