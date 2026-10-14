@@ -32,7 +32,14 @@ jobs:
           from issue39_dist8_provenance import pre_dist8_bytes
           R=Path('.')
           state=json.loads((R/'RELEASE_STATUS.json').read_text())
+          native=json.loads((R/'validation/review/ISSUE136_SEEK_DIVMOD_NATIVE_VICE.json').read_text())
+          assert native['status']=='PASS_NATIVE_VICE_MIXED_SEEK_DIVMOD'
+          assert native['public_calls']==325 and not native['native_cycle_timing_measured']
           parent=state['issue39_seek16_euclid_scale_2026_10_14']
+          for p,row in native['profiles'].items():
+              assert row['candidate_prg_sha256']==parent['candidate_prg_sha256'][p]
+              assert row['native_calls']==65
+          print('ISSUE136 NATIVE PROOF HASHES VERIFIED',flush=True)
           for profile,old_sha in parent['old_resident_sha256'].items():
               cur=(R/profile/'resident'/f'math_{profile}_game_math.prg').read_bytes()
               assert hashlib.sha256(cur).hexdigest()==parent['candidate_prg_sha256'][profile]
