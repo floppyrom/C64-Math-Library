@@ -1,0 +1,34 @@
+name: Issue39 trig angle public SIN COS SINCOS and ATAN2 audit
+on:
+  push:
+    branches: [issue39-trig-angle-family-20261014]
+    paths:
+      - tools/issue39_trig_angle_family_audit.py
+      - .github/workflows/issue39-trig-angle-family.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exhaustive-trig-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild all public source maps and V5 hybrid
+        run: |
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+          python3 tools/build_hybrid.py --config-kind alternate
+      - name: Exhaustive signed-byte sine cosine combined output and ATAN2 provenance
+        run: python3 tools/issue39_trig_angle_family_audit.py --output /tmp/issue39_trig_angle_family.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-trig-angle-five-profile-audit
+          path: /tmp/issue39_trig_angle_family.json
