@@ -35,15 +35,15 @@ def check_delta(p,k,old,new):
  load=int.from_bytes(old[:2],'little')
  changed=[load+i for i,(a,b) in enumerate(zip(old[2:],new[2:])) if a!=b]
  # V1/V5 also repair the long-standing public SEEK-state/UDIV32 collision.
- # The unrolled low/high core moves, page-aligned, from $1900 to $7800;
+ # Only the clashing LOW rounds move from $1900 to $4D80;
  # both explicit redirect JMP operands point into the new island.
  seek=set(range(start,start+size))
  division=set()
  if p in (P[0],P[-1]) and k=='reference':
-  division=set(range(0x7800,0x7bf8)) | set(range(0x446a,0x446d)) | set(range(0x4570,0x4573))
+  division=set(range(0x4d80,0x4fed)) | set(range(0x4570,0x4573))
  assert changed and all(a in seek or a in division for a in changed),(p,k,'unexpected modified address',changed[:45])
  assert any(a in seek for a in changed)
- if division:assert any(0x7800<=a<=0x7bf7 for a in changed)
+ if division:assert any(0x4d80<=a<=0x4fec for a in changed)
  return dict(first=hex(min(changed)),last=hex(max(changed)),changed_bytes=len(changed),
    ud32_state_collision_relocation=(p in (P[0],P[-1])))
 def main():
