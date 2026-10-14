@@ -25,6 +25,7 @@ jobs:
           python-version: '3.12'
       - name: Rebuild all source maps and V5
         run: |
+          python3 tools/generate_sources.py
           for kind in reference alternate; do
             python3 tools/assemble_sources.py --profile all --config-kind "$kind"
             python3 tools/build_hybrid.py --config-kind "$kind"
