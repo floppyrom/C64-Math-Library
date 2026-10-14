@@ -117,7 +117,7 @@ Mean cycles; 408 random moves (256x200 for SEEK8, 320x200 for SEEK16) at 0.5–4
 | `MATH_SEEK16_INIT`, major-axis speed | 529.9 | 479.6 | 478.0 | 478.0 | 529.9 |
 | `MATH_SEEK16_INIT`, integer speed | 506.8 | 458.1 | 456.2 | 456.2 | 506.8 |
 | `MATH_SEEK16_INIT`, speed $0100 | 420.1 | 382.7 | 381.7 | 381.7 | 420.1 |
-| `MATH_SEEK16_INIT`, Euclidean speed | 1036.5 | 925.8 | 925.1 | 925.1 | 1036.5 |
+| `MATH_SEEK16_INIT`, Euclidean speed | 1036.2 | 925.6 | 923.9 | 923.9 | 1036.2 |
 | `MATH_SEEK8_STEP` | 87.14 | 87.14 | 87.14 | 87.14 | 87.14 |
 | `MATH_SEEK8_STEP_INT` | 70.99 | 70.99 | 70.99 | 70.99 | 70.99 |
 | `MATH_SEEK8_STEP1` | 65.95 | 65.95 | 65.95 | 65.95 | 65.95 |

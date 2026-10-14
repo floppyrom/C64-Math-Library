@@ -1,0 +1,42 @@
+{
+  "native_cycles_measured": false,
+  "profiles": {
+    "v1_balanced": {
+      "bytewise_equal_with_model": true,
+      "candidate_prg": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+      "cases_per_image": 24,
+      "old_prg": "fce456e15cb35cc18ad01815b974194343ade40d1a2c0a3127aa002619b4443d",
+      "output_sha256": "9313e191c5837233b19bc44b98fdb0b8bae59c252ad7c21192af4c88aa53ef33"
+    },
+    "v2_pareto_fast": {
+      "bytewise_equal_with_model": true,
+      "candidate_prg": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+      "cases_per_image": 24,
+      "old_prg": "3c7fd7a7f011751af06ae6995c12eba982f007218c1e5f99198f950f58c4ba17",
+      "output_sha256": "643318a41ee95f05d576bd7ff30be5db7a468baa3a4f53fff259f5655d8869ab"
+    },
+    "v3_reu_512k": {
+      "bytewise_equal_with_model": true,
+      "candidate_prg": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+      "cases_per_image": 24,
+      "old_prg": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
+      "output_sha256": "643318a41ee95f05d576bd7ff30be5db7a468baa3a4f53fff259f5655d8869ab"
+    },
+    "v4_reu_16m": {
+      "bytewise_equal_with_model": true,
+      "candidate_prg": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "cases_per_image": 24,
+      "old_prg": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
+      "output_sha256": "643318a41ee95f05d576bd7ff30be5db7a468baa3a4f53fff259f5655d8869ab"
+    },
+    "v5_hybrid_lowzp": {
+      "bytewise_equal_with_model": true,
+      "candidate_prg": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2",
+      "cases_per_image": 24,
+      "old_prg": "cb7c69e0ba8a12b65a311dc60c0ad7f4e036121c45d1a88e7cdd9263584134cb",
+      "output_sha256": "9313e191c5837233b19bc44b98fdb0b8bae59c252ad7c21192af4c88aa53ef33"
+    }
+  },
+  "public_calls": 240,
+  "status": "PASS_NATIVE_VICE_PAIRED_SEEK16_INIT"
+}

@@ -136,20 +136,20 @@ L36E8:
     sta $54                            ; @36EE 85 54
     lda $60                            ; @36F0 A5 60
     ldy $5F                            ; @36F2 A4 5F
-L36F4:
-    beq L3700                          ; @36F4 F0 0A
+    beq L36FF                          ; @36F4 F0 09
+L36F6:
     lsr $5F                            ; @36F6 46 5F
     ror a                              ; @36F8 6A
     lsr $54                            ; @36F9 46 54
     ldy $5F                            ; @36FB A4 5F
-    jmp L36F4                          ; @36FD 4C F4 36
-L3700:
-    sta $53                            ; @3700 85 53
-    jsr L3D23                          ; @3702 20 23 3D
-    sta $9158,x                        ; @3705 9D 58 91
-    tya                                ; @3708 98
-    sta $9150,x                        ; @3709 9D 50 91
-    jmp L369F                          ; @370C 4C 9F 36
+    bne L36F6                          ; @36FD D0 F7
+L36FF:
+    sta $53                            ; @36FF 85 53
+    jsr L3D23                          ; @3701 20 23 3D
+    sta $9158,x                        ; @3704 9D 58 91
+    tya                                ; @3707 98
+    sta $9150,x                        ; @3708 9D 50 91
+    jmp L369F                          ; @370B 4C 9F 36
 ; ---- executable island $3D23 ----
 * = $3D23
 L3D23:

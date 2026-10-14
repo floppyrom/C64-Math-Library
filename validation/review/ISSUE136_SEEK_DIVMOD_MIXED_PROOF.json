@@ -1,0 +1,91 @@
+{
+  "native_vice_proof": false,
+  "profiles": {
+    "v1_balanced": {
+      "alternate": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "9c0601d70523cd588ee267cb54783f4efe1dfd9fcaf57ef43a465a2c0faf0425",
+        "status": "PASS",
+        "step_calls": 1358
+      },
+      "reference": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+        "status": "PASS",
+        "step_calls": 1358
+      }
+    },
+    "v2_pareto_fast": {
+      "alternate": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "6a1b8b03658affad4009a54e22ebd9a4207fad5e21e8f57d26244f45729554ae",
+        "status": "PASS",
+        "step_calls": 1358
+      },
+      "reference": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+        "status": "PASS",
+        "step_calls": 1358
+      }
+    },
+    "v3_reu_512k": {
+      "alternate": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "17c5a82460c43bbbfc67cfd9540f8de7b8a29f34499598945bad0380fb415fa6",
+        "status": "PASS",
+        "step_calls": 1358
+      },
+      "reference": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+        "status": "PASS",
+        "step_calls": 1358
+      }
+    },
+    "v4_reu_16m": {
+      "alternate": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "96bd7c4ca68116a71f575673d83d4c992882f88d67b9be556784c0a85cb6e276",
+        "status": "PASS",
+        "step_calls": 1358
+      },
+      "reference": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+        "status": "PASS",
+        "step_calls": 1358
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "alternate": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "c4e0a737e8b9ab1ddf9bce91157f3732856da3a0e2d04f77ceb9542a0641510d",
+        "status": "PASS",
+        "step_calls": 1358
+      },
+      "reference": {
+        "init_calls": 12,
+        "interleaved_divmod_calls": 1828,
+        "source_prg_sha256": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2",
+        "status": "PASS",
+        "step_calls": 1358
+      }
+    }
+  },
+  "status": "PASS_MIXED_SEEK_DIVMOD_PUBLIC_SOURCE",
+  "totals": {
+    "init_calls": 120,
+    "interleaved_divmod_calls": 18280,
+    "step_calls": 13580
+  }
+}

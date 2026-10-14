@@ -1,0 +1,41 @@
+name: Issue136 native VICE mixed SEEK/DIVMOD proof
+on:
+  push:
+    branches: [issue136-native-mixed-vice-20261014, issue39-seek16-euclid-scale-source-release-20261014]
+  pull_request:
+    branches: [main, issue39-seek16-euclid-scale-source-release-20261014]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mixed-real-c64:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate optimized source-backed candidates
+        run: |
+          python3 tools/generate_seek_sources.py
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/build_hybrid.py --config-kind reference
+      - name: Install pinned VICE x64sc headless
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Run native mixed SEEK16 and four division/modulo APIs
+        run: python3 tools/native_issue136_seek_divmod_mixed.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue136-native-mixed-vice
+          if-no-files-found: warn
+          path: validation/review/ISSUE136_SEEK_DIVMOD_NATIVE_VICE.json

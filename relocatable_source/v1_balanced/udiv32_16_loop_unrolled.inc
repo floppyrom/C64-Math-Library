@@ -2,7 +2,9 @@
 ; Retain first iterations in existing core; unroll remaining 14 low and
 ; 15 high rounds. Source expresses ALL mutable ZP operands through ZP_MAIN,
 ; so reference $02 and alternate $07 relocate identically to parent core.
-; Code islands $1900-$1CF7 (REG_LOW+$0900..+$0CF7) preserve X=0.
+; Low-round code was at $1900-$1B6C and overlapped public SEEK state.
+; Move LOW only to $4D80-$4FEC, free in V1 and V5; keep HIGH at $1B6D.
+; All public division and movement entry/data addresses remain unchanged.
 ; Explicit branch labels are local to each copy and retain original widths.
 
 * = REG_KERNEL+$046A
@@ -15,7 +17,7 @@ L4570:
 D3216_LOW_REDIRECT:
     jmp D3216_LOW_ROUNDS
 
-* = REG_LOW+$0900
+* = REG_KERNEL+$0D80
 D3216_LOW_ROUNDS:
     ; low-word iteration 2/15
     rol ZP_MAIN+$18
@@ -424,7 +426,7 @@ D3216_LOW_FULL_15:
     sec
 D3216_LOW_NEXT_15:
     ldx #$00
-    jmp REG_KERNEL+$0573
+    jmp REG_KERNEL+$056C
 
 * = REG_LOW+$0B6D
 D3216_HIGH_ROUNDS:

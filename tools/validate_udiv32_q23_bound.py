@@ -10,8 +10,8 @@ j=load_common(R)
 target={
     # These public 32/32 aliases can reach V1's relocated 32/16 helper.
     # Source-installed PR100 exact same-input means, not historical PR86 means.
-    'MATH_UDIV32_32':(335.7508244778307,2729),
-    'MATH_UMOD32_32':(399.55718475073314,1705)}
+    'MATH_UDIV32_32':(335.7610846463906,2729),
+    'MATH_UMOD32_32':(399.57360703812316,1705)}
 v5_means={'MATH_UDIV32_32':275.01319164529133,
           'MATH_UMOD32_32':299.58299120234600}
 for name,(mean,cases) in target.items():

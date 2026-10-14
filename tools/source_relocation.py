@@ -193,7 +193,7 @@ DIVISION_REFRESH_DECODE_EXCLUDE={
   (0x3d20,0x3d22),(0x3fd7,0x3fd9),(0x5200,0x52de),(0x5400,0x552c),
   (0x3de0,0x3de2),(0x3fda,0x3fdc),(0x5600,0x5714),(0x5800,0x58b5),
   (0x2590,0x25b1),(0x5c00,0x5d01),
-  (0x1900,0x1cf7),(0x446a,0x446c),(0x4570,0x4572),(0x5957,0x59d8),(0x5e00,0x5e05),(0x6810,0x685b),(0x6860,0x68e2),(0xc134,0xc221)),
+  (0x1900,0x1cf7),(0x4d80,0x4fec),(0x446a,0x446c),(0x4570,0x4572),(0x5957,0x59d8),(0x5e00,0x5e05),(0x6810,0x685b),(0x6860,0x68e2),(0xc134,0xc221)),
  'v2_pareto_fast':(
   (0x5472,0x54d4),(0x5323,0x5387), # V2 D>=24 UMOD8 source-owned helper
 
@@ -578,6 +578,17 @@ def generate_source(profile,outpath:Path):
  # untracked byte-patch into the generated code.
  lines += ['', '; Issue39 DIST8 source-backed, fixed-width register swap.',
            f'!source "../game_math/dist8_swap_{profile}.inc"']
+ # Issue #136: V1/V5 SEEK state and historical $1900 UDIV32 low rounds
+ # were overlapping. The original monolith contains an additional direct
+ # JMP at $4569, besides the $4570 symbolic redirect in the included module.
+ # Repoint that *one* instruction during the first source regeneration from
+ # the original published image. Future images already encode the new target.
+ if profile=='v1_balanced':
+  stale='    jmp REG_LOW+$0900'
+  updated='    jmp REG_KERNEL+$0D80'
+  count=lines.count(stale)
+  assert count<=1,('unexpected duplicate stale V1 UDIV32 jump',count)
+  if count:lines=[updated if line==stale else line for line in lines]
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 

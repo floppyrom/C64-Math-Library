@@ -20,13 +20,13 @@ SEEK8 steppers sit inside one page, so no hot branch pays a page-crossing cycle.
 | seek8_init | `REG_API+$0711` | $3711-$37DD | 205 |
 | seek8_planes | `REG_GAME_API+$00DD` | $5EDD-$5F3B | 95 |
 | seek16_step | `REG_KERNEL` | $4000-$4122 | 291 |
-| seek16_init | `REG_API+$0600` | $3600-$370E | 271 |
+| seek16_init | `REG_API+$0600` | $3600-$370D | 270 |
 | seek16_helpers | `REG_GAME_API+$0054` | $5E54-$5EDC | 137 |
 | seek_shared | `REG_API+$0D23` | $3D23-$3D8F | 109 |
 | SEEK8 object state | `REG_TABLE+$3308` | $9308-$93A7 | 160 |
 | SEEK16 object state | `REG_TABLE+$30E8` | $90E8-$91DF | 248 |
 
-Code: 1288 bytes plus 24 bytes of JMP slots. Object state: 408 bytes
+Code: 1287 bytes plus 24 bytes of JMP slots. Object state: 408 bytes
 (8 slots each). No lookup table other than the 32-byte Euclidean correction inside `seek_shared`.
 
 ## Scratch and resources

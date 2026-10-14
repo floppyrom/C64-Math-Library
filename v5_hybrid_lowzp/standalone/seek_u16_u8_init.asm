@@ -146,20 +146,20 @@ L382A:
     sta $C041                          ; @3833 8D 41 C0
     lda $C04D                          ; @3836 AD 4D C0
     ldy $C04C                          ; @3839 AC 4C C0
-L383C:
-    beq L384B                          ; @383C F0 0D
+    beq L384A                          ; @383C F0 0C
+L383E:
     lsr $C04C                          ; @383E 4E 4C C0
     ror a                              ; @3841 6A
     lsr $C041                          ; @3842 4E 41 C0
     ldy $C04C                          ; @3845 AC 4C C0
-    jmp L383C                          ; @3848 4C 3C 38
-L384B:
-    sta $C040                          ; @384B 8D 40 C0
-    jsr L3977                          ; @384E 20 77 39
-    sta $19F8,x                        ; @3851 9D F8 19
-    tya                                ; @3854 98
-    sta $19F0,x                        ; @3855 9D F0 19
-    jmp L37DA                          ; @3858 4C DA 37
+    bne L383E                          ; @3848 D0 F4
+L384A:
+    sta $C040                          ; @384A 8D 40 C0
+    jsr L3977                          ; @384D 20 77 39
+    sta $19F8,x                        ; @3850 9D F8 19
+    tya                                ; @3853 98
+    sta $19F0,x                        ; @3854 9D F0 19
+    jmp L37DA                          ; @3857 4C DA 37
 ; ---- executable island $38CE ----
 * = $38CE
 L38CE:

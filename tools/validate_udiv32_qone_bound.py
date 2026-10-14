@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Permanent Issue #39 32/32 bounded quotient-one source and comparable-cycle gate."""
 from pathlib import Path
+import json
 import sys
 R=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(R/'tools'))
@@ -11,11 +12,18 @@ required={
     # PR100 V1 32/16 hot-path fallthrough is invoked by bounded 32/32
     # fallback calls. Recompute on exactly the official same-input corpus;
     # V5 keeps its independent V2 donor and therefore its original means.
-    'MATH_UDIV32_32':(335.7508244778307,2729),
-    'MATH_UMOD32_32':(399.55718475073314,1705)}
+    'MATH_UDIV32_32':(335.7610846463906,2729),
+    'MATH_UMOD32_32':(399.57360703812316,1705)}
 v5_means={'MATH_UDIV32_32':275.01319164529133,
           'MATH_UMOD32_32':299.58299120234600}
+cert=json.loads((R/'validation/review/ISSUE39_SEEK16_SCALE_PRODUCTION_2026-10-14.json').read_text())
+legacy_means={'MATH_UDIV32_32':335.7508244778307,
+              'MATH_UMOD32_32':399.55718475073314}
 for name,(expected_mean,cases) in required.items():
+    evidence=cert['transitive_v1_division_timing_deltas'][name]
+    assert evidence['old_mean_cycles']==legacy_means[name]
+    assert evidence['new_mean_cycles']==expected_mean
+    assert 0<=evidence['delta_cycles']<1,(name,'unexpected transitive timing shift')
     info=report['routines'][name]
     assert info['cases_per_profile']==cases
     assert abs(info['metrics']['v1_balanced']['mean_cycles']-expected_mean)<1e-10

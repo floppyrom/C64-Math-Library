@@ -1,0 +1,117 @@
+name: Issue136 historical inverse proof and release reseal
+on:
+  push:
+    branches: [issue39-seek16-euclid-scale-source-release-20261014]
+    paths:
+      - .github/workflows/issue136-provenance-reseal.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  reverse-and-reseal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-seek16-euclid-scale-source-release-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reverse exact SEEK release for all five historical profiles
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,sys
+          from pathlib import Path
+          sys.path.insert(0,str(Path('tools').resolve()))
+          from issue39_normalize_provenance import pre_seek_division_bytes,pre_normalize_bytes
+          from issue39_dist8_provenance import pre_dist8_bytes
+          R=Path('.')
+          state=json.loads((R/'RELEASE_STATUS.json').read_text())
+          native=json.loads((R/'validation/review/ISSUE136_SEEK_DIVMOD_NATIVE_VICE.json').read_text())
+          assert native['status']=='PASS_NATIVE_VICE_MIXED_SEEK_DIVMOD'
+          assert native['public_calls']==325 and not native['native_cycle_timing_measured']
+          parent=state['issue39_seek16_euclid_scale_2026_10_14']
+          for p,row in native['profiles'].items():
+              assert row['candidate_prg_sha256']==parent['candidate_prg_sha256'][p]
+              assert row['native_calls']==65
+          print('ISSUE136 NATIVE PROOF HASHES VERIFIED',flush=True)
+          for profile,old_sha in parent['old_resident_sha256'].items():
+              cur=(R/profile/'resident'/f'math_{profile}_game_math.prg').read_bytes()
+              assert hashlib.sha256(cur).hexdigest()==parent['candidate_prg_sha256'][profile]
+              restored=pre_seek_division_bytes(profile,cur,state)
+              assert hashlib.sha256(restored).hexdigest()==old_sha,(profile,'seek inverse')
+              normalized=pre_normalize_bytes(profile,cur)
+              historical=pre_dist8_bytes(profile,cur)
+              assert historical and normalized
+              print('REVERSE HISTORICAL',profile,'PASS',len(restored),flush=True)
+          PY
+      - name: Refresh deterministic unsigned-workload proof for relocated V1 division
+        run: |
+          python3 tools/audit_issue39_unsigned_small_workloads.py
+          python3 tools/benchmark_unsigned_3216_workloads.py
+          python3 tools/benchmark_unsigned_common_corpus.py
+          python3 tools/validate_udiv32_qone_bound.py
+          python3 tools/validate_udiv32_q23_bound.py
+      - name: Refresh downstream signed DIV/MOD and ISQRT32 deterministic validation
+        run: |
+          python3 tools/validate_signed_division.py
+          python3 tools/benchmark_isqrt32_fast.py
+      - name: Pin V1 structured unsigned validation to exact green CI arithmetic
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          doc=json.loads(Path('validation/review/UNSIGNED_DIVISION_VALIDATION.json').read_text())
+          expected={
+            'MATH_UDIV32_16':801.5874184725436,
+            'MATH_UDIV32_32':271.0129392736362,
+            'MATH_UDIV16_SHL8':703.1870397643594,
+            'MATH_UMOD32_16':892.69800386349,
+            'MATH_UMOD32_32':399.3296844816484,
+            'MATH_URECIP16_Q16':104.13734436035156,
+          }
+          assert doc['status']=='PASS'
+          assert doc['summary']['profiles']==5
+          assert all(not x['errors'] for p in doc['profiles'].values() for x in p.values())
+          for name,mean in expected.items():
+            assert doc['profiles']['v1_balanced'][name]['mean_cycles']==mean,(name,'secondary mean')
+          print('ISSUE136 STRUCTURED UNSIGNED MEANS PINNED: all five profiles zero errors')
+          PY
+      - name: Reseal checksum and deterministic package audit
+        run: |
+          python3 - <<'PY'
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          import subprocess,sys
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,'tools/package_audit.py'],check=True)
+          PY
+      - name: Commit verified checksums only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json \
+            validation/review/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.json \
+            benchmarks/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.csv \
+            validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json \
+            benchmarks/UNSIGNED_3216_WORKLOAD_AUDIT.csv \
+            validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json \
+            benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv \
+            validation/review/SIGNED_DIVISION_VALIDATION.json \
+            validation/review/ISQRT32_FAST_PERFORMANCE_4130.json \
+            v1_balanced/PUBLIC_PERFORMANCE_GAME_MATH.csv \
+            v2_pareto_fast/PUBLIC_PERFORMANCE_GAME_MATH.csv \
+            v3_reu_512k/PUBLIC_PERFORMANCE_GAME_MATH.csv \
+            v4_reu_16m/PUBLIC_PERFORMANCE_GAME_MATH.csv
+          git diff --cached --quiet || git commit -m 'issue136: seal reversible SEEK and division historic proof in package manifest'
+          git push origin HEAD:issue39-seek16-euclid-scale-source-release-20261014
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: issue136-history-inverse-diagnostics
+          path: validation/PACKAGE_AUDIT.json
