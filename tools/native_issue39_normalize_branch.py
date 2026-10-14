@@ -170,6 +170,6 @@ def main():
             print("NATIVE NORMALIZE BRANCH",p,"PASS",COUNT*2,flush=True)
     assert summary["baseline_and_candidate_calls"]==len(P)*COUNT*2
     path=R/"validation/review/ISSUE39_NORMALIZE_BRANCH_COLLAPSE_NATIVE_2026-10-14.json"
-    path.write_text(json.dumps(summary,indent=2,sort_keys=True)+"\\n")
+    path.write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n")
     print("ISSUE39 NORMALIZE BRANCH NATIVE DIFF PASS",summary["baseline_and_candidate_calls"],flush=True)
 if __name__=="__main__":main()
