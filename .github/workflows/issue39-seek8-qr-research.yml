@@ -1,0 +1,46 @@
+name: Issue39 SEEK8 binary rate synthesis research
+on:
+  push:
+    branches: [issue39-seek8-rate-qr-research-20261014]
+    paths:
+      - tools/research_issue39_seek8_binary_qr.py
+      - .github/workflows/issue39-seek8-qr-research.yml
+  pull_request:
+    branches: [main]
+    paths:
+      - tools/research_issue39_seek8_binary_qr.py
+      - .github/workflows/issue39-seek8-qr-research.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-bounded-rate-math:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exhaustive 4,177,665-case SEEK8 signed-slope rate-domain proof
+        run: |
+          python3 tools/research_issue39_seek8_binary_qr.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          f=Path('validation/review/ISSUE39_SEEK8_BINARY_RATE_RESEARCH_2026-10-14.json')
+          d=json.loads(f.read_text())
+          assert d['status']=='PASS_MATH_RESEARCH_ONLY_NOT_PRODUCTION'
+          assert d['rate_cases']==4177665
+          assert d['full_domain'] and not d['native_vice_tested']
+          assert not d['public_abi_resource_qualified'] and not d['production_merged']
+          print("BOUNDED SEEK8 4,177,665-CORPUS: research pass only")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-seek8-binary-rate-research
+          if-no-files-found: warn
+          path: validation/review/ISSUE39_SEEK8_BINARY_RATE_RESEARCH_2026-10-14.json
