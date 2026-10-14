@@ -1,0 +1,36 @@
+name: Issue39 signed multiply family public ABI READY and OptiSearch gate
+on:
+  push:
+    branches: [issue39-signed-multiply-family-20261014, main]
+    paths:
+      - tools/issue39_signed_multiply_family_audit.py
+      - docs/ISSUE39_SIGNED_MULTIPLY_FAMILY_2026-10-14.md
+      - .github/workflows/issue39-signed-multiply-family.yml
+  pull_request:
+    paths:
+      - tools/issue39_signed_multiply_family_audit.py
+      - docs/ISSUE39_SIGNED_MULTIPLY_FAMILY_2026-10-14.md
+      - .github/workflows/issue39-signed-multiply-family.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  signed-five-profile-full-abi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exhaustive 8-bit signed and full five-profile 16/24/32 + READY matched-corpus
+        run: python3 tools/issue39_signed_multiply_family_audit.py --output /tmp/issue39-signed-multiply-family.json
+      - name: Verify unchanged lean release package
+        run: python3 tools/package_audit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-signed-multiply-family
+          path: /tmp/issue39-signed-multiply-family.json
