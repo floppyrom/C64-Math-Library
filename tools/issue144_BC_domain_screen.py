@@ -100,6 +100,48 @@ def test_isqrt(profile,limit):
          "source_sha256":sha(asm.encode()),"code_bytes":nbytes,
          "V4_REU_bus_or_DMA_time_measured":False,"workloads":results}
 
+
+def test_signed_pow2(profile):
+ from validate_signed_division import load_profile,div_expected
+ old,api=load_profile(profile);new,_=load_profile(profile)
+ path="optional/issue144_pow2_smod32_16/smod32_16_r_only.asm"
+ source=(ROOT/path).read_text()
+ labels,nbytes=install(new,source)
+ assert labels["MATH_SMOD32_16_POSPOW2_RONLY"]==0x0C80
+ rng=random.Random(0x1445D32)
+ pairs=[]
+ for k in range(15):
+  d=1<<k
+  for n in [0,1,2,3,d-1,d,d+1,0xFFFF,0x10000,0x80000000,0xFFFFFFFF,
+            0x80000001,0x7FFFFFFF,0x12345678,0xDEADBEEF]:
+   pairs.append((n&0xFFFFFFFF,d))
+  for _ in range(150):pairs.append((rng.getrandbits(32),d))
+ before=[];after=[]
+ for n,d in pairs:
+  for cpu in (old,new):
+   wr(cpu.mem,0xC010,n,4);wr(cpu.mem,0xC014,d,2)
+   wr(cpu.mem,0xC018,0x4CA92DAB,4)
+  oldcy=old.call(api["MATH_SMOD32_16"],4000000)
+  stack=new.sp;rx=new.x;ry=new.y
+  newcy=new.call(labels["MATH_SMOD32_16_POSPOW2_RONLY"],4000000)
+  q,r,flag=div_expected(n,32,d,16,32,16)
+  assert flag==old.c==new.c==0
+  assert rd(old.mem,0xC01C,2)==rd(new.mem,0xC01C,2)==r
+  assert rd(new.mem,0xC018,4)==0x4CA92DAB
+  assert rd(new.mem,0xC010,4)==n and rd(new.mem,0xC014,2)==d
+  assert (new.sp,new.x,new.y)==(stack,rx,ry)
+  before.append(oldcy);after.append(newcy)
+ gains=[a-b for a,b in zip(before,after)]
+ assert min(gains)>0
+ return {"status":"PASS_SIGNED_POW2_RONLY_NOT_QUOTIENT",
+  "cases":len(pairs),"code_bytes":nbytes,"stock":metrics(before),
+  "specialist":metrics(after),"saved":metrics(gains),
+  "source_sha256":sha(source.encode()),
+  "precondition":"signed positive power of two divisor (1..16384)",
+  "negative_numerators_qualified":True,
+  "public_alias_quotient_contract_not_equivalent":True,
+  "X_Y_stack_preserved":True}
+
 def main():
  p=argparse.ArgumentParser()
  p.add_argument("--profile",required=True,choices=PROFILES)
@@ -108,6 +150,7 @@ def main():
  args=p.parse_args()
  results={"status":"PASS_CPU_MODEL_DOMAIN_SCREEN_ONLY",
      "profile":args.profile,"mod_pow2":test_mod(args.profile,args.mod_random_per_power),
+     "signed_mod_pow2":test_signed_pow2(args.profile),
      "isqrt_low16":test_isqrt(args.profile,args.sqrt_random),
      "published_binaries_altered":False,"zero_page_added":0,
      "native_vice_cycles_measured":False,
