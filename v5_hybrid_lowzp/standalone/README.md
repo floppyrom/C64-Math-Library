@@ -56,7 +56,7 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_ISQRT32` | `isqrt_u32_u16` | `isqrt_u32_u16.asm` |  | 103 |
 | `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | `dist_s8_s8_u8_fast.asm` |  | 29 |
 | `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | `dist_s8_s8_u8_accurate.asm` |  | 30 |
-| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm` |  | 413 |
+| `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm` |  | 405 |
 | `MATH_SEEK8_INIT` | `seek_u8_u8_init` | `seek_u8_u8_init.asm` |  | 197 |
 | `MATH_SEEK8_STEP` | `seek_u8_u8_step` | `seek_u8_u8_step.asm` |  | 69 |
 | `MATH_SEEK8_STEP_INT` | `seek_u8_u8_step_int` | `seek_u8_u8_step_int.asm` |  | 38 |

@@ -35,24 +35,24 @@
       "name": "v1_balanced_reference_isolated_equals_integrated",
       "status": "PASS",
       "detail": {
-        "code_bytes": 881,
+        "code_bytes": 865,
         "table_bytes": 2560,
         "entry": "$5E39",
         "body": "$1500",
-        "isolated_sha256": "bf3d52fb8e71cf9e05d132ac64d7b498693156ac45fe5524785368b4ba1f5fb8",
-        "integrated_sha256": "bf3d52fb8e71cf9e05d132ac64d7b498693156ac45fe5524785368b4ba1f5fb8"
+        "isolated_sha256": "f83c5f1f15ab66996147e2d01fa7ccf429879e146aef10669dd2171e04bf22c5",
+        "integrated_sha256": "f83c5f1f15ab66996147e2d01fa7ccf429879e146aef10669dd2171e04bf22c5"
       }
     },
     {
       "name": "v2_pareto_fast_reference_isolated_equals_integrated",
       "status": "PASS",
       "detail": {
-        "code_bytes": 881,
+        "code_bytes": 865,
         "table_bytes": 2560,
         "entry": "$5E39",
         "body": "$1500",
-        "isolated_sha256": "f3c8c92d78fd21a65be0b052074930126520c19ea02b66c5eac4f5780bcb80c3",
-        "integrated_sha256": "f3c8c92d78fd21a65be0b052074930126520c19ea02b66c5eac4f5780bcb80c3"
+        "isolated_sha256": "10ba80fa98834829ab9d6265670027983fbfe0945123805078cb2bbca25320b5",
+        "integrated_sha256": "10ba80fa98834829ab9d6265670027983fbfe0945123805078cb2bbca25320b5"
       }
     },
     {
@@ -63,8 +63,8 @@
         "table_bytes": 1024,
         "entry": "$5E39",
         "body": "$1200",
-        "isolated_sha256": "66e37c1fdf3a0d7763c5127c8a62e61585e1bfa962b65c02b9e4503b1d2baaa4",
-        "integrated_sha256": "66e37c1fdf3a0d7763c5127c8a62e61585e1bfa962b65c02b9e4503b1d2baaa4"
+        "isolated_sha256": "3d7e45dd9eaaef3a73170059528a52b5502a30a30ab48052b4ad68297c95fc84",
+        "integrated_sha256": "3d7e45dd9eaaef3a73170059528a52b5502a30a30ab48052b4ad68297c95fc84"
       }
     },
     {
@@ -75,44 +75,44 @@
         "table_bytes": 1024,
         "entry": "$5E39",
         "body": "$1200",
-        "isolated_sha256": "66e37c1fdf3a0d7763c5127c8a62e61585e1bfa962b65c02b9e4503b1d2baaa4",
-        "integrated_sha256": "66e37c1fdf3a0d7763c5127c8a62e61585e1bfa962b65c02b9e4503b1d2baaa4"
+        "isolated_sha256": "3d7e45dd9eaaef3a73170059528a52b5502a30a30ab48052b4ad68297c95fc84",
+        "integrated_sha256": "3d7e45dd9eaaef3a73170059528a52b5502a30a30ab48052b4ad68297c95fc84"
       }
     },
     {
       "name": "v5_hybrid_lowzp_reference_isolated_equals_integrated",
       "status": "PASS",
       "detail": {
-        "code_bytes": 881,
+        "code_bytes": 865,
         "table_bytes": 2560,
         "entry": "$5E39",
         "body": "$1500",
-        "isolated_sha256": "bf3d52fb8e71cf9e05d132ac64d7b498693156ac45fe5524785368b4ba1f5fb8",
-        "integrated_sha256": "bf3d52fb8e71cf9e05d132ac64d7b498693156ac45fe5524785368b4ba1f5fb8"
+        "isolated_sha256": "f83c5f1f15ab66996147e2d01fa7ccf429879e146aef10669dd2171e04bf22c5",
+        "integrated_sha256": "f83c5f1f15ab66996147e2d01fa7ccf429879e146aef10669dd2171e04bf22c5"
       }
     },
     {
       "name": "v1_balanced_alternate_isolated_equals_integrated",
       "status": "PASS",
       "detail": {
-        "code_bytes": 881,
+        "code_bytes": 865,
         "table_bytes": 2560,
         "entry": "$7C39",
         "body": "$9500",
-        "isolated_sha256": "fd9bc2a0aa2d7f81ff6bcaa38bc84836a31ab21d5ba8833781a4d8fe1ef8fbd2",
-        "integrated_sha256": "fd9bc2a0aa2d7f81ff6bcaa38bc84836a31ab21d5ba8833781a4d8fe1ef8fbd2"
+        "isolated_sha256": "228871b2359da2802b3c7c3209ddc78853cd78290a5c99bfe09dd14e8d8e8b24",
+        "integrated_sha256": "228871b2359da2802b3c7c3209ddc78853cd78290a5c99bfe09dd14e8d8e8b24"
       }
     },
     {
       "name": "v2_pareto_fast_alternate_isolated_equals_integrated",
       "status": "PASS",
       "detail": {
-        "code_bytes": 881,
+        "code_bytes": 865,
         "table_bytes": 2560,
         "entry": "$7C39",
         "body": "$9500",
-        "isolated_sha256": "1fa085150e2c6f9469f7e633dcfb6a10ed63cf8ebf548281358874bf0968b1b1",
-        "integrated_sha256": "1fa085150e2c6f9469f7e633dcfb6a10ed63cf8ebf548281358874bf0968b1b1"
+        "isolated_sha256": "b92d57672dadc0e90f2bb51688db2bc199dd6ebcd115d1ad7c589f496a763061",
+        "integrated_sha256": "b92d57672dadc0e90f2bb51688db2bc199dd6ebcd115d1ad7c589f496a763061"
       }
     },
     {
@@ -123,8 +123,8 @@
         "table_bytes": 1024,
         "entry": "$7C39",
         "body": "$9200",
-        "isolated_sha256": "d8c07cc4eab90a5c9f86469a176351e57839137265f41f89af14482903b2e3fb",
-        "integrated_sha256": "d8c07cc4eab90a5c9f86469a176351e57839137265f41f89af14482903b2e3fb"
+        "isolated_sha256": "ffc0ff05a672901a1410310a1d3cd50e5159d8b8c070add53cc8ce51ebdabfd8",
+        "integrated_sha256": "ffc0ff05a672901a1410310a1d3cd50e5159d8b8c070add53cc8ce51ebdabfd8"
       }
     },
     {
@@ -135,69 +135,69 @@
         "table_bytes": 1024,
         "entry": "$7C39",
         "body": "$9200",
-        "isolated_sha256": "d9fc8943c1cbfd66de2fad6564bd21c764563a99adf2ff5f4e1d245c8fadd435",
-        "integrated_sha256": "d9fc8943c1cbfd66de2fad6564bd21c764563a99adf2ff5f4e1d245c8fadd435"
+        "isolated_sha256": "916a0c85c57c41b61c24953a970180961c2f19193eeac1ca95a0d666d191f0bc",
+        "integrated_sha256": "916a0c85c57c41b61c24953a970180961c2f19193eeac1ca95a0d666d191f0bc"
       }
     },
     {
       "name": "v5_hybrid_lowzp_alternate_isolated_equals_integrated",
       "status": "PASS",
       "detail": {
-        "code_bytes": 881,
+        "code_bytes": 865,
         "table_bytes": 2560,
         "entry": "$7C39",
         "body": "$9500",
-        "isolated_sha256": "fd9bc2a0aa2d7f81ff6bcaa38bc84836a31ab21d5ba8833781a4d8fe1ef8fbd2",
-        "integrated_sha256": "fd9bc2a0aa2d7f81ff6bcaa38bc84836a31ab21d5ba8833781a4d8fe1ef8fbd2"
+        "isolated_sha256": "228871b2359da2802b3c7c3209ddc78853cd78290a5c99bfe09dd14e8d8e8b24",
+        "integrated_sha256": "228871b2359da2802b3c7c3209ddc78853cd78290a5c99bfe09dd14e8d8e8b24"
       }
     }
   ],
   "profiles": {
     "v1_balanced": {
       "native_source": "v1_balanced/resident/vector/native/vec2_normalize_q8_8.asm",
-      "native_sha256": "02c62b29908cb367195eb9f8ac3f80c715532f2442369f5181769f3dc468dd58",
+      "native_sha256": "64f34204dbd092fe6228170d0cf6cec714df0aba198d54debf33b4ffb82ff15b",
       "tables_sha256": "59092b96cebca7715f98f1fe7a8264a0169e535fc48946ac4f4b596358b1f0ab",
       "maps": {
         "reference": {
           "entry": "$5E39",
           "body": "$1500",
-          "code_bytes": 881,
+          "code_bytes": 865,
           "table_bytes": 2560,
-          "routine_sha256": "bf3d52fb8e71cf9e05d132ac64d7b498693156ac45fe5524785368b4ba1f5fb8"
+          "routine_sha256": "f83c5f1f15ab66996147e2d01fa7ccf429879e146aef10669dd2171e04bf22c5"
         },
         "alternate": {
           "entry": "$7C39",
           "body": "$9500",
-          "code_bytes": 881,
+          "code_bytes": 865,
           "table_bytes": 2560,
-          "routine_sha256": "fd9bc2a0aa2d7f81ff6bcaa38bc84836a31ab21d5ba8833781a4d8fe1ef8fbd2"
+          "routine_sha256": "228871b2359da2802b3c7c3209ddc78853cd78290a5c99bfe09dd14e8d8e8b24"
         }
       }
     },
     "v2_pareto_fast": {
       "native_source": "v2_pareto_fast/resident/vector/native/vec2_normalize_q8_8.asm",
-      "native_sha256": "439f2e5ae1067b662942318ac63c67621f9c53eea9b5fc7ff02b9b7bdad3c115",
+      "native_sha256": "95ddb6052f0185534c3c3271ad41d115f9b0e09c6bfd81782bfc6d36dd1fc994",
       "tables_sha256": "01994d2967af68ed058f3056cab5a340e8f9268141e2326ed8eed3cdb5e623d0",
       "maps": {
         "reference": {
           "entry": "$5E39",
           "body": "$1500",
-          "code_bytes": 881,
+          "code_bytes": 865,
           "table_bytes": 2560,
-          "routine_sha256": "f3c8c92d78fd21a65be0b052074930126520c19ea02b66c5eac4f5780bcb80c3"
+          "routine_sha256": "10ba80fa98834829ab9d6265670027983fbfe0945123805078cb2bbca25320b5"
         },
         "alternate": {
           "entry": "$7C39",
           "body": "$9500",
-          "code_bytes": 881,
+          "code_bytes": 865,
           "table_bytes": 2560,
-          "routine_sha256": "1fa085150e2c6f9469f7e633dcfb6a10ed63cf8ebf548281358874bf0968b1b1"
+          "routine_sha256": "b92d57672dadc0e90f2bb51688db2bc199dd6ebcd115d1ad7c589f496a763061"
         }
       }
     },
     "v3_reu_512k": {
       "native_source": "v3_reu_512k/resident/vector/native/vec2_normalize_q8_8.asm",
-      "native_sha256": "7624b7057cc1fc0eeb7a38bf0aa47e2fe280d8e72e8906d7e3bbe02564229939",
+      "native_sha256": "ad5a56958a35aac0febe2f288579ef070f93488c2d2d8f3b16dcd785a23adf23",
       "tables_sha256": "aa6a79903e25d0f8127b5aac26d7e029d7c8e97625246a631d47c4254538d476",
       "maps": {
         "reference": {
@@ -205,20 +205,20 @@
           "body": "$1200",
           "code_bytes": 849,
           "table_bytes": 1024,
-          "routine_sha256": "66e37c1fdf3a0d7763c5127c8a62e61585e1bfa962b65c02b9e4503b1d2baaa4"
+          "routine_sha256": "3d7e45dd9eaaef3a73170059528a52b5502a30a30ab48052b4ad68297c95fc84"
         },
         "alternate": {
           "entry": "$7C39",
           "body": "$9200",
           "code_bytes": 849,
           "table_bytes": 1024,
-          "routine_sha256": "d8c07cc4eab90a5c9f86469a176351e57839137265f41f89af14482903b2e3fb"
+          "routine_sha256": "ffc0ff05a672901a1410310a1d3cd50e5159d8b8c070add53cc8ce51ebdabfd8"
         }
       }
     },
     "v4_reu_16m": {
       "native_source": "v4_reu_16m/resident/vector/native/vec2_normalize_q8_8.asm",
-      "native_sha256": "7624b7057cc1fc0eeb7a38bf0aa47e2fe280d8e72e8906d7e3bbe02564229939",
+      "native_sha256": "ad5a56958a35aac0febe2f288579ef070f93488c2d2d8f3b16dcd785a23adf23",
       "tables_sha256": "aa6a79903e25d0f8127b5aac26d7e029d7c8e97625246a631d47c4254538d476",
       "maps": {
         "reference": {
@@ -226,35 +226,35 @@
           "body": "$1200",
           "code_bytes": 849,
           "table_bytes": 1024,
-          "routine_sha256": "66e37c1fdf3a0d7763c5127c8a62e61585e1bfa962b65c02b9e4503b1d2baaa4"
+          "routine_sha256": "3d7e45dd9eaaef3a73170059528a52b5502a30a30ab48052b4ad68297c95fc84"
         },
         "alternate": {
           "entry": "$7C39",
           "body": "$9200",
           "code_bytes": 849,
           "table_bytes": 1024,
-          "routine_sha256": "d9fc8943c1cbfd66de2fad6564bd21c764563a99adf2ff5f4e1d245c8fadd435"
+          "routine_sha256": "916a0c85c57c41b61c24953a970180961c2f19193eeac1ca95a0d666d191f0bc"
         }
       }
     },
     "v5_hybrid_lowzp": {
       "native_source": "v5_hybrid_lowzp/resident/vector/native/vec2_normalize_q8_8.asm",
-      "native_sha256": "02c62b29908cb367195eb9f8ac3f80c715532f2442369f5181769f3dc468dd58",
+      "native_sha256": "64f34204dbd092fe6228170d0cf6cec714df0aba198d54debf33b4ffb82ff15b",
       "tables_sha256": "59092b96cebca7715f98f1fe7a8264a0169e535fc48946ac4f4b596358b1f0ab",
       "maps": {
         "reference": {
           "entry": "$5E39",
           "body": "$1500",
-          "code_bytes": 881,
+          "code_bytes": 865,
           "table_bytes": 2560,
-          "routine_sha256": "bf3d52fb8e71cf9e05d132ac64d7b498693156ac45fe5524785368b4ba1f5fb8"
+          "routine_sha256": "f83c5f1f15ab66996147e2d01fa7ccf429879e146aef10669dd2171e04bf22c5"
         },
         "alternate": {
           "entry": "$7C39",
           "body": "$9500",
-          "code_bytes": 881,
+          "code_bytes": 865,
           "table_bytes": 2560,
-          "routine_sha256": "fd9bc2a0aa2d7f81ff6bcaa38bc84836a31ab21d5ba8833781a4d8fe1ef8fbd2"
+          "routine_sha256": "228871b2359da2802b3c7c3209ddc78853cd78290a5c99bfe09dd14e8d8e8b24"
         }
       }
     }

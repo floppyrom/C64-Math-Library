@@ -1,3 +1,9 @@
+## 2026-10-14 ISSUE39 NORMALIZE STOCK LOG BRANCH PRODUCTION
+
+Optimized V1/V2/V5 VEC2_NORMALIZE_Q8_8: redundant BNE/BEQ branch collapse, 16 fewer code bytes, mean CPU-model 160.150080 -> 159.128794 cycles. 1,073,960 public model calls; 320 old/new x64sc calls. Exact signed outputs and full-domain angular/component accuracy preserved; no extra ZP or REU. Rebuilt standalone sources, performance tables, verified reversible old PRG bytes and checksums. Independent PR/main CI pending. See docs/ISSUE39_NORMALIZE_BRANCH_RELEASE_2026-10-14.md.
+
+---
+
 ## 2026-10-14 ISSUE39 DIST8 POSTMERGE FINAL CERTIFICATION
 
 Final certification of shipped DIST8_FAST/DIST8_ACCURATE optimization after PR #130 merge, four green main checks. 1,310,720 paired CPU-model baseline/candidate calls, 655,360 new shipped benchmarks, 119,220 reference/alternate calls and 480 native VICE baseline/candidate public calls on SHA-distinct PRGs. Exact 8/10-byte source-backed swap only; no ABI, resident size, normal ZP or REU changes. VICE cycle timing not measured. Both changelogs and SHA256 resealed. Issue #39 remains open for VEC2 normalization and seek. Main `44fc91813d945c05194d2f4962bb89f9d5f88449`; full [#38573248160](https://github.com/floppyrom/C64-Math-Library/actions/runs/38573248160), comparable [#38573248208](https://github.com/floppyrom/C64-Math-Library/actions/runs/38573248208), fixed [#38573248172](https://github.com/floppyrom/C64-Math-Library/actions/runs/38573248172), Turbo32 [#38573248117](https://github.com/floppyrom/C64-Math-Library/actions/runs/38573248117).
