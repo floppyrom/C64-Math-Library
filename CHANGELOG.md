@@ -1,6 +1,13 @@
+## 2026-10-14 ISSUE39 NORMALIZE POSTMERGE FINAL CERTIFICATION
+
+Confirmed PR #132 installed the 865-byte V1/V2/V5 normalizer with 16 fewer code bytes and identical signed results. Mean CPU-model cycles 160.150080 -> 159.128794. Verified 1,073,960 paired-map model calls, 320 real x64sc old/new calls, 723,073-cell precision certificate, unchanged four-byte scratch, public API and V3/V4 REU. Native VICE cycle timing was not measured. The fully qualified distance/normalization family is complete; Issue #39 remains OPEN for SEEK8/16 INIT/STEP. Both changelogs and checksum ledger sealed.
+Main merge 07f89e65661a1a543c7315d1ce5dc8319278e61b; full main run 38586383233, comparable 38586383155, fixed multiply 38586383270. Completion certificate: validation/review/ISSUE39_NORMALIZE_POSTMERGE_COMPLETION_2026-10-14.json.
+
+---
+
 ## 2026-10-14 ISSUE39 NORMALIZE STOCK LOG BRANCH PRODUCTION
 
-Optimized V1/V2/V5 VEC2_NORMALIZE_Q8_8: redundant BNE/BEQ branch collapse, 16 fewer code bytes, mean CPU-model 160.150080 -> 159.128794 cycles. 1,073,960 public model calls; 320 old/new x64sc calls. Exact signed outputs and full-domain angular/component accuracy preserved; no extra ZP or REU. Rebuilt standalone sources, performance tables, verified reversible old PRG bytes and checksums. Independent PR/main CI pending. See docs/ISSUE39_NORMALIZE_BRANCH_RELEASE_2026-10-14.md.
+Optimized V1/V2/V5 VEC2_NORMALIZE_Q8_8: redundant BNE/BEQ branch collapse, 16 fewer code bytes, mean CPU-model 160.150080 -> 159.128794 cycles. 1,073,960 public model calls; 320 old/new x64sc calls. Exact signed outputs and full-domain angular/component accuracy preserved; no extra ZP or REU. Rebuilt standalone sources, performance tables, verified reversible old PRG bytes and checksums. PR #132 merged; post-merge main certification passed. See docs/ISSUE39_NORMALIZE_BRANCH_RELEASE_2026-10-14.md.
 
 ---
 

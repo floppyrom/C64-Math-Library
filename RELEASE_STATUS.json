@@ -3153,7 +3153,7 @@
     "postmerge_turbo32_ci_run": 38573248117
   },
   "issue39_normalize_branch_collapse_2026_10_14": {
-    "status": "PASS_STAGED_PR_MAIN_CI_PENDING",
+    "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
     "public_api": "MATH_VEC2_NORMALIZE_Q8_8",
     "stock_profiles": [
       "v1_balanced",
@@ -3185,7 +3185,13 @@
     "stock_code_bytes_after": 865,
     "normal_zp_growth": 0,
     "reu_changed": false,
-    "normalization_family_complete": false,
-    "issue39_open": true
+    "normalization_family_complete": true,
+    "issue39_open": true,
+    "certified_main_merge_sha": "07f89e65661a1a543c7315d1ce5dc8319278e61b",
+    "full_library_main_ci_run": 38586383233,
+    "comparable_main_ci_run": 38586383155,
+    "fixed_multiply_main_ci_run": 38586383270,
+    "distance_normalization_family_complete": true,
+    "postmerge_full_ci_pending": false
   }
 }

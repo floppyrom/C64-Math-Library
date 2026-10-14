@@ -1,0 +1,30 @@
+{
+  "additional_zp_bytes": 0,
+  "distance_normalization_family_complete": true,
+  "full_domain_precision_cells": 723073,
+  "issue39_still_open_for_seek": true,
+  "main_green_runs": {
+    "comparable_unsigned": 38586383155,
+    "fixed_multiply": 38586383270,
+    "full_library": 38586383233
+  },
+  "merged_pr": 132,
+  "merged_sha": "07f89e65661a1a543c7315d1ce5dc8319278e61b",
+  "native_vice_cycles_measured": false,
+  "old_new_x64sc_public_calls": 320,
+  "public_entry": "MATH_VEC2_NORMALIZE_Q8_8",
+  "reference_alternate_cpu_model_calls": 1073960,
+  "reu_changed": false,
+  "shipped_prg_sha256": {
+    "v1_balanced": "fce456e15cb35cc18ad01815b974194343ade40d1a2c0a3127aa002619b4443d",
+    "v2_pareto_fast": "3c7fd7a7f011751af06ae6995c12eba982f007218c1e5f99198f950f58c4ba17",
+    "v3_reu_512k": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
+    "v4_reu_16m": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
+    "v5_hybrid_lowzp": "cb7c69e0ba8a12b65a311dc60c0ad7f4e036121c45d1a88e7cdd9263584134cb"
+  },
+  "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
+  "stock_code_bytes_after": 865,
+  "stock_code_bytes_before": 881,
+  "stock_mean_after": 159.12879436850534,
+  "stock_mean_before": 160.1500800774703
+}
