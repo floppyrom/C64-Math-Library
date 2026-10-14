@@ -106,7 +106,9 @@ def common_init_pairs(original,candidate,source_symbols,additional=180):
        index,move,speed,"complete eight-slot state differs")
    assert bytes(a.mem[io:io+0x12])==bytes(b.mem[io:io+0x12])==snap,(
        index,move,speed,"input overwritten")
-   group="k1" if a.mem[S["MATH_SEEK16_KI"]+slot]==1 else "other"
+   import seek_kernel as K
+   ki_offset=dict(K.S16_FIELDS)["KI"]
+   group="k1" if a.mem[base+ki_offset+slot]==1 else "other"
    improvements[group].append(old_cycles-new_cycles)
    count+=1
  assert count>5500
