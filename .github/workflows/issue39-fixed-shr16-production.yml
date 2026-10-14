@@ -1,0 +1,41 @@
+name: Issue39 fixed SHR16 public return-tail production stage
+on:
+  push:
+    branches: [issue39-fixed-multiply-shr16-tail-20261014]
+    paths:
+      - tools/stage_issue39_fixed_shr16_tail.py
+      - .github/workflows/issue39-fixed-shr16-production.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  source-generation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 125
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-fixed-multiply-shr16-tail-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Integrate matched signed unsigned two-cycle shifted-result gain
+        run: python3 tools/stage_issue39_fixed_shr16_tail.py
+      - name: Commit only source-and-binary qualification success
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: integrate fixed SHR16 carry-neutral source and release artifacts'
+          git push origin HEAD:issue39-fixed-multiply-shr16-tail-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fixed-shr16-production-source
+          path: |
+            validation/review/ISSUE39_FIXED_SHR16_RETURN_TAIL_PRODUCTION_2026-10-14.json
+            docs/ISSUE39_FIXED_SHR16_RETURN_TAIL_2026-10-14.md

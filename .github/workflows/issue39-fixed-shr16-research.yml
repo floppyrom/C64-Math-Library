@@ -1,0 +1,28 @@
+name: Issue39 fixed SHR16 signed and unsigned two-cycle research
+on:
+  push:
+    branches: [issue39-fixed-multiply-shr16-tail-20261014]
+    paths:
+      - tools/screen_issue39_fixed_shr16_tail.py
+      - .github/workflows/issue39-fixed-shr16-research.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  paired-two-maps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualified all-profile reference+alternate signed unsigned 32x32 shifted output A/B
+        run: python3 tools/screen_issue39_fixed_shr16_tail.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fixed-shr16-source-research
+          path: validation/review/ISSUE39_FIXED_SHR16_RETURN_TAIL_RESEARCH_2026-10-14.json

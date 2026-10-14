@@ -4067,8 +4067,8 @@ L5BD1:
     sta MATH_IO+$0C
     lda MATH_IO+$0F
     sta MATH_IO+$0D
-    clc
     rts
+    !byte $EA
     jsr REG_API+$0C40
     lda MATH_IO+$0A
     sta MATH_IO+$08
@@ -4082,8 +4082,8 @@ L5BD1:
     sta MATH_IO+$0C
     lda MATH_IO+$0F
     sta MATH_IO+$0D
-    clc
     rts
+    !byte $EA
     lda #$00
     sta ZP_MAIN+$16
     sta ZP_MAIN+$0F

@@ -13,6 +13,7 @@ from mini6502 import CPU
 from validate_unsigned_division import expected,api
 from issue39_umod8_guard_parent import restore_umod8_parent,restore_v5_pr67_u16_parent,PARENT_SHA
 from issue39_v1_u16_q2_parent import restore_v1_q2_parent,restore_v5_q2_parent
+from issue39_umul24_v1v5_historical_parent import undo_fixed_shr16_release
 PROFILES=('v1_balanced','v5_hybrid_lowzp')
 OUT=ROOT/'validation/review/ISSUE39_V1V5_UMOD8_GUARD_EXHAUSTIVE.json'
 j={'status':'PASS','guard_minimum_divisor':32,'bytes_of_new_code':77,
@@ -22,6 +23,11 @@ j={'status':'PASS','guard_minimum_divisor':32,'bytes_of_new_code':77,
 for profile in PROFILES:
     name=ROOT/profile/'resident'/f'math_{profile}_game_math.prg'
     new=name.read_bytes()
+    # Stable PR57-62 historical proof uses the SHA-pinned pre-SHR16
+    # V1 resident; independent 32-bit fixed-result return tails are not
+    # part of the 8-bit remainder donor comparison.
+    if profile=='v1_balanced':
+        new=undo_fixed_shr16_release(profile,new)
     # Historical PR57-62 certificate is pinned to the V5 binary as it was
     # BEFORE independent PR67 16-bit code changes. Reversing those changes
     # is SHA-qualified, and neither affects the UMOD8 operand/cycle path.
@@ -30,7 +36,7 @@ for profile in PROFILES:
     # Historical PR67/Q2 rollback is already applied to 'new' above.
     # Reconstruct the UMOD8 parent from the *live* SHA-pinned image instead,
     # otherwise restore_umod8_parent would undo PR67/Q2 a second time.
-    old=restore_umod8_parent(profile,name.read_bytes())
+    old=restore_umod8_parent(profile,new if profile=='v1_balanced' else name.read_bytes())
     lo=int.from_bytes(new[:2],'little')
     assert lo==0x1000 and len(new)==len(old)
     assert hashlib.sha256(old).hexdigest()==PARENT_SHA[profile]
