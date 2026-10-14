@@ -26,6 +26,13 @@ def main():
     reduced=json.loads((R/"validation/normalize/OPTIMIZED_VALIDATION.json").read_text())
     full_log=json.loads((R/"validation/normalize/LOG_RATIO_FULL_DOMAIN_PRECISION_CERTIFICATE.json").read_text())
     full_exact=json.loads((R/"validation/normalize/EXACT_RATIO_FULL_DOMAIN_PRECISION_CERTIFICATE.json").read_text())
+    native_proof=json.loads((R/"validation/review/ISSUE39_NORMALIZE_BRANCH_COLLAPSE_NATIVE_2026-10-14.json").read_text())
+    assert native_proof["status"]=="PASS_NATIVE_VICE_NORMALIZE_BRANCH_COLLAPSE"
+    assert native_proof["baseline_and_candidate_calls"]==320
+    for row in new["profiles"]:
+        p=row["profile"]
+        assert row["reference"]["prg_sha256"]==native_proof["profiles"][p]["candidate_sha256"],(p,"CPU/native candidate mismatch")
+        assert native_proof["profiles"][p]["all_signed_vectors_and_flags_match"]
     assert new["status"]=="PASS" and new["corpus_sha256"]==old["corpus_sha256"]
     assert new["corpus_vectors"]==old["corpus_vectors"]
     assert native["status"]==reduced["status"]=="PASS"
@@ -43,7 +50,7 @@ def main():
       "new_public_model_calls":107396*len(PROFILES)*2,
       "precision_cells":full_log["cells"],
       "stock_code_bytes_before":881,"stock_code_bytes_candidate":865,
-      "new_normal_zp":0,"native_vice_not_run_on_candidate":True,
+      "new_normal_zp":0,"native_vice_candidate_baseline_calls":320,
       "profiles":{}}
     assert len(new["profiles"])==len(old["profiles"])==len(PROFILES)
     for previous,current in zip(old["profiles"],new["profiles"]):
