@@ -1,0 +1,45 @@
+name: Issue39 normalize postmerge family completion seal
+on:
+  push:
+    branches: [issue39-normalize-postmerge-final-cert-20261014]
+    paths:
+      - .github/workflows/issue39-normalize-postmerge-final.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  certify-normalizer-green-main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-normalize-postmerge-final-cert-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Certify exact merged PR132 and main green source/ABI/provenance
+        run: |
+          python3 tools/finalize_issue39_normalize_postmerge.py \
+            --merged-sha 07f89e65661a1a543c7315d1ce5dc8319278e61b \
+            --main-full 38586383233 \
+            --main-comparable 38586383155 \
+            --main-fixed 38586383270
+      - name: Commit sealed release status and both changelogs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal normalized vector family after merged green main'
+          git push origin HEAD:issue39-normalize-postmerge-final-cert-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-normalize-family-completion
+          path: |
+            validation/review/ISSUE39_NORMALIZE_POSTMERGE_COMPLETION_2026-10-14.json
+            docs/ISSUE39_NORMALIZE_BRANCH_RELEASE_2026-10-14.md
