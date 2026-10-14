@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Stage the proven Issue39 DIST8 shared-swap optimization for publication.
 
-This function is deliberately NOT the final Issue39 distance-family closeout:
+This guarded release is deliberately NOT the Issue39 distance-family closeout:
 VEC2_NORMALIZE_Q8_8 remains to be audited. Gate source/public binary identity,
 baseline provenance, native VICE, fixed ABI/memory and every non-DIST8 byte.
 """
