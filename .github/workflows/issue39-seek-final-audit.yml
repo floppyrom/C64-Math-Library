@@ -9,7 +9,7 @@ on:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   family-disposition:
     runs-on: ubuntu-latest
@@ -18,6 +18,10 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: issue39-seek-final-family-audit-20261014
+          fetch-depth: 0
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -36,6 +40,20 @@ jobs:
         run: |
           python3 tools/validate_issue136_seek_divmod_mixed.py
           python3 tools/validate_seek_placement.py
+      - name: Stage final resource audit, changelogs and SHA-256 package seal
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue39_seek_family_completion.py
+      - name: Commit only a green source-backed SEEK family audit
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add validation/review/ISSUE39_SEEK_FAMILY_FINAL_AUDIT_2026-10-14.json \
+            docs/ISSUE39_SEEK_FAMILY_COMPLETION_2026-10-14.md \
+            RELEASE_STATUS.json CHANGELOG.md CSDB_CHANGELOG.txt \
+            SHA256SUMS.txt validation/PACKAGE_AUDIT.json
+          git diff --cached --quiet || git commit -m 'issue39: seal completed SEEK8/16 audit and rejected resource-overlap candidate'
+          git push origin HEAD:issue39-seek-final-family-audit-20261014
       - uses: actions/upload-artifact@v4
         if: always()
         with:
