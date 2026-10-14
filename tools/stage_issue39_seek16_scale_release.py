@@ -149,8 +149,48 @@ def main():
  cp=R/'validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json'
  prev=json.loads(cp.read_text());run('benchmark_unsigned_common_corpus.py')
  current=json.loads(cp.read_text())
- assert prev['routines']==current['routines']
+ # Moving the V1 low-round loop changes branch page phases slightly.
+ # Preserve identical input corpora and arithmetic results, and allow ONLY
+ # measured, tightly bounded cycle shifts in known transitive V1 beneficiaries.
  assert prev['total_calls']==current['total_calls']==136335
+ assert prev['profile_order']==current['profile_order']==list(P)
+ assert prev['contract']==current['contract']
+ allowed={'MATH_UDIV32_16','MATH_UMOD32_16','MATH_UDIV32_32',
+          'MATH_UMOD32_32','MATH_UDIV16_SHL8'}
+ timing_deltas={}
+ assert prev['routines'].keys()==current['routines'].keys()
+ for op,oldop in prev['routines'].items():
+  newop=current['routines'][op]
+  for key in ('status','random_seed','cases_per_profile','total_calls','same_cases_sha256'):
+   assert oldop[key]==newop[key],(op,'comparability contract',key)
+  for profile in P:
+   a=oldop['metrics'][profile];z=newop['metrics'][profile]
+   if a==z:continue
+   assert profile=='v1_balanced' and op in allowed,(op,profile,'unexpected cycle metric delta',a,z)
+   diff=z['mean_cycles']-a['mean_cycles']
+   assert abs(diff)<1.0,(op,'unacceptable average-cycle drift',diff)
+   assert abs(z['p95_cycles']-a['p95_cycles'])<=8,(op,'p95 drift')
+   assert abs(z['max_cycles']-a['max_cycles'])<=8,(op,'worst drift')
+   timing_deltas[op]={'profile':profile,'old_mean_cycles':a['mean_cycles'],
+                     'new_mean_cycles':z['mean_cycles'],'delta_cycles':diff}
+ assert timing_deltas,('missing transitive V1 page-phase measurements')
+ print('ISSUE136 COMMON-CORPUS TIMING DELTAS',timing_deltas,flush=True)
+ # The routine tables must reflect the new same-input benchmark rather than
+ # retaining the old V1 timing/PRG hashes from earlier generated rows.
+ run('generate_consolidated_routine_table.py')
+ # Also refresh the hand-curated quick performance table for changed V1 calls.
+ performance=R/'PERFORMANCE.md';lines=performance.read_text().splitlines(keepends=True)
+ for op in timing_deltas:
+  marker='| '+chr(96)+op+chr(96)+' |'
+  hits=[i for i,line in enumerate(lines) if line.startswith(marker)]
+  assert len(hits)==1,(op,'missing public performance row',len(hits))
+  i=hits[0];parts=lines[i].rstrip('\n').split('|')
+  assert len(parts)==9
+  parts[3]=f" {current['routines'][op]['metrics']['v1_balanced']['mean_cycles']:.6f} "
+  lines[i]='|'.join(parts)+'\n'
+ performance.write_text(''.join(lines))
+ # Run the new complete-state interleaving gate before publication.
+ run('validate_issue136_seek_divmod_mixed.py')
  run('generate_public_indexes.py')
  status['reference_prg_sha256']=new;status['alternate_prg_sha256']=alt
  if isinstance(status.get('hybrid_v5'),dict):
