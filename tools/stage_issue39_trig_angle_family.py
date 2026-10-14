@@ -93,12 +93,12 @@ def main():
             q=native["profiles"][p][op]
             assert q["cases"]==24 and q["correct_output_and_inputs"] is True
             assert q["carry_clear"] and q["matched_model_public_results"]
-    native_note=("2026-10-14 ISSUE39 TRIG ANGLE NATIVE VICE VALIDATION\\n"
+    native_note=("2026-10-14 ISSUE39 TRIG ANGLE NATIVE VICE VALIDATION\n"
       "- 480 installed x64sc public calls in all five profiles covering "
       "SIN8/COS8/SINCOS8/ATAN2; compared exact outputs against independent "
       "model, preserved operands, carry clear and stable stack. V3/V4 REU "
       "image tested. No native cycle measurement; source, standalone, "
-      "ZP and public ABI unchanged. Final PR/main CI pending.\\n\\n")
+      "ZP and public ABI unchanged. Final PR/main CI pending.\n\n")
     for name in ("CHANGELOG.md","CSDB_CHANGELOG.txt"):
         path=R/name
         if "ISSUE39 TRIG ANGLE NATIVE VICE VALIDATION" not in path.read_text():
