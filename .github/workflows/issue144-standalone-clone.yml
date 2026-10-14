@@ -1,0 +1,34 @@
+name: Issue144 independent unsigned 32bit SHR16 producer research
+on:
+  push:
+    branches: [issue144-umul32-shr16-independent-clone-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  clone-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check generation syntax
+        run: |
+          python3 - <<'PY'
+          import ast
+          ast.parse(open('tools/issue144_shr16_independent_clone.py').read())
+          PY
+      - name: Source-assembled relocated independent 32x32 core, three profiles and interleaved calls
+        run: python3 tools/issue144_shr16_independent_clone.py --limit 512
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-independent-clone-cpu-qualification
+          path: validation/review/ISSUE144_SHR16_STANDALONE_CLONE_CPU_MODEL.json
+          if-no-files-found: warn
