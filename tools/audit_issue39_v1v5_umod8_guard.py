@@ -14,6 +14,7 @@ from validate_unsigned_division import expected,api
 from issue39_umod8_guard_parent import restore_umod8_parent,restore_v5_pr67_u16_parent,PARENT_SHA
 from issue39_v1_u16_q2_parent import restore_v1_q2_parent,restore_v5_q2_parent
 from issue39_umul24_v1v5_historical_parent import undo_fixed_shr16_release
+from issue39_dist8_provenance import pre_dist8_bytes
 PROFILES=('v1_balanced','v5_hybrid_lowzp')
 OUT=ROOT/'validation/review/ISSUE39_V1V5_UMOD8_GUARD_EXHAUSTIVE.json'
 j={'status':'PASS','guard_minimum_divisor':32,'bytes_of_new_code':77,
@@ -22,7 +23,7 @@ j={'status':'PASS','guard_minimum_divisor':32,'bytes_of_new_code':77,
    'profiles':{}}
 for profile in PROFILES:
     name=ROOT/profile/'resident'/f'math_{profile}_game_math.prg'
-    new=name.read_bytes()
+    new=pre_dist8_bytes(profile,name.read_bytes())
     # Stable PR57-62 historical proof uses the SHA-pinned pre-SHR16
     # V1 resident; independent 32-bit fixed-result return tails are not
     # part of the 8-bit remainder donor comparison.
