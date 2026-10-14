@@ -1,0 +1,43 @@
+name: Issue39 REU multiply source-maps and lifecycle research release seal
+on:
+  push:
+    branches: [issue39-reu-multiply-modes-audit-20261014]
+    paths:
+      - tools/stage_issue39_reu_multiply_modes.py
+      - .github/workflows/issue39-reu-multiply-stage.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  installed-and-relocated-reu-modes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-reu-multiply-modes-audit-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Match normal/Turbo16, normal/Turbo32, normal/V4 QS16 with all source maps
+        run: python3 tools/issue39_reu_multiply_family_audit.py --all-maps --output validation/review/ISSUE39_REU_MULTIPLY_MATCHED_CORPUS_2026-10-14.json
+      - name: Stage batch architecture review without resident changes and seal package
+        run: python3 tools/stage_issue39_reu_multiply_modes.py
+      - name: Commit verified research and release metadata to branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: seal V3/V4 Turbo16/32 and V4 QS16 public batch-cost research'
+          git push origin HEAD:issue39-reu-multiply-modes-audit-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-reu-multiply-source-profile-review
+          path: |
+            validation/review/ISSUE39_REU_MULTIPLY_MATCHED_CORPUS_2026-10-14.json
+            docs/ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md
