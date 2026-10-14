@@ -6,7 +6,7 @@ on:
     branches: [main]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 jobs:
   clone-model:
     runs-on: ubuntu-latest
@@ -15,6 +15,10 @@ jobs:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: issue144-shr16-fast-public-release-20261015
+          fetch-depth: 0
+          persist-credentials: true
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -27,6 +31,7 @@ jobs:
           ast.parse(open('tools/issue144_shr16_public_entry_optin.py').read())
           ast.parse(open('tools/native_issue144_shr16_public_entry_optin.py').read())
           ast.parse(open('tools/issue144_shr16_entry_patch_installer.py').read())
+          ast.parse(open('tools/stage_issue144_shr16_independent_clone.py').read())
           PY
       - name: Source-assembled relocated independent 32x32 core, three profiles and interleaved calls
         run: python3 tools/issue144_shr16_independent_clone.py --limit 2409
@@ -45,6 +50,17 @@ jobs:
         run: python3 tools/native_issue144_shr16_independent_clone.py
       - name: Native x64sc proof of original $5E12 entry with clone redirect
         run: python3 tools/native_issue144_shr16_public_entry_optin.py
+      - name: Seal opt-in producer, stable public entry, exact proof records and both changelogs
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue144_shr16_independent_clone.py
+      - name: Commit the qualified specialist without changing production resident binaries
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: seal 62-cycle standalone clone and 59-cycle stable public entry specialist'
+          git push origin HEAD:issue144-shr16-fast-public-release-20261015
       - uses: actions/upload-artifact@v4
         if: always()
         with:
