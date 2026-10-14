@@ -1,7 +1,7 @@
 name: Issue39 SEEK16 Euclidean init paired research
 on:
-  push:
-    branches: [issue39-seek-init-branch-research-20261014]
+  pull_request:
+    branches: [main]
     paths:
       - tools/qualify_issue39_seek16_scale_loop.py
       - .github/workflows/issue39-seek16-scale-research.yml
