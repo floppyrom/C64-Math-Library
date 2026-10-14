@@ -1,0 +1,46 @@
+{
+  "all_slot_evidence": "validation/review/ISSUE39_SEEK_ALL_SLOTS_RESEARCH_2026-10-14.json",
+  "main_merge_commit": "d296ace693543025f8aba582a0c933c867939a3a",
+  "native_cycle_timing_measured": false,
+  "native_evidence": "validation/review/ISSUE39_SEEK_ALL_MODES_NATIVE_VICE_2026-10-14.json",
+  "no_new_shortcut_promoted": true,
+  "optisearch_private_code_published": false,
+  "production_prgs_unchanged": true,
+  "public_profile_prg_sha256": {
+    "v1_balanced": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+    "v2_pareto_fast": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+    "v3_reu_512k": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+    "v4_reu_16m": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+    "v5_hybrid_lowzp": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2"
+  },
+  "reu_unchanged": true,
+  "seek_audit": "validation/review/ISSUE39_SEEK_FAMILY_FINAL_AUDIT_2026-10-14.json",
+  "stable_abi": true,
+  "status": "PASS_COMPLETE_POSTMERGE_MAIN_GREEN",
+  "verified_postmerge_runs": {
+    "comparable_unsigned": {
+      "commit": "d296ace693543025f8aba582a0c933c867939a3a",
+      "event": "push",
+      "id": 38633755164,
+      "status": "success",
+      "url": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38633755164",
+      "workflow": "Comparable unsigned performance"
+    },
+    "fixed_multiply": {
+      "commit": "d296ace693543025f8aba582a0c933c867939a3a",
+      "event": "push",
+      "id": 38633754914,
+      "status": "success",
+      "url": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38633754914",
+      "workflow": "Issue39 fixed multiply four-output public ABI qualification"
+    },
+    "full_library": {
+      "commit": "d296ace693543025f8aba582a0c933c867939a3a",
+      "event": "push",
+      "id": 38633755150,
+      "status": "success",
+      "url": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38633755150",
+      "workflow": "Validate library"
+    }
+  }
+}

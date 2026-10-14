@@ -3281,7 +3281,7 @@
     "family_campaign_complete": false
   },
   "issue39_seek_family_completion_2026_10_14": {
-    "status": "PASS_FAMILY_AUDIT_MAIN_POSTMERGE_PENDING",
+    "status": "PASS_COMPLETE_POSTMERGE_MAIN_GREEN",
     "all_eight_public_ops_audited": true,
     "native_init_calls": 40,
     "native_step_calls": 640,
@@ -3296,7 +3296,29 @@
     "private_optisearch_published": false,
     "certificate": "validation/review/ISSUE39_SEEK_FAMILY_FINAL_AUDIT_2026-10-14.json",
     "documentation": "docs/ISSUE39_SEEK_FAMILY_COMPLETION_2026-10-14.md",
-    "main_ci_postmerge_certified": false,
-    "issue39_closeout_pending": true
+    "main_ci_postmerge_certified": true,
+    "issue39_closeout_pending": false,
+    "postmerge_main_commit": "d296ace693543025f8aba582a0c933c867939a3a",
+    "main_run_ids": {
+      "full_library": 38633755150,
+      "comparable_unsigned": 38633755164,
+      "fixed_multiply": 38633754914
+    },
+    "postmerge_certificate": "validation/review/ISSUE39_SEEK_FAMILY_POSTMERGE_MAIN_CERT_2026-10-14.json"
+  },
+  "issue39_campaign_completion_2026_10_14": {
+    "status": "PASS_COMPLETE_POSTMERGE_MAIN_GREEN",
+    "all_existing_families_audited": true,
+    "all_issue39_family_checkboxes_complete": true,
+    "seek_family_public_variants": 8,
+    "main_commit": "d296ace693543025f8aba582a0c933c867939a3a",
+    "runs": {
+      "full_library": 38633755150,
+      "comparable_unsigned": 38633755164,
+      "fixed_multiply": 38633754914
+    },
+    "certificate": "validation/review/ISSUE39_SEEK_FAMILY_POSTMERGE_MAIN_CERT_2026-10-14.json",
+    "private_optisearch_published": false,
+    "production_prgs_and_reu_unchanged_in_closeout": true
   }
 }

@@ -64,3 +64,13 @@ Evidence: validation/review/ISSUE39_SEEK_FAMILY_FINAL_AUDIT_2026-10-14.json
 Official benchmark: validation/movement/SEEK_PROFILE_BENCHMARK.json
 Native proof: validation/review/ISSUE39_SEEK_ALL_MODES_NATIVE_VICE_2026-10-14.json
 All-slot proof: validation/review/ISSUE39_SEEK_ALL_SLOTS_RESEARCH_2026-10-14.json
+
+## Independently verified main post-merge closeout
+
+All existing Issue #39 optimization families have now been audited, with released improvements and no additional qualified SEEK specialist. This is not a global proof of algorithmic optimality. The following push-triggered post-merge main runs passed on commit d296ace693543025f8aba582a0c933c867939a3a:
+
+- full_library: https://github.com/floppyrom/C64-Math-Library/actions/runs/38633755150
+- comparable_unsigned: https://github.com/floppyrom/C64-Math-Library/actions/runs/38633755164
+- fixed_multiply: https://github.com/floppyrom/C64-Math-Library/actions/runs/38633754914
+
+Final certificate: validation/review/ISSUE39_SEEK_FAMILY_POSTMERGE_MAIN_CERT_2026-10-14.json
