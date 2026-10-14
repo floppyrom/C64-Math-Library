@@ -1,0 +1,31 @@
+name: Issue144 signed SHR16 quadrant screen (research only)
+on:
+  push:
+    branches: [issue144-signed-shr16-hybrid-screen-20261015]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  signed-shr16-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source and research model syntax
+        run: |
+          python3 -m py_compile tools/issue144_signed_shr16_hybrid_research.py
+      - name: Focused ABI, output and cycle screen
+        run: python3 tools/issue144_signed_shr16_hybrid_research.py --limit 256
+      - name: Full 2409 operand pairs on all three profiles
+        run: python3 tools/issue144_signed_shr16_hybrid_research.py --limit 2409
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-signed-shr16-architecture-cpu-model
+          path: validation/review/ISSUE144_SIGNED_SHR16_HYBRID_RESEARCH.json
+          if-no-files-found: warn
