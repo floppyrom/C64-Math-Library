@@ -1,0 +1,71 @@
+name: Issue39 normalize small-width unsigned provenance recheck
+on:
+  push:
+    branches: [issue39-normalize-source-production-20261014]
+    paths:
+      - .github/workflows/issue39-normalize-small-width-provenance.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  numerical-identical-sha-update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-normalize-source-production-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prove all 53760 unsigned small-width results and workload rows unchanged
+        run: |
+          python3 - <<'PY'
+          import sys,json,csv,hashlib,subprocess
+          from pathlib import Path
+          f=Path("validation/review/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.json")
+          c=Path("benchmarks/ISSUE39_UNSIGNED_SMALL_WORKLOAD_AUDIT.csv")
+          before=json.loads(f.read_text())
+          with c.open(newline="") as fd: oldrows=list(csv.DictReader(fd))
+          subprocess.run([sys.executable,"tools/audit_issue39_unsigned_small_workloads.py"],check=True)
+          after=json.loads(f.read_text())
+          with c.open(newline="") as fd: newrows=list(csv.DictReader(fd))
+          assert before["status"]==after["status"]=="PASS"
+          assert before["results"]==after["results"],"arithmetic workload results changed"
+          assert before["total_calls"]==after["total_calls"]==53760
+          assert before["workloads"]==after["workloads"]
+          assert len(oldrows)==len(newrows)==210
+          for old,new in zip(oldrows,newrows):
+              assert {k:v for k,v in old.items() if k!="resident_sha256"}=={
+                  k:v for k,v in new.items() if k!="resident_sha256"},(old,new)
+          stpath=Path("RELEASE_STATUS.json")
+          st=json.loads(stpath.read_text())
+          record=st["issue39_normalize_branch_collapse_2026_10_14"]
+          for p,newsha in after["resident_sha256"].items():
+              assert newsha==st["reference_prg_sha256"][p]==record["new_resident_sha256"][p]
+              assert before["resident_sha256"][p]==record["old_resident_sha256"][p]
+          st["issue39_unsigned_small_width_workloads_2026_10_11"]["data_sha256"]=hashlib.sha256(f.read_bytes()).hexdigest()
+          stpath.write_text(json.dumps(st,indent=2)+"\n")
+          print("SMALL WIDTH UNSIGNED 53760 PUBLIC CALLS NUMERICALLY IDENTICAL; SHA ONLY UPDATED")
+          PY
+      - name: Seal and triple verify package
+        run: |
+          python3 - <<'PY'
+          import subprocess,sys
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          subprocess.run(["make","clean"],check=True)
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,"tools/package_audit.py"],check=True)
+          PY
+      - name: Commit identical-results historical report and checksum
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: revalidate small-width unsigned numbers with normalized PRG provenance'
+          git push origin HEAD:issue39-normalize-source-production-20261014
