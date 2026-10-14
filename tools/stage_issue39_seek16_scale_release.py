@@ -40,7 +40,8 @@ def check_delta(p,k,old,new):
  seek=set(range(start,start+size))
  division=set()
  if p in (P[0],P[-1]) and k=='reference':
-  division=set(range(0x4d80,0x4fed)) | set(range(0x4570,0x4573))
+  division=(set(range(0x4d80,0x4fed)) | set(range(0x4569,0x456c))
+            | set(range(0x4570,0x4573)))
  assert changed and all(a in seek or a in division for a in changed),(p,k,'unexpected modified address',changed[:45])
  assert any(a in seek for a in changed)
  if division:assert any(0x4d80<=a<=0x4fec for a in changed)
