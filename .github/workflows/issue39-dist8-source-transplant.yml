@@ -7,6 +7,7 @@ on:
       - tools/source_relocation.py
       - relocatable_source/game_math/dist8_swap_*.inc
       - tools/issue39_dist8_source_transplant_audit.py
+      - tools/issue39_dist8_binary_diff.py
   workflow_dispatch:
 permissions:
   contents: read
@@ -31,8 +32,12 @@ jobs:
           python3 tools/build_hybrid.py --config-kind alternate
       - name: Validate integrated DIST8 dual-map public ABI
         run: python3 tools/issue39_dist8_source_transplant_audit.py --output /tmp/issue39_dist8_source_transplant.json
+      - name: Inspect every resident PRG byte changed by the transplant
+        run: python3 tools/issue39_dist8_binary_diff.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: issue39-dist8-relocatable-public-parity
-          path: /tmp/issue39_dist8_source_transplant.json
+          path: |
+            /tmp/issue39_dist8_source_transplant.json
+            /tmp/issue39_dist8_binary_diff.json
