@@ -67,10 +67,10 @@ def body():
    # The distance to SEEK8_INIT at $1B00 is NOT a free 542-byte island.
    # Preserve *all* existing installed bytes outside this init block.
    if base=="v2_pareto_fast":
-    orig=(ROOT/"v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg").read_bytes()
-    load=int.from_bytes(orig[:2],"little")
-    assert orig[0x19F0-load+2]==0x19
-    assert orig[0x1A00-load+2]==0xFC
+    orig_prg=(ROOT/"v2_pareto_fast/resident/math_v2_pareto_fast_game_math.prg").read_bytes()
+    load=int.from_bytes(orig_prg[:2],"little")
+    assert orig_prg[0x19F0-load+2]==0x19
+    assert orig_prg[0x1A00-load+2]==0xFC
     available_bytes=270
    else:
     available_bytes=312 if base=="v1_balanced" else 273
