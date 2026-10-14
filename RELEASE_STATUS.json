@@ -2940,8 +2940,8 @@
     "separate_remaining_steps": "REU Turbo/QS, trig, distance, seek"
   },
   "issue39_reu_multiply_modes_2026_10_14": {
-    "status": "PASS_NATIVE_VICE_PR_MAIN_CI_PENDING",
-    "family_complete": false,
+    "status": "PASS_COMPLETED_POSTMERGE_MAIN_GREEN",
+    "family_complete": true,
     "modes": [
       "MATH_REU_UMUL16",
       "MATH_REU_UMUL32",
@@ -2980,6 +2980,10 @@
     "native_VICE_calls": 120,
     "native_evidence": "validation/review/ISSUE39_REU_MULTIPLY_NATIVE_2026-10-14.json",
     "v4_QS16_alternate_relocation_fixed": true,
-    "byte_identical_reference_QS16_retained": true
+    "byte_identical_reference_QS16_retained": true,
+    "completion_main_sha": "abf288e8cb20ad75b068e5d425517654ba30c219",
+    "completion_full_library_ci_run": 38545214940,
+    "completion_comparable_ci_run": 38545214835,
+    "premerge_native_vice_run": 38539477409
   }
 }
