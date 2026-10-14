@@ -1,0 +1,57 @@
+name: Issue39 DIST8 historical-proof compatibility reseal
+on:
+  push:
+    branches: [issue39-dist8-source-transplant-20261014]
+    paths:
+      - .github/workflows/issue39-dist8-compat-seal.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  reseal-after-verified-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-dist8-source-transplant-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate reversible historical DIST8 provenance
+        run: |
+          python3 - <<'PY'
+          import sys,json,hashlib
+          from pathlib import Path
+          sys.path.insert(0,"tools")
+          from issue39_dist8_provenance import pre_dist8_bytes
+          state=json.loads(Path("RELEASE_STATUS.json").read_text())
+          old=state["issue39_dist8_shared_register_swap_2026_10_14"]["old_production_prgs"]
+          for p,want in old.items():
+              current=(Path(p)/"resident"/("math_"+p+"_game_math.prg")).read_bytes()
+              prior=pre_dist8_bytes(p,current)
+              assert hashlib.sha256(prior).hexdigest()==want
+              assert prior!=current
+          print("DIST8: all five historical parents SHA verified")
+          PY
+      - name: Rehash files and check package integrity three times
+        run: |
+          python3 - <<'PY'
+          import subprocess,sys
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          subprocess.run(["make","clean"],check=True)
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,"tools/package_audit.py"],check=True)
+          PY
+      - name: Commit updated manifest without touching PRGs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'ci(issue39): reseal strict historical proof compatibility with DIST8 release'
+          git push origin HEAD:issue39-dist8-source-transplant-20261014
