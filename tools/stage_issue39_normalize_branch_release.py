@@ -98,7 +98,8 @@ def main():
   if p in STOCK:
    if (R/p/"PUBLIC_PERFORMANCE_GAME_MATH.csv").exists():
     refresh_csv(R/p/"PUBLIC_PERFORMANCE_GAME_MATH.csv",p,means[p])
-   refresh_csv(R/"docs/PERFORMANCE_GAME_MATH_FINAL.csv",p,means[p])
+   if p!=P[4]:
+    refresh_csv(R/"docs/PERFORMANCE_GAME_MATH_FINAL.csv",p,means[p])
  perf=R/"PERFORMANCE.md";s=perf.read_text()
  row=next(x for x in s.splitlines() if "MATH_VEC2_NORMALIZE_Q8_8" in x and x.startswith("|"))
  pieces=row.split("|")
