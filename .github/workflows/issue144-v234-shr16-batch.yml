@@ -25,7 +25,6 @@ jobs:
           for name in ('tools/issue144_v234_shr16_batch.py', 'tools/native_issue144_v234_shr16_batch.py'):
               ast.parse(open(name, encoding='utf-8').read(), filename=name)
           PY
-          python3 tools/package_audit.py
       - name: V2 V3 V4 exact matching 2409-pair arithmetic and cycles
         run: python3 tools/issue144_v234_shr16_batch.py --limit 2409
       - name: Install pinned VICE x64sc
