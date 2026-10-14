@@ -1,0 +1,35 @@
+name: Issue39 REU Turbo16 Turbo32 QS16 matched public ABI and lifecycle
+on:
+  push:
+    branches: [issue39-reu-multiply-modes-audit-20261014]
+    paths:
+      - tools/issue39_reu_multiply_family_audit.py
+      - .github/workflows/issue39-reu-multiply-audit.yml
+  pull_request:
+    paths:
+      - tools/issue39_reu_multiply_family_audit.py
+      - docs/ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md
+      - .github/workflows/issue39-reu-multiply-audit.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  match-public-batch-cost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Match normal versus Turbo16, Turbo32 and V4 QS16 on installed public binaries
+        run: python3 tools/issue39_reu_multiply_family_audit.py --output /tmp/issue39_reu_multiply.json
+      - name: Crosscheck published resident/reu and Turbo boundary checksums
+        run: python3 tools/package_audit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-reu-multiply-lifecycle-matched
+          path: /tmp/issue39_reu_multiply.json
