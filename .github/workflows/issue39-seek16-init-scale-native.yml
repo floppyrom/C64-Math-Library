@@ -1,0 +1,62 @@
+name: Issue39 SEEK16 init scale candidate native VICE proof
+on:
+  push:
+    branches: [issue39-seek16-init-scale-loop-research-20261014]
+    paths:
+      - .github/workflows/issue39-seek16-init-scale-native.yml
+      - tools/native_issue39_seek16_scale_loop.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  native-paired-five-profile-seek16:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-seek16-init-scale-loop-research-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate source from candidate and build exact reference maps
+        run: |
+          python3 tools/generate_seek_sources.py --check
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/build_hybrid.py --config-kind reference
+      - name: Install SHA-pinned headless VICE
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Compare full state, carry and stack baseline/candidate with real x64sc and REU
+        run: python3 tools/native_issue39_seek16_scale_loop.py
+      - name: Seal proof while leaving shipped binaries untouched
+        run: |
+          python3 - <<'PY'
+          import subprocess,sys
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          subprocess.run(["make","clean"],check=True)
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,"tools/package_audit.py"],check=True)
+          PY
+      - name: Commit native proof
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: certify SEEK16 native scaler paired state and flags'
+          git push origin HEAD:issue39-seek16-init-scale-loop-research-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-seek16-init-scale-native
+          path: validation/review/ISSUE39_SEEK16_SCALE_LOOP_NATIVE_2026-10-14.json
