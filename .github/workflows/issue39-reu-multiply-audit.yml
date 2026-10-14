@@ -6,6 +6,7 @@ on:
       - tools/issue39_reu_multiply_family_audit.py
       - tools/source_relocation.py
       - relocatable_source/v4_reu_16m/v4_qs16_relocatable.asm
+      - relocatable_source/v4_reu_16m/math_relocatable.asm
       - .github/workflows/issue39-reu-multiply-audit.yml
   pull_request:
     paths:
