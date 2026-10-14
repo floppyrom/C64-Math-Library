@@ -104,7 +104,11 @@ jobs:
             benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv \
             validation/review/SIGNED_DIVISION_VALIDATION.json \
             validation/review/ISQRT32_FAST_PERFORMANCE_4130.json \
-            benchmarks/GAME_MATH_PROFILE_RESULTS.csv
+            v1_balanced/PUBLIC_PERFORMANCE_GAME_MATH.csv \
+            v2_pareto_fast/PUBLIC_PERFORMANCE_GAME_MATH.csv \
+            v3_reu_512k/PUBLIC_PERFORMANCE_GAME_MATH.csv \
+            v4_reu_16m/PUBLIC_PERFORMANCE_GAME_MATH.csv \
+            v5_hybrid_lowzp/PUBLIC_PERFORMANCE_GAME_MATH.csv
           git diff --cached --quiet || git commit -m 'issue136: seal reversible SEEK and division historic proof in package manifest'
           git push origin HEAD:issue39-seek16-euclid-scale-source-release-20261014
       - uses: actions/upload-artifact@v4
