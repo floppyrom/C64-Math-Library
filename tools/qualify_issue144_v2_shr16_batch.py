@@ -73,6 +73,7 @@ def main():
    "batch_patch_overhead_cpu_cycles_excl_caller_jsr":overhead,
    "per_call_steady_state_savings_cpu_cycles":53,
    "first_call_count_with_positive_net_savings_excl_caller_jsrs":breakeven,
+   "first_call_count_with_positive_net_savings_including_two_caller_jsrs":(overhead+12)//53+1,
    "tested_pairs":a.limit,
    "baseline":metrics(ordinary),
    "batch_candidate":metrics(special),
