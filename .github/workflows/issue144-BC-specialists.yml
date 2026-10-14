@@ -1,0 +1,53 @@
+name: Issue144 B/C domain-specialist independent qualification
+on:
+  push:
+    branches: [issue144-full-frontier-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  five-profile-cpu-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [v1_balanced,v2_pareto_fast,v3_reu_512k,v4_reu_16m,v5_hybrid_lowzp]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify opt-in exact output/carry and paired timing
+        run: python3 tools/issue144_BC_domain_screen.py --profile ${{ matrix.profile }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue144-BC-cpu-${{ matrix.profile }}
+          path: validation/review/ISSUE144_BC_DOMAIN_${{ matrix.profile }}.json
+  all-profiles-native-vice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install SHA256-pinned headless x64sc (VICE)
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Native real C64, all five, V4 REU image
+        run: python3 tools/native_issue144_BC_specialists.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue144-BC-native-vice
+          path: validation/review/ISSUE144_BC_SPECIALISTS_NATIVE_VICE.json
