@@ -68,6 +68,32 @@ def main():
            generated(p,'reference').read_bytes()),
            'alternate':{'candidate_sha256':alt[p],
                         'same_input_old_new_verified_in_research_pr134':True}}
+ # Diagnostic gate: V1 UDIV32 must remain callable after relocating its
+ # low-round island, before any SEEK-state writes are made.
+ from mini6502 import CPU
+ def diag_udiv32(blob, who):
+  from native_issue39_signed_multiply_family import api
+  a=api(P[0]);ld=int.from_bytes(blob[:2],'little')
+  m=bytearray(65536);m[ld:ld+len(blob)-2]=blob[2:]
+  c=CPU(m);c.d=0;c.call(a['MATH_INIT'],2000000)
+  visited=[];step0=CPU.step
+  def trace(self):
+   pc=self.pc
+   if pc in (0x4569,0x4570,0x1900,0x4d80,0x1b6d,0x4fed,0x4fef):
+    visited.append((hex(pc),self.a,self.x,self.y))
+   return step0(self)
+  CPU.step=trace
+  try:
+   c.mem[a['MATH_N']]=1;c.mem[a['MATH_D']]=1
+   n=c.call(a['MATH_UDIV32_16'],2000000)
+  finally:CPU.step=step0
+  q=c.mem[a['MATH_Q']]|c.mem[a['MATH_Q']+1]<<8
+  rem=c.mem[a['MATH_R']]|c.mem[a['MATH_R']+1]<<8
+  print('ISSUE136 DIAG',who,'q',q,'r',rem,'carry',c.c,'cycles',n,
+        'visited',visited[:25], 'jmp4569',m[0x4569:0x456c].hex(),
+        'jmp4570',m[0x4570:0x4573].hex(),'low4',m[0x4d80:0x4d88].hex(),flush=True)
+ diag_udiv32(resident(P[0]).read_bytes(),'old')
+ diag_udiv32(generated(P[0],'reference').read_bytes(),'candidate')
  # Both independently relocatable source maps and all foreign-access
  # memory-island checks must pass before touching a published PRG.
  for k in K:
