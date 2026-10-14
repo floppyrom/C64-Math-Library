@@ -1,11 +1,11 @@
 {
   "basis": "machine-code 6502 instruction cycles including public entry/RTS; not REU bus wall time",
   "profile_resident_sha256": {
-    "v1_balanced": "fce456e15cb35cc18ad01815b974194343ade40d1a2c0a3127aa002619b4443d",
-    "v2_pareto_fast": "3c7fd7a7f011751af06ae6995c12eba982f007218c1e5f99198f950f58c4ba17",
-    "v3_reu_512k": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
-    "v4_reu_16m": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
-    "v5_hybrid_lowzp": "cb7c69e0ba8a12b65a311dc60c0ad7f4e036121c45d1a88e7cdd9263584134cb"
+    "v1_balanced": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+    "v2_pareto_fast": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+    "v3_reu_512k": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+    "v4_reu_16m": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+    "v5_hybrid_lowzp": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2"
   },
   "profiles": [
     "v1_balanced",
@@ -30,12 +30,12 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "cff081e79e5478c320e078ef6b9d0babd7a3d148b983c5262174b9da1d601a21",
-            "max_cycles": 1499,
-            "mean_cycles": 599.998046875,
+            "cycles_sha256": "0e6f65d8ce7362d7290fddf92133ff24b9bf8aeffe9daa22cd3d751dbc961c5a",
+            "max_cycles": 1498,
+            "mean_cycles": 600.07421875,
             "median_cycles": 584,
             "min_cycles": 584,
-            "p95_cycles": 633
+            "p95_cycles": 632
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -77,12 +77,12 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "4796ded4d90f1b415cd887b8579f9334ca8b9fcb0625f21ea188d39448d4ca98",
-            "max_cycles": 1502,
-            "mean_cycles": 602.998046875,
+            "cycles_sha256": "d99f69af970491bcbc6d39e69686b324f54eeed928de11f6946727f2e9dd7d59",
+            "max_cycles": 1501,
+            "mean_cycles": 603.07421875,
             "median_cycles": 587,
             "min_cycles": 587,
-            "p95_cycles": 636
+            "p95_cycles": 635
           },
           "v2_pareto_fast": {
             "cases": 512,
@@ -130,9 +130,9 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "22a93db33b81e3f8c40c598395791300959f2797f175f6bf29f00546625c8df5",
+            "cycles_sha256": "2e825819ae97b8d8d1afac3e3a2753517acd5169858717d2d3aa230c2ac9849d",
             "max_cycles": 1485,
-            "mean_cycles": 668.412109375,
+            "mean_cycles": 668.408203125,
             "median_cycles": 667,
             "min_cycles": 584,
             "p95_cycles": 730
@@ -177,9 +177,9 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "7510529c45c1fd24d9551469bb399f8c49efe2107ee448b1c1bb314899329226",
+            "cycles_sha256": "0a8b6269d465d8ab79ad187c10f088137b63e91c5f98f1ea894ad75fd971ee4c",
             "max_cycles": 1488,
-            "mean_cycles": 671.412109375,
+            "mean_cycles": 671.408203125,
             "median_cycles": 670,
             "min_cycles": 587,
             "p95_cycles": 733
@@ -230,9 +230,9 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "a79a2ec97018da9a742768b1c986b5fb45a7242d3ba71a7b8d61316621ef0cd2",
+            "cycles_sha256": "22fee5661d943a9dddc2be1abdfc6c70c490a521d197ae2327364bbc5868b728",
             "max_cycles": 1732,
-            "mean_cycles": 1377.67578125,
+            "mean_cycles": 1377.728515625,
             "median_cycles": 1539,
             "min_cycles": 695,
             "p95_cycles": 1648
@@ -277,9 +277,9 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "1641237cee7eac7ec5a6eb84bd66b393ff536453bbf947d66c33c04abcd718d7",
+            "cycles_sha256": "b4c11a31f79cefcd5fc277bbaa480b8f6d3a21e8dad0e31de4e5cc7db73eabbe",
             "max_cycles": 1735,
-            "mean_cycles": 1380.67578125,
+            "mean_cycles": 1380.728515625,
             "median_cycles": 1542,
             "min_cycles": 698,
             "p95_cycles": 1651
@@ -430,9 +430,9 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "b2538dd8103b667cef108d91e666f624a89a8c60d9905db4a4ed6d3c6917da2a",
+            "cycles_sha256": "e22280b3094930ff2ffd2745264ad9f64885979097694531e0f80d4fb647ee34",
             "max_cycles": 1714,
-            "mean_cycles": 1562.240234375,
+            "mean_cycles": 1562.25,
             "median_cycles": 1557,
             "min_cycles": 1463,
             "p95_cycles": 1640
@@ -477,9 +477,9 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "77112c172f85b6a4665591bcbca2edeb62f9820ce744826cad5dd0374a808903",
+            "cycles_sha256": "1c8082f98fd15c25a5929c0b23dbc93a9c43647e7ae25a228feace03c57a29ab",
             "max_cycles": 1717,
-            "mean_cycles": 1565.240234375,
+            "mean_cycles": 1565.25,
             "median_cycles": 1560,
             "min_cycles": 1466,
             "p95_cycles": 1643
@@ -530,10 +530,10 @@
         "MATH_UDIV32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "8482202705df3af1f854f32f47f8f84d57b2054b132a8176e1962b5595080273",
-            "max_cycles": 1568,
-            "mean_cycles": 794.41015625,
-            "median_cycles": 758,
+            "cycles_sha256": "0b77b9287ceb88744b942e335485be67c4150bc1a31931e5d80898593dc52c23",
+            "max_cycles": 1569,
+            "mean_cycles": 794.423828125,
+            "median_cycles": 757,
             "min_cycles": 625,
             "p95_cycles": 1040
           },
@@ -577,10 +577,10 @@
         "MATH_UMOD32_16": {
           "v1_balanced": {
             "cases": 512,
-            "cycles_sha256": "f66d090b4174e927385a82d25e4b7dc362fc4d9ac24143809b2e4eca9726bc71",
-            "max_cycles": 1571,
-            "mean_cycles": 797.41015625,
-            "median_cycles": 761,
+            "cycles_sha256": "9fa9797044aff3f3f2529d018d600c0dfdceea8b48115ca2b1f56d4ada5c3dbe",
+            "max_cycles": 1572,
+            "mean_cycles": 797.423828125,
+            "median_cycles": 760,
             "min_cycles": 628,
             "p95_cycles": 1043
           },
