@@ -1,0 +1,55 @@
+name: Issue39 SEEK16 Euclidean high-byte scale-loop research
+on:
+  push:
+    branches: [issue39-seek16-scale-loop-research-20261014]
+    paths:
+      - .github/workflows/issue39-seek16-scale-research.yml
+      - tools/research_issue39_seek16_scale.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  paired-seek16-initialization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-seek16-scale-loop-research-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regenerate derived seek sources
+        run: |
+          python3 tools/generate_seek_sources.py
+          python3 tools/generate_seek_sources.py --check
+      - name: Compare original and faster SEEK16 init + eight step frames
+        run: python3 tools/research_issue39_seek16_scale.py
+      - name: Cross-check seek free-island placement
+        run: python3 tools/validate_seek_placement.py
+      - name: Seal only research evidence and package manifest
+        run: |
+          python3 - <<'PY'
+          import subprocess,sys
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          subprocess.run(["make","clean"],check=True)
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,"tools/package_audit.py"],check=True)
+          PY
+      - name: Commit guard-tested research evidence, not distributed binaries
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: record SEEK16 Euclidean high-byte scaling research'
+          git push origin HEAD:issue39-seek16-scale-loop-research-20261014
+      - uses: actions/upload-artifact@v4
+        if: always
+        with:
+          name: issue39-seek16-scale-init-proof
+          path: validation/review/ISSUE39_SEEK16_SCALE_RESEARCH_2026-10-14.json
