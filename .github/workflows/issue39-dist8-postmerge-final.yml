@@ -1,0 +1,46 @@
+name: Issue39 DIST8 postmerge completed-family certificate
+on:
+  push:
+    branches: [issue39-dist8-postmerge-final-cert-20261014]
+    paths:
+      - .github/workflows/issue39-dist8-postmerge-final.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  finalize-postmerge-dist8:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-dist8-postmerge-final-cert-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Certify PR130 against verified green main and distinct native VICE proof
+        run: |
+          python3 tools/finalize_issue39_dist8_postmerge.py \
+            --main-sha 44fc91813d945c05194d2f4962bb89f9d5f88449 \
+            --full-ci 38573248160 \
+            --comparable-ci 38573248208 \
+            --fixed-ci 38573248172 \
+            --turbo-ci 38573248117
+      - name: Commit evidence and updated changelogs
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: finalize and seal DIST8 after four green main checks'
+          git push origin HEAD:issue39-dist8-postmerge-final-cert-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-dist8-final-certificate
+          path: |
+            validation/review/ISSUE39_DIST8_POSTMERGE_COMPLETION_2026-10-14.json
+            docs/ISSUE39_DIST8_REGISTER_SWAP_RELEASE_2026-10-14.md
