@@ -1,9 +1,9 @@
 name: Issue136 mixed SEEK/DIVMOD source-map stress
 on:
   push:
-    branches: [issue136-seek-divmod-mixed-stress-20261014]
+    branches: [issue136-seek-divmod-mixed-stress-20261014, issue39-seek16-euclid-scale-source-release-20261014]
   pull_request:
-    branches: [issue39-seek16-euclid-scale-source-release-20261014]
+    branches: [main, issue39-seek16-euclid-scale-source-release-20261014]
   workflow_dispatch:
 permissions:
   contents: read
