@@ -1,0 +1,27 @@
+name: Issue39 baseline SEEK placement differential
+on:
+  push:
+    branches: [issue39-seek16-init-scale-qualify-20261014]
+    paths:
+      - .github/workflows/issue39-seek-baseline-placement.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: aea9f8d045c9cbeec6210d1dd9c1b7c960ce3c7b
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test released baseline without seek scaler modification
+        run: |
+          python3 tools/generate_seek_sources.py --check
+          python3 tools/generate_sources.py
+          python3 tools/assemble_sources.py --profile all --config-kind reference
+          python3 tools/assemble_sources.py --profile all --config-kind alternate
+          python3 tools/validate_seek_placement.py
