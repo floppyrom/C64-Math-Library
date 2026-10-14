@@ -57,6 +57,27 @@ jobs:
           python3 tools/benchmark_unsigned_common_corpus.py
           python3 tools/validate_udiv32_qone_bound.py
           python3 tools/validate_udiv32_q23_bound.py
+      - name: Pin V1 structured unsigned validation to exact green CI arithmetic
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          doc=json.loads(Path('validation/review/UNSIGNED_DIVISION_VALIDATION.json').read_text())
+          expected={
+            'MATH_UDIV32_16':801.5874184725436,
+            'MATH_UDIV32_32':271.0129392736362,
+            'MATH_UDIV16_SHL8':703.1870397643594,
+            'MATH_UMOD32_16':892.69800386349,
+            'MATH_UMOD32_32':399.3296844816484,
+            'MATH_URECIP16_Q16':104.13734436035156,
+          }
+          assert doc['status']=='PASS'
+          assert doc['summary']['profiles']==5
+          assert all(not x['errors'] for p in doc['profiles'].values() for x in p.values())
+          for name,mean in expected.items():
+            assert doc['profiles']['v1_balanced'][name]['mean_cycles']==mean,(name,'secondary mean')
+          print('ISSUE136 STRUCTURED UNSIGNED MEANS PINNED: all five profiles zero errors')
+          PY
       - name: Reseal checksum and deterministic package audit
         run: |
           python3 - <<'PY'
