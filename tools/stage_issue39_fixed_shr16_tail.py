@@ -7,6 +7,7 @@ Native x64sc and independent PR/main CI are STILL required.
 Historical-test-only normalization pins the parent release by SHA and checks
 that the two fixed-output tail bytes are the only displaced production bytes.
 Archived UMOD8 provenance is replayed on its exact pre-SHR16 V1 image.
+The tracked UMOD8 report records that archival SHA, not the live PRG SHA.
 """
 from __future__ import annotations
 from pathlib import Path
