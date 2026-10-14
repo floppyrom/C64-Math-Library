@@ -1,0 +1,151 @@
+{
+  "candidate_models": "reference and alternate maps",
+  "input_moves": 490,
+  "native_vice_cycle_timing": false,
+  "profiles": {
+    "v1_balanced": {
+      "alternate": {
+        "baseline_prg_sha256": "fce456e15cb35cc18ad01815b974194343ade40d1a2c0a3127aa002619b4443d",
+        "candidate_prg_sha256": "5da124b3f4285fc790a047d7f09116e0adf2df334f28654e182f7253f5a9894c",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 396,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 16,
+        "mean_cpu_model_cycles_saved": 0.9404081632653061,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      },
+      "reference": {
+        "baseline_prg_sha256": "fce456e15cb35cc18ad01815b974194343ade40d1a2c0a3127aa002619b4443d",
+        "candidate_prg_sha256": "825e39d606c19160175554284cd623622db64fd20e82c4c6a758cf3d699bb9a2",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 396,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 16,
+        "mean_cpu_model_cycles_saved": 0.9404081632653061,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      }
+    },
+    "v2_pareto_fast": {
+      "alternate": {
+        "baseline_prg_sha256": "3c7fd7a7f011751af06ae6995c12eba982f007218c1e5f99198f950f58c4ba17",
+        "candidate_prg_sha256": "6a1b8b03658affad4009a54e22ebd9a4207fad5e21e8f57d26244f45729554ae",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 396,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 16,
+        "mean_cpu_model_cycles_saved": 0.9404081632653061,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      },
+      "reference": {
+        "baseline_prg_sha256": "3c7fd7a7f011751af06ae6995c12eba982f007218c1e5f99198f950f58c4ba17",
+        "candidate_prg_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 396,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 16,
+        "mean_cpu_model_cycles_saved": 0.9404081632653061,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      }
+    },
+    "v3_reu_512k": {
+      "alternate": {
+        "baseline_prg_sha256": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
+        "candidate_prg_sha256": "17c5a82460c43bbbfc67cfd9540f8de7b8a29f34499598945bad0380fb415fa6",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 1952,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 17,
+        "mean_cpu_model_cycles_saved": 1.3387755102040817,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      },
+      "reference": {
+        "baseline_prg_sha256": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
+        "candidate_prg_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 1952,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 17,
+        "mean_cpu_model_cycles_saved": 1.3387755102040817,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      }
+    },
+    "v4_reu_16m": {
+      "alternate": {
+        "baseline_prg_sha256": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
+        "candidate_prg_sha256": "96bd7c4ca68116a71f575673d83d4c992882f88d67b9be556784c0a85cb6e276",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 1952,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 17,
+        "mean_cpu_model_cycles_saved": 1.3387755102040817,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      },
+      "reference": {
+        "baseline_prg_sha256": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
+        "candidate_prg_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 1952,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 17,
+        "mean_cpu_model_cycles_saved": 1.3387755102040817,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "alternate": {
+        "baseline_prg_sha256": "cb7c69e0ba8a12b65a311dc60c0ad7f4e036121c45d1a88e7cdd9263584134cb",
+        "candidate_prg_sha256": "2e985c9991746e510d2117eefbbc710e5a7212448bcd231436b6193a9fd2a49e",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 396,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 16,
+        "mean_cpu_model_cycles_saved": 0.9404081632653061,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      },
+      "reference": {
+        "baseline_prg_sha256": "cb7c69e0ba8a12b65a311dc60c0ad7f4e036121c45d1a88e7cdd9263584134cb",
+        "candidate_prg_sha256": "e246dd2c2ab9f7fde8fabb479e6caeb5e389232928657f88b2c7b04f4456e106",
+        "euclid_calls": 1960,
+        "euclid_cases_improved": 396,
+        "init_calls_per_image": 4900,
+        "max_cpu_model_cycles_saved": 16,
+        "mean_cpu_model_cycles_saved": 0.9404081632653061,
+        "min_cpu_model_cycles_saved": 0,
+        "slot_and_inputs_preserved": true,
+        "state_and_carry_identical": true
+      }
+    }
+  },
+  "published_prgs_changed": false,
+  "speeds": [
+    128,
+    256,
+    384,
+    512,
+    768,
+    1024,
+    33024,
+    33152,
+    33280,
+    33536
+  ],
+  "status": "PASS_SEEK16_EUCLID_SCALE_LOOP_RESEARCH"
+}
