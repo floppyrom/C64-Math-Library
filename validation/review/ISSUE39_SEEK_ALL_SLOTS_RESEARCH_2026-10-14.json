@@ -1,0 +1,901 @@
+{
+  "basis": "full public CPU-model entry, both relocation maps; not native VICE timing",
+  "profiles": {
+    "v1_balanced": {
+      "alternate": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 31816,
+          "MATH_SEEK16_STEP": 31819,
+          "MATH_SEEK16_STEP1": 31825,
+          "MATH_SEEK16_STEP_INT": 31822,
+          "MATH_SEEK8_INIT": 31804,
+          "MATH_SEEK8_STEP": 31807,
+          "MATH_SEEK8_STEP1": 31813,
+          "MATH_SEEK8_STEP_INT": 31810
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 556.625,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 387.875,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 662.875,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.63065693430657,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 352.375,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 277.625,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 516.75,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.714599609375,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "9c0601d70523cd588ee267cb54783f4efe1dfd9fcaf57ef43a465a2c0faf0425",
+        "status": "PASS"
+      },
+      "reference": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 24136,
+          "MATH_SEEK16_STEP": 24139,
+          "MATH_SEEK16_STEP1": 24145,
+          "MATH_SEEK16_STEP_INT": 24142,
+          "MATH_SEEK8_INIT": 24124,
+          "MATH_SEEK8_STEP": 24127,
+          "MATH_SEEK8_STEP1": 24133,
+          "MATH_SEEK8_STEP_INT": 24130
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 556.625,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 387.875,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 662.875,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.63065693430657,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 352.375,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 277.625,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 516.75,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.714599609375,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+        "status": "PASS"
+      }
+    },
+    "v2_pareto_fast": {
+      "alternate": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 31816,
+          "MATH_SEEK16_STEP": 31819,
+          "MATH_SEEK16_STEP1": 31825,
+          "MATH_SEEK16_STEP_INT": 31822,
+          "MATH_SEEK8_INIT": 31804,
+          "MATH_SEEK8_STEP": 31807,
+          "MATH_SEEK8_STEP1": 31813,
+          "MATH_SEEK8_STEP_INT": 31810
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 501.625,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 354.0,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 596.875,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.5419708029197,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 320.875,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 255.5,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 468.125,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.733154296875,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "6a1b8b03658affad4009a54e22ebd9a4207fad5e21e8f57d26244f45729554ae",
+        "status": "PASS"
+      },
+      "reference": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 24136,
+          "MATH_SEEK16_STEP": 24139,
+          "MATH_SEEK16_STEP1": 24145,
+          "MATH_SEEK16_STEP_INT": 24142,
+          "MATH_SEEK8_INIT": 24124,
+          "MATH_SEEK8_STEP": 24127,
+          "MATH_SEEK8_STEP1": 24133,
+          "MATH_SEEK8_STEP_INT": 24130
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 501.625,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 354.0,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 596.875,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.5419708029197,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 320.875,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 255.5,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 468.125,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.733154296875,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+        "status": "PASS"
+      }
+    },
+    "v3_reu_512k": {
+      "alternate": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 31816,
+          "MATH_SEEK16_STEP": 31819,
+          "MATH_SEEK16_STEP1": 31825,
+          "MATH_SEEK16_STEP_INT": 31822,
+          "MATH_SEEK8_INIT": 31804,
+          "MATH_SEEK8_STEP": 31807,
+          "MATH_SEEK8_STEP1": 31813,
+          "MATH_SEEK8_STEP_INT": 31810
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 498.75,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 353.125,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 595.375,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.407299270073,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 321.0,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 255.625,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 468.25,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.733154296875,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "17c5a82460c43bbbfc67cfd9540f8de7b8a29f34499598945bad0380fb415fa6",
+        "status": "PASS"
+      },
+      "reference": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 24136,
+          "MATH_SEEK16_STEP": 24139,
+          "MATH_SEEK16_STEP1": 24145,
+          "MATH_SEEK16_STEP_INT": 24142,
+          "MATH_SEEK8_INIT": 24124,
+          "MATH_SEEK8_STEP": 24127,
+          "MATH_SEEK8_STEP1": 24133,
+          "MATH_SEEK8_STEP_INT": 24130
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 498.75,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 353.125,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 595.375,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.407299270073,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 321.0,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 255.625,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 468.25,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.733154296875,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+        "status": "PASS"
+      }
+    },
+    "v4_reu_16m": {
+      "alternate": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 31816,
+          "MATH_SEEK16_STEP": 31819,
+          "MATH_SEEK16_STEP1": 31825,
+          "MATH_SEEK16_STEP_INT": 31822,
+          "MATH_SEEK8_INIT": 31804,
+          "MATH_SEEK8_STEP": 31807,
+          "MATH_SEEK8_STEP1": 31813,
+          "MATH_SEEK8_STEP_INT": 31810
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 498.75,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 353.125,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 595.375,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.407299270073,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 321.0,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 255.625,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 468.25,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.733154296875,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "96bd7c4ca68116a71f575673d83d4c992882f88d67b9be556784c0a85cb6e276",
+        "status": "PASS"
+      },
+      "reference": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 24136,
+          "MATH_SEEK16_STEP": 24139,
+          "MATH_SEEK16_STEP1": 24145,
+          "MATH_SEEK16_STEP_INT": 24142,
+          "MATH_SEEK8_INIT": 24124,
+          "MATH_SEEK8_STEP": 24127,
+          "MATH_SEEK8_STEP1": 24133,
+          "MATH_SEEK8_STEP_INT": 24130
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 498.75,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 353.125,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 595.375,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.407299270073,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 321.0,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 255.625,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 468.25,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.733154296875,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+        "status": "PASS"
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "alternate": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 31816,
+          "MATH_SEEK16_STEP": 31819,
+          "MATH_SEEK16_STEP1": 31825,
+          "MATH_SEEK16_STEP_INT": 31822,
+          "MATH_SEEK8_INIT": 31804,
+          "MATH_SEEK8_STEP": 31807,
+          "MATH_SEEK8_STEP1": 31813,
+          "MATH_SEEK8_STEP_INT": 31810
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 556.625,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 387.875,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 662.875,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.63065693430657,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 352.375,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 277.625,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 516.75,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.714599609375,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "c4e0a737e8b9ab1ddf9bce91157f3732856da3a0e2d04f77ceb9542a0641510d",
+        "status": "PASS"
+      },
+      "reference": {
+        "public_api_addresses": {
+          "MATH_SEEK16_INIT": 24136,
+          "MATH_SEEK16_STEP": 24139,
+          "MATH_SEEK16_STEP1": 24145,
+          "MATH_SEEK16_STEP_INT": 24142,
+          "MATH_SEEK8_INIT": 24124,
+          "MATH_SEEK8_STEP": 24127,
+          "MATH_SEEK8_STEP1": 24133,
+          "MATH_SEEK8_STEP_INT": 24130
+        },
+        "scenarios": {
+          "SEEK16_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 556.625,
+            "max_frame_length": 342,
+            "model_frames": 981,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2752,
+            "step_max_cpu_cycles": 117,
+            "step_mean_cpu_cycles": 90.51199127906976,
+            "step_min_cpu_cycles": 85
+          },
+          "SEEK16_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 387.875,
+            "max_frame_length": 1024,
+            "model_frames": 2588,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 8208,
+            "step_max_cpu_cycles": 112,
+            "step_mean_cpu_cycles": 82.42227095516569,
+            "step_min_cpu_cycles": 77
+          },
+          "SEEK16_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 662.875,
+            "max_frame_length": 683,
+            "model_frames": 1983,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 5480,
+            "step_max_cpu_cycles": 134,
+            "step_mean_cpu_cycles": 107.63065693430657,
+            "step_min_cpu_cycles": 102
+          },
+          "SEEK8_INT": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 352.375,
+            "max_frame_length": 255,
+            "model_frames": 579,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 74,
+            "step_mean_cpu_cycles": 63.95525291828794,
+            "step_min_cpu_cycles": 61
+          },
+          "SEEK8_ONE": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 277.625,
+            "max_frame_length": 255,
+            "model_frames": 1349,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 2056,
+            "step_max_cpu_cycles": 69,
+            "step_mean_cpu_cycles": 62.21498054474708,
+            "step_min_cpu_cycles": 54
+          },
+          "SEEK8_STEP": {
+            "eight_simultaneous_slots": true,
+            "init_calls": 8,
+            "init_mean_cpu_cycles": 516.75,
+            "max_frame_length": 510,
+            "model_frames": 1216,
+            "post_arrival_calls_per_slot": 2,
+            "step_calls": 4096,
+            "step_max_cpu_cycles": 91,
+            "step_mean_cpu_cycles": 80.714599609375,
+            "step_min_cpu_cycles": 77
+          }
+        },
+        "source_prg_sha256": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2",
+        "status": "PASS"
+      }
+    }
+  },
+  "status": "PASS_SEEK_ALL_EIGHT_SLOTS",
+  "totals": {
+    "init_calls": 480,
+    "model_frames": 86960,
+    "step_calls": 246480
+  }
+}
