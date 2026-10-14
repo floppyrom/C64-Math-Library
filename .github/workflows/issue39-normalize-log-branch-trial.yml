@@ -1,0 +1,49 @@
+name: Issue39 normalize eight-branch collapse research
+on:
+  push:
+    branches: [issue39-normalize-log-branch-collapse-trial-20261014]
+    paths:
+      - .github/workflows/issue39-normalize-log-branch-trial.yml
+      - tools/screen_issue39_normalize_log_branch.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  exhaustive-normalize-branch-screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-normalize-log-branch-collapse-trial-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild, compare 1,073,960 identical public vectors, and certify unchanged signed accuracy
+        run: python3 tools/screen_issue39_normalize_log_branch.py
+      - name: Seal research artifacts without publishing candidate PRGs
+        run: |
+          python3 - <<'PY'
+          import subprocess,sys
+          from tools.stage_issue39_v1_3216_ool_release import reseal
+          subprocess.run(["make","clean"],check=True)
+          for _ in range(3):
+              reseal()
+              subprocess.run([sys.executable,"tools/package_audit.py"],check=True)
+          PY
+      - name: Commit guarded research evidence, not production binaries
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: record exhaustive normalization branch-collapse research'
+          git push origin HEAD:issue39-normalize-log-branch-collapse-trial-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-normalize-log-branch-research
+          path: validation/review/ISSUE39_NORMALIZE_BRANCH_COLLAPSE_RESEARCH_2026-10-14.json
