@@ -5,7 +5,7 @@ Publishes a SHA- and Actions-run-pinned final certificate, changelog,
 RELEASE_STATUS and package manifest. No routine, resident PRG or REU changes.
 """
 from __future__ import annotations
-import hashlib,json,subprocess,sys,urllib.request
+import hashlib,json,os,subprocess,sys,urllib.request
 from pathlib import Path
 R=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(R/"tools"))
@@ -22,10 +22,13 @@ P=("v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m","v5_hybrid_lowzp")
 
 def sha(data):return hashlib.sha256(data).hexdigest()
 def get_run(run_id):
+    headers={"User-Agent":"C64ML-Issue39-Postmerge-Cert/1.0",
+             "Accept":"application/vnd.github+json"}
+    if os.getenv("GH_API_TOKEN"):
+        headers["Authorization"]="Bearer "+os.environ["GH_API_TOKEN"]
     req=urllib.request.Request(
        f"https://api.github.com/repos/{REPO}/actions/runs/{run_id}",
-       headers={"User-Agent":"C64ML-Issue39-Postmerge-Cert/1.0",
-                "Accept":"application/vnd.github+json"})
+       headers=headers)
     with urllib.request.urlopen(req,timeout=30) as fh:body=json.load(fh)
     assert body["head_sha"]==MERGE,(run_id,"incorrect merged SHA",body["head_sha"])
     assert body["event"]=="push",(run_id,"not postmerge")
