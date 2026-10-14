@@ -4867,6 +4867,8 @@ ZCE4:
 !source "umul32_v29_shared.inc"
 !source "smul24_fast24_composed.inc"
 !source "smul16_shr8_selected.inc"
+; V4 QS16 BEGIN/CALL/END relocatable module: fixes alternate IO/ZP/bank map.
+!source "v4_qs16_relocatable.asm"
 ; END MULTIPLY REFRESH 2026-09-20
 
 ; BEGIN DIVISION REFRESH 2026-09-20
