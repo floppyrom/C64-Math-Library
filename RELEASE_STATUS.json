@@ -2987,8 +2987,10 @@
     "premerge_native_vice_run": 38539477409
   },
   "issue39_trig_angle_family_2026_10_14": {
-    "status": "PASS_SOURCE_ABI_NATIVE_CI_PENDING",
+    "status": "PASS_NATIVE_VICE_PR_MAIN_CI_PENDING",
     "family_complete": false,
+    "native_vice_calls": 480,
+    "native_validation": "validation/review/ISSUE39_TRIG_ANGLE_NATIVE_2026-10-14.json",
     "routines": [
       "MATH_SIN8",
       "MATH_COS8",

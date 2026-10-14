@@ -1,3 +1,6 @@
+2026-10-14 ISSUE39 TRIG ANGLE NATIVE VICE VALIDATION
+- 480 installed x64sc public calls in all five profiles covering SIN8/COS8/SINCOS8/ATAN2; compared exact outputs against independent model, preserved operands, carry clear and stable stack. V3/V4 REU image tested. No native cycle measurement; source, standalone, ZP and public ABI unchanged. Final PR/main CI pending.
+
 2026-10-14 ISSUE39 TRIG ANGLE PUBLIC TABLE AUDIT RESEARCH
 - SIN8/COS8/SINCOS8 qualified on all 256 phases, 7,680 five-profile/two-map CPU calls; SINCOS outputs equal separate operations. Existing ATAN2 exhaustive 655,360-call public dispatch proof retained. V1 SINCOS 39 cycles, 13 saved vs two separate; V2-V5 31 cycles, 15 saved. No public ABI, resident binary, table/ZP or private OptiSearch source changes. Native VICE and final CI pending; Issue39 trig remains OPEN. docs/ISSUE39_TRIG_ANGLE_FAMILY_REVIEW_2026-10-14.md
 
