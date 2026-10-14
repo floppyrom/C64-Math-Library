@@ -184,5 +184,5 @@ def main():
     subprocess.run(["make","clean"],cwd=ROOT,check=True)
     for _ in range(3):
         reseal();run("package_audit")
-    print("ISSUE39 FIXED SHR16 SOURCE PRODUCER PASS; NATIVE VICE AND FULL CI PENDING",flush=True)
+    # Reseal revised UMOD8 provenance without touching qualified binaries.\n    print("ISSUE39 FIXED SHR16 SOURCE PRODUCER PASS; NATIVE VICE AND FULL CI PENDING",flush=True)
 if __name__=="__main__":main()
