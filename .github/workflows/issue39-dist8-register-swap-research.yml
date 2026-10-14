@@ -31,7 +31,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           stamp='2026-10-14 ISSUE39 DIST8 SHARED SWAP RESEARCH — NOT RELEASED'
-          note=(stamp+'\\n'
+          note=(stamp+'\n'
             '- In-memory same-address DIST8_FAST/DIST8_ACCURATE swap candidate '
             'exhaustively passed 655,360 paired public operand cases across '
             'all five profiles (1,310,720 original/candidate CPU-model calls). '
@@ -42,7 +42,7 @@ jobs:
             'changed. This is NOT a shipped optimization; further source '
             'integration, relocation, native VICE and full release checks '
             'remain. Evidence: validation/review/'
-            'ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json\\n\\n')
+            'ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json\n\n')
           for name in ('CHANGELOG.md','CSDB_CHANGELOG.txt'):
               file=Path(name)
               old=file.read_text()
