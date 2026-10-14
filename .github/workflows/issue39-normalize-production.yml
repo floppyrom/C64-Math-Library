@@ -1,0 +1,42 @@
+name: Issue39 normalize source-backed production staging
+on:
+  push:
+    branches: [issue39-normalize-log-branch-production-20261014]
+    paths:
+      - .github/workflows/issue39-normalize-production.yml
+      - tools/stage_issue39_normalize_log_release.py
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  production-normalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-normalize-log-branch-production-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-build 5 profiles, exhaustively test, and publish normalized code only if ABI/precision hashes match
+        run: python3 tools/stage_issue39_normalize_log_release.py
+      - name: Commit validated binaries, standalone, perf reports, both changelogs and SHA ledger
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: stage stock normalizer branch-collapse optimized release'
+          git push origin HEAD:issue39-normalize-log-branch-production-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-normalize-production
+          path: |
+            validation/review/ISSUE39_NORMALIZE_LOG_BRANCH_PRODUCTION_2026-10-14.json
+            validation/review/ISSUE39_NORMALIZE_LOG_BRANCH_PROVENANCE_2026-10-14.json
+            docs/ISSUE39_NORMALIZE_LOG_BRANCH_RELEASE_2026-10-14.md
