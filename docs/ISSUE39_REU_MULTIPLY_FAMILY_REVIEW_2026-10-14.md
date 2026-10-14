@@ -2,6 +2,8 @@
 
 **Public ABI and resource-screen date:** 14 October 2026. Source and resident profile review only; **native raster-exact timing is not measured**. The private OptiSearch source is not published.
 
+**Final certification (14 October 2026):** The REU multiply family (Turbo16, Turbo32, and V4 QS16) is complete after real VICE REU-image validation, reference/alternate relocation tests and post-merge full-library and comparable checks. The V4 QS16 alternate-bank defect is corrected in the source generator, with reference binaries unchanged. Issue #39 remains open.
+
 ## Identical-input public-entry results
 
 Every normal-vs-Turbo16 pair is the **same 2,097 inputs**; every normal-vs-Turbo32 pair is the **same 2,192 inputs**. V4 QS16 uses the identical Turbo16 corpus (2,097). The CPU model includes its deterministic REU DMA costs; entry to RTS includes the actual public wrapper, while caller JSR and input setup are excluded. Both V3 and V4 have identical measured Turbo/public vectors, as do both source relocation maps.

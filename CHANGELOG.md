@@ -1,3 +1,11 @@
+## 2026-10-14 ISSUE39 REU MULTIPLY FAMILY FINAL CERTIFICATION
+
+**Completed:** Turbo16, Turbo32 and V4 QS16; merged source and relocation fix PR #124. Published reference PRGs and REU images unchanged. CPU-model comparison uses the same operands and includes deterministic REU transfer costs: Turbo16 197.046 versus normal 216.734, batch crossover 33; Turbo32 676.185 versus normal 693.453, batch crossover 41. V4 QS16 281.727 versus 216.734, no speed crossover. Exact 57,759 public model products, earlier 17,196 relocation API calls/3,556 boundary products, and 120 native VICE calls with real 512 KiB/16 MiB REU images passed. Native cycle timing **not measured**. Alternate V4 QS16 REU bank $30 is corrected.
+
+**Final validated main:** `abf288e8cb20ad75b068e5d425517654ba30c219`; full-library [#38545214940](https://github.com/floppyrom/C64-Math-Library/actions/runs/38545214940), comparable unsigned [#38545214835](https://github.com/floppyrom/C64-Math-Library/actions/runs/38545214835), native [#38539477409](https://github.com/floppyrom/C64-Math-Library/actions/runs/38539477409). Reproducible certificate: `validation/review/ISSUE39_REU_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json`. Issue #39 remains open for trig, distance and seek.
+
+---
+
 ## 2026-10-14 — Issue #39 merged PR closeout (#118–#124)
 
 **Merged into `main` through `03ba4fc98893` (14 October 2026).** The entries below are **merge closeouts**, not preliminary research staging. Earlier notes farther down that say *CI pending* describe the state at the time of staging and are superseded by this section. Cycle improvements are deterministic **CPU-model** comparisons; native VICE correctness does not imply native cycle measurements. Private OptiSearch source remains unpublished.
