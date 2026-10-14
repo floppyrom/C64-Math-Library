@@ -1,0 +1,55 @@
+{
+  "model": "installed C64 6510 with real REU profiles",
+  "native_cycle_timing_measured": false,
+  "normal_zp_bytes": 4,
+  "profiles": {
+    "v1_balanced": {
+      "cases": 32,
+      "hardware_stack_pointer_stable": true,
+      "native_result_sha256": "39e8e4fa2725aa60c8a67e21dd4d058ed1929b8dd60e528004a8280aa113deca",
+      "reference_carry_output_and_inputs_match": true,
+      "reu_sha256": null,
+      "shipped_prg_sha256": "d45c2922b93cdf786e40ade87ae6f9d187a3cd26baeea5b34fa203707a01ba3c",
+      "zero_flag_and_all_quadrants_checked": true
+    },
+    "v2_pareto_fast": {
+      "cases": 32,
+      "hardware_stack_pointer_stable": true,
+      "native_result_sha256": "39e8e4fa2725aa60c8a67e21dd4d058ed1929b8dd60e528004a8280aa113deca",
+      "reference_carry_output_and_inputs_match": true,
+      "reu_sha256": null,
+      "shipped_prg_sha256": "f02f8928dcc6d6f7660eb1309d68a180277160278f2033e8c9c00ffd01f82f06",
+      "zero_flag_and_all_quadrants_checked": true
+    },
+    "v3_reu_512k": {
+      "cases": 32,
+      "hardware_stack_pointer_stable": true,
+      "native_result_sha256": "7726fc8abc507913417a6dedb9e58f671e2d396c5929ae0785d51780e57b84bb",
+      "reference_carry_output_and_inputs_match": true,
+      "reu_sha256": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
+      "shipped_prg_sha256": "7b547248f1e870aca394e1c642684488d516d7f2e2356b4283811d947e504c54",
+      "zero_flag_and_all_quadrants_checked": true
+    },
+    "v4_reu_16m": {
+      "cases": 32,
+      "hardware_stack_pointer_stable": true,
+      "native_result_sha256": "7726fc8abc507913417a6dedb9e58f671e2d396c5929ae0785d51780e57b84bb",
+      "reference_carry_output_and_inputs_match": true,
+      "reu_sha256": "f745ab4021518d0277e75b42ece6b3bd747d852bc75a1c2138d47f0a32c65a73",
+      "shipped_prg_sha256": "acd55072d2d56dfce0bc93bc6789e99e76a9fc2578b399d4519b744302818db9",
+      "zero_flag_and_all_quadrants_checked": true
+    },
+    "v5_hybrid_lowzp": {
+      "cases": 32,
+      "hardware_stack_pointer_stable": true,
+      "native_result_sha256": "39e8e4fa2725aa60c8a67e21dd4d058ed1929b8dd60e528004a8280aa113deca",
+      "reference_carry_output_and_inputs_match": true,
+      "reu_sha256": null,
+      "shipped_prg_sha256": "0c58ec4b91bc5696e830c0db238b2a2f5dabd8991e8c960c5e4f8d5681d09acb",
+      "zero_flag_and_all_quadrants_checked": true
+    }
+  },
+  "public_calls": 160,
+  "resident_binaries_modified": false,
+  "status": "PASS_NATIVE_VICE_NORMALIZE_5_PROFILE"
+}
