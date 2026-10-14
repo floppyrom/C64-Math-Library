@@ -55,8 +55,10 @@ def run(cpu,api,name,bits,pairs):
             "max_cycles":max(cy),"cycle_vector_sha256":digest,
             "arithmetic_carry_stack_inputs":"PASS"}
 def lifecycle(cpu,api,prefix,bits,pairs,base,zplen):
-    before=bytes((i*73+bits+17)&255 for i in range(zplen))
-    cpu.mem[base:base+zplen]=before
+    # BEGIN must restore the REAL pre-batch resident state. Replacing ZP
+    # with invented sentinels here would destroy ordinary UMUL32 pointers
+    # after END and turn a harness error into a false runtime regression.
+    before=bytes(cpu.mem[base:base+zplen])
     begin=cpu.call(api[prefix+"_BEGIN"],2_000_000)
     installed=bytes(cpu.mem[base:base+zplen])
     assert installed!=before,(prefix,"BEGIN failed to install")
