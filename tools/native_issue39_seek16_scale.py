@@ -49,8 +49,11 @@ def fields(A):
     names=["POS_XL","POS_XH","POS_Y","TGT_XL","TGT_XH","TGT_Y",
            "RL","RM","RH","ERRL","ERRH","DMAJL","DMAJH","KF","KI",
            "REML","REMH","VXL","VXH","VY"]
+    from seek_kernel import S16_FIELDS
+    offsets=dict(S16_FIELDS)
+    base=A[s+"POS_XL"]
     return [A["MATH_X"],A["MATH_X"]+1,A["MATH_Y"],A["MATH_N"],A["MATH_N"]+1,
-            0xc030,0xc032,0xc033]+[A[s+n]+SLOT for n in names]
+            0xc030,0xc032,0xc033]+[base+offsets[n]+SLOT for n in names]
 
 def harness(A):
     code=bytearray()
