@@ -57,6 +57,10 @@ jobs:
           python3 tools/benchmark_unsigned_common_corpus.py
           python3 tools/validate_udiv32_qone_bound.py
           python3 tools/validate_udiv32_q23_bound.py
+      - name: Refresh downstream signed DIV/MOD and ISQRT32 deterministic validation
+        run: |
+          python3 tools/validate_signed_division.py
+          python3 tools/benchmark_isqrt32_fast.py
       - name: Pin V1 structured unsigned validation to exact green CI arithmetic
         run: |
           python3 - <<'PY'
@@ -97,7 +101,10 @@ jobs:
             validation/review/UNSIGNED_3216_WORKLOAD_AUDIT.json \
             benchmarks/UNSIGNED_3216_WORKLOAD_AUDIT.csv \
             validation/review/UNSIGNED_DIVMOD_COMMON_CORPUS.json \
-            benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv
+            benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv \
+            validation/review/SIGNED_DIVISION_VALIDATION.json \
+            validation/review/ISQRT32_FAST_PERFORMANCE_4130.json \
+            benchmarks/GAME_MATH_PROFILE_RESULTS.csv
           git diff --cached --quiet || git commit -m 'issue136: seal reversible SEEK and division historic proof in package manifest'
           git push origin HEAD:issue39-seek16-euclid-scale-source-release-20261014
       - uses: actions/upload-artifact@v4
