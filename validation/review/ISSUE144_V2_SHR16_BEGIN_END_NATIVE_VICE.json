@@ -1,0 +1,19 @@
+{
+  "baseline_dump_sha256": "f70174ff50531f0554e196bb30b12f7cbf1a0763913ab18b311d8a4992b0379b",
+  "batch_dump_sha256": "cfa4852bf6664ecfe9817da2ea40d2da70e4d91512cd49587422d20bc4e9cb14",
+  "begin_and_end_executed_native": true,
+  "calls": 48,
+  "carry_zero_and_inputs_stack_match": true,
+  "default_prg_changed": false,
+  "entry": "MATH_UMUL32_SHR16",
+  "native_cycle_timing_measured": false,
+  "ordinary_umul32_while_active_illegal": true,
+  "outputs_6_bytes_exact": true,
+  "profile": "v2_pareto_fast",
+  "published_prg_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+  "regular_mixed_call_qualified": false,
+  "source_sha256": "6dbe5fbf77df1102987c5c51cfb336b36926ee3695bde78ba3c81a6b301fa403",
+  "status": "PASS_NATIVE_EXCLUSIVE_BEGIN_CALL_END",
+  "true_source_assembled_in_harness": true,
+  "volatile_status_flags_may_differ": true
+}

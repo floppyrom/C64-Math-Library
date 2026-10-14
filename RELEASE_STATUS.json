@@ -3320,5 +3320,28 @@
     "certificate": "validation/review/ISSUE39_SEEK_FAMILY_POSTMERGE_MAIN_CERT_2026-10-14.json",
     "private_optisearch_published": false,
     "production_prgs_and_reu_unchanged_in_closeout": true
+  },
+  "issue144_v2_unsigned32_shr16_exclusive_2026_10_14": {
+    "status": "PASS_RESEARCH_ONLY_EXCLUSIVE_NOT_NORMAL_PUBLIC",
+    "profile": "v2_pareto_fast",
+    "paired_cases": 2409,
+    "measured_saving_cycles_per_call": 53,
+    "setup_cpu_cycles_excluding_caller_jsr": 76,
+    "restore_cpu_cycles_excluding_caller_jsr": 80,
+    "positive_net_batch_from_calls_including_caller_jsrs": 4,
+    "native_public_probe_calls": 48,
+    "native_begin_end_calls": 48,
+    "native_cycle_timing_measured": false,
+    "mixed_calls_safe": false,
+    "production_prgs_changed": false,
+    "regular_public_abi_promoted": false,
+    "source": "optional/issue144_v2_umul32_shr16_exclusive/overlay_begin_end.asm",
+    "documentation": "docs/ISSUE144_V2_SHR16_EXCLUSIVE_BATCH_RESEARCH.md",
+    "evidence": {
+      "paired": "validation/review/ISSUE144_SHR16_DIRECT_SLICE_OVERLAY_RESEARCH.json",
+      "batch": "validation/review/ISSUE144_V2_SHR16_BATCH_BREAK_EVEN.json",
+      "native_probe": "validation/review/ISSUE144_SHR16_OVERLAY_NATIVE_VICE_RESEARCH.json",
+      "native_batch": "validation/review/ISSUE144_V2_SHR16_BEGIN_END_NATIVE_VICE.json"
+    }
   }
 }

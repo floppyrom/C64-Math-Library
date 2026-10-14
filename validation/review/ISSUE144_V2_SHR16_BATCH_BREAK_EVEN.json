@@ -1,0 +1,50 @@
+{
+  "abi_default_profile_changed": false,
+  "asm_bytes": 120,
+  "asm_origin": 2304,
+  "baseline": {
+    "cycle_vector_sha256": "7a392add249584ea547b52b58c54b9b45db0be0c0d56a954cd42cfe8c8378b9e",
+    "max_cycles": 872,
+    "mean_cycles": 753.2353673723537,
+    "median_cycles": 753,
+    "min_cycles": 693,
+    "p95_cycles": 797
+  },
+  "basis": "CPU.call entry through RTS; no caller JSR included",
+  "batch_candidate": {
+    "cycle_vector_sha256": "15e2c77825dde500cf1598924ce4e485a3895cffcddd83da1061a2d129ef8b44",
+    "max_cycles": 819,
+    "mean_cycles": 700.2353673723537,
+    "median_cycles": 700,
+    "min_cycles": 640,
+    "p95_cycles": 744
+  },
+  "batch_patch_overhead_cpu_cycles_excl_caller_jsr": 156,
+  "entry_begin": 2304,
+  "entry_end": 2362,
+  "first_call_count_with_positive_net_savings_excl_caller_jsrs": 3,
+  "first_call_count_with_positive_net_savings_including_two_caller_jsrs": 4,
+  "native_begin_end_qualified": false,
+  "native_cycle_timing_measured": false,
+  "ordinary_UMUL32_legal_while_active": false,
+  "original_core_correct_after_restore": true,
+  "patched_existing_bytes": 13,
+  "per_call_steady_state_savings_cpu_cycles": 53,
+  "precondition": "exact stock V2 profile, MATH_INIT, RAM visible, exclusive core ownership",
+  "profile": "v2_pareto_fast",
+  "resident_prgs_changed": false,
+  "restore_cpu_cycles_excl_caller_jsr": 80,
+  "savings": {
+    "cycle_vector_sha256": "8ef186f3a61df3f7731cfe317dc20f47118b1cda0f76450fd6187766fc3929be",
+    "max_cycles": 53,
+    "mean_cycles": 53.0,
+    "median_cycles": 53,
+    "min_cycles": 53,
+    "p95_cycles": 53
+  },
+  "setup_cpu_cycles_excl_caller_jsr": 76,
+  "source_path": "optional/issue144_v2_umul32_shr16_exclusive/overlay_begin_end.asm",
+  "source_sha256": "6dbe5fbf77df1102987c5c51cfb336b36926ee3695bde78ba3c81a6b301fa403",
+  "status": "PASS_EXCLUSIVE_BATCH_CPU_MODEL",
+  "tested_pairs": 2409
+}

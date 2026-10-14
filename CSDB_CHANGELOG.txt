@@ -1,3 +1,6 @@
+2026-10-14 ISSUE144 V2 EXCLUSIVE SHR16 DIRECT-SLICE RESEARCH
+- Research-only opt-in V2 unsigned 32x32 SHR16 direct-result-slice overlay measured 53 CPU-model cycles faster for all 2,409 paired operands; BEGIN/END overhead 76/80 cycles, four-call full-program crossover. Native VICE baseline/overlay and assembled BEGIN/CALL/END both passed 48 calls. Affects shared UMUL32 producer while active; ordinary public mixed-call ABI NOT qualified, no resident PRG/REU/default profile changed and no automatic promotion. See docs/ISSUE144_V2_SHR16_EXCLUSIVE_BATCH_RESEARCH.md
+
 2026-10-14 ISSUE39 CAMPAIGN MAIN POSTMERGE CERTIFICATION
 - Completed the full Issue #39 audit: all eight SEEK8/16 public operations qualified with V1-V5 reference/alternate sources, native VICE/REU checks and 408-byte mixed-state safety. Three independent main push workflows green at d296ace693543025f8aba582a0c933c867939a3a (full library, comparable unsigned, fixed multiply). No additional unqualified shortcut, no public ABI/PRG/REU/ZP changes; rejected V2 memory overlap documented, private OptiSearch excluded. Final status, evidence and package SHA256 sealed. validation/review/ISSUE39_SEEK_FAMILY_POSTMERGE_MAIN_CERT_2026-10-14.json
 
