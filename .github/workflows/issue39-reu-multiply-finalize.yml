@@ -1,0 +1,46 @@
+name: Issue39 REU multiply completed-family publication
+on:
+  push:
+    branches: [issue39-reu-multiply-final-20261014]
+    paths:
+      - tools/finalize_issue39_reu_multiply_family.py
+      - .github/workflows/issue39-reu-multiply-finalize.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  certify-postmerge-reu-family:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: issue39-reu-multiply-final-20261014
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Guarded finalization against green main and native REU proof
+        run: |
+          python3 tools/finalize_issue39_reu_multiply_family.py \
+            --main-sha abf288e8cb20ad75b068e5d425517654ba30c219 \
+            --full-ci 38545214940 \
+            --comparable-ci 38545214835 \
+            --native-ci 38539477409
+      - name: Commit publication without editing binaries
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue39: certify REU Turbo16 Turbo32 and V4 QS16 complete'
+          git push origin HEAD:issue39-reu-multiply-final-20261014
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue39-reu-final-publication
+          path: |
+            validation/review/ISSUE39_REU_MULTIPLY_FAMILY_COMPLETION_2026-10-14.json
+            docs/ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md
