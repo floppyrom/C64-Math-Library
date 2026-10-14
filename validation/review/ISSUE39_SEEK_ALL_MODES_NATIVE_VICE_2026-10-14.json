@@ -1,0 +1,209 @@
+{
+  "native_cycle_timing_measured": false,
+  "native_public_init_calls": 40,
+  "native_public_step_calls": 640,
+  "private_optisearch_source_published": false,
+  "profiles": {
+    "v1_balanced": {
+      "native_dump_sha256": "a12dbb6a52760259eee5a0906e8073879ed5e875d3040b937d4333a476fe3649",
+      "prg_sha256": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+      "public_modes": {
+        "SEEK16_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK16_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK16_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK16_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        },
+        "SEEK8_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK8_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK8_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK8_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        }
+      },
+      "sp_after_return": 253,
+      "step_calls": 128
+    },
+    "v2_pareto_fast": {
+      "native_dump_sha256": "a12dbb6a52760259eee5a0906e8073879ed5e875d3040b937d4333a476fe3649",
+      "prg_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+      "public_modes": {
+        "SEEK16_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK16_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK16_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK16_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        },
+        "SEEK8_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK8_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK8_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK8_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        }
+      },
+      "sp_after_return": 253,
+      "step_calls": 128
+    },
+    "v3_reu_512k": {
+      "native_dump_sha256": "a12dbb6a52760259eee5a0906e8073879ed5e875d3040b937d4333a476fe3649",
+      "prg_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+      "public_modes": {
+        "SEEK16_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK16_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK16_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK16_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        },
+        "SEEK8_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK8_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK8_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK8_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        }
+      },
+      "sp_after_return": 253,
+      "step_calls": 128
+    },
+    "v4_reu_16m": {
+      "native_dump_sha256": "43ab37f5752560395e9a97a6d2bd495d8e32f8e8253a081ff52c0f03c0feaf3b",
+      "prg_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "public_modes": {
+        "SEEK16_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK16_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK16_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK16_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        },
+        "SEEK8_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK8_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK8_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK8_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        }
+      },
+      "sp_after_return": 0,
+      "step_calls": 128
+    },
+    "v5_hybrid_lowzp": {
+      "native_dump_sha256": "a12dbb6a52760259eee5a0906e8073879ed5e875d3040b937d4333a476fe3649",
+      "prg_sha256": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2",
+      "public_modes": {
+        "SEEK16_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK16_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK16_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK16_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        },
+        "SEEK8_int_0200": {
+          "calls": 16,
+          "frames_to_arrive": 4
+        },
+        "SEEK8_one_0100": {
+          "calls": 16,
+          "frames_to_arrive": 8
+        },
+        "SEEK8_step_0180": {
+          "calls": 16,
+          "frames_to_arrive": 6
+        },
+        "SEEK8_step_8180": {
+          "calls": 16,
+          "frames_to_arrive": 7
+        }
+      },
+      "sp_after_return": 253,
+      "step_calls": 128
+    }
+  },
+  "status": "PASS_NATIVE_SEEK8_16_ALL_STEP_MODES"
+}

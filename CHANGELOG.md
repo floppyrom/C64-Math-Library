@@ -1,3 +1,6 @@
+2026-10-14 ISSUE39 SEEK8/16 ALL-MODE NATIVE VICE CERTIFICATION
+- Native x64sc executes all eight SEEK8/16 INIT/STEP, STEP_INT and STEP1 public modes on V1–V5, 40 INIT and 640 STEP calls; checks movement, arrival carry, X, stack and post-arrival stability against independent model, using real V3/V4 REU images. No native cycle timing claimed. No production binary/API/REU/ZP changes; main certification and full SEEK family closeout still pending. docs/ISSUE39_SEEK_NATIVE_ALL_MODES_2026-10-14.md
+
 2026-10-14 ISSUE39 SEEK8/16 EIGHT-OBJECT INTERLEAVING RESEARCH
 - Five profiles, reference/alternate, eight concurrent slots and all INIT/STEP/STEP_INT/STEP1 modes qualified: 480 INITs, 246,480 STEP calls, 86,960 model frames, slot isolation and post-arrival safety. Mixed DIV/MOD and memory-island gates passed. No changes to public API, resident PRGs, REU or speed tables. Native all-stepper proof and full SEEK optimization still open. docs/ISSUE39_SEEK_ALL_SLOTS_RESEARCH_2026-10-14.md
 
