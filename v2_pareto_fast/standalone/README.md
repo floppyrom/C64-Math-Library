@@ -54,8 +54,8 @@ The historical `MATH_*` ABI remains supported. New code should prefer the typed 
 | `MATH_ATAN2_8` | `atan2_s8_s8_u8` | `atan2_s8_s8_u8.asm` |  | 40 |
 | `MATH_ISQRT16` | `isqrt_u16_u16` | `isqrt_u16_u16.asm` |  | 17 |
 | `MATH_ISQRT32` | `isqrt_u32_u16` | `isqrt_u32_u16.asm` |  | 103 |
-| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | `dist_s8_s8_u8_fast.asm` |  | 30 |
-| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | `dist_s8_s8_u8_accurate.asm` |  | 31 |
+| `MATH_DIST8_FAST` | `dist_s8_s8_u8_fast` | `dist_s8_s8_u8_fast.asm` |  | 29 |
+| `MATH_DIST8_ACCURATE` | `dist_s8_s8_u8_accurate` | `dist_s8_s8_u8_accurate.asm` |  | 30 |
 | `MATH_VEC2_NORMALIZE_Q8_8` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15` | `normalize_s16_s16_s16_s16_q8_8_to_q1_15.asm` |  | 413 |
 | `MATH_SEEK8_INIT` | `seek_u8_u8_init` | `seek_u8_u8_init.asm` |  | 197 |
 | `MATH_SEEK8_STEP` | `seek_u8_u8_step` | `seek_u8_u8_step.asm` |  | 69 |

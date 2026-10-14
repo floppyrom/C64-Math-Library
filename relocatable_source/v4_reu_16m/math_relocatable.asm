@@ -4609,12 +4609,12 @@ LC8CA:
     sta ZP_MAIN+$5C
     cmp ZP_MAIN+$5B
     bcc LC8DA
+    tax
     lda ZP_MAIN+$5B
-    pha
-    lda ZP_MAIN+$5C
-    sta ZP_MAIN+$5B
-    pla
     sta ZP_MAIN+$5C
+    stx ZP_MAIN+$5B
+    rts
+    !byte $EA, $EA
 LC8DA:
     rts
     jsr REG_GAME+$07B2

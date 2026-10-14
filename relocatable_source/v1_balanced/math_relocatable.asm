@@ -4266,12 +4266,12 @@ LCAE5:
     sta V1_SCRATCH+$0B
     cmp V1_SCRATCH+$0A
     bcc LCAFB
+    tax
     lda V1_SCRATCH+$0A
-    pha
-    lda V1_SCRATCH+$0B
-    sta V1_SCRATCH+$0A
-    pla
     sta V1_SCRATCH+$0B
+    stx V1_SCRATCH+$0A
+    rts
+    !byte $EA, $EA, $EA
 LCAFB:
     rts
     jsr REG_GAME+$09CC

@@ -4490,12 +4490,12 @@ LCA00:
     sta ZP_MAIN+$5C
     cmp ZP_MAIN+$5B
     bcc LCA10
+    tax
     lda ZP_MAIN+$5B
-    pha
-    lda ZP_MAIN+$5C
-    sta ZP_MAIN+$5B
-    pla
     sta ZP_MAIN+$5C
+    stx ZP_MAIN+$5B
+    rts
+    !byte $EA, $EA
 LCA10:
     rts
     jsr REG_GAME+$08E8

@@ -372,7 +372,7 @@
           "file": "dist_s8_s8_u8_fast.asm",
           "alias_of": "",
           "entry_address": "$5E33",
-          "reachable_instructions": 30
+          "reachable_instructions": 29
         },
         {
           "legacy_api": "MATH_DIST8_ACCURATE",
@@ -380,7 +380,7 @@
           "file": "dist_s8_s8_u8_accurate.asm",
           "alias_of": "",
           "entry_address": "$5E36",
-          "reachable_instructions": 31
+          "reachable_instructions": 30
         },
         {
           "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",
@@ -827,7 +827,7 @@
           "file": "dist_s8_s8_u8_fast.asm",
           "alias_of": "",
           "entry_address": "$5E33",
-          "reachable_instructions": 30
+          "reachable_instructions": 29
         },
         {
           "legacy_api": "MATH_DIST8_ACCURATE",
@@ -835,7 +835,7 @@
           "file": "dist_s8_s8_u8_accurate.asm",
           "alias_of": "",
           "entry_address": "$5E36",
-          "reachable_instructions": 31
+          "reachable_instructions": 30
         },
         {
           "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",
@@ -1282,7 +1282,7 @@
           "file": "dist_s8_s8_u8_fast.asm",
           "alias_of": "",
           "entry_address": "$5E33",
-          "reachable_instructions": 30
+          "reachable_instructions": 29
         },
         {
           "legacy_api": "MATH_DIST8_ACCURATE",
@@ -1290,7 +1290,7 @@
           "file": "dist_s8_s8_u8_accurate.asm",
           "alias_of": "",
           "entry_address": "$5E36",
-          "reachable_instructions": 31
+          "reachable_instructions": 30
         },
         {
           "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",
@@ -1785,7 +1785,7 @@
           "file": "dist_s8_s8_u8_fast.asm",
           "alias_of": "",
           "entry_address": "$5E33",
-          "reachable_instructions": 30
+          "reachable_instructions": 29
         },
         {
           "legacy_api": "MATH_DIST8_ACCURATE",
@@ -1793,7 +1793,7 @@
           "file": "dist_s8_s8_u8_accurate.asm",
           "alias_of": "",
           "entry_address": "$5E36",
-          "reachable_instructions": 31
+          "reachable_instructions": 30
         },
         {
           "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",
@@ -2312,7 +2312,7 @@
           "file": "dist_s8_s8_u8_fast.asm",
           "alias_of": "",
           "entry_address": "$5E33",
-          "reachable_instructions": 30
+          "reachable_instructions": 29
         },
         {
           "legacy_api": "MATH_DIST8_ACCURATE",
@@ -2320,7 +2320,7 @@
           "file": "dist_s8_s8_u8_accurate.asm",
           "alias_of": "",
           "entry_address": "$5E36",
-          "reachable_instructions": 31
+          "reachable_instructions": 30
         },
         {
           "legacy_api": "MATH_VEC2_NORMALIZE_Q8_8",

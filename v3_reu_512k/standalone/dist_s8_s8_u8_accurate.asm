@@ -6,7 +6,7 @@
 ; This file contains every executable instruction statically reachable from the public entry after MATH_INIT.
 ; Shared immutable lookup/data tables and REU payload data are intentionally not duplicated here.
 ; The address/byte annotations make this a mechanically auditable source view of the shipped executable.
-; Reachable instructions: 31.
+; Reachable instructions: 30.
 !cpu 6510
 
 ; ---- executable island $5E36 ----
@@ -33,12 +33,13 @@ LCA0B:
     sta $5E                            ; @CA0B 85 5E
     cmp $5D                            ; @CA0D C5 5D
     bcc LCA1B                          ; @CA0F 90 0A
-    lda $5D                            ; @CA11 A5 5D
-    pha                                ; @CA13 48
-    lda $5E                            ; @CA14 A5 5E
-    sta $5D                            ; @CA16 85 5D
-    pla                                ; @CA18 68
-    sta $5E                            ; @CA19 85 5E
+    tax                                ; @CA11 AA
+    lda $5D                            ; @CA12 A5 5D
+    sta $5E                            ; @CA14 85 5E
+    stx $5D                            ; @CA16 86 5D
+    rts                                ; @CA18 60
+; ---- executable island $CA1B ----
+* = $CA1B
 LCA1B:
     rts                                ; @CA1B 60
 ; ---- executable island $CA2A ----

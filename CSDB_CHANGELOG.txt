@@ -1,3 +1,9 @@
+## 2026-10-14 ISSUE39 DIST8 SHARED REGISTER-SWAP SOURCE RELEASE
+
+Source-integrated DIST8_FAST/DIST8_ACCURATE common stack-swap elimination (TAX/LDA/STA/STX) for V1–V5. Exact 1,310,720 old/new emulator calls; 119,220 reference/alternate model calls; 480 native x64sc baseline/candidate calls; production exhaustive 655,360 calls. Saves 9 cycles on the swap branch in V1/V5 and 8 in V2–V4 (CPU model, not VICE timing). PRG lengths, stable ABI, REU and ZP unchanged. Standalone, metrics and package checksums synchronized. Independent PR/main CI pending; Issue39 still open for normalization and seek. See `docs/ISSUE39_DIST8_REGISTER_SWAP_RELEASE_2026-10-14.md`.
+
+---
+
 2026-10-14 ISSUE39 DIST8 SHARED SWAP RESEARCH — NOT RELEASED
 - In-memory same-address DIST8_FAST/DIST8_ACCURATE swap candidate exhaustively passed 655,360 paired public operand cases across all five profiles (1,310,720 original/candidate CPU-model calls). All output/scratch bytes, inputs, carry and stack agree; V1/V5 save 4.535019 mean modeled cycles per public call, V2/V3/V4 save 4.031128. Native cycle timing NOT measured. No production binaries, ABI, ZP, standalone sources or REU changed. This is NOT a shipped optimization; further source integration, relocation, native VICE and full release checks remain. Evidence: validation/review/ISSUE39_DIST8_REGISTER_SWAP_RESEARCH_2026-10-14.json
 
