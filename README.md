@@ -210,3 +210,5 @@ The library is **not reentrant**. Sequential calls in ordinary game/demo loops a
 - V2 UMUL8 public direct-result source release: docs/ISSUE39_V2_UMUL8_DIRECT_OUTPUT_2026-10-13.md (native x64sc 128 old/new public calls PASS; independent PR/main CI pending).
 
 The standard unsigned multiply family (UMUL8/16/24/32 and stateful READY) is [qualified and complete](docs/ISSUE39_UNSIGNED_MULTIPLY_FAMILY_REVIEW_2026-10-14.md). REU Turbo/QS multiply modes are separate.
+
+For the signed SMUL8/16/24/32 and conditional SMUL32_READY profiles see the [Issue #39 signed multiply ABI/resource and OptiSearch audit](docs/ISSUE39_SIGNED_MULTIPLY_FAMILY_2026-10-14.md).

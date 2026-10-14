@@ -1,3 +1,8 @@
+2026-10-14 ISSUE39 SIGNED MULTIPLY FAMILY ABI RESOURCE QUALIFICATION
+- Completed per-implementation audit of five stable SMUL8/16/24/32 and conditional SMUL32_READY APIs. Exhaustive SMUL8 65,536 each of V1-V5; 16/24/32 matched corpora 4,457/2,409/2,409; independent ordinary/READY paired 2,409 per profile, V1/V5 dirty-pointer interleavings. The existing 264,999-call signed regression and both relocation maps remain release gates.
+- 600 installed-resident native x64sc calls plus 120 READY state preparation calls, exact product/carry/inputs/output sentinels/stack. Native cycles NOT measured. Private OptiSearch sign-first/probability layout, conditional carry, centered tables and SMUL32 compact126 screened; no demonstrable compatible full public ABI gain; no code or resident/ZP/stack/table growth.
+- Publication is staged pending independent PR and main CI. Issue #39 remains OPEN; shifted multiplication and REU Turbo/QS are independent later steps. docs/ISSUE39_SIGNED_MULTIPLY_FAMILY_2026-10-14.md
+
 2026-10-14 ISSUE39 UNSIGNED MULTIPLY FAMILY COMPLETE
 - UMUL8/16/24/32 and stateful READY: five-profile ABI, reference/alternate source-build and deterministic mixed-call review completed. UMUL8 exhaustive 65,536; UMUL16 10,169; UMUL24 10,324; UMUL32/READY 2,409 matched inputs/profile.
 - V1/V5 UMUL24 uniform -1 CPU-model cycle (466.042329 to 465.042329), 384 native x64sc old/new calls; no extra resident/ZP bytes. Normal UMUL32 pointer repair retained; private OptiSearch candidates not promoted without ABI/resource proof.

@@ -1,0 +1,547 @@
+{
+  "cycle_provenance": "CPU-model public entry through RTS, excludes caller JSR/input stores",
+  "date": "2026-10-14",
+  "normal_ZP_modified": false,
+  "previous_264999_signed_calls": "PASS",
+  "private_optisearch_code_published": false,
+  "profiles": [
+    "v1_balanced",
+    "v2_pareto_fast",
+    "v3_reu_512k",
+    "v4_reu_16m",
+    "v5_hybrid_lowzp"
+  ],
+  "ready_mixed_lifetime_lowzp": {
+    "v1_balanced": {
+      "ordinary_valid": 360,
+      "paired_calls": 360,
+      "ready_state_is_a_precondition_not_a_normal_api_substitute": true,
+      "states": 18,
+      "unqualified_ready_wrong": 180,
+      "witnesses": [
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x0"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x1"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x2"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x3"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x7"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0xf"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x10"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x1f"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x3f"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x7f"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x80"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0xff"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x7ffffffe"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x7fffffff"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x80000000"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x80000001"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0xfffffffd"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0xfffffffe"
+        }
+      ]
+    },
+    "v5_hybrid_lowzp": {
+      "ordinary_valid": 360,
+      "paired_calls": 360,
+      "ready_state_is_a_precondition_not_a_normal_api_substitute": true,
+      "states": 18,
+      "unqualified_ready_wrong": 180,
+      "witnesses": [
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x0"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x1"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x2"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x3"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x7"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0xf"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x10"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x1f"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x3f"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x7f"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x80"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0xff"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x7ffffffe"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x7fffffff"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x80000000"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0x80000001"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0xfffffffd"
+        },
+        {
+          "error_type": "AssertionError",
+          "preceding_op": "MATH_UMUL24",
+          "state": 0,
+          "x": "0x0",
+          "y": "0xfffffffe"
+        }
+      ]
+    }
+  },
+  "ready_same_input_confirmed": {
+    "v1_balanced": 2409,
+    "v2_pareto_fast": 2409,
+    "v3_reu_512k": 2409,
+    "v4_reu_16m": 2409,
+    "v5_hybrid_lowzp": 2409
+  },
+  "reference_prg_sha256": {
+    "v1_balanced": "f18253b37f2b537062b9caa2990497becb0c3a76c7e79dcbb728227cfa80c1f7",
+    "v2_pareto_fast": "59346bb4b3b418e2dff01269d9b3b114be5c13ab23e25a16484be97d0ccd6e18",
+    "v3_reu_512k": "09f2599294a11b3966282af07a3c3d9335bac225877cbf39178591370b468a69",
+    "v4_reu_16m": "82ed7d57e2e6106caa94bc3dafe99d6d3d4b1c3e04a0cd04ea4f304a49addee2",
+    "v5_hybrid_lowzp": "2c4f3494dd89ab883818fc1c006e603f620078df21bc3b9d8326b5a60773ad90"
+  },
+  "resident_modified": false,
+  "s8_exhaustive_all_five_profiles": true,
+  "same_input_corpus_sizes": {
+    "16": 4457,
+    "24": 2409,
+    "32": 2409,
+    "8": 65536
+  },
+  "same_input_per_profile": {
+    "v1_balanced": {
+      "MATH_SMUL16": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "4a6043b778f6414506a526e93024199aa29c0028d2298fbe2de4476e7c709d7e",
+        "maximum": 316,
+        "mean_cycles": 282.0666367511779,
+        "minimum": 250,
+        "pairs": 4457
+      },
+      "MATH_SMUL24": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "25bcf5aa7ae722c306f30e7510b65d5ad2c0aa801d4cb60abf92ce5deb919cd7",
+        "maximum": 571,
+        "mean_cycles": 507.3623910336239,
+        "minimum": 451,
+        "pairs": 2409
+      },
+      "MATH_SMUL32": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "376fae59227637d092b0fee5adb3a8b40314622e92f8830d8c3dc7bed34b8a22",
+        "maximum": 873,
+        "mean_cycles": 744.4848484848485,
+        "minimum": 660,
+        "pairs": 2409
+      },
+      "MATH_SMUL32_READY": {
+        "arithmetic_carry_input_stack": "PASS",
+        "delta_histogram": {
+          "25": 2409
+        },
+        "identical_operand_and_initialized_pointer_corpus": true,
+        "mean_ready_saving_cycles": 25.0,
+        "ordinary_mean_cycles": 744.4848484848485,
+        "ordinary_vector_sha256": "376fae59227637d092b0fee5adb3a8b40314622e92f8830d8c3dc7bed34b8a22",
+        "pairs": 2409,
+        "ready_mean_cycles": 719.4848484848485,
+        "ready_vector_sha256": "ff41782fdad6547ef9a42583000b815f10c850e96737fbfbcb7f760c7f7836e1"
+      },
+      "MATH_SMUL8": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "19f222c702c1710e054130910af14c5f08755becf52d75b204d6d2d5abd0ad66",
+        "maximum": 70,
+        "mean_cycles": 67.9921875,
+        "minimum": 66,
+        "pairs": 65536
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_SMUL16": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "cc097cf15a0791d3e028baf319481f6703d4bc2a6fceda51ab6ff6835abf3f5c",
+        "maximum": 286,
+        "mean_cycles": 245.8548350908683,
+        "minimum": 223,
+        "pairs": 4457
+      },
+      "MATH_SMUL24": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "6fe3c4e2f5dfc7ba1627e673949db727d4c71c263b34d2efac25fdd00ec9604c",
+        "maximum": 527,
+        "mean_cycles": 463.3623910336239,
+        "minimum": 407,
+        "pairs": 2409
+      },
+      "MATH_SMUL32": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "a39752037f7af0f60c62d57fa3f8436a585f48e62a32e6a5e103d9a90734f3b3",
+        "maximum": 838,
+        "mean_cycles": 712.4263179742632,
+        "minimum": 630,
+        "pairs": 2409
+      },
+      "MATH_SMUL32_READY": {
+        "arithmetic_carry_input_stack": "PASS",
+        "delta_histogram": {
+          "-3": 2409
+        },
+        "identical_operand_and_initialized_pointer_corpus": true,
+        "mean_ready_saving_cycles": -3.0,
+        "ordinary_mean_cycles": 712.4263179742632,
+        "ordinary_vector_sha256": "a39752037f7af0f60c62d57fa3f8436a585f48e62a32e6a5e103d9a90734f3b3",
+        "pairs": 2409,
+        "ready_mean_cycles": 715.4263179742632,
+        "ready_vector_sha256": "c26e6e70cc86c5788a353e0e14949fc82e87549d7d570d9ca43be1d3410ef463"
+      },
+      "MATH_SMUL8": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "19f222c702c1710e054130910af14c5f08755becf52d75b204d6d2d5abd0ad66",
+        "maximum": 70,
+        "mean_cycles": 67.9921875,
+        "minimum": 66,
+        "pairs": 65536
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_SMUL16": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "cc097cf15a0791d3e028baf319481f6703d4bc2a6fceda51ab6ff6835abf3f5c",
+        "maximum": 286,
+        "mean_cycles": 245.8548350908683,
+        "minimum": 223,
+        "pairs": 4457
+      },
+      "MATH_SMUL24": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "6fe3c4e2f5dfc7ba1627e673949db727d4c71c263b34d2efac25fdd00ec9604c",
+        "maximum": 527,
+        "mean_cycles": 463.3623910336239,
+        "minimum": 407,
+        "pairs": 2409
+      },
+      "MATH_SMUL32": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "a39752037f7af0f60c62d57fa3f8436a585f48e62a32e6a5e103d9a90734f3b3",
+        "maximum": 838,
+        "mean_cycles": 712.4263179742632,
+        "minimum": 630,
+        "pairs": 2409
+      },
+      "MATH_SMUL32_READY": {
+        "arithmetic_carry_input_stack": "PASS",
+        "delta_histogram": {
+          "-3": 2409
+        },
+        "identical_operand_and_initialized_pointer_corpus": true,
+        "mean_ready_saving_cycles": -3.0,
+        "ordinary_mean_cycles": 712.4263179742632,
+        "ordinary_vector_sha256": "a39752037f7af0f60c62d57fa3f8436a585f48e62a32e6a5e103d9a90734f3b3",
+        "pairs": 2409,
+        "ready_mean_cycles": 715.4263179742632,
+        "ready_vector_sha256": "c26e6e70cc86c5788a353e0e14949fc82e87549d7d570d9ca43be1d3410ef463"
+      },
+      "MATH_SMUL8": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "19f222c702c1710e054130910af14c5f08755becf52d75b204d6d2d5abd0ad66",
+        "maximum": 70,
+        "mean_cycles": 67.9921875,
+        "minimum": 66,
+        "pairs": 65536
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_SMUL16": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "cc097cf15a0791d3e028baf319481f6703d4bc2a6fceda51ab6ff6835abf3f5c",
+        "maximum": 286,
+        "mean_cycles": 245.8548350908683,
+        "minimum": 223,
+        "pairs": 4457
+      },
+      "MATH_SMUL24": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "6fe3c4e2f5dfc7ba1627e673949db727d4c71c263b34d2efac25fdd00ec9604c",
+        "maximum": 527,
+        "mean_cycles": 463.3623910336239,
+        "minimum": 407,
+        "pairs": 2409
+      },
+      "MATH_SMUL32": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "a39752037f7af0f60c62d57fa3f8436a585f48e62a32e6a5e103d9a90734f3b3",
+        "maximum": 838,
+        "mean_cycles": 712.4263179742632,
+        "minimum": 630,
+        "pairs": 2409
+      },
+      "MATH_SMUL32_READY": {
+        "arithmetic_carry_input_stack": "PASS",
+        "delta_histogram": {
+          "-3": 2409
+        },
+        "identical_operand_and_initialized_pointer_corpus": true,
+        "mean_ready_saving_cycles": -3.0,
+        "ordinary_mean_cycles": 712.4263179742632,
+        "ordinary_vector_sha256": "a39752037f7af0f60c62d57fa3f8436a585f48e62a32e6a5e103d9a90734f3b3",
+        "pairs": 2409,
+        "ready_mean_cycles": 715.4263179742632,
+        "ready_vector_sha256": "c26e6e70cc86c5788a353e0e14949fc82e87549d7d570d9ca43be1d3410ef463"
+      },
+      "MATH_SMUL8": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "19f222c702c1710e054130910af14c5f08755becf52d75b204d6d2d5abd0ad66",
+        "maximum": 70,
+        "mean_cycles": 67.9921875,
+        "minimum": 66,
+        "pairs": 65536
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "MATH_SMUL16": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "4a6043b778f6414506a526e93024199aa29c0028d2298fbe2de4476e7c709d7e",
+        "maximum": 316,
+        "mean_cycles": 282.0666367511779,
+        "minimum": 250,
+        "pairs": 4457
+      },
+      "MATH_SMUL24": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "25bcf5aa7ae722c306f30e7510b65d5ad2c0aa801d4cb60abf92ce5deb919cd7",
+        "maximum": 571,
+        "mean_cycles": 507.3623910336239,
+        "minimum": 451,
+        "pairs": 2409
+      },
+      "MATH_SMUL32": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "376fae59227637d092b0fee5adb3a8b40314622e92f8830d8c3dc7bed34b8a22",
+        "maximum": 873,
+        "mean_cycles": 744.4848484848485,
+        "minimum": 660,
+        "pairs": 2409
+      },
+      "MATH_SMUL32_READY": {
+        "arithmetic_carry_input_stack": "PASS",
+        "delta_histogram": {
+          "25": 2409
+        },
+        "identical_operand_and_initialized_pointer_corpus": true,
+        "mean_ready_saving_cycles": 25.0,
+        "ordinary_mean_cycles": 744.4848484848485,
+        "ordinary_vector_sha256": "376fae59227637d092b0fee5adb3a8b40314622e92f8830d8c3dc7bed34b8a22",
+        "pairs": 2409,
+        "ready_mean_cycles": 719.4848484848485,
+        "ready_vector_sha256": "ff41782fdad6547ef9a42583000b815f10c850e96737fbfbcb7f760c7f7836e1"
+      },
+      "MATH_SMUL8": {
+        "arithmetic_carry_input_stack": "PASS",
+        "cycle_vector_sha256": "19f222c702c1710e054130910af14c5f08755becf52d75b204d6d2d5abd0ad66",
+        "maximum": 70,
+        "mean_cycles": 67.9921875,
+        "minimum": 66,
+        "pairs": 65536
+      }
+    }
+  },
+  "scope": "signed multiply 8,16,24,32 and signed 32 READY",
+  "status": "PASS_PUBLIC_ABI_MODEL"
+}

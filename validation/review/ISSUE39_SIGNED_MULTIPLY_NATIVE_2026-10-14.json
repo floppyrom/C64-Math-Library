@@ -1,0 +1,269 @@
+{
+  "additional_ready_preparation_calls": 120,
+  "captured_public_calls": 600,
+  "native_cycle_timing_measured": false,
+  "profiles": {
+    "v1_balanced": {
+      "MATH_SMUL16": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "59a304f57b6a2b6fa6466b831cfa2212ccb6326272360861eccf1d4c03f907da",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL24": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "195a5a1b692ff5829f18a1ef3ad1143648599a35dede5dee271b311b2201bc89",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32_READY": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": true,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL8": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "4f8cf25818f4e40b313019758329fca207311548a724df70f6cfb45a8f2587c0",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_SMUL16": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "76f272d66f2e1f7cdcbeef77d930ce6ad2e7c91b76115466a300b85e69ae8cae",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL24": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "195a5a1b692ff5829f18a1ef3ad1143648599a35dede5dee271b311b2201bc89",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32_READY": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": true,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL8": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "4f8cf25818f4e40b313019758329fca207311548a724df70f6cfb45a8f2587c0",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_SMUL16": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "76f272d66f2e1f7cdcbeef77d930ce6ad2e7c91b76115466a300b85e69ae8cae",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL24": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "195a5a1b692ff5829f18a1ef3ad1143648599a35dede5dee271b311b2201bc89",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32_READY": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": true,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL8": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "4f8cf25818f4e40b313019758329fca207311548a724df70f6cfb45a8f2587c0",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_SMUL16": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "76f272d66f2e1f7cdcbeef77d930ce6ad2e7c91b76115466a300b85e69ae8cae",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL24": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "195a5a1b692ff5829f18a1ef3ad1143648599a35dede5dee271b311b2201bc89",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32_READY": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": true,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL8": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "4f8cf25818f4e40b313019758329fca207311548a724df70f6cfb45a8f2587c0",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "MATH_SMUL16": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "59a304f57b6a2b6fa6466b831cfa2212ccb6326272360861eccf1d4c03f907da",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL24": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "195a5a1b692ff5829f18a1ef3ad1143648599a35dede5dee271b311b2201bc89",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL32_READY": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "972aa09f85707b1475257e6c5350787eb26edc06d2348b1ce1add74cb7a6c3ba",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": true,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      },
+      "MATH_SMUL8": {
+        "carry_clear": true,
+        "inputs_preserved": true,
+        "native_output_dump_sha256": "4f8cf25818f4e40b313019758329fca207311548a724df70f6cfb45a8f2587c0",
+        "pairs": 24,
+        "public_results_correct": true,
+        "ready_prepared_by_ordinary_call": false,
+        "result_sentinels_preserved": true,
+        "stable_stack_pointer": 252
+      }
+    }
+  },
+  "public_abi_unchanged": true,
+  "status": "PASS_NATIVE_VICE_PUBLIC_SIGNED_FAMILY"
+}
