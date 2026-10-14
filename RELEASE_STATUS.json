@@ -772,7 +772,7 @@
     "reported_calls": 30720,
     "scenario_count": 6,
     "same_input_across_profiles": true,
-    "report_sha256": "724cbaaca258f4b688dcc88fd7f00b4f5850277ea7f87c3ae22748c4da06b3be",
+    "report_sha256": "18b5e7e3cdd305e306f913427e099319a22964089bd6ddb6116fae2cba934d16",
     "resident_binaries_changed": false,
     "public_abi_changed": false,
     "rejected_q01_source_published": false,
