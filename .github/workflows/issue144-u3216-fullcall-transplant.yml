@@ -1,0 +1,23 @@
+name: Issue144 UDIV32-16 complete public-call source transplant screen
+
+on:
+  push:
+    branches:
+      - 'issue144-u3216-fullcall-source-transplant-*'
+  pull_request:
+    paths:
+      - 'tools/issue144_u3216_fullcall_source_transplant_screen.py'
+      - '.github/workflows/issue144-u3216-fullcall-transplant.yml'
+  workflow_dispatch:
+
+jobs:
+  model-full-public:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Real source-built V2 V3 V4 public DIV MOD after temporary source transplant
+        run: python tools/issue144_u3216_fullcall_source_transplant_screen.py
