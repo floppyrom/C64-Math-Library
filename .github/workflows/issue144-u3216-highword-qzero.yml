@@ -1,0 +1,18 @@
+name: Issue144 B U3216 highword quotient zero source-only screen
+on:
+  push:
+    branches: [issue144-b-u3216-highword-qzero-normal-source-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cpu-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Pair full ordinary DIV/MOD ABI and cycles against same-current-source original, both maps
+        run: python3 tools/issue144_u3216_highword_qzero_screen.py
