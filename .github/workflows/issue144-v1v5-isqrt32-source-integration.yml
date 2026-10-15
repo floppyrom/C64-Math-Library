@@ -1,0 +1,63 @@
+name: Issue144 V1V5 canonical resident ISQRT32 source promotion
+on:
+  push:
+    branches: [issue144-isqrt32-v1v5-canonical-source-20261015]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify canonical V1 root ownership and source generator declaration
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from tempfile import TemporaryDirectory
+          import sys
+          sys.path.insert(0, 'tools')
+          from source_relocation import generate_source
+          p='v1_balanced'
+          canonical=Path('relocatable_source')/p/'math_relocatable.asm'
+          marker='!source "isqrt32_direct_highword_normal.inc"'
+          assert canonical.read_text().count(marker)==1
+          with TemporaryDirectory() as tmp:
+              output=Path(tmp)/'generated.asm'
+              generate_source(p,output)
+              assert output.read_text().count(marker)==1
+          print('V1 generator final-owner PASS')
+          PY
+      - name: Reverse-only original V1 source and prove 51-cycle resident improvement on both maps
+        run: python3 tools/issue144_v1_isqrt32_normal_resident_feasibility.py
+      - name: Build actual V5 hybrid and certify inherited resident root and sequential interleaving
+        run: python3 tools/issue144_v5_isqrt32_inheritance_screen.py
+      - name: Assemble V1 source in reference and alternate memory maps
+        run: |
+          python3 tools/assemble_sources.py --profile v1_balanced --config-kind reference --out /tmp/issue144_v1_build
+          python3 tools/assemble_sources.py --profile v1_balanced --config-kind alternate --out /tmp/issue144_v1_build
+          python3 tools/validate_source_build.py v1_balanced --build /tmp/issue144_v1_build/reference
+          python3 tools/validate_source_build.py v1_balanced --build /tmp/issue144_v1_build/alternate
+      - name: Build V5 source in reference and alternate memory maps
+        run: |
+          python3 tools/build_hybrid.py --config-kind reference --out /tmp/issue144_v5_build
+          python3 tools/build_hybrid.py --config-kind alternate --out /tmp/issue144_v5_build
+          python3 tools/validate_source_build.py v5_hybrid_lowzp --build /tmp/issue144_v5_build/reference
+          python3 tools/validate_source_build.py v5_hybrid_lowzp --build /tmp/issue144_v5_build/alternate
+      - name: Install checksum-pinned VICE x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Native V1 unchanged API 96 paired public root calls
+        run: python3 tools/native_issue144_v1_isqrt32_normal_resident.py
+      - name: Native V5 inherited root 96 paired public calls
+        run: python3 tools/native_issue144_v5_isqrt32_inheritance.py
