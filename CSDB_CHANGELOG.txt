@@ -1,3 +1,7 @@
+2026-10-15 ISSUE144 PRODUCTION SOURCE INTEGRATION TRIAL (NOT RELEASED)
+- Canonical V2–V4 resident SEEK16_INIT sources now use the previously opt-in normal-footprint in-hole Euclid/fractional helper placement; common 32/16 division source uses the qualified shared-take tail (PRs #169/#170). All public API labels and normal ZP allocations intended unchanged.
+- This is a source-level production trial, not a release: shipped five resident PRGs, both REU images, PERFORMANCE.md and published cycle numbers remain unchanged pending full five-profile reference/alternate source validation, native VICE, mixed-call, resource, release and checksum gates. PR #171.
+
 2026-10-15 ISSUE144 SEEK16 NORMAL-RESIDENT IN-HOLE + U3216 SOURCE-ONLY RESEARCH (NOT DEFAULT)
 - Three independent opt-in V2/V3/V4 SEEK16 INIT source variants reuse 192 bytes recovered from the compact 32/16 division tail, replacing repeated accumulator JSR/RTS, relocating Euclid + fractional helpers to the reclaimed resident island. No extra caller RAM, normal ZP or public-entry changes.
 - Same-input local 1,920 ordinary SEEK16 INIT calls/profile followed by STEP: V2 mean -22.1448 cycles, V3/V4 mean -20.4781, no slower measured call, exact full SEEK object state/carry/X/SP. Three 56-entry source validators passed 65,034 calls total.
