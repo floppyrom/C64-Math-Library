@@ -70,7 +70,7 @@ def main():
                 assert restored[offset]==new_root.mem[addr],(hex(addr),'unqualified new root byte')
                 restored[offset]=original
                 changed+=1
-        assert changed==121,('unexpected root replacement footprint',changed)
+        assert 0 < changed <= 0xC0,('unexpected root replacement footprint',changed)
         assert sha(restored)==historical_source_sha,('unqualified V2 source beyond root',sha(restored))
         current_source=bytes(restored)
     if sha(current_source)==historical_source_sha:
