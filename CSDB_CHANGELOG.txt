@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 SEEK16 INIT ACCUMULATOR INLINING FIVE PROFILE OPTIN
+- SEEK16_INIT accumulator direct inline + JMP continuation in separately allocated caller RAM: five public profiles, 20,400 paired full-state CPU model calls with STEP follow-up, 70 real native INIT and 1,120 STEP executions PASS. Mean savings V1/V5 22.105 cycles (some -1 worst), V2 25.451, V3/V4 23.704. Original residents and REU images unchanged; not a default promotion. docs/ISSUE144_SEEK16_INIT_INLINE_ACCUM_V1_V5_2026-10-15.md
+
 2026-10-15 ISSUE144 SIGNED32 DIVMOD NATIVE VICE HARNESS STABILITY
 - Initialize 6510 SP=$FF explicitly before MATH_INIT in the signed32/16 DIV/MOD VICE harness; run three independent 480-call native repetitions (1,440 calls) to screen startup-state flakiness. No math algorithm, performance metrics, ABI, ZP, shipped binaries, or REU image changed.
 
