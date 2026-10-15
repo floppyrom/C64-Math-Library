@@ -1,0 +1,54 @@
+{
+  "mixed_normal_stepper_calls": true,
+  "native_real_cycle_measurement": false,
+  "profiles": {
+    "v1_balanced": {
+      "candidate_init_calls": 7,
+      "frame_dump_sha256": "1dfffb53024bad088c89c4f59db4ebdf7f07642e6fe760198dfafb1a08e36bac",
+      "native_step_calls_each": 112,
+      "original_init_calls": 7,
+      "resident_image_unmodified": true,
+      "source_sha256": "23f8b1c2fc8beddd71fda96e227559cbc2aeacabbd6faf6d1ff4e08d03860497",
+      "status": "PASS_REU_NATIVE_FRAME_STATUS_X_STACK_IDENTICAL"
+    },
+    "v2_pareto_fast": {
+      "candidate_init_calls": 7,
+      "frame_dump_sha256": "1dfffb53024bad088c89c4f59db4ebdf7f07642e6fe760198dfafb1a08e36bac",
+      "native_step_calls_each": 112,
+      "original_init_calls": 7,
+      "resident_image_unmodified": true,
+      "source_sha256": "4fc8bd2e54e15ae20fe55252045a3dc76a991fc527cda883f89ff351c6ffc443",
+      "status": "PASS_REU_NATIVE_FRAME_STATUS_X_STACK_IDENTICAL"
+    },
+    "v3_reu_512k": {
+      "candidate_init_calls": 7,
+      "frame_dump_sha256": "1dfffb53024bad088c89c4f59db4ebdf7f07642e6fe760198dfafb1a08e36bac",
+      "native_step_calls_each": 112,
+      "original_init_calls": 7,
+      "resident_image_unmodified": true,
+      "source_sha256": "54c65f611717b43facdd9a8327e7bd1e0c826d647beeaeb7bee2bd6b60801bbf",
+      "status": "PASS_REU_NATIVE_FRAME_STATUS_X_STACK_IDENTICAL"
+    },
+    "v4_reu_16m": {
+      "candidate_init_calls": 7,
+      "frame_dump_sha256": "1dfffb53024bad088c89c4f59db4ebdf7f07642e6fe760198dfafb1a08e36bac",
+      "native_step_calls_each": 112,
+      "original_init_calls": 7,
+      "resident_image_unmodified": true,
+      "source_sha256": "54c65f611717b43facdd9a8327e7bd1e0c826d647beeaeb7bee2bd6b60801bbf",
+      "status": "PASS_REU_NATIVE_FRAME_STATUS_X_STACK_IDENTICAL"
+    },
+    "v5_hybrid_lowzp": {
+      "candidate_init_calls": 7,
+      "frame_dump_sha256": "1dfffb53024bad088c89c4f59db4ebdf7f07642e6fe760198dfafb1a08e36bac",
+      "native_step_calls_each": 112,
+      "original_init_calls": 7,
+      "resident_image_unmodified": true,
+      "source_sha256": "23f8b1c2fc8beddd71fda96e227559cbc2aeacabbd6faf6d1ff4e08d03860497",
+      "status": "PASS_REU_NATIVE_FRAME_STATUS_X_STACK_IDENTICAL"
+    }
+  },
+  "regular_prgs_reu_unchanged": true,
+  "status": "PASS_NATIVE_VICE_SEEK16_INIT_SOURCE_RELOCATED_FIVE_PROFILES",
+  "total_original_plus_candidate_public_init_calls": 70
+}
