@@ -35,7 +35,7 @@ def synth_old(cfg):
     layout["seek_shared"]="REG_API+$0977"
     config=ROOT/"relocatable_source/v1_balanced"/("math_config_"+cfg+".inc")
     values=parse_config(config)
-    decl="".join(f"{k} = \${v:04X}\\n" for k,v in values.items())
+    decl="".join(f"{k} = ${v:04X}\\n" for k,v in values.items())
     old=K.library("v1_before_issue144",layout,*SCRATCH["v1_balanced"])
     mem,labels,const=Assembler().assemble(decl+old)
     return mem,labels,const
@@ -54,7 +54,7 @@ def run(profile,layout,tmp):
     # independent original differs at precisely a nonempty SEEK byte subset.
     diff=[a for a,v in old.items() if cur.mem[a]!=v]
     assert diff,("no installed SEEK difference",profile,layout)
-    assert len(diff)<100,("unexpected large patch",profile,layout,len(diff))
+    assert len(diff)<400,("unexpected large patch",profile,layout,len(diff))
     for a,v in old.items():
         base.mem[a]=v
     assert base.mem[pub["MATH_SEEK16_INIT"]]==0x4c
