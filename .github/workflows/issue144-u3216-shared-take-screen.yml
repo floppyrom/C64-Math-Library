@@ -1,0 +1,23 @@
+name: Issue144 UDIV32-16 shared take research
+
+on:
+  push:
+    branches:
+      - 'issue144-u3216-shared-take-tail-screen-*'
+  pull_request:
+    paths:
+      - 'tools/issue144_u3216_shared_take_tail_research.py'
+      - '.github/workflows/issue144-u3216-shared-take-screen.yml'
+      - 'docs/ISSUE144_UDIV32_16_SHARED_TAKE_TAIL_SCREEN_2026-10-15.md'
+  workflow_dispatch:
+
+jobs:
+  screen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python tools/issue144_u3216_shared_take_tail_research.py
