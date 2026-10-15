@@ -4,7 +4,7 @@
 Research-only performance rejection gate. This is ONE radix-256 digit with
 normalized divisor and incoming remainder (0<=R<D); NOT a complete UDIV32_16.
 Uses a 64KiB q0,t0 lookup stored in V4 REU bank $20, one 2-byte DMA transfer,
-the shipped public MATH_UMUL8 for the low product, and bounded 17-bit
+an independent eight-round 8x8 multiply for the low product, and bounded 17-bit
 correction code. Checks the *assembled* output, C, scratch and same-call CPU
 instruction timing. REU bus occupancy / VIC contention is not modeled.
 No existing resident image, ABI, REU release image or OptiSearch source changes.
@@ -51,13 +51,32 @@ digit:
     sta $df0a
     lda #$91
     sta $df01
-    ; q0 * divisor-low, using certified public 8x8 -> 16-bit producer
+    ; q0 * divisor-low: self-contained, no shared REU/UMUL8 state.
+    ; Shift/add baseline (8 iterations) is intentionally not optimized.
     lda $76
     sta $75
-    sta $c000
+    lda #$00
+    sta $7c
+    sta $7d
+    sta $7f
     lda $72
-    sta $c004
-    jsr $3000
+    sta $7e
+    ldx #$08
+mul_bit:
+    lsr $76
+    bcc mul_skip
+    clc
+    lda $7c
+    adc $7e
+    sta $7c
+    lda $7d
+    adc $7f
+    sta $7d
+mul_skip:
+    asl $7e
+    rol $7f
+    dex
+    bne mul_bit
 
     ; T = ((t0+Rlo)<<8) + nextByte - (q0*Dlo), signed 24-bit
     clc
@@ -69,10 +88,10 @@ digit:
     sta $7b
     lda $74
     sec
-    sbc $c008
+    sbc $7c
     sta $79
     lda $7a
-    sbc $c009
+    sbc $7d
     sta $7a
     lda $7b
     sbc #$00
@@ -146,7 +165,7 @@ def main():
     start=labels["digit"]
     assert min(code)==0x0d00 and max(code)<0x1000
     c,api=load("v4_reu_16m")
-    assert api["MATH_UMUL8"]==0x3000
+    assert api["MATH_UMUL8"]==0x3000  # available but deliberately NOT called
     assert len(c.reu)>=0x210000
     assert all(b==0 for b in c.reu[0x200000:0x210000]), "REU bank $20 already used: refuse ownership"
     c.reu[0x200000:0x210000]=LOOKUP_Q_R
@@ -167,7 +186,7 @@ def main():
         expected_q,expected_r=divmod((rem<<8)|byte,d)
         assert (q,got)==(expected_q,expected_r),(
             i,hex(rem),hex(d),byte,q,got,expected_q,expected_r,
-            "table",list(c.mem[0x76:0x78]),"product",list(c.mem[0xc008:0xc00a]),
+            "table",list(c.mem[0x76:0x78]),"product",list(c.mem[0x7c:0x7e]),
             "temp",list(c.mem[0x79:0x7c]),
             "dma_regs",list(c.mem[0xdf01:0xdf0b]))
         assert c.c==0 and c.sp==sp and c.d==0
@@ -189,7 +208,8 @@ def main():
             "code_sha256":hashlib.sha256(bytes(code[a] for a in sorted(code))).hexdigest(),
             "extra_normal_zp_bytes":16,"scratch":"$70-$7F (outside current normal ZP pools)",
             "reu_table_bank":"$20","reu_lookup_bytes":65536,
-            "uses_certified_MATH_UMUL8":True,
+            "uses_certified_MATH_UMUL8":False,
+            "multiplier":"self-contained eight-round shift-add; no external REU dependencies",
             "mean_cycles_one_digit":statistics.mean(cycles),
             "median_cycles_one_digit":statistics.median(cycles),
             "p95_cycles_one_digit":percentile(cycles,.95),
