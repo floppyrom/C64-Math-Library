@@ -1,3 +1,6 @@
+2026-10-16 ISSUE144 SEEK16 V1/V5 NORMAL RESIDENT BATCH SOURCE QUALIFIED
+- Source-only V1/V5 SEEK16_INIT integer-accumulator batch now fits 45 bytes at resident REG_API+$0599 (no additional normal ZP/application RAM); 1,088 paired public INIT and 26,112 following STEP calls per profile pass. Mean saving 10.566176 modeled cycles, min 0, max 36; real native x64sc and alternate/reference source-map checks PASS. No frozen PRGs/REUs, PERFORMANCE.md or default binary publication changed. docs/ISSUE144_SEEK16_V15_NORMAL_BATCH_2026-10-16.md
+
 2026-10-16 ISSUE144 B SIGNED 32/16 R-FIRST REMAINDER/QUOTIENT FUSION (SOURCE ONLY)
 - V2/V3/V4 signed32 normal resident removes a redundant JSR/RTS and CLC on negative-N / positive-D paths by placing the same R-then-Q sign correction order in private D32F normal code, tail-calling the existing Q correction. No new normal ZP, caller RAM or illegal opcodes. V5 inherited source validation is a separate gate.
 - 26,352 paired V2–V4 public signed DIV/MOD model comparisons across both maps: 11 cycles saved on each negative-N positive-D call, no slowdown elsewhere, 2.8051 cycles mean on sampled full-width/sign-enriched corpus. Full Q/R/C/N/D and A/X/Y/flags/SP match; prior 14-cycle Q-first trial rejected because it changed A/V.

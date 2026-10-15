@@ -1,6 +1,6 @@
 # Issue #144 D — V1/V5 SEEK16 normal-resident accumulator batching
 
-**Status: qualification in progress; not a default-binary release.** This candidate is
+**Status: source-only qualification PASS for V1/V5 on paired 6510 model and actual VICE; not a default-binary release.** This candidate is
 isolated to the canonical V1/V5 source-builder and is not yet merged.
 
 ## Motivation and placement
@@ -55,3 +55,16 @@ The ordinary fractional path has not been modified.
 V2/V3/V4 retain the already-merged, different in-resident source acceleration
 from Issue144 PR #171. The standalone general SEEK16 example retains its
 own unchanged implementation and calling convention.
+
+## Qualification results
+
+The full 64-movement public test passed 1,088 paired INIT calls and
+26,112 subsequent calls to ordinary STEP/STEP_INT/STEP1 per profile.
+Mean CPU-model saving: **10.566176 cycles** per V1/V5 public INIT;
+smallest saving 0, largest 36, **no slower measured cases**.
+The V1 and V5 native x64sc before/after public SEEK8/16 mode dumps
+were byte-identical. No native cycle timing was performed.
+Both reference and alternate source builds were separately
+qualified by the existing four-profile Issue144 source gate.
+
+Qualification evidence: `validation/review/ISSUE144_SEEK16_V15_NORMAL_BATCH_2026-10-16.json`.
