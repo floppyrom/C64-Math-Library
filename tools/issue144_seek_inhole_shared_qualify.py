@@ -67,7 +67,10 @@ def install_optin(root):
         source=root/ALT/profile/"seek_dda.asm"
         original=dest.read_text()
         modified=source.read_text()
-        assert original.count("s16i_r0:\n        jsr s16_addmin")==1
+        # The production-integration branch may already contain the qualified
+        # opt-in variant.  Require either the pinned pre-optimization input or
+        # exactly the independently published candidate; reject third variants.
+        assert original == modified or original.count("s16i_r0:\n        jsr s16_addmin")==1
         assert modified.count("s16i_frac_remote:")==1
         assert modified.count("s16i_euclid_remote:")==1
         assert "* = U3216_MAIN_END" in modified

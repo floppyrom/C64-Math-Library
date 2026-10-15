@@ -112,6 +112,12 @@ def outputs() -> dict[Path, str]:
     for p, layout in LAYOUTS.items():
         expr, note = SCRATCH[p]
         text = K.library(p, layout, expr, note)
+        # Issue #144 production integration: the independently validated
+        # normal-resident V2-V4 variant now owns these canonical source files.
+        # Pin to that checked-in source; do not overwrite it with the older
+        # generic template when running --check or regenerating SEEK sources.
+        if p in ('v2_pareto_fast', 'v3_reu_512k', 'v4_reu_16m'):
+            text = (ROOT / 'optional/issue144_seek_inhole_shared' / p / 'seek_dda.asm').read_text(encoding='utf-8')
         out[ROOT / p / 'resident/movement/native/seek_dda.asm'] = text
         out[ROOT / p / 'resident/movement/native/README.md'] = readme(p, layout, (expr, note))
         if p == 'v1_balanced':
