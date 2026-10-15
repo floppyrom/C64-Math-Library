@@ -1,0 +1,34 @@
+name: Issue144 production source integration four-source-profile gate
+on:
+  push:
+    branches: [issue144-production-v234-seek-u3216-integration-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-public-api:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build four source-built normal reference source profiles
+        run: python3 tools/assemble_sources.py --profile all --config-kind reference --out build_issue144_prod
+      - name: Validate four source-built profile public source builds
+        run: |
+          for profile in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m; do
+            python3 tools/validate_source_build.py "$profile" --build build_issue144_prod/reference
+          done
+      - name: Build four source-built alternate source profiles
+        run: python3 tools/assemble_sources.py --profile all --config-kind alternate --out build_issue144_prod
+      - name: Validate four source-built alternate public source builds
+        run: |
+          for profile in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m; do
+            python3 tools/validate_source_build.py "$profile" --build build_issue144_prod/alternate
+          done

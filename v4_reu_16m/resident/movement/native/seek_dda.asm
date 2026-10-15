@@ -533,7 +533,23 @@ s16i_rates:
         ldy S16_KI,x
         beq s16i_r0done
 s16i_r0:
-        jsr s16_addmin
+        lda SK_REML
+        clc
+        adc SK_DMIN
+        sta SK_REML
+        bcc s16i_inline_nc
+        inc SK_REMH
+s16i_inline_nc:
+        cmp SK_DMAJL
+        lda SK_REMH
+        sbc SK_DMAJH
+        bcc s16i_inline_done
+        sta SK_REMH
+        lda SK_REML
+        sbc SK_DMAJL
+        sta SK_REML
+        inc SK_WHOLE
+s16i_inline_done:
         dey
         bne s16i_r0
 s16i_r0done:
@@ -547,7 +563,8 @@ s16i_r0done:
         jsr s16_planes
         lda S16_KF,x
         beq s16i_done
-        jsr s16_addmin          ; k0+1
+        jmp s16i_frac_remote   ; k0+1, JMP/JMP replacing JSR/RTS
+s16i_frac_return:
         lda SK_REML
         sta S16_REML+8,x
         lda SK_REMH
@@ -565,26 +582,7 @@ s16i_done:
 s16i_zero:
         jmp s16_arrived         ; C=1
 s16i_euclid:
-        lda SK_DMAJH            ; scale dmaj below 256 for an 8-bit ratio
-        sta SK_T
-        lda SK_DMIN
-        sta SK_EMIN
-        lda SK_DMAJL
-        ldy SK_T
-        beq s16i_scaled
-s16i_scale:
-        lsr SK_T
-        ror
-        lsr SK_EMIN
-        ldy SK_T
-        bne s16i_scale
-s16i_scaled:
-        sta SK_EMAJ
-        jsr seek_euclid_speed   ; A = integer, Y = fraction
-        sta S16_KI,x
-        tya
-        sta S16_KF,x
-        jmp s16i_rates
+        jmp s16i_euclid_remote
 
 * = REG_GAME_API+$00DD
 ; ---- SEEK8 plane writer ----
@@ -791,3 +789,48 @@ seek_cos_d:
         !byte 9, 11, 13, 15, 18, 20, 23, 26
         !byte 28, 31, 34, 37, 40, 44, 47, 50
         !byte 53, 56, 59, 62, 65, 68, 71, 74
+
+; Reclaimed U3216 core gap: original U3216 entry, ZP and D8 slots are unchanged
+* = U3216_MAIN_END
+s16i_euclid_remote:
+        lda SK_DMAJH            ; scale dmaj below 256 for an 8-bit ratio
+        sta SK_T
+        lda SK_DMIN
+        sta SK_EMIN
+        lda SK_DMAJL
+        ldy SK_T
+        beq s16i_scaled
+s16i_scale:
+        lsr SK_T
+        ror
+        lsr SK_EMIN
+        ldy SK_T
+        bne s16i_scale
+s16i_scaled:
+        sta SK_EMAJ
+        jsr seek_euclid_speed   ; A = integer, Y = fraction
+        sta S16_KI,x
+        tya
+        sta S16_KF,x
+        jmp s16i_rates
+
+
+s16i_frac_remote:
+        lda SK_REML
+        clc
+        adc SK_DMIN
+        sta SK_REML
+        bcc s16i_frac_nc
+        inc SK_REMH
+s16i_frac_nc:
+        cmp SK_DMAJL
+        lda SK_REMH
+        sbc SK_DMAJH
+        bcc s16i_frac_done
+        sta SK_REMH
+        lda SK_REML
+        sbc SK_DMAJL
+        sta SK_REML
+        inc SK_WHOLE
+s16i_frac_done:
+        jmp s16i_frac_return

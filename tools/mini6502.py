@@ -180,7 +180,15 @@ class Assembler:
             _,pc,op,arg,mode=it; mode,arg2=self._mode(op,arg,self.labels)
             codeop=OPS[op][mode]; bs=[codeop]
             if mode=='rel':
-                target=self.expr(arg2); d=target-(pc+2)
+                try:
+                    target=self.expr(arg2)
+                except ValueError as exc:
+                    # Source-built integration occasionally references a stale
+                    # generated label. Identify the owning branch precisely.
+                    declared=sum(x.split(';',1)[0].strip()==arg2+':' for x in lines)
+                    raise ValueError(f'unresolved branch at ${pc:04X}: {op} {arg2}; '
+                                     f'label declarations={declared}, resolved={arg2 in self.labels}') from exc
+                d=target-(pc+2)
                 if not -128<=d<=127: raise ValueError(f'branch out of range {hex(pc)} {op} {arg2} {d}')
                 bs.append(d&255)
             elif mode=='imm': bs.append(self.expr(arg2)&255)
