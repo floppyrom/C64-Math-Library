@@ -1,0 +1,60 @@
+name: Issue144 V2V3 ISQRT32 normal resident canonical source integration
+on:
+  push:
+    branches: [issue144-isqrt32-v23-normal-resident-source-integration-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  model-native-source-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify generated owner declaration without overwriting optimized canonical monolith
+        run: |
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          from tempfile import TemporaryDirectory
+          sys.path.insert(0,'tools')
+          from source_relocation import generate_source
+          for profile in ('v2_pareto_fast','v3_reu_512k'):
+              canonical=Path('relocatable_source')/profile/'math_relocatable.asm'
+              marker='!source "isqrt32_direct_highword_normal.inc"'
+              assert canonical.read_text().count(marker)==1,(profile,'missing normal-root final owner')
+              with TemporaryDirectory(prefix='issue144_root_gen_',dir=Path.cwd()) as directory:
+                  reproduced=Path(directory)/'math_relocatable.asm'
+                  generate_source(profile,reproduced)
+                  assert reproduced.read_text().count(marker)==1,(profile,'source regeneration loses new owner')
+              print(profile,'source generator preserves ISQRT32 owner declaration')
+          PY
+          # Do not overwrite current monolith: reference-PRG regeneration still
+          # reverts other independently qualified canonical source integrations.
+          git diff --exit-code -- relocatable_source/v2_pareto_fast/math_relocatable.asm relocatable_source/v3_reu_512k/math_relocatable.asm
+      - name: Independently compare prepromotion V2/V3 normal resident against installed seed in both relocations
+        run: python3 tools/issue144_isqrt32_normal_resident_screen.py --count 1200
+      - name: Real VICE with actual V3 512KiB REU
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          VICE_WRAPPER="$(command -v x64sc)" python3 tools/native_issue144_isqrt32_normal_resident.py
+      - name: Assemble source-built public ABI (reference and alternate maps)
+        run: |
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind reference --out /tmp/isqrt_prod_source
+          python3 tools/assemble_sources.py --profile v2_pareto_fast --config-kind alternate --out /tmp/isqrt_prod_source
+          python3 tools/assemble_sources.py --profile v3_reu_512k --config-kind reference --out /tmp/isqrt_prod_source
+          python3 tools/assemble_sources.py --profile v3_reu_512k --config-kind alternate --out /tmp/isqrt_prod_source
+          python3 tools/validate_source_build.py v2_pareto_fast --build /tmp/isqrt_prod_source/reference
+          python3 tools/validate_source_build.py v2_pareto_fast --build /tmp/isqrt_prod_source/alternate
+          python3 tools/validate_source_build.py v3_reu_512k --build /tmp/isqrt_prod_source/reference
+          python3 tools/validate_source_build.py v3_reu_512k --build /tmp/isqrt_prod_source/alternate
