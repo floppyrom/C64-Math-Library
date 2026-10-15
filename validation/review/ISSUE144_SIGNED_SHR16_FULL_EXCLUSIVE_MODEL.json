@@ -4,6 +4,34 @@
   "normal_resident_images_unchanged": true,
   "pairs_per_profile": 2409,
   "profiles": {
+    "v1_balanced": {
+      "baseline": {
+        "cycle_vector_sha256": "a0322fb2e5008833b335f3cd8996ab5edd9514203bac44c9b385bd60eb8ed717",
+        "max_cycles": 936,
+        "mean_cycles": 806.6089663760897,
+        "median_cycles": 811,
+        "min_cycles": 723,
+        "p95_cycles": 858
+      },
+      "candidate": {
+        "cycle_vector_sha256": "1b81d08a232ae9b4bddfcbf02a2fc4de9e646a10f1e5facd35e0014c32d690f6",
+        "max_cycles": 883,
+        "mean_cycles": 753.6089663760897,
+        "median_cycles": 758,
+        "min_cycles": 670,
+        "p95_cycles": 805
+      },
+      "paired_savings": {
+        "cycle_vector_sha256": "8ef186f3a61df3f7731cfe317dc20f47118b1cda0f76450fd6187766fc3929be",
+        "max_cycles": 53,
+        "mean_cycles": 53.0,
+        "median_cycles": 53,
+        "min_cycles": 53,
+        "p95_cycles": 53
+      },
+      "source_sha256": "dc2dfa16ba1fd8099a49c44750902afc76abfcededd61015e8d910b91d3400b9",
+      "status": "PASS_ALL_SIGNED_OUTPUT_CARRY_INPUTS_STACK"
+    },
     "v2_pareto_fast": {
       "baseline": {
         "cycle_vector_sha256": "ac96d9c394121008cd2246921a5c74bf81f52693d61080611a137de714d45815",
@@ -86,6 +114,34 @@
         "p95_cycles": 53
       },
       "source_sha256": "71779e02d41e27a2784a6bb2cb34569dfd56b96ee238af0f273f139acc9a8042",
+      "status": "PASS_ALL_SIGNED_OUTPUT_CARRY_INPUTS_STACK"
+    },
+    "v5_hybrid_lowzp": {
+      "baseline": {
+        "cycle_vector_sha256": "a0322fb2e5008833b335f3cd8996ab5edd9514203bac44c9b385bd60eb8ed717",
+        "max_cycles": 936,
+        "mean_cycles": 806.6089663760897,
+        "median_cycles": 811,
+        "min_cycles": 723,
+        "p95_cycles": 858
+      },
+      "candidate": {
+        "cycle_vector_sha256": "1b81d08a232ae9b4bddfcbf02a2fc4de9e646a10f1e5facd35e0014c32d690f6",
+        "max_cycles": 883,
+        "mean_cycles": 753.6089663760897,
+        "median_cycles": 758,
+        "min_cycles": 670,
+        "p95_cycles": 805
+      },
+      "paired_savings": {
+        "cycle_vector_sha256": "8ef186f3a61df3f7731cfe317dc20f47118b1cda0f76450fd6187766fc3929be",
+        "max_cycles": 53,
+        "mean_cycles": 53.0,
+        "median_cycles": 53,
+        "min_cycles": 53,
+        "p95_cycles": 53
+      },
+      "source_sha256": "f9b6b6adc23ce07581dce233bac295b59bd1b9b350e6d292c3b320db5b240ad9",
       "status": "PASS_ALL_SIGNED_OUTPUT_CARRY_INPUTS_STACK"
     }
   },
