@@ -10,7 +10,6 @@ P='v4_reu_16m'
 MODULE='relocatable_source/v4_reu_16m/isqrt32_reu_prefix.asm'
 OPT='optional/issue144_v4_reu_isqrt_maskshift/v4_reu_16m.asm'
 BASELINE='optional/issue144_v4_reu_isqrt_maskshift/prepromotion_fastfour_v4_reu.asm'
-BASELINE='optional/issue144_v4_reu_isqrt_fast4/prepromotion_v4_isqrt32_reu_prefix.asm'
 REU='v4_reu_16m/reu/c64_math_v4_16m_game_math.reu'
 E=[0,1,2,3,4,7,15,16,17,255,256,257,32767,65535,65536,65537,0x12345678,0x7fffffff,0x80000000,0x80000001,0xbaddcafe,0xfffffffd,0xfffffffe,0xffffffff]
 
