@@ -22,7 +22,7 @@ LAYOUTS = {
     'v1_balanced': dict(
         seek8_step='REG_API+$0400', seek8_init='REG_API+$04B4', seek16_step='REG_API+$0600',
         seek16_init='REG_API+$0723', seek8_planes='REG_API+$085B', seek16_helpers='REG_API+$08CE',
-        seek_shared='REG_API+$0977', seek8_state='REG_LOW+$08E8', seek16_state='REG_LOW+$0988'),
+        seek_shared='REG_API+$0977', seek16_batch='REG_API+$0599', seek8_state='REG_LOW+$08E8', seek16_state='REG_LOW+$0988'),
     'v2_pareto_fast': dict(
         seek8_step='REG_API+$0E00', seek16_step='REG_GAME_API+$0054', seek8_init='REG_LOW+$0B00',
         seek16_init='REG_LOW+$08E2', seek8_planes='REG_API+$0F6C', seek16_helpers='REG_API+$0EE3',
@@ -65,6 +65,15 @@ def readme(profile: str, layout: dict, scratch: tuple) -> str:
             end += 1
         code_total += end - start + 1
         rows.append(f'| {blk} | `{layout[blk]}` | ${start:04X}-${end:04X} | {end - start + 1} |')
+    # The V1 (also V5) source owns an additional loop-only helper island.
+    # Include its symbol in the gap accounting; do not fold it into SEEK8_INIT.
+    if base == 'v1_balanced':
+        start = labels['s16_addmin_batch']
+        end = start
+        while end + 1 in mem:
+            end += 1
+        rows.insert(3, f'| seek16_batch | `REG_API+$0599` | ${start:04X}-${end:04X} | {end - start + 1} |')
+        code_total += end - start + 1
     s8, s16 = const['SEEK8_STATE'], const['SEEK16_STATE']
     rows.append(f"| SEEK8 object state | `{layout['seek8_state']}` | ${s8:04X}-${s8 + K.S8_BYTES - 1:04X} | {K.S8_BYTES} |")
     rows.append(f"| SEEK16 object state | `{layout['seek16_state']}` | ${s16:04X}-${s16 + K.S16_BYTES - 1:04X} | {K.S16_BYTES} |")
