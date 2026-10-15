@@ -1,0 +1,20 @@
+name: Issue144 V1V5 SEEK16 in-resident source feasibility
+on:
+  push:
+    branches: [issue144-v1v5-seek16-normalresident-slot-screen-20261015]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check relocated same-slot code ownership, 1600 public INIT and STEP pairs
+        run: python3 tools/issue144_seek16_v15_normal_resident_feasibility.py
