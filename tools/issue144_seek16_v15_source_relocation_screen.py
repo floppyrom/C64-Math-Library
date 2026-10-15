@@ -74,7 +74,16 @@ def source_pair(layout):
         c=CPU(ram);c.d=0
         c.call(symbols["MATH_INIT"],2_000_000)
         return c
-    return machine(before),machine(after),csymbols,values,len(changed),patch
+    # The public state constants live in math_api.inc rather than the
+    # relocatable assembler's core symbol table. Derive them from the
+    # verified map, not from frozen reference addresses.
+    public=dict(csymbols)
+    public.update(MATH_X=values["MATH_IO"],MATH_Y=values["MATH_IO"]+4,
+                  MATH_N=values["MATH_IO"]+0x10,
+                  MATH_SEEK16_POS_XL=values["REG_LOW"]+0x988,
+                  MATH_SEEK16_POS_XH=values["REG_LOW"]+0x990,
+                  MATH_SEEK16_POS_Y=values["REG_LOW"]+0x998)
+    return machine(before),machine(after),public,values,len(changed),patch
 
 def feed(cpu,api,move,speed,slot):
     x0,y0,x1,y1=move
