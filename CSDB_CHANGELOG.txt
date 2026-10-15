@@ -1,3 +1,9 @@
+2026-10-15 ISSUE144 U3216 FULL-DOMAIN SHARED-TAKE INLINE SOURCE (RESEARCH ONLY)
+- Independently authored standard-layout NMOS 6510 source alternative replaces duplicated forced/taken 32/16 low-tail subtraction with a shared path, saving 192 bytes of V2 general-tail source assembly (685 -> 493); preserves the D8/D0 dispatch and stable public ABI.
+- Same-input 10,735 alternating UDIV32_16/UMOD32_16 public-call CPU-model cases PASS. V2 mean saved 6.3371 cycles overall / 6.7192 uniform, worst 1-cycle slowdown on 108 cases. D8 and D0 unchanged, no default promotion.
+- Four-profile (V1-V4) source builds and broad source validators PASS 86,712 calls; 48 native VICE 3.13.2 full-public calls PASS across V2, V3+512KiB REU, V4+16MiB REU. Reproducer and pinned optional ASM in optional/issue144_u3216_shared_take_inline; private OptiSearch implementation excluded.
+- This modest win does not close Issue144 unrestricted division architecture; no PRGs/REUs/performance records or builder defaults changed. V5, production integration and physical REU/VIC timing remain future qualification.
+
 2026-10-15 ISSUE144 V4 ISQRT32 FAST-FOUR SOURCE-ONLY RESEARCH (NOT DEFAULT)
 - Independently authored opt-in V4 16-bit first-four-radix-4-step refinement; retains full 17-bit last two steps and current-main immediate $91 REU DMA.
 - Same-input 8,619 full-public CPU-model calls PASS: 918.542406 -> 807.352361 mean cycles (111.190045 saved), no slower case; 48 native VICE calls PASS on actual 16-MiB REU after hardware-correct DMA.

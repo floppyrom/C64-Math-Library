@@ -1,4 +1,16 @@
 {
+  "issue144_u3216_shared_take_full_domain_inline_2026_10_15": {
+    "status": "PASS_SOURCE_ONLY_NO_DEFAULT_CHANGE",
+    "documentation": "optional/issue144_u3216_shared_take_inline/README.md",
+    "source": "optional/issue144_u3216_shared_take_inline/udiv32_16_split_direct_shared.inc",
+    "paired_public_cpu_calls": 10735,
+    "full_source_api_calls": 86712,
+    "native_vice_public_calls": 48,
+    "saved_mean_cycles_all_v2": 6.3371,
+    "worst_regression_cycles_v2": 1,
+    "tail_code_bytes_saved": 192,
+    "production_promotion": false
+  },
   "issue144_u3216_nooverflow_lowdiv_optin_2026_10_15": {
     "status": "PASS_NATIVE_SOURCE_ONLY_OPTIN_RESTRICTED_FAST_LANE",
     "description": "Unrestricted N32/D16 via safe fallback, faster only on D=$0100-$7FFF",

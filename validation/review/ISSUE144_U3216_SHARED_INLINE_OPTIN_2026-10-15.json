@@ -1,0 +1,75 @@
+{
+  "status": "PASS_RESEARCH_OPTIN_NOT_DEFAULT",
+  "date": "2026-10-15",
+  "origin": "archived source snapshot (U3216 common source identical to main)",
+  "api": [
+    "MATH_UDIV32_16",
+    "MATH_UMOD32_16"
+  ],
+  "source": "optional/issue144_u3216_shared_take_inline/udiv32_16_split_direct_shared.inc",
+  "common_source_sha256": "161959b6d505f1216e86a8e54bcca40bc1c48f66d67f11ac0fe6cceab3c31324",
+  "baseline_general_tail_bytes": 685,
+  "candidate_general_tail_bytes": 493,
+  "public_model_calls": 10735,
+  "source_build_profiles": [
+    "v1_balanced",
+    "v2_pareto_fast",
+    "v3_reu_512k",
+    "v4_reu_16m"
+  ],
+  "full_api_calls_per_profile": 21678,
+  "native_vice": "VICE 3.13.2 x64sc",
+  "native_calls": {
+    "v2": 16,
+    "v3_512KiB_REU": 16,
+    "v4_16MiB_REU": 16
+  },
+  "native_errors": 0,
+  "benchmark": {
+    "all": {
+      "n": 10735,
+      "mean_saved": 6.3371,
+      "worst": -1,
+      "slower": 108
+    },
+    "uniform": {
+      "n": 5000,
+      "mean_saved": 6.7192,
+      "worst": -1,
+      "slower": 56
+    },
+    "lowD": {
+      "n": 2500,
+      "mean_saved": 9.4984,
+      "worst": 3,
+      "slower": 0
+    },
+    "highD": {
+      "n": 2500,
+      "mean_saved": 3.962,
+      "worst": -1,
+      "slower": 52
+    },
+    "D8": {
+      "n": 400,
+      "mean_saved": 0,
+      "worst": 0,
+      "slower": 0
+    },
+    "D0": {
+      "n": 50,
+      "mean_saved": 0,
+      "worst": 0,
+      "slower": 0
+    }
+  },
+  "production_artifacts_changed": false,
+  "production_promotion": false,
+  "limitations": [
+    "small unrestricted speedup below initial 5% triage threshold",
+    "one-cycle worst-case regressions",
+    "V5 hybrid integration unqualified",
+    "physical VIC/REU timing unmeasured",
+    "IRQ/NMI and arbitrary mixed-call use unqualified"
+  ]
+}
