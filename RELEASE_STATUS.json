@@ -4022,5 +4022,28 @@
         }
       }
     }
+  },
+  "issue144_v4_reu_isqrt32_rotate6_2026_10_15": {
+    "status": "PASS_CANONICAL_CPU_AND_NATIVE_REAL_REU_SOURCE_OPTIN_ONLY",
+    "profile": "v4_reu_16m",
+    "all_unsigned_32bit_inputs_supported": true,
+    "canonical_paired_inputs": 4130,
+    "CPU_saved_cycles_every_case": 6,
+    "model_baseline": 917.3174334140435,
+    "model_candidate": 911.3174334140435,
+    "native_original_candidate_calls": 48,
+    "real_16MiB_REU_image_loaded": true,
+    "normal_code_growth": 0,
+    "normal_ZP_growth": 0,
+    "normal_REU_data_growth": 0,
+    "optional_installer_bytes": 88,
+    "begin_cycles": 66,
+    "end_cycles": 56,
+    "normal_PRGs_and_REUs_unchanged": true,
+    "native_cycles_measured": false,
+    "source": "optional/issue144_v4_reu_isqrt_rotate6/v4_reu_16m.asm",
+    "documentation": "docs/ISSUE144_V4_REU_ISQRT32_ROTATE6_PARETO_2026-10-15.md",
+    "model_evidence": "validation/review/ISSUE144_V4_REU_ISQRT32_ROTATE6_MODEL.json",
+    "native_evidence": "validation/review/ISSUE144_V4_REU_ISQRT32_ROTATE6_NATIVE_VICE.json"
   }
 }
