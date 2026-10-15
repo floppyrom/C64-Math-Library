@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 UNSIGNED 32/16 LOW-WORD TAIL RESEARCH (NOT A RELEASED DIVIDER)
+- Tested shared forced/accepted subtraction in an independent 16-step unsigned 32/16 low-word quotient/remainder continuation: 7,554 matching nonzero-divisor oracle cases, tail bytes 684->492, 7.511 mean modeled cycles saved, no slower screened tail cases. Strictly tail-only, high-word residual oracle-seeded; zero-divisor, full public ABI, native VICE, resident placement and full-call Pareto not yet qualified. Draft research only; shipped PRGs/REU, PERFORMANCE and public entries unchanged. See docs/ISSUE144_UDIV32_16_SHARED_TAKE_TAIL_SCREEN_2026-10-15.md.
+
 2026-10-15 ISSUE144 SIGNED32 DIVMOD NATIVE VICE HARNESS STABILITY
 - Initialize 6510 SP=$FF explicitly before MATH_INIT in the signed32/16 DIV/MOD VICE harness; run three independent 480-call native repetitions (1,440 calls) to screen startup-state flakiness. No math algorithm, performance metrics, ABI, ZP, shipped binaries, or REU image changed.
 
