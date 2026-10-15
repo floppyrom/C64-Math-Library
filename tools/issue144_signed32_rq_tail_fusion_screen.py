@@ -82,7 +82,7 @@ def pair(profile,kind):
     assert c0["MATH_SDIV32_16"]==c1["MATH_SDIV32_16"]==v["REG_API"]+0x0EE0
     assert c0["MATH_SMOD32_16"]==c1["MATH_SMOD32_16"]==v["REG_API"]+0x0FDD
     assert c0["MULDIV16_S_DIV_QR"]==c1["MULDIV16_S_DIV_QR"]
-    return old,candidate,c0,v
+    return old,candidate,c1,v
 
 def corpus(count):
     rng=random.Random(0x144B0026)
