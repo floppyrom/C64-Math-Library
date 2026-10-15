@@ -28,7 +28,7 @@ jobs:
           canonical=Path('relocatable_source')/p/'math_relocatable.asm'
           marker='!source "isqrt32_direct_highword_normal.inc"'
           assert canonical.read_text().count(marker)==1
-          with TemporaryDirectory() as tmp:
+          with TemporaryDirectory(dir=Path.cwd()) as tmp:
               output=Path(tmp)/'generated.asm'
               generate_source(p,output)
               assert output.read_text().count(marker)==1
