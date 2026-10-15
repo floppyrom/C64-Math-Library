@@ -1,0 +1,55 @@
+name: Issue144 signed 32by16 direct public JMP full ABI
+on:
+  push:
+    branches: [issue144-signed32-divmod-direct-jmp-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  signed32-divmod-jmp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Public signed32by16 full Q/R/C and 65580 model calls
+        run: python3 tools/issue144_signed_divmod_alias_direct_research.py
+      - name: Generate and execute four real 6510 reversible BEGIN END installers
+        run: python3 tools/issue144_signed32_divmod_alias_installer.py
+      - name: Install checksum-pinned native x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Native x64sc full Q/R/C flags and source BEGIN END across V1 to V5
+        run: python3 tools/native_issue144_signed32_divmod_alias_direct.py
+      - name: Verify both changelogs, release status and full SHA manifest
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue144_signed32_divmod_direct_jump.py
+      - name: Commit release records and sources on research branch
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: seal signed32 DIVMOD direct public JMP opt-in tests and changelogs'
+          git push origin HEAD:issue144-signed32-divmod-direct-jmp-20261015
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-signed32-divmod-direct-jmp-native-model
+          path: |
+            validation/review/ISSUE144_SIGNED32_16_DIRECT_PUBLIC_JUMP_RESEARCH.json
+            validation/review/ISSUE144_SIGNED32_16_DIRECT_PUBLIC_JUMP_INSTALLER.json
+            validation/review/ISSUE144_SIGNED32_16_DIRECT_PUBLIC_JUMP_NATIVE_VICE.json
+          if-no-files-found: warn

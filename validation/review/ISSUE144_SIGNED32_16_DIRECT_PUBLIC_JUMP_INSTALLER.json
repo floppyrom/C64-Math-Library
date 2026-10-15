@@ -1,0 +1,67 @@
+{
+  "install_requires_exclusive_patch_transition": true,
+  "normal_resident_prg_unchanged": true,
+  "profiles": {
+    "v1_balanced": {
+      "affected_public_entries": [
+        "MATH_SMOD32_16"
+      ],
+      "changed_operand_bytes": 2,
+      "code_bytes": 22,
+      "disable_cycles": 18,
+      "enable_cycles": 18,
+      "probed_pairs_per_api_while_enabled": 180,
+      "restored_original_signed_divmod": true,
+      "source_sha256": "1362d0e77bfa55c43044a682702165bef35c8968f9e99854d5c384560dcf97c4",
+      "status": "PASS_6510_BEGIN_END_FULL_ABI_RESTORED"
+    },
+    "v2_pareto_fast": {
+      "affected_public_entries": [
+        "MATH_SDIV32_16",
+        "MATH_SMOD32_16"
+      ],
+      "changed_operand_bytes": 4,
+      "code_bytes": 42,
+      "disable_cycles": 30,
+      "enable_cycles": 30,
+      "probed_pairs_per_api_while_enabled": 180,
+      "restored_original_signed_divmod": true,
+      "source_sha256": "1bb12922d0280da64995f919180e3849d59a1e93ff6fea5070e86174f5c192d3",
+      "status": "PASS_6510_BEGIN_END_FULL_ABI_RESTORED"
+    },
+    "v3_reu_512k": {
+      "affected_public_entries": [
+        "MATH_SDIV32_16",
+        "MATH_SMOD32_16"
+      ],
+      "changed_operand_bytes": 4,
+      "code_bytes": 42,
+      "disable_cycles": 30,
+      "enable_cycles": 30,
+      "probed_pairs_per_api_while_enabled": 180,
+      "restored_original_signed_divmod": true,
+      "source_sha256": "f158dc022a7e1c96e9685feda85b075894510024a13d37342a0397ff3b9a1b52",
+      "status": "PASS_6510_BEGIN_END_FULL_ABI_RESTORED"
+    },
+    "v4_reu_16m": {
+      "affected_public_entries": [
+        "MATH_SDIV32_16",
+        "MATH_SMOD32_16"
+      ],
+      "changed_operand_bytes": 4,
+      "code_bytes": 42,
+      "disable_cycles": 30,
+      "enable_cycles": 30,
+      "probed_pairs_per_api_while_enabled": 180,
+      "restored_original_signed_divmod": true,
+      "source_sha256": "3a86812aacb32c9a22a7f4aefcc26caa13f706728f7e50b8c96109dfca868bd9",
+      "status": "PASS_6510_BEGIN_END_FULL_ABI_RESTORED"
+    },
+    "v5_hybrid_lowzp": {
+      "already_direct": true,
+      "changed_bytes": 0,
+      "expected_cycle_gain": 0
+    }
+  },
+  "status": "PASS_S32_16_REAL_6510_SOURCE_BEGIN_END"
+}
