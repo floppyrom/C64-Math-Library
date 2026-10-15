@@ -20,13 +20,13 @@ SEEK8 steppers sit inside one page, so no hot branch pays a page-crossing cycle.
 | seek8_init | `REG_API+$04B4` | $34B4-$3598 | 229 |
 | seek8_planes | `REG_API+$085B` | $385B-$38CD | 115 |
 | seek16_step | `REG_API+$0600` | $3600-$3722 | 291 |
-| seek16_init | `REG_API+$0723` | $3723-$3859 | 311 |
-| seek16_helpers | `REG_API+$08CE` | $38CE-$3976 | 169 |
-| seek_shared | `REG_API+$0977` | $3977-$39F5 | 127 |
+| seek16_init | `REG_API+$0723` | $3723-$3858 | 310 |
+| seek16_helpers | `REG_API+$08CE` | $38CE-$3979 | 172 |
+| seek_shared | `REG_API+$097A` | $397A-$39F8 | 127 |
 | SEEK8 object state | `REG_LOW+$08E8` | $18E8-$1987 | 160 |
 | SEEK16 object state | `REG_LOW+$0988` | $1988-$1A7F | 248 |
 
-Code: 1422 bytes plus 24 bytes of JMP slots. Object state: 408 bytes
+Code: 1424 bytes plus 24 bytes of JMP slots. Object state: 408 bytes
 (8 slots each). No lookup table other than the 32-byte Euclidean correction inside `seek_shared`.
 
 ## Scratch and resources
@@ -36,3 +36,5 @@ Code: 1422 bytes plus 24 bytes of JMP slots. Object state: 408 bytes
 - No REU use and no `MATH_INIT` dependency; the steppers need no initialisation beyond `*_INIT`.
 - `MATH_SEEK*_STEP1` uses the stable NMOS `DCP abs,X` opcode.
 - Not reentrant with other library calls (shared init scratch), as elsewhere in the library.
+
+V1/V5 SEEK16_INIT uses the resident Y-counted `s16_addmin` helper for integer speed quanta, so it consumes Y during INIT. The fractional phase explicitly loads Y=1. The three-byte helper extension shifts `seek_shared` by three bytes into the existing in-region free tail without allocating application RAM or zero page. Per-frame STEPs and their public ABI remain unchanged. The standalone generic mirror deliberately retains the original uncounted helper; the resident variant is selected only for V1/V5.
