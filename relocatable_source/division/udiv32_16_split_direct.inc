@@ -110,7 +110,7 @@ U3216_B0:
         rol U3216_LN1
         rol U3216_R0
         rol
-        bcs U3216_FORCE0
+        bcs U3216_TAKE0
         cmp U3216_D1
         bcc U3216_NO0
         bne U3216_TAKE0
@@ -124,21 +124,13 @@ U3216_TAKE0:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO0
-U3216_FORCE0:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO0:
 U3216_B1:
         rol U3216_LN1
         rol U3216_R0
         rol
-        bcs U3216_FORCE1
+        bcs U3216_TAKE1
         cmp U3216_D1
         bcc U3216_NO1
         bne U3216_TAKE1
@@ -152,21 +144,13 @@ U3216_TAKE1:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO1
-U3216_FORCE1:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO1:
 U3216_B2:
         rol U3216_LN1
         rol U3216_R0
         rol
-        bcs U3216_FORCE2
+        bcs U3216_TAKE2
         cmp U3216_D1
         bcc U3216_NO2
         bne U3216_TAKE2
@@ -180,21 +164,13 @@ U3216_TAKE2:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO2
-U3216_FORCE2:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO2:
 U3216_B3:
         rol U3216_LN1
         rol U3216_R0
         rol
-        bcs U3216_FORCE3
+        bcs U3216_TAKE3
         cmp U3216_D1
         bcc U3216_NO3
         bne U3216_TAKE3
@@ -208,21 +184,13 @@ U3216_TAKE3:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO3
-U3216_FORCE3:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO3:
 U3216_B4:
         rol U3216_LN1
         rol U3216_R0
         rol
-        bcs U3216_FORCE4
+        bcs U3216_TAKE4
         cmp U3216_D1
         bcc U3216_NO4
         bne U3216_TAKE4
@@ -236,21 +204,13 @@ U3216_TAKE4:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO4
-U3216_FORCE4:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO4:
 U3216_B5:
         rol U3216_LN1
         rol U3216_R0
         rol
-        bcs U3216_FORCE5
+        bcs U3216_TAKE5
         cmp U3216_D1
         bcc U3216_NO5
         bne U3216_TAKE5
@@ -264,21 +224,13 @@ U3216_TAKE5:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO5
-U3216_FORCE5:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO5:
 U3216_B6:
         rol U3216_LN1
         rol U3216_R0
         rol
-        bcs U3216_FORCE6
+        bcs U3216_TAKE6
         cmp U3216_D1
         bcc U3216_NO6
         bne U3216_TAKE6
@@ -292,21 +244,13 @@ U3216_TAKE6:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO6
-U3216_FORCE6:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO6:
 U3216_B7:
         rol U3216_LN1
         rol U3216_R0
         rol
-        bcs U3216_FORCE7
+        bcs U3216_TAKE7
         cmp U3216_D1
         bcc U3216_NO7
         bne U3216_TAKE7
@@ -320,14 +264,6 @@ U3216_TAKE7:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO7
-U3216_FORCE7:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO7:
         rol U3216_LN1
@@ -335,7 +271,7 @@ U3216_B8:
         rol U3216_LN0
         rol U3216_R0
         rol
-        bcs U3216_FORCE8
+        bcs U3216_TAKE8
         cmp U3216_D1
         bcc U3216_NO8
         bne U3216_TAKE8
@@ -349,21 +285,13 @@ U3216_TAKE8:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO8
-U3216_FORCE8:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO8:
 U3216_B9:
         rol U3216_LN0
         rol U3216_R0
         rol
-        bcs U3216_FORCE9
+        bcs U3216_TAKE9
         cmp U3216_D1
         bcc U3216_NO9
         bne U3216_TAKE9
@@ -377,21 +305,13 @@ U3216_TAKE9:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO9
-U3216_FORCE9:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO9:
 U3216_B10:
         rol U3216_LN0
         rol U3216_R0
         rol
-        bcs U3216_FORCE10
+        bcs U3216_TAKE10
         cmp U3216_D1
         bcc U3216_NO10
         bne U3216_TAKE10
@@ -405,21 +325,13 @@ U3216_TAKE10:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO10
-U3216_FORCE10:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO10:
 U3216_B11:
         rol U3216_LN0
         rol U3216_R0
         rol
-        bcs U3216_FORCE11
+        bcs U3216_TAKE11
         cmp U3216_D1
         bcc U3216_NO11
         bne U3216_TAKE11
@@ -433,21 +345,13 @@ U3216_TAKE11:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO11
-U3216_FORCE11:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO11:
 U3216_B12:
         rol U3216_LN0
         rol U3216_R0
         rol
-        bcs U3216_FORCE12
+        bcs U3216_TAKE12
         cmp U3216_D1
         bcc U3216_NO12
         bne U3216_TAKE12
@@ -461,21 +365,13 @@ U3216_TAKE12:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO12
-U3216_FORCE12:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO12:
 U3216_B13:
         rol U3216_LN0
         rol U3216_R0
         rol
-        bcs U3216_FORCE13
+        bcs U3216_TAKE13
         cmp U3216_D1
         bcc U3216_NO13
         bne U3216_TAKE13
@@ -489,21 +385,13 @@ U3216_TAKE13:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO13
-U3216_FORCE13:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO13:
 U3216_B14:
         rol U3216_LN0
         rol U3216_R0
         rol
-        bcs U3216_FORCE14
+        bcs U3216_TAKE14
         cmp U3216_D1
         bcc U3216_NO14
         bne U3216_TAKE14
@@ -517,21 +405,13 @@ U3216_TAKE14:
         sta U3216_R0
         txa
         sbc U3216_D1
-        bcs U3216_NO14
-U3216_FORCE14:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
         sec
 U3216_NO14:
 U3216_B15:
         rol U3216_LN0
         rol U3216_R0
         rol
-        bcs U3216_FORCE15
+        bcs U3216_TAKE15
         cmp U3216_D1
         bcc U3216_NO15
         bne U3216_TAKE15
@@ -539,14 +419,6 @@ U3216_B15:
         cpx U3216_D0
         bcc U3216_NO15
 U3216_TAKE15:
-        tax
-        lda U3216_R0
-        sbc U3216_D0
-        sta U3216_R0
-        txa
-        sbc U3216_D1
-        bcs U3216_NO15
-U3216_FORCE15:
         tax
         lda U3216_R0
         sbc U3216_D0
