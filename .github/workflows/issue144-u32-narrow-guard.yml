@@ -1,0 +1,52 @@
+name: Issue144 unsigned 32by16 narrow numerator full-output optin
+on:
+  push:
+    branches: [issue144-u32-narrow-guard-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  u32-full-qr-narrow-workload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Five-profile same-input all-output 12,800 paired CPU model and workload corpus
+        run: python3 tools/issue144_u32div_smallnumerator_screen.py
+      - name: Install SHA256-pinned headless real VICE x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Native original and guarded UDIV and UMOD full Q R C on all five profiles
+        run: python3 tools/native_issue144_u32_16_narrow_guard.py
+      - name: Release-source research seal and both changelogs
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue144_u32_16_narrow_guard.py
+      - name: Commit reproducible proofs docs and complete package SHA manifest
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: seal 22B workload-dependent 32/16 full Q/R narrow N source'
+          git push origin HEAD:issue144-u32-narrow-guard-20261015
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-unsigned32by16-narrow-guard-model-native
+          path: |
+            validation/review/ISSUE144_U32DIV32_16_NARROW_N_RESEARCH.json
+            validation/review/ISSUE144_U32DIV32_16_NARROW_GUARD_NATIVE_VICE.json
+          if-no-files-found: warn

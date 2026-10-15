@@ -1,0 +1,72 @@
+{
+  "code_bytes": 22,
+  "native_cycles_measured": false,
+  "native_old_and_candidate_calls": 480,
+  "normal_resident_PRGs_unchanged": true,
+  "precondition": "none; all 32-bit unsigned inputs supported",
+  "profiles": {
+    "v1_balanced": {
+      "MATH_UDIV32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      },
+      "MATH_UMOD32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_UDIV32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      },
+      "MATH_UMOD32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_UDIV32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      },
+      "MATH_UMOD32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_UDIV32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      },
+      "MATH_UMOD32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "MATH_UDIV32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      },
+      "MATH_UMOD32_16": {
+        "baseline_native_calls": 24,
+        "candidate_native_calls": 24,
+        "complete_Q32_R16_C_inputs_stack_equal": true
+      }
+    }
+  },
+  "registered_volatile_XY_and_NZV_may_differ": true,
+  "source_sha256": "21fdbaa080230f8fb62215cfd8b187aac9c504e25810668104c467b4c5635008",
+  "status": "PASS_NATIVE_ALL_FIVE_FULL_QR_C_NARROW_GUARD"
+}
