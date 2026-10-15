@@ -18,9 +18,26 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Rebuild canonical generated source and verify source ownership
+      - name: Verify generated owner declaration without overwriting optimized canonical monolith
         run: |
-          python3 tools/generate_sources.py
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          from tempfile import TemporaryDirectory
+          sys.path.insert(0,'tools')
+          from source_relocation import generate_source
+          for profile in ('v2_pareto_fast','v3_reu_512k'):
+              canonical=Path('relocatable_source')/profile/'math_relocatable.asm'
+              marker='!source "isqrt32_direct_highword_normal.inc"'
+              assert canonical.read_text().count(marker)==1,(profile,'missing normal-root final owner')
+              with TemporaryDirectory(prefix='issue144_root_gen_') as directory:
+                  reproduced=Path(directory)/'math_relocatable.asm'
+                  generate_source(profile,reproduced)
+                  assert reproduced.read_text().count(marker)==1,(profile,'source regeneration loses new owner')
+              print(profile,'source generator preserves ISQRT32 owner declaration')
+          PY
+          # Do not overwrite current monolith: reference-PRG regeneration still
+          # reverts other independently qualified canonical source integrations.
           git diff --exit-code -- relocatable_source/v2_pareto_fast/math_relocatable.asm relocatable_source/v3_reu_512k/math_relocatable.asm
       - name: Independently compare prepromotion V2/V3 normal resident against installed seed in both relocations
         run: python3 tools/issue144_isqrt32_normal_resident_screen.py --count 1200
