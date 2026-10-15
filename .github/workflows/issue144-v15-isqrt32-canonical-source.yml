@@ -18,6 +18,10 @@ jobs:
           python-version: '3.12'
       - name: V1/V5 both maps 56-entry full ABI, V5 inheritance and paired source-model proof
         run: python3 tools/issue144_v15_isqrt32_canonical_source_qualification.py
+      - name: Canonical source regeneration must retain the installed V1 root module
+        run: |
+          python3 tools/generate_sources.py
+          git diff --exit-code -- relocatable_source/v1_balanced/math_relocatable.asm
   native:
     runs-on: ubuntu-latest
     timeout-minutes: 50
