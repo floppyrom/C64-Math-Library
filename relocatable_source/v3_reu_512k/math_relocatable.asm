@@ -4875,6 +4875,9 @@ ZCE4:
 ; Issue39 exact ISQRT16 code+seed replaces retired eight-trial island.
 !source "isqrt16_seed_square_trial.inc"
 
+; Issue144 unrestricted ISQRT32 highword seed, normal resident source-owned slot.
+!source "isqrt32_direct_highword_normal.inc"
+
 ; Canonical optimized Turbo16 public CALL wrapper.
 !source "../turbo/turbo16_runtime.asm"
 

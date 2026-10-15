@@ -1,3 +1,14 @@
+2026-10-15 ISSUE144 V2/V3 ISQRT32 DIRECT HIGHWORD SEED IN NORMAL RESIDENT SOURCE (NOT BINARY RELEASE)
+- Installed the independently qualified unrestricted direct-highword sqrt seed as final-owner source in the existing 192-byte normal V2/V3 root slot, without new ZP or caller-owned RAM.
+- PR #174 demonstrated 47 CPU-model cycles saved for every one of 3,388 paired calls and 192 native x64sc calls with actual V3 512KiB REU. Production-source branch checks include normal public API and two memory relocations.
+- Source-generator includes the new root module but full historical-image regeneration may rewrite other unrelated optimized source; use non-destructive generator-owner check.
+- Five frozen reference PRGs, REUs and production PERFORMANCE.md unchanged. Physical REU/VIC DMA timing, IRQ/NMI interference and full release publication remain open.
+
+2026-10-15 ISSUE144 V2/V3 NORMAL-RESIDENT ISQRT32 HIGHWORD SEED SOURCE INTEGRATION (NO BINARY RELEASE)
+- Install independent full-domain ISQRT32 highword seed as canonical V2/V3 final-owner source modules within existing 192-byte root slot; no added normal ZP or caller RAM.
+- PR #174 research qualified 3,388 paired public model calls: exactly 47 cycles saved each, no slower inputs; 192 real x64sc public calls V2/V3 both relocations, V3 512KiB REU, all equal. New source branch's dedicated model/native/56-entry ABI gate PASS.
+- Preserve all historical PRGs/REUs and PERFORMANCE.md; note legacy whole-monolith regeneration from historical binaries can revert unrelated source optimizations. Source owner generator tested nondestructively; physical VIC/REU cycles and binary release remain open.
+
 2026-10-15 ISSUE144 V2/V3 ISQRT32 NORMAL-RESIDENT HIGHWORD-SEED RESEARCH (SOURCE-ONLY OPTIN)
 - Reused already verified unrestricted direct-highword-seed strategy without its caller-owned $0C00 overlay: helper fits within the pre-existing 192-byte V2/V3 $CB40-$CBFF normal resident slot (alternate map $8A40-$8AFF); source and public entry unchanged in the committed default.
 - Independent source model 847 input pairs/profile/layout (3,388 paired): exactly 47 CPU-model cycles saved each, zero slower cases, correct root/carry/inputs/XY/SP, no additional normal zero-page or caller RAM; reference/alternate full-source assemblies differ only in root slot.
