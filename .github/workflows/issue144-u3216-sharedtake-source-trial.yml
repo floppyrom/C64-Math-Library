@@ -1,0 +1,31 @@
+name: Issue144 U3216 shared-take full-public source trial
+on:
+  pull_request:
+    paths:
+      - optional/issue144_u3216_sharedtake_fullwidth/**
+      - .github/workflows/issue144-u3216-sharedtake-source-trial.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  public-abi-source-trial:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Apply opt-in source only inside isolated CI checkout
+        run: cp optional/issue144_u3216_sharedtake_fullwidth/udiv32_16_sharedtake.inc relocatable_source/division/udiv32_16_split_direct.inc
+      - name: Build V1-V5 reference and alternate profiles
+        run: make reference alternate
+      - name: V2-V4 paired full-public correctness, carry, input and map compatibility
+        run: python3 tools/validate_udiv32_16_integrated.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-u3216-sharedtake-full-public-source-trial
+          path: validation/research/UDIV32_16_INTEGRATED.json
