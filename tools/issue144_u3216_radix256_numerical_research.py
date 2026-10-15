@@ -20,6 +20,22 @@ import random
 import sys
 
 
+# Each row fixes the normalized high divisor byte v=$80..$FF and holds
+# 256 (quotient guess, residual-byte) records indexed by the high remainder byte.
+# Only high_remainder<=v is reachable. One contiguous 64-KiB REU bank is enough
+# for the 128 * 256 * 2 direct-addressed records; constructing this table here
+# proves numerical content only, not DMA timing or memory availability.
+LOOKUP_Q_R = bytearray(65536)
+for _v in range(128, 256):
+    for _h in range(_v + 1):
+        _q = min(255, (_h << 8) // _v)
+        _r = (_h << 8) - _q * _v
+        assert 0 <= _q <= 255 and 0 <= _r <= 255
+        _offset = ((_v - 128) << 9) | (_h << 1)
+        LOOKUP_Q_R[_offset] = _q
+        LOOKUP_Q_R[_offset + 1] = _r
+
+
 def trial_digit(remainder: int, next_byte: int, dnorm: int, method: str):
     assert 0 <= remainder < dnorm and 0 <= next_byte <= 255
     assert 32768 <= dnorm <= 65535
@@ -31,6 +47,30 @@ def trial_digit(remainder: int, next_byte: int, dnorm: int, method: str):
         inv = (65536 + v - 1) // v
         q = min(255, (remainder * inv) >> 16)
         cap = 3
+    elif method == "lookup_byte":
+        # q0=floor((Rhi*256)/v), clipped to 255. The table also stores the
+        # residual t0=(Rhi*256)-q0*v. Because R<D, Rhi<=v, so t0 fits 8 bits.
+        high = remainder >> 8
+        low = remainder & 255
+        assert high <= v
+        offset = ((v - 128) << 9) | (high << 1)
+        q = LOOKUP_Q_R[offset]
+        t0 = LOOKUP_Q_R[offset + 1]
+        rem = ((t0 + low) << 8) + next_byte - q * (dnorm & 255)
+        fixups = 0
+        while rem < 0:
+            q -= 1
+            rem += dnorm
+            fixups -= 1
+            assert fixups >= -2
+        while rem >= dnorm:
+            q += 1
+            rem -= dnorm
+            fixups += 1
+            assert fixups <= 2
+        assert 0 <= rem < dnorm
+        assert (q, rem) == divmod((remainder << 8) | next_byte, dnorm)
+        return q, rem, fixups
     else:
         raise ValueError(method)
     t = (remainder << 8) | next_byte
@@ -82,7 +122,7 @@ def samples():
 
 def main():
     counters = {method: collections.Counter() for method in
-                ("exact_highbyte", "reciprocal_seed")}
+                ("exact_highbyte", "reciprocal_seed", "lookup_byte")}
     shift_classes = collections.Counter()
     digest = hashlib.sha256()
     count = 0
@@ -96,7 +136,7 @@ def main():
                                            (q, r, c), expected)
             if d:
                 counters[method].update(corrections)
-                assert max(corrections) <= (2 if method == "exact_highbyte" else 3)
+                assert max(abs(x) for x in corrections) <= (3 if method == "reciprocal_seed" else 2)
         if d:
             shift_classes[16 - d.bit_length()] += 1
         else:
@@ -110,16 +150,22 @@ def main():
         "total_input_pairs": count,
         "divisor_zero_pairs": zero,
         "operand_sha256": digest.hexdigest(),
+        "lookup_bytes": len(LOOKUP_Q_R),
+        "lookup_address": "((normalized_divisor_high-128)<<9) | (remainder_high<<1)",
+        "lookup_reu_dma_cycles_measured": False,
         "corrections_per_quotient_digit": {
             method: {str(k): v for k, v in sorted(counter.items())}
             for method, counter in counters.items()
         },
         "max_corrections": {method: max(counter) for method,counter in counters.items()},
+        "max_absolute_corrections": {method: max(map(abs, counter)) for method,counter in counters.items()},
         "divisor_normalization_shifts": {
             str(s): v for s, v in sorted(shift_classes.items())
         },
         "still_unproven": [
             "fast exact 6510 quotient-estimator producer",
+            "64-KiB REU bank ownership and table DMA cost",
+            "8x8 multiplication qhat*divisor_low and correction cost",
             "normal public ABI, MATH_INIT/zero-divisor and mixed-call safety",
             "physical code/ZP/table footprint and placement",
             "identical-input public-call cycle advantage over current fast core",
