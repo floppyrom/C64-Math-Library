@@ -94,11 +94,14 @@ IS32P_ENTRY:
     asl
     asl
     tax
+    ; The first four radix-4 steps fit in two-byte residual and trial.
     ldy #$02
-    jsr IS32P_REFINE
+    jsr IS32P_REFINE_FAST
 
     ldx MATH_N+0
-    ldy #$04
+    ldy #$02
+    jsr IS32P_REFINE_FAST
+    ldy #$02
     jsr IS32P_REFINE
 
     lda IS32_ROOT0
@@ -166,4 +169,49 @@ IS32P_TAKE:
 IS32P_SKIP:
     dey
     bne IS32P_LOOP
+    rts
+
+; Source-independent 16-bit fast refinement, only for the first four steps.
+; The first 20 bits give a root <= 1023. The extra four two-bit steps stay
+; <= 16-bit trial/residual. Final two steps must use IS32P_REFINE above.
+IS32P_REFINE_FAST:
+IS32P_FAST_LOOP:
+    txa
+    asl
+    rol IS32_RES0
+    rol IS32_RES1
+    asl
+    rol IS32_RES0
+    rol IS32_RES1
+    tax
+
+    asl IS32_ROOT0
+    rol IS32_ROOT1
+    lda IS32_ROOT0
+    asl
+    ora #$01
+    sta IS32_TRIAL0
+    lda IS32_ROOT1
+    rol
+    sta IS32_TRIAL1
+
+    lda IS32_RES1
+    cmp IS32_TRIAL1
+    bcc IS32P_FAST_SKIP
+    bne IS32P_FAST_TAKE
+    lda IS32_RES0
+    cmp IS32_TRIAL0
+    bcc IS32P_FAST_SKIP
+IS32P_FAST_TAKE:
+    sec
+    lda IS32_RES0
+    sbc IS32_TRIAL0
+    sta IS32_RES0
+    lda IS32_RES1
+    sbc IS32_TRIAL1
+    sta IS32_RES1
+    inc IS32_ROOT0
+IS32P_FAST_SKIP:
+    dey
+    bne IS32P_FAST_LOOP
     rts
