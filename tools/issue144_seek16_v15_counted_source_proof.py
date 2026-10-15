@@ -19,7 +19,7 @@ sys.path.insert(0,str(ROOT/"tools"))
 from mini6502 import Assembler
 from assemble_sources import build,parse_config
 from build_hybrid import build as hybrid_build
-from validate_source_build import load
+from validate_source_build import load,seek_symbols
 from benchmark_seek_profiles import corpus
 import seek_kernel as K
 from generate_seek_sources import LAYOUTS,SCRATCH
@@ -49,6 +49,10 @@ def run(profile,layout,tmp):
         hybrid_build(cfg,dest)
     cur,pub,io,man,_=load(profile,tmp/layout)
     base,_,_,_,_=load(profile,tmp/layout)
+    pub.update(seek_symbols(dest))
+    pub["MATH_X"]=io
+    pub["MATH_Y"]=io+4
+    pub["MATH_N"]=io+0x10
     old,labels,const=synth_old(layout)
     # Verify canonical source really contains the candidate and that the
     # independent original differs at precisely a nonempty SEEK byte subset.
