@@ -1,0 +1,451 @@
+{
+  "IRQ_NMI_reentrant": false,
+  "corpus_sha256": "a53c473ea26290c4f7623c9599eeabc9158e56065222f3f695b8fe84ee2e0496",
+  "native_VICE_cycles_measured": false,
+  "normal_ZP_growth": 0,
+  "pairs_per_profile": 2409,
+  "profiles": {
+    "v1_balanced": {
+      "baseline": {
+        "cycle_vector_sha256": "a0322fb2e5008833b335f3cd8996ab5edd9514203bac44c9b385bd60eb8ed717",
+        "max_cycles": 936,
+        "mean_cycles": 806.6089663760897,
+        "median_cycles": 811,
+        "min_cycles": 723,
+        "p95_cycles": 858
+      },
+      "cases": 2409,
+      "clone_entry": "0x840",
+      "code_bytes": 1405,
+      "code_range": [
+        "0x800",
+        "0xdc0"
+      ],
+      "donor_public_source_sha256": "72ec4e9f78c3bafc4eef800848dee36b75cc45c0ea7c71f39defa57517782916",
+      "independent": {
+        "cycle_vector_sha256": "caa2fa71669d94b4996a44eac58b526254daf59d34a15b0d632bb30f29f3055f",
+        "max_cycles": 881,
+        "mean_cycles": 750.6106268161062,
+        "median_cycles": 755,
+        "min_cycles": 667,
+        "p95_cycles": 802
+      },
+      "ordinary_32bit_core_unchanged": true,
+      "paired_savings": {
+        "cycle_vector_sha256": "6940c776e9c624395ffef4084f62ba2b9dd27d23398e96b423d7ed3abed34ae4",
+        "max_cycles": 56,
+        "mean_cycles": 55.99833955998339,
+        "median_cycles": 56,
+        "min_cycles": 55,
+        "p95_cycles": 56
+      },
+      "relocated_islands": [
+        [
+          "0x3c00",
+          "0x3c3d",
+          "0x800"
+        ],
+        [
+          "0x3c40",
+          "0x3c95",
+          "0x840"
+        ],
+        [
+          "0x3ca3",
+          "0x3d09",
+          "0x8a0"
+        ],
+        [
+          "0x5fc8",
+          "0x5fda",
+          "0x910"
+        ],
+        [
+          "0x6537",
+          "0x6625",
+          "0x930"
+        ],
+        [
+          "0x6705",
+          "0x680c",
+          "0xa20"
+        ],
+        [
+          "0x6905",
+          "0x69fa",
+          "0xb30"
+        ],
+        [
+          "0x6a41",
+          "0x6a76",
+          "0xc30"
+        ],
+        [
+          "0x6b81",
+          "0x6c8b",
+          "0xc70"
+        ],
+        [
+          "0x7100",
+          "0x7140",
+          "0xd80"
+        ]
+      ],
+      "shared_normal_ZP_nonreentrant": true,
+      "source_fully_relocated": true,
+      "source_sha256": "a58f161802a52df20e8f47f011eb17bb0e3eeecdfe0d6eeb7553add4f0c0c843",
+      "status": "PASS_PUBLIC_ABI_MIXED_SIGNED_UNSIGNED_NORMAL_CALLS"
+    },
+    "v2_pareto_fast": {
+      "baseline": {
+        "cycle_vector_sha256": "ac96d9c394121008cd2246921a5c74bf81f52693d61080611a137de714d45815",
+        "max_cycles": 901,
+        "mean_cycles": 774.64300539643,
+        "median_cycles": 778,
+        "min_cycles": 693,
+        "p95_cycles": 826
+      },
+      "cases": 2409,
+      "clone_entry": "0xad0",
+      "code_bytes": 1371,
+      "code_range": [
+        "0x800",
+        "0xd98"
+      ],
+      "donor_public_source_sha256": "cccc385fc99c93441283dad0d1a2fd140353e427b4551130e4ef1f1dd91c9a5e",
+      "independent": {
+        "cycle_vector_sha256": "48a1f89b55ccf42266d0d63eca6354c49d888478df13d98e6692020845f2e2f6",
+        "max_cycles": 856,
+        "mean_cycles": 720.9493565794936,
+        "median_cycles": 725,
+        "min_cycles": 637,
+        "p95_cycles": 774
+      },
+      "ordinary_32bit_core_unchanged": true,
+      "paired_savings": {
+        "cycle_vector_sha256": "6133661eb5ae33b08b4688bb7e436cce6f539dfecef486ae520244f3bfa04fac",
+        "max_cycles": 57,
+        "mean_cycles": 53.69364881693649,
+        "median_cycles": 55,
+        "min_cycles": 36,
+        "p95_cycles": 57
+      },
+      "relocated_islands": [
+        [
+          "0x2300",
+          "0x2376",
+          "0x800"
+        ],
+        [
+          "0x3505",
+          "0x35cf",
+          "0x880"
+        ],
+        [
+          "0x35d3",
+          "0x35e4",
+          "0x950"
+        ],
+        [
+          "0x3981",
+          "0x3a9b",
+          "0x970"
+        ],
+        [
+          "0x3c00",
+          "0x3c3d",
+          "0xa90"
+        ],
+        [
+          "0x3c40",
+          "0x3c92",
+          "0xad0"
+        ],
+        [
+          "0x3ca3",
+          "0x3d06",
+          "0xb30"
+        ],
+        [
+          "0x5505",
+          "0x5622",
+          "0xba0"
+        ],
+        [
+          "0xca37",
+          "0xcb0f",
+          "0xcc0"
+        ]
+      ],
+      "shared_normal_ZP_nonreentrant": true,
+      "source_fully_relocated": true,
+      "source_sha256": "dc55edd7e8ef5a8b43403d4abb7ac3ebbed6d62902575c0b2cd635b6bcb87401",
+      "status": "PASS_PUBLIC_ABI_MIXED_SIGNED_UNSIGNED_NORMAL_CALLS"
+    },
+    "v3_reu_512k": {
+      "baseline": {
+        "cycle_vector_sha256": "ac96d9c394121008cd2246921a5c74bf81f52693d61080611a137de714d45815",
+        "max_cycles": 901,
+        "mean_cycles": 774.64300539643,
+        "median_cycles": 778,
+        "min_cycles": 693,
+        "p95_cycles": 826
+      },
+      "cases": 2409,
+      "clone_entry": "0x930",
+      "code_bytes": 1371,
+      "code_range": [
+        "0x800",
+        "0xd96"
+      ],
+      "donor_public_source_sha256": "cc77c4214cec820b7aa72d60527c9967c86e2960f44023d236f9794b2350b4a4",
+      "independent": {
+        "cycle_vector_sha256": "9816f252dc99c65fb4d38edbf390179bb03729aca1a06dd2529b3260c092d01c",
+        "max_cycles": 845,
+        "mean_cycles": 718.7505188875052,
+        "median_cycles": 723,
+        "min_cycles": 637,
+        "p95_cycles": 770
+      },
+      "ordinary_32bit_core_unchanged": true,
+      "paired_savings": {
+        "cycle_vector_sha256": "4a4ae080a49ee70bdee0d7d453e420193851bd66207a42b01ad1b8ef777d9025",
+        "max_cycles": 56,
+        "mean_cycles": 55.89248650892487,
+        "median_cycles": 56,
+        "min_cycles": 55,
+        "p95_cycles": 56
+      },
+      "relocated_islands": [
+        [
+          "0x3505",
+          "0x35cf",
+          "0x800"
+        ],
+        [
+          "0x35d3",
+          "0x35e4",
+          "0x8d0"
+        ],
+        [
+          "0x3c00",
+          "0x3c3d",
+          "0x8f0"
+        ],
+        [
+          "0x3c40",
+          "0x3c92",
+          "0x930"
+        ],
+        [
+          "0x3ca3",
+          "0x3d06",
+          "0x990"
+        ],
+        [
+          "0x4681",
+          "0x479b",
+          "0xa00"
+        ],
+        [
+          "0x5137",
+          "0x520f",
+          "0xb20"
+        ],
+        [
+          "0x5505",
+          "0x5622",
+          "0xc00"
+        ],
+        [
+          "0x6c00",
+          "0x6c76",
+          "0xd20"
+        ]
+      ],
+      "shared_normal_ZP_nonreentrant": true,
+      "source_fully_relocated": true,
+      "source_sha256": "02b53e94d35d80c5f8210431f7f186b601de795ec892383d072fc238d55c0be2",
+      "status": "PASS_PUBLIC_ABI_MIXED_SIGNED_UNSIGNED_NORMAL_CALLS"
+    },
+    "v4_reu_16m": {
+      "baseline": {
+        "cycle_vector_sha256": "ac96d9c394121008cd2246921a5c74bf81f52693d61080611a137de714d45815",
+        "max_cycles": 901,
+        "mean_cycles": 774.64300539643,
+        "median_cycles": 778,
+        "min_cycles": 693,
+        "p95_cycles": 826
+      },
+      "cases": 2409,
+      "clone_entry": "0x930",
+      "code_bytes": 1371,
+      "code_range": [
+        "0x800",
+        "0xd96"
+      ],
+      "donor_public_source_sha256": "2aa9367ed888d7f4f18c841316725bc02baaa3d93d1cb5f3b5c705f7f29d86d5",
+      "independent": {
+        "cycle_vector_sha256": "9816f252dc99c65fb4d38edbf390179bb03729aca1a06dd2529b3260c092d01c",
+        "max_cycles": 845,
+        "mean_cycles": 718.7505188875052,
+        "median_cycles": 723,
+        "min_cycles": 637,
+        "p95_cycles": 770
+      },
+      "ordinary_32bit_core_unchanged": true,
+      "paired_savings": {
+        "cycle_vector_sha256": "4a4ae080a49ee70bdee0d7d453e420193851bd66207a42b01ad1b8ef777d9025",
+        "max_cycles": 56,
+        "mean_cycles": 55.89248650892487,
+        "median_cycles": 56,
+        "min_cycles": 55,
+        "p95_cycles": 56
+      },
+      "relocated_islands": [
+        [
+          "0x3505",
+          "0x35cf",
+          "0x800"
+        ],
+        [
+          "0x35d3",
+          "0x35e4",
+          "0x8d0"
+        ],
+        [
+          "0x3c00",
+          "0x3c3d",
+          "0x8f0"
+        ],
+        [
+          "0x3c40",
+          "0x3c92",
+          "0x930"
+        ],
+        [
+          "0x3ca3",
+          "0x3d06",
+          "0x990"
+        ],
+        [
+          "0x4681",
+          "0x479b",
+          "0xa00"
+        ],
+        [
+          "0x5137",
+          "0x520f",
+          "0xb20"
+        ],
+        [
+          "0x5505",
+          "0x5622",
+          "0xc00"
+        ],
+        [
+          "0x6c00",
+          "0x6c76",
+          "0xd20"
+        ]
+      ],
+      "shared_normal_ZP_nonreentrant": true,
+      "source_fully_relocated": true,
+      "source_sha256": "da594f605e09f7811585c78a53877c26e9183df1c2401d143d3437a6646b2644",
+      "status": "PASS_PUBLIC_ABI_MIXED_SIGNED_UNSIGNED_NORMAL_CALLS"
+    },
+    "v5_hybrid_lowzp": {
+      "baseline": {
+        "cycle_vector_sha256": "a0322fb2e5008833b335f3cd8996ab5edd9514203bac44c9b385bd60eb8ed717",
+        "max_cycles": 936,
+        "mean_cycles": 806.6089663760897,
+        "median_cycles": 811,
+        "min_cycles": 723,
+        "p95_cycles": 858
+      },
+      "cases": 2409,
+      "clone_entry": "0x840",
+      "code_bytes": 1405,
+      "code_range": [
+        "0x800",
+        "0xdc0"
+      ],
+      "donor_public_source_sha256": "8c1131427276503b1a976692eb5293c4704a25c906efd0c6eeddcff0e5fbfcec",
+      "independent": {
+        "cycle_vector_sha256": "caa2fa71669d94b4996a44eac58b526254daf59d34a15b0d632bb30f29f3055f",
+        "max_cycles": 881,
+        "mean_cycles": 750.6106268161062,
+        "median_cycles": 755,
+        "min_cycles": 667,
+        "p95_cycles": 802
+      },
+      "ordinary_32bit_core_unchanged": true,
+      "paired_savings": {
+        "cycle_vector_sha256": "6940c776e9c624395ffef4084f62ba2b9dd27d23398e96b423d7ed3abed34ae4",
+        "max_cycles": 56,
+        "mean_cycles": 55.99833955998339,
+        "median_cycles": 56,
+        "min_cycles": 55,
+        "p95_cycles": 56
+      },
+      "relocated_islands": [
+        [
+          "0x3c00",
+          "0x3c3d",
+          "0x800"
+        ],
+        [
+          "0x3c40",
+          "0x3c95",
+          "0x840"
+        ],
+        [
+          "0x3ca3",
+          "0x3d09",
+          "0x8a0"
+        ],
+        [
+          "0x5fc8",
+          "0x5fda",
+          "0x910"
+        ],
+        [
+          "0x6537",
+          "0x6625",
+          "0x930"
+        ],
+        [
+          "0x6705",
+          "0x680c",
+          "0xa20"
+        ],
+        [
+          "0x6905",
+          "0x69fa",
+          "0xb30"
+        ],
+        [
+          "0x6a41",
+          "0x6a76",
+          "0xc30"
+        ],
+        [
+          "0x6b81",
+          "0x6c8b",
+          "0xc70"
+        ],
+        [
+          "0x7100",
+          "0x7140",
+          "0xd80"
+        ]
+      ],
+      "shared_normal_ZP_nonreentrant": true,
+      "source_fully_relocated": true,
+      "source_sha256": "fe22347102e6e0c92fc007308eabb53289fded1f57cdef8fb4daea078f570b1a",
+      "status": "PASS_PUBLIC_ABI_MIXED_SIGNED_UNSIGNED_NORMAL_CALLS"
+    }
+  },
+  "status": "PASS_ALL_FIVE_PUBLIC_SEQUENTIAL_MIXED_SIGNED_SHR16",
+  "stock_PRGs_REU_unchanged": true
+}
