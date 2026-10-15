@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 32/16 FULL-WIDTH SHARED-SUBTRACTION RESEARCH (NONPRODUCTION)
+- Public mini6502 isolated low-tail 7,554 nonzero-divisor same-input checks PASS, 684->492 bytes and 7.511 modeled tail cycles saved. Full-public V2/V3/V4 source-built 1,280-case Q32/R16/C comparison on reference+alternate maps PASS, 6.592 cycles saved uniform full-width, 4.758 mixed mean; 13 one-cycle mixed regressions. Independent pinned native x64sc V2/V3/V4 288 full-public baseline/candidate DIV/MOD calls PASS. Only a ~1% full-call gain; no default producer promotion. V1/V5 and mixed-call certification still pending; shipped PRGs, REUs, PERFORMANCE, ABI and ZP unchanged. docs/ISSUE144_UDIV32_16_SHARED_TAKE_TAIL_SCREEN_2026-10-15.md
+
 2026-10-15 ISSUE144 SEEK16 INIT ACCUMULATOR INLINING FIVE PROFILE OPTIN
 - SEEK16_INIT accumulator direct inline + JMP continuation in separately allocated caller RAM: five public profiles, 20,400 paired full-state CPU model calls with STEP follow-up, 70 real native INIT and 1,120 STEP executions PASS. Mean savings V1/V5 22.105 cycles (some -1 worst), V2 25.451, V3/V4 23.704. Original residents and REU images unchanged; not a default promotion. docs/ISSUE144_SEEK16_INIT_INLINE_ACCUM_V1_V5_2026-10-15.md
 
