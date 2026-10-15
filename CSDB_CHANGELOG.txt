@@ -1,3 +1,7 @@
+2026-10-15 ISSUE144 V5 INHERITED V1 ISQRT32 51-CYCLE NORMAL RESIDENT RESEARCH (NO BINARY PROMOTION)
+- V5 reference+alternate hybrid source builder retains V1 root resident ownership; 2,658 paired ordinary public ISQRT32 calls save exactly 51 modeled CPU cycles each without slower cases, caller RAM or normal ZP growth. 72 sequential ISQRT16 interleaving smokes passed.
+- Real SHA256-pinned VICE x64sc passed 96 original/candidate public root calls across both layouts. Full imported V5 56-entry mixed/IRQ and wall bus-time are NOT certified. Frozen five PRGs, two REUs and PERFORMANCE.md unchanged.
+
 2026-10-15 ISSUE144 V1 ISQRT32 51-CYCLE NORMAL-RESIDENT HIGHWORD SEED FEASIBILITY (RESEARCH ONLY)
 - Independently tested a direct-highword V1 ISQRT32 public producer inside unused pre-existing resident bytes: helper REG_GAME+$0AA8 (reference $CBA8); reference and alternate maps both avoid nonzero occupied helper code, without caller RAM or new ZP.
 - Each layout passed 657 matched full-width 32-bit public CPU-model calls, exactly 51 modeled cycles saved per call with no slower inputs; root/carry/input/X/Y/SP preserved. 96 real x64sc V1 public calls also passed, with full captured status equality on both layouts.
