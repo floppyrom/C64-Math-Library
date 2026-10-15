@@ -4693,3 +4693,6 @@ ZCE4:
 
 ; Issue39 DIST8 source-backed, fixed-width register swap.
 !source "../game_math/dist8_swap_v2_pareto_fast.inc"
+
+; Issue144 canonical V2/V3 unrestricted ISQRT32 direct highword seed, final-owner source.
+!source "isqrt32_highword_resident.inc"

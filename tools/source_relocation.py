@@ -599,6 +599,8 @@ def generate_source(profile,outpath:Path):
   count=lines.count(stale)
   assert count<=1,('unexpected duplicate stale V1 UDIV32 jump',count)
   if count:lines=[updated if line==stale else line for line in lines]
+ if profile in ('v2_pareto_fast','v3_reu_512k'):
+  lines += ['', '; Issue144 canonical V2/V3 unrestricted ISQRT32 direct highword seed, final-owner source.', '!source "isqrt32_highword_resident.inc"']
  outpath.parent.mkdir(parents=True,exist_ok=True);outpath.write_text('\n'.join(lines)+'\n')
  return {'profile':profile,'source':str(outpath.relative_to(ROOT)),'reachable_instructions':len(seen),'source_sha256':sha(outpath)}
 
