@@ -20,8 +20,22 @@ OLD=("        ; -+ : quotient and remainder both negative.\n"
      "        jsr U3216_ENTRY\n"
      "        jsr MULDIV16_S_NEG_R\n"
      "        jmp MULDIV16_S_NEG_Q\n")
-NEW=("        ; -+ : shared signed QR normalization owns both outputs.\n"
-     "        jmp MULDIV16_S_DIV_QR\n")
+NEW=("        ; -+ : reuse combined R-then-Q path, preserving final accumulator/flags.\n"
+     "        jsr U3216_ENTRY\n"
+     "        jmp D32F_R_THEN_Q\n")
+END_NN=("D32F_NN:\n"
+        "        ; -- : quotient positive, remainder follows negative numerator.\n"
+        "        jsr U3216_ENTRY\n"
+        "        jmp MULDIV16_S_NEG_R\n")
+RQ_TAIL=("\nD32F_R_THEN_Q:\n"
+         "        lda #0\n"
+         "        sec\n"
+         "        sbc MATH_R\n"
+         "        sta MATH_R\n"
+         "        lda #0\n"
+         "        sbc MATH_R+1\n"
+         "        sta MATH_R+1\n"
+         "        jmp MULDIV16_S_NEG_Q\n")
 
 def machine(text,profile):
     mem,labels,const=Assembler().assemble(text)
@@ -42,6 +56,8 @@ def pair(profile,kind):
     span=source[a:b]
     assert span.count(OLD)==1,(profile,kind,"original signed producer drift")
     new=source[:a]+span.replace(OLD,NEW)+source[b:]
+    assert new.count(END_NN)==1,(profile,kind,"D32F end owner changed")
+    new=new.replace(END_NN,END_NN+RQ_TAIL,1)
     old,c0=machine(source,profile)
     candidate,c1=machine(new,profile)
     assert c0["MATH_SDIV32_16"]==c1["MATH_SDIV32_16"]==v["REG_API"]+0x0EE0
@@ -93,6 +109,7 @@ def main():
                                 cpu.sp,cpu.x,cpu.y)
                     s0=state(old);s1=state(new)
                     assert s0==s1,(p,layout,name,hex(n),hex(d),s0,s1)
+                    assert old.a==new.a and old.status()==new.status(),(p,layout,name,hex(n),hex(d),"exact A/flags",old.a,new.a,old.status(),new.status())
                     assert s1[:3]==want,(p,layout,name,hex(n),hex(d),s1[:3],want)
                     assert old.sp==oldsp and new.sp==newsp
                     key=("zero_divisor" if d==0 else
