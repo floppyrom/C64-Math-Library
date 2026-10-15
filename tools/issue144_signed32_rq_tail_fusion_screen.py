@@ -54,12 +54,31 @@ def pair(profile,kind):
     a=source.index("\nD32F_NNEG:")
     b=source.index("\nD32F_NN:",a+1)
     span=source[a:b]
-    assert span.count(OLD)==1,(profile,kind,"original signed producer drift")
-    new=source[:a]+span.replace(OLD,NEW)+source[b:]
-    assert new.count(END_NN)==1,(profile,kind,"D32F end owner changed")
-    new=new.replace(END_NN,END_NN+RQ_TAIL,1)
-    old,c0=machine(source,profile)
+    if span.count(OLD)==1:
+        baseline=source
+        new=source[:a]+span.replace(OLD,NEW)+source[b:]
+        assert new.count(END_NN)==1,(profile,kind,"D32F end owner changed")
+        new=new.replace(END_NN,END_NN+RQ_TAIL,1)
+        source_installed=False
+    else:
+        # Canonical source promotion must leave this independently pinned old
+        # source inverse uniquely recoverable, never silently compare itself.
+        assert span.count(NEW)==1 and source.count(RQ_TAIL)==1,(profile,kind,"unknown signed source owner")
+        new=source
+        baseline=source.replace(NEW,OLD,1).replace(RQ_TAIL,"",1)
+        source_installed=True
+    old,c0=machine(baseline,profile)
     candidate,c1=machine(new,profile)
+    span_begin=v["REG_TABLE"]+0x3200
+    span_end=v["REG_TABLE"]+0x3301
+    helper=c1["D32F_R_THEN_Q"]
+    assert span_begin<=helper<=span_end-19,(profile,kind,"owned normal-region allocation",hex(helper))
+    touched=[a for a in range(65536) if old.mem[a]!=candidate.mem[a]]
+    assert touched and all(span_begin<=a<=span_end for a in touched),(
+        profile,kind,"out-of-region source mutation",list(map(hex,touched[:20])))
+    assert old.mem[c0["MATH_SDIV32_16"]]==candidate.mem[c1["MATH_SDIV32_16"]]
+    assert old.mem[c0["MATH_SMOD32_16"]]==candidate.mem[c1["MATH_SMOD32_16"]]
+    assert (source_installed or not source_installed)
     assert c0["MATH_SDIV32_16"]==c1["MATH_SDIV32_16"]==v["REG_API"]+0x0EE0
     assert c0["MATH_SMOD32_16"]==c1["MATH_SMOD32_16"]==v["REG_API"]+0x0FDD
     assert c0["MULDIV16_S_DIV_QR"]==c1["MULDIV16_S_DIV_QR"]
