@@ -78,7 +78,7 @@ D32F_NNEG:
         lda MATH_D+1
         bmi D32F_NN
 
-        ; -+ : fused R-first signed normalization; preserves Q/R/C, A/X/Y and flags.
+        ; -+ : reuse combined R-then-Q path, preserving final accumulator/flags.
         jsr U3216_ENTRY
         jmp D32F_R_THEN_Q
 
@@ -86,9 +86,6 @@ D32F_NN:
         ; -- : quotient positive, remainder follows negative numerator.
         jsr U3216_ENTRY
         jmp MULDIV16_S_NEG_R
-; Same visible order as the old two-helper chain (R then Q).  Fold the R
-; correction into this private resident island, avoiding nested JSR/RTS and
-; the temporary redundant CLC.  MULDIV16's independent tails are unchanged.
 D32F_R_THEN_Q:
         lda #0
         sec
