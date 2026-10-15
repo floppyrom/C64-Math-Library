@@ -22,3 +22,5 @@ jobs:
           python-version: '3.12'
       - name: Paired shipped 16/16 helper and high-D q0/1 6510 CPU model
         run: python tools/issue144_u3216_highdiv_q01_stage_screen.py
+      - name: Matched uniform N32-D16 dual-tail optimistic upper-bound against public calls
+        run: python tools/issue144_u3216_dual_tail_upper_bound_screen.py
