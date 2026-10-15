@@ -1,0 +1,54 @@
+name: Issue144 ISQRT32 unrestricted direct-highword seed
+on:
+  push:
+    branches: [issue144-isqrt32-highword-direct-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  isqrt32-public-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate 4 profile assemblies and validate deterministic 1042 case smoke
+        run: python3 tools/issue144_isqrt32_highword_direct_experiment.py
+      - name: Canonical same-input 4130 sqrt calls on all four changed profiles
+        run: python3 tools/issue144_isqrt32_direct_seed_canonical.py
+      - name: Install SHA256-pinned x64sc emulator
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Native 4-profile originals vs direct seed plus real V4 16MiB REU control
+        run: python3 tools/native_issue144_isqrt32_highword_direct.py
+      - name: Stage docs, release metadata and 30-check checksum-sealed package
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue144_isqrt32_highword_direct.py
+      - name: Commit actual release evidence, both changelogs and checksum manifest
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: seal all-domain highword seed ISQRT32 source and native evidence'
+          git push origin HEAD:issue144-isqrt32-highword-direct-20261015
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-isqrt32-highword-direct-native-model
+          path: |
+            validation/review/ISSUE144_ISQRT32_DIRECT_HIGHWORD_SEED_MODEL.json
+            validation/review/ISSUE144_ISQRT32_DIRECT_HIGHWORD_SEED_NATIVE_VICE.json
+          if-no-files-found: warn
