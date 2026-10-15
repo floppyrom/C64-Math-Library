@@ -532,7 +532,7 @@ s16i_rates:
         sta SK_WHOLE
         ldy S16_KI,x
         beq s16i_r0done
-        jsr s16_addmin
+        jsr s16_addmin_many
 s16i_r0done:
         lda SK_REML
         sta S16_REML,x
@@ -544,7 +544,6 @@ s16i_r0done:
         jsr s16_planes
         lda S16_KF,x
         beq s16i_done
-        ldy #1
         jsr s16_addmin          ; k0+1
         lda SK_REML
         sta S16_REML+8,x
@@ -647,7 +646,7 @@ s8p_y1:
 
 * = REG_API+$08CE
 ; ---- SEEK16 helpers ----
-; rem += dmin; if rem >= dmaj: rem -= dmaj, whole++.  Preserves X; consumes Y=count.
+; rem += dmin; if rem >= dmaj: rem -= dmaj, whole++.  Preserves X/Y.
 s16_addmin:
         lda SK_REML
         clc
@@ -666,8 +665,6 @@ s16a_nc:
         sta SK_REML
         inc SK_WHOLE
 s16a_done:
-        dey
-        bne s16_addmin
         rts
 
 ; As s8_planes, with a 16-bit x delta: VXH is the sign byte of VX.
@@ -730,7 +727,7 @@ s16p_y1:
         sta S16_VY+16,y
         rts
 
-* = REG_API+$097A
+* = REG_API+$0977
 ; ---- shared: Euclidean speed -> major-axis speed ----
 ; In: SK_EMAJ >= 1 and SK_EMIN <= SK_EMAJ (8-bit magnitudes), speed in
 ; SEEK_IN_SPL/SEEK_IN_SPH (bit 7 ignored). Out: A = integer, Y = fraction of
@@ -791,3 +788,29 @@ seek_cos_d:
         !byte 9, 11, 13, 15, 18, 20, 23, 26
         !byte 28, 31, 34, 37, 40, 44, 47, 50
         !byte 53, 56, 59, 62, 65, 68, 71, 74
+
+* = REG_API+$0599
+; SEEK16 INIT integer-speed repeated accumulator (Y=quanta, 1..126).
+; This entry consumes Y but leaves X and the public state ABI intact.
+; Fractional speed still calls the unchanged s16_addmin once.
+s16_addmin_many:
+        lda SK_REML
+        clc
+        adc SK_DMIN
+        sta SK_REML
+        bcc s16am_nc
+        inc SK_REMH
+s16am_nc:
+        cmp SK_DMAJL
+        lda SK_REMH
+        sbc SK_DMAJH
+        bcc s16am_done
+        sta SK_REMH
+        lda SK_REML
+        sbc SK_DMAJL
+        sta SK_REML
+        inc SK_WHOLE
+s16am_done:
+        dey
+        bne s16_addmin_many
+        rts
