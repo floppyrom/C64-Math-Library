@@ -1,3 +1,8 @@
+2026-10-15 ISSUE144 V2/V3 ISQRT32 CANONICAL SOURCE TRIAL (NOT PRG/REU BINARY RELEASE)
+- Install independently model- and x64sc-verified direct-highword square-root seed as V2/V3 canonical normal-resident final-owner sources within the existing 192-byte root slot. Generator retains the dedicated source module; no caller RAM or added ZP.
+- Historical research: exactly 47 modeled cycles saved for every one of 3,388 same-input full-width comparisons across both V2/V3 source relocations; 192 real native VICE calls matched with V3 512-KiB REU. New integration qualification validates 1,200+ same-input public sqrt cases/profile/map, interleaved MATH_ISQRT16, full ABI, real native VICE and source/image safety.
+- This is source-only. Five historical reference PRGs, two REU images and shipped PERFORMANCE.md are unchanged; full generator whole-file provenance drift unrelated to this root remains separately unresolved. Do not claim physical bus time or default binary release.
+
 2026-10-15 ISSUE144 V2/V3 ISQRT32 NORMAL-RESIDENT HIGHWORD-SEED RESEARCH (SOURCE-ONLY OPTIN)
 - Reused already verified unrestricted direct-highword-seed strategy without its caller-owned $0C00 overlay: helper fits within the pre-existing 192-byte V2/V3 $CB40-$CBFF normal resident slot (alternate map $8A40-$8AFF); source and public entry unchanged in the committed default.
 - Independent source model 847 input pairs/profile/layout (3,388 paired): exactly 47 CPU-model cycles saved each, zero slower cases, correct root/carry/inputs/XY/SP, no additional normal zero-page or caller RAM; reference/alternate full-source assemblies differ only in root slot.
