@@ -1,0 +1,90 @@
+name: Issue144 four 32-bit narrow16 multiply specialists
+on:
+  push:
+    branches: [issue144-four-multiply-narrow16-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  common-input-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [v1_balanced,v2_pareto_fast,v3_reu_512k,v4_reu_16m,v5_hybrid_lowzp]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 4 domain-qualified 32-bit multiply operations with same-input public ABI
+        run: python3 tools/issue144_four_mul_narrow16_model.py --profile ${{ matrix.profile }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue144-narrow16-${{ matrix.profile }}
+          path: validation/review/ISSUE144_FOUR_MUL_NARROW16_${{ matrix.profile }}.json
+  five-profile-native-vice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install checksum-pinned native x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: 960 native baseline/specialist calls V1-V5
+        run: python3 tools/native_issue144_four_mul_narrow16.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue144-narrow16-native-vice
+          path: validation/review/ISSUE144_FOUR_MUL_NARROW16_NATIVE_VICE.json
+  publish-source-only:
+    if: github.event_name == 'push'
+    needs: [common-input-model, five-profile-native-vice]
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reproduce full mathematical/ABI evidence on every profile
+        run: |
+          for p in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m v5_hybrid_lowzp; do
+            python3 tools/issue144_four_mul_narrow16_model.py --profile "$p"
+          done
+      - name: Install native VICE x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Reproduce native checks
+        run: python3 tools/native_issue144_four_mul_narrow16.py
+      - name: Reconcile release docs/changelogs and SHA
+        run: python3 tools/stage_issue144_four_mul.py
+      - name: Commit exact evidence package
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: publish narrow16 multiply optional sources and sealed evidence'
+          git push origin HEAD:issue144-four-multiply-narrow16-20261015

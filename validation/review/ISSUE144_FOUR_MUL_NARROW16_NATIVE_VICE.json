@@ -1,0 +1,140 @@
+{
+  "native_cpu_cycles_measured": false,
+  "precondition": "both full-width 32-bit input upper words zero",
+  "profiles": {
+    "v1_balanced": {
+      "MATH_SMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_SMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_SMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_SMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_SMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_SMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_SMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_SMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "MATH_SMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_SMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      },
+      "MATH_UMUL32_SHR16": {
+        "correct_inputs_outputs_carry_stack": true,
+        "native_candidate_calls": 24,
+        "native_original_calls": 24,
+        "public_target_patch_in_disposable_image_only": true
+      }
+    }
+  },
+  "source_sha256": "5080e0c12dfc23f57712f8ab6d4b1570151a3cfd8b51263690b11cf2f985f270",
+  "status": "PASS_NATIVE_VICE_FOUR_NARROW16_U32_MUL",
+  "stock_PRGs_changed": false,
+  "total_native_calls": 960
+}
