@@ -46,10 +46,9 @@ jobs:
           python3 tools/validate_source_build.py v1_balanced --build /tmp/issue144_v1_build/alternate
       - name: Build V5 source in reference and alternate memory maps
         run: |
-          python3 tools/build_hybrid.py --config-kind reference --out /tmp/issue144_v5_build
-          python3 tools/build_hybrid.py --config-kind alternate --out /tmp/issue144_v5_build
-          python3 tools/validate_source_build.py v5_hybrid_lowzp --build /tmp/issue144_v5_build/reference
-          python3 tools/validate_source_build.py v5_hybrid_lowzp --build /tmp/issue144_v5_build/alternate
+          python3 tools/build_hybrid.py --config-kind reference
+          python3 tools/build_hybrid.py --config-kind alternate
+          python3 tools/validate_hybrid.py --random-per-family 180 --mixed 720
       - name: Install checksum-pinned VICE x64sc
         run: |
           curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
