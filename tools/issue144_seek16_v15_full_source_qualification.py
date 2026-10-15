@@ -21,8 +21,11 @@ P="v1_balanced"
 INCLUDE="issue144_seek16_inresident_research.inc"
 
 def command(repo,args):
-    p=subprocess.run([sys.executable,*args],cwd=repo,check=True,text=True,
+    p=subprocess.run([sys.executable,*args],cwd=repo,check=False,text=True,
                      capture_output=True)
+    if p.returncode:
+        raise RuntimeError(("source-qualification subprocess failed",p.returncode,
+                            p.stdout[-2000:],p.stderr[-4000:]))
     return p.stdout.strip()
 
 def main():
