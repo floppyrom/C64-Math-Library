@@ -126,12 +126,18 @@ def main():
         shutil.copytree(ROOT,clone,ignore=shutil.ignore_patterns('.git','__pycache__','build_source'))
         file=clone/MODULE;integrated=file.read_text();optimized=(clone/OPT).read_text()
         baseline=(clone/BASELINE).read_text()
-        assert integrated == optimized, 'canonical V4 must equal qualified fast-four source'
+        # The PR #167 research reproducer stays pinned to its independently
+        # qualified fast-four source even after the separate maskshift upgrade.
+        # Reject changes other than the two certified prefix-index sequences.
+        old_shifts='    and #$03\n' + '    asl\n'*6
+        new_shifts='    and #$03\n    lsr\n    ror\n    ror\n    and #$C0\n'
+        assert optimized.count(old_shifts)==2, 'historical fast-four geometry changed'
+        assert integrated == optimized.replace(old_shifts,new_shifts), 'unexpected canonical change beyond maskshift'
         assert 'lda #$91\n    sta $DF01' in baseline and 'lda #$91\n    sta $DF01' in integrated
         file.write_text(baseline)
         b_ref=build(clone,'reference',temp/'baseline')
         b_alt=build(clone,'alternate',temp/'baseline')
-        file.write_text(integrated)
+        file.write_text(optimized)
         c_ref=build(clone,'reference',temp/'candidate')
         c_alt=build(clone,'alternate',temp/'candidate')
         assert b_ref.stat().st_size==c_ref.stat().st_size
