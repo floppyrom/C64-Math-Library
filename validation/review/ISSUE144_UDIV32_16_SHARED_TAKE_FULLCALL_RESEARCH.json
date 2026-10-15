@@ -1,0 +1,45 @@
+{
+  "status": "PASS_RESEARCH_ONLY_NOT_PRODUCTION_PROMOTED",
+  "date": "2026-10-15",
+  "profiles": [
+    "v2_pareto_fast",
+    "v3_reu_512k",
+    "v4_reu_16m"
+  ],
+  "maps": [
+    "reference",
+    "alternate"
+  ],
+  "public_apis": [
+    "MATH_UDIV32_16",
+    "MATH_UMOD32_16"
+  ],
+  "corpus_cases_per_profile_map_api": 1280,
+  "model_paired_calls": 15360,
+  "model_total_calls": 30720,
+  "uniform_fullwidth_cases": 512,
+  "corpus_sha256": "873a7f093e844d9ea9493cad2f6ae95a8d48707915174d39bcb70db0dac6ae4b",
+  "mean_saving_cpu_model_cycles": 4.7578125,
+  "uniform_mean_saving_cpu_model_cycles": 6.591796875,
+  "per_profile_map_api": {
+    "faster": 878,
+    "equal": 389,
+    "slower": 13,
+    "worst_saving": -1,
+    "best_saving": 18
+  },
+  "native_x64sc_calls": 288,
+  "native_complete_public_api": true,
+  "native_physical_cycle_timing": false,
+  "reversible_source_build_only": true,
+  "original_resident_prgs_modified": false,
+  "reu_images_modified": false,
+  "additional_public_zp_claimed": false,
+  "production_promoted": false,
+  "private_optisearch_published": false,
+  "source_script": "tools/issue144_u3216_fullcall_source_transplant_screen.py",
+  "native_script": "tools/issue144_u3216_fullcall_native.py",
+  "source_ci": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38724485006",
+  "native_ci": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38725574165",
+  "issue144_B_complete": false
+}

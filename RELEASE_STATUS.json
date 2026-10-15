@@ -1,4 +1,26 @@
 {
+  "issue144_radix256_reu_digit_cost_gate_2026_10_15": {
+    "status": "PASS_RESEARCH_NO_GO_NOT_PROMOTED",
+    "scope": "unsigned unrestricted 32x16 radix256 with V4 REU bank $20 research only",
+    "numerical_oracle_pairs": 1155360,
+    "assembled_6510_model_digit_pairs": 4040,
+    "identical_paired_tail_pairs": 698,
+    "real_radix256_two_digit_mean_cycles": 893.676217765043,
+    "shared_restoring_tail_mean_cycles": 460.59885386819485,
+    "zero_cost_mul_optimistic_two_digit_mean": 351.72206303724926,
+    "zero_cost_lookup_and_mul_optimistic_two_digit_mean": 231.72206303724928,
+    "extra_zp_research_only": 16,
+    "reu_lut_bytes": 65536,
+    "findings": "REU-controller state conflicts with normal V4 UMUL8; actual shift-add datapath loses 433.077 modeled cycles on paired wide-divisor lower-tail inputs. Even with zero guard/restoration and no bus delay, multiplication needs <54.438 cycles each merely to tie.",
+    "public_math_binary_changed": false,
+    "reu_image_changed": false,
+    "normal_public_zp_changed": false,
+    "private_optisearch_published": false,
+    "native_vice_certified": false,
+    "issue144_B_complete": false,
+    "evidence": "validation/review/ISSUE144_RADIX256_6510_COST_GATE_2026-10-15.json",
+    "document": "docs/ISSUE144_RADIX256_6510_COST_GATE_2026-10-15.md"
+  },
   "issue39_umul32_ready_pointer_lifetime_2026_10_13": {
     "status": "PASS_RESEARCH_REJECT_UNQUALIFIED_READY_BYPASS",
     "evidence": "validation/review/ISSUE39_UMUL32_READY_POINTER_LIFETIME.json",
@@ -3492,12 +3514,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 1468.2246464646464,
         "mod_stock": 1351.1940406976744,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 1313.1940406976744,
         "sqrt_stock": 1712.8368902439024,
         "sqrt_fast": 89.2858231707317,
         "sqrt_gain": 1623.5510670731708,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 152.803125
       },
       "v2_pareto_fast": {
@@ -3505,12 +3527,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 849.9086868686869,
         "mod_stock": 851.1420784883721,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 813.1420784883721,
         "sqrt_stock": 1530.4176829268292,
         "sqrt_fast": 89.54420731707317,
         "sqrt_gain": 1440.873475609756,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 134.24
       },
       "v3_reu_512k": {
@@ -3518,12 +3540,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 849.9086868686869,
         "mod_stock": 851.1420784883721,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 813.1420784883721,
         "sqrt_stock": 1530.4176829268292,
         "sqrt_fast": 89.56478658536585,
         "sqrt_gain": 1440.8528963414635,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 134.236875
       },
       "v4_reu_16m": {
@@ -3531,12 +3553,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 849.9086868686869,
         "mod_stock": 851.1420784883721,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 813.1420784883721,
         "sqrt_stock": 971.625,
-        "sqrt_fast": 57.0,
+        "sqrt_fast": 57,
         "sqrt_gain": 914.625,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 77.649375
       },
       "v5_hybrid_lowzp": {
@@ -3544,12 +3566,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 843.9086868686869,
         "mod_stock": 851.1420784883721,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 813.1420784883721,
         "sqrt_stock": 1712.8368902439024,
         "sqrt_fast": 89.2858231707317,
         "sqrt_gain": 1623.5510670731708,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 152.803125
       }
     }
@@ -3943,14 +3965,14 @@
     "workload_mean_cycle_savings": {
       "v1_balanced": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 29.183594,
           "small50pct": 212.59375,
           "small100pct": 446.148438,
           "q0q1": 481.429688
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 32.183594,
           "small50pct": 215.59375,
           "small100pct": 449.148438,
@@ -3959,14 +3981,14 @@
       },
       "v2_pareto_fast": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 20.710938,
           "small50pct": 165.472656,
           "small100pct": 348.816406,
           "q0q1": 367.261719
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 23.710938,
           "small50pct": 168.472656,
           "small100pct": 351.816406,
@@ -3975,14 +3997,14 @@
       },
       "v3_reu_512k": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 20.710938,
           "small50pct": 165.472656,
           "small100pct": 348.816406,
           "q0q1": 367.261719
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 23.710938,
           "small50pct": 168.472656,
           "small100pct": 351.816406,
@@ -3991,14 +4013,14 @@
       },
       "v4_reu_16m": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 20.710938,
           "small50pct": 165.472656,
           "small100pct": 348.816406,
           "q0q1": 367.261719
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 23.710938,
           "small50pct": 168.472656,
           "small100pct": 351.816406,
@@ -4007,14 +4029,14 @@
       },
       "v5_hybrid_lowzp": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 20.710938,
           "small50pct": 165.472656,
           "small100pct": 348.816406,
           "q0q1": 367.261719
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 23.710938,
           "small50pct": 168.472656,
           "small100pct": 351.816406,
