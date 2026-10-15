@@ -1,0 +1,20 @@
+name: Issue144 ISQRT32 highword normal-resident V2/V3 screen
+on:
+  push:
+    branches: [issue144-isqrt32-resident-seed-screen-20261015]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  normal-resident-source-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble V2/V3 normal-resident direct highword source in both layouts and same-input public model
+        run: python3 tools/issue144_isqrt32_normal_resident_screen.py --count 800
