@@ -18,3 +18,5 @@ jobs:
           python-version: '3.12'
       - name: Check relocated same-slot code ownership, 1600 public INIT and STEP pairs
         run: python3 tools/issue144_seek16_v15_normal_resident_feasibility.py
+      - name: Rebuild V1 resident source in reference/alternate maps and prove real public INIT/STEP relocation
+        run: python3 tools/issue144_seek16_v15_source_relocation_screen.py
