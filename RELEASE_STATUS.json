@@ -3553,5 +3553,164 @@
         "sqrt_guard_mixed10_gain": 152.803125
       }
     }
+  },
+  "issue144_four_mul_narrow16_optin_2026_10_15": {
+    "status": "PASS_CPU_NATIVE_SOURCE_ONLY_NO_DEFAULT_PROMOTION",
+    "precondition": "both U32 operand upper 16-bit words zero",
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "operations": [
+      "MATH_UMUL32",
+      "MATH_SMUL32",
+      "MATH_UMUL32_SHR16",
+      "MATH_SMUL32_SHR16"
+    ],
+    "model_paired_cases_total": 22900,
+    "native_baseline_candidate_calls": 960,
+    "native_cycles_measured": false,
+    "no_regular_ZP_growth": true,
+    "default_PRGs_changed": false,
+    "default_REUs_changed": false,
+    "source": "optional/issue144_four_mul_narrow16/four_u32_narrow16.asm",
+    "documentation": "docs/ISSUE144_A_FOUR_MUL_NARROW16_SPECIALIST_2026-10-15.md",
+    "native_proof": "validation/review/ISSUE144_FOUR_MUL_NARROW16_NATIVE_VICE.json",
+    "model_proof_prefix": "validation/review/ISSUE144_FOUR_MUL_NARROW16_",
+    "mean_public_call_metrics": {
+      "v1_balanced": {
+        "MATH_UMUL32": {
+          "baseline": 674.1467248908297,
+          "optin": 305.43755458515284,
+          "saved": 368.7091703056769,
+          "worst_case_saved": 347
+        },
+        "MATH_SMUL32": {
+          "baseline": 682.1467248908297,
+          "optin": 308.43755458515284,
+          "saved": 373.7091703056769,
+          "worst_case_saved": 352
+        },
+        "MATH_UMUL32_SHR16": {
+          "baseline": 737.1467248908297,
+          "optin": 321.43755458515284,
+          "saved": 415.7091703056769,
+          "worst_case_saved": 394
+        },
+        "MATH_SMUL32_SHR16": {
+          "baseline": 745.1467248908297,
+          "optin": 324.43755458515284,
+          "saved": 420.7091703056769,
+          "worst_case_saved": 399
+        }
+      },
+      "v2_pareto_fast": {
+        "MATH_UMUL32": {
+          "baseline": 652.1467248908297,
+          "optin": 248.43755458515284,
+          "saved": 403.7091703056769,
+          "worst_case_saved": 382
+        },
+        "MATH_SMUL32": {
+          "baseline": 652.1467248908297,
+          "optin": 251.43755458515284,
+          "saved": 400.7091703056769,
+          "worst_case_saved": 379
+        },
+        "MATH_UMUL32_SHR16": {
+          "baseline": 715.1467248908297,
+          "optin": 264.43755458515284,
+          "saved": 450.7091703056769,
+          "worst_case_saved": 429
+        },
+        "MATH_SMUL32_SHR16": {
+          "baseline": 715.1467248908297,
+          "optin": 267.43755458515284,
+          "saved": 447.7091703056769,
+          "worst_case_saved": 426
+        }
+      },
+      "v3_reu_512k": {
+        "MATH_UMUL32": {
+          "baseline": 652.1467248908297,
+          "optin": 248.43755458515284,
+          "saved": 403.7091703056769,
+          "worst_case_saved": 382
+        },
+        "MATH_SMUL32": {
+          "baseline": 652.1467248908297,
+          "optin": 251.43755458515284,
+          "saved": 400.7091703056769,
+          "worst_case_saved": 379
+        },
+        "MATH_UMUL32_SHR16": {
+          "baseline": 715.1467248908297,
+          "optin": 264.43755458515284,
+          "saved": 450.7091703056769,
+          "worst_case_saved": 429
+        },
+        "MATH_SMUL32_SHR16": {
+          "baseline": 715.1467248908297,
+          "optin": 267.43755458515284,
+          "saved": 447.7091703056769,
+          "worst_case_saved": 426
+        }
+      },
+      "v4_reu_16m": {
+        "MATH_UMUL32": {
+          "baseline": 652.1467248908297,
+          "optin": 248.43755458515284,
+          "saved": 403.7091703056769,
+          "worst_case_saved": 382
+        },
+        "MATH_SMUL32": {
+          "baseline": 652.1467248908297,
+          "optin": 251.43755458515284,
+          "saved": 400.7091703056769,
+          "worst_case_saved": 379
+        },
+        "MATH_UMUL32_SHR16": {
+          "baseline": 715.1467248908297,
+          "optin": 264.43755458515284,
+          "saved": 450.7091703056769,
+          "worst_case_saved": 429
+        },
+        "MATH_SMUL32_SHR16": {
+          "baseline": 715.1467248908297,
+          "optin": 267.43755458515284,
+          "saved": 447.7091703056769,
+          "worst_case_saved": 426
+        }
+      },
+      "v5_hybrid_lowzp": {
+        "MATH_UMUL32": {
+          "baseline": 674.1467248908297,
+          "optin": 305.43755458515284,
+          "saved": 368.7091703056769,
+          "worst_case_saved": 347
+        },
+        "MATH_SMUL32": {
+          "baseline": 682.1467248908297,
+          "optin": 308.43755458515284,
+          "saved": 373.7091703056769,
+          "worst_case_saved": 352
+        },
+        "MATH_UMUL32_SHR16": {
+          "baseline": 737.1467248908297,
+          "optin": 321.43755458515284,
+          "saved": 415.7091703056769,
+          "worst_case_saved": 394
+        },
+        "MATH_SMUL32_SHR16": {
+          "baseline": 745.1467248908297,
+          "optin": 324.43755458515284,
+          "saved": 420.7091703056769,
+          "worst_case_saved": 399
+        }
+      }
+    }
   }
 }
