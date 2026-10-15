@@ -22,7 +22,7 @@ LAYOUTS = {
     'v1_balanced': dict(
         seek8_step='REG_API+$0400', seek8_init='REG_API+$04B4', seek16_step='REG_API+$0600',
         seek16_init='REG_API+$0723', seek8_planes='REG_API+$085B', seek16_helpers='REG_API+$08CE',
-        seek_shared='REG_API+$0977', seek8_state='REG_LOW+$08E8', seek16_state='REG_LOW+$0988'),
+        seek_shared='REG_API+$097A', seek8_state='REG_LOW+$08E8', seek16_state='REG_LOW+$0988'),
     'v2_pareto_fast': dict(
         seek8_step='REG_API+$0E00', seek16_step='REG_GAME_API+$0054', seek8_init='REG_LOW+$0B00',
         seek16_init='REG_LOW+$08E2', seek8_planes='REG_API+$0F6C', seek16_helpers='REG_API+$0EE3',
