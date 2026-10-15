@@ -1,3 +1,8 @@
+2026-10-15 ISSUE144 V4 ISQRT32 MASKSHIFT CANONICAL-SOURCE TRIAL (NOT BINARY RELEASE)
+- Replace two six-ASL REU prefix index shifts after AND #$03 with LSR/ROR/ROR/AND #$C0, no added ZP or REU data.
+- Independent current-main source-built same-input paired qualification 2,109 V4 public calls: exactly 8 modeled cycles saved every case, zero regressions or overflow V changes; actual 16-MiB REU VICE 48 calls PASS. Exact fast-four baseline pinned.
+- Frozen reference PRGs, REU images and production PERFORMANCE.md unchanged. Full source/library/ABI, package and release gates required before merge; physical VIC/REU DMA time unmeasured.
+
 2026-10-15 ISSUE144 V4 ISQRT32 FAST-FOUR CANONICAL SOURCE TRIAL (NOT BINARY RELEASE)
 - V4 REU ISQRT32 canonical source-build input uses four 16-bit refinement steps followed by the original final two 17-bit steps; prepromotion source pinned for paired reference.
 - Prior independent 8,619-radicand research: 111.190 mean CPU-model cycles saved, no slower cases, no new normal ZP or REU tables; V volatile flag differs on 195/8,619 model calls and is not a public contract.
