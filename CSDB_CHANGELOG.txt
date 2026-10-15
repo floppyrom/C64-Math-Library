@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 FULL PUBLIC UNSIGNED 32/16 SHARED-TAKE RESEARCH (NOT PROMOTED)
+- Independently source-built V2/V3/V4, both RAM maps, both 32/16 DIV/MOD APIs with one shared subtract body: 15,360 paired full Q32/R16/C public-call model checks, 6.592 mean cycles saved on uniform full-width N32 and 4.758 on mixed corpus. 13 one-cycle regressions per 1,280-case set; below ~5% production triage. 288 genuine native x64sc stock/candidate public calls PASS outputs/carry/input/stack. Disposable source transplant only; V1/V5 and regular PRG/REU/performance untouched; no native-cycle claim. docs/ISSUE144_UDIV32_16_SHARED_TAKE_FULLCALL_TRANSPLANT_2026-10-15.md
+
 2026-10-15 ISSUE144 SIGNED32 DIVMOD NATIVE VICE HARNESS STABILITY
 - Initialize 6510 SP=$FF explicitly before MATH_INIT in the signed32/16 DIV/MOD VICE harness; run three independent 480-call native repetitions (1,440 calls) to screen startup-state flakiness. No math algorithm, performance metrics, ABI, ZP, shipped binaries, or REU image changed.
 
