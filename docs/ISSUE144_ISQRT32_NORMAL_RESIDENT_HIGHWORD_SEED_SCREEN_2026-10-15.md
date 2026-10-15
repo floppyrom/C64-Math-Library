@@ -1,0 +1,7 @@
+# Issue #144 C — V2/V3 unrestricted ISQRT32 normal-resident source screen
+
+**Research branch, not a production change.** Independently qualified direct-highword seed from PR #155 previously saved 47 modeled cycles on every tested V2/V3 32-bit radicand, but used caller-owned $0C00 RAM. This new screen tries to fit the **same producer** in the canonical pre-existing normal resident $CB40..$CC00 source slot.
+
+The source transformer translates hardcoded table/ZP/IO/CPU addresses to the canonical source relocation symbols and places the self-contained main at `REG_GAME+$0A40` and highword seed helper at `REG_GAME+$0AD0`. Both the V2 and V3 source trees are assembled **in memory** for reference and alternate memory maps. It asserts that the only image changes lie within the original 192-byte root region; checks the unchanged ordinary `MATH_ISQRT32` trampoline and no additional normal zero page or caller RAM; compares public-entry CPU calls on identical 32-bit radicands to `math.isqrt`, including input preservation, carry, X/Y and SP.
+
+Results must be published from actual CI, not projected. A green CPU-model screen is only a feasibility checkpoint. Full 56-entry mixed-call qualification, actual x64sc (V3 with correct REU), native physical memory collision, release/payload publication and native cycle timing remain required. Do not install into normal source or update production PERFORMANCE until they pass. Private OptiSearch materials excluded.
