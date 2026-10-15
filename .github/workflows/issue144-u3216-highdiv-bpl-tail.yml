@@ -20,3 +20,5 @@ jobs:
           python-version: '3.12'
       - name: Matched fullwidth N32 and D16 high divisor 6510 quotient tail
         run: python tools/issue144_u3216_highdiv_bpl_tail_screen.py
+      - name: Combined no-overflow plus sign-fastskip full public DIV MOD 32/16
+        run: python tools/issue144_u3216_signskip_hybrid_fullcall.py
