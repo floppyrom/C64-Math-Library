@@ -18,7 +18,7 @@ The independent public-source numerical script `tools/issue144_u3216_radix256_nu
 
 ### Why the table's signed correction bound is two
 
-For `v≥128`, `w∈[0,255]`, `q0≤255`, the temporary remainder is strictly greater than `-255²=-65025`, and `Dn≥32768`, so fewer than two Dn additions suffice when negative (integer correction count at most two). When `h<v`, `t0≤v-1` and `l≤255`, giving `temp<256(v+255)+256≤3Dn`; the upward correction count is at most two. For `h=v`, `R<Dn` forces `l<w`, `q0=255` and `temp<Dn`, so the upper case is even simpler.
+For `v≥128`, `w∈[0,255]`, `q0≤255`, the temporary remainder is strictly greater than `-255²=-65025`, and `Dn≥32768`, so at most two Dn additions are necessary when negative. When `h<v`, `t0≤v-1` and `l≤255`, giving `temp<256(v+255)+256≤3Dn`; the upward correction count is at most two. For `h=v`, `R<Dn` forces `l<w`, `q0=255` and `temp<Dn`, so the upper case is even simpler.
 
 This is an algebraic correction bound for **exact integer arithmetic**, not a bound on CPU cycles.
 
