@@ -1,3 +1,9 @@
+2026-10-15 ISSUE144 SEEK16 NORMAL-RESIDENT IN-HOLE + U3216 SOURCE-ONLY RESEARCH (NOT DEFAULT)
+- Three independent opt-in V2/V3/V4 SEEK16 INIT source variants reuse 192 bytes recovered from the compact 32/16 division tail, replacing repeated accumulator JSR/RTS, relocating Euclid + fractional helpers to the reclaimed resident island. No extra caller RAM, normal ZP or public-entry changes.
+- Same-input local 1,920 ordinary SEEK16 INIT calls/profile followed by STEP: V2 mean -22.1448 cycles, V3/V4 mean -20.4781, no slower measured call, exact full SEEK object state/carry/X/SP. Three 56-entry source validators passed 65,034 calls total.
+- Real VICE 3.13.2 x64sc V2/V3/V4 baseline-vs-candidate native INIT+STEP state/status snapshots passed 32 INIT and 32 STEP calls per profile (384 compared bytes), including 512-KiB/16-MiB REU. Source-rebuilt REU bytes unchanged.
+- Individually liftable full source examples in optional/issue144_seek_inhole_shared; new reproducible current-main reference+alternate/source-validator/paired-model/native workflow. V1/V5, physical bus timing, arbitrary IRQ/NMI mixing, full production promotion and performance tables remain unchanged.
+
 2026-10-15 ISSUE144 U3216 FULL-DOMAIN SHARED-TAKE INLINE SOURCE (RESEARCH ONLY)
 - Independently authored standard-layout NMOS 6510 source alternative replaces duplicated forced/taken 32/16 low-tail subtraction with a shared path, saving 192 bytes of V2 general-tail source assembly (685 -> 493); preserves the D8/D0 dispatch and stable public ABI.
 - Same-input 10,735 alternating UDIV32_16/UMOD32_16 public-call CPU-model cases PASS. V2 mean saved 6.3371 cycles overall / 6.7192 uniform, worst 1-cycle slowdown on 108 cases. D8 and D0 unchanged, no default promotion.
