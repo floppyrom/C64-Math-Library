@@ -43,7 +43,7 @@ def probe(layout,helper):
  assert changes and all(start<=a<values["REG_GAME"]+0x0AE0 for a in changes),(layout,helper,changes[:10])
  assert labels["LCB40"]==start and labels["LC8DB"]==aux
  api=values["REG_GAME_API"]+0x30
- assert before[api]==after[api]==0x4C and before[api+1:api+3] == after[api+1:api+3]
+ assert before[api]==after[api]==0x4C and (before[api+1],before[api+2])==(after[api+1],after[api+2])
  def machine(code):
   ram=bytearray(65536)
   for a,v in code.items():ram[a]=v
