@@ -14,7 +14,7 @@ This is **not** an application-RAM overlay. The three independently accessible, 
 
 To evaluate, in a disposable checkout install `optional/issue144_u3216_shared_take_inline/udiv32_16_split_direct_shared.inc` over `relocatable_source/division/udiv32_16_split_direct.inc`, then install the corresponding alternative `seek_dda.asm` over each matching `<profile>/resident/movement/native/seek_dda.asm`. Assemble and qualify as usual; do not overwrite shipped images without completing production gates. The combined U3216+SEEK placement is necessary: using these SEEK alternatives without the compact division core may overwrite other resident code.
 
-## Same-input CPU-model public-entry benchmark (16 October 2026 research checkpoint)
+## Same-input CPU-model public-entry benchmark (15 October 2026 research checkpoint)
 
 | Profile | Paired INIT calls | Mean cycles saved | Worst saved | Slower | Follow-up STEP |
 | --- | ---: | ---: | ---: | ---: | --- |
