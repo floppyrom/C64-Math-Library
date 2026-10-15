@@ -1,3 +1,8 @@
+2026-10-15 ISSUE144 V2/V3 ISQRT32 NORMAL-RESIDENT HIGHWORD-SEED RESEARCH (SOURCE-ONLY OPTIN)
+- Reused already verified unrestricted direct-highword-seed strategy without its caller-owned $0C00 overlay: helper fits within the pre-existing 192-byte V2/V3 $CB40-$CBFF normal resident slot (alternate map $8A40-$8AFF); source and public entry unchanged in the committed default.
+- Independent source model 847 input pairs/profile/layout (3,388 paired): exactly 47 CPU-model cycles saved each, zero slower cases, correct root/carry/inputs/XY/SP, no additional normal zero-page or caller RAM; reference/alternate full-source assemblies differ only in root slot.
+- Native VICE 3.10 x64sc: 192 baseline-plus-candidate public calls V2/V3 and both relocations pass byte-identical root/status; actual V3 512-KiB REU attached. Physical/native cycle timing not measured. Not promoted; no PRG, REU, PERFORMANCE or public API modification; larger mixed-call/source-regeneration/resource qualification remains open.
+
 2026-10-15 ISSUE144 V4 ISQRT32 MASKSHIFT CANONICAL-SOURCE TRIAL (NOT BINARY RELEASE)
 - Replace two six-ASL REU prefix index shifts after AND #$03 with LSR/ROR/ROR/AND #$C0, no added ZP or REU data.
 - Independent current-main source-built same-input paired qualification 2,109 V4 public calls: exactly 8 modeled cycles saved every case, zero regressions or overflow V changes; actual 16-MiB REU VICE 48 calls PASS. Exact fast-four baseline pinned.
