@@ -1,0 +1,24 @@
+name: Issue144 REU quotient-digit genuine 6510 CPU screen
+
+on:
+  push:
+    branches:
+      - issue144-radix256-udiv3216-digit-research-20261015
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  assembled-6510-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: One quotient digit on assembled 6510 using real V4 UMUL8 and REU table
+        run: python tools/issue144_u3216_reu_digit_6510_screen.py
