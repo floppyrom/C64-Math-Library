@@ -126,6 +126,9 @@ def main():
         reports=[run(p,lay,Path(d)) for lay in ("reference","alternate") for p in PROFILES]
     assert all(r["cases"]==4080 for r in reports)
     assert all(r["mean_saved"]>0 for r in reports)
+    # A resident default must be Pareto-safe across every sampled speed/mode;
+    # the original in-place Y-counted helper had 1941 slower calls/profile.
+    assert all(r["slower_calls"]==0 and r["worst_saved"]>=0 for r in reports),reports
     print(json.dumps({"status":"PASS_SEEK16_COUNTED_SOURCE_MODEL",
           "reference_images_modified":False,"profiles":reports},indent=2))
 if __name__=="__main__":
