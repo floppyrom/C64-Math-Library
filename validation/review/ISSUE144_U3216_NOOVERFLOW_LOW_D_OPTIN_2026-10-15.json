@@ -1,0 +1,94 @@
+{
+  "status": "PASS_RESEARCH_OPTIN_SOURCE_NATIVE_NOT_DEFAULT",
+  "date": "2026-10-15",
+  "scope": "all-input public ABI via $0800 opt-in with D=$0100-$7FFF fast lane; V2/V3/V4 reference maps only",
+  "dedicated_cpu_workflow": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38734408007",
+  "dedicated_native_workflow": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38734340141",
+  "tail_workflow": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38732778399",
+  "tail_research": {
+    "correct_cases": 12976,
+    "divisor": "$0001-$7FFF",
+    "code_bytes_before": 684,
+    "code_bytes_after": 444,
+    "mean_cycle_saving": 56.77304254007398,
+    "min_cycle_saving": 33,
+    "max_cycle_saving": 81,
+    "slower_cases": 0,
+    "highword_seed": "mathematical 16/16 oracle",
+    "corpus_sha256": "8e90eb434c836a27b1eccb54a196bdefb2efeb2725353be8e1bfb882ff3d5d14"
+  },
+  "public_cpu": {
+    "profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "operations": [
+      "MATH_UDIV32_16",
+      "MATH_UMOD32_16"
+    ],
+    "cases_per_operation_and_profile": 4261,
+    "total_paired_comparisons": 25566,
+    "total_baseline_plus_candidate_public_calls": 51132,
+    "correct_q32_r16_carry_input_stack": true,
+    "standalone_asm_equals_tested_machine_bytes": true,
+    "input_corpus_sha256": "405d0a810398fed2d47a2def2650d2e4c2c317c31bbfe3a1966035bbb3d46f76",
+    "output": {
+      "MATH_UDIV32_16": {
+        "mixed_all_mean_saved": 28.06383478056794,
+        "uniform_fullwidth_mean_saved": 24.323567708333332,
+        "eligible_D0100_7FFF_cases": 2345,
+        "eligible_D0100_7FFF_mean_saved": 59.72537313432836,
+        "eligible_min_saved": 36,
+        "eligible_max_saved": 85,
+        "high_D_fallback_saved": -11,
+        "D8_zero_fallback_saved": -10,
+        "mixed_worst_saved": -11
+      },
+      "MATH_UMOD32_16": {
+        "mixed_all_mean_saved": 31.06383478056794,
+        "uniform_fullwidth_mean_saved": 27.323567708333332,
+        "eligible_D0100_7FFF_cases": 2345,
+        "eligible_D0100_7FFF_mean_saved": 62.72537313432836,
+        "eligible_min_saved": 39,
+        "eligible_max_saved": 88,
+        "high_D_fallback_saved": -8,
+        "D8_zero_fallback_saved": -7,
+        "mixed_worst_saved": -8
+      }
+    }
+  },
+  "native_x64sc": {
+    "emulator": "pinned VICE 3.10 r46274",
+    "baseline_plus_candidate_calls": 288,
+    "profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "q_r_c_N_D_SP_matched": true,
+    "native_cycles_measured": false
+  },
+  "resource": {
+    "entry": "$0800",
+    "end": "$09FE",
+    "bytes": 511,
+    "caller_owned_below_resident": true,
+    "overlaps_Basic_program_area": true,
+    "extra_normal_zp": 0,
+    "uses_shared_resident_zp": "$10-$19",
+    "hardcoded_reference_kernel": "$420C",
+    "hardcoded_reference_public_fallback": "$31B0",
+    "relocation_or_IRQ_NMI_reentrant_qualified": false
+  },
+  "limits": {
+    "default_promotion": false,
+    "normal_profiles_V1_V5_qualified": false,
+    "alternate_map_qualified": false,
+    "physical_bus_timing_measured": false,
+    "p95_fallback_regression": true,
+    "all_profiles_reu_prgs_unchanged": true,
+    "private_optisearch_published": false,
+    "issue_144_B_closed": false
+  }
+}
