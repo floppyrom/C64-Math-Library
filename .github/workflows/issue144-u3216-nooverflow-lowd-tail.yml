@@ -1,0 +1,19 @@
+name: Issue144 full-numerator no-overflow low-divisor tail proof
+on:
+  push:
+    branches:
+      - issue144-u3216-nooverflow-lowd-tail-20261015
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  nm6510-same-input:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Real assembled NMOS 6510 low-divisor quotient tail screen
+        run: PYTHONDONTWRITEBYTECODE=1 python tools/issue144_u3216_nooverflow_lowd_tail_screen.py
