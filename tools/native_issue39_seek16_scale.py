@@ -198,10 +198,24 @@ def main():
                 # V1/V5 qualification instead of pretending it never changed.
                 latest = status.get(
                     "issue144_seek16_v15_normal_resident_batched_source_2026_10_16", {})
-                if p in ("v1_balanced", "v5_hybrid_lowzp") and latest.get("status") == (
-                    "PASS_NORMAL_RESIDENT_SOURCE_MODEL_NATIVE_NOT_BINARY_RELEASE"):
-                    assert p in latest["profiles"]
+                inhole = status.get(
+                    "issue144_seek16_inhole_shared_source_only_2026_10_15", {})
+                later_v15 = (
+                    p in ("v1_balanced", "v5_hybrid_lowzp")
+                    and latest.get("status") ==
+                    "PASS_NORMAL_RESIDENT_SOURCE_MODEL_NATIVE_NOT_BINARY_RELEASE"
+                    and p in latest.get("profiles", ()))
+                later_v234 = (
+                    p in ("v2_pareto_fast", "v3_reu_512k", "v4_reu_16m")
+                    and p in inhole.get("profiles", ())
+                    and inhole.get("model_worst_regression_cycles") == 0
+                    and inhole.get("normal_zp_growth") == 0)
+                if later_v15:
                     assert latest["public_cycle_saving_by_profile"][p]["worst"] >= 0
+                if later_v15 or later_v234:
+                    # Historical SHA is intentionally immutable; all later
+                    # source builds are instead compared below via real VICE
+                    # old/new dumps AND independent CPU reference model.
                     assert sha(new) != release["candidate_prg_sha256"][p], (
                         p, "current normal-resident candidate unexpectedly matched old hash")
                 else:
