@@ -1,0 +1,20 @@
+name: Issue144 V5 derived root ISQRT32 inheritance screen
+on:
+  push:
+    branches: [issue144-v5-isqrt32-inheritance-screen-20261015]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build V5 reference+alternate and prove V1 resident ownership and paired ordinary-call roots
+        run: python3 tools/issue144_v5_isqrt32_inheritance_screen.py
