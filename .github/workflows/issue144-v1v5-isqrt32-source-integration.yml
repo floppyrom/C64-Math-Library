@@ -48,7 +48,16 @@ jobs:
         run: |
           python3 tools/build_hybrid.py --config-kind reference
           python3 tools/build_hybrid.py --config-kind alternate
-          python3 tools/validate_hybrid.py --random-per-family 180 --mixed 720
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'tools')
+          from validate_source_build import validate
+          for kind in ('reference','alternate'):
+              result=validate('v5_hybrid_lowzp',Path('build_hybrid')/kind)
+              assert result['public_entries_executed']==56
+              print('V5 full source ABI',kind,'PASS',result['public_entries_executed'],'entries',result['machine_calls'],'calls')
+          PY
       - name: Install checksum-pinned VICE x64sc
         run: |
           curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
