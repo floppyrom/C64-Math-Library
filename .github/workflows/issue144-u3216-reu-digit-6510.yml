@@ -20,5 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: One quotient digit on assembled 6510 using real V4 UMUL8 and REU table
+      - name: One quotient digit on assembled 6510 using self-contained 8x8 multiplication and REU table
         run: python tools/issue144_u3216_reu_digit_6510_screen.py
+      - name: Matched full-width two-digit 6510 time and oracle lower-bound screen
+        run: python tools/issue144_u3216_radix256_optimistic_cost_gate.py
