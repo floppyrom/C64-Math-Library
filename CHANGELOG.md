@@ -1,3 +1,8 @@
+2026-10-15 ISSUE144 V1/V5 NORMAL-RESIDENT ISQRT32 DIRECT-HIGHWORD CANONICAL SOURCE PROMOTION (SOURCE ONLY)
+- Integrated the independently qualified 51-cycle V1 root seed as the normal-resident source's unique final owner, reusable by V5's existing V1-derived hybrid builder, with no added ZP, caller RAM or public ABI entries.
+- Existing V1 and V5 research qualification: 1,314 + 2,658 paired unrestricted model root calls with a 51-cycle saving on every input and no regressions, 72 sequential ISQRT16 interleaving smokes, and 96 native x64sc calls on each profile across both maps.
+- Dedicated new source/VICE integration and complete V1/V5 public-source gates must pass before merging. Five reference PRGs, two REUs and production PERFORMANCE.md remain unchanged. IRQ/NMI concurrency, physical bus time and a new default binary release remain open.
+
 2026-10-15 ISSUE144 V5 INHERITED V1 ISQRT32 51-CYCLE NORMAL RESIDENT RESEARCH (NO BINARY PROMOTION)
 - V5 reference+alternate hybrid source builder retains V1 root resident ownership; 2,658 paired ordinary public ISQRT32 calls save exactly 51 modeled CPU cycles each without slower cases, caller RAM or normal ZP growth. 72 sequential ISQRT16 interleaving smokes passed.
 - Real SHA256-pinned VICE x64sc passed 96 original/candidate public root calls across both layouts. Full imported V5 56-entry mixed/IRQ and wall bus-time are NOT certified. Frozen five PRGs, two REUs and PERFORMANCE.md unchanged.
