@@ -1,0 +1,22 @@
+name: Issue144 SEEK16 V1/V5 counted resident source proof
+on:
+  push:
+    branches: [issue144-seek16-v1v5-ycount-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify generated SEEK sources exactly reproduce V1/V5 candidate
+        run: python3 tools/generate_seek_sources.py --check
+      - name: Paired reference and alternate full-state INIT/STEP speed-class model proof
+        run: python3 tools/issue144_seek16_v15_counted_source_proof.py
