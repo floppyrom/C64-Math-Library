@@ -1,0 +1,20 @@
+name: Issue144 V1 ISQRT32 normal resident direct highword research
+on:
+  push:
+    branches: [issue144-isqrt32-v1-normal-resident-research-20261015]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cpu-model-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test V1 original normal root resident slot on both memory maps, full 32-bit inputs
+        run: python3 tools/issue144_isqrt32_v1_normal_resident_screen.py --count 1200
