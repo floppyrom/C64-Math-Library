@@ -1,0 +1,99 @@
+{
+  "native_baseline_and_candidate_calls": 480,
+  "native_cycle_measurement": false,
+  "ordinary_resident_PRGs_unchanged": true,
+  "paired_input_cases": 24,
+  "profiles": {
+    "v1_balanced": {
+      "MATH_SDIV32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "32c3042c0089a9a2bd331b192a9770799a941cdbdc18cdf7760b2ba0ff9df326",
+        "saved_cpu_cycles_from_model": 0,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      },
+      "MATH_SMOD32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "32c3042c0089a9a2bd331b192a9770799a941cdbdc18cdf7760b2ba0ff9df326",
+        "saved_cpu_cycles_from_model": 3,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      }
+    },
+    "v2_pareto_fast": {
+      "MATH_SDIV32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "20ce5aa6763fd373616f22aeebbc928b26745e2fe8f711149df03ad88da0818d",
+        "saved_cpu_cycles_from_model": 3,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      },
+      "MATH_SMOD32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "20ce5aa6763fd373616f22aeebbc928b26745e2fe8f711149df03ad88da0818d",
+        "saved_cpu_cycles_from_model": 6,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      }
+    },
+    "v3_reu_512k": {
+      "MATH_SDIV32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "20ce5aa6763fd373616f22aeebbc928b26745e2fe8f711149df03ad88da0818d",
+        "saved_cpu_cycles_from_model": 3,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      },
+      "MATH_SMOD32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "20ce5aa6763fd373616f22aeebbc928b26745e2fe8f711149df03ad88da0818d",
+        "saved_cpu_cycles_from_model": 6,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      }
+    },
+    "v4_reu_16m": {
+      "MATH_SDIV32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "20ce5aa6763fd373616f22aeebbc928b26745e2fe8f711149df03ad88da0818d",
+        "saved_cpu_cycles_from_model": 3,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      },
+      "MATH_SMOD32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "20ce5aa6763fd373616f22aeebbc928b26745e2fe8f711149df03ad88da0818d",
+        "saved_cpu_cycles_from_model": 6,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "MATH_SDIV32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "20ce5aa6763fd373616f22aeebbc928b26745e2fe8f711149df03ad88da0818d",
+        "saved_cpu_cycles_from_model": 0,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      },
+      "MATH_SMOD32_16": {
+        "all_status_registers_outputs_and_stack_exact": true,
+        "native_cases_per_version": 24,
+        "native_original_byte_restoration_rechecked_by_CPU_model": true,
+        "output_sha256": "20ce5aa6763fd373616f22aeebbc928b26745e2fe8f711149df03ad88da0818d",
+        "saved_cpu_cycles_from_model": 0,
+        "source_assembled_ENABLE_DISABLE_executed_on_native": true
+      }
+    }
+  },
+  "status": "PASS_FIVE_PROFILE_NATIVE_SIGNED32_16_JMP_DIRECT"
+}
