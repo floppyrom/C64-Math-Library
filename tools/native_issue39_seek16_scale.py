@@ -5,7 +5,7 @@ Public entry execution on actual five resident images and real V3/V4 REU
 images. Native output/flag/state parity only; NO native cycle timing.
 """
 from __future__ import annotations
-import hashlib, json, os, random, socket, subprocess, sys, tempfile, time
+import argparse, hashlib, json, os, random, socket, subprocess, sys, tempfile, time
 from pathlib import Path
 
 R=Path(__file__).resolve().parents[1]
@@ -27,7 +27,9 @@ def original(p):return (R/p/"resident"/("math_"+p+"_game_math.prg")).read_bytes(
 def candidate(p):
     folder=(R/("build_hybrid/reference" if p==P[-1] else "build_source/reference")/p)
     man=json.loads((folder/"source_build_manifest.json").read_text())
-    return (folder/man["output_prg"]).read_bytes()
+    payload=(folder/man["output_prg"]).read_bytes()
+    assert sha(payload)==man["output_sha256"],(p,"live source-build manifest SHA mismatch")
+    return payload
 def vectors():
     r=random.Random(0x39E16)
     seeds=[(0,0,0,0,0x8100),(0,0,319,199,0x8100),(319,199,0,0,0x8180),
@@ -172,6 +174,12 @@ def check_model(p,prg,reu,data):
     return True
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument(
+        "--live-source", action="store_true",
+        help="Qualify later canonical source via its SHA-verified build manifest; "
+             "default remains the original strictly pinned Oct-14 release")
+    args=parser.parse_args()
     exe=os.getenv("VICE_WRAPPER","x64sc")
     status=json.loads((R/"RELEASE_STATUS.json").read_text())
     # Reconstruct only the immediate pre-SEEK/UDIV32 image when running on a
@@ -179,7 +187,11 @@ def main():
     # every changed byte, including V1/V5's relocated division block.
     from issue39_normalize_provenance import pre_seek_division_bytes, SEEK_KEY
     release=status.get(SEEK_KEY)
-    report={"status":"PASS_NATIVE_VICE_PAIRED_SEEK16_INIT",
+    report={"status":("PASS_NATIVE_VICE_LIVE_CANONICAL_SEEK16_INIT"
+                      if args.live_source else "PASS_NATIVE_VICE_PAIRED_SEEK16_INIT"),
+            "mode":("live_source" if args.live_source else "historic_oct14"),
+            "historic_candidate_sha_guard_bypassed":args.live_source,
+            "live_source_verified_against_build_manifest":args.live_source,
             "native_cycles_measured":False,"public_calls":0,"profiles":{}}
     with tempfile.TemporaryDirectory(prefix="seek16_native_") as folder:
         tmp=Path(folder)
@@ -190,7 +202,15 @@ def main():
             old=pre_seek_division_bytes(p,published,status)
             if release:
                 assert sha(old)==release["old_resident_sha256"][p]
-                assert sha(new)==release["candidate_prg_sha256"][p]
+                # The historical certificate is an immutable 14-Oct source
+                # fingerprint. It MUST match in default historic mode. The
+                # explicit --live-source mode instead compares a fresh
+                # SHA-manifest-verified canonical build to the same pinned
+                # original PRG; it does not claim historical SHA identity.
+                if not args.live_source:
+                    assert sha(new)==release["candidate_prg_sha256"][p]
+                else:
+                    assert sha(new)!=sha(old),(p,"live source equals original")
             assert old!=new and len(old)==len(new)
             if reu:assert sha(reu.read_bytes())==status["reference_reu_sha256"][p]
             a=native(p,old,reu,11000+pi*4,tmp,exe)
@@ -209,11 +229,16 @@ def main():
             check_model(p,new,reu,b)
             report["profiles"][p]={"cases_per_image":COUNT,"output_sha256":sha(a),
                         "old_prg":sha(old),"candidate_prg":sha(new),
+                        "archived_candidate_sha256":release["candidate_prg_sha256"][p] if release else None,
+                        "archive_and_live_source_same_sha":(
+                            sha(new)==release["candidate_prg_sha256"][p] if release else None),
                         "bytewise_equal_with_model":True}
             report["public_calls"]+=2*COUNT
             print("SEEK16 native",p,COUNT,"paired calls PASS",flush=True)
     assert report["public_calls"]==240
-    dest=R/"validation/review/ISSUE39_SEEK16_SCALE_NATIVE_2026-10-14.json"
+    dest=R/"validation/review"/(
+        "ISSUE39_SEEK16_SCALE_NATIVE_LIVE_SOURCE.json" if args.live_source
+        else "ISSUE39_SEEK16_SCALE_NATIVE_2026-10-14.json")
     dest.write_text(json.dumps(report,indent=2,sort_keys=True)+"\n")
     print("SEEK16 240 NATIVE PUBLIC CALLS PASS")
 if __name__=="__main__":main()
