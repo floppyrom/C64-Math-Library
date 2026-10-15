@@ -166,7 +166,10 @@ def main():
         got=c.mem[0x70]+(c.mem[0x71]<<8)
         expected_q,expected_r=divmod((rem<<8)|byte,d)
         assert (q,got)==(expected_q,expected_r),(
-            i,hex(rem),hex(d),byte,q,got,expected_q,expected_r)
+            i,hex(rem),hex(d),byte,q,got,expected_q,expected_r,
+            "table",list(c.mem[0x76:0x78]),"product",list(c.mem[0xc008:0xc00a]),
+            "temp",list(c.mem[0x79:0x7c]),
+            "dma_regs",list(c.mem[0xdf01:0xdf0b]))
         assert c.c==0 and c.sp==sp and c.d==0
         assert c.mem[0x72]==d&255 and c.mem[0x73]==d>>8 and c.mem[0x74]==byte
         # Actual correction count from the table seed; this does not depend on
