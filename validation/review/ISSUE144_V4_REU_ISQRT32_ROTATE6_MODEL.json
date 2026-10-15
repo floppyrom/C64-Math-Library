@@ -1,0 +1,45 @@
+{
+  "status": "PASS_CPU_MODEL_V4_REU_ISQRT32_NO_EXTRA_RESOURCES",
+  "profile": "v4_reu_16m",
+  "canonical_corpus": 4130,
+  "before": {
+    "mean": 917.3174334140435,
+    "median": 914.0,
+    "p95": 986,
+    "min": 806,
+    "max": 1067,
+    "vector_sha256": "0a0c97b7153cdc09d7a361d047b7aacafe50af01a4601bcfddc44af124b3a71f"
+  },
+  "after": {
+    "mean": 911.3174334140435,
+    "median": 908.0,
+    "p95": 980,
+    "min": 800,
+    "max": 1061,
+    "vector_sha256": "6717a1a633961aa50e5149537627b2b79ead8fa93a77230eddde772f0a193a16"
+  },
+  "gain_cycles_on_every_input": 6,
+  "original_resident_data_changed": false,
+  "real_16MiB_REU_payload_loaded": true,
+  "old_extra_ZP": 0,
+  "new_extra_ZP": 0,
+  "net_executable_bytes_growth": 0,
+  "source_installer_bytes": 88,
+  "enable_cycles": 66,
+  "disable_cycles": 56,
+  "patch": [
+    {
+      "address": "0xc90b",
+      "original": "0a0a0a0a0a0a",
+      "candidate": "4a6a6a9001ea"
+    },
+    {
+      "address": "0xc924",
+      "original": "0a0a0a0a0a0a",
+      "candidate": "4a6a6a9001ea"
+    }
+  ],
+  "source_sha256": "a7b023d26e1bf52bebeefba07fb638c6f95b6dd98303380f4562b2cb6cff4552",
+  "unpromoted_native_pending": true,
+  "physical_REU_bus_cycles_not_measured": true
+}
