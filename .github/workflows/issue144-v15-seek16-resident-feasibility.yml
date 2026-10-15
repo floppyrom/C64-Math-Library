@@ -22,3 +22,5 @@ jobs:
         run: python3 tools/issue144_seek16_v15_source_relocation_screen.py
       - name: Reject candidate if its footprint overwrites the live SEEK8 plane writer
         run: python3 tools/issue144_seek16_v15_ownership_gate.py
+      - name: Enumerate same-offset unassigned resident executable holes in both layouts
+        run: python3 tools/issue144_seek16_v15_free_islands.py
