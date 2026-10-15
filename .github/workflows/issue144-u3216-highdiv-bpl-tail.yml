@@ -1,0 +1,24 @@
+name: Issue144 high-divisor sign fast-reject quotient tail
+
+on:
+  push:
+    branches:
+      - issue144-u3216-highdiv-sign-fastskip-20261015
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  highdiv-6510:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Matched fullwidth N32 and D16 high divisor 6510 quotient tail
+        run: python tools/issue144_u3216_highdiv_bpl_tail_screen.py
+      - name: Combined no-overflow plus sign-fastskip full public DIV MOD 32/16
+        run: python tools/issue144_u3216_signskip_hybrid_fullcall.py
