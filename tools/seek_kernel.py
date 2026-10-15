@@ -838,6 +838,29 @@ SEEK_T      = IO+5
 {SHARED}"""
 
 
+
+def _v15_batched_seek16_init(native_source: str, layout: dict) -> str:
+    """V1/V5 resident-only loop: one JSR/RTS for all integer increments.
+
+    The distinct one-shot helper remains for the fractional k0+1 plane.
+    Uses the 45-byte, source-owned free REG_API+$0599 island; no caller RAM.
+    Standalone SEEK16 retains the original generic kernel.
+    """
+    loop = "s16i_r0:\n        jsr s16_addmin\n        dey\n        bne s16i_r0\n"
+    assert native_source.count(loop) == 1
+    native_source = native_source.replace(loop, "s16i_r0:\n        jsr s16_addmin_batch\n")
+    helper = SEEK16_HELPERS.split("s16_addmin:\n", 1)[1].split("\n; As s8_planes", 1)[0]
+    assert helper.count("s16a_done:\n        rts") == 1
+    helper = helper.replace("s16a_", "s16b_")
+    helper = helper.replace("s16b_done:\n        rts",
+                            "s16b_done:\n        dey\n        bne s16_addmin_batch\n        rts")
+    batch = ("* = " + layout["seek16_batch"] + "\n"
+             "; Issue144: repeated accumulator, same state and carry semantics.\n"
+             "s16_addmin_batch:\n" + helper.rstrip() + "\n")
+    anchor = "\n* = " + layout["seek16_step"] + "\n"
+    assert native_source.count(anchor) == 1
+    return native_source.replace(anchor, "\n" + batch + "\n* = " + layout["seek16_step"] + "\n")
+
 def library(profile: str, layout: dict, scratch_expr: str, notes: str) -> str:
     """Profile-native include. layout maps block/state names to origin exprs."""
     lines = [f"""\
@@ -884,4 +907,5 @@ SEEK16_STATE = {layout['seek16_state']}
         lines.append('')
         lines.append(f'* = {layout[block]}')
         lines.append(BLOCKS[block].rstrip('\n'))
-    return '\n'.join(lines) + '\n'
+    native_source = '\n'.join(lines) + '\n'
+    return _v15_batched_seek16_init(native_source, layout) if profile == 'v1_balanced' else native_source
