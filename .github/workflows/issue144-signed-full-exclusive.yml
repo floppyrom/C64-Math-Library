@@ -1,7 +1,7 @@
 name: Issue144 all-signed SHR16 exclusive direct-slice
 on:
   push:
-    branches: [issue144-signed-full-domain-exclusive-20261015]
+    branches: [issue144-signed-full-domain-exclusive-20261015, issue144-signed-exclusive-five-profiles-20261015]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -39,7 +39,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
           git diff --cached --quiet || git commit -m 'issue144: seal unrestricted signed SHR16 exclusive producer and native proofs'
-          git push origin HEAD:issue144-signed-full-domain-exclusive-20261015
+          git push origin HEAD:"$GITHUB_REF_NAME"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
