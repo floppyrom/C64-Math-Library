@@ -1,0 +1,10 @@
+{
+  "status": "PASS_REAL_NATIVE_VICE_V4_REU_ISQRT32_ROTATE6",
+  "profile": "v4_reu_16m",
+  "original_and_candidate_calls": 48,
+  "original_and_candidate_output_and_STATUS_BYTES_EQUAL": true,
+  "real_16MiB_REU_image_loaded": true,
+  "native_cycle_timing_not_measured": true,
+  "original_output_dump_sha256": "a22f4ba584e615bb9acea28fd5d99ba962694b3ff77026cfb92a436dc3653fdb",
+  "candidate_output_dump_sha256": "a22f4ba584e615bb9acea28fd5d99ba962694b3ff77026cfb92a436dc3653fdb"
+}

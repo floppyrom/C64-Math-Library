@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 V4 REU ISQRT32 INPLACE ROTATE6 PARETO
+- Source-only V4 REU ISQRT32 all-input 12-byte in-place peephole: two 6x ASL groups -> LSR/ROR/ROR/BCC+1/NOP, exact public output/flags, 6 CPU-model cycles saved on all 4,130 canonical inputs (917.317433 -> 911.317433), 48 real native x64sc REU-16MiB baseline/candidate calls PASS. Optional reversible 88-byte BEGIN/END assembly, no extra normal ZP/code/data; normal resident PRG/REU and ordinary PERFORMANCE remain unchanged. docs/ISSUE144_V4_REU_ISQRT32_ROTATE6_PARETO_2026-10-15.md
+
 2026-10-15 ISSUE144 UNSIGNED 32/16 FULL Q R NARROW NUMERATOR OPTIN
 - Source-only 22-byte all-input UDIV32_16/UMOD32_16 full-Q/R/C guarded narrow-numerator option: 12,800 same-input paired CPU model cases and 480 native x64sc calls PASS. Saves ~21–32 cycles on 10% narrow workload (V1–V5) but COSTS 14/11 cycles per uniform full-width call; deliberately not a default promotion. Documented volatile X/Y/NZV may differ; no shipped resident PRGs, REUs, ordinary ZP/ABI or PERFORMANCE change. docs/ISSUE144_UNSIGNED32_16_NARROW_NUMERATOR_GUARD_2026-10-15.md
 
