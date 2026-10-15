@@ -16,3 +16,13 @@ jobs:
           python-version: '3.12'
       - name: Assemble production highD and no-overflow lowD engines, compare public DIV MOD
         run: python3 tools/issue144_u3216_dualtail_direct_dispatch_screen.py
+  geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check real normal-resident source-owned vacancy before D8 core
+        run: python3 tools/issue144_u3216_dualtail_resident_geometry.py
