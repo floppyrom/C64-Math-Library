@@ -53,9 +53,13 @@ def readme(profile: str, layout: dict, scratch: tuple) -> str:
     lib = K.library(base, LAYOUTS[base], *SCRATCH[base])
     mem, labels, const = Assembler().assemble(cfg + lib)
     order = ['seek8_step', 'seek8_init', 'seek8_planes', 'seek16_step', 'seek16_init', 'seek16_helpers', 'seek_shared']
+    if base == 'v1_balanced':
+        order.insert(3, 'seek16_batch')
     first = {'seek8_step': 'seek8_step', 'seek8_init': 'seek8_init', 'seek8_planes': 's8_planes',
              'seek16_step': 'seek16_step1', 'seek16_init': 'seek16_init', 'seek16_helpers': 's16_addmin',
              'seek_shared': 'seek_euclid_speed'}
+    if base == 'v1_balanced':
+        first['seek16_batch'] = 's16_addmin_batch'
     rows = []
     code_total = 0
     for blk in order:
@@ -65,15 +69,6 @@ def readme(profile: str, layout: dict, scratch: tuple) -> str:
             end += 1
         code_total += end - start + 1
         rows.append(f'| {blk} | `{layout[blk]}` | ${start:04X}-${end:04X} | {end - start + 1} |')
-    # The V1 (also V5) source owns an additional loop-only helper island.
-    # Include its symbol in the gap accounting; do not fold it into SEEK8_INIT.
-    if base == 'v1_balanced':
-        start = labels['s16_addmin_batch']
-        end = start
-        while end + 1 in mem:
-            end += 1
-        rows.insert(3, f'| seek16_batch | `REG_API+$0599` | ${start:04X}-${end:04X} | {end - start + 1} |')
-        code_total += end - start + 1
     s8, s16 = const['SEEK8_STATE'], const['SEEK16_STATE']
     rows.append(f"| SEEK8 object state | `{layout['seek8_state']}` | ${s8:04X}-${s8 + K.S8_BYTES - 1:04X} | {K.S8_BYTES} |")
     rows.append(f"| SEEK16 object state | `{layout['seek16_state']}` | ${s16:04X}-${s16 + K.S16_BYTES - 1:04X} | {K.S16_BYTES} |")
