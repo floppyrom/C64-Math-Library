@@ -904,6 +904,7 @@ SEEK16_STATE = {layout['seek16_state']}
             assert body.count(old) == 1
             body = body.replace(old, "        ldy #1\n        jsr s16_addmin          ; k0+1")
         if profile == 'v1_balanced' and block == 'seek16_helpers':
+            body = body.replace('Preserves X/Y.', 'Preserves X; consumes Y=count.', 1)
             old = "s16a_done:\n        rts"
             assert body.count(old) == 1
             body = body.replace(
