@@ -1,0 +1,27 @@
+name: Issue144 SEEK16 V1/V5 counted native VICE source qualification
+on:
+  push:
+    branches: [issue144-seek16-v1v5-ycount-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-vice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install SHA256-pinned headless VICE 3.10 x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Compare 96 independent native 6510 SEEK16 source-built INIT calls
+        run: python3 tools/native_issue144_seek16_v15_counted.py
