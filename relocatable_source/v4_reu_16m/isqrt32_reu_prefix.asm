@@ -31,12 +31,10 @@ IS32P_ENTRY:
 
     lda MATH_N+3
     and #$03
-    asl
-    asl
-    asl
-    asl
-    asl
-    asl
+    lsr
+    ror
+    ror
+    and #$C0
     sta REU_SCRATCH+3
     lda MATH_N+2
     lsr
@@ -46,12 +44,10 @@ IS32P_ENTRY:
 
     lda MATH_N+2
     and #$03
-    asl
-    asl
-    asl
-    asl
-    asl
-    asl
+    lsr
+    ror
+    ror
+    and #$C0
     sta REU_SCRATCH+3
     lda MATH_N+1
     and #$F0
