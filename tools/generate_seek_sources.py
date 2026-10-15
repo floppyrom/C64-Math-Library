@@ -22,7 +22,7 @@ LAYOUTS = {
     'v1_balanced': dict(
         seek8_step='REG_API+$0400', seek8_init='REG_API+$04B4', seek16_step='REG_API+$0600',
         seek16_init='REG_API+$0723', seek8_planes='REG_API+$085B', seek16_helpers='REG_API+$08CE',
-        seek_shared='REG_API+$097A', seek8_state='REG_LOW+$08E8', seek16_state='REG_LOW+$0988'),
+        seek_shared='REG_API+$0977', seek16_accum_many='REG_API+$0599', seek8_state='REG_LOW+$08E8', seek16_state='REG_LOW+$0988'),
     'v2_pareto_fast': dict(
         seek8_step='REG_API+$0E00', seek16_step='REG_GAME_API+$0054', seek8_init='REG_LOW+$0B00',
         seek16_init='REG_LOW+$08E2', seek8_planes='REG_API+$0F6C', seek16_helpers='REG_API+$0EE3',
@@ -53,9 +53,10 @@ def readme(profile: str, layout: dict, scratch: tuple) -> str:
     lib = K.library(base, LAYOUTS[base], *SCRATCH[base])
     mem, labels, const = Assembler().assemble(cfg + lib)
     order = ['seek8_step', 'seek8_init', 'seek8_planes', 'seek16_step', 'seek16_init', 'seek16_helpers', 'seek_shared']
+    if base == 'v1_balanced': order.insert(2, 'seek16_accum_many')
     first = {'seek8_step': 'seek8_step', 'seek8_init': 'seek8_init', 'seek8_planes': 's8_planes',
              'seek16_step': 'seek16_step1', 'seek16_init': 'seek16_init', 'seek16_helpers': 's16_addmin',
-             'seek_shared': 'seek_euclid_speed'}
+             'seek_shared': 'seek_euclid_speed', 'seek16_accum_many': 's16_addmin_many'}
     rows = []
     code_total = 0
     for blk in order:
@@ -103,7 +104,7 @@ Code: {code_total} bytes plus 24 bytes of JMP slots. Object state: {K.S8_BYTES +
 - Not reentrant with other library calls (shared init scratch), as elsewhere in the library.
 """
     if profile in ('v1_balanced', 'v5_hybrid_lowzp'):
-        content += "\nV1/V5 SEEK16_INIT uses the resident Y-counted `s16_addmin` helper for integer speed quanta, so it consumes Y during INIT. The fractional phase explicitly loads Y=1. The three-byte helper extension shifts `seek_shared` by three bytes into the existing in-region free tail without allocating application RAM or zero page. Per-frame STEPs and their public ABI remain unchanged. The standalone generic mirror deliberately retains the original uncounted helper; the resident variant is selected only for V1/V5.\n"
+        content += "\nV1/V5 SEEK16_INIT uses the `s16_addmin_many` integer accumulator in the free `REG_API+$0599` resident gap between SEEK8_INIT and SEEK16_STEP. It consumes Y but preserves X, object state and the public ABI. The original `s16_addmin` helper stays byte-identical for the fractional phase, so fractional classes do not regress. No additional ZP or caller-owned RAM, no stack dispatch; STEPs and standalone generic source remain unchanged.\n"
     return content
 
 
