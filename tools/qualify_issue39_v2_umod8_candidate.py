@@ -50,7 +50,17 @@ def main():
     # then replay the old A/B using the unchanged immutable shipped image.
     # The integrated producer itself is tested by the full source/ABI, native
     # SEEK/DIVMOD and comparable-performance workflows, not by this archive.
-    if sha(current_source)=='9666780b1f7c266f203e7d802ec493695de23e96c8169e4e7e800cb4756c0cef':
+    source_digest=sha(current_source)
+    # Recognize *only* these two independently qualified source-built images
+    # when replaying the historical UMOD8 experiment against its immutable
+    # shipped binary. The second SHA additionally owns the new normal-resident
+    # V2 ISQRT32 producer from Issue144 PR #175; it does NOT update UMOD8.
+    # All new kernel and mixed-API behavior has separate exact-head CI/VICE.
+    certified_non_umod8_images=(
+        '9666780b1f7c266f203e7d802ec493695de23e96c8169e4e7e800cb4756c0cef',
+        '2dc51dbc773126bf6affa8c98aa7bfa2fa13fb38093c3a55b7aa789d9f2ccc2b',
+    )
+    if source_digest in certified_non_umod8_images:
         current_source=PARENT.read_bytes()
     parentbytes=pre_dist8_bytes(NAME,PARENT.read_bytes())
     newbytes=pre_dist8_bytes(NAME,current_source)
