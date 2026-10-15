@@ -1,6 +1,7 @@
 2026-10-15 ISSUE144 V4 ISQRT32 FAST-FOUR SOURCE-ONLY RESEARCH (NOT DEFAULT)
 - Independently authored opt-in V4 16-bit first-four-radix-4-step refinement; retains full 17-bit last two steps and current-main immediate $91 REU DMA.
 - Same-input 8,619 full-public CPU-model calls PASS: 918.542406 -> 807.352361 mean cycles (111.190045 saved), no slower case; 48 native VICE calls PASS on actual 16-MiB REU after hardware-correct DMA.
+- Source-based independent reproducer `tools/issue144_v4_isqrt_fast4_source_native_qualify.py` builds reference/alternate V4 maps and tests 2,109 additional public calls plus 48 actual x64sc calls with the 16-MiB REU; dedicated pinned-native CI added.
 - Overflow (V) is volatile and differs on 195 model calls. Physical DMA/VIC cycle cost, current-main production requalification and wider issue144 work remain open. Five shipped PRGs, two REU images and PERFORMANCE unchanged.
 - A stale 8 October offline source snapshot had $81. Current GitHub main already uses $91/$92; false-positive production bug report #166 is closed with correction. No private OptiSearch code shipped.
 
