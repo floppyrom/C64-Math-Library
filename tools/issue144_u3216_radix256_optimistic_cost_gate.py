@@ -23,7 +23,7 @@ from mini6502 import Assembler
 from benchmark_multiply_refresh import load
 from issue144_u3216_radix256_numerical_research import LOOKUP_Q_R
 from issue144_u3216_reu_digit_6510_screen import ASM
-from issue144_u3216_shared_take_tail_research import assembled,execute
+from issue144_u3216_shared_take_tail_research import assemble,execute
 
 MUL_START="    ; q0 * divisor-low:"
 MUL_END="    ; T = ((t0+Rlo)"
@@ -67,7 +67,7 @@ def main():
     assert len(cpu.reu)>=0x210000
     assert not any(cpu.reu[0x200000:0x210000])
     cpu.reu[0x200000:0x210000]=LOOKUP_Q_R
-    base=assembled("shared")
+    base=assemble("shared")
     baseline=[]
     for n,d in pairs:
         q,r,cycles=execute(base,n,d)
