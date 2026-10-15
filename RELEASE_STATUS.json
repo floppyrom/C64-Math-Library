@@ -1,4 +1,37 @@
 {
+  "issue144_u3216_nooverflow_lowdiv_optin_2026_10_15": {
+    "status": "PASS_NATIVE_SOURCE_ONLY_OPTIN_RESTRICTED_FAST_LANE",
+    "description": "Unrestricted N32/D16 via safe fallback, faster only on D=$0100-$7FFF",
+    "doc": "docs/ISSUE144_UDIV32_16_NOOVERFLOW_LOW_D_OPTIN_2026-10-15.md",
+    "source": "optional/issue144_u3216_nooverflow_lowdiv/optin_v2_v3_v4_reference.asm",
+    "evidence": "validation/review/ISSUE144_U3216_NOOVERFLOW_LOW_D_OPTIN_2026-10-15.json",
+    "profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "model_public_entry_calls": 51132,
+    "native_public_entry_calls": 288,
+    "eligible_divisor_min": 256,
+    "eligible_divisor_max": 32767,
+    "eligible_mean_udiv_saved": 59.72537313432836,
+    "eligible_mean_umod_saved": 62.72537313432836,
+    "uniform_mean_udiv_saved": 24.323567708333332,
+    "uniform_mean_umod_saved": 27.323567708333332,
+    "fallback_worst_udiv_regression": 11,
+    "fallback_worst_umod_regression": 8,
+    "caller_ram_start": "$0800",
+    "caller_ram_end": "$09FE",
+    "caller_ram_bytes": 511,
+    "extra_normal_zp": 0,
+    "native_timing_measured": false,
+    "default_binary_changed": false,
+    "normal_performance_table_updated": false,
+    "normal_public_api_promoted": false,
+    "reu_binary_changed": false,
+    "private_optisearch_published": false,
+    "issue144_B_complete": false
+  },
   "issue144_radix256_reu_digit_cost_gate_2026_10_15": {
     "status": "PASS_RESEARCH_NO_GO_NOT_PROMOTED",
     "scope": "unsigned unrestricted 32x16 radix256 with V4 REU bank $20 research only",
