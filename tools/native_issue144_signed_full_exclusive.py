@@ -21,7 +21,7 @@ def patch_prg(blob,patch):
   off=addr-0x1000+2
   before=bytes(result[off:off+len(value)])
   if len(value)==3:assert before[0]==0x8D
-  elif addr==0xC50C:assert before==b"\x20"
+  elif addr in (0xC50C,0xC575):assert before==b"\x20"
   else:assert result[off-1]==0x8D and result[off+1]==0xC0
   result[off:off+len(value)]=value
  return bytes(result)
