@@ -26,6 +26,14 @@ def probe(layout,helper):
  cfg=ROOT/"relocatable_source"/P/("math_config_"+layout+".inc")
  values=parse_config(cfg)
  main=preprocess(ROOT/"relocatable_source"/P/"math_relocatable.asm",cfg)
+ # Once canonical source owns this slot, reverse precisely the qualified module
+ # to obtain the historic source-built baseline, rather than timing new vs new.
+ owner=ROOT/"relocatable_source"/P/"isqrt32_direct_highword_normal.inc"
+ source_file=(ROOT/"relocatable_source"/P/"math_relocatable.asm").read_text()
+ if '!source "isqrt32_direct_highword_normal.inc"' in source_file:
+  block=owner.read_text()
+  assert main.count(block)==1,(layout,"root owner declaration mismatch")
+  main=main.replace(block,"",1)
  before,_,_=Assembler().assemble(main)
  module=source(helper)
  candidate,_,_=Assembler().assemble(cfg.read_text()+"\n"+module)
