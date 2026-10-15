@@ -25,7 +25,7 @@ START="$2070"
 def low_d_source():
     s=source("baseline")
     for i in range(16):
-        first=f"    bcs FORCE_{i}\n"
+        first=f"bcs FORCE_{i}\n"
         last=f"NEXT_{i}:"
         assert s.count(first)==1, (i,first)
         a=s.index(first)
@@ -33,7 +33,7 @@ def low_d_source():
         segment=s[a:b]
         assert segment.count(f"FORCE_{i}:")==1
         assert segment.count(f"TAKE_{i}:")==1
-        assert segment.count("    sbc $31")==2
+        assert segment.count("sbc $31")==2
         replacement=(
             "    cmp $31\n"
             f"    bcc NEXT_{i}\n"
