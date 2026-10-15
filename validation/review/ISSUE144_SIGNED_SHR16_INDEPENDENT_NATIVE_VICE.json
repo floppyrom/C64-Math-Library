@@ -1,0 +1,130 @@
+{
+  "IRQ_reentrant": false,
+  "native_cycle_measurement": false,
+  "normal_resident_PRGs_REUs_modified": false,
+  "ordinary_SMUL32_UMUL32_unchanged": true,
+  "original_and_candidate_calls": 240,
+  "profiles": {
+    "v1_balanced": {
+      "baseline": {
+        "carry_clear": true,
+        "dump_sha256": "bf0f4eaeea4110389f9517bd10b5c5e9c0b57ce3d5108840ebaf17cadf621d9f",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "executable_bytes": 1405,
+      "independent": {
+        "carry_clear": true,
+        "dump_sha256": "66b376be1d453e808885a178bfd9dca8534ef35aaad7ae29d715139aaedc8614",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "signed_output_inputs_carry_equal": true,
+      "source_sha256": "a58f161802a52df20e8f47f011eb17bb0e3eeecdfe0d6eeb7553add4f0c0c843",
+      "status": "PASS_REAL_X64SC_SEQUENTIAL_MIXED_S32_U32"
+    },
+    "v2_pareto_fast": {
+      "baseline": {
+        "carry_clear": true,
+        "dump_sha256": "bf0f4eaeea4110389f9517bd10b5c5e9c0b57ce3d5108840ebaf17cadf621d9f",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "executable_bytes": 1371,
+      "independent": {
+        "carry_clear": true,
+        "dump_sha256": "66b376be1d453e808885a178bfd9dca8534ef35aaad7ae29d715139aaedc8614",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "signed_output_inputs_carry_equal": true,
+      "source_sha256": "dc55edd7e8ef5a8b43403d4abb7ac3ebbed6d62902575c0b2cd635b6bcb87401",
+      "status": "PASS_REAL_X64SC_SEQUENTIAL_MIXED_S32_U32"
+    },
+    "v3_reu_512k": {
+      "baseline": {
+        "carry_clear": true,
+        "dump_sha256": "bf0f4eaeea4110389f9517bd10b5c5e9c0b57ce3d5108840ebaf17cadf621d9f",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "executable_bytes": 1371,
+      "independent": {
+        "carry_clear": true,
+        "dump_sha256": "66b376be1d453e808885a178bfd9dca8534ef35aaad7ae29d715139aaedc8614",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "signed_output_inputs_carry_equal": true,
+      "source_sha256": "02b53e94d35d80c5f8210431f7f186b601de795ec892383d072fc238d55c0be2",
+      "status": "PASS_REAL_X64SC_SEQUENTIAL_MIXED_S32_U32"
+    },
+    "v4_reu_16m": {
+      "baseline": {
+        "carry_clear": true,
+        "dump_sha256": "bf0f4eaeea4110389f9517bd10b5c5e9c0b57ce3d5108840ebaf17cadf621d9f",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "executable_bytes": 1371,
+      "independent": {
+        "carry_clear": true,
+        "dump_sha256": "66b376be1d453e808885a178bfd9dca8534ef35aaad7ae29d715139aaedc8614",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "signed_output_inputs_carry_equal": true,
+      "source_sha256": "da594f605e09f7811585c78a53877c26e9183df1c2401d143d3437a6646b2644",
+      "status": "PASS_REAL_X64SC_SEQUENTIAL_MIXED_S32_U32"
+    },
+    "v5_hybrid_lowzp": {
+      "baseline": {
+        "carry_clear": true,
+        "dump_sha256": "bf0f4eaeea4110389f9517bd10b5c5e9c0b57ce3d5108840ebaf17cadf621d9f",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "executable_bytes": 1405,
+      "independent": {
+        "carry_clear": true,
+        "dump_sha256": "66b376be1d453e808885a178bfd9dca8534ef35aaad7ae29d715139aaedc8614",
+        "inputs_preserved": true,
+        "native_vectors": 24,
+        "output_six_bytes_correct": true,
+        "signed_and_unsigned_full_producer_calls_interleaved": true,
+        "stack_stable": true
+      },
+      "signed_output_inputs_carry_equal": true,
+      "source_sha256": "fe22347102e6e0c92fc007308eabb53289fded1f57cdef8fb4daea078f570b1a",
+      "status": "PASS_REAL_X64SC_SEQUENTIAL_MIXED_S32_U32"
+    }
+  },
+  "status": "PASS_NATIVE_FIVE_PROFILE_INDEPENDENT_SIGNED_SHR16_MIXED"
+}

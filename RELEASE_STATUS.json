@@ -3751,5 +3751,90 @@
     "cpu_proof": "validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_MODEL.json",
     "installer_proof": "validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_INSTALLER.json",
     "native_proof": "validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_NATIVE_VICE.json"
+  },
+  "issue144_all_sign_shr16_independent_mixed_2026_10_15": {
+    "status": "PASS_MODEL_NATIVE_OPTIONAL_SOURCE_SEQUENTIAL_MIXED",
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "model_pairs": 12045,
+    "native_old_new_calls": 240,
+    "ordinary_public_full_producers_unchanged": true,
+    "shared_normal_zero_page": true,
+    "IRQ_reentrant": false,
+    "extra_code_bytes_by_profile": {
+      "v1_balanced": 1405,
+      "v2_pareto_fast": 1371,
+      "v3_reu_512k": 1371,
+      "v4_reu_16m": 1371,
+      "v5_hybrid_lowzp": 1405
+    },
+    "mean_cycle_comparison": {
+      "v1_balanced": {
+        "ordinary_signed_baseline": 806.6089663760897,
+        "independent_signed_shr16": 750.6106268161062,
+        "paired_saving": 55.99833955998339,
+        "minimum_saving": 55,
+        "p95_baseline": 858,
+        "p95_independent": 802,
+        "executable_bytes": 1405,
+        "entry": "0x840",
+        "code_end": "0xdc0"
+      },
+      "v2_pareto_fast": {
+        "ordinary_signed_baseline": 774.64300539643,
+        "independent_signed_shr16": 720.9493565794936,
+        "paired_saving": 53.69364881693649,
+        "minimum_saving": 36,
+        "p95_baseline": 826,
+        "p95_independent": 774,
+        "executable_bytes": 1371,
+        "entry": "0xad0",
+        "code_end": "0xd98"
+      },
+      "v3_reu_512k": {
+        "ordinary_signed_baseline": 774.64300539643,
+        "independent_signed_shr16": 718.7505188875052,
+        "paired_saving": 55.89248650892487,
+        "minimum_saving": 55,
+        "p95_baseline": 826,
+        "p95_independent": 770,
+        "executable_bytes": 1371,
+        "entry": "0x930",
+        "code_end": "0xd96"
+      },
+      "v4_reu_16m": {
+        "ordinary_signed_baseline": 774.64300539643,
+        "independent_signed_shr16": 718.7505188875052,
+        "paired_saving": 55.89248650892487,
+        "minimum_saving": 55,
+        "p95_baseline": 826,
+        "p95_independent": 770,
+        "executable_bytes": 1371,
+        "entry": "0x930",
+        "code_end": "0xd96"
+      },
+      "v5_hybrid_lowzp": {
+        "ordinary_signed_baseline": 806.6089663760897,
+        "independent_signed_shr16": 750.6106268161062,
+        "paired_saving": 55.99833955998339,
+        "minimum_saving": 55,
+        "p95_baseline": 858,
+        "p95_independent": 802,
+        "executable_bytes": 1405,
+        "entry": "0x840",
+        "code_end": "0xdc0"
+      }
+    },
+    "documentation": "docs/ISSUE144_SIGNED_SHR16_INDEPENDENT_MIXED_2026-10-15.md",
+    "source_directory": "optional/issue144_signed_shr16_independent",
+    "CPU_proof": "validation/review/ISSUE144_SIGNED_SHR16_INDEPENDENT_MODEL.json",
+    "VICE_proof": "validation/review/ISSUE144_SIGNED_SHR16_INDEPENDENT_NATIVE_VICE.json",
+    "stock_PRGs_and_REUs_unchanged": true,
+    "native_CPU_cycles_measured": false
   }
 }

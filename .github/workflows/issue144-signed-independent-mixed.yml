@@ -1,0 +1,52 @@
+name: Issue144 unrestricted signed32 SHR16 independent mixed-call producer
+on:
+  push:
+    branches: [issue144-independent-signed-shr16-mixed-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  independent-signed-mixed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble all five relocatable signed producer sources and run 12,045 same-input mixed-call proofs
+        run: python3 tools/issue144_independent_signed_shr16.py --profile all --limit 2409 --write
+      - name: Install known SHA256-pinned headless native x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Real 5-profile x64sc 240 baseline/independent calls with SMUL32 and UMUL32 interleaved
+        run: python3 tools/native_issue144_independent_signed_shr16.py
+      - name: Stage proof-qualified source, documentation and checksum-sealed package
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue144_independent_signed_shr16.py
+      - name: Commit auditable original-source-derived assembler, full evidence and both changelogs
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: seal independent all-sign signed SHR16 mixed-call Pareto source and VICE proof'
+          git push origin HEAD:issue144-independent-signed-shr16-mixed-20261015
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-signed-shr16-independent-native-cpu
+          path: |
+            validation/review/ISSUE144_SIGNED_SHR16_INDEPENDENT_MODEL.json
+            validation/review/ISSUE144_SIGNED_SHR16_INDEPENDENT_NATIVE_VICE.json
+          if-no-files-found: warn
