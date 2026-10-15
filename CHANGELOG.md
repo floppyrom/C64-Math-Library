@@ -1,3 +1,8 @@
+2026-10-15 ISSUE144 V1/V5 ISQRT32 51-CYCLE NORMAL-RESIDENT CANONICAL SOURCE (NO REFERENCE-BINARY RELEASE)
+- Installed source-owned direct-highword ISQRT32 in original V1 normal resident root slot and unused +$0AA8 helper. Actual derived V5 builder inherits the same source, with no extra normal ZP or caller RAM; public API remains unchanged. Source generator regeneration is stable.
+- Independently qualified V1 and V5 on reference+alternate relocation maps: 56 public entries and 21,678 ordinary source-model calls per profile/map (86,712 calls total); 2,628 paired root32 ordinary inputs saved exactly 51 modeled cycles each, with no slow cases. 192 native checksum-pinned x64sc root calls passed for V1/V5 baseline/candidate across both maps.
+- Research checkers recover only pinned original source for paired baselines. Reference five PRGs/two REUs and production PERFORMANCE.md remain historical; full V5 imported native 56-entry mix, IRQ/NMI and physical timing are pending. Issue #144 remains open.
+
 2026-10-15 ISSUE144 V5 INHERITED V1 ISQRT32 51-CYCLE NORMAL RESIDENT RESEARCH (NO BINARY PROMOTION)
 - V5 reference+alternate hybrid source builder retains V1 root resident ownership; 2,658 paired ordinary public ISQRT32 calls save exactly 51 modeled CPU cycles each without slower cases, caller RAM or normal ZP growth. 72 sequential ISQRT16 interleaving smokes passed.
 - Real SHA256-pinned VICE x64sc passed 96 original/candidate public root calls across both layouts. Full imported V5 56-entry mixed/IRQ and wall bus-time are NOT certified. Frozen five PRGs, two REUs and PERFORMANCE.md unchanged.
