@@ -14,7 +14,7 @@ sys.path.insert(0,str(ROOT/"tools"))
 from benchmark_multiply_refresh import CORPORA,load
 from issue144_shr16_direct_slice_overlay_research import run
 from mini6502 import Assembler
-PROFILES=("v2_pareto_fast","v3_reu_512k","v4_reu_16m")
+PROFILES=("v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m","v5_hybrid_lowzp")
 DIRECTORY="optional/issue144_signed_shr16_exclusive"
 def sha(b):return hashlib.sha256(b).hexdigest()
 def metrics(a):
@@ -31,18 +31,19 @@ def patch_map(profile):
   pos=int(location,16)
   if digit in ("8","9"):p[pos]=bytes((0xEA,0xEA,0xEA))
   else:p[pos+1]=bytes((int(digit,16)-2,))
- p[0xC50C]=bytes((0x4C,))
+ p[0xC575 if profile in ("v1_balanced","v5_hybrid_lowzp") else 0xC50C]=bytes((0x4C,))
  return p
 def generate(profile):
  cpu,_=load(profile)
  changes=patch_map(profile)
- assert bytes(cpu.mem[0xC50C:0xC50F])==b"\x20\x40\x3C"
- assert bytes(cpu.mem[0x5E15:0x5E18])==b"\x4C\x0C\xC5"
+ adapter=0xC575 if profile in ("v1_balanced","v5_hybrid_lowzp") else 0xC50C
+ assert bytes(cpu.mem[adapter:adapter+3])==b"\x20\x40\x3C"
+ assert bytes(cpu.mem[0x5E15:0x5E18])==bytes((0x4C,adapter&255,adapter>>8))
  before,after={},{}
  for addr,data in changes.items():
   original=bytes(cpu.mem[addr:addr+len(data)])
   if len(data)==3:assert original[0]==0x8D
-  elif addr==0xC50C:assert original==b"\x20"
+  elif addr in (0xC50C,0xC575):assert original==b"\x20"
   else:assert cpu.mem[addr-1]==0x8D and cpu.mem[addr+1]==0xC0
   for i,v in enumerate(original):before[addr+i]=v
   for i,v in enumerate(data):after[addr+i]=v

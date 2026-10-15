@@ -1,6 +1,15 @@
 {
   "normal_resident_images_unchanged": true,
   "profiles": {
+    "v1_balanced": {
+      "begin_cycles": 218,
+      "code_bytes": 334,
+      "end_cycles": 224,
+      "native_cycle_timing_measured": false,
+      "patched_bytes": 49,
+      "public_signed_full_after_restore": true,
+      "status": "PASS_6510_BEGIN_END_RESTORED_SMUL32"
+    },
     "v2_pareto_fast": {
       "begin_cycles": 218,
       "code_bytes": 334,
@@ -20,6 +29,15 @@
       "status": "PASS_6510_BEGIN_END_RESTORED_SMUL32"
     },
     "v4_reu_16m": {
+      "begin_cycles": 218,
+      "code_bytes": 334,
+      "end_cycles": 224,
+      "native_cycle_timing_measured": false,
+      "patched_bytes": 49,
+      "public_signed_full_after_restore": true,
+      "status": "PASS_6510_BEGIN_END_RESTORED_SMUL32"
+    },
+    "v5_hybrid_lowzp": {
       "begin_cycles": 218,
       "code_bytes": 334,
       "end_cycles": 224,

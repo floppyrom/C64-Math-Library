@@ -4,6 +4,7 @@
 
 For all sign quadrants and arbitrary 32-bit signed operands, the
 ordinary public MATH_SMUL32_SHR16 address $5E15 is preserved.
+V1/V5 use the $C575 signed SHR16 adapter; V2/V3/V4 use $C50C.
 The 6510 source-backed overlay redirects final full-product stores
 within each of four distinct signed producer paths directly into
 $C008..$C00D and changes the SHR16 adapter JSR into a JMP so
@@ -12,16 +13,18 @@ Exactly **53 CPU-model cycles saved per call**, independent of operands.
 
 | Profile | Baseline cycles | Opt-in cycles | Saved |
 |---|---:|---:|---:|
+| v1_balanced | 806.609 | 753.609 | 53.000 |
 | v2_pareto_fast | 774.643 | 721.643 | 53.000 |
 | v3_reu_512k | 774.643 | 721.643 | 53.000 |
 | v4_reu_16m | 774.643 | 721.643 | 53.000 |
+| v5_hybrid_lowzp | 806.609 | 753.609 | 53.000 |
 
-**7,227 matched signed 32-bit operand pairs across V2/V3/V4**
+**12,045 matched signed 32-bit operand pairs across V1–V5**
 pass exact six-byte output, input preservation, carry=0, and stack.
-Native x64sc: 144 baseline/opt-in executions pass output and flags;
+Native x64sc: 240 baseline/opt-in executions pass output and flags;
 VICE proves correctness, **not CPU cycle timing**.
 
-Three separately assembled 334-byte BEGIN/END installers,
+Five separately assembled 334-byte BEGIN/END installers,
 original-source-derived, examples placed in caller-owned $0900..$0A4D.
 Each exact original resident configuration requires its own source
 file; they are not interchangeable. 49 existing executable bytes
@@ -46,9 +49,11 @@ MATH_INIT, and that $0900..$0A4D is free before loading.
 Do not combine with the optional unsigned $0900 overlay.
 BEGIN/END clobber A and processor flags; they do not add ZP.
 
+Source: optional/issue144_signed_shr16_exclusive/v1_balanced.asm
 Source: optional/issue144_signed_shr16_exclusive/v2_pareto_fast.asm
 Source: optional/issue144_signed_shr16_exclusive/v3_reu_512k.asm
 Source: optional/issue144_signed_shr16_exclusive/v4_reu_16m.asm
+Source: optional/issue144_signed_shr16_exclusive/v5_hybrid_lowzp.asm
 Generator/model: tools/issue144_signed_full_exclusive.py
 Native VICE: tools/native_issue144_signed_full_exclusive.py
 CPU proof: validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_MODEL.json

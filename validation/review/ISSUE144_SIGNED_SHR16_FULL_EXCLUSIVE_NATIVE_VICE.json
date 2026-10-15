@@ -1,9 +1,16 @@
 {
-  "baseline_and_candidate_calls": 144,
+  "baseline_and_candidate_calls": 240,
   "native_cycles_measured": false,
   "normal_prgs_unchanged": true,
   "ordinary_SMUL32_during_overlay_valid": false,
   "profiles": {
+    "v1_balanced": {
+      "disposable_overlay_sha256": "d32a169b88ba10e61e35053deb016d43e83009f3f28b09d4c4127f5dcb6bdfc1",
+      "original_resident_disk_file_unchanged": true,
+      "original_resident_sha256": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+      "paired_vectors": 24,
+      "status": "PASS_NATIVE_SIX_OUTPUT_BYTES_CARRY_INPUTS_SP"
+    },
     "v2_pareto_fast": {
       "disposable_overlay_sha256": "247cacc0b7db8291c9b75df28331dc2f5db112a7c1e5e54a6df75ae32818b69a",
       "original_resident_disk_file_unchanged": true,
@@ -22,6 +29,13 @@
       "disposable_overlay_sha256": "dcb73f096a6380ebc18699f70fe91325f1c1cf3fe4003839891e66428931aa23",
       "original_resident_disk_file_unchanged": true,
       "original_resident_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "paired_vectors": 24,
+      "status": "PASS_NATIVE_SIX_OUTPUT_BYTES_CARRY_INPUTS_SP"
+    },
+    "v5_hybrid_lowzp": {
+      "disposable_overlay_sha256": "1421d5e92f16e05c849065072b6df6d8552f101bd3584338b3ec3758262d5397",
+      "original_resident_disk_file_unchanged": true,
+      "original_resident_sha256": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2",
       "paired_vectors": 24,
       "status": "PASS_NATIVE_SIX_OUTPUT_BYTES_CARRY_INPUTS_SP"
     }

@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 SIGNED SHR16 EXCLUSIVE FIVE PROFILE EXTENSION
+- Source-only unrestricted all-sign SMUL32_SHR16 exclusive overlay V2/V3/V4: 53 CPU-model cycles faster per public call across 12,045 paired calls, 240 native x64sc original/candidate calls PASS across V1-V5. Reversible 334-byte BEGIN/END, changes 49 in-memory code bytes, 218/224 cycle setup/teardown. Shared SMUL32 cannot be called while overlay enabled, no regular profile/ABI/ZP or PERFORMANCE promotion. docs/ISSUE144_SIGNED_FULL_DOMAIN_EXCLUSIVE_2026-10-15.md
+
 2026-10-15 ISSUE144 SIGNED SHR16 FULL DOMAIN EXCLUSIVE PRODUCER
 - Source-only unrestricted all-sign SMUL32_SHR16 exclusive overlay V2/V3/V4: 53 CPU-model cycles faster per public call across 7,227 paired calls, 144 native x64sc original/candidate calls PASS. Reversible 334-byte BEGIN/END, changes 49 in-memory code bytes, 218/224 cycle setup/teardown. Shared SMUL32 cannot be called while overlay enabled, no regular profile/ABI/ZP or PERFORMANCE promotion. docs/ISSUE144_SIGNED_FULL_DOMAIN_EXCLUSIVE_2026-10-15.md
 

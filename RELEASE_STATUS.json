@@ -3729,9 +3729,11 @@
   "issue144_all_sign_signed32_shr16_exclusive_2026_10_15": {
     "status": "PASS_CPU_NATIVE_ASM_SOURCE_EXCLUSIVE_ONLY_NO_DEFAULT_PROMOTION",
     "profile_names": [
+      "v1_balanced",
       "v2_pareto_fast",
       "v3_reu_512k",
-      "v4_reu_16m"
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
     ],
     "full_signed_operand_domain": true,
     "per_call_saved_cycles": 53,
@@ -3740,8 +3742,8 @@
     "source_installer_bytes": 334,
     "patch_resident_bytes": 49,
     "mixed_smultiplication_calls_during_enabled_period_valid": false,
-    "model_paired_cases": 7227,
-    "native_before_after_calls": 144,
+    "model_paired_cases": 12045,
+    "native_before_after_calls": 240,
     "extra_normal_ZP": 0,
     "native_cycles_measured": false,
     "ordinary_resident_prgs_or_reu_changed": false,

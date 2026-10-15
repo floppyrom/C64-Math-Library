@@ -1,4 +1,11 @@
 {
+  "v1_balanced": {
+    "changed_resident_bytes": 49,
+    "entry_begin": "0x900",
+    "entry_end": "0x9a4",
+    "installer_code_bytes": 334,
+    "source_sha256": "dc2dfa16ba1fd8099a49c44750902afc76abfcededd61015e8d910b91d3400b9"
+  },
   "v2_pareto_fast": {
     "changed_resident_bytes": 49,
     "entry_begin": "0x900",
@@ -19,5 +26,12 @@
     "entry_end": "0x9a4",
     "installer_code_bytes": 334,
     "source_sha256": "71779e02d41e27a2784a6bb2cb34569dfd56b96ee238af0f273f139acc9a8042"
+  },
+  "v5_hybrid_lowzp": {
+    "changed_resident_bytes": 49,
+    "entry_begin": "0x900",
+    "entry_end": "0x9a4",
+    "installer_code_bytes": 334,
+    "source_sha256": "f9b6b6adc23ce07581dce233bac295b59bd1b9b350e6d292c3b320db5b240ad9"
   }
 }
