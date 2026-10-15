@@ -50,7 +50,30 @@ def main():
     # then replay the old A/B using the unchanged immutable shipped image.
     # The integrated producer itself is tested by the full source/ABI, native
     # SEEK/DIVMOD and comparable-performance workflows, not by this archive.
-    if sha(current_source)=='9666780b1f7c266f203e7d802ec493695de23e96c8169e4e7e800cb4756c0cef':
+    historical_source_sha='9666780b1f7c266f203e7d802ec493695de23e96c8169e4e7e800cb4756c0cef'
+    if sha(current_source)!=historical_source_sha:
+        # Issue144 normal-root source promotion (PR177) changes only the
+        # pre-existing V2 ISQRT32 root resident island. Recover the exact
+        # previously qualified image before replaying the old UMOD8 A/B.
+        # No arbitrary SHA or unverified other source changes are accepted.
+        from issue144_isqrt32_normal_resident_screen import assembled
+        old_root,new_root,_,_,_,slot=assembled(NAME,'reference')
+        assert int(slot['begin'],16)==0xCB40 and int(slot['end_exclusive'],16)==0xCC00
+        load=int.from_bytes(current_source[:2],'little')
+        assert load==0x1000
+        restored=bytearray(current_source)
+        changed=0
+        for addr in range(0xCB40,0xCC00):
+            offset=addr-load+2
+            original=old_root.mem[addr]
+            if restored[offset]!=original:
+                assert restored[offset]==new_root.mem[addr],(hex(addr),'unqualified new root byte')
+                restored[offset]=original
+                changed+=1
+        assert changed==121,('unexpected root replacement footprint',changed)
+        assert sha(restored)==historical_source_sha,('unqualified V2 source beyond root',sha(restored))
+        current_source=bytes(restored)
+    if sha(current_source)==historical_source_sha:
         current_source=PARENT.read_bytes()
     parentbytes=pre_dist8_bytes(NAME,PARENT.read_bytes())
     newbytes=pre_dist8_bytes(NAME,current_source)
