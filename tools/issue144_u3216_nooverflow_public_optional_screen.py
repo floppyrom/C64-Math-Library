@@ -116,7 +116,7 @@ def main():
   for addr,b in code.items(): changed.mem[addr]=b
   out["profiles"][p]={}
   for op in OPS:
-   savings=[]; low=[];high=[];D8=[];zero=[];uniform=[]
+   savings=[]; low=[];eligible=[];high=[];D8=[];zero=[];uniform=[]
    for i,(n,d) in enumerate(pairs):
     before,ok1,a,want=one(original,api[op],n,d)
     after,ok2,b,want2=one(changed,ENTRY,n,d)
@@ -128,10 +128,11 @@ def main():
     elif d<0x8000:
      low.append(z)
      if d<256:D8.append(z)
+     else:eligible.append(z)
     else:high.append(z)
    out["profiles"][p][op]={
     "all":stats(savings),"uniform":stats(uniform),"low_D":stats(low),
-    "high_D":stats(high),"D8":stats(D8),"zero":stats(zero),
+    "high_D":stats(high),"eligible_D0100_7FFF":stats(eligible),"D8":stats(D8),"zero":stats(zero),
     "slower_calls":sum(z<0 for z in savings)}
   print(p,out["profiles"][p],flush=True)
  print(json.dumps(out,indent=2))
