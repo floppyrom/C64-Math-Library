@@ -54,18 +54,21 @@ def pair(layout: str, outdir: Path):
     assert v1_api == v["REG_GAME_API"] + 0x30
     assert v1_io == v["MATH_IO"]
     assert manifest["normal_zp_bytes"] == 31
-    # Guard against V5 importing or overwriting even one byte of the
-    # original V1 resident root interval, including the unused helper area.
+    # A source-promoted V5 must inherit the exact final V1 resident owner.
+    # Reconstruct the historical baseline by reversing only its changed bytes;
+    # before promotion, keep the research forward-transplant path.
+    promoted = '!source "isqrt32_direct_highword_normal.inc"' in (ROOT / "relocatable_source" / "v1_balanced" / "math_relocatable.asm").read_text()
+    expected = v1_after.mem if promoted else v1_before.mem
     for a in range(start, stop):
-        assert raw[a] == v1_before.mem[a], (
+        assert raw[a] == expected[a], (
             layout, "V5/V1 resident ownership drift", hex(a),
-            raw[a], v1_before.mem[a])
+            raw[a], expected[a])
     touched = [a for a in range(start, stop)
                if v1_before.mem[a] != v1_after.mem[a]]
     assert touched, "empty candidate"
     modified = bytearray(raw)
     for a in touched:
-        modified[a] = v1_after.mem[a]
+        modified[a] = (v1_before.mem[a] if promoted else v1_after.mem[a])
     assert all(raw[a] == modified[a] for a in range(65536)
                if not (start <= a < stop))
     assert raw[v1_api] == modified[v1_api] == 0x4C
@@ -77,7 +80,8 @@ def pair(layout: str, outdir: Path):
         c.d = 0
         c.call(v["REG_API"] + 0x280, 2_000_000)
         return c
-    return cpu(raw), cpu(modified), v, touched, manifest, hashlib.sha256(bytes(raw)).hexdigest()
+    baseline, candidate = (modified, raw) if promoted else (raw, modified)
+    return cpu(baseline), cpu(candidate), v, touched, manifest, hashlib.sha256(bytes(baseline)).hexdigest()
 
 
 def model(layout: str, outdir: Path, count=None):
