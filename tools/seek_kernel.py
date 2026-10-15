@@ -883,5 +883,30 @@ SEEK16_STATE = {layout['seek16_state']}
     for block in BLOCKS:
         lines.append('')
         lines.append(f'* = {layout[block]}')
-        lines.append(BLOCKS[block].rstrip('\n'))
+        body = BLOCKS[block]
+        # Issue144 D: V1 (and V5, derived from V1) retains its original
+        # resident islands. The in-helper Y-counted loop removes one
+        # JSR/RTS pair for every additional integer speed quantum.
+        # V2-V4 use their separately qualified canonical in-hole sources.
+        if profile == 'v1_balanced' and block == 'seek16_init':
+            old = ("        ldy S16_KI,x\n"
+                   "        beq s16i_r0done\n"
+                   "s16i_r0:\n"
+                   "        jsr s16_addmin\n"
+                   "        dey\n"
+                   "        bne s16i_r0\n")
+            new = ("        ldy S16_KI,x\n"
+                   "        beq s16i_r0done\n"
+                   "        jsr s16_addmin\n")
+            assert body.count(old) == 1
+            body = body.replace(old, new)
+            old = "        jsr s16_addmin          ; k0+1"
+            assert body.count(old) == 1
+            body = body.replace(old, "        ldy #1\n        jsr s16_addmin          ; k0+1")
+        if profile == 'v1_balanced' and block == 'seek16_helpers':
+            old = "s16a_done:\n        rts"
+            assert body.count(old) == 1
+            body = body.replace(
+                old, "s16a_done:\n        dey\n        bne s16_addmin\n        rts")
+        lines.append(body.rstrip('\n'))
     return '\n'.join(lines) + '\n'
