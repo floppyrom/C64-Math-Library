@@ -11,13 +11,13 @@
       "profile": "v2_pareto_fast",
       "source": "relocatable_source/v2_pareto_fast/math_relocatable.asm",
       "reachable_instructions": 7993,
-      "source_sha256": "40b80aee5267e7abbd28e27fd9a282a687166a927386e68c70d0b2fccedd1ce2"
+      "source_sha256": "d471daf8b679b4d7dfac0e6e277b9de62680cecfc5b346fceb10cdcf84dcd61e"
     },
     {
       "profile": "v3_reu_512k",
       "source": "relocatable_source/v3_reu_512k/math_relocatable.asm",
       "reachable_instructions": 8023,
-      "source_sha256": "3339e8815e6adfb07b85963f73e61e4b01d9a881bdc8c7ffc9b55b81687dff38"
+      "source_sha256": "53cd679eb7a3a8ec099512566d30ca9d1eac98474aac7c23fce37013a1cd84a4"
     },
     {
       "profile": "v4_reu_16m",
