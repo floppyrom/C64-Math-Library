@@ -1,0 +1,76 @@
+{
+  "status": "PASS_RESEARCH_NO_GO_NOT_PRODUCTION",
+  "date": "2026-10-15",
+  "issue": 144,
+  "target": [
+    "MATH_UDIV32_16",
+    "MATH_UMOD32_16"
+  ],
+  "scope": "V4 radix256 REU 2-byte q0/t0 quotient digit and paired lower-word continuation",
+  "numerical": {
+    "cases": 1155360,
+    "sha256": "46d1b118fbc5dd38e3430c3517031ea4a68bfab0db1f53ef06228b96ebf2ab6d",
+    "reu_table_bytes": 65536,
+    "max_table_corrections": 2,
+    "ci_run": 38728754571
+  },
+  "assembled_single_digit": {
+    "cases": 4040,
+    "code_bytes": 199,
+    "additional_zp": 16,
+    "reu_bank": "$20",
+    "mean_cycles": 446.7049504950495,
+    "p95_cycles": 516,
+    "max_cycles": 569,
+    "min_cycles": 354,
+    "passes": true,
+    "ci_run": 38730137724,
+    "uses_shift_add8x8": true,
+    "measures_dma_wait": false
+  },
+  "paired_tail": {
+    "cases": 698,
+    "sha256": "89a835ff218cc355ee6937bec9085faad44a86ae6616715ef92e4217af69ecc2",
+    "divisor_min": 32768,
+    "methods": {
+      "shared_restoring": {
+        "mean": 460.59885386819485,
+        "p95": 521,
+        "max": 661,
+        "min": 342
+      },
+      "real_reu_and_shiftadd": {
+        "mean": 893.676217765043,
+        "p95": 983,
+        "max": 1078,
+        "min": 708,
+        "slower_count": 698
+      },
+      "oracle_zero_cost_multiply": {
+        "mean": 351.72206303724926,
+        "p95": 408,
+        "max": 492,
+        "min": 304,
+        "non_executable": true
+      },
+      "oracle_zero_cost_multiply_and_lookup": {
+        "mean": 231.72206303724928,
+        "p95": 288,
+        "max": 372,
+        "min": 184,
+        "non_executable": true
+      }
+    },
+    "no_normalization_or_headword_cost": true,
+    "ci_run": 38730630823
+  },
+  "public_umul8_mean_modeled_cycles": 69,
+  "mean_8x8_multiply_cycles_required_to_tie_low_tail": 54.4383954154728,
+  "mean_8x8_multiply_cycles_required_for_five_percent_tail_gain": 42.92342406876793,
+  "native_x64sc_qualified": false,
+  "normal_public_entry_qualified": false,
+  "private_optisearch_source_published": false,
+  "production_binaries_changed": false,
+  "public_performance_changed": false,
+  "decision": "reject this exact REU lookup + shift/add implementation for default producer; preserve math/table model for new architectures"
+}
