@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 FOUR 32BIT MULTIPLY NARROW16 OPTINS
+- Published four source-only opt-in U32 and S32 full/SHR16 multiply variants for the strict both-upper-words-zero operand domain: 22,900 paired CPU model calls, 960 real x64sc calls across all profiles passing. No regular profile/API/ZP/REU/benchmark leaderboard modification. docs/ISSUE144_A_FOUR_MUL_NARROW16_SPECIALIST_2026-10-15.md
+
 2026-10-15 ISSUE144 B/C DOMAIN-QUALIFIED OPTIONAL SOURCES
 - Source-only opt-in B/C specialists, no installed library change: power-of-two D16 remainder-only 25 bytes/38 cycles (NOT quotient-producing); low16 ISQRT32 via existing ISQRT16; five-profile CPU/native proof including real V4 REU image. An all-input guard and quotient-complete pow2 selector remain research-only. Regular library binaries, ZP, public API and PERFORMANCE leaderboard unchanged. docs/ISSUE144_BC_DOMAIN_SPECIALIST_PARETO_2026-10-15.md
 

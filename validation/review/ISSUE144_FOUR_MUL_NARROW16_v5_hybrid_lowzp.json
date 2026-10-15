@@ -1,0 +1,130 @@
+{
+  "cases_per_operation": 1145,
+  "code_bytes": 56,
+  "entries": {
+    "MATH_SMUL32": {
+      "cases": 1145,
+      "full_32bit_operand_inputs_preserved": true,
+      "low16_sign_bit_can_be_set": true,
+      "optin": {
+        "max_cycles": 332,
+        "mean_cycles": 308.43755458515284,
+        "median_cycles": 307,
+        "min_cycles": 297,
+        "p95_cycles": 323,
+        "vector_sha256": "1cda23cdd208fc8abb82f1ed9fd4636b75724ff504459fe78f82e40a56312ef2"
+      },
+      "paired_savings": {
+        "max_cycles": 403,
+        "mean_cycles": 373.7091703056769,
+        "median_cycles": 371,
+        "min_cycles": 352,
+        "p95_cycles": 387,
+        "vector_sha256": "1b47b98a4f4c7492dc4e9c82c44dd5c667ce2d0a462a68f6ee1bdcbcff7934c3"
+      },
+      "stock": {
+        "max_cycles": 716,
+        "mean_cycles": 682.1467248908297,
+        "median_cycles": 682,
+        "min_cycles": 660,
+        "p95_cycles": 700,
+        "vector_sha256": "e539fa499b1f8fb4eebe417a432ac22e5c1ea525236b64d28b3a60fda3bf6b0a"
+      }
+    },
+    "MATH_SMUL32_SHR16": {
+      "cases": 1145,
+      "full_32bit_operand_inputs_preserved": true,
+      "low16_sign_bit_can_be_set": true,
+      "optin": {
+        "max_cycles": 348,
+        "mean_cycles": 324.43755458515284,
+        "median_cycles": 323,
+        "min_cycles": 313,
+        "p95_cycles": 339,
+        "vector_sha256": "0e37cfd6e09748cef66691a6eb931355f3e1e3b83815dbb395dbd075502c5b81"
+      },
+      "paired_savings": {
+        "max_cycles": 450,
+        "mean_cycles": 420.7091703056769,
+        "median_cycles": 418,
+        "min_cycles": 399,
+        "p95_cycles": 434,
+        "vector_sha256": "0c1082fa271d7183e0db7a2d301625a28f327eb706364c548ec2de9298ac4a59"
+      },
+      "stock": {
+        "max_cycles": 779,
+        "mean_cycles": 745.1467248908297,
+        "median_cycles": 745,
+        "min_cycles": 723,
+        "p95_cycles": 763,
+        "vector_sha256": "c244f73413e08e1f06ae4e7fcdfbf7a87ad02b788b7ef872bf1213ebcdc20bfd"
+      }
+    },
+    "MATH_UMUL32": {
+      "cases": 1145,
+      "full_32bit_operand_inputs_preserved": true,
+      "low16_sign_bit_can_be_set": true,
+      "optin": {
+        "max_cycles": 329,
+        "mean_cycles": 305.43755458515284,
+        "median_cycles": 304,
+        "min_cycles": 294,
+        "p95_cycles": 320,
+        "vector_sha256": "34a5b38c869b2c40265a971ed6e612d900b1abe1ed264ffbc6a11f09c0c8fb40"
+      },
+      "paired_savings": {
+        "max_cycles": 398,
+        "mean_cycles": 368.7091703056769,
+        "median_cycles": 366,
+        "min_cycles": 347,
+        "p95_cycles": 382,
+        "vector_sha256": "6998611230214de7f9f118791f43c88a92b45a07f488870085c95ca719f7ddcb"
+      },
+      "stock": {
+        "max_cycles": 708,
+        "mean_cycles": 674.1467248908297,
+        "median_cycles": 674,
+        "min_cycles": 652,
+        "p95_cycles": 692,
+        "vector_sha256": "ed4cd8d5918000459f63c18aa0620737633f1e6953b14e1440823a43c1ebfeab"
+      }
+    },
+    "MATH_UMUL32_SHR16": {
+      "cases": 1145,
+      "full_32bit_operand_inputs_preserved": true,
+      "low16_sign_bit_can_be_set": true,
+      "optin": {
+        "max_cycles": 345,
+        "mean_cycles": 321.43755458515284,
+        "median_cycles": 320,
+        "min_cycles": 310,
+        "p95_cycles": 336,
+        "vector_sha256": "c3c75c88e0778d4f12df3d6b7a6e3a22a4df2babde9426d570475bfcaae0bd1d"
+      },
+      "paired_savings": {
+        "max_cycles": 445,
+        "mean_cycles": 415.7091703056769,
+        "median_cycles": 413,
+        "min_cycles": 394,
+        "p95_cycles": 429,
+        "vector_sha256": "b31b959841a421f27b176296b4602b7f84f05659fe30cc5c9662be2ed610aefd"
+      },
+      "stock": {
+        "max_cycles": 771,
+        "mean_cycles": 737.1467248908297,
+        "median_cycles": 737,
+        "min_cycles": 715,
+        "p95_cycles": 755,
+        "vector_sha256": "d9d2e947e2241cf4d1c6a918fa34491135a8cf695571a58b55184ed9d7f3e4e8"
+      }
+    }
+  },
+  "native_VICE_cycles_measured": false,
+  "normal_ZP_extra": 0,
+  "operand_vector_sha256": "dc68891582e7f19cac2388489c74c1f1bfd6b76e23ddb7834b1e53812cfe6458",
+  "precondition": "both 32-bit operand upper 16-bit words zero",
+  "profile": "v5_hybrid_lowzp",
+  "regular_resident_prg_changed": false,
+  "source_sha256": "5080e0c12dfc23f57712f8ab6d4b1570151a3cfd8b51263690b11cf2f985f270",
+  "status": "PASS_FOUR_NARROW16_PUBLIC_ABI_SHAPED_OPTINS"
+}
