@@ -1,3 +1,7 @@
+2026-10-15 ISSUE144 B UNRESTRICTED 32/16 SHARED-TAKE SOURCE-ONLY CANDIDATE (NOT DEFAULT)
+- Independently authored 16-step shared-subtraction implementation reduces the common 32/16 continuation code by about 192 machine bytes. Archived V2 same-input public ABI screening: 10,735 alternating DIV/MOD calls correct; mean 6.3371 cycles saved overall and 6.7192 for 5,000 unrestricted uniform pairs; worst observed regression one cycle. Preliminary native VICE V2 full-public proof passed 16 calls.
+- Published independently liftable source and a current-main V2-V4 reference/alternate map CI qualification path. The normal source, five resident PRGs and two REU images are unchanged; the candidate is NOT installed into default profiles and requires further release gates.
+
 2026-10-15 ISSUE144 V4 ISQRT32 FAST-FOUR SOURCE-ONLY RESEARCH (NOT DEFAULT)
 - Independently authored opt-in V4 16-bit first-four-radix-4-step refinement; retains full 17-bit last two steps and current-main immediate $91 REU DMA.
 - Same-input 8,619 full-public CPU-model calls PASS: 918.542406 -> 807.352361 mean cycles (111.190045 saved), no slower case; 48 native VICE calls PASS on actual 16-MiB REU after hardware-correct DMA.
