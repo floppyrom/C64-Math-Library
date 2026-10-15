@@ -46,8 +46,8 @@ def main():
      "original_resident_disk_file_unchanged":True}
    report["baseline_and_candidate_calls"]+=COUNT*2
    print("NATIVE SIGNED SHR16 EXCLUSIVE",p,COUNT*2,"PASS",flush=True)
- assert report["baseline_and_candidate_calls"]==144
+ assert report["baseline_and_candidate_calls"]==240
  path=R/OUT;path.parent.mkdir(parents=True,exist_ok=True)
  path.write_text(json.dumps(report,indent=2,sort_keys=True)+"\n")
- print("NATIVE SIGNED SHR16 EXCLUSIVE PASS",144)
+ print("NATIVE SIGNED SHR16 EXCLUSIVE PASS",240)
 if __name__=="__main__":main()
