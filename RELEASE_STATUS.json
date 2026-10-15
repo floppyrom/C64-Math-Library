@@ -3725,5 +3725,29 @@
     "default_prgs_changed": false,
     "native_cycles_measured": false,
     "overall_mean_saving": 4.226666666666667
+  },
+  "issue144_all_sign_signed32_shr16_exclusive_2026_10_15": {
+    "status": "PASS_CPU_NATIVE_ASM_SOURCE_EXCLUSIVE_ONLY_NO_DEFAULT_PROMOTION",
+    "profile_names": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "full_signed_operand_domain": true,
+    "per_call_saved_cycles": 53,
+    "setup_begin_cycles": 218,
+    "setup_end_cycles": 224,
+    "source_installer_bytes": 334,
+    "patch_resident_bytes": 49,
+    "mixed_smultiplication_calls_during_enabled_period_valid": false,
+    "model_paired_cases": 7227,
+    "native_before_after_calls": 144,
+    "extra_normal_ZP": 0,
+    "native_cycles_measured": false,
+    "ordinary_resident_prgs_or_reu_changed": false,
+    "documentation": "docs/ISSUE144_SIGNED_FULL_DOMAIN_EXCLUSIVE_2026-10-15.md",
+    "cpu_proof": "validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_MODEL.json",
+    "installer_proof": "validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_INSTALLER.json",
+    "native_proof": "validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_NATIVE_VICE.json"
   }
 }

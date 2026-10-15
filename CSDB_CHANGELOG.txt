@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 SIGNED SHR16 FULL DOMAIN EXCLUSIVE PRODUCER
+- Source-only unrestricted all-sign SMUL32_SHR16 exclusive overlay V2/V3/V4: 53 CPU-model cycles faster per public call across 7,227 paired calls, 144 native x64sc original/candidate calls PASS. Reversible 334-byte BEGIN/END, changes 49 in-memory code bytes, 218/224 cycle setup/teardown. Shared SMUL32 cannot be called while overlay enabled, no regular profile/ABI/ZP or PERFORMANCE promotion. docs/ISSUE144_SIGNED_FULL_DOMAIN_EXCLUSIVE_2026-10-15.md
+
 2026-10-15 ISSUE144 SEEK16 INIT RELOCATION UNPROMOTED
 - Unpromoted V2 SEEK16_INIT speed-one source relocation research: 291 bytes in caller RAM, $19F0 and $1A00 preserved, 300 paired model INIT+STEP states and 128 native STEP executions matched; overall gain only ~4.2 CPU cycles, some slower calls. No resident integration. docs/ISSUE144_SEEK16_INIT_RELOCATED_K1_RESEARCH_2026-10-15.md
 
