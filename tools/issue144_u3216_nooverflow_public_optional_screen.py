@@ -39,8 +39,7 @@ def assemble():
 OPT_U3216_LOW:
     lda $c015
     beq FALLBACK
-    bmi FALLBACK
-    jmp COPY_INPUT
+    bpl COPY_INPUT
 FALLBACK:
     jmp $31b0
 COPY_INPUT:
