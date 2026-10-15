@@ -1,0 +1,51 @@
+name: Issue144 SEEK16 INIT accumulator inline five-profile
+on:
+  push:
+    branches: [issue144-seek16-accum-inline-five-20261015]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  native-public-abi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble and prove 20,400 all-profile model INIT/state/STEP vectors
+        run: python3 tools/issue144_seek16_accum_all_profiles_v2.py --profile all --moves 408 --write
+      - name: Install checksum-pinned native headless x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Native VICE real V1-V5 and REU INIT plus subsequent full STEP frames
+        run: python3 tools/native_issue144_seek16_accum_all_profiles.py
+      - name: Seal source-only proof and both changelogs
+        if: github.event_name == 'push'
+        run: python3 tools/stage_issue144_seek16_accum_inline.py
+      - name: Commit reproducible research sources and release checksum proofs
+        if: github.event_name == 'push'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git diff --cached --quiet || git commit -m 'issue144: seal SEEK16 full-profile inline accumulator research and native proof'
+          git push origin HEAD:issue144-seek16-accum-inline-five-20261015
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: issue144-seek16-accum-five-profile-native-model
+          path: |
+            validation/review/ISSUE144_SEEK16_ACCUM_INLINE_ALL_MODEL.json
+            validation/review/ISSUE144_SEEK16_ACCUM_NATIVE_VICE.json

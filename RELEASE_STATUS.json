@@ -4045,5 +4045,75 @@
     "documentation": "docs/ISSUE144_V4_REU_ISQRT32_ROTATE6_PARETO_2026-10-15.md",
     "model_evidence": "validation/review/ISSUE144_V4_REU_ISQRT32_ROTATE6_MODEL.json",
     "native_evidence": "validation/review/ISSUE144_V4_REU_ISQRT32_ROTATE6_NATIVE_VICE.json"
+  },
+  "issue144_seek16_accumulator_inline_v1v5_2026_10_15": {
+    "status": "PASS_MODEL_NATIVE_SOURCE_ONLY_NO_DEFAULT_PROMOTION",
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "public_model_pair_count": 20400,
+    "native_before_and_after_init_calls": 70,
+    "native_before_and_after_step_calls": 1120,
+    "profile_cycle_pairs": {
+      "v1_balanced": {
+        "baseline": 737.9948529411764,
+        "optin": 715.8894607843138,
+        "saved": 22.105392156862745,
+        "smallest_saving": -1,
+        "largest_saving": 46,
+        "machine_code_bytes": 399
+      },
+      "v2_pareto_fast": {
+        "baseline": 662.7553921568627,
+        "optin": 637.3044117647058,
+        "saved": 25.45098039215686,
+        "smallest_saving": 0,
+        "largest_saving": 52,
+        "machine_code_bytes": 328
+      },
+      "v3_reu_512k": {
+        "baseline": 661.0083333333333,
+        "optin": 637.3044117647058,
+        "saved": 23.70392156862745,
+        "smallest_saving": 0,
+        "largest_saving": 48,
+        "machine_code_bytes": 328
+      },
+      "v4_reu_16m": {
+        "baseline": 661.0083333333333,
+        "optin": 637.3044117647058,
+        "saved": 23.70392156862745,
+        "smallest_saving": 0,
+        "largest_saving": 48,
+        "machine_code_bytes": 328
+      },
+      "v5_hybrid_lowzp": {
+        "baseline": 737.9948529411764,
+        "optin": 715.8894607843138,
+        "saved": 22.105392156862745,
+        "smallest_saving": -1,
+        "largest_saving": 46,
+        "machine_code_bytes": 399
+      }
+    },
+    "source_dir": "optional/issue144_seek16_accum_inline_all",
+    "documentation": "docs/ISSUE144_SEEK16_INIT_INLINE_ACCUM_V1_V5_2026-10-15.md",
+    "model_evidence": "validation/review/ISSUE144_SEEK16_ACCUM_INLINE_ALL_MODEL.json",
+    "native_evidence": "validation/review/ISSUE144_SEEK16_ACCUM_NATIVE_VICE.json",
+    "V1_V5_one_cycle_minor_regression": true,
+    "normal_resident_PRGs_REUs_changed": false,
+    "extra_normal_ZP": 0,
+    "extra_application_RAM_bytes_by_profile": {
+      "v1_balanced": 399,
+      "v2_pareto_fast": 328,
+      "v3_reu_512k": 328,
+      "v4_reu_16m": 328,
+      "v5_hybrid_lowzp": 399
+    },
+    "native_cycles_measured": false
   }
 }
