@@ -31,7 +31,7 @@ def machine(text,profile):
     cpu=CPU(m,reu=reu);cpu.d=0
     assert cpu.call(const["MATH_INIT"],2_000_000)>0
     assert cpu.c==0
-    return cpu,const
+    return cpu,{**labels,**const}
 
 def pair(profile,kind):
     cfg=ROOT/"relocatable_source"/profile/("math_config_"+kind+".inc")
@@ -44,8 +44,8 @@ def pair(profile,kind):
     new=source[:a]+span.replace(OLD,NEW)+source[b:]
     old,c0=machine(source,profile)
     candidate,c1=machine(new,profile)
-    assert c0["MATH_SDIV32_16"]==c1["MATH_SDIV32_16"]==v["REG_LOW"]+0x0EE0
-    assert c0["MATH_SMOD32_16"]==c1["MATH_SMOD32_16"]==v["REG_LOW"]+0x0FDD
+    assert c0["MATH_SDIV32_16"]==c1["MATH_SDIV32_16"]==v["REG_API"]+0x0EE0
+    assert c0["MATH_SMOD32_16"]==c1["MATH_SMOD32_16"]==v["REG_API"]+0x0FDD
     assert c0["MULDIV16_S_DIV_QR"]==c1["MULDIV16_S_DIV_QR"]
     return old,candidate,c0,v
 
