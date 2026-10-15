@@ -554,6 +554,9 @@ def generate_source(profile,outpath:Path):
  if profile in ROOT_SOURCE_INCLUDES:
   lines += ['', '; Issue39 exact ISQRT16 code+seed replaces retired eight-trial island.',
             f'!source "{ROOT_SOURCE_INCLUDES[profile]}"']
+ if profile in ('v2_pareto_fast','v3_reu_512k'):
+  lines += ['', '; Issue144 unrestricted ISQRT32 highword seed, normal resident source-owned slot.',
+            '!source "isqrt32_direct_highword_normal.inc"']
  if profile in REU:
   lines += ['', '; Canonical optimized Turbo16 public CALL wrapper.',
             '!source "../turbo/turbo16_runtime.asm"',

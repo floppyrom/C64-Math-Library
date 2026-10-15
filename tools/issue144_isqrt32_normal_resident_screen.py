@@ -55,6 +55,16 @@ def assembled(p,layout):
     vals=parse_config(cfg)
     src=ROOT/"relocatable_source"/p/"math_relocatable.asm"
     expanded=preprocess(src,cfg)
+    # Once installed as a final-owner module in canonical source, subtract that
+    # *one known module* to recover the historical source-built baseline.
+    # This protects the 47-cycle research delta from silently becoming zero
+    # after promotion; the candidate is independently authored, not copied
+    # from the installed source image.
+    overlay=ROOT/"relocatable_source"/p/"isqrt32_direct_highword_normal.inc"
+    if overlay.is_file():
+        raw_module=overlay.read_text()
+        assert expanded.count(raw_module)==1, (p,layout,"missing unique source owner")
+        expanded=expanded.replace(raw_module,"",1)
     # Identical expansion prefix/suffix; substitute precisely the one root span.
     root_a=expanded.index(OLD_START);root_b=expanded.index(OLD_END,root_a)
     canon=a[a.index(OLD_START):a.index(OLD_END,a.index(OLD_START))]
