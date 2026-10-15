@@ -1,0 +1,355 @@
+{
+  "status": "PASS_SOURCE_ASSEMBLED_PUBLIC_ABI",
+  "profiles": {
+    "v1_balanced": {
+      "status": "PASS_SOURCE_ASSEMBLED_6510_PUBLIC_ABI_STATE_STEP",
+      "model_profiles": "v1_balanced",
+      "cases": 4080,
+      "public_mean_before": 737.9948529411764,
+      "public_mean_after": 715.8894607843138,
+      "mean_saving": 22.105392156862745,
+      "minimum_saving": -1,
+      "maximum_saving": 46,
+      "code_bytes": 399,
+      "max_code_address": "0xf8b",
+      "source_sha256": "23f8b1c2fc8beddd71fda96e227559cbc2aeacabbd6faf6d1ff4e08d03860497",
+      "return_stack_balanced": true,
+      "original_resident_bytes_and_tables_untouched": true,
+      "reference_reu_unchanged": true,
+      "native_vice_tested": false,
+      "method": "inline",
+      "by_speed": {
+        "$0080": {
+          "mean_saved": 3.9877450980392157,
+          "min_saved": -1,
+          "max_saved": 4
+        },
+        "$0100": {
+          "mean_saved": 9.973039215686274,
+          "min_saved": -1,
+          "max_saved": 10
+        },
+        "$0180": {
+          "mean_saved": 15.958333333333334,
+          "min_saved": -1,
+          "max_saved": 16
+        },
+        "$0200": {
+          "mean_saved": 21.943627450980394,
+          "min_saved": -1,
+          "max_saved": 22
+        },
+        "$0300": {
+          "mean_saved": 33.91421568627451,
+          "min_saved": -1,
+          "max_saved": 34
+        },
+        "$0400": {
+          "mean_saved": 45.884803921568626,
+          "min_saved": -1,
+          "max_saved": 46
+        },
+        "$8100": {
+          "mean_saved": 4.678921568627451,
+          "min_saved": -1,
+          "max_saved": 10
+        },
+        "$8200": {
+          "mean_saved": 16.649509803921568,
+          "min_saved": -1,
+          "max_saved": 22
+        },
+        "$8300": {
+          "mean_saved": 28.620098039215687,
+          "min_saved": -1,
+          "max_saved": 34
+        },
+        "$8400": {
+          "mean_saved": 39.443627450980394,
+          "min_saved": -1,
+          "max_saved": 46
+        }
+      }
+    },
+    "v2_pareto_fast": {
+      "status": "PASS_SOURCE_ASSEMBLED_6510_PUBLIC_ABI_STATE_STEP",
+      "model_profiles": "v2_pareto_fast",
+      "cases": 4080,
+      "public_mean_before": 662.7553921568627,
+      "public_mean_after": 637.3044117647058,
+      "mean_saving": 25.45098039215686,
+      "minimum_saving": 0,
+      "maximum_saving": 52,
+      "code_bytes": 328,
+      "max_code_address": "0xf7f",
+      "source_sha256": "4fc8bd2e54e15ae20fe55252045a3dc76a991fc527cda883f89ff351c6ffc443",
+      "return_stack_balanced": true,
+      "original_resident_bytes_and_tables_untouched": true,
+      "reference_reu_unchanged": true,
+      "native_vice_tested": false,
+      "method": "inline",
+      "by_speed": {
+        "$0080": {
+          "mean_saved": 6.965686274509804,
+          "min_saved": 0,
+          "max_saved": 7
+        },
+        "$0100": {
+          "mean_saved": 12.950980392156863,
+          "min_saved": 0,
+          "max_saved": 13
+        },
+        "$0180": {
+          "mean_saved": 19.534313725490197,
+          "min_saved": 0,
+          "max_saved": 20
+        },
+        "$0200": {
+          "mean_saved": 25.519607843137255,
+          "min_saved": 0,
+          "max_saved": 26
+        },
+        "$0300": {
+          "mean_saved": 38.07843137254902,
+          "min_saved": 0,
+          "max_saved": 39
+        },
+        "$0400": {
+          "mean_saved": 50.61274509803921,
+          "min_saved": 0,
+          "max_saved": 52
+        },
+        "$8100": {
+          "mean_saved": 6.659313725490196,
+          "min_saved": 0,
+          "max_saved": 12
+        },
+        "$8200": {
+          "mean_saved": 19.227941176470587,
+          "min_saved": 0,
+          "max_saved": 25
+        },
+        "$8300": {
+          "mean_saved": 31.78676470588235,
+          "min_saved": 0,
+          "max_saved": 38
+        },
+        "$8400": {
+          "mean_saved": 43.174019607843135,
+          "min_saved": 0,
+          "max_saved": 51
+        }
+      }
+    },
+    "v3_reu_512k": {
+      "status": "PASS_SOURCE_ASSEMBLED_6510_PUBLIC_ABI_STATE_STEP",
+      "model_profiles": "v3_reu_512k",
+      "cases": 4080,
+      "public_mean_before": 661.0083333333333,
+      "public_mean_after": 637.3044117647058,
+      "mean_saving": 23.70392156862745,
+      "minimum_saving": 0,
+      "maximum_saving": 48,
+      "code_bytes": 328,
+      "max_code_address": "0xf7f",
+      "source_sha256": "54c65f611717b43facdd9a8327e7bd1e0c826d647beeaeb7bee2bd6b60801bbf",
+      "return_stack_balanced": true,
+      "original_resident_bytes_and_tables_untouched": true,
+      "reference_reu_unchanged": true,
+      "native_vice_tested": false,
+      "method": "inline",
+      "by_speed": {
+        "$0080": {
+          "mean_saved": 5.985294117647059,
+          "min_saved": 0,
+          "max_saved": 6
+        },
+        "$0100": {
+          "mean_saved": 11.970588235294118,
+          "min_saved": 0,
+          "max_saved": 12
+        },
+        "$0180": {
+          "mean_saved": 17.955882352941178,
+          "min_saved": 0,
+          "max_saved": 18
+        },
+        "$0200": {
+          "mean_saved": 23.941176470588236,
+          "min_saved": 0,
+          "max_saved": 24
+        },
+        "$0300": {
+          "mean_saved": 35.911764705882355,
+          "min_saved": 0,
+          "max_saved": 36
+        },
+        "$0400": {
+          "mean_saved": 47.88235294117647,
+          "min_saved": 0,
+          "max_saved": 48
+        },
+        "$8100": {
+          "mean_saved": 5.678921568627451,
+          "min_saved": 0,
+          "max_saved": 11
+        },
+        "$8200": {
+          "mean_saved": 17.649509803921568,
+          "min_saved": 0,
+          "max_saved": 23
+        },
+        "$8300": {
+          "mean_saved": 29.620098039215687,
+          "min_saved": 0,
+          "max_saved": 35
+        },
+        "$8400": {
+          "mean_saved": 40.443627450980394,
+          "min_saved": 0,
+          "max_saved": 47
+        }
+      }
+    },
+    "v4_reu_16m": {
+      "status": "PASS_SOURCE_ASSEMBLED_6510_PUBLIC_ABI_STATE_STEP",
+      "model_profiles": "v4_reu_16m",
+      "cases": 4080,
+      "public_mean_before": 661.0083333333333,
+      "public_mean_after": 637.3044117647058,
+      "mean_saving": 23.70392156862745,
+      "minimum_saving": 0,
+      "maximum_saving": 48,
+      "code_bytes": 328,
+      "max_code_address": "0xf7f",
+      "source_sha256": "54c65f611717b43facdd9a8327e7bd1e0c826d647beeaeb7bee2bd6b60801bbf",
+      "return_stack_balanced": true,
+      "original_resident_bytes_and_tables_untouched": true,
+      "reference_reu_unchanged": true,
+      "native_vice_tested": false,
+      "method": "inline",
+      "by_speed": {
+        "$0080": {
+          "mean_saved": 5.985294117647059,
+          "min_saved": 0,
+          "max_saved": 6
+        },
+        "$0100": {
+          "mean_saved": 11.970588235294118,
+          "min_saved": 0,
+          "max_saved": 12
+        },
+        "$0180": {
+          "mean_saved": 17.955882352941178,
+          "min_saved": 0,
+          "max_saved": 18
+        },
+        "$0200": {
+          "mean_saved": 23.941176470588236,
+          "min_saved": 0,
+          "max_saved": 24
+        },
+        "$0300": {
+          "mean_saved": 35.911764705882355,
+          "min_saved": 0,
+          "max_saved": 36
+        },
+        "$0400": {
+          "mean_saved": 47.88235294117647,
+          "min_saved": 0,
+          "max_saved": 48
+        },
+        "$8100": {
+          "mean_saved": 5.678921568627451,
+          "min_saved": 0,
+          "max_saved": 11
+        },
+        "$8200": {
+          "mean_saved": 17.649509803921568,
+          "min_saved": 0,
+          "max_saved": 23
+        },
+        "$8300": {
+          "mean_saved": 29.620098039215687,
+          "min_saved": 0,
+          "max_saved": 35
+        },
+        "$8400": {
+          "mean_saved": 40.443627450980394,
+          "min_saved": 0,
+          "max_saved": 47
+        }
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "status": "PASS_SOURCE_ASSEMBLED_6510_PUBLIC_ABI_STATE_STEP",
+      "model_profiles": "v5_hybrid_lowzp",
+      "cases": 4080,
+      "public_mean_before": 737.9948529411764,
+      "public_mean_after": 715.8894607843138,
+      "mean_saving": 22.105392156862745,
+      "minimum_saving": -1,
+      "maximum_saving": 46,
+      "code_bytes": 399,
+      "max_code_address": "0xf8b",
+      "source_sha256": "23f8b1c2fc8beddd71fda96e227559cbc2aeacabbd6faf6d1ff4e08d03860497",
+      "return_stack_balanced": true,
+      "original_resident_bytes_and_tables_untouched": true,
+      "reference_reu_unchanged": true,
+      "native_vice_tested": false,
+      "method": "inline",
+      "by_speed": {
+        "$0080": {
+          "mean_saved": 3.9877450980392157,
+          "min_saved": -1,
+          "max_saved": 4
+        },
+        "$0100": {
+          "mean_saved": 9.973039215686274,
+          "min_saved": -1,
+          "max_saved": 10
+        },
+        "$0180": {
+          "mean_saved": 15.958333333333334,
+          "min_saved": -1,
+          "max_saved": 16
+        },
+        "$0200": {
+          "mean_saved": 21.943627450980394,
+          "min_saved": -1,
+          "max_saved": 22
+        },
+        "$0300": {
+          "mean_saved": 33.91421568627451,
+          "min_saved": -1,
+          "max_saved": 34
+        },
+        "$0400": {
+          "mean_saved": 45.884803921568626,
+          "min_saved": -1,
+          "max_saved": 46
+        },
+        "$8100": {
+          "mean_saved": 4.678921568627451,
+          "min_saved": -1,
+          "max_saved": 10
+        },
+        "$8200": {
+          "mean_saved": 16.649509803921568,
+          "min_saved": -1,
+          "max_saved": 22
+        },
+        "$8300": {
+          "mean_saved": 28.620098039215687,
+          "min_saved": -1,
+          "max_saved": 34
+        },
+        "$8400": {
+          "mean_saved": 39.443627450980394,
+          "min_saved": -1,
+          "max_saved": 46
+        }
+      }
+    }
+  }
+}
