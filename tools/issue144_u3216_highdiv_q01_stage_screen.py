@@ -103,7 +103,7 @@ def main():
     code,labels,_=Assembler().assemble(ASM)
     assert min(code)==0x0D00 and max(code)<0x0E00
     for pc,val in code.items(): new.mem[pc]=val
-    orig=[],changed=[],outcome=[]
+    orig=[];changed=[];outcome=[]
     digest=hashlib.sha256()
     for index,(n,d) in enumerate(pairs):
         digest.update(n.to_bytes(2,"little")+d.to_bytes(2,"little"))
@@ -131,7 +131,6 @@ def main():
        "cycles_saved":stats(delta),
        "slower_cases":sum(x<0 for x in delta),
        "cycles_by_q0or1":{},
-       "baseline_C_flags":list(sorted(set(old.c for _ in (0,)))),
        "normal_public_32by16_call_verified":False,
        "native_vice_verified":False,
        "all_D16_unrestricted_public_entry_optimized":False,
