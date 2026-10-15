@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 SIGNED32/16 ZERO-FOOTPRINT PUBLIC-JMP DIRECT OPTIN
+- All-input signed32/16 SDIV/SMOD full-Q+R public-entry JMP-chain micro-optins: V2/3/4 save 3/6 cycles per call, V1 SMOD saves 3, V5 already direct. 32,790 matched input cases and 480 real native x64sc calls PASS; reversible V1/2/3/4 source installers 22/42 B. No ordinary resident PRG/REU/zero-page/API/PERFORMANCE changes. docs/ISSUE144_SIGNED32_DIVMOD_DIRECT_JMP_2026-10-15.md
+
 2026-10-15 ISSUE144 ISQRT32 ALL-DOMAIN DIRECT HIGHWORD SEED
 - Source-only all-domain ISQRT32 non-REU highword-seed opt-in (V1/V2/V3/V5): 47 cycles faster V2/V3, 51 cycles V1/V5 on all 16,520 canonical paired CPU calls; 192 native original/opt-in x64sc calls PASS; V4 original 16MiB REU 24-call control PASS but unchanged. 95–102 bytes in caller-owned RAM, no ordinary ZP/PRG/REU/API/PERFORMANCE changes. docs/ISSUE144_ISQRT32_FULL_INPUT_DIRECT_HIGHWORD_SEED_2026-10-15.md
 

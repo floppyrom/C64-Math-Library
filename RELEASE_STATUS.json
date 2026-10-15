@@ -3869,5 +3869,56 @@
     "native_record": "validation/review/ISSUE144_ISQRT32_DIRECT_HIGHWORD_SEED_NATIVE_VICE.json",
     "documentation": "docs/ISSUE144_ISQRT32_FULL_INPUT_DIRECT_HIGHWORD_SEED_2026-10-15.md",
     "source_directory": "optional/issue144_isqrt32_highword_direct"
+  },
+  "issue144_signed32_divmod_direct_public_jmp_2026_10_15": {
+    "status": "PASS_SOURCE_CPU_NATIVE_OPTIN_NOT_DEFAULT",
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "model_public_calls": 65580,
+    "native_public_calls": 480,
+    "normal_zero_page_growth": 0,
+    "changed_JMP_operand_bytes_by_profile": {
+      "v1_balanced": 2,
+      "v2_pareto_fast": 4,
+      "v3_reu_512k": 4,
+      "v4_reu_16m": 4,
+      "v5_hybrid_lowzp": 0
+    },
+    "savings_by_profile": {
+      "v1_balanced": {
+        "MATH_SDIV32_16": 0,
+        "MATH_SMOD32_16": 3
+      },
+      "v2_pareto_fast": {
+        "MATH_SDIV32_16": 3,
+        "MATH_SMOD32_16": 6
+      },
+      "v3_reu_512k": {
+        "MATH_SDIV32_16": 3,
+        "MATH_SMOD32_16": 6
+      },
+      "v4_reu_16m": {
+        "MATH_SDIV32_16": 3,
+        "MATH_SMOD32_16": 6
+      },
+      "v5_hybrid_lowzp": {
+        "MATH_SDIV32_16": 0,
+        "MATH_SMOD32_16": 0
+      }
+    },
+    "all_input_signs_and_divide_by_zero_qualified": true,
+    "full_Q32_R16_and_C_contract": true,
+    "native_cycles_measured": false,
+    "production_PRGs_REUs_unchanged": true,
+    "docs": "docs/ISSUE144_SIGNED32_DIVMOD_DIRECT_JMP_2026-10-15.md",
+    "sources": "optional/issue144_signed32_divmod_direct_jump",
+    "CPU_proof": "validation/review/ISSUE144_SIGNED32_16_DIRECT_PUBLIC_JUMP_RESEARCH.json",
+    "native_proof": "validation/review/ISSUE144_SIGNED32_16_DIRECT_PUBLIC_JUMP_NATIVE_VICE.json",
+    "installer_proof": "validation/review/ISSUE144_SIGNED32_16_DIRECT_PUBLIC_JUMP_INSTALLER.json"
   }
 }
