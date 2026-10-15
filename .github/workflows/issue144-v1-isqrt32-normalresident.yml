@@ -1,0 +1,20 @@
+name: Issue144 V1 ISQRT32 normal resident feasibility
+on:
+  push:
+    branches: [issue144-v1-isqrt32-highword-normalresident-screen-20261015]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  feasibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Disallow overlapping V1 normal-resident code on both layouts and check full-domain model
+        run: python3 tools/issue144_v1_isqrt32_normal_resident_feasibility.py

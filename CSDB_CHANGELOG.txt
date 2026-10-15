@@ -1,3 +1,8 @@
+2026-10-15 ISSUE144 V1 ISQRT32 51-CYCLE NORMAL-RESIDENT HIGHWORD SEED FEASIBILITY (RESEARCH ONLY)
+- Independently tested a direct-highword V1 ISQRT32 public producer inside unused pre-existing resident bytes: helper REG_GAME+$0AA8 (reference $CBA8); reference and alternate maps both avoid nonzero occupied helper code, without caller RAM or new ZP.
+- Each layout passed 657 matched full-width 32-bit public CPU-model calls, exactly 51 modeled cycles saved per call with no slower inputs; root/carry/input/X/Y/SP preserved. 96 real x64sc V1 public calls also passed, with full captured status equality on both layouts.
+- Nothing installed into the production V1/V5 source, PRGs, REUs or PERFORMANCE.md. V5 inheritance, full 56-entry mixed-call ABI, IRQ/reentrancy and physical bus timing are NOT yet qualified.
+
 2026-10-15 ISSUE144 V2/V3 ISQRT32 DIRECT HIGHWORD SEED IN NORMAL RESIDENT SOURCE (NOT BINARY RELEASE)
 - Installed the independently qualified unrestricted direct-highword sqrt seed as final-owner source in the existing 192-byte normal V2/V3 root slot, without new ZP or caller-owned RAM.
 - PR #174 demonstrated 47 CPU-model cycles saved for every one of 3,388 paired calls and 192 native x64sc calls with actual V3 512KiB REU. Production-source branch checks include normal public API and two memory relocations.
