@@ -1,7 +1,7 @@
 name: Issue144 signed 32by16 direct public JMP full ABI
 on:
   push:
-    branches: [issue144-signed32-divmod-direct-jmp-20261015]
+    branches: [issue144-signed32-divmod-direct-jmp-20261015, issue144-signed32-divmod-native-sp-hardening-20261015]
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -32,7 +32,11 @@ jobs:
           sudo apt-get install -y /tmp/headlessvice.deb
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
       - name: Native x64sc full Q/R/C flags and source BEGIN END across V1 to V5
-        run: python3 tools/native_issue144_signed32_divmod_alias_direct.py
+        run: |
+          for repeat in 1 2 3; do
+            echo "x64sc deterministic-stack native repetition $repeat / 3"
+            python3 tools/native_issue144_signed32_divmod_alias_direct.py
+          done
       - name: Verify both changelogs, release status and full SHA manifest
         if: github.event_name == 'push'
         run: python3 tools/stage_issue144_signed32_divmod_direct_jump.py
@@ -43,7 +47,7 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A
           git diff --cached --quiet || git commit -m 'issue144: seal signed32 DIVMOD direct public JMP opt-in tests and changelogs'
-          git push origin HEAD:issue144-signed32-divmod-direct-jmp-20261015
+          git push origin HEAD:"$GITHUB_REF_NAME"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

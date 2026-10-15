@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 SIGNED32 DIVMOD NATIVE VICE HARNESS STABILITY
+- Initialize 6510 SP=$FF explicitly before MATH_INIT in the signed32/16 DIV/MOD VICE harness; run three independent 480-call native repetitions (1,440 calls) to screen startup-state flakiness. No math algorithm, performance metrics, ABI, ZP, shipped binaries, or REU image changed.
+
 2026-10-15 ISSUE144 V4 REU ISQRT32 INPLACE ROTATE6 PARETO
 - Source-only V4 REU ISQRT32 all-input 12-byte in-place peephole: two 6x ASL groups -> LSR/ROR/ROR/BCC+1/NOP, exact public output/flags, 6 CPU-model cycles saved on all 4,130 canonical inputs (917.317433 -> 911.317433), 48 real native x64sc REU-16MiB baseline/candidate calls PASS. Optional reversible 88-byte BEGIN/END assembly, no extra normal ZP/code/data; normal resident PRG/REU and ordinary PERFORMANCE remain unchanged. docs/ISSUE144_V4_REU_ISQRT32_ROTATE6_PARETO_2026-10-15.md
 

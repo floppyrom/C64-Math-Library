@@ -27,7 +27,7 @@ assert len(VECTORS)==N
 
 def sha(b):return hashlib.sha256(b).hexdigest()
 def harness(entry,enable=None,disable=None):
- lines=['!cpu 6510','* = $0B00','start:','  sei','  cld','  lda #$34','  sta $01','  jsr $3280']
+ lines=['!cpu 6510','* = $0B00','start:','  sei','  cld','  ldx #$FF','  txs','  lda #$34','  sta $01','  jsr $3280']
  if enable is not None:lines.append(f'  jsr ${enable:04X}')
  lines+=['  ldx #$00','loop:']
  for i in range(6):
