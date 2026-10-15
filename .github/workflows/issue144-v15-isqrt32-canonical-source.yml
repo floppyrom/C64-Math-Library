@@ -1,0 +1,20 @@
+name: Issue144 V1 V5 canonical source root promotion qualification
+on:
+  push:
+    branches: [issue144-v15-isqrt32-highword-canonical-source-20261015]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: V1/V5 both maps 56-entry full ABI, V5 inheritance and paired source-model proof
+        run: python3 tools/issue144_v15_isqrt32_canonical_source_qualification.py
