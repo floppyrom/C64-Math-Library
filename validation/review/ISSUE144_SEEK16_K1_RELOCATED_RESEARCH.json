@@ -1,0 +1,49 @@
+{
+  "status": "PASS_SOURCE_MODEL_RELOCATED_RESEARCH_NOT_PROMOTED",
+  "profile": "v2_pareto_fast",
+  "same_input_pairs": 300,
+  "original_island_code_bytes": 270,
+  "candidate_relocated_bytes": 291,
+  "separate_reserved_code_range": "$0D00-$0E22",
+  "foreign_resident_byte_19F0_unmodified": true,
+  "existing_1A00_table_unmodified": true,
+  "original_library_api_and_reu_untouched": true,
+  "full_248_byte_state_input_carry_X_SP_and_step_equal": true,
+  "mean_saving": 4.226666666666667,
+  "worst_regression": 18,
+  "by_speed": {
+    "0x100": {
+      "mean_saved": 16.66,
+      "min_saved": -18,
+      "max_saved": 24
+    },
+    "0x180": {
+      "mean_saved": 16.66,
+      "min_saved": -18,
+      "max_saved": 24
+    },
+    "0x200": {
+      "mean_saved": -4.9,
+      "min_saved": -5,
+      "max_saved": 0
+    },
+    "0x0": {
+      "mean_saved": 0.0,
+      "min_saved": 0,
+      "max_saved": 0
+    },
+    "0x300": {
+      "mean_saved": -4.9,
+      "min_saved": -5,
+      "max_saved": 0
+    },
+    "0x8100": {
+      "mean_saved": 1.84,
+      "min_saved": 0,
+      "max_saved": 24
+    }
+  },
+  "source_sha256": "8c88acdb81468c29d1c0f1fd2a579f00259907cdc959015f8fcbd54a8b0a15f2",
+  "requires_original_resident_helpers_ZP": true,
+  "native_cycles_measured": false
+}

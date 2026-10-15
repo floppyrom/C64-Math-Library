@@ -1,0 +1,14 @@
+{
+  "status": "PASS_NATIVE_VICE_RELOCATED_SEEK16_V2_K1",
+  "profile": "v2_pareto_fast",
+  "source_sha256": "8c88acdb81468c29d1c0f1fd2a579f00259907cdc959015f8fcbd54a8b0a15f2",
+  "native_original_step_calls": 64,
+  "native_candidate_step_calls": 64,
+  "native_original_and_candidate_INIT_calls": 8,
+  "outputs_carry_x_stack_bitwise_equal": true,
+  "stock_prg_file_unchanged": true,
+  "foreign_resident_19f0_and_1a00_unchanged": true,
+  "native_cycles_measured": false,
+  "not_reentrant": true,
+  "independent_required_application_ram": "$0D00-$0E22"
+}
