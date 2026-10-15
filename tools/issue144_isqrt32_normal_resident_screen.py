@@ -60,8 +60,23 @@ def assembled(p,layout):
     canon=a[a.index(OLD_START):a.index(OLD_END,a.index(OLD_START))]
     assert expanded[root_a:root_b]==canon
     new=b[b.index("* = REG_GAME+$0A40"):b.index(OLD_END,b.index("* = REG_GAME+$0A40"))]
-    cand=expanded[:root_a]+new+expanded[root_b:]
-    mem0,labels0,c0=Assembler().assemble(expanded)
+    include=src.parent/"isqrt32_highword_resident.inc"
+    if include.is_file():
+        # Production source has an independently generated original root and
+        # a final-owner include. Reconstruct baseline by excluding only the
+        # final-owner block, then compare ordinary unmodified public entries.
+        marker='; BEGIN !source "isqrt32_highword_resident.inc"'
+        final='; END !source "isqrt32_highword_resident.inc"'
+        assert expanded.count(marker)==expanded.count(final)==1
+        pos0=expanded.index(marker);pos1=expanded.index(final,pos0)+len(final)
+        assert expanded[pos0:pos1].count("LCB40:")==1
+        assert include.read_text().strip()==new.strip()
+        base=expanded[:pos0]+expanded[pos1:]
+        cand=expanded
+    else:
+        base=expanded
+        cand=expanded[:root_a]+new+expanded[root_b:]
+    mem0,labels0,c0=Assembler().assemble(base)
     mem1,labels1,c1=Assembler().assemble(cand)
     io=vals["MATH_IO"];resident_base=vals["REG_GAME"]
     bounds=(resident_base+OLD_ENTRY,resident_base+0x0B00)
@@ -113,6 +128,14 @@ def run(profile,layout,count):
         assert (old.x,old.y)==(new.x,new.y),(profile,layout,k,"X/Y")
         vflags+=(old.v!=new.v)
         changes.append(a-b)
+        if k%79==0:
+            # Normal public ISQRT16 must remain separately usable between
+            # highword-seeded ISQRT32 operations, with no READY state.
+            v=(n^(n>>16))&0xffff
+            for cpu in (old,new):
+                wr(cpu.mem,io+0x10,v,2)
+                cpu.call(api["MATH_ISQRT16"],500000)
+                assert rd(cpu.mem,io+8,2)==math.isqrt(v),(profile,layout,k,"interleaved ISQRT16")
     assert changes and min(changes)>0,(profile,layout,stats(changes))
     return {"profile":profile,"layout":layout,"status":"PASS_PUBLIC_MODEL_FULL_DOMAIN",
             "cases":len(nums),"source_sha256":sha,"slot":bounds,
