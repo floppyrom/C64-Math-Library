@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 B/C DOMAIN-QUALIFIED OPTIONAL SOURCES
+- Source-only opt-in B/C specialists, no installed library change: power-of-two D16 remainder-only 25 bytes/38 cycles (NOT quotient-producing); low16 ISQRT32 via existing ISQRT16; five-profile CPU/native proof including real V4 REU image. An all-input guard and quotient-complete pow2 selector remain research-only. Regular library binaries, ZP, public API and PERFORMANCE leaderboard unchanged. docs/ISSUE144_BC_DOMAIN_SPECIALIST_PARETO_2026-10-15.md
+
 2026-10-15 ISSUE144 SIGNED SHR16 NONNEGATIVE SPECIALIST AND QUADRANT RESEARCH
 - Domain-qualified optional signed 32x32 SHR16 public-entry alias for nonnegative input pairs: 58.372 CPU-model cycles saved on 715 paired cases/profile V2-V4, 144 native x64sc baseline/alias calls PASS, reversible source-assembled signed JMP enable/disable. General all-sign hybrid screened: 16.438 mean saved but negative-quadrant regressions, NOT promoted. Stock PRGs, REU, ABI, normal ZP and regular leaderboard unchanged. docs/ISSUE144_SIGNED_SHR16_SPECIALISTS_2026-10-15.md
 
