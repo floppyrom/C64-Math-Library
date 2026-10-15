@@ -1,0 +1,20 @@
+name: Issue144 unrestricted shared-take 32/16 source-only qualification
+on:
+  push:
+    branches:
+      - main
+      - issue144-u3216-shared-inline-normal-footprint-20261015
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  paired-public-abi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Reproduce V2 V3 V4 paired unrestricted public DIV/MOD source test
+        run: python tools/issue144_u3216_shared_inline_optin_screen.py --profile all --random 1200
