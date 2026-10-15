@@ -39,11 +39,13 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y /tmp/headlessvice.deb
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
-      - name: Run paired native VICE public SEEK16 INIT across V1-V5
-        run: python3 tools/native_issue39_seek16_scale.py
+      - name: Run pinned-original versus SHA-verified live-source SEEK16 native VICE across V1-V5
+        # This PR targets newer source. Preserve the original strict 14-Oct
+        # image fingerprint in the script's default (historical) mode.
+        run: python3 tools/native_issue39_seek16_scale.py --live-source
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: issue39-seek16-native-proof
           if-no-files-found: warn
-          path: validation/review/ISSUE39_SEEK16_SCALE_NATIVE_2026-10-14.json
+          path: validation/review/ISSUE39_SEEK16_SCALE_NATIVE_LIVE_SOURCE.json
