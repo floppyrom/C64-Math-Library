@@ -1,0 +1,23 @@
+{
+  "v2_pareto_fast": {
+    "changed_resident_bytes": 49,
+    "entry_begin": "0x900",
+    "entry_end": "0x9a4",
+    "installer_code_bytes": 334,
+    "source_sha256": "f4f8863fbcb6bc79a3d89a87701963d197bae156a6a1d03b3c9b50cb6e62a2bf"
+  },
+  "v3_reu_512k": {
+    "changed_resident_bytes": 49,
+    "entry_begin": "0x900",
+    "entry_end": "0x9a4",
+    "installer_code_bytes": 334,
+    "source_sha256": "054e0d004a3cad23ec89f7872db9ea21a5bc6a1ee8789b99cc50aad9836b1164"
+  },
+  "v4_reu_16m": {
+    "changed_resident_bytes": 49,
+    "entry_begin": "0x900",
+    "entry_end": "0x9a4",
+    "installer_code_bytes": 334,
+    "source_sha256": "71779e02d41e27a2784a6bb2cb34569dfd56b96ee238af0f273f139acc9a8042"
+  }
+}

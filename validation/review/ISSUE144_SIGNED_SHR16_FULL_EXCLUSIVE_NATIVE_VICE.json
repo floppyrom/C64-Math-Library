@@ -1,0 +1,30 @@
+{
+  "baseline_and_candidate_calls": 144,
+  "native_cycles_measured": false,
+  "normal_prgs_unchanged": true,
+  "ordinary_SMUL32_during_overlay_valid": false,
+  "profiles": {
+    "v2_pareto_fast": {
+      "disposable_overlay_sha256": "247cacc0b7db8291c9b75df28331dc2f5db112a7c1e5e54a6df75ae32818b69a",
+      "original_resident_disk_file_unchanged": true,
+      "original_resident_sha256": "8096cdc897413d0652b039b236bcd4637090543e58453dceaeeb84c276e1c630",
+      "paired_vectors": 24,
+      "status": "PASS_NATIVE_SIX_OUTPUT_BYTES_CARRY_INPUTS_SP"
+    },
+    "v3_reu_512k": {
+      "disposable_overlay_sha256": "337b29bfb993a4732b8573b5da88f7e29ea3db1aba0a80a218a8ae2868f3be9e",
+      "original_resident_disk_file_unchanged": true,
+      "original_resident_sha256": "93b07ce72e564c2f716e09620175e0bd25bf8b89498bf589cb40d66da28c0d53",
+      "paired_vectors": 24,
+      "status": "PASS_NATIVE_SIX_OUTPUT_BYTES_CARRY_INPUTS_SP"
+    },
+    "v4_reu_16m": {
+      "disposable_overlay_sha256": "dcb73f096a6380ebc18699f70fe91325f1c1cf3fe4003839891e66428931aa23",
+      "original_resident_disk_file_unchanged": true,
+      "original_resident_sha256": "e2372bb53cb8b4f2607744a6a87061b051cb8bd140f15a4f835d6d2fbc56d33a",
+      "paired_vectors": 24,
+      "status": "PASS_NATIVE_SIX_OUTPUT_BYTES_CARRY_INPUTS_SP"
+    }
+  },
+  "status": "PASS_NATIVE_ALL_SIGNED_DOMAIN_EXCLUSIVE_ONLY"
+}
