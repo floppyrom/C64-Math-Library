@@ -855,7 +855,7 @@ def _v15_batched_seek16_init(native_source: str, layout: dict) -> str:
     helper = helper.replace("s16b_done:\n        rts",
                             "s16b_done:\n        dey\n        bne s16_addmin_batch\n        rts")
     batch = ("* = " + layout["seek16_batch"] + "\n"
-             "; Issue144: repeated accumulator, same state and carry semantics.\n"
+             "; V1/V5 normal-resident Issue144: batch the integer-speed accumulation.\n"\n             "; The original s16_addmin remains unchanged for the fractional plane.\n"
              "s16_addmin_batch:\n" + helper.rstrip() + "\n")
     anchor = "\n* = " + layout["seek16_step"] + "\n"
     assert native_source.count(anchor) == 1
