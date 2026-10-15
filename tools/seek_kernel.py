@@ -884,10 +884,10 @@ SEEK16_STATE = {layout['seek16_state']}
         lines.append('')
         lines.append(f'* = {layout[block]}')
         body = BLOCKS[block]
-        # Issue144 D: V1 (and V5, derived from V1) retains its original
-        # resident islands. The in-helper Y-counted loop removes one
-        # JSR/RTS pair for every additional integer speed quantum.
-        # V2-V4 use their separately qualified canonical in-hole sources.
+        # Issue144 D: V1/V5 use a second accumulator helper placed in the
+        # free resident REG_API+$0599 island. The original helper remains
+        # byte-identical for fractional speeds; the new helper runs all
+        # integer speed quanta in one JSR/RTS invocation.
         if profile == 'v1_balanced' and block == 'seek16_init':
             old = ("        ldy S16_KI,x\n"
                    "        beq s16i_r0done\n"
@@ -897,17 +897,39 @@ SEEK16_STATE = {layout['seek16_state']}
                    "        bne s16i_r0\n")
             new = ("        ldy S16_KI,x\n"
                    "        beq s16i_r0done\n"
-                   "        jsr s16_addmin\n")
+                   "        jsr s16_addmin_many\n")
             assert body.count(old) == 1
             body = body.replace(old, new)
-            old = "        jsr s16_addmin          ; k0+1"
-            assert body.count(old) == 1
-            body = body.replace(old, "        ldy #1\n        jsr s16_addmin          ; k0+1")
-        if profile == 'v1_balanced' and block == 'seek16_helpers':
-            body = body.replace('Preserves X/Y.', 'Preserves X; consumes Y=count.', 1)
-            old = "s16a_done:\n        rts"
-            assert body.count(old) == 1
-            body = body.replace(
-                old, "s16a_done:\n        dey\n        bne s16_addmin\n        rts")
         lines.append(body.rstrip('\n'))
+    if profile == 'v1_balanced':
+        # 45-byte helper in the measured free gap after seek8_init and before
+        # seek16_step, $3599..$35FF on the reference memory map. No extra
+        # scratch RAM or zero page, no stack-page dispatch.
+        lines.append("""
+* = REG_API+$0599
+; SEEK16 INIT integer-speed repeated accumulator (Y=quanta, 1..126).
+; This entry consumes Y but leaves X and the public state ABI intact.
+; Fractional speed still calls the unchanged s16_addmin once.
+s16_addmin_many:
+        lda SK_REML
+        clc
+        adc SK_DMIN
+        sta SK_REML
+        bcc s16am_nc
+        inc SK_REMH
+s16am_nc:
+        cmp SK_DMAJL
+        lda SK_REMH
+        sbc SK_DMAJH
+        bcc s16am_done
+        sta SK_REMH
+        lda SK_REML
+        sbc SK_DMAJL
+        sta SK_REML
+        inc SK_WHOLE
+s16am_done:
+        dey
+        bne s16_addmin_many
+        rts
+""".rstrip('\\n'))
     return '\n'.join(lines) + '\n'
