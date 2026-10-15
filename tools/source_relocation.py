@@ -27,6 +27,16 @@ def seek_code_addresses(profile):
  from mini6502 import Assembler
  cfg=(ROOT/'relocatable_source'/profile/'math_config_reference.inc').read_text()
  src=(ROOT/profile/'resident/movement/native/seek_dda.asm').read_text()
+ # An integrated compact U3216/SEEK source can place SEEK helpers at the
+ # assembled end of the division producer. Resolve that address from the
+ # complete symbolic source before assembling this native include alone.
+ if '* = U3216_MAIN_END' in src:
+  from assemble_sources import preprocess
+  full=preprocess(ROOT/'relocatable_source'/profile/'math_relocatable.asm',
+                  ROOT/'relocatable_source'/profile/'math_config_reference.inc')
+  _,labels,_=Assembler().assemble(full)
+  assert 'U3216_MAIN_END' in labels,profile
+  src=src.replace('* = U3216_MAIN_END',f'* = ${labels["U3216_MAIN_END"]:04X}')
  mem,_,_=Assembler().assemble(cfg+'\n'+src)
  return set(mem)
 
