@@ -1,0 +1,54 @@
+{
+  "status": "PASS_LOCAL_MODEL_AND_NATIVE_SOURCE_ONLY",
+  "date": "2026-10-15",
+  "profiles": {
+    "v2_pareto_fast": {
+      "paired_public_calls": 1920,
+      "saved_mean_cycles": 22.1448,
+      "saved_worst_cycles": 0,
+      "slower_calls": 0,
+      "full_source_validator_calls": 21678,
+      "real_vice_original_init_calls": 16,
+      "real_vice_candidate_init_calls": 16,
+      "real_vice_original_step_calls": 16,
+      "real_vice_candidate_step_calls": 16
+    },
+    "v3_reu_512k": {
+      "paired_public_calls": 1920,
+      "saved_mean_cycles": 20.4781,
+      "saved_worst_cycles": 0,
+      "slower_calls": 0,
+      "full_source_validator_calls": 21678,
+      "real_vice_original_init_calls": 16,
+      "real_vice_candidate_init_calls": 16,
+      "real_vice_original_step_calls": 16,
+      "real_vice_candidate_step_calls": 16
+    },
+    "v4_reu_16m": {
+      "paired_public_calls": 1920,
+      "saved_mean_cycles": 20.4781,
+      "saved_worst_cycles": 0,
+      "slower_calls": 0,
+      "full_source_validator_calls": 21678,
+      "real_vice_original_init_calls": 16,
+      "real_vice_candidate_init_calls": 16,
+      "real_vice_original_step_calls": 16,
+      "real_vice_candidate_step_calls": 16
+    }
+  },
+  "real_vice_x64sc": "3.13.2",
+  "native_frame_state_comparison_bytes_per_profile": 384,
+  "v3_v4_reu_byte_identical_to_baseline": true,
+  "normal_zp_extra": 0,
+  "caller_owned_ram_extra": 0,
+  "public_entry_changed": false,
+  "production_artifacts_changed": false,
+  "default_installed": false,
+  "validation_source": "tools/issue144_seek_inhole_shared_qualify.py",
+  "limitations": [
+    "production integration not yet qualified",
+    "V1/V5 source not accelerated",
+    "no real physical bus/DMA timing or native cycle benchmark",
+    "no IRQ/NMI or concurrent arbitrary-call certification"
+  ]
+}
