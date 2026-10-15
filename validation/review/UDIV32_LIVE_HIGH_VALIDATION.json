@@ -5,14 +5,14 @@
   "results": {
     "v2_pareto_fast": {
       "reference": {
-        "code_bytes": 2755,
+        "code_bytes": 2563,
         "zp_bytes": 14,
         "groups": {
           "edges": {
             "cases": 529,
-            "mean_cycles": 413.6862003780718,
+            "mean_cycles": 412.7240075614367,
             "min_cycles": 72,
-            "max_cycles": 1792
+            "max_cycles": 1774
           },
           "uniform32": {
             "cases": 30000,
@@ -22,9 +22,9 @@
           },
           "divisor16": {
             "cases": 2000,
-            "mean_cycles": 709.9665,
-            "min_cycles": 568,
-            "max_cycles": 1569
+            "mean_cycles": 703.4385,
+            "min_cycles": 567,
+            "max_cycles": 1558
           },
           "divisor8": {
             "cases": 2000,
@@ -34,21 +34,21 @@
           },
           "quotient_boundaries": {
             "cases": 178,
-            "mean_cycles": 594.0168539325842,
+            "mean_cycles": 592.4550561797753,
             "min_cycles": 72,
             "max_cycles": 1539
           }
         }
       },
       "alternate": {
-        "code_bytes": 2755,
+        "code_bytes": 2563,
         "zp_bytes": 14,
         "groups": {
           "edges": {
             "cases": 529,
-            "mean_cycles": 413.6862003780718,
+            "mean_cycles": 412.7240075614367,
             "min_cycles": 72,
-            "max_cycles": 1792
+            "max_cycles": 1774
           },
           "uniform32": {
             "cases": 30000,
@@ -58,9 +58,9 @@
           },
           "divisor16": {
             "cases": 2000,
-            "mean_cycles": 709.9665,
-            "min_cycles": 568,
-            "max_cycles": 1569
+            "mean_cycles": 703.4385,
+            "min_cycles": 567,
+            "max_cycles": 1558
           },
           "divisor8": {
             "cases": 2000,
@@ -70,7 +70,7 @@
           },
           "quotient_boundaries": {
             "cases": 178,
-            "mean_cycles": 594.0168539325842,
+            "mean_cycles": 592.4550561797753,
             "min_cycles": 72,
             "max_cycles": 1539
           }
@@ -79,14 +79,14 @@
     },
     "v3_reu_512k": {
       "reference": {
-        "code_bytes": 2755,
+        "code_bytes": 2563,
         "zp_bytes": 14,
         "groups": {
           "edges": {
             "cases": 529,
-            "mean_cycles": 413.6862003780718,
+            "mean_cycles": 412.7240075614367,
             "min_cycles": 72,
-            "max_cycles": 1792
+            "max_cycles": 1774
           },
           "uniform32": {
             "cases": 30000,
@@ -96,9 +96,9 @@
           },
           "divisor16": {
             "cases": 2000,
-            "mean_cycles": 709.9665,
-            "min_cycles": 568,
-            "max_cycles": 1569
+            "mean_cycles": 703.4385,
+            "min_cycles": 567,
+            "max_cycles": 1558
           },
           "divisor8": {
             "cases": 2000,
@@ -108,21 +108,21 @@
           },
           "quotient_boundaries": {
             "cases": 178,
-            "mean_cycles": 594.0168539325842,
+            "mean_cycles": 592.4550561797753,
             "min_cycles": 72,
             "max_cycles": 1539
           }
         }
       },
       "alternate": {
-        "code_bytes": 2755,
+        "code_bytes": 2563,
         "zp_bytes": 14,
         "groups": {
           "edges": {
             "cases": 529,
-            "mean_cycles": 413.6862003780718,
+            "mean_cycles": 412.7240075614367,
             "min_cycles": 72,
-            "max_cycles": 1792
+            "max_cycles": 1774
           },
           "uniform32": {
             "cases": 30000,
@@ -132,9 +132,9 @@
           },
           "divisor16": {
             "cases": 2000,
-            "mean_cycles": 709.9665,
-            "min_cycles": 568,
-            "max_cycles": 1569
+            "mean_cycles": 703.4385,
+            "min_cycles": 567,
+            "max_cycles": 1558
           },
           "divisor8": {
             "cases": 2000,
@@ -144,7 +144,7 @@
           },
           "quotient_boundaries": {
             "cases": 178,
-            "mean_cycles": 594.0168539325842,
+            "mean_cycles": 592.4550561797753,
             "min_cycles": 72,
             "max_cycles": 1539
           }
@@ -153,14 +153,14 @@
     },
     "v4_reu_16m": {
       "reference": {
-        "code_bytes": 2755,
+        "code_bytes": 2563,
         "zp_bytes": 14,
         "groups": {
           "edges": {
             "cases": 529,
-            "mean_cycles": 413.6862003780718,
+            "mean_cycles": 412.7240075614367,
             "min_cycles": 72,
-            "max_cycles": 1792
+            "max_cycles": 1774
           },
           "uniform32": {
             "cases": 30000,
@@ -170,9 +170,9 @@
           },
           "divisor16": {
             "cases": 2000,
-            "mean_cycles": 709.9665,
-            "min_cycles": 568,
-            "max_cycles": 1569
+            "mean_cycles": 703.4385,
+            "min_cycles": 567,
+            "max_cycles": 1558
           },
           "divisor8": {
             "cases": 2000,
@@ -182,21 +182,21 @@
           },
           "quotient_boundaries": {
             "cases": 178,
-            "mean_cycles": 594.0168539325842,
+            "mean_cycles": 592.4550561797753,
             "min_cycles": 72,
             "max_cycles": 1539
           }
         }
       },
       "alternate": {
-        "code_bytes": 2755,
+        "code_bytes": 2563,
         "zp_bytes": 14,
         "groups": {
           "edges": {
             "cases": 529,
-            "mean_cycles": 413.6862003780718,
+            "mean_cycles": 412.7240075614367,
             "min_cycles": 72,
-            "max_cycles": 1792
+            "max_cycles": 1774
           },
           "uniform32": {
             "cases": 30000,
@@ -206,9 +206,9 @@
           },
           "divisor16": {
             "cases": 2000,
-            "mean_cycles": 709.9665,
-            "min_cycles": 568,
-            "max_cycles": 1569
+            "mean_cycles": 703.4385,
+            "min_cycles": 567,
+            "max_cycles": 1558
           },
           "divisor8": {
             "cases": 2000,
@@ -218,7 +218,7 @@
           },
           "quotient_boundaries": {
             "cases": 178,
-            "mean_cycles": 594.0168539325842,
+            "mean_cycles": 592.4550561797753,
             "min_cycles": 72,
             "max_cycles": 1539
           }
