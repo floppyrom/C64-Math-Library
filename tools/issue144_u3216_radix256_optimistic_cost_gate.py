@@ -42,7 +42,7 @@ def variant_src(which):
         a=src.index(MUL_START);b=src.index(MUL_END,a)
         src=src[:a]+ORACLE_MUL+src[b:]
     if which=="oracle_both":
-        a=src.index(REU_START);b=src.index(REU_END,a)
+        a=src.index(REU_START);b=src.index(ORACLE_MUL,a)
         assert EXPECTED_REU in src[a:b]
         src=src[:a]+src[b:]
     assert which in ("real","oracle_mul","oracle_both")
