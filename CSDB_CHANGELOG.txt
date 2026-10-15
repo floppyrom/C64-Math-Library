@@ -1,3 +1,10 @@
+2026-10-15 ISSUE144 V4 ISQRT32 FAST-FOUR SOURCE-ONLY RESEARCH (NOT DEFAULT)
+- Independently authored opt-in V4 16-bit first-four-radix-4-step refinement; retains full 17-bit last two steps and current-main immediate $91 REU DMA.
+- Same-input 8,619 full-public CPU-model calls PASS: 918.542406 -> 807.352361 mean cycles (111.190045 saved), no slower case; 48 native VICE calls PASS on actual 16-MiB REU after hardware-correct DMA.
+- Source-based independent reproducer `tools/issue144_v4_isqrt_fast4_source_native_qualify.py` builds reference/alternate V4 maps and tests 2,109 additional public calls plus 48 actual x64sc calls with the 16-MiB REU; dedicated pinned-native CI added.
+- Overflow (V) is volatile and differs on 195 model calls. Physical DMA/VIC cycle cost, current-main production requalification and wider issue144 work remain open. Five shipped PRGs, two REU images and PERFORMANCE unchanged.
+- A stale 8 October offline source snapshot had $81. Current GitHub main already uses $91/$92; false-positive production bug report #166 is closed with correction. No private OptiSearch code shipped.
+
 2026-10-15 ISSUE144 32/16 HIGH-DIVISOR SIGN-FASTSKIP AND FULL-CALL HYBRID (RESEARCH ONLY)
 - Independent NMOS 6510 model 18,224 high-D tail pairs PASS; sign-bit skip saves 11.088 mean cycles vs stock-like tail but 2,324 slower calls (worst 15 cycles). Assembled caller-owned 1,038-byte V2/V3/V4 hybrid combines low-D no-overflow and high-D sign-fastskip: 14,220 paired full Q32/R16/C/N/D/SP public DIV/MOD checks PASS, uniform N32/D16 savings 28.923 / 31.923 modeled cycles. But 99/640 UDIV uniform slower (worst -17), D8/zero fallback +9/+6 cycles, and requires $0800-$0C0D caller RAM. No native VICE or alternate-map proof; REJECT default promotion, Issue #144 B OPEN. No PRGs, REUs, builder, ZP, PERFORMANCE or private OptiSearch changed. See docs/ISSUE144_UDIV32_16_HIGHDIV_SIGN_FASTSKIP_HYBRID_SCREEN_2026-10-15.md
 

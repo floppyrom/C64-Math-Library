@@ -4207,5 +4207,22 @@
     "report": "docs/ISSUE144_UDIV32_16_HIGHDIV_SIGN_FASTSKIP_HYBRID_SCREEN_2026-10-15.md",
     "source": "tools/issue144_u3216_signskip_hybrid_fullcall.py",
     "model_ci": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38742928085"
+  },
+  "issue144_v4_reu_isqrt32_fast4_optin_2026_10_15": {
+    "status": "PASS_LOCAL_FULL_PUBLIC_CPU_MODEL_NATIVE_VICE_RESEARCH_OPTIN",
+    "normal_profile_promoted": false,
+    "abi": "unrestricted ISQRT32 floor root, carry clear",
+    "model_same_operands": 8619,
+    "model_mean_cycles_saved": 111.19004524886878,
+    "model_no_slower": true,
+    "volatile_V_differences": 195,
+    "native_real_reu_vice_calls": 48,
+    "production_reference_binary_changed": false,
+    "physical_reu_bus_timing_qualified": false,
+    "reproducer": "tools/issue144_v4_isqrt_fast4_source_native_qualify.py",
+    "dedicated_native_ci": ".github/workflows/issue144-v4-isqrt-fast4.yml",
+    "source": "optional/issue144_v4_reu_isqrt_fast4/v4_reu_16m.asm",
+    "doc": "docs/ISSUE144_V4_REU_ISQRT32_FAST4_REFINEMENT_2026-10-15.md",
+    "proof": "validation/review/ISSUE144_V4_REU_ISQRT32_FAST4_RESEARCH.json"
   }
 }
