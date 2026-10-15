@@ -48,10 +48,18 @@ def copy_checkout(destination):
         ".git","__pycache__","build_source","build_hybrid","build_pareto"))
     assert (destination/SHARED).is_file()
 
+def restore_production_baseline(root):
+    base=root/"optional/issue144_production_baseline"
+    for path in (SHARED,)+tuple(
+        profile+"/resident/movement/native/seek_dda.asm" for profile in PROFILES
+    ):
+        pinned=base/path
+        assert pinned.is_file(),pinned
+        (root/path).write_bytes(pinned.read_bytes())
+
 def install_optin(root):
     old=(root/SHARED).read_text()
     candidate=(root/OPT_SHARED).read_text()
-    assert old!=candidate
     assert candidate.count("U3216_FORCE")==0
     (root/SHARED).write_text(candidate)
     for profile in PROFILES:
@@ -63,7 +71,6 @@ def install_optin(root):
         assert modified.count("s16i_frac_remote:")==1
         assert modified.count("s16i_euclid_remote:")==1
         assert "* = U3216_MAIN_END" in modified
-        assert original!=modified
         dest.write_text(modified)
 
 def machine(prg,reu):
@@ -183,6 +190,7 @@ def main():
         alternative=base/"alternative_checkout"
         copy_checkout(original)
         copy_checkout(alternative)
+        restore_production_baseline(original)
         install_optin(alternative)
         b=base/"baseline"
         c=base/"candidate"
