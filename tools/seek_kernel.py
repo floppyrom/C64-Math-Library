@@ -931,5 +931,5 @@ s16am_done:
         dey
         bne s16_addmin_many
         rts
-""".rstrip('\\n'))
+""".rstrip('\n'))
     return '\n'.join(lines) + '\n'
