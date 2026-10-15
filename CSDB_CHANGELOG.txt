@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 UNSIGNED 32/16 FULL Q R NARROW NUMERATOR OPTIN
+- Source-only 22-byte all-input UDIV32_16/UMOD32_16 full-Q/R/C guarded narrow-numerator option: 12,800 same-input paired CPU model cases and 480 native x64sc calls PASS. Saves ~21–32 cycles on 10% narrow workload (V1–V5) but COSTS 14/11 cycles per uniform full-width call; deliberately not a default promotion. Documented volatile X/Y/NZV may differ; no shipped resident PRGs, REUs, ordinary ZP/ABI or PERFORMANCE change. docs/ISSUE144_UNSIGNED32_16_NARROW_NUMERATOR_GUARD_2026-10-15.md
+
 2026-10-15 ISSUE144 SIGNED32/16 ZERO-FOOTPRINT PUBLIC-JMP DIRECT OPTIN
 - All-input signed32/16 SDIV/SMOD full-Q+R public-entry JMP-chain micro-optins: V2/3/4 save 3/6 cycles per call, V1 SMOD saves 3, V5 already direct. 32,790 matched input cases and 480 real native x64sc calls PASS; reversible V1/2/3/4 source installers 22/42 B. No ordinary resident PRG/REU/zero-page/API/PERFORMANCE changes. docs/ISSUE144_SIGNED32_DIVMOD_DIRECT_JMP_2026-10-15.md
 

@@ -3920,5 +3920,107 @@
     "CPU_proof": "validation/review/ISSUE144_SIGNED32_16_DIRECT_PUBLIC_JUMP_RESEARCH.json",
     "native_proof": "validation/review/ISSUE144_SIGNED32_16_DIRECT_PUBLIC_JUMP_NATIVE_VICE.json",
     "installer_proof": "validation/review/ISSUE144_SIGNED32_16_DIRECT_PUBLIC_JUMP_INSTALLER.json"
+  },
+  "issue144_unsigned32_16_narrow_guard_full_qr_2026_10_15": {
+    "status": "PASS_MODEL_NATIVE_WORKLOAD_SPECIALIST_NOT_PROMOTED",
+    "all_numerators_valid": true,
+    "two_apis_qualified": [
+      "MATH_UDIV32_16",
+      "MATH_UMOD32_16"
+    ],
+    "paired_model_calls": 12800,
+    "native_original_candidate_calls": 480,
+    "extra_normal_ZP": 0,
+    "code_bytes": 22,
+    "narrow_guard_full_width_regression_cycles": 14,
+    "A_X_Y_N_Z_V_volatile_and_can_differ": true,
+    "ordinary_production_PRGs_REUs_unchanged": true,
+    "native_cycles_measured": false,
+    "source": "optional/issue144_u32_16_narrow_guard/guard.asm",
+    "documentation": "docs/ISSUE144_UNSIGNED32_16_NARROW_NUMERATOR_GUARD_2026-10-15.md",
+    "CPU_proof": "validation/review/ISSUE144_U32DIV32_16_NARROW_N_RESEARCH.json",
+    "VICE_proof": "validation/review/ISSUE144_U32DIV32_16_NARROW_GUARD_NATIVE_VICE.json",
+    "workload_mean_cycle_savings": {
+      "v1_balanced": {
+        "MATH_UDIV32_16": {
+          "uniform": -14.0,
+          "small10pct": 29.183594,
+          "small50pct": 212.59375,
+          "small100pct": 446.148438,
+          "q0q1": 481.429688
+        },
+        "MATH_UMOD32_16": {
+          "uniform": -11.0,
+          "small10pct": 32.183594,
+          "small50pct": 215.59375,
+          "small100pct": 449.148438,
+          "q0q1": 484.429688
+        }
+      },
+      "v2_pareto_fast": {
+        "MATH_UDIV32_16": {
+          "uniform": -14.0,
+          "small10pct": 20.710938,
+          "small50pct": 165.472656,
+          "small100pct": 348.816406,
+          "q0q1": 367.261719
+        },
+        "MATH_UMOD32_16": {
+          "uniform": -11.0,
+          "small10pct": 23.710938,
+          "small50pct": 168.472656,
+          "small100pct": 351.816406,
+          "q0q1": 370.261719
+        }
+      },
+      "v3_reu_512k": {
+        "MATH_UDIV32_16": {
+          "uniform": -14.0,
+          "small10pct": 20.710938,
+          "small50pct": 165.472656,
+          "small100pct": 348.816406,
+          "q0q1": 367.261719
+        },
+        "MATH_UMOD32_16": {
+          "uniform": -11.0,
+          "small10pct": 23.710938,
+          "small50pct": 168.472656,
+          "small100pct": 351.816406,
+          "q0q1": 370.261719
+        }
+      },
+      "v4_reu_16m": {
+        "MATH_UDIV32_16": {
+          "uniform": -14.0,
+          "small10pct": 20.710938,
+          "small50pct": 165.472656,
+          "small100pct": 348.816406,
+          "q0q1": 367.261719
+        },
+        "MATH_UMOD32_16": {
+          "uniform": -11.0,
+          "small10pct": 23.710938,
+          "small50pct": 168.472656,
+          "small100pct": 351.816406,
+          "q0q1": 370.261719
+        }
+      },
+      "v5_hybrid_lowzp": {
+        "MATH_UDIV32_16": {
+          "uniform": -14.0,
+          "small10pct": 20.710938,
+          "small50pct": 165.472656,
+          "small100pct": 348.816406,
+          "q0q1": 367.261719
+        },
+        "MATH_UMOD32_16": {
+          "uniform": -11.0,
+          "small10pct": 23.710938,
+          "small50pct": 168.472656,
+          "small100pct": 351.816406,
+          "q0q1": 370.261719
+        }
+      }
+    }
   }
 }
