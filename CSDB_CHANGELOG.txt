@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 ISQRT32 ALL-DOMAIN DIRECT HIGHWORD SEED
+- Source-only all-domain ISQRT32 non-REU highword-seed opt-in (V1/V2/V3/V5): 47 cycles faster V2/V3, 51 cycles V1/V5 on all 16,520 canonical paired CPU calls; 192 native original/opt-in x64sc calls PASS; V4 original 16MiB REU 24-call control PASS but unchanged. 95–102 bytes in caller-owned RAM, no ordinary ZP/PRG/REU/API/PERFORMANCE changes. docs/ISSUE144_ISQRT32_FULL_INPUT_DIRECT_HIGHWORD_SEED_2026-10-15.md
+
 2026-10-15 ISSUE144 SIGNED SHR16 INDEPENDENT MIXED-CALL PRODUCER
 - Source-only all-sign SMUL32_SHR16 independent producer: 1,371–1,405 bytes additional caller-owned code RAM, 12,045 paired CPU-model calls across V1–V5 saving 53.69–56.00 mean cycles; 240 native x64sc old/new calls with normal SMUL32 and UMUL32 interleaved. Original full producers untouched (sequential mixed-call safe, not IRQ/NMI reentrant). No default PRG, REU, ABI, ZP or ordinary PERFORMANCE leaderboard changes. docs/ISSUE144_SIGNED_SHR16_INDEPENDENT_MIXED_2026-10-15.md
 
