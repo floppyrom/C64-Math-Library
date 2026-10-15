@@ -1,4 +1,30 @@
 {
+  "issue144_seek16_inhole_shared_source_only_2026_10_15": {
+    "status": "PASS_LOCAL_RESEARCH_SOURCE_ONLY_CI_PENDING",
+    "documentation": "optional/issue144_seek_inhole_shared/README.md",
+    "source_directory": "optional/issue144_seek_inhole_shared",
+    "reproducer": "tools/issue144_seek_inhole_shared_qualify.py",
+    "profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "local_public_paired_seek_init_calls": 5760,
+    "local_full_source_validation_calls": 65034,
+    "local_native_real_vice_total_init_calls": 96,
+    "local_native_real_vice_total_step_calls": 96,
+    "local_model_saved_mean_cycles": {
+      "v2": 22.1448,
+      "v3": 20.4781,
+      "v4": 20.4781
+    },
+    "model_worst_regression_cycles": 0,
+    "normal_zp_growth": 0,
+    "caller_ram_growth": 0,
+    "shipped_prgs_reu_unchanged": true,
+    "performance_md_unchanged": true,
+    "production_promotion": false
+  },
   "issue144_u3216_shared_take_full_domain_inline_2026_10_15": {
     "status": "PASS_SOURCE_ONLY_NO_DEFAULT_CHANGE",
     "documentation": "optional/issue144_u3216_shared_take_inline/README.md",
