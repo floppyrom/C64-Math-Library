@@ -20,5 +20,5 @@ jobs:
         run: python3 tools/issue144_seek16_v15_normal_resident_feasibility.py
       - name: Rebuild V1 resident source in reference/alternate maps and prove real public INIT/STEP relocation
         run: python3 tools/issue144_seek16_v15_source_relocation_screen.py
-      - name: Qualify V1 and V5 normal resident source across both complete 56-entry public APIs
-        run: python3 tools/issue144_seek16_v15_full_source_qualification.py
+      - name: Reject candidate if its footprint overwrites the live SEEK8 plane writer
+        run: python3 tools/issue144_seek16_v15_ownership_gate.py
