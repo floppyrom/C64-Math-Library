@@ -3492,12 +3492,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 1468.2246464646464,
         "mod_stock": 1351.1940406976744,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 1313.1940406976744,
         "sqrt_stock": 1712.8368902439024,
         "sqrt_fast": 89.2858231707317,
         "sqrt_gain": 1623.5510670731708,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 152.803125
       },
       "v2_pareto_fast": {
@@ -3505,12 +3505,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 849.9086868686869,
         "mod_stock": 851.1420784883721,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 813.1420784883721,
         "sqrt_stock": 1530.4176829268292,
         "sqrt_fast": 89.54420731707317,
         "sqrt_gain": 1440.873475609756,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 134.24
       },
       "v3_reu_512k": {
@@ -3518,12 +3518,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 849.9086868686869,
         "mod_stock": 851.1420784883721,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 813.1420784883721,
         "sqrt_stock": 1530.4176829268292,
         "sqrt_fast": 89.56478658536585,
         "sqrt_gain": 1440.8528963414635,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 134.236875
       },
       "v4_reu_16m": {
@@ -3531,12 +3531,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 849.9086868686869,
         "mod_stock": 851.1420784883721,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 813.1420784883721,
         "sqrt_stock": 971.625,
-        "sqrt_fast": 57.0,
+        "sqrt_fast": 57,
         "sqrt_gain": 914.625,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 77.649375
       },
       "v5_hybrid_lowzp": {
@@ -3544,12 +3544,12 @@
         "smod_fast": 60.21010101010101,
         "smod_gain": 843.9086868686869,
         "mod_stock": 851.1420784883721,
-        "mod_fast": 38.0,
+        "mod_fast": 38,
         "mod_gain": 813.1420784883721,
         "sqrt_stock": 1712.8368902439024,
         "sqrt_fast": 89.2858231707317,
         "sqrt_gain": 1623.5510670731708,
-        "sqrt_guard_full_regression": 14.0,
+        "sqrt_guard_full_regression": 14,
         "sqrt_guard_mixed10_gain": 152.803125
       }
     }
@@ -3943,14 +3943,14 @@
     "workload_mean_cycle_savings": {
       "v1_balanced": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 29.183594,
           "small50pct": 212.59375,
           "small100pct": 446.148438,
           "q0q1": 481.429688
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 32.183594,
           "small50pct": 215.59375,
           "small100pct": 449.148438,
@@ -3959,14 +3959,14 @@
       },
       "v2_pareto_fast": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 20.710938,
           "small50pct": 165.472656,
           "small100pct": 348.816406,
           "q0q1": 367.261719
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 23.710938,
           "small50pct": 168.472656,
           "small100pct": 351.816406,
@@ -3975,14 +3975,14 @@
       },
       "v3_reu_512k": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 20.710938,
           "small50pct": 165.472656,
           "small100pct": 348.816406,
           "q0q1": 367.261719
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 23.710938,
           "small50pct": 168.472656,
           "small100pct": 351.816406,
@@ -3991,14 +3991,14 @@
       },
       "v4_reu_16m": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 20.710938,
           "small50pct": 165.472656,
           "small100pct": 348.816406,
           "q0q1": 367.261719
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 23.710938,
           "small50pct": 168.472656,
           "small100pct": 351.816406,
@@ -4007,14 +4007,14 @@
       },
       "v5_hybrid_lowzp": {
         "MATH_UDIV32_16": {
-          "uniform": -14.0,
+          "uniform": -14,
           "small10pct": 20.710938,
           "small50pct": 165.472656,
           "small100pct": 348.816406,
           "q0q1": 367.261719
         },
         "MATH_UMOD32_16": {
-          "uniform": -11.0,
+          "uniform": -11,
           "small10pct": 23.710938,
           "small50pct": 168.472656,
           "small100pct": 351.816406,
@@ -4115,5 +4115,38 @@
       "v5_hybrid_lowzp": 399
     },
     "native_cycles_measured": false
+  },
+  "issue144_u3216_nooverflow_lowdiv_optin_2026_10_15": {
+    "status": "PASS_NATIVE_SOURCE_ONLY_OPTIN_RESTRICTED_FAST_LANE",
+    "description": "Unrestricted N32/D16 via safe fallback, faster only on D=$0100-$7FFF",
+    "doc": "docs/ISSUE144_UDIV32_16_NOOVERFLOW_LOW_D_OPTIN_2026-10-15.md",
+    "source": "optional/issue144_u3216_nooverflow_lowdiv/optin_v2_v3_v4_reference.asm",
+    "evidence": "validation/review/ISSUE144_U3216_NOOVERFLOW_LOW_D_OPTIN_2026-10-15.json",
+    "profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "model_public_entry_calls": 51132,
+    "native_public_entry_calls": 288,
+    "eligible_divisor_min": 256,
+    "eligible_divisor_max": 32767,
+    "eligible_mean_udiv_saved": 59.72537313432836,
+    "eligible_mean_umod_saved": 62.72537313432836,
+    "uniform_mean_udiv_saved": 24.323567708333332,
+    "uniform_mean_umod_saved": 27.323567708333332,
+    "fallback_worst_udiv_regression": 11,
+    "fallback_worst_umod_regression": 8,
+    "caller_ram_start": "$0800",
+    "caller_ram_end": "$09FE",
+    "caller_ram_bytes": 511,
+    "extra_normal_zp": 0,
+    "native_timing_measured": false,
+    "default_binary_changed": false,
+    "normal_performance_table_updated": false,
+    "normal_public_api_promoted": false,
+    "reu_binary_changed": false,
+    "private_optisearch_published": false,
+    "issue144_B_complete": false
   }
 }
