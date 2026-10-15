@@ -4046,4 +4046,16 @@
     "model_evidence": "validation/review/ISSUE144_V4_REU_ISQRT32_ROTATE6_MODEL.json",
     "native_evidence": "validation/review/ISSUE144_V4_REU_ISQRT32_ROTATE6_NATIVE_VICE.json"
   }
+,
+  "issue144_u3216_shared_take_fullcall_source_research_2026_10_15": {
+    "status": "PASS_RESEARCH_ONLY_NOT_PRODUCTION",
+    "document": "docs/ISSUE144_UDIV32_16_SHARED_TAKE_FULLCALL_TRANSPLANT_2026-10-15.md",
+    "evidence": "validation/review/ISSUE144_UDIV32_16_SHARED_TAKE_FULLCALL_RESEARCH.json",
+    "model_full_public_paired_calls": 15360,
+    "fullwidth_uniform_saved_mean_cycles": 6.591796875,
+    "native_vice_calls": 288,
+    "normal_resident_released": false,
+    "ordinary_performance_changed": false,
+    "issue144_B_complete": false
+  }
 }
