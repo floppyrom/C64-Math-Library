@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Full unrestricted signed 2409 pairs each V2 V3 V4 with actual assembled BEGIN END
+      - name: Full unrestricted signed 2409 pairs per V1–V5 with actual assembled BEGIN END
         run: python3 tools/issue144_signed_full_exclusive.py --limit 2409
       - name: Install checksum-pinned headless VICE x64sc
         run: |
