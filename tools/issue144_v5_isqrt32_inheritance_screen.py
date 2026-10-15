@@ -54,30 +54,37 @@ def pair(layout: str, outdir: Path):
     assert v1_api == v["REG_GAME_API"] + 0x30
     assert v1_io == v["MATH_IO"]
     assert manifest["normal_zp_bytes"] == 31
-    # Guard against V5 importing or overwriting even one byte of the
-    # original V1 resident root interval, including the unused helper area.
-    for a in range(start, stop):
-        assert raw[a] == v1_before.mem[a], (
-            layout, "V5/V1 resident ownership drift", hex(a),
-            raw[a], v1_before.mem[a])
+    # The historical research branch starts with old V1 bytes and installs
+    # the independently synthesized candidate. After canonical promotion,
+    # V5 starts with the new V1 bytes: reverse ONLY known changed root bytes
+    # to recover the pinned baseline. Neither path touches imported V5 code.
     touched = [a for a in range(start, stop)
                if v1_before.mem[a] != v1_after.mem[a]]
     assert touched, "empty candidate"
+    matches_old = all(raw[a] == v1_before.mem[a] for a in range(start, stop))
+    matches_new = all(raw[a] == v1_after.mem[a] for a in range(start, stop))
+    assert matches_old or matches_new, (
+        layout, "unknown V5/V1 root owner; source/builder drift")
+    historical = bytearray(raw)
     modified = bytearray(raw)
-    for a in touched:
-        modified[a] = v1_after.mem[a]
-    assert all(raw[a] == modified[a] for a in range(65536)
+    if matches_new:
+        for a in touched:
+            historical[a] = v1_before.mem[a]
+    else:
+        for a in touched:
+            modified[a] = v1_after.mem[a]
+    assert all(historical[a] == modified[a] for a in range(65536)
                if not (start <= a < stop))
-    assert raw[v1_api] == modified[v1_api] == 0x4C
-    assert bytes(raw[v1_api:v1_api+3]) == bytes(modified[v1_api:v1_api+3])
-    assert (raw[v1_api+1] | (raw[v1_api+2] << 8)) == start
-    assert all(raw[a] == modified[a] for a in range(v["MATH_IO"], v["MATH_IO"] + 0x20))
+    assert historical[v1_api] == modified[v1_api] == 0x4C
+    assert bytes(historical[v1_api:v1_api+3]) == bytes(modified[v1_api:v1_api+3])
+    assert (historical[v1_api+1] | (historical[v1_api+2] << 8)) == start
+    assert all(historical[a] == modified[a] for a in range(v["MATH_IO"], v["MATH_IO"] + 0x20))
     def cpu(mem):
         c = CPU(bytearray(mem))
         c.d = 0
         c.call(v["REG_API"] + 0x280, 2_000_000)
         return c
-    return cpu(raw), cpu(modified), v, touched, manifest, hashlib.sha256(bytes(raw)).hexdigest()
+    return cpu(historical), cpu(modified), v, touched, manifest, hashlib.sha256(bytes(historical)).hexdigest()
 
 
 def model(layout: str, outdir: Path, count=None):

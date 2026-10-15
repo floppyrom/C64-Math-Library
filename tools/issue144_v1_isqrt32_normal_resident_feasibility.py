@@ -26,6 +26,15 @@ def probe(layout,helper):
  cfg=ROOT/"relocatable_source"/P/("math_config_"+layout+".inc")
  values=parse_config(cfg)
  main=preprocess(ROOT/"relocatable_source"/P/"math_relocatable.asm",cfg)
+ # When the vetted final-owner module is installed, remove EXACTLY that one
+ # known include from the assembled source to recover the historical 51-cycle
+ # baseline; reject ambiguous or unfamiliar root owners. Reproducible research
+ # must not compare an optimized routine against itself after promotion.
+ owner=ROOT/"relocatable_source"/P/"isqrt32_direct_highword_normal.inc"
+ if owner.is_file():
+  frozen=owner.read_text()
+  assert main.count(frozen)==1, ("unexpected V1 root source owner", layout)
+  main=main.replace(frozen,"",1)
  before,_,_=Assembler().assemble(main)
  module=source(helper)
  candidate,_,_=Assembler().assemble(cfg.read_text()+"\n"+module)

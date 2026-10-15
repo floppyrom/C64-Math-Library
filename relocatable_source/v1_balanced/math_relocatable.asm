@@ -4377,6 +4377,9 @@ LCAFB:
 ; Issue39 exact ISQRT16 code+seed replaces retired eight-trial island.
 !source "isqrt16_seed_square_trial.inc"
 
+; Issue144 unrestricted ISQRT32 highword seed, normal resident source-owned slot.
+!source "isqrt32_direct_highword_normal.inc"
+
 ; Canonical seek movement kernels: public MATH_SEEK8_*/MATH_SEEK16_* slots,
 ; code islands and object state (final ownership of those bytes).
 !source "../../v1_balanced/resident/movement/native/seek_dda.asm"
