@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Research only: optional complete UDIV32/16 public ABI, unrestricted N,D.
 
-Branch once: for 1 <= D < $8000, use certified V2-V4 16/16 highword
+Branch once: for $0100 <= D < $8000, use certified V2-V4 16/16 highword
 producer followed by no-overflow unrolled lowword tail; for all other
-denominators, JMP the original public UDIV32/16. Code is assembled in
+denominators, including D=0 and all 8-bit D, JMP the original public UDIV32/16. Code is assembled in
 caller-owned $0800 RAM; shipped residents and REUs are untouched.
 """
 import hashlib, json, random, statistics, sys
@@ -38,11 +38,10 @@ def assemble():
  header="""* = $0800
 OPT_U3216_LOW:
     lda $c015
-    bpl SELECT_LOW
-    jmp $31b0
-SELECT_LOW:
-    ora $c014
-    bne COPY_INPUT
+    beq FALLBACK
+    bmi FALLBACK
+    jmp COPY_INPUT
+FALLBACK:
     jmp $31b0
 COPY_INPUT:
     lda $c010
