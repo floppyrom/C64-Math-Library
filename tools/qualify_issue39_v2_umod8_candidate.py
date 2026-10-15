@@ -176,7 +176,35 @@ def main():
     # current-source integration, not to the SHA-pinned pre-Issue39 archive.
     # Do not pass new code through the historical reversible-binary chain.
     # Compare its public UMOD8 ABI against the immutable V5 image directly.
-    v5_new_source_trial=(sha(v5_source_image)=='30d0e9b54d5d8603f5f885b4c2e84562baedf1da7e75ba30509acacd507b670b')
+    # Issue144 canonical V1/V5 root source changes an independently owned
+    # 160-byte resident interval; the older Issue39 historical SHA must not be
+    # taught to accept arbitrary new V5 images. Reverse only the independently
+    # assembled, exact 92-byte root delta and demand the pre-promotion SHA.
+    # This is a *recognition* proof: the exhaustive UMOD8 ABI below still runs
+    # on the actual new V5 source build, not the reversed historical image.
+    expected_v5_before_root='30d0e9b54d5d8603f5f885b4c2e84562baedf1da7e75ba30509acacd507b670b'
+    v5_new_source_trial=(sha(v5_source_image)==expected_v5_before_root)
+    if not v5_new_source_trial:
+        from issue144_v1_isqrt32_normal_resident_feasibility import probe
+        geometry,root_pair=probe('reference',0x0AA8)
+        assert root_pair is not None,geometry
+        old_root,new_root,api_root,io_root=root_pair
+        assert geometry['changed_bytes']==92
+        load=int.from_bytes(v5_source_image[:2],'little')
+        assert load==0x1000 and api_root==0x5E30 and io_root==0xC000
+        reverse=bytearray(v5_source_image)
+        changed=0
+        for addr in range(0xCB40,0xCBE0):
+            offset=addr-load+2
+            if reverse[offset]!=old_root.mem[addr]:
+                assert reverse[offset]==new_root.mem[addr], (
+                    hex(addr),'unknown V5 root-slot source byte')
+                reverse[offset]=old_root.mem[addr]
+                changed+=1
+        assert changed==92,('unexpected V5 ISQRT32 source footprint',changed)
+        assert sha(reverse)==expected_v5_before_root, (
+            'V5 changed outside certified root-owner source',sha(reverse))
+        v5_new_source_trial=True
     if v5_new_source_trial:
         old_v5=cpubuild(V5.read_bytes())
         new_v5=cpubuild(v5_source_image)
