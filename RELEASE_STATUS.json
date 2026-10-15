@@ -4170,5 +4170,42 @@
       "v5_hybrid_lowzp": 399
     },
     "native_cycles_measured": false
+  },
+  "issue144_u3216_highdiv_bpl_hybrid_research_2026_10_15": {
+    "status": "PASS_MODEL_REJECT_DEFAULT_NONPARETO",
+    "date": "2026-10-15",
+    "profile_ids": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "operations": [
+      "MATH_UDIV32_16",
+      "MATH_UMOD32_16"
+    ],
+    "high_D_tail_model_pairs": 18224,
+    "high_D_tail_mean_cycles_saved_vs_baseline": 11.088290166812994,
+    "high_D_tail_worst_cycles_saved": -15,
+    "full_public_paired_tests": 14220,
+    "full_public_total_baseline_candidate_calls": 28440,
+    "uniform_public_mean_cycles_saved": {
+      "UDIV32_16": 28.9234375,
+      "UMOD32_16": 31.9234375
+    },
+    "uniform_UDIV_slower_cases_of_640": 99,
+    "uniform_UDIV_worst_cycles_saved": -17,
+    "D8_public_UDIV_extra_cycles": 9,
+    "caller_owned_code_bytes": 1038,
+    "caller_owned_range": "$0800-$0C0D",
+    "normal_ZP_added": 0,
+    "native_VICE_qualified": false,
+    "alternate_maps_qualified": false,
+    "normal_public_api_replaced": false,
+    "production_performance_changed": false,
+    "original_PRGs_REUs_modified": false,
+    "private_optisearch_source_published": false,
+    "report": "docs/ISSUE144_UDIV32_16_HIGHDIV_SIGN_FASTSKIP_HYBRID_SCREEN_2026-10-15.md",
+    "source": "tools/issue144_u3216_signskip_hybrid_fullcall.py",
+    "model_ci": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38742928085"
   }
 }
