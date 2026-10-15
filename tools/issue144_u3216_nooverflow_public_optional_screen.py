@@ -97,6 +97,11 @@ def stats(xs):
 
 def main():
  code=assemble()
+ standalone=ROOT/"optional/issue144_u3216_nooverflow_lowdiv/optin_v2_v3_v4_reference.asm"
+ if standalone.exists():
+  compiled,labels,_=Assembler().assemble(standalone.read_text())
+  assert compiled==code,("published standalone assembler byte mismatch",len(compiled),len(code))
+  assert labels["OPT_U3216_LOW"]==ENTRY
  pairs=vectors()
  digest=hashlib.sha256(b"".join(n.to_bytes(4,"little")+d.to_bytes(2,"little")
                               for n,d in pairs)).hexdigest()
