@@ -1,0 +1,22 @@
+name: Issue144 radix256 unsigned 32by16 numerical research
+
+on:
+  push:
+    branches:
+      - issue144-radix256-udiv3216-digit-research-20261015
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  numerical-bound:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-independent unrestricted 32/16 quotient-digit arithmetic oracle
+        run: python tools/issue144_u3216_radix256_numerical_research.py
