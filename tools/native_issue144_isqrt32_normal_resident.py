@@ -22,7 +22,7 @@ def native(profile,layout,cpu,api,io,port,tmp,vice):
     asm=['!cpu 6510','* = $0B00','sei','cld','ldx #$FF','txs',
          'lda #$35','sta $01',f'jsr ${api["MATH_INIT"]:04X}','ldx #$00','loop:']
     for k in range(4):
-        asm += ['lda 
+        asm += ['lda $'+format(IN+k*64,'04X')+',x', 'sta $'+format(io+0x10+k,'04X')]
     asm+=['txa','pha',f'jsr ${api["MATH_ISQRT32"]:04X}','php','pla','sta $C030','pla','tax',
           'lda $C030','sta $0780,x']
     for k in range(2):
