@@ -11,7 +11,7 @@ MODEL="validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_MODEL.json"
 ASM="validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_INSTALLER.json"
 VICE="validation/review/ISSUE144_SIGNED_SHR16_FULL_EXCLUSIVE_NATIVE_VICE.json"
 DOC="docs/ISSUE144_SIGNED_FULL_DOMAIN_EXCLUSIVE_2026-10-15.md"
-TAG="2026-10-15 ISSUE144 SIGNED SHR16 FULL DOMAIN EXCLUSIVE PRODUCER"
+TAG="2026-10-15 ISSUE144 SIGNED SHR16 EXCLUSIVE FIVE PROFILE EXTENSION"
 def data(p):return json.loads((R/p).read_text())
 def file_sha(p):return sha((R/p).read_bytes())
 def main():
@@ -20,7 +20,7 @@ def main():
  assert installer["status"]=="PASS_ASSEMBLED_BEGIN_END_AND_FULL_SIGNED_RESTORATION"
  assert native["status"]=="PASS_NATIVE_ALL_SIGNED_DOMAIN_EXCLUSIVE_ONLY"
  assert model["pairs_per_profile"]==2409
- assert native["baseline_and_candidate_calls"]==144
+ assert native["baseline_and_candidate_calls"]==240
  assert set(model["profiles"])==set(installer["profiles"])==set(native["profiles"])==set(PROFILES)
  status=data("RELEASE_STATUS.json")
  resident_before=dict(status["reference_prg_sha256"])
@@ -45,6 +45,7 @@ def main():
   "",
   "For all sign quadrants and arbitrary 32-bit signed operands, the",
   "ordinary public MATH_SMUL32_SHR16 address $5E15 is preserved.",
+  "V1/V5 use the $C575 signed SHR16 adapter; V2/V3/V4 use $C50C.",
   "The 6510 source-backed overlay redirects final full-product stores",
   "within each of four distinct signed producer paths directly into",
   "$C008..$C00D and changes the SHR16 adapter JSR into a JMP so",
@@ -59,12 +60,12 @@ def main():
    (v["baseline"]["mean_cycles"],v["candidate"]["mean_cycles"],v["paired_savings"]["mean_cycles"]))
  lines += [
   "",
-  "**7,227 matched signed 32-bit operand pairs across V2/V3/V4**",
+  "**12,045 matched signed 32-bit operand pairs across V1–V5**",
   "pass exact six-byte output, input preservation, carry=0, and stack.",
-  "Native x64sc: 144 baseline/opt-in executions pass output and flags;",
+  "Native x64sc: 240 baseline/opt-in executions pass output and flags;",
   "VICE proves correctness, **not CPU cycle timing**.",
   "",
-  "Three separately assembled 334-byte BEGIN/END installers,",
+  "Five separately assembled 334-byte BEGIN/END installers,",
   "original-source-derived, examples placed in caller-owned $0900..$0A4D.",
   "Each exact original resident configuration requires its own source",
   "file; they are not interchangeable. 49 existing executable bytes",
@@ -89,9 +90,11 @@ def main():
   "Do not combine with the optional unsigned $0900 overlay.",
   "BEGIN/END clobber A and processor flags; they do not add ZP.",
   "",
+  "Source: optional/issue144_signed_shr16_exclusive/v1_balanced.asm",
   "Source: optional/issue144_signed_shr16_exclusive/v2_pareto_fast.asm",
   "Source: optional/issue144_signed_shr16_exclusive/v3_reu_512k.asm",
   "Source: optional/issue144_signed_shr16_exclusive/v4_reu_16m.asm",
+  "Source: optional/issue144_signed_shr16_exclusive/v5_hybrid_lowzp.asm",
   "Generator/model: tools/issue144_signed_full_exclusive.py",
   "Native VICE: tools/native_issue144_signed_full_exclusive.py",
   "CPU proof: "+MODEL,"Installer proof: "+ASM,"Native proof: "+VICE,
@@ -113,15 +116,15 @@ def main():
   "per_call_saved_cycles":53,"setup_begin_cycles":218,"setup_end_cycles":224,
   "source_installer_bytes":334,"patch_resident_bytes":49,
   "mixed_smultiplication_calls_during_enabled_period_valid":False,
-  "model_paired_cases":7227,"native_before_after_calls":144,
+  "model_paired_cases":12045,"native_before_after_calls":240,
   "extra_normal_ZP":0,"native_cycles_measured":False,
   "ordinary_resident_prgs_or_reu_changed":False,
   "documentation":DOC,"cpu_proof":MODEL,
   "installer_proof":ASM,"native_proof":VICE}
  (R/"RELEASE_STATUS.json").write_text(json.dumps(status,indent=2)+"\n")
  note=(TAG+"\n- Source-only unrestricted all-sign SMUL32_SHR16 exclusive overlay V2/V3/V4: "+
-       "53 CPU-model cycles faster per public call across 7,227 paired calls, "+
-       "144 native x64sc original/candidate calls PASS. Reversible 334-byte "+
+       "53 CPU-model cycles faster per public call across 12,045 paired calls, "+
+       "240 native x64sc original/candidate calls PASS across V1-V5. Reversible 334-byte "+
        "BEGIN/END, changes 49 in-memory code bytes, 218/224 cycle setup/teardown. "+
        "Shared SMUL32 cannot be called while overlay enabled, no regular "+
        "profile/ABI/ZP or PERFORMANCE promotion. "+DOC+"\n\n")
