@@ -1,0 +1,42 @@
+{
+  "native_baseline_and_candidate_calls": 192,
+  "native_cpu_cycles_measured": false,
+  "native_pairs_each_profile": 24,
+  "profiles": {
+    "v1_balanced": {
+      "native_pairs": 24,
+      "source_code_bytes": 102,
+      "source_sha256": "0ea10e3074748b5013da46ad5754431ccfdcbec1024d6a4aeb9f42706027ab05",
+      "status": "PASS_NATIVE_ALL_32BITS_ROOT_AND_CARRY",
+      "stock_public_entry": "0x5e30"
+    },
+    "v2_pareto_fast": {
+      "native_pairs": 24,
+      "source_code_bytes": 95,
+      "source_sha256": "556be911356842cdee483dc94a9b7f65a82be81308b62215c326866a475cbeb7",
+      "status": "PASS_NATIVE_ALL_32BITS_ROOT_AND_CARRY",
+      "stock_public_entry": "0x5e30"
+    },
+    "v3_reu_512k": {
+      "native_pairs": 24,
+      "source_code_bytes": 95,
+      "source_sha256": "3a4cac4520336f8e00e7c0ac85fade46c41368dde360905d91cf9d05201fa99e",
+      "status": "PASS_NATIVE_ALL_32BITS_ROOT_AND_CARRY",
+      "stock_public_entry": "0x5e30"
+    },
+    "v5_hybrid_lowzp": {
+      "native_pairs": 24,
+      "source_code_bytes": 102,
+      "source_sha256": "0ea10e3074748b5013da46ad5754431ccfdcbec1024d6a4aeb9f42706027ab05",
+      "status": "PASS_NATIVE_ALL_32BITS_ROOT_AND_CARRY",
+      "stock_public_entry": "0x5e30"
+    }
+  },
+  "status": "PASS_REAL_NATIVE_VICE_UNRESTRICTED_ISQRT32_HIGHWORD_SEED",
+  "v4_16m_REU_original_only": {
+    "actual_REU_image_loaded": true,
+    "candidate_not_applicable": true,
+    "native_calls": 24,
+    "status": "PASS_ORIGINAL_REU_NATIVE_CORRECTNESS"
+  }
+}

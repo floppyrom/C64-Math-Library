@@ -3836,5 +3836,38 @@
     "VICE_proof": "validation/review/ISSUE144_SIGNED_SHR16_INDEPENDENT_NATIVE_VICE.json",
     "stock_PRGs_and_REUs_unchanged": true,
     "native_CPU_cycles_measured": false
+  },
+  "issue144_isqrt32_direct_highword_seed_2026_10_15": {
+    "status": "PASS_SOURCE_NATIVE_PUBLIC_CPU_OPTIONAL_NON_REU_ONLY",
+    "optimized_profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v5_hybrid_lowzp"
+    ],
+    "unchanged_REU_profile": "v4_reu_16m",
+    "canonical_paired_model_cases": 16520,
+    "native_old_new_calls": 192,
+    "v4_actual_16MiB_REU_native_reference_calls": 24,
+    "actual_cpu_savings_by_profile": {
+      "v1_balanced": 51,
+      "v2_pareto_fast": 47,
+      "v3_reu_512k": 47,
+      "v5_hybrid_lowzp": 51
+    },
+    "code_bytes_by_profile": {
+      "v1_balanced": 102,
+      "v2_pareto_fast": 95,
+      "v3_reu_512k": 95,
+      "v5_hybrid_lowzp": 102
+    },
+    "no_new_normal_zero_page": true,
+    "interrupt_reentrant": false,
+    "default_resident_or_REU_modified": false,
+    "native_cycle_timing_measured": false,
+    "model_record": "validation/review/ISSUE144_ISQRT32_DIRECT_HIGHWORD_SEED_MODEL.json",
+    "native_record": "validation/review/ISSUE144_ISQRT32_DIRECT_HIGHWORD_SEED_NATIVE_VICE.json",
+    "documentation": "docs/ISSUE144_ISQRT32_FULL_INPUT_DIRECT_HIGHWORD_SEED_2026-10-15.md",
+    "source_directory": "optional/issue144_isqrt32_highword_direct"
   }
 }
