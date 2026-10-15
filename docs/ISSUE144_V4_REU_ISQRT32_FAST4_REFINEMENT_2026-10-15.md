@@ -16,3 +16,7 @@ The existing 16 MiB V4 REU image supplies a 4 MiB prefix table: a mathematically
 The separately available `optional/issue144_v4_reu_isqrt_fast4/v4_reu_16m.asm` replaces `relocatable_source/v4_reu_16m/isqrt32_reu_prefix.asm` **only in a disposable local custom V4 source build**. Build both `--config-kind reference` and `alternate`; verify source/executable placements, native end-to-end tests on the **current** shipped V4 resident and physical REU/VIC DMA before considering normal-profile promotion. This source cannot simply be JSR'd as a separately linked self-contained object. The remainder of #144 stays open.
 
 **No private OptiSearch generator, source, files or candidate archive is redistributed.**
+
+## Independently rerunnable proof (not merely an evidence ledger)
+
+Run `python3 tools/issue144_v4_isqrt_fast4_source_native_qualify.py` to build both reference and alternate layouts from temporary source copies, then compare 2,109 additional unrestricted public-entry pairs against `math.isqrt` using the actual 16MiB REU data in mini6502. To also execute 48 real x64sc hardware-emulation calls, set `VICE_WRAPPER` to a working headless x64sc binary or wrapper. The dedicated `.github/workflows/issue144-v4-isqrt-fast4.yml` installs a SHA256-pinned VICE package and reruns this combined gate in CI. All production source and binary files are left untouched.
