@@ -1,3 +1,8 @@
+2026-10-16 ISSUE144 B SIGNED 32/16 R-FIRST REMAINDER/QUOTIENT FUSION (SOURCE ONLY)
+- V2/V3/V4 signed32 normal resident removes a redundant JSR/RTS and CLC on negative-N / positive-D paths by placing the same R-then-Q sign correction order in private D32F normal code, tail-calling the existing Q correction. No new normal ZP, caller RAM or illegal opcodes. V5 inherited source validation is a separate gate.
+- 26,352 paired V2–V4 public signed DIV/MOD model comparisons across both maps: 11 cycles saved on each negative-N positive-D call, no slowdown elsewhere, 2.8051 cycles mean on sampled full-width/sign-enriched corpus. Full Q/R/C/N/D and A/X/Y/flags/SP match; prior 14-cycle Q-first trial rejected because it changed A/V.
+- 576 actual checksum-pinned x64sc calls passed with identical captured full state. Source-generator/full 56-entry/V5 and publication qualification separately required. Historical PRGs/REUs and production PERFORMANCE.md remain unchanged. Issue 144 remains open.
+
 2026-10-15 ISSUE144 V1/V5 ISQRT32 51-CYCLE NORMAL-RESIDENT CANONICAL SOURCE (NO REFERENCE-BINARY RELEASE)
 - Installed source-owned direct-highword ISQRT32 in original V1 normal resident root slot and unused +$0AA8 helper. Actual derived V5 builder inherits the same source, with no extra normal ZP or caller RAM; public API remains unchanged. Source generator regeneration is stable.
 - Independently qualified V1 and V5 on reference+alternate relocation maps: 56 public entries and 21,678 ordinary source-model calls per profile/map (86,712 calls total); 2,628 paired root32 ordinary inputs saved exactly 51 modeled cycles each, with no slow cases. 192 native checksum-pinned x64sc root calls passed for V1/V5 baseline/candidate across both maps.
