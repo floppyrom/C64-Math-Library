@@ -35,7 +35,7 @@ def synth_old(cfg):
     layout["seek_shared"]="REG_API+$0977"
     config=ROOT/"relocatable_source/v1_balanced"/("math_config_"+cfg+".inc")
     values=parse_config(config)
-    decl="".join(f"{k} = ${v:04X}\\n" for k,v in values.items())
+    decl="".join(f"{k} = ${v:04X}\n" for k,v in values.items())
     old=K.library("v1_before_issue144",layout,*SCRATCH["v1_balanced"])
     mem,labels,const=Assembler().assemble(decl+old)
     return mem,labels,const
