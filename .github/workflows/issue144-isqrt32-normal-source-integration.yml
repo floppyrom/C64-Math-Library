@@ -30,7 +30,7 @@ jobs:
               canonical=Path('relocatable_source')/profile/'math_relocatable.asm'
               marker='!source "isqrt32_direct_highword_normal.inc"'
               assert canonical.read_text().count(marker)==1,(profile,'missing normal-root final owner')
-              with TemporaryDirectory(prefix='issue144_root_gen_') as directory:
+              with TemporaryDirectory(prefix='issue144_root_gen_',dir=Path.cwd()) as directory:
                   reproduced=Path(directory)/'math_relocatable.asm'
                   generate_source(profile,reproduced)
                   assert reproduced.read_text().count(marker)==1,(profile,'source regeneration loses new owner')
