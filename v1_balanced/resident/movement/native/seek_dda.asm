@@ -532,10 +532,7 @@ s16i_rates:
         sta SK_WHOLE
         ldy S16_KI,x
         beq s16i_r0done
-s16i_r0:
         jsr s16_addmin
-        dey
-        bne s16i_r0
 s16i_r0done:
         lda SK_REML
         sta S16_REML,x
@@ -547,6 +544,7 @@ s16i_r0done:
         jsr s16_planes
         lda S16_KF,x
         beq s16i_done
+        ldy #1
         jsr s16_addmin          ; k0+1
         lda SK_REML
         sta S16_REML+8,x
@@ -649,7 +647,7 @@ s8p_y1:
 
 * = REG_API+$08CE
 ; ---- SEEK16 helpers ----
-; rem += dmin; if rem >= dmaj: rem -= dmaj, whole++.  Preserves X/Y.
+; rem += dmin; if rem >= dmaj: rem -= dmaj, whole++.  Preserves X; consumes Y=count.
 s16_addmin:
         lda SK_REML
         clc
@@ -668,6 +666,8 @@ s16a_nc:
         sta SK_REML
         inc SK_WHOLE
 s16a_done:
+        dey
+        bne s16_addmin
         rts
 
 ; As s8_planes, with a 16-bit x delta: VXH is the sign byte of VX.
@@ -730,7 +730,7 @@ s16p_y1:
         sta S16_VY+16,y
         rts
 
-* = REG_API+$0977
+* = REG_API+$097A
 ; ---- shared: Euclidean speed -> major-axis speed ----
 ; In: SK_EMAJ >= 1 and SK_EMIN <= SK_EMAJ (8-bit magnitudes), speed in
 ; SEEK_IN_SPL/SEEK_IN_SPH (bit 7 ignored). Out: A = integer, Y = fraction of
