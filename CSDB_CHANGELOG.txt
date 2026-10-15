@@ -1,3 +1,8 @@
+2026-10-15 ISSUE144 V4 ISQRT32 FAST-FOUR CANONICAL SOURCE TRIAL (NOT BINARY RELEASE)
+- V4 REU ISQRT32 canonical source-build input uses four 16-bit refinement steps followed by the original final two 17-bit steps; prepromotion source pinned for paired reference.
+- Prior independent 8,619-radicand research: 111.190 mean CPU-model cycles saved, no slower cases, no new normal ZP or REU tables; V volatile flag differs on 195/8,619 model calls and is not a public contract.
+- Existing five reference PRGs, two REU images, and production PERFORMANCE.md remain unchanged. New source and VICE qualification, public API, source-map and package gates required before merge. Physical REU/VIC/DMA timing outstanding.
+
 2026-10-15 ISSUE144 PRODUCTION SOURCE INTEGRATION TRIAL (NOT RELEASED)
 - Canonical V2–V4 resident SEEK16_INIT sources now use the previously opt-in normal-footprint in-hole Euclid/fractional helper placement; common 32/16 division source uses the qualified shared-take tail (PRs #169/#170). All public API labels and normal ZP allocations intended unchanged.
 - This is a source-level production trial, not a release: shipped five resident PRGs, both REU images, PERFORMANCE.md and published cycle numbers remain unchanged pending full five-profile reference/alternate source validation, native VICE, mixed-call, resource, release and checksum gates. PR #171.
