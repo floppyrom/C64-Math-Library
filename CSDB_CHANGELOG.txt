@@ -1,3 +1,6 @@
+2026-10-15 ISSUE144 SEEK16 INIT RELOCATION UNPROMOTED
+- Unpromoted V2 SEEK16_INIT speed-one source relocation research: 291 bytes in caller RAM, $19F0 and $1A00 preserved, 300 paired model INIT+STEP states and 128 native STEP executions matched; overall gain only ~4.2 CPU cycles, some slower calls. No resident integration. docs/ISSUE144_SEEK16_INIT_RELOCATED_K1_RESEARCH_2026-10-15.md
+
 2026-10-15 ISSUE144 FOUR 32BIT MULTIPLY NARROW16 OPTINS
 - Published four source-only opt-in U32 and S32 full/SHR16 multiply variants for the strict both-upper-words-zero operand domain: 22,900 paired CPU model calls, 960 real x64sc calls across all profiles passing. No regular profile/API/ZP/REU/benchmark leaderboard modification. docs/ISSUE144_A_FOUR_MUL_NARROW16_SPECIALIST_2026-10-15.md
 

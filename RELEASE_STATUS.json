@@ -3712,5 +3712,18 @@
         }
       }
     }
+  },
+  "issue144_seek16_relocated_k1_research_2026_10_15": {
+    "status": "PASS_CPU_NATIVE_RESEARCH_ONLY_NOT_PROMOTED",
+    "profile": "v2_pareto_fast",
+    "model_pairs": 300,
+    "native_steps_old": 64,
+    "native_steps_new": 64,
+    "source": "optional/issue144_seek16_k1_relocated/research_source.asm",
+    "documentation": "docs/ISSUE144_SEEK16_INIT_RELOCATED_K1_RESEARCH_2026-10-15.md",
+    "foreign_19f0_and_1a00_unchanged": true,
+    "default_prgs_changed": false,
+    "native_cycles_measured": false,
+    "overall_mean_saving": 4.226666666666667
   }
 }

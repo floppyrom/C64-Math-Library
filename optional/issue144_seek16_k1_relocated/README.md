@@ -1,0 +1,3 @@
+# Unpromoted V2 SEEK16 INIT research
+
+See ../../docs/ISSUE144_SEEK16_INIT_RELOCATED_K1_RESEARCH_2026-10-15.md.
