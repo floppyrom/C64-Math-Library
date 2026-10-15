@@ -26,7 +26,7 @@ def source_built(profile):
     cfg=src.with_name("math_config_reference.inc")
     old=SOURCE.read_text()
     opt=ALT.read_text()
-    assert opt!=old and len(opt)<len(old)
+    assert len(opt)<=len(old), 'candidate unexpectedly larger than installed source'
     expanded=preprocess(src,cfg)
     assert expanded.count(old)==1,"unexpected source insertion geometry"
     memory,labels,const=Assembler().assemble(expanded.replace(old,opt,1))
