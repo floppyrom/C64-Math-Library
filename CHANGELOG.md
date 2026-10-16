@@ -1,3 +1,8 @@
+2026-10-16 BUILDER HISTORICAL V1 UDIV8 SELECTIVE MODULE (UNRELEASED; QUALIFICATION PENDING)
+- Transplanted the V1 optimized unsigned 8-bit division public producer (125 instructions, 294-byte source island, trampoline omitted) as link:v1-resident-fast. The entry is 8 bytes inside the code island; one relocatable ZP scratch byte, no extra RAM scratch, tables, REU or initialization.
+- Preserve original 8-bit quotient/remainder, dividend/divisor inputs, carry error on D=0, and high I/O byte sentinels. Exhaustive 65,536 n/d pairs in two separate CPU relocations, mixed-module and minimum-budget checks, plus separate two-map native x64sc harness in CI.
+- Operation-first builder now has ten of 56 public operations linkable; V1-V5 resident releases and benchmark records unchanged. Comparative speed ranking requires a matched corpus; the remaining historical variants are not yet selectively linkable.
+
 2026-10-16 OPERATION-FIRST DIST8_FAST HISTORICAL PORT (UNRELEASED; QUALIFICATION PENDING)
 - Transplanted the V1 signed DIST8_FAST max/half-min arithmetic with trampoline removed, preserving abs(-128), unsigned 8-bit wraparound, inputs and carry contract; 61-byte independently relocatable kernel, 0 ZP and 2 explicit RAM scratch bytes, total standalone 95 RAM bytes including shared public I/O.
 - Added exhaustive 65,536-pair CPU-model tests at two relocations, native x64sc test harness at two relocations, mixed-call checks and CI gates. Corrected the ISQRT16 variant validation-path metadata. Neither library resident releases nor benchmarks changed.
