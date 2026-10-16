@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**A first real selective linker is now available for UDIV16, UMOD16, UDIV32_32 and UMOD32_32.**
+**A first real selective linker is now available for UDIV16, UMOD16, UDIV32_32, UMOD32_32 and ATAN2_8.**
 These use separately qualified relocatable sources, not the historical
 full-profile images or exact extracted resident mirrors. Other operations
 remain selection-plan-only until their own source contracts pass qualification.
@@ -133,6 +133,35 @@ python3 tools/math_builder.py --operation UDIV16 --operation UMOD16 \
 The interactive wizard groups all 56 operations with readable descriptions,
 shows which are currently linkable, and accepts numbers, ranges or names.
 
+### ATAN2: source/table-aware linking
+
+ATAN2 now provides two selectable, independently published algorithms.
+The linker assembles the canonical kernel and regenerates the exact lookup
+tables from `routines/atan2/tables.py`; it does **not** copy old resident
+images or accidentally leave out tables.
+
+| Variant pin | Executable | Lookup data | ZP | Example PRG payload at $8000 |
+|---|---:|---:|---:|---:|
+| `link:compact` | 94 B | 512 B | 0 | 768 B including page padding |
+| `link:sum-fast` | 85 B | 1024 B | 0 | 1280 B including page padding |
+
+Both use `MATH_X` and `MATH_Y` low bytes as signed 8-bit operands,
+write phase to `MATH_Z` low byte and return it in A; C is clear. Tables
+must start on 256-byte boundaries, and the linker **charges alignment padding
+against the actual RAM budget and PRG length** rather than reporting only
+the sum of occupied code/table bytes. These variants have the same established
+65,536-vector numerical output contract (maximum error one phase unit).
+
+```sh
+python3 tools/math_builder.py --operation ATAN2_8 \
+  --pin ATAN2_8=link:sum-fast --zp-budget 0 --ram-budget 1400 --build
+```
+
+This builds only the fast algorithm and its four pages, with no other math
+operations. To minimize footprint, omit the pin: the size objective chooses
+`link:compact`. An exact-assembly check, including padding, is available with
+`--measure`.
+
 A JSON configuration can specify a custom, nonoverlapping memory map:
 
 ```json
@@ -161,8 +190,9 @@ cannot be silently selected for a compact build. An unsupported routine or
 unsupported variant pin makes `--build` fail instead of loading 56 routines.
 
 The compact linker is intentionally marked experimental pending native
-VICE qualification; source/mixed-call CPU and native linked-image tests are
-included in dedicated CI.
+VICE qualification. Arithmetic PRGs have a native linked-image test gate;
+ATAN2 compact/fast adds full-domain CPU-model and alternate relocation/mixed
+ABI tests. Hardware-native ATAN2 certification is still pending.
 
 ## Direction and acceptance criteria
 
