@@ -301,7 +301,8 @@ hardware claims.
 
 ## Direction and acceptance criteria
 
-1. **Inventory (implemented).** Index all 56 stable operations using
+1. **Inventory (implemented).** Index all 56 stable operations from the profile-independent
+   `routines/PUBLIC_OPERATIONS.csv`, while indexing variants via
    `routines/SOURCE_CATALOG.csv`, retaining the current source, hash,
    provenance and validation distinctions. Offer interactive/JSON selection,
    variant inspection, pins and strict parameter validation. Preserve existing
