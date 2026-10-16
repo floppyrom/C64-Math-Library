@@ -82,6 +82,7 @@ builder-validate:
 	$(PYTHON) tools/test_selective_linker.py
 	$(PYTHON) tools/test_selective_atan2.py
 	$(PYTHON) tools/test_selective_multiply.py
+	$(PYTHON) tools/test_selective_umul8.py
 
 pareto-validate:
 	$(PYTHON) tools/validate_pareto.py
