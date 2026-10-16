@@ -1,3 +1,8 @@
+2026-10-16 OPERATION-FIRST DIST8_ACCURATE EXACT V1 TABLE MIGRATION (UNRELEASED; QUALIFICATION PENDING)
+- Added selective source-linked MATH_DIST8_ACCURATE preserving the V1 signed magnitude sort and exact historical 256-byte maximum and minimum contribution lookup pages, without pulling the V1 resident image into selective builds. The 66-byte kernel uses zero ZP, 2 scratch bytes, and 512 page-aligned table bytes (802 RAM total including common I/O at $8000).
+- Byte-parity regression compares both tables against the published V1 PRG; exhaustive 65,536 input pairs at each of two relocations and independent two-map native x64sc tests gate the port. Extended linker, source locks, resource budgets, build-manifest hashes, docs and CI. Main historical V1–V5 outputs unchanged.
+- This is the tenth operation eligible for selective linking; the next candidates are resident SIN8, COS8 and SINCOS8 with shared V1 sine-page data.
+
 2026-10-16 OPERATION-FIRST DIST8_FAST HISTORICAL PORT (UNRELEASED; QUALIFICATION PENDING)
 - Transplanted the V1 signed DIST8_FAST max/half-min arithmetic with trampoline removed, preserving abs(-128), unsigned 8-bit wraparound, inputs and carry contract; 61-byte independently relocatable kernel, 0 ZP and 2 explicit RAM scratch bytes, total standalone 95 RAM bytes including shared public I/O.
 - Added exhaustive 65,536-pair CPU-model tests at two relocations, native x64sc test harness at two relocations, mixed-call checks and CI gates. Corrected the ISQRT16 variant validation-path metadata. Neither library resident releases nor benchmarks changed.
