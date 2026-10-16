@@ -1,3 +1,15 @@
+## Unreleased — operation-first unsigned 32/16 DIV/MOD reference kernel
+
+- Add independent selectable `MATH_UDIV32_16` and `MATH_UMOD32_16`
+  with a single 162-byte source-linked, zero-ZP restoring reference
+  producer. Both public aliases write Q32 and R16, preserve input bytes
+  and report zero divisor in carry. Three bytes of nonreentrant RAM scratch.
+- Add two-map CPU-model edge/random/divide-by-zero and native VICE
+  qualification, full image/ABI checks, RAM budget enforcement, and
+  user-reserved overlap rejection.
+- The original optimized V1–V5 split 32/16 producers are **not replaced**;
+  further migration and comparable cycle benchmarking remain necessary.
+
 ## Unreleased — operation-first SEEK16 movement family
 
 - Link four SEEK16 public operations from a single generated 898-byte
