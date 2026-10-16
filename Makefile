@@ -85,6 +85,7 @@ builder-validate:
 	$(PYTHON) tools/test_selective_multiply.py
 	$(PYTHON) tools/test_selective_umul8.py
 	$(PYTHON) tools/test_selective_fast_umul8.py
+	$(PYTHON) tools/test_selective_umul8_v1.py
 	$(PYTHON) tools/test_selective_fast_umul16.py
 	$(PYTHON) tools/test_selective_speed_umul16.py
 	$(PYTHON) tools/test_selective_speed_udiv8.py
