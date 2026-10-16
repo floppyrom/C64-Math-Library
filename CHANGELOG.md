@@ -1,3 +1,12 @@
+2026-10-16 OPERATION-FIRST DIST8_FAST HISTORICAL PORT (UNRELEASED; QUALIFICATION PENDING)
+- Transplanted the V1 signed DIST8_FAST max/half-min arithmetic with trampoline removed, preserving abs(-128), unsigned 8-bit wraparound, inputs and carry contract; 61-byte independently relocatable kernel, 0 ZP and 2 explicit RAM scratch bytes, total standalone 95 RAM bytes including shared public I/O.
+- Added exhaustive 65,536-pair CPU-model tests at two relocations, native x64sc test harness at two relocations, mixed-call checks and CI gates. Corrected the ISQRT16 variant validation-path metadata. Neither library resident releases nor benchmarks changed.
+- This is now the ninth operation with selective source linking; speed selection for multi-operation selections is still gated on comparable workload data, and all remaining operations/optimized variants still require migration and qualification.
+
+2026-10-16 OPTIMIZED ISQRT16 SELECTIVE SOURCE MIGRATION (UNRELEASED; QUALIFICATION PENDING)
+- Port the V1/V2/V5 resident 16-bit square-table search (without resident trampoline) as a 38-byte relocatable standalone link kernel; regenerate three 256-byte lookup tables deterministically, with page-alignment padding, exact RAM accounting, zero ZP, no initialization and explicit SHA-locked generator provenance.
+- Add complete 65,536-input CPU-model checks at two relocations, mixed table-aligned linking smoke tests, native x64sc correctness checks at two maps, source-pin/constraint and build-manifest tests. This expands the experimental linkable catalog to 8/56 operations, not the complete historic performance spectrum. No shipped profiles, published cycle records or default release change.
+
 2026-10-16 MEASURED SELECTIVE UMUL8 SPEED CHOICE (EXPERIMENTAL PHASE 3; UNRELEASED)
 - Enable --objective speed for UMUL8-only selective builds by assembling each known variant at the requested origin and measuring both with the same deterministic 1,000-pair edge/uniform CPU-model corpus. Choose the fastest variant that actually fits RAM/ZP budgets; 95-byte RAM fallback uses the compact module if 1,129-byte quarter-square cannot fit.
 - Record cycle basis, input corpus SHA-256, per-variant mean CPU-model cycles, requested code/IO origin, and source/toolchain SHA-256 in the output manifest. These are model cycle counts, not native hardware timings. Speed objectives for other operations and incompatible mixed-operation workloads remain explicitly unsupported.

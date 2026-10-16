@@ -64,7 +64,7 @@ class CatalogTests(unittest.TestCase):
                 sum(v["kind"] == "resident-source-mirror" for v in op["variants"]), 5
             )
             linkable = [v for v in op["variants"] if v["selective_link_ready"]]
-            self.assertEqual(bool(linkable), api in {"MATH_UDIV16", "MATH_UMOD16", "MATH_UDIV32_32", "MATH_UMOD32_32", "MATH_ATAN2_8", "MATH_UMUL16", "MATH_UMUL8"})
+            self.assertEqual(bool(linkable), api in {"MATH_UDIV16", "MATH_UMOD16", "MATH_UDIV32_32", "MATH_UMOD32_32", "MATH_ATAN2_8", "MATH_UMUL16", "MATH_UMUL8", "MATH_ISQRT16", "MATH_DIST8_FAST"})
 
     def test_typed_and_short_names_resolve(self):
         self.assertEqual(mb.resolve("umul16", self.index), "MATH_UMUL16")
@@ -289,7 +289,7 @@ class CatalogTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             out = Path(d)
             invocation = [sys.executable, str(SCRIPT),
-                          "--operation", "ISQRT16",
+                          "--operation", "SMUL24",
                           "--build", "--out", str(out / "plan.json")]
             result = subprocess.run(invocation, text=True,
                                     capture_output=True, cwd=ROOT)
