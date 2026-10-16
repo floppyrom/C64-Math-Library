@@ -118,8 +118,9 @@ of zero set carry and return zero results, while modulo preserves Q.
 resident implementations, especially for certain small-divisor workloads.
 These are the first *linkable* choices, not proven universal speed winners.
 The optimizer currently enforces budgets globally and scores the few available
-implementations by size/ZP trade-offs; an authenticated same-corpus
-performance objective will be introduced as candidates are qualified.
+implementations by size/ZP trade-offs. An actual `--objective speed --build`
+request is **rejected**, rather than pretending unrelated benchmark cycles are
+comparable. The speed objective will be enabled after same-corpus qualification.
 
 A JSON configuration can specify a custom, nonoverlapping memory map:
 
