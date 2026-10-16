@@ -85,6 +85,10 @@ def available_variants(root=ROOT):
                 "source_path": mod["source"],
                 "source_sha256": hashlib.sha256(
                     (root / mod["source"]).read_bytes()).hexdigest(),
+                "dependency_sha256": ({
+                    "routines/atan2/tables.py": hashlib.sha256(
+                        (root / "routines/atan2/tables.py").read_bytes()).hexdigest()
+                } if "atan2" in mod else {}),
                 "historical_provenance": None,
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
@@ -299,6 +303,18 @@ def build(plan, outdir, memory=None, root=ROOT):
         exact_digest = hashlib.sha256(source_path.read_bytes()).hexdigest()
         if exact_digest != link_sources[0]["source_sha256"]:
             raise LinkError(api + ": source changed since selection plan")
+        dep_provenance = []
+        for dep, digest in link_sources[0].get("dependency_sha256", {}).items():
+            dep_path = (root / dep).resolve()
+            if not dep_path.is_relative_to(root.resolve()) or not dep_path.is_file():
+                raise LinkError(api + ": missing/unsafe source dependency")
+            actual_dep_sha = hashlib.sha256(dep_path.read_bytes()).hexdigest()
+            if actual_dep_sha != digest:
+                raise LinkError(api + ": source dependency changed since selection plan")
+            dep_provenance.append({"source_path": dep, "sha256": actual_dep_sha})
+        if "atan2" in module and [x["source_path"] for x in dep_provenance] != [
+                "routines/atan2/tables.py"]:
+            raise LinkError(api + ": ATAN2 table generator provenance missing")
         locations = dict(constants)
         expected = set()
         ranges = []
@@ -332,7 +348,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         entries[api] = labels[module["entry"]]
         detail.append({
             "api": api, "variant": ident, "entry": "$%04X" % entries[api],
-            "dependencies": [], "scratch_lifetime": "exclusive_call",
+            "dependencies": dep_provenance, "scratch_lifetime": "exclusive_call",
             "source": module["source"],
             "sha256": hashlib.sha256((root / module["source"]).read_bytes()).hexdigest(),
             "segments": ranges, "zp_bytes": module["zp"], "scratch_bytes": module["scratch"],
