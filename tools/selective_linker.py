@@ -17,9 +17,37 @@ import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_speed
 import selective_isqrt16 as sqrt16
+import selective_trig8 as trig8
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
+    "MATH_SIN8": {
+        "link:resident-shared-table": {
+            "source": "routines/trig/sin8_shared.asm",
+            "segments": (("KERNEL_CODE", 11),),
+            "entry": "FAST_SIN8", "zp": 0, "scratch": 0,
+            "trig8": True, "operand_layout": "xyz",
+            "provenance": "V1-V5 exact 256-byte shared sine table, original 11-byte kernel",
+        },
+    },
+    "MATH_COS8": {
+        "link:resident-shared-table": {
+            "source": "routines/trig/cos8_shared.asm",
+            "segments": (("KERNEL_CODE", 15),),
+            "entry": "FAST_COS8", "zp": 0, "scratch": 0,
+            "trig8": True, "operand_layout": "xyz",
+            "provenance": "V1-V5 identical lookup table, original 15-byte quarter-cycle phase shift",
+        },
+    },
+    "MATH_SINCOS8": {
+        "link:resident-shared-table": {
+            "source": "routines/trig/sincos8_shared.asm",
+            "segments": (("KERNEL_CODE", 22),),
+            "entry": "FAST_SINCOS8", "zp": 0, "scratch": 0,
+            "trig8": True, "operand_layout": "xyz",
+            "provenance": "V1-V5 identical lookup table, original 22-byte dual-output kernel",
+        },
+    },
     "MATH_UDIV8": {
         "link:v1-resident-fast": {
             "source": "routines/divide/udiv8_v1_resident.asm",
@@ -150,12 +178,16 @@ def available_variants(root=ROOT):
                 } if mod.get("fast_umul8") else {
                     "tools/selective_isqrt16.py": hashlib.sha256(
                         (root / "tools/selective_isqrt16.py").read_bytes()).hexdigest()
-                } if mod.get("isqrt16") else {}),
+                } if mod.get("isqrt16") else {
+                    "tools/selective_trig8.py": hashlib.sha256(
+                        (root / "tools/selective_trig8.py").read_bytes()).hexdigest()
+                } if mod.get("trig8") else {}),
                 "historical_provenance": mod.get("provenance"),
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
                 "validation_path": (
+                    "tools/test_selective_trig8.py" if mod.get("trig8") else
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
@@ -165,11 +197,14 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("294-byte V1 8-bit quotient/remainder chain, one ZP byte, no table"
+                "notes": ("Original 8-bit trig code with one page-aligned 256-byte exact sine table; "
+                          "shared across SIN8/COS8/SINCOS8 in one binary, zero scratch/ZP"
+                          if mod.get("trig8") else
+                          "294-byte V1 8-bit quotient/remainder chain, one ZP byte, no table"
                           if mod.get("udiv8_v1") else
                           "61-byte trampoline-free V1 signed-distance approximation, "
                           "two private scratch bytes and zero ZP"
@@ -250,8 +285,9 @@ def custom_reserved(data, key, zp=False):
 
 
 def projected_end(start, items):
-    """Actual compact PRG span, including required ATAN2 page alignment."""
+    """Actual compact PRG span, including aligned table data and trig sharing."""
     cursor = start
+    shared_trig = any(mod.get("trig8") for _, _, mod in items)
     for _, _, mod in items:
         if "atan2" in mod:
             _, cursor = atan2.layout(mod["atan2"], cursor)
@@ -259,6 +295,8 @@ def projected_end(start, items):
             _, cursor = sqrt16.layout(cursor)
         else:
             cursor += sum(length for _, length in mod["segments"])
+    if shared_trig:
+        cursor = trig8.align_page(cursor) + len(trig8.SINE_BYTES)
     return cursor
 
 
@@ -401,6 +439,8 @@ def relocate_source(mod, locations, root):
         used.add("TEMP_ZP")
     if mod["scratch"]:
         used.add("TEMP_RAM")
+    if mod.get("trig8"):
+        used.add("SINE_TAB")
     for key in used:
         if key not in locations:
             raise LinkError("Missing address symbol: " + key)
@@ -475,6 +515,13 @@ def build(plan, outdir, memory=None, root=ROOT):
         "OUTPUT_QUOT": io + 24, "OUTPUT_REM": io + 28,
         "INPUT_X": io, "INPUT_Y": io + 4, "OUTPUT_Z": io + 8,
     }
+    # All selected trig routines share one immutable, verified 256-byte page.
+    has_trig = any(mod.get("trig8") for _, mod in modules.values())
+    shared_trig_page = (size + code - len(trig8.SINE_BYTES)) if has_trig else None
+    if has_trig:
+        if shared_trig_page & 255:
+            raise LinkError("Trig shared table was not placed on a page boundary")
+        constants["SINE_TAB"] = shared_trig_page
     if zp_bytes:
         constants["TEMP_ZP"] = zb
     if scratch:
@@ -512,6 +559,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("isqrt16") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_isqrt16.py"]:
             raise LinkError(api + ": integer-root table generator provenance missing")
+        if module.get("trig8") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_trig8.py"]:
+            raise LinkError(api + ": shared sine table provenance missing")
         locations = dict(constants)
         expected = set()
         ranges = []
@@ -556,6 +606,22 @@ def build(plan, outdir, memory=None, root=ROOT):
             "segments": ranges, "zp_bytes": module["zp"], "scratch_bytes": module["scratch"],
             "operand_layout": module.get("operand_layout", "ndqr"),
         })
+    shared_tables = []
+    if has_trig:
+        if pc > shared_trig_page:
+            raise LinkError("Shared sine table overlaps kernel bytes")
+        shared_data = trig8.emit(shared_trig_page)
+        if set(shared_data) & set(binary):
+            raise LinkError("Shared sine table overlaps linked module")
+        binary.update(shared_data)
+        shared_tables.append({
+            "name": "SINE8_SHARED", "start": "$%04X" % shared_trig_page,
+            "bytes": len(shared_data),
+            "users": sorted(api for api, (ident, mod) in modules.items()
+                            if mod.get("trig8")),
+        })
+        shared_tables[-1]["sha256"] = hashlib.sha256(trig8.SINE_BYTES).hexdigest()
+        pc = shared_trig_page + len(shared_data)
     if pc != code + size:
         raise LinkError("Incorrect linked image span")
     # ATAN2 lookup pages need page alignment. Gaps are explicit zero-filled
@@ -574,6 +640,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
         "; ISQRT16: unsigned MATH_N 16-bit => floor(sqrt(N)) in MATH_Z 16-bit, C=0.",
+        "; SIN8: phase in MATH_X low => sine signed byte in MATH_Z low, C=0.",
+        "; COS8: phase in MATH_X low => cosine signed byte in MATH_Z low, C=0.",
+        "; SINCOS8: phase in MATH_X low => sin/cos in MATH_Z low/next, C=0.",
         "; DIST8_FAST: signed MATH_X/Y low bytes => max(abs(X),abs(Y)) +",
         "; floor(min(abs(X),abs(Y))/2) mod 256 in MATH_Z low byte, C=0.",
         "; ATAN2_8: signed 8-bit MATH_X/Y low bytes => phase MATH_Z low byte",
@@ -593,7 +662,7 @@ def build(plan, outdir, memory=None, root=ROOT):
     toolchain_paths = ("tools/math_builder.py", "tools/selective_linker.py",
                        "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
                        "tools/selective_speed.py", "tools/selective_isqrt16.py",
-                       "tools/mini6502.py")
+                       "tools/selective_trig8.py", "tools/mini6502.py")
     toolchain_hashes = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
         for name in toolchain_paths
@@ -609,11 +678,13 @@ def build(plan, outdir, memory=None, root=ROOT):
                             "global code/RAM/ZP resource optimization; cycle-speed not certified"),
         "cycle_model_benchmark": cycle_model,
         "operations": detail,
+        "shared_tables": shared_tables,
         "link_order": [api for api, _, _ in build_order],
         "link_exports": sorted(entries),
         "typed_exports": sorted(x["canonical_name"] for x in plan["operations"]),
         "resource_use": {
             "code_and_tables_bytes": len(binary), "image_span_bytes": size,
+            "shared_table_bytes": sum(t["bytes"] for t in shared_tables),
             "alignment_padding_bytes": padding, "public_io_bytes": 32,
             "private_ram_scratch_bytes": scratch,
             "main_ram_total_bytes": occupied_ram, "zero_page_bytes": zp_bytes,
