@@ -1,0 +1,18 @@
+name: Issue144 B V5 461-byte resident island feasibility survey
+on:
+  push:
+    branches: [issue144-b-v5-dualtail-freeisland-screen-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-build and validate V5 on both memory maps, survey same-offset 461-byte zero windows
+        run: python3 tools/issue144_v5_dualtail_resident_island_feasibility.py
