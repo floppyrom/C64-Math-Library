@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker now supports nine operations: UMUL8, UMUL16, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16 and DIST8_FAST.**
+**An experimental selective linker now supports ten operations: UMUL8, UMUL16, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST and DIST8_ACCURATE.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -196,6 +196,34 @@ python3 tools/math_builder.py --operation DIST8_FAST --zp-budget 0 \
 
 The variant preserves the *historical operation semantics*; performance
 ranking against V1/V2/V3/V4/V5 needs a matched-input benchmark corpus.
+
+### Exact historical DIST8_ACCURATE tables (experimental)
+
+`MATH_DIST8_ACCURATE` is a **distinct public operation** from
+`MATH_DIST8_FAST`. The `link:v1-accurate-table` port keeps the original
+V1 two-lookup-table approximation: signed X/Y are converted to unsigned
+absolute magnitudes, sorted into maximum/minimum, and the result is
+`(V1_MAX[max] + V1_MIN[min]) & 255`.
+
+Both 256-byte tables are **byte-exact copies of released V1** resident PRG
+pages `$9A00` and `$9B00`, pinned in the text emitter. The selective
+build needs **no resident image at build time**. The independent regression
+compares all 512 bytes with the released V1 PRG and checks every one of the
+65,536 signed operand pairs at each of two RAM relocations. Native VICE
+also checks two relocations, with preserved inputs, carry and output sentinel.
+
+The module occupies **66 code bytes**, **512 lookup bytes**, **0 ZP**,
+and **2 scratch RAM bytes**. At origin `$8000`, the table alignment
+adds 190 padding bytes: a 768-byte image plus 34 bytes shared I/O and
+scratch, or **802 bytes total RAM**. No initialization is needed. Its
+historical timing corpus still requires a directly comparable measurement
+before automatic multi-operation speed ranking.
+
+```sh
+python3 tools/math_builder.py --operation DIST8_ACCURATE \
+  --pin DIST8_ACCURATE=link:v1-accurate-table --zp-budget 0 \
+  --ram-budget 802 --build
+```
 
 ### Quarter-square fast UMUL8 (experimental source alternative)
 
