@@ -1,7 +1,7 @@
 ; Original V1 unsigned 8-bit modulo with two-case fast/fallback split.
 ; Main >=32-divisor subtraction chain and small-divisor direct remainder body.
 ; Exact 157 executable bytes, resident trampoline removed; NMOS 6502.
-; SMOD/SDIV flags are not aliases: UMOD8 writes ONLY low byte of MATH_R.
+; Unlike UDIV8, this UMOD8 kernel writes ONLY low byte of MATH_R.
 ; Divisor=0 -> R=0 and C=1, otherwise C=0. Input N/D, Q preserved.
 ; Two explicit zero-page scratch bytes; immediate operands modified in RAM
 ; for the low-divisor subtraction loop; non-reentrant, CLD required.
@@ -91,6 +91,7 @@ L4626:
 L4636:
     sbc #$00
     bcs L4636
+L463A:
     adc #$00
     clc
     rts
