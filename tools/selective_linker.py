@@ -35,7 +35,7 @@ MODULES = {
             "source": "routines/trig/cos8_shared.asm",
             "segments": (("KERNEL_CODE", 15),),
             "entry": "FAST_COS8", "zp": 0, "scratch": 0,
-            "trig8": True, "operand_layout": "xyz",
+            "trig8": True, "operand_layout": "trig-xz",
             "provenance": "V1-V5 identical lookup table, original 15-byte quarter-cycle phase shift",
         },
     },
@@ -44,7 +44,7 @@ MODULES = {
             "source": "routines/trig/sincos8_shared.asm",
             "segments": (("KERNEL_CODE", 22),),
             "entry": "FAST_SINCOS8", "zp": 0, "scratch": 0,
-            "trig8": True, "operand_layout": "xyz",
+            "trig8": True, "operand_layout": "trig-xz",
             "provenance": "V1-V5 identical lookup table, original 22-byte dual-output kernel",
         },
     },
@@ -441,8 +441,6 @@ def relocate_source(mod, locations, root):
         used.add("TEMP_ZP")
     if mod["scratch"]:
         used.add("TEMP_RAM")
-    if mod.get("trig8"):
-        used.add("SINE_TAB")
     for key in used:
         if key not in locations:
             raise LinkError("Missing address symbol: " + key)
