@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Relocatable SEEK8 DDA: the unmodified generated 582-byte standalone kernel.
+"""Relocatable SEEK8 DDA: the unaltered generated DDA instructions relocated for RAM-based inputs.
 
 Keep one physical producer for INIT, STEP, STEP_INT and STEP1; the linker's
 separate public exports have distinct entry addresses but share the 160-byte
@@ -14,7 +14,7 @@ from mini6502 import Assembler
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = "routines/movement/seek_u8_u8_dda.asm"
-CODE_BYTES = 582
+CODE_BYTES = 651
 STATE_BYTES = 160
 INIT_SCRATCH_BYTES = 19
 ENTRIES = ("seek8_init", "seek8_step", "seek8_step_int", "seek8_step1")
@@ -40,7 +40,7 @@ def assemble(code: int, io: int, scratch: int, state: int, root: Path = ROOT):
             raise ValueError("Generated SEEK8 source binding missing or duplicated: " + label)
     image, labels, constants = Assembler().assemble(source)
     if set(image) != set(range(code, code + CODE_BYTES)):
-        raise ValueError("SEEK8 generated 582-byte code contract changed")
+        raise ValueError("SEEK8 RAM-operand code must occupy 651 bytes")
     if any(label not in labels or labels[label] not in image for label in ENTRIES):
         raise ValueError("SEEK8 public entry or source labels missing")
     if constants["S8_POS_X"] != state or constants["S8_POS_Y"] != state + 8:
