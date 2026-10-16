@@ -136,18 +136,18 @@ shows which are currently linkable, and accepts numbers, ranges or names.
 ### Compact multiplication: portable zero-ZP UMUL16
 
 A new `link:compact-zerozp` implementation provides unsigned 16×16→32
-multiplication via a small shift/add kernel. It uses **107 bytes of code,
+multiplication via a small shift/add kernel. It uses **108 bytes of code,
 zero ZP, six caller-reserved ordinary RAM scratch bytes and 32 bytes
-of shared public I/O**; the exact total claim is **145 RAM bytes**.
+of shared public I/O**; the exact total claim is **146 RAM bytes**.
 `MATH_X` and `MATH_Y` hold the 16-bit operands, and the 32-bit result
 appears in `MATH_Z`. Inputs are preserved. The kernel uses documented
 NMOS 6502 instructions and requires CLD.
 
 ```sh
 python3 tools/math_builder.py --operation UMUL16 \
-  --zp-budget 0 --ram-budget 145 --measure
+  --zp-budget 0 --ram-budget 146 --measure
 python3 tools/math_builder.py --operation UMUL16 \
-  --zp-budget 0 --ram-budget 145 --build
+  --zp-budget 0 --ram-budget 146 --build
 ```
 
 This is an **ultracompact baseline, not a faster replacement** for the
@@ -159,7 +159,7 @@ ATAN2 code and tables may be placed *between* ordinary arithmetic
 modules: a 256-residue dynamic program finds the minimum possible
 page-alignment padding without factorial permutations. For example,
 a UMUL16 + ATAN2 compact + UDIV16 combination occupies 1,091 bytes of
-PRG payload including 55 padding bytes, 6 RAM scratch bytes and 2 ZP
+PRG payload including 54 padding bytes, 6 RAM scratch bytes and 2 ZP
 bytes (1,129 total RAM bytes, including 32 public I/O bytes).
 
 ### ATAN2: source/table-aware linking
