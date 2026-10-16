@@ -158,12 +158,26 @@ python3 tools/math_builder.py --operation UMUL8 \
   --pin UMUL8=link:quarter-square --zp-budget 0 --ram-budget 1129 --measure
 ```
 
-Automatic **size** selection continues to prefer the compact module;
-developers can pin the quarter-square variant for speed-oriented
-experiments. The `--objective speed --build` option remains guarded until
-comparable measured cycle data are validated across module variants.
-Phase 2 adds a same-corpus CPU cycle comparison and native linked-PRG
-qualification. This variant is experimental until those gates pass.
+Automatic **size** selection continues to prefer the compact module.
+For a **UMUL8-only** build, `--objective speed` now performs a same-corpus
+6502 CPU-model measurement for *both* source variants at the requested
+memory origin, including instruction/page-crossing penalties. It picks the
+fastest feasible version under the actual RAM/ZP constraints; if 1,129
+RAM bytes are unavailable, the 95-byte compact variant remains a valid
+fallback. The manifest stores the source hashes, 1,000-pair deterministic
+corpus fingerprint, average modeled cycles and origin used.
+
+```sh
+python3 tools/math_builder.py --operation UMUL8 --objective speed \
+  --ram-budget 1129 --zp-budget 0 --measure
+```
+
+**Scope:** this is source-assembled *CPU-model* evidence, not a measured
+real-C64 hardware or raster-contended wall-clock performance claim. The
+new option is intentionally restricted to UMUL8-only selections.
+Requests to auto-rank other operations, or mixed sets lacking verified
+comparable workload and cycle data, still fail closed. Expert pins
+remain available independently of this automatic objective.
 
 ### Compact multiplication: portable zero-ZP UMUL8
 
@@ -288,10 +302,12 @@ grows. It does **not** filter the advanced variant inventory or block pinned
 choices; for example, explicitly requesting ATAN2's larger sum-fast
 implementation remains supported.
 
-This is the **resource** frontier, not a claim of cycle-optimality. A true
-speed/Pareto optimizer will add separately certified comparable per-operation
-cycle measurements and should not discard a faster implementation merely
-because it uses more memory.
+This is the **resource** frontier, not a claim of cycle-optimality. A generalized
+speed/Pareto optimizer still requires separately certified comparable
+per-operation cycle measurements and workload weights. The implemented
+single-operation UMUL8 speed selector measures both alternatives directly
+on identical inputs; it does not extrapolate that comparison across
+unrelated operations.
 
 A selective build stages its PRG, symbol include and manifest in a temporary
 output directory before publishing. A staged-write failure leaves any existing
