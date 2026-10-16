@@ -324,6 +324,20 @@ class SelectiveLinkTests(unittest.TestCase):
                 linker.build(plan, Path(d))
             self.assertFalse((Path(d) / "math_selective.prg").exists())
 
+    def test_build_manifest_seals_complete_toolchain(self):
+        with tempfile.TemporaryDirectory() as d:
+            plan = self.plan(["UMUL8", "UDIV16"], zp_budget=2,
+                             ram_budget=600)
+            man = linker.build(plan, Path(d))
+            files = ("tools/math_builder.py", "tools/selective_linker.py",
+                     "tools/selective_atan2.py", "tools/mini6502.py")
+            self.assertEqual(set(man["toolchain_sha256"]), set(files))
+            for name in files:
+                expected = hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+                self.assertEqual(man["toolchain_sha256"][name], expected)
+            saved = json.loads((Path(d) / "selective_manifest.json").read_text())
+            self.assertEqual(saved["toolchain_sha256"], man["toolchain_sha256"])
+
     def test_exact_measure_preview_leaves_no_files(self):
         with tempfile.TemporaryDirectory() as d:
             target = Path(d)
