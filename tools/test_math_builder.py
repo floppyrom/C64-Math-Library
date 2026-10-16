@@ -42,6 +42,11 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaises(mb.SelectionError):
             mb.resolve("not_a_real_operation", self.index)
 
+    def test_atan2_variant_publication(self):
+        variants = self.index["MATH_ATAN2_8"]["variants"]
+        eligible = {v["id"] for v in variants if v["selective_link_ready"]}
+        self.assertEqual(eligible, {"link:compact", "link:sum-fast"})
+
     def test_numbered_manual_selector(self):
         numbered = ["MATH_UDIV16", "MATH_UMOD16", "MATH_ISQRT16", "MATH_UDIV32_32"]
         picked = mb.parse_interactive_choices("1,2-3, UDIV32_32", numbered)
