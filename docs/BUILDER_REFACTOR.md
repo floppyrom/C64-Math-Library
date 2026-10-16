@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker now supports eight operations: UMUL8, UMUL16, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8 and ISQRT16.**
+**An experimental selective linker now supports nine operations: UMUL8, UMUL16, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16 and DIST8_FAST.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -27,7 +27,7 @@ Create a plan for a new project:
 ```sh
 python3 tools/math_builder.py \
   --operation UMUL16 --operation ATAN2_8 --operation ISQRT16 \
-  --objective speed --zp-budget 20 --ram-budget 4096 \
+  --objective balanced --zp-budget 20 --ram-budget 4096 \
   --out build_selective/selection_manifest.json
 ```
 
@@ -170,6 +170,32 @@ Mixed builds with multiple page-aligned modules link correctly but currently use
 deterministic conservative ordering; **multi-aligned ordering is not globally
 padding-optimal yet**. The optimized ISQRT16 migration is not evidence that the
 other 48 operations or unported high-performance variants are link-ready.
+
+### Historical optimized DIST8_FAST source (experimental)
+
+`MATH_DIST8_FAST` adds an independently linkable V1 resident fast-distance
+approximation, `link:resident-approx`. It preserves the shipped source
+algorithm without the resident entry trampoline: for signed 8-bit X and Y,
+compute `a=abs(X)`, `b=abs(Y)`, and return
+`(max(a,b) + floor(min(a,b)/2)) & 255`. The unusual `-128`
+case yields magnitude 128 and all arithmetic wraps to unsigned 8-bit output.
+This is **not** the more expensive `DIST8_ACCURATE` lookup-table operation.
+
+It uses **61 code bytes, zero ZP, two owned ordinary RAM scratch bytes**,
+and the shared 32-byte public I/O block: **95 RAM bytes total** without
+alignment padding. The input low bytes of `MATH_X` and `MATH_Y` are
+preserved, the low byte of `MATH_Z` is written, the high byte is unchanged,
+and carry is clear on return. All 65,536 signed input-byte pairs are checked
+at each of two relocations by the CPU-model test, with a separate native VICE
+harness at both relocations.
+
+```sh
+python3 tools/math_builder.py --operation DIST8_FAST --zp-budget 0 \
+  --ram-budget 95 --pin DIST8_FAST=link:resident-approx --build
+```
+
+The variant preserves the *historical operation semantics*; performance
+ranking against V1/V2/V3/V4/V5 needs a matched-input benchmark corpus.
 
 ### Quarter-square fast UMUL8 (experimental source alternative)
 
