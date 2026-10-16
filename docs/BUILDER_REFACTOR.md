@@ -133,6 +133,25 @@ python3 tools/math_builder.py --operation UDIV16 --operation UMOD16 \
 The interactive wizard groups all 56 operations with readable descriptions,
 shows which are currently linkable, and accepts numbers, ranges or names.
 
+### Compact multiplication: portable zero-ZP UMUL8
+
+The builder also offers `MATH_UMUL8` via `link:compact-zerozp`,
+a **60-byte 8×8→16** shift/add module using **0 ZP and 3 ordinary
+scratch bytes**. Including shared I/O it requires **95 RAM bytes**.
+The low bytes of `MATH_X` and `MATH_Y` supply unsigned operands;
+only the low 16 bits of `MATH_Z` are part of the output contract.
+
+```sh
+python3 tools/math_builder.py --operation UMUL8 --zp-budget 0 \
+  --ram-budget 95 --build
+```
+
+The public multiply ABI requires **carry clear on return**, which both
+UMUL8 and UMUL16 explicitly enforce. Both are compact algorithmic
+baselines; they are not presented as faster than the published
+table-accelerated alternatives. Exhaustive UMUL8 input-pair and
+mixed UMUL8/UMUL16 scratch/carry tests are in the builder gate.
+
 ### Compact multiplication: portable zero-ZP UMUL16
 
 A new `link:compact-zerozp` implementation provides unsigned 16×16→32
