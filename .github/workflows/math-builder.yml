@@ -20,6 +20,7 @@ on:
       - routines/atan2/tables.py
       - routines/standalone_lab/portable/*.asm
       - routines/SOURCE_CATALOG.csv
+      - routines/PUBLIC_OPERATIONS.csv
       - benchmarks/STANDALONE_RESULTS.csv
       - .github/workflows/math-builder.yml
       - tools/mini6502.py
