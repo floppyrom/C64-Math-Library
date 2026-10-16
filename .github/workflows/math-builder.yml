@@ -26,6 +26,9 @@ on:
       - routines/game/*.asm
       - tools/test_selective_dist8.py
       - tools/native_selective_dist8.py
+      - tools/selective_dist8_accurate.py
+      - tools/test_selective_dist8_accurate.py
+      - tools/native_selective_dist8_accurate.py
       - tools/test_selective_speed.py
       - tools/selective_atan2.py
       - tools/test_selective_atan2.py
@@ -54,7 +57,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Syntax-check builder and regression scripts before running tests
-        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/native_selective_fast_umul8.py tools/selective_fast_umul8.py tools/test_selective_fast_umul8.py tools/selective_speed.py tools/test_selective_speed.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/native_selective_isqrt16.py tools/test_selective_dist8.py tools/native_selective_dist8.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
+        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/native_selective_fast_umul8.py tools/selective_fast_umul8.py tools/test_selective_fast_umul8.py tools/selective_speed.py tools/test_selective_speed.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/native_selective_isqrt16.py tools/test_selective_dist8.py tools/native_selective_dist8.py tools/selective_dist8_accurate.py tools/test_selective_dist8_accurate.py tools/native_selective_dist8_accurate.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
       - name: Validate operation catalog and no-binary safety
         run: |
           python3 tools/test_math_builder.py
@@ -66,6 +69,7 @@ jobs:
           python3 tools/test_selective_speed.py
           python3 tools/test_selective_isqrt16.py
           python3 tools/test_selective_dist8.py
+          python3 tools/test_selective_dist8_accurate.py
       - name: Smoke-test source SHA provenance
         run: >-
           python3 tools/math_builder.py
@@ -99,3 +103,5 @@ jobs:
         run: python3 tools/native_selective_isqrt16.py
       - name: Validate source-linked historical DIST8_FAST at two RAM maps
         run: python3 tools/native_selective_dist8.py
+      - name: Validate exact V1 DIST8_ACCURATE tables in native VICE at two RAM maps
+        run: python3 tools/native_selective_dist8_accurate.py
