@@ -62,6 +62,42 @@ class CatalogTests(unittest.TestCase):
         eligible = {v["id"] for v in variants if v["selective_link_ready"]}
         self.assertEqual(eligible, {"link:compact", "link:sum-fast"})
 
+    def test_future_6502_targets_plan_only(self):
+        for hardware in ("1541", "1571", "1581"):
+            with self.subTest(hardware=hardware):
+                plan = mb.create_plan(self.index, ["UMUL8", "ATAN2_8"],
+                                      target=hardware, zp_budget=0,
+                                      ram_budget=512)
+                self.assertEqual(plan["target"], hardware)
+                self.assertEqual(plan["target_backend_status"],
+                                 "planning_only_no_target_backend")
+                self.assertEqual(plan["linker_status"],
+                                 "target_backend_unavailable")
+                self.assertEqual(plan["public_operation_count"], 2)
+                import selective_linker
+                with tempfile.TemporaryDirectory() as workdir:
+                    with self.assertRaises(selective_linker.LinkError):
+                        selective_linker.build(plan, Path(workdir))
+                    self.assertFalse(list(Path(workdir).iterdir()))
+        available = mb.create_plan(self.index, ["UMUL8"], target="c64")
+        self.assertEqual(available["linker_status"],
+                         "experimental_subset_available")
+
+    def test_cli_future_target_refuses_binary(self):
+        for target in ("1541", "1571", "1581"):
+            with self.subTest(target=target), tempfile.TemporaryDirectory() as d:
+                config = [sys.executable, str(SCRIPT), "--operation", "UMUL8",
+                          "--target", target, "--out", str(Path(d) / "plan.json")]
+                preview = subprocess.run(config + ["--preview"],
+                                         text=True, capture_output=True, cwd=ROOT)
+                self.assertEqual(preview.returncode, 0, preview.stderr)
+                self.assertEqual(json.loads(preview.stdout)["target"], target)
+                refuse = subprocess.run(config + ["--build"],
+                                        text=True, capture_output=True, cwd=ROOT)
+                self.assertNotEqual(refuse.returncode, 0)
+                self.assertIn("No qualified selective modules", refuse.stderr)
+                self.assertFalse(list(Path(d).iterdir()))
+
     def test_numbered_manual_selector(self):
         numbered = ["MATH_UDIV16", "MATH_UMOD16", "MATH_ISQRT16", "MATH_UDIV32_32"]
         picked = mb.parse_interactive_choices("1,2-3, UDIV32_32", numbered)
