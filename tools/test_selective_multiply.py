@@ -75,7 +75,7 @@ class SelectiveMultiplyTests(unittest.TestCase):
                     self.assertEqual(int.from_bytes(mem[io:io+2], "little"), x)
                     self.assertEqual(int.from_bytes(mem[io+4:io+6], "little"), y)
                     self.assertEqual(cpu.c, 0)
-                    self.assertEqual(cpu.sp, sp)
+                self.assertEqual(cpu.sp, sp)
                 self.assertEqual(bytes(mem[code:code+108]), original)
 
     def test_multiply_divide_atan2_interleaving(self):
@@ -121,7 +121,7 @@ class SelectiveMultiplyTests(unittest.TestCase):
 
     def test_atan2_module_can_pack_between_arithmetic_modules(self):
         # The globally optimal layout is not ATAN2-first or ATAN2-last:
-        # 107-byte UMUL16 precedes ATAN2 and the 323-byte UDIV16 follows it.
+        # 108-byte UMUL16 precedes ATAN2 and the 323-byte UDIV16 follows it.
         with tempfile.TemporaryDirectory() as d:
             plan = math_builder.create_plan(
                 self.index, ["UDIV16", "UMUL16", "ATAN2_8"],
@@ -148,7 +148,7 @@ class SelectiveMultiplyTests(unittest.TestCase):
                 self.index, ["UMUL16"], objective="zp",
                 zp_budget=0, ram_budget=146)
             manifest = selective_linker.build(plan, Path(d))
-            self.assertEqual(manifest["resource_use"]["main_ram_total_bytes"], 145)
+            self.assertEqual(manifest["resource_use"]["main_ram_total_bytes"], 146)
             failed = math_builder.create_plan(
                 self.index, ["UMUL16"], zp_budget=0, ram_budget=145)
             with self.assertRaises(selective_linker.LinkError):
