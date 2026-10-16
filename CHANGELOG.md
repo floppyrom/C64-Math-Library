@@ -1,3 +1,9 @@
+2026-10-16 BUILDER SHARED HISTORICAL TRIG8 FAMILY (UNRELEASED; QUALIFICATION PENDING)
+- Added SIN8, COS8, SINCOS8 as independently selectable V1-V5 source-exact trig8 entry points (11/15/22 code bytes). All three share one source-locked 256-byte page-aligned sine table, exact against the bytes at $9400 in every shipped V1–V5 PRG. No ZP, private RAM, initialization, or REU.
+- Extended resource accounting for a single shared lookup page, including alignment padding, origin relocation, per-operation exported symbols, metadata and toolchain SHA provenance; no redundant tables in mixed trig builds.
+- Added five-profile binary source-parity tests, exhaustive 256-phase CPU-model ABI checks at two code/memory layouts, mixed ATAN2/ISQRT links, and native x64sc execution at two relocations. This increases independently linkable operations from 10 to 13 of 56.
+- No historical resident files or performance numbers changed. Global shared-resource speed optimization and unported algorithms remain in subsequent builder stages.
+
 2026-10-16 BUILDER HISTORICAL V1 UDIV8 SELECTIVE MODULE (UNRELEASED; QUALIFICATION PENDING)
 - Transplanted the V1 optimized unsigned 8-bit division public producer (125 instructions, 294-byte source island, trampoline omitted) as link:v1-resident-fast. The entry is 8 bytes inside the code island; one relocatable ZP scratch byte, no extra RAM scratch, tables, REU or initialization.
 - Preserve original 8-bit quotient/remainder, dividend/divisor inputs, carry error on D=0, and high I/O byte sentinels. Exhaustive 65,536 n/d pairs in two separate CPU relocations, mixed-module and minimum-budget checks, plus separate two-map native x64sc harness in CI.
