@@ -1,3 +1,8 @@
+2026-10-16 HISTORICAL V5 UMOD8 SELECTION ALTERNATIVE (UNRELEASED; QUALIFICATION PENDING)
+- Retained original V5 205-byte hybrid unrolled unsigned modulo producer as a second independent MATH_UMOD8 implementation beside V1's 157-byte fast/fallback source. Both use two ZP bytes and writable code RAM, no REU.
+- Preserve V5 extended small-divisor fast subtraction, two dynamic immediate operands, unsigned remainder-only ABI, unchanged quotient, input preservation, and division-by-zero carry. No shipped V1–V5 release binaries change.
+- Added exhaustive 65536-case two-relocation CPU model and native VICE qualification; matched corpus cycle ranking is still pending and no unverified fastest label is assigned.
+
 2026-10-16 OPERATION-FIRST HISTORICAL UMOD8 FAST/FALLBACK (UNRELEASED, QUALIFICATION PENDING)
 - Migrated the original V1 MATH_UMOD8 producer as a standalone 157-byte relocatable NMOS kernel, preserving the >=32 divisor direct-subtraction fast path and the small-divisor fast remainder fallback, with the public entry trampoline removed. One 2-byte owned ZP allocation, no lookup tables or other RAM scratch; 189 RAM bytes including public I/O.
 - Preserves the full quotient register group and input bytes; writes only low MATH_R, with R=0 / C=1 for a zero divisor, C=0 otherwise. The two immediate bytes in the original fallback are self-modified and require writable non-reentrant RAM code.
