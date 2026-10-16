@@ -15,6 +15,7 @@ import re
 from mini6502 import Assembler
 import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
+import selective_speed
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
@@ -287,7 +288,7 @@ def pareto_resource_variants(variants):
     return keep
 
 
-def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000):
+def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000, cycle_metrics=None):
     """Optimize *the whole selection*, sharing nonreentrant scratch ownership."""
     options = []
     for api in names:
@@ -300,12 +301,12 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000)
             # An expert pin can select a memory-dominated algorithm for other
             # benefits (e.g. ATAN2 sum-fast's published speed improvement).
             variants = {pins[api]: variants[pins[api]]}
-        else:
+        elif objective != "speed":
             variants = pareto_resource_variants(variants)
         options.append([(api, ident, mod) for ident, mod in sorted(variants.items())])
 
-    if objective == "speed":
-        raise LinkError("Speed-optimized selective builds need verified same-corpus cycle measurements; choose size/zp/balanced or pin a variant")
+    if objective == "speed" and not cycle_metrics:
+        raise LinkError("Speed selection requires an authenticated same-corpus cycle model")
     best_score = None
     best = None
     for combination in itertools.product(*options):
@@ -318,7 +319,14 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000)
         if ram_budget is not None and ram > ram_budget:
             continue
         # Never combine unrelated benchmark corpora into a fake speed score.
-        if objective == "zp":
+        if objective == "speed":
+            try:
+                measured_cycles = sum(
+                    cycle_metrics[api][ident] for api, ident, _ in combination)
+            except KeyError as exc:
+                raise LinkError("Selected variants lack a comparable cycle model") from exc
+            metric = (measured_cycles, ram, zp)
+        elif objective == "zp":
             metric = (zp, ram, code)
         elif objective == "balanced":
             metric = (ram + 8 * zp, ram, zp)
@@ -379,8 +387,21 @@ def build(plan, outdir, memory=None, root=ROOT):
     io = address(memory.get("math_io", 0xc000), "math_io")
     zb = address(memory.get("zp_base", 0x50), "zp_base")
     sb = address(memory.get("scratch_base", io + 32), "scratch_base")
+    cycle_model = None
+    per_operation_cycles = None
+    if plan["objective"] == "speed":
+        if names != ["MATH_UMUL8"]:
+            raise LinkError(
+                "Measured automatic speed selection currently supports UMUL8 alone; "
+                "other operations require comparable certified cycle corpora")
+        try:
+            cycle_model = selective_speed.bench_umul8(
+                MODULES["MATH_UMUL8"], code, io, sb, root)
+        except (ValueError, OSError, RuntimeError) as exc:
+            raise LinkError("UMUL8 cycle-model measurement failed: " + str(exc)) from exc
+        per_operation_cycles = {"MATH_UMUL8": cycle_model["mean_cycles"]}
     modules = choose(names, pins, plan["objective"], zp_budget, ram_budget,
-                     code_base=code)
+                     code_base=code, cycle_metrics=per_operation_cycles)
     zp_bytes = max(mod["zp"] for _, mod in modules.values())
     scratch = max(mod["scratch"] for _, mod in modules.values())
     build_order = place_modules([(api, ident, mod)
@@ -513,7 +534,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         exports.append(canonical + " = " + operation["api"])
     toolchain_paths = ("tools/math_builder.py", "tools/selective_linker.py",
                        "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
-                       "tools/mini6502.py")
+                       "tools/selective_speed.py", "tools/mini6502.py")
     toolchain_hashes = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
         for name in toolchain_paths
@@ -524,7 +545,10 @@ def build(plan, outdir, memory=None, root=ROOT):
         "status": "selective_binary_emitted",
         "target": "c64",
         "selection_objective": plan["objective"],
-        "selection_basis": "global code/RAM/ZP resource optimization; cycle-speed not certified",
+        "selection_basis": ("same-corpus measured CPU-model cycles for UMUL8"
+                            if cycle_model else
+                            "global code/RAM/ZP resource optimization; cycle-speed not certified"),
+        "cycle_model_benchmark": cycle_model,
         "operations": detail,
         "link_order": [api for api, _, _ in build_order],
         "link_exports": sorted(entries),
