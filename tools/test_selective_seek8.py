@@ -41,13 +41,13 @@ class SelectiveSeek8Tests(unittest.TestCase):
             cpu,man,ex,state=self.load(d)
             self.assertEqual(set(ex),set(FAMILY))
             self.assertEqual(len(set(ex.values())),4)
-            self.assertEqual(man["resource_use"]["code_and_tables_bytes"],582)
+            self.assertEqual(man["resource_use"]["code_and_tables_bytes"],651)
             self.assertEqual(man["resource_use"]["image_span_bytes"],582)
             self.assertEqual(man["resource_use"]["zero_page_bytes"],0)
             self.assertEqual(man["resource_use"]["private_ram_scratch_bytes"],19)
             self.assertEqual(man["resource_use"]["persistent_state_bytes"],160)
             self.assertEqual(man["resource_use"]["state_alignment_padding_bytes"],5)
-            self.assertEqual(man["resource_use"]["main_ram_total_bytes"],798)
+            self.assertEqual(man["resource_use"]["main_ram_total_bytes"],867)
             inc=(Path(d)/"math_api.inc").read_text()
             self.assertIn("MATH_SEEK8_POS_X = $C038",inc)
             self.assertIn("MATH_SEEK8_POS_Y = $C040",inc)
@@ -59,7 +59,7 @@ class SelectiveSeek8Tests(unittest.TestCase):
         for code,io,sb in ((0x8000,0xc000,0xc020),(0x7123,0xc100,0xc121)):
             with self.subTest(code=code),tempfile.TemporaryDirectory() as d:
                 cpu,man,entries,state=self.load(d,code,io,sb)
-                original_code=bytes(cpu.mem[code:code+582])
+                original_code=bytes(cpu.mem[code:code+651])
                 rng=random.Random(0xC6482026)
                 for mode in range(4):
                     for batch in range(15):
@@ -117,15 +117,15 @@ class SelectiveSeek8Tests(unittest.TestCase):
                 selective_linker.build(plan,Path(d),memory={
                     "reserved":[{"start":"$C038","end":"$C040"}]})
             with self.assertRaises(selective_linker.LinkError):
-                selective_linker.build(self.plan(ram_budget=797),Path(d))
+                selective_linker.build(self.plan(ram_budget=866),Path(d))
             self.assertFalse((Path(d)/"math_selective.prg").exists())
 
     def test_mixed_operation_preserves_durable_seek_state(self):
         with tempfile.TemporaryDirectory() as d:
-            plan=self.plan(FAMILY+["MATH_UMUL8"],zp_budget=0,ram_budget=858)
+            plan=self.plan(FAMILY+["MATH_UMUL8"],zp_budget=0,ram_budget=927)
             man=selective_linker.build(plan,Path(d))
             self.assertEqual(man["resource_use"]["persistent_state_bytes"],160)
-            self.assertEqual(man["resource_use"]["main_ram_total_bytes"],858)
+            self.assertEqual(man["resource_use"]["main_ram_total_bytes"],927)
             self.assertEqual(set(man["link_exports"]),set(FAMILY+["MATH_UMUL8"]))
             self.assertEqual(len(man["link_order"]),2)
             self.assertEqual(man["resource_use"]["zero_page_bytes"],0)
