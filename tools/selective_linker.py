@@ -783,8 +783,8 @@ def build(plan, outdir, memory=None, root=ROOT):
     blocks = [region("code", code, size), region("public I/O", io, 32)]
     if scratch:
         blocks.append(region("scratch", sb, scratch))
-    for family, address in states.items():
-        blocks.append(region("persistent " + family, address,
+    for family, state_start in states.items():
+        blocks.append(region("persistent " + family, state_start,
                              state_requirements(mod for _, mod in modules.values())[family]))
     main_reserved = custom_reserved(memory, "reserved")
     zp_reserved = custom_reserved(memory, "zp_reserved", zp=True)
