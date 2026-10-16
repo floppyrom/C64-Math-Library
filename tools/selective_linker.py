@@ -22,6 +22,26 @@ import selective_dist8_accurate as dist8tab
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
+    "MATH_SDIV8": {
+        "link:v1-shared-producer": {
+            "source": "routines/divide/sdiv8_v1_resident.asm",
+            "segments": (("KERNEL_CODE", 530),),
+            "entry": "FAST_SDIV8_V1", "zp": 1, "scratch": 0,
+            "share_producer": "v1-signed-division8",
+            "provenance": "Exact V1 shared SDIV8/SMOD8 producer with zero stub",
+            "sdiv8_v1": True,
+        },
+    },
+    "MATH_SMOD8": {
+        "link:v1-shared-producer": {
+            "source": "routines/divide/sdiv8_v1_resident.asm",
+            "segments": (("KERNEL_CODE", 530),),
+            "entry": "FAST_SDIV8_V1", "zp": 1, "scratch": 0,
+            "share_producer": "v1-signed-division8",
+            "provenance": "Exact V1 alias of SDIV8 public producer; Q and R both written",
+            "sdiv8_v1": True,
+        },
+    },
     "MATH_SIN8": {
         "link:resident-shared-table": {
             "source": "routines/trig/sin8_shared.asm",
@@ -209,6 +229,7 @@ def available_variants(root=ROOT):
                 "validation_path": (
                     "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
                     "tools/test_selective_trig8.py" if mod.get("trig8") else
+                    "tools/test_selective_sdiv8.py" if mod.get("sdiv8_v1") else
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
@@ -218,11 +239,13 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("Historical V1/V2 max/min lookup with one shared 512-byte table pair; "
+                "notes": ("Original V1 signed 8-bit Q/R producer; two APIs share a single 530-byte kernel, one ZP byte"
+                          if mod.get("sdiv8_v1") else
+                          "Historical V1/V2 max/min lookup with one shared 512-byte table pair; "
                           "variant-dependent 2 scratch RAM or 2 ZP bytes"
                           if mod.get("dist8_accurate") else
                           "Original 8-bit trig code with one page-aligned 256-byte exact sine table; "
@@ -306,6 +329,29 @@ def custom_reserved(data, key, zp=False):
             raise LinkError(key + ": invalid reservation label")
         result.append((name, first, last))
     return result
+
+
+def shared_identity(item):
+    """Identical share-eligible code/data contract; other items are never coalesced."""
+    _, ident, spec = item
+    key = spec.get("share_producer")
+    if not key:
+        return None
+    return (key, ident, spec["source"], tuple(spec["segments"]),
+            spec["entry"], spec["zp"], spec["scratch"])
+
+
+def unique_code_modules(items):
+    """Count/emit genuinely shared producer once while retaining all API exports."""
+    physical, seen = [], set()
+    for item in items:
+        key = shared_identity(item)
+        if key is not None and key in seen:
+            continue
+        if key is not None:
+            seen.add(key)
+        physical.append(item)
+    return physical
 
 
 def projected_end(start, items):
@@ -426,7 +472,7 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
     for combination in itertools.product(*options):
         zp = max(mod["zp"] for _, _, mod in combination)
         scratch = max(mod["scratch"] for _, _, mod in combination)
-        code = projected_end(code_base, place_modules(combination, code_base)) - code_base
+        code = projected_end(code_base, place_modules(unique_code_modules(combination), code_base)) - code_base
         ram = code + 32 + scratch
         if zp_budget is not None and zp > zp_budget:
             continue
@@ -522,8 +568,8 @@ def build(plan, outdir, memory=None, root=ROOT):
                      code_base=code, cycle_metrics=per_operation_cycles)
     zp_bytes = max(mod["zp"] for _, mod in modules.values())
     scratch = max(mod["scratch"] for _, mod in modules.values())
-    build_order = place_modules([(api, ident, mod)
-                                 for api, (ident, mod) in modules.items()], code)
+    selected = [(api, ident, mod) for api, (ident, mod) in modules.items()]
+    build_order = place_modules(unique_code_modules(selected), code)
     size = projected_end(code, build_order) - code
     occupied_ram = size + 32 + scratch
     if zp_budget is not None and zp_bytes > zp_budget:
@@ -649,6 +695,33 @@ def build(plan, outdir, memory=None, root=ROOT):
             "segments": ranges, "zp_bytes": module["zp"], "scratch_bytes": module["scratch"],
             "operand_layout": module.get("operand_layout", "ndqr"),
         })
+    # Public API aliases can point at one physically linked historical producer.
+    # Every virtual export is separately source/hash-authorized by its own plan.
+    shared_owners = {shared_identity(item): item[0] for item in build_order
+                     if shared_identity(item) is not None}
+    for api, ident, module in selected:
+        if api in entries:
+            continue
+        identity = shared_identity((api, ident, module))
+        if identity is None or identity not in shared_owners:
+            raise LinkError(api + ": missing shared physical producer")
+        owner = shared_owners[identity]
+        op = next(op for op in plan["operations"] if op["api"] == api)
+        authorized = [v for v in op["available_source_variants"]
+                      if v["id"] == ident and v["selective_link_ready"]]
+        if len(authorized) != 1:
+            raise LinkError(api + ": aliased source not authorized by plan")
+        source = (root / module["source"]).read_bytes()
+        if authorized[0]["source_sha256"] != hashlib.sha256(source).hexdigest():
+            raise LinkError(api + ": aliased source changed since selection plan")
+        parent = next(d for d in detail if d["api"] == owner)
+        original = next(op for op in plan["operations"] if op["api"] == owner)
+        source_qual = next(v for v in original["available_source_variants"]
+                           if v["id"] == ident and v["selective_link_ready"])
+        if authorized[0].get("dependency_sha256", {}) != source_qual.get("dependency_sha256", {}):
+            raise LinkError(api + ": alias dependency provenance differs")
+        entries[api] = entries[owner]
+        detail.append({**parent, "api": api, "shared_kernel_of": owner})
     shared_tables = []
     if has_trig:
         if pc > shared_trig_page:
@@ -695,6 +768,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; All public inputs preserved; A/X/Y and processor flags may be volatile.",
         "; DIV/MOD: unsigned N/D in MATH_N/MATH_D, quotient/remainder Q/R;",
         "; UDIV8: low byte N/D => low byte Q/R; high bytes unchanged; C=1 on D=0.",
+        "; SDIV8/SMOD8: signed low byte N/D => signed low Q/R, both outputs written.",
         "; carry set iff D=0. UMOD leaves quotient untouched.",
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
