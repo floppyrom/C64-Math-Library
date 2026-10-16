@@ -369,7 +369,7 @@ class SelectiveLinkTests(unittest.TestCase):
                      "tools/selective_speed_umul16.py", "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                      "tools/selective_speed.py", "tools/selective_isqrt16.py",
                      "tools/selective_trig8.py", "tools/selective_dist8_accurate.py", "tools/selective_smul8.py",
-                     "tools/selective_seek8.py", "tools/seek_kernel.py",
+                     "tools/selective_seek8.py", "tools/selective_seek16.py", "tools/seek_kernel.py",
                      "tools/mini6502.py")
             self.assertEqual(set(man["toolchain_sha256"]), set(files))
             for name in files:
