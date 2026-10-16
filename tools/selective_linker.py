@@ -176,6 +176,25 @@ def projected_end(start, items):
     return cursor
 
 
+def place_modules(items, start):
+    """Choose the smaller of ATAN2-first and ATAN2-last layouts.
+
+    All currently linkable non-ATAN2 modules have no origin-alignment
+    requirements. With a single ATAN2 module, its only relevant choices
+    are before or after those modules; there is no gain from permuting
+    the unaligned arithmetic kernels among themselves.
+    """
+    table_modules = [item for item in items if "atan2" in item[2]]
+    ordinary = [item for item in items if "atan2" not in item[2]]
+    if len(table_modules) > 1:
+        raise LinkError("More than one table-aligned module needs placement logic")
+    first = table_modules + ordinary
+    last = ordinary + table_modules
+    if projected_end(start, last) < projected_end(start, first):
+        return last
+    return first
+
+
 def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000):
     """Optimize *the whole selection*, sharing nonreentrant scratch ownership."""
     options = []
@@ -196,7 +215,7 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000)
     for combination in itertools.product(*options):
         zp = max(mod["zp"] for _, _, mod in combination)
         scratch = max(mod["scratch"] for _, _, mod in combination)
-        code = projected_end(code_base, combination) - code_base
+        code = projected_end(code_base, place_modules(combination, code_base)) - code_base
         ram = code + 32 + scratch
         if zp_budget is not None and zp > zp_budget:
             continue
@@ -263,8 +282,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                      code_base=code)
     zp_bytes = max(mod["zp"] for _, mod in modules.values())
     scratch = max(mod["scratch"] for _, mod in modules.values())
-    size = projected_end(code, [(api, ident, mod)
-                                for api, (ident, mod) in modules.items()]) - code
+    build_order = place_modules([(api, ident, mod)
+                                 for api, (ident, mod) in modules.items()], code)
+    size = projected_end(code, build_order) - code
     occupied_ram = size + 32 + scratch
     if zp_budget is not None and zp_bytes > zp_budget:
         raise LinkError("ZP budget too small")
@@ -290,8 +310,7 @@ def build(plan, outdir, memory=None, root=ROOT):
     binary = {}
     entries, detail = {}, []
     pc = code
-    for api in names:
-        ident, module = modules[api]
+    for api, ident, module in build_order:
         operation = next(op for op in plan["operations"] if op["api"] == api)
         link_sources = [v for v in operation["available_source_variants"]
                         if v["id"] == ident and v["selective_link_ready"]]
@@ -384,6 +403,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "selection_objective": plan["objective"],
         "selection_basis": "global code/RAM/ZP resource optimization; cycle-speed not certified",
         "operations": detail,
+        "link_order": [api for api, _, _ in build_order],
         "link_exports": sorted(entries),
         "typed_exports": sorted(x["canonical_name"] for x in plan["operations"]),
         "resource_use": {
