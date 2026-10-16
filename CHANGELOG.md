@@ -1,3 +1,9 @@
+2026-10-16 UMOD8 CERTIFIED SINGLE-OPERATION SPEED SELECTION (UNRELEASED)
+- Extended operation-first --objective speed eligibility to historical UMOD8 only when it is the sole requested operation, using the certified V1/V2/V5 identical 1,000-pair source-assembled 6502 CPU-model benchmark.
+- Benchmark reproduces and SHA-locks original small-divisor-weighted corpus, relocates real machine code to caller memory layout, validates each output and carry, preserves N/D/Q/high bytes and stack, and records source SHA + mean call cycles. Source itself uses writable code and 2 ZP.
+- With default placement, 189-236 RAM bytes chooses V1 (95.635 mean cycles), 237-260 chooses V5 (94.165), >=261 chooses V2 (90.893); these are CPU-model means, not native VICE timing claims. Explicit pins and memory budget remain authoritative.
+- Mixed-operation automatic speed ranking stays prohibited pending an aligned joint workload; no historical resident images or release benchmarks changed.
+
 2026-10-16 BUILDER UMOD8 THREE-VARIANT MATCHED SPEED VALIDATION (UNRELEASED)
 - Retained the matched-input V1/V5 CPU-model cycle test from superseded PR #211 and extended it to the merged V2 variant. Same 1,000-pair source-assembled corpus, with explicit small-divisor (3..31) mean, corpus SHA, and each immutable source SHA.
 - Tests validate remainder, zero-divisor carry, input/quotient preservation, stable stack and per-variant RAM/ZP footprint; all three historic implementations are selectable, but unqualified cross-operation or automatic UMOD8 speed ranking remains disabled.
