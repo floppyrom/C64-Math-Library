@@ -19,6 +19,7 @@ import selective_fast_umul16 as fast16
 import selective_speed
 import selective_speed_umul16
 import selective_speed_umod8
+import selective_speed_udiv8
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
@@ -637,19 +638,23 @@ def build(plan, outdir, memory=None, root=ROOT):
     cycle_model = None
     per_operation_cycles = None
     if plan["objective"] == "speed":
-        if names not in (["MATH_UMUL8"], ["MATH_UMUL16"], ["MATH_UMOD8"]):
+        if names not in (["MATH_UMUL8"], ["MATH_UMUL16"],
+                         ["MATH_UMOD8"], ["MATH_UDIV8"]):
             raise LinkError(
-                "Measured automatic speed selection currently supports UMUL8, UMUL16 or UMOD8 alone; "
-                "other operations require comparable certified cycle corpora")
+                "Measured automatic speed selection supports UMUL8, UMUL16, "
+                "UMOD8 or UDIV8 alone; mixed operations need comparable "
+                "certified cycle corpora")
         api = names[0]
-        benchmark = (selective_speed.bench_umul8 if api == "MATH_UMUL8"
-                     else selective_speed_umul16.bench_umul16 if api == "MATH_UMUL16"
-                     else selective_speed_umod8.bench_umod8)
+        if api == "MATH_UMUL8":
+            benchmark, scratch_address = selective_speed.bench_umul8, sb
+        elif api == "MATH_UMUL16":
+            benchmark, scratch_address = selective_speed_umul16.bench_umul16, sb
+        elif api == "MATH_UMOD8":
+            benchmark, scratch_address = selective_speed_umod8.bench_umod8, zb
+        else:
+            benchmark, scratch_address = selective_speed_udiv8.bench_udiv8, zb
         try:
-            # UMOD8's historical SMC reducer owns a relocatable ZP pair;
-            # multiply variants instead use ordinary RAM scratch.
-            cycle_model = benchmark(MODULES[api], code, io,
-                                    zb if api == "MATH_UMOD8" else sb, root)
+            cycle_model = benchmark(MODULES[api], code, io, scratch_address, root)
         except (ValueError, OSError, RuntimeError) as exc:
             raise LinkError(api + " cycle-model measurement failed: " + str(exc)) from exc
         per_operation_cycles = {api: cycle_model["mean_cycles"]}
@@ -926,7 +931,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
                        "tools/selective_speed.py", "tools/selective_isqrt16.py",
                        "tools/selective_fast_umul16.py", "tools/selective_speed_umul16.py",
-                       "tools/selective_speed_umod8.py",
+                       "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                        "tools/selective_trig8.py", "tools/selective_dist8_accurate.py",
                        "tools/selective_smul8.py",
                        "tools/mini6502.py")

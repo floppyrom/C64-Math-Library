@@ -349,6 +349,30 @@ size/speed trade-offs. The builder does not yet auto-select UMOD8 by
 cycle speed, and does not rank unrelated operation families using an
 unmatched benchmark corpus.
 
+### Same-corpus UDIV8 speed selection
+
+Once the original V1 and V2/V5 UDIV8 producers are available, **UDIV8
+alone** supports `--objective speed` over a locked **1,000-pair shared
+numerator/divisor CPU-model corpus**. Both kernels are source-assembled
+at the requested code, I/O and zero-page origins and every measured call
+verifies unsigned quotient/remainder, zero-divisor carry, intact inputs
+and neighbouring output bytes, and balanced stack. Benchmarks and input
+corpus hashes appear in the manifest. These are **CPU-model cycles**, not
+independent VICE cycle measurements.
+
+V1 uses 294 code bytes / **326 RAM bytes including shared I/O**;
+V2/V5 uses 430 code bytes / **462 RAM bytes including I/O**. Both use one
+zero-page byte. Thus budgets from 326 to 461 bytes select V1 regardless
+of timing, and larger RAM budgets permit choosing the measured faster
+implementation. Explicit pinning and RAM/ZP limits remain authoritative.
+Mixed-operation speed selection remains unavailable without a matched
+weighted workload model.
+
+```sh
+python3 tools/math_builder.py --operation UDIV8 --objective speed \
+  --zp-budget 1 --ram-budget 462 --measure
+```
+
 ### Source-identical V2/V5 UDIV8 fast-chain alternative
 
 V2 and V5 ship *byte-for-byte identical* UDIV8 code at the original
