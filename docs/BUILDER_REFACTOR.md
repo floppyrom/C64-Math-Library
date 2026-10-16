@@ -134,6 +134,37 @@ python3 tools/math_builder.py --operation UDIV16 --operation UMOD16 \
 The interactive wizard groups all 56 operations with readable descriptions,
 shows which are currently linkable, and accepts numbers, ranges or names.
 
+### Quarter-square fast UMUL8 (experimental source alternative)
+
+UMUL8 now has **two** explicitly selectable kernels, sharing the same
+`MATH_X` / `MATH_Y` 8-bit unsigned input and `MATH_Z` 16-bit output
+contract. Both preserve operands and return with carry clear:
+
+| Variant pin | Code bytes | Generated table bytes | ZP | Ordinary scratch | Claimed RAM including 32-byte I/O |
+|---|---:|---:|---:|---:|---:|
+| `link:compact-zerozp` | 60 | 0 | 0 | 3 | 95 |
+| `link:quarter-square` | 73 | 1,022 | 0 | 2 | 1,129 |
+
+The new quarter-square kernel computes
+`Q(x+y) - Q(abs(x-y))`, where `Q(n)=floor(n*n/4)`.
+Its tables contain 511 two-byte entries, generated reproducibly from
+the integer formula. The linker emits them as two independent 511-byte
+planes; no full-library profile tables or initialization dependency are
+copied. Table and kernel bytes, private scratch and public I/O are all
+charged to the actual RAM budget.
+
+```sh
+python3 tools/math_builder.py --operation UMUL8 \
+  --pin UMUL8=link:quarter-square --zp-budget 0 --ram-budget 1129 --measure
+```
+
+Automatic **size** selection continues to prefer the compact module;
+developers can pin the quarter-square variant for speed-oriented
+experiments. The `--objective speed --build` option remains guarded until
+comparable measured cycle data are validated across module variants.
+Phase 2 adds a same-corpus CPU cycle comparison and native linked-PRG
+qualification. This variant is experimental until those gates pass.
+
 ### Compact multiplication: portable zero-ZP UMUL8
 
 The builder also offers `MATH_UMUL8` via `link:compact-zerozp`,

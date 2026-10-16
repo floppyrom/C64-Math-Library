@@ -78,9 +78,17 @@ class CatalogTests(unittest.TestCase):
     def test_umul8_compact_source_is_linkable(self):
         variants = self.index["MATH_UMUL8"]["variants"]
         linkable = [v for v in variants if v["selective_link_ready"]]
-        self.assertEqual([v["id"] for v in linkable], ["link:compact-zerozp"])
-        self.assertEqual(linkable[0]["resources_reported"]["code_and_table_bytes"], 60)
-        self.assertEqual(linkable[0]["resources_reported"]["scratch_bytes"], 3)
+        self.assertEqual({v["id"] for v in linkable},
+                         {"link:compact-zerozp", "link:quarter-square"})
+        by_id = {v["id"]: v for v in linkable}
+        self.assertEqual(by_id["link:compact-zerozp"]
+                         ["resources_reported"]["code_and_table_bytes"], 60)
+        self.assertEqual(by_id["link:compact-zerozp"]
+                         ["resources_reported"]["scratch_bytes"], 3)
+        self.assertEqual(by_id["link:quarter-square"]
+                         ["resources_reported"]["code_and_table_bytes"], 1095)
+        self.assertEqual(by_id["link:quarter-square"]
+                         ["resources_reported"]["scratch_bytes"], 2)
 
     def test_compact_multiply_variant_publication(self):
         variants = self.index["MATH_UMUL16"]["variants"]
