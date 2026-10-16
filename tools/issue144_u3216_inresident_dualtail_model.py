@@ -50,7 +50,9 @@ def builds(profile,layout):
     assert api["MATH_UMOD32_16"]==labels["MATH_UMOD32_16"]
     assert v["REG_LOW"]<=low and end<=v["REG_LOW"]+0x2000
     assert all(new.mem[i]==original.mem[i] for i in range(v["REG_LOW"],low)),(
-           profile,layout,"unrelated REG_LOW bytes changed")
+           profile,layout,"unrelated REG_LOW bytes changed",
+           [(hex(i),hex(original.mem[i]),hex(new.mem[i]))
+            for i in range(v["REG_LOW"],low) if original.mem[i]!=new.mem[i]][:24])
     return original,new,api,v,NBYTES
 
 def summarise(values):
