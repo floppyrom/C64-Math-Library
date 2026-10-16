@@ -269,6 +269,24 @@ MODULES = {
             "entry": "FAST_UMOD16_DIRECT_PUBLIC", "zp": 0, "scratch": 2,
         },
     },
+    "MATH_UDIV32_16": {
+        "link:portable-restoring": {
+            "source": "routines/divide/u32_by_u16_restoring_selective.asm",
+            "segments": (("KERNEL_CODE", 162),),
+            "entry": "FAST_UDIV32_16_PORTABLE", "zp": 0, "scratch": 3,
+            "share_producer": "unsigned-32by16-restoring", "multi_entry": True,
+            "provenance": "Portable standalone restoring reference; shared public DIV/MOD producer, NOT a V1-V5 speed replacement",
+        },
+    },
+    "MATH_UMOD32_16": {
+        "link:portable-restoring": {
+            "source": "routines/divide/u32_by_u16_restoring_selective.asm",
+            "segments": (("KERNEL_CODE", 162),),
+            "entry": "FAST_UMOD32_16_PORTABLE", "zp": 0, "scratch": 3,
+            "share_producer": "unsigned-32by16-restoring", "multi_entry": True,
+            "provenance": "Portable standalone restoring reference; writes both Q32 and R16 like the existing resident alias",
+        },
+    },
     "MATH_UDIV32_32": {
         "link:zptail": {
             "source": "routines/standalone_lab/portable/div_u32_zptail.asm",
@@ -1091,6 +1109,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; All public inputs preserved; A/X/Y and processor flags may be volatile.",
         "; DIV/MOD: unsigned N/D in MATH_N/MATH_D, quotient/remainder Q/R;",
         "; UDIV8: low byte N/D => low byte Q/R; high bytes unchanged; C=1 on D=0.",
+        "; UDIV32_16 and UMOD32_16: N32/D16 => Q32/R16 both outputs, C=1 on D=0.",
+        "; Portable 32/16 source is the correctness fallback, not the resident speed champion.",
         "; UMOD8: low byte N/D => low byte R ONLY; Q untouched, C=1 if D=0.",
         "; UMOD8 V1 fast/fallback uses two writable immediate operands in RAM.",
         "; SDIV8/SMOD8: signed low byte N/D => signed low Q/R, both outputs written.",
