@@ -103,6 +103,7 @@ def compiler(layout,tmp):
     (opt/"source_build_manifest.json").write_text(json.dumps(man,indent=2)+"\n")
     api={k:int(v[1:],16) if isinstance(v,str) and v.startswith("$") else int(v)
          for k,v in man["public_entries"].items()}
+    api["MATH_INIT"]=int(man["math_init"].lstrip("$"),16)
     return load(oldraw)[0],mem,api,vals,man,opt,((p0,p0+n0),(p1,p1+n1))
 
 def init(mem,api):
