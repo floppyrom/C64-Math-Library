@@ -1,3 +1,8 @@
+2026-10-16 HISTORICAL SMUL8 WRITABLE-CODE SOURCE MIGRATION (UNRELEASED, CI PENDING)
+- Added MATH_SMUL8 link:v1-resident-smc, retaining the exact 46-byte self-modifying historical signed 8x8 producer, instead of introducing a compact but slower replacement. Its four immutable 511-entry table pages match shipped V1-V5 bytes (including V2-V4 relocated complement pages), with 0 ZP, 0 extra scratch, and a required writable 46-byte code region.
+- Explicit resource accounting: four 512-byte aligned regions, 2044 source table bytes, 214 default-origin alignment/hole bytes, 2304 total image bytes and 32 public I/O bytes (2336 RAM). All 65536 input pairs tested in both mathematical reference and source-built CPU emulation at two origins, plus native x64sc two-origin checks. Only four executable operand bytes are intentionally modified.
+- This is the 17th independently linkable public operation in the operation-first builder. V1-V5 resident binary releases and published performance figures remain untouched; global speed selection beyond comparably measured single-operation multiplication is still not supported.
+
 2026-10-16 SELECTIVE UMUL16 QUARTER-SQUARE SPEED ALTERNATIVE (UNRELEASED; CI QUALIFICATION PENDING)
 - Transplanted independently source-linked UMUL16 quarter-square alternative (233 code bytes + 2×511 precomputed table bytes + 4 RAM scratch, zero ZP) alongside the existing 108-byte compact implementation. Inputs retained, full 32-bit result and carry-clear ABI checked.
 - Added same-source, same-corpus CPU-model speed measurements for each 16×16 variant, with 1,000 deterministic edge and uniform operand pairs, source/corpus SHA provenance and RAM/ZP gating. Mixed-operation speed ranking remains explicitly unsupported.
