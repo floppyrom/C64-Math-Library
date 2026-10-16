@@ -1,0 +1,76 @@
+name: Issue144 P5 all-nine sequential mixed-call model proof
+on:
+  push:
+    branches: [issue144-p5-mixed-nine-api-20261016]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mixed-nine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        layout: [reference, alternate]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check interleaved calls with persistent scratch and independent public oracle
+        run: |
+          python3 tools/issue144_mixed_nine_kernels.py \
+            --layout "${{ matrix.layout }}" --rounds 96 --out "$RUNNER_TEMP/issue144-p5-mixed"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue144-mixed-${{ matrix.layout }}
+          path: ${{ runner.temp }}/issue144-p5-mixed/ISSUE144_MIXED_NINE_*.json
+          if-no-files-found: error
+  seal-branch:
+    if: github.event_name == 'push' && github.ref_name == 'issue144-p5-mixed-nine-api-20261016'
+    needs: [mixed-nine]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Re-seal full package and audit after qualification
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,subprocess
+          root=Path('.')
+          def seal():
+              out=[]
+              for p in sorted(root.rglob('*')):
+                  if not p.is_file() or '.git' in p.parts or '__pycache__' in p.parts or p.name=='SHA256SUMS.txt':
+                      continue
+                  out.append(f'{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.as_posix()}\n')
+              (root/'SHA256SUMS.txt').write_text(''.join(out))
+          seal()
+          subprocess.run(['python3','tools/package_audit.py'],check=True)
+          seal()
+          subprocess.run(['python3','tools/package_audit.py'],check=True)
+          PY
+      - name: Commit exact checksum and package seal when changed
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json
+          git diff --cached --check
+          if ! git diff --cached --quiet; then
+            git commit -m 'Issue144 P5: seal mixed nine-kernel qualification package'
+            git push origin HEAD:issue144-p5-mixed-nine-api-20261016
+          fi
