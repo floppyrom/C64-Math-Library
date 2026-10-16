@@ -33,7 +33,7 @@ MODULES = {
     "MATH_UMUL16": {
         "link:compact-zerozp": {
             "source": "routines/multiply/umul16_compact_zerozp.asm",
-            "segments": (("KERNEL_CODE", 107),),
+            "segments": (("KERNEL_CODE", 108),),
             "entry": "FAST_UMUL16_COMPACT", "zp": 0, "scratch": 6,
             "operand_layout": "xyz",
         },
