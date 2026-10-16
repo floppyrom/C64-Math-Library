@@ -161,7 +161,18 @@ def custom_reserved(data, key, zp=False):
     return result
 
 
-def choose(names, pins, objective, zp_budget, ram_budget=None):
+def projected_end(start, items):
+    """Actual compact PRG span, including required ATAN2 page alignment."""
+    cursor = start
+    for _, _, mod in items:
+        if "atan2" in mod:
+            _, cursor = atan2.layout(mod["atan2"], cursor)
+        else:
+            cursor += sum(length for _, length in mod["segments"])
+    return cursor
+
+
+def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000):
     """Optimize *the whole selection*, sharing nonreentrant scratch ownership."""
     options = []
     for api in names:
@@ -181,7 +192,7 @@ def choose(names, pins, objective, zp_budget, ram_budget=None):
     for combination in itertools.product(*options):
         zp = max(mod["zp"] for _, _, mod in combination)
         scratch = max(mod["scratch"] for _, _, mod in combination)
-        code = sum(n for _, _, mod in combination for _, n in mod["segments"])
+        code = projected_end(code_base, combination) - code_base
         ram = code + 32 + scratch
         if zp_budget is not None and zp > zp_budget:
             continue
@@ -232,16 +243,6 @@ def build(plan, outdir, memory=None, root=ROOT):
     constraints = plan["constraints"]
     zp_budget = constraints["max_zp_bytes"]
     ram_budget = constraints["max_ram_bytes"]
-    modules = choose(names, pins, plan["objective"], zp_budget, ram_budget)
-    zp_bytes = max(mod["zp"] for _, mod in modules.values())
-    scratch = max(mod["scratch"] for _, mod in modules.values())
-    size = sum(length for _, mod in modules.values() for _, length in mod["segments"])
-    occupied_ram = size + 32 + scratch
-    if zp_budget is not None and zp_bytes > zp_budget:
-        raise LinkError("ZP budget too small")
-    if ram_budget is not None and occupied_ram > ram_budget:
-        raise LinkError("RAM budget too small (includes public 32-byte I/O)")
-
     memory = memory or {}
     if not isinstance(memory, dict):
         raise LinkError("memory: expected a map")
@@ -254,6 +255,17 @@ def build(plan, outdir, memory=None, root=ROOT):
     io = address(memory.get("math_io", 0xc000), "math_io")
     zb = address(memory.get("zp_base", 0x50), "zp_base")
     sb = address(memory.get("scratch_base", io + 32), "scratch_base")
+    modules = choose(names, pins, plan["objective"], zp_budget, ram_budget,
+                     code_base=code)
+    zp_bytes = max(mod["zp"] for _, mod in modules.values())
+    scratch = max(mod["scratch"] for _, mod in modules.values())
+    size = projected_end(code, [(api, ident, mod)
+                                for api, (ident, mod) in modules.items()]) - code
+    occupied_ram = size + 32 + scratch
+    if zp_budget is not None and zp_bytes > zp_budget:
+        raise LinkError("ZP budget too small")
+    if ram_budget is not None and occupied_ram > ram_budget:
+        raise LinkError("RAM budget too small (including alignment padding and I/O)")
     blocks = [region("code", code, size), region("public I/O", io, 32)]
     if scratch:
         blocks.append(region("scratch", sb, scratch))
@@ -290,14 +302,24 @@ def build(plan, outdir, memory=None, root=ROOT):
         locations = dict(constants)
         expected = set()
         ranges = []
-        for seg, length in module["segments"]:
-            locations[seg] = pc
-            ranges.append({"name": seg, "start": "$%04X" % pc, "bytes": length})
-            expected.update(range(pc, pc + length))
-            pc += length
         try:
-            machine, labels, _ = Assembler().assemble(
-                relocate_source(module, locations, root))
+            if "atan2" in module:
+                machine, entry, ranges, end = atan2.assemble(
+                    module["atan2"], pc, io, root)
+                expected = set()
+                for seg in ranges:
+                    start = int(seg["start"][1:], 16)
+                    expected.update(range(start, start + seg["bytes"]))
+                labels = {module["entry"]: entry}
+                pc = end
+            else:
+                for seg, length in module["segments"]:
+                    locations[seg] = pc
+                    ranges.append({"name": seg, "start": "$%04X" % pc, "bytes": length})
+                    expected.update(range(pc, pc + length))
+                    pc += length
+                machine, labels, _ = Assembler().assemble(
+                    relocate_source(module, locations, root))
         except Exception as e:
             raise LinkError("Assembly failed for " + api + ": " + str(e)) from e
         if set(machine) != expected:
@@ -315,10 +337,15 @@ def build(plan, outdir, memory=None, root=ROOT):
             "sha256": hashlib.sha256((root / module["source"]).read_bytes()).hexdigest(),
             "segments": ranges, "zp_bytes": module["zp"], "scratch_bytes": module["scratch"],
         })
-    if set(binary) != set(range(code, code + size)):
-        raise LinkError("Linked code is not compact and contiguous")
+    if pc != code + size:
+        raise LinkError("Incorrect linked image span")
+    # ATAN2 lookup pages need page alignment. Gaps are explicit zero-filled
+    # PRG padding and are counted in RAM usage, not silently reusable memory.
+    padding = size - len(binary)
+    if padding < 0 or any(a < code or a >= pc for a in binary):
+        raise LinkError("Linked image outside declared span")
     prg = bytes((code & 255, code >> 8)) + bytes(
-        binary[addr] for addr in range(code, code + size))
+        binary.get(addr, 0) for addr in range(code, code + size))
     exports = [
         "; Generated selective C64 math library (CLD required; non-reentrant)",
         "; Registers volatile; N/D preserved; carry set iff divisor zero",
@@ -344,7 +371,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         "link_exports": sorted(entries),
         "typed_exports": sorted(x["canonical_name"] for x in plan["operations"]),
         "resource_use": {
-            "code_and_tables_bytes": size, "public_io_bytes": 32,
+            "code_and_tables_bytes": len(binary), "image_span_bytes": size,
+            "alignment_padding_bytes": padding, "public_io_bytes": 32,
             "private_ram_scratch_bytes": scratch,
             "main_ram_total_bytes": occupied_ram, "zero_page_bytes": zp_bytes,
             "persistent_stack_page_bytes": 0,
