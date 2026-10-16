@@ -1,3 +1,14 @@
+## Unreleased — operation-first SEEK16 movement family
+
+- Link four SEEK16 public operations from a single generated 898-byte
+  RAM-operand DDA engine with distinct INIT/STEP/STEP_INT/STEP1 exports.
+- Allocate 248-byte independent persistent state for eight 16-bit-X
+  objects, sharing reusable 19-byte init scratch with SEEK8.
+  Enforce state alignment, no overlap and global mixed-operation budgets.
+- Export X low/high and Y position array symbols; maintain the public
+  MATH_X/MATH_Y/MATH_N calling convention and CPU/VICE relocation gates.
+- V1–V5 profile images remain unchanged; speed rankings remain fail-closed.
+
 ## Unreleased — operation-first SEEK8 movement family
 
 - Add four independently selectable SEEK8 public API entries from one
