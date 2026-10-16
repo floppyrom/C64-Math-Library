@@ -213,6 +213,37 @@ class SelectiveLinkTests(unittest.TestCase):
                     self.assertEqual(cpu.sp, stack_start)
             self.assertEqual(bytes(mem[0x8000:0x8000+len(prg)-2]), image_before)
 
+    def test_resource_pareto_prunes_only_automatic_variants(self):
+        # Compact ATAN2 is smaller at identical ZP/scratch resource use;
+        # expert pinning sum-fast must remain allowed for its speed benefit.
+        variants = linker.MODULES["MATH_ATAN2_8"]
+        frontier = linker.pareto_resource_variants(variants)
+        self.assertEqual(set(frontier), {"link:compact"})
+        for code in (0x8000, 0x7123):
+            with self.subTest(code=code), tempfile.TemporaryDirectory() as d:
+                auto = self.plan(["ATAN2_8"], objective="size",
+                                 zp_budget=0, ram_budget=1600)
+                result = linker.build(
+                    auto, Path(d), memory={"code_base": code})
+                self.assertEqual(result["operations"][0]["variant"], "link:compact")
+                pinned = self.plan(
+                    ["ATAN2_8"], zp_budget=0, ram_budget=1600,
+                    pins={"ATAN2_8": "link:sum-fast"})
+                fast = linker.build(
+                    pinned, Path(d), memory={"code_base": code})
+                self.assertEqual(fast["operations"][0]["variant"], "link:sum-fast")
+        def record(size, scratch, zp):
+            return {"segments": (("KERNEL_CODE", size),),
+                    "scratch": scratch, "zp": zp}
+        records = {"a": record(100, 3, 0),
+                   "b": record(110, 4, 0),
+                   "c": record(80, 6, 2),
+                   "d": record(140, 0, 0),
+                   "e": record(100, 3, 0)}
+        # b is dominated by a; e is equal but tie-broken by stable ID.
+        self.assertEqual(set(linker.pareto_resource_variants(records)),
+                         {"a", "c", "d"})
+
     def test_global_variant_selection_beats_local_choices(self):
         # UDIV16 needs 2 ZP bytes. The smaller UDIV32 donor needs 4, but
         # switching only UDIV32 to its zero-ZP donor lets both coexist.
