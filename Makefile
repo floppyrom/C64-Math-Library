@@ -85,6 +85,7 @@ builder-validate:
 	$(PYTHON) tools/test_selective_multiply.py
 	$(PYTHON) tools/test_selective_umul8.py
 	$(PYTHON) tools/test_selective_fast_umul8.py
+	$(PYTHON) tools/test_selective_speed.py
 
 pareto-validate:
 	$(PYTHON) tools/validate_pareto.py
