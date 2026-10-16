@@ -71,7 +71,14 @@ def call(c,n):
     sp=c.sp
     cycles=c.call(0x5e30, 2_000_000)
     got=int.from_bytes(c.mem[0xc008:0xc00a],"little")
-    assert got==math.isqrt(n),(hex(n),got,math.isqrt(n))
+    if got!=math.isqrt(n):
+        print("DEBUG_BAD_ROOT",hex(n),"got",got,"expected",math.isqrt(n),
+              "prg-entry",bytes(c.mem[0x5e30:0x5e33]).hex(),
+              "zp",bytes(c.mem[0x54:0x5c]).hex(),
+              "scratch",bytes(c.mem[0xc020:0xc024]).hex(),
+              "reu-reg",bytes(c.mem[0xdf02:0xdf0b]).hex(),
+              flush=True)
+        raise AssertionError((hex(n),got,math.isqrt(n)))
     assert bytes(c.mem[0xc010:0xc014])==saved_n and c.c==0 and c.sp==sp
     # The REU C64 buffer register must again identify its original $C020
     # scratch address so that unrelated REU clients do not inherit $0054.
@@ -121,6 +128,10 @@ def main():
             path.write_text(candidate)
             new_prg,new_reu,man1=build(clone,layout,tmp/"new")
             assert old_reu.read_bytes()==new_reu.read_bytes()
+            if layout=="reference":
+                from validate_source_build import validate as full_baseline_validator
+                baseline_test=full_baseline_validator(PROFILE,tmp/"old"/layout)
+                print("BASELINE_FULL_VALIDATOR",baseline_test["status"],baseline_test["machine_calls"],flush=True)
             m=compare(old_prg,new_prg,new_reu,corpus)
             assert m["minimum_saved_cycles"]>=0 and m["mean_saved_cycles"]>0,m
             m["layout"]=layout
