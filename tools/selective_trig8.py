@@ -21,6 +21,10 @@ SINE_BYTES = bytes.fromhex(SINE_HEX)
 assert len(SINE_BYTES) == 256
 
 
+def align_page(address: int) -> int:
+    return (address + 255) & ~255
+
+
 def emit(address: int):
     """Page-aligned shared immutable table for SIN8/COS8/SINCOS8 links."""
     if address & 255 or not 0 <= address <= 0xFF00:
