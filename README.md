@@ -4,6 +4,8 @@ High-performance integer, fixed-point and game math for the Commodore 64 / NMOS 
 
 The library exposes one stable **56-entry public API** across five fixed profiles. V3/V4 add stateful Turbo16/Turbo32 calls; V4 also adds QS16. A Custom Pareto Builder can generate a stock-C64 mix for a chosen ZP/RAM budget.
 
+> **Next-generation builder (experimental):** Choose mathematical operations, optimization priorities, and memory budgets without selecting a fixed profile. [Read the refactor plan](docs/BUILDER_REFACTOR.md) or run `python3 tools/math_builder.py --list`. This first stage produces a selection manifest only; complete resident V1–V5 binaries remain the supported build outputs until selective linking is qualified.
+
 ## Start here
 
 - **How fast are the routines?** [`PERFORMANCE.md`](PERFORMANCE.md)
