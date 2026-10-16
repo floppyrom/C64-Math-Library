@@ -1,3 +1,9 @@
+2026-10-16 BUILDER V2/V5 HISTORICAL FAST UMOD8 ALTERNATIVES (UNRELEASED; QUALIFICATION PENDING)
+- Added independent source-faithful V2 (229 bytes, fast divisor >=24) and V5 (205 bytes, fast divisor >=32) unsigned 8-bit remainder kernels alongside the existing V1 157-byte source. All require two caller-free ZP bytes and writable executable RAM for exactly two immediate operand patches, with no lookup data, REU, or setup.
+- Public ABI retains unsigned N/D, untouched Q, upper I/O bytes, remainder low byte and carry only on division-by-zero; no cosmetic smaller-but-slower substitute was introduced.
+- Added exact mirror opcode/geometry parity checks, all 65,536 N/D cases at each of two code/ZP relocations per candidate, source immutability apart from the documented SMC bytes, RAM budgeting, and native x64sc ABI tests. V1–V5 release PRGs and published timing records are unchanged.
+- UMOD8 keeps V1 as the default minimum-memory choice; speed selection remains gated on a matched-input workload corpus.
+
 2026-10-16 OPERATION-FIRST HISTORICAL UMOD8 FAST/FALLBACK (UNRELEASED, QUALIFICATION PENDING)
 - Migrated the original V1 MATH_UMOD8 producer as a standalone 157-byte relocatable NMOS kernel, preserving the >=32 divisor direct-subtraction fast path and the small-divisor fast remainder fallback, with the public entry trampoline removed. One 2-byte owned ZP allocation, no lookup tables or other RAM scratch; 189 RAM bytes including public I/O.
 - Preserves the full quotient register group and input bytes; writes only low MATH_R, with R=0 / C=1 for a zero divisor, C=0 otherwise. The two immediate bytes in the original fallback are self-modified and require writable non-reentrant RAM code.
