@@ -93,7 +93,7 @@ class CatalogTests(unittest.TestCase):
     def test_compact_multiply_variant_publication(self):
         variants = self.index["MATH_UMUL16"]["variants"]
         eligible = {v["id"] for v in variants if v["selective_link_ready"]}
-        self.assertEqual(eligible, {"link:compact-zerozp"})
+        self.assertEqual(eligible, {"link:compact-zerozp", "link:quarter-square"})
         self.assertEqual(next(v for v in variants
                               if v["id"] == "link:compact-zerozp")
                          ["resources_reported"]["scratch_bytes"], 6)

@@ -15,7 +15,9 @@ import re
 from mini6502 import Assembler
 import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
+import selective_fast_umul16 as fast16
 import selective_speed
+import selective_speed_umul16
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
@@ -105,6 +107,12 @@ MODULES = {
             "segments": (("KERNEL_CODE", 108),),
             "entry": "FAST_UMUL16_COMPACT", "zp": 0, "scratch": 6,
             "operand_layout": "xyz",
+        },
+        "link:quarter-square": {
+            "source": "routines/multiply/umul16_quartersquare.asm",
+            "segments": (("KERNEL_CODE", 233), ("Q_LO", 511), ("Q_HI", 511)),
+            "entry": "FAST_UMUL16_QUARTERSQUARE", "zp": 0, "scratch": 4,
+            "operand_layout": "xyz", "fast_umul16": True,
         },
     },
     "MATH_UMOD16": {
@@ -213,6 +221,11 @@ def available_variants(root=ROOT):
                     "tools/selective_fast_umul8.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest()
                 } if mod.get("fast_umul8") else {
+                    "tools/selective_fast_umul8.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
+                    "tools/selective_fast_umul16.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
+                } if mod.get("fast_umul16") else {
                     "tools/selective_isqrt16.py": hashlib.sha256(
                         (root / "tools/selective_isqrt16.py").read_bytes()).hexdigest()
                 } if mod.get("isqrt16") else {
@@ -227,6 +240,7 @@ def available_variants(root=ROOT):
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
                 "validation_path": (
+                    "tools/test_selective_fast_umul16.py" if mod.get("fast_umul16") else
                     "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
                     "tools/test_selective_trig8.py" if mod.get("trig8") else
                     "tools/test_selective_sdiv8.py" if mod.get("sdiv8_v1") else
@@ -554,16 +568,18 @@ def build(plan, outdir, memory=None, root=ROOT):
     cycle_model = None
     per_operation_cycles = None
     if plan["objective"] == "speed":
-        if names != ["MATH_UMUL8"]:
+        if names not in (["MATH_UMUL8"], ["MATH_UMUL16"]):
             raise LinkError(
-                "Measured automatic speed selection currently supports UMUL8 alone; "
+                "Measured automatic speed selection currently supports UMUL8 or UMUL16 alone; "
                 "other operations require comparable certified cycle corpora")
+        api = names[0]
+        benchmark = (selective_speed.bench_umul8 if api == "MATH_UMUL8"
+                     else selective_speed_umul16.bench_umul16)
         try:
-            cycle_model = selective_speed.bench_umul8(
-                MODULES["MATH_UMUL8"], code, io, sb, root)
+            cycle_model = benchmark(MODULES[api], code, io, sb, root)
         except (ValueError, OSError, RuntimeError) as exc:
-            raise LinkError("UMUL8 cycle-model measurement failed: " + str(exc)) from exc
-        per_operation_cycles = {"MATH_UMUL8": cycle_model["mean_cycles"]}
+            raise LinkError(api + " cycle-model measurement failed: " + str(exc)) from exc
+        per_operation_cycles = {api: cycle_model["mean_cycles"]}
     modules = choose(names, pins, plan["objective"], zp_budget, ram_budget,
                      code_base=code, cycle_metrics=per_operation_cycles)
     zp_bytes = max(mod["zp"] for _, mod in modules.values())
@@ -642,6 +658,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("fast_umul8") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_fast_umul8.py"]:
             raise LinkError(api + ": quarter-square table generator provenance missing")
+        if module.get("fast_umul16") and set(x["source_path"] for x in dep_provenance) != {
+                "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py"}:
+            raise LinkError(api + ": 16-bit quarter-square emitter provenance missing")
         if module.get("isqrt16") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_isqrt16.py"]:
             raise LinkError(api + ": integer-root table generator provenance missing")
@@ -655,12 +674,14 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("isqrt16"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
                 elif module.get("isqrt16"):
                     machine, entry, ranges, end = sqrt16.assemble(pc, io, root)
+                elif module.get("fast_umul16"):
+                    machine, entry, ranges, end = fast16.assemble(pc, io, sb, root)
                 else:
                     machine, entry, ranges, end = fast8.assemble(pc, io, sb, root)
                 expected = set()
@@ -797,6 +818,7 @@ def build(plan, outdir, memory=None, root=ROOT):
     toolchain_paths = ("tools/math_builder.py", "tools/selective_linker.py",
                        "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
                        "tools/selective_speed.py", "tools/selective_isqrt16.py",
+                       "tools/selective_fast_umul16.py", "tools/selective_speed_umul16.py",
                        "tools/selective_trig8.py", "tools/selective_dist8_accurate.py",
                        "tools/mini6502.py")
     toolchain_hashes = {
@@ -809,7 +831,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "status": "selective_binary_emitted",
         "target": "c64",
         "selection_objective": plan["objective"],
-        "selection_basis": ("same-corpus measured CPU-model cycles for UMUL8"
+        "selection_basis": ("same-corpus measured CPU-model cycles for " + names[0]
                             if cycle_model else
                             "global code/RAM/ZP resource optimization; cycle-speed not certified"),
         "cycle_model_benchmark": cycle_model,

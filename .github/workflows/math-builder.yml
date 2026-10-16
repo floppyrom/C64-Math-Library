@@ -16,6 +16,12 @@ on:
       - tools/test_selective_umul8.py
       - routines/multiply/umul8_quartersquare.asm
       - tools/selective_fast_umul8.py
+      - tools/selective_fast_umul16.py
+      - tools/test_selective_fast_umul16.py
+      - tools/native_selective_fast_umul16.py
+      - tools/selective_speed_umul16.py
+      - tools/test_selective_speed_umul16.py
+      - routines/multiply/umul16_quartersquare.asm
       - tools/test_selective_fast_umul8.py
       - tools/native_selective_fast_umul8.py
       - tools/selective_speed.py
@@ -66,7 +72,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Syntax-check builder and regression scripts before running tests
-        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/native_selective_fast_umul8.py tools/selective_fast_umul8.py tools/test_selective_fast_umul8.py tools/selective_speed.py tools/test_selective_speed.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/native_selective_isqrt16.py tools/test_selective_dist8.py tools/native_selective_dist8.py tools/test_selective_udiv8.py tools/native_selective_udiv8.py tools/test_selective_sdiv8.py tools/native_selective_sdiv8.py tools/selective_trig8.py tools/test_selective_trig8.py tools/native_selective_trig8.py tools/selective_dist8_accurate.py tools/test_selective_dist8_accurate.py tools/native_selective_dist8_accurate.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
+        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/native_selective_fast_umul8.py tools/selective_fast_umul8.py tools/test_selective_fast_umul8.py tools/selective_fast_umul16.py tools/test_selective_fast_umul16.py tools/native_selective_fast_umul16.py tools/selective_speed_umul16.py tools/test_selective_speed_umul16.py tools/selective_speed.py tools/test_selective_speed.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/native_selective_isqrt16.py tools/test_selective_dist8.py tools/native_selective_dist8.py tools/test_selective_udiv8.py tools/native_selective_udiv8.py tools/test_selective_sdiv8.py tools/native_selective_sdiv8.py tools/selective_trig8.py tools/test_selective_trig8.py tools/native_selective_trig8.py tools/selective_dist8_accurate.py tools/test_selective_dist8_accurate.py tools/native_selective_dist8_accurate.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
       - name: Validate operation catalog and no-binary safety
         run: |
           python3 tools/test_math_builder.py
@@ -75,6 +81,8 @@ jobs:
           python3 tools/test_selective_multiply.py
           python3 tools/test_selective_umul8.py
           python3 tools/test_selective_fast_umul8.py
+          python3 tools/test_selective_fast_umul16.py
+          python3 tools/test_selective_speed_umul16.py
           python3 tools/test_selective_speed.py
           python3 tools/test_selective_isqrt16.py
           python3 tools/test_selective_dist8.py
@@ -111,6 +119,8 @@ jobs:
         run: python3 tools/native_selective_multiply.py
       - name: Validate quarter-square UMUL8 linked PRGs in native VICE
         run: python3 tools/native_selective_fast_umul8.py
+      - name: Validate independently linked quarter-square UMUL16 in VICE
+        run: python3 tools/native_selective_fast_umul16.py
       - name: Validate source-linked optimized ISQRT16 at two RAM maps
         run: python3 tools/native_selective_isqrt16.py
       - name: Validate source-linked historical DIST8_FAST at two RAM maps

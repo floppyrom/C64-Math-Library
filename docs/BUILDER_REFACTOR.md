@@ -412,6 +412,38 @@ a UMUL16 + ATAN2 compact + UDIV16 combination occupies 1,091 bytes of
 PRG payload including 54 padding bytes, 6 RAM scratch bytes and 2 ZP
 bytes (1,129 total RAM bytes, including 32 public I/O bytes).
 
+### Faster-source UMUL16: quarter-square composition
+
+Alongside the 108-byte compact shift/add source, `MATH_UMUL16` can now
+select `link:quarter-square`. It evaluates four exact unsigned 8×8
+quarter-square products, combines them with carry propagation into a 32-bit
+result, and reuses the 511-entry low/high lookup-table generator already
+used by UMUL8. Both sources preserve X/Y and return `C=0`.
+
+| UMUL16 variant | Kernel | Tables | ZP | Ordinary scratch | RAM with shared I/O |
+|---|---:|---:|---:|---:|---:|
+| `link:compact-zerozp` | 108 B | 0 B | 0 B | 6 B | 146 B |
+| `link:quarter-square` | 233 B | 1022 B | 0 B | 4 B | 1291 B |
+
+Explicit pinned build (source/table SHA-locked, no resident image):
+
+```sh
+python3 tools/math_builder.py --operation UMUL16 \
+  --pin UMUL16=link:quarter-square --zp-budget 0 \
+  --ram-budget 1291 --build
+```
+
+With `--objective speed` for **UMUL16 alone**, the builder executes both
+source-assembled implementations on the same deterministic CPU-model corpus
+(1,000 16×16 operand pairs, seeded edge/uniform). It records the corpus
+SHA, individual mean cycles and the chosen implementation in the manifest;
+RAM/ZP constraints still apply. These measurements are **CPU-model cycles**,
+not native VICE performance timings. A mixed-operation speed optimization
+request still refuses to claim comparability.
+
+The source-linked and native VICE qualification for this new variant is
+tracked by PR #201, qualified independently before publication.
+
 ### ATAN2: source/table-aware linking
 
 ATAN2 now provides two selectable, independently published algorithms.

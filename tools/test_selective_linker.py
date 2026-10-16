@@ -365,7 +365,8 @@ class SelectiveLinkTests(unittest.TestCase):
                              ram_budget=600)
             man = linker.build(plan, Path(d))
             files = ("tools/math_builder.py", "tools/selective_linker.py",
-                     "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
+                     "tools/selective_atan2.py", "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py",
+                     "tools/selective_speed_umul16.py",
                      "tools/selective_speed.py", "tools/selective_isqrt16.py",
                      "tools/selective_trig8.py", "tools/selective_dist8_accurate.py",
                      "tools/mini6502.py")
