@@ -103,6 +103,12 @@ def operation_index(root: Path = ROOT) -> dict[str, dict]:
             raise SelectionError("Variant ID collision for " + api + ": " + variant_id)
         options.append(v)
 
+    # First independently relocatable arithmetic modules, with explicit source contracts.
+    import selective_linker
+    for api, variants in selective_linker.available_variants(root).items():
+        if api not in operations:
+            raise SelectionError("Unknown linkable operation: " + api)
+        operations[api]["variants"].extend(variants)
     return dict(sorted(operations.items()))
 
 
@@ -243,7 +249,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--validate-sources", action="store_true",
                         help="SHA-check referenced source mirrors and records")
     parser.add_argument("--build", action="store_true",
-                        help="request a PRG (currently refused until linker qualification)")
+                        help="build the qualified 16-bit selective subset only")
     args = parser.parse_args(argv)
     try:
         index = operation_index()
@@ -287,10 +293,18 @@ def main(argv: list[str] | None = None) -> int:
             pins=pins, validate_sources=args.validate_sources,
         )
         if args.build:
-            raise SelectionError(
-                "Selective PRG linking is not qualified yet; plan only. "
-                "The current complete-image builder remains unchanged."
-            )
+            if args.preview:
+                raise SelectionError("--build and --preview are mutually exclusive")
+            import selective_linker
+            try:
+                manifest = selective_linker.build(plan, args.out.parent,
+                                                  memory=cfg.get("memory", {}))
+            except selective_linker.LinkError as exc:
+                raise SelectionError(str(exc)) from exc
+            print("Built minimal PRG:", args.out.parent / "math_selective.prg")
+            print("Linked operations:", ", ".join(x["api"] for x in manifest["operations"]))
+            print("Code bytes:", manifest["resource_use"]["code_and_tables_bytes"])
+            return 0
         payload = json.dumps(plan, indent=2) + "\n"
         if args.preview:
             print(payload, end="")
