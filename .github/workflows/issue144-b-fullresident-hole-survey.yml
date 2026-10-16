@@ -1,0 +1,18 @@
+name: Issue144 B all source-owned region geometry survey
+on:
+  push:
+    branches: [issue144-b-resident-geometry-survey-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  region-map:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Survey every source-owned code/data region on three profiles, two maps
+        run: python3 tools/issue144_u3216_fullresident_hole_survey.py
