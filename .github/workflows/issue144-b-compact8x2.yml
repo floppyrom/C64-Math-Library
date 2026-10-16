@@ -1,0 +1,18 @@
+name: Issue144 B compact 8x2 low-divisor quotient tail
+on:
+  push:
+    branches: [issue144-b-lowd-8x2-compact-tail-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  cpu-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Paired full-public DIV MOD and source-owned address vacancy audit V2-V4 both maps
+        run: python3 tools/issue144_u3216_compact_8x2_screen.py
