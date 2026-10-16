@@ -4,13 +4,11 @@
 ; The remaining 12 radicand bits are resolved by six ordinary restoring steps.
 ; Input N is preserved; output Z0:Z1 is floor(sqrt(N)); C=0.
 
-; The four REU record bytes are [rootlo, roothi, reslo, reshi].
-; Keep the same eight-byte ZP allocation, but order fields in DMA order.
-IS32_ROOT0  = ZP_MAIN+$52
-IS32_ROOT1  = ZP_MAIN+$53
-IS32_RES0   = ZP_MAIN+$54
-IS32_RES1   = ZP_MAIN+$55
-IS32_RES2   = ZP_MAIN+$56
+IS32_RES0   = ZP_MAIN+$52
+IS32_RES1   = ZP_MAIN+$53
+IS32_RES2   = ZP_MAIN+$54
+IS32_ROOT0  = ZP_MAIN+$55
+IS32_ROOT1  = ZP_MAIN+$56
 IS32_TRIAL0 = ZP_MAIN+$57
 IS32_TRIAL1 = ZP_MAIN+$58
 IS32_TRIAL2 = ZP_MAIN+$59
@@ -58,13 +56,10 @@ IS32P_ENTRY:
     ora REU_SCRATCH+3
     sta $DF04
 
-    ; Read root0/root1/res0/res1 directly to the existing eight-byte
-    ; ISQRT32 ZP workspace. No new ZP or caller-owned RAM.
-    ; Other REU routines assume the normal transfer destination, so restore
-    ; the C64 address latch before executing the arithmetic refinement.
-    lda #<IS32_ROOT0
+    ; One four-byte REU -> C64 transfer.
+    lda #<REU_SCRATCH
     sta $DF02
-    lda #>IS32_ROOT0
+    lda #>REU_SCRATCH
     sta $DF03
     lda #$04
     sta $DF07
@@ -74,10 +69,15 @@ IS32P_ENTRY:
     lda #$91
     sta $DF01
 
-    lda #<REU_SCRATCH
-    sta $DF02
-    lda #>REU_SCRATCH
-    sta $DF03
+    ; Record = partial root (16-bit), residual (16-bit).
+    lda REU_SCRATCH+0
+    sta IS32_ROOT0
+    lda REU_SCRATCH+1
+    sta IS32_ROOT1
+    lda REU_SCRATCH+2
+    sta IS32_RES0
+    lda REU_SCRATCH+3
+    sta IS32_RES1
     lda #$00
     sta IS32_RES2
 
