@@ -269,6 +269,12 @@ def build(plan, outdir, memory=None, root=ROOT):
         "MATH_Q = $%04X" % (io + 24), "MATH_R = $%04X" % (io + 28),
     ]
     exports += [api + " = $%04X" % addr for api, addr in entries.items()]
+    # Preserve the stable typed ABI aliases when generating a tiny library.
+    for operation in plan["operations"]:
+        canonical = operation["canonical_name"]
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", canonical):
+            raise LinkError("Unsafe typed operation alias: " + canonical)
+        exports.append(canonical + " = " + operation["api"])
     manifest = {
         "schema": "c64-math-selective-binary-v1",
         "status": "selective_binary_emitted",
@@ -276,6 +282,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         "selection_objective": plan["objective"],
         "selection_basis": "global code/RAM/ZP resource optimization; cycle-speed not certified",
         "operations": detail,
+        "link_exports": sorted(entries),
+        "typed_exports": sorted(x["canonical_name"] for x in plan["operations"]),
         "resource_use": {
             "code_and_tables_bytes": size, "public_io_bytes": 32,
             "private_ram_scratch_bytes": scratch,
