@@ -88,6 +88,15 @@ MODULES = {
             "entry": "atan2", "zp": 0, "scratch": 0, "atan2": "sum-fast",
         },
     },
+    "MATH_DIST8_FAST": {
+        "link:resident-approx": {
+            "source": "routines/game/dist8_fast.asm",
+            "segments": (("KERNEL_CODE", 61),),
+            "entry": "FAST_DIST8_FAST", "zp": 0, "scratch": 2,
+            "operand_layout": "xyz", "dist8": True,
+            "provenance": "V1 fast signed-8 abs/max/min approximation; resident trampoline removed",
+        },
+    },
     "MATH_ISQRT16": {
         "link:square-table": {
             "source": "routines/roots/isqrt16_square_table.asm",
@@ -137,23 +146,26 @@ def available_variants(root=ROOT):
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
-                "validation_path": ("tools/test_selective_fast_umul8.py"
-                                    if mod.get("fast_umul8") else
-                                    "tools/test_selective_multiply.py"
-                                    if mod.get("operand_layout") == "xyz" else
-                          "V1-family 38-byte lookup kernel; three generated 256-byte tables, no ZP"
-                          if mod.get("isqrt16") else
-                                  "extracted square-lookup kernel; CPU/native qualification pending"
-                                  if mod.get("isqrt16") else
-                                    "tools/test_selective_isqrt16.py"
-                                    if mod.get("isqrt16") else
-                                    "routines/atan2/validate_optimized.py"
-                                    if "atan2" in mod else
-                                    "routines/standalone_lab/portable/verify.py"),
-                "qualification": ("experimental new compact source; CPU/native validation pending"
+                "validation_path": (
+                    "tools/test_selective_dist8.py" if mod.get("dist8") else
+                    "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
+                    "tools/test_selective_fast_umul8.py" if mod.get("fast_umul8") else
+                    "tools/test_selective_multiply.py"
+                    if mod.get("operand_layout") == "xyz" else
+                    "routines/atan2/validate_optimized.py" if "atan2" in mod else
+                    "routines/standalone_lab/portable/verify.py"),
+                "qualification": ("historical fast source port; CPU and native VICE gates"
+                                  if mod.get("dist8") or mod.get("isqrt16") else
+                                  "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
-                                  "existing portable source; selective mixed-call validation pending"),
-                "notes": ("73-byte quarter-square 8x8 code and 1022 exact table bytes; 2 RAM scratch, 0 ZP"
+                                  "portable source; mixed-call qualification"),
+                "notes": ("61-byte trampoline-free V1 signed-distance approximation, "
+                          "two private scratch bytes and zero ZP"
+                          if mod.get("dist8") else
+                          "38-byte V1/V2/V5 ISQRT16 descending square-lookup kernel, "
+                          "768 generated aligned table bytes and zero ZP"
+                          if mod.get("isqrt16") else
+                          "73-byte quarter-square 8x8 code and 1022 exact table bytes; 2 RAM scratch, 0 ZP"
                           if mod.get("fast_umul8") else
                           "Compact portable shift-add multiply; not performance-ranked against table variants"
                           if mod.get("operand_layout") == "xyz" else
@@ -549,6 +561,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
         "; ISQRT16: unsigned MATH_N 16-bit => floor(sqrt(N)) in MATH_Z 16-bit, C=0.",
+        "; DIST8_FAST: signed MATH_X/Y low bytes => max(abs(X),abs(Y)) +",
+        "; floor(min(abs(X),abs(Y))/2) mod 256 in MATH_Z low byte, C=0.",
         "; ATAN2_8: signed 8-bit MATH_X/Y low bytes => phase MATH_Z low byte",
         "; and A, C clear. Initial carry ignored.",
         "MATH_X = $%04X" % io, "MATH_Y = $%04X" % (io + 4),
