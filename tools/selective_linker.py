@@ -6,6 +6,7 @@ image, fixed-address source mirror or unverified record is linked.
 """
 from __future__ import annotations
 import hashlib
+import itertools
 import json
 from pathlib import Path
 import re
@@ -122,25 +123,48 @@ def check_nonoverlap(regions):
                 raise LinkError(name + " overlaps " + other)
 
 
-def choose(names, pins, objective, zp_budget):
-    chosen = {}
+def choose(names, pins, objective, zp_budget, ram_budget=None):
+    """Optimize *the whole selection*, sharing nonreentrant scratch ownership."""
+    options = []
     for api in names:
         if api not in MODULES:
             raise LinkError(api + ": no qualified selective source yet")
-        choices = MODULES[api]
+        variants = MODULES[api]
         if api in pins:
-            if pins[api] not in choices:
+            if pins[api] not in variants:
                 raise LinkError(api + ": selected variant is not link-ready")
-            choices = {pins[api]: choices[pins[api]]}
-        if objective == "zp" or zp_budget == 0:
-            key = min(choices, key=lambda k: (
-                choices[k]["zp"], sum(s for _, s in choices[k]["segments"])))
-        else:
-            key = min(choices, key=lambda k: (
-                sum(s for _, s in choices[k]["segments"]), choices[k]["zp"]))
-        chosen[api] = (key, choices[key])
-    return chosen
+            variants = {pins[api]: variants[pins[api]]}
+        options.append([(api, ident, mod) for ident, mod in sorted(variants.items())])
 
+    best_score = None
+    best = None
+    for combination in itertools.product(*options):
+        zp = max(mod["zp"] for _, _, mod in combination)
+        scratch = max(mod["scratch"] for _, _, mod in combination)
+        code = sum(n for _, _, mod in combination for _, n in mod["segments"])
+        ram = code + 32 + scratch
+        if zp_budget is not None and zp > zp_budget:
+            continue
+        if ram_budget is not None and ram > ram_budget:
+            continue
+        # Current portable candidates have no cross-module common-corpus
+        # timing certification. Do NOT invent cycle sums or benchmark scores.
+        # 'speed' temporarily prefers the documented smaller biased/ZP-tail
+        # variants; true performance ranking requires a shared corpus.
+        if objective == "zp":
+            metric = (zp, ram, code)
+        elif objective == "balanced":
+            metric = (ram + 8 * zp, ram, zp)
+        else:  # size; and provisional speed until comparable CPU measurements
+            metric = (ram, zp, code)
+        fingerprint = tuple(ident for _, ident, _ in combination)
+        score = (*metric, fingerprint)
+        if best_score is None or score < best_score:
+            best_score = score
+            best = {api: (ident, mod) for api, ident, mod in combination}
+    if best is None:
+        raise LinkError("No certified variant combination fits RAM/ZP budgets")
+    return best
 
 def relocate_source(mod, locations, root):
     src = (root / mod["source"]).read_text(encoding="utf-8")
@@ -171,7 +195,7 @@ def build(plan, outdir, memory=None, root=ROOT):
     constraints = plan["constraints"]
     zp_budget = constraints["max_zp_bytes"]
     ram_budget = constraints["max_ram_bytes"]
-    modules = choose(names, pins, plan["objective"], zp_budget)
+    modules = choose(names, pins, plan["objective"], zp_budget, ram_budget)
     zp_bytes = max(mod["zp"] for _, mod in modules.values())
     scratch = max(mod["scratch"] for _, mod in modules.values())
     size = sum(length for _, mod in modules.values() for _, length in mod["segments"])
