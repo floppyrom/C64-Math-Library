@@ -21,9 +21,20 @@ import selective_speed_umul16
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
+import selective_smul8 as smul8tab
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
+    "MATH_SMUL8": {
+        "link:v1-resident-smc": {
+            "source": "routines/multiply/smul8_v1_smc.asm",
+            "segments": (("KERNEL_CODE", 46),),
+            "entry": "FAST_SMUL8_V1", "zp": 0, "scratch": 0,
+            "operand_layout": "xyz", "smul8_v1": True,
+            "requires_writable_code": True,
+            "provenance": "46-byte original V1-V5 SMC producer; exact four 511-entry table pages",
+        },
+    },
     "MATH_SDIV8": {
         "link:v1-shared-producer": {
             "source": "routines/divide/sdiv8_v1_resident.asm",
@@ -234,12 +245,16 @@ def available_variants(root=ROOT):
                 } if mod.get("trig8") else {
                     "tools/selective_dist8_accurate.py": hashlib.sha256(
                         (root / "tools/selective_dist8_accurate.py").read_bytes()).hexdigest()
-                } if mod.get("dist8_accurate") else {}),
+                } if mod.get("dist8_accurate") else {
+                    "tools/selective_smul8.py": hashlib.sha256(
+                        (root / "tools/selective_smul8.py").read_bytes()).hexdigest(),
+                } if mod.get("smul8_v1") else {}),
                 "historical_provenance": mod.get("provenance"),
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
                 "validation_path": (
+                    "tools/test_selective_smul8.py" if mod.get("smul8_v1") else
                     "tools/test_selective_fast_umul16.py" if mod.get("fast_umul16") else
                     "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
                     "tools/test_selective_trig8.py" if mod.get("trig8") else
@@ -253,11 +268,14 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if mod.get("smul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("Original V1 signed 8-bit Q/R producer; two APIs share a single 530-byte kernel, one ZP byte"
+                "notes": ("Original 46-byte writable-RAM self-modifying signed 8x8; "
+                          "four exact V1-V5 511-byte table pages, zero ZP/scratch"
+                          if mod.get("smul8_v1") else
+                          "Original V1 signed 8-bit Q/R producer; two APIs share a single 530-byte kernel, one ZP byte"
                           if mod.get("sdiv8_v1") else
                           "Historical V1/V2 max/min lookup with one shared 512-byte table pair; "
                           "variant-dependent 2 scratch RAM or 2 ZP bytes"
@@ -373,6 +391,7 @@ def projected_end(start, items):
     cursor = start
     shared_trig = any(mod.get("trig8") for _, _, mod in items)
     shared_dist8 = any(mod.get("dist8_accurate") for _, _, mod in items)
+    shared_smul8 = any(mod.get("smul8_v1") for _, _, mod in items)
     for _, _, mod in items:
         if "atan2" in mod:
             _, cursor = atan2.layout(mod["atan2"], cursor)
@@ -384,6 +403,8 @@ def projected_end(start, items):
         cursor = trig8.align_page(cursor) + len(trig8.SINE_BYTES)
     if shared_dist8:
         cursor = trig8.align_page(cursor) + len(dist8tab.MAJOR_BYTES) + len(dist8tab.MINOR_BYTES)
+    if shared_smul8:
+        cursor = smul8tab.align_page(cursor) + smul8tab.ALIGNED_SPAN
     return cursor
 
 
@@ -518,7 +539,10 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
 def relocate_source(mod, locations, root):
     src = (root / mod["source"]).read_text(encoding="utf-8")
     used = {k for k, _ in mod["segments"]}
-    if mod.get("trig8"):
+    if mod.get("smul8_v1"):
+        used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z",
+                 "SMUL_LOW_SUM", "SMUL_HIGH_SUM", "SMUL_LOW_COMP", "SMUL_HIGH_COMP"}
+    elif mod.get("trig8"):
         used |= {"INPUT_X", "OUTPUT_Z", "SINE_TAB"}
     elif mod.get("dist8_accurate"):
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z", "DIST_MAJOR", "DIST_MINOR"}
@@ -610,10 +634,13 @@ def build(plan, outdir, memory=None, root=ROOT):
     # DIST8's two pages follow the (optional) one-page sine table.
     has_trig = any(mod.get("trig8") for _, mod in modules.values())
     has_dist8 = any(mod.get("dist8_accurate") for _, mod in modules.values())
+    has_smul8 = any(mod.get("smul8_v1") for _, mod in modules.values())
+    smul8_span = smul8tab.ALIGNED_SPAN if has_smul8 else 0
+    smul8_start = code + size - smul8_span if has_smul8 else None
     dist_table_bytes = (len(dist8tab.MAJOR_BYTES) + len(dist8tab.MINOR_BYTES)
                         if has_dist8 else 0)
-    shared_dist_page = code + size - dist_table_bytes if has_dist8 else None
-    shared_trig_page = (code + size - dist_table_bytes - len(trig8.SINE_BYTES)
+    shared_dist_page = code + size - smul8_span - dist_table_bytes if has_dist8 else None
+    shared_trig_page = (code + size - smul8_span - dist_table_bytes - len(trig8.SINE_BYTES)
                         if has_trig else None)
     if has_trig:
         if shared_trig_page & 255:
@@ -624,6 +651,15 @@ def build(plan, outdir, memory=None, root=ROOT):
             raise LinkError("DIST8 shared table pages were not aligned")
         constants["DIST_MAJOR"] = shared_dist_page
         constants["DIST_MINOR"] = shared_dist_page + len(dist8tab.MAJOR_BYTES)
+    if has_smul8:
+        if smul8_start & 255:
+            raise LinkError("SMUL8 self-modifying operand tables must start at page boundary")
+        constants.update({
+            "SMUL_LOW_SUM": smul8_start,
+            "SMUL_HIGH_SUM": smul8_start + smul8tab.PAGE_STRIDE,
+            "SMUL_LOW_COMP": smul8_start + 2*smul8tab.PAGE_STRIDE,
+            "SMUL_HIGH_COMP": smul8_start + 3*smul8tab.PAGE_STRIDE,
+        })
     if zp_bytes:
         constants["TEMP_ZP"] = zb
     if scratch:
@@ -670,6 +706,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("dist8_accurate") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_dist8_accurate.py"]:
             raise LinkError(api + ": accurate-distance lookup provenance missing")
+        if module.get("smul8_v1") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_smul8.py"]:
+            raise LinkError(api + ": signed multiplication table provenance missing")
         locations = dict(constants)
         expected = set()
         ranges = []
@@ -775,6 +814,21 @@ def build(plan, outdir, memory=None, root=ROOT):
                 dist8tab.MAJOR_BYTES + dist8tab.MINOR_BYTES).hexdigest(),
         })
         pc = shared_dist_page + len(shared_data)
+    if has_smul8:
+        if pc > smul8_start:
+            raise LinkError("SMUL8 tables overlap linked code or other tables")
+        data = smul8tab.emit(smul8_start)
+        if set(data) & set(binary):
+            raise LinkError("SMUL8 lookup tables overlap other modules")
+        binary.update(data)
+        shared_tables.append({
+            "name": "SMUL8_V1_ORIGINAL_PAGES",
+            "start": "$%04X" % smul8_start, "bytes": len(data),
+            "users": sorted(api for api, (ident, mod) in modules.items()
+                            if mod.get("smul8_v1")),
+            "sha256": hashlib.sha256(smul8tab.digest_data()).hexdigest(),
+        })
+        pc = smul8_start + smul8tab.ALIGNED_SPAN
     if pc != code + size:
         raise LinkError("Incorrect linked image span")
     # ATAN2 lookup pages need page alignment. Gaps are explicit zero-filled
@@ -793,6 +847,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; carry set iff D=0. UMOD leaves quotient untouched.",
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
+        "; SMUL8: signed 8-bit X/Y => signed 16-bit Z low/next, C=0.",
+        "; SMUL8 uses self-modifying instructions: load into writable RAM, non-reentrant.",
         "; ISQRT16: unsigned MATH_N 16-bit => floor(sqrt(N)) in MATH_Z 16-bit, C=0.",
         "; SIN8: phase in MATH_X low => sine signed byte in MATH_Z low, C=0.",
         "; COS8: phase in MATH_X low => cosine signed byte in MATH_Z low, C=0.",
@@ -820,6 +876,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed.py", "tools/selective_isqrt16.py",
                        "tools/selective_fast_umul16.py", "tools/selective_speed_umul16.py",
                        "tools/selective_trig8.py", "tools/selective_dist8_accurate.py",
+                       "tools/selective_smul8.py",
                        "tools/mini6502.py")
     toolchain_hashes = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
