@@ -6,6 +6,8 @@ image, fixed-address source mirror or unverified record is linked.
 """
 from __future__ import annotations
 import hashlib
+import os
+import tempfile
 import itertools
 import json
 from pathlib import Path
@@ -473,6 +475,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; All public inputs preserved; A/X/Y and processor flags may be volatile.",
         "; DIV/MOD: unsigned N/D in MATH_N/MATH_D, quotient/remainder Q/R;",
         "; carry set iff D=0. UMOD leaves quotient untouched.",
+        "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
         "; ATAN2_8: signed 8-bit MATH_X/Y low bytes => phase MATH_Z low byte",
         "; and A, C clear. Initial carry ignored.",
@@ -527,9 +530,19 @@ def build(plan, outdir, memory=None, root=ROOT):
         "prg_sha256": hashlib.sha256(prg).hexdigest(),
         "note": "New selective binaries require full CPU/native qualification before general release.",
     }
+    # All assembly, resource and provenance checks must succeed before any
+    # publication. Stage all outputs first; commit the manifest last, as a
+    # completion marker for consumers of this experimental build directory.
     outdir.mkdir(parents=True, exist_ok=True)
-    (outdir / "math_selective.prg").write_bytes(prg)
-    (outdir / "math_api.inc").write_text("\n".join(exports) + "\n")
-    (outdir / "selective_manifest.json").write_text(
-        json.dumps(manifest, indent=2) + "\n")
+    with tempfile.TemporaryDirectory(prefix=".math_stage_", dir=outdir) as temp:
+        stage = Path(temp)
+        (stage / "math_selective.prg").write_bytes(prg)
+        (stage / "math_api.inc").write_text("\n".join(exports) + "\n")
+        (stage / "selective_manifest.json").write_text(
+            json.dumps(manifest, indent=2) + "\n")
+        if hashlib.sha256((stage / "math_selective.prg").read_bytes()).hexdigest() != manifest["prg_sha256"]:
+            raise LinkError("Staged PRG checksum mismatch")
+        for name in ("math_selective.prg", "math_api.inc",
+                     "selective_manifest.json"):
+            os.replace(stage / name, outdir / name)
     return manifest
