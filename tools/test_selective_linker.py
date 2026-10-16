@@ -214,11 +214,12 @@ class SelectiveLinkTests(unittest.TestCase):
             self.assertEqual(bytes(mem[0x8000:0x8000+len(prg)-2]), image_before)
 
     def test_resource_pareto_prunes_only_automatic_variants(self):
-        # Compact ATAN2 is smaller at identical ZP/scratch resource use;
-        # expert pinning sum-fast must remain allowed for its speed benefit.
+        # Compact and sum-fast ATAN2 have different table-page geometry:
+        # neither may be pruned until equivalence is proved. Global
+        # resource scoring still picks compact under the size objective.
         variants = linker.MODULES["MATH_ATAN2_8"]
         frontier = linker.pareto_resource_variants(variants)
-        self.assertEqual(set(frontier), {"link:compact"})
+        self.assertEqual(set(frontier), {"link:compact", "link:sum-fast"})
         for code in (0x8000, 0x7123):
             with self.subTest(code=code), tempfile.TemporaryDirectory() as d:
                 auto = self.plan(["ATAN2_8"], objective="size",
@@ -243,6 +244,17 @@ class SelectiveLinkTests(unittest.TestCase):
         # b is dominated by a; e is equal but tie-broken by stable ID.
         self.assertEqual(set(linker.pareto_resource_variants(records)),
                          {"a", "c", "d"})
+        # A lower raw-footprint candidate with a different alignment
+        # constraint must not suppress a larger but potentially better
+        # placed alternative.
+        synthetic = {
+            "plain": {"segments": (("KERNEL_CODE", 300),),
+                      "scratch": 0, "zp": 0},
+            "paged": {"segments": (("KERNEL_CODE", 90), ("T1", 256)),
+                      "scratch": 0, "zp": 0, "atan2": "compact"},
+        }
+        self.assertEqual(set(linker.pareto_resource_variants(synthetic)),
+                         {"plain", "paged"})
 
     def test_global_variant_selection_beats_local_choices(self):
         # UDIV16 needs 2 ZP bytes. The smaller UDIV32 donor needs 4, but
