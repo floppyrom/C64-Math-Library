@@ -16,6 +16,7 @@ from mini6502 import Assembler
 import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_fast_umul16 as fast16
+import selective_umul8_v1 as v1umul8
 import selective_speed
 import selective_speed_umul16
 import selective_speed_umod8
@@ -131,6 +132,13 @@ MODULES = {
         },
     },
     "MATH_UMUL8": {
+        "link:v1-resident-fast": {
+            "source": "routines/multiply/umul8_v1_original.asm",
+            "segments": (("KERNEL_CODE", 51), ("Q_LO", 511), ("Q_HI", 511)),
+            "entry": "FAST_UMUL8_V1", "zp": 4, "scratch": 0,
+            "operand_layout": "xyz", "umul8_v1": True,
+            "provenance": "Original V1 22-byte entry plus 29-byte helper, identical 511-entry quarter-square lookup pages",
+        },
         "link:compact-zerozp": {
             "source": "routines/multiply/umul8_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 60),),
@@ -264,6 +272,9 @@ def available_variants(root=ROOT):
                     "tools/selective_fast_umul8.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest()
                 } if mod.get("fast_umul8") else {
+                    "tools/selective_umul8_v1.py": hashlib.sha256(
+                        (root / "tools/selective_umul8_v1.py").read_bytes()).hexdigest(),
+                } if mod.get("umul8_v1") else {
                     "tools/selective_fast_umul8.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
                     "tools/selective_fast_umul16.py": hashlib.sha256(
@@ -298,13 +309,14 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
+                    "tools/test_selective_umul8_v1.py" if mod.get("umul8_v1") else
                     "tools/test_selective_fast_umul8.py" if mod.get("fast_umul8") else
                     "tools/test_selective_multiply.py"
                     if mod.get("operand_layout") == "xyz" else
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v2v5") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("umul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v2v5") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
@@ -337,6 +349,8 @@ def available_variants(root=ROOT):
                           if mod.get("isqrt16") else
                           "73-byte quarter-square 8x8 code and 1022 exact table bytes; 2 RAM scratch, 0 ZP"
                           if mod.get("fast_umul8") else
+                          "Original V1 unsigned 8x8 51-byte entry/core and two exact 511-byte lookup pages; 4 ZP, no REU"
+                          if mod.get("umul8_v1") else
                           "Compact portable shift-add multiply; not performance-ranked against table variants"
                           if mod.get("operand_layout") == "xyz" else
                           "Complete page-aligned ATAN2 lookup tables, exhaustive stock-C64 phase certification"
@@ -441,6 +455,8 @@ def projected_end(start, items):
             _, cursor = atan2.layout(mod["atan2"], cursor)
         elif mod.get("isqrt16"):
             _, cursor = sqrt16.layout(cursor)
+        elif mod.get("umul8_v1"):
+            _, cursor = v1umul8.layout(cursor)
         else:
             cursor += sum(length for _, length in mod["segments"])
     if shared_trig:
@@ -460,8 +476,8 @@ def place_modules(items, start):
     minimum padding at the aligned module's code/table boundary. This remains
     O(256 * number_of_modules), not factorial when the catalog expands.
     """
-    aligned = [item for item in items if "atan2" in item[2] or item[2].get("isqrt16")]
-    ordinary = [item for item in items if "atan2" not in item[2] and not item[2].get("isqrt16")]
+    aligned = [item for item in items if "atan2" in item[2] or item[2].get("isqrt16") or item[2].get("umul8_v1")]
+    ordinary = [item for item in items if "atan2" not in item[2] and not item[2].get("isqrt16") and not item[2].get("umul8_v1")]
     if not aligned:
         return ordinary
     if len(aligned) != 1:
@@ -470,7 +486,8 @@ def place_modules(items, start):
         return ordinary + sorted(aligned, key=lambda item: item[0])
     atan = aligned[0]
     code_bytes = (atan2.KINDS[atan[2]["atan2"]]["code_bytes"]
-                  if "atan2" in atan[2] else sqrt16.CODE_BYTES)
+                  if "atan2" in atan[2] else sqrt16.CODE_BYTES
+                  if atan[2].get("isqrt16") else v1umul8.CODE_BYTES)
     # Track one deterministic set of indices per possible prefix address.
     # Item order remains stable within the selected prefix and suffix.
     states = {start % 256: ()}
@@ -509,7 +526,8 @@ def pareto_resource_variants(variants):
     # other code/table alignment or placement constraints.
     layout_classes = {
         key: (("page-aligned", len(spec["segments"]) - 1)
-              if "atan2" in spec or spec.get("isqrt16") else ("contiguous", 0))
+              if "atan2" in spec or spec.get("isqrt16") or spec.get("umul8_v1")
+              else ("contiguous", 0))
         for key, spec in candidates
     }
     keep = {}
@@ -760,6 +778,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("dist8_accurate") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_dist8_accurate.py"]:
             raise LinkError(api + ": accurate-distance lookup provenance missing")
+        if module.get("umul8_v1") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_umul8_v1.py"]:
+            raise LinkError(api + ": V1 unsigned multiply source provenance missing")
         if module.get("smul8_v1") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_smul8.py"]:
             raise LinkError(api + ": signed multiplication table provenance missing")
@@ -767,12 +788,14 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
                 elif module.get("isqrt16"):
                     machine, entry, ranges, end = sqrt16.assemble(pc, io, root)
+                elif module.get("umul8_v1"):
+                    machine, entry, ranges, end = v1umul8.assemble(pc, io, zb, root)
                 elif module.get("fast_umul16"):
                     machine, entry, ranges, end = fast16.assemble(pc, io, sb, root)
                 else:
