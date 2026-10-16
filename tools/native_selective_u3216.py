@@ -138,22 +138,26 @@ def main():
     count=0
     with tempfile.TemporaryDirectory(prefix="native_u3216_") as path:
         folder=Path(path)
-        for i,(code,io) in enumerate(((0x8000,0xc000),(0x7123,0xc040))):
-            plan=math_builder.create_plan(index,list(("UDIV32_16","UMOD32_16")),
-                                          zp_budget=0,ram_budget=197)
-            man=selective_linker.build(plan,folder,memory={
-                "code_base":code,"math_io":io})
-            image=(folder/"math_selective.prg").read_bytes()
-            base=bytearray(65536)
-            base[code:code+len(image)-2]=image[2:]
-            for j,item in enumerate(man["operations"]):
-                entry=int(item["entry"][1:],16)
-                tag=f'u3216_{i}_{j}'
-                checksum=native(vice,bytearray(base),entry,code,io,tag,7670+count,folder)
-                count+=N
-                print(tag,"VICE PASS",N,checksum,flush=True)
-    assert count==4*N,count
-    print("NATIVE UDIV32_16+UMOD32_16 PASS",count)
+        for variant in ("link:portable-restoring","link:accumulator-remainder"):
+            for i,(code,io) in enumerate(((0x8000,0xc000),(0x7123,0xc040))):
+                plan=math_builder.create_plan(index,list(("UDIV32_16","UMOD32_16")),
+                    zp_budget=0,ram_budget=197,
+                    pins={"UDIV32_16":variant,"UMOD32_16":variant})
+                man=selective_linker.build(plan,folder,memory={
+                    "code_base":code,"math_io":io})
+                expected=162 if variant=="link:portable-restoring" else 131
+                assert man["resource_use"]["code_and_tables_bytes"]==expected
+                image=(folder/"math_selective.prg").read_bytes()
+                base=bytearray(65536)
+                base[code:code+len(image)-2]=image[2:]
+                for j,item in enumerate(man["operations"]):
+                    entry=int(item["entry"][1:],16)
+                    tag=f'u3216_{variant.split(":")[1]}_{i}_{j}'
+                    checksum=native(vice,bytearray(base),entry,code,io,tag,7670+count,folder)
+                    count+=N
+                    print(tag,"VICE PASS",N,checksum,flush=True)
+    assert count==8*N,count
+    print("NATIVE UDIV32_16+UMOD32_16 BOTH VARIANTS PASS",count)
 
 
 if __name__=="__main__":

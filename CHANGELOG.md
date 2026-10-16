@@ -1,3 +1,16 @@
+## Unreleased — unsigned 32/16 one-byte-RAM Pareto producer
+
+- Introduce a second independently linkable shared DIV32/16+MOD32/16
+  variant, `link:accumulator-remainder`, using a **131-byte**
+  non-self-modifying source and **one RAM byte / zero ZP**.
+- Preserve the existing source-linked `link:portable-restoring`
+  reference as a pin-selectable fallback. Default size/RAM Pareto
+  selection now chooses the smaller candidate; no unqualified
+  cross-profile speed claim is made.
+- Add paired exact-cycle CPU-model comparisons on identical 32/16
+  operands and both relocated maps; extend native VICE to qualify
+  both variants and both public entries with independently seeded calls.
+
 ## Unreleased — operation-first unsigned 32/16 DIV/MOD reference kernel
 
 - Add independent selectable `MATH_UDIV32_16` and `MATH_UMOD32_16`
