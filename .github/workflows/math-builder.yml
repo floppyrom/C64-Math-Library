@@ -7,6 +7,9 @@ on:
     paths:
       - tools/math_builder.py
       - tools/test_math_builder.py
+      - tools/selective_linker.py
+      - tools/test_selective_linker.py
+      - routines/standalone_lab/portable/*.asm
       - routines/SOURCE_CATALOG.csv
       - benchmarks/STANDALONE_RESULTS.csv
       - .github/workflows/math-builder.yml
@@ -14,6 +17,9 @@ on:
     paths:
       - tools/math_builder.py
       - tools/test_math_builder.py
+      - tools/selective_linker.py
+      - tools/test_selective_linker.py
+      - routines/standalone_lab/portable/*.asm
       - routines/SOURCE_CATALOG.csv
       - benchmarks/STANDALONE_RESULTS.csv
       - .github/workflows/math-builder.yml
@@ -28,7 +34,9 @@ jobs:
         with:
           python-version: "3.11"
       - name: Validate operation catalog and no-binary safety
-        run: python3 tools/test_math_builder.py
+        run: |
+          python3 tools/test_math_builder.py
+          python3 tools/test_selective_linker.py
       - name: Smoke-test source SHA provenance
         run: >-
           python3 tools/math_builder.py
