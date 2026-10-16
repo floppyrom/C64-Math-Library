@@ -49,6 +49,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+      - name: Syntax-check builder and regression scripts before running tests
+        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py
       - name: Validate operation catalog and no-binary safety
         run: |
           python3 tools/test_math_builder.py
