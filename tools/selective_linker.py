@@ -250,6 +250,7 @@ def available_variants(root=ROOT):
                         (root / "tools/selective_smul8.py").read_bytes()).hexdigest(),
                 } if mod.get("smul8_v1") else {}),
                 "historical_provenance": mod.get("provenance"),
+                "requires_writable_code": bool(mod.get("requires_writable_code")),
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
