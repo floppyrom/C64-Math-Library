@@ -1,3 +1,33 @@
+### Source-linked portable unsigned 32/16 DIV/MOD
+
+`MATH_UDIV32_16` and `MATH_UMOD32_16` are now independently
+selectable. They deliberately share one **162-byte source-level restoring
+reference producer**, the same entry address and the same output contract as
+the historical resident shared DIV/MOD core. Calling either writes both
+the 32-bit quotient and the 16-bit remainder; the two public input fields
+remain untouched. Divisor zero yields Q=R=0 and carry set; success clears
+carry. The top two bytes of `MATH_R` are left untouched because the
+remainder is 16 bits. Requires D=0 on entry.
+
+This non-self-modifying, ROM-compatible kernel uses **three bytes
+of reusable ordinary RAM scratch and zero zero-page bytes**. The default
+single-family build is 162 code + 32 public I/O + 3 scratch = **197 RAM
+bytes**. Selecting both APIs still costs only 197 bytes, not two kernels.
+The source hash and full toolchain provenance are recorded in the
+selection plan and binary manifest.
+
+```sh
+python3 tools/math_builder.py --operation UDIV32_16 --operation UMOD32_16 \
+  --zp-budget 0 --ram-budget 197 --build
+```
+
+**Performance warning:** This is a qualified *linkability/reference* option
+and **not** the V2–V4 resident optimized 32/16 producer. The latter uses
+a split quotient/remainder chain, the certified UDIV16 size-fast producer,
+and a specialized 32/8 path; those dependencies still need to be migrated.
+Until a common-corpus cross-variant measurement is certified, `speed`
+selection remains unavailable here. The V1–V5 distribution is unchanged.
+
 ### Independently linked SEEK16 four-entry DDA
 
 The original generated SEEK16 (16-bit unsigned X, 8-bit unsigned Y) is
