@@ -33,6 +33,26 @@ MODULES = {
             "entry": "FAST_UMOD16_DIRECT_PUBLIC", "zp": 0, "scratch": 2,
         },
     },
+    "MATH_UDIV32_32": {
+        "link:zptail": {
+            "source": "routines/standalone_lab/portable/div_u32_zptail.asm",
+            "segments": (("KERNEL_CODE", 325), ("KERNEL_AUX", 219)),
+            "entry": "FAST_UDIV32_PUBLIC", "zp": 4, "scratch": 0,
+        },
+        "link:aligned-zerozp": {
+            "source": "routines/standalone_lab/portable/div_u32_aligned_nozp.asm",
+            "segments": (("KERNEL_CODE", 325), ("KERNEL_AUX", 251)),
+            "entry": "FAST_UDIV32_PUBLIC", "zp": 0, "scratch": 4,
+        },
+    },
+    "MATH_UMOD32_32": {
+        "link:aligned-zerozp": {
+            "source": "routines/standalone_lab/portable/mod_u32_aligned_carry.asm",
+            "segments": (("KERNEL_CODE", 250), ("KERNEL_AUX", 225),
+                         ("KERNEL_ADAPTER", 21)),
+            "entry": "FAST_UMOD32_ALIGNED_PUBLIC", "zp": 0, "scratch": 4,
+        },
+    },
 }
 
 class LinkError(ValueError):
