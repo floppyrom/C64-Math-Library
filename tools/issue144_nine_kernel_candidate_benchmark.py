@@ -52,8 +52,20 @@ def corpus(limit):
     return pairs,division,seek
 
 def init_machine(profile,prg,reu,entries):
-    c=machine(prg,reu)
-    return c,{name:unhx(value) for name,value in entries.items()}
+    from mini6502 import CPU
+    b=Path(prg).read_bytes()
+    load=int.from_bytes(b[:2],"little")
+    mem=bytearray(65536)
+    mem[load:load+len(b)-2]=b[2:]
+    c=CPU(mem,reu=bytearray(Path(reu).read_bytes()) if reu else None)
+    c.d=0
+    api={name:unhx(value) for name,value in entries.items()}
+    # Alternate source layouts relocate MATH_INIT away from the historical
+    # $3280. Never call a hardcoded reference-map init on a relocated PRG.
+    assert "MATH_INIT" in api
+    c.call(api["MATH_INIT"],2_000_000)
+    assert c.c==0,(profile,"MATH_INIT",hex(api["MATH_INIT"]))
+    return c,api
 
 def api_frozen(profile):
     import re
