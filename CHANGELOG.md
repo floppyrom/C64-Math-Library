@@ -1,3 +1,8 @@
+2026-10-16 ISSUE144 NINE-KERNEL MATCHED SOURCE-CANDIDATE SCORECARD
+- 31,800 same-input public model calls across V1-V5 and reference/alternate maps; all nine original expensive kernels, arithmetic and SEEK STEP oracle pass, zero measured slowdowns.
+- Source-vs-frozen mean savings: ISQRT32 V1/V5 -51, V2/V3 -47, V4 -135.205; SEEK16_INIT V1/V5 -1.913, V2 -14.029, V3/V4 -12.435; V2-V4 UDIV/UMOD32_16 -3.743 and SMOD32_16 -6.707. Four 32x32/SHR16 multiply APIs unchanged.
+- Both-map 45-row CSV/JSON and crossmap SHA-provenance permanently retained. CPU cycles only, not physical REU/VIC/DMA/IRQ timing; no frozen binaries or historical PERFORMANCE changes. Issue #144 remains open.
+
 2026-10-16 ISSUE144 F VERSIONED DUAL-MAP SOURCE DISTRIBUTION AND VERIFY GATE (CANDIDATE; NOT SHIPPED)
 - Add tools/issue144_versioned_distribution.py: builds reference + alternate V1/V2/V3/V4/V5 canonical-source PRGs (10 total), both V3 512-KiB/V4 16-MiB REU images in each map (4 total), caller math_api.inc, 56-entry source manifests and full source API validation. Creates stable-content versioned ZIP, independent file SHA-256 inventory, ZIP-level .sha256, complete qualification reports and same 438-input old-versus-new ISQRT32 benchmark. Refuses stale V4 source that lacks the PR #192 direct-ZP 16-cycle gain.
 - Add CI verification and 90-day per-commit Actions artifact upload; manual explicit workflow_dispatch prerelease gate checks exact-main CI green and refuses existing release tags. Seven historical default binaries and their PERFORMANCE.md rows remain unchanged. No automatic GitHub production/default release or physical VIC/REU/IRQ certification. See docs/ISSUE144_VERSIONED_DISTRIBUTION_2026-10-16.md.
