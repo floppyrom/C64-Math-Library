@@ -1,0 +1,78 @@
+name: Operation-first math builder (phase 1)
+
+on:
+  pull_request:
+    paths:
+      - tools/math_builder.py
+      - tools/test_math_builder.py
+      - tools/selective_linker.py
+      - tools/test_selective_linker.py
+      - tools/native_selective_linker.py
+      - tools/native_selective_atan2.py
+      - tools/native_selective_multiply.py
+      - tools/test_selective_multiply.py
+      - routines/multiply/umul16_compact_zerozp.asm
+      - routines/multiply/umul8_compact_zerozp.asm
+      - tools/test_selective_umul8.py
+      - tools/selective_atan2.py
+      - tools/test_selective_atan2.py
+      - routines/atan2/*.asm
+      - routines/atan2/tables.py
+      - routines/standalone_lab/portable/*.asm
+      - routines/SOURCE_CATALOG.csv
+      - routines/PUBLIC_OPERATIONS.csv
+      - benchmarks/STANDALONE_RESULTS.csv
+      - .github/workflows/math-builder.yml
+      - tools/mini6502.py
+      - routines/standalone_lab/portable/native_vice.py
+      - routines/atan2/validate_optimized.py
+  workflow_dispatch:
+
+concurrency:
+  group: operation-first-builder-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  selection-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Syntax-check builder and regression scripts before running tests
+        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
+      - name: Validate operation catalog and no-binary safety
+        run: |
+          python3 tools/test_math_builder.py
+          python3 tools/test_selective_linker.py
+          python3 tools/test_selective_atan2.py
+          python3 tools/test_selective_multiply.py
+          python3 tools/test_selective_umul8.py
+      - name: Smoke-test source SHA provenance
+        run: >-
+          python3 tools/math_builder.py
+          --operation UMUL16 --operation ISQRT16
+          --validate-sources --preview > /dev/null
+
+  native-vice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install checksum-pinned headless VICE
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: Validate 16-bit and 32-bit linked binaries at two RAM maps
+        run: python3 tools/native_selective_linker.py
+      - name: Validate compact and fast ATAN2 linked binaries at two RAM maps
+        run: python3 tools/native_selective_atan2.py
+      - name: Validate zero-ZP UMUL16 linked binary at two RAM maps
+        run: python3 tools/native_selective_multiply.py

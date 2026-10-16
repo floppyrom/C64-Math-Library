@@ -1,7 +1,7 @@
 PYTHON ?= python3
 ACME ?= acme
 
-.PHONY: sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress normalize seek audit acme clean package-audit all
+.PHONY: sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all
 
 all: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
 
@@ -76,6 +76,14 @@ pareto-config:
 
 pareto-stress:
 	$(PYTHON) tools/stress_pareto.py
+
+builder-validate:
+	$(PYTHON) -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py routines/atan2/tables.py tools/mini6502.py routines/standalone_lab/portable/native_vice.py
+	$(PYTHON) tools/test_math_builder.py
+	$(PYTHON) tools/test_selective_linker.py
+	$(PYTHON) tools/test_selective_atan2.py
+	$(PYTHON) tools/test_selective_multiply.py
+	$(PYTHON) tools/test_selective_umul8.py
 
 pareto-validate:
 	$(PYTHON) tools/validate_pareto.py
