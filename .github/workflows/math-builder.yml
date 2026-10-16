@@ -27,6 +27,10 @@ on:
       - .github/workflows/math-builder.yml
   workflow_dispatch:
 
+concurrency:
+  group: operation-first-builder-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
 jobs:
   selection-plan:
     runs-on: ubuntu-latest
