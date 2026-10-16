@@ -336,6 +336,29 @@ class SelectiveLinkTests(unittest.TestCase):
                 linker.build(plan, Path(d))
             self.assertFalse((Path(d) / "math_selective.prg").exists())
 
+    def test_staged_build_failure_does_not_publish_partial_outputs(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d)
+            plan = self.plan(["UMUL8"], zp_budget=0, ram_budget=95)
+            linker.build(plan, out)
+            names = ("math_selective.prg", "math_api.inc",
+                     "selective_manifest.json")
+            before = {name: (out / name).read_bytes() for name in names}
+            original_write_text = Path.write_text
+
+            def fail_on_staged_include(path, *args, **kwargs):
+                if path.name == "math_api.inc" and ".math_stage_" in str(path):
+                    raise OSError("simulated staged include write failure")
+                return original_write_text(path, *args, **kwargs)
+
+            with patch.object(Path, "write_text", fail_on_staged_include):
+                with self.assertRaisesRegex(OSError, "simulated staged"):
+                    linker.build(plan, out, memory={"code_base": 0x7123})
+            self.assertEqual(
+                {name: (out / name).read_bytes() for name in names}, before)
+            self.assertFalse(list(out.glob(".math_stage_*")))
+
     def test_build_manifest_seals_complete_toolchain(self):
         with tempfile.TemporaryDirectory() as d:
             plan = self.plan(["UMUL8", "UDIV16"], zp_budget=2,
