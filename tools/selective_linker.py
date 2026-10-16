@@ -136,6 +136,8 @@ def choose(names, pins, objective, zp_budget, ram_budget=None):
             variants = {pins[api]: variants[pins[api]]}
         options.append([(api, ident, mod) for ident, mod in sorted(variants.items())])
 
+    if objective == "speed":
+        raise LinkError("Speed-optimized selective builds need verified same-corpus cycle measurements; choose size/zp/balanced or pin a variant")
     best_score = None
     best = None
     for combination in itertools.product(*options):
@@ -147,15 +149,12 @@ def choose(names, pins, objective, zp_budget, ram_budget=None):
             continue
         if ram_budget is not None and ram > ram_budget:
             continue
-        # Current portable candidates have no cross-module common-corpus
-        # timing certification. Do NOT invent cycle sums or benchmark scores.
-        # 'speed' temporarily prefers the documented smaller biased/ZP-tail
-        # variants; true performance ranking requires a shared corpus.
+        # Never combine unrelated benchmark corpora into a fake speed score.
         if objective == "zp":
             metric = (zp, ram, code)
         elif objective == "balanced":
             metric = (ram + 8 * zp, ram, zp)
-        else:  # size; and provisional speed until comparable CPU measurements
+        else:  # size, exactly measured RAM footprint
             metric = (ram, zp, code)
         fingerprint = tuple(ident for _, ident, _ in combination)
         score = (*metric, fingerprint)
@@ -274,6 +273,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         "schema": "c64-math-selective-binary-v1",
         "status": "selective_binary_emitted",
         "target": "c64",
+        "selection_objective": plan["objective"],
+        "selection_basis": "global code/RAM/ZP resource optimization; cycle-speed not certified",
         "operations": detail,
         "resource_use": {
             "code_and_tables_bytes": size, "public_io_bytes": 32,
