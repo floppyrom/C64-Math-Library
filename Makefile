@@ -78,7 +78,7 @@ pareto-stress:
 	$(PYTHON) tools/stress_pareto.py
 
 builder-validate:
-	$(PYTHON) -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py
+	$(PYTHON) -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py routines/atan2/tables.py tools/mini6502.py routines/standalone_lab/portable/native_vice.py
 	$(PYTHON) tools/test_math_builder.py
 	$(PYTHON) tools/test_selective_linker.py
 	$(PYTHON) tools/test_selective_atan2.py
