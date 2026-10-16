@@ -72,7 +72,7 @@ class MeasuredUMUL8SpeedTests(unittest.TestCase):
         for operations in (["UDIV16"],["UMUL8","UDIV16"],["ATAN2_8"]):
             with self.subTest(operations=operations),tempfile.TemporaryDirectory() as d:
                 with self.assertRaisesRegex(
-                        selective_linker.LinkError,"UMUL8, UMUL16 or UMOD8 alone"):
+                        selective_linker.LinkError,"UMUL8, UMUL16, UMOD8 or UDIV8 alone"):
                     selective_linker.build(
                         self.plan(operations,4096),Path(d))
                 self.assertFalse((Path(d)/"math_selective.prg").exists())

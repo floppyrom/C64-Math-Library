@@ -116,7 +116,7 @@ class QualifiedUMOD8SpeedTests(unittest.TestCase):
             with self.subTest(ops=ops),tempfile.TemporaryDirectory() as d:
                 target=Path(d)/"reject"
                 with self.assertRaisesRegex(selective_linker.LinkError,
-                                            "UMUL8, UMUL16 or UMOD8 alone"):
+                                            "UMUL8, UMUL16, UMOD8 or UDIV8 alone"):
                     selective_linker.build(self.plan(ops,ram=4096),target)
                 self.assertFalse(target.exists())
 
