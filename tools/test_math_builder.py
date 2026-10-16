@@ -83,6 +83,19 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(available["linker_status"],
                          "experimental_subset_available")
 
+    def test_plan_schema_is_hardware_neutral_and_enforced(self):
+        import selective_linker
+        for target in mb.TARGETS:
+            plan = mb.create_plan(self.index, ["UMUL8"], target=target)
+            self.assertEqual(plan["schema"], "math-selection-plan-v2")
+        plan = mb.create_plan(self.index, ["UMUL8"])
+        plan["schema"] = "c64-math-selection-plan-v1"
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaisesRegex(selective_linker.LinkError,
+                                        "Unsupported selection plan schema"):
+                selective_linker.build(plan, Path(d))
+            self.assertFalse(list(Path(d).iterdir()))
+
     def test_target_specific_variant_reporting(self):
         for target, expected in (("c64", True), ("1541", False),
                                  ("1571", False), ("1581", False)):
