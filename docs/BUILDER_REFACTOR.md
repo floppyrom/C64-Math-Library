@@ -18,6 +18,7 @@ Browse the 56 stable operations without selecting a fixed profile:
 
 ```sh
 python3 tools/math_builder.py --list
+python3 tools/math_builder.py --list-linkable
 ```
 
 Create a plan for a new project:
@@ -122,6 +123,16 @@ implementations by size/ZP trade-offs. An actual `--objective speed --build`
 request is **rejected**, rather than pretending unrelated benchmark cycles are
 comparable. The speed objective will be enabled after same-corpus qualification.
 
+Get a **measured**, assembled footprint without retaining build output:
+
+```sh
+python3 tools/math_builder.py --operation UDIV16 --operation UMOD16 \
+  --zp-budget 2 --ram-budget 1000 --measure
+```
+
+The interactive wizard groups all 56 operations with readable descriptions,
+shows which are currently linkable, and accepts numbers, ranges or names.
+
 A JSON configuration can specify a custom, nonoverlapping memory map:
 
 ```json
@@ -129,14 +140,18 @@ A JSON configuration can specify a custom, nonoverlapping memory map:
   "operations": ["UDIV16", "UMOD16"],
   "objective": "size",
   "constraints": {"max_zp_bytes": 2, "max_ram_bytes": 1000},
-  "memory": {"code_base": "$7123", "math_io": "$C040", "zp_base": "$60"}
+  "memory": {
+    "code_base": "$7123", "math_io": "$C040", "zp_base": "$60",
+    "reserved": [{"name": "loader", "start": "$2000", "end": "$2FFF"}],
+    "zp_reserved": [{"name": "irq", "start": "$02", "end": "$4F"}]
+  }
 }
 ```
 
 The default code origin is `$8000`, public I/O at `$C000-$C01F`, and
 shared scratch at `$50`–`$51` when needed. ROM underlay, I/O address
 ranges, system stack, zero-page processor ports, address overflow, and
-colliding source/data allocations are rejected. The public ABI preserves
+colliding source/data allocations and caller-reserved RAM/ZP ranges are rejected. The public ABI preserves
 N/D. Divide-by-zero sets C, clears Q/R for UDIV16; UMOD16 clears R while
 preserving the caller's Q. `CLD` is required before calls.
 
