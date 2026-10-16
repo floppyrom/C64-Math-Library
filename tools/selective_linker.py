@@ -270,6 +270,13 @@ MODULES = {
         },
     },
     "MATH_UDIV32_16": {
+        "link:accumulator-remainder": {
+            "source": "routines/divide/u32_by_u16_accum_selective.asm",
+            "segments": (("KERNEL_CODE", 131),),
+            "entry": "FAST_UDIV32_16_ACCUM", "zp": 0, "scratch": 1,
+            "share_producer": "unsigned-32by16-accum", "multi_entry": True,
+            "provenance": "131-byte accumulator-high restoring unsigned 32/16 kernel; independently verified zero-ZP candidate",
+        },
         "link:portable-restoring": {
             "source": "routines/divide/u32_by_u16_restoring_selective.asm",
             "segments": (("KERNEL_CODE", 162),),
@@ -279,6 +286,13 @@ MODULES = {
         },
     },
     "MATH_UMOD32_16": {
+        "link:accumulator-remainder": {
+            "source": "routines/divide/u32_by_u16_accum_selective.asm",
+            "segments": (("KERNEL_CODE", 131),),
+            "entry": "FAST_UMOD32_16_ACCUM", "zp": 0, "scratch": 1,
+            "share_producer": "unsigned-32by16-accum", "multi_entry": True,
+            "provenance": "131-byte accumulator-high restoring unsigned 32/16 kernel; independently verified zero-ZP candidate",
+        },
         "link:portable-restoring": {
             "source": "routines/divide/u32_by_u16_restoring_selective.asm",
             "segments": (("KERNEL_CODE", 162),),
