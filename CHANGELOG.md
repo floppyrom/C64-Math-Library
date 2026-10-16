@@ -1,3 +1,8 @@
+2026-10-16 SELECTIVE UMUL16 QUARTER-SQUARE SPEED ALTERNATIVE (UNRELEASED; CI QUALIFICATION PENDING)
+- Transplanted independently source-linked UMUL16 quarter-square alternative (233 code bytes + 2×511 precomputed table bytes + 4 RAM scratch, zero ZP) alongside the existing 108-byte compact implementation. Inputs retained, full 32-bit result and carry-clear ABI checked.
+- Added same-source, same-corpus CPU-model speed measurements for each 16×16 variant, with 1,000 deterministic edge and uniform operand pairs, source/corpus SHA provenance and RAM/ZP gating. Mixed-operation speed ranking remains explicitly unsupported.
+- Added source assembly, relocation, mixed-call, ABI and native VICE regression tests. The resident V1–V5 implementations and benchmarks remain unchanged.
+
 2026-10-16 OPERATION-FIRST SHARED SIGNED DIV8/MOD8 SOURCE PORT (MERGE CANDIDATE; CI QUALIFICATION REQUIRED)
 - Preserve exact historical V1 530-byte signed SDIV8/SMOD8 routine and signed quotient/remainder public semantics in a relocatable producer. The two public operations coalesce to one code image, one ZP byte and 562 bytes including shared I/O.
 - Independently SHA-authorize the shared aliases, test all 65,536 signed input pairs at each of two RAM layouts, test exclusive-call scratch/stack/upper-output preservation, plus two native x64sc maps. Historical V1–V5 released binaries are unchanged.
