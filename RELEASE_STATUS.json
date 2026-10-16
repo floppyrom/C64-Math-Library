@@ -1,4 +1,28 @@
 {
+  "issue144_v4_reu_isqrt32_direct_zp_canonical_source_2026_10_16": {
+    "status": "NORMAL_V4_CANONICAL_SOURCE_INTEGRATION_NO_FROZEN_BINARY_RELEASE",
+    "source": "relocatable_source/v4_reu_16m/isqrt32_reu_prefix.asm",
+    "source_equal_to_research": "optional/issue144_v4_isqrt32_direct_reu_zp/v4_reu_16m.asm",
+    "historical_source": "optional/issue144_v4_isqrt32_direct_reu_zp/prepromotion_v4_reu.asm",
+    "independent_qualification": "tools/issue144_v4_reu_direct_zp_screen.py",
+    "native_workflow": ".github/workflows/issue144-v4-root-direct-reu-zp.yml",
+    "research_evidence": "validation/review/ISSUE144_V4_ISQRT32_DIRECT_REU_ZP_2026-10-16.json",
+    "model_public_entry_pairs_across_two_maps": 2132,
+    "model_mean_cycles_saved": 16,
+    "minimum_saved": 16,
+    "maximum_saved": 16,
+    "slower_cases": 0,
+    "public_full_source_validation_calls_over_two_maps": 43356,
+    "native_vice_old_candidate_public_calls": 48,
+    "reu_destination_registers_restored": true,
+    "normal_zp_added": 0,
+    "caller_ram_added": 0,
+    "reu_image_added": 0,
+    "shipped_reference_binary_files_unchanged": true,
+    "performance_md_unchanged": true,
+    "hardware_timing_and_reentrant_irq_certified": false,
+    "production_default_binary_released": false
+  },
   "issue144_v4_reu_isqrt32_direct_zp_dma_2026_10_16": {
     "status": "PASS_EXPERIMENTAL_OPTIN_SOURCE_MODEL_AND_NATIVE",
     "issue": 144,
