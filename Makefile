@@ -80,6 +80,7 @@ pareto-stress:
 builder-validate:
 	$(PYTHON) tools/test_math_builder.py
 	$(PYTHON) tools/test_selective_linker.py
+	$(PYTHON) tools/test_selective_atan2.py
 
 pareto-validate:
 	$(PYTHON) tools/validate_pareto.py
