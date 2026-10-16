@@ -72,7 +72,7 @@ class HistoricalUMOD8FastVariants(unittest.TestCase):
             self.assertTrue(entry["requires_writable_code"])
             self.assertEqual(entry["resources_reported"]["code_and_table_bytes"],info["size"])
             self.assertEqual(entry["zp_bytes_reported"],2)
-            self.assertEqual(entry["validation_path"],"tools/test_selective_umod8.py")
+            self.assertEqual(entry["validation_path"],"tools/test_selective_umod8_variants.py")
             self.assertIn("Original V",entry["historical_provenance"])
 
     def test_opcode_parity_all_unsigned_pairs_and_relocations(self):
