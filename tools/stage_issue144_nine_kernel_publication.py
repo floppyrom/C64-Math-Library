@@ -108,8 +108,8 @@ def main():
             # the *same* 45-row logical CSV using repository LF convention.
             if field.suffix==".csv":
                 original=dst.read_bytes()
-                assert b"\\r\\n" in original
-                dst.write_bytes(original.replace(b"\\r\\n",b"\\n"))
+                assert b"\r\n" in original
+                dst.write_bytes(original.replace(b"\r\n",b"\n"))
             print("STAGED",dst.relative_to(ROOT),h(dst.read_bytes()),flush=True)
         rowpairs[layout]={(x["profile"],x["routine"]):x for x in rows}
     for key,a in rowpairs["reference"].items():
