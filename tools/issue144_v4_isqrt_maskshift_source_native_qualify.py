@@ -130,7 +130,8 @@ def main():
         new_shifts='    and #$03\n    lsr\n    ror\n    ror\n    and #$C0\n'
         assert baseline.count(old_shifts)==2, 'expected two original six-ASL sites'
         assert optimized==baseline.replace(old_shifts,new_shifts), 'only the two exact masked-shift sites may change'
-        assert integrated == optimized, 'canonical source must match qualified candidate'
+        assert (clone/'optional/issue144_v4_isqrt32_direct_reu_zp/prepromotion_v4_reu.asm').read_text() == optimized, 'independent historical maskshift source changed'
+        assert integrated == (clone/'optional/issue144_v4_isqrt32_direct_reu_zp/v4_reu_16m.asm').read_text(), 'canonical V4 differs from qualified direct-ZP promotion'
         assert 'lda #$91\n    sta $DF01' in baseline and 'lda #$91\n    sta $DF01' in integrated
         file.write_text(baseline)
         b_ref=build(clone,'reference',temp/'baseline')
