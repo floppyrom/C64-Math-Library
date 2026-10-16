@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 import re
 from mini6502 import Assembler
+import selective_atan2 as atan2
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
@@ -46,6 +47,20 @@ MODULES = {
             "entry": "FAST_UDIV32_PUBLIC", "zp": 0, "scratch": 4,
         },
     },
+    "MATH_ATAN2_8": {
+        "link:compact": {
+            "source": "routines/atan2/atan2_compact_opt.asm",
+            "segments": (("KERNEL_CODE", 94), ("LOGTAB", 256),
+                         ("ATANTAB", 256)),
+            "entry": "atan2", "zp": 0, "scratch": 0, "atan2": "compact",
+        },
+        "link:sum-fast": {
+            "source": "routines/atan2/atan2_sum_fast.asm",
+            "segments": (("KERNEL_CODE", 85), ("LOGX", 256),
+                         ("LOGY", 256), ("QPOS", 256), ("QNEG", 256)),
+            "entry": "atan2", "zp": 0, "scratch": 0, "atan2": "sum-fast",
+        },
+    },
     "MATH_UMOD32_32": {
         "link:aligned-zerozp": {
             "source": "routines/standalone_lab/portable/mod_u32_aligned_carry.asm",
@@ -74,9 +89,13 @@ def available_variants(root=ROOT):
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
-                "validation_path": "routines/standalone_lab/portable/verify.py",
+                "validation_path": ("routines/atan2/validate_optimized.py"
+                                    if "atan2" in mod else
+                                    "routines/standalone_lab/portable/verify.py"),
                 "qualification": "existing portable source; selective mixed-call testing",
-                "notes": "Standalone source with checked public carry semantics",
+                "notes": ("Complete page-aligned ATAN2 lookup tables, exhaustive stock-C64 phase certification"
+                          if "atan2" in mod else
+                          "Standalone source with checked public carry semantics"),
                 "resources_reported": {
                     "code_and_table_bytes": sum(s for _, s in mod["segments"]),
                     "scratch_bytes": mod["scratch"],
