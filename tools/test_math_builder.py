@@ -42,6 +42,18 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaises(mb.SelectionError):
             mb.resolve("not_a_real_operation", self.index)
 
+    def test_numbered_manual_selector(self):
+        numbered = ["MATH_UDIV16", "MATH_UMOD16", "MATH_ISQRT16", "MATH_UDIV32_32"]
+        picked = mb.parse_interactive_choices("1,2-3, UDIV32_32", numbered)
+        self.assertEqual(
+            mb.parse_operations(picked, self.index),
+            sorted(numbered))
+        self.assertIn("Unsigned divide", mb.operation_description("MATH_UDIV16"))
+        self.assertIn("square root", mb.operation_description("MATH_ISQRT16"))
+        for bad in ("0", "5", "3-2", "1-5", "0-2"):
+            with self.subTest(bad=bad), self.assertRaises(mb.SelectionError):
+                mb.parse_interactive_choices(bad, numbered)
+
     def test_selection_deduplicates_and_pins(self):
         op = "MATH_UMUL16"
         valid_id = self.index[op]["variants"][0]["id"]
