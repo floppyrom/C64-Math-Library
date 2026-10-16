@@ -4477,5 +4477,43 @@
     "reference_binaries_replaced": false,
     "native_cycle_measurement": false,
     "irq_nmi_reentrancy_certified": false
+  },
+  "issue144_nine_kernel_source_candidate_benchmark_2026_10_16": {
+    "status": "PASS_NINE_KERNEL_TWO_MAP_PERMANENT_EVIDENCE",
+    "date": "2026-10-16",
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "apis": [
+      "MATH_ISQRT32",
+      "MATH_SEEK16_INIT",
+      "MATH_SMUL32_SHR16",
+      "MATH_UMUL32_SHR16",
+      "MATH_SMUL32",
+      "MATH_UMUL32",
+      "MATH_SMOD32_16",
+      "MATH_UMOD32_16",
+      "MATH_UDIV32_16"
+    ],
+    "source_candidate_only": true,
+    "tagged_release": false,
+    "physical_REU_VIC_DMA_elapsed_time_proven": false,
+    "IRQ_NMI_reentrant_proven": false,
+    "all_api_rows_per_map": 45,
+    "compared_public_calls_per_map": 15900,
+    "total_matched_public_calls": 31800,
+    "source_and_historical_PRG_hashes_per_row": true,
+    "no_slowed_input_measured": true,
+    "exact_same_result_both_relocation_maps": true,
+    "source": "tools/issue144_nine_kernel_candidate_benchmark.py",
+    "workflow": ".github/workflows/issue144-nine-kernel-candidate.yml",
+    "original_actions_run": 38878974907,
+    "reference_csv": "benchmarks/ISSUE144_NINE_KERNEL_SOURCE_REFERENCE_2026-10-16.csv",
+    "alternate_csv": "benchmarks/ISSUE144_NINE_KERNEL_SOURCE_ALTERNATE_2026-10-16.csv",
+    "crossmap_record": "validation/review/ISSUE144_NINE_KERNEL_CROSSMAP_2026-10-16.json"
   }
 }

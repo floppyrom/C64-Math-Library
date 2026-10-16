@@ -1,0 +1,67 @@
+name: Issue144 nine-kernel same-input source-candidate benchmark
+on:
+  push:
+    branches: [issue144-p4-nine-kernel-candidate-benchmark-20261016]
+    paths:
+      - 'tools/issue144_nine_kernel_candidate_benchmark.py'
+      - 'tools/stage_issue144_nine_kernel_publication.py'
+      - '.github/workflows/issue144-nine-kernel-candidate.yml'
+      - 'docs/ISSUE144_NINE_KERNEL_SOURCE_CANDIDATE_2026-10-16.md'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    strategy:
+      fail-fast: false
+      matrix:
+        layout: [reference, alternate]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Benchmark all nine public kernels against frozen artifacts on same-input oracle
+        run: python3 tools/issue144_nine_kernel_candidate_benchmark.py --layout ${{ matrix.layout }} --random 128 --out /tmp/issue144-nine-kernels
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue144-nine-kernels-${{ matrix.layout }}
+          path: /tmp/issue144-nine-kernels/ISSUE144_NINE_KERNEL_${{ matrix.layout }}.*
+          if-no-files-found: error
+  retain-permanent-evidence:
+    if: github.event_name == 'push'
+    needs: [benchmark]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: issue144-nine-kernels-reference
+          path: /tmp/issue144-nine-kernels/reference
+      - uses: actions/download-artifact@v4
+        with:
+          name: issue144-nine-kernels-alternate
+          path: /tmp/issue144-nine-kernels/alternate
+      - name: Stage only qualified identical-input permanent CSV JSON and verify package
+        run: python3 tools/stage_issue144_nine_kernel_publication.py --reference /tmp/issue144-nine-kernels/reference --alternate /tmp/issue144-nine-kernels/alternate
+      - name: Commit benchmark results and exact SHA256 package seal
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add benchmarks/ISSUE144_NINE_KERNEL_SOURCE_*.csv validation/review/ISSUE144_NINE_KERNEL_*2026-10-16.json RELEASE_STATUS.json CHANGELOG.md CSDB_CHANGELOG.txt validation/PACKAGE_AUDIT.json SHA256SUMS.txt
+          git diff --cached --check
+          git diff --cached --quiet && { echo 'Benchmark evidence unexpectedly unchanged'; exit 1; }
+          git commit -m 'Issue144 P4: permanently retain qualified two-map nine-kernel candidate scorecards'
+          git push origin HEAD:issue144-p4-nine-kernel-candidate-benchmark-20261016
