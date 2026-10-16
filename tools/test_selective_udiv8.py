@@ -21,7 +21,7 @@ class NativeV1UDIV8Tests(unittest.TestCase):
         cls.index = math_builder.operation_index()
 
     def plan(self, ops, **kwargs):
-        return math_builder.create_plan(cls.index, ops, **kwargs)
+        return math_builder.create_plan(self.index, ops, **kwargs)
 
     def test_exact_all_pairs_two_relocations(self):
         for origin, io, zbase in ((0x8000, 0xc000, 0x50),
