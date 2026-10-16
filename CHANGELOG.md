@@ -1,3 +1,8 @@
+2026-10-16 BUILDER HISTORICAL SELF-MODIFYING V1 UMOD8 (UNRELEASED; QUALIFICATION PENDING)
+- Migrated original V1 optimized 157-byte unsigned 8-bit modulo producer as a self-contained independently linkable source module; retain unrolled large-divisor and writable-RAM SMC small-divisor fast paths, two protected ZP scratch bytes and no extra data tables/initialization/REU.
+- Preserve unsigned remainder result, untouched quotient and input bytes, clear carry for valid denominators and carry set on division by zero. Require writable code RAM; self-modification restricted to two instruction immediates.
+- Added exhaustive 65,536 input-pair CPU tests at each of two relocations, mixed-module and tight RAM/ZP budgeting tests, native x64sc tests, and source/build metadata. 18 of 56 stable public operations independently linkable if qualified; V1–V5 released images unchanged.
+
 2026-10-16 HISTORICAL SMUL8 WRITABLE-CODE SOURCE MIGRATION (UNRELEASED, CI PENDING)
 - Added MATH_SMUL8 link:v1-resident-smc, retaining the exact 46-byte self-modifying historical signed 8x8 producer, instead of introducing a compact but slower replacement. Its four immutable 511-entry table pages match shipped V1-V5 bytes (including V2-V4 relocated complement pages), with 0 ZP, 0 extra scratch, and a required writable 46-byte code region.
 - Explicit resource accounting: four 512-byte aligned regions, 2044 source table bytes, 214 default-origin alignment/hole bytes, 2304 total image bytes and 32 public I/O bytes (2336 RAM). All 65536 input pairs tested in both mathematical reference and source-built CPU emulation at two origins, plus native x64sc two-origin checks. Only four executable operand bytes are intentionally modified.
