@@ -60,5 +60,5 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y /tmp/headlessvice.deb
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
-      - name: Validate linked binaries at two RAM maps
+      - name: Validate 16-bit and 32-bit linked binaries at two RAM maps
         run: python3 tools/native_selective_linker.py
