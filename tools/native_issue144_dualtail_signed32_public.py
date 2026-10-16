@@ -23,7 +23,7 @@ monitor.STRIDE=STRIDE
 native=monitor.native
 from issue144_u3216_dualtail_direct_dispatch_screen import builds,PROFILES
 OPS=("MATH_SDIV32_16","MATH_SMOD32_16")
-assert N==24 and STRIDE==64
+assert N==24 and STRIDE==24
 
 def main():
     exe=os.environ.get("VICE_WRAPPER")
