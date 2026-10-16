@@ -145,7 +145,14 @@ def run_profile(p,stage,layout,sets):
     frozen_api=api_frozen(p)
     old,_=init_machine(p,FROZEN[p],REUS.get(p),{k:f"${v:04X}" for k,v in frozen_api.items()})
     candidate,api=init_machine(p,prg,reu,manifest["public_entries"])
+    # The 56 stable public *functions* and caller-visible SEEK state arrays
+    # are separate API include records; the manifest lists only functions.
+    import re
+    for line in (dest/"math_api.inc").read_text().splitlines():
+        m=re.match(r"\\s*(MATH_SEEK16_POS_[A-Z]+)\\s*=\\s*\\$([0-9A-Fa-f]+)",line)
+        if m:api[m.group(1)]=int(m.group(2),16)
     assert set(OPS).issubset(api) and len(manifest["public_entries"])==56
+    assert all(k in api for k in ("MATH_SEEK16_POS_XL","MATH_SEEK16_POS_XH","MATH_SEEK16_POS_Y"))
     io_new=unhx(manifest["public_io"].split("-")[0]);io_old=0xc000
     result=[]
     for op in OPS:
