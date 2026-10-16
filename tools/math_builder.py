@@ -194,6 +194,8 @@ def create_plan(
             "chosen_linkable_variant": None,
         })
 
+    can_link = all(any(v["selective_link_ready"] for v in op["available_source_variants"])
+                   for op in output)
     return {
         "schema": "c64-math-selection-plan-v1",
         "status": "planning_only_not_a_loadable_binary",
@@ -203,7 +205,7 @@ def create_plan(
         "operations": output,
         "public_operation_count": len(output),
         "unresolved_dependencies": True,
-        "linker_status": "not_implemented",
+        "linker_status": "experimental_subset_available" if can_link else "operations_unqualified_for_selective_linking",
         "notes": [
             "Variant cycle means may use different corpora; do not rank across bases.",
             "Per-routine zero-page and memory claims must not be added together.",
@@ -233,6 +235,8 @@ def main(argv: list[str] | None = None) -> int:
         description="Plan a minimal math library from operations, budgets and variants."
     )
     parser.add_argument("--list", action="store_true", help="list public operations")
+    parser.add_argument("--list-linkable", action="store_true",
+                        help="list operations with currently link-ready sources")
     parser.add_argument("--variants", metavar="OP", help="inspect published alternatives")
     parser.add_argument("--operation", action="append", default=[],
                         help="select an API/typed operation (repeat or comma-separate)")
@@ -253,9 +257,13 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         index = operation_index()
-        if args.list:
+        if args.list or args.list_linkable:
             for api, op in index.items():
-                print("{:<25} {:<12} {}".format(api, op["category"], op["canonical_name"]))
+                eligible = sum(v["selective_link_ready"] for v in op["variants"])
+                if args.list_linkable and not eligible:
+                    continue
+                print("{:<25} {:<12} {}{}".format(api, op["category"],
+                    op["canonical_name"], " [linkable: {}]".format(eligible) if eligible else ""))
             return 0
         if args.variants:
             api = resolve(args.variants, index)
