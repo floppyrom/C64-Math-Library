@@ -296,6 +296,37 @@ distribution; smaller code is not presumed faster. CPU model checks cover all
 VICE checks each source-linked variant at both relocations and CI protects the
 two intentional self-modifying immediate operands from other writes.
 
+### Qualified single-operation UMOD8 speed selection
+
+The builder may now use the reproducible 1,000-pair *source-assembled
+CPU-model* corpus for `--objective speed --operation UMOD8`, honoring
+both the caller's RAM/ZP budget and any explicitly pinned historical
+implementation. It measures the actual relocatable source at the requested
+code/I/O/ZP placement, verifies public ABI on every operand pair, and
+records the full per-variant cycles, corpus hash and source hashes.
+
+For the default `$8000` code origin and `$C000` I/O layout, all
+three variants use two ZP bytes. The certified source-assembled mean
+cycles over the identical corpus were V1 **95.635**, V2 **90.893**,
+V5 **94.165**; these are **not native hardware timings**.
+
+| Available main RAM | Fastest eligible source in this corpus |
+|---|---|
+| 189–236 B | V1 fast/fallback (157 code B) |
+| 237–260 B | V5 unrolled hybrid (205 code B) |
+| 261+ B | V2 unrolled fallback (229 code B) |
+
+RAM includes the common 32-byte public I/O reservation, and the code
+must be writable for these SMC producers. The user can still request
+`--objective size` or explicitly pin any implementation. The speed
+selector **refuses mixed-operation rankings** without a comparable
+joint workload.
+
+```sh
+python3 tools/math_builder.py --operation UMOD8 --objective speed \
+  --zp-budget 2 --ram-budget 261 --build
+```
+
 ### Source-aligned UMOD8 cycle measurement (V1, V2, V5)
 
 `tools/test_selective_umod8_speed.py` benchmarks all three independently
