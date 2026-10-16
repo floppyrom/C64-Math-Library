@@ -164,6 +164,55 @@ class SelectiveLinkTests(unittest.TestCase):
                                 self.assertEqual(cpu.sp, initial_sp)
                         self.assertEqual(bytes(mem[origin:origin+exp_size]), code_before)
 
+    def test_four_operations_interleaved_share_scratch_safely(self):
+        api = ["UDIV16", "UMOD16", "UDIV32_32", "UMOD32_32"]
+        with tempfile.TemporaryDirectory() as d:
+            plan = self.plan(api, objective="balanced",
+                             zp_budget=4, ram_budget=1800)
+            man = linker.build(plan, Path(d))
+            self.assertEqual(man["resource_use"]["code_and_tables_bytes"], 1625)
+            self.assertEqual(man["resource_use"]["main_ram_total_bytes"], 1661)
+            self.assertEqual(man["resource_use"]["zero_page_bytes"], 4)
+            self.assertEqual(man["resource_use"]["private_ram_scratch_bytes"], 4)
+            prg = (Path(d) / "math_selective.prg").read_bytes()
+            mem = bytearray(65536)
+            mem[0x8000:0x8000+len(prg)-2] = prg[2:]
+            cpu = CPU(mem)
+            stack_start = cpu.sp
+            image_before = bytes(mem[0x8000:0x8000+len(prg)-2])
+            entry = {x["api"]: int(x["entry"][1:], 16)
+                     for x in man["operations"]}
+            rng = random.Random(0x16C6432)
+            chosen = list(entry)
+            for i in range(256):
+                rng.shuffle(chosen)
+                n_full = rng.getrandbits(32)
+                d_full = rng.choice((0, 1, 2, 7, 255, 256,
+                                     0xffff, rng.getrandbits(32)))
+                for op in chosen:
+                    width = 2 if op.endswith("16") and not op.endswith("_32") else 4
+                    mask = (1 << (width * 8)) - 1
+                    n, dv = n_full & mask, d_full & mask
+                    mem[0xc010:0xc014] = (n_full & 0xffffffff).to_bytes(4, "little")
+                    mem[0xc014:0xc018] = (d_full & 0xffffffff).to_bytes(4, "little")
+                    input_n, input_d = bytes(mem[0xc010:0xc014]), bytes(mem[0xc014:0xc018])
+                    mem[0xc018:0xc01c] = b"\x55" * 4
+                    mem[0xc01c:0xc020] = b"\x66" * 4
+                    cpu.d = 0
+                    cpu.call(entry[op], 2_000_000)
+                    q = int.from_bytes(mem[0xc018:0xc018+width], "little")
+                    rem = int.from_bytes(mem[0xc01c:0xc01c+width], "little")
+                    expect_q = 0x5555 if width == 2 else 0x55555555
+                    if "UDIV" in op:
+                        expect_q = n // dv if dv else 0
+                    self.assertEqual(q, expect_q, (i, op, n, dv))
+                    self.assertEqual(rem, n % dv if dv else 0, (i, op, n, dv))
+                    self.assertEqual(cpu.c, int(dv == 0))
+                    self.assertEqual(bytes(mem[0xc010:0xc014]), input_n)
+                    self.assertEqual(bytes(mem[0xc014:0xc018]), input_d)
+                    self.assertEqual(cpu.sp, stack_start)
+            self.assertEqual(bytes(mem[0x8000:0x8000+len(prg)-2]), image_before)
+
     def test_global_variant_selection_beats_local_choices(self):
         # UDIV16 needs 2 ZP bytes. The smaller UDIV32 donor needs 4, but
         # switching only UDIV32 to its zero-ZP donor lets both coexist.
