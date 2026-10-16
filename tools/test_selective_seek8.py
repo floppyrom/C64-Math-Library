@@ -42,7 +42,7 @@ class SelectiveSeek8Tests(unittest.TestCase):
             self.assertEqual(set(ex),set(FAMILY))
             self.assertEqual(len(set(ex.values())),4)
             self.assertEqual(man["resource_use"]["code_and_tables_bytes"],651)
-            self.assertEqual(man["resource_use"]["image_span_bytes"],582)
+            self.assertEqual(man["resource_use"]["image_span_bytes"],651)
             self.assertEqual(man["resource_use"]["zero_page_bytes"],0)
             self.assertEqual(man["resource_use"]["private_ram_scratch_bytes"],19)
             self.assertEqual(man["resource_use"]["persistent_state_bytes"],160)
@@ -108,7 +108,7 @@ class SelectiveSeek8Tests(unittest.TestCase):
                             cpu.call(entries[step],120000)
                             self.assertEqual(cpu.c,1)
                             self.assertEqual((cpu.mem[state+slot],cpu.mem[state+8+slot]),(tx,ty))
-                self.assertEqual(bytes(cpu.mem[code:code+582]),original_code)
+                self.assertEqual(bytes(cpu.mem[code:code+651]),original_code)
 
     def test_exclusive_scratch_and_state_overlap_fail_closed(self):
         with tempfile.TemporaryDirectory() as d:
