@@ -117,6 +117,7 @@ LB026:
 LB066:
     sbc #$00
     bcs LB066
+LB06A:
     adc #$00
     clc
     rts
