@@ -73,7 +73,7 @@ routine figures. Standalone timing corpora may differ substantially.
 Generate a PRG containing only unsigned 16-bit division and/or remainder:
 
 ```sh
-python3 tools/math_builder.py --operation UDIV16 --operation UMOD16 \\
+python3 tools/math_builder.py --operation UDIV16 --operation UMOD16 \
   --objective size --zp-budget 2 --ram-budget 1000 --build
 ```
 
@@ -89,7 +89,7 @@ No other math operations, global lookup tables or fixed resident code are
 included. For a one-routine 0-ZP modulo build, select:
 
 ```sh
-python3 tools/math_builder.py --operation UMOD16 --objective zp \\
+python3 tools/math_builder.py --operation UMOD16 --objective zp \
   --zp-budget 0 --ram-budget 1100 --build
 ```
 
