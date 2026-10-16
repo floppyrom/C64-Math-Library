@@ -11,6 +11,7 @@ import argparse
 import csv
 import hashlib
 import json
+import tempfile
 from pathlib import Path
 import sys
 
@@ -306,7 +307,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--validate-sources", action="store_true",
                         help="SHA-check referenced source mirrors and records")
     parser.add_argument("--build", action="store_true",
-                        help="build the qualified 16-bit selective subset only")
+                        help="build a qualified selective source-only subset")
+    parser.add_argument("--measure", action="store_true",
+                        help="assemble in temporary memory and print exact linked resources")
     args = parser.parse_args(argv)
     try:
         index = operation_index()
@@ -353,6 +356,24 @@ def main(argv: list[str] | None = None) -> int:
                        else constraints.get("max_ram_bytes"),
             pins=pins, validate_sources=args.validate_sources,
         )
+        if args.measure:
+            if args.build or args.preview:
+                raise SelectionError("--measure cannot be combined with --build or --preview")
+            import selective_linker
+            try:
+                with tempfile.TemporaryDirectory(prefix="c64_math_measure_") as folder:
+                    manifest = selective_linker.build(plan, Path(folder),
+                                                      memory=cfg.get("memory", {}))
+            except selective_linker.LinkError as exc:
+                raise SelectionError(str(exc)) from exc
+            print(json.dumps({
+                "operations": [x["api"] for x in manifest["operations"]],
+                "selected_variants": {x["api"]: x["variant"] for x in manifest["operations"]},
+                "resource_use": manifest["resource_use"],
+                "memory_map": manifest["memory_map"],
+                "note": "Exact assembled bytes, experimental source; no output retained.",
+            }, indent=2))
+            return 0
         if args.build:
             if args.preview:
                 raise SelectionError("--build and --preview are mutually exclusive")
