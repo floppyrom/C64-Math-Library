@@ -216,19 +216,72 @@ def create_plan(
     }
 
 
+def operation_description(api: str) -> str:
+    """Readable labels; all technical names still resolve unchanged."""
+    tail = api.removeprefix("MATH_")
+    for prefix, kind in (("UMULDIV", "Unsigned multiply/divide"),
+                         ("SMULDIV", "Signed multiply/divide"),
+                         ("UMUL", "Unsigned multiply"), ("SMUL", "Signed multiply"),
+                         ("UDIV", "Unsigned divide"), ("SDIV", "Signed divide"),
+                         ("UMOD", "Unsigned remainder"), ("SMOD", "Signed remainder")):
+        if tail.startswith(prefix):
+            return kind + " " + tail[len(prefix):].replace("_", " ")
+    names = {
+        "SIN8": "8-bit sine", "COS8": "8-bit cosine",
+        "SINCOS8": "8-bit sine and cosine", "ATAN2_8": "8-bit vector angle",
+        "ISQRT16": "16-bit integer square root",
+        "ISQRT32": "32-bit integer square root",
+        "URECIP16_Q16": "16-bit reciprocal in Q16",
+        "DIST8_FAST": "Fast 8-bit vector distance",
+        "DIST8_ACCURATE": "Accurate 8-bit vector distance",
+        "VEC2_NORMALIZE_Q8_8": "Normalize 2D Q8.8 vector",
+    }
+    if tail in names:
+        return names[tail]
+    if tail.startswith("SEEK"):
+        return "Seek/movement " + tail[4:].replace("_", " ")
+    return tail.replace("_", " ")
+
+
+def parse_interactive_choices(raw: str, numbered: list[str]) -> list[str]:
+    selected = []
+    for part in raw.split(","):
+        term = part.strip()
+        if not term:
+            continue
+        if term.isdecimal():
+            number = int(term)
+            if not 1 <= number <= len(numbered):
+                raise SelectionError("Operation number out of range: " + term)
+            selected.append(numbered[number - 1])
+        elif "-" in term and all(x.strip().isdecimal() for x in term.split("-", 1)):
+            first, last = (int(x.strip()) for x in term.split("-", 1))
+            if not 1 <= first <= last <= len(numbered):
+                raise SelectionError("Invalid operation range: " + term)
+            selected.extend(numbered[first-1:last])
+        else:
+            selected.append(term)
+    return selected
+
+
 def interactive_pick(index: dict[str, dict]) -> list[str]:
     categories: dict[str, list[str]] = {}
     for api, op in index.items():
         categories.setdefault(op["category"], []).append(api)
-    print("C64 Math Library — select operations (no fixed profile required)")
+    numbered = []
+    print("C64 Math Library — choose operations (no fixed profile)")
+    print("Select by number, range (e.g. 1-3), or operation name.")
+    print("Asterisk = selective-linkable source currently available.")
     for category, names in sorted(categories.items()):
         print("\n" + category.title())
         for name in names:
-            print("  {:23s} {}".format(name, index[name]["canonical_name"]))
-    print("\nEnter operation names, separated by commas.")
-    raw = input("Operations: ")
-    return [raw]
-
+            numbered.append(name)
+            ready = any(v["selective_link_ready"] for v in index[name]["variants"])
+            print("  {:2d}{} {:25s} {}".format(
+                len(numbered), "*" if ready else " ", name, operation_description(name)))
+    print("\nOnly starred operations can currently produce a minimal PRG.")
+    raw = input("Operations (e.g. 2,5,8-11 or UDIV16,UMOD16): ")
+    return parse_interactive_choices(raw, numbered)
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
