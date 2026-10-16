@@ -20,6 +20,15 @@ import selective_isqrt16 as sqrt16
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
+    "MATH_UDIV8": {
+        "link:v1-resident-fast": {
+            "source": "routines/divide/udiv8_v1_resident.asm",
+            "segments": (("KERNEL_CODE", 294),),
+            "entry": "FAST_UDIV8_V1", "zp": 1, "scratch": 0,
+            "provenance": "Exact V1 125-instruction UDIV8 fast chain, trampoline omitted",
+            "udiv8_v1": True,
+        },
+    },
     "MATH_UDIV16": {
         "link:biased": {
             "source": "routines/standalone_lab/portable/div_u16_biased.asm",
@@ -147,6 +156,7 @@ def available_variants(root=ROOT):
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
                 "validation_path": (
+                    "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
                     "tools/test_selective_fast_umul8.py" if mod.get("fast_umul8") else
@@ -155,11 +165,13 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if mod.get("dist8") or mod.get("isqrt16") else
+                                  if mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("61-byte trampoline-free V1 signed-distance approximation, "
+                "notes": ("294-byte V1 8-bit quotient/remainder chain, one ZP byte, no table"
+                          if mod.get("udiv8_v1") else
+                          "61-byte trampoline-free V1 signed-distance approximation, "
                           "two private scratch bytes and zero ZP"
                           if mod.get("dist8") else
                           "38-byte V1/V2/V5 ISQRT16 descending square-lookup kernel, "
@@ -557,6 +569,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; Generated selective C64 math library (CLD required; non-reentrant)",
         "; All public inputs preserved; A/X/Y and processor flags may be volatile.",
         "; DIV/MOD: unsigned N/D in MATH_N/MATH_D, quotient/remainder Q/R;",
+        "; UDIV8: low byte N/D => low byte Q/R; high bytes unchanged; C=1 on D=0.",
         "; carry set iff D=0. UMOD leaves quotient untouched.",
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
