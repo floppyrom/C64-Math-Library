@@ -417,7 +417,12 @@ def build(plan, outdir, memory=None, root=ROOT):
         binary.get(addr, 0) for addr in range(code, code + size))
     exports = [
         "; Generated selective C64 math library (CLD required; non-reentrant)",
-        "; Registers volatile; N/D preserved; carry set iff divisor zero",
+        "; All public inputs preserved; A/X/Y and processor flags may be volatile.",
+        "; DIV/MOD: unsigned N/D in MATH_N/MATH_D, quotient/remainder Q/R;",
+        "; carry set iff D=0. UMOD leaves quotient untouched.",
+        "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
+        "; ATAN2_8: signed 8-bit MATH_X/Y low bytes => phase MATH_Z low byte",
+        "; and A, C clear. Initial carry ignored.",
         "MATH_X = $%04X" % io, "MATH_Y = $%04X" % (io + 4),
         "MATH_Z = $%04X" % (io + 8),
         "MATH_N = $%04X" % (io + 16), "MATH_D = $%04X" % (io + 20),
