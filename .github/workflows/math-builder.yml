@@ -9,7 +9,7 @@ on:
       - tools/test_selective_linker.py
       - tools/native_selective_linker.py
       - tools/native_selective_atan2.py
-      - tools/native_selective_multiply.py routines/atan2/tables.py tools/mini6502.py routines/standalone_lab/portable/native_vice.py
+      - tools/native_selective_multiply.py
       - tools/test_selective_multiply.py
       - routines/multiply/umul16_compact_zerozp.asm
       - routines/multiply/umul8_compact_zerozp.asm
@@ -41,7 +41,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Syntax-check builder and regression scripts before running tests
-        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py
+        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
       - name: Validate operation catalog and no-binary safety
         run: |
           python3 tools/test_math_builder.py
