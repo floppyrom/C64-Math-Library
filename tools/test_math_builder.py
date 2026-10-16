@@ -83,6 +83,30 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(available["linker_status"],
                          "experimental_subset_available")
 
+    def test_target_specific_variant_reporting(self):
+        for target, expected in (("c64", True), ("1541", False),
+                                 ("1571", False), ("1581", False)):
+            with self.subTest(target=target):
+                inspect = subprocess.run(
+                    [sys.executable, str(SCRIPT), "--variants", "UMUL8",
+                     "--target", target], capture_output=True, text=True, cwd=ROOT)
+                self.assertEqual(inspect.returncode, 0, inspect.stderr)
+                operation = json.loads(inspect.stdout)
+                self.assertEqual(operation["requested_target"], target)
+                linkable = [v for v in operation["variants"]
+                            if v["id"] == "link:compact-zerozp"]
+                self.assertEqual(len(linkable), 1)
+                self.assertEqual(linkable[0]["target_link_ready"], expected)
+                listing = subprocess.run(
+                    [sys.executable, str(SCRIPT), "--list-linkable",
+                     "--target", target], capture_output=True, text=True, cwd=ROOT)
+                self.assertEqual(listing.returncode, 0, listing.stderr)
+                if expected:
+                    self.assertIn("MATH_UMUL8", listing.stdout)
+                else:
+                    self.assertNotIn("MATH_UMUL8", listing.stdout)
+                    self.assertIn("planning only", listing.stderr)
+
     def test_cli_future_target_refuses_binary(self):
         for target in ("1541", "1571", "1581"):
             with self.subTest(target=target), tempfile.TemporaryDirectory() as d:
