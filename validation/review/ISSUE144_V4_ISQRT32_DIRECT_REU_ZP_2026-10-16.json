@@ -1,0 +1,62 @@
+{
+  "status": "PASS_EXPERIMENTAL_OPTIN_NOT_DEFAULT",
+  "issue": 144,
+  "research_pr": 191,
+  "source": "optional/issue144_v4_isqrt32_direct_reu_zp/v4_reu_16m.asm",
+  "reproducer": "tools/issue144_v4_reu_direct_zp_screen.py",
+  "workflow": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38858850607",
+  "baseline": "relocatable_source/v4_reu_16m/isqrt32_reu_prefix.asm",
+  "reference_and_alternate_full_root_public_call_model": {
+    "pairs_per_map": 1066,
+    "maps": 2,
+    "total_pairs": 2132,
+    "corpus_sha256": "aaa17656b99c66f1bee21fecbe0fc1c1161f8ffb8623827e1c673373d6e4cbb2",
+    "mean_cpu_cycles_saved": 16,
+    "median_cpu_cycles_saved": 16,
+    "min_cpu_cycles_saved": 16,
+    "max_cpu_cycles_saved": 16,
+    "slower_cases": 0,
+    "same_input_root_input_preservation_carry_cpu_state_and_stack": "PASS",
+    "reu_c64_destination_restored": "PASS",
+    "build_sha256": {
+      "reference_old_prg": "8ed12962d9e64abbae7864894185b59f937e7c7f5356930b94e36f002ceab6c6",
+      "reference_opt_prg": "cf87e3b983f0e5dd8cab4cae3885dba78172464a07c9e2db01c8f63ad56ba36a",
+      "alternate_old_prg": "b708e3f005e91fbacd191efe80eb431c48241d41b60028703b1d6f7c4e4ee4bd",
+      "alternate_opt_prg": "e09905717ca2c857361af7b294933c1a13e9bf5f6c30bf7dd34eb37163f87aa2"
+    }
+  },
+  "full_public_api_source_validation": {
+    "calls_per_map": 21678,
+    "maps": 2,
+    "total_calls": 43356,
+    "entries_per_map": 56,
+    "passed": true
+  },
+  "native_vice": {
+    "status": "PASS_PINNED_X64SC_16_MIB_REU",
+    "paired_reference_root_inputs": 24,
+    "total_original_candidate_calls": 48,
+    "captured_output_sha256": "a22f4ba584e615bb9acea28fd5d99ba962694b3ff77026cfb92a436dc3653fdb"
+  },
+  "resources": {
+    "normal_zp_bytes_added": 0,
+    "caller_ram_bytes_added": 0,
+    "reu_image_bytes_added": 0,
+    "normal_zero_page_reused": "ZP_MAIN+$52..+$59",
+    "fixed_reu_c64_dest_latches_restored": true
+  },
+  "native_emulator_3_13_2_independent_dma_smoke": {
+    "status": "PASS_ONLY_DMA_MECHANISM",
+    "prefix": "$12345",
+    "address": "$448D14",
+    "destination": "$0054",
+    "record": "11012400"
+  },
+  "not_certified": [
+    "physical PAL/NTSC VIC contention or REU DMA wall time",
+    "IRQ/NMI shared-scratch/reentrancy",
+    "installed canonical V4 source or default PRG",
+    "production shipped performance",
+    "complete public-core native cross-API interaction"
+  ]
+}
