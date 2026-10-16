@@ -283,6 +283,16 @@ class SelectiveLinkTests(unittest.TestCase):
                         linker.build(plan, out / "invalid", memory=overrides)
             self.assertFalse((out / "invalid" / "math_selective.prg").exists())
 
+    def test_source_hash_lock_rejects_stale_plan(self):
+        with tempfile.TemporaryDirectory() as d:
+            plan = self.plan(["UDIV16"])
+            chosen = next(v for v in plan["operations"][0]["available_source_variants"]
+                          if v["id"] == "link:biased")
+            chosen["source_sha256"] = "0" * 64
+            with self.assertRaisesRegex(linker.LinkError, "source changed"):
+                linker.build(plan, Path(d))
+            self.assertFalse((Path(d) / "math_selective.prg").exists())
+
     def test_cli_build_compact_and_exports(self):
         with tempfile.TemporaryDirectory() as d:
             config = Path(d) / "config.json"
