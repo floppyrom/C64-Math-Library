@@ -1,4 +1,32 @@
 {
+  "issue144_b_u3216_inresident_dualtail_optin_2026_10_16": {
+    "status": "PASS_MODEL_NATIVE_SOURCE_ONLY_OPTIN_V2_V3_V4",
+    "description": "Unrestricted N32/D16 via D8/zero and highD stock fallback, private owned REG_LOW+$0C00 lowD 461-byte code",
+    "documentation": "docs/ISSUE144_B_DUALTAIL_INRESIDENT_2026-10-16.md",
+    "optional_builder": "tools/build_issue144_u3216_resident_optin.py",
+    "profiles": [
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m"
+    ],
+    "baseline_candidate_paired_public_calls": 51252,
+    "pinned_native_public_baseline_candidate_calls": 1152,
+    "six_map_full_56_entry_public_calls": 130068,
+    "v5_isolated_original_public_calls": 43356,
+    "v5_dualtail_direct_inheritance_supported": false,
+    "lowd_saved_mean_model_cycles": 27.029896907216497,
+    "mixed_unsigned_saved_mean_model_cycles": 10.871527777777779,
+    "sign_enriched_saved_mean_model_cycles": 19.991865785460092,
+    "worst_tested_regression_cycles": 2,
+    "source_owned_normal_Ram_code_bytes": 461,
+    "caller_ram_growth": 0,
+    "normal_zp_growth": 0,
+    "shipped_reference_prgs_reu_unchanged": true,
+    "performance_md_historical": true,
+    "prime_architecture_workstream_b_complete": false,
+    "physical_vic_reu_timing_qualified": false,
+    "irq_nmi_nested_reentrancy_qualified": false
+  },
   "issue144_source_release_candidate_isqrt32_2026_10_16": {
     "status": "PASS_29_OF_29_EXACT_HEAD_PR_CI_SOURCE_CANDIDATE_NOT_DEFAULT",
     "issue": 144,
