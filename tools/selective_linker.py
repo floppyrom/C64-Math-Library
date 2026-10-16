@@ -479,8 +479,15 @@ def build(plan, outdir, memory=None, root=ROOT):
         if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", canonical):
             raise LinkError("Unsafe typed operation alias: " + canonical)
         exports.append(canonical + " = " + operation["api"])
+    toolchain_paths = ("tools/math_builder.py", "tools/selective_linker.py",
+                       "tools/selective_atan2.py", "tools/mini6502.py")
+    toolchain_hashes = {
+        name: hashlib.sha256((root / name).read_bytes()).hexdigest()
+        for name in toolchain_paths
+    }
     manifest = {
         "schema": "c64-math-selective-binary-v1",
+        "toolchain_sha256": toolchain_hashes,
         "status": "selective_binary_emitted",
         "target": "c64",
         "selection_objective": plan["objective"],
