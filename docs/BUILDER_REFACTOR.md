@@ -1,3 +1,33 @@
+### One-byte-RAM accumulator remainder variant for unsigned 32/16
+
+An additional independent option, `link:accumulator-remainder`, keeps the
+high eight bits of the 17-bit in-progress remainder in accumulator A.
+Only the low byte uses scratch RAM, and the 32 quotient bits are shifted
+directly in public Q32. Its source occupies **131 bytes** and needs **1
+ordinary RAM byte and 0 zero-page bytes**, making the default
+two-API combination **164 bytes total** (131 code + 32 IO + 1 scratch).
+The original 162-byte/`3 RAM` reference `link:portable-restoring`
+remains explicitly pinnable and independently qualified.
+
+Both variants share their producer between `MATH_UDIV32_16` and
+`MATH_UMOD32_16`, preserve N32/D16 and the upper two bytes of R,
+write full Q32 + R16, clear carry on success and set it on a zero divisor.
+The builder defaults to the resource-Pareto-minimal accumulator variant;
+this is a **size/RAM selection, not a general speed certification**.
+The regression suite additionally checks exact cycles on the same seeded
+operand corpus at identical RAM maps and rejects the candidate if its
+aggregate cycles are not better than the original restoring reference.
+Native VICE tests run both variants and both public aliases independently.
+
+```sh
+python3 tools/math_builder.py --operation UDIV32_16 --operation UMOD32_16 \
+  --pin UDIV32_16=link:accumulator-remainder \
+  --pin UMOD32_16=link:accumulator-remainder --zp-budget 0 --ram-budget 164 --build
+```
+
+The optimized V1–V5 producers remain a separate, outstanding
+dependency-transplant task; no historic profile is replaced.
+
 ### Source-linked portable unsigned 32/16 DIV/MOD
 
 `MATH_UDIV32_16` and `MATH_UMOD32_16` are now independently
