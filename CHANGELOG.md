@@ -1,3 +1,10 @@
+2026-10-16 ISSUE144 B NORMAL-RESIDENT DUALTAIL UDIV32/16 SOURCE-ONLY OPT-IN
+- V2/V3/V4 source-selected 461-byte secondary low-divisor quotient engine relocates to already claimed REG_LOW+$0C00; no caller-owned RAM, extra ZP or published PRG/REU replacement. Original $1C00-class bytes zero; normal reference and alternate memory map validated.
+- 51,252 paired same-input public signed/unsigned DIV/MOD CPU-model calls pass with full Q/R/C/N/D and volatile signed status. +27.0299 cycles on eligible low D, +10.8715 mean over mixed unsigned corpus, +19.9919 on sign-enriched signed corpus, 2-cycle worst regression.
+- 1,152 pinned real x64sc baseline/candidate calls pass. 130,068 V2–V4 all-56-entry reference/alternate source-built public calls pass with an explicit runtime write guard around the resident code island.
+- V5 cannot inherit the V2 helper with the current linker: direct-import unsupported opcode confirmed; separate 43,356 V5 stock hybrid public calls PASS at 31 ZP. Isolated optional builder refuses V5 and preserves original source. IRQ/NMI nested-use, indirect references and full physical VIC/REU wall-time gates remain OPEN; issue #144 B remains OPEN.
+- See docs/ISSUE144_B_DUALTAIL_INRESIDENT_2026-10-16.md.
+
 2026-10-16 ISSUE144 B DUALTAIL SIGNED32 DIVMOD PUBLIC AND NATIVE QUALIFICATION (OPTIN ONLY)
 - The optional $0800 lowD U3216 magnitudes also serve signed SDIV32_16/SMOD32_16 V2/V3/V4. 23,604 paired same-input source CPU model public calls, both memory maps, all four signed quadrants and D=0, exact Q/R/C/N/D/stack and processor status; +19.9919 modeled cycles mean on signed corpus, worst -2. Pinned native x64sc signed 576 original/candidate public calls passed, zero volatile CPU-state differences. Native harness correction constrains result capture to $0500-$0697, avoiding the optional executable at $0800. Research-only; 461 caller-owned bytes remain mandatory, no production promotion or reference PRG/REU/benchmark updates. See docs/ISSUE144_B_DUALTAIL_DIRECT_DISPATCH_SCREEN_2026-10-16.md
 
