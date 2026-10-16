@@ -98,6 +98,7 @@ def available_variants(root=ROOT):
         for ident, mod in variants.items():
             result[api].append({
                 "id": ident, "kind": "selective-source-module",
+                "build_targets": ["c64"],
                 "source_path": mod["source"],
                 "source_sha256": hashlib.sha256(
                     (root / mod["source"]).read_bytes()).hexdigest(),
