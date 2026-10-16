@@ -4262,5 +4262,47 @@
     "source": "optional/issue144_v4_reu_isqrt_fast4/v4_reu_16m.asm",
     "doc": "docs/ISSUE144_V4_REU_ISQRT32_FAST4_REFINEMENT_2026-10-15.md",
     "proof": "validation/review/ISSUE144_V4_REU_ISQRT32_FAST4_RESEARCH.json"
+  },
+  "issue144_seek16_v15_normal_resident_batched_source_2026_10_16": {
+    "status": "PASS_NORMAL_RESIDENT_SOURCE_MODEL_NATIVE_NOT_BINARY_RELEASE",
+    "profiles": [
+      "v1_balanced",
+      "v5_hybrid_lowzp"
+    ],
+    "source_qualification": "validation/review/ISSUE144_SEEK16_V15_NORMAL_BATCH_2026-10-16.json",
+    "source_document": "docs/ISSUE144_SEEK16_V15_NORMAL_BATCH_2026-10-16.md",
+    "init_pairs_per_profile": 1088,
+    "step_calls_per_profile": 26112,
+    "public_cycle_saving_by_profile": {
+      "v1_balanced": {
+        "n": 1088,
+        "mean": 10.566176,
+        "median": 0.0,
+        "p95": 36,
+        "worst": 0,
+        "best": 36,
+        "slower": 0
+      },
+      "v5_hybrid_lowzp": {
+        "n": 1088,
+        "mean": 10.566176,
+        "median": 0.0,
+        "p95": 36,
+        "worst": 0,
+        "best": 36,
+        "slower": 0
+      }
+    },
+    "native_vice": {
+      "v1_balanced": "PASS_NATIVE_X64SC_ALL_SEEK_MODES",
+      "v5_hybrid_lowzp": "PASS_NATIVE_X64SC_ALL_SEEK_MODES"
+    },
+    "additional_resident_code_bytes_per_profile": 45,
+    "normal_zero_page_growth": 0,
+    "application_RAM_growth": 0,
+    "source_only": true,
+    "reference_binaries_replaced": false,
+    "native_cycle_measurement": false,
+    "irq_nmi_reentrancy_certified": false
   }
 }

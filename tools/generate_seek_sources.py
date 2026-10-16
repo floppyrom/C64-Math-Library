@@ -22,7 +22,7 @@ LAYOUTS = {
     'v1_balanced': dict(
         seek8_step='REG_API+$0400', seek8_init='REG_API+$04B4', seek16_step='REG_API+$0600',
         seek16_init='REG_API+$0723', seek8_planes='REG_API+$085B', seek16_helpers='REG_API+$08CE',
-        seek_shared='REG_API+$0977', seek8_state='REG_LOW+$08E8', seek16_state='REG_LOW+$0988'),
+        seek_shared='REG_API+$0977', seek16_batch='REG_API+$0599', seek8_state='REG_LOW+$08E8', seek16_state='REG_LOW+$0988'),
     'v2_pareto_fast': dict(
         seek8_step='REG_API+$0E00', seek16_step='REG_GAME_API+$0054', seek8_init='REG_LOW+$0B00',
         seek16_init='REG_LOW+$08E2', seek8_planes='REG_API+$0F6C', seek16_helpers='REG_API+$0EE3',
@@ -53,9 +53,13 @@ def readme(profile: str, layout: dict, scratch: tuple) -> str:
     lib = K.library(base, LAYOUTS[base], *SCRATCH[base])
     mem, labels, const = Assembler().assemble(cfg + lib)
     order = ['seek8_step', 'seek8_init', 'seek8_planes', 'seek16_step', 'seek16_init', 'seek16_helpers', 'seek_shared']
+    if base == 'v1_balanced':
+        order.insert(3, 'seek16_batch')
     first = {'seek8_step': 'seek8_step', 'seek8_init': 'seek8_init', 'seek8_planes': 's8_planes',
              'seek16_step': 'seek16_step1', 'seek16_init': 'seek16_init', 'seek16_helpers': 's16_addmin',
              'seek_shared': 'seek_euclid_speed'}
+    if base == 'v1_balanced':
+        first['seek16_batch'] = 's16_addmin_batch'
     rows = []
     code_total = 0
     for blk in order:

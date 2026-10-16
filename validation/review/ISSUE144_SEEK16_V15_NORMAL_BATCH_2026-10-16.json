@@ -1,0 +1,360 @@
+{
+  "status": "PASS_MODEL_AND_NATIVE",
+  "source_built_not_reference_release": true,
+  "profiles": {
+    "v1_balanced": {
+      "profile": "v1_balanced",
+      "status": "PASS_PAIRED_PUBLIC_MODEL",
+      "candidate_sha256": "d7c41cc08612ece68a9b334fba02298347e9ccea9aff42273278f0b900913449",
+      "old_sha256": "7acada618c6d2306e496d9220a0e28010c4a0d45da8b009a348ada76e6696d99",
+      "init_calls": 1088,
+      "followup_calls": 26112,
+      "saved_cycles": {
+        "n": 1088,
+        "mean": 10.566176,
+        "median": 0.0,
+        "p95": 36,
+        "worst": 0,
+        "best": 36,
+        "slower": 0
+      },
+      "speed_classes": {
+        "0080:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0100:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0100:STEP_INT": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0100:STEP1": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0180:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0200:STEP": {
+          "n": 64,
+          "mean": 11.8125,
+          "median": 12.0,
+          "p95": 12,
+          "worst": 0,
+          "best": 12,
+          "slower": 0
+        },
+        "0200:STEP_INT": {
+          "n": 64,
+          "mean": 11.8125,
+          "median": 12.0,
+          "p95": 12,
+          "worst": 0,
+          "best": 12,
+          "slower": 0
+        },
+        "0300:STEP": {
+          "n": 64,
+          "mean": 23.625,
+          "median": 24.0,
+          "p95": 24,
+          "worst": 0,
+          "best": 24,
+          "slower": 0
+        },
+        "0300:STEP_INT": {
+          "n": 64,
+          "mean": 23.625,
+          "median": 24.0,
+          "p95": 24,
+          "worst": 0,
+          "best": 24,
+          "slower": 0
+        },
+        "0400:STEP": {
+          "n": 64,
+          "mean": 35.4375,
+          "median": 36.0,
+          "p95": 36,
+          "worst": 0,
+          "best": 36,
+          "slower": 0
+        },
+        "0400:STEP_INT": {
+          "n": 64,
+          "mean": 35.4375,
+          "median": 36.0,
+          "p95": 36,
+          "worst": 0,
+          "best": 36,
+          "slower": 0
+        },
+        "8080:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "8100:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "8180:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "8200:STEP": {
+          "n": 64,
+          "mean": 1.125,
+          "median": 0.0,
+          "p95": 12,
+          "worst": 0,
+          "best": 12,
+          "slower": 0
+        },
+        "8300:STEP": {
+          "n": 64,
+          "mean": 12.9375,
+          "median": 12.0,
+          "p95": 24,
+          "worst": 0,
+          "best": 24,
+          "slower": 0
+        },
+        "8400:STEP": {
+          "n": 64,
+          "mean": 23.8125,
+          "median": 24.0,
+          "p95": 36,
+          "worst": 0,
+          "best": 36,
+          "slower": 0
+        }
+      }
+    },
+    "v5_hybrid_lowzp": {
+      "profile": "v5_hybrid_lowzp",
+      "status": "PASS_PAIRED_PUBLIC_MODEL",
+      "candidate_sha256": "555f9a2f0765d6e6f5b0c48dc0e71cb9af6036d12e4f6a4a17dd3af49ff3bf91",
+      "old_sha256": "177c7da36f2e8b5a0c1ef107816b6e8688f92e51a5e7b3cc66e9afc1fea600b2",
+      "init_calls": 1088,
+      "followup_calls": 26112,
+      "saved_cycles": {
+        "n": 1088,
+        "mean": 10.566176,
+        "median": 0.0,
+        "p95": 36,
+        "worst": 0,
+        "best": 36,
+        "slower": 0
+      },
+      "speed_classes": {
+        "0080:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0100:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0100:STEP_INT": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0100:STEP1": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0180:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "0200:STEP": {
+          "n": 64,
+          "mean": 11.8125,
+          "median": 12.0,
+          "p95": 12,
+          "worst": 0,
+          "best": 12,
+          "slower": 0
+        },
+        "0200:STEP_INT": {
+          "n": 64,
+          "mean": 11.8125,
+          "median": 12.0,
+          "p95": 12,
+          "worst": 0,
+          "best": 12,
+          "slower": 0
+        },
+        "0300:STEP": {
+          "n": 64,
+          "mean": 23.625,
+          "median": 24.0,
+          "p95": 24,
+          "worst": 0,
+          "best": 24,
+          "slower": 0
+        },
+        "0300:STEP_INT": {
+          "n": 64,
+          "mean": 23.625,
+          "median": 24.0,
+          "p95": 24,
+          "worst": 0,
+          "best": 24,
+          "slower": 0
+        },
+        "0400:STEP": {
+          "n": 64,
+          "mean": 35.4375,
+          "median": 36.0,
+          "p95": 36,
+          "worst": 0,
+          "best": 36,
+          "slower": 0
+        },
+        "0400:STEP_INT": {
+          "n": 64,
+          "mean": 35.4375,
+          "median": 36.0,
+          "p95": 36,
+          "worst": 0,
+          "best": 36,
+          "slower": 0
+        },
+        "8080:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "8100:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "8180:STEP": {
+          "n": 64,
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0,
+          "worst": 0,
+          "best": 0,
+          "slower": 0
+        },
+        "8200:STEP": {
+          "n": 64,
+          "mean": 1.125,
+          "median": 0.0,
+          "p95": 12,
+          "worst": 0,
+          "best": 12,
+          "slower": 0
+        },
+        "8300:STEP": {
+          "n": 64,
+          "mean": 12.9375,
+          "median": 12.0,
+          "p95": 24,
+          "worst": 0,
+          "best": 24,
+          "slower": 0
+        },
+        "8400:STEP": {
+          "n": 64,
+          "mean": 23.8125,
+          "median": 24.0,
+          "p95": 36,
+          "worst": 0,
+          "best": 36,
+          "slower": 0
+        }
+      }
+    }
+  },
+  "native": {
+    "v1_balanced": {
+      "status": "PASS_NATIVE_X64SC_ALL_SEEK_MODES",
+      "output_sha256": "a12dbb6a52760259eee5a0906e8073879ed5e875d3040b937d4333a476fe3649"
+    },
+    "v5_hybrid_lowzp": {
+      "status": "PASS_NATIVE_X64SC_ALL_SEEK_MODES",
+      "output_sha256": "a12dbb6a52760259eee5a0906e8073879ed5e875d3040b937d4333a476fe3649"
+    }
+  }
+}

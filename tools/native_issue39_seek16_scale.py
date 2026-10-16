@@ -190,7 +190,36 @@ def main():
             old=pre_seek_division_bytes(p,published,status)
             if release:
                 assert sha(old)==release["old_resident_sha256"][p]
-                assert sha(new)==release["candidate_prg_sha256"][p]
+                # Issue144 V1/V5 subsequently adds the resident SEEK16
+                # accumulator batch, so its source-built candidate is no
+                # longer byte-identical to the historically published
+                # Issue39 Euclidean-only source candidate. Keep the archived
+                # SHA immutable, and demand the new independently sealed
+                # V1/V5 qualification instead of pretending it never changed.
+                latest = status.get(
+                    "issue144_seek16_v15_normal_resident_batched_source_2026_10_16", {})
+                inhole = status.get(
+                    "issue144_seek16_inhole_shared_source_only_2026_10_15", {})
+                later_v15 = (
+                    p in ("v1_balanced", "v5_hybrid_lowzp")
+                    and latest.get("status") ==
+                    "PASS_NORMAL_RESIDENT_SOURCE_MODEL_NATIVE_NOT_BINARY_RELEASE"
+                    and p in latest.get("profiles", ()))
+                later_v234 = (
+                    p in ("v2_pareto_fast", "v3_reu_512k", "v4_reu_16m")
+                    and p in inhole.get("profiles", ())
+                    and inhole.get("model_worst_regression_cycles") == 0
+                    and inhole.get("normal_zp_growth") == 0)
+                if later_v15:
+                    assert latest["public_cycle_saving_by_profile"][p]["worst"] >= 0
+                if later_v15 or later_v234:
+                    # Historical SHA is intentionally immutable; all later
+                    # source builds are instead compared below via real VICE
+                    # old/new dumps AND independent CPU reference model.
+                    assert sha(new) != release["candidate_prg_sha256"][p], (
+                        p, "current normal-resident candidate unexpectedly matched old hash")
+                else:
+                    assert sha(new)==release["candidate_prg_sha256"][p]
             assert old!=new and len(old)==len(new)
             if reu:assert sha(reu.read_bytes())==status["reference_reu_sha256"][p]
             a=native(p,old,reu,11000+pi*4,tmp,exe)

@@ -315,6 +315,31 @@ s8i_euclid:
         sta S8_KF,x
         jmp s8i_rates
 
+* = REG_API+$0599
+; V1/V5 normal-resident Issue144: batch the integer-speed accumulation.
+; The original s16_addmin remains unchanged for the fractional plane.
+s16_addmin_batch:
+        lda SK_REML
+        clc
+        adc SK_DMIN
+        sta SK_REML
+        bcc s16b_nc
+        inc SK_REMH
+s16b_nc:
+        cmp SK_DMAJL
+        lda SK_REMH
+        sbc SK_DMAJH
+        bcc s16b_done
+        sta SK_REMH
+        lda SK_REML
+        sbc SK_DMAJL
+        sta SK_REML
+        inc SK_WHOLE
+s16b_done:
+        dey
+        bne s16_addmin_batch
+        rts
+
 * = REG_API+$0600
 ; ---- SEEK16 per-frame steppers ----
 seek16_step1:
@@ -533,9 +558,7 @@ s16i_rates:
         ldy S16_KI,x
         beq s16i_r0done
 s16i_r0:
-        jsr s16_addmin
-        dey
-        bne s16i_r0
+        jsr s16_addmin_batch
 s16i_r0done:
         lda SK_REML
         sta S16_REML,x
