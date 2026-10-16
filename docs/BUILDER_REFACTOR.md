@@ -192,7 +192,10 @@ unsupported variant pin makes `--build` fail instead of loading 56 routines.
 The compact linker is intentionally marked experimental pending native
 VICE qualification. Arithmetic PRGs have a native linked-image test gate;
 ATAN2 compact/fast adds full-domain CPU-model and alternate relocation/mixed
-ABI tests. Hardware-native ATAN2 certification is still pending.
+ABI tests. Hardware-native ATAN2 qualification is now included in the checksum-pinned
+x64sc CI gate (384 signed-vector checks, two algorithms/two RAM maps); it must
+pass before the experimental implementation is marked qualified. The assembly
+source and the table generator are each SHA-locked in the selection manifest.
 
 ## Direction and acceptance criteria
 
