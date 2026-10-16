@@ -11,6 +11,9 @@ on:
       - tools/test_selective_linker.py
       - tools/native_selective_linker.py
       - tools/native_selective_atan2.py
+      - tools/native_selective_multiply.py
+      - tools/test_selective_multiply.py
+      - routines/multiply/umul16_compact_zerozp.asm
       - tools/selective_atan2.py
       - tools/test_selective_atan2.py
       - routines/atan2/*.asm
@@ -49,6 +52,7 @@ jobs:
           python3 tools/test_math_builder.py
           python3 tools/test_selective_linker.py
           python3 tools/test_selective_atan2.py
+          python3 tools/test_selective_multiply.py
       - name: Smoke-test source SHA provenance
         run: >-
           python3 tools/math_builder.py
@@ -74,3 +78,5 @@ jobs:
         run: python3 tools/native_selective_linker.py
       - name: Validate compact and fast ATAN2 linked binaries at two RAM maps
         run: python3 tools/native_selective_atan2.py
+      - name: Validate zero-ZP UMUL16 linked binary at two RAM maps
+        run: python3 tools/native_selective_multiply.py
