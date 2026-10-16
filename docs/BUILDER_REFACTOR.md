@@ -54,9 +54,11 @@ qualification status) using:
 python3 tools/math_builder.py --variants UMUL16
 ```
 
-An advanced selection can pin a specific source variant, e.g.
-`--pin MATH_UMUL16=resident:v1_balanced`; this is a **source preference for
-future linker integration**, not a proof of linkability.
+An advanced selection can copy a content-derived variant ID from
+`--variants UMUL16` and pin it with `--pin MATH_UMUL16=mirror:<sha-prefix>`.
+Legacy source provenance remains in metadata but is **not a profile choice**.
+A pin is a source preference for future linker integration, not proof of
+linkability.
 
 The plan records every source choice and explicitly sets:
 `status=planning_only_not_a_loadable_binary`,
