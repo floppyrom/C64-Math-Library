@@ -49,10 +49,11 @@ def cpu(prg, reu):
     # README's public entry coordinates are not an initialization substitute.
     from validate_source_build import load
     c,pub,io,manifest,initcycles = load(PROFILE,prg.parent.parent)
-    assert pub["MATH_ISQRT32"]==0x5e30, (pub["MATH_ISQRT32"],manifest)
-    assert io==0xc000 and Path(manifest["_resolved_reu_path"]).read_bytes()==reu.read_bytes()
-    assert c.mem[0x5e30]==0x4c, ("bad public JMP before first call",c.mem[0x5e30])
-    return c
+    assert Path(manifest["_resolved_reu_path"]).read_bytes()==reu.read_bytes()
+    entry=pub["MATH_ISQRT32"]
+    scratch=int(manifest["reu_scratch"].split("-")[0][1:],16)
+    assert c.mem[entry]==0x4c, ("bad public JMP before call",hex(entry),c.mem[entry])
+    return {"cpu":c,"entry":entry,"io":io,"scratch":scratch}
 
 
 def inp_cases():
@@ -65,27 +66,23 @@ def inp_cases():
     return list(dict.fromkeys(out))
 
 
-def call(c,n):
-    c.mem[0xc010:0xc014]=n.to_bytes(4,"little")
-    saved_n=bytes(c.mem[0xc010:0xc014])
+def call(context,n):
+    c=context["cpu"]
+    io=context["io"]
+    entry=context["entry"]
+    scratch=context["scratch"]
+    c.mem[io+0x10:io+0x14]=n.to_bytes(4,"little")
+    saved_n=bytes(c.mem[io+0x10:io+0x14])
     sp=c.sp
-    cycles=c.call(0x5e30, 2_000_000)
-    got=int.from_bytes(c.mem[0xc008:0xc00a],"little")
-    if got!=math.isqrt(n):
-        print("DEBUG_BAD_ROOT",hex(n),"got",got,"expected",math.isqrt(n),
-              "prg-entry",bytes(c.mem[0x5e30:0x5e33]).hex(),
-              "zp",bytes(c.mem[0x54:0x5c]).hex(),
-              "scratch",bytes(c.mem[0xc020:0xc024]).hex(),
-              "reu-reg",bytes(c.mem[0xdf02:0xdf0b]).hex(),
-              flush=True)
-        raise AssertionError((hex(n),got,math.isqrt(n)))
-    assert bytes(c.mem[0xc010:0xc014])==saved_n and c.c==0 and c.sp==sp
-    # The REU C64 buffer register must again identify its original $C020
-    # scratch address so that unrelated REU clients do not inherit $0054.
-    assert c.mem[0xdf02]==0x20 and c.mem[0xdf03]==0xc0, (
-        "REU C64 destination not restored",hex(c.mem[0xdf02]),hex(c.mem[0xdf03]))
+    cycles=c.call(entry, 2_000_000)
+    got=int.from_bytes(c.mem[io+8:io+10],"little")
+    assert got==math.isqrt(n),(hex(n),hex(entry),got,math.isqrt(n))
+    assert bytes(c.mem[io+0x10:io+0x14])==saved_n and c.c==0 and c.sp==sp
+    # Keep default C64 transfer-destination configured after lookup on both
+    # relocation maps; other REU clients reuse that destination.
+    destination=c.mem[0xdf02]|(c.mem[0xdf03]<<8)
+    assert destination==scratch,("REU C64 destination",hex(destination),hex(scratch))
     return cycles,(got,c.c,c.n,c.z,c.a,c.x,c.y,c.sp)
-
 
 def compare(old, new, reu, vectors):
     a=cpu(old,reu); b=cpu(new,reu)
