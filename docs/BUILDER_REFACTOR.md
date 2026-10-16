@@ -246,6 +246,31 @@ x64sc CI gate (384 signed-vector checks, two algorithms/two RAM maps); it must
 pass before the experimental implementation is marked qualified. The assembly
 source and the table generator are each SHA-locked in the selection manifest.
 
+## Target backends and portability boundary
+
+The operation catalog is target-independent: developers can describe the
+same mathematical requirements for `c64`, `1541`, `1571` and `1581`
+without choosing a historical library profile.
+
+```sh
+python3 tools/math_builder.py --target 1541 --operation UMUL8 \
+  --objective size --zp-budget 8 --ram-budget 512 --preview
+```
+
+**This produces a planning manifest only.** The first experimental linkable
+modules and their current memory ownership contracts are C64-specific.
+A `--target 1541`, `1571` or `1581` request with `--build` or
+`--measure` fails explicitly; it does not secretly reuse the C64's
+`$C000` I/O buffer or claim that C64 output is drive-safe. Target
+capabilities and link-readiness are separate fields in the manifest. Each
+future backend will require its own code/data/ZP reservations, calling
+conventions, RAM residency assumptions and device-specific correctness
+qualification.
+
+This describes general-purpose device-side arithmetic only. It does not
+introduce any target-specific binary, bundled firmware or experimental
+hardware claims.
+
 ## Direction and acceptance criteria
 
 1. **Inventory (implemented).** Index all 56 stable operations using
