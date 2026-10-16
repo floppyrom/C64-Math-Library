@@ -168,6 +168,37 @@ class ATAN2SelectiveTests(unittest.TestCase):
                 selective_linker.build(plan, Path(d))
             self.assertFalse((Path(d) / "math_selective.prg").exists())
 
+    def test_global_layout_packs_division_before_atan2(self):
+        for kind, footprint in (("compact", 1024), ("sum-fast", 1536)):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as d:
+                plan = math_builder.create_plan(
+                    self.index, ["UDIV16", "ATAN2_8"], objective="size",
+                    zp_budget=2, ram_budget=footprint+32,
+                    pins={"ATAN2_8": "link:" + kind})
+                manifest = selective_linker.build(plan, Path(d))
+                self.assertEqual(
+                    manifest["link_order"], ["MATH_UDIV16", "MATH_ATAN2_8"])
+                self.assertEqual(
+                    manifest["resource_use"]["image_span_bytes"], footprint)
+                self.assertEqual(
+                    manifest["resource_use"]["main_ram_total_bytes"], footprint+32)
+                # Source/data are page-aligned but unused padding is charged.
+                entry = next(x for x in manifest["operations"]
+                             if x["api"] == "MATH_ATAN2_8")
+                for segment in entry["segments"][1:]:
+                    self.assertEqual(int(segment["start"][1:], 16) & 255, 0)
+                self.assertEqual(
+                    manifest["resource_use"]["alignment_padding_bytes"],
+                    footprint - 323 - (606 if kind == "compact" else 1109))
+                # The same choice at an insufficient budget is not silently
+                # replaced with a complete resident library.
+                fail = math_builder.create_plan(
+                    self.index, ["UDIV16", "ATAN2_8"], objective="size",
+                    zp_budget=2, ram_budget=footprint+31,
+                    pins={"ATAN2_8": "link:" + kind})
+                with self.assertRaises(selective_linker.LinkError):
+                    selective_linker.build(fail, Path(d) / "bad")
+
     def test_pins_and_budget_alignment_fail_closed(self):
         with tempfile.TemporaryDirectory() as d:
             plan = math_builder.create_plan(self.index, ["ATAN2_8"], zp_budget=0,
