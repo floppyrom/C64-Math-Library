@@ -293,6 +293,21 @@ class SelectiveLinkTests(unittest.TestCase):
                 linker.build(plan, Path(d))
             self.assertFalse((Path(d) / "math_selective.prg").exists())
 
+    def test_exact_measure_preview_leaves_no_files(self):
+        with tempfile.TemporaryDirectory() as d:
+            target = Path(d)
+            proc = subprocess.run(
+                [sys.executable, str(ROOT / "tools" / "math_builder.py"),
+                 "--operation", "UDIV16", "--operation", "UMOD16",
+                 "--zp-budget", "2", "--ram-budget", "1000",
+                 "--measure", "--out", str(target / "not_written.json")],
+                cwd=ROOT, text=True, capture_output=True)
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["resource_use"]["code_and_tables_bytes"], 585)
+            self.assertEqual(data["resource_use"]["main_ram_total_bytes"], 617)
+            self.assertFalse(list(target.iterdir()))
+
     def test_cli_build_compact_and_exports(self):
         with tempfile.TemporaryDirectory() as d:
             config = Path(d) / "config.json"
