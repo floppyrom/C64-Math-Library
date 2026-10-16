@@ -12,7 +12,6 @@ import csv
 import hashlib
 import json
 from pathlib import Path
-import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -65,7 +64,7 @@ def operation_index(root: Path = ROOT) -> dict[str, dict]:
                 continue
             if r["canonical_name"] != operations[api]["canonical_name"]:
                 raise SelectionError("Inconsistent canonical operation for " + api)
-            variant_id = "resident:" + r["profile"]
+            variant_id = "mirror:" + r["source_sha256"][:12]
             kind = "resident-source-mirror"
             resource = {}
         elif r["scope"] == "standalone-alternative":
@@ -89,6 +88,7 @@ def operation_index(root: Path = ROOT) -> dict[str, dict]:
             "kind": kind,
             "source_path": r["source_path"],
             "source_sha256": r["source_sha256"],
+            "historical_provenance": r["profile"] if kind == "resident-source-mirror" else None,
             "mean_cycles_reported": r["mean_cycles"],
             "zp_bytes_reported": r["zp_bytes"],
             "stack_page_bytes_reported": r["stack_page_reserved_bytes"],
