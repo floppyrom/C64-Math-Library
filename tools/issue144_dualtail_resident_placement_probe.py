@@ -36,7 +36,6 @@ def main():
             compiled,clabels,_=Assembler().assemble(src+src_candidate)
             end=clabels["U3216_LD_END"]
             assert end-start==CAND_BYTES,(profile,kind,end-start)
-            existing=bytes(mem.get(i,0) for i in range(start,end))
             old_nonzero=[i for i in range(start,end) if mem.get(i,0)!=0]
             names=[{"name":key,"address":hex(address)} for key,address in labels.items()
                    if start<=address<end]
@@ -52,7 +51,31 @@ def main():
                     ownership.append({"segment":rec["segment"],"start":hex(a),
                                       "end":hex(b),"reason":rec["purpose"][:90]})
             affected=sum(mem.get(i,0)!=compiled.get(i,0) for i in range(start,end))
+            region_bounds={"REG_LOW":0x2000,"REG_API":0x1000,
+                           "REG_KERNEL":0x1e00,"REG_GAME_API":0x200,
+                           "REG_TABLE":0x3c00,"REG_GAME":0xb74}
+            zero_runs=[]
+            for reg,length in region_bounds.items():
+                rs=vals[reg];re=rs+length;cursor=rs
+                while cursor<re:
+                    if mem.get(cursor,0)!=0:cursor+=1;continue
+                    endzero=cursor
+                    while endzero<re and mem.get(endzero,0)==0:endzero+=1
+                    if endzero-cursor>=461:
+                        labels_here=[name for name,pc in labels.items()
+                                     if cursor<=pc<endzero]
+                        zero_runs.append({"region":reg,
+                            "start":hex(cursor),"end_exclusive":hex(endzero),
+                            "start_offset":hex(cursor-rs),
+                            "bytes":endzero-cursor,
+                            "old_labels":labels_here[:10]})
+                    cursor=endzero
+            zero_runs=sorted(zero_runs,key=lambda x:-x["bytes"])
+            print("ZERO SPANS",profile,kind,"candidate_count",len(zero_runs),
+                  "largest",zero_runs[0]["bytes"] if zero_runs else 0,flush=True)
             report["locations"][profile][kind]={
+              "zero_runs_461":zero_runs[:35],
+              "zero_run_461_count":len(zero_runs),
               "start":hex(start),"end_exclusive":hex(end),"candidate_bytes":end-start,
               "existing_nonzero_byte_count":len(old_nonzero),
               "existing_nonzero_examples":[hex(i) for i in old_nonzero[:12]],
