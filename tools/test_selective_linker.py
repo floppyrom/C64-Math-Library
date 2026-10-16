@@ -367,6 +367,7 @@ class SelectiveLinkTests(unittest.TestCase):
             files = ("tools/math_builder.py", "tools/selective_linker.py",
                      "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
                      "tools/selective_speed.py", "tools/selective_isqrt16.py",
+                     "tools/selective_trig8.py",
                      "tools/mini6502.py")
             self.assertEqual(set(man["toolchain_sha256"]), set(files))
             for name in files:
