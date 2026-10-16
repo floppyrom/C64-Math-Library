@@ -1,3 +1,17 @@
+## Unreleased — operation-first SEEK8 movement family
+
+- Add four independently selectable SEEK8 public API entries from one
+  source-locked, generated 582-byte DDA kernel (INIT, STEP, STEP_INT, STEP1).
+  Keep their four distinct addresses while sharing exactly one physical
+  producer and its internal 32-byte Euclidean correction table.
+- Add persistent state ownership to the builder: reserve 160 bytes for
+  eight objects, with separate 19-byte reusable init scratch and aligned
+  placement. Honor RAM budgets and reject any reservation overlap.
+- Export both position array addresses and retain public MATH_X/MATH_Y/MATH_N
+  calling convention. Add two-relocation, eight-slot CPU/VICE qualification.
+- No change to the historical V1-V5 PRG/REU distribution or mixed-family
+  speed selection (which remains fail-closed without comparable corpora).
+
 ## Unreleased — original V1 UMUL8 builder migration
 
 - Introduce an operation-first original V1 UMUL8 source variant with the shipped
