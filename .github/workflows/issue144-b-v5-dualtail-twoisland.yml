@@ -1,0 +1,20 @@
+name: Issue144 B V5 split dualtail experimental executor
+on:
+  push:
+    branches: [issue144-b-v5-dualtail-freeisland-screen-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  paired-execution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build and execute V5 split 8+8 linked normal-resident opt-in both layouts, 56 API entries
+        run: python3 tools/issue144_v5_dualtail_twoisland_model.py
+      - name: Confirm archived common-source donor was restored
+        run: git diff --exit-code -- relocatable_source/division/udiv32_16_split_direct.inc
