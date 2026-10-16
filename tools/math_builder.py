@@ -19,7 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "routines" / "SOURCE_CATALOG.csv"
 STANDALONE = ROOT / "benchmarks" / "STANDALONE_RESULTS.csv"
 OBJECTIVES = ("balanced", "speed", "size", "zp")
-TARGETS = ("c64",)
+TARGETS = ("c64", "1541", "1571", "1581")
 
 
 class SelectionError(ValueError):
@@ -201,22 +201,29 @@ def create_plan(
             "chosen_linkable_variant": None,
         })
 
-    can_link = all(any(v["selective_link_ready"] for v in op["available_source_variants"])
-                   for op in output)
+    can_link = target == "c64" and all(
+        any(v["selective_link_ready"] and target in v.get("build_targets", ["c64"])
+            for v in op["available_source_variants"]) for op in output)
     return {
         "schema": "c64-math-selection-plan-v1",
         "status": "planning_only_not_a_loadable_binary",
         "target": target,
+        "target_backend_status": ("experimental_selective_linker"
+                                  if target == "c64" else "planning_only_no_target_backend"),
         "objective": objective,
         "constraints": {"max_zp_bytes": zp_budget, "max_ram_bytes": ram_budget},
         "operations": output,
         "public_operation_count": len(output),
         "unresolved_dependencies": True,
-        "linker_status": "experimental_subset_available" if can_link else "operations_unqualified_for_selective_linking",
+        "linker_status": ("experimental_subset_available" if can_link else
+                          "target_backend_unavailable" if target != "c64" else
+                          "operations_unqualified_for_selective_linking"),
         "notes": [
             "Variant cycle means may use different corpora; do not rank across bases.",
             "Per-routine zero-page and memory claims must not be added together.",
             "Resident source mirrors and standalone records are not automatically linkable.",
+            "Only the C64 currently has experimental selective executable modules; "
+            "other targets accept plans but do not permit binary output.",
             "Build-time compatibility, dependencies, memory ownership and execution "
             "must be verified before producing a selective PRG.",
         ],
@@ -321,7 +328,10 @@ def main(argv: list[str] | None = None) -> int:
         index = operation_index()
         if args.list or args.list_linkable:
             for api, op in index.items():
-                eligible = sum(v["selective_link_ready"] for v in op["variants"])
+                requested_target = args.target or "c64"
+                eligible = sum(v["selective_link_ready"] and
+                               requested_target in v.get("build_targets", ["c64"])
+                               for v in op["variants"])
                 if args.list_linkable and not eligible:
                     continue
                 print("{:<25} {:<12} {}{}".format(api, op["category"],
