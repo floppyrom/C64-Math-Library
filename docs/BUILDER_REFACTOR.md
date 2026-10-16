@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker now supports seventeen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, DIST8_ACCURATE, SIN8, COS8, SINCOS8, SDIV8, SMOD8 and SMUL8.**
+**An experimental selective linker now supports eighteen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, DIST8_ACCURATE, SIN8, COS8, SINCOS8, SDIV8, SMOD8, SMUL8 and UMOD8.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -411,6 +411,36 @@ page-alignment padding without factorial permutations. For example,
 a UMUL16 + ATAN2 compact + UDIV16 combination occupies 1,091 bytes of
 PRG payload including 54 padding bytes, 6 RAM scratch bytes and 2 ZP
 bytes (1,129 total RAM bytes, including 32 public I/O bytes).
+
+### Original V1 unsigned UMOD8 (fast subtraction with SMC fallback)
+
+`MATH_UMOD8` now provides `link:v1-fast-fallback`, retaining the
+original **157-byte V1** unsigned modulo producer without the old
+3-byte public trampoline. The source has two optimized cases:
+a straight-line subtraction chain for divisors at least 32, and a
+small-divisor producer using two private zero-page bytes. The fallback
+uses two writable immediate-operand bytes in its subtraction loop,
+so the **code must reside in writable RAM** and is non-reentrant.
+
+The implementation preserves dividend, divisor, high output bytes,
+and the **entire quotient `MATH_Q`**, unlike a shortcut that calls
+`UDIV8` and clobbers Q. It writes the low byte of `MATH_R`,
+sets carry on division by zero with R=0, and clears carry otherwise.
+It needs **157 bytes of code + 32 bytes shared I/O = 189 bytes RAM**,
+**2 ZP bytes**, no tables, no REU and no init. Only the two declared
+immediate operands may change between calls.
+
+```sh
+python3 tools/math_builder.py --operation UMOD8 \
+  --pin UMOD8=link:v1-fast-fallback --zp-budget 2 \
+  --ram-budget 189 --build
+```
+
+The test campaign covers **65,536 unsigned N/D pairs at two relocations**,
+checks divisor-zero flags, quotient preservation, stack/operand bytes,
+writable-code footprint and mixed linking with UDIV8 and signed division.
+Native x64sc verifies both relocated builds independently. Other historical
+UMOD8 variants remain available as future migration candidates.
 
 ### Original 46-byte signed SMUL8 (writable self-modifying source)
 
