@@ -33,6 +33,20 @@ MODULES = {
             "requires_writable_code": True, "umod8_v1": True,
             "provenance": "Original V1 fast >=32 divide and small-divisor SMC fallback, Q preserved",
         },
+        "link:v2-unrolled-fallback": {
+            "source": "routines/modulo/umod8_v2_fast.asm",
+            "segments": (("KERNEL_CODE", 229),),
+            "entry": "FAST_UMOD8_V2", "zp": 2, "scratch": 0,
+            "requires_writable_code": True, "umod8_extra": True,
+            "provenance": "Original V2 >=24 fast subtraction and 15-step SMC small-divisor fallback; Q preserved",
+        },
+        "link:v5-unrolled-hybrid": {
+            "source": "routines/modulo/umod8_v5_hybrid.asm",
+            "segments": (("KERNEL_CODE", 205),),
+            "entry": "FAST_UMOD8_V5", "zp": 2, "scratch": 0,
+            "requires_writable_code": True, "umod8_extra": True,
+            "provenance": "Original V5 >=32 fast subtraction and 15-step SMC small-divisor fallback; Q preserved",
+        },
     },
     "MATH_SMUL8": {
         "link:v1-resident-smc": {
@@ -264,6 +278,7 @@ def available_variants(root=ROOT):
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
                 "validation_path": (
+                    "tools/test_selective_umod8_variants.py" if mod.get("umod8_extra") else
                     "tools/test_selective_umod8.py" if mod.get("umod8_v1") else
                     "tools/test_selective_smul8.py" if mod.get("smul8_v1") else
                     "tools/test_selective_fast_umul16.py" if mod.get("fast_umul16") else
@@ -279,13 +294,16 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if mod.get("umod8_v1") or mod.get("smul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("Original V1 157-byte UMOD8 fast/low-divisor fallback; "
+                "notes": ("Original V2/V5 unrolled fast/fallback U8 remainder producer, "
+                          "two zero-page bytes and writable immediate operands; Q untouched"
+                          if mod.get("umod8_extra") else
+                          "Original V1 157-byte UMOD8 fast/low-divisor fallback; "
                           "2 zero-page scratch and two writable immediate operands, Q untouched"
-                          if mod.get("umod8_v1") else
+                          if (mod.get("umod8_v1") or mod.get("umod8_extra")) else
                           "Original 46-byte writable-RAM self-modifying signed 8x8; "
                           "four exact V1-V5 511-byte table pages, zero ZP/scratch"
                           if mod.get("smul8_v1") else
@@ -553,7 +571,7 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
 def relocate_source(mod, locations, root):
     src = (root / mod["source"]).read_text(encoding="utf-8")
     used = {k for k, _ in mod["segments"]}
-    if mod.get("umod8_v1"):
+    if (mod.get("umod8_v1") or mod.get("umod8_extra")):
         used |= {"INPUT_NUM", "INPUT_DIV", "OUTPUT_REM"}
     elif mod.get("smul8_v1"):
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z",

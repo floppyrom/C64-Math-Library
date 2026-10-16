@@ -90,7 +90,8 @@ class HistoricalUMOD8(unittest.TestCase):
             self.assertEqual(len(result["link_order"]),3)
 
     def test_source_qualification_and_modulo_side_effect_contract(self):
-        one,=selective_linker.available_variants()["MATH_UMOD8"]
+        one=next(v for v in selective_linker.available_variants()["MATH_UMOD8"]
+                 if v["id"] == VARIANT)
         self.assertEqual(one["validation_path"],"tools/test_selective_umod8.py")
         self.assertEqual(one["resources_reported"]["code_and_table_bytes"],157)
         self.assertEqual(one["zp_bytes_reported"],2)
