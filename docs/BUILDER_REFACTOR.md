@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**A first real selective linker is now available for UDIV16, UMOD16, UDIV32_32, UMOD32_32 and ATAN2_8.**
+**A first real selective linker is now available for UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8 and UMUL16.**
 These use separately qualified relocatable sources, not the historical
 full-profile images or exact extracted resident mirrors. Other operations
 remain selection-plan-only until their own source contracts pass qualification.
@@ -132,6 +132,35 @@ python3 tools/math_builder.py --operation UDIV16 --operation UMOD16 \
 
 The interactive wizard groups all 56 operations with readable descriptions,
 shows which are currently linkable, and accepts numbers, ranges or names.
+
+### Compact multiplication: portable zero-ZP UMUL16
+
+A new `link:compact-zerozp` implementation provides unsigned 16×16→32
+multiplication via a small shift/add kernel. It uses **107 bytes of code,
+zero ZP, six caller-reserved ordinary RAM scratch bytes and 32 bytes
+of shared public I/O**; the exact total claim is **145 RAM bytes**.
+`MATH_X` and `MATH_Y` hold the 16-bit operands, and the 32-bit result
+appears in `MATH_Z`. Inputs are preserved. The kernel uses documented
+NMOS 6502 instructions and requires CLD.
+
+```sh
+python3 tools/math_builder.py --operation UMUL16 \
+  --zp-budget 0 --ram-budget 145 --measure
+python3 tools/math_builder.py --operation UMUL16 \
+  --zp-budget 0 --ram-budget 145 --build
+```
+
+This is an **ultracompact baseline, not a faster replacement** for the
+published large-table UMUL16 kernels. Those remain catalogued as sources,
+but their scratch ownership, special input contracts, self-modifying ZP
+code and table dependencies must be qualified before selectable linking.
+
+ATAN2 code and tables may be placed *between* ordinary arithmetic
+modules: a 256-residue dynamic program finds the minimum possible
+page-alignment padding without factorial permutations. For example,
+a UMUL16 + ATAN2 compact + UDIV16 combination occupies 1,091 bytes of
+PRG payload including 55 padding bytes, 6 RAM scratch bytes and 2 ZP
+bytes (1,129 total RAM bytes, including 32 public I/O bytes).
 
 ### ATAN2: source/table-aware linking
 
