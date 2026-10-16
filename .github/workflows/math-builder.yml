@@ -1,10 +1,9 @@
 name: Operation-first math builder (phase 1)
 
 on:
-  push:
-    branches:
-      - refactor/unified-math-builder-phase1
+  pull_request:
     paths:
+      - refactor/unified-math-builder-phase1
       - tools/math_builder.py
       - tools/test_math_builder.py
       - tools/selective_linker.py
@@ -24,17 +23,9 @@ on:
       - routines/SOURCE_CATALOG.csv
       - benchmarks/STANDALONE_RESULTS.csv
       - .github/workflows/math-builder.yml
-  pull_request:
-    paths:
-      - tools/math_builder.py
-      - tools/test_math_builder.py
-      - tools/selective_linker.py
-      - tools/test_selective_linker.py
-      - tools/native_selective_linker.py
-      - routines/standalone_lab/portable/*.asm
-      - routines/SOURCE_CATALOG.csv
-      - benchmarks/STANDALONE_RESULTS.csv
-      - .github/workflows/math-builder.yml
+      - tools/mini6502.py
+      - routines/standalone_lab/portable/native_vice.py
+      - routines/atan2/validate_optimized.py
   workflow_dispatch:
 
 concurrency:
