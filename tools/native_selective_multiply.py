@@ -62,7 +62,7 @@ def harness(entry, io):
     return bytes(out),halt
 
 
-def run_native(vice, prg_bytes, entry, code, io, tag, port, folder):
+def run_native(vice, prg_bytes, entry, code, io, tag, port, folder, bits=16):
     memory=bytearray(65536)
     memory[code:code+len(prg_bytes)-2]=prg_bytes[2:]
     stub,halt=harness(entry,io)
@@ -123,7 +123,9 @@ def run_native(vice, prg_bytes, entry, code, io, tag, port, folder):
         value=sum(data[(j*STRIDE)+i]<<(8*j) for j in range(4))
         n=data[4*STRIDE+i]|(data[5*STRIDE+i]<<8)
         d=data[6*STRIDE+i]|(data[7*STRIDE+i]<<8)
-        if (value,n,d)!=(x*y,x,y):
+        expected = x*y if bits == 16 else (x&255)*(y&255)
+        valid = value == expected if bits == 16 else (value & 0xffff) == expected
+        if not valid or (n,d)!=(x,y):
             raise AssertionError((tag,i,x,y,value,n,d))
     return hashlib.sha256(data).hexdigest()
 
@@ -148,8 +150,24 @@ def main():
                               "umul16_%04x"%code,7480+i,folder)
             total+=N
             print("NATIVE UMUL16",hex(code),N,"PASS",digest,flush=True)
-    assert total==192
-    print("NATIVE SELECTIVE UMUL16 PASS",total)
+    # UMUL8 stores a 16-bit result; the two higher Z bytes are outside its
+    # public output contract and intentionally not compared.
+    for i,(code,io) in enumerate(((0x8000,0xC000),(0x7123,0xC040))):
+        plan=math_builder.create_plan(
+            index,["UMUL8"],zp_budget=0,ram_budget=95)
+        with tempfile.TemporaryDirectory(prefix="selective_umul8_native_") as temp:
+            folder=Path(temp)
+            man=selective_linker.build(
+                plan,folder,memory={"code_base":code,"math_io":io})
+            assert man["resource_use"]["image_span_bytes"]==60
+            entry=int(man["operations"][0]["entry"][1:],16)
+            image=(folder/"math_selective.prg").read_bytes()
+            digest=run_native(vice,image,entry,code,io,
+                              "umul8_%04x"%code,7490+i,folder,bits=8)
+            total+=N
+            print("NATIVE UMUL8",hex(code),N,"PASS",digest,flush=True)
+    assert total==384
+    print("NATIVE SELECTIVE UMUL8/UMUL16 PASS",total)
 
 
 if __name__=="__main__":
