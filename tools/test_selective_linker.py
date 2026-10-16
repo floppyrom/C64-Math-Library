@@ -111,6 +111,59 @@ class SelectiveLinkTests(unittest.TestCase):
                 self.assertEqual(man["resource_use"]["code_and_tables_bytes"], 976)
                 self.run_cases(man, Path(d))
 
+    def test_32bit_divmod_compact_and_zerozp(self):
+        edge = (0, 1, 2, 3, 7, 255, 256, 65535, 65536,
+                0x7fffffff, 0x80000000, 0xffffffff)
+        rng = random.Random(0x32C64)
+        operands = [(n, d) for n in edge for d in edge]
+        operands += [(rng.getrandbits(32), rng.getrandbits(32))
+                     for _ in range(192)]
+        operands += [(rng.getrandbits(32), 0) for _ in range(16)]
+        for origin, io in ((0x8000, 0xc000), (0x7123, 0xc040)):
+            for zp_budget, variant in ((4, "link:zptail"),
+                                       (0, "link:aligned-zerozp")):
+                with self.subTest(origin=origin, zp_budget=zp_budget):
+                    with tempfile.TemporaryDirectory() as d:
+                        plan = self.plan(
+                            ["UDIV32_32", "UMOD32_32"],
+                            zp_budget=zp_budget, ram_budget=1200,
+                            pins={"UDIV32_32": variant})
+                        man = linker.build(
+                            plan, Path(d),
+                            memory={"code_base": origin, "math_io": io})
+                        exp_size = 1040 if zp_budget == 4 else 1072
+                        self.assertEqual(man["resource_use"]["code_and_tables_bytes"],
+                                         exp_size)
+                        self.assertEqual(man["resource_use"]["zero_page_bytes"],
+                                         zp_budget)
+                        self.assertEqual(man["resource_use"]["private_ram_scratch_bytes"], 4)
+                        prg = (Path(d) / "math_selective.prg").read_bytes()
+                        self.assertEqual(len(prg), exp_size + 2)
+                        mem = bytearray(65536)
+                        mem[origin:origin+exp_size] = prg[2:]
+                        cpu = CPU(mem)
+                        code_before = bytes(mem[origin:origin+exp_size])
+                        initial_sp = cpu.sp
+                        for n, dv in operands:
+                            for op in man["operations"]:
+                                mem[io+16:io+20] = n.to_bytes(4, "little")
+                                mem[io+20:io+24] = dv.to_bytes(4, "little")
+                                mem[io+24:io+28] = b"\x55" * 4
+                                mem[io+28:io+32] = b"\x66" * 4
+                                cpu.d = 0
+                                cpu.call(int(op["entry"][1:], 16), 2_000_000)
+                                q = int.from_bytes(mem[io+24:io+28], "little")
+                                rem = int.from_bytes(mem[io+28:io+32], "little")
+                                self.assertEqual(cpu.c, int(dv == 0))
+                                self.assertEqual(rem, n % dv if dv else 0,
+                                                 (origin, op["api"], n, dv))
+                                expect_q = (n // dv if dv else 0) if op["api"] == "MATH_UDIV32_32" else 0x55555555
+                                self.assertEqual(q, expect_q, (origin, op["api"], n, dv))
+                                self.assertEqual(mem[io+16:io+20], n.to_bytes(4, "little"))
+                                self.assertEqual(mem[io+20:io+24], dv.to_bytes(4, "little"))
+                                self.assertEqual(cpu.sp, initial_sp)
+                        self.assertEqual(bytes(mem[origin:origin+exp_size]), code_before)
+
     def test_constraints_and_unavailable_operations(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d)
