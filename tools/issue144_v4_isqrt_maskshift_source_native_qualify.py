@@ -136,7 +136,9 @@ def main():
         file.write_text(baseline)
         b_ref=build(clone,'reference',temp/'baseline')
         b_alt=build(clone,'alternate',temp/'baseline')
-        file.write_text(integrated)
+        # The historical maskshift proof must assemble its own independently
+        # pinned candidate, not whichever newer root occupies canonical V4.
+        file.write_text(optimized)
         c_ref=build(clone,'reference',temp/'candidate')
         c_alt=build(clone,'alternate',temp/'candidate')
         assert b_ref.stat().st_size==c_ref.stat().st_size
