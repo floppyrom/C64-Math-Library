@@ -192,6 +192,8 @@ class SelectiveLinkTests(unittest.TestCase):
             with self.assertRaises(linker.LinkError):
                 linker.build(self.plan(["UMUL16"]), path)
             with self.assertRaises(linker.LinkError):
+                linker.build(self.plan(["UDIV16"], objective="speed"), path)
+            with self.assertRaises(linker.LinkError):
                 linker.build(self.plan(["UDIV16"], ram_budget=300), path)
             good = self.plan(["UDIV16"])
             for bad_memory in (
