@@ -119,10 +119,11 @@ of zero set carry and return zero results, while modulo preserves Q.
 **Performance caveat:** the portable 32-bit kernels can be slower than the
 resident implementations, especially for certain small-divisor workloads.
 These are the first *linkable* choices, not proven universal speed winners.
-The optimizer currently enforces budgets globally and scores the few available
-implementations by size/ZP trade-offs. An actual `--objective speed --build`
-request is **rejected**, rather than pretending unrelated benchmark cycles are
-comparable. The speed objective will be enabled after same-corpus qualification.
+For most operation combinations, the optimizer enforces global RAM/ZP
+constraints without inventing speed rankings from unrelated corpora.
+The only measured automatic speed path currently available is the
+**UMUL8-only** comparison described below; all other speed-ranking
+requests remain guarded until comparable per-operation workload data exist.
 
 Get a **measured**, assembled footprint without retaining build output:
 
