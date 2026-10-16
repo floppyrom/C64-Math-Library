@@ -180,6 +180,29 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaises(mb.SelectionError):
             mb.create_plan(self.index, [])
 
+    def test_selection_plan_is_independent_source_snapshot(self):
+        api = "MATH_UDIV16"
+        plan_a = mb.create_plan(self.index, ["UDIV16"])
+        plan_b = mb.create_plan(self.index, ["UDIV16"])
+        chosen_a = next(v for v in plan_a["operations"][0]["available_source_variants"]
+                        if v["id"] == "link:biased")
+        chosen_b = next(v for v in plan_b["operations"][0]["available_source_variants"]
+                        if v["id"] == "link:biased")
+        pristine = next(v for v in self.index[api]["variants"]
+                        if v["id"] == "link:biased")["source_sha256"]
+        chosen_a["source_sha256"] = "0" * 64
+        self.assertEqual(chosen_b["source_sha256"], pristine)
+        self.assertEqual(
+            next(v for v in self.index[api]["variants"] if v["id"] == "link:biased")
+            ["source_sha256"], pristine)
+        with tempfile.TemporaryDirectory() as d:
+            import selective_linker
+            with self.assertRaisesRegex(selective_linker.LinkError, "source changed"):
+                selective_linker.build(plan_a, Path(d))
+            # Later independent plans remain valid after the intentional tamper.
+            valid = selective_linker.build(plan_b, Path(d))
+            self.assertIn(api, valid["link_exports"])
+
     def test_source_hash_verification(self):
         # Every selected operation has a V1 source mirror with a published SHA.
         v = self.index["MATH_UMUL16"]["variants"][0]
