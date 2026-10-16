@@ -1,0 +1,18 @@
+name: Issue144 B selected kernel placement audit
+on:
+  push:
+    branches: [issue144-b-resident-geometry-survey-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bytes-and-ownership:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare actual source byte data, labels and historic segment ownership for proposed resident tail
+        run: python3 tools/issue144_dualtail_resident_placement_probe.py
