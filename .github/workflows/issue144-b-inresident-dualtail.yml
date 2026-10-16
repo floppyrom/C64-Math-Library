@@ -53,3 +53,15 @@ jobs:
           python-version: '3.12'
       - name: Build V5 hybrid against selected V2 resident dual tail and certify 56-entry ABI and 31-byte ZP
         run: python3 tools/issue144_u3216_inresident_v5_hybrid_probe.py
+  optin-builder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build validated optional V2/V3/V4 resident binaries without changing the checkout
+        run: python3 tools/build_issue144_u3216_resident_optin.py --profile v2_pareto_fast --out /tmp/issue144_output
+      - name: Check immutable canonical source after independent build
+        run: git diff --exit-code -- relocatable_source/division/udiv32_16_split_direct.inc
