@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker now supports nine operations: UMUL8, UMUL16, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16 and DIST8_FAST.**
+**An experimental selective linker now supports ten operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16 and DIST8_FAST.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -170,6 +170,37 @@ Mixed builds with multiple page-aligned modules link correctly but currently use
 deterministic conservative ordering; **multi-aligned ordering is not globally
 padding-optimal yet**. The optimized ISQRT16 migration is not evidence that the
 other 48 operations or unported high-performance variants are link-ready.
+
+### Historical V1 fast unsigned 8-bit division (experimental)
+
+`MATH_UDIV8` now offers the `link:v1-resident-fast` source choice:
+the original V1 125-instruction high-performance quotient/remainder branch
+chain, with its external trampoline removed. It is **294 bytes of executable
+code**, needs one explicitly reserved ZP byte and no ordinary scratch RAM,
+tables, initialization or REU. Its entry is at code origin + 8 because the
+V1 divide-by-zero return stub precedes it. The linker emits the correct
+entry label rather than assuming every module starts at its API address.
+
+Public inputs are the low bytes of `MATH_N` and `MATH_D`, retained on
+return. Low-byte `MATH_Q` and `MATH_R` receive the quotient and remainder.
+`D=0` yields `Q=R=0` and carry set; otherwise carry is clear. Upper I/O
+bytes are not modified. At `$8000`, memory requirements are **294 code +
+32 common I/O = 326 bytes**, plus **one zero-page byte**.
+
+```sh
+python3 tools/math_builder.py --operation UDIV8 \
+  --pin UDIV8=link:v1-resident-fast --zp-budget 1 \
+  --ram-budget 326 --build
+```
+
+The exhaustive CPU test exercises all **65,536 unsigned numerator/divisor
+pairs at each of two RAM/ZP relocations**, including division-by-zero,
+carry and unchanged ABI bytes. Separate native x64sc tests exercise two
+relocations, comparing quotient, remainder, carry and preserved operands.
+This is an original optimized historical implementation, **not** a newly
+introduced slower compact alternative. Other profiles' UDIV8 algorithms
+and their cycle tradeoffs remain to be migrated and benchmarked on
+comparable workloads.
 
 ### Historical optimized DIST8_FAST source (experimental)
 
