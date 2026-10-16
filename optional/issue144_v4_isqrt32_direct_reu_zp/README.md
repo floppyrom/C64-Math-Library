@@ -19,3 +19,14 @@ Run `python3 tools/issue144_v4_reu_direct_zp_screen.py` to construct disposable 
 Differences in transient internal zero-page scratch bytes after return are **expected** when the workspace is permuted; these bytes are not public state. A full mixed-call, interrupt-lifetime and real PAL/NTSC VIC/REU hardware timing audit is still needed before potential default promotion. Any native mismatch, wrong output/carry, unsafe REU state, slower workload class, source-space collision or ZP growth rejects promotion.
 
 The existing [Issue144 source-release candidate](ISSUE144_ISQRT32_SOURCE_RELEASE_CANDIDATE_2026-10-16.md) remains the published baseline.
+
+## Reproduced results — 16 October 2026
+
+The opt-in **passed** [dedicated native/model CI #38858850607](https://github.com/floppyrom/C64-Math-Library/actions/runs/38858850607) on the source research branch:
+
+- **1,066 identical public-entry ISQRT32 operands per map**, reference and alternate (2,132 paired calls): **exactly 16 CPU-model cycles saved per call** (mean=median=min=max=16; **0 slower calls**), exact root/carry/input, ordinary register/SP parity and restored REU transfer destination.
+- Full **56-entry, 21,678-call source-API validator per map** passed (43,356 source public calls).
+- The independently qualified **24 native x64sc baseline + 24 candidate calls** with an actual emulated 16 MiB REU image produced byte-identical root/status captures.
+- Reference image PRG SHA-256 changed from `8ed12962d9e64abbae7864894185b59f937e7c7f5356930b94e36f002ceab6c6` to `cf87e3b983f0e5dd8cab4cae3885dba78172464a07c9e2db01c8f63ad56ba36a` **only in temporary candidate builds**; the historical PRG and REU are unchanged.
+
+Machine-readable proof and both map hashes: [`validation/review/ISSUE144_V4_ISQRT32_DIRECT_REU_ZP_2026-10-16.json`](../../validation/review/ISSUE144_V4_ISQRT32_DIRECT_REU_ZP_2026-10-16.json). This establishes a new source-level Pareto research win, **not yet a canonical default promotion or physical hardware timing certificate**.
