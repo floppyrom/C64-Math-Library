@@ -126,6 +126,7 @@ L5226:
 L5266:
     sbc #$00
     bcs L5266
+L526A:
     adc #$00
     clc
     rts
