@@ -14,8 +14,9 @@ from pathlib import Path
 
 from mini6502 import Assembler, CPU, load_sparse
 import selective_fast_umul8 as fast8
+import selective_umul8_v1 as v1umul8
 
-BASIS = "cpu-model-umul8-seeded-edge-and-uniform-v1"
+BASIS = "cpu-model-umul8-seeded-edge-and-uniform-v1-with-original-v1"
 SEED = 0xC64B2026
 EDGE = (0, 1, 2, 3, 15, 16, 127, 128, 254, 255)
 COUNT = 1000
@@ -31,7 +32,10 @@ def corpus():
 
 
 def assemble_variant(variant: str, source: str, origin: int,
-                     io: int, scratch: int, root: Path):
+                     io: int, scratch: int, root: Path, zp: int):
+    if variant == "link:v1-resident-fast":
+        mem, entry, _, _ = v1umul8.assemble(origin, io, zp, root)
+        return mem, entry
     if variant == "link:quarter-square":
         mem, entry, _, _ = fast8.assemble(origin, io, scratch, root)
         return mem, entry
@@ -57,9 +61,10 @@ def assemble_variant(variant: str, source: str, origin: int,
 
 
 def bench_umul8(modules: dict, origin: int, io: int, scratch: int,
-                root: Path):
+                root: Path, zp: int = 0x50):
     """Measure every known candidate on identical seeded 1000-pair corpus."""
-    if set(modules) != {"link:compact-zerozp", "link:quarter-square"}:
+    if set(modules) != {"link:compact-zerozp", "link:quarter-square",
+                        "link:v1-resident-fast"}:
         raise ValueError("UMUL8 measured speed source set has changed")
     cases = corpus()
     checksum = hashlib.sha256(bytes(byte for x, y in cases
@@ -69,7 +74,7 @@ def bench_umul8(modules: dict, origin: int, io: int, scratch: int,
     for ident, mod in sorted(modules.items()):
         source_path = root / mod["source"]
         mem, entry = assemble_variant(
-            ident, mod["source"], origin, io, scratch, root)
+            ident, mod["source"], origin, io, scratch, root, zp)
         cpu = CPU(load_sparse(mem))
         stack = cpu.sp
         cycles = 0
