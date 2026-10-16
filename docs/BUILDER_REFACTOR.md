@@ -246,6 +246,27 @@ x64sc CI gate (384 signed-vector checks, two algorithms/two RAM maps); it must
 pass before the experimental implementation is marked qualified. The assembly
 source and the table generator are each SHA-locked in the selection manifest.
 
+## Resource-frontier pruning and reproducibility
+
+Automatic selection now prunes **resource-dominated** source variants before
+exploring combinations: a candidate can be discarded when another uses no
+more code/table bytes, no more ZP, and no more ordinary scratch memory.
+This reduces wasted combination searches as the certified variant catalog
+grows. It does **not** filter the advanced variant inventory or block pinned
+choices; for example, explicitly requesting ATAN2's larger sum-fast
+implementation remains supported.
+
+This is the **resource** frontier, not a claim of cycle-optimality. A true
+speed/Pareto optimizer will add separately certified comparable per-operation
+cycle measurements and should not discard a faster implementation merely
+because it uses more memory.
+
+Every generated selective binary manifest now records SHA-256 of the active
+builder, linker, ATAN2 emitter and 6502 assembler alongside individual
+algorithm sources and generated-table dependencies. Together with the
+selected source IDs, memory map, PRG SHA and build constraints, this allows
+precise reproduction and auditing of experimental images.
+
 ## Target backends and portability boundary
 
 The versioned `math-selection-plan-v2` manifest and operation catalog are
