@@ -1,4 +1,34 @@
 {
+  "issue144_v4_reu_isqrt32_direct_zp_dma_2026_10_16": {
+    "status": "PASS_EXPERIMENTAL_OPTIN_SOURCE_MODEL_AND_NATIVE",
+    "issue": 144,
+    "baseline_canonical_source_changed": false,
+    "private_optisearch_code_published": false,
+    "default_binary_changed": false,
+    "performance_md_changed": false,
+    "source": "optional/issue144_v4_isqrt32_direct_reu_zp/v4_reu_16m.asm",
+    "reproducer": "tools/issue144_v4_reu_direct_zp_screen.py",
+    "evidence": "validation/review/ISSUE144_V4_ISQRT32_DIRECT_REU_ZP_2026-10-16.json",
+    "paired_same_input_calls_per_map": 1066,
+    "source_maps": [
+      "reference",
+      "alternate"
+    ],
+    "total_paired_cases": 2132,
+    "mean_model_cycles_saved": 16,
+    "min_model_cycles_saved": 16,
+    "max_model_cycles_saved": 16,
+    "slower_cases": 0,
+    "full_56_entry_api_model_calls": 43356,
+    "native_vice_original_candidate_root_calls": 48,
+    "native_vice_pass": true,
+    "normal_zp_growth": 0,
+    "reu_memory_growth": 0,
+    "caller_ram_growth": 0,
+    "reu_c64_destination_restored": true,
+    "real_hardware_time_measured": false,
+    "production_integration_pending": true
+  },
   "issue144_b_u3216_inresident_dualtail_optin_2026_10_16": {
     "status": "PASS_MODEL_NATIVE_SOURCE_ONLY_OPTIN_V2_V3_V4",
     "description": "Unrestricted N32/D16 via D8/zero and highD stock fallback, private owned REG_LOW+$0C00 lowD 461-byte code",
