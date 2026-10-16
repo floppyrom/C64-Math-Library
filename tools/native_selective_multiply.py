@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Native x64sc regression for the *selected* 107-byte zero-ZP UMUL16 PRG.
+"""Native x64sc regression for selected compact UMUL8/UMUL16 PRGs.
 
-This checks arithmetic, caller input preservation and two placements,
+This checks arithmetic, carry-clear, caller inputs and two placements,
 not emulated VIC contention or native cycle timings.
 """
 from __future__ import annotations
@@ -50,8 +50,11 @@ def harness(entry, io):
         op(0x8D, target)
     emit(0x8A,0x48)
     op(0x20, entry)
+    # Snapshot result status before restoring the loop index.
+    emit(0x08,0x68)
+    op(0x8D,0xC030)
     emit(0x68,0xAA)
-    for slot, src in enumerate((io+8,io+9,io+10,io+11,io,io+1,io+4,io+5)):
+    for slot, src in enumerate((io+8,io+9,io+10,io+11,io,io+1,io+4,io+5,0xC030)):
         op(0xAD,src)
         op(0x9D,OUTPUT+slot*STRIDE)
     emit(0xE8,0xE0,N,0xF0,0x03)
@@ -108,7 +111,7 @@ def run_native(vice, prg_bytes, entry, code, io, tag, port, folder, bits=16):
             command("break "+format(halt,"04x"),"BREAK:")
             command("g "+format(H,"04x"),"Stop on  exec")
             command('bsave "'+str(dump)+'" 0 '+format(OUTPUT,"04x")+
-                    " "+format(OUTPUT+8*STRIDE-1,"04x"),"Saving")
+                    " "+format(OUTPUT+9*STRIDE-1,"04x"),"Saving")
             sock.sendall(b"quit\n")
             sock.close()
         finally:
@@ -118,15 +121,16 @@ def run_native(vice, prg_bytes, entry, code, io, tag, port, folder, bits=16):
             except subprocess.TimeoutExpired:
                 proc.kill()
     data=dump.read_bytes()
-    assert len(data)==8*STRIDE
+    assert len(data)==9*STRIDE
     for i,(x,y) in enumerate(tests):
         value=sum(data[(j*STRIDE)+i]<<(8*j) for j in range(4))
         n=data[4*STRIDE+i]|(data[5*STRIDE+i]<<8)
         d=data[6*STRIDE+i]|(data[7*STRIDE+i]<<8)
         expected = x*y if bits == 16 else (x&255)*(y&255)
         valid = value == expected if bits == 16 else (value & 0xffff) == expected
-        if not valid or (n,d)!=(x,y):
-            raise AssertionError((tag,i,x,y,value,n,d))
+        processor_status = data[8*STRIDE+i]
+        if not valid or (n,d)!=(x,y) or (processor_status & 1):
+            raise AssertionError((tag,i,x,y,value,n,d,processor_status))
     return hashlib.sha256(data).hexdigest()
 
 
