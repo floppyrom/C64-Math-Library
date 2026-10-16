@@ -262,6 +262,40 @@ including carry, ABI preservation and full generated-binary immutability;
 the source-linked VICE CI also tests both relocations. The two public
 names are independently validated by source hashes before aliasing.
 
+### Original V1, V2 and V5 fast UMOD8 selectable variants
+
+The original V1 `UMOD8` source module remains the **157-byte size winner**.
+Two additional independently linkable historical alternatives now preserve
+the real Pareto and Hybrid optimized implementations:
+
+| Selection pin | Code | ZP | Writable RAM? | Fast divisor branch |
+|---|---:|---:|---|---|
+| `link:v1-fast-fallback` | 157 bytes | 2 bytes | Yes | divisor >= 32 |
+| `link:v2-unrolled-fallback` | 229 bytes | 2 bytes | Yes | divisor >= 24 |
+| `link:v5-unrolled-hybrid` | 205 bytes | 2 bytes | Yes | divisor >= 32 |
+
+The high-divisor branches and small-divisor reducers retain the historical
+instructions, including the self-modified immediate subtraction loop in writable
+code RAM. All produce **only the low remainder byte** of `MATH_R`;
+the quotient, both public input groups and unused output bytes remain unchanged.
+Zero divisor produces remainder 0 and carry set. No REU is required.
+
+```sh
+python3 tools/math_builder.py --operation UMOD8 \
+  --pin UMOD8=link:v2-unrolled-fallback --zp-budget 2 \
+  --ram-budget 261 --build
+python3 tools/math_builder.py --operation UMOD8 \
+  --pin UMOD8=link:v5-unrolled-hybrid --zp-budget 2 \
+  --ram-budget 237 --build
+```
+
+These source-faithful options are compared only on **matched divisor corpora**
+before any automatic speed ranking. The faster choice may vary with divisor
+distribution; smaller code is not presumed faster. CPU model checks cover all
+65,536 operand pairs at each of two code/ZP relocations per variant; native
+VICE checks each source-linked variant at both relocations and CI protects the
+two intentional self-modifying immediate operands from other writes.
+
 ### Historical V1 fast unsigned 8-bit division (experimental)
 
 `MATH_UDIV8` now offers the `link:v1-resident-fast` source choice:
