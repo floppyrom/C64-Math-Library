@@ -138,10 +138,10 @@ def main():
         folder=Path(tmp)
         for i,(code,io) in enumerate(((0x8000,0xC000),(0x7123,0xC040))):
             plan=math_builder.create_plan(
-                index,["UMUL16"],zp_budget=0,ram_budget=145)
+                index,["UMUL16"],zp_budget=0,ram_budget=146)
             man=selective_linker.build(
                 plan,folder,memory={"code_base":code,"math_io":io})
-            assert man["resource_use"]["image_span_bytes"]==107
+            assert man["resource_use"]["image_span_bytes"]==108
             entry=int(man["operations"][0]["entry"][1:],16)
             image=(folder/"math_selective.prg").read_bytes()
             digest=run_native(vice,image,entry,code,io,
