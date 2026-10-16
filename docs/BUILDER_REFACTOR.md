@@ -5,10 +5,12 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**This phase implements an inventory and selection-plan generator, not a
-selective linker.** It produces JSON, never a compact PRG, and intentionally
-refuses a requested binary build. A mirror extracted from a resident image
-is not automatically a self-contained or relocatable module.
+**A first real selective linker is now available for UDIV16 and UMOD16 only.**
+These use separately qualified relocatable sources, not the historical
+full-profile images or exact extracted resident mirrors. Other operations
+remain selection-plan-only until their own source contracts pass qualification.
+A mirror extracted from a resident image is not automatically a self-contained
+or relocatable module.
 
 ## Try it
 
@@ -66,9 +68,65 @@ The plan records every source choice and explicitly sets:
 No code size, cycle total or zero-page total is guessed by adding unrelated
 routine figures. Standalone timing corpora may differ substantially.
 
+## First compact build (experimental)
+
+Generate a PRG containing only unsigned 16-bit division and/or remainder:
+
+```sh
+python3 tools/math_builder.py --operation UDIV16 --operation UMOD16 \\
+  --objective size --zp-budget 2 --ram-budget 1000 --build
+```
+
+Output in `build_selective/`:
+
+- `math_selective.prg`: **585 code bytes**, plus the usual two-byte PRG load header.
+- `math_api.inc`: only the selected callable symbols, plus shared I/O symbols.
+- `selective_manifest.json`: entry addresses, source SHA, actual segments and RAM/ZP ownership.
+
+The pair shares **2 ZP scratch bytes** (sequential, nonreentrant calls), a
+**32-byte caller-owned I/O block**, and has a **617-byte total RAM claim**.
+No other math operations, global lookup tables or fixed resident code are
+included. For a one-routine 0-ZP modulo build, select:
+
+```sh
+python3 tools/math_builder.py --operation UMOD16 --objective zp \\
+  --zp-budget 0 --ram-budget 1100 --build
+```
+
+This selects the independently relocatable direct-chain engine: 976 code/table
+bytes + 2 ordinary scratch bytes + 32 caller I/O bytes. It is slower than the
+biased modulo source on the prior paired corpus, but uses no ZP. Pin explicitly
+via `--pin UMOD16=link:direct-zerozp` or `--pin UMOD16=link:biased`.
+
+A JSON configuration can specify a custom, nonoverlapping memory map:
+
+```json
+{
+  "operations": ["UDIV16", "UMOD16"],
+  "objective": "size",
+  "constraints": {"max_zp_bytes": 2, "max_ram_bytes": 1000},
+  "memory": {"code_base": "$7123", "math_io": "$C040", "zp_base": "$60"}
+}
+```
+
+The default code origin is `$8000`, public I/O at `$C000-$C01F`, and
+shared scratch at `$50`–`$51` when needed. ROM underlay, I/O address
+ranges, system stack, zero-page processor ports, address overflow, and
+colliding source/data allocations are rejected. The public ABI preserves
+N/D. Divide-by-zero sets C, clears Q/R for UDIV16; UMOD16 clears R while
+preserving the caller's Q. `CLD` is required before calls.
+
+**No broader optimized-variant claims yet:** fixed source variants and record
+kernels with unrelated performance corpora are shown in the inventory but
+cannot be silently selected for a compact build. An unsupported routine or
+unsupported variant pin makes `--build` fail instead of loading 56 routines.
+
+The compact linker is intentionally marked experimental pending native
+VICE qualification; first source/mixed-call CPU tests are under CI.
+
 ## Direction and acceptance criteria
 
-1. **Inventory (this PR).** Index all 56 stable operations using
+1. **Inventory (implemented).** Index all 56 stable operations using
    `routines/SOURCE_CATALOG.csv`, retaining the current source, hash,
    provenance and validation distinctions. Offer interactive/JSON selection,
    variant inspection, pins and strict parameter validation. Preserve existing
@@ -78,7 +136,7 @@ routine figures. Standalone timing corpora may differ substantially.
    data dependencies, memory ownership, scratch lifetime, initialization,
    and benchmark-corpus identity. Deduplicate shared code and tables.
    Qualified *standalone* does not imply mixed-call or arbitrary-location safety.
-3. **Real selective linker.** Assemble/link only the chosen operations and
+3. **Real selective linker (initial UDIV16/UMOD16 implementation).** Assemble/link only the chosen operations and
    transitive dependencies; retain only necessary export stubs. Respect
    reserved ranges, code execution under ROM, stack and ZP conflicts.
    Measure actual linked byte ranges rather than summing reported footprints.
@@ -101,6 +159,7 @@ only a subset.
 
 ```sh
 python3 tools/test_math_builder.py
+python3 tools/test_selective_linker.py
 # or:
 make builder-validate
 ```
