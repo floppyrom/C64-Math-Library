@@ -1,3 +1,8 @@
+2026-10-16 BUILDER UMOD8 THREE-VARIANT MATCHED SPEED VALIDATION (UNRELEASED)
+- Retained the matched-input V1/V5 CPU-model cycle test from superseded PR #211 and extended it to the merged V2 variant. Same 1,000-pair source-assembled corpus, with explicit small-divisor (3..31) mean, corpus SHA, and each immutable source SHA.
+- Tests validate remainder, zero-divisor carry, input/quotient preservation, stable stack and per-variant RAM/ZP footprint; all three historic implementations are selectable, but unqualified cross-operation or automatic UMOD8 speed ranking remains disabled.
+- No change to original V1-V5 resident executable images, benchmark claims, or operation count.
+
 2026-10-16 BUILDER V2/V5 HISTORICAL FAST UMOD8 ALTERNATIVES (UNRELEASED; QUALIFICATION PENDING)
 - Added independent source-faithful V2 (229 bytes, fast divisor >=24) and V5 (205 bytes, fast divisor >=32) unsigned 8-bit remainder kernels alongside the existing V1 157-byte source. All require two caller-free ZP bytes and writable executable RAM for exactly two immediate operand patches, with no lookup data, REU, or setup.
 - Public ABI retains unsigned N/D, untouched Q, upper I/O bytes, remainder low byte and carry only on division-by-zero; no cosmetic smaller-but-slower substitute was introduced.

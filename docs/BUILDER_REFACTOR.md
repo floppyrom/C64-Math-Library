@@ -296,6 +296,28 @@ distribution; smaller code is not presumed faster. CPU model checks cover all
 VICE checks each source-linked variant at both relocations and CI protects the
 two intentional self-modifying immediate operands from other writes.
 
+### Source-aligned UMOD8 cycle measurement (V1, V2, V5)
+
+`tools/test_selective_umod8_speed.py` benchmarks all three independently
+source-linked historical UMOD8 variants on the **same deterministic 1,000-case
+unsigned numerator/divisor corpus**, including the small-divisor region in
+which the V2/V5 unrolled fallback is designed to help. It records the SHA256
+of that corpus and all three source files, together with mean call-through-RTS
+cycles, per-variant size and ZP usage, and a separate mean for divisors 3–31.
+The benchmark runs the emitted source-assembled machine code with the
+deterministic 6502 CPU model, validating public input preservation, quotient
+preservation, remainder and carry on every call.
+
+```sh
+python3 tools/test_selective_umod8_speed.py
+```
+
+**These are comparable CPU-model estimates, not independently timed native
+VICE results.** They provide a reproducible basis for examining
+size/speed trade-offs. The builder does not yet auto-select UMOD8 by
+cycle speed, and does not rank unrelated operation families using an
+unmatched benchmark corpus.
+
 ### Historical V1 fast unsigned 8-bit division (experimental)
 
 `MATH_UDIV8` now offers the `link:v1-resident-fast` source choice:

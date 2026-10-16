@@ -30,6 +30,7 @@ on:
       - routines/modulo/umod8_v2_fast.asm
       - routines/modulo/umod8_v5_hybrid.asm
       - tools/test_selective_umod8_variants.py
+      - tools/test_selective_umod8_speed.py
       - tools/native_selective_umod8_variants.py
       - tools/test_selective_umod8.py
       - tools/native_selective_umod8.py
@@ -83,7 +84,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Syntax-check builder and regression scripts before running tests
-        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/native_selective_fast_umul8.py tools/selective_fast_umul8.py tools/test_selective_fast_umul8.py tools/selective_fast_umul16.py tools/test_selective_fast_umul16.py tools/native_selective_fast_umul16.py tools/selective_speed_umul16.py tools/test_selective_speed_umul16.py tools/selective_smul8.py tools/test_selective_smul8.py tools/native_selective_smul8.py tools/test_selective_umod8.py tools/native_selective_umod8.py tools/test_selective_umod8_variants.py tools/native_selective_umod8_variants.py tools/selective_speed.py tools/test_selective_speed.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/native_selective_isqrt16.py tools/test_selective_dist8.py tools/native_selective_dist8.py tools/test_selective_udiv8.py tools/native_selective_udiv8.py tools/test_selective_sdiv8.py tools/native_selective_sdiv8.py tools/selective_trig8.py tools/test_selective_trig8.py tools/native_selective_trig8.py tools/selective_dist8_accurate.py tools/test_selective_dist8_accurate.py tools/native_selective_dist8_accurate.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
+        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/native_selective_fast_umul8.py tools/selective_fast_umul8.py tools/test_selective_fast_umul8.py tools/selective_fast_umul16.py tools/test_selective_fast_umul16.py tools/native_selective_fast_umul16.py tools/selective_speed_umul16.py tools/test_selective_speed_umul16.py tools/selective_smul8.py tools/test_selective_smul8.py tools/native_selective_smul8.py tools/test_selective_umod8.py tools/native_selective_umod8.py tools/test_selective_umod8_variants.py tools/test_selective_umod8_speed.py tools/native_selective_umod8_variants.py tools/selective_speed.py tools/test_selective_speed.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/native_selective_isqrt16.py tools/test_selective_dist8.py tools/native_selective_dist8.py tools/test_selective_udiv8.py tools/native_selective_udiv8.py tools/test_selective_sdiv8.py tools/native_selective_sdiv8.py tools/selective_trig8.py tools/test_selective_trig8.py tools/native_selective_trig8.py tools/selective_dist8_accurate.py tools/test_selective_dist8_accurate.py tools/native_selective_dist8_accurate.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
       - name: Validate operation catalog and no-binary safety
         run: |
           python3 tools/test_math_builder.py
@@ -96,6 +97,7 @@ jobs:
           python3 tools/test_selective_smul8.py
           python3 tools/test_selective_umod8.py
           python3 tools/test_selective_umod8_variants.py
+          python3 tools/test_selective_umod8_speed.py
           python3 tools/test_selective_speed_umul16.py
           python3 tools/test_selective_speed.py
           python3 tools/test_selective_isqrt16.py
