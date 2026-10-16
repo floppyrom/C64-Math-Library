@@ -244,7 +244,7 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaises(mb.SelectionError):
             mb.validate_sha(ROOT, corrupted)
 
-    def test_config_file_and_no_binary(self):
+    def test_config_selection_is_plan_only_until_build_requested(self):
         with tempfile.TemporaryDirectory() as d:
             config = Path(d) / "pick.json"
             output = Path(d) / "plan.json"
@@ -264,12 +264,30 @@ class CatalogTests(unittest.TestCase):
             self.assertEqual(plan["public_operation_count"], 2)
             self.assertEqual(plan["objective"], "zp")
             self.assertEqual(plan["constraints"]["max_ram_bytes"], 1024)
+            self.assertEqual(plan["linker_status"], "experimental_subset_available")
             self.assertFalse(list(Path(d).rglob("*.prg")))
-            reject = subprocess.run(call + ["--build"], text=True,
+            # These operations became legitimately linkable after phase 1.
+            # An explicit --build must produce only the selected modules.
+            build = subprocess.run(call + ["--build"], text=True,
+                                   capture_output=True, cwd=ROOT)
+            self.assertEqual(build.returncode, 0, build.stderr)
+            manifest = json.loads((Path(d) / "selective_manifest.json").read_text())
+            self.assertEqual(set(manifest["link_exports"]),
+                             {"MATH_ATAN2_8", "MATH_UMUL16"})
+            self.assertEqual(manifest["resource_use"]["zero_page_bytes"], 0)
+            self.assertEqual(len(list(Path(d).rglob("*.prg"))), 1)
+
+    def test_build_rejects_nonlinkable_operation(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = Path(d)
+            invocation = [sys.executable, str(SCRIPT),
+                          "--operation", "ISQRT16",
+                          "--build", "--out", str(out / "plan.json")]
+            result = subprocess.run(invocation, text=True,
                                     capture_output=True, cwd=ROOT)
-            self.assertNotEqual(reject.returncode, 0)
-            self.assertIn("no qualified selective source", reject.stderr)
-            self.assertFalse(list(Path(d).rglob("*.prg")))
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("no qualified selective source", result.stderr)
+            self.assertFalse(list(out.rglob("*.prg")))
 
     def test_deterministic_selection_plan(self):
         a = mb.create_plan(self.index, ["isqrt16", "umul16"])
