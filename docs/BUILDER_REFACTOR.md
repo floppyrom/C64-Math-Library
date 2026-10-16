@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**A first real selective linker is now available for UDIV16 and UMOD16 only.**
+**A first real selective linker is now available for UDIV16, UMOD16, UDIV32_32 and UMOD32_32.**
 These use separately qualified relocatable sources, not the historical
 full-profile images or exact extracted resident mirrors. Other operations
 remain selection-plan-only until their own source contracts pass qualification.
@@ -98,6 +98,29 @@ bytes + 2 ordinary scratch bytes + 32 caller I/O bytes. It is slower than the
 biased modulo source on the prior paired corpus, but uses no ZP. Pin explicitly
 via `--pin UMOD16=link:direct-zerozp` or `--pin UMOD16=link:biased`.
 
+The linker also supports full-width 32/32 division and remainder, reusing
+the existing portable OptiSearch-derived C64 kernels:
+
+```sh
+python3 tools/math_builder.py --operation UDIV32_32 --operation UMOD32_32 \
+  --objective size --zp-budget 4 --ram-budget 1200 --build
+```
+
+The size-oriented version selects the 544-byte UDIV32 ZP-tail and 496-byte
+zero-ZP UMOD32: **1,040 code bytes, 4 shared ZP bytes, 4 ordinary scratch
+bytes, and 32 public I/O bytes** (1,076 claimed RAM bytes). With
+`--zp-budget 0`, it selects the 576-byte zero-ZP UDIV32 alternative
+instead, for **1,072 code bytes and 1,108 total RAM bytes**. The 32-bit
+operands and outputs occupy the full four-byte public I/O groups. Divisors
+of zero set carry and return zero results, while modulo preserves Q.
+
+**Performance caveat:** the portable 32-bit kernels can be slower than the
+resident implementations, especially for certain small-divisor workloads.
+These are the first *linkable* choices, not proven universal speed winners.
+The optimizer currently enforces budgets globally and scores the few available
+implementations by size/ZP trade-offs; an authenticated same-corpus
+performance objective will be introduced as candidates are qualified.
+
 A JSON configuration can specify a custom, nonoverlapping memory map:
 
 ```json
@@ -122,7 +145,8 @@ cannot be silently selected for a compact build. An unsupported routine or
 unsupported variant pin makes `--build` fail instead of loading 56 routines.
 
 The compact linker is intentionally marked experimental pending native
-VICE qualification; first source/mixed-call CPU tests are under CI.
+VICE qualification; source/mixed-call CPU and native linked-image tests are
+included in dedicated CI.
 
 ## Direction and acceptance criteria
 
