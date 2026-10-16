@@ -18,6 +18,7 @@ import selective_fast_umul8 as fast8
 import selective_speed
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
+import selective_dist8_accurate as dist8tab
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
@@ -125,6 +126,22 @@ MODULES = {
             "entry": "atan2", "zp": 0, "scratch": 0, "atan2": "sum-fast",
         },
     },
+    "MATH_DIST8_ACCURATE": {
+        "link:v1-ram-tables": {
+            "source": "routines/game/dist8_accurate_v1_ram.asm",
+            "segments": (("KERNEL_CODE", 66),),
+            "entry": "FAST_DIST8_ACCURATE", "zp": 0, "scratch": 2,
+            "operand_layout": "xyz", "dist8_accurate": True,
+            "provenance": "Original V1 accurate-distance two-table lookup with RAM abs/sort",
+        },
+        "link:v2-zp-tables": {
+            "source": "routines/game/dist8_accurate_v2_zp.asm",
+            "segments": (("KERNEL_CODE", 58),),
+            "entry": "FAST_DIST8_ACCURATE", "zp": 2, "scratch": 0,
+            "operand_layout": "xyz", "dist8_accurate": True,
+            "provenance": "Original V2 accurate-distance two-table lookup with ZP abs/sort",
+        },
+    },
     "MATH_DIST8_FAST": {
         "link:resident-approx": {
             "source": "routines/game/dist8_fast.asm",
@@ -181,12 +198,16 @@ def available_variants(root=ROOT):
                 } if mod.get("isqrt16") else {
                     "tools/selective_trig8.py": hashlib.sha256(
                         (root / "tools/selective_trig8.py").read_bytes()).hexdigest()
-                } if mod.get("trig8") else {}),
+                } if mod.get("trig8") else {
+                    "tools/selective_dist8_accurate.py": hashlib.sha256(
+                        (root / "tools/selective_dist8_accurate.py").read_bytes()).hexdigest()
+                } if mod.get("dist8_accurate") else {}),
                 "historical_provenance": mod.get("provenance"),
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
                 "validation_path": (
+                    "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
                     "tools/test_selective_trig8.py" if mod.get("trig8") else
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
@@ -197,11 +218,14 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("Original 8-bit trig code with one page-aligned 256-byte exact sine table; "
+                "notes": ("Historical V1/V2 max/min lookup with one shared 512-byte table pair; "
+                          "variant-dependent 2 scratch RAM or 2 ZP bytes"
+                          if mod.get("dist8_accurate") else
+                          "Original 8-bit trig code with one page-aligned 256-byte exact sine table; "
                           "shared across SIN8/COS8/SINCOS8 in one binary, zero scratch/ZP"
                           if mod.get("trig8") else
                           "294-byte V1 8-bit quotient/remainder chain, one ZP byte, no table"
@@ -288,6 +312,7 @@ def projected_end(start, items):
     """Actual compact PRG span, including aligned table data and trig sharing."""
     cursor = start
     shared_trig = any(mod.get("trig8") for _, _, mod in items)
+    shared_dist8 = any(mod.get("dist8_accurate") for _, _, mod in items)
     for _, _, mod in items:
         if "atan2" in mod:
             _, cursor = atan2.layout(mod["atan2"], cursor)
@@ -297,6 +322,8 @@ def projected_end(start, items):
             cursor += sum(length for _, length in mod["segments"])
     if shared_trig:
         cursor = trig8.align_page(cursor) + len(trig8.SINE_BYTES)
+    if shared_dist8:
+        cursor = trig8.align_page(cursor) + len(dist8tab.MAJOR_BYTES) + len(dist8tab.MINOR_BYTES)
     return cursor
 
 
@@ -433,6 +460,8 @@ def relocate_source(mod, locations, root):
     used = {k for k, _ in mod["segments"]}
     if mod.get("trig8"):
         used |= {"INPUT_X", "OUTPUT_Z", "SINE_TAB"}
+    elif mod.get("dist8_accurate"):
+        used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z", "DIST_MAJOR", "DIST_MINOR"}
     elif mod.get("operand_layout") == "xyz":
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z"}
     else:
@@ -515,13 +544,24 @@ def build(plan, outdir, memory=None, root=ROOT):
         "OUTPUT_QUOT": io + 24, "OUTPUT_REM": io + 28,
         "INPUT_X": io, "INPUT_Y": io + 4, "OUTPUT_Z": io + 8,
     }
-    # All selected trig routines share one immutable, verified 256-byte page.
+    # Source-locked tables are shared per family and placed after all code.
+    # DIST8's two pages follow the (optional) one-page sine table.
     has_trig = any(mod.get("trig8") for _, mod in modules.values())
-    shared_trig_page = (size + code - len(trig8.SINE_BYTES)) if has_trig else None
+    has_dist8 = any(mod.get("dist8_accurate") for _, mod in modules.values())
+    dist_table_bytes = (len(dist8tab.MAJOR_BYTES) + len(dist8tab.MINOR_BYTES)
+                        if has_dist8 else 0)
+    shared_dist_page = code + size - dist_table_bytes if has_dist8 else None
+    shared_trig_page = (code + size - dist_table_bytes - len(trig8.SINE_BYTES)
+                        if has_trig else None)
     if has_trig:
         if shared_trig_page & 255:
             raise LinkError("Trig shared table was not placed on a page boundary")
         constants["SINE_TAB"] = shared_trig_page
+    if has_dist8:
+        if shared_dist_page & 255:
+            raise LinkError("DIST8 shared table pages were not aligned")
+        constants["DIST_MAJOR"] = shared_dist_page
+        constants["DIST_MINOR"] = shared_dist_page + len(dist8tab.MAJOR_BYTES)
     if zp_bytes:
         constants["TEMP_ZP"] = zb
     if scratch:
@@ -562,6 +602,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("trig8") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_trig8.py"]:
             raise LinkError(api + ": shared sine table provenance missing")
+        if module.get("dist8_accurate") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_dist8_accurate.py"]:
+            raise LinkError(api + ": accurate-distance lookup provenance missing")
         locations = dict(constants)
         expected = set()
         ranges = []
@@ -622,6 +665,22 @@ def build(plan, outdir, memory=None, root=ROOT):
         })
         shared_tables[-1]["sha256"] = hashlib.sha256(trig8.SINE_BYTES).hexdigest()
         pc = shared_trig_page + len(shared_data)
+    if has_dist8:
+        if pc > shared_dist_page:
+            raise LinkError("DIST8 shared table pair overlaps previous data")
+        shared_data = dist8tab.emit(shared_dist_page)
+        if set(shared_data) & set(binary):
+            raise LinkError("DIST8 lookup overlaps linked module")
+        binary.update(shared_data)
+        shared_tables.append({
+            "name": "DIST8_ACCURATE_SHARED", "start": "$%04X" % shared_dist_page,
+            "bytes": len(shared_data),
+            "users": sorted(api for api, (ident, mod) in modules.items()
+                            if mod.get("dist8_accurate")),
+            "sha256": hashlib.sha256(
+                dist8tab.MAJOR_BYTES + dist8tab.MINOR_BYTES).hexdigest(),
+        })
+        pc = shared_dist_page + len(shared_data)
     if pc != code + size:
         raise LinkError("Incorrect linked image span")
     # ATAN2 lookup pages need page alignment. Gaps are explicit zero-filled
@@ -643,6 +702,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; SIN8: phase in MATH_X low => sine signed byte in MATH_Z low, C=0.",
         "; COS8: phase in MATH_X low => cosine signed byte in MATH_Z low, C=0.",
         "; SINCOS8: phase in MATH_X low => sin/cos in MATH_Z low/next, C=0.",
+        "; DIST8_ACCURATE: signed MATH_X/Y low => lookup[max] +",
+        "; lookup[min] mod 256 in MATH_Z low, C=0 (exact resident tables).",
         "; DIST8_FAST: signed MATH_X/Y low bytes => max(abs(X),abs(Y)) +",
         "; floor(min(abs(X),abs(Y))/2) mod 256 in MATH_Z low byte, C=0.",
         "; ATAN2_8: signed 8-bit MATH_X/Y low bytes => phase MATH_Z low byte",
@@ -662,7 +723,8 @@ def build(plan, outdir, memory=None, root=ROOT):
     toolchain_paths = ("tools/math_builder.py", "tools/selective_linker.py",
                        "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
                        "tools/selective_speed.py", "tools/selective_isqrt16.py",
-                       "tools/selective_trig8.py", "tools/mini6502.py")
+                       "tools/selective_trig8.py", "tools/selective_dist8_accurate.py",
+                       "tools/mini6502.py")
     toolchain_hashes = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
         for name in toolchain_paths

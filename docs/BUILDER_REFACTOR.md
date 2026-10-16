@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker now supports thirteen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, SIN8, COS8 and SINCOS8.**
+**An experimental selective linker now supports fourteen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, DIST8_ACCURATE, SIN8, COS8 and SINCOS8.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -170,6 +170,40 @@ Mixed builds with multiple page-aligned modules link correctly but currently use
 deterministic conservative ordering; **multi-aligned ordering is not globally
 padding-optimal yet**. The optimized ISQRT16 migration is not evidence that the
 other 43 operations or unported high-performance variants are link-ready.
+
+### Historical V1/V2 accurate-distance two-table lookup (experimental)
+
+`MATH_DIST8_ACCURATE` has two independent source-exact optimized variants:
+`link:v1-ram-tables` (66-byte kernel, **zero ZP**, two owned RAM scratch
+bytes) and `link:v2-zp-tables` (58-byte kernel, **two ZP**,
+zero ordinary RAM scratch). These retain the shipped lookup-table algorithm,
+not the faster but less accurate `DIST8_FAST` approximation.
+
+Both variants share **one immutable 512-byte aligned pair** of table pages
+at the generated address, with exact byte-for-byte V1–V5 release-image
+provenance from `$9A00` and `$9B00`. This is true even for mixed
+trig/distance builds: one 256-byte sine page, one 512-byte accurate-distance
+pair, with all padding charged to the finished image.
+
+The contract preserves signed X/Y low input bytes, absolute -128 behaviour,
+MATH_Z low-byte output and clear carry, and does not alter neighbouring
+I/O bytes. The exact computation is
+`(MAJOR[max(abs(x),abs(y))] + MINOR[min(abs(x),abs(y))]) & 255`.
+Exhaustive **65,536 x/y pairs at each of two relocations** for *each*
+variant and independent native x64sc checks are required for promotion.
+
+```sh
+python3 tools/math_builder.py --operation DIST8_ACCURATE \
+  --pin DIST8_ACCURATE=link:v1-ram-tables --zp-budget 0 \
+  --ram-budget 802 --build
+python3 tools/math_builder.py --operation DIST8_ACCURATE \
+  --pin DIST8_ACCURATE=link:v2-zp-tables --zp-budget 2 \
+  --ram-budget 800 --build
+```
+
+The resource figures include the 32-byte public I/O reservation and
+page-alignment padding at the default `$8000` code origin. V2's ZP
+work area must not conflict with caller-reserved zero page.
 
 ### Historical V1–V5 shared trigonometric table (experimental)
 
