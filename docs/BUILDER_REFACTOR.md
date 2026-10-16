@@ -412,6 +412,28 @@ a UMUL16 + ATAN2 compact + UDIV16 combination occupies 1,091 bytes of
 PRG payload including 54 padding bytes, 6 RAM scratch bytes and 2 ZP
 bytes (1,129 total RAM bytes, including 32 public I/O bytes).
 
+### Original optimized V5 UMOD8 as second selective variant (experimental)
+
+The builder also retains the V5 `link:v5-hybrid-unrolled` implementation:
+**205 executable bytes**, two zero-page scratch bytes, no extra data tables,
+and no REU. It extends V1's straight-line small-divisor subtraction chain
+before the writable-code fallback. The remainder-only ABI, division-by-zero
+carry semantics, and unchanged quotient are identical to V1. The linked
+code **must execute from writable RAM**, as two instruction operands are
+self-modified; it is nonreentrant.
+
+```sh
+python3 tools/math_builder.py --operation UMOD8 \
+  --pin UMOD8=link:v5-hybrid-unrolled --zp-budget 2 \
+  --ram-budget 237 --build
+```
+
+The default size-oriented objective can prefer the original smaller
+157-byte V1 variant; selecting V5 is an explicit trade-off until
+matched-corpus cycle measurements establish relative performance.
+Both versions must pass all 65,536 N/D pairs at two relocations
+and independent native VICE qualifications.
+
 ### Original V1 unsigned UMOD8 (fast subtraction with SMC fallback)
 
 `MATH_UMOD8` now provides `link:v1-fast-fallback`, retaining the
