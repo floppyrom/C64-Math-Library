@@ -1,3 +1,40 @@
+### Independently linked SEEK8 four-entry stateful DDA
+
+The builder can now link the **unchanged generated SEEK8 instructions**, relocated to 651 bytes with absolute RAM inputs as
+four distinct public entry points: `MATH_SEEK8_INIT`, `MATH_SEEK8_STEP`,
+`MATH_SEEK8_STEP_INT`, and `MATH_SEEK8_STEP1`. Any selected combination
+occupies the code exactly **once**, while exports retain distinct addresses.
+The source's 32-byte Euclidean correction table is part of the relocated 651-byte image.
+No REU, MATH_INIT, zero-page reservation or writable code is required.
+
+Stateful modules require different accounting from temporary scratch. The
+builder reserves **160 persistent RAM bytes** for eight object slots, plus
+**19 bytes of reusable call-lifetime initialization scratch** and up to seven
+alignment bytes. It never shares the persistent state with other routines,
+even when adding calls sequentially. Default at `MATH_IO=$C000`, the
+state occupies `$C038-$C0D7`, with exported
+`MATH_SEEK8_POS_X=$C038` and `MATH_SEEK8_POS_Y=$C040`.
+Default output total: 651 code + 32 public IO + 19 scratch + 5
+alignment + 160 persistent state = **867 RAM bytes** (0 ZP).
+
+SEEK8 INIT follows the existing public ABI:
+`MATH_X` low target X, `MATH_Y` low target Y, and
+`MATH_N` low/high speed fraction/integer+mode. X selects slot 0..7 and is
+preserved. INIT and all stepper entries preserve user inputs, and steppers
+report arrival through carry. All modes can be interleaved between eight
+objects with persistent state retained. Source and emitter are SHA-locked.
+
+```sh
+python3 tools/math_builder.py --operation SEEK8_INIT --operation SEEK8_STEP \
+  --operation SEEK8_STEP_INT --operation SEEK8_STEP1 --zp-budget 0 \
+  --ram-budget 867 --build
+```
+
+Single-operation speed optimization for SEEK8 remains intentionally disabled
+until a matched-input performance basis is qualified. Native VICE and
+CPU-model tests exercise two code/IO/scratch relocations; full-state safety
+and mixed-operation resource contracts are checked in the builder tests.
+
 # Builder refactor: operation-first selection (phase 1)
 
 The future **C64 Math Library Builder** will replace user-facing V1–V5 profile
