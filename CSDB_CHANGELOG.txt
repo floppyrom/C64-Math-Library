@@ -1,3 +1,8 @@
+2026-10-16 ISSUE144 C V4 REU ISQRT32 DIRECT ZERO-PAGE DMA RESEARCH (OPT-IN)
+- Optional eight-byte-ZP-layout permutation directs the existing four-byte V4 REU prefix root/residual record into ZP_MAIN+$52..+$55, instead of copying four bytes from REU_SCRATCH. Explicit $DF02/$DF03 restoration retains the established destination for other math routines. No new normal zero page, caller RAM or REU payload.
+- 1,066 paired unrestricted source-model public root calls in each reference/alternate map (2,132 pairs), exactly 16 modeled instruction cycles saved on EVERY input, zero slower. Both full 56-entry source validators PASS (43,356 calls). 24 actual native pinned x64sc old/new pairs with emulated 16 MiB REU produced byte-identical output/status. Qualification: tools/issue144_v4_reu_direct_zp_screen.py, optional/issue144_v4_isqrt32_direct_reu_zp/, validation/review/ISSUE144_V4_ISQRT32_DIRECT_REU_ZP_2026-10-16.json.
+- Experimental source only: production V4 canonical source, frozen five PRGs/two REUs and PERFORMANCE.md unchanged. Physical VIC/REU DMA elapsed time, IRQ/NMI and default-source promotion remain open.
+
 2026-10-16 ISSUE144 B NORMAL-RESIDENT DUALTAIL UDIV32/16 SOURCE-ONLY OPT-IN
 - V2/V3/V4 source-selected 461-byte secondary low-divisor quotient engine relocates to already claimed REG_LOW+$0C00; no caller-owned RAM, extra ZP or published PRG/REU replacement. Original $1C00-class bytes zero; normal reference and alternate memory map validated.
 - 51,252 paired same-input public signed/unsigned DIV/MOD CPU-model calls pass with full Q/R/C/N/D and volatile signed status. +27.0299 cycles on eligible low D, +10.8715 mean over mixed unsigned corpus, +19.9919 on sign-enriched signed corpus, 2-cycle worst regression.
