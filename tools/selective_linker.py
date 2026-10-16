@@ -299,6 +299,8 @@ def relocate_source(mod, locations, root):
 
 
 def build(plan, outdir, memory=None, root=ROOT):
+    if plan.get("schema") != "math-selection-plan-v2":
+        raise LinkError("Unsupported selection plan schema; regenerate with current math_builder")
     if plan["target"] != "c64":
         raise LinkError("No qualified selective modules for requested hardware")
     names = [op["api"] for op in plan["operations"]]
