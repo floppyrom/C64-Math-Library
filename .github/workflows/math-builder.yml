@@ -9,7 +9,7 @@ on:
       - tools/test_selective_linker.py
       - tools/native_selective_linker.py
       - tools/native_selective_atan2.py
-      - tools/native_selective_multiply.py
+      - tools/native_selective_multiply.py routines/atan2/tables.py tools/mini6502.py routines/standalone_lab/portable/native_vice.py
       - tools/test_selective_multiply.py
       - routines/multiply/umul16_compact_zerozp.asm
       - routines/multiply/umul8_compact_zerozp.asm
