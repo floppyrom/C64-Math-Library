@@ -278,6 +278,8 @@ class SelectiveLinkTests(unittest.TestCase):
             self.assertEqual(len((Path(d) / "math_selective.prg").read_bytes()), 587)
             self.assertIn("MATH_UDIV16 =", (Path(d) / "math_api.inc").read_text())
             self.assertIn("MATH_UMOD16 =", (Path(d) / "math_api.inc").read_text())
+            self.assertIn("div_u16_u16_u16_16 = MATH_UDIV16", (Path(d) / "math_api.inc").read_text())
+            self.assertIn("mod_u16_u16_u16 = MATH_UMOD16", (Path(d) / "math_api.inc").read_text())
 
 
 if __name__ == "__main__":
