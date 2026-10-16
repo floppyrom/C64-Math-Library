@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker now supports fourteen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, DIST8_ACCURATE, SIN8, COS8 and SINCOS8.**
+**An experimental selective linker now supports sixteen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, DIST8_ACCURATE, SIN8, COS8, SINCOS8, SDIV8 and SMOD8.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -235,6 +235,32 @@ with ATAN2 and ISQRT16 aligned tables, and independent native x64sc execution
 of each source-linked entry point at two RAM layouts. Selection remains
 operation-first: a one-routine request exports only that operation, although
 it necessarily includes the one 256-byte lookup page.
+
+
+### Shared historical signed 8-bit DIV/MOD producer
+
+Both `MATH_SDIV8` and `MATH_SMOD8` are backed by the same historical V1
+signed quotient/remainder routine. The `link:v1-shared-producer` module
+contains **530 bytes of original code**, requires **one ZP byte**, and
+uses no lookup table, RAM scratch or REU. The builder exports both public
+symbols with **one physical producer** when both operations are selected.
+
+Results preserve the original signed 8-bit quotient truncation and signed
+remainder, input bytes and the high output bytes; carry is set on zero divisor
+(and the low Q/R bytes are zero). Zero divisor is therefore handled without
+a separate adapter. At default RAM placement, a single or paired selection
+costs 530 code + 32 public I/O = **562 bytes of RAM**. The original
+trampoline is removed while the resident fast calculation survives.
+
+```sh
+python3 tools/math_builder.py --operation SDIV8 --operation SMOD8 \
+  --zp-budget 1 --ram-budget 562 --build
+```
+
+All 65,536 signed numerator/divisor cases are tested at two relocations,
+including carry, ABI preservation and full generated-binary immutability;
+the source-linked VICE CI also tests both relocations. The two public
+names are independently validated by source hashes before aliasing.
 
 ### Historical V1 fast unsigned 8-bit division (experimental)
 

@@ -1,3 +1,8 @@
+2026-10-16 OPERATION-FIRST SHARED SIGNED DIV8/MOD8 SOURCE PORT (MERGE CANDIDATE; CI QUALIFICATION REQUIRED)
+- Preserve exact historical V1 530-byte signed SDIV8/SMOD8 routine and signed quotient/remainder public semantics in a relocatable producer. The two public operations coalesce to one code image, one ZP byte and 562 bytes including shared I/O.
+- Independently SHA-authorize the shared aliases, test all 65,536 signed input pairs at each of two RAM layouts, test exclusive-call scratch/stack/upper-output preservation, plus two native x64sc maps. Historical V1–V5 released binaries are unchanged.
+- Operation-first linker supports 16 of 56 operations as source-selectable, with shared immutable trig/distance tables and shared signed producer. Comparative speed ranking for multiple operations remains unqualified.
+
 2026-10-16 BUILDER HISTORICAL ACCURATE DISTANCE V1 AND V2 (UNRELEASED; QUALIFICATION PENDING)
 - Added two independent exact V1/V2 MATH_DIST8_ACCURATE source ports. The V1 66-byte implementation uses 2 caller-free scratch RAM bytes, 0 ZP; the V2 58-byte implementation uses 2 explicitly owned ZP bytes, no RAM scratch. Both preserve 8-bit signed-input magnitude/swap and table lookup, carry-clear and I/O sentinels.
 - Original 256+256 immutable high/min contribution pages are checked byte-for-byte against all five shipped V1-V5 resident PRGs. Added globally shared aligned distance table pair after optional shared sine page, proper multi-module RAM/ZP/padding accounting, output provenance and complete source-dependency hashes.
