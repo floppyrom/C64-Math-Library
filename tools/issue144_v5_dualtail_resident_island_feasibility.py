@@ -90,12 +90,43 @@ def main():
         common[name]={"intersecting_461byte_symbol_relative_offsets":len(both),
                       "first_16_offsets":[hex(a) for a in both[:16]],
                       "possible":bool(both)}
+    # The existing low-D loop is 16 unrolled steps. Its STEP8 boundary
+    # separates two closed branch graphs. Measure actual assembled bytes
+    # rather than estimating from source text or counting instructions.
+    from assemble_sources import preprocess
+    from mini6502 import Assembler
+    from issue144_u3216_inresident_fullabi_stage import variant
+    v2=ROOT/"relocatable_source/v2_pareto_fast"
+    cfg=v2/"math_config_reference.inc"
+    assembled=variant(preprocess(v2/"math_relocatable.asm",cfg))
+    machine,labels,_=Assembler().assemble(assembled)
+    start=labels["U3216_LOW_DIV"]
+    divide=labels["U3216_LD_B8"]
+    end=labels["U3216_LD_END"]
+    assert start<divide<end,(hex(start),hex(divide),hex(end))
+    one=(divide-start)+3  # absolute jump to next resident island
+    two=end-divide
+    geometry={"first_8steps_including_jump":one,
+              "second_8steps_through_result":two,
+              "total_bytes_including_jump":one+two,
+              "unsplit_tail_bytes":end-start,
+              "relative_island_candidates":["REG_LOW+$0E4D","REG_LOW+$13AF"],
+              "candidate_zero_capacity":[435,337],
+              "fit_only_if_no_future_collision":one<=435 and two<=337}
+    for layout in ("reference","alternate"):
+        holes=corpus_by_map[layout]["REG_LOW"]["longest_12_unclaimed_candidates"]
+        slots={row["offset"]:row["bytes"] for row in holes}
+        if geometry["fit_only_if_no_future_collision"]:
+            assert slots.get("0xe4d",0)>=one and slots.get("0x13af",0)>=two,(
+                layout,"known V5 zero-run locations shifted",slots)
+    assert geometry["fit_only_if_no_future_collision"],geometry
     report={"status":"PASS_V5_RELOCATION_HOLE_SURVEY_NOT_PROOF_OF_OWNERSHIP",
         "tail_bytes":TAIL_BYTES,"default_source_unchanged":True,
         "imported_auxiliary_tail":False,"native_vice_executed":False,
         "zero_filled_region_is_not_code_ownership_proof":True,
         "V5_ordinary_source_all_56_entries_pass":True,
         "layout_results":rows,"matching_offsets":common,
+        "two_island_source_geometry":geometry,
         "next_required_gates":["source ownership, labels, data relocation and all future generated overlays",
           "relocate all reachable V2 donor JMP/JSR/zero page operands",
           "56-entry regression and executed-program write guard",
