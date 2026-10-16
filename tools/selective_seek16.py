@@ -13,7 +13,7 @@ import re
 from mini6502 import Assembler
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = "routines/movement/seek_u8_u8_dda.asm"
+SOURCE = "routines/movement/seek_u16_u8_dda.asm"
 CODE_BYTES = 898
 STATE_BYTES = 248
 INIT_SCRATCH_BYTES = 19
