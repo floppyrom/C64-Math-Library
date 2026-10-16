@@ -1,3 +1,8 @@
+2026-10-16 MEASURED SELECTIVE UMUL8 SPEED CHOICE (EXPERIMENTAL PHASE 3; UNRELEASED)
+- Enable --objective speed for UMUL8-only selective builds by assembling each known variant at the requested origin and measuring both with the same deterministic 1,000-pair edge/uniform CPU-model corpus. Choose the fastest variant that actually fits RAM/ZP budgets; 95-byte RAM fallback uses the compact module if 1,129-byte quarter-square cannot fit.
+- Record cycle basis, input corpus SHA-256, per-variant mean CPU-model cycles, requested code/IO origin, and source/toolchain SHA-256 in the output manifest. These are model cycle counts, not native hardware timings. Speed objectives for other operations and incompatible mixed-operation workloads remain explicitly unsupported.
+- Add budget/pinning/provenance/repeatability/CLI regression tests and preserve the existing production binaries and benchmark records.
+
 2026-10-16 EXPERIMENTAL BUILDER FAST-MULTIPLY PHASE 2 (UNRELEASED)
 - Add an independently relocatable UMUL8 quarter-square option: 73 bytes of NMOS 6502 code, 1022 bytes of generated Q(n)=floor(n*n/4) lookup planes, 2 ordinary scratch RAM bytes and zero ZP. Preserves the existing compact 60-byte alternative and the public input/output/carry ABI.
 - Extend the selective linker with source and table-generator SHA checks, exact image span accounting, typed public include export, and deterministic side-by-side variant selection. Size optimization keeps the compact kernel; experts may explicitly pin quarter-square.
