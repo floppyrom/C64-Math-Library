@@ -149,7 +149,7 @@ def run_profile(p,stage,layout,sets):
     # are separate API include records; the manifest lists only functions.
     import re
     for line in (dest/"math_api.inc").read_text().splitlines():
-        m=re.match(r"\\s*(MATH_SEEK16_POS_[A-Z]+)\\s*=\\s*\\$([0-9A-Fa-f]+)",line)
+        m=re.match(r"\s*(MATH_SEEK16_POS_[A-Z]+)\s*=\s*\$([0-9A-Fa-f]+)",line)
         if m:api[m.group(1)]=int(m.group(2),16)
     assert set(OPS).issubset(api) and len(manifest["public_entries"])==56
     assert all(k in api for k in ("MATH_SEEK16_POS_XL","MATH_SEEK16_POS_XH","MATH_SEEK16_POS_Y"))
