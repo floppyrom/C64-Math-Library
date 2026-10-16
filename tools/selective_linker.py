@@ -278,7 +278,8 @@ def available_variants(root=ROOT):
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
                 "validation_path": (
-                    "tools/test_selective_umod8.py" if (mod.get("umod8_v1") or mod.get("umod8_extra")) else
+                    "tools/test_selective_umod8_variants.py" if mod.get("umod8_extra") else
+                    "tools/test_selective_umod8.py" if mod.get("umod8_v1") else
                     "tools/test_selective_smul8.py" if mod.get("smul8_v1") else
                     "tools/test_selective_fast_umul16.py" if mod.get("fast_umul16") else
                     "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
