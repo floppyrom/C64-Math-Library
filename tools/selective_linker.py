@@ -22,6 +22,14 @@ MODULES = {
             "entry": "FAST_UDIV16_BIASED", "zp": 2, "scratch": 0,
         },
     },
+    "MATH_UMUL8": {
+        "link:compact-zerozp": {
+            "source": "routines/multiply/umul8_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 60),),
+            "entry": "FAST_UMUL8_COMPACT", "zp": 0, "scratch": 3,
+            "operand_layout": "xyz",
+        },
+    },
     "MATH_UMUL16": {
         "link:compact-zerozp": {
             "source": "routines/multiply/umul16_compact_zerozp.asm",
@@ -109,7 +117,7 @@ def available_variants(root=ROOT):
                 "qualification": ("experimental new compact source; CPU/native validation pending"
                                   if mod.get("operand_layout") == "xyz" else
                                   "existing portable source; selective mixed-call validation pending"),
-                "notes": ("Compact portable 16x16 source; slower than table-based optimized variants"
+                "notes": ("Compact portable shift-add multiply; not performance-ranked against table variants"
                           if mod.get("operand_layout") == "xyz" else
                           "Complete page-aligned ATAN2 lookup tables, exhaustive stock-C64 phase certification"
                           if "atan2" in mod else
