@@ -672,7 +672,10 @@ def build(plan, outdir, memory=None, root=ROOT):
         else:
             benchmark, scratch_address = selective_speed_udiv8.bench_udiv8, zb
         try:
-            cycle_model = benchmark(MODULES[api], code, io, scratch_address, root)
+            if api == "MATH_UMUL8":
+                cycle_model = benchmark(MODULES[api], code, io, scratch_address, root, zp=zb)
+            else:
+                cycle_model = benchmark(MODULES[api], code, io, scratch_address, root)
         except (ValueError, OSError, RuntimeError) as exc:
             raise LinkError(api + " cycle-model measurement failed: " + str(exc)) from exc
         per_operation_cycles = {api: cycle_model["mean_cycles"]}
