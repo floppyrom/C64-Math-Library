@@ -23,6 +23,39 @@ class CatalogTests(unittest.TestCase):
     def setUpClass(cls):
         cls.index = mb.operation_index()
 
+    def test_public_operations_survive_removal_of_v1_profile_metadata(self):
+        # Profile migration must not make V1 an implicit schema dependency.
+        from unittest.mock import patch
+        original = mb.read_csv
+
+        def without_historical_v1(path):
+            records = original(path)
+            if path.name == "SOURCE_CATALOG.csv":
+                return [r for r in records
+                        if not (r["scope"] == "shipped-profile" and
+                                r["profile"] == "v1_balanced")]
+            return records
+
+        with patch.object(mb, "read_csv", side_effect=without_historical_v1):
+            reduced = mb.operation_index()
+        self.assertEqual(set(reduced), set(self.index))
+        for api in reduced:
+            self.assertEqual(reduced[api]["canonical_name"],
+                             self.index[api]["canonical_name"])
+            self.assertEqual(reduced[api]["category"],
+                             self.index[api]["category"])
+            self.assertTrue(all(v.get("historical_provenance") != "v1_balanced"
+                                for v in reduced[api]["variants"]))
+        self.assertIn("MATH_UMUL8", reduced)
+        self.assertIn("MATH_ATAN2_8", reduced)
+
+    def test_public_operation_catalog_is_unique(self):
+        rows = mb.read_csv(ROOT / "routines" / "PUBLIC_OPERATIONS.csv")
+        self.assertEqual(len(rows), 56)
+        self.assertEqual(len({r["api"] for r in rows}), 56)
+        self.assertEqual(len({r["canonical_name"] for r in rows}), 56)
+        self.assertEqual(set(r["api"] for r in rows), set(self.index))
+
     def test_full_stable_api_indexed(self):
         self.assertEqual(len(self.index), 56)
         for api, op in self.index.items():
