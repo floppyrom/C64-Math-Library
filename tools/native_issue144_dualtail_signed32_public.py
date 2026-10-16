@@ -11,7 +11,16 @@ import hashlib,json,os,sys,tempfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"tools"))
-from native_issue144_signed32_rq_tail_fusion import native,VECTORS,N,STRIDE
+import native_issue144_signed32_rq_tail_fusion as monitor
+# The existing signed harness uses STRIDE=64, writing 17*64 bytes from
+# $0500 through $093F. That OVERWRITES our resident optional code $0800+.
+# Narrow the result columns to N=24 bytes so all captures end below $0800.
+N=monitor.N
+STRIDE=N
+assert N==24 and monitor.OUT+17*STRIDE<0x0800
+assert monitor.IN+6*STRIDE<monitor.OUT
+monitor.STRIDE=STRIDE
+native=monitor.native
 from issue144_u3216_dualtail_direct_dispatch_screen import builds,PROFILES
 OPS=("MATH_SDIV32_16","MATH_SMOD32_16")
 assert N==24 and STRIDE==64
