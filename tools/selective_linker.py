@@ -248,11 +248,20 @@ def pareto_resource_variants(variants):
               spec["scratch"], spec["zp"])
         for key, spec in candidates
     }
+    # Pruning is sound only across identical layout classes. All current
+    # ATAN2 data segments are full pages, but future emitters may impose
+    # other code/table alignment or placement constraints.
+    layout_classes = {
+        key: (("page-aligned", len(spec["segments"]) - 1)
+              if "atan2" in spec else ("contiguous", 0))
+        for key, spec in candidates
+    }
     keep = {}
     for key, variant in candidates:
         mine = sizes[key]
         dominated = any(
             other != key and
+            layout_classes[other] == layout_classes[key] and
             all(a <= b for a, b in zip(sizes[other], mine)) and
             (any(a < b for a, b in zip(sizes[other], mine)) or other < key)
             for other, _ in candidates
