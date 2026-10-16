@@ -1,0 +1,123 @@
+{
+  "status": "PASS_CANDIDATE_ONLY_NOT_SHIPPED",
+  "date": "2026-10-16",
+  "issue": 144,
+  "source_pr": 188,
+  "merged_commit": "338a3df208684cd8b53d374b54135ed0e2dfd1bb",
+  "full_pr_ci": "29/29 green at exact PR head",
+  "candidate_workflow": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38852903249",
+  "reference_artifact_id": 12024934027,
+  "alternate_artifact_id": 12025773964,
+  "artifact_retention_days": 30,
+  "source_archived_frozen_binaries_unmodified": true,
+  "canonical_binary_release_promoted": false,
+  "release_status": "versioned source-release candidate, separate current-source performance publication",
+  "all_profiles": [
+    "v1_balanced",
+    "v2_pareto_fast",
+    "v3_reu_512k",
+    "v4_reu_16m",
+    "v5_hybrid_lowzp"
+  ],
+  "layouts": [
+    "reference",
+    "alternate"
+  ],
+  "public_api_calls_per_profile_per_map": 21678,
+  "public_entry_count": 56,
+  "model_total_public_calls": 216780,
+  "native_x64sc_roots": "PASS V1,V2,V3,V4,V5 with emulated V3 512KiB/V4 16MiB REU",
+  "root_corpus_samples_per_profile": 438,
+  "root_corpus_sha256": "ed3fa08f428753f66dc12fefa6a5768198157ce06d3bce2624d6fc352749c29d",
+  "root_cycles": "instruction cycles from public call through RTS, 6502 CPU model, physical DMA/bus time excluded",
+  "isqrt_same_input_rows": [
+    {
+      "profile": "v1_balanced",
+      "frozen_mean": 1263.164383561644,
+      "candidate_mean": 1212.164383561644,
+      "mean_cycles_saved": 51,
+      "minimum_saved": 51,
+      "maximum_saved": 51,
+      "p95_frozen": 1593,
+      "p95_candidate": 1542,
+      "slower_cases": 0,
+      "reference_prg_sha256": "d7c41cc08612ece68a9b334fba02298347e9ccea9aff42273278f0b900913449",
+      "alternate_prg_sha256": "0a2e361c6b36573acecec057bf14a4ae75141d2e108c7a8e625b488e50bc6d8f"
+    },
+    {
+      "profile": "v2_pareto_fast",
+      "frozen_mean": 1095.1278538812785,
+      "candidate_mean": 1048.1278538812785,
+      "mean_cycles_saved": 47,
+      "minimum_saved": 47,
+      "maximum_saved": 47,
+      "p95_frozen": 1437,
+      "p95_candidate": 1390,
+      "slower_cases": 0,
+      "reference_prg_sha256": "ee1dee16ceefa69d4642d9e2326c7389b7e09e5caa3d2725a06bc1e889ee284d",
+      "alternate_prg_sha256": "1e36f45cc36a9783fca55a2c8df3eb4b2a4aca641dae4d6944a650a2cba700d2"
+    },
+    {
+      "profile": "v3_reu_512k",
+      "frozen_mean": 1095.1575342465753,
+      "candidate_mean": 1048.1575342465753,
+      "mean_cycles_saved": 47,
+      "minimum_saved": 47,
+      "maximum_saved": 47,
+      "p95_frozen": 1437,
+      "p95_candidate": 1390,
+      "slower_cases": 0,
+      "reference_prg_sha256": "97d588c2691a2ce908997ba15b255342fb85c39a000d725008e9f25c8af56755",
+      "alternate_prg_sha256": "78cdbe540873118b052f7f6aae5ed61d1b6cb1d7b25b489ae37a237248fc4d5b"
+    },
+    {
+      "profile": "v4_reu_16m",
+      "frozen_mean": 924.082191780822,
+      "candidate_mean": 804.8767123287671,
+      "mean_cycles_saved": 119.20547945205479,
+      "minimum_saved": 101,
+      "maximum_saved": 137,
+      "p95_frozen": 1022,
+      "p95_candidate": 885,
+      "slower_cases": 0,
+      "reference_prg_sha256": "8ed12962d9e64abbae7864894185b59f937e7c7f5356930b94e36f002ceab6c6",
+      "alternate_prg_sha256": "b708e3f005e91fbacd191efe80eb431c48241d41b60028703b1d6f7c4e4ee4bd"
+    },
+    {
+      "profile": "v5_hybrid_lowzp",
+      "frozen_mean": 1263.164383561644,
+      "candidate_mean": 1212.164383561644,
+      "mean_cycles_saved": 51,
+      "minimum_saved": 51,
+      "maximum_saved": 51,
+      "p95_frozen": 1593,
+      "p95_candidate": 1542,
+      "slower_cases": 0,
+      "reference_prg_sha256": "555f9a2f0765d6e6f5b0c48dc0e71cb9af6036d12e4f6a4a17dd3af49ff3bf91",
+      "alternate_prg_sha256": "05b48721289c8a77630be859e6e6d18582f5d15b921a65fb8822d0fb5f4aafda"
+    }
+  ],
+  "v4_reu_reference_sha256": "f745ab4021518d0277e75b42ece6b3bd747d852bc75a1c2138d47f0a32c65a73",
+  "v4_reu_alternate_sha256": "55a1c6106ab096dafd64a472df60419202ad9776cb2cc9344517adf5b7902a62",
+  "v3_reu_reference_sha256": "4f5961fe2f52a382497a57f05251946dfbb327588d291591faa4007766d0e54f",
+  "v3_reu_alternate_sha256": "397945440240618adcf6dc54ff1c60465b13e9660046331358b81e8551bcf148",
+  "supplemental_v4_vice_cia_timing": {
+    "status": "PASS_EMULATOR_CIA_TIMER_ONLY",
+    "sample_count": 16,
+    "range_elapsed_phi2_ticks": [
+      749,
+      1018
+    ],
+    "median_elapsed_phi2_ticks": 810.5,
+    "method": "VICE 3.13.2 16 tested V4 root public calls, CIA Timer A before public call/after return, includes measurement overhead and emulator VIC/REU effects",
+    "physical_hardware_timing": false,
+    "native_data_in_git_release": false
+  },
+  "unqualified_open_gates": [
+    "hardware VIC/REU DMA wall time and PAL/NTSC phase",
+    "IRQ/NMI reentrancy / resource interference",
+    "production-default tagged binary publication",
+    "updated PERFORMANCE.md only for genuinely published default binaries",
+    "larger unrestricted root algorithmic gain"
+  ]
+}

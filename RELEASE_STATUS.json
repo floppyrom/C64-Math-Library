@@ -27,6 +27,55 @@
     "physical_vic_reu_timing_qualified": false,
     "irq_nmi_nested_reentrancy_qualified": false
   },
+  "issue144_source_release_candidate_isqrt32_2026_10_16": {
+    "status": "PASS_29_OF_29_EXACT_HEAD_PR_CI_SOURCE_CANDIDATE_NOT_DEFAULT",
+    "issue": 144,
+    "merged_pr": 188,
+    "merged_commit": "338a3df208684cd8b53d374b54135ed0e2dfd1bb",
+    "source_candidate_workflow": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38852903249",
+    "ref_artifact_id": 12024934027,
+    "alternate_artifact_id": 12025773964,
+    "profiles": [
+      "v1_balanced",
+      "v2_pareto_fast",
+      "v3_reu_512k",
+      "v4_reu_16m",
+      "v5_hybrid_lowzp"
+    ],
+    "maps": [
+      "reference",
+      "alternate"
+    ],
+    "public_api_entries": 56,
+    "public_calls_per_profile_map": 21678,
+    "total_source_public_calls": 216780,
+    "native_vice_roots_all_profiles_pass": true,
+    "performance_measurement": "new independent 438-identical-input source-built vs frozen-binary ISQRT32 public-entry model cycles, distinct from PERFORMANCE.md 4130-case historical corpus",
+    "mean_model_cycles_saved": {
+      "v1": 51,
+      "v2": 47,
+      "v3": 47,
+      "v4": 119.20547945205479,
+      "v5": 51
+    },
+    "measured_slower_cases_per_profile": 0,
+    "emulated_vice_cia_16_calls": {
+      "median_ticks": 810.5,
+      "minimum_ticks": 749,
+      "maximum_ticks": 1018,
+      "physical_hardware": false
+    },
+    "candidate_benchmark": "benchmarks/ISSUE144_ISQRT32_SOURCE_CANDIDATE_2026-10-16.csv",
+    "candidate_evidence": "validation/review/ISSUE144_SOURCE_RELEASE_CANDIDATE_2026-10-16.json",
+    "seven_historical_prg_reu_files_unchanged": true,
+    "performance_md_unchanged": true,
+    "unqualified": [
+      "real VIC REU physical timing",
+      "IRQ/NMI reentrancy",
+      "new bigger all-domain root algorithmic gain",
+      "tagged new default-binary release"
+    ]
+  },
   "issue144_seek16_inhole_shared_source_only_2026_10_15": {
     "status": "PASS_LOCAL_RESEARCH_SOURCE_ONLY_CI_PENDING",
     "documentation": "optional/issue144_seek_inhole_shared/README.md",
