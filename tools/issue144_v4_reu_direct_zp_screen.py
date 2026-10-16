@@ -139,7 +139,6 @@ def main():
             # Existing independent full REU native root harness, same input
             # corpus, 24 baseline + 24 candidate real x64sc calls.
             from issue144_v4_isqrt_maskshift_source_native_qualify import native as native_root
-            from pathlib import Path
             b=native_root(os.environ["VICE_WRAPPER"],tmp/"old/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg",
                           tmp/"old/reference/v4_reu_16m/c64_math_v4_reu_16m_source_built.reu",20511,tmp)
             c=native_root(os.environ["VICE_WRAPPER"],tmp/"new/reference/v4_reu_16m/math_v4_reu_16m_source_built.prg",
