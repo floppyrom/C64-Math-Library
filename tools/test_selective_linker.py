@@ -282,7 +282,7 @@ class SelectiveLinkTests(unittest.TestCase):
             with self.assertRaises(linker.LinkError):
                 linker.build(baseline, path)
             with self.assertRaises(linker.LinkError):
-                linker.build(self.plan(["ISQRT16"]), path)
+                linker.build(self.plan(["SMUL24"]), path)
             with self.assertRaises(linker.LinkError):
                 linker.build(self.plan(["UDIV16"], objective="speed"), path)
             with self.assertRaises(linker.LinkError):

@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker is now available for seven operations: UMUL8, UMUL16, UDIV16, UMOD16, UDIV32_32, UMOD32_32 and ATAN2_8.**
+**An experimental selective linker now supports eight operations: UMUL8, UMUL16, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8 and ISQRT16.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -134,6 +134,42 @@ python3 tools/math_builder.py --operation UDIV16 --operation UMOD16 \
 
 The interactive wizard groups all 56 operations with readable descriptions,
 shows which are currently linkable, and accepts numbers, ranges or names.
+
+### Historical optimized ISQRT16 lookup source (experimental)
+
+`MATH_ISQRT16` is the first selective migration of a **historical optimized
+resident implementation**, rather than a new compact baseline. The independent
+`link:square-table` source preserves the V1/V2/V5 descending square-table
+comparison kernel with its resident entry trampoline removed. Tables are
+generated mathematically, not copied from resident RAM:
+
+- `SQ_LO[r]` and `SQ_HI[r]` are the low/high bytes of `r*r`, for 256 roots.
+- `SEED[h] = isqrt((h << 8) | 255)` is the maximum candidate for each high byte.
+- The 38-byte kernel scans downward until the table square is no greater than
+  the 16-bit input. Results are exact for every `0..65535` value.
+- No ZP, stack-page workspace, REU, writable code or initialization is needed.
+  The 768 bytes of tables must be page-aligned; real padding is charged to RAM.
+- Public input: unsigned 16-bit `MATH_N` (`math_io + 16`). Public output:
+  unsigned 16-bit `MATH_Z` (`math_io + 8`). Input retained, carry clear.
+- At code origin `$8000`, its linked image is 1024 bytes (38 code,
+  768 tables, 218 padding), plus the 32-byte common caller-owned I/O block:
+  **1056 total RAM bytes and zero ZP**. Other origins may require less padding.
+
+```sh
+python3 tools/math_builder.py --operation ISQRT16 --objective size \
+  --zp-budget 0 --ram-budget 1056 --measure
+python3 tools/math_builder.py --operation ISQRT16 \
+  --pin ISQRT16=link:square-table --build
+```
+
+An exhaustive two-relocation CPU image test and independent two-relocation
+native x64sc harness are included in the builder gate. No performance ranking
+against the historical corpus is asserted until equivalent benchmark inputs and
+conditions are checked. Until CI qualification passes, this remains experimental.
+Mixed builds with multiple page-aligned modules link correctly but currently use
+deterministic conservative ordering; **multi-aligned ordering is not globally
+padding-optimal yet**. The optimized ISQRT16 migration is not evidence that the
+other 48 operations or unported high-performance variants are link-ready.
 
 ### Quarter-square fast UMUL8 (experimental source alternative)
 

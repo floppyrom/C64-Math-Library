@@ -21,6 +21,7 @@ on:
       - tools/selective_speed.py
       - tools/selective_isqrt16.py
       - tools/test_selective_isqrt16.py
+      - tools/native_selective_isqrt16.py
       - routines/roots/*.asm
       - tools/test_selective_speed.py
       - tools/selective_atan2.py
@@ -50,7 +51,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Syntax-check builder and regression scripts before running tests
-        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/native_selective_fast_umul8.py tools/selective_fast_umul8.py tools/test_selective_fast_umul8.py tools/selective_speed.py tools/test_selective_speed.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
+        run: python3 -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py tools/native_selective_fast_umul8.py tools/selective_fast_umul8.py tools/test_selective_fast_umul8.py tools/selective_speed.py tools/test_selective_speed.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/native_selective_isqrt16.py tools/mini6502.py routines/atan2/tables.py routines/standalone_lab/portable/native_vice.py
       - name: Validate operation catalog and no-binary safety
         run: |
           python3 tools/test_math_builder.py
@@ -90,3 +91,5 @@ jobs:
         run: python3 tools/native_selective_multiply.py
       - name: Validate quarter-square UMUL8 linked PRGs in native VICE
         run: python3 tools/native_selective_fast_umul8.py
+      - name: Validate source-linked optimized ISQRT16 at two RAM maps
+        run: python3 tools/native_selective_isqrt16.py
