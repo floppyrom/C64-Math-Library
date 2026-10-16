@@ -45,13 +45,13 @@ def build(repo, layout, out):
 
 
 def cpu(prg, reu):
-    data = prg.read_bytes()
-    load = int.from_bytes(data[:2], "little")
-    mem = bytearray(65536)
-    mem[load:load+len(data)-2] = data[2:]
-    c = CPU(mem, reu=bytearray(reu.read_bytes()))
-    c.d = 0
-    c.call(0x3280, 2_000_000)
+    # Match the repository's proven source-test loader *exactly*. The native
+    # README's public entry coordinates are not an initialization substitute.
+    from validate_source_build import load
+    c,pub,io,manifest,initcycles = load(PROFILE,prg.parent.parent)
+    assert pub["MATH_ISQRT32"]==0x5e30, (pub["MATH_ISQRT32"],manifest)
+    assert io==0xc000 and manifest["_resolved_reu_path"]==str(reu)
+    assert c.mem[0x5e30]==0x4c, ("bad public JMP before first call",c.mem[0x5e30])
     return c
 
 
