@@ -249,8 +249,9 @@ source and the table generator are each SHA-locked in the selection manifest.
 ## Resource-frontier pruning and reproducibility
 
 Automatic selection now prunes **resource-dominated** source variants before
-exploring combinations: a candidate can be discarded when another uses no
-more code/table bytes, no more ZP, and no more ordinary scratch memory.
+exploring combinations, but only **within equivalent layout classes**: a
+candidate can be discarded when another with compatible alignment geometry
+uses no more code/table bytes, no more ZP, and no more ordinary scratch memory.
 This reduces wasted combination searches as the certified variant catalog
 grows. It does **not** filter the advanced variant inventory or block pinned
 choices; for example, explicitly requesting ATAN2's larger sum-fast
@@ -260,6 +261,11 @@ This is the **resource** frontier, not a claim of cycle-optimality. A true
 speed/Pareto optimizer will add separately certified comparable per-operation
 cycle measurements and should not discard a faster implementation merely
 because it uses more memory.
+
+A selective build stages its PRG, symbol include and manifest in a temporary
+output directory before publishing. A staged-write failure leaves any existing
+completed build unchanged, and the manifest is published last as a completion
+marker. The three separate files are not a single filesystem transaction.
 
 Every generated selective binary manifest now records SHA-256 of the active
 builder, linker, ATAN2 emitter and 6502 assembler alongside individual
