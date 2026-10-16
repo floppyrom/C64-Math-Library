@@ -105,7 +105,7 @@ def main():
         folder=Path(d)
         for i,(code,io,sb) in enumerate(((0x8000,0xc000,0xc020),
                                          (0x7123,0xc100,0xc121))):
-            plan=math_builder.create_plan(index,list(FAMILY),ram_budget=798,zp_budget=0)
+            plan=math_builder.create_plan(index,list(FAMILY),ram_budget=867,zp_budget=0)
             manifest=selective_linker.build(plan,folder,memory={
                 "code_base":code,"math_io":io,"scratch_base":sb})
             names={item["api"]:int(item["entry"][1:],16)
