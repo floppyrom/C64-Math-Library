@@ -33,3 +33,13 @@ jobs:
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
       - name: Native VICE 1152 full unsigned and signed DIV MOD paired public calls
         run: python3 tools/native_issue144_u3216_inresident_dualtail.py
+  full-public-source-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build both relocated resident/source REU variants and validate all 56 public entries with code write-guard
+        run: python3 tools/issue144_u3216_inresident_fullabi_stage.py
