@@ -5,9 +5,10 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**A first real selective linker is now available for UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8 and UMUL16.**
-These use separately qualified relocatable sources, not the historical
-full-profile images or exact extracted resident mirrors. Other operations
+**An experimental selective linker is now available for seven operations: UMUL8, UMUL16, UDIV16, UMOD16, UDIV32_32, UMOD32_32 and ATAN2_8.**
+It uses standalone relocatable sources or newly developed compact algorithms,
+not the historical full-profile images or extracted resident mirrors. New
+module combinations remain release-unqualified until all CI gates pass. Other operations
 remain selection-plan-only until their own source contracts pass qualification.
 A mirror extracted from a resident image is not automatically a self-contained
 or relocatable module.
