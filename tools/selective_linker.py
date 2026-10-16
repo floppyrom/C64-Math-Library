@@ -16,6 +16,7 @@ from mini6502 import Assembler
 import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_speed
+import selective_isqrt16 as sqrt16
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
@@ -87,6 +88,16 @@ MODULES = {
             "entry": "atan2", "zp": 0, "scratch": 0, "atan2": "sum-fast",
         },
     },
+    "MATH_ISQRT16": {
+        "link:square-table": {
+            "source": "routines/roots/isqrt16_square_table.asm",
+            "segments": (("KERNEL_CODE", 38), ("SQ_LO", 256),
+                         ("SQ_HI", 256), ("SEED", 256)),
+            "entry": "FAST_ISQRT16_TABLE", "zp": 0, "scratch": 0,
+            "isqrt16": True, "operand_layout": "nz",
+            "provenance": "V1/V2/V5 16-bit square-lookup kernel; tables regenerated",
+        },
+    },
     "MATH_UMOD32_32": {
         "link:aligned-zerozp": {
             "source": "routines/standalone_lab/portable/mod_u32_aligned_carry.asm",
@@ -118,8 +129,11 @@ def available_variants(root=ROOT):
                 } if "atan2" in mod else {
                     "tools/selective_fast_umul8.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest()
-                } if mod.get("fast_umul8") else {}),
-                "historical_provenance": None,
+                } if mod.get("fast_umul8") else {
+                    "tools/selective_isqrt16.py": hashlib.sha256(
+                        (root / "tools/selective_isqrt16.py").read_bytes()).hexdigest()
+                } if mod.get("isqrt16") else {}),
+                "historical_provenance": mod.get("provenance"),
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
@@ -127,6 +141,12 @@ def available_variants(root=ROOT):
                                     if mod.get("fast_umul8") else
                                     "tools/test_selective_multiply.py"
                                     if mod.get("operand_layout") == "xyz" else
+                          "V1-family 38-byte lookup kernel; three generated 256-byte tables, no ZP"
+                          if mod.get("isqrt16") else
+                                  "extracted square-lookup kernel; CPU/native qualification pending"
+                                  if mod.get("isqrt16") else
+                                    "tools/test_selective_isqrt16.py"
+                                    if mod.get("isqrt16") else
                                     "routines/atan2/validate_optimized.py"
                                     if "atan2" in mod else
                                     "routines/standalone_lab/portable/verify.py"),
@@ -211,6 +231,8 @@ def projected_end(start, items):
     for _, _, mod in items:
         if "atan2" in mod:
             _, cursor = atan2.layout(mod["atan2"], cursor)
+        elif mod.get("isqrt16"):
+            _, cursor = sqrt16.layout(cursor)
         else:
             cursor += sum(length for _, length in mod["segments"])
     return cursor
@@ -224,14 +246,17 @@ def place_modules(items, start):
     minimum padding at the aligned module's code/table boundary. This remains
     O(256 * number_of_modules), not factorial when the catalog expands.
     """
-    aligned = [item for item in items if "atan2" in item[2]]
-    ordinary = [item for item in items if "atan2" not in item[2]]
+    aligned = [item for item in items if "atan2" in item[2] or item[2].get("isqrt16")]
+    ordinary = [item for item in items if "atan2" not in item[2] and not item[2].get("isqrt16")]
     if not aligned:
         return ordinary
     if len(aligned) != 1:
-        raise LinkError("Multiple page-aligned modules need a generalized layout optimizer")
+        # Deterministic conservative layout for multiple table-aligned kernels.
+        # Exact span is still budgeted; optimal multi-aligned ordering is future work.
+        return ordinary + sorted(aligned, key=lambda item: item[0])
     atan = aligned[0]
-    code_bytes = atan2.KINDS[atan[2]["atan2"]]["code_bytes"]
+    code_bytes = (atan2.KINDS[atan[2]["atan2"]]["code_bytes"]
+                  if "atan2" in atan[2] else sqrt16.CODE_BYTES)
     # Track one deterministic set of indices per possible prefix address.
     # Item order remains stable within the selected prefix and suffix.
     states = {start % 256: ()}
@@ -270,7 +295,7 @@ def pareto_resource_variants(variants):
     # other code/table alignment or placement constraints.
     layout_classes = {
         key: (("page-aligned", len(spec["segments"]) - 1)
-              if "atan2" in spec else ("contiguous", 0))
+              if "atan2" in spec or spec.get("isqrt16") else ("contiguous", 0))
         for key, spec in candidates
     }
     keep = {}
@@ -460,14 +485,19 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("fast_umul8") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_fast_umul8.py"]:
             raise LinkError(api + ": quarter-square table generator provenance missing")
+        if module.get("isqrt16") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_isqrt16.py"]:
+            raise LinkError(api + ": integer-root table generator provenance missing")
         locations = dict(constants)
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("isqrt16"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
+                elif module.get("isqrt16"):
+                    machine, entry, ranges, end = sqrt16.assemble(pc, io, root)
                 else:
                     machine, entry, ranges, end = fast8.assemble(pc, io, sb, root)
                 expected = set()
@@ -518,6 +548,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; carry set iff D=0. UMOD leaves quotient untouched.",
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
+        "; ISQRT16: unsigned MATH_N 16-bit => floor(sqrt(N)) in MATH_Z 16-bit, C=0.",
         "; ATAN2_8: signed 8-bit MATH_X/Y low bytes => phase MATH_Z low byte",
         "; and A, C clear. Initial carry ignored.",
         "MATH_X = $%04X" % io, "MATH_Y = $%04X" % (io + 4),
@@ -534,7 +565,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         exports.append(canonical + " = " + operation["api"])
     toolchain_paths = ("tools/math_builder.py", "tools/selective_linker.py",
                        "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
-                       "tools/selective_speed.py", "tools/mini6502.py")
+                       "tools/selective_speed.py", "tools/selective_isqrt16.py",
+                       "tools/mini6502.py")
     toolchain_hashes = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
         for name in toolchain_paths
