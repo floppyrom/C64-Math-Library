@@ -17,6 +17,7 @@ import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_speed
 import selective_isqrt16 as sqrt16
+import selective_dist8_accurate as accurate8
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
@@ -88,6 +89,16 @@ MODULES = {
             "entry": "atan2", "zp": 0, "scratch": 0, "atan2": "sum-fast",
         },
     },
+    "MATH_DIST8_ACCURATE": {
+        "link:v1-accurate-table": {
+            "source": "routines/game/dist8_accurate.asm",
+            "segments": (("KERNEL_CODE", 66), ("DIST_MAX", 256),
+                         ("DIST_MIN", 256)),
+            "entry": "FAST_DIST8_ACCURATE", "zp": 0, "scratch": 2,
+            "operand_layout": "xyz", "dist8_accurate": True,
+            "provenance": "V1 signed-8 accurate-distance kernel; original 512 lookup bytes",
+        },
+    },
     "MATH_DIST8_FAST": {
         "link:resident-approx": {
             "source": "routines/game/dist8_fast.asm",
@@ -141,12 +152,16 @@ def available_variants(root=ROOT):
                 } if mod.get("fast_umul8") else {
                     "tools/selective_isqrt16.py": hashlib.sha256(
                         (root / "tools/selective_isqrt16.py").read_bytes()).hexdigest()
-                } if mod.get("isqrt16") else {}),
+                } if mod.get("isqrt16") else {
+                    "tools/selective_dist8_accurate.py": hashlib.sha256(
+                        (root / "tools/selective_dist8_accurate.py").read_bytes()).hexdigest()
+                } if mod.get("dist8_accurate") else {}),
                 "historical_provenance": mod.get("provenance"),
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
                 "validation_path": (
+                    "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
                     "tools/test_selective_fast_umul8.py" if mod.get("fast_umul8") else
@@ -155,11 +170,15 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if mod.get("dist8") or mod.get("isqrt16") else
+                                  if mod.get("dist8") or mod.get("isqrt16") or
+                                  mod.get("dist8_accurate") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("61-byte trampoline-free V1 signed-distance approximation, "
+                "notes": ("66-byte V1 accurate signed-distance lookup kernel, "
+                          "512 original table bytes, page alignment and 2 scratch bytes"
+                          if mod.get("dist8_accurate") else
+                          "61-byte trampoline-free V1 signed-distance approximation, "
                           "two private scratch bytes and zero ZP"
                           if mod.get("dist8") else
                           "38-byte V1/V2/V5 ISQRT16 descending square-lookup kernel, "
@@ -245,6 +264,8 @@ def projected_end(start, items):
             _, cursor = atan2.layout(mod["atan2"], cursor)
         elif mod.get("isqrt16"):
             _, cursor = sqrt16.layout(cursor)
+        elif mod.get("dist8_accurate"):
+            _, cursor = accurate8.layout(cursor)
         else:
             cursor += sum(length for _, length in mod["segments"])
     return cursor
@@ -258,8 +279,10 @@ def place_modules(items, start):
     minimum padding at the aligned module's code/table boundary. This remains
     O(256 * number_of_modules), not factorial when the catalog expands.
     """
-    aligned = [item for item in items if "atan2" in item[2] or item[2].get("isqrt16")]
-    ordinary = [item for item in items if "atan2" not in item[2] and not item[2].get("isqrt16")]
+    aligned = [item for item in items if "atan2" in item[2] or item[2].get("isqrt16")
+               or item[2].get("dist8_accurate")]
+    ordinary = [item for item in items if "atan2" not in item[2] and not item[2].get("isqrt16")
+                and not item[2].get("dist8_accurate")]
     if not aligned:
         return ordinary
     if len(aligned) != 1:
@@ -268,7 +291,9 @@ def place_modules(items, start):
         return ordinary + sorted(aligned, key=lambda item: item[0])
     atan = aligned[0]
     code_bytes = (atan2.KINDS[atan[2]["atan2"]]["code_bytes"]
-                  if "atan2" in atan[2] else sqrt16.CODE_BYTES)
+                  if "atan2" in atan[2] else
+                  sqrt16.CODE_BYTES if atan[2].get("isqrt16") else
+                  accurate8.CODE_BYTES)
     # Track one deterministic set of indices per possible prefix address.
     # Item order remains stable within the selected prefix and suffix.
     states = {start % 256: ()}
@@ -307,7 +332,8 @@ def pareto_resource_variants(variants):
     # other code/table alignment or placement constraints.
     layout_classes = {
         key: (("page-aligned", len(spec["segments"]) - 1)
-              if "atan2" in spec or spec.get("isqrt16") else ("contiguous", 0))
+              if "atan2" in spec or spec.get("isqrt16") or spec.get("dist8_accurate")
+              else ("contiguous", 0))
         for key, spec in candidates
     }
     keep = {}
@@ -500,16 +526,22 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("isqrt16") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_isqrt16.py"]:
             raise LinkError(api + ": integer-root table generator provenance missing")
+        if module.get("dist8_accurate") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_dist8_accurate.py"]:
+            raise LinkError(api + ": accurate-distance table provenance missing")
         locations = dict(constants)
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("isqrt16"):
+            if ("atan2" in module or module.get("fast_umul8") or
+                    module.get("isqrt16") or module.get("dist8_accurate")):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
                 elif module.get("isqrt16"):
                     machine, entry, ranges, end = sqrt16.assemble(pc, io, root)
+                elif module.get("dist8_accurate"):
+                    machine, entry, ranges, end = accurate8.assemble(pc, io, sb, root)
                 else:
                     machine, entry, ranges, end = fast8.assemble(pc, io, sb, root)
                 expected = set()
@@ -561,6 +593,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
         "; ISQRT16: unsigned MATH_N 16-bit => floor(sqrt(N)) in MATH_Z 16-bit, C=0.",
+        "; DIST8_ACCURATE: signed MATH_X/Y low bytes => original V1 distance lookup",
+        "; sum modulo 256 in MATH_Z low byte, C=0.",
         "; DIST8_FAST: signed MATH_X/Y low bytes => max(abs(X),abs(Y)) +",
         "; floor(min(abs(X),abs(Y))/2) mod 256 in MATH_Z low byte, C=0.",
         "; ATAN2_8: signed 8-bit MATH_X/Y low bytes => phase MATH_Z low byte",
@@ -580,6 +614,7 @@ def build(plan, outdir, memory=None, root=ROOT):
     toolchain_paths = ("tools/math_builder.py", "tools/selective_linker.py",
                        "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
                        "tools/selective_speed.py", "tools/selective_isqrt16.py",
+                       "tools/selective_dist8_accurate.py",
                        "tools/mini6502.py")
     toolchain_hashes = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
