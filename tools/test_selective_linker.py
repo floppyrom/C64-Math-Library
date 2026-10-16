@@ -164,6 +164,25 @@ class SelectiveLinkTests(unittest.TestCase):
                                 self.assertEqual(cpu.sp, initial_sp)
                         self.assertEqual(bytes(mem[origin:origin+exp_size]), code_before)
 
+    def test_global_variant_selection_beats_local_choices(self):
+        # UDIV16 needs 2 ZP bytes. The smaller UDIV32 donor needs 4, but
+        # switching only UDIV32 to its zero-ZP donor lets both coexist.
+        with tempfile.TemporaryDirectory() as d:
+            plan = self.plan(["UDIV16", "UDIV32_32"],
+                             zp_budget=2, ram_budget=950,
+                             objective="size")
+            man = linker.build(plan, Path(d))
+            variants = {m["api"]: m["variant"] for m in man["operations"]}
+            self.assertEqual(variants["MATH_UDIV16"], "link:biased")
+            self.assertEqual(variants["MATH_UDIV32_32"], "link:aligned-zerozp")
+            self.assertEqual(man["resource_use"]["zero_page_bytes"], 2)
+            self.assertEqual(man["resource_use"]["main_ram_total_bytes"], 935)
+            # Pinning the smaller 4-ZP UDIV32 source must fail this budget.
+            pinned = self.plan(["UDIV16", "UDIV32_32"], zp_budget=2,
+                               pins={"UDIV32_32": "link:zptail"})
+            with self.assertRaises(linker.LinkError):
+                linker.build(pinned, Path(d) / "not_valid")
+
     def test_constraints_and_unavailable_operations(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d)
