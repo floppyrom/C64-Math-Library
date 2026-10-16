@@ -38,12 +38,12 @@ def assemble(code: int, io: int, scratch: int, state: int, root: Path = ROOT):
         source, n = re.subn(pattern, f"{label} = ${value:04X}", source)
         if n != 1:
             raise ValueError("Generated SEEK8 source binding missing or duplicated: " + label)
-    image, labels, _ = Assembler().assemble(source)
+    image, labels, constants = Assembler().assemble(source)
     if set(image) != set(range(code, code + CODE_BYTES)):
         raise ValueError("SEEK8 generated 582-byte code contract changed")
     if any(label not in labels or labels[label] not in image for label in ENTRIES):
         raise ValueError("SEEK8 public entry or source labels missing")
-    if labels["S8_POS_X"] != state or labels["S8_POS_Y"] != state + 8:
+    if constants["S8_POS_X"] != state or constants["S8_POS_Y"] != state + 8:
         # The source's state field offsets are a public part of the ABI.
         raise ValueError("SEEK8 persistent state layout changed")
     return image, labels, [{"name":"KERNEL_CODE","start":f"${code:04X}",
