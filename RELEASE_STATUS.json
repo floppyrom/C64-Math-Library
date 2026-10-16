@@ -1,4 +1,22 @@
 {
+  "issue144_versioned_source_distribution_2026_10_16": {
+    "status": "SOURCE_CANDIDATE_DISTRIBUTION_CI_UNQUALIFIED_PENDING",
+    "description": "immutable new 10 PRGs / 4 REU dual map candidate ZIP with verified 56-entry source ABI and same-root corpus",
+    "source": "tools/issue144_versioned_distribution.py",
+    "workflow": ".github/workflows/issue144-versioned-distribution.yml",
+    "doc": "docs/ISSUE144_VERSIONED_DISTRIBUTION_2026-10-16.md",
+    "shipped_reference_prgs_modified": false,
+    "shipped_reference_reu_images_modified": false,
+    "default_tagged_release_created": false,
+    "automatic_publication": false,
+    "required_exact_main_green": [
+      "source-and-publication",
+      "comparable-unsigned-metrics"
+    ],
+    "benchmark_profile": "V4 ISQRT32 canonical 788.876712 vs frozen 924.082192 cycles on matched 438-root corpus",
+    "hardware_vic_reu_irq_certified": false,
+    "physical_reu_dma_timing": false
+  },
   "issue144_v4_directzp_qualified_rebuilt_source_candidate_2026_10_16": {
     "status": "PASS_SOURCE_CANDIDATE_32_OF_32_PR_CHECKS_NO_HISTORICAL_BINARY_MUTATION",
     "pr": 192,
@@ -4432,7 +4450,7 @@
       "v1_balanced": {
         "n": 1088,
         "mean": 10.566176,
-        "median": 0.0,
+        "median": 0,
         "p95": 36,
         "worst": 0,
         "best": 36,
@@ -4441,7 +4459,7 @@
       "v5_hybrid_lowzp": {
         "n": 1088,
         "mean": 10.566176,
-        "median": 0.0,
+        "median": 0,
         "p95": 36,
         "worst": 0,
         "best": 36,
