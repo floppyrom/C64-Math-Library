@@ -150,6 +150,12 @@ def validate_sha(root: Path, source: dict) -> None:
     digest = hashlib.sha256(path.read_bytes()).hexdigest()
     if digest != source["source_sha256"]:
         raise SelectionError("Source checksum mismatch: " + source["source_path"])
+    for dependency, expected in source.get("dependency_sha256", {}).items():
+        dep = (root / dependency).resolve()
+        if not dep.is_relative_to(root.resolve()) or not dep.is_file():
+            raise SelectionError("Missing or unsafe dependency: " + dependency)
+        if hashlib.sha256(dep.read_bytes()).hexdigest() != expected:
+            raise SelectionError("Source dependency checksum mismatch: " + dependency)
 
 
 def create_plan(
