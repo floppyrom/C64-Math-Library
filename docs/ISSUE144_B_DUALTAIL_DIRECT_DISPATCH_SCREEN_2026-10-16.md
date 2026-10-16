@@ -33,3 +33,13 @@ Across each full mixed corpus, 831 cases are slower and 501 are equal; the remai
 **Do not merge the candidate into production, replace shipped reference PRGs/REUs, update production `PERFORMANCE.md`, or check off issue #144 B.** The architecture is better than a public-call wrapper because the high-divisor fallback penalty is at most one modeled cycle and D8/D0 just two, but the optional code does not meet the normal-resident ownership test. Before a release, prove a size-compatible private placement or an explicit builder-selected code owner; then run all-sign signed DIV/MOD, full 56-entry mixed ABI, interrupt/reentrancy tests, V5 integration, source-build maps, actual native VICE, reproducible checksums and library CI. These gates remain open.
 
 [Reproducible research workflow](../.github/workflows/issue144-b-u3216-dualtail-directdispatch.yml).
+
+## Signed 32/16 DIV/MOD qualification (16 October 2026)
+
+The V2/V3/V4 native signed `SDIV32_16` and `SMOD32_16` entry points use the unsigned `U3216_ENTRY` magnitude producer. Changing its low-divisor branch must therefore preserve every sign quadrant and both signed public results, not just unsigned division.
+
+The [separate same-input signed regression](../tools/issue144_dualtail_signed_public_regression.py) passed **23,604 baseline/candidate public-call pairs** (1,967 boundary, sign-quadrant, random, signed-overflow and divide-by-zero operands × 2 signed APIs × 3 profiles × 2 maps). Full Q32/R16, C, preserved N32/D16, stack and CPU status were identical. The recorded sign-enriched corpus mean saving was **19.991865785460092 modeled cycles/call**, p05 = −2 saved cycles, best +28 and worst −2, no processor-status differences.
+
+The [independent native x64sc harness](../tools/native_issue144_dualtail_signed32_public.py) passed **576 pinned VICE original/candidate signed public calls**, 24 input vectors per API/profile/map. Exact quotient, remainder, carry, N/D, SP and captured accumulator/X/Y/processor status matched; zero volatile register/status differences. [Signed native/model CI evidence](https://github.com/floppyrom/C64-Math-Library/actions/runs/38849380207). The native harness deliberately uses 24-byte output columns to keep its capture buffer below $0800; the original 64-byte columns overlapped the optional executable at $0800 and invalidated the first native trial.
+
+This extends **functional qualification of the optional 461-byte caller-owned program** only. It does not establish a normal-resident 461-byte code owner, V5 extension, cross-API interrupt/reentrancy safety, physical VIC/REU bus timing or any production-default speedup. The immutable five resident PRGs, two REUs and PERFORMANCE.md are not altered.
