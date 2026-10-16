@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Independent opt-in V4 REU->ZP root screen, never mutates canonical V4.
+"""V4 canonical REU->ZP root promotion screen against immutable prior source.
 
-Reassembles current-main source and optional direct-ZP source in a disposable
+Reassembles preserved prepromotion source and current integrated direct-ZP source in a disposable
 clone, compares ordinary full-domain public calls, ABI and native x64sc.
 The same eight ZP bytes are permuted; volatile temporary ZP byte snapshots
 are NOT a public ABI contract. Physical REU/VIC/IRQ safety remains open.
@@ -26,6 +26,7 @@ from mini6502 import CPU
 PROFILE = "v4_reu_16m"
 MOD = "relocatable_source/v4_reu_16m/isqrt32_reu_prefix.asm"
 OPTION = "optional/issue144_v4_isqrt32_direct_reu_zp/v4_reu_16m.asm"
+PREPROMOTION = "optional/issue144_v4_isqrt32_direct_reu_zp/prepromotion_v4_reu.asm"
 EDGE = [0, 1, 2, 3, 4, 7, 15, 16, 17, 255, 256, 257, 65535,
         65536, 65537, 0x7fffffff, 0x80000000, 0xffffffff]
 
@@ -104,7 +105,9 @@ def compare(old, new, reu, vectors):
 def main():
     source=(ROOT/MOD).read_text()
     candidate=(ROOT/OPTION).read_text()
-    assert source!=candidate
+    baseline=(ROOT/PREPROMOTION).read_text()
+    assert source==candidate,"canonical V4 owner must match the already qualified direct-ZP source"
+    assert baseline!=candidate and "IS32_RES0   = ZP_MAIN+$52" in baseline
     assert candidate.count("sta $DF01")==1
     assert candidate.count("sta $DF02")==2
     assert candidate.count("sta $DF03")==2
@@ -120,7 +123,7 @@ def main():
         path=clone/MOD
         results=[]
         for layout in ("reference","alternate"):
-            path.write_text(source)
+            path.write_text(baseline)
             old_prg,old_reu,man0=build(clone,layout,tmp/"old")
             path.write_text(candidate)
             new_prg,new_reu,man1=build(clone,layout,tmp/"new")
@@ -155,7 +158,7 @@ def main():
             native={"status":"PASS_REAL_EMULATOR","paired_root_calls":24,
                     "output_sha256":hashlib.sha256(c).hexdigest()}
     assert len(results)==2
-    print(json.dumps({"status":"PASS_RESEARCH_OPTIN_NO_DEFAULT_CHANGE",
+    print(json.dumps({"status":"PASS_CANONICAL_SOURCE_PROMOTION_VALIDATED",
                       "contract":"same 8 byte normal ZP workspace, direct REU DMA root+residual, restored REU C64 address",
                       "corpus_sha256":hashlib.sha256(b"".join(n.to_bytes(4,"little") for n in corpus)).hexdigest(),
                       "native":native,"maps":results,
