@@ -1,3 +1,9 @@
+2026-10-16 EXPERIMENTAL OPERATION-FIRST MATH BUILDER (DRAFT PR #197; NOT RELEASED)
+- Introduce a user-facing operation selector covering all 56 stable operations, with numbered categorized interactive selection, typed aliases, resource budgets, variant inventory and deterministic selection manifests. Historical V1-V5 names survive only as provenance/baselines, not required end-user build modes.
+- First genuine compact source-only linker supports UDIV16, UMOD16, UDIV32_32 and UMOD32_32 with portable low-ZP and zero-ZP source choices. Example 16-bit DIV+MOD uses 585 code bytes and two shared scratch ZP bytes; full 32-bit DIV+MOD uses 1040 code bytes/four ZP or 1072 code bytes/zero ZP. All figures are assembler-contract targets pending CI, not published performance revisions.
+- Global feasible-source selection checks RAM/ZP budgets, caller-owned reserved ranges, source SHA lock, ROM/I/O collisions, code/operand isolation and experimental compatibility. Emits loadable PRG, typed/public API include and precise memory manifest. Speed ranking is intentionally refused until same-corpus source-model cycle qualification is available.
+- Added multi-origin emulator/model edge/random/divisor-zero and mixed-call validation and pinned headless native VICE checks. Keep PR draft until checks are green; historical binaries, REU images and all benchmark publications unchanged. See docs/BUILDER_REFACTOR.md.
+
 2026-10-16 ISSUE144 NINE-KERNEL MATCHED SOURCE-CANDIDATE SCORECARD
 - 31,800 same-input public model calls across V1-V5 and reference/alternate maps; all nine original expensive kernels, arithmetic and SEEK STEP oracle pass, zero measured slowdowns.
 - Source-vs-frozen mean savings: ISQRT32 V1/V5 -51, V2/V3 -47, V4 -135.205; SEEK16_INIT V1/V5 -1.913, V2 -14.029, V3/V4 -12.435; V2-V4 UDIV/UMOD32_16 -3.743 and SMOD32_16 -6.707. Four 32x32/SHR16 multiply APIs unchanged.
