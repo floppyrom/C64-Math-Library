@@ -78,7 +78,7 @@ pareto-stress:
 	$(PYTHON) tools/stress_pareto.py
 
 builder-validate:
-	$(PYTHON) -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/native_selective_isqrt16.py tools/test_selective_dist8.py tools/native_selective_dist8.py tools/test_selective_udiv8.py tools/native_selective_udiv8.py tools/test_selective_sdiv8.py tools/native_selective_sdiv8.py tools/selective_smul8.py tools/test_selective_smul8.py tools/native_selective_smul8.py tools/test_selective_umod8.py tools/native_selective_umod8.py tools/selective_trig8.py tools/test_selective_trig8.py tools/native_selective_trig8.py tools/selective_dist8_accurate.py tools/test_selective_dist8_accurate.py tools/native_selective_dist8_accurate.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py routines/atan2/tables.py tools/mini6502.py routines/standalone_lab/portable/native_vice.py
+	$(PYTHON) -m compileall -q tools/math_builder.py tools/selective_linker.py tools/selective_atan2.py tools/test_math_builder.py tools/test_selective_linker.py tools/test_selective_atan2.py tools/test_selective_multiply.py tools/test_selective_umul8.py tools/selective_isqrt16.py tools/test_selective_isqrt16.py tools/native_selective_isqrt16.py tools/test_selective_dist8.py tools/native_selective_dist8.py tools/test_selective_udiv8.py tools/native_selective_udiv8.py tools/test_selective_sdiv8.py tools/native_selective_sdiv8.py tools/selective_smul8.py tools/test_selective_smul8.py tools/native_selective_smul8.py tools/test_selective_umod8.py tools/native_selective_umod8.py tools/test_selective_umod8_v5.py tools/native_selective_umod8_v5.py tools/selective_trig8.py tools/test_selective_trig8.py tools/native_selective_trig8.py tools/selective_dist8_accurate.py tools/test_selective_dist8_accurate.py tools/native_selective_dist8_accurate.py tools/native_selective_linker.py tools/native_selective_atan2.py tools/native_selective_multiply.py routines/atan2/tables.py tools/mini6502.py routines/standalone_lab/portable/native_vice.py
 	$(PYTHON) tools/test_math_builder.py
 	$(PYTHON) tools/test_selective_linker.py
 	$(PYTHON) tools/test_selective_atan2.py
@@ -94,6 +94,7 @@ builder-validate:
 	$(PYTHON) tools/test_selective_sdiv8.py
 	$(PYTHON) tools/test_selective_smul8.py
 	$(PYTHON) tools/test_selective_umod8.py
+	$(PYTHON) tools/test_selective_umod8_v5.py
 	$(PYTHON) tools/test_selective_trig8.py
 	$(PYTHON) tools/test_selective_dist8_accurate.py
 
