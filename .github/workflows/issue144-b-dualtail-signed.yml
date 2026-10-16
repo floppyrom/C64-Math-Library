@@ -1,0 +1,18 @@
+name: Issue144 B dual-tail signed DIV and MOD interoperability
+on:
+  push:
+    branches: [issue144-b-dualtail-signed-integration-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-signed-cpu-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check signed quadrants, extrema and zero-divisor on 3 profiles 2 relocation layouts
+        run: python3 tools/issue144_dualtail_signed_public_regression.py
