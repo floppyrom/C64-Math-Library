@@ -1,0 +1,27 @@
+name: Issue144 nine-kernel same-input source-candidate benchmark
+on:
+  push:
+    branches: [issue144-p4-nine-kernel-candidate-benchmark-20261016]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    strategy:
+      fail-fast: false
+      matrix:
+        layout: [reference, alternate]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Benchmark all nine public kernels against frozen artifacts on same-input oracle
+        run: python3 tools/issue144_nine_kernel_candidate_benchmark.py --layout ${{ matrix.layout }} --random 128 --out /tmp/issue144-nine-kernels
+      - uses: actions/upload-artifact@v4
+        with:
+          name: issue144-nine-kernels-${{ matrix.layout }}
+          path: /tmp/issue144-nine-kernels/ISSUE144_NINE_KERNEL_${{ matrix.layout }}.*
+          if-no-files-found: error
