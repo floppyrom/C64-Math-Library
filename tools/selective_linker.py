@@ -235,6 +235,33 @@ def place_modules(items, start):
     after = [item for i, item in enumerate(ordinary) if i not in before_indices]
     return before + [atan] + after
 
+def pareto_resource_variants(variants):
+    """Prune memory-dominated variants only for automatic selection.
+
+    An algorithm using no more code/table bytes, scratch RAM, or zero page
+    always has a memory layout no worse after page-padding optimization.
+    Performance ranking is intentionally outside this resource-only rule.
+    """
+    candidates = list(sorted(variants.items()))
+    sizes = {
+        key: (sum(length for _, length in spec["segments"]),
+              spec["scratch"], spec["zp"])
+        for key, spec in candidates
+    }
+    keep = {}
+    for key, variant in candidates:
+        mine = sizes[key]
+        dominated = any(
+            other != key and
+            all(a <= b for a, b in zip(sizes[other], mine)) and
+            (any(a < b for a, b in zip(sizes[other], mine)) or other < key)
+            for other, _ in candidates
+        )
+        if not dominated:
+            keep[key] = variant
+    return keep
+
+
 def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000):
     """Optimize *the whole selection*, sharing nonreentrant scratch ownership."""
     options = []
@@ -245,7 +272,11 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000)
         if api in pins:
             if pins[api] not in variants:
                 raise LinkError(api + ": selected variant is not link-ready")
+            # An expert pin can select a memory-dominated algorithm for other
+            # benefits (e.g. ATAN2 sum-fast's published speed improvement).
             variants = {pins[api]: variants[pins[api]]}
+        else:
+            variants = pareto_resource_variants(variants)
         options.append([(api, ident, mod) for ident, mod in sorted(variants.items())])
 
     if objective == "speed":
