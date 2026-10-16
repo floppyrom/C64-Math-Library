@@ -189,23 +189,40 @@ def projected_end(start, items):
 
 
 def place_modules(items, start):
-    """Choose the smaller of ATAN2-first and ATAN2-last layouts.
+    """Minimize ATAN2 alignment waste over all attainable modulo-256 offsets.
 
-    All currently linkable non-ATAN2 modules have no origin-alignment
-    requirements. With a single ATAN2 module, its only relevant choices
-    are before or after those modules; there is no gain from permuting
-    the unaligned arithmetic kernels among themselves.
+    One table-aligned module is currently supported. Ordinary kernels have
+    unconstrained placement. A 256-state subset-sum DP identifies the globally
+    minimum padding at the aligned module's code/table boundary. This remains
+    O(256 * number_of_modules), not factorial when the catalog expands.
     """
-    table_modules = [item for item in items if "atan2" in item[2]]
+    aligned = [item for item in items if "atan2" in item[2]]
     ordinary = [item for item in items if "atan2" not in item[2]]
-    if len(table_modules) > 1:
-        raise LinkError("More than one table-aligned module needs placement logic")
-    first = table_modules + ordinary
-    last = ordinary + table_modules
-    if projected_end(start, last) < projected_end(start, first):
-        return last
-    return first
-
+    if not aligned:
+        return ordinary
+    if len(aligned) != 1:
+        raise LinkError("Multiple page-aligned modules need a generalized layout optimizer")
+    atan = aligned[0]
+    code_bytes = atan2.KINDS[atan[2]["atan2"]]["code_bytes"]
+    # Track one deterministic set of indices per possible prefix address.
+    # Item order remains stable within the selected prefix and suffix.
+    states = {start % 256: ()}
+    for i, item in enumerate(ordinary):
+        nbytes = sum(length for _, length in item[2]["segments"])
+        expanded = dict(states)
+        for residue, indices in states.items():
+            new_residue = (residue + nbytes) % 256
+            candidate = indices + (i,)
+            if (new_residue not in expanded or
+                    candidate < expanded[new_residue]):
+                expanded[new_residue] = candidate
+        states = expanded
+    best = min(states, key=lambda residue: (
+        -(residue + code_bytes) % 256, states[residue]))
+    before_indices = set(states[best])
+    before = [item for i, item in enumerate(ordinary) if i in before_indices]
+    after = [item for i, item in enumerate(ordinary) if i not in before_indices]
+    return before + [atan] + after
 
 def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000):
     """Optimize *the whole selection*, sharing nonreentrant scratch ownership."""
