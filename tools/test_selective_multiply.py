@@ -38,27 +38,27 @@ class SelectiveMultiplyTests(unittest.TestCase):
             with self.subTest(code=code), tempfile.TemporaryDirectory() as d:
                 plan = math_builder.create_plan(
                     self.index, ["UMUL16"], objective="size",
-                    zp_budget=0, ram_budget=145)
+                    zp_budget=0, ram_budget=146)
                 manifest = selective_linker.build(
                     plan, Path(d),
                     memory={"code_base": code, "math_io": io,
                             "scratch_base": scratch})
                 self.assertEqual(manifest["resource_use"], {
-                    "code_and_tables_bytes": 107,
-                    "image_span_bytes": 107,
+                    "code_and_tables_bytes": 108,
+                    "image_span_bytes": 108,
                     "alignment_padding_bytes": 0,
                     "public_io_bytes": 32,
                     "private_ram_scratch_bytes": 6,
-                    "main_ram_total_bytes": 145,
+                    "main_ram_total_bytes": 146,
                     "zero_page_bytes": 0,
                     "persistent_stack_page_bytes": 0,
                 })
                 image = (Path(d) / "math_selective.prg").read_bytes()
-                self.assertEqual(len(image), 109)
+                self.assertEqual(len(image), 110)
                 self.assertEqual(image[:2], code.to_bytes(2, "little"))
                 mem = bytearray(65536)
-                mem[code:code+107] = image[2:]
-                original = bytes(mem[code:code+107])
+                mem[code:code+108] = image[2:]
+                original = bytes(mem[code:code+108])
                 cpu = CPU(mem)
                 entry = int(manifest["operations"][0]["entry"][1:], 16)
                 sp = cpu.sp
@@ -74,8 +74,9 @@ class SelectiveMultiplyTests(unittest.TestCase):
                         x*y, (code, x, y))
                     self.assertEqual(int.from_bytes(mem[io:io+2], "little"), x)
                     self.assertEqual(int.from_bytes(mem[io+4:io+6], "little"), y)
+                    self.assertEqual(cpu.c, 0)
                     self.assertEqual(cpu.sp, sp)
-                self.assertEqual(bytes(mem[code:code+107]), original)
+                self.assertEqual(bytes(mem[code:code+108]), original)
 
     def test_multiply_divide_atan2_interleaving(self):
         rng = random.Random(0x16A7A2)
@@ -114,7 +115,8 @@ class SelectiveMultiplyTests(unittest.TestCase):
                     int.from_bytes(mem[0xc01c:0xc01e], "little"),
                     x%y if y else 0)
                 cpu.call(entries["MATH_ATAN2_8"], 20000)
-                self.assertEqual(cpu.sp, sp)
+                self.assertEqual(cpu.c, 0)
+                    self.assertEqual(cpu.sp, sp)
             self.assertEqual(bytes(mem[load:load+len(image)]), before)
 
     def test_atan2_module_can_pack_between_arithmetic_modules(self):
@@ -129,8 +131,8 @@ class SelectiveMultiplyTests(unittest.TestCase):
             self.assertEqual(man["link_order"],
                              ["MATH_UMUL16", "MATH_ATAN2_8", "MATH_UDIV16"])
             resources = man["resource_use"]
-            self.assertEqual(resources["code_and_tables_bytes"], 1036)
-            self.assertEqual(resources["alignment_padding_bytes"], 55)
+            self.assertEqual(resources["code_and_tables_bytes"], 1037)
+            self.assertEqual(resources["alignment_padding_bytes"], 54)
             self.assertEqual(resources["image_span_bytes"], 1091)
             self.assertEqual(resources["main_ram_total_bytes"], 1129)
             self.assertEqual(resources["zero_page_bytes"], 2)
@@ -144,11 +146,11 @@ class SelectiveMultiplyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             plan = math_builder.create_plan(
                 self.index, ["UMUL16"], objective="zp",
-                zp_budget=0, ram_budget=145)
+                zp_budget=0, ram_budget=146)
             manifest = selective_linker.build(plan, Path(d))
             self.assertEqual(manifest["resource_use"]["main_ram_total_bytes"], 145)
             failed = math_builder.create_plan(
-                self.index, ["UMUL16"], zp_budget=0, ram_budget=144)
+                self.index, ["UMUL16"], zp_budget=0, ram_budget=145)
             with self.assertRaises(selective_linker.LinkError):
                 selective_linker.build(failed, Path(d) / "fail")
 
