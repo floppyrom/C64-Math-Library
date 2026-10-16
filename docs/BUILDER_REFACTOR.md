@@ -248,7 +248,8 @@ source and the table generator are each SHA-locked in the selection manifest.
 
 ## Target backends and portability boundary
 
-The operation catalog is target-independent: developers can describe the
+The versioned `math-selection-plan-v2` manifest and operation catalog are
+target-independent: developers can describe the
 same mathematical requirements for `c64`, `1541`, `1571` and `1581`
 without choosing a historical library profile.
 
