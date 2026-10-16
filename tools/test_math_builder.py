@@ -79,8 +79,10 @@ class CatalogTests(unittest.TestCase):
         variants = self.index["MATH_UMUL8"]["variants"]
         linkable = [v for v in variants if v["selective_link_ready"]]
         self.assertEqual({v["id"] for v in linkable},
-                         {"link:compact-zerozp", "link:quarter-square"})
+                         {"link:compact-zerozp", "link:quarter-square", "link:v1-resident-fast"})
         by_id = {v["id"]: v for v in linkable}
+        self.assertEqual(by_id["link:v1-resident-fast"]["zp_bytes_reported"], 4)
+        self.assertEqual(by_id["link:v1-resident-fast"]["resources_reported"]["code_and_table_bytes"], 1073)
         self.assertEqual(by_id["link:compact-zerozp"]
                          ["resources_reported"]["code_and_table_bytes"], 60)
         self.assertEqual(by_id["link:compact-zerozp"]
