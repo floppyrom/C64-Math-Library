@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker now supports seventeen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, DIST8_ACCURATE, SIN8, COS8, SINCOS8, SDIV8, SMOD8 and SMUL8.**
+**An experimental selective linker now supports eighteen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, DIST8_ACCURATE, SIN8, COS8, SINCOS8, SDIV8, SMOD8, SMUL8 and UMOD8.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -261,6 +261,38 @@ All 65,536 signed numerator/divisor cases are tested at two relocations,
 including carry, ABI preservation and full generated-binary immutability;
 the source-linked VICE CI also tests both relocations. The two public
 names are independently validated by source hashes before aliasing.
+
+### Historical V1 unsigned 8-bit remainder: writable code (experimental)
+
+The operation-first builder now provides `MATH_UMOD8` as
+`link:v1-resident-smc`, a **157-byte exact V1 optimized source port**
+(160 original reachable bytes less a 3-byte public trampoline).
+It requires **2 dedicated zero-page bytes**, has no other scratch/table
+requirements and preserves the original fast large-divisor path.
+
+The small-divisor path retains V1's two self-modified
+immediate operands. The linked code **must run in writable C64 RAM**,
+not ROM, I/O space, or protected mapped memory, and requires CLD on entry.
+The builder records the writable-code requirement rather than pretending
+this is a read-only implementation. The full 32-byte public input/output
+reservation remains, giving **189 total RAM bytes and 2 ZP bytes**
+with no alignment padding at the default origin.
+
+The low bytes of N and D are preserved, the low byte of R is the
+unsigned remainder, upper R bytes and all Q bytes are **untouched**.
+Dividing by zero writes R=0 and returns carry set; valid division
+clears carry.
+
+```sh
+python3 tools/math_builder.py --operation UMOD8 \
+  --pin UMOD8=link:v1-resident-smc --zp-budget 2 \
+  --ram-budget 189 --build
+```
+
+Qualification runs the **entire 65,536 N/D input space at each of two
+RAM and ZP relocations**, proves code mutation is restricted to exactly
+the two specified immediate operands, tests mixed UDIV8 and SDIV8/SMOD8
+linkage, and runs native x64sc tests at both relocations.
 
 ### Historical V1 fast unsigned 8-bit division (experimental)
 
