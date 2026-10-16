@@ -8,6 +8,20 @@ The V2/V3/V4 UDIV32 live-high core uses four ZP bytes on the wide-divisor hot pa
 
 **Benchmark basis:** The unsigned DIV/MOD rows (UDIV8/16/24/32_16/32_32, UMOD counterparts and UDIV16_SHL8) now use **identical input pairs for all five profiles**. These common-corpus averages are reproducible but workload-dependent: see [the same-input results](benchmarks/UNSIGNED_COMMON_PROFILE_RESULTS.csv) for per-profile p95/worst-case, and the [audit methodology](docs/ISSUE39_BENCHMARK_COMPARABILITY_AUDIT_2026-10-11.md). The remaining published routine rows retain their existing distinct benchmark corpora and should not be treated as automatically comparable until independently certified. For V3/V4 REU-assisted functions, instruction cycles exclude external DMA/bus wait time.**
 
+## Qualified newer source-build candidate (not the frozen shipped profiles)
+
+The default rows below still refer to the **historical SHA-pinned binaries**. Issue #144 has separately integrated new source-level optimizations in the **five canonical source profiles**. The independently reproducible [versioned distribution builder](docs/ISSUE144_VERSIONED_DISTRIBUTION_2026-10-16.md) outputs both memory maps and current `math_api.inc` headers; its ZIP includes a complete same-input current-source-versus-frozen ISQRT32 report. This is **not yet a promoted/tagged production-default release**.
+
+| ISQRT32 profile | Historical frozen PRG | Current canonical-source candidate | Saved per ordinary public call |
+|---|---:|---:|---:|
+| V1 | 1263.164383 | 1212.164383 | 51.000000 |
+| V2 | 1095.127854 | 1048.127854 | 47.000000 |
+| V3 | 1095.157534 | 1048.157534 | 47.000000 |
+| V4 | 924.082192 | 788.876712 | **135.205479** |
+| V5 | 1263.164383 | 1212.164383 | 51.000000 |
+
+**Benchmark basis:** exactly 438 matched N32 operands/profile, 6502-model CPU instruction cycles counted for public calls through RTS. The V4 current-source result includes the [PR #192 direct-REU-to-zero-page improvement](https://github.com/floppyrom/C64-Math-Library/pull/192) (16 more cycles saved per call than the preceding source). These candidate numbers must **not** replace shipped measurements computed from different corpora. Real C64/VIC/REU DMA bus timing and IRQ/NMI safety have **not** been certified. No historical reference PRG/REU is altered.
+
 ## Shipped profile means
 
 ### Multiply
