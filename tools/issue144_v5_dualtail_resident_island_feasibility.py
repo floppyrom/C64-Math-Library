@@ -22,7 +22,7 @@ TAIL_BYTES=461
 PROFILE="v5_hybrid_lowzp"
 # Source-defined regions are inspected separately; no candidate crosses
 # a region boundary even when two successive bytes happen to be zero.
-SCAN=("REG_LOW","REG_KERNEL","REG_TABLE")
+SCAN=tuple(row[0] for row in REGIONS)
 def windows(mem,base,length):
     out=[];i=0
     while i<length:
@@ -33,10 +33,10 @@ def windows(mem,base,length):
     return out
 
 def region_length(name):
-    if name=="REG_LOW":return 0x2000
-    if name=="REG_KERNEL":return 0x1e00
-    if name=="REG_TABLE":return 0x3c00
-    raise ValueError(name)
+    exact=[(start,end) for region,start,end in REGIONS if region==name]
+    assert len(exact)==1,(name,exact)
+    start,end=exact[0]
+    return end-start+1
 
 def main():
     rows={};corpus_by_map={}
