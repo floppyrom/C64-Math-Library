@@ -151,6 +151,23 @@ class ATAN2SelectiveTests(unittest.TestCase):
                             self.assertEqual(cpu.c, int(dval == 0))
                             self.assertEqual(cpu.sp, 0xfd)
 
+    def test_table_generator_source_is_hash_locked(self):
+        plan = math_builder.create_plan(
+            self.index, ["ATAN2_8"], pins={"ATAN2_8": "link:compact"})
+        op = plan["operations"][0]
+        variant = next(v for v in op["available_source_variants"]
+                       if v["id"] == "link:compact")
+        self.assertIn("routines/atan2/tables.py", variant["dependency_sha256"])
+        math_builder.validate_sha(ROOT, variant)
+        with tempfile.TemporaryDirectory() as d:
+            variant["dependency_sha256"]["routines/atan2/tables.py"] = "0" * 64
+            with self.assertRaises(math_builder.SelectionError):
+                math_builder.validate_sha(ROOT, variant)
+            with self.assertRaisesRegex(
+                    selective_linker.LinkError, "source dependency changed"):
+                selective_linker.build(plan, Path(d))
+            self.assertFalse((Path(d) / "math_selective.prg").exists())
+
     def test_pins_and_budget_alignment_fail_closed(self):
         with tempfile.TemporaryDirectory() as d:
             plan = math_builder.create_plan(self.index, ["ATAN2_8"], zp_budget=0,
