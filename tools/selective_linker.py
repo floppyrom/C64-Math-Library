@@ -26,7 +26,7 @@ MODULES = {
             "source": "routines/trig/sin8_shared.asm",
             "segments": (("KERNEL_CODE", 11),),
             "entry": "FAST_SIN8", "zp": 0, "scratch": 0,
-            "trig8": True, "operand_layout": "xyz",
+            "trig8": True, "operand_layout": "trig-xz",
             "provenance": "V1-V5 exact 256-byte shared sine table, original 11-byte kernel",
         },
     },
@@ -431,7 +431,9 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
 def relocate_source(mod, locations, root):
     src = (root / mod["source"]).read_text(encoding="utf-8")
     used = {k for k, _ in mod["segments"]}
-    if mod.get("operand_layout") == "xyz":
+    if mod.get("trig8"):
+        used |= {"INPUT_X", "OUTPUT_Z", "SINE_TAB"}
+    elif mod.get("operand_layout") == "xyz":
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z"}
     else:
         used |= {"INPUT_NUM", "INPUT_DIV", "OUTPUT_QUOT", "OUTPUT_REM"}
