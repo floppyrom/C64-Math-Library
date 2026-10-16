@@ -1,3 +1,8 @@
+2026-10-16 BUILDER HISTORICAL ACCURATE DISTANCE V1 AND V2 (UNRELEASED; QUALIFICATION PENDING)
+- Added two independent exact V1/V2 MATH_DIST8_ACCURATE source ports. The V1 66-byte implementation uses 2 caller-free scratch RAM bytes, 0 ZP; the V2 58-byte implementation uses 2 explicitly owned ZP bytes, no RAM scratch. Both preserve 8-bit signed-input magnitude/swap and table lookup, carry-clear and I/O sentinels.
+- Original 256+256 immutable high/min contribution pages are checked byte-for-byte against all five shipped V1-V5 resident PRGs. Added globally shared aligned distance table pair after optional shared sine page, proper multi-module RAM/ZP/padding accounting, output provenance and complete source-dependency hashes.
+- Exhaustive 65,536 signed x/y pairs at two relocations per variant, mixed linked sine/ATAN2/ISQRT16 tests, budget-negative tests and four independent native VICE layouts now gate promotion. This is the fourteenth linkable operation; no historical resident binaries or published cycle records changed.
+
 2026-10-16 BUILDER SHARED HISTORICAL TRIG8 FAMILY (UNRELEASED; QUALIFICATION PENDING)
 - Added SIN8, COS8, SINCOS8 as independently selectable V1-V5 source-exact trig8 entry points (11/15/22 code bytes). All three share one source-locked 256-byte page-aligned sine table, exact against the bytes at $9400 in every shipped V1–V5 PRG. No ZP, private RAM, initialization, or REU.
 - Extended resource accounting for a single shared lookup page, including alignment padding, origin relocation, per-operation exported symbols, metadata and toolchain SHA provenance; no redundant tables in mixed trig builds.
