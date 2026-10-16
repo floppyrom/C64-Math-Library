@@ -14,6 +14,7 @@ from pathlib import Path
 import re
 from mini6502 import Assembler
 import selective_atan2 as atan2
+import selective_fast_umul8 as fast8
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
@@ -30,6 +31,12 @@ MODULES = {
             "segments": (("KERNEL_CODE", 60),),
             "entry": "FAST_UMUL8_COMPACT", "zp": 0, "scratch": 3,
             "operand_layout": "xyz",
+        },
+        "link:quarter-square": {
+            "source": "routines/multiply/umul8_quartersquare.asm",
+            "segments": (("KERNEL_CODE", 73), ("Q_LO", 511), ("Q_HI", 511)),
+            "entry": "FAST_UMUL8_QUARTERSQUARE", "zp": 0, "scratch": 2,
+            "operand_layout": "xyz", "fast_umul8": True,
         },
     },
     "MATH_UMUL16": {
@@ -107,12 +114,17 @@ def available_variants(root=ROOT):
                 "dependency_sha256": ({
                     "routines/atan2/tables.py": hashlib.sha256(
                         (root / "routines/atan2/tables.py").read_bytes()).hexdigest()
-                } if "atan2" in mod else {}),
+                } if "atan2" in mod else {
+                    "tools/selective_fast_umul8.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest()
+                } if mod.get("fast_umul8") else {}),
                 "historical_provenance": None,
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
-                "validation_path": ("tools/test_selective_multiply.py"
+                "validation_path": ("tools/test_selective_fast_umul8.py"
+                                    if mod.get("fast_umul8") else
+                                    "tools/test_selective_multiply.py"
                                     if mod.get("operand_layout") == "xyz" else
                                     "routines/atan2/validate_optimized.py"
                                     if "atan2" in mod else
@@ -120,7 +132,9 @@ def available_variants(root=ROOT):
                 "qualification": ("experimental new compact source; CPU/native validation pending"
                                   if mod.get("operand_layout") == "xyz" else
                                   "existing portable source; selective mixed-call validation pending"),
-                "notes": ("Compact portable shift-add multiply; not performance-ranked against table variants"
+                "notes": ("73-byte quarter-square 8x8 code and 1022 exact table bytes; 2 RAM scratch, 0 ZP"
+                          if mod.get("fast_umul8") else
+                          "Compact portable shift-add multiply; not performance-ranked against table variants"
                           if mod.get("operand_layout") == "xyz" else
                           "Complete page-aligned ATAN2 lookup tables, exhaustive stock-C64 phase certification"
                           if "atan2" in mod else
@@ -422,13 +436,19 @@ def build(plan, outdir, memory=None, root=ROOT):
         if "atan2" in module and [x["source_path"] for x in dep_provenance] != [
                 "routines/atan2/tables.py"]:
             raise LinkError(api + ": ATAN2 table generator provenance missing")
+        if module.get("fast_umul8") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_fast_umul8.py"]:
+            raise LinkError(api + ": quarter-square table generator provenance missing")
         locations = dict(constants)
         expected = set()
         ranges = []
         try:
-            if "atan2" in module:
-                machine, entry, ranges, end = atan2.assemble(
-                    module["atan2"], pc, io, root)
+            if "atan2" in module or module.get("fast_umul8"):
+                if "atan2" in module:
+                    machine, entry, ranges, end = atan2.assemble(
+                        module["atan2"], pc, io, root)
+                else:
+                    machine, entry, ranges, end = fast8.assemble(pc, io, sb, root)
                 expected = set()
                 for seg in ranges:
                     start = int(seg["start"][1:], 16)
@@ -492,7 +512,8 @@ def build(plan, outdir, memory=None, root=ROOT):
             raise LinkError("Unsafe typed operation alias: " + canonical)
         exports.append(canonical + " = " + operation["api"])
     toolchain_paths = ("tools/math_builder.py", "tools/selective_linker.py",
-                       "tools/selective_atan2.py", "tools/mini6502.py")
+                       "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
+                       "tools/mini6502.py")
     toolchain_hashes = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
         for name in toolchain_paths
