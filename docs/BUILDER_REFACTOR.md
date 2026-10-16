@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker now supports sixteen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, DIST8_ACCURATE, SIN8, COS8, SINCOS8, SDIV8 and SMOD8.**
+**An experimental selective linker now supports seventeen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, DIST8_ACCURATE, SIN8, COS8, SINCOS8, SDIV8, SMOD8 and SMUL8.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -411,6 +411,42 @@ page-alignment padding without factorial permutations. For example,
 a UMUL16 + ATAN2 compact + UDIV16 combination occupies 1,091 bytes of
 PRG payload including 54 padding bytes, 6 RAM scratch bytes and 2 ZP
 bytes (1,129 total RAM bytes, including 32 public I/O bytes).
+
+### Original 46-byte signed SMUL8 (writable self-modifying source)
+
+`MATH_SMUL8` now offers `link:v1-resident-smc`: the exact **46-byte**
+historical 6502 signed 8×8 multiplier from V1–V5. This is **not** the
+slower compact shift/add replacement. It uses four original 511-byte
+lookup tables, retained byte-for-byte from every released V1–V5 PRG.
+Their historical absolute pages differ between profiles, but their
+mathematical bytes are identical.
+
+This routine writes the low operand bytes of its four indexed lookup
+instructions on each call. **Its code must be in writable RAM, never
+ROM/cartridge ROM or read-only memory, and calls must not overlap.** The
+builder records `requires_writable_code: true` in variant metadata.
+Zero-page usage and separate scratch RAM are both **zero**. The four tables
+are emitted at successive 512-byte offsets with page-aligned starts;
+alignment, three inter-table holes, and other shared family tables
+are included in the image RAM budget.
+
+At default code origin `$8000`, 46 code bytes, 4×511 lookup bytes
+and 214 padding bytes occupy 2304 image bytes plus a 32-byte public I/O
+block: **2336 bytes of total RAM, zero ZP**. At `$80D2`,
+padding falls to four bytes (2094 image bytes and 2126 bytes of RAM).
+
+```sh
+python3 tools/math_builder.py --operation SMUL8 \
+  --pin SMUL8=link:v1-resident-smc --zp-budget 0 \
+  --ram-budget 2336 --build
+```
+
+All 65,536 signed operand pairs are checked by reference-table arithmetic
+and on actual assembled 6502 bytecode at two RAM relocations. Tests verify
+that only the four documented operand bytes change, that source tables
+remain immutable, carry clears, the inputs and upper result bytes are
+preserved, and the stack is balanced. Native VICE tests use two separate
+code and I/O placements.
 
 ### Faster-source UMUL16: quarter-square composition
 
