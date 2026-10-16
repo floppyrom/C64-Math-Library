@@ -22,6 +22,14 @@ MODULES = {
             "entry": "FAST_UDIV16_BIASED", "zp": 2, "scratch": 0,
         },
     },
+    "MATH_UMUL16": {
+        "link:compact-zerozp": {
+            "source": "routines/multiply/umul16_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 107),),
+            "entry": "FAST_UMUL16_COMPACT", "zp": 0, "scratch": 6,
+            "operand_layout": "xyz",
+        },
+    },
     "MATH_UMOD16": {
         "link:biased": {
             "source": "routines/standalone_lab/portable/mod_u16_biased_carry.asm",
@@ -93,11 +101,15 @@ def available_variants(root=ROOT):
                 "mean_cycles_reported": "",
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
-                "validation_path": ("routines/atan2/validate_optimized.py"
+                "validation_path": ("tools/test_selective_multiply.py"
+                                    if mod.get("operand_layout") == "xyz" else
+                                    "routines/atan2/validate_optimized.py"
                                     if "atan2" in mod else
                                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": "existing portable source; selective mixed-call testing",
-                "notes": ("Complete page-aligned ATAN2 lookup tables, exhaustive stock-C64 phase certification"
+                "notes": ("Compact portable 16x16 source; slower than table-based optimized variants"
+                          if mod.get("operand_layout") == "xyz" else
+                          "Complete page-aligned ATAN2 lookup tables, exhaustive stock-C64 phase certification"
                           if "atan2" in mod else
                           "Standalone source with checked public carry semantics"),
                 "resources_reported": {
@@ -240,7 +252,10 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000)
 def relocate_source(mod, locations, root):
     src = (root / mod["source"]).read_text(encoding="utf-8")
     used = {k for k, _ in mod["segments"]}
-    used |= {"INPUT_NUM", "INPUT_DIV", "OUTPUT_QUOT", "OUTPUT_REM"}
+    if mod.get("operand_layout") == "xyz":
+        used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z"}
+    else:
+        used |= {"INPUT_NUM", "INPUT_DIV", "OUTPUT_QUOT", "OUTPUT_REM"}
     if mod["zp"]:
         used.add("TEMP_ZP")
     if mod["scratch"]:
@@ -302,6 +317,7 @@ def build(plan, outdir, memory=None, root=ROOT):
     constants = {
         "INPUT_NUM": io + 16, "INPUT_DIV": io + 20,
         "OUTPUT_QUOT": io + 24, "OUTPUT_REM": io + 28,
+        "INPUT_X": io, "INPUT_Y": io + 4, "OUTPUT_Z": io + 8,
     }
     if zp_bytes:
         constants["TEMP_ZP"] = zb
@@ -371,6 +387,7 @@ def build(plan, outdir, memory=None, root=ROOT):
             "source": module["source"],
             "sha256": hashlib.sha256((root / module["source"]).read_bytes()).hexdigest(),
             "segments": ranges, "zp_bytes": module["zp"], "scratch_bytes": module["scratch"],
+            "operand_layout": module.get("operand_layout", "ndqr"),
         })
     if pc != code + size:
         raise LinkError("Incorrect linked image span")
