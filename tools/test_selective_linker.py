@@ -259,6 +259,30 @@ class SelectiveLinkTests(unittest.TestCase):
                     linker.build(good, path, memory=bad_memory)
             self.assertFalse((path / "math_selective.prg").exists())
 
+    def test_user_reservations_are_enforced(self):
+        with tempfile.TemporaryDirectory() as temp:
+            plan = self.plan(["UDIV16", "UMOD16"], zp_budget=2)
+            out = Path(temp)
+            good = linker.build(plan, out, memory={
+                "reserved": [{"name": "loader", "start": "$2000", "end": "$2fff"}],
+                "zp_reserved": [{"name": "irq", "start": "$02", "end": "$4f"}],
+            })
+            self.assertEqual(good["memory_map"]["user_reserved"][0]["name"], "loader")
+            self.assertEqual(good["memory_map"]["user_zp_reserved"][0]["name"], "irq")
+            for overrides in (
+                {"reserved": [{"start": "$8000", "end": "$80ff"}]},
+                {"reserved": [{"start": "$c000", "end": "$c010"}]},
+                {"zp_reserved": [{"start": "$50", "end": "$60"}]},
+                {"reserved": [{"start": "$ffff", "end": "$fff0"}]},
+                {"reserved": "8000-8100"},
+                {"zp_reserved": [{"start": "$00", "end": "$0100"}]},
+                {"math_oi": "$c000"},
+            ):
+                with self.subTest(overrides=overrides):
+                    with self.assertRaises(linker.LinkError):
+                        linker.build(plan, out / "invalid", memory=overrides)
+            self.assertFalse((out / "invalid" / "math_selective.prg").exists())
+
     def test_cli_build_compact_and_exports(self):
         with tempfile.TemporaryDirectory() as d:
             config = Path(d) / "config.json"
