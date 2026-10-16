@@ -1,0 +1,99 @@
+name: Issue144 reproducible versioned dual-map candidate distribution
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - tools/issue144_versioned_distribution.py
+      - .github/workflows/issue144-versioned-distribution.yml
+      - docs/ISSUE144_VERSIONED_DISTRIBUTION_2026-10-16.md
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Candidate release identifier; never overwrite an existing release
+        required: true
+        default: issue144-2026.10.16-source-rc1
+        type: string
+      publish_prerelease:
+        description: Create an explicitly named GitHub prerelease after fresh source and CI qualification
+        required: true
+        default: false
+        type: boolean
+permissions:
+  contents: read
+jobs:
+  assemble-distribution:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+      SOURCE_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+      CANDIDATE_VERSION: ${{ inputs.version || 'issue144-2026.10.16-source-rc1' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild, verify and package 10 complete source PRGs plus 4 REU images
+        run: |
+          python3 tools/issue144_versioned_distribution.py \
+            --version "$CANDIDATE_VERSION" \
+            --revision "$SOURCE_REVISION" \
+            --out "$RUNNER_TEMP/distribution"
+      - name: Independently read back ZIP and verify file SHA256, profiles and relocation pairs
+        run: |
+          cd "$RUNNER_TEMP/distribution"
+          sha256sum -c "C64-Math-Library-$CANDIDATE_VERSION.zip.sha256"
+          cd "$GITHUB_WORKSPACE"
+          python3 tools/issue144_versioned_distribution.py \
+            --verify "$RUNNER_TEMP/distribution/C64-Math-Library-$CANDIDATE_VERSION.zip" \
+            --revision "$SOURCE_REVISION"
+      - name: Preserve run-specific versioned artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue144-versioned-candidate-${{ github.sha }}
+          path: ${{ runner.temp }}/distribution/
+          retention-days: 90
+          if-no-files-found: error
+  publish-explicit-prerelease:
+    if: github.event_name == 'workflow_dispatch' && inputs.publish_prerelease == true
+    needs: assemble-distribution
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      checks: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CANDIDATE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: issue144-versioned-candidate-${{ github.sha }}
+          path: ${{ runner.temp }}/distribution
+      - name: Allow prerelease only from current main and green exact-head full-library CI
+        run: |
+          test "$GITHUB_REF" = "refs/heads/main"
+          test "$(gh api "repos/$GITHUB_REPOSITORY/branches/main" --jq .commit.sha)" = "$GITHUB_SHA"
+          gh api "repos/$GITHUB_REPOSITORY/commits/$GITHUB_SHA/check-runs?per_page=100" > "$RUNNER_TEMP/checks.json"
+          python3 - "$RUNNER_TEMP/checks.json" <<'PY'
+          import json,sys
+          data=json.load(open(sys.argv[1]))['check_runs']
+          for name in ('source-and-publication','comparable-unsigned-metrics'):
+              hits=[x for x in data if x['name']==name and x['conclusion']=='success']
+              assert hits,(name,'required exact-main check is not successful')
+          print('Exact-main validator/performance check gate PASS')
+          PY
+          ! gh release view "$CANDIDATE_VERSION" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1
+      - name: Publish GitHub prerelease; never mark it latest or a hardware-certified release
+        run: |
+          cd "$RUNNER_TEMP/distribution"
+          sha256sum -c "C64-Math-Library-$CANDIDATE_VERSION.zip.sha256"
+          gh release create "$CANDIDATE_VERSION" \
+            "C64-Math-Library-$CANDIDATE_VERSION.zip" \
+            "C64-Math-Library-$CANDIDATE_VERSION.zip.sha256" \
+            DISTRIBUTION_STATUS.json \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --prerelease --latest=false \
+            --title "C64 Math Library $CANDIDATE_VERSION (source-qualified prerelease)" \
+            --notes "Source-qualified reference and alternate map builds. Physical REU/VIC DMA and IRQ/NMI hardware timing are not certified. Original SHA-pinned profile binaries remain unchanged."
