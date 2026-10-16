@@ -18,6 +18,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "routines" / "SOURCE_CATALOG.csv"
+OPERATIONS = ROOT / "routines" / "PUBLIC_OPERATIONS.csv"
 STANDALONE = ROOT / "benchmarks" / "STANDALONE_RESULTS.csv"
 OBJECTIVES = ("balanced", "speed", "size", "zp")
 TARGETS = ("c64", "1541", "1571", "1581")
@@ -39,24 +40,28 @@ def operation_index(root: Path = ROOT) -> dict[str, dict]:
         (r["canonical_name"], r["variant"], r["source_path"]): r
         for r in read_csv(root / "benchmarks" / "STANDALONE_RESULTS.csv")
     }
+    # The public operation vocabulary is independent of historical V1-V5
+    # release profiles. Those profiles contribute source variants only.
     operations: dict[str, dict] = {}
     canonical_to_api: dict[str, str] = {}
-    for r in rows:
-        if r["scope"] != "shipped-profile" or r["profile"] != "v1_balanced":
-            continue
-        api = r["legacy_api"]
-        if not api or api in operations:
-            raise SelectionError("Duplicate or missing stable public API: " + api)
+    for r in read_csv(root / "routines" / "PUBLIC_OPERATIONS.csv"):
+        api = r["api"]
+        canonical = r["canonical_name"]
+        category = r["category"]
+        if not api.startswith("MATH_") or api in operations or not canonical or not category:
+            raise SelectionError("Duplicate or invalid public operation: " + api)
+        if canonical in canonical_to_api:
+            raise SelectionError("Duplicate canonical operation: " + canonical)
         operations[api] = {
             "api": api,
-            "canonical_name": r["canonical_name"],
-            "category": r["category"],
+            "canonical_name": canonical,
+            "category": category,
             "variants": [],
         }
-        canonical_to_api[r["canonical_name"]] = api
+        canonical_to_api[canonical] = api
 
     if not operations:
-        raise SelectionError("No stable operations in the source catalog")
+        raise SelectionError("Empty public operation catalog")
 
     for r in rows:
         if r["scope"] == "shipped-profile":
