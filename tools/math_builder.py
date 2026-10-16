@@ -205,7 +205,7 @@ def create_plan(
         any(v["selective_link_ready"] and target in v.get("build_targets", ["c64"])
             for v in op["available_source_variants"]) for op in output)
     return {
-        "schema": "c64-math-selection-plan-v1",
+        "schema": "math-selection-plan-v2",
         "status": "planning_only_not_a_loadable_binary",
         "target": target,
         "target_backend_status": ("experimental_selective_linker"
