@@ -1,6 +1,6 @@
 ; Portable unsigned 16 x 16 => 32 multiply, 6510/NMOS 6502, all legal opcodes.
 ; Source-only selectively linked module, NOT a speed winner over published
-; large-table multipliers. Exactly 107 code bytes; 6 ordinary scratch bytes.
+; large-table multipliers. Exactly 108 code bytes; 6 ordinary scratch bytes.
 ; No zero-page allocation, no self-modifying code, no initialization.
 ; ABI: uint16 INPUT_X/Y preserved; uint32 OUTPUT_Z little endian.
 ; A/X/flags volatile; decimal mode must be clear; not reentrant.
@@ -55,4 +55,5 @@ umul16_skip_add:
     rol TEMP_RAM+3
     dex
     bne umul16_loop
+    clc
     rts
