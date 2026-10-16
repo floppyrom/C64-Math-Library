@@ -1,0 +1,60 @@
+name: Issue144 five-profile candidate and ISQRT32 release qualification
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  candidate:
+    name: Candidate / ${{ matrix.layout }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        layout: [reference, alternate]
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble five PRGs and both REUs, verify frozen hashes and validate public API
+        run: |
+          python3 tools/issue144_isqrt32_release_candidate.py \
+            --layout "${{ matrix.layout }}" \
+            --out "$RUNNER_TEMP/issue144-${{ matrix.layout }}"
+      - name: Archive versioned and checksum-identified candidate outputs, not historic references
+        uses: actions/upload-artifact@v4
+        with:
+          name: issue144-source-candidate-${{ matrix.layout }}-${{ github.sha }}
+          path: ${{ runner.temp }}/issue144-${{ matrix.layout }}
+          retention-days: 30
+          if-no-files-found: error
+  native-roots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install SHA256-pinned real VICE x64sc
+        run: |
+          curl -fL --retry 3 --connect-timeout 20 'https://github.com/VICE-Team/svn-mirror/releases/download/r46274/headlessvice_3.10%2Br46274.deb' -o /tmp/headlessvice.deb
+          echo '5d85ab7b73e9b32007ac7f844603e101fdd7009c47d1898216bfff4b2a44996a  /tmp/headlessvice.deb' | sha256sum -c -
+          sudo apt-get update -qq
+          sudo apt-get install -y /tmp/headlessvice.deb
+          echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
+      - name: V1 and V5 inherited highword-seeded ISQRT32, native x64sc
+        run: |
+          python3 tools/native_issue144_v1_isqrt32_normal_resident.py
+          python3 tools/native_issue144_v5_isqrt32_inheritance.py
+      - name: V2 V3 highword-seeded root with real emulator and V3 REU
+        run: python3 tools/native_issue144_isqrt32_normal_resident.py
+      - name: V4 full 16 MiB REU ISQRT32, reference versus optimized
+        run: python3 tools/issue144_v4_isqrt_maskshift_source_native_qualify.py
