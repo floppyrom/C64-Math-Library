@@ -50,7 +50,7 @@ def cpu(prg, reu):
     from validate_source_build import load
     c,pub,io,manifest,initcycles = load(PROFILE,prg.parent.parent)
     assert pub["MATH_ISQRT32"]==0x5e30, (pub["MATH_ISQRT32"],manifest)
-    assert io==0xc000 and manifest["_resolved_reu_path"]==str(reu)
+    assert io==0xc000 and Path(manifest["_resolved_reu_path"]).read_bytes()==reu.read_bytes()
     assert c.mem[0x5e30]==0x4c, ("bad public JMP before first call",c.mem[0x5e30])
     return c
 
