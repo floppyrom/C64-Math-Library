@@ -206,8 +206,8 @@ def build(plan, outdir, memory=None, root=ROOT):
     if plan["target"] != "c64":
         raise LinkError("No qualified selective modules for requested hardware")
     names = [op["api"] for op in plan["operations"]]
-    if not names:
-        raise LinkError("No selected operations")
+    if not names or len(set(names)) != len(names):
+        raise LinkError("Selected operations must be nonempty and unique")
     pins = {op["api"]: op["pinned_variant"] for op in plan["operations"]
             if op["pinned_variant"]}
     constraints = plan["constraints"]
@@ -257,6 +257,17 @@ def build(plan, outdir, memory=None, root=ROOT):
     pc = code
     for api in names:
         ident, module = modules[api]
+        operation = next(op for op in plan["operations"] if op["api"] == api)
+        link_sources = [v for v in operation["available_source_variants"]
+                        if v["id"] == ident and v["selective_link_ready"]]
+        if len(link_sources) != 1:
+            raise LinkError(api + ": selected source not authorized by plan")
+        source_path = (root / module["source"]).resolve()
+        if not source_path.is_relative_to(root.resolve()):
+            raise LinkError(api + ": source escapes repository")
+        exact_digest = hashlib.sha256(source_path.read_bytes()).hexdigest()
+        if exact_digest != link_sources[0]["source_sha256"]:
+            raise LinkError(api + ": source changed since selection plan")
         locations = dict(constants)
         expected = set()
         ranges = []
@@ -280,6 +291,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         entries[api] = labels[module["entry"]]
         detail.append({
             "api": api, "variant": ident, "entry": "$%04X" % entries[api],
+            "dependencies": [], "scratch_lifetime": "exclusive_call",
             "source": module["source"],
             "sha256": hashlib.sha256((root / module["source"]).read_bytes()).hexdigest(),
             "segments": ranges, "zp_bytes": module["zp"], "scratch_bytes": module["scratch"],
