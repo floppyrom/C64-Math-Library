@@ -106,7 +106,9 @@ def available_variants(root=ROOT):
                                     "routines/atan2/validate_optimized.py"
                                     if "atan2" in mod else
                                     "routines/standalone_lab/portable/verify.py"),
-                "qualification": "existing portable source; selective mixed-call testing",
+                "qualification": ("experimental new compact source; CPU/native validation pending"
+                                  if mod.get("operand_layout") == "xyz" else
+                                  "existing portable source; selective mixed-call validation pending"),
                 "notes": ("Compact portable 16x16 source; slower than table-based optimized variants"
                           if mod.get("operand_layout") == "xyz" else
                           "Complete page-aligned ATAN2 lookup tables, exhaustive stock-C64 phase certification"
