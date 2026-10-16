@@ -10,6 +10,7 @@ on:
       - tools/selective_linker.py
       - tools/test_selective_linker.py
       - tools/native_selective_linker.py
+      - tools/native_selective_atan2.py
       - tools/selective_atan2.py
       - tools/test_selective_atan2.py
       - routines/atan2/*.asm
@@ -71,3 +72,5 @@ jobs:
           echo "VICE_WRAPPER=$(command -v x64sc)" >> "$GITHUB_ENV"
       - name: Validate 16-bit and 32-bit linked binaries at two RAM maps
         run: python3 tools/native_selective_linker.py
+      - name: Validate compact and fast ATAN2 linked binaries at two RAM maps
+        run: python3 tools/native_selective_atan2.py
