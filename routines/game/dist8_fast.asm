@@ -43,5 +43,6 @@ DIST_Y_POSITIVE:
     lda TEMP_RAM
     sta TEMP_RAM+1
     stx TEMP_RAM
+    rts
 DIST_DONE:
     rts
