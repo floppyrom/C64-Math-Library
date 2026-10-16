@@ -1,7 +1,7 @@
 ## Unreleased — operation-first SEEK8 movement family
 
 - Add four independently selectable SEEK8 public API entries from one
-  source-locked, generated 582-byte DDA kernel (INIT, STEP, STEP_INT, STEP1).
+  source-locked, generated DDA kernel (651 bytes for RAM inputs) (INIT, STEP, STEP_INT, STEP1).
   Keep their four distinct addresses while sharing exactly one physical
   producer and its internal 32-byte Euclidean correction table.
 - Add persistent state ownership to the builder: reserve 160 bytes for
