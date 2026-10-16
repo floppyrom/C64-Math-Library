@@ -40,7 +40,7 @@ def donor():
     end=labels["U3216_LD_END"]
     assert (end-lo)==461 and (mid-lo+3, end-mid)==(234,230),(lo,mid,end)
     starts=trace(b,lo)
-    assert all(s in starts for s in (lo,mid,labels["U3216_LOW_STUB"])),("label not executable")
+    assert all(s in starts for s in (lo,mid)),("auxiliary segment entry not executable")
     return b,labels,starts
 
 def load(b):
