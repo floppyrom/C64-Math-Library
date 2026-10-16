@@ -327,8 +327,9 @@ def main(argv: list[str] | None = None) -> int:
     try:
         index = operation_index()
         if args.list or args.list_linkable:
+            requested_target = args.target or "c64"
+            printed = 0
             for api, op in index.items():
-                requested_target = args.target or "c64"
                 eligible = sum(v["selective_link_ready"] and
                                requested_target in v.get("build_targets", ["c64"])
                                for v in op["variants"])
@@ -336,10 +337,22 @@ def main(argv: list[str] | None = None) -> int:
                     continue
                 print("{:<25} {:<12} {}{}".format(api, op["category"],
                     op["canonical_name"], " [linkable: {}]".format(eligible) if eligible else ""))
+                printed += 1
+            if args.list_linkable and printed == 0:
+                print("No selectively linkable modules for target " +
+                      requested_target + "; planning only.", file=sys.stderr)
             return 0
         if args.variants:
             api = resolve(args.variants, index)
-            print(json.dumps(index[api], indent=2))
+            requested_target = args.target or "c64"
+            operation = dict(index[api])
+            operation["requested_target"] = requested_target
+            operation["variants"] = [
+                {**v, "target_link_ready": bool(
+                    v["selective_link_ready"] and requested_target in
+                    v.get("build_targets", ["c64"]))}
+                for v in operation["variants"]]
+            print(json.dumps(operation, indent=2))
             return 0
 
         cfg = json.loads(args.config.read_text(encoding="utf-8")) if args.config else {}
