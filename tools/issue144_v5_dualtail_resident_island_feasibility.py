@@ -24,12 +24,13 @@ PROFILE="v5_hybrid_lowzp"
 # a region boundary even when two successive bytes happen to be zero.
 SCAN=tuple(row[0] for row in REGIONS)
 def windows(mem,base,length):
+    # Return ALL maximal zero runs, not merely the impossible 461-byte option.
     out=[];i=0
     while i<length:
         if mem[base+i]!=0:i+=1;continue
         start=i
         while i<length and mem[base+i]==0:i+=1
-        if i-start>=TAIL_BYTES:out.append((start,i-start))
+        out.append((start,i-start))
     return out
 
 def region_length(name):
@@ -59,11 +60,21 @@ def main():
                 assert start>=at and start+length<=at+len(prg)-2,(layout,name,
                        hex(start),hex(at+len(prg)-2))
                 runs=windows(mem,start,length)
+                top=sorted(runs,key=lambda a:(-a[1],a[0]))[:12]
+                large=[(a,sz) for a,sz in runs if sz>=TAIL_BYTES]
                 result[name]={"region_base":hex(start),"length":length,
-                     "hole_count":len(runs),
+                     "hole_count":len(large),
+                     "max_zero_run_bytes":max((sz for _,sz in runs),default=0),
+                     "runs_at_least_32":sum(sz>=32 for _,sz in runs),
+                     "runs_at_least_64":sum(sz>=64 for _,sz in runs),
+                     "runs_at_least_128":sum(sz>=128 for _,sz in runs),
+                     "runs_at_least_232":sum(sz>=232 for _,sz in runs),
+                     "total_zero_bytes_in_runs_32plus":sum(sz for _,sz in runs if sz>=32),
+                     "longest_12_unclaimed_candidates":[{"offset":hex(a),"bytes":sz}
+                                                          for a,sz in top],
                      "candidates_offset":[{"offset":hex(a),"bytes":sz}
-                                          for a,sz in runs[:16]],
-                     "all_offsets":[a for a,sz in runs for a in range(a,a+sz-TAIL_BYTES+1)]}
+                                          for a,sz in large[:16]],
+                     "all_offsets":[a for a,sz in large for a in range(a,a+sz-TAIL_BYTES+1)]}
             check=validate(PROFILE,Path(td)/layout)
             assert check["public_entries_executed"]==56 and check["machine_calls"]==21678
             rows[layout]={"normal_zp":31,"public_entries":56,"public_calls":check["machine_calls"],
