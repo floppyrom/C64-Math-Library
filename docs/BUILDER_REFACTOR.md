@@ -1,3 +1,36 @@
+### Independently linked SEEK16 four-entry DDA
+
+The original generated SEEK16 (16-bit unsigned X, 8-bit unsigned Y) is
+now available as `MATH_SEEK16_INIT`, `MATH_SEEK16_STEP`,
+`MATH_SEEK16_STEP_INT` and `MATH_SEEK16_STEP1`. Each has an
+independent public address but all four share one **898-byte kernel**:
+the original 799-byte zero-page source expands by exactly 99 operand
+bytes when using normal RAM inputs. It remains RAM-only and requires
+no REU, zero page, initialization or writable code.
+
+The selected kernel owns **248 persistent object bytes** (8 objects)
+plus **19 temporary initialization scratch bytes** and up to 7 bytes
+of 8-byte state-alignment padding. Default RAM cost is
+898+32+19+5+248 = **1,202 bytes**. It exports
+`MATH_SEEK16_POS_XL`, `MATH_SEEK16_POS_XH` and
+`MATH_SEEK16_POS_Y`, corresponding to the arrays at state offsets
+0, 8 and 16. The public ABI passes 16-bit target X in `MATH_X`,
+8-bit target Y in `MATH_Y`, and speed in `MATH_N`.
+The caller keeps the state live across successive frames.
+
+SEEK16 and SEEK8 may coexist without duplicate code or state, but
+the two families reserve **separate** eight-object state blocks.
+Their init calls reuse the same 19-byte scratch buffer. Mixed
+selections continue to be budgeted globally, with alignment and
+user-reserved spans checked. Speed selection remains fail-closed
+until cross-family cycle corpora are comparable.
+
+```sh
+python3 tools/math_builder.py --operation SEEK16_INIT --operation SEEK16_STEP \
+  --operation SEEK16_STEP_INT --operation SEEK16_STEP1 --zp-budget 0 \
+  --ram-budget 1202 --build
+```
+
 ### Independently linked SEEK8 four-entry stateful DDA
 
 The builder can now link the **unchanged generated SEEK8 instructions**, relocated to 651 bytes with absolute RAM inputs as
