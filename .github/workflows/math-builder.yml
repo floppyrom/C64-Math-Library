@@ -1,0 +1,36 @@
+name: Operation-first math builder (phase 1)
+
+on:
+  push:
+    branches:
+      - refactor/unified-math-builder-phase1
+    paths:
+      - tools/math_builder.py
+      - tools/test_math_builder.py
+      - routines/SOURCE_CATALOG.csv
+      - benchmarks/STANDALONE_RESULTS.csv
+      - .github/workflows/math-builder.yml
+  pull_request:
+    paths:
+      - tools/math_builder.py
+      - tools/test_math_builder.py
+      - routines/SOURCE_CATALOG.csv
+      - benchmarks/STANDALONE_RESULTS.csv
+      - .github/workflows/math-builder.yml
+  workflow_dispatch:
+
+jobs:
+  selection-plan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Validate operation catalog and no-binary safety
+        run: python3 tools/test_math_builder.py
+      - name: Smoke-test source SHA provenance
+        run: >-
+          python3 tools/math_builder.py
+          --operation UMUL16 --operation ISQRT16
+          --validate-sources --preview > /dev/null
