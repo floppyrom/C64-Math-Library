@@ -30,7 +30,8 @@ class CatalogTests(unittest.TestCase):
             self.assertGreaterEqual(
                 sum(v["kind"] == "resident-source-mirror" for v in op["variants"]), 5
             )
-            self.assertFalse(any(v["selective_link_ready"] for v in op["variants"]))
+            linkable = [v for v in op["variants"] if v["selective_link_ready"]]
+            self.assertEqual(bool(linkable), api in {"MATH_UDIV16", "MATH_UMOD16"})
 
     def test_typed_and_short_names_resolve(self):
         self.assertEqual(mb.resolve("umul16", self.index), "MATH_UMUL16")
@@ -106,7 +107,7 @@ class CatalogTests(unittest.TestCase):
             reject = subprocess.run(call + ["--build"], text=True,
                                     capture_output=True, cwd=ROOT)
             self.assertNotEqual(reject.returncode, 0)
-            self.assertIn("not qualified", reject.stderr)
+            self.assertIn("no qualified selective source", reject.stderr)
             self.assertFalse(list(Path(d).rglob("*.prg")))
 
     def test_deterministic_selection_plan(self):
