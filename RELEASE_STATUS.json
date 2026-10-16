@@ -17,6 +17,30 @@
     "hardware_vic_reu_irq_certified": false,
     "physical_reu_dma_timing": false
   },
+  "issue144_v4_directzp_qualified_rebuilt_source_candidate_2026_10_16": {
+    "status": "PASS_SOURCE_CANDIDATE_32_OF_32_PR_CHECKS_NO_HISTORICAL_BINARY_MUTATION",
+    "pr": 192,
+    "merge_commit": "eb64e84a557be30aadc36ce37bdc0fb76bff45b2",
+    "workflow": "https://github.com/floppyrom/C64-Math-Library/actions/runs/38872606791",
+    "release_artifacts": {
+      "reference": 12033279576,
+      "alternate": 12033907062
+    },
+    "current_source_corpus_csv": "benchmarks/ISSUE144_ISQRT32_V4_DIRECTZP_SOURCE_CANDIDATE_2026-10-16.csv",
+    "current_source_manifest": "validation/review/ISSUE144_V4_DIRECTZP_CANONICAL_CANDIDATE_RELEASE_2026-10-16.json",
+    "same_input_public_root_cases_per_profile": 438,
+    "current_v4_model_mean_cycles": 788.8767123287671,
+    "frozen_v4_model_mean_cycles": 924.082191780822,
+    "previous_optimized_source_v4_cycles": 804.8767123287671,
+    "direct_dma_incremental_cycles_saved": 16,
+    "no_slower_cases": true,
+    "full_56_entry_api_both_maps_pass": true,
+    "native_vice_reu_pass": true,
+    "default_prgs_or_reus_replaced": false,
+    "performance_md_updated": false,
+    "hardware_vir_dma_timing_certified": false,
+    "tagged_default_release": false
+  },
   "issue144_v4_reu_isqrt32_direct_zp_canonical_source_2026_10_16": {
     "status": "NORMAL_V4_CANONICAL_SOURCE_INTEGRATION_NO_FROZEN_BINARY_RELEASE",
     "source": "relocatable_source/v4_reu_16m/isqrt32_reu_prefix.asm",
@@ -4426,7 +4450,7 @@
       "v1_balanced": {
         "n": 1088,
         "mean": 10.566176,
-        "median": 0.0,
+        "median": 0,
         "p95": 36,
         "worst": 0,
         "best": 36,
@@ -4435,7 +4459,7 @@
       "v5_hybrid_lowzp": {
         "n": 1088,
         "mean": 10.566176,
-        "median": 0.0,
+        "median": 0,
         "p95": 36,
         "worst": 0,
         "best": 36,
