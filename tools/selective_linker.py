@@ -32,45 +32,45 @@ MODULES = {
     "MATH_SEEK8_INIT": {
         "link:generated-dda": {
             "source": "routines/movement/seek_u8_u8_dda.asm",
-            "segments": (("KERNEL_CODE", 582),),
+            "segments": (("KERNEL_CODE", 651),),
             "entry": "seek8_init", "zp": 0, "scratch": 19,
             "persistent_state": 160, "state_family": "seek8",
             "share_producer": "seek8-dda", "multi_entry": True,
             "seek8": True, "operand_layout": "seek8",
-            "provenance": "Byte-identical 582-byte generated eight-slot SEEK8 engine; four distinct exported entry points",
+            "provenance": "RAM-input relocation of generated eight-slot SEEK8 engine; four distinct exported entry points",
         },
     },
     "MATH_SEEK8_STEP": {
         "link:generated-dda": {
             "source": "routines/movement/seek_u8_u8_dda.asm",
-            "segments": (("KERNEL_CODE", 582),),
+            "segments": (("KERNEL_CODE", 651),),
             "entry": "seek8_step", "zp": 0, "scratch": 19,
             "persistent_state": 160, "state_family": "seek8",
             "share_producer": "seek8-dda", "multi_entry": True,
             "seek8": True, "operand_layout": "seek8",
-            "provenance": "Byte-identical 582-byte generated eight-slot SEEK8 engine; four distinct exported entry points",
+            "provenance": "RAM-input relocation of generated eight-slot SEEK8 engine; four distinct exported entry points",
         },
     },
     "MATH_SEEK8_STEP_INT": {
         "link:generated-dda": {
             "source": "routines/movement/seek_u8_u8_dda.asm",
-            "segments": (("KERNEL_CODE", 582),),
+            "segments": (("KERNEL_CODE", 651),),
             "entry": "seek8_step_int", "zp": 0, "scratch": 19,
             "persistent_state": 160, "state_family": "seek8",
             "share_producer": "seek8-dda", "multi_entry": True,
             "seek8": True, "operand_layout": "seek8",
-            "provenance": "Byte-identical 582-byte generated eight-slot SEEK8 engine; four distinct exported entry points",
+            "provenance": "RAM-input relocation of generated eight-slot SEEK8 engine; four distinct exported entry points",
         },
     },
     "MATH_SEEK8_STEP1": {
         "link:generated-dda": {
             "source": "routines/movement/seek_u8_u8_dda.asm",
-            "segments": (("KERNEL_CODE", 582),),
+            "segments": (("KERNEL_CODE", 651),),
             "entry": "seek8_step1", "zp": 0, "scratch": 19,
             "persistent_state": 160, "state_family": "seek8",
             "share_producer": "seek8-dda", "multi_entry": True,
             "seek8": True, "operand_layout": "seek8",
-            "provenance": "Byte-identical 582-byte generated eight-slot SEEK8 engine; four distinct exported entry points",
+            "provenance": "RAM-input relocation of generated eight-slot SEEK8 engine; four distinct exported entry points",
         },
     },
     "MATH_UMOD8": {
@@ -402,7 +402,7 @@ def available_variants(root=ROOT):
                           if mod.get("fast_umul8") else
                           "Original V1 unsigned 8x8 51-byte entry/core and two exact 511-byte lookup pages; 4 ZP, no REU"
                           if mod.get("umul8_v1") else
-                          "Generated 582-byte original SEEK8 engine; four entries share 160 persistent RAM bytes and 19 init scratch bytes"
+                          "Generated 651-byte RAM-operand SEEK8 engine; four entries share 160 persistent RAM bytes and 19 init scratch bytes"
                           if mod.get("seek8") else
                           "Compact portable shift-add multiply; not performance-ranked against table variants"
                           if mod.get("operand_layout") == "xyz" else
@@ -1101,10 +1101,11 @@ def build(plan, outdir, memory=None, root=ROOT):
             "shared_table_bytes": sum(t["bytes"] for t in shared_tables),
             "alignment_padding_bytes": padding, "public_io_bytes": 32,
             "private_ram_scratch_bytes": scratch,
-            "persistent_state_bytes": sum(state_requirements(
+            **({"persistent_state_bytes": sum(state_requirements(
                 mod for _, mod in modules.values()).values()),
-            "state_alignment_padding_bytes": persistent_allocated - sum(
-                state_requirements(mod for _, mod in modules.values()).values()),
+                "state_alignment_padding_bytes": persistent_allocated - sum(
+                state_requirements(mod for _, mod in modules.values()).values())}
+               if states else {}),
             "main_ram_total_bytes": occupied_ram, "zero_page_bytes": zp_bytes,
             "persistent_stack_page_bytes": 0,
         },
