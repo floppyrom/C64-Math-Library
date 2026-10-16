@@ -123,6 +123,25 @@ def check_nonoverlap(regions):
                 raise LinkError(name + " overlaps " + other)
 
 
+def custom_reserved(data, key, zp=False):
+    raw = data.get(key, [])
+    if not isinstance(raw, list):
+        raise LinkError(key + ": expected a list")
+    result = []
+    for i, item in enumerate(raw):
+        if not isinstance(item, dict) or "start" not in item or "end" not in item:
+            raise LinkError(key + ": expected objects with start/end")
+        first = address(item["start"], key + ".start")
+        last = address(item["end"], key + ".end")
+        if not first <= last <= (255 if zp else 65535):
+            raise LinkError(key + ": inverted or out-of-range reservation")
+        name = item.get("name", "reserved_" + str(i))
+        if not isinstance(name, str) or not name.strip():
+            raise LinkError(key + ": invalid reservation label")
+        result.append((name, first, last))
+    return result
+
+
 def choose(names, pins, objective, zp_budget, ram_budget=None):
     """Optimize *the whole selection*, sharing nonreentrant scratch ownership."""
     options = []
@@ -205,6 +224,13 @@ def build(plan, outdir, memory=None, root=ROOT):
         raise LinkError("RAM budget too small (includes public 32-byte I/O)")
 
     memory = memory or {}
+    if not isinstance(memory, dict):
+        raise LinkError("memory: expected a map")
+    supported = {"code_base", "math_io", "zp_base", "scratch_base",
+                 "reserved", "zp_reserved"}
+    unknown = set(memory) - supported
+    if unknown:
+        raise LinkError("Unknown memory parameters: " + ", ".join(sorted(unknown)))
     code = address(memory.get("code_base", 0x8000), "code_base")
     io = address(memory.get("math_io", 0xc000), "math_io")
     zb = address(memory.get("zp_base", 0x50), "zp_base")
@@ -212,9 +238,11 @@ def build(plan, outdir, memory=None, root=ROOT):
     blocks = [region("code", code, size), region("public I/O", io, 32)]
     if scratch:
         blocks.append(region("scratch", sb, scratch))
-    check_nonoverlap(blocks)
+    main_reserved = custom_reserved(memory, "reserved")
+    zp_reserved = custom_reserved(memory, "zp_reserved", zp=True)
+    check_nonoverlap(blocks + main_reserved)
     if zp_bytes:
-        region("scratch ZP", zb, zp_bytes, zp=True)
+        check_nonoverlap([region("scratch ZP", zb, zp_bytes, zp=True)] + zp_reserved)
 
     constants = {
         "INPUT_NUM": io + 16, "INPUT_DIV": io + 20,
@@ -296,6 +324,10 @@ def build(plan, outdir, memory=None, root=ROOT):
             "math_io_start": "$%04X" % io,
             "scratch_start": "$%04X" % sb if scratch else None,
             "zp_start": "$%02X" % zb if zp_bytes else None,
+            "user_reserved": [dict(name=n, start="$%04X" % a, end="$%04X" % b)
+                              for n, a, b in main_reserved],
+            "user_zp_reserved": [dict(name=n, start="$%02X" % a, end="$%02X" % b)
+                                 for n, a, b in zp_reserved],
         },
         "nonreentrant": True, "rom_underlay_enabled": False,
         "prg_sha256": hashlib.sha256(prg).hexdigest(),
