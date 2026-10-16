@@ -57,7 +57,7 @@ class TrigSharedTableTests(unittest.TestCase):
                                  ((-origin-48) % 256))
                 self.assertEqual(len(result["shared_tables"]), 1)
                 shared, = result["shared_tables"]
-                self.assertEqual(shared["users"], ["MATH_COS8", "MATH_SINCOS8", "MATH_SIN8"])
+                self.assertEqual(shared["users"], ["MATH_COS8", "MATH_SIN8", "MATH_SINCOS8"])
                 self.assertEqual(shared["bytes"], 256)
                 self.assertEqual(shared["sha256"],
                                  hashlib.sha256(selective_trig8.SINE_BYTES).hexdigest())
