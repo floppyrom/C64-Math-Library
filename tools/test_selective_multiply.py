@@ -116,7 +116,7 @@ class SelectiveMultiplyTests(unittest.TestCase):
                     x%y if y else 0)
                 cpu.call(entries["MATH_ATAN2_8"], 20000)
                 self.assertEqual(cpu.c, 0)
-                    self.assertEqual(cpu.sp, sp)
+                self.assertEqual(cpu.sp, sp)
             self.assertEqual(bytes(mem[load:load+len(image)]), before)
 
     def test_atan2_module_can_pack_between_arithmetic_modules(self):
