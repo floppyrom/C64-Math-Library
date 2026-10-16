@@ -17,6 +17,7 @@ import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_fast_umul16 as fast16
 import selective_umul8_v1 as v1umul8
+import selective_seek8 as seek8
 import selective_speed
 import selective_speed_umul16
 import selective_speed_umod8
@@ -28,6 +29,50 @@ import selective_smul8 as smul8tab
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
+    "MATH_SEEK8_INIT": {
+        "link:generated-dda": {
+            "source": "routines/movement/seek_u8_u8_dda.asm",
+            "segments": (("KERNEL_CODE", 582),),
+            "entry": "seek8_init", "zp": 0, "scratch": 19,
+            "persistent_state": 160, "state_family": "seek8",
+            "share_producer": "seek8-dda", "multi_entry": True,
+            "seek8": True, "operand_layout": "seek8",
+            "provenance": "Byte-identical 582-byte generated eight-slot SEEK8 engine; four distinct exported entry points",
+        },
+    },
+    "MATH_SEEK8_STEP": {
+        "link:generated-dda": {
+            "source": "routines/movement/seek_u8_u8_dda.asm",
+            "segments": (("KERNEL_CODE", 582),),
+            "entry": "seek8_step", "zp": 0, "scratch": 19,
+            "persistent_state": 160, "state_family": "seek8",
+            "share_producer": "seek8-dda", "multi_entry": True,
+            "seek8": True, "operand_layout": "seek8",
+            "provenance": "Byte-identical 582-byte generated eight-slot SEEK8 engine; four distinct exported entry points",
+        },
+    },
+    "MATH_SEEK8_STEP_INT": {
+        "link:generated-dda": {
+            "source": "routines/movement/seek_u8_u8_dda.asm",
+            "segments": (("KERNEL_CODE", 582),),
+            "entry": "seek8_step_int", "zp": 0, "scratch": 19,
+            "persistent_state": 160, "state_family": "seek8",
+            "share_producer": "seek8-dda", "multi_entry": True,
+            "seek8": True, "operand_layout": "seek8",
+            "provenance": "Byte-identical 582-byte generated eight-slot SEEK8 engine; four distinct exported entry points",
+        },
+    },
+    "MATH_SEEK8_STEP1": {
+        "link:generated-dda": {
+            "source": "routines/movement/seek_u8_u8_dda.asm",
+            "segments": (("KERNEL_CODE", 582),),
+            "entry": "seek8_step1", "zp": 0, "scratch": 19,
+            "persistent_state": 160, "state_family": "seek8",
+            "share_producer": "seek8-dda", "multi_entry": True,
+            "seek8": True, "operand_layout": "seek8",
+            "provenance": "Byte-identical 582-byte generated eight-slot SEEK8 engine; four distinct exported entry points",
+        },
+    },
     "MATH_UMOD8": {
         "link:v1-fast-fallback": {
             "source": "routines/modulo/umod8_v1_hybrid.asm",
@@ -275,6 +320,11 @@ def available_variants(root=ROOT):
                     "tools/selective_umul8_v1.py": hashlib.sha256(
                         (root / "tools/selective_umul8_v1.py").read_bytes()).hexdigest(),
                 } if mod.get("umul8_v1") else {
+                    "tools/selective_seek8.py": hashlib.sha256(
+                        (root / "tools/selective_seek8.py").read_bytes()).hexdigest(),
+                    "tools/seek_kernel.py": hashlib.sha256(
+                        (root / "tools/seek_kernel.py").read_bytes()).hexdigest(),
+                } if mod.get("seek8") else {
                     "tools/selective_fast_umul8.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
                     "tools/selective_fast_umul16.py": hashlib.sha256(
@@ -309,6 +359,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
+                    "tools/test_selective_seek8.py" if mod.get("seek8") else
                     "tools/test_selective_umul8_v1.py" if mod.get("umul8_v1") else
                     "tools/test_selective_fast_umul8.py" if mod.get("fast_umul8") else
                     "tools/test_selective_multiply.py"
@@ -316,7 +367,7 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("umul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v2v5") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("umul8_v1") or mod.get("seek8") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v2v5") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
@@ -351,6 +402,8 @@ def available_variants(root=ROOT):
                           if mod.get("fast_umul8") else
                           "Original V1 unsigned 8x8 51-byte entry/core and two exact 511-byte lookup pages; 4 ZP, no REU"
                           if mod.get("umul8_v1") else
+                          "Generated 582-byte original SEEK8 engine; four entries share 160 persistent RAM bytes and 19 init scratch bytes"
+                          if mod.get("seek8") else
                           "Compact portable shift-add multiply; not performance-ranked against table variants"
                           if mod.get("operand_layout") == "xyz" else
                           "Complete page-aligned ATAN2 lookup tables, exhaustive stock-C64 phase certification"
@@ -359,6 +412,7 @@ def available_variants(root=ROOT):
                 "resources_reported": {
                     "code_and_table_bytes": sum(s for _, s in mod["segments"]),
                     "scratch_bytes": mod["scratch"],
+                    "persistent_state_bytes": mod.get("persistent_state", 0),
                 },
                 "selective_link_ready": True,
             })
@@ -428,7 +482,8 @@ def shared_identity(item):
     if not key:
         return None
     return (key, ident, spec["source"], tuple(spec["segments"]),
-            spec["entry"], spec["zp"], spec["scratch"])
+            None if spec.get("multi_entry") else spec["entry"],
+            spec["zp"], spec["scratch"], spec.get("persistent_state", 0))
 
 
 def unique_code_modules(items):
@@ -545,7 +600,35 @@ def pareto_resource_variants(variants):
     return keep
 
 
-def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000, cycle_metrics=None):
+def state_requirements(modules):
+    """Persistent state is neither reusable call scratch nor per-entry duplication."""
+    regions = {}
+    for mod in modules:
+        family = mod.get("state_family")
+        if not family:
+            continue
+        claimed = mod.get("persistent_state")
+        if not isinstance(claimed, int) or claimed <= 0:
+            raise LinkError("Invalid persistent state requirement")
+        if family in regions and regions[family] != claimed:
+            raise LinkError("Conflicting persistent state resource contract")
+        regions[family] = claimed
+    return dict(sorted(regions.items()))
+
+
+def place_state(state_families, scratch_start, scratch_size):
+    cursor = scratch_start + scratch_size
+    allocation = {}
+    for family, count in state_families.items():
+        # Eight sprite slots are indexed by X; 8-byte alignment preserves
+        # their documented no-page-cross layout within each field.
+        cursor = (cursor + 7) & ~7
+        allocation[family] = cursor
+        cursor += count
+    return allocation, cursor - (scratch_start + scratch_size)
+
+
+def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000, cycle_metrics=None, scratch_base=0xc020):
     """Optimize *the whole selection*, sharing nonreentrant scratch ownership."""
     options = []
     for api in names:
@@ -570,7 +653,10 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
         zp = max(mod["zp"] for _, _, mod in combination)
         scratch = max(mod["scratch"] for _, _, mod in combination)
         code = projected_end(code_base, place_modules(unique_code_modules(combination), code_base)) - code_base
-        ram = code + 32 + scratch
+        _, state_allocated = place_state(
+            state_requirements(spec for _, _, spec in combination),
+            scratch_base, scratch)
+        ram = code + 32 + scratch + state_allocated
         if zp_budget is not None and zp > zp_budget:
             continue
         if ram_budget is not None and ram > ram_budget:
@@ -680,13 +766,16 @@ def build(plan, outdir, memory=None, root=ROOT):
             raise LinkError(api + " cycle-model measurement failed: " + str(exc)) from exc
         per_operation_cycles = {api: cycle_model["mean_cycles"]}
     modules = choose(names, pins, plan["objective"], zp_budget, ram_budget,
-                     code_base=code, cycle_metrics=per_operation_cycles)
+                     code_base=code, cycle_metrics=per_operation_cycles,
+                     scratch_base=sb)
     zp_bytes = max(mod["zp"] for _, mod in modules.values())
     scratch = max(mod["scratch"] for _, mod in modules.values())
     selected = [(api, ident, mod) for api, (ident, mod) in modules.items()]
     build_order = place_modules(unique_code_modules(selected), code)
     size = projected_end(code, build_order) - code
-    occupied_ram = size + 32 + scratch
+    states, persistent_allocated = place_state(
+        state_requirements(mod for _, mod in modules.values()), sb, scratch)
+    occupied_ram = size + 32 + scratch + persistent_allocated
     if zp_budget is not None and zp_bytes > zp_budget:
         raise LinkError("ZP budget too small")
     if ram_budget is not None and occupied_ram > ram_budget:
@@ -694,6 +783,9 @@ def build(plan, outdir, memory=None, root=ROOT):
     blocks = [region("code", code, size), region("public I/O", io, 32)]
     if scratch:
         blocks.append(region("scratch", sb, scratch))
+    for family, address in states.items():
+        blocks.append(region("persistent " + family, address,
+                             state_requirements(mod for _, mod in modules.values())[family]))
     main_reserved = custom_reserved(memory, "reserved")
     zp_reserved = custom_reserved(memory, "zp_reserved", zp=True)
     check_nonoverlap(blocks + main_reserved)
@@ -741,6 +833,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         constants["TEMP_RAM"] = sb
     binary = {}
     entries, detail = {}, []
+    physical_labels = {}
     pc = code
     for api, ident, module in build_order:
         operation = next(op for op in plan["operations"] if op["api"] == api)
@@ -784,6 +877,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("umul8_v1") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_umul8_v1.py"]:
             raise LinkError(api + ": V1 unsigned multiply source provenance missing")
+        if module.get("seek8") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_seek8.py", "tools/seek_kernel.py"]:
+            raise LinkError(api + ": SEEK8 source generator/emitter provenance missing")
         if module.get("smul8_v1") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_smul8.py"]:
             raise LinkError(api + ": signed multiplication table provenance missing")
@@ -791,7 +887,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -799,6 +895,10 @@ def build(plan, outdir, memory=None, root=ROOT):
                     machine, entry, ranges, end = sqrt16.assemble(pc, io, root)
                 elif module.get("umul8_v1"):
                     machine, entry, ranges, end = v1umul8.assemble(pc, io, zb, root)
+                elif module.get("seek8"):
+                    machine, labels, ranges, end = seek8.assemble(
+                        pc, io, sb, states["seek8"], root)
+                    entry = labels[module["entry"]]
                 elif module.get("fast_umul16"):
                     machine, entry, ranges, end = fast16.assemble(pc, io, sb, root)
                 else:
@@ -807,7 +907,8 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ranges:
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                labels = {module["entry"]: entry}
+                if not module.get("seek8"):
+                    labels = {module["entry"]: entry}
                 pc = end
             else:
                 for seg, length in module["segments"]:
@@ -826,6 +927,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         if set(machine) & set(binary):
             raise LinkError(api + ": module overlaps existing code")
         binary.update(machine)
+        if shared_identity((api, ident, module)) is not None:
+            physical_labels[shared_identity((api, ident, module))] = labels
         entries[api] = labels[module["entry"]]
         detail.append({
             "api": api, "variant": ident, "entry": "$%04X" % entries[api],
@@ -833,6 +936,7 @@ def build(plan, outdir, memory=None, root=ROOT):
             "source": module["source"],
             "sha256": hashlib.sha256((root / module["source"]).read_bytes()).hexdigest(),
             "segments": ranges, "zp_bytes": module["zp"], "scratch_bytes": module["scratch"],
+            "persistent_state_bytes": module.get("persistent_state", 0),
             "operand_layout": module.get("operand_layout", "ndqr"),
         })
     # Public API aliases can point at one physically linked historical producer.
@@ -860,8 +964,12 @@ def build(plan, outdir, memory=None, root=ROOT):
                            if v["id"] == ident and v["selective_link_ready"])
         if authorized[0].get("dependency_sha256", {}) != source_qual.get("dependency_sha256", {}):
             raise LinkError(api + ": alias dependency provenance differs")
-        entries[api] = entries[owner]
-        detail.append({**parent, "api": api, "shared_kernel_of": owner})
+        owner_entries = physical_labels[identity]
+        if module["entry"] not in owner_entries:
+            raise LinkError(api + ": distinct shared entry missing from linked producer")
+        entries[api] = owner_entries[module["entry"]]
+        detail.append({**parent, "api": api, "entry": "$%04X" % entries[api],
+                       "shared_kernel_of": owner})
     shared_tables = []
     if has_trig:
         if pc > shared_trig_page:
@@ -946,6 +1054,13 @@ def build(plan, outdir, memory=None, root=ROOT):
         "MATH_N = $%04X" % (io + 16), "MATH_D = $%04X" % (io + 20),
         "MATH_Q = $%04X" % (io + 24), "MATH_R = $%04X" % (io + 28),
     ]
+    if "seek8" in states:
+        exports += [
+            "; SEEK8: X=slot 0..7; INIT target MATH_X/MATH_Y, speed MATH_N/N+1.",
+            "; Eight persistent object positions, targets and velocities; keep RAM live.",
+            "MATH_SEEK8_POS_X = $%04X" % states["seek8"],
+            "MATH_SEEK8_POS_Y = $%04X" % (states["seek8"] + 8),
+        ]
     exports += [api + " = $%04X" % addr for api, addr in entries.items()]
     # Preserve the stable typed ABI aliases when generating a tiny library.
     for operation in plan["operations"]:
@@ -960,6 +1075,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                        "tools/selective_trig8.py", "tools/selective_dist8_accurate.py",
                        "tools/selective_smul8.py",
+                       "tools/selective_seek8.py", "tools/seek_kernel.py",
                        "tools/mini6502.py")
     toolchain_hashes = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
@@ -985,6 +1101,10 @@ def build(plan, outdir, memory=None, root=ROOT):
             "shared_table_bytes": sum(t["bytes"] for t in shared_tables),
             "alignment_padding_bytes": padding, "public_io_bytes": 32,
             "private_ram_scratch_bytes": scratch,
+            "persistent_state_bytes": sum(state_requirements(
+                mod for _, mod in modules.values()).values()),
+            "state_alignment_padding_bytes": persistent_allocated - sum(
+                state_requirements(mod for _, mod in modules.values()).values()),
             "main_ram_total_bytes": occupied_ram, "zero_page_bytes": zp_bytes,
             "persistent_stack_page_bytes": 0,
         },
@@ -993,6 +1113,7 @@ def build(plan, outdir, memory=None, root=ROOT):
             "code_end": "$%04X" % (pc - 1),
             "math_io_start": "$%04X" % io,
             "scratch_start": "$%04X" % sb if scratch else None,
+            "persistent_state": {family:"$%04X" % addr for family, addr in states.items()},
             "zp_start": "$%02X" % zb if zp_bytes else None,
             "user_reserved": [dict(name=n, start="$%04X" % a, end="$%04X" % b)
                               for n, a, b in main_reserved],
