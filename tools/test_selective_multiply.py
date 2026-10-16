@@ -117,6 +117,29 @@ class SelectiveMultiplyTests(unittest.TestCase):
                 self.assertEqual(cpu.sp, sp)
             self.assertEqual(bytes(mem[load:load+len(image)]), before)
 
+    def test_atan2_module_can_pack_between_arithmetic_modules(self):
+        # The globally optimal layout is not ATAN2-first or ATAN2-last:
+        # 107-byte UMUL16 precedes ATAN2 and the 323-byte UDIV16 follows it.
+        with tempfile.TemporaryDirectory() as d:
+            plan = math_builder.create_plan(
+                self.index, ["UDIV16", "UMUL16", "ATAN2_8"],
+                objective="size", zp_budget=2, ram_budget=1129,
+                pins={"ATAN2_8": "link:compact"})
+            man = selective_linker.build(plan, Path(d))
+            self.assertEqual(man["link_order"],
+                             ["MATH_UMUL16", "MATH_ATAN2_8", "MATH_UDIV16"])
+            resources = man["resource_use"]
+            self.assertEqual(resources["code_and_tables_bytes"], 1036)
+            self.assertEqual(resources["alignment_padding_bytes"], 55)
+            self.assertEqual(resources["image_span_bytes"], 1091)
+            self.assertEqual(resources["main_ram_total_bytes"], 1129)
+            self.assertEqual(resources["zero_page_bytes"], 2)
+            failed = math_builder.create_plan(
+                self.index, ["UDIV16", "UMUL16", "ATAN2_8"],
+                objective="size", zp_budget=2, ram_budget=1128)
+            with self.assertRaises(selective_linker.LinkError):
+                selective_linker.build(failed, Path(d) / "bad")
+
     def test_small_memory_and_no_zp(self):
         with tempfile.TemporaryDirectory() as d:
             plan = math_builder.create_plan(
