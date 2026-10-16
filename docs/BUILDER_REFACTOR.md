@@ -5,7 +5,7 @@ selection with a choice of mathematical **operations**, resource constraints,
 and optimization goals. Historical images remain available as regression
 oracles until the new linker meets the same correctness and timing contracts.
 
-**An experimental selective linker now supports ten operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16 and DIST8_FAST.**
+**An experimental selective linker now supports thirteen operations: UMUL8, UMUL16, UDIV8, UDIV16, UMOD16, UDIV32_32, UMOD32_32, ATAN2_8, ISQRT16, DIST8_FAST, SIN8, COS8 and SINCOS8.**
 It uses standalone relocatable sources or newly developed compact algorithms,
 not the historical full-profile images or extracted resident mirrors. New
 module combinations remain release-unqualified until all CI gates pass. Other operations
@@ -169,7 +169,38 @@ conditions are checked. Until CI qualification passes, this remains experimental
 Mixed builds with multiple page-aligned modules link correctly but currently use
 deterministic conservative ordering; **multi-aligned ordering is not globally
 padding-optimal yet**. The optimized ISQRT16 migration is not evidence that the
-other 48 operations or unported high-performance variants are link-ready.
+other 43 operations or unported high-performance variants are link-ready.
+
+### Historical V1–V5 shared trigonometric table (experimental)
+
+Three more independently selectable public operations preserve the original
+8-bit sine lookup and phase-shift kernels: `SIN8` (11 bytes), `COS8`
+(15 bytes), and `SINCOS8` (22 bytes). All five shipped V1–V5 resident
+PRGs contain **identical exact lookup bytes** at `$9400`; the source
+generator retains their exact 256-byte signed sine table, not host-side
+floating-point approximations. Sine is `table[phase]`, cosine is
+`table[(phase+64)&255]`, and SINCOS outputs both.
+
+These routines require **no ZP or private RAM**. One common lookup page is
+shared even if all three functions are selected: **48 executable bytes plus
+256 table bytes**, not 768 bytes of duplicate lookup tables. The table is
+page-aligned and its real padding is charged to the emitted image.
+At `$8000`, a combined three-operation build uses 512 image bytes,
+including 208 alignment bytes, and 32 caller-owned I/O bytes (544 RAM total).
+All inputs are retained, carry clears, and low-byte results are written to
+`MATH_Z` (low/second byte for SINCOS); upper unused bytes are unchanged.
+
+```sh
+python3 tools/math_builder.py --operation SIN8 --operation COS8 \
+  --operation SINCOS8 --zp-budget 0 --ram-budget 544 --build
+```
+
+CI verifies byte-for-byte table identity against **all five shipped PRGs**,
+all 256 phase values per operation at two relocations, actual mixed linking
+with ATAN2 and ISQRT16 aligned tables, and independent native x64sc execution
+of each source-linked entry point at two RAM layouts. Selection remains
+operation-first: a one-routine request exports only that operation, although
+it necessarily includes the one 256-byte lookup page.
 
 ### Historical V1 fast unsigned 8-bit division (experimental)
 

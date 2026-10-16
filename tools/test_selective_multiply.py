@@ -46,6 +46,7 @@ class SelectiveMultiplyTests(unittest.TestCase):
                 self.assertEqual(manifest["resource_use"], {
                     "code_and_tables_bytes": 108,
                     "image_span_bytes": 108,
+                    "shared_table_bytes": 0,
                     "alignment_padding_bytes": 0,
                     "public_io_bytes": 32,
                     "private_ram_scratch_bytes": 6,
