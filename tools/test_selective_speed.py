@@ -39,7 +39,8 @@ class MeasuredUMUL8SpeedTests(unittest.TestCase):
             self.assertEqual(model["cases"],1000)
             self.assertTrue(model["cpu_model_only"])
             self.assertEqual(set(model["mean_cycles"]),
-                             {"link:compact-zerozp","link:quarter-square"})
+                             {"link:compact-zerozp","link:quarter-square",
+                              "link:v1-resident-fast"})
             self.assertLess(model["mean_cycles"]["link:quarter-square"],
                             model["mean_cycles"]["link:compact-zerozp"])
             self.assertEqual(result["selection_objective"],"speed")
@@ -50,6 +51,16 @@ class MeasuredUMUL8SpeedTests(unittest.TestCase):
                              ).hexdigest())
             saved=json.loads((Path(d)/"selective_manifest.json").read_text())
             self.assertEqual(saved["cycle_model_benchmark"],model)
+
+    def test_original_v1_variant_is_also_measured_and_pin_eligible(self):
+        with tempfile.TemporaryDirectory() as folder:
+            plan = math_builder.create_plan(self.index, ["UMUL8"],
+                 objective="speed", zp_budget=4, ram_budget=1311,
+                 pins={"UMUL8": "link:v1-resident-fast"})
+            man = selective_linker.build(plan, Path(folder))
+            self.assertEqual(man["operations"][0]["variant"],"link:v1-resident-fast")
+            self.assertEqual(man["resource_use"]["zero_page_bytes"],4)
+            self.assertIn("link:v1-resident-fast",man["cycle_model_benchmark"]["mean_cycles"])
 
     def test_budget_restricts_speed_choice_and_preserves_pins(self):
         with tempfile.TemporaryDirectory() as d:

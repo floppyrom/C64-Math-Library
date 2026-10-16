@@ -1,3 +1,14 @@
+## Unreleased — original V1 UMUL8 builder migration
+
+- Introduce an operation-first original V1 UMUL8 source variant with the shipped
+  22-byte entry / 29-byte helper assembled contiguously, two exact 511-entry
+  quarter-square pages, four relocatable ZP scratch bytes, and no REU.
+- Extend same-input 1,000-case source-assembled CPU-model UMUL8 speed comparison
+  to the original V1 alongside compact and portable quarter-square kernels.
+  Preserve existing single-operation speed guard and RAM/ZP budget constraints.
+- Add exhaustive 65,536-case model tests at two RAM/ZP relocations, native VICE
+  tests at both locations, and byte-for-byte V1 table provenance.
+
 2026-10-16 UMOD8 CERTIFIED SINGLE-OPERATION SPEED SELECTION (UNRELEASED)
 - Extended operation-first --objective speed eligibility to historical UMOD8 only when it is the sole requested operation, using the certified V1/V2/V5 identical 1,000-pair source-assembled 6502 CPU-model benchmark.
 - Benchmark reproduces and SHA-locks original small-divisor-weighted corpus, relocates real machine code to caller memory layout, validates each output and carry, preserves N/D/Q/high bytes and stack, and records source SHA + mean call cycles. Source itself uses writable code and 2 ZP.

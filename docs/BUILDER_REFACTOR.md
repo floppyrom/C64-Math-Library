@@ -327,6 +327,38 @@ python3 tools/math_builder.py --operation UMOD8 --objective speed \
   --zp-budget 2 --ram-budget 261 --build
 ```
 
+### Source-exact original V1 UMUL8 (51-byte entry/core)
+
+The original shipped V1 `MATH_UMUL8` is now a third independently selectable
+8-bit unsigned multiplier, not replaced by a generic compact algorithm. Its
+22-byte entry and 29-byte helper are assembled contiguously (51 code bytes);
+the two aligned quarter-square lookup pages contain 511 exact entries each,
+plus the original unused gap bytes. Every lookup entry is checked byte-for-byte
+against the published V1 resident image.
+
+Use `--pin UMUL8=link:v1-resident-fast --zp-budget 4 --ram-budget 1311`.
+The code requires four exclusive consecutive zero-page bytes as two pointers;
+it requires neither self-modifying code nor REU nor one-time initialization.
+The public low X and Y bytes remain unchanged; the 16-bit result occupies the
+low two Z bytes, carry clears and high output bytes are preserved.
+At code origin $8000, 51 code + 1022 lookup bytes + 206 alignment/gap bytes
+plus 32-byte public I/O = **1311 total main RAM bytes**. The memory cost varies
+with code origin; all padding and unowned gap bytes count toward the footprint.
+
+The **same locked 1000-pair CPU-model corpus** now measures all three UMUL8
+implementations, with an explicit ZP origin in the benchmark. Automatic speed
+selection remains scoped to **UMUL8 alone**, resource constraints and pins are
+enforced, and mixed-operation speed comparisons continue to fail closed.
+All 65,536 x/y products are checked at two independently relocated RAM/ZP
+placements, followed by native VICE execution at both placements.
+
+```sh
+python3 tools/math_builder.py --operation UMUL8 \
+  --pin UMUL8=link:v1-resident-fast --zp-budget 4 --ram-budget 1311 --build
+python3 tools/math_builder.py --operation UMUL8 --objective speed \
+  --zp-budget 4 --ram-budget 1311 --measure
+```
+
 ### Source-aligned UMOD8 cycle measurement (V1, V2, V5)
 
 `tools/test_selective_umod8_speed.py` benchmarks all three independently
