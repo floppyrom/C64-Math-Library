@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import copy
 import hashlib
 import json
 import tempfile
@@ -188,7 +189,10 @@ def create_plan(
     output = []
     for api in selected:
         op = index[api]
-        variants = op["variants"]
+        # A plan is a provenance snapshot, never an alias into the catalog.
+        # Tests and callers may intentionally tamper with a plan to verify
+        # checksum rejection without poisoning later builds.
+        variants = copy.deepcopy(op["variants"])
         if validate_sources:
             for v in variants:
                 validate_sha(root, v)
