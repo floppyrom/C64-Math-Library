@@ -14,6 +14,8 @@ on:
       - tools/native_selective_multiply.py
       - tools/test_selective_multiply.py
       - routines/multiply/umul16_compact_zerozp.asm
+      - routines/multiply/umul8_compact_zerozp.asm
+      - tools/test_selective_umul8.py
       - tools/selective_atan2.py
       - tools/test_selective_atan2.py
       - routines/atan2/*.asm
@@ -53,6 +55,7 @@ jobs:
           python3 tools/test_selective_linker.py
           python3 tools/test_selective_atan2.py
           python3 tools/test_selective_multiply.py
+          python3 tools/test_selective_umul8.py
       - name: Smoke-test source SHA provenance
         run: >-
           python3 tools/math_builder.py
