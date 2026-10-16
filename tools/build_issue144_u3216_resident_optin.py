@@ -79,7 +79,8 @@ def main():
             if dest.exists():shutil.rmtree(dest)
             shutil.copytree(folder,dest)
             (dest/"U3216_LOWTAIL_SELECTED_SOURCE.inc").write_text(patched)
-            p=dest/("math_"+profile+"_game_math.prg")
+            built_manifest=json.loads((dest/"source_build_manifest.json").read_text())
+            p=dest/built_manifest["output_prg"]
             assert p.exists()
             row={"profile":profile,"layout":a.config_kind,
                  "status":"PASS_56_ENTRY_SOURCE_ONLY_OPTION",
