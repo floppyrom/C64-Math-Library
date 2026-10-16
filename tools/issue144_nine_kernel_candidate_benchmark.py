@@ -156,7 +156,9 @@ def run_profile(p,stage,layout,sets):
     assert digest(prg)==manifest["output_sha256"]
     frozen_api=api_frozen(p)
     old,_=init_machine(p,FROZEN[p],REUS.get(p),{k:f"${v:04X}" for k,v in frozen_api.items()})
-    candidate,api=init_machine(p,prg,reu,manifest["public_entries"])
+    candidate,api=init_machine(p,prg,reu,
+                               {**manifest["public_entries"],
+                                "MATH_INIT":manifest["math_init"]})
     # The 56 stable public *functions* and caller-visible SEEK state arrays
     # are separate API include records; the manifest lists only functions.
     import re
