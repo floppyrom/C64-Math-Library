@@ -40,9 +40,12 @@ class U3216ReferenceTest(unittest.TestCase):
         cls.index=math_builder.operation_index()
 
     def build(self,path,ops=APIS,code=0x8000,io=0xc000,sb=None,**kw):
+        default_pins={api:"link:portable-restoring" for api in ops if api in APIS}
+        pins=kw.pop("pins",default_pins)
         plan=math_builder.create_plan(cls_index(self),list(ops),
                                       zp_budget=kw.pop("zp_budget",0),
-                                      ram_budget=kw.pop("ram_budget",197),**kw)
+                                      ram_budget=kw.pop("ram_budget",197),
+                                      pins=pins,**kw)
         memory={"code_base":code,"math_io":io}
         if sb is not None:
             memory["scratch_base"]=sb
