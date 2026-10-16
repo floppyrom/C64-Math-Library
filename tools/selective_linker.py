@@ -18,6 +18,7 @@ import selective_fast_umul8 as fast8
 import selective_fast_umul16 as fast16
 import selective_umul8_v1 as v1umul8
 import selective_seek8 as seek8
+import selective_seek16 as seek16
 import selective_speed
 import selective_speed_umul16
 import selective_speed_umod8
@@ -29,6 +30,50 @@ import selective_smul8 as smul8tab
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULES = {
+    "MATH_SEEK16_INIT": {
+        "link:generated-dda": {
+            "source": "routines/movement/seek_u16_u8_dda.asm",
+            "segments": (("KERNEL_CODE", 898),),
+            "entry": "seek16_init", "zp": 0, "scratch": 19,
+            "persistent_state": 248, "state_family": "seek16",
+            "share_producer": "seek16-dda", "multi_entry": True,
+            "seek16": True, "operand_layout": "seek16",
+            "provenance": "RAM-input relocation of eight-slot, 16-bit-X SEEK16 DDA engine with four entry points",
+        },
+    },
+    "MATH_SEEK16_STEP": {
+        "link:generated-dda": {
+            "source": "routines/movement/seek_u16_u8_dda.asm",
+            "segments": (("KERNEL_CODE", 898),),
+            "entry": "seek16_step", "zp": 0, "scratch": 19,
+            "persistent_state": 248, "state_family": "seek16",
+            "share_producer": "seek16-dda", "multi_entry": True,
+            "seek16": True, "operand_layout": "seek16",
+            "provenance": "RAM-input relocation of eight-slot, 16-bit-X SEEK16 DDA engine with four entry points",
+        },
+    },
+    "MATH_SEEK16_STEP_INT": {
+        "link:generated-dda": {
+            "source": "routines/movement/seek_u16_u8_dda.asm",
+            "segments": (("KERNEL_CODE", 898),),
+            "entry": "seek16_step_int", "zp": 0, "scratch": 19,
+            "persistent_state": 248, "state_family": "seek16",
+            "share_producer": "seek16-dda", "multi_entry": True,
+            "seek16": True, "operand_layout": "seek16",
+            "provenance": "RAM-input relocation of eight-slot, 16-bit-X SEEK16 DDA engine with four entry points",
+        },
+    },
+    "MATH_SEEK16_STEP1": {
+        "link:generated-dda": {
+            "source": "routines/movement/seek_u16_u8_dda.asm",
+            "segments": (("KERNEL_CODE", 898),),
+            "entry": "seek16_step1", "zp": 0, "scratch": 19,
+            "persistent_state": 248, "state_family": "seek16",
+            "share_producer": "seek16-dda", "multi_entry": True,
+            "seek16": True, "operand_layout": "seek16",
+            "provenance": "RAM-input relocation of eight-slot, 16-bit-X SEEK16 DDA engine with four entry points",
+        },
+    },
     "MATH_SEEK8_INIT": {
         "link:generated-dda": {
             "source": "routines/movement/seek_u8_u8_dda.asm",
@@ -325,6 +370,11 @@ def available_variants(root=ROOT):
                     "tools/seek_kernel.py": hashlib.sha256(
                         (root / "tools/seek_kernel.py").read_bytes()).hexdigest(),
                 } if mod.get("seek8") else {
+                    "tools/selective_seek16.py": hashlib.sha256(
+                        (root / "tools/selective_seek16.py").read_bytes()).hexdigest(),
+                    "tools/seek_kernel.py": hashlib.sha256(
+                        (root / "tools/seek_kernel.py").read_bytes()).hexdigest(),
+                } if mod.get("seek16") else {
                     "tools/selective_fast_umul8.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
                     "tools/selective_fast_umul16.py": hashlib.sha256(
@@ -359,6 +409,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
+                    "tools/test_selective_seek16.py" if mod.get("seek16") else
                     "tools/test_selective_seek8.py" if mod.get("seek8") else
                     "tools/test_selective_umul8_v1.py" if mod.get("umul8_v1") else
                     "tools/test_selective_fast_umul8.py" if mod.get("fast_umul8") else
@@ -367,7 +418,7 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("umul8_v1") or mod.get("seek8") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v2v5") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("umul8_v1") or mod.get("seek8") or mod.get("seek16") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v2v5") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
@@ -404,6 +455,8 @@ def available_variants(root=ROOT):
                           if mod.get("umul8_v1") else
                           "Generated 651-byte RAM-operand SEEK8 engine; four entries share 160 persistent RAM bytes and 19 init scratch bytes"
                           if mod.get("seek8") else
+                          "Generated 898-byte RAM-operand SEEK16 DDA engine; 248 persistent object RAM and 19-byte shared init scratch"
+                          if mod.get("seek16") else
                           "Compact portable shift-add multiply; not performance-ranked against table variants"
                           if mod.get("operand_layout") == "xyz" else
                           "Complete page-aligned ATAN2 lookup tables, exhaustive stock-C64 phase certification"
@@ -880,6 +933,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("seek8") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_seek8.py", "tools/seek_kernel.py"]:
             raise LinkError(api + ": SEEK8 source generator/emitter provenance missing")
+        if module.get("seek16") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_seek16.py", "tools/seek_kernel.py"]:
+            raise LinkError(api + ": SEEK16 source generator/emitter provenance missing")
         if module.get("smul8_v1") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_smul8.py"]:
             raise LinkError(api + ": signed multiplication table provenance missing")
@@ -887,7 +943,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -899,6 +955,10 @@ def build(plan, outdir, memory=None, root=ROOT):
                     machine, labels, ranges, end = seek8.assemble(
                         pc, io, sb, states["seek8"], root)
                     entry = labels[module["entry"]]
+                elif module.get("seek16"):
+                    machine, labels, ranges, end = seek16.assemble(
+                        pc, io, sb, states["seek16"], root)
+                    entry = labels[module["entry"]]
                 elif module.get("fast_umul16"):
                     machine, entry, ranges, end = fast16.assemble(pc, io, sb, root)
                 else:
@@ -907,7 +967,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ranges:
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8"):
+                if not module.get("seek8") and not module.get("seek16"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
@@ -1061,6 +1121,14 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_SEEK8_POS_X = $%04X" % states["seek8"],
             "MATH_SEEK8_POS_Y = $%04X" % (states["seek8"] + 8),
         ]
+    if "seek16" in states:
+        exports += [
+            "; SEEK16: X=slot 0..7; 16-bit target MATH_X, 8-bit Y, speed MATH_N.",
+            "; Eight persistent 16-bit X/Y object coordinates; keep RAM live.",
+            "MATH_SEEK16_POS_XL = $%04X" % states["seek16"],
+            "MATH_SEEK16_POS_XH = $%04X" % (states["seek16"] + 8),
+            "MATH_SEEK16_POS_Y = $%04X" % (states["seek16"] + 16),
+        ]
     exports += [api + " = $%04X" % addr for api, addr in entries.items()]
     # Preserve the stable typed ABI aliases when generating a tiny library.
     for operation in plan["operations"]:
@@ -1075,7 +1143,8 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                        "tools/selective_trig8.py", "tools/selective_dist8_accurate.py",
                        "tools/selective_smul8.py",
-                       "tools/selective_seek8.py", "tools/seek_kernel.py",
+                       "tools/selective_seek8.py", "tools/selective_seek16.py",
+                       "tools/seek_kernel.py",
                        "tools/mini6502.py")
     toolchain_hashes = {
         name: hashlib.sha256((root / name).read_bytes()).hexdigest()
