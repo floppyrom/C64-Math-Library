@@ -114,6 +114,13 @@ MODULES = {
             "provenance": "Exact V1 125-instruction UDIV8 fast chain, trampoline omitted",
             "udiv8_v1": True,
         },
+        "link:v2-v5-fast": {
+            "source": "routines/divide/udiv8_v2v5_fast.asm",
+            "segments": (("KERNEL_CODE", 430),),
+            "entry": "FAST_UDIV8_V2V5", "zp": 1, "scratch": 0,
+            "udiv8_v2v5": True,
+            "provenance": "Byte-identical V2 and V5 original 430-byte branch-chain producer; no REU",
+        },
     },
     "MATH_UDIV16": {
         "link:biased": {
@@ -286,6 +293,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
                     "tools/test_selective_trig8.py" if mod.get("trig8") else
                     "tools/test_selective_sdiv8.py" if mod.get("sdiv8_v1") else
+                    "tools/test_selective_udiv8_v2v5.py" if mod.get("udiv8_v2v5") else
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
@@ -295,11 +303,13 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v2v5") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("Original V2/V5 unrolled fast/fallback U8 remainder producer, "
+                "notes": ("Original byte-identical V2/V5 430-byte unrestricted UDIV8 Q/R fast producer; no REU, 1 ZP byte"
+                          if mod.get("udiv8_v2v5") else
+                          "Original V2/V5 unrolled fast/fallback U8 remainder producer, "
                           "two zero-page bytes and writable immediate operands; Q untouched"
                           if mod.get("umod8_extra") else
                           "Original V1 157-byte UMOD8 fast/low-divisor fallback; "

@@ -349,6 +349,35 @@ size/speed trade-offs. The builder does not yet auto-select UMOD8 by
 cycle speed, and does not rank unrelated operation families using an
 unmatched benchmark corpus.
 
+### Source-identical V2/V5 UDIV8 fast-chain alternative
+
+V2 and V5 ship *byte-for-byte identical* UDIV8 code at the original
+`$4000-$41AD` executable island. Rather than manufacture a duplicate
+implementation, the operation-first linker exposes the original source as
+`link:v2-v5-fast`: **430 code bytes, 1 zero-page scratch byte, no
+private RAM scratch, no lookup tables or REU**. Original `$3120` jump
+trampoline is omitted, and the public entry is code origin + 8.
+
+The default minimum-RAM choice remains the smaller V1 kernel
+(`link:v1-resident-fast`, 294 code bytes). V2/V5's longer unrolled
+fast branch chain is retained as a historical speed-oriented alternative,
+without asserting a superior average speed on unmatched published
+benchmark corpora. The builder accepts an explicit pin:
+
+```sh
+python3 tools/math_builder.py --operation UDIV8 \
+  --pin UDIV8=link:v2-v5-fast --zp-budget 1 \
+  --ram-budget 462 --build
+```
+
+At the original source address `$4000` and ZP `$10`, the generated
+430-byte PRG code island is tested byte-for-byte against **both** shipped
+V2 and V5 resident PRGs. An additional two-location test calls the
+source-assembled code for all 65,536 numerator/divisor pairs per location,
+checking dividend/divisor preservation, quotient/remainder, zero-divisor
+carry, upper output byte sentinels and stable stack. Native x64sc verifies
+the source-built selected image at two more RAM and ZP placements.
+
 ### Historical V1 fast unsigned 8-bit division (experimental)
 
 `MATH_UDIV8` now offers the `link:v1-resident-fast` source choice:

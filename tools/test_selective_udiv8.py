@@ -87,7 +87,7 @@ class NativeV1UDIV8Tests(unittest.TestCase):
 
     def test_canonical_variant_metadata(self):
         candidates=selective_linker.available_variants()["MATH_UDIV8"]
-        variant,=candidates
+        variant=next(v for v in candidates if v["id"] == "link:v1-resident-fast")
         self.assertEqual(variant["validation_path"],"tools/test_selective_udiv8.py")
         self.assertEqual(variant["historical_provenance"],
                          "Exact V1 125-instruction UDIV8 fast chain, trampoline omitted")
