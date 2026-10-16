@@ -82,6 +82,15 @@ MODULES = {
             "provenance": "V1-V5 identical lookup table, original 22-byte dual-output kernel",
         },
     },
+    "MATH_UMOD8": {
+        "link:v1-resident-smc": {
+            "source": "routines/divide/umod8_v1_selfmod.asm",
+            "segments": (("KERNEL_CODE", 157),),
+            "entry": "FAST_UMOD8_V1", "zp": 2, "scratch": 0,
+            "umod8_v1": True, "requires_writable_code": True,
+            "provenance": "Exact optimized V1 157-byte unsigned remainder self-modifying producer; 2 ZP",
+        },
+    },
     "MATH_UDIV8": {
         "link:v1-resident-fast": {
             "source": "routines/divide/udiv8_v1_resident.asm",
@@ -255,6 +264,7 @@ def available_variants(root=ROOT):
                 "zp_bytes_reported": mod["zp"],
                 "stack_page_bytes_reported": 0,
                 "validation_path": (
+                    "tools/test_selective_umod8.py" if mod.get("umod8_v1") else
                     "tools/test_selective_smul8.py" if mod.get("smul8_v1") else
                     "tools/test_selective_fast_umul16.py" if mod.get("fast_umul16") else
                     "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
@@ -269,11 +279,14 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if mod.get("smul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if mod.get("umod8_v1") or mod.get("smul8_v1") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("Original 46-byte writable-RAM self-modifying signed 8x8; "
+                "notes": ("157-byte original V1 fast unsigned remainder with two code-operand patches; "
+                          "two reserved ZP bytes, writable code RAM required"
+                          if mod.get("umod8_v1") else
+                          "Original 46-byte writable-RAM self-modifying signed 8x8; "
                           "four exact V1-V5 511-byte table pages, zero ZP/scratch"
                           if mod.get("smul8_v1") else
                           "Original V1 signed 8-bit Q/R producer; two APIs share a single 530-byte kernel, one ZP byte"
@@ -845,6 +858,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; DIV/MOD: unsigned N/D in MATH_N/MATH_D, quotient/remainder Q/R;",
         "; UDIV8: low byte N/D => low byte Q/R; high bytes unchanged; C=1 on D=0.",
         "; SDIV8/SMOD8: signed low byte N/D => signed low Q/R, both outputs written.",
+        "; UMOD8: unsigned low byte N/D => R low; quotient untouched, C=1 iff D=0.",
+        "; UMOD8 self-modifies two immediate operands and requires writable code RAM.",
         "; carry set iff D=0. UMOD leaves quotient untouched.",
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
