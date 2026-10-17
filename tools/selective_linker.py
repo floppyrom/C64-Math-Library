@@ -322,6 +322,15 @@ MODULES = {
             "provenance": "Shared 24/24 unsigned DIV+MOD producer: both outputs, divisor-zero carry and preserved N/D",
         },
     },
+    "MATH_URECIP16_Q16": {
+        "link:compact-zerozp": {
+            "source": "routines/fixed/urecip16_q16_zerozp.asm",
+            "segments": (("KERNEL_CODE", 99),),
+            "entry": "FAST_URECIP16_Q16_ZEROZP", "zp": 0, "scratch": 1,
+            "urecip16": True,
+            "provenance": "Standalone 24-step fixed-numerator unsigned 65536/D16 Q24, 99 B code and one RAM byte. Inputs intact, D=0 signals carry. Portable reference, not historical 66-cycle speed variant.",
+        },
+    },
     "MATH_UDIV16_SHL8": {
         "link:accumulator-remainder": {
             "source": "routines/divide/u16_shl8_accum_selective.asm",
@@ -530,6 +539,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8_v2v5.py" if mod.get("udiv8_v2v5") else
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
+                    "tools/test_selective_urecip16_q16.py" if mod.get("urecip16") else
                     "tools/test_selective_udiv16_shl8.py" if mod.get("udiv16_shl8") else
                     "tools/test_selective_udiv24_v2.py" if mod.get("udiv24_v2") else
                     "tools/test_selective_isqrt32_v2.py" if mod.get("isqrt32_v2") else
@@ -1241,6 +1251,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UDIV8: low byte N/D => low byte Q/R; high bytes unchanged; C=1 on D=0.",
         "; UDIV32_16 and UMOD32_16: N32/D16 => Q32/R16 both outputs, C=1 on D=0.",
         "; UDIV16_SHL8: unsigned (N16 << 8)/D16 => Q24/R16, C=1 on D=0.",
+        "; URECIP16_Q16: D16 => Q24 = floor(65536/D), C=1 on D=0; Q3/R unchanged.",
         "; Portable 32/16 source is the correctness fallback, not the resident speed champion.",
         "; UMOD8: low byte N/D => low byte R ONLY; Q untouched, C=1 if D=0.",
         "; UMOD8 V1 fast/fallback uses two writable immediate operands in RAM.",
