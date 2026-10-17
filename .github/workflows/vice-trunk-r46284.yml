@@ -57,7 +57,7 @@ jobs:
           sha256sum vice-r46284-linux-x86_64-headless.tar.gz \
             > vice-r46284-linux-x86_64-headless.sha256
           tar tzf vice-r46284-linux-x86_64-headless.tar.gz \
-            | grep -E 'usr/local/(bin/x64sc|share/vice/)' | head -15
+            | grep -E 'usr/local/(bin/x64sc|share/vice/)' | sed -n '1,15p'
 
       - name: Upload reproducible pinned VICE package
         uses: actions/upload-artifact@v4
