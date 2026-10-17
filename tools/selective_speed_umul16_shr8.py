@@ -38,7 +38,7 @@ def assemble_variant(ident, mod, origin, io, scratch, root):
     for label, value in {"KERNEL_CODE": origin, "INPUT_X": io,
                          "INPUT_Y": io+4, "OUTPUT_Z": io+8,
                          "TEMP_RAM": scratch}.items():
-        expr = r"(?m)^" + re.escape(label) + r"\\s*=\\s*\\$[0-9A-Fa-f]+\\s*$"
+        expr = r"(?m)^" + re.escape(label) + r"\s*=\s*\$[0-9A-Fa-f]+\s*$"
         program, n = re.subn(expr, label + " = $%04X" % value, program)
         if n != 1:
             raise ValueError("Unqualified compact source constant: " + label)
@@ -64,7 +64,7 @@ def bench_umul16_shr8(modules, origin, io, scratch, root: Path):
         for x, y in pairs:
             cpu.mem[io:io+2] = x.to_bytes(2, "little")
             cpu.mem[io+4:io+6] = y.to_bytes(2, "little")
-            cpu.mem[io+8:io+12] = b"\\xA5" * 4
+            cpu.mem[io+8:io+12] = bytes([0xA5]) * 4
             cpu.d = 0
             cpu.c = (x ^ y) & 1
             total += cpu.call(entry, 50000)
