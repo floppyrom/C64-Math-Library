@@ -352,6 +352,15 @@ MODULES = {
             "provenance": "V1 fast signed-8 abs/max/min approximation; resident trampoline removed",
         },
     },
+    "MATH_ISQRT32": {
+        "link:radix4-zerozp": {
+            "source": "routines/roots/isqrt32_restoring_zerozp.asm",
+            "segments": (("KERNEL_CODE", 204),),
+            "entry": "FAST_ISQRT32_RESTORING", "zp": 0, "scratch": 10,
+            "operand_layout": "nz",
+            "provenance": "Exact full-domain restoring ISQRT32; 204 bytes / 10 RAM / 0 ZP; V1–V5 optimized fast producers retained for follow-on transplant",
+        },
+    },
     "MATH_ISQRT16": {
         "link:square-table": {
             "source": "routines/roots/isqrt16_square_table.asm",
@@ -781,6 +790,8 @@ def relocate_source(mod, locations, root):
         used |= {"INPUT_X", "OUTPUT_Z", "SINE_TAB"}
     elif mod.get("dist8_accurate"):
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z", "DIST_MAJOR", "DIST_MINOR"}
+    elif mod.get("operand_layout") == "nz":
+        used |= {"INPUT_NUM", "OUTPUT_Z"}
     elif mod.get("operand_layout") == "xyz":
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z"}
     else:

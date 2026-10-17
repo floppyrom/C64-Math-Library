@@ -1,3 +1,15 @@
+## Unreleased — operation-first ISQRT32 full-domain reference
+
+- Independently link `MATH_ISQRT32` as a **204-byte/10-RAM/0-ZP**
+  full-domain restoring radix-4 source. Preserves N32/X/Y/stack and
+  upper output bytes; no ROM writes, tables, REU or setup.
+- Add boundary/perfect-square/random CPU-model correctness,
+  source/ABI/relocation and 246-byte minimum RAM checks;
+  native VICE verifies 96 roots per relocation across two maps.
+- Historical fast V1–V5 ISQRT32 implementations remain unchanged and
+  are not ranked against the portable source until their dependencies
+  are integrated and measured on a common corpus.
+
 ## Unreleased — unsigned 32/16 one-byte-RAM Pareto producer
 
 - Introduce a second independently linkable shared DIV32/16+MOD32/16

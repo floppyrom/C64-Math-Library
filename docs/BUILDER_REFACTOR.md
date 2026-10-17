@@ -1,3 +1,34 @@
+### Independently linkable ISQRT32, complete 32-bit domain
+
+`MATH_ISQRT32` is available as the source-hashed, relocatable
+`link:radix4-zerozp` reference variant. It implements exact integer
+square root of any unsigned 32-bit radicand (16-bit floor result) using
+16 radix-4 restoring iterations. It preserves all four `MATH_N` bytes,
+X and Y registers, and the stack pointer; returns carry clear and only
+writes the lower two `MATH_Z` output bytes. The caller must enter with
+decimal mode clear.
+
+The kernel occupies **204 bytes** and uses **10 bytes of ordinary,
+reusable RAM scratch**, no normal zero page, no setup, no REU and no
+lookup tables. Default footprint with a 32-byte public I/O block:
+**246 bytes**. Code is not modified at runtime and may live in ROM.
+The source is independently relocatable and the builder includes
+its exact digest in the plan and binary manifest. RAM and reserved
+regions are checked across the complete selected operation set.
+
+```sh
+python3 tools/math_builder.py --operation ISQRT32 --zp-budget 0 \
+  --ram-budget 246 --build
+```
+
+**Performance caveat:** this portable fallback is not claimed to be
+the fastest ISQRT32. The certified V1/V5 high-word seeded and V2/V3
+resident radix-four refiners rely on resident root16 tables, 16-bit
+seed helpers, and initialized/zero-page state. V4 has a separate REU
+architecture. These historical fast producers are *not yet
+independently linkable* and remain the next optimization/import target.
+They and all V1–V5 profiles are preserved unchanged.
+
 ### One-byte-RAM accumulator remainder variant for unsigned 32/16
 
 An additional independent option, `link:accumulator-remainder`, keeps the
