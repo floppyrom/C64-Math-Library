@@ -29,6 +29,7 @@ import selective_speed_isqrt32
 import selective_speed_umul32
 import selective_speed_smul32
 import selective_speed_mul32_ready_shr16 as speed32extras
+import selective_speed_u3216 as speed_u3216
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
@@ -1370,12 +1371,14 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_SMUL32_READY": (speed32extras.bench_smul32_ready, "scratch", True),
             "MATH_UMUL32_SHR16": (speed32extras.bench_umul32_shr16, "scratch", True),
             "MATH_SMUL32_SHR16": (speed32extras.bench_smul32_shr16, "scratch", True),
+            "MATH_UDIV32_16": (speed_u3216.bench_udiv32_16, "scratch", False),
+            "MATH_UMOD32_16": (speed_u3216.bench_umod32_16, "scratch", False),
         }
         unavailable = sorted(set(names) - set(measured))
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16")
+                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16")
         models = {}
         per_operation_cycles = {}
         for api in names:
@@ -1800,6 +1803,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_fast_umul16.py", "tools/selective_fast31_umul32.py",
                        "tools/selective_speed_umul32.py", "tools/selective_speed_smul32.py",
                        "tools/selective_speed_mul32_ready_shr16.py",
+                       "tools/selective_speed_u3216.py",
                        "tools/selective_speed_umul16.py",
                        "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                        "tools/selective_speed_isqrt32.py",
