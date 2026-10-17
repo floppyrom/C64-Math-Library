@@ -39,7 +39,7 @@ def main():
                 api="MATH_"+op
                 result=check(bytearray(mem),entries[api],32,mapping,
                              "u3232_shared_%s_%04x"%(op.lower(),code),
-                             9900+i*2+j,root,op=="UMOD32_32")
+                             9900+i*2+j,root,False)
                 total+=result["cases"]
                 print("NATIVE SHARED U3232",api,hex(code),result["cases"],
                       "PASS",flush=True)
