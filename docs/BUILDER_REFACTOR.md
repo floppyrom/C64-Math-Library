@@ -1,3 +1,31 @@
+### Independently linked signed 32x32 SHR16 fixed-point
+
+The operation-first builder now exposes `MATH_SMUL32_SHR16` as
+`link:compact-zerozp`, using a self-contained 293-byte
+signed 32×32→64 source core and a 41-byte fixed-point adapter.
+The adapter copies the signed full-product bytes [2..7] into
+Z[0..5], the exact two's-complement low 48-bit result of
+arithmetic `(signed X32 * signed Y32) >> 16`. Z[6..7]
+are volatile and outside this entry's output contract.
+
+The module uses **334 executable bytes**, **12 bytes of reusable
+call-exclusive ordinary RAM**, **zero ZP**, and **378 total RAM
+bytes including the public I/O region**. Signed X/Y inputs
+are unchanged, carry is clear, CLD is required, and no tables,
+SMC, REU, undocumented opcodes or initialization are needed.
+
+```sh
+python3 tools/math_builder.py --operation SMUL32_SHR16 \
+  --zp-budget 0 --ram-budget 378 \
+  --pin SMUL32_SHR16=link:compact-zerozp --build
+```
+
+Tests cover signed extremes, three relocated CPU-model maps,
+mixed signed and unsigned calls, strict scratch budgets, code/stack
+integrity and two native x64sc placements. This is a portable
+correctness baseline, not a transplant of the historical fastest
+resident kernel and not a new benchmark claim.
+
 ### Full signed 32x32 multiplication via independent source
 
 The operation-first builder now offers `MATH_SMUL32`
