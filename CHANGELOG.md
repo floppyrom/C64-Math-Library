@@ -1,3 +1,17 @@
+## Unreleased — zero-ZP signed 16-bit multiplication source
+
+- Add independently linked `MATH_SMUL16` `link:compact-zerozp`
+  implementation using a source-local 108-byte unsigned core and
+  signed high-product correction: 161 executable bytes, 6 bytes RAM
+  scratch, 0 ZP; 199 bytes total including public I/O.
+- Preserve 16-bit signed X/Y (and upper operand bytes), write the exact
+  signed 32-bit Z product while leaving Z[4..7] untouched and carry clear.
+  Qualify negative/positive extremes including -32768, mixed calls,
+  three CPU-model memory maps and two native VICE maps.
+- Raises builder independent-link coverage to 36/56 once merged.
+  Historical V1–V5 resident algorithms and published cycle counts
+  are unchanged; fast-source transplant remains future work.
+
 ## Unreleased — independent 24-bit unsigned multiply source
 
 - Introduce `MATH_UMUL24` `link:compact-zerozp` standalone source,
