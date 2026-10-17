@@ -21,6 +21,7 @@ import selective_seek8 as seek8
 import selective_seek16 as seek16
 import selective_speed
 import selective_speed_umul16
+import selective_speed_umul16_shr8
 import selective_speed_umod8
 import selective_speed_udiv8
 import selective_speed_isqrt32
@@ -250,6 +251,14 @@ MODULES = {
             "entry": "FAST_UMUL16_SHR8_COMPACT", "zp": 0, "scratch": 6,
             "operand_layout": "xyz",
             "provenance": "Standalone 16x16 product shifted right eight, 24-bit result; no ZP, all public inputs preserved; reference rather than historical speed",
+        },
+        "link:quarter-square": {
+            "source": "routines/multiply/umul16_shr8_quartersquare.asm",
+            "segments": (("KERNEL_CODE", 256), ("Q_LO", 511), ("Q_HI", 511)),
+            "entry": "FAST_UMUL16_SHR8_QUARTERSQUARE", "zp": 0, "scratch": 4,
+            "operand_layout": "xyz", "fast_umul16": True,
+            "fast_umul16_shr8": True,
+            "provenance": "Independent zero-ZP 16x16 quarter-square shared-table kernel plus 24-bit SHR8 adapter; 256 B code, 1022 B tables, 4 B scratch",
         },
     },
     "MATH_UMUL16": {
@@ -504,6 +513,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_umod8_variants.py" if mod.get("umod8_extra") else
                     "tools/test_selective_umod8.py" if mod.get("umod8_v1") else
                     "tools/test_selective_smul8.py" if mod.get("smul8_v1") else
+                    "tools/test_selective_fast_umul16_shr8.py" if mod.get("fast_umul16_shr8") else
                     "tools/test_selective_fast_umul16.py" if mod.get("fast_umul16") else
                     "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
                     "tools/test_selective_trig8.py" if mod.get("trig8") else
@@ -906,18 +916,20 @@ def build(plan, outdir, memory=None, root=ROOT):
     cycle_model = None
     per_operation_cycles = None
     if plan["objective"] == "speed":
-        if names not in (["MATH_UMUL8"], ["MATH_UMUL16"],
+        if names not in (["MATH_UMUL8"], ["MATH_UMUL16"], ["MATH_UMUL16_SHR8"],
                          ["MATH_UMOD8"], ["MATH_UDIV8"],
                          ["MATH_ISQRT32"]):
             raise LinkError(
                 "Measured automatic speed selection supports UMUL8, UMUL16, "
-                "UMOD8 or UDIV8 alone; mixed operations need comparable "
-                "certified cycle corpora (ISQRT32 alone is also supported)")
+                "UMOD8, UDIV8, UMUL16_SHR8 or ISQRT32 alone; mixed operations "
+                "need comparable certified cycle corpora")
         api = names[0]
         if api == "MATH_UMUL8":
             benchmark, scratch_address = selective_speed.bench_umul8, sb
         elif api == "MATH_UMUL16":
             benchmark, scratch_address = selective_speed_umul16.bench_umul16, sb
+        elif api == "MATH_UMUL16_SHR8":
+            benchmark, scratch_address = selective_speed_umul16_shr8.bench_umul16_shr8, sb
         elif api == "MATH_UMOD8":
             benchmark, scratch_address = selective_speed_umod8.bench_umod8, zb
         elif api == "MATH_ISQRT32":
@@ -1082,7 +1094,10 @@ def build(plan, outdir, memory=None, root=ROOT):
                         pc, io, sb, states["seek16"], root)
                     entry = labels[module["entry"]]
                 elif module.get("fast_umul16"):
-                    machine, entry, ranges, end = fast16.assemble(pc, io, sb, root)
+                    machine, entry, ranges, end = fast16.assemble(
+                        pc, io, sb, root, source_path=module["source"],
+                        code_bytes=module["segments"][0][1],
+                        entry_label=module["entry"])
                 else:
                     machine, entry, ranges, end = fast8.assemble(pc, io, sb, root)
                 expected = set()
@@ -1263,7 +1278,8 @@ def build(plan, outdir, memory=None, root=ROOT):
         exports.append(canonical + " = " + operation["api"])
     toolchain_paths = ("tools/math_builder.py", "tools/selective_linker.py",
                        "tools/selective_atan2.py", "tools/selective_fast_umul8.py",
-                       "tools/selective_speed.py", "tools/selective_isqrt16.py",
+                       "tools/selective_speed.py", "tools/selective_speed_umul16_shr8.py",
+                       "tools/selective_isqrt16.py",
                        "tools/selective_fast_umul16.py", "tools/selective_speed_umul16.py",
                        "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                        "tools/selective_speed_isqrt32.py",
