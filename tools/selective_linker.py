@@ -921,8 +921,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                          ["MATH_ISQRT32"]):
             raise LinkError(
                 "Measured automatic speed selection supports UMUL8, UMUL16, "
-                "UMOD8, UDIV8, UMUL16_SHR8 or ISQRT32 alone; mixed operations "
-                "need comparable certified cycle corpora")
+                "UMOD8 or UDIV8 alone; UMUL16_SHR8 and ISQRT32 are also "
+                "supported individually; mixed operations need comparable "
+                "certified cycle corpora")
         api = names[0]
         if api == "MATH_UMUL8":
             benchmark, scratch_address = selective_speed.bench_umul8, sb
