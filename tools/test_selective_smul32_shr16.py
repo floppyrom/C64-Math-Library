@@ -22,7 +22,7 @@ class SMUL32SHR16Tests(unittest.TestCase):
         return math_builder.create_plan(
             self.index,list(ops),objective="size",zp_budget=0,ram_budget=ram)
 
-    def test_exact_unsigned_shift_48bit_three_memory_maps(self):
+    def test_exact_signed_shift_48bit_three_memory_maps(self):
         for code,io,scratch in ((0x8000,0xc000,0xc020),
                                 (0x7123,0xc040,0xc080),
                                 (0x830f,0xc100,0xc140)):
@@ -31,7 +31,7 @@ class SMUL32SHR16Tests(unittest.TestCase):
                     "code_base":code,"math_io":io,"scratch_base":scratch})
                 use=man["resource_use"]
                 self.assertEqual(use["image_span_bytes"],334)
-                self.assertEqual(use["main_ram_total_bytes"],289)
+                self.assertEqual(use["main_ram_total_bytes"],378)
                 self.assertEqual(use["private_ram_scratch_bytes"],12)
                 self.assertEqual(use["zero_page_bytes"],0)
                 image=(Path(td)/"math_selective.prg").read_bytes()
