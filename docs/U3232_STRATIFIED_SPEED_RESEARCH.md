@@ -17,6 +17,10 @@ python3 tools/audit_u3232_cycle_frontier.py \
   --cases-per-band 64 --output build/u3232_stratified_cycles.json
 ```
 
+The operation-first builder workflow uploads the complete JSON as the
+`u3232-stratified-cycle-tails` artifact (30-day retention). The CI console
+also prints every candidate's overall mean, p95, worst, RAM and ZP costs.
+
 The required CI run repeats the complete 64-case-per-band analysis, once at
 `$8000` and once at `$7123`, for both public APIs and every available
 source-qualified candidate. Its JSON report contains source SHA-256, code size,
