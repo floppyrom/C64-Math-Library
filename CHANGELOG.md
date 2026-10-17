@@ -1,3 +1,17 @@
+## Unreleased — shared signed 24-bit DIV/MOD source
+
+- Add independently selectable `MATH_SDIV24` and `MATH_SMOD24`
+  backed by a single 325-byte `link:portable-zerozp` quotient and
+  remainder producer with 7 call-exclusive ordinary RAM bytes, zero
+  ZP and 364 main RAM bytes including I/O.
+- Correct signed quotient truncation and numerator-signed remainder
+  across 24-bit edge values, with signed wrap for -8388608/-1 and
+  carry-set divide-by-zero, preserving input and high Q/R bytes.
+- Add 3-map CPU-model/mixed-call and 2-map native VICE qualification,
+  shared-source dedup and exact RAM-budget checks. Proposed
+  operation-first coverage reaches 44/56 after stacked PRs merge.
+- Historical V1–V5 resident kernels and speed records unchanged.
+
 ## Unreleased — independent signed SDIV16_SHL8 module
 
 - Add standalone `MATH_SDIV16_SHL8` signed fixed-point `link:portable-zerozp`:

@@ -1,3 +1,34 @@
+### Shared signed SDIV24 / SMOD24 zero-ZP portable kernel
+
+`MATH_SDIV24` and `MATH_SMOD24` now have `link:portable-zerozp`
+entries sharing one **325-byte** signed 24/24 quotient-and-remainder
+image. Its **7 ordinary-RAM temporary bytes** are reusable across
+non-overlapping arithmetic calls; **0 ZP**, **364 main RAM bytes**
+including 32 bytes of shared public I/O. The 24-step restoring core
+operates on absolute N/D while the wrapper supplies signed quotient
+and remainder corrections.
+
+The complete three-byte N and D values and their upper fourth bytes
+are preserved. Q[0..2] receives signed quotient truncated toward
+zero, R[0..2] receives signed remainder with numerator's sign.
+Q[3] and R[3] remain unchanged. The two's-complement overflow
+`-8388608/-1` wraps to `$800000`, R=0. D=0 zeroes Q24/R24
+and returns C=1; otherwise C=0. CLD is mandatory; A/X/Y/other flags
+are volatile. No undocumented opcodes, REU, initialization or SMC.
+
+```sh
+python3 tools/math_builder.py --operation SDIV24 --operation SMOD24 \
+  --zp-budget 0 --ram-budget 364 --build
+```
+
+Three independent CPU-model code/I/O/scratch relocations verify exact
+signed24 edge/random inputs, preserved public fields and shared entry
+deduplication. Mixed calls with SDIV16 and UMUL16 exercise scratch
+lifetime. Native x64sc checks both relocations and all Q/R/N/D
+bytes. This is not yet the historical best-speed SDIV24/SMOD24
+implementation, so it leaves resident profiles and cycle records
+unchanged.
+
 ### Independently linked signed SDIV16_SHL8 fixed-point producer
 
 `MATH_SDIV16_SHL8` now has a portable `link:portable-zerozp`
