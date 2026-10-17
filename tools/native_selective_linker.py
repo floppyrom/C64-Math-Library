@@ -83,7 +83,9 @@ def main():
                 row = check(mem[:], entry, 32, mp,
                             "selective_" + layout + "_" + api.lower(),
                             7450 + total // 96, folder,
-                            api == "MATH_UMOD32_32")
+                            (api == "MATH_UMOD32_32" and
+                             next(x["variant"] for x in man["operations"]
+                                  if x["api"]==api)!="link:shared-aligned-zerozp"))
                 total += row["cases"]
                 print(layout, api, "native VICE PASS", row["cases"], flush=True)
             zero = math_builder.create_plan(
