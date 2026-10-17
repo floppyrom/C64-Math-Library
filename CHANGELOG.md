@@ -1,3 +1,16 @@
+## Unreleased — historical FAST31 unsigned 32-bit producer research
+
+- Adapt the certified V2 31-byte-ZP native UMUL32 arithmetic source into a
+  **standalone public-ABI research prototype**. Inputs remain in public X/Y,
+  output full Z64, C=0; wrapper stages register operands and exports CPU/ZP
+  result. Restores six table pointer highs on every public call for mixed-call
+  safety; 31 volatile ZP bytes, four immutable 511-entry quarter-square planes,
+  no REU or stack-page allocation, writable code required.
+- Add a relocatable deterministic assembler and independent CPU-model and
+  native VICE two-map qualification. This prototype is **not registered as a
+  builder variant** until the native and resource audits qualify its contract,
+  matched-input speeds and mixed-operation ownership.
+
 ## Unreleased — 32-bit unsigned quarter-square speed-source transplant
 
 - Add a relocatable stock-C64 32x32->64 unsigned table-based convolution,
