@@ -261,6 +261,15 @@ MODULES = {
             "provenance": "Independent zero-ZP 16x16 quarter-square shared-table kernel plus 24-bit SHR8 adapter; 256 B code, 1022 B tables, 4 B scratch",
         },
     },
+    "MATH_UMUL24": {
+        "link:compact-zerozp": {
+            "source": "routines/multiply/umul24_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 156),),
+            "entry": "FAST_UMUL24_COMPACT", "zp": 0, "scratch": 9,
+            "operand_layout": "xyz", "umul24": True,
+            "provenance": "Portable unsigned 24x24 -> 48-bit source; zero ZP, nine RAM scratch bytes, preserved operands, output Z0..5, no REU/SMC/lookup. Not historical fastest.",
+        },
+    },
     "MATH_UMUL16": {
         "link:compact-zerozp": {
             "source": "routines/multiply/umul16_compact_zerozp.asm",
@@ -548,6 +557,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_seek8.py" if mod.get("seek8") else
                     "tools/test_selective_umul8_v1.py" if mod.get("umul8_v1") else
                     "tools/test_selective_fast_umul8.py" if mod.get("fast_umul8") else
+                    "tools/test_selective_umul24.py" if mod.get("umul24") else
                     "tools/test_selective_multiply.py"
                     if mod.get("operand_layout") == "xyz" else
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
@@ -1259,6 +1269,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; carry set iff D=0. UMOD leaves quotient untouched.",
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
+        "; UMUL24: unsigned X24*Y24 => exact low 48-bit Z[0..5], Z[6..7] untouched.",
         "; UMUL16_SHR8: unsigned X16*Y16 >> 8 => low 24 bits MATH_Z, C=0.",
         "; SMUL8: signed 8-bit X/Y => signed 16-bit Z low/next, C=0.",
         "; SMUL8 uses self-modifying instructions: load into writable RAM, non-reentrant.",
