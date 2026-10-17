@@ -1,3 +1,23 @@
+## Unreleased — final operation-first source link: certified VEC2 normalization
+
+- Add independently selectable `MATH_VEC2_NORMALIZE_Q8_8`
+  `link:certified-stock`, transplanting the V1/V5 logarithmic-ratio
+  source and exact generated stock table bytes into one reproducible,
+  relocateable, page-aligned source. No floating-point approximation,
+  precision-reduced replacement or reliance on the legacy resident image.
+- Preserve signed Q8.8 X/Y and return signed Q1.15 unit vector in Z[0..3];
+  carry set only for (0,0). Keep existing full-domain limits of
+  <=0.3621 degrees and <=202 LSB from the unchanged certified donor.
+- Declare 4 reusable ZP bytes, zero ordinary scratch, 3587 bytes of
+  page-aligned source image span (including gaps, 2560 table bytes and
+  865 occupied code bytes). Requires writable C64 RAM for existing
+  self-modifying lookup dispatch, and uses the donor's stable NMOS LAX.
+- Add three relocated CPU-model parity maps including page alignment,
+  signed edge/random vectors and mixed link, and two native VICE maps.
+  With stacked prerequisite migrations merged, all 56 public operations
+  are independently source-linkable; speed-optimization and fast
+  historical kernel transplantation remain separate work.
+
 ## Unreleased — independent signed/unsigned MULDIV16 sources
 
 - Add zero-ZP `MATH_UMULDIV16` (288 B) and `MATH_SMULDIV16`

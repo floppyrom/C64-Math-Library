@@ -1,3 +1,46 @@
+### Certified source-linked signed Q8.8 vector normalization (56/56)
+
+The builder now exposes `MATH_VEC2_NORMALIZE_Q8_8` as
+`link:certified-stock`, using the existing V1/V5 native
+logarithmic-ratio algorithm and its exact 2,560-byte generated
+logarithm/ratio/component table image. The source includes all
+tables inline and does not depend on an integrated resident PRG.
+
+The original ABI is unchanged: signed Q8.8 X16/Y16 inputs are
+preserved; the signed Q1.15 unit vector is returned in Z[0..3].
+The (0,0) case clears the result and sets carry; all other
+vectors clear carry. The original full-domain certificate's
+upper bounds are <=0.3621 degrees and <=202 Q1.15 LSB;
+the test gates require exact bitwise parity with the library's
+published stock normalizer reduction and lookup model.
+
+The module requires 4 reusable ZP bytes and zero exclusive
+ordinary RAM scratch. The relocatable lookup/table bundle
+starts at a page boundary, occupying 3,587 bytes of image
+span: 2,560 actual table bytes, 865 occupied executable
+bytes and 162 unused internal/alignment bytes. Additional
+padding can be charged at an unaligned user-selected code
+base, up to 255 bytes. Example for the default aligned map:
+
+```sh
+python3 tools/math_builder.py --operation VEC2_NORMALIZE_Q8_8 \
+  --zp-budget 4 --ram-budget 3619 --build
+```
+
+The donor requires writable main RAM because the stock
+quadrant paths self-patch table lookup operands; it includes
+the certified stable NMOS 6510 `LAX abs` instruction. It
+must not run in IRQ-reentrant circumstances sharing ZP.
+No REU or initialization is required. CPU model tests
+cover three placements (including unaligned base) with
+signed extremes and random values; native VICE covers
+two relocations with exact input/output/carry validation.
+
+After the prerequisite stacked PRs, source availability
+reaches 56 of 56 public operations. This does not mean
+that optimal speed kernels have been transplanted or
+that all historic profiles can be removed yet.
+
 ### Source-linked unsigned and signed 16×16 full-width MULDIV
 
 `MATH_UMULDIV16` and `MATH_SMULDIV16` are independently selectable

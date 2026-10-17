@@ -284,9 +284,7 @@ class SelectiveLinkTests(unittest.TestCase):
             unlinked = sorted(api for api, operation in self.index.items()
                               if not any(v["selective_link_ready"]
                                          for v in operation["variants"]))
-            self.assertTrue(unlinked, "All public modules are linked; retire negative test")
-            with self.assertRaises(linker.LinkError):
-                linker.build(self.plan([unlinked[0]]), path)
+            self.assertEqual(unlinked, [], "All 56 operations must be source-linkable")
             with self.assertRaises(linker.LinkError):
                 linker.build(self.plan(["UDIV16"], objective="speed"), path)
             with self.assertRaises(linker.LinkError):
