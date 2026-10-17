@@ -92,6 +92,19 @@ FAST31 and zero-ZP compact variants remain available. The signed shared
 entry pays the complete unsigned public call plus signed high-word correction.
 The two public exports have distinct addresses and full CPU/native VICE
 qualification; source and candidate-set hashes remain authenticated.
+
+The physical FAST31 image additionally exports unsigned and signed
+`SHR16` fixed-point 48-bit entries, and both original full64 entries are
+reused as safe state-independent `READY` aliases. Pin
+`link:fast31-shared-full64` for any selection of the six APIs to make the
+linker coalesce them into one signed/unsigned six-operation producer, with no
+additional tables or code-page allocation. The 512-byte code island and
+2,592-byte main-RAM footprint are unchanged at `$8000` even when all six
+operations are linked. The READY/SHR16 APIs remain *unmeasured* for automatic
+speed-selection purposes: their fast variants are selectable under ordinary
+size/balanced/ZP objectives and explicit pins, but the speed objective still
+supports eight source-qualified public operations until matching corpus
+measurements are published for the four additional APIs.
 \nUnsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
 `size` and `zp` plans remain fully available for all 56 APIs.

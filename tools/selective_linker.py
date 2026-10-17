@@ -381,6 +381,18 @@ MODULES = {
         },
     },
     "MATH_SMUL32_SHR16": {
+        "link:fast31-shared-full64": {
+            "source": "routines/multiply/mul32_fast31_shared_public.asm",
+            "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
+                         ("Q_SQR_HI", 512), ("Q_NEG_LO", 512),
+                         ("Q_NEG_HI", 512)),
+            "entry": "FAST_SMUL32_SHR16_FAST31", "zp": 31, "scratch": 0,
+            "operand_layout": "xyz", "fast31_umul32": True,
+            "fast31_shared": True,
+            "share_producer": "fast31-dual-public-full64", "multi_entry": True,
+            "requires_writable_code": True,
+            "provenance": "Signed 32x32 Q48 SHR16 ABI; one six-export shared V2 FAST31 512-byte code island, four 512-byte page-aligned lookup slots, 31 call-exclusive ZP bytes, zero ordinary scratch, writable RAM, D=0, no persistent READY state.",
+        },
         "link:compact-zerozp": {
             "source": "routines/multiply/smul32_shr16_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 334),),
@@ -398,6 +410,18 @@ MODULES = {
         },
     },
     "MATH_SMUL32_READY": {
+        "link:fast31-shared-full64": {
+            "source": "routines/multiply/mul32_fast31_shared_public.asm",
+            "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
+                         ("Q_SQR_HI", 512), ("Q_NEG_LO", 512),
+                         ("Q_NEG_HI", 512)),
+            "entry": "FAST_SMUL32_FAST31", "zp": 31, "scratch": 0,
+            "operand_layout": "xyz", "fast31_umul32": True,
+            "fast31_shared": True,
+            "share_producer": "fast31-dual-public-full64", "multi_entry": True,
+            "requires_writable_code": True,
+            "provenance": "Signed 32x32 READY full64 ABI, state-independent; one six-export shared V2 FAST31 512-byte code island, four 512-byte page-aligned lookup slots, 31 call-exclusive ZP bytes, zero ordinary scratch, writable RAM, D=0, no persistent READY state.",
+        },
         "link:compact-zerozp": {
             "source": "routines/multiply/smul32_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 293),),
@@ -463,6 +487,18 @@ MODULES = {
         },
     },
     "MATH_UMUL32_SHR16": {
+        "link:fast31-shared-full64": {
+            "source": "routines/multiply/mul32_fast31_shared_public.asm",
+            "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
+                         ("Q_SQR_HI", 512), ("Q_NEG_LO", 512),
+                         ("Q_NEG_HI", 512)),
+            "entry": "FAST_UMUL32_SHR16_FAST31", "zp": 31, "scratch": 0,
+            "operand_layout": "xyz", "fast31_umul32": True,
+            "fast31_shared": True,
+            "share_producer": "fast31-dual-public-full64", "multi_entry": True,
+            "requires_writable_code": True,
+            "provenance": "Unsigned 32x32 Q48 SHR16 ABI; one six-export shared V2 FAST31 512-byte code island, four 512-byte page-aligned lookup slots, 31 call-exclusive ZP bytes, zero ordinary scratch, writable RAM, D=0, no persistent READY state.",
+        },
         "link:compact-zerozp": {
             "source": "routines/multiply/umul32_shr16_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 245),),
@@ -480,6 +516,18 @@ MODULES = {
         },
     },
     "MATH_UMUL32_READY": {
+        "link:fast31-shared-full64": {
+            "source": "routines/multiply/mul32_fast31_shared_public.asm",
+            "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
+                         ("Q_SQR_HI", 512), ("Q_NEG_LO", 512),
+                         ("Q_NEG_HI", 512)),
+            "entry": "FAST_UMUL32_FAST31", "zp": 31, "scratch": 0,
+            "operand_layout": "xyz", "fast31_umul32": True,
+            "fast31_shared": True,
+            "share_producer": "fast31-dual-public-full64", "multi_entry": True,
+            "requires_writable_code": True,
+            "provenance": "Unsigned 32x32 READY full64 ABI, state-independent; one six-export shared V2 FAST31 512-byte code island, four 512-byte page-aligned lookup slots, 31 call-exclusive ZP bytes, zero ordinary scratch, writable RAM, D=0, no persistent READY state.",
+        },
         "link:compact-zerozp": {
             "source": "routines/multiply/umul32_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 204),),

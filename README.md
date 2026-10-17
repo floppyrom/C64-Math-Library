@@ -30,7 +30,12 @@ links one arithmetic core and four page-aligned table slots: 2,592 B RAM
 (including 32 B public I/O) and 31 call-exclusive ZP at a page-aligned
 `$8000` start, versus 5,152 B RAM for two separately linked FAST31 images.
 The workload-aware selector can choose this shared producer automatically
-when both public APIs and their RAM/ZP budgets permit it. Historical-core means are not compared with
+when both public APIs and their RAM/ZP budgets permit it.
+The same `link:fast31-shared-full64` producer can now be pinned for
+`UMUL32_READY`, `SMUL32_READY`, `UMUL32_SHR16`, and `SMUL32_SHR16`.
+These six operations then use just one code+table image and 31 bytes of ZP.
+The additional four APIs are not yet supported by the automatic speed model;
+use explicit variant pins (or the ordinary size/balanced objectives). Historical-core means are not compared with
 public-call timing. Other operations still need fast-kernel migration; the
 selection model's timing is a CPU-model estimate, not native VICE cycle data.
 

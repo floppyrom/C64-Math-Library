@@ -1,3 +1,21 @@
+## Unreleased — six-entry FAST31 operation-first builder selection
+
+- Register the certified shared V2 FAST31 image under the existing
+  `link:fast31-shared-full64` identity for `UMUL32_READY`,
+  `SMUL32_READY`, `UMUL32_SHR16`, and `SMUL32_SHR16`.
+  READY aliases use the unchanged unsigned/signed full64 entry addresses;
+  SHR16 entries share a single carry-preserving 48-bit output shifter.
+- All **six** public operations now independently link and may share one
+  FAST31 512-byte code slot and four 512-byte lookup slots, with only
+  31 call-exclusive ZP bytes and 32 public IO bytes: **2,592 B main RAM**
+  at `$8000`. The existing 375-byte zero-ZP six-entry unified fallback
+  remains independently selectable.
+- Add exact linked-binary CPU correctness and native VICE tests of all
+  six mixed public exports across two relocation maps, plus resource
+  boundary and reserved-ZP negative tests. Separate speed selection for
+  READY and SHR16 remains future work; no incomparable full64 timings
+  are reused for the four additional API contracts.
+
 ## Unreleased — six-entry FAST31 source qualification
 
 - Extend the qualified 31-ZP, four-table, 512-byte shared FAST31 source
