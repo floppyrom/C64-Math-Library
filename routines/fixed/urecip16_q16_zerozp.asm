@@ -5,8 +5,10 @@
 ; Only 1 exclusive ordinary RAM scratch byte, zero ZP, no tables/REU/SMC.
 !cpu 6510
 KERNEL_CODE = $8000
+INPUT_NUM = $C010
 INPUT_DIV = $C014
 OUTPUT_QUOT = $C018
+OUTPUT_REM = $C01C
 TEMP_RAM = $C020
 R0 = TEMP_RAM
 * = KERNEL_CODE
