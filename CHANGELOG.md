@@ -1,3 +1,19 @@
+## Unreleased — matched-input UMUL16_SHR8 fast source option
+
+- Add standalone `MATH_UMUL16_SHR8` `link:quarter-square` source:
+  256 bytes code + 1,022 generated lookup bytes + four reusable RAM
+  scratch bytes + zero ZP, 1,314 RAM including public I/O. Preserves the
+  portable 164-RAM `link:compact-zerozp` alternative.
+- Extend source-parameterized UMUL16 quarter-square emitter without
+  modifying its existing default emitter contract. Add independent
+  full-width relocation/ABI tests and native x64sc shifted-product
+  correctness at two code and I/O maps.
+- Enable scoped `--objective speed` for `UMUL16_SHR8` only, ranking
+  both assembled sources on exactly 1,000 paired inputs and honoring
+  actual RAM/ZP budgets. Mixed-operation speed ranking still fails closed.
+- Historical V1–V5 profiles and performance numbers are unchanged.
+  The original resident fast-core extraction remains to be done.
+
 ## Unreleased — operation-first UMUL16_SHR8 standalone reference
 
 - Add an independently linkable 126-byte, zero-ZP `MATH_UMUL16_SHR8`
