@@ -1,3 +1,15 @@
+## Unreleased — signed full-width 24-bit multiplication module
+
+- Add standalone `MATH_SMUL24` `link:compact-zerozp` with exact
+  signed 24×24→48-bit product, 227 bytes of code, 9 bytes of reusable
+  RAM, zero ZP and 268 total bytes including shared public I/O.
+- Preserve signed X/Y and out-of-contract high Z bytes, clear carry.
+  Three relocation/ABI CPU-model checks exercise signed extremes;
+  two native x64sc maps validate live 6510 outputs and input canaries.
+  Verify mixed-call scratch lifetime and fail-closed exact RAM budget.
+- Independently source-linkable operation count rises to 38/56
+  once merged. V1–V5 code/performance metrics are unchanged.
+
 ## Unreleased — signed 16-bit fixed-point SHR8 kernel
 
 - Introduce independently linkable `MATH_SMUL16_SHR8`
