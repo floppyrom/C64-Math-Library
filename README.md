@@ -17,8 +17,14 @@ The example selects UMUL16, UDIV16 and ISQRT16. Output is a minimal
 `math_selective.prg`, `math_api.inc`, and a machine-readable selection manifest.
 For arbitrary operations, edit a copy of [`examples/operation-first.json`](examples/operation-first.json).
 [Full setup and legacy transition notes](docs/PROFILE_RETIREMENT_PLAN.md).
-For workload-aware speed optimization of the fourteen measured operations, including 32-bit multiplication and 32/16 division, try
+For workload-aware speed optimization of the sixteen measured operations, including 32-bit multiplication and 32/16 division, try
 `make builder CONFIG=examples/operation-first-speed.json OUT=build_speed`.
+For unrestricted `UDIV32_32` the selector compares the 4-ZP and
+4-byte RAM-scratch 32/32 quotient/remainder implementations on the same
+384-pair public-call corpus; `UMOD32_32` has an independently measured
+specialized zero-ZP remainder producer (one published candidate so far).
+Historical full-width DIV/MOD fast transplants and shared producer accounting
+remain separate optimization work.
 For `UDIV32_16` / `UMOD32_16`, the builder independently measures both
 zero-ZP shared quotient/remainder producers on identical 384-input public-call
 corpora; the zero-ZP 1771-byte statically unrolled accumulator derivative is an
