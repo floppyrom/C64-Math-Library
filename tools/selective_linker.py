@@ -243,6 +243,15 @@ MODULES = {
             "operand_layout": "xyz", "fast_umul8": True,
         },
     },
+    "MATH_UMUL16_SHR8": {
+        "link:compact-zerozp": {
+            "source": "routines/multiply/umul16_shr8_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 126),),
+            "entry": "FAST_UMUL16_SHR8_COMPACT", "zp": 0, "scratch": 6,
+            "operand_layout": "xyz",
+            "provenance": "Standalone 16x16 product shifted right eight, 24-bit result; no ZP, all public inputs preserved; reference rather than historical speed",
+        },
+    },
     "MATH_UMUL16": {
         "link:compact-zerozp": {
             "source": "routines/multiply/umul16_compact_zerozp.asm",
@@ -1212,6 +1221,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; carry set iff D=0. UMOD leaves quotient untouched.",
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
+        "; UMUL16_SHR8: unsigned X16*Y16 >> 8 => low 24 bits MATH_Z, C=0.",
         "; SMUL8: signed 8-bit X/Y => signed 16-bit Z low/next, C=0.",
         "; SMUL8 uses self-modifying instructions: load into writable RAM, non-reentrant.",
         "; ISQRT16: unsigned MATH_N 16-bit => floor(sqrt(N)) in MATH_Z 16-bit, C=0.",
