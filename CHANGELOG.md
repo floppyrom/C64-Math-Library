@@ -1,3 +1,16 @@
+## Unreleased — 32-bit unsigned quarter-square speed-source transplant
+
+- Add a relocatable stock-C64 32x32->64 unsigned table-based convolution,
+  adapted from the already source-qualified 8x8/16x16 quarter-square algorithm.
+  Physical layout: 1028 bytes code, two 511-byte generated tables, four
+  call-exclusive RAM bytes, zero ZP, no REU or initializer.
+- Retain portable compact (204 B) and shared six-entry (375 B) alternatives.
+  Add source/ABI checks at two relocations, native x64sc qualification and
+  same-192-input CPU-model cycle benchmarks. UMUL32 joins workload-weighted
+  speed selection without importing incomparable historical V1–V5 means.
+- This is an algorithmic table-method transplant, not yet a direct port of
+  the V2/V3/V4 FAST31/V29 resident kernel. Other 32-bit APIs remain separate.
+
 ## Unreleased — workload-weighted multi-operation CPU-model speed selector
 
 - Extend the certified same-corpus speed selector from one operation to any

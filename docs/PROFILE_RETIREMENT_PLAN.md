@@ -34,7 +34,7 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (six certified APIs)
+## Workload-weighted speed selection (seven source-qualified APIs)
 
 The `speed` objective supports project-level weighted selection for **six**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8 and
@@ -62,7 +62,7 @@ an expected workload estimate, not exact total cycle prediction.
 With 1,400 total RAM bytes and the two example APIs, the optimizer can use only
 one quarter-square implementation. Heavy UMUL8 workloads select its fast
 variant and compact UMUL16; reversing the call weights reverses that choice.
-Unsupported APIs fail closed in `speed` mode rather than using historical
+UMUL32 compares the compact shift/add, the shared six-API compact source and\na source-linked 32x32 quarter-square convolution on one 192-pair corpus.\nIts fast variant uses 1,028 bytes of code, 1,022 bytes of immutable tables,\n4 bytes of ordinary scratch and no ZP. This is not yet the historical\nFAST31/V29 optimized resident transplant; its weighted speed choice remains\na nominal code-map CPU-model estimate and must pass the native VICE gate.\n\nUnsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
 `size` and `zp` plans remain fully available for all 56 APIs.
 

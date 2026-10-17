@@ -25,6 +25,7 @@ import selective_speed_umul16_shr8
 import selective_speed_umod8
 import selective_speed_udiv8
 import selective_speed_isqrt32
+import selective_speed_umul32
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
@@ -472,6 +473,13 @@ MODULES = {
         },
     },
     "MATH_UMUL32": {
+        "link:quarter-square-32": {
+            "source": "routines/multiply/umul32_quartersquare.asm",
+            "segments": (("KERNEL_CODE", 1028), ("Q_LO", 511), ("Q_HI", 511)),
+            "entry": "FAST_UMUL32_QUARTERSQUARE", "zp": 0, "scratch": 4,
+            "operand_layout": "xyz", "fast_umul16": True, "fast_umul32": True,
+            "provenance": "Unsigned 32x32 16-term base-256 quarter-square convolution using certified UMUL16 511-entry tables; zero ZP, preserved inputs, no init/SMC/REU.",
+        },
         "link:compact-zerozp": {
             "source": "routines/multiply/umul32_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 204),),
@@ -786,6 +794,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_umod8.py" if mod.get("umod8_v1") else
                     "tools/test_selective_smul8.py" if mod.get("smul8_v1") else
                     "tools/test_selective_fast_umul16_shr8.py" if mod.get("fast_umul16_shr8") else
+                    "tools/test_selective_umul32_quartersquare.py" if mod.get("fast_umul32") else
                     "tools/test_selective_fast_umul16.py" if mod.get("fast_umul16") else
                     "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
                     "tools/test_selective_trig8.py" if mod.get("trig8") else
@@ -854,6 +863,8 @@ def available_variants(root=ROOT):
                           "38-byte V1/V2/V5 ISQRT16 descending square-lookup kernel, "
                           "768 generated aligned table bytes and zero ZP"
                           if mod.get("isqrt16") else
+                          "1028-byte unsigned 32x32 quarter-square convolution and 1022 generated table bytes; 4 RAM scratch, 0 ZP"
+                          if mod.get("fast_umul32") else
                           "73-byte quarter-square 8x8 code and 1022 exact table bytes; 2 RAM scratch, 0 ZP"
                           if mod.get("fast_umul8") else
                           "Original V1 unsigned 8x8 51-byte entry/core and two exact 511-byte lookup pages; 4 ZP, no REU"
@@ -1243,12 +1254,13 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_UMOD8": (selective_speed_umod8.bench_umod8, "zp", False),
             "MATH_UDIV8": (selective_speed_udiv8.bench_udiv8, "zp", False),
             "MATH_ISQRT32": (selective_speed_isqrt32.bench_isqrt32, "scratch", True),
+            "MATH_UMUL32": (selective_speed_umul32.bench_umul32, "scratch", False),
         }
         unavailable = sorted(set(names) - set(measured))
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32")
+                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32")
         models = {}
         per_operation_cycles = {}
         for api in names:

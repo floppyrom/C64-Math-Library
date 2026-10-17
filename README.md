@@ -17,7 +17,7 @@ The example selects UMUL16, UDIV16 and ISQRT16. Output is a minimal
 `math_selective.prg`, `math_api.inc`, and a machine-readable selection manifest.
 For arbitrary operations, edit a copy of [`examples/operation-first.json`](examples/operation-first.json).
 [Full setup and legacy transition notes](docs/PROFILE_RETIREMENT_PLAN.md).
-For workload-aware speed optimization of the measured subset, try
+For workload-aware speed optimization of the seven measured operations (now\nincluding UMUL32), try
 `make builder CONFIG=examples/operation-first-speed.json OUT=build_speed`.
 The operation-first binary backend currently targets **stock C64 only**;
 1541/1571/1581 remain planning-only, and historic REU/Turbo/QS16 functionality
