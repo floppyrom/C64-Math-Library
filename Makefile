@@ -1,9 +1,35 @@
+.DEFAULT_GOAL := builder-help
+
 PYTHON ?= python3
 ACME ?= acme
 
-.PHONY: sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all
+.PHONY: builder-help builder-list builder builder-measure sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all
 
 all: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
+
+# Preferred operation-first C64 distribution: no V1-V5 profile selection.
+# Override CONFIG and OUT to build another operation set; keep all historical
+# profile targets as explicit legacy release/validation compatibility tools.
+CONFIG ?= examples/operation-first.json
+OUT ?= build_selective
+
+builder-help:
+	@echo 'C64 Math Library: operation-first builder (default)' 
+	@echo '  make builder                       # build example operations'
+	@echo '  make builder CONFIG=path/to.json    # build your own operation set'
+	@echo '  make builder-measure                # measure exact assembled footprint'
+	@echo '  make builder-list                   # show 56 public operations'
+	@echo '  make all                            # legacy V1-V5 validation (opt-in)'
+
+builder-list:
+	$(PYTHON) tools/math_builder.py --list-linkable
+
+builder-measure:
+	$(PYTHON) tools/math_builder.py --config $(CONFIG) --measure
+
+builder:
+	$(PYTHON) tools/math_builder.py --config $(CONFIG) --out $(OUT)/selection_manifest.json --build
+
 
 sources:
 	$(PYTHON) tools/generate_sources.py

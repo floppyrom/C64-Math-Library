@@ -2,9 +2,25 @@
 
 High-performance integer, fixed-point and game math for the Commodore 64 / NMOS 6502/6510.
 
-The library exposes one stable **56-entry public API** across five fixed profiles. V3/V4 add stateful Turbo16/Turbo32 calls; V4 also adds QS16. A Custom Pareto Builder can generate a stock-C64 mix for a chosen ZP/RAM budget.
+The **operation-first builder** is the default way to configure a stock C64 library: select from **56 independently linkable public operations**, specify resource limits and emit only the needed code. The five historical fixed profiles are retained as verified compatibility/performance references while their fastest kernels are migrated. V3/V4 additionally provide REU/Turbo services, and V4 QS16, that are not yet replaced by the operation-first builder.
 
-> **Next-generation builder (experimental):** Choose mathematical operations, optimization priorities, and memory budgets without selecting a fixed profile. [Read the refactor plan](docs/BUILDER_REFACTOR.md) or run `python3 tools/math_builder.py --list`. Selection plans work for all 56 stable operations, and an **experimental selective linker** can already build compact zero-ZP UMUL8/UMUL16, 16-bit/32-bit DIV/MOD and page-aligned ATAN2 PRGs via `--build`; all other operations require further source/link qualification. The stable operation identities are now defined in `routines/PUBLIC_OPERATIONS.csv`, independent of the historical V1–V5 source catalog. The selector can also produce **planning-only manifests** for 1541, 1571 and 1581 arithmetic targets; executable builds for those devices remain unavailable pending independent backend qualification. Existing full-profile binaries remain the supported published releases.
+**Start without profiles:**
+
+```sh
+make builder-list
+make builder-measure
+make builder
+# Or: make builder CONFIG=your-operations.json OUT=build_my_game
+```
+
+The example selects UMUL16, UDIV16 and ISQRT16. Output is a minimal
+`math_selective.prg`, `math_api.inc`, and a machine-readable selection manifest.
+For arbitrary operations, edit a copy of [`examples/operation-first.json`](examples/operation-first.json).
+[Full setup and legacy transition notes](docs/PROFILE_RETIREMENT_PLAN.md).
+The operation-first binary backend currently targets **stock C64 only**;
+1541/1571/1581 remain planning-only, and historic REU/Turbo/QS16 functionality
+still requires the corresponding legacy profile. Automatic *globally fastest*
+variant selection remains work in progress; no historical cycle wins are implied.
 
 ## Start here
 
@@ -20,7 +36,7 @@ The library exposes one stable **56-entry public API** across five fixed profile
 
 Every published benchmark row now points to a public source file and SHA-256. Run `python3 tools/validate_public_catalog.py` to verify that contract.
 
-## Fixed profiles
+## Legacy fixed profiles (reference and compatibility)
 
 | Profile | Hardware | Main goal |
 |---|---|---|
@@ -70,6 +86,9 @@ div_u32_u16_u32_16
 Every callable fixed-profile entry has an exact source mirror under `<profile>/standalone/`. Independently benchmarked alternatives live under `routines/`. The complete source index is [`routines/SOURCE_CATALOG.csv`](routines/SOURCE_CATALOG.csv).
 
 ## Build
+
+**Default: operation-first.** Run `make builder` or `make builder CONFIG=your-operations.json`.
+The historical profile build commands below remain opt-in release tools.
 
 Requirements: Python 3. The deterministic assembler/build path is included; ACME is optional as an independent cross-check.
 

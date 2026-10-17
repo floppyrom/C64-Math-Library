@@ -170,6 +170,11 @@ on:
       - routines/PUBLIC_OPERATIONS.csv
       - benchmarks/STANDALONE_RESULTS.csv
       - .github/workflows/math-builder.yml
+      - Makefile
+      - README.md
+      - QUICK_START.md
+      - examples/operation-first.json
+      - docs/PROFILE_RETIREMENT_PLAN.md
       - tools/mini6502.py
       - routines/standalone_lab/portable/native_vice.py
       - routines/atan2/validate_optimized.py
@@ -246,6 +251,18 @@ jobs:
           python3 tools/test_selective_sdiv8.py
           python3 tools/test_selective_trig8.py
           python3 tools/test_selective_dist8_accurate.py
+      - name: Build operation-first default configuration (no profiles)
+        run: |
+          make builder OUT="$RUNNER_TEMP/opmath"
+          test -s "$RUNNER_TEMP/opmath/math_selective.prg"
+          test -s "$RUNNER_TEMP/opmath/math_api.inc"
+          python3 - "$RUNNER_TEMP/opmath/selective_manifest.json" <<'PYJSON'
+          import json,sys
+          m=json.load(open(sys.argv[1]))
+          assert {e['api'] for e in m['operations']} == {'MATH_UMUL16','MATH_UDIV16','MATH_ISQRT16'}
+          assert m['resource_use']['main_ram_total_bytes'] == 1318
+          assert m['resource_use']['zero_page_bytes'] == 2
+          PYJSON
       - name: Smoke-test source SHA provenance
         run: >-
           python3 tools/math_builder.py
