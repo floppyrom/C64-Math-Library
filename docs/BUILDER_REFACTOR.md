@@ -1,3 +1,38 @@
+### Canonical high-speed V2 unsigned 24-bit DIV/MOD option
+
+The source-linked `MATH_UDIV24` and `MATH_UMOD24` family now has an
+additional **explicitly pinnable** `link:v2-repose-fast` variant. This
+is a relocation of the actual canonical V2 Repose quotient/remainder
+producer, **not** a substituted slow arithmetic algorithm or a copy of
+the resident PRG. Its executable body has two tightly packed code
+islands of **1,244 + 217 bytes**; both public operations share the
+same physical entry and the same 1,461-byte code allocation.
+Inputs N24/D24 remain untouched; both Q24 and R24 are written (except
+uncontracted high bytes, left unchanged); divide by zero sets carry
+and zeros Q/R.
+
+**Hardware and resource contracts:** the historical V2 implementation
+uses the stable NMOS 6510 unintended `LAX` and `ANC` opcodes,
+**three zero-page scratch bytes**, **no separate RAM scratch**,
+no precomputed tables, and a **self-modifying immediate operand**
+in the tail path. Code must reside in writable RAM, not ROM, and
+decimal mode must be clear. The builder checks all code, IO,
+ZP, and reserved-memory intersections. The old 190-byte/4-RAM/0-ZP
+`link:portable-restoring` remains the default compact option.
+
+```sh
+python3 tools/math_builder.py --operation UDIV24 --operation UMOD24 \
+  --pin UDIV24=link:v2-repose-fast \
+  --pin UMOD24=link:v2-repose-fast --zp-budget 3 \
+  --ram-budget 1493 --build
+```
+
+Selection-plan and image manifests SHA-lock the derived relocatable
+source and its original historical source plus relocation adapter.
+Cross-variant cycle comparisons are made on exactly the same inputs;
+the builder **does not yet automatically select a universal fastest
+variant**. The historical V1–V5 profile files stay unchanged.
+
 ### Portable source-linked unsigned 24/24 DIV/MOD family
 
 `MATH_UDIV24` and `MATH_UMOD24` can each be selected independently,
