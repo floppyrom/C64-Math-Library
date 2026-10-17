@@ -1,0 +1,33 @@
+name: Selective performance workbench
+
+on:
+  pull_request:
+    paths:
+      - tools/selective_linker.py
+      - tools/test_selective_linker.py
+      - tools/bench_selective_migrations.py
+      - .github/workflows/performance-workbench.yml
+      - docs/BUILDER_MIGRATION_CYCLE_BASIS.md
+  workflow_dispatch:
+
+jobs:
+  reproducible-workbench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run post-migration matched-input baseline
+        run: |
+          mkdir -p performance-output
+          python3 tools/bench_selective_migrations.py > performance-output/six-operation-baseline.json
+          python3 -m json.tool performance-output/six-operation-baseline.json > /dev/null
+      - name: Prepare reproducible source snapshot for local native VICE qualification
+        run: |
+          tar -czf performance-output/c64-math-source.tar.gz \
+            --exclude=.git --exclude=performance-output .
+          sha256sum performance-output/c64-math-source.tar.gz > performance-output/c64-math-source.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: perf-workbench-source-and-baseline
+          path: performance-output/
+          if-no-files-found: error

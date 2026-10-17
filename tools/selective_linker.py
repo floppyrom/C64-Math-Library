@@ -982,6 +982,10 @@ def pareto_resource_variants(variants):
     An algorithm using no more code/table bytes, scratch RAM, or zero page
     always has a memory layout no worse after page-padding optimization.
     Performance ranking is intentionally outside this resource-only rule.
+
+    Do not prune an individually dominated *shared producer*: two API entries
+    can link the same physical image once. A larger producer may therefore
+    reduce global RAM compared with a locally smaller independent kernel.
     """
     candidates = list(sorted(variants.items()))
     sizes = {
@@ -1000,6 +1004,11 @@ def pareto_resource_variants(variants):
     }
     keep = {}
     for key, variant in candidates:
+        if variant.get("share_producer"):
+            # Dominance in isolation says nothing about combined cost when
+            # another selected operation exports this physical producer.
+            keep[key] = variant
+            continue
         mine = sizes[key]
         dominated = any(
             other != key and
