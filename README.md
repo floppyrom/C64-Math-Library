@@ -21,8 +21,10 @@ For workload-aware speed optimization of the fourteen measured operations, inclu
 `make builder CONFIG=examples/operation-first-speed.json OUT=build_speed`.
 For `UDIV32_16` / `UMOD32_16`, the builder independently measures both
 zero-ZP shared quotient/remainder producers on identical 384-input public-call
-corpora; a faster historical V1/V2 divider transplant remains an optimization
-research target rather than a qualified speed claim.
+corpora; the zero-ZP 1771-byte statically unrolled accumulator derivative is an
+additional selectable speed-over-RAM candidate. It retains one ordinary
+scratch byte and independent shared Q/R public aliases. Historical V1/V2
+register-ABI fast dividers remain a separate optimization target.
 The operation-first binary backend currently targets **stock C64 only**;
 1541/1571/1581 remain planning-only, and historic REU/Turbo/QS16 functionality
 still requires the corresponding legacy profile. For UMUL32, the historical V2 FAST31 public-ABI kernel is now a selectable
