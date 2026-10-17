@@ -1,3 +1,18 @@
+## Unreleased — shared signed 32/32 division and modulo
+
+- Add independently linkable `MATH_SDIV32_32` and `MATH_SMOD32_32`
+  using one 412-byte source-linked signed 32-bit restoring producer
+  (9 bytes reusable ordinary RAM scratch, 0 zero page, total
+  453 RAM including public I/O).
+- Exact signed quotient truncation toward zero, signed full-width R32,
+  D=0 carry signalling, `-2147483648/-1` wrap and preserved N/D.
+- Add three relocated CPU-model exhaustive-edge/seeded-random
+  producer tests, mixed-operation scratch-sharing and two-map
+  native VICE verification, with checksum/package audit updates.
+- Operation-first independently linked coverage increases to
+  48 of 56 when merged. Historical profile kernels and published
+  performance measurements unchanged.
+
 ## Unreleased — shared signed 32/16 divide and modulo
 
 - Register `MATH_SDIV32_16` and `MATH_SMOD32_16` as independently

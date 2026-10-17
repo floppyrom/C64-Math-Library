@@ -216,6 +216,26 @@ MODULES = {
             "provenance": "Byte-identical V2 and V5 original 430-byte branch-chain producer; no REU",
         },
     },
+    "MATH_SDIV32_32": {
+        "link:portable-zerozp": {
+            "source": "routines/divide/sdiv32_smod32_zerozp.asm",
+            "segments": (("KERNEL_CODE", 412),),
+            "entry": "FAST_SDIV32_32_ZEROZP", "zp": 0, "scratch": 9,
+            "share_producer": "signed-32by32-portable-zerozp",
+            "multi_entry": True, "sdiv32_32_portable": True,
+            "provenance": "Portable sign-normalized 32/32 restoring shared Q32/R32 producer, 412 code bytes, 9 ordinary RAM scratch, 0 ZP. Exact signed truncating quotient and N-sign remainder.",
+        },
+    },
+    "MATH_SMOD32_32": {
+        "link:portable-zerozp": {
+            "source": "routines/divide/sdiv32_smod32_zerozp.asm",
+            "segments": (("KERNEL_CODE", 412),),
+            "entry": "FAST_SMOD32_32_ZEROZP", "zp": 0, "scratch": 9,
+            "share_producer": "signed-32by32-portable-zerozp",
+            "multi_entry": True, "sdiv32_32_portable": True,
+            "provenance": "Signed SMOD32_32 alias of shared SDIV32_32 Q32/R32 restoring producer; full-width exact R, N/D untouched, no duplicate image.",
+        },
+    },
     "MATH_SDIV32_16": {
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv32_16_smod32_16_zerozp.asm",
@@ -654,6 +674,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_urecip16_q16.py" if mod.get("urecip16") else
+                    "tools/test_selective_sdiv32_32.py" if mod.get("sdiv32_32_portable") else
                     "tools/test_selective_sdiv32_16.py" if mod.get("sdiv32_16_portable") else
                     "tools/test_selective_sdiv24.py" if mod.get("sdiv24_portable") else
                     "tools/test_selective_sdiv16_shl8.py" if mod.get("sdiv16_shl8_portable") else
@@ -1378,6 +1399,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; SDIV16_SHL8: signed (N16 << 8)/D16 => signed Q24 and R16 (N sign), C=1 for D=0.",
         "; SDIV24/SMOD24: signed N24/D24 => signed Q24/R24, shared code, D=0 C=1.",
         "; SDIV32_16/SMOD32_16: signed N32/D16 => Q32/R16, shared code, D=0 C=1.",
+        "; SDIV32_32/SMOD32_32: signed N32/D32 => Q32/R32, shared code, D=0 C=1.",
         "; URECIP16_Q16: D16 => Q24 = floor(65536/D), C=1 on D=0; Q3/R unchanged.",
         "; Portable 32/16 source is the correctness fallback, not the resident speed champion.",
         "; UMOD8: low byte N/D => low byte R ONLY; Q untouched, C=1 if D=0.",
