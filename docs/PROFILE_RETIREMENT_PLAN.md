@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (twelve source-qualified APIs)
+## Workload-weighted speed selection (fourteen source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **twelve**
+The `speed` objective supports project-level weighted selection for **fourteen**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16
-and SMUL32_SHR16. Multiple operations **must** each have a positive integer call count,
+SMUL32_SHR16, UDIV32_16 and UMOD32_16. Multiple operations **must** each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
 
@@ -109,7 +109,14 @@ READY and Q48 calls separately, including the SHR16 output adapter and return.
 The global speed optimizer can now compare the four additional APIs with their
 complete same-API cycle models, preserving shared code/table resource accounting.
 As before, source-model means do not imply physical-C64 or post-link cycle invariance.
-\nUnsupported APIs fail closed in `speed` mode rather than using historical
+\nFor unsigned `UDIV32_16` and `UMOD32_16`, speed selection compares the
+131-byte accumulator-remainder and 162-byte portable restoring shared
+quotient/remainder kernels on an independent 384-input corpus, preserving
+Q32, R16, C=1 on division by zero, C=0 on success, N/D inputs, caller SP
+and zero ZP. The shared producer can be selected once for both operations;
+measured performance is for complete public calls, not resident V1/V2 timing.
+
+Unsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
 `size` and `zp` plans remain fully available for all 56 APIs.
 
