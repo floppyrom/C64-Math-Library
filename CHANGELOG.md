@@ -1,3 +1,16 @@
+## Unreleased — source-linked UDIV16_SHL8 reference
+
+- Independently selectable `MATH_UDIV16_SHL8` source:
+  129 executable bytes, one ordinary-RAM scratch byte and zero ZP
+  (162 bytes including public I/O). Implements exact unsigned
+  `(N16 << 8)/D16` with quotient Q24, remainder R16 and carry-set
+  divide-by-zero behavior, retaining input and high-byte ABI.
+- Add relocation and mixed-arithmetic CPU-model regression tests,
+  budget failure checks and two-map native x64sc qualification.
+  Preserve V1–V5 resident sources and historical speed records.
+- This operation increases operation-first independent-link coverage
+  from 32 to 33 of the public 56-operation catalog once merged.
+
 ## Unreleased — matched-input UMUL16_SHR8 fast source option
 
 - Add standalone `MATH_UMUL16_SHR8` `link:quarter-square` source:
