@@ -1,3 +1,18 @@
+## Unreleased — historical V2 12-ZP 32/16 public-adapter research
+
+- Import no duplicate executable: the relocation adapter reads the certified
+  `v2_pareto_fast/resident/modules/pareto_udiv32_16.a` donor directly and
+  moves its two code islands plus twelve private ZP operands. It adds a
+  public staging/output shim to preserve the operation-first Q32+R16 ABI,
+  public N32/D16 inputs, divide-by-zero output and carry.
+- Add exact two-relocation CPU-model correctness and same-input complete
+  public-call cycle comparisons against the qualified 1,771-byte, zero-ZP
+  unrolled baseline, and direct-source native x64sc Q/R/C proof for both
+  DIV/MOD exports. Stable LAX/ANC 6510 opcodes are an explicit dependency.
+- Research only: no production builder variant has been registered, no
+  profile timings imported as public-call measurements. Qualification and
+  resources determine whether this fast donor merits a separate selection.
+
 ## Unreleased — selectable zero-ZP unrolled shared U32/16 producer
 
 - Promote source-qualified 32-round unrolled accumulator divider into the
