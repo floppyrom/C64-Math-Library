@@ -1,3 +1,20 @@
+## Unreleased — six-entry FAST31 source qualification
+
+- Extend the qualified 31-ZP, four-table, 512-byte shared FAST31 source
+  with separate signed/unsigned Q48 SHR16 exports, while keeping the original
+  full64 entrypoints as state-independent READY aliases. The extra two Q48
+  wrappers share a single six-byte public-output shifter, preserving carry
+  clear from the full-width arithmetic call. No duplicate 32-bit product
+  producer or extra lookup pages are introduced.
+- Add exact two-code-map CPU-model qualification of all six operations,
+  10 exclusive SMC operand whitelist assertions, original input preservation,
+  C=0, and full signed/unsigned fixed-point high-48 output assertions.
+  Qualify all six code-assembled entrypoints under native VICE.
+- This is a source-level **research stage**. The four additional operations
+  are not yet registered as FAST31-selectable builder variants; a separate
+  builder-API promotion with resource/ownership and speed accounting is
+  required after native correctness is confirmed.
+
 ## Unreleased — FAST31 two-entry shared signed/unsigned producer
 
 - Add `link:fast31-shared-full64` for both `UMUL32` and `SMUL32`,

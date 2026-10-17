@@ -350,3 +350,29 @@ fast31_shared_x_positive:
 fast31_shared_y_positive:
     clc
     rts
+
+; Two new 48-bit Q16 entries share the same six-byte result shift.
+; The public READY full64 entries are the original UMUL32/SMUL32 labels:
+; they are state-independent, mixed-call safe, and require no separate init.
+; The signed entry jumps to the common shift; the unsigned entry falls
+; through, saving one JMP and retaining the 512-byte code island.
+FAST_SMUL32_SHR16_FAST31:
+    jsr FAST_SMUL32_FAST31
+    jmp fast31_shared_shift48
+FAST_UMUL32_SHR16_FAST31:
+    jsr FAST_UMUL32_FAST31
+fast31_shared_shift48:
+    lda OUTPUT_Z+2
+    sta OUTPUT_Z
+    lda OUTPUT_Z+3
+    sta OUTPUT_Z+1
+    lda OUTPUT_Z+4
+    sta OUTPUT_Z+2
+    lda OUTPUT_Z+5
+    sta OUTPUT_Z+3
+    lda OUTPUT_Z+6
+    sta OUTPUT_Z+4
+    lda OUTPUT_Z+7
+    sta OUTPUT_Z+5
+    ; Both full64 producers return C clear; LDA/STA do not change C.
+    rts
