@@ -1,3 +1,36 @@
+### Measured UMUL16_SHR8 source-only speed selection
+
+An additional `link:quarter-square` variant retains the qualified
+four-partial-product `UMUL16` quarter-square core and provides a
+standalone fixed-point adapter. It is independently source-linked: **256
+code bytes + two 511-byte generated lookup planes + four call-scratch RAM
+bytes, zero ZP**. The 32-byte public I/O block makes a **1,314-byte
+single-operation RAM allocation**; no REU, writable code or startup
+initialization is required. Inputs X16/Y16 remain intact; carry returns
+clear; the lower three Z bytes contain `(X16*Y16)>>8` exactly.
+The upper fourth Z byte is outside this API's output contract.
+
+`--objective speed` is now supported for **UMUL16_SHR8 alone**:
+it source-assembles both its portable 126-byte/6-RAM fallback and
+the quarter-square variant at the requested addresses and executes
+**the same 1,000 full-width operand pairs** in the 6502 model.
+Only resource-feasible variants compete. The measured cycle basis,
+source hashes, exact inputs and selected image are recorded in the
+manifest; no historical profile timing or unrelated operations are
+combined with these measurements. Native x64sc checks both memory
+relocations independently for correctness (not physical cycle timings).
+
+```sh
+python3 tools/math_builder.py --operation UMUL16_SHR8 \
+  --objective speed --zp-budget 0 --ram-budget 1314 --build
+```
+
+The compact reference remains pinnable for 164 RAM bytes; the V1–V5
+resident code and the much faster historical V2–V4 243.804139-cycle
+publication remain unchanged. This work is a selectively linkable
+intermediate: importing the canonical resident fast core and proving
+equal or better public call speed remains a separate optimization task.
+
 ### Standalone zero-ZP UMUL16_SHR8 link-ready reference
 
 `MATH_UMUL16_SHR8` is independently selectable with
