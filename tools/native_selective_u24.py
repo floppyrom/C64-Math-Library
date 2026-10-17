@@ -138,23 +138,28 @@ def main():
     count=0
     with tempfile.TemporaryDirectory(prefix="native_u24_") as path:
         folder=Path(path)
-        for i,(code,io) in enumerate(((0x8000,0xc000),(0x7123,0xc040))):
-            plan=math_builder.create_plan(index,["UDIV24","UMOD24"],
-                zp_budget=0,ram_budget=226)
-            man=selective_linker.build(plan,folder,memory={
-                "code_base":code,"math_io":io})
-            assert man["resource_use"]["code_and_tables_bytes"]==190
-            image=(folder/"math_selective.prg").read_bytes()
-            base=bytearray(65536)
-            base[code:code+len(image)-2]=image[2:]
-            for j,item in enumerate(man["operations"]):
-                entry=int(item["entry"][1:],16)
-                tag=f'u24_{i}_{j}'
-                checksum=native(vice,bytearray(base),entry,code,io,tag,7680+i*2+j,folder)
-                count+=N
-                print(tag,"VICE PASS",N,checksum,flush=True)
-    assert count==4*N,count
-    print("NATIVE UDIV24+UMOD24 PASS",count)
+        for variant in ("link:portable-restoring", "link:v2-repose-fast"):
+            for i,(code,io,zp) in enumerate(((0x8000,0xc000,0x90),
+                                            (0x7123,0xc040,0xb0))):
+                plan=math_builder.create_plan(index,["UDIV24","UMOD24"],
+                    pins={"UDIV24":variant,"UMOD24":variant},
+                    zp_budget=3,ram_budget=1493)
+                man=selective_linker.build(plan,folder,memory={
+                    "code_base":code,"math_io":io,"zp_base":zp})
+                expected=190 if variant=="link:portable-restoring" else 1461
+                assert man["resource_use"]["code_and_tables_bytes"]==expected
+                image=(folder/"math_selective.prg").read_bytes()
+                base=bytearray(65536)
+                base[code:code+len(image)-2]=image[2:]
+                for j,item in enumerate(man["operations"]):
+                    entry=int(item["entry"][1:],16)
+                    tag=f'u24_{variant.split(":")[1]}_{i}_{j}'
+                    checksum=native(vice,bytearray(base),entry,code,io,tag,
+                        7680+count,folder)
+                    count+=N
+                    print(tag,"VICE PASS",N,checksum,flush=True)
+    assert count==8*N,count
+    print("NATIVE UDIV24+UMOD24 BOTH VARIANTS PASS",count)
 
 
 if __name__=="__main__":
