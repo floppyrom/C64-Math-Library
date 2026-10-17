@@ -146,9 +146,16 @@ Unsigned 32/32 UDIV and UMOD now have the same independent
 producer. UMOD initially has one specialized 250+225+21 code-byte,
 zero-ZP implementation. Both measure full Q32/R32 outputs, C carry status
 on divide-by-zero, preserved 32-bit N/D inputs, and CPU-model cycles
-through RTS. They do not yet share a single linked 32/32 quotient/remainder
-producer; current speed models cannot be used as historical native speed
-claims, and new candidate promotions require a separate source+VICE gate.
+through RTS. The additional `link:shared-aligned-zerozp` exports the full public
+Q32/R32 routine from the existing independently qualified aligned DIV32
+source as both DIV and MOD. Its shared-producer identity makes the builder
+emit a *single* 576-byte code image with four bytes of scratch and zero ZP
+when both APIs select it: 612 B including the 32-byte public I/O area,
+versus 1,108 B for two separate aligned DIV and specialized MOD images.
+The dedicated MOD source and the 4-ZP zptail DIV source remain available.
+Speed decisions use each API's independent public-call corpus, not native
+historical speed numbers. The two public exports are deliberately aliases
+of the same quotient+remainder calculation.
 
 Unsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
