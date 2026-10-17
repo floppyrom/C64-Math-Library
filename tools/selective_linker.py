@@ -1846,6 +1846,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed_umul32.py", "tools/selective_speed_smul32.py",
                        "tools/selective_speed_mul32_ready_shr16.py",
                        "tools/selective_speed_u3216.py",
+                       "tools/selective_v2_fast_u3216.py",
                        "tools/selective_speed_umul16.py",
                        "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                        "tools/selective_speed_isqrt32.py",
