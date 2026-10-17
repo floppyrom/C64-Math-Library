@@ -62,7 +62,7 @@ an expected workload estimate, not exact total cycle prediction.
 With 1,400 total RAM bytes and the two example APIs, the optimizer can use only
 one quarter-square implementation. Heavy UMUL8 workloads select its fast
 variant and compact UMUL16; reversing the call weights reverses that choice.
-UMUL32 now compares **four** full64 source-linked candidates on the same
+UMUL32 now compares **five** full64 source-linked candidates on the same
 192-pair operand corpus: the 204-byte portable compact, 375-byte shared
 six-operation core, 1,028-byte zero-ZP quarter-square (plus 1,022 table bytes),
 and the historical V2 FAST31 native producer adapted to the public ABI.
@@ -74,17 +74,24 @@ CPU-model mean only where all resource constraints permit it. The published
 resident FAST31 record is **not** a directly comparable public-call timing.
 Native VICE proof covers the linked public interface at two code layouts.
 
-SMUL32 now also compares **three** signed full64 public-ABI implementations
+SMUL32 now also compares **four** signed full64 public-ABI implementations
 on its own deterministic 192-pair signed operand corpus: compact 293-byte
 source, 375-byte unified producer, and the independently source-linked signed
 FAST31 (512 code-slot bytes, four 512-byte lookup slots, 31 ZP). The signed
 FAST31 is a composition of the qualified unsigned V2 arithmetic producer
 with upper-word signed corrections, **not** the separately recorded V2
 692.825-cycle native signed kernel. Its full-call speed is measured separately.
-The builder conservatively charges distinct signed and unsigned FAST31 images
-if both are selected; they reuse one exclusive 31-byte ZP scratch region but
-**do not** yet share executable code or lookup tables. Mixed-call correctness
-is tested and these sharing optimizations remain future work.
+The `link:fast31-shared-full64` candidate exports both signed and unsigned
+public entries from a **single** code island, one V2 unsigned arithmetic
+producer and four immutable page-aligned quarter-square table slots. When
+selected for both operations, one 2,560-byte code/data image, 32-byte I/O,
+and 31 call-exclusive ZP bytes replaces two separate images needing 5,152 B
+RAM total (both figures at code base `$8000`). This is an additional
+candidate, not an irreversible replacement: individually selected historical
+FAST31 and zero-ZP compact variants remain available. The signed shared
+entry pays the complete unsigned public call plus signed high-word correction.
+The two public exports have distinct addresses and full CPU/native VICE
+qualification; source and candidate-set hashes remain authenticated.
 \nUnsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
 `size` and `zp` plans remain fully available for all 56 APIs.

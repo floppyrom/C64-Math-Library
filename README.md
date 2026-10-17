@@ -24,9 +24,13 @@ The operation-first binary backend currently targets **stock C64 only**;
 still requires the corresponding legacy profile. For UMUL32, the historical V2 FAST31 public-ABI kernel is now a selectable
 31-byte-ZP, writable-code candidate with four page-aligned quarter-square
 lookup tables. The builder compares its complete public-call cycle cost with
-three alternative algorithms on the same 192 operand pairs. The signed SMUL32 implementation also now supports a 31-ZP FAST31 variant,
-compared with the compact 293-byte and unified 375-byte alternatives on one
-192-input signed full64 corpus. Historical-core means are not compared with
+three alternative algorithms on the same 192 operand pairs. The signed SMUL32 implementation also now supports historical FAST31.
+Select `link:fast31-shared-full64` for BOTH operations and the builder
+links one arithmetic core and four page-aligned table slots: 2,592 B RAM
+(including 32 B public I/O) and 31 call-exclusive ZP at a page-aligned
+`$8000` start, versus 5,152 B RAM for two separately linked FAST31 images.
+The workload-aware selector can choose this shared producer automatically
+when both public APIs and their RAM/ZP budgets permit it. Historical-core means are not compared with
 public-call timing. Other operations still need fast-kernel migration; the
 selection model's timing is a CPU-model estimate, not native VICE cycle data.
 
