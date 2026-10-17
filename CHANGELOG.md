@@ -1,3 +1,18 @@
+## Unreleased — independent signed/unsigned MULDIV16 sources
+
+- Add zero-ZP `MATH_UMULDIV16` (288 B) and `MATH_SMULDIV16`
+  (439 B) independent source-linked producers. Each performs a complete
+  16×16 -> 32-bit product before a true 32/16 quotient/remainder
+  division; six bytes of exclusive ordinary scratch RAM are shared.
+- Preserve X16/Y16/D16 fields, produce Q32 and R16; signed path
+  truncates quotient toward zero and follows the product sign for
+  remainder. D=0 returns zero Q/R and C=1.
+- Three RAM/I/O relocation maps, signed/unsigned edge/random
+  reference tests, budget enforcement and two native VICE placements.
+  The portable sources are not the faster historical fused resident
+  donor kernels; no speed claims or profile binaries are changed.
+- Once preceding READY PRs merge, independently linkable API reaches 55/56.
+
 ## Unreleased — safe state-independent 32-bit READY fallbacks
 
 - Link `MATH_UMUL32_READY` and `MATH_SMUL32_READY` independently

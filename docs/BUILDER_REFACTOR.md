@@ -1,3 +1,33 @@
+### Source-linked unsigned and signed 16×16 full-width MULDIV
+
+`MATH_UMULDIV16` and `MATH_SMULDIV16` are independently selectable
+with the `link:portable-zerozp` variant. Their self-contained 6502
+modules perform the full unsigned/signed 16×16→32-bit product first,
+then divide the full product by D16 using a private 32/16 restoring
+kernel. The public X16/Y16/D16 inputs remain intact; N32/Z32 are
+volatile internal intermediates. Quotient Q32 and remainder R16
+have the original public ABI, including divide-by-zero zeroed Q/R
+and C=1, otherwise C=0. Signed division truncates toward zero and
+the remainder follows the full signed product's sign.
+
+Each module uses 6 call-exclusive ordinary-RAM scratch bytes and
+zero zero-page bytes. The unsigned module is 288 executable bytes,
+the signed module 439; together they need 727 code + 6 scratch +
+32 common I/O = **765 RAM bytes**. No initialized pointers, tables,
+SMC, REU or illegal 6502 instructions are needed.
+
+```sh
+python3 tools/math_builder.py --operation UMULDIV16 \
+  --operation SMULDIV16 --zp-budget 0 --ram-budget 765 --build
+```
+
+The CPU-model gate covers three independent code/I/O/scratch maps,
+unsigned/signed edge and random triples, zero divisor, complete
+Q32/R16 output, X/Y/D preservation, zero-page usage and strict
+RAM budget. Native VICE checks both modules at two placements.
+These correctness-first implementations do not inherit the historical
+V2–V4 fused producer-consumer benchmarks.
+
 ### READY32 operation-first safe fallbacks
 
 `MATH_UMUL32_READY` and `MATH_SMUL32_READY` are now
