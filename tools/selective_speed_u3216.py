@@ -21,10 +21,12 @@ DIVISORS=(0,1,2,3,7,127,255,256,257,32768,65535)
 COUNT=384
 CORPUS_SHA256="d3c5e882c9ee52461ca764dc50b4b9f7d9203bf378ac5a25be3692168bb053e1"
 APIS=frozenset(("MATH_UDIV32_16","MATH_UMOD32_16"))
-EXPECTED=frozenset(("link:portable-restoring","link:accumulator-remainder"))
+EXPECTED=frozenset(("link:portable-restoring","link:accumulator-remainder",
+                    "link:accum-unrolled-32"))
 RESOURCES={
     "link:portable-restoring":(162,0,3),
     "link:accumulator-remainder":(131,0,1),
+    "link:accum-unrolled-32":(1771,0,1),
 }
 
 def corpus():
@@ -78,7 +80,8 @@ def benchmark(api,modules,code,io,scratch,root:Path):
             raise ValueError(api+": kernel resource ownership changed: "+ident)
         if (mod.get("requires_reu") or mod.get("requires_writable_code")
             or mod.get("share_producer") not in (
-                "unsigned-32by16-restoring","unsigned-32by16-accum")
+                "unsigned-32by16-restoring","unsigned-32by16-accum",
+                "unsigned-32by16-accum-unrolled")
             or not mod.get("multi_entry")):
             raise ValueError(api+": hardware/sharing contract changed: "+ident)
         image,entry=assemble_source(ident,mod,code,io,scratch,root)

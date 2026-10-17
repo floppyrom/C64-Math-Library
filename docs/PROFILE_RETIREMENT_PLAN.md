@@ -116,6 +116,16 @@ Q32, R16, C=1 on division by zero, C=0 on success, N/D inputs, caller SP
 and zero ZP. The shared producer can be selected once for both operations;
 measured performance is for complete public calls, not resident V1/V2 timing.
 
+The optional `link:accum-unrolled-32` is a statically unrolled 32-round
+zero-ZP quotient/remainder core with 1,771 bytes of executable code and
+one ordinary scratch byte. It shares the complete producer when DIV and MOD
+are both selected. Main RAM is 1,804 bytes including public I/O at `$8000`,
+versus 164 bytes for the compact accumulator implementation. Automatic
+speed selection uses matched 384-input full public-call timing, and will
+prefer unrolled only if its actual measured cycles and project resources
+justify it; the portable reference and compact zero-ZP sources remain
+available. This is not the historical V2 663-cycle native ABI transplant.
+
 Unsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
 `size` and `zp` plans remain fully available for all 56 APIs.
