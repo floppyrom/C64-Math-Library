@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (fourteen source-qualified APIs)
+## Workload-weighted speed selection (sixteen source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **fourteen**
+The `speed` objective supports project-level weighted selection for **sixteen**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16
-SMUL32_SHR16, UDIV32_16 and UMOD32_16. Multiple operations **must** each have a positive integer call count,
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32 and UMOD32_32. Multiple operations **must** each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
 
@@ -138,6 +138,17 @@ averages ~932.63 cycles at `$8000` (rather than the historic native-only
 three zero-ZP variants according to RAM, ZP and workload budgets. No public
 input, carry or divide-by-zero semantics are changed; nested/interrupt use
 of the same ZP workspace is not supported.
+
+Unsigned 32/32 UDIV and UMOD now have the same independent
+384-pair full-public-call speed corpus. UDIV compares the standalone
+`link:zptail` (325+219 code bytes, 4 ZP) against the
+`link:aligned-zerozp` (325+251 code bytes, 4 ordinary scratch RAM)
+producer. UMOD initially has one specialized 250+225+21 code-byte,
+zero-ZP implementation. Both measure full Q32/R32 outputs, C carry status
+on divide-by-zero, preserved 32-bit N/D inputs, and CPU-model cycles
+through RTS. They do not yet share a single linked 32/32 quotient/remainder
+producer; current speed models cannot be used as historical native speed
+claims, and new candidate promotions require a separate source+VICE gate.
 
 Unsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
