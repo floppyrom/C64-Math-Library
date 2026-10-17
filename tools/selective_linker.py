@@ -1407,8 +1407,8 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_SMUL32_READY": (speed32extras.bench_smul32_ready, "scratch", True),
             "MATH_UMUL32_SHR16": (speed32extras.bench_umul32_shr16, "scratch", True),
             "MATH_SMUL32_SHR16": (speed32extras.bench_smul32_shr16, "scratch", True),
-            "MATH_UDIV32_16": (speed_u3216.bench_udiv32_16, "scratch", False),
-            "MATH_UMOD32_16": (speed_u3216.bench_umod32_16, "scratch", False),
+            "MATH_UDIV32_16": (speed_u3216.bench_udiv32_16, "scratch", True),
+            "MATH_UMOD32_16": (speed_u3216.bench_umod32_16, "scratch", True),
         }
         unavailable = sorted(set(names) - set(measured))
         if unavailable:
