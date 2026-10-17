@@ -1,3 +1,21 @@
+## Unreleased — safe state-independent 32-bit READY fallbacks
+
+- Link `MATH_UMUL32_READY` and `MATH_SMUL32_READY` independently
+  using the existing 204-byte unsigned and 293-byte signed full64
+  `link:compact-zerozp` source kernels, respectively. Both use
+  12 bytes of call-exclusive ordinary RAM scratch and zero ZP.
+- In the operation-first builder, READY aliases are deliberately safe
+  under arbitrary mixed calls, requiring neither pointer lifetime nor
+  initialization. Selecting ordinary and READY versions deduplicates the
+  exact core and links both entry symbols at no additional code cost.
+  This *does not* claim the historical READY speed advantage.
+- Three CPU-model relocated maps test signed/unsigned edges, deliberate
+  scratch invalidation by 24-bit multipliers, stack/code integrity,
+  alias dedup and strict budget enforcement; native x64sc checks
+  both entries at two independent placements.
+- Independently selectable catalog reaches 53/56 once parent PR merges.
+  Existing resident profiles, timing data and pointer contracts unchanged.
+
 ## Unreleased — independently linked signed 32x32 SHR16 fixed-point
 
 - Add standalone `MATH_SMUL32_SHR16` `link:compact-zerozp` using a
