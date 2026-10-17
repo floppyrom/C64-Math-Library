@@ -1,3 +1,33 @@
+### Full signed 32x32 multiplication via independent source
+
+The operation-first builder now offers `MATH_SMUL32`
+`link:compact-zerozp`, a full signed32×signed32→signed64
+two's-complement producer. The **293 executable byte** module
+includes a private 204-byte unsigned32 shift-add source and
+corrects the high 32 bits by subtracting Y32 when X32 is negative
+and X32 when Y32 is negative. Thus even `-2147483648 ×
+-2147483648` produces the correct 64-bit signed result.
+
+The module uses **12 ordinary RAM call-exclusive scratch bytes**,
+**zero ZP**, and **337 RAM bytes including public I/O**.
+Both 32-bit input fields are preserved, all eight Z bytes are
+written, carry is cleared, CLD is required, and A/X/Y and other
+flags are volatile. No REU, tables, initialization, SMC or
+undocumented opcodes.
+
+```sh
+python3 tools/math_builder.py --operation SMUL32 \
+  --pin SMUL32=link:compact-zerozp \
+  --zp-budget 0 --ram-budget 337 --build
+```
+
+Three relocated CPU-model signed 64-bit edge/random tests
+and mixed source-linked calls with UMUL32_SHR16 verify shared
+scratch lifetime and exact main-RAM accounting. Two native x64sc
+placements validate output, preserved inputs and carry. This
+portable implementation does not replace the faster V1–V5
+resident signed 32-bit kernels or inherit their benchmark cycles.
+
 ### Source-linked unsigned 32x32 SHR16 fixed-point result
 
 `MATH_UMUL32_SHR16` is independently linkable with the
