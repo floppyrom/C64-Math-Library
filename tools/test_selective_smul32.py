@@ -69,11 +69,11 @@ class SMUL32Tests(unittest.TestCase):
     def test_zero_zp_and_shared_scratch_across_signed_and_unsigned(self):
         with tempfile.TemporaryDirectory() as td:
             man=linker.build(self.plan(
-                ("SMUL32","UMUL32_SHR16"),ram=582),Path(td))
-            self.assertEqual(man["resource_use"]["main_ram_total_bytes"],582)
+                ("SMUL32","UMUL32_SHR16"),ram=419),Path(td))
+            self.assertEqual(man["resource_use"]["main_ram_total_bytes"],419)
             self.assertEqual(man["resource_use"]["private_ram_scratch_bytes"],12)
             self.assertEqual(man["resource_use"]["zero_page_bytes"],0)
-            self.assertEqual(len(man["link_order"]),2)
+            self.assertEqual(len(man["link_order"]),1)
             entry={o["api"]:int(o["entry"][1:],16) for o in man["operations"]}
             img=(Path(td)/"math_selective.prg").read_bytes()
             mem=bytearray(65536)
