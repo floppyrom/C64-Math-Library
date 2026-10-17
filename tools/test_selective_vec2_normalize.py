@@ -66,7 +66,20 @@ class Vec2SelectiveTests(unittest.TestCase):
                     self.assertEqual(bytes(mem[io:io+2]),xb)
                     self.assertEqual(bytes(mem[io+4:io+6]),yb)
                     self.assertEqual(cpu.sp,sp)
-                self.assertEqual(bytes(mem[code:code+span]),before)
+                # The stock V1/V5 kernel is deliberately self-modifying:
+                # eight high bytes of LDX abs,Y lookup operands may change.
+                # Check the exact allowed instruction class and region rather
+                # than incorrectly demanding a fully immutable code image.
+                modified = [i for i, (a,b) in enumerate(
+                    zip(mem[code:code+span], before)) if a != b]
+                self.assertLessEqual(len(modified), 8)
+                for offset in modified:
+                    absolute = code + offset
+                    self.assertGreaterEqual(absolute, expected_start+0x500)
+                    self.assertLess(absolute, expected_start+0x900)
+                    self.assertEqual(before[offset-2], 0xbe)  # LDX abs,Y
+                    self.assertEqual(before[offset-1], 0x00)  # page base low
+
 
     def test_zp_budget_and_aligned_mixed_link(self):
         with tempfile.TemporaryDirectory() as td:
