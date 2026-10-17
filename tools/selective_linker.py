@@ -322,6 +322,15 @@ MODULES = {
             "provenance": "Shared 24/24 unsigned DIV+MOD producer: both outputs, divisor-zero carry and preserved N/D",
         },
     },
+    "MATH_UDIV16_SHL8": {
+        "link:accumulator-remainder": {
+            "source": "routines/divide/u16_shl8_accum_selective.asm",
+            "segments": (("KERNEL_CODE", 129),),
+            "entry": "FAST_UDIV16_SHL8_ACCUM", "zp": 0, "scratch": 1,
+            "udiv16_shl8": True,
+            "provenance": "Portable shifted N16<<8 / D16 using one ordinary remainder byte, 32 iterations; Q24 and R16, preserved N/D, zero-divisor carry; no ZP/REU/SMC",
+        },
+    },
     "MATH_UDIV32_16": {
         "link:accumulator-remainder": {
             "source": "routines/divide/u32_by_u16_accum_selective.asm",
@@ -521,6 +530,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8_v2v5.py" if mod.get("udiv8_v2v5") else
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
+                    "tools/test_selective_udiv16_shl8.py" if mod.get("udiv16_shl8") else
                     "tools/test_selective_udiv24_v2.py" if mod.get("udiv24_v2") else
                     "tools/test_selective_isqrt32_v2.py" if mod.get("isqrt32_v2") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
@@ -1230,6 +1240,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; DIV/MOD: unsigned N/D in MATH_N/MATH_D, quotient/remainder Q/R;",
         "; UDIV8: low byte N/D => low byte Q/R; high bytes unchanged; C=1 on D=0.",
         "; UDIV32_16 and UMOD32_16: N32/D16 => Q32/R16 both outputs, C=1 on D=0.",
+        "; UDIV16_SHL8: unsigned (N16 << 8)/D16 => Q24/R16, C=1 on D=0.",
         "; Portable 32/16 source is the correctness fallback, not the resident speed champion.",
         "; UMOD8: low byte N/D => low byte R ONLY; Q untouched, C=1 if D=0.",
         "; UMOD8 V1 fast/fallback uses two writable immediate operands in RAM.",
