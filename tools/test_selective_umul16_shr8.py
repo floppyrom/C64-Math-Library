@@ -54,7 +54,7 @@ class ShiftedMultiplyTests(unittest.TestCase):
                 for x, y in corpus():
                     mem[io:io+2] = x.to_bytes(2, "little")
                     mem[io+4:io+6] = y.to_bytes(2, "little")
-                    mem[io+8:io+12] = b"\\xA5" * 4
+                    mem[io+8:io+12] = bytes([0xA5]) * 4
                     cpu.d = 0
                     cpu.c = (x ^ y) & 1
                     cpu.call(entry, 50000)
