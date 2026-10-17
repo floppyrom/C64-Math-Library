@@ -270,6 +270,14 @@ MODULES = {
         },
     },
     "MATH_UDIV24": {
+        "link:v2-repose-fast": {
+            "source": "routines/divide/u24_v2_repose_selective.asm",
+            "segments": (("KERNEL_CODE", 1244), ("KERNEL_AUX", 217)),
+            "entry": "DU24F_div_u24", "zp": 3, "scratch": 0,
+            "share_producer": "unsigned-24by24-v2-repose", "multi_entry": True,
+            "requires_writable_code": True, "udiv24_v2": True,
+            "provenance": "Canonical historical V2 high-speed Repose 24-bit shared quotient/remainder; two relocated code islands, three scratch ZP, self-modifying tail immediate",
+        },
         "link:portable-restoring": {
             "source": "routines/divide/u24_by_u24_restoring_selective.asm",
             "segments": (("KERNEL_CODE", 190),),
@@ -279,6 +287,14 @@ MODULES = {
         },
     },
     "MATH_UMOD24": {
+        "link:v2-repose-fast": {
+            "source": "routines/divide/u24_v2_repose_selective.asm",
+            "segments": (("KERNEL_CODE", 1244), ("KERNEL_AUX", 217)),
+            "entry": "DU24F_div_u24", "zp": 3, "scratch": 0,
+            "share_producer": "unsigned-24by24-v2-repose", "multi_entry": True,
+            "requires_writable_code": True, "udiv24_v2": True,
+            "provenance": "Canonical historical V2 high-speed Repose 24-bit shared quotient/remainder; two relocated code islands, three scratch ZP, self-modifying tail immediate",
+        },
         "link:portable-restoring": {
             "source": "routines/divide/u24_by_u24_restoring_selective.asm",
             "segments": (("KERNEL_CODE", 190),),
@@ -442,6 +458,11 @@ def available_variants(root=ROOT):
                     "tools/selective_isqrt16.py": hashlib.sha256(
                         (root / "tools/selective_isqrt16.py").read_bytes()).hexdigest()
                 } if mod.get("isqrt16") else {
+                    "relocatable_source/v2_pareto_fast/udiv24_direct_repose.inc":
+                        hashlib.sha256((root / "relocatable_source/v2_pareto_fast/udiv24_direct_repose.inc").read_bytes()).hexdigest(),
+                    "tools/selective_udiv24_v2.py":
+                        hashlib.sha256((root / "tools/selective_udiv24_v2.py").read_bytes()).hexdigest(),
+                } if mod.get("udiv24_v2") else {
                     "tools/selective_trig8.py": hashlib.sha256(
                         (root / "tools/selective_trig8.py").read_bytes()).hexdigest()
                 } if mod.get("trig8") else {
@@ -467,6 +488,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8_v2v5.py" if mod.get("udiv8_v2v5") else
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
+                    "tools/test_selective_udiv24_v2.py" if mod.get("udiv24_v2") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
                     "tools/test_selective_seek16.py" if mod.get("seek16") else
                     "tools/test_selective_seek8.py" if mod.get("seek8") else
@@ -477,11 +499,13 @@ def available_variants(root=ROOT):
                     "routines/atan2/validate_optimized.py" if "atan2" in mod else
                     "routines/standalone_lab/portable/verify.py"),
                 "qualification": ("historical fast source port; CPU and native VICE gates"
-                                  if (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("umul8_v1") or mod.get("seek8") or mod.get("seek16") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v2v5") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
+                                  if mod.get("udiv24_v2") or (mod.get("umod8_v1") or mod.get("umod8_extra")) or mod.get("smul8_v1") or mod.get("umul8_v1") or mod.get("seek8") or mod.get("seek16") or mod.get("sdiv8_v1") or mod.get("dist8_accurate") or mod.get("trig8") or mod.get("udiv8_v2v5") or mod.get("udiv8_v1") or mod.get("dist8") or mod.get("isqrt16") else
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("Original byte-identical V2/V5 430-byte unrestricted UDIV8 Q/R fast producer; no REU, 1 ZP byte"
+                "notes": ("Certified historical V2 1244+217-byte direct Repose 24/24 DIV/MOD fast chain, 3 ZP bytes and writable tail-bias instruction; explicit opt-in until common-corpus speed ranking"
+                          if mod.get("udiv24_v2") else
+                          "Original byte-identical V2/V5 430-byte unrestricted UDIV8 Q/R fast producer; no REU, 1 ZP byte"
                           if mod.get("udiv8_v2v5") else
                           "Original V2/V5 unrolled fast/fallback U8 remainder producer, "
                           "two zero-page bytes and writable immediate operands; Q untouched"
@@ -979,6 +1003,10 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("fast_umul16") and set(x["source_path"] for x in dep_provenance) != {
                 "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py"}:
             raise LinkError(api + ": 16-bit quarter-square emitter provenance missing")
+        if module.get("udiv24_v2") and [x["source_path"] for x in dep_provenance] != [
+                "relocatable_source/v2_pareto_fast/udiv24_direct_repose.inc",
+                "tools/selective_udiv24_v2.py"]:
+            raise LinkError(api + ": canonical V2 U24 source / relocation provenance missing")
         if module.get("isqrt16") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_isqrt16.py"]:
             raise LinkError(api + ": integer-root table generator provenance missing")
