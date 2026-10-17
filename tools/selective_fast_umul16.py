@@ -19,17 +19,18 @@ CODE_BYTES = 233
 TABLE_BYTES = 511
 
 
-def layout(start: int):
+def layout(start: int, code_bytes: int = CODE_BYTES):
     addresses = {
         "KERNEL_CODE": start,
-        "Q_LO": start + CODE_BYTES,
-        "Q_HI": start + CODE_BYTES + TABLE_BYTES,
+        "Q_LO": start + code_bytes,
+        "Q_HI": start + code_bytes + TABLE_BYTES,
     }
-    return addresses, start + CODE_BYTES + 2 * TABLE_BYTES
+    return addresses, start + code_bytes + 2 * TABLE_BYTES
 
 
-def render(addresses: dict, io: int, scratch: int, root: Path):
-    source = (root / SOURCE).read_text(encoding="utf-8")
+def render(addresses: dict, io: int, scratch: int, root: Path,
+           source_path: str = SOURCE):
+    source = (root / source_path).read_text(encoding="utf-8")
     values = {
         **addresses,
         "INPUT_X": io,
@@ -45,11 +46,14 @@ def render(addresses: dict, io: int, scratch: int, root: Path):
     return source
 
 
-def assemble(start: int, io: int, scratch: int, root: Path):
-    positions, end = layout(start)
-    machine, labels, _ = Assembler().assemble(render(positions, io, scratch, root))
-    expected = set(range(start, start + CODE_BYTES))
-    if set(machine) != expected or labels.get("FAST_UMUL16_QUARTERSQUARE") != start:
+def assemble(start: int, io: int, scratch: int, root: Path,
+             *, source_path: str = SOURCE, code_bytes: int = CODE_BYTES,
+             entry_label: str = "FAST_UMUL16_QUARTERSQUARE"):
+    positions, end = layout(start, code_bytes)
+    machine, labels, _ = Assembler().assemble(
+        render(positions, io, scratch, root, source_path))
+    expected = set(range(start, start + code_bytes))
+    if set(machine) != expected or entry_label not in labels:
         raise ValueError("UMUL16 quarter-square code size or entry mismatch")
     lower, upper = fast8.tables()
     if len(lower) != TABLE_BYTES or len(upper) != TABLE_BYTES:
@@ -62,11 +66,11 @@ def assemble(start: int, io: int, scratch: int, root: Path):
                 raise ValueError("UMUL16 quarter-square source/data collision")
             machine[address] = value
     segments = [
-        {"name": "KERNEL_CODE", "start": f"${start:04X}", "bytes": CODE_BYTES},
+        {"name": "KERNEL_CODE", "start": f"${start:04X}", "bytes": code_bytes},
         {"name": "Q_LO", "start": f"${positions['Q_LO']:04X}", "bytes": TABLE_BYTES},
         {"name": "Q_HI", "start": f"${positions['Q_HI']:04X}", "bytes": TABLE_BYTES},
     ]
-    return machine, start, segments, end
+    return machine, labels[entry_label], segments, end
 
 
 def source_sha256(root: Path):

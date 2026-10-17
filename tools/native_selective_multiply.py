@@ -174,6 +174,23 @@ def main():
                                 bits="shr8")
             total += N
             print("NATIVE UMUL16_SHR8", hex(code), N, "PASS", digest, flush=True)
+    # Independent table-driven shifted product, genuine compiled PRG on x64sc.
+    for i, (code, io) in enumerate(((0x8000, 0xC000), (0x7123, 0xC040))):
+        plan = math_builder.create_plan(
+            index, ["UMUL16_SHR8"], zp_budget=0, ram_budget=1314,
+            pins={"UMUL16_SHR8":"link:quarter-square"})
+        with tempfile.TemporaryDirectory(prefix="selective_umul16_shr8_qs_native_") as temp:
+            folder = Path(temp)
+            man = selective_linker.build(
+                plan, folder, memory={"code_base":code,"math_io":io})
+            assert man["resource_use"]["image_span_bytes"] == 1278
+            entry = int(man["operations"][0]["entry"][1:],16)
+            data = (folder/"math_selective.prg").read_bytes()
+            digest = run_native(vice,data,entry,code,io,
+                                "umul16_shr8_qs_%04x"%code,7520+i,folder,
+                                bits="shr8")
+            total += N
+            print("NATIVE UMUL16_SHR8 QUARTER-SQUARE",hex(code),N,"PASS",digest,flush=True)
     # UMUL8 stores a 16-bit result; the two higher Z bytes are outside its
     # public output contract and intentionally not compared.
     for i,(code,io) in enumerate(((0x8000,0xC000),(0x7123,0xC040))):
@@ -190,8 +207,8 @@ def main():
                               "umul8_%04x"%code,7490+i,folder,bits=8)
             total+=N
             print("NATIVE UMUL8",hex(code),N,"PASS",digest,flush=True)
-    assert total==576
-    print("NATIVE SELECTIVE UMUL8/UMUL16/UMUL16_SHR8 PASS",total)
+    assert total==768
+    print("NATIVE SELECTIVE UMUL8/UMUL16/UMUL16_SHR8 PLUS QS PASS",total)
 
 
 if __name__=="__main__":
