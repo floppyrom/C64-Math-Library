@@ -127,7 +127,11 @@ def run_native(vice, prg_bytes, entry, code, io, tag, port, folder, bits=16):
         n=data[4*STRIDE+i]|(data[5*STRIDE+i]<<8)
         d=data[6*STRIDE+i]|(data[7*STRIDE+i]<<8)
         expected = x*y if bits == 16 else (x&255)*(y&255)
-        valid = value == expected if bits == 16 else (value & 0xffff) == expected
+        if bits == "shr8":
+            expected = (x*y) >> 8
+            valid = (value & 0xffffff) == expected
+        else:
+            valid = value == expected if bits == 16 else (value & 0xffff) == expected
         processor_status = data[8*STRIDE+i]
         if not valid or (n,d)!=(x,y) or (processor_status & 1):
             raise AssertionError((tag,i,x,y,value,n,d,processor_status))
@@ -154,6 +158,22 @@ def main():
                               "umul16_%04x"%code,7480+i,folder)
             total+=N
             print("NATIVE UMUL16",hex(code),N,"PASS",digest,flush=True)
+    # UMUL16_SHR8 is an independent zero-ZP reference with a 24-bit result.
+    for i, (code, io) in enumerate(((0x8000, 0xC000), (0x7123, 0xC040))):
+        plan = math_builder.create_plan(
+            index, ["UMUL16_SHR8"], zp_budget=0, ram_budget=164)
+        with tempfile.TemporaryDirectory(prefix="selective_umul16_shr8_native_") as temp:
+            folder = Path(temp)
+            man = selective_linker.build(
+                plan, folder, memory={"code_base": code, "math_io": io})
+            assert man["resource_use"]["image_span_bytes"] == 126
+            entry = int(man["operations"][0]["entry"][1:], 16)
+            image = (folder / "math_selective.prg").read_bytes()
+            digest = run_native(vice, image, entry, code, io,
+                                "umul16_shr8_%04x" % code, 7500+i, folder,
+                                bits="shr8")
+            total += N
+            print("NATIVE UMUL16_SHR8", hex(code), N, "PASS", digest, flush=True)
     # UMUL8 stores a 16-bit result; the two higher Z bytes are outside its
     # public output contract and intentionally not compared.
     for i,(code,io) in enumerate(((0x8000,0xC000),(0x7123,0xC040))):
@@ -170,8 +190,8 @@ def main():
                               "umul8_%04x"%code,7490+i,folder,bits=8)
             total+=N
             print("NATIVE UMUL8",hex(code),N,"PASS",digest,flush=True)
-    assert total==384
-    print("NATIVE SELECTIVE UMUL8/UMUL16 PASS",total)
+    assert total==576
+    print("NATIVE SELECTIVE UMUL8/UMUL16/UMUL16_SHR8 PASS",total)
 
 
 if __name__=="__main__":
