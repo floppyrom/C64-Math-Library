@@ -321,6 +321,14 @@ jobs:
           python3 tools/test_selective_sdiv8.py
           python3 tools/test_selective_trig8.py
           python3 tools/test_selective_dist8_accurate.py
+      - name: Upload 32/32 divisor-stratified CPU cycle report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: u3232-stratified-cycle-tails
+          path: build/u3232_stratified_cycles.json
+          if-no-files-found: ignore
+          retention-days: 30
       - name: Build operation-first default configuration (no profiles)
         run: |
           make builder OUT="$RUNNER_TEMP/opmath"
