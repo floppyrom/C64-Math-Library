@@ -216,6 +216,26 @@ MODULES = {
             "provenance": "Byte-identical V2 and V5 original 430-byte branch-chain producer; no REU",
         },
     },
+    "MATH_SDIV24": {
+        "link:portable-zerozp": {
+            "source": "routines/divide/sdiv24_smod24_zerozp.asm",
+            "segments": (("KERNEL_CODE", 325),),
+            "entry": "FAST_SDIV24_ZEROZP", "zp": 0, "scratch": 7,
+            "share_producer": "signed-24by24-portable-zerozp",
+            "multi_entry": True, "sdiv24_portable": True,
+            "provenance": "Shared signed 24/24 quotient and modulo exact wrap/truncation, signed R; 325 code, 7 ordinary RAM scratch, zero ZP, input and high Q/R preserved.",
+        },
+    },
+    "MATH_SMOD24": {
+        "link:portable-zerozp": {
+            "source": "routines/divide/sdiv24_smod24_zerozp.asm",
+            "segments": (("KERNEL_CODE", 325),),
+            "entry": "FAST_SMOD24_ZEROZP", "zp": 0, "scratch": 7,
+            "share_producer": "signed-24by24-portable-zerozp",
+            "multi_entry": True, "sdiv24_portable": True,
+            "provenance": "SMOD24 alias to the signed 24/24 quotient+remainder kernel; code shares with SDIV24 and writes public R/Q.",
+        },
+    },
     "MATH_SDIV16_SHL8": {
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv16_shl8_zerozp.asm",
@@ -614,6 +634,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_urecip16_q16.py" if mod.get("urecip16") else
+                    "tools/test_selective_sdiv24.py" if mod.get("sdiv24_portable") else
                     "tools/test_selective_sdiv16_shl8.py" if mod.get("sdiv16_shl8_portable") else
                     "tools/test_selective_sdiv16.py" if mod.get("sdiv16_portable") else
                     "tools/test_selective_udiv16_shl8.py" if mod.get("udiv16_shl8") else
@@ -1334,6 +1355,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UDIV16_SHL8: unsigned (N16 << 8)/D16 => Q24/R16, C=1 on D=0.",
         "; SDIV16/SMOD16: shared signed N16/D16 => Q16 truncated toward zero, R16 N-signed; D=0 C=1.",
         "; SDIV16_SHL8: signed (N16 << 8)/D16 => signed Q24 and R16 (N sign), C=1 for D=0.",
+        "; SDIV24/SMOD24: signed N24/D24 => signed Q24/R24, shared code, D=0 C=1.",
         "; URECIP16_Q16: D16 => Q24 = floor(65536/D), C=1 on D=0; Q3/R unchanged.",
         "; Portable 32/16 source is the correctness fallback, not the resident speed champion.",
         "; UMOD8: low byte N/D => low byte R ONLY; Q untouched, C=1 if D=0.",
