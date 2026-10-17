@@ -34,11 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (eight source-qualified APIs)
+## Workload-weighted speed selection (twelve source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **eight**
+The `speed` objective supports project-level weighted selection for **twelve**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
-ISQRT32, UMUL32 and SMUL32. Multiple operations **must** each have a positive integer call count,
+ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16
+and SMUL32_SHR16. Multiple operations **must** each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
 
@@ -100,11 +101,14 @@ reused as safe state-independent `READY` aliases. Pin
 linker coalesce them into one signed/unsigned six-operation producer, with no
 additional tables or code-page allocation. The 512-byte code island and
 2,592-byte main-RAM footprint are unchanged at `$8000` even when all six
-operations are linked. The READY/SHR16 APIs remain *unmeasured* for automatic
-speed-selection purposes: their fast variants are selectable under ordinary
-size/balanced/ZP objectives and explicit pins, but the speed objective still
-supports eight source-qualified public operations until matching corpus
-measurements are published for the four additional APIs.
+operations are linked. The READY and SHR16 APIs now each have independently measured full public-call
+CPU-model means: three source-certified candidates per API (compact zero-ZP,
+shared six-entry unified zero-ZP, and shared FAST31 31-ZP). Signed and unsigned
+measurements reuse their respective deterministic 192-input corpora but measure
+READY and Q48 calls separately, including the SHR16 output adapter and return.
+The global speed optimizer can now compare the four additional APIs with their
+complete same-API cycle models, preserving shared code/table resource accounting.
+As before, source-model means do not imply physical-C64 or post-link cycle invariance.
 \nUnsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
 `size` and `zp` plans remain fully available for all 56 APIs.
