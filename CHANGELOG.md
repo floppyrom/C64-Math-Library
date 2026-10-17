@@ -1,3 +1,16 @@
+## Unreleased — independently linked UMUL32_SHR16
+
+- Add `MATH_UMUL32_SHR16` `link:compact-zerozp` (245 bytes
+  executable, 12 bytes reusable ordinary RAM, 0 ZP; 289 bytes
+  including public I/O). Exact `(unsigned X32 * unsigned Y32)>>16`
+  48-bit result in Z[0..5]; X/Y preserved, carry clear.
+- Add three relocated CPU-model edge/random and mixed UMUL32
+  qualification cases, two native VICE memory maps, strict RAM
+  resource accounting, changelog and sealed package audit.
+- Independently linked operation catalog rises to 49 of 56
+  once this and the parent shared signed32 DIV/MOD PR merge.
+  Resident V1–V5 code and historical cycle numbers unchanged.
+
 ## Unreleased — shared signed 32/32 division and modulo
 
 - Add independently linkable `MATH_SDIV32_32` and `MATH_SMOD32_32`
