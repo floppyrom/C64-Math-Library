@@ -1,3 +1,17 @@
+## Unreleased — unsigned 32/16 shared-quotient speed foundations
+
+- Qualify `UDIV32_16` and `UMOD32_16` for project-weighted automatic
+  `speed` selection: 384 identical source-assembled public calls for each
+  candidate, including divide-by-zero behavior (Q=R=0/C=1), full Q32,
+  R16, preserved inputs/SP, and instruction-image immutability.
+- Compare the 131-byte/1 scratch accumulator-remainder source with the
+  162-byte/3 scratch portable restoring baseline, both using zero ZP,
+  shared quotient/remainder entrypoints and source-hash provenance.
+  Add two-relocation, exact-RAM, global weighted-sharing and fail-closed
+  candidate/resource CI regressions. Speed-selected operations: 12→14.
+- These are portable-source baseline comparisons; no historical V1/V2
+  native DIV32/16 optimized kernel has been transplanted yet.
+
 ## Unreleased — matched-input READY/SHR16 FAST31 speed promotion
 
 - Add four same-operand public-call speed bases for UMUL32_READY,
