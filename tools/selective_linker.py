@@ -350,6 +350,15 @@ MODULES = {
             "provenance": "Independent zero-ZP 16x16 quarter-square shared-table kernel plus 24-bit SHR8 adapter; 256 B code, 1022 B tables, 4 B scratch",
         },
     },
+    "MATH_VEC2_NORMALIZE_Q8_8": {
+        "link:certified-stock": {
+            "source": "routines/vector/vec2_normalize_q8_8_source.asm",
+            "segments": (("KERNEL_CODE", 3587),),
+            "entry": "VEC2_NORMALIZE_Q8_8_NATIVE", "zp": 4, "scratch": 0,
+            "operand_layout": "vec2", "vec2_stock": True,
+            "provenance": "Canonical V1/V5 4-quadrant signed Q8.8 normalizer and exact 2560B ratio/log/component stock tables; 865 code bytes plus 162 page gaps, 3587 aligned RAM image span, 4 volatile ZP, NMOS LAX abs and self-modifying operand; unchanged full-domain precision certificate <=0.3621 degrees / <=202 LSB.",
+        },
+    },
     "MATH_UMULDIV16": {
         "link:portable-zerozp": {
             "source": "routines/muldiv16/umuldiv16_compact_zerozp.asm",
@@ -913,6 +922,8 @@ def projected_end(start, items):
             _, cursor = sqrt16.layout(cursor)
         elif mod.get("umul8_v1"):
             _, cursor = v1umul8.layout(cursor)
+        elif mod.get("vec2_stock"):
+            cursor = ((cursor + 255) & ~255) + 3587
         else:
             cursor += sum(length for _, length in mod["segments"])
     if shared_trig:
@@ -932,8 +943,8 @@ def place_modules(items, start):
     minimum padding at the aligned module's code/table boundary. This remains
     O(256 * number_of_modules), not factorial when the catalog expands.
     """
-    aligned = [item for item in items if "atan2" in item[2] or item[2].get("isqrt16") or item[2].get("umul8_v1")]
-    ordinary = [item for item in items if "atan2" not in item[2] and not item[2].get("isqrt16") and not item[2].get("umul8_v1")]
+    aligned = [item for item in items if "atan2" in item[2] or item[2].get("isqrt16") or item[2].get("umul8_v1") or item[2].get("vec2_stock")]
+    ordinary = [item for item in items if "atan2" not in item[2] and not item[2].get("isqrt16") and not item[2].get("umul8_v1") and not item[2].get("vec2_stock")]
     if not aligned:
         return ordinary
     if len(aligned) != 1:
@@ -943,7 +954,8 @@ def place_modules(items, start):
     atan = aligned[0]
     code_bytes = (atan2.KINDS[atan[2]["atan2"]]["code_bytes"]
                   if "atan2" in atan[2] else sqrt16.CODE_BYTES
-                  if atan[2].get("isqrt16") else v1umul8.CODE_BYTES)
+                  if atan[2].get("isqrt16") else 0
+                   if atan[2].get("vec2_stock") else v1umul8.CODE_BYTES)
     # Track one deterministic set of indices per possible prefix address.
     # Item order remains stable within the selected prefix and suffix.
     states = {start % 256: ()}
@@ -982,7 +994,7 @@ def pareto_resource_variants(variants):
     # other code/table alignment or placement constraints.
     layout_classes = {
         key: (("page-aligned", len(spec["segments"]) - 1)
-              if "atan2" in spec or spec.get("isqrt16") or spec.get("umul8_v1")
+              if "atan2" in spec or spec.get("isqrt16") or spec.get("umul8_v1") or spec.get("vec2_stock")
               else ("contiguous", 0))
         for key, spec in candidates
     }
@@ -1102,6 +1114,8 @@ def relocate_source(mod, locations, root):
     elif mod.get("operand_layout") == "muldiv16":
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z", "INPUT_NUM",
                  "INPUT_DIV", "OUTPUT_QUOT", "OUTPUT_REM"}
+    elif mod.get("operand_layout") == "vec2":
+        used |= {"INPUT_X"}
     elif mod.get("operand_layout") == "xyz":
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z"}
     else:
@@ -1310,7 +1324,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -1326,6 +1340,24 @@ def build(plan, outdir, memory=None, root=ROOT):
                     machine, labels, ranges, end = seek16.assemble(
                         pc, io, sb, states["seek16"], root)
                     entry = labels[module["entry"]]
+                elif module.get("vec2_stock"):
+                    # Preserve the certified stock-native page organization.
+                    # Image is page-aligned and combines 2560 exact lookup
+                    # bytes, the four quadrant code islands and final JMP.
+                    pc = (pc + 255) & ~255
+                    locations["KERNEL_CODE"] = pc
+                    machine, labels, _ = Assembler().assemble(
+                        relocate_source(module, locations, root))
+                    entry = labels[module["entry"]]
+                    end = pc + 3587
+                    if entry != pc + 0x0E00:
+                        raise LinkError("VEC2 normalized export is not at expected relocation")
+                    ranges = [
+                        {"name": "VEC2_LOG_RATIO", "start": "$%04X" % pc, "bytes": 1280},
+                        {"name": "VEC2_QUADRANT_CODE", "start": "$%04X" % (pc+0x500), "bytes": 1024},
+                        {"name": "VEC2_COMPONENTS", "start": "$%04X" % (pc+0x900), "bytes": 1280},
+                        {"name": "VEC2_EXPORT", "start": "$%04X" % (pc+0xE00), "bytes": 3},
+                    ]
                 elif module.get("fast_umul16"):
                     machine, entry, ranges, end = fast16.assemble(
                         pc, io, sb, root, source_path=module["source"],
@@ -1333,11 +1365,11 @@ def build(plan, outdir, memory=None, root=ROOT):
                         entry_label=module["entry"])
                 else:
                     machine, entry, ranges, end = fast8.assemble(pc, io, sb, root)
-                expected = set()
-                for seg in ranges:
+                expected = set(machine) if module.get("vec2_stock") else set()
+                for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
@@ -1485,6 +1517,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; SMUL32_SHR16: signed (X32*Y32)>>16 => low 48 bits in Z[0..5], C=0.",
         "; SMUL32_READY and UMUL32_READY: safe state-independent full64 fallbacks, not resident READY speed.",
         "; UMULDIV16 / SMULDIV16: full 32-bit signed/unsigned product divided by D16; Q32 R16, zero-div C=1.",
+        "; VEC2_NORMALIZE_Q8_8: signed Q8.8 X/Y => unit Q1.15 Z[0..3], zero input C=1; stock log-ratio precision.",
         "; SMUL24: signed X24*Y24 => exact signed48 Z[0..5], Z[6..7] preserved.",
         "; UMUL16_SHR8: unsigned X16*Y16 >> 8 => low 24 bits MATH_Z, C=0.",
         "; SMUL8: signed 8-bit X/Y => signed 16-bit Z low/next, C=0.",

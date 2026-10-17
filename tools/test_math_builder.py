@@ -64,7 +64,7 @@ class CatalogTests(unittest.TestCase):
                 sum(v["kind"] == "resident-source-mirror" for v in op["variants"]), 5
             )
             linkable = [v for v in op["variants"] if v["selective_link_ready"]]
-            self.assertEqual(bool(linkable), api in {"MATH_UDIV16", "MATH_UMOD16", "MATH_UDIV32_32", "MATH_UMOD32_32", "MATH_ATAN2_8", "MATH_UMUL16", "MATH_UMUL16_SHR8", "MATH_UMUL24", "MATH_SMUL16", "MATH_SMUL16_SHR8", "MATH_SMUL24", "MATH_UMUL32", "MATH_UMUL8", "MATH_ISQRT16", "MATH_DIST8_FAST", "MATH_UDIV8", "MATH_SIN8", "MATH_COS8", "MATH_SINCOS8", "MATH_DIST8_ACCURATE", "MATH_SDIV16", "MATH_SDIV16_SHL8", "MATH_SDIV24", "MATH_SMOD24", "MATH_SDIV32_16", "MATH_SMOD32_16", "MATH_SDIV32_32", "MATH_SMOD32_32", "MATH_UMUL32_SHR16", "MATH_SMUL32", "MATH_SMUL32_SHR16", "MATH_SMUL32_READY", "MATH_UMUL32_READY", "MATH_SMULDIV16", "MATH_UMULDIV16", "MATH_SMOD16", "MATH_SDIV8", "MATH_SMOD8", "MATH_SMUL8", "MATH_UMOD8", "MATH_SEEK8_INIT", "MATH_SEEK8_STEP", "MATH_SEEK8_STEP_INT", "MATH_SEEK8_STEP1", "MATH_SEEK16_INIT", "MATH_SEEK16_STEP", "MATH_SEEK16_STEP_INT", "MATH_SEEK16_STEP1", "MATH_ISQRT32", "MATH_UDIV24", "MATH_UMOD24", "MATH_UDIV16_SHL8", "MATH_URECIP16_Q16", "MATH_UDIV32_16", "MATH_UMOD32_16"})
+            self.assertEqual(bool(linkable), api in {"MATH_UDIV16", "MATH_UMOD16", "MATH_UDIV32_32", "MATH_UMOD32_32", "MATH_ATAN2_8", "MATH_UMUL16", "MATH_UMUL16_SHR8", "MATH_UMUL24", "MATH_SMUL16", "MATH_SMUL16_SHR8", "MATH_SMUL24", "MATH_UMUL32", "MATH_UMUL8", "MATH_ISQRT16", "MATH_DIST8_FAST", "MATH_UDIV8", "MATH_SIN8", "MATH_COS8", "MATH_SINCOS8", "MATH_DIST8_ACCURATE", "MATH_SDIV16", "MATH_SDIV16_SHL8", "MATH_SDIV24", "MATH_SMOD24", "MATH_SDIV32_16", "MATH_SMOD32_16", "MATH_SDIV32_32", "MATH_SMOD32_32", "MATH_UMUL32_SHR16", "MATH_SMUL32", "MATH_SMUL32_SHR16", "MATH_SMUL32_READY", "MATH_UMUL32_READY", "MATH_SMULDIV16", "MATH_UMULDIV16", "MATH_VEC2_NORMALIZE_Q8_8", "MATH_SMOD16", "MATH_SDIV8", "MATH_SMOD8", "MATH_SMUL8", "MATH_UMOD8", "MATH_SEEK8_INIT", "MATH_SEEK8_STEP", "MATH_SEEK8_STEP_INT", "MATH_SEEK8_STEP1", "MATH_SEEK16_INIT", "MATH_SEEK16_STEP", "MATH_SEEK16_STEP_INT", "MATH_SEEK16_STEP1", "MATH_ISQRT32", "MATH_UDIV24", "MATH_UMOD24", "MATH_UDIV16_SHL8", "MATH_URECIP16_Q16", "MATH_UDIV32_16", "MATH_UMOD32_16"})
 
     def test_typed_and_short_names_resolve(self):
         self.assertEqual(mb.resolve("umul16", self.index), "MATH_UMUL16")
@@ -287,21 +287,14 @@ class CatalogTests(unittest.TestCase):
             self.assertEqual(manifest["resource_use"]["zero_page_bytes"], 0)
             self.assertEqual(len(list(Path(d).rglob("*.prg"))), 1)
 
-    def test_build_rejects_nonlinkable_operation(self):
-        with tempfile.TemporaryDirectory() as d:
-            out = Path(d)
-            unlinked = sorted(api for api, operation in self.index.items()
-                              if not any(v["selective_link_ready"]
-                                         for v in operation["variants"]))
-            self.assertTrue(unlinked, "All operations are independently linkable; retire this negative test")
-            invocation = [sys.executable, str(SCRIPT),
-                          "--operation", unlinked[0],
-                          "--build", "--out", str(out / "plan.json")]
-            result = subprocess.run(invocation, text=True,
-                                    capture_output=True, cwd=ROOT)
-            self.assertNotEqual(result.returncode, 0)
-            self.assertIn("no qualified selective source", result.stderr)
-            self.assertFalse(list(out.rglob("*.prg")))
+    def test_all_56_operations_have_selective_sources(self):
+        # The old negative test intentionally selected an unported operation.
+        # Once the 56th operation is link-ready, it must instead enforce
+        # complete linkable catalog coverage.
+        unlinked = sorted(api for api, operation in self.index.items()
+                          if not any(v["selective_link_ready"]
+                                     for v in operation["variants"]))
+        self.assertEqual(unlinked, [], "Every public operation must have a qualified source")
 
     def test_deterministic_selection_plan(self):
         a = mb.create_plan(self.index, ["isqrt16", "umul16"])
