@@ -177,7 +177,8 @@ def main():
                       "bytes",entry["code_bytes"],"zp",entry["zp_bytes"],
                       flush=True)
     print("U3232 STRATIFIED VERIFIED",
-          sum(len(x["candidates"]) for x in report["locations"].values()),
+          sum(len(rec["candidates"]) for apis in report["locations"].values()
+              for rec in apis.values()),
           "candidate-map observations",
           args.cases_per_band*len(BANDS),"inputs per candidate",flush=True)
 
