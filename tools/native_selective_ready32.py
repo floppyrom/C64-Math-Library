@@ -20,11 +20,11 @@ def main():
         folder=Path(td)
         for map_i,(code,io) in enumerate(((0x8000,0xc000),(0x7123,0xc040))):
             plan=math_builder.create_plan(index,list(ops),objective="size",
-                zp_budget=0,ram_budget=541)
+                zp_budget=0,ram_budget=419)
             man=selective_linker.build(plan,folder,
                 memory={"code_base":code,"math_io":io})
-            assert man["resource_use"]["image_span_bytes"]==497
-            assert man["resource_use"]["main_ram_total_bytes"]==541
+            assert man["resource_use"]["image_span_bytes"]==375
+            assert man["resource_use"]["main_ram_total_bytes"]==419
             assert man["resource_use"]["zero_page_bytes"]==0
             ep={v["api"]:int(v["entry"][1:],16) for v in man["operations"]}
             assert ep["MATH_UMUL32"]==ep["MATH_UMUL32_READY"]
