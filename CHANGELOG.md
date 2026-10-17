@@ -1,3 +1,15 @@
+## Unreleased — measured source-only migration baseline groundwork
+
+- Add deterministic 256-input, two-relocation CPU-model cycle reporting
+  for the six newly source-linked operations. The report prints canonical
+  corpus SHA-256, exact linked source SHA-256, call-through-RTS cycle
+  distribution and actual memory/ZP resources, with ABI correctness checks.
+- Wire the benchmark into the existing operation-first builder CI as an
+  evidence-generating gate. This adds no resident changes and publishes
+  **no unverified speed rankings or historical fast-kernel claims**.
+- Document matched-input/per-operation comparison constraints and the
+  remaining historical fast donor/transplant work.
+
 ## Unreleased — final operation-first source link: certified VEC2 normalization
 
 - Add independently selectable `MATH_VEC2_NORMALIZE_Q8_8`
