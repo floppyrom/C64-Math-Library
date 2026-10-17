@@ -8,7 +8,8 @@
 - Report source SHA256, RAM/ZP, 64 identical inputs per divisor/quotient band,
   candidate-wise means and paired fastest/slower/equal counts to expose
   small-divisor and high-quotient regressions hidden by one average.
-  Two-code-map assertions and the full source audit are CI-required.
+  Two-code-map assertions and the full source audit are CI-required;
+  the complete JSON diagnostic is uploaded as a 30-day GitHub Actions artifact.
 - Research-only: no new kernel, production promotion, V1–V5 binary replacement,
   or native-VICE timing claim. The existing 16 speed-modelled APIs remain
   unchanged.
