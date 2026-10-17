@@ -1,3 +1,36 @@
+### Independently linked signed 16x16 multiplication
+
+`MATH_SMUL16` now has a relocatable `link:compact-zerozp`
+reference. A source-local unsigned 16×16 core computes the full 32-bit
+product, then a signed adapter conditionally subtracts Y16 from the
+high result word when X16 is negative and subtracts X16 from the high
+word when Y16 is negative. This is exact modulo 2^32 for all
+two's-complement signed16 inputs, including `-32768 × -32768`.
+The entry point is after its original 108-byte unsigned core.
+
+The implementation uses **161 code bytes, 6 ordinary RAM scratch
+bytes, zero ZP**, and **199 bytes total including public I/O**.
+X[0..3] and Y[0..3] remain unchanged. Z[0..3] contains the exact signed
+32-bit product, with Z[4..7] preserved. Carry returns clear; CLD
+required, other flags and A/X/Y volatile. No tables, REU,
+undocumented opcodes, initialization or writable code. The core is
+currently private to the independently linked module, not implicitly
+shared with separately selected UMUL16.
+
+```sh
+python3 tools/math_builder.py --operation SMUL16 \
+  --pin SMUL16=link:compact-zerozp \
+  --zp-budget 0 --ram-budget 199 --build
+```
+
+Full signed boundary/random CPU tests validate three code/I/O/scratch
+layouts, exact 32-bit results, unchanged inputs/output high bytes,
+carry, stack and source integrity. Mixed calls with unsigned UMUL24
+and URECIP16 validate exclusive scratch lifetimes. Native x64sc
+checks both relocations. This compact standalone reference does **not**
+replace the faster historical signed16 resident kernel or establish
+comparable mixed-operation cycle performance.
+
 ### Independently linked UMUL24 portable unsigned 24x24 kernel
 
 The public `MATH_UMUL24` now has a source-linked
