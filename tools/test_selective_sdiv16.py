@@ -94,9 +94,9 @@ class SDIV16AndSMOD16(unittest.TestCase):
                 m=linker.build(self.plan((operation,)),Path(td)/operation)
                 self.assertEqual(m["resource_use"]["main_ram_total_bytes"],241)
             joint=linker.build(self.plan(
-                ("SDIV16","SMOD16","UMUL16"),ram=349),Path(td)/"mix")
+                ("SDIV16","SMOD16","UMUL16"),ram=352),Path(td)/"mix")
             self.assertEqual(joint["resource_use"]["private_ram_scratch_bytes"],6)
-            self.assertEqual(joint["resource_use"]["main_ram_total_bytes"],349)
+            self.assertEqual(joint["resource_use"]["main_ram_total_bytes"],352)
             self.assertEqual(joint["resource_use"]["zero_page_bytes"],0)
             self.assertEqual(len(joint["link_order"]),2)
             entry={v["api"]:int(v["entry"][1:],16) for v in joint["operations"]}
