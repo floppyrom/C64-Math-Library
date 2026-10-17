@@ -1,3 +1,17 @@
+## Unreleased — standalone signed 32x32 full product
+
+- Source-link `MATH_SMUL32` `link:compact-zerozp` using an exact
+  signed32×signed32→signed64 kernel (293 executable bytes, 12
+  reusable ordinary scratch RAM bytes, zero ZP, 337 total
+  RAM bytes including I/O). Preserves both complete X/Y operands
+  and writes all eight product bytes with carry clear.
+- Qualify signed extremes, three independently relocated CPU-model
+  runs, mixed UMUL32_SHR16 calls, full code/stack ABI and two
+  native VICE placements. Checksum/package audit included.
+- Raises independently linkable operation count to 50/56 after
+  dependent merges. Historical V1–V5 resident sources and
+  cycle measurements remain untouched.
+
 ## Unreleased — independently linked UMUL32_SHR16
 
 - Add `MATH_UMUL32_SHR16` `link:compact-zerozp` (245 bytes
