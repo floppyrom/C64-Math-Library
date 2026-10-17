@@ -1,3 +1,23 @@
+## Unreleased — shared zero-ZP Q32/R32 DIV and MOD physical producer
+
+- Publish an optional `link:shared-aligned-zerozp` source-linked variant
+  for both `UDIV32_32` and `UMOD32_32`, using the qualified 325+251
+  zero-ZP aligned divide source with two public entry aliases.
+  Both calls produce the complete Q32/R32, preserve inputs, and propagate
+  divide-zero carry, so one kernel can replace two independently linked
+  files without altering public behavior.
+- Deduplicate 576 executable bytes and four private ordinary-RAM scratch
+  bytes across both APIs, with one physical image occupying **612 B total
+  main RAM** (including the common 32B public interface), compared to
+  **1,108 B** for separately selected aligned DIV and specialized MOD.
+  Code saving: 496 B; ZP remains zero.
+- Extend the deterministic 384-pair public-call speed model to include
+  the shared candidate for both APIs, with strict source-hash, segment,
+  shared-producer and caller-ABI checks. Add two-map alternating DIV/MOD
+  CPU-model regression, a 612B RAM gate, weighted speed selection under
+  hard RAM constraints, and native VICE validation of both linked exports.
+  This is not yet a transplant of the historical fast V1–V5 DIV32 kernels.
+
 ## Unreleased — 32/32 unsigned public division/modulo cycle baseline
 
 - Add 384 identical-input complete public-call cycle models for

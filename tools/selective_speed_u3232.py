@@ -22,12 +22,15 @@ DIVISORS=(0,1,2,7,255,256,65535,0x10000,0x7fffffff,0x80000000,0xffffffff)
 CORPUS_SHA256="96e691eace2ab60671c984c61b4adc567720f3116c5873f13d0a07fc47344acf"
 BASE="cpu-model-unsigned-32by32-complete-public-q32-r32-v1"
 EXPECTED={
-    "MATH_UDIV32_32":frozenset(("link:zptail","link:aligned-zerozp")),
-    "MATH_UMOD32_32":frozenset(("link:aligned-zerozp",)),
+    "MATH_UDIV32_32":frozenset(("link:zptail","link:aligned-zerozp",
+                                  "link:shared-aligned-zerozp")),
+    "MATH_UMOD32_32":frozenset(("link:aligned-zerozp",
+                                  "link:shared-aligned-zerozp")),
 }
 RESOURCES={
     "link:zptail":((325,219),4,0),
     "link:aligned-zerozp":((325,251),0,4),
+    "link:shared-aligned-zerozp":((325,251),0,4),
     "link:mod-aligned-zerozp":((250,225,21),0,4),
 }
 
@@ -45,7 +48,8 @@ def corpus():
 
 def assemble_source(api,ident,mod,base,io,scratch,zp,root):
     parts=tuple(n for _,n in mod["segments"])
-    expected=RESOURCES["link:mod-aligned-zerozp" if api=="MATH_UMOD32_32" else ident]
+    expected=RESOURCES["link:mod-aligned-zerozp" if
+        api=="MATH_UMOD32_32" and ident=="link:aligned-zerozp" else ident]
     if (parts,mod["zp"],mod["scratch"])!=expected:
         raise ValueError(api+": source resource contract changed: "+ident)
     source=(root/mod["source"]).read_text(encoding="utf-8")
@@ -82,6 +86,10 @@ def benchmark(api,modules,base,io,scratch,root:Path,zp=0x50):
     means={}
     sources={}
     for ident,mod in sorted(modules.items()):
+        if ident=="link:shared-aligned-zerozp" and (
+            not mod.get("multi_entry") or
+            mod.get("share_producer")!="unsigned-32by32-aligned-public-qr"):
+            raise ValueError(api+": shared producer identity changed")
         if mod.get("requires_reu") or mod.get("requires_writable_code"):
             raise ValueError(api+": candidate hardware requirement changed")
         code,entry=assemble_source(api,ident,mod,base,io,scratch,zp,root)

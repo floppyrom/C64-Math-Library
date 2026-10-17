@@ -23,8 +23,11 @@ For unrestricted `UDIV32_32` the selector compares the 4-ZP and
 4-byte RAM-scratch 32/32 quotient/remainder implementations on the same
 384-pair public-call corpus; `UMOD32_32` has an independently measured
 specialized zero-ZP remainder producer (one published candidate so far).
-Historical full-width DIV/MOD fast transplants and shared producer accounting
-remain separate optimization work.
+The optional `link:shared-aligned-zerozp` variant lets both public 32/32
+DIV and MOD reuse one aligned quotient/remainder producer: 576 code bytes,
+4 ordinary scratch bytes, 0 ZP, and 612 B main RAM including I/O. The
+independently selectable specialized modulo implementation remains available.
+Historical full-width DIV/MOD fast transplants are still separate work.
 For `UDIV32_16` / `UMOD32_16`, the builder independently measures both
 zero-ZP shared quotient/remainder producers on identical 384-input public-call
 corpora; the zero-ZP 1771-byte statically unrolled accumulator derivative is an
