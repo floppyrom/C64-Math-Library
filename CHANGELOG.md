@@ -1,3 +1,20 @@
+## Unreleased — historical V2 fast 24/24 DIV/MOD selective transplant
+
+- Add the certified historical V2 direct Repose UDIV24/UMOD24 producer
+  as an opt-in modular `link:v2-repose-fast` source variant, using
+  1,244+217 bytes of code, 3 ZP bytes, and a writable immediate tail
+  operand. Requires legal NMOS 6510 `LAX`/`ANC` semantics, and
+  does not use lookup tables or REU.
+- Source hashing captures the original historical producer, the
+  relocation adapter and the linked derivation. Both APIs share the
+  same physical code; optional fast selection does not disturb the
+  zero-ZP compact reference or the original V1–V5 profiles.
+- Added two-map CPU source-equivalence and full-domain division tests,
+  same-corpus exact-cycle comparisons, and actual VICE verification
+  of both APIs and both 24-bit variants.
+- This *adds* a speed alternative; global all-catalog cycle ranking,
+  variant co-selection and default-distribution replacement remain open.
+
 ## Unreleased — operation-first UDIV24 and UMOD24 source link
 
 - Enable separate selection of unsigned 24/24 DIV and MOD through a
