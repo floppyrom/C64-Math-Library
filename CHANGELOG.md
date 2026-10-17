@@ -1,3 +1,15 @@
+## Unreleased — independent UMUL32 full 64-bit source
+
+- Add source-linked `MATH_UMUL32` `link:compact-zerozp`:
+  204 executable bytes, 12 reusable ordinary RAM scratch bytes,
+  0 ZP, 248 main RAM bytes including public I/O. Full 32×32→64
+  unsigned product, preserved X/Y and carry clear.
+- Three relocated CPU-model product/ABI tests, two native VICE maps,
+  mixed calls with UMUL24, SMUL24 and URECIP16_Q16, strict RAM budget
+  qualification, checksummed source and documentation.
+- Raises independently linkable public catalog coverage to 39/56
+  once merged, preserving V1–V5 fast kernels and published timings.
+
 ## Unreleased — signed full-width 24-bit multiplication module
 
 - Add standalone `MATH_SMUL24` `link:compact-zerozp` with exact

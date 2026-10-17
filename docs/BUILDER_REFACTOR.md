@@ -1,3 +1,33 @@
+### Independently linked UMUL32 unsigned full-width reference
+
+The builder now offers `MATH_UMUL32` `link:compact-zerozp`, a
+standalone legal-NMOS **204-byte** unsigned32×unsigned32→unsigned64
+kernel. It uses **12 call-exclusive ordinary RAM bytes**, **0 ZP**,
+and **248 RAM bytes total**, including the shared 32-byte public
+X/Y/Z/N/D/Q/R I/O window. It does not require initialization,
+tables, REU, undocumented opcodes or writable code.
+
+Inputs X[0..3] and Y[0..3] are untouched. All eight Z output bytes
+contain the exact unsigned 64-bit product. Carry returns clear, CLD
+is required, and A/X/Y and remaining processor flags are volatile.
+The code implements 32 shift-add iterations on an 8-byte shifted
+multiplicand plus 4-byte multiplier; the 12 RAM scratch bytes are
+exclusive to a call and can be reused between distinct operations.
+
+```sh
+python3 tools/math_builder.py --operation UMUL32 \
+  --pin UMUL32=link:compact-zerozp \
+  --zp-budget 0 --ram-budget 248 --build
+```
+
+CPU-model tests validate full-width edge and randomized products and
+unchanged operands under three relocated code/I/O/scratch maps,
+shared RAM reuse with UMUL24/SMUL24/URECIP16_Q16, and exact memory
+budget rejection. Native x64sc tests cover two placements. As with
+the other portable sources, this **does not replace** published
+historical 32-bit high-speed multiplication producers and is not
+automatically ranked against their different cycle benchmarks.
+
 ### Independently linked signed 24x24 multiplication
 
 `MATH_SMUL24` has a source-linked `link:compact-zerozp`
