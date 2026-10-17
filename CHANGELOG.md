@@ -1,3 +1,20 @@
+## Unreleased — FAST31 two-entry shared signed/unsigned producer
+
+- Add `link:fast31-shared-full64` for both `UMUL32` and `SMUL32`,
+  backed by one independently linked image with unsigned entry calling the
+  original V2 arithmetic and a second signed entry correcting the high word.
+  The shared identity deduplicates exactly one 512-byte code slot and four
+  512-byte lookup slots; both APIs reuse 31 call-exclusive zero-page bytes.
+- Main RAM for both operations at `$8000`: **2,592 B**, down from
+  **5,152 B** when both separate FAST31 variants are pinned; save **2,560 B**.
+  Both source-linked signed and unsigned historical variants remain usable
+  independently; zero-ZP fallbacks remain in place.
+- Extend both signed and unsigned 192-input comparable CPU-model performance
+  bases to this shared source. Add mixed signed/unsigned alternating calls,
+  two relocation maps, exact resource boundary/restriction tests, authenticated
+  distinct public entrypoints and four native VICE runs across the two maps.
+  All results remain CPU-model timing unless independently measured in VICE.
+
 ## Unreleased — signed FAST31 selectable-builder promotion
 
 - Add `link:fast31-v2-signed` as a fourth-generation source-linked signed
