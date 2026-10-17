@@ -269,6 +269,24 @@ MODULES = {
             "entry": "FAST_UMOD16_DIRECT_PUBLIC", "zp": 0, "scratch": 2,
         },
     },
+    "MATH_UDIV24": {
+        "link:portable-restoring": {
+            "source": "routines/divide/u24_by_u24_restoring_selective.asm",
+            "segments": (("KERNEL_CODE", 190),),
+            "entry": "FAST_UDIV24_RESTORING", "zp": 0, "scratch": 4,
+            "share_producer": "unsigned-24by24-restoring", "multi_entry": True,
+            "provenance": "Full-domain zero-ZP portable 24/24 DIV+MOD correctness source, not historical speed champion",
+        },
+    },
+    "MATH_UMOD24": {
+        "link:portable-restoring": {
+            "source": "routines/divide/u24_by_u24_restoring_selective.asm",
+            "segments": (("KERNEL_CODE", 190),),
+            "entry": "FAST_UMOD24_RESTORING", "zp": 0, "scratch": 4,
+            "share_producer": "unsigned-24by24-restoring", "multi_entry": True,
+            "provenance": "Shared 24/24 unsigned DIV+MOD producer: both outputs, divisor-zero carry and preserved N/D",
+        },
+    },
     "MATH_UDIV32_16": {
         "link:accumulator-remainder": {
             "source": "routines/divide/u32_by_u16_accum_selective.asm",
