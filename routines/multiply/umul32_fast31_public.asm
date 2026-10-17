@@ -99,29 +99,29 @@ FAST_UMUL32_FAST31:
 ; The native arithmetic core below is copied from the certified profile
 ; source, with only its output/zero-page/table labels rebound above.
 umult32x32
-        sta _sqr_lo_0+1
-        sta _sqr_hi_0+1
+        sta SMC_sqr_lo_0+1
+        sta SMC_sqr_hi_0+1
         eor #$ff
-        sta _neg_lo_0+1
-        sta _neg_hi_0+1
+        sta SMC_neg_lo_0+1
+        sta SMC_neg_hi_0+1
 
         lda x1
-        sta _sqr_lo_1+1
+        sta SMC_sqr_lo_1+1
         eor #$ff
         sta neg_lo_1
-        sta _neg_hi_1+1
+        sta SMC_neg_hi_1+1
 
         lda x2
-        sta _sqr_lo_2+1
+        sta SMC_sqr_lo_2+1
         eor #$ff
         sta neg_lo_2
-        sta _neg_hi_2+1
+        sta SMC_neg_hi_2+1
 
         lda x3
-        sta _sqr_lo_3+1
+        sta SMC_sqr_lo_3+1
         eor #$ff
         sta neg_lo_3
-        sta _neg_hi_3+1
+        sta SMC_neg_hi_3+1
 
 umult32x32_same_x
         ldx #3
@@ -155,44 +155,44 @@ row_loop
         ldy y0,x
 
 kernel
-_sqr_lo_0
+SMC_sqr_lo_0
         lda sqr_lo,y
-_neg_lo_0
+SMC_neg_lo_0
         adc neg_sqr_lo,y
         sta z00,x
-_sqr_hi_0
+SMC_sqr_hi_0
         lda sqr_hi,y
-_neg_hi_0
+SMC_neg_hi_0
         adc neg_sqr_hi,y
 
-_sqr_lo_1
+SMC_sqr_lo_1
         adc sqr_lo,y
         bcs H10
         adc (neg_lo_1),y
         sta z01,x
         lda (sqr_hi_1),y
 p10_tail
-_neg_hi_1
+SMC_neg_hi_1
         adc neg_sqr_hi,y
 
-_sqr_lo_2
+SMC_sqr_lo_2
         adc sqr_lo,y
         bcs H20
         adc (neg_lo_2),y
         sta z02,x
         lda (sqr_hi_2),y
 p20_tail
-_neg_hi_2
+SMC_neg_hi_2
         adc neg_sqr_hi,y
 
-_sqr_lo_3
+SMC_sqr_lo_3
         adc sqr_lo,y
         bcs H30
         adc (neg_lo_3),y
         sta z03,x
         lda (sqr_hi_3),y
 p30_tail
-_neg_hi_3
+SMC_neg_hi_3
         adc neg_sqr_hi,y
 
         dex
