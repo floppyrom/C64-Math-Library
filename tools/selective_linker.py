@@ -350,6 +350,15 @@ MODULES = {
             "provenance": "Independent zero-ZP 16x16 quarter-square shared-table kernel plus 24-bit SHR8 adapter; 256 B code, 1022 B tables, 4 B scratch",
         },
     },
+    "MATH_SMUL32_SHR16": {
+        "link:compact-zerozp": {
+            "source": "routines/multiply/smul32_shr16_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 334),),
+            "entry": "FAST_SMUL32_SHR16_COMPACT", "zp": 0, "scratch": 12,
+            "operand_layout": "xyz", "smul32_shr16": True,
+            "provenance": "Standalone signed 32x32 full64 source plus 41-byte arithmetic SHR16 Q48 adapter; 334 code / 12 RAM scratch / zero ZP.",
+        },
+    },
     "MATH_SMUL32": {
         "link:compact-zerozp": {
             "source": "routines/multiply/smul32_compact_zerozp.asm",
@@ -1434,6 +1443,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UMUL32: unsigned X32*Y32 => exact full 64-bit Z[0..7], C=0.",
         "; UMUL32_SHR16: unsigned X32*Y32>>16 => exact unsigned Z[0..5], high Z volatile, C=0.",
         "; SMUL32: signed X32*Y32 => exact signed64 two\'s-complement Z[0..7], C=0.",
+        "; SMUL32_SHR16: signed (X32*Y32)>>16 => low 48 bits in Z[0..5], C=0.",
         "; SMUL24: signed X24*Y24 => exact signed48 Z[0..5], Z[6..7] preserved.",
         "; UMUL16_SHR8: unsigned X16*Y16 >> 8 => low 24 bits MATH_Z, C=0.",
         "; SMUL8: signed 8-bit X/Y => signed 16-bit Z low/next, C=0.",
