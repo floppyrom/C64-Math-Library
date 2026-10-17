@@ -17,7 +17,7 @@ The example selects UMUL16, UDIV16 and ISQRT16. Output is a minimal
 `math_selective.prg`, `math_api.inc`, and a machine-readable selection manifest.
 For arbitrary operations, edit a copy of [`examples/operation-first.json`](examples/operation-first.json).
 [Full setup and legacy transition notes](docs/PROFILE_RETIREMENT_PLAN.md).
-For workload-aware speed optimization of the eight measured operations, including UMUL32 and SMUL32, try
+For workload-aware speed optimization of the twelve measured operations, including UMUL32 and SMUL32, try
 `make builder CONFIG=examples/operation-first-speed.json OUT=build_speed`.
 The operation-first binary backend currently targets **stock C64 only**;
 1541/1571/1581 remain planning-only, and historic REU/Turbo/QS16 functionality
@@ -34,8 +34,10 @@ when both public APIs and their RAM/ZP budgets permit it.
 The same `link:fast31-shared-full64` producer can now be pinned for
 `UMUL32_READY`, `SMUL32_READY`, `UMUL32_SHR16`, and `SMUL32_SHR16`.
 These six operations then use just one code+table image and 31 bytes of ZP.
-The additional four APIs are not yet supported by the automatic speed model;
-use explicit variant pins (or the ordinary size/balanced objectives). Historical-core means are not compared with
+The four READY/SHR16 operations additionally have their own matched-input
+complete-public-call CPU-model speed rankings. Under the `speed` objective,
+the optimizer can choose the shared FAST31 image across all six 32-bit APIs,
+or retain a 0-ZP compact source when memory limits make FAST31 infeasible. Historical-core means are not compared with
 public-call timing. Other operations still need fast-kernel migration; the
 selection model's timing is a CPU-model estimate, not native VICE cycle data.
 
