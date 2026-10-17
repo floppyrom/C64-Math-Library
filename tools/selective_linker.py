@@ -216,6 +216,15 @@ MODULES = {
             "provenance": "Byte-identical V2 and V5 original 430-byte branch-chain producer; no REU",
         },
     },
+    "MATH_SDIV16_SHL8": {
+        "link:portable-zerozp": {
+            "source": "routines/divide/sdiv16_shl8_zerozp.asm",
+            "segments": (("KERNEL_CODE", 237),),
+            "entry": "FAST_SDIV16_SHL8_ZEROZP", "zp": 0, "scratch": 3,
+            "sdiv16_shl8_portable": True,
+            "provenance": "Signed fixed-point (N16<<8)/D16 => signed Q24/R16, truncation to zero and numerator-signed remainder; 237B code, 3 RAM scratch, 0 ZP, no writable code.",
+        },
+    },
     "MATH_SDIV16": {
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv16_smod16_zerozp.asm",
@@ -605,6 +614,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_urecip16_q16.py" if mod.get("urecip16") else
+                    "tools/test_selective_sdiv16_shl8.py" if mod.get("sdiv16_shl8_portable") else
                     "tools/test_selective_sdiv16.py" if mod.get("sdiv16_portable") else
                     "tools/test_selective_udiv16_shl8.py" if mod.get("udiv16_shl8") else
                     "tools/test_selective_udiv24_v2.py" if mod.get("udiv24_v2") else
@@ -1323,6 +1333,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UDIV32_16 and UMOD32_16: N32/D16 => Q32/R16 both outputs, C=1 on D=0.",
         "; UDIV16_SHL8: unsigned (N16 << 8)/D16 => Q24/R16, C=1 on D=0.",
         "; SDIV16/SMOD16: shared signed N16/D16 => Q16 truncated toward zero, R16 N-signed; D=0 C=1.",
+        "; SDIV16_SHL8: signed (N16 << 8)/D16 => signed Q24 and R16 (N sign), C=1 for D=0.",
         "; URECIP16_Q16: D16 => Q24 = floor(65536/D), C=1 on D=0; Q3/R unchanged.",
         "; Portable 32/16 source is the correctness fallback, not the resident speed champion.",
         "; UMOD8: low byte N/D => low byte R ONLY; Q untouched, C=1 if D=0.",
