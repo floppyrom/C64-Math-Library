@@ -1,3 +1,15 @@
+## Unreleased — operation-first UDIV24 and UMOD24 source link
+
+- Enable separate selection of unsigned 24/24 DIV and MOD through a
+  shared **190-byte**, zero-ZP, four-RAM-byte restoring kernel. Preserve
+  24-bit input fields, Q/R upper sentinels, carry and division-by-zero
+  semantics. No writable instructions, REU, or initialization.
+- Test 24-bit boundaries and randomized operands on two code/I/O maps,
+  both API aliases and mixed-resource budgets; add real native VICE
+  public-call qualification and 2072-file package hash release seal.
+- Keep the historical certified V1–V5 fast producers intact for
+  later modular dependency transplant and common-corpus speed ranking.
+
 ## Unreleased — operation-first ISQRT32 full-domain reference
 
 - Independently link `MATH_ISQRT32` as a **204-byte/10-RAM/0-ZP**
