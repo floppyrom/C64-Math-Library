@@ -290,8 +290,12 @@ class CatalogTests(unittest.TestCase):
     def test_build_rejects_nonlinkable_operation(self):
         with tempfile.TemporaryDirectory() as d:
             out = Path(d)
+            unlinked = sorted(api for api, operation in self.index.items()
+                              if not any(v["selective_link_ready"]
+                                         for v in operation["variants"]))
+            self.assertTrue(unlinked, "All operations are independently linkable; retire this negative test")
             invocation = [sys.executable, str(SCRIPT),
-                          "--operation", "SMUL24",
+                          "--operation", unlinked[0],
                           "--build", "--out", str(out / "plan.json")]
             result = subprocess.run(invocation, text=True,
                                     capture_output=True, cwd=ROOT)
