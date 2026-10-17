@@ -14,10 +14,10 @@ class UMUL32SpeedTests(unittest.TestCase):
     def setUpClass(cls):
         cls.index=math_builder.operation_index()
 
-    def plan(self, ram, pins=None):
+    def plan(self, ram, pins=None, zp=0):
         return math_builder.create_plan(
             self.index,["UMUL32"],objective="speed",
-            zp_budget=0,ram_budget=ram,pins=pins)
+            zp_budget=zp,ram_budget=ram,pins=pins)
 
     def test_matched_source_means_and_auto_selection(self):
         for code,io,scratch in ((0x8000,0xc000,0xc020),
@@ -34,6 +34,8 @@ class UMUL32SpeedTests(unittest.TestCase):
                 self.assertEqual(set(cycles),set(bench.EXPECTED))
                 self.assertLess(cycles["link:quarter-square-32"],
                                 cycles["link:compact-zerozp"])
+                self.assertLess(cycles["link:fast31-v2-public"],
+                                cycles["link:quarter-square-32"])
                 self.assertLess(cycles["link:quarter-square-32"],
                                 cycles["link:unified-375"])
                 self.assertEqual(man["operations"][0]["variant"],
@@ -43,6 +45,18 @@ class UMUL32SpeedTests(unittest.TestCase):
                     memory={"code_base":code,"math_io":io,"scratch_base":scratch})
                 self.assertEqual(constrained["operations"][0]["variant"],
                                  "link:compact-zerozp")
+
+    def test_fast31_speed_with_zp_budget_and_exact_layout(self):
+        with tempfile.TemporaryDirectory() as td:
+            man=selective_linker.build(self.plan(3000,zp=31),Path(td))
+            self.assertEqual(man["operations"][0]["variant"],"link:fast31-v2-public")
+            self.assertEqual(man["resource_use"]["zero_page_bytes"],31)
+            self.assertEqual(man["resource_use"]["image_span_bytes"],2560)
+            self.assertEqual(man["resource_use"]["main_ram_total_bytes"],2592)
+            model=man["cycle_model_benchmark"]
+            self.assertEqual(model["cases"],192)
+            self.assertLess(model["mean_cycles"]["link:fast31-v2-public"],
+                            model["mean_cycles"]["link:quarter-square-32"])
 
     def test_explicit_pins_and_fail_closed_candidate_set(self):
         with tempfile.TemporaryDirectory() as td:

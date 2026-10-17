@@ -1,3 +1,18 @@
+## Unreleased — historical FAST31 builder promotion
+
+- Enable the V2 31-ZP native producer as `link:fast31-v2-public` in the
+  operation-first `UMUL32` catalog. The linker charges exact page-aligned
+  code/table footprints, 31 call-exclusive ZP bytes, zero ordinary scratch,
+  and writable executable RAM; generated lookup provenance is separately
+  source-hash checked.
+- Extend the shared 192-pair full64 CPU-model speed basis to all four
+  competing algorithms using identical operands and full public call cycles.
+  Automatically choose FAST31 only when its measured result and ZP/RAM budgets
+  allow; retain zero-ZP quarter-square and compact fallbacks.
+- Add independent-link CPU-model exact ABI, relocation, resource boundary and
+  generated-binary native VICE two-map gates. This is not yet a port of
+  historical signed FAST31, READY/SHR16 kernels or drive-side hardware.
+
 ## Unreleased — historical FAST31 unsigned 32-bit producer research
 
 - Adapt the certified V2 31-byte-ZP native UMUL32 arithmetic source into a
