@@ -1,3 +1,34 @@
+### Source-linked signed fixed-point SMUL16_SHR8
+
+`MATH_SMUL16_SHR8` has an independently linkable
+`link:compact-zerozp` implementation: **184 executable bytes**,
+**6 bytes exclusive-call ordinary RAM scratch**, **zero ZP**, and
+**222 RAM bytes including the public 32-byte I/O field**.
+It contains its own unsigned core and exact signed 32-bit correction,
+then places product bytes [1..3] into public Z[0..2]. This is the
+arithmetic signed right shift by eight, exact for negative products,
+with no intermediate rounding or saturation.
+
+Signed 16-bit X/Y inputs and their upper unused bytes are unchanged.
+Output Z[0..2] is the full signed 24-bit fixed-point result; Z[3]
+contains an intermediate product byte and is *outside* this API's
+contract. Z[4..7] remains untouched. Carry returns clear, CLD is
+required, and other flags/A/X/Y may change. The routine uses no ZP,
+tables, initialization, REU, SMC or undocumented opcodes.
+
+```sh
+python3 tools/math_builder.py --operation SMUL16_SHR8 \
+  --zp-budget 0 --ram-budget 222 \
+  --pin SMUL16_SHR8=link:compact-zerozp --build
+```
+
+The CPU-model suite checks negative/positive edge pairs, random pairs,
+three independently relocated memory layouts, preserved inputs,
+and mixed calls with SMUL16, UMUL24 and URECIP16_Q16. Native x64sc
+checks two placements and the unchanged Z[4..7] high bytes.
+This is a compact, independently linkable fallback—not a
+replacement for the historically faster resident signed SHR8 core.
+
 ### Independently linked signed 16x16 multiplication
 
 `MATH_SMUL16` now has a relocatable `link:compact-zerozp`
