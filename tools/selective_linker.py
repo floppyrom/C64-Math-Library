@@ -385,6 +385,14 @@ MODULES = {
             "operand_layout": "xyz", "smul32_shr16": True,
             "provenance": "Standalone signed 32x32 full64 source plus 41-byte arithmetic SHR16 Q48 adapter; 334 code / 12 RAM scratch / zero ZP.",
         },
+        "link:unified-375": {
+            "source": "routines/multiply/mul32_unified_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 375),),
+            "entry": "FAST_SMUL32_SHR16_COMPACT", "zp": 0, "scratch": 12,
+            "operand_layout": "xyz", "share_producer": "mul32-six-entry-unified375",
+            "multi_entry": True,
+            "provenance": "Combined state-independent signed/unsigned full64 and SHR16 Q48 shared source: six public APIs, 375 bytes code and 12 reusable ordinary scratch bytes; no ZP/REU/SMC/READY state.",
+        },
     },
     "MATH_SMUL32_READY": {
         "link:compact-zerozp": {
@@ -394,6 +402,14 @@ MODULES = {
             "operand_layout": "xyz", "share_producer": "smul32-safe-core",
             "provenance": "State-independent signed full64 READY-compatible fallback; deduplicated with SMUL32, zero ZP, 12 RAM scratch, correctness-first rather than faster resident READY ABI",
         },
+        "link:unified-375": {
+            "source": "routines/multiply/mul32_unified_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 375),),
+            "entry": "FAST_SMUL32_COMPACT", "zp": 0, "scratch": 12,
+            "operand_layout": "xyz", "share_producer": "mul32-six-entry-unified375",
+            "multi_entry": True,
+            "provenance": "Combined state-independent signed/unsigned full64 and SHR16 Q48 shared source: six public APIs, 375 bytes code and 12 reusable ordinary scratch bytes; no ZP/REU/SMC/READY state.",
+        },
     },
     "MATH_SMUL32": {
         "link:compact-zerozp": {
@@ -402,6 +418,14 @@ MODULES = {
             "entry": "FAST_SMUL32_COMPACT", "zp": 0, "scratch": 12,
             "operand_layout": "xyz", "share_producer": "smul32-safe-core", "smul32": True,
             "provenance": "Compact 32x32 signed full64: source-local unsigned shift-add plus upper32 two's complement correction, 293 code / 12 ordinary scratch / 0 ZP, not historical faster resident source.",
+        },
+        "link:unified-375": {
+            "source": "routines/multiply/mul32_unified_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 375),),
+            "entry": "FAST_SMUL32_COMPACT", "zp": 0, "scratch": 12,
+            "operand_layout": "xyz", "share_producer": "mul32-six-entry-unified375",
+            "multi_entry": True,
+            "provenance": "Combined state-independent signed/unsigned full64 and SHR16 Q48 shared source: six public APIs, 375 bytes code and 12 reusable ordinary scratch bytes; no ZP/REU/SMC/READY state.",
         },
     },
     "MATH_SMUL24": {
@@ -421,6 +445,14 @@ MODULES = {
             "operand_layout": "xyz", "umul32_shr16": True,
             "provenance": "Standalone compact 32x32 unsigned source returning exact 48-bit (X*Y)>>16 in Z0..5, 245B code/12B ordinary scratch/0 ZP; high Z volatile and historical fastest remains available in resident profiles.",
         },
+        "link:unified-375": {
+            "source": "routines/multiply/mul32_unified_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 375),),
+            "entry": "FAST_UMUL32_SHR16_COMPACT", "zp": 0, "scratch": 12,
+            "operand_layout": "xyz", "share_producer": "mul32-six-entry-unified375",
+            "multi_entry": True,
+            "provenance": "Combined state-independent signed/unsigned full64 and SHR16 Q48 shared source: six public APIs, 375 bytes code and 12 reusable ordinary scratch bytes; no ZP/REU/SMC/READY state.",
+        },
     },
     "MATH_UMUL32_READY": {
         "link:compact-zerozp": {
@@ -430,6 +462,14 @@ MODULES = {
             "operand_layout": "xyz", "share_producer": "umul32-safe-core",
             "provenance": "State-independent unsigned full64 READY-compatible fallback; deduplicated with UMUL32, zero ZP, 12 RAM scratch, correctness-first rather than faster resident READY ABI",
         },
+        "link:unified-375": {
+            "source": "routines/multiply/mul32_unified_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 375),),
+            "entry": "FAST_UMUL32_COMPACT", "zp": 0, "scratch": 12,
+            "operand_layout": "xyz", "share_producer": "mul32-six-entry-unified375",
+            "multi_entry": True,
+            "provenance": "Combined state-independent signed/unsigned full64 and SHR16 Q48 shared source: six public APIs, 375 bytes code and 12 reusable ordinary scratch bytes; no ZP/REU/SMC/READY state.",
+        },
     },
     "MATH_UMUL32": {
         "link:compact-zerozp": {
@@ -438,6 +478,14 @@ MODULES = {
             "entry": "FAST_UMUL32_COMPACT", "zp": 0, "scratch": 12,
             "operand_layout": "xyz", "share_producer": "umul32-safe-core", "umul32": True,
             "provenance": "Portable standalone exact unsigned 32x32->64, 204 code/12 RAM scratch/0 ZP, untouched X/Y, legal NMOS; not historical 600-cycle fast source.",
+        },
+        "link:unified-375": {
+            "source": "routines/multiply/mul32_unified_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 375),),
+            "entry": "FAST_UMUL32_COMPACT", "zp": 0, "scratch": 12,
+            "operand_layout": "xyz", "share_producer": "mul32-six-entry-unified375",
+            "multi_entry": True,
+            "provenance": "Combined state-independent signed/unsigned full64 and SHR16 Q48 shared source: six public APIs, 375 bytes code and 12 reusable ordinary scratch bytes; no ZP/REU/SMC/READY state.",
         },
     },
     "MATH_UMUL24": {

@@ -1,3 +1,21 @@
+## Unreleased — six-entry compact 32-bit producer sharing
+
+- Introduce one 375-byte source-assembled, legal-NMOS signed/unsigned 32-bit
+  multiplication producer, exporting independent UMUL32, SMUL32, READY aliases,
+  and both >>16 Q48 fixed-point adapters. The 12 ordinary scratch bytes are
+  call-exclusive; no zero-page, tables, REU, initialized READY state or SMC.
+- The operation-first builder now offers `link:unified-375` for all six APIs.
+  Global resource selection links its physical code image once when this is
+  beneficial, but preserves smaller independently selectable standalone
+  sources and existing pin semantics for single-operation builds.
+- Selecting all six reduces executable code from 1,076 to **375 bytes**
+  (−701 bytes, −65.1%), and total main RAM with I/O and scratch from 1,120
+  to **419 bytes**, at unchanged ZP=0. No historical V1–V5 resident code or
+  published speed metrics change.
+- Add 2-map exact 64/48-bit edge/random CPU, carry/input/stack/code proofs,
+  selective size/pin/budget regressions, and native VICE test of all six entry
+  points, plus updated footprint-qualified preexisting READY and SHR16 tests.
+
 ## Unreleased — global shared-producer resource selection and performance workbench
 
 - Correct automatic global RAM/size/ZP variant selection: a locally dominated

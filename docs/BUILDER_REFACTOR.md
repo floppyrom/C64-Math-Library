@@ -1,3 +1,35 @@
+### Six multiply32 APIs can share one 375-byte source image
+
+The C64 operation-first linker offers `link:unified-375` for
+`UMUL32`, `UMUL32_READY`, `UMUL32_SHR16`, `SMUL32`, `SMUL32_READY`, and
+`SMUL32_SHR16`. This is an unmodified arithmetic-core composition of the
+previously certified portable 204-byte unsigned and signed correction paths,
+plus the two existing 41-byte fixed-point adapters. Four distinct entries
+are present: unsigned full64 at offset 0, signed full64 at +204,
+signed SHR16 Q48 at +293, unsigned SHR16 Q48 at +334. The two READY aliases
+map to full64 entries and are safe despite unrelated scratch use.
+
+On a six-operation size/balanced/ZP build, code is a single physical image
+of **375 executable bytes**, versus the former 204+293+245+334=1,076
+bytes. With 32 public I/O bytes and 12 shared scratch bytes, the total is
+**419 main RAM bytes** instead of 1,120 (saving 701); zero page stays zero.
+The selector retains the smaller 204/293/245/334-byte standalone choices
+where those are more economical. The global Pareto sharing guard prevents
+prematurely eliminating this locally larger, globally cheaper source.
+
+```sh
+python3 tools/math_builder.py \
+  --operation UMUL32 --operation UMUL32_READY --operation UMUL32_SHR16 \
+  --operation SMUL32 --operation SMUL32_READY --operation SMUL32_SHR16 \
+  --zp-budget 0 --ram-budget 419 --build
+```
+
+Native VICE checks all four unique calculation entries at two relocations,
+and the READY pair at both relocations; CPU-model checks signed/unsigned edge,
+full32 random and interleaved calls. No historical high-performance quarter-
+square kernel has yet been transplanted, so this is a **RAM/size improvement**,
+not a claim of faster arithmetic or new comparable speed rankings.
+
 ### Global selection: shared-producer dominance guard
 
 Global size, balanced and ZP objectives must consider physical producer

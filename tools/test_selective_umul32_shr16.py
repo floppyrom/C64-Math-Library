@@ -62,11 +62,11 @@ class UMUL32SHR16Tests(unittest.TestCase):
     def test_ordinary_scratch_lifetime_and_ram_boundaries(self):
         with tempfile.TemporaryDirectory() as td:
             man=linker.build(self.plan(("UMUL32_SHR16","UMUL32"),
-                                       ram=493),Path(td))
-            self.assertEqual(man["resource_use"]["main_ram_total_bytes"],493)
+                                       ram=419),Path(td))
+            self.assertEqual(man["resource_use"]["main_ram_total_bytes"],419)
             self.assertEqual(man["resource_use"]["private_ram_scratch_bytes"],12)
             self.assertEqual(man["resource_use"]["zero_page_bytes"],0)
-            self.assertEqual(len(man["link_order"]),2)
+            self.assertEqual(len(man["link_order"]),1)
             entry={r["api"]:int(r["entry"][1:],16) for r in man["operations"]}
             image=(Path(td)/"math_selective.prg").read_bytes()
             mem=bytearray(65536)
