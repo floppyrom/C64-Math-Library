@@ -80,13 +80,14 @@ class MeasuredUMUL8SpeedTests(unittest.TestCase):
             self.assertFalse((Path(d)/"too_small").exists())
 
     def test_other_operations_cannot_claim_unmeasured_speed(self):
-        for operations in (["UDIV16"],["UMUL8","UDIV16"],["ATAN2_8"]):
-            with self.subTest(operations=operations),tempfile.TemporaryDirectory() as d:
-                with self.assertRaisesRegex(
-                        selective_linker.LinkError,"UMUL8, UMUL16, UMOD8 or UDIV8 alone"):
-                    selective_linker.build(
-                        self.plan(operations,4096),Path(d))
-                self.assertFalse((Path(d)/"math_selective.prg").exists())
+        for operation in ("UDIV16", "ATAN2_8"):
+            with self.subTest(operation=operation), tempfile.TemporaryDirectory() as d:
+                with self.assertRaisesRegex(selective_linker.LinkError,
+                                            "No authenticated matched-input speed basis"):
+                    selective_linker.build(self.plan([operation],4096),Path(d))
+        with self.assertRaisesRegex(math_builder.SelectionError,
+                                    "requires workload calls"):
+            self.plan(["UMUL8","UDIV16"],4096)
 
     def test_benchmark_reproducible_across_repeat_builds(self):
         with tempfile.TemporaryDirectory() as d:

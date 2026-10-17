@@ -169,6 +169,7 @@ def create_plan(
     objective: str = "balanced", zp_budget: int | None = None,
     ram_budget: int | None = None, pins: dict[str, str] | None = None,
     validate_sources: bool = False, root: Path = ROOT,
+    workload_calls: dict[str, int] | None = None,
 ) -> dict:
     if target not in TARGETS:
         raise SelectionError("Unsupported target: " + target)
@@ -179,6 +180,24 @@ def create_plan(
     if ram_budget is not None and not 0 <= ram_budget <= 65536:
         raise SelectionError("RAM budget must be in [0, 65536]")
     selected = parse_operations(names, index)
+    calls: dict[str, int] = {}
+    if workload_calls is not None:
+        if objective != "speed" or not isinstance(workload_calls, dict):
+            raise SelectionError("Workload calls require the speed objective and a JSON object")
+        for name, count in workload_calls.items():
+            if not isinstance(name, str):
+                raise SelectionError("Workload operation name must be a string")
+            api = resolve(name, index)
+            if api not in selected or api in calls:
+                raise SelectionError("Duplicate or unselected workload operation: " + api)
+            if type(count) is not int or not 1 <= count <= 1000000:
+                raise SelectionError("Workload calls must be positive integers <= 1000000")
+            calls[api] = count
+    if objective == "speed":
+        if len(selected) == 1 and workload_calls is None:
+            calls[selected[0]] = 1
+        if set(calls) != set(selected):
+            raise SelectionError("Speed selection requires workload calls for every selected operation")
     requested_pins = pins or {}
     resolved_pins: dict[str, str] = {}
     for operation, variant_id in requested_pins.items():
@@ -220,6 +239,7 @@ def create_plan(
         "target_backend_status": ("experimental_selective_linker"
                                   if target == "c64" else "planning_only_no_target_backend"),
         "objective": objective,
+        "workload_calls": dict(sorted(calls.items())) if objective == "speed" else None,
         "constraints": {"max_zp_bytes": zp_budget, "max_ram_bytes": ram_budget},
         "operations": output,
         "public_operation_count": len(output),
@@ -321,6 +341,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--target", choices=TARGETS)
     parser.add_argument("--zp-budget", type=int)
     parser.add_argument("--ram-budget", type=int)
+    parser.add_argument("--calls", action="append", default=[], metavar="OP=COUNT",
+                        help="speed workload: calls of this operation per frame (repeat)")
     parser.add_argument("--pin", action="append", default=[], metavar="OP=VARIANT",
                         help="pin a catalog variant for subsequent integration")
     parser.add_argument("--out", type=Path,
@@ -384,6 +406,22 @@ def main(argv: list[str] | None = None) -> int:
             pins[name] = variant
 
         constraints = cfg.get("constraints", {})
+        workloads = cfg.get("workload_calls", None)
+        if args.calls:
+            if workloads is None:
+                workloads = {}
+            if not isinstance(workloads, dict):
+                raise SelectionError("workload_calls must be a JSON object")
+            workloads = dict(workloads)
+            for record in args.calls:
+                if "=" not in record:
+                    raise SelectionError("Expected --calls OP=COUNT")
+                name, value = record.split("=", 1)
+                if name in workloads:
+                    raise SelectionError("Duplicate workload --calls: " + name)
+                if not value.isdecimal():
+                    raise SelectionError("Invalid workload call count: " + value)
+                workloads[name] = int(value)
         plan = create_plan(
             index, selected,
             target=args.target or cfg.get("target", "c64"),
@@ -393,6 +431,7 @@ def main(argv: list[str] | None = None) -> int:
             ram_budget=args.ram_budget if args.ram_budget is not None
                        else constraints.get("max_ram_bytes"),
             pins=pins, validate_sources=args.validate_sources,
+            workload_calls=workloads,
         )
         if args.measure:
             if args.build or args.preview:

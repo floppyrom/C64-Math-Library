@@ -1098,8 +1098,14 @@ def place_state(state_families, scratch_start, scratch_size):
     return allocation, cursor - (scratch_start + scratch_size)
 
 
-def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000, cycle_metrics=None, scratch_base=0xc020):
+def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000, cycle_metrics=None, scratch_base=0xc020, workload_calls=None):
     """Optimize *the whole selection*, sharing nonreentrant scratch ownership."""
+    if objective == "speed":
+        if not isinstance(workload_calls, dict) or set(workload_calls) != set(names):
+            raise LinkError("Speed selection requires positive workload calls for all selected operations")
+        if any(type(n) is not int or not 1 <= n <= 1000000
+               for n in workload_calls.values()):
+            raise LinkError("Invalid speed workload call count")
     options = []
     for api in names:
         if api not in MODULES:
@@ -1135,7 +1141,8 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
         if objective == "speed":
             try:
                 measured_cycles = sum(
-                    cycle_metrics[api][ident] for api, ident, _ in combination)
+                    workload_calls[api] * cycle_metrics[api][ident]
+                    for api, ident, _ in combination)
             except KeyError as exc:
                 raise LinkError("Selected variants lack a comparable cycle model") from exc
             metric = (measured_cycles, ram, zp)
@@ -1218,39 +1225,63 @@ def build(plan, outdir, memory=None, root=ROOT):
     sb = address(memory.get("scratch_base", io + 32), "scratch_base")
     cycle_model = None
     per_operation_cycles = None
+    workload_calls = None
     if plan["objective"] == "speed":
-        if names not in (["MATH_UMUL8"], ["MATH_UMUL16"], ["MATH_UMUL16_SHR8"],
-                         ["MATH_UMOD8"], ["MATH_UDIV8"],
-                         ["MATH_ISQRT32"]):
-            raise LinkError(
-                "Measured automatic speed selection supports UMUL8, UMUL16, "
-                "UMOD8 or UDIV8 alone; UMUL16_SHR8 and ISQRT32 are also "
-                "supported individually; mixed operations need comparable "
-                "certified cycle corpora")
-        api = names[0]
-        if api == "MATH_UMUL8":
-            benchmark, scratch_address = selective_speed.bench_umul8, sb
-        elif api == "MATH_UMUL16":
-            benchmark, scratch_address = selective_speed_umul16.bench_umul16, sb
-        elif api == "MATH_UMUL16_SHR8":
-            benchmark, scratch_address = selective_speed_umul16_shr8.bench_umul16_shr8, sb
-        elif api == "MATH_UMOD8":
-            benchmark, scratch_address = selective_speed_umod8.bench_umod8, zb
-        elif api == "MATH_ISQRT32":
-            benchmark, scratch_address = selective_speed_isqrt32.bench_isqrt32, sb
+        workload_calls = plan.get("workload_calls")
+        # Permit legacy single-operation plans without an explicit workload;
+        # never infer equal call frequencies for multi-operation projects.
+        if workload_calls is None and len(names) == 1:
+            workload_calls = {names[0]: 1}
+        if (not isinstance(workload_calls, dict) or set(workload_calls) != set(names)
+            or any(type(x) is not int or not 1 <= x <= 1000000
+                   for x in workload_calls.values())):
+            raise LinkError("Speed builds require positive workload calls for every operation")
+        measured = {
+            "MATH_UMUL8": (selective_speed.bench_umul8, "scratch", True),
+            "MATH_UMUL16": (selective_speed_umul16.bench_umul16, "scratch", False),
+            "MATH_UMUL16_SHR8": (selective_speed_umul16_shr8.bench_umul16_shr8, "scratch", False),
+            "MATH_UMOD8": (selective_speed_umod8.bench_umod8, "zp", False),
+            "MATH_UDIV8": (selective_speed_udiv8.bench_udiv8, "zp", False),
+            "MATH_ISQRT32": (selective_speed_isqrt32.bench_isqrt32, "scratch", True),
+        }
+        unavailable = sorted(set(names) - set(measured))
+        if unavailable:
+            raise LinkError("No authenticated matched-input speed basis for " +
+                            ", ".join(unavailable) +
+                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32")
+        models = {}
+        per_operation_cycles = {}
+        for api in names:
+            benchmark, placement, need_zp = measured[api]
+            try:
+                if need_zp:
+                    result = benchmark(MODULES[api], code, io,
+                                       sb if placement == "scratch" else zb, root, zp=zb)
+                else:
+                    result = benchmark(MODULES[api], code, io,
+                                       sb if placement == "scratch" else zb, root)
+            except (ValueError, OSError, RuntimeError) as exc:
+                raise LinkError(api + " cycle-model measurement failed: " + str(exc)) from exc
+            if set(result.get("mean_cycles", {})) != set(MODULES[api]):
+                raise LinkError(api + ": incomplete same-corpus cycle measurement")
+            if not result.get("cpu_model_only", False) or not result.get("corpus_sha256"):
+                raise LinkError(api + ": unqualified cycle provenance")
+            models[api] = result
+            per_operation_cycles[api] = result["mean_cycles"]
+        if len(names) == 1:
+            cycle_model = models[names[0]]  # Preserve existing manifest schema.
         else:
-            benchmark, scratch_address = selective_speed_udiv8.bench_udiv8, zb
-        try:
-            if api in ("MATH_UMUL8", "MATH_ISQRT32"):
-                cycle_model = benchmark(MODULES[api], code, io, scratch_address, root, zp=zb)
-            else:
-                cycle_model = benchmark(MODULES[api], code, io, scratch_address, root)
-        except (ValueError, OSError, RuntimeError) as exc:
-            raise LinkError(api + " cycle-model measurement failed: " + str(exc)) from exc
-        per_operation_cycles = {api: cycle_model["mean_cycles"]}
+            cycle_model = {
+                "basis": "per-operation identical-input CPU-model means, weighted call frequencies",
+                "cpu_model_only": True,
+                "native_hardware_timing": False,
+                "code_placement_note": "Benchmark candidate sources assembled individually at requested code base; link order may relocate them",
+                "workload_calls": dict(sorted(workload_calls.items())),
+                "operations": models,
+            }
     modules = choose(names, pins, plan["objective"], zp_budget, ram_budget,
                      code_base=code, cycle_metrics=per_operation_cycles,
-                     scratch_base=sb)
+                     scratch_base=sb, workload_calls=workload_calls)
     zp_bytes = max(mod["zp"] for _, mod in modules.values())
     scratch = max(mod["scratch"] for _, mod in modules.values())
     selected = [(api, ident, mod) for api, (ident, mod) in modules.items()]
@@ -1638,10 +1669,17 @@ def build(plan, outdir, memory=None, root=ROOT):
         "status": "selective_binary_emitted",
         "target": "c64",
         "selection_objective": plan["objective"],
-        "selection_basis": ("same-corpus measured CPU-model cycles for " + names[0]
+        "selection_basis": (("workload-weighted same-corpus per-operation CPU-model cycles"
+                             if len(names) > 1 else
+                             "same-corpus measured CPU-model cycles for " + names[0])
                             if cycle_model else
                             "global code/RAM/ZP resource optimization; cycle-speed not certified"),
         "cycle_model_benchmark": cycle_model,
+        **({"workload_calls": dict(sorted(workload_calls.items())),
+            "estimated_weighted_cycles": sum(
+                workload_calls[api] * per_operation_cycles[api][ident]
+                for api, (ident, _) in modules.items())}
+           if workload_calls else {}),
         "operations": detail,
         "shared_tables": shared_tables,
         "link_order": [api for api, _, _ in build_order],

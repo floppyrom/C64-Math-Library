@@ -197,6 +197,7 @@ class CatalogTests(unittest.TestCase):
             self.index, ["umul16", "MATH_UMUL16", "isqrt16"],
             objective="speed", zp_budget=31, ram_budget=4096,
             pins={"umul16": valid_id},
+            workload_calls={"umul16":1,"isqrt16":1},
         )
         self.assertEqual(plan["public_operation_count"], 2)
         self.assertEqual(plan["status"], "planning_only_not_a_loadable_binary")

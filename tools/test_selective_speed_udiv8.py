@@ -114,9 +114,9 @@ class MatchedUDIV8SpeedTests(unittest.TestCase):
         for ops in (["UDIV8","UMOD8"],["UDIV8","UMUL8"],["UDIV8","SDIV8"]):
             with self.subTest(ops=ops), tempfile.TemporaryDirectory() as folder:
                 out=Path(folder)/"reject"
-                with self.assertRaisesRegex(selective_linker.LinkError,
-                                            "UDIV8 alone"):
-                    selective_linker.build(self.plan(ops,ram=4096),out)
+                with self.assertRaisesRegex(math_builder.SelectionError,
+                                            "requires workload calls"):
+                    self.plan(ops,ram=4096)
                 self.assertFalse(out.exists())
         with tempfile.TemporaryDirectory() as folder:
             p=subprocess.run(
