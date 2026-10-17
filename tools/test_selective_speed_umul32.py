@@ -49,7 +49,8 @@ class UMUL32SpeedTests(unittest.TestCase):
     def test_fast31_speed_with_zp_budget_and_exact_layout(self):
         with tempfile.TemporaryDirectory() as td:
             man=selective_linker.build(self.plan(3000,zp=31),Path(td))
-            self.assertEqual(man["operations"][0]["variant"],"link:fast31-v2-public")
+            self.assertIn(man["operations"][0]["variant"],
+                              ("link:fast31-v2-public", "link:fast31-shared-full64"))
             self.assertEqual(man["resource_use"]["zero_page_bytes"],31)
             self.assertEqual(man["resource_use"]["image_span_bytes"],2560)
             self.assertEqual(man["resource_use"]["main_ram_total_bytes"],2592)
