@@ -1,3 +1,32 @@
+### Independently linked signed 24x24 multiplication
+
+`MATH_SMUL24` has a source-linked `link:compact-zerozp`
+fallback: **227 code bytes**, **9 bytes ordinary call-exclusive RAM
+scratch**, **0 ZP**, and **268 RAM bytes** including the existing
+32-byte shared public I/O. A private unsigned24 shift-add core produces
+the 48-bit product, then a 24-bit sign correction conditionally
+subtracts Y24 or X24 from the upper half when the opposite operand
+is negative. The result is the exact signed 48-bit two's-complement
+product, including `-8388608 × -8388608`.
+
+The routine leaves the input X[0..3] and Y[0..3] intact, writes
+Z[0..5], preserves Z[6..7], clears carry, and requires CLD.
+A/X/Y registers and flags other than carry may change. No tables,
+REU, illegal opcodes, SMC or initialization are needed.
+
+```sh
+python3 tools/math_builder.py --operation SMUL24 \
+  --zp-budget 0 --ram-budget 268 \
+  --pin SMUL24=link:compact-zerozp --build
+```
+
+Qualification includes 24-bit signed edge and seeded random product
+pairs at three relocated code, I/O and scratch addresses; mixed calls
+with independently linked UMUL24, SMUL16_SHR8 and URECIP16_Q16;
+fixed RAM-budget boundaries; and native x64sc validation on two maps.
+The module does not claim to outperform historical V1–V5 fast signed
+24-bit resident kernels, which remain intact.
+
 ### Source-linked signed fixed-point SMUL16_SHR8
 
 `MATH_SMUL16_SHR8` has an independently linkable
