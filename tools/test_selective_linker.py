@@ -367,6 +367,7 @@ class SelectiveLinkTests(unittest.TestCase):
             files = ("tools/math_builder.py", "tools/selective_linker.py",
                      "tools/selective_atan2.py", "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py",
                      "tools/selective_speed_umul16.py", "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
+                     "tools/selective_speed_isqrt32.py",
                      "tools/selective_speed.py", "tools/selective_isqrt16.py",
                      "tools/selective_trig8.py", "tools/selective_dist8_accurate.py", "tools/selective_smul8.py",
                      "tools/selective_seek8.py", "tools/selective_seek16.py", "tools/seek_kernel.py",
