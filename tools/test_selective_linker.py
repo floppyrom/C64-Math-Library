@@ -281,8 +281,12 @@ class SelectiveLinkTests(unittest.TestCase):
             baseline = self.plan(["UDIV16"], zp_budget=1)
             with self.assertRaises(linker.LinkError):
                 linker.build(baseline, path)
+            unlinked = sorted(api for api, operation in self.index.items()
+                              if not any(v["selective_link_ready"]
+                                         for v in operation["variants"]))
+            self.assertTrue(unlinked, "All public modules are linked; retire negative test")
             with self.assertRaises(linker.LinkError):
-                linker.build(self.plan(["SMUL24"]), path)
+                linker.build(self.plan([unlinked[0]]), path)
             with self.assertRaises(linker.LinkError):
                 linker.build(self.plan(["UDIV16"], objective="speed"), path)
             with self.assertRaises(linker.LinkError):
