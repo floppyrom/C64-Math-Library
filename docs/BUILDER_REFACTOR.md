@@ -1,3 +1,29 @@
+### Independently linked UMUL24 portable unsigned 24x24 kernel
+
+The public `MATH_UMUL24` now has a source-linked
+`link:compact-zerozp` fallback: **156 bytes executable code**, **9
+bytes reusable ordinary RAM scratch**, **0 ZP**, **197 bytes total**
+including the existing 32-byte public I/O window. X[0..2] and Y[0..2]
+are preserved, and Z[0..5] holds the exact 48-bit unsigned product.
+High X/Y bytes and Z[6..7] remain unchanged; C clears on return.
+A/X/Y registers and other flags are volatile; CLD is required.
+It uses 24 shift/add steps and ordinary legal NMOS instructions:
+no table, REU, writable code or initialization.
+
+```sh
+python3 tools/math_builder.py --operation UMUL24 \
+  --pin UMUL24=link:compact-zerozp \
+  --zp-budget 0 --ram-budget 197 --build
+```
+
+The new module is qualified with 24-bit edge and seeded random
+cases on three memory maps, byte-exact product and caller-memory
+assertions, scratch sharing with UMUL16/URECIP16, and native x64sc
+qualification at two placements. It is a small, independently linkable
+baseline, not a claim to beat the highly optimized resident UMUL24
+implementations. Existing V1–V5 profiles and performance records stay
+unchanged, and there is no cross-operation speed ranking.
+
 ### Independent URECIP16_Q16 zero-ZP reference migration
 
 The builder now supports `MATH_URECIP16_Q16` via

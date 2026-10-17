@@ -1,3 +1,15 @@
+## Unreleased — independent 24-bit unsigned multiply source
+
+- Introduce `MATH_UMUL24` `link:compact-zerozp` standalone source,
+  a 156-byte code / 9-byte ordinary RAM / zero-ZP exact unsigned
+  24×24→48-bit public producer (197 bytes including public I/O).
+- Cover full-width product, ABI high-byte preservation, two native
+  VICE relocations, three CPU-model relocations, mixed-call scratch
+  sharing, zero-page constraints, and memory-budget rejection.
+- Increases operation-first independently linkable coverage to 35/56
+  when merged. No V1–V5 resident or historical-performance changes;
+  further fast-core source transplantation is still required.
+
 ## Unreleased — independent URECIP16_Q16 module
 
 - Add zero-ZP source-linked `MATH_URECIP16_Q16` portable reference:
