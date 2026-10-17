@@ -261,6 +261,15 @@ MODULES = {
             "provenance": "Independent zero-ZP 16x16 quarter-square shared-table kernel plus 24-bit SHR8 adapter; 256 B code, 1022 B tables, 4 B scratch",
         },
     },
+    "MATH_SMUL24": {
+        "link:compact-zerozp": {
+            "source": "routines/multiply/smul24_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 227),),
+            "entry": "FAST_SMUL24_COMPACT", "zp": 0, "scratch": 9,
+            "operand_layout": "xyz", "smul24": True,
+            "provenance": "Exact signed24x24 -> signed48 via source-private unsigned 156B core + 24-bit high correction, 227B code/9B RAM/0 ZP; original fast resident algorithms retained.",
+        },
+    },
     "MATH_UMUL24": {
         "link:compact-zerozp": {
             "source": "routines/multiply/umul24_compact_zerozp.asm",
@@ -577,6 +586,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_fast_umul8.py" if mod.get("fast_umul8") else
                     "tools/test_selective_smul16_shr8.py" if mod.get("smul16_shr8") else
                     "tools/test_selective_smul16.py" if mod.get("smul16") else
+                    "tools/test_selective_smul24.py" if mod.get("smul24") else
                     "tools/test_selective_umul24.py" if mod.get("umul24") else
                     "tools/test_selective_multiply.py"
                     if mod.get("operand_layout") == "xyz" else
@@ -1292,6 +1302,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; SMUL16: signed X16*Y16 => signed full 32-bit Z[0..3], C=0.",
         "; SMUL16_SHR8: signed (X16*Y16)>>8 => signed Z[0..2], C=0.",
         "; UMUL24: unsigned X24*Y24 => exact low 48-bit Z[0..5], Z[6..7] untouched.",
+        "; SMUL24: signed X24*Y24 => exact signed48 Z[0..5], Z[6..7] preserved.",
         "; UMUL16_SHR8: unsigned X16*Y16 >> 8 => low 24 bits MATH_Z, C=0.",
         "; SMUL8: signed 8-bit X/Y => signed 16-bit Z low/next, C=0.",
         "; SMUL8 uses self-modifying instructions: load into writable RAM, non-reentrant.",
