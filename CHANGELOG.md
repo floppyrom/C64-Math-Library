@@ -1,3 +1,16 @@
+## Unreleased — independent URECIP16_Q16 module
+
+- Add zero-ZP source-linked `MATH_URECIP16_Q16` portable reference:
+  99 code bytes, 1 call-exclusive ordinary RAM scratch byte, and
+  132 RAM bytes including public I/O.
+- Exact unsigned `floor(65536 / D16)` Q24 ABI, with zero-divisor
+  carry signalling, preserved D, untouched Q[3] and R bytes.
+- Add arithmetic edge/random, relocation, budget and mixed-operation
+  CPU-model tests, native x64sc two-map validation and new independent
+  operation catalog entry (34/56 after merge).
+- Historical V1–V5 resident code and performance numbers unchanged;
+  the high-speed threshold/reciprocal paths remain future transplant work.
+
 ## Unreleased — source-linked UDIV16_SHL8 reference
 
 - Independently selectable `MATH_UDIV16_SHL8` source:

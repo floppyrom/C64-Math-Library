@@ -1,3 +1,37 @@
+### Independent URECIP16_Q16 zero-ZP reference migration
+
+The builder now supports `MATH_URECIP16_Q16` via
+`link:compact-zerozp`: one self-contained **99-byte** 6510 routine,
+**1 byte** of reusable ordinary RAM scratch and **0 ZP**. Including
+32 bytes of public I/O, the minimum single-operation RAM use is **132 bytes**.
+No initialization, tables, REU, undocumented opcodes or writable code.
+The caller must clear decimal mode before entry.
+
+Input `D[0..1]` is preserved; the low three bytes of Q receive
+`floor(65536 / D16)` for nonzero D with carry clear, including
+`D=1 -> $010000`. For D=0, those Q bytes become zero and carry is set.
+Q[3] and the entire R field are deliberately preserved.
+A/X/Y and flags other than the carry ABI are volatile.
+
+The implementation uses a 24-step shift/subtract producer with a
+17-bit remainder held in A plus one private RAM byte. All 65,535
+nonzero divisors have been checked against the arithmetic reference
+in independent software; the linked 6502 source receives distinct
+edge/random CPU-model, relocation, caller-ABI and mixed-call checks,
+plus native VICE x64sc execution in two memory layouts.
+
+```sh
+python3 tools/math_builder.py --operation URECIP16_Q16 \
+  --pin URECIP16_Q16=link:compact-zerozp \
+  --zp-budget 0 --ram-budget 132 --build
+```
+
+This is the first *independently linkable* portable candidate, not
+a replacement for historically faster V2–V4 reciprocal kernels
+(which use threshold and division-specialist paths).
+The V1–V5 resident profiles and performance records are untouched,
+and no automatic speed ranking is claimed for this operation.
+
 ### Independently linked UDIV16_SHL8 fixed-point division reference
 
 `MATH_UDIV16_SHL8` now has an independently selectable
