@@ -34,6 +34,38 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
+## Workload-weighted speed selection (six certified APIs)
+
+The `speed` objective supports project-level weighted selection for **six**
+individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8 and
+ISQRT32. Multiple operations **must** each have a positive integer call count,
+reflecting expected calls per game frame (no implicit equal-frequency guess).
+For example:
+
+```sh
+python3 tools/math_builder.py --operation UMUL8 --operation UMUL16 \
+  --objective speed --calls UMUL8=1000 --calls UMUL16=1 \
+  --ram-budget 1400 --zp-budget 4 --build
+```
+
+Or supply the same names in a JSON `workload_calls` object. The builder
+benchmarks each API's candidate sources on that API's **same fixed deterministic
+input corpus** at the requested nominal memory placement, checks the
+full candidate variant set and corpus hash, then minimizes the sum of
+`calls × mean cycles` under **global** linked-code, scratch, RAM, ZP and
+persistent-state constraints. The manifest contains per-operation corpus hashes,
+source hashes, mean cycles, call counts and the resulting estimated weighted
+CPU-model cycles. Benchmarks do **not** provide real hardware timing or prove
+cycle invariance after physical link relocation; speed selection is therefore
+an expected workload estimate, not exact total cycle prediction.
+
+With 1,400 total RAM bytes and the two example APIs, the optimizer can use only
+one quarter-square implementation. Heavy UMUL8 workloads select its fast
+variant and compact UMUL16; reversing the call weights reverses that choice.
+Unsupported APIs fail closed in `speed` mode rather than using historical
+resident timing from incomparable benchmark corpora. Ordinary `balanced`,
+`size` and `zp` plans remain fully available for all 56 APIs.
+
 ## Acceptance gates for retiring fixed profiles
 
 1. Every one of 56 public APIs is independently source-linkable — **done**.

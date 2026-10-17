@@ -111,14 +111,17 @@ class QualifiedUMOD8SpeedTests(unittest.TestCase):
                          key=first["cycle_model_benchmark"]["mean_cycles"].get)
             self.assertEqual(first["operations"][0]["variant"],expected)
 
-    def test_rejects_fictional_comparability_for_mixed_operations(self):
+    def test_mixed_operations_require_explicit_calls_and_corpus(self):
         for ops in (["UMOD8","UMUL8"],["UMOD8","UDIV8"],["SMUL8","UMOD8"]):
-            with self.subTest(ops=ops),tempfile.TemporaryDirectory() as d:
-                target=Path(d)/"reject"
-                with self.assertRaisesRegex(selective_linker.LinkError,
-                                            "UMUL8, UMUL16, UMOD8 or UDIV8 alone"):
-                    selective_linker.build(self.plan(ops,ram=4096),target)
-                self.assertFalse(target.exists())
+            with self.subTest(ops=ops):
+                with self.assertRaisesRegex(math_builder.SelectionError,
+                                            "requires workload calls"):
+                    self.plan(ops,ram=4096)
+        with tempfile.TemporaryDirectory() as d:
+            p=math_builder.create_plan(self.index,["SMUL8","UMOD8"],
+                  objective="speed",workload_calls={"SMUL8":1,"UMOD8":1})
+            with self.assertRaisesRegex(selective_linker.LinkError,"No authenticated"):
+                selective_linker.build(p,Path(d))
 
     def test_cli_uses_certified_source_but_does_not_claim_hardware_timing(self):
         with tempfile.TemporaryDirectory() as d:

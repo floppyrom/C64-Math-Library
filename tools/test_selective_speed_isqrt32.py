@@ -93,10 +93,8 @@ class ISQRT32SpeedTests(unittest.TestCase):
                             fast["cycle_model_benchmark"]["mean_cycles"]["link:radix4-zerozp"])
 
     def test_mixed_ops_fail_closed_and_variant_set_drift(self):
-        with tempfile.TemporaryDirectory() as td:
-            with self.assertRaisesRegex(selective_linker.LinkError,"mixed operations"):
-                selective_linker.build(self.plan(operations=("ISQRT32","ISQRT16"),
-                    ram=2200),Path(td))
+        with self.assertRaisesRegex(math_builder.SelectionError,"requires workload calls"):
+            self.plan(operations=("ISQRT32","ISQRT16"),ram=2200)
         bad=dict(selective_linker.MODULES["MATH_ISQRT32"])
         bad["unverified-source"]=bad["link:v2-highword-source"]
         with self.assertRaisesRegex(ValueError,"candidate set changed"):

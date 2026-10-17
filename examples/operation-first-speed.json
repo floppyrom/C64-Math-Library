@@ -1,0 +1,7 @@
+{
+  "target": "c64",
+  "operations": ["UMUL8", "UMUL16"],
+  "objective": "speed",
+  "workload_calls": {"UMUL8": 1000, "UMUL16": 1},
+  "constraints": {"max_ram_bytes": 1400, "max_zp_bytes": 4}
+}

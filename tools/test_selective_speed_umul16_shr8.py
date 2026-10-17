@@ -61,11 +61,9 @@ class Shift16SpeedTests(unittest.TestCase):
             b = selective_linker.build(self.plan(1314),Path(d),memory=reloc)
             self.assertEqual(a["cycle_model_benchmark"],b["cycle_model_benchmark"])
             self.assertEqual(a["prg_sha256"],b["prg_sha256"])
-            mixed = math_builder.create_plan(
-                self.index,["UMUL16_SHR8","UMUL16"],
-                objective="speed",zp_budget=0,ram_budget=2000)
-            with self.assertRaises(selective_linker.LinkError):
-                selective_linker.build(mixed,Path(d)/"mixed")
+            with self.assertRaisesRegex(math_builder.SelectionError,"requires workload calls"):
+                math_builder.create_plan(self.index,["UMUL16_SHR8","UMUL16"],
+                    objective="speed",zp_budget=0,ram_budget=2000)
 
 if __name__ == "__main__":
     unittest.main()

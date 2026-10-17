@@ -1,3 +1,20 @@
+## Unreleased — workload-weighted multi-operation CPU-model speed selector
+
+- Extend the certified same-corpus speed selector from one operation to any
+  combination of six benchmark-qualified public APIs, using explicit positive
+  call counts and a global linked RAM/ZP budget. Each API compares its own
+  variants on identical inputs; never combine unrelated historical profile
+  cycle numbers or presume equal call frequencies.
+- Emit a deterministic mixed-operation benchmark report, workload calls,
+  corpus/source provenance and estimated workload cycles in the binary manifest.
+  Preserve the original single-operation speed manifest contract.
+- Add a tight-budget performance regression where reversed UMUL8/UMUL16
+  workloads change which quarter-square kernel is linked. Add two-relocation
+  native VICE mixed-operation tests, invalid-count/unsupported-API guards,
+  documented CLI/JSON example and CI qualification.
+- CPU-model estimates use nominal code placement; physical selected linked
+  code placement and host hardware timing are not claimed as exact cycle truth.
+
 ## Unreleased — operation-first primary build setup (profiles become opt-in)
 
 - Make the profile-independent C64 builder the README/quick-start front door.
