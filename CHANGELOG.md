@@ -1,3 +1,16 @@
+## Unreleased — independent signed SDIV16_SHL8 module
+
+- Add standalone `MATH_SDIV16_SHL8` signed fixed-point `link:portable-zerozp`:
+  237 executable bytes, 3 bytes of reusable ordinary RAM scratch,
+  zero ZP, 272 RAM total including shared public I/O.
+- Compute `(signed N16 << 8)/signed D16` with exact wrapped Q24,
+  truncation toward zero, signed remainder R16, carry-set D=0
+  signaling and preserved N/D/high Q/R fields.
+- Three CPU-model memory-map relocations, mixed non-overlapping
+  signed/unsigned operations, exact budget failures and two native
+  VICE maps. Independently linkable catalog advances 41 to 42 of
+  56 after parent merges. Historical profiles and timing records unchanged.
+
 ## Unreleased — source-linked signed SDIV16/SMOD16 shared producer
 
 - Add `MATH_SDIV16` and `MATH_SMOD16` as separate selectable

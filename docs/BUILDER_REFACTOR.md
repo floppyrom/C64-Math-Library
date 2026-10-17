@@ -1,3 +1,31 @@
+### Independently linked signed SDIV16_SHL8 fixed-point producer
+
+`MATH_SDIV16_SHL8` now has a portable `link:portable-zerozp`
+source that performs signed `(N16 << 8)/D16` without extending or
+modifying the public input fields. The 237-byte, legal-NMOS source
+writes signed Q24 and signed R16, using **3 ordinary-RAM scratch bytes,
+zero zero-page bytes, and 272 RAM bytes including public I/O**.
+
+The quotient truncates toward zero, with a two's-complement wrap
+for `-32768 << 8` divided by `-1` (mathematical +8388608
+becomes Q24 `$800000`). The remainder always follows the original
+numerator's sign. For D=0, Q24/R16 become zero and C=1; otherwise
+C=0. N/D are unchanged; Q[3] and R[2..3] are preserved. CLD is
+required. No tables, REU, self-modifying code, undocumented
+instructions, or initialization.
+
+```sh
+python3 tools/math_builder.py --operation SDIV16_SHL8 \
+  --zp-budget 0 --ram-budget 272 --build
+```
+
+Tests cover signed edge/random values at three independent
+code/I/O/scratch maps, mixed calls with separately linked
+SDIV16/SMOD16 and UMUL16, resource accounting, and native
+x64sc testing at two maps. This is a correctness-first portable
+fallback and not a substitution for resident high-speed V1–V5
+signed shifted-division implementations.
+
 ### Shared zero-ZP signed SDIV16 / SMOD16 source
 
 `MATH_SDIV16` and `MATH_SMOD16` now have independently
