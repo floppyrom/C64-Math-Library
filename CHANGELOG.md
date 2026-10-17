@@ -1,3 +1,17 @@
+## Unreleased — shared signed 32/16 divide and modulo
+
+- Register `MATH_SDIV32_16` and `MATH_SMOD32_16` as independently
+  selectable shared-source `link:portable-zerozp` operations.
+  260 code bytes, 3 ordinary-RAM scratch bytes, no zero page,
+  295 RAM bytes including public I/O; code counted once for both.
+- Signed N32/D16 produce exact signed Q32/R16 with truncate-to-zero
+  quotient, numerator-signed remainder, two's-complement overflow
+  wrap and carry-set division-by-zero; input/high R bytes unchanged.
+- Qualify three relocated CPU model maps and two native VICE maps,
+  mixed signed/unsigned operations, deduped entries and RAM budgets.
+  Proposed catalog reaches 46/56 after prior stacked migrations.
+  Retain historical V1–V5 source binaries and performance figures.
+
 ## Unreleased — shared signed 24-bit DIV/MOD source
 
 - Add independently selectable `MATH_SDIV24` and `MATH_SMOD24`
