@@ -1,0 +1,69 @@
+name: Build pinned VICE r46284 headless x64sc
+on:
+  push:
+    branches:
+      - tools/vice-trunk-r46284
+    paths:
+      - .github/workflows/vice-trunk-r46284.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  vice-headless:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact upstream VICE SVN trunk revision r46284
+        uses: actions/checkout@v4
+        with:
+          repository: VICE-Team/svn-mirror
+          ref: d4d62d0b9538238e6a84826e951e76debf5df649
+          path: vice-source
+          persist-credentials: false
+
+      - name: Install upstream headless build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            autoconf automake build-essential byacc dos2unix flex \
+            libcurl4-openssl-dev libpcap-dev libreadline-dev \
+            texinfo xa65
+
+      - name: Build x64sc from r46284
+        shell: bash
+        run: |
+          set -euxo pipefail
+          cd vice-source/vice
+          ./src/buildtools/genvicedate_h.sh
+          ./autogen.sh
+          ./configure --enable-headlessui \
+            --disable-html-docs --disable-pdf-docs \
+            --without-alsa --without-png --without-pulse \
+            --prefix=/usr/local
+          make -j2 SVN_REVISION_OVERRIDE=46284
+          test -x src/x64sc
+          src/x64sc -version
+          ldd src/x64sc
+          make DESTDIR="${RUNNER_TEMP}/vice-r46284-root" install
+
+      - name: Package headless Linux executable and ROM data
+        run: |
+          set -euxo pipefail
+          test -x "${RUNNER_TEMP}/vice-r46284-root/usr/local/bin/x64sc"
+          tar -czf vice-r46284-linux-x86_64-headless.tar.gz \
+            -C "${RUNNER_TEMP}/vice-r46284-root" usr/local
+          sha256sum vice-r46284-linux-x86_64-headless.tar.gz \
+            > vice-r46284-linux-x86_64-headless.sha256
+          tar tzf vice-r46284-linux-x86_64-headless.tar.gz \
+            | grep -E 'usr/local/(bin/x64sc|share/vice/)' | head -15
+
+      - name: Upload reproducible pinned VICE package
+        uses: actions/upload-artifact@v4
+        with:
+          name: vice-r46284-linux-x86_64-headless
+          path: |
+            vice-r46284-linux-x86_64-headless.tar.gz
+            vice-r46284-linux-x86_64-headless.sha256
+          retention-days: 30
