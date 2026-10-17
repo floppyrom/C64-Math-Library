@@ -270,6 +270,15 @@ MODULES = {
             "provenance": "Portable unsigned 24x24 -> 48-bit source; zero ZP, nine RAM scratch bytes, preserved operands, output Z0..5, no REU/SMC/lookup. Not historical fastest.",
         },
     },
+    "MATH_SMUL16_SHR8": {
+        "link:compact-zerozp": {
+            "source": "routines/multiply/smul16_shr8_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 184),),
+            "entry": "FAST_SMUL16_SHR8_COMPACT", "zp": 0, "scratch": 6,
+            "operand_layout": "xyz", "smul16_shr8": True,
+            "provenance": "Independent source-private signed16 producer plus arithmetic high-byte slice: exact signed (X16*Y16)>>8 in Z24, 184 code and 6 ordinary scratch, zero ZP; not resident speed champion.",
+        },
+    },
     "MATH_SMUL16": {
         "link:compact-zerozp": {
             "source": "routines/multiply/smul16_compact_zerozp.asm",
@@ -566,6 +575,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_seek8.py" if mod.get("seek8") else
                     "tools/test_selective_umul8_v1.py" if mod.get("umul8_v1") else
                     "tools/test_selective_fast_umul8.py" if mod.get("fast_umul8") else
+                    "tools/test_selective_smul16_shr8.py" if mod.get("smul16_shr8") else
                     "tools/test_selective_smul16.py" if mod.get("smul16") else
                     "tools/test_selective_umul24.py" if mod.get("umul24") else
                     "tools/test_selective_multiply.py"
@@ -1280,6 +1290,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UMUL8: unsigned 8-bit MATH_X/Y => unsigned 16-bit MATH_Z;",
         "; UMUL16: unsigned 16-bit MATH_X/Y => unsigned 32-bit MATH_Z;",
         "; SMUL16: signed X16*Y16 => signed full 32-bit Z[0..3], C=0.",
+        "; SMUL16_SHR8: signed (X16*Y16)>>8 => signed Z[0..2], C=0.",
         "; UMUL24: unsigned X24*Y24 => exact low 48-bit Z[0..5], Z[6..7] untouched.",
         "; UMUL16_SHR8: unsigned X16*Y16 >> 8 => low 24 bits MATH_Z, C=0.",
         "; SMUL8: signed 8-bit X/Y => signed 16-bit Z low/next, C=0.",

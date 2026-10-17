@@ -1,3 +1,17 @@
+## Unreleased — signed 16-bit fixed-point SHR8 kernel
+
+- Introduce independently linkable `MATH_SMUL16_SHR8`
+  `link:compact-zerozp` (184 B code, 6 B reusable private RAM,
+  0 ZP, 222 B total with I/O). Computes exact arithmetic
+  `(signed X16 * signed Y16) >> 8` into public Z[0..2], C=0.
+- Preserve caller X/Y and non-contracted high Z bytes. Add
+  three relocated CPU-model signed product tests, mixed-operation
+  scratch lifetime and exact-budget checks, and two native x64sc
+  placements with signed extremes and memory canaries.
+- Expands independently source-linkable builder coverage to 37/56
+  once merged; leaves historical V1–V5 resident code untouched
+  and makes no unsupported mixed-operation speed claims.
+
 ## Unreleased — zero-ZP signed 16-bit multiplication source
 
 - Add independently linked `MATH_SMUL16` `link:compact-zerozp`
