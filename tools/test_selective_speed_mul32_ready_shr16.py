@@ -51,7 +51,8 @@ class Extra32SpeedTests(unittest.TestCase):
                     self.assertLess(cycles[FAST],cycles["link:unified-375"])
                     self.assertEqual(man["operations"][0]["variant"],FAST)
                     self.assertEqual(man["resource_use"]["zero_page_bytes"],31)
-                    self.assertEqual(man["resource_use"]["main_ram_total_bytes"],2592)
+                    self.assertEqual(man["resource_use"]["main_ram_total_bytes"],
+                                     speed.fast31.layout(code)[1]-code+32)
                     constrained=linker.build(
                         self.plan((op,),zp=0,ram=EXPECTED_SMALL[op]),
                         out/"compact",memory=memory)
