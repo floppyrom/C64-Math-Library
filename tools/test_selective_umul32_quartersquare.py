@@ -50,7 +50,7 @@ class UMUL32QuarterSquareTests(unittest.TestCase):
                     yb=y.to_bytes(4,"little")
                     mem[io:io+4]=xb
                     mem[io+4:io+8]=yb
-                    mem[io+8:io+16]=b"\\xa5"*8
+                    mem[io+8:io+16]=b"\xa5"*8
                     cpu.c=i&1
                     cpu.d=0
                     cpu.call(entry,120000)
