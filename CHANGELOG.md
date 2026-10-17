@@ -1,3 +1,15 @@
+## Unreleased — operation-first primary build setup (profiles become opt-in)
+
+- Make the profile-independent C64 builder the README/quick-start front door.
+  `make` now displays builder help; `make builder` compiles an example and
+  `make builder CONFIG=... OUT=...` creates project-specific minimal PRGs.
+- Publish validated, reproducible `examples/operation-first.json`, a migration
+  guide with explicit performance/hardware qualification gates, and a CI smoke
+  build that checks the selected API set plus RAM/ZP accounting.
+- Preserve `make all`, V1–V5 reference files, Pareto builder, REU/Turbo/QS16
+  features and benchmark provenance as opt-in compatibility tools. Full
+  global automatic speed optimization remains incomplete.
+
 ## Unreleased — six-entry compact 32-bit producer sharing
 
 - Introduce one 375-byte source-assembled, legal-NMOS signed/unsigned 32-bit

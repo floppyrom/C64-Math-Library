@@ -1,0 +1,9 @@
+{
+  "target": "c64",
+  "operations": ["UMUL16", "UDIV16", "ISQRT16"],
+  "objective": "balanced",
+  "constraints": {
+    "max_zp_bytes": 8,
+    "max_ram_bytes": 4096
+  }
+}
