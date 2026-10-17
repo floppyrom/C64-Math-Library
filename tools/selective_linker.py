@@ -415,6 +415,18 @@ MODULES = {
         },
     },
     "MATH_SMUL32": {
+        "link:fast31-shared-full64": {
+            "source": "routines/multiply/mul32_fast31_shared_public.asm",
+            "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
+                         ("Q_SQR_HI", 512), ("Q_NEG_LO", 512),
+                         ("Q_NEG_HI", 512)),
+            "entry": "FAST_SMUL32_FAST31", "zp": 31, "scratch": 0,
+            "operand_layout": "xyz", "fast31_umul32": True,
+            "fast31_shared": True,
+            "share_producer": "fast31-dual-public-full64", "multi_entry": True,
+            "requires_writable_code": True,
+            "provenance": "Historical V2 31-ZP FAST31 single arithmetic kernel and four aligned lookup pages shared by unsigned/signed public full64 API; exact signed upper-half correction, retained X32/Y32, CLD and writable code; 512B code + 2048B table slots, 31 exclusive ZP.",
+        },
         "link:fast31-v2-signed": {
             "source": "routines/multiply/smul32_fast31_public.asm",
             "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
@@ -485,6 +497,18 @@ MODULES = {
         },
     },
     "MATH_UMUL32": {
+        "link:fast31-shared-full64": {
+            "source": "routines/multiply/mul32_fast31_shared_public.asm",
+            "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
+                         ("Q_SQR_HI", 512), ("Q_NEG_LO", 512),
+                         ("Q_NEG_HI", 512)),
+            "entry": "FAST_UMUL32_FAST31", "zp": 31, "scratch": 0,
+            "operand_layout": "xyz", "fast31_umul32": True,
+            "fast31_shared": True,
+            "share_producer": "fast31-dual-public-full64", "multi_entry": True,
+            "requires_writable_code": True,
+            "provenance": "Historical V2 31-ZP FAST31 single arithmetic kernel and four aligned lookup pages shared by unsigned/signed public full64 API; exact signed upper-half correction, retained X32/Y32, CLD and writable code; 512B code + 2048B table slots, 31 exclusive ZP.",
+        },
         "link:fast31-v2-public": {
             "source": "routines/multiply/umul32_fast31_public.asm",
             "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
@@ -1472,8 +1496,20 @@ def build(plan, outdir, memory=None, root=ROOT):
                 elif module.get("isqrt16"):
                     machine, entry, ranges, end = sqrt16.assemble(pc, io, root)
                 elif module.get("fast31_umul32"):
-                    machine, entry, ranges, end = fast31.assemble(pc, io, zb, root,
-                        source_path=module["source"], entry_label=module["entry"])
+                    if module.get("fast31_shared"):
+                        # The physical owner can be signed; retain BOTH labels
+                        # for independently source-hash-authorized virtual exports.
+                        locations_fast31, _ = fast31.layout(pc)
+                        _, labels, _ = Assembler().assemble(fast31.render(
+                            locations_fast31, io, zb, root, module["source"]))
+                        machine, _, ranges, end = fast31.assemble(
+                            pc, io, zb, root, source_path=module["source"],
+                            entry_label="FAST_UMUL32_FAST31")
+                        entry = labels[module["entry"]]
+                    else:
+                        machine, entry, ranges, end = fast31.assemble(
+                            pc, io, zb, root, source_path=module["source"],
+                            entry_label=module["entry"])
                 elif module.get("umul8_v1"):
                     machine, entry, ranges, end = v1umul8.assemble(pc, io, zb, root)
                 elif module.get("seek8"):
@@ -1513,7 +1549,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
