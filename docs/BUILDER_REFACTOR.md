@@ -1,3 +1,32 @@
+### ISQRT32 exact same-corpus speed selection
+
+With both source-qualified `ISQRT32` variants available, the builder
+supports `--objective speed` for **ISQRT32 alone**. The selector
+reassembles each variant at the requested code/I/O/ZP/RAM map, validates
+all 512 identical full-width deterministic inputs, carry, untouched
+operands and X/Y/stack, and counts CPU-model instruction cycles through
+RTS. It chooses the fastest **resource-feasible** candidate; RAM and
+ZP constraints are applied after measuring both. The source SHA,
+fixed corpus SHA, per-variant cycles and image/toolchain provenance
+are preserved in the build manifest.
+
+```sh
+python3 tools/math_builder.py --operation ISQRT32 --objective speed \
+  --zp-budget 7 --ram-budget 992 --build
+```
+
+With fewer than seven available ZP bytes or fewer than 992 main-RAM
+bytes, the **204-byte/0-ZP restoring variant** remains eligible and is
+selected automatically, provided its 246-byte minimum main RAM
+footprint is available. An explicit expert pin remains honored when
+within budget. `--objective speed` deliberately **rejects mixed
+operation sets** because the full 56-operation resource-sharing and
+same-corpus cross-family workload model is not qualified yet.
+
+This is source-assembled 6502 CPU-model timing. Native VICE independently
+validates correctness, but physical C64 VIC/REU/interrupt wall-time is
+not implied by instruction counts. All V1–V5 binaries remain unchanged.
+
 ### Certified-source V2 highword ISQRT32 fast candidate
 
 `MATH_ISQRT32` has a second independently linkable, opt-in
