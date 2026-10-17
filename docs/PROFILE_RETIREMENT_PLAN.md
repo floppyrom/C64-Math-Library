@@ -36,9 +36,9 @@ copying a resident profile's symbol addresses.
 
 ## Workload-weighted speed selection (seven source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **six**
-individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8 and
-ISQRT32. Multiple operations **must** each have a positive integer call count,
+The `speed` objective supports project-level weighted selection for **seven**
+individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
+ISQRT32 and UMUL32. Multiple operations **must** each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
 
@@ -62,7 +62,18 @@ an expected workload estimate, not exact total cycle prediction.
 With 1,400 total RAM bytes and the two example APIs, the optimizer can use only
 one quarter-square implementation. Heavy UMUL8 workloads select its fast
 variant and compact UMUL16; reversing the call weights reverses that choice.
-UMUL32 compares the compact shift/add, the shared six-API compact source and\na source-linked 32x32 quarter-square convolution on one 192-pair corpus.\nIts fast variant uses 1,028 bytes of code, 1,022 bytes of immutable tables,\n4 bytes of ordinary scratch and no ZP. This is not yet the historical\nFAST31/V29 optimized resident transplant; its weighted speed choice remains\na nominal code-map CPU-model estimate and must pass the native VICE gate.\n\nUnsupported APIs fail closed in `speed` mode rather than using historical
+UMUL32 now compares **four** full64 source-linked candidates on the same
+192-pair operand corpus: the 204-byte portable compact, 375-byte shared
+six-operation core, 1,028-byte zero-ZP quarter-square (plus 1,022 table bytes),
+and the historical V2 FAST31 native producer adapted to the public ABI.
+FAST31 reserves 512 code-slot bytes and four 512-byte page-aligned table
+slots, with 31 call-exclusive ZP bytes, zero ordinary scratch, writable code,
+no stack-page reservation and no explicit initialization requirement. Page
+padding is charged to RAM. The builder selects by the complete public-call
+CPU-model mean only where all resource constraints permit it. The published
+resident FAST31 record is **not** a directly comparable public-call timing.
+Native VICE proof covers the linked public interface at two code layouts.
+\nUnsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
 `size` and `zp` plans remain fully available for all 56 APIs.
 
