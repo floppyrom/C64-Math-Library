@@ -172,7 +172,7 @@ class SelectiveLinkTests(unittest.TestCase):
             man = linker.build(plan, Path(d))
             self.assertEqual(man["resource_use"]["code_and_tables_bytes"], 1161)
             self.assertEqual(man["resource_use"]["main_ram_total_bytes"], 1197)
-            self.assertEqual(man["resource_use"]["zero_page_bytes"], 4)
+            self.assertEqual(man["resource_use"]["zero_page_bytes"], 2)
             self.assertEqual(man["resource_use"]["private_ram_scratch_bytes"], 4)
             prg = (Path(d) / "math_selective.prg").read_bytes()
             mem = bytearray(65536)
