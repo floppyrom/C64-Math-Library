@@ -25,6 +25,7 @@ import selective_speed_umul16_shr8
 import selective_speed_umod8
 import selective_speed_udiv8
 import selective_speed_isqrt32
+import selective_speed_umul32
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
@@ -1253,12 +1254,13 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_UMOD8": (selective_speed_umod8.bench_umod8, "zp", False),
             "MATH_UDIV8": (selective_speed_udiv8.bench_udiv8, "zp", False),
             "MATH_ISQRT32": (selective_speed_isqrt32.bench_isqrt32, "scratch", True),
+            "MATH_UMUL32": (selective_speed_umul32.bench_umul32, "scratch", False),
         }
         unavailable = sorted(set(names) - set(measured))
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32")
+                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32")
         models = {}
         per_operation_cycles = {}
         for api in names:
