@@ -1,9 +1,13 @@
 name: Selective performance workbench
 
 on:
-  push:
-    branches:
-      - perf/global-selective-optimizer
+  pull_request:
+    paths:
+      - tools/selective_linker.py
+      - tools/test_selective_linker.py
+      - tools/bench_selective_migrations.py
+      - .github/workflows/performance-workbench.yml
+      - docs/BUILDER_MIGRATION_CYCLE_BASIS.md
   workflow_dispatch:
 
 jobs:

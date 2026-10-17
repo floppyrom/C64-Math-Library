@@ -1,3 +1,18 @@
+## Unreleased — global shared-producer resource selection and performance workbench
+
+- Correct automatic global RAM/size/ZP variant selection: a locally dominated
+  source cannot be removed from the search frontier when it exports a shared
+  physical producer that other selected operations might reuse. Retain
+  share-eligible choices before global combination scoring; expert pins,
+  single-operation results and emitted arithmetic code remain unchanged.
+- Add a synthetic two-operation regression where retaining one 110-byte shared
+  producer beats an 80-byte local alternative plus that same producer (190
+  bytes), including a restrictive RAM budget and pin-rejection test.
+- Add an on-demand / targeted-PR performance workbench: deterministic
+  six-operation matched-input CPU-model report plus a SHA-256-stamped source
+  snapshot for reproducible local native-6510/VICE qualification. No new
+  historical speed ranking or resident-profile binary is published.
+
 ## Unreleased — measured source-only migration baseline groundwork
 
 - Add deterministic 256-input, two-relocation CPU-model cycle reporting

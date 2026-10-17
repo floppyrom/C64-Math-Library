@@ -256,6 +256,52 @@ class SelectiveLinkTests(unittest.TestCase):
         self.assertEqual(set(linker.pareto_resource_variants(synthetic)),
                          {"plain", "paged"})
 
+    def test_global_selection_preserves_larger_shared_producer(self):
+        # A's 80-byte standalone kernel locally dominates its 110-byte
+        # shared producer. But B needs that 110-byte physical producer,
+        # so A+B together cost 110 bytes rather than 80+110=190.
+        from unittest.mock import patch
+
+        def spec(size, *, entry, shared=False):
+            result = {
+                "source": "test/synthetic.asm",
+                "segments": (("KERNEL_CODE", size),),
+                "entry": entry, "zp": 0, "scratch": 0,
+            }
+            if shared:
+                result.update(share_producer="test-shared-physical-image",
+                              multi_entry=True)
+            return result
+
+        shared_a = spec(110, entry="ENTRY_A", shared=True)
+        shared_b = spec(110, entry="ENTRY_B", shared=True)
+        standalone = spec(80, entry="ENTRY_A")
+        variants_a = {"link:compact": standalone, "link:shared": shared_a}
+        variants_b = {"link:shared": shared_b}
+        self.assertEqual(set(linker.pareto_resource_variants(variants_a)),
+                         {"link:compact", "link:shared"})
+        with patch.dict(linker.MODULES, {
+            "MATH_SYNTH_A": variants_a, "MATH_SYNTH_B": variants_b
+        }):
+            for objective in ("size", "balanced", "zp"):
+                chosen = linker.choose(["MATH_SYNTH_A", "MATH_SYNTH_B"],
+                                       {}, objective, zp_budget=0,
+                                       ram_budget=142)
+                self.assertEqual(chosen["MATH_SYNTH_A"][0], "link:shared")
+                physical = linker.unique_code_modules([
+                    (api, variant, module)
+                    for api, (variant, module) in chosen.items()
+                ])
+                self.assertEqual(len(physical), 1)
+                self.assertEqual(linker.projected_end(0x8000, physical) - 0x8000,
+                                 110)
+            # Explicit pinning a locally smaller but unshared source fails
+            # the real global RAM constraint; never coalesce unrelated code.
+            with self.assertRaises(linker.LinkError):
+                linker.choose(["MATH_SYNTH_A", "MATH_SYNTH_B"],
+                              {"MATH_SYNTH_A": "link:compact"},
+                              "size", zp_budget=0, ram_budget=142)
+
     def test_global_variant_selection_beats_local_choices(self):
         # UDIV16 needs 2 ZP bytes. The smaller UDIV32 donor needs 4, but
         # switching only UDIV32 to its zero-ZP donor lets both coexist.

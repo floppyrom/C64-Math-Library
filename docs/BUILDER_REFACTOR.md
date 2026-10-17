@@ -1,3 +1,22 @@
+### Global selection: shared-producer dominance guard
+
+Global size, balanced and ZP objectives must consider physical producer
+sharing, not only the isolated resource cost of one API's source. The
+operation-first linker now preserves all share-eligible producer variants
+on its automatic search frontier. As a proof case, one API can choose an
+80-byte private alternative or a 110-byte shared producer while another
+API needs that same 110-byte producer: linking the shared donor once costs
+110 bytes, versus 190 bytes for independent plus shared. The optimizer
+must retain and select the physically shared donor under a tight RAM
+budget; a pinned private donor correctly fails if the budget is too low.
+
+This is a selection correctness fix rather than a faster 6502 kernel.
+It does not make historical fixed-profile speed measurements comparable,
+change any resident image, or relax source/ABI qualification. The
+`performance-workbench.yml` workflow can record the deterministic six-
+operation baseline and package an exact source snapshot for independent
+native VICE checks. Speed-aware global selection remains a later stage.
+
 ### Certified source-linked signed Q8.8 vector normalization (56/56)
 
 The builder now exposes `MATH_VEC2_NORMALIZE_Q8_8` as
