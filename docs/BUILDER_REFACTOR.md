@@ -1,3 +1,33 @@
+### Shared signed SDIV32_16 / SMOD32_16 portable kernel
+
+`MATH_SDIV32_16` and `MATH_SMOD32_16` now share one relocatable,
+zero-ZP `link:portable-zerozp` signed quotient/remainder producer.
+Code is **260 bytes**, scratch is **3 bytes of reusable ordinary
+RAM**, and total allocation is **295 RAM bytes** including shared
+32-byte public I/O. Selecting both operations once does not duplicate
+their code image or require separate scratch lifetime.
+
+The producer accepts signed N32 and signed D16 without clobbering
+their public N[0..3]/D[0..3] input fields. It returns signed Q32
+truncated toward zero and signed R16 with N's sign. R[2..3] remains
+unchanged. The `-2147483648 / -1` two's-complement overflow returns
+Q32 `$80000000`, R=0. D=0 zeros Q32/R16 and returns C=1;
+otherwise C=0. CLD required, A/X/Y and non-carry flags volatile.
+No tables, REU, SMC, illegal instructions or init requirement.
+
+```sh
+python3 tools/math_builder.py --operation SDIV32_16 --operation SMOD32_16 \
+  --zp-budget 0 --ram-budget 295 --build
+```
+
+CPU-model verification uses three code/I/O/scratch relocations, signed
+32/16 edge/random inputs, preserved ABI fields and both public aliases.
+Mixed tests call separately linked SDIV24 and UMUL16 with overlapping
+scratch lifetimes only between completed calls. Native x64sc proves
+both code maps and all quotient/remainder/input bytes. The portable
+source is not asserted to match historically faster V1–V5 signed
+32/16 kernels; full-profile speed records remain intact.
+
 ### Shared signed SDIV24 / SMOD24 zero-ZP portable kernel
 
 `MATH_SDIV24` and `MATH_SMOD24` now have `link:portable-zerozp`
