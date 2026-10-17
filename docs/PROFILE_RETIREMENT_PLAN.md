@@ -34,11 +34,11 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (seven source-qualified APIs)
+## Workload-weighted speed selection (eight source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **seven**
+The `speed` objective supports project-level weighted selection for **eight**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
-ISQRT32 and UMUL32. Multiple operations **must** each have a positive integer call count,
+ISQRT32, UMUL32 and SMUL32. Multiple operations **must** each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
 
@@ -73,6 +73,18 @@ padding is charged to RAM. The builder selects by the complete public-call
 CPU-model mean only where all resource constraints permit it. The published
 resident FAST31 record is **not** a directly comparable public-call timing.
 Native VICE proof covers the linked public interface at two code layouts.
+
+SMUL32 now also compares **three** signed full64 public-ABI implementations
+on its own deterministic 192-pair signed operand corpus: compact 293-byte
+source, 375-byte unified producer, and the independently source-linked signed
+FAST31 (512 code-slot bytes, four 512-byte lookup slots, 31 ZP). The signed
+FAST31 is a composition of the qualified unsigned V2 arithmetic producer
+with upper-word signed corrections, **not** the separately recorded V2
+692.825-cycle native signed kernel. Its full-call speed is measured separately.
+The builder conservatively charges distinct signed and unsigned FAST31 images
+if both are selected; they reuse one exclusive 31-byte ZP scratch region but
+**do not** yet share executable code or lookup tables. Mixed-call correctness
+is tested and these sharing optimizations remain future work.
 \nUnsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
 `size` and `zp` plans remain fully available for all 56 APIs.
