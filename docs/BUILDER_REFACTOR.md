@@ -1,3 +1,32 @@
+### Source-linked unsigned 32x32 SHR16 fixed-point result
+
+`MATH_UMUL32_SHR16` is independently linkable with the
+`link:compact-zerozp` implementation. It includes a private
+204-byte full-width UMUL32 shift/add core and a 41-byte result
+adapter that copies product bytes [2..7] into public Z[0..5],
+yielding the **exact unsigned 48-bit result** of
+`(X32 * Y32) >> 16`, without rounding or saturation.
+
+The module consumes **245 code bytes**, **12 bytes reusable ordinary
+RAM scratch**, **0 zero-page bytes**, and **289 total RAM bytes
+including public I/O**. The complete 32-bit X/Y operands remain
+untouched; Z[6..7] are outside the API's output contract and
+volatile. Carry returns clear, CLD is required, and A/X/Y and
+other flags may change. No initialization, tables, REU,
+self-modifying code, or undocumented instructions.
+
+```sh
+python3 tools/math_builder.py --operation UMUL32_SHR16 \
+  --zp-budget 0 --ram-budget 289 \
+  --pin UMUL32_SHR16=link:compact-zerozp --build
+```
+
+CPU-model regression tests check all 48 result bits across three
+relocations and mixed calls with independently linked UMUL32; the
+native x64sc qualification covers two memory maps. This portable
+module is a correctness-first source, not a replacement for the
+historical speed-optimized resident SHR16 kernels.
+
 ### Shared signed 32-bit division and modulo
 
 The operation-first builder now offers `MATH_SDIV32_32` and
