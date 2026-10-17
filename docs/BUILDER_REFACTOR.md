@@ -1,3 +1,32 @@
+### Portable source-linked unsigned 24/24 DIV/MOD family
+
+`MATH_UDIV24` and `MATH_UMOD24` can each be selected independently,
+yet share a single **190-byte restoring source producer**. Both public
+entries write an exact 24-bit quotient and a 24-bit remainder, preserve
+the input 24-bit numerator and divisor (including upper-byte sentinels),
+preserve the fourth Q/R bytes, return C=0 on success, and return
+Q=R=0 and C=1 for a zero divisor. Requires decimal mode clear.
+
+The single producer uses **4 bytes of reusable ordinary RAM scratch
+and zero zero-page bytes**, with no external tables, initialization,
+REU, or writable code. Its full default RAM allocation is
+**226 bytes** (190 code, 32 public I/O, 4 scratch); selecting both
+public operations does not duplicate the source, or the scratch.
+Cross-family selection takes the maximum scratch reservation rather
+than adding non-overlapping call-lifetime scratch repeatedly.
+
+```sh
+python3 tools/math_builder.py --operation UDIV24 --operation UMOD24 \
+  --zp-budget 0 --ram-budget 226 --build
+```
+
+**Performance caveat:** this first source-linked zero-ZP variant is a
+correctness/reference choice; certified historical V1's q0counter
+producer, V2–V4 Repose kernels and V5 hybrid selection are still faster
+on relevant workloads and remain intact as separate import targets.
+All public V1–V5 profile artifacts are unchanged, and automatic
+cycle-ranking is still fail-closed here.
+
 ### Independently linkable ISQRT32, complete 32-bit domain
 
 `MATH_ISQRT32` is available as the source-hashed, relocatable
