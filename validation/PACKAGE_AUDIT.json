@@ -162,14 +162,14 @@
         "bad": [],
         "missing": [],
         "extra": [],
-        "entries": 2066
+        "entries": 2069
       }
     }
   ],
   "summary": {
     "checks_passed": 30,
-    "file_count_excluding_checksum": 2066,
-    "uncompressed_bytes_excluding_checksum": 39994026,
+    "file_count_excluding_checksum": 2069,
+    "uncompressed_bytes_excluding_checksum": 40009666,
     "reference_prgs": 5,
     "reference_reu_images": 2
   }
