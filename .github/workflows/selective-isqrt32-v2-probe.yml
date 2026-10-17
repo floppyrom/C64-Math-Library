@@ -1,0 +1,17 @@
+name: V2 ISQRT32 fast standalone source research
+on:
+  pull_request:
+    paths:
+      - routines/roots/isqrt32_v2_highword_selective.asm
+      - tools/test_selective_isqrt32_v2_probe.py
+      - .github/workflows/selective-isqrt32-v2-probe.yml
+jobs:
+  root-probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate exact 32-bit roots, registers and table provenance on CPU model
+        run: python3 tools/test_selective_isqrt32_v2_probe.py
