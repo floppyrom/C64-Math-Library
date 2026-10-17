@@ -1,3 +1,17 @@
+## Unreleased — experimental unrolled zero-ZP public U32/16 producer
+
+- Create a static 32-iteration unrolled derivative of the qualified
+  131-byte accumulator-remainder 32/16 divider, using distinct local branch
+  labels and preserving complete public quotient Q32, remainder R16, C flag,
+  caller input memory, and X=0 on exit. No extra RAM scratch or zero-page
+  bytes are required; the tradeoff is larger resident code.
+- Add exact old/new matched-operand CPU-model proof at two code origins,
+  complete Q/R/C public calls, code immutability and mean-cycle comparison.
+  Native x64sc tests compare all Q/R/C outputs on 768 isolated old/new DIV
+  and MOD calls across two code origins; do not claim hardware cycle speed.
+- Research only: no selectable builder variant or default policy change until
+  source qualifications and RAM-vs-speed Pareto screening are complete.
+
 ## Unreleased — unsigned 32/16 shared-quotient speed foundations
 
 - Qualify `UDIV32_16` and `UMOD32_16` for project-weighted automatic
