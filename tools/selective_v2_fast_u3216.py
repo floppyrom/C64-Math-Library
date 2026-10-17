@@ -21,6 +21,8 @@ MX_SLOT=0x400
 WRAPPER_OFFSET=0x900
 MAX_WRAPPER=160
 PUB_ENTRY="FAST_UDIV32_16_V2"
+PUBLIC_CODE_BYTES=64
+IMAGE_BYTES=WRAPPER_OFFSET+PUBLIC_CODE_BYTES
 
 def layout(code):
     cg=code+12
@@ -102,6 +104,20 @@ def assemble(code,io,zp,root:Path=ROOT):
         labels.get("FAST_UMOD32_16_V2")!=wrapper):
         raise ValueError("V2 signed/unsigned public 32/16 export changed")
     return memory,labels,sections
+
+
+def assemble_image(code,io,zp,root:Path=ROOT):
+    """Packed deterministic NOP-padded two-island image for the global linker."""
+    sparse,labels,sections=assemble(code,io,zp,root)
+    if sections["PUBLIC"][1]!=PUBLIC_CODE_BYTES:
+        raise ValueError("V2 32/16 source public wrapper code length changed")
+    end=code+IMAGE_BYTES
+    if end>0x10000 or any(not code<=addr<end for addr in sparse):
+        raise ValueError("V2 32/16 relocated source exceeds packed image")
+    packed={addr:0xea for addr in range(code,end)}
+    packed.update(sparse)
+    ranges=[{"name":"KERNEL_CODE","start":"$%04X"%code,"bytes":IMAGE_BYTES}]
+    return packed,labels,ranges,end
 
 def source_sha256(root:Path=ROOT):
     return hashlib.sha256((root/SOURCE).read_bytes()).hexdigest()
