@@ -1,3 +1,36 @@
+### Independently linked UDIV16_SHL8 fixed-point division reference
+
+`MATH_UDIV16_SHL8` now has an independently selectable
+`link:accumulator-remainder` implementation. It initializes the
+reusable public Q32 working field with `N16 << 8`, then uses the
+previously qualified 32/16 high-remainder-in-accumulator restoring loop.
+Code is **129 bytes**, with **one reusable RAM scratch byte** and
+**zero ZP**. Together with the 32-byte public I/O block, minimum RAM
+is **162 bytes**. There are no tables, self-modification, REU, or
+initialization requirements. The routine needs decimal mode clear.
+
+The 16-bit N/D inputs are preserved, the low three Q bytes contain
+`floor((N16 << 8)/D16)`, and the low two R bytes contain the exact
+remainder; carry returns clear. Division by zero zeros Q/R and sets
+carry. The high public I/O bytes not part of R16 are untouched.
+The 4-byte Q working field is cleared on zero-divisor, while Q3 is
+zero after successful computation because the unsigned quotient fits
+in 24 bits.
+
+```sh
+python3 tools/math_builder.py --operation UDIV16_SHL8 \
+  --pin UDIV16_SHL8=link:accumulator-remainder \
+  --zp-budget 0 --ram-budget 162 --build
+```
+
+The CPU-model qualifications include seeded full-width/zero-divisor
+samples on three relocations, two other arithmetic operations linked
+together and scratch lifetime reuse. Native x64sc performs 192
+emulator calls on two maps, checking quotient/remainder, carry and
+preserved N/D. The original V1–V5 optimized division implementations
+are retained and likely faster on relevant workloads; the portable
+source is **not** automatically ranked for speed.
+
 ### Measured UMUL16_SHR8 source-only speed selection
 
 An additional `link:quarter-square` variant retains the qualified
