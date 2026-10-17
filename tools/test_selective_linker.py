@@ -170,8 +170,8 @@ class SelectiveLinkTests(unittest.TestCase):
             plan = self.plan(api, objective="balanced",
                              zp_budget=4, ram_budget=1800)
             man = linker.build(plan, Path(d))
-            self.assertEqual(man["resource_use"]["code_and_tables_bytes"], 1625)
-            self.assertEqual(man["resource_use"]["main_ram_total_bytes"], 1661)
+            self.assertEqual(man["resource_use"]["code_and_tables_bytes"], 1161)
+            self.assertEqual(man["resource_use"]["main_ram_total_bytes"], 1197)
             self.assertEqual(man["resource_use"]["zero_page_bytes"], 4)
             self.assertEqual(man["resource_use"]["private_ram_scratch_bytes"], 4)
             prg = (Path(d) / "math_selective.prg").read_bytes()
@@ -182,6 +182,7 @@ class SelectiveLinkTests(unittest.TestCase):
             image_before = bytes(mem[0x8000:0x8000+len(prg)-2])
             entry = {x["api"]: int(x["entry"][1:], 16)
                      for x in man["operations"]}
+            variant = {x["api"]: x["variant"] for x in man["operations"]}
             rng = random.Random(0x16C6432)
             chosen = list(entry)
             for i in range(256):
@@ -203,7 +204,8 @@ class SelectiveLinkTests(unittest.TestCase):
                     q = int.from_bytes(mem[0xc018:0xc018+width], "little")
                     rem = int.from_bytes(mem[0xc01c:0xc01c+width], "little")
                     expect_q = 0x5555 if width == 2 else 0x55555555
-                    if "UDIV" in op:
+                    if ("UDIV" in op or (op=="MATH_UMOD32_32" and
+                        variant[op]=="link:shared-aligned-zerozp")):
                         expect_q = n // dv if dv else 0
                     self.assertEqual(q, expect_q, (i, op, n, dv))
                     self.assertEqual(rem, n % dv if dv else 0, (i, op, n, dv))
