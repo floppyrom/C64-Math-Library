@@ -17,11 +17,13 @@ SEED=0xC6435132
 EDGES=(0,1,2,255,256,65535,0x7fffffff,0x80000000,0xffffffff)
 COUNT=192
 CORPUS_SHA256="928b2da2262eca3c95347f97698ae45d1e01a54bddca98d00ee7d9482b90a8f9"
-EXPECTED=frozenset(("link:compact-zerozp","link:unified-375","link:fast31-v2-signed"))
+EXPECTED=frozenset(("link:compact-zerozp","link:unified-375","link:fast31-v2-signed",
+                    "link:fast31-shared-full64"))
 EXPECTED_RESOURCES={
     "link:compact-zerozp":(293,0,12),
     "link:unified-375":(375,0,12),
     "link:fast31-v2-signed":(2560,31,0),
+    "link:fast31-shared-full64":(2560,31,0),
 }
 MASK=(1<<64)-1
 
@@ -36,14 +38,19 @@ def corpus():
     return pairs
 
 def source_assemble(ident,mod,code,io,scratch,zp,root):
-    if ident=="link:fast31-v2-signed":
+    if ident in ("link:fast31-v2-signed", "link:fast31-shared-full64"):
+        shared=ident=="link:fast31-shared-full64"
         image,entry,ranges,end=fast31.assemble(
-            code,io,zp,root,source_path=mod["source"],entry_label=mod["entry"])
-        if end!=fast31.layout(code)[1] or entry!=code:
+            code,io,zp,root,source_path=mod["source"],
+            entry_label="FAST_UMUL32_FAST31" if shared else mod["entry"])
+        if end!=fast31.layout(code)[1]:
             raise ValueError("SMUL32 FAST31 page-aligned geometry changed")
         src=fast31.render(fast31.layout(code)[0],io,zp,root,
                           source_path=mod["source"])
         _,labels,_=Assembler().assemble(src)
+        entry=labels[mod["entry"]]
+        if (entry==code) == shared:
+            raise ValueError("SMUL32 FAST31 signed entry geometry changed")
         mutable={a+1 for k,a in labels.items() if k.startswith("SMC_")}
         if len(mutable)!=10:
             raise ValueError("SMUL32 FAST31 self-modifying whitelist changed")
@@ -79,7 +86,8 @@ def bench_smul32(modules,code,io,scratch,root:Path,zp=0x50):
         if res!=EXPECTED_RESOURCES[ident]:
             raise ValueError("SMUL32 memory contract changed: "+ident)
         if mod.get("requires_reu") or (mod.get("requires_writable_code") and
-                                       ident!="link:fast31-v2-signed"):
+                                       ident not in ("link:fast31-v2-signed",
+                                                     "link:fast31-shared-full64")):
             raise ValueError("SMUL32 hardware contract changed")
         memory,entry,mutable=source_assemble(ident,mod,code,io,scratch,zp,root)
         cpu=CPU(load_sparse(memory))
