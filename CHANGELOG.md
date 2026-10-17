@@ -1,3 +1,18 @@
+## Unreleased — canonical-source V2 highword fast ISQRT32 variant
+
+- Add opt-in `MATH_ISQRT32` `link:v2-highword-source`, retaining
+  original V2 highword seed and four-step radix-4 refinement path,
+  192 executable bytes plus 3 exact 256-byte table pages; seven
+  reusable ZP bytes, no self-modifying code or REU.
+- Hash-lock highword/refinement source dependencies and lookup table
+  bytes in source manifests; verify mathematical table contents.
+  Include dual-address memory relocation, mixed ISQRT16 linking,
+  carry/register/input preservation, common-corpus cycle tests and
+  actual native VICE qualification against the portable reference.
+- Keep `link:radix4-zerozp` available and keep historical profile
+  binaries intact; global speed-choice infrastructure is still
+  restricted to routines with common certified input corpora.
+
 ## Unreleased — historical V2 fast 24/24 DIV/MOD selective transplant
 
 - Add the certified historical V2 direct Repose UDIV24/UMOD24 producer

@@ -387,6 +387,14 @@ MODULES = {
         },
     },
     "MATH_ISQRT32": {
+        "link:v2-highword-source": {
+            "source": "routines/roots/isqrt32_v2_highword_selective.asm",
+            "segments": (("KERNEL_CODE", 192), ("SQ_SQUARE_LO", 256),
+                         ("SQ_SQUARE_HI", 256), ("SQ_GUESS", 256)),
+            "entry": "LCB40", "zp": 7, "scratch": 0,
+            "operand_layout": "nz", "isqrt32_v2": True,
+            "provenance": "Original V2 highword seed and 4+4 radix-4 refinement, 192 code and three exact 256-byte tables, seven ZP; portable all-domain source-derived specialist",
+        },
         "link:radix4-zerozp": {
             "source": "routines/roots/isqrt32_restoring_zerozp.asm",
             "segments": (("KERNEL_CODE", 204),),
@@ -458,6 +466,11 @@ def available_variants(root=ROOT):
                     "tools/selective_isqrt16.py": hashlib.sha256(
                         (root / "tools/selective_isqrt16.py").read_bytes()).hexdigest()
                 } if mod.get("isqrt16") else {
+                    "relocatable_source/v2_pareto_fast/isqrt32_direct_highword_normal.inc":
+                        hashlib.sha256((root / "relocatable_source/v2_pareto_fast/isqrt32_direct_highword_normal.inc").read_bytes()).hexdigest(),
+                    "relocatable_source/v2_pareto_fast/math_relocatable.asm":
+                        hashlib.sha256((root / "relocatable_source/v2_pareto_fast/math_relocatable.asm").read_bytes()).hexdigest(),
+                } if mod.get("isqrt32_v2") else {
                     "relocatable_source/v2_pareto_fast/udiv24_direct_repose.inc":
                         hashlib.sha256((root / "relocatable_source/v2_pareto_fast/udiv24_direct_repose.inc").read_bytes()).hexdigest(),
                     "tools/selective_udiv24_v2.py":
@@ -489,6 +502,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_udiv24_v2.py" if mod.get("udiv24_v2") else
+                    "tools/test_selective_isqrt32_v2.py" if mod.get("isqrt32_v2") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
                     "tools/test_selective_seek16.py" if mod.get("seek16") else
                     "tools/test_selective_seek8.py" if mod.get("seek8") else
@@ -503,7 +517,9 @@ def available_variants(root=ROOT):
                                   "experimental compact source; CPU and native validation"
                                   if mod.get("operand_layout") == "xyz" else
                                   "portable source; mixed-call qualification"),
-                "notes": ("Certified historical V2 1244+217-byte direct Repose 24/24 DIV/MOD fast chain, 3 ZP bytes and writable tail-bias instruction; explicit opt-in until common-corpus speed ranking"
+                "notes": ("Canonical V2 highword root32 seed with source-derived 4+4 radix-4 refinement, exact 3-page generated tables; 192 code, 768 table, 7 ZP, no writable code"
+                          if mod.get("isqrt32_v2") else
+                          "Certified historical V2 1244+217-byte direct Repose 24/24 DIV/MOD fast chain, 3 ZP bytes and writable tail-bias instruction; explicit opt-in until common-corpus speed ranking"
                           if mod.get("udiv24_v2") else
                           "Original byte-identical V2/V5 430-byte unrestricted UDIV8 Q/R fast producer; no REU, 1 ZP byte"
                           if mod.get("udiv8_v2v5") else
@@ -1007,6 +1023,10 @@ def build(plan, outdir, memory=None, root=ROOT):
                 "relocatable_source/v2_pareto_fast/udiv24_direct_repose.inc",
                 "tools/selective_udiv24_v2.py"]:
             raise LinkError(api + ": canonical V2 U24 source / relocation provenance missing")
+        if module.get("isqrt32_v2") and [x["source_path"] for x in dep_provenance] != [
+                "relocatable_source/v2_pareto_fast/isqrt32_direct_highword_normal.inc",
+                "relocatable_source/v2_pareto_fast/math_relocatable.asm"]:
+            raise LinkError(api + ": canonical V2 root32 seed/refinement provenance missing")
         if module.get("isqrt16") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_isqrt16.py"]:
             raise LinkError(api + ": integer-root table generator provenance missing")
