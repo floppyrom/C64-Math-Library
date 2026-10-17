@@ -23,6 +23,7 @@ import selective_speed
 import selective_speed_umul16
 import selective_speed_umod8
 import selective_speed_udiv8
+import selective_speed_isqrt32
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
@@ -897,10 +898,11 @@ def build(plan, outdir, memory=None, root=ROOT):
     per_operation_cycles = None
     if plan["objective"] == "speed":
         if names not in (["MATH_UMUL8"], ["MATH_UMUL16"],
-                         ["MATH_UMOD8"], ["MATH_UDIV8"]):
+                         ["MATH_UMOD8"], ["MATH_UDIV8"],
+                         ["MATH_ISQRT32"]):
             raise LinkError(
                 "Measured automatic speed selection supports UMUL8, UMUL16, "
-                "UMOD8 or UDIV8 alone; mixed operations need comparable "
+                "UMOD8, UDIV8 or ISQRT32 alone; mixed operations need comparable "
                 "certified cycle corpora")
         api = names[0]
         if api == "MATH_UMUL8":
@@ -909,10 +911,12 @@ def build(plan, outdir, memory=None, root=ROOT):
             benchmark, scratch_address = selective_speed_umul16.bench_umul16, sb
         elif api == "MATH_UMOD8":
             benchmark, scratch_address = selective_speed_umod8.bench_umod8, zb
+        elif api == "MATH_ISQRT32":
+            benchmark, scratch_address = selective_speed_isqrt32.bench_isqrt32, sb
         else:
             benchmark, scratch_address = selective_speed_udiv8.bench_udiv8, zb
         try:
-            if api == "MATH_UMUL8":
+            if api in ("MATH_UMUL8", "MATH_ISQRT32"):
                 cycle_model = benchmark(MODULES[api], code, io, scratch_address, root, zp=zb)
             else:
                 cycle_model = benchmark(MODULES[api], code, io, scratch_address, root)
@@ -1252,6 +1256,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed.py", "tools/selective_isqrt16.py",
                        "tools/selective_fast_umul16.py", "tools/selective_speed_umul16.py",
                        "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
+                       "tools/selective_speed_isqrt32.py",
                        "tools/selective_trig8.py", "tools/selective_dist8_accurate.py",
                        "tools/selective_smul8.py",
                        "tools/selective_seek8.py", "tools/selective_seek16.py",
