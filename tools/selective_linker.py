@@ -422,7 +422,7 @@ MODULES = {
                          ("Q_NEG_HI", 512)),
             "entry": "FAST_SMUL32_FAST31", "zp": 31, "scratch": 0,
             "operand_layout": "xyz", "fast31_umul32": True,
-            "fast31_shared": True,
+            "fast31_smul32": True, "fast31_shared": True,
             "share_producer": "fast31-dual-public-full64", "multi_entry": True,
             "requires_writable_code": True,
             "provenance": "Historical V2 31-ZP FAST31 single arithmetic kernel and four aligned lookup pages shared by unsigned/signed public full64 API; exact signed upper-half correction, retained X32/Y32, CLD and writable code; 512B code + 2048B table slots, 31 exclusive ZP.",
@@ -845,6 +845,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_umod8.py" if mod.get("umod8_v1") else
                     "tools/test_selective_smul8.py" if mod.get("smul8_v1") else
                     "tools/test_selective_fast_umul16_shr8.py" if mod.get("fast_umul16_shr8") else
+                    "tools/test_selective_fast31_shared.py" if mod.get("fast31_shared") else
                     "tools/test_selective_fast31_smul32_builder.py" if mod.get("fast31_smul32") else
                     "tools/test_selective_umul32_fast31_builder.py" if mod.get("fast31_umul32") else
                     "tools/test_selective_umul32_quartersquare.py" if mod.get("fast_umul32") else
