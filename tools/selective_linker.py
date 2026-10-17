@@ -27,6 +27,7 @@ import selective_speed_umod8
 import selective_speed_udiv8
 import selective_speed_isqrt32
 import selective_speed_umul32
+import selective_speed_smul32
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
@@ -414,6 +415,16 @@ MODULES = {
         },
     },
     "MATH_SMUL32": {
+        "link:fast31-v2-signed": {
+            "source": "routines/multiply/smul32_fast31_public.asm",
+            "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
+                         ("Q_SQR_HI", 512), ("Q_NEG_LO", 512),
+                         ("Q_NEG_HI", 512)),
+            "entry": "FAST_SMUL32_FAST31", "zp": 31, "scratch": 0,
+            "operand_layout": "xyz", "fast31_umul32": True, "fast31_smul32": True,
+            "requires_writable_code": True,
+            "provenance": "Signed 32x32 full64 public adapter using certified V2 31-ZP unsigned FAST31 native producer and sign-correct upper 32 bits. 512 code slot, four exact 512-byte-aligned quarter-square table slots, 31 volatile ZP, no RAM scratch, REU or stack reservation, SMC kernel RAM and D=0 required.",
+        },
         "link:compact-zerozp": {
             "source": "routines/multiply/smul32_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 293),),
@@ -810,6 +821,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_umod8.py" if mod.get("umod8_v1") else
                     "tools/test_selective_smul8.py" if mod.get("smul8_v1") else
                     "tools/test_selective_fast_umul16_shr8.py" if mod.get("fast_umul16_shr8") else
+                    "tools/test_selective_fast31_smul32_builder.py" if mod.get("fast31_smul32") else
                     "tools/test_selective_umul32_fast31_builder.py" if mod.get("fast31_umul32") else
                     "tools/test_selective_umul32_quartersquare.py" if mod.get("fast_umul32") else
                     "tools/test_selective_fast_umul16.py" if mod.get("fast_umul16") else
@@ -880,6 +892,8 @@ def available_variants(root=ROOT):
                           "38-byte V1/V2/V5 ISQRT16 descending square-lookup kernel, "
                           "768 generated aligned table bytes and zero ZP"
                           if mod.get("isqrt16") else
+                          "Signed FAST31 native 32x32 product with exact high-word sign corrections; 512-byte code slot and four 512-byte aligned table slots, 31 ZP, writable code"
+                          if mod.get("fast31_smul32") else
                           "FAST31 historical 277-byte native producer wrapped for public ABI; 512 code slot and four 512-byte aligned table slots, 31 ZP, writable code, zero ordinary scratch"
                           if mod.get("fast31_umul32") else
                           "1028-byte unsigned 32x32 quarter-square convolution and 1022 generated table bytes; 4 RAM scratch, 0 ZP"
@@ -1277,12 +1291,13 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_UDIV8": (selective_speed_udiv8.bench_udiv8, "zp", False),
             "MATH_ISQRT32": (selective_speed_isqrt32.bench_isqrt32, "scratch", True),
             "MATH_UMUL32": (selective_speed_umul32.bench_umul32, "scratch", True),
+            "MATH_SMUL32": (selective_speed_smul32.bench_smul32, "scratch", True),
         }
         unavailable = sorted(set(names) - set(measured))
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32")
+                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32")
         models = {}
         per_operation_cycles = {}
         for api in names:
@@ -1457,7 +1472,8 @@ def build(plan, outdir, memory=None, root=ROOT):
                 elif module.get("isqrt16"):
                     machine, entry, ranges, end = sqrt16.assemble(pc, io, root)
                 elif module.get("fast31_umul32"):
-                    machine, entry, ranges, end = fast31.assemble(pc, io, zb, root)
+                    machine, entry, ranges, end = fast31.assemble(pc, io, zb, root,
+                        source_path=module["source"], entry_label=module["entry"])
                 elif module.get("umul8_v1"):
                     machine, entry, ranges, end = v1umul8.assemble(pc, io, zb, root)
                 elif module.get("seek8"):
@@ -1692,7 +1708,8 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed.py", "tools/selective_speed_umul16_shr8.py",
                        "tools/selective_isqrt16.py",
                        "tools/selective_fast_umul16.py", "tools/selective_fast31_umul32.py",
-                       "tools/selective_speed_umul32.py", "tools/selective_speed_umul16.py",
+                       "tools/selective_speed_umul32.py", "tools/selective_speed_smul32.py",
+                       "tools/selective_speed_umul16.py",
                        "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                        "tools/selective_speed_isqrt32.py",
                        "tools/selective_trig8.py", "tools/selective_dist8_accurate.py",
