@@ -414,7 +414,7 @@ class SelectiveLinkTests(unittest.TestCase):
             man = linker.build(plan, Path(d))
             files = ("tools/math_builder.py", "tools/selective_linker.py",
                      "tools/selective_atan2.py", "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py", "tools/selective_fast31_umul32.py",
-                     "tools/selective_speed_umul32.py", "tools/selective_speed_smul32.py", "tools/selective_speed_mul32_ready_shr16.py", "tools/selective_speed_u3216.py", "tools/selective_v2_fast_u3216.py", "tools/selective_speed_umul16.py", "tools/selective_speed_umul16_shr8.py", "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
+                     "tools/selective_speed_umul32.py", "tools/selective_speed_smul32.py", "tools/selective_speed_mul32_ready_shr16.py", "tools/selective_speed_u3216.py", "tools/selective_speed_u3232.py", "tools/selective_v2_fast_u3216.py", "tools/selective_speed_umul16.py", "tools/selective_speed_umul16_shr8.py", "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                      "tools/selective_speed_isqrt32.py",
                      "tools/selective_speed.py", "tools/selective_isqrt16.py",
                      "tools/selective_trig8.py", "tools/selective_dist8_accurate.py", "tools/selective_smul8.py",
