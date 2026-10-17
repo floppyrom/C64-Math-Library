@@ -1,3 +1,35 @@
+### Shared zero-ZP signed SDIV16 / SMOD16 source
+
+`MATH_SDIV16` and `MATH_SMOD16` now have independently
+source-linked `link:portable-zerozp` variants. Both are aliases
+of **one 206-byte legal NMOS 6502 code image**; selecting both
+does not duplicate this image. Each invocation uses **3 bytes**
+of reusable ordinary RAM scratch and **0 ZP**. With the shared
+32-byte public I/O window, a single or jointly selected pair
+requires **241 bytes** of main RAM.
+
+The source accepts signed N16 and D16, preserves their complete public
+four-byte fields, writes both signed quotient Q16 and remainder R16,
+leaves Q[2..3] and R[2..3] untouched, and returns C=0 for nonzero
+divisors. Quotients truncate toward zero; the remainder has N's sign.
+The two's-complement overflow case `-32768 / -1` wraps Q16 to
+`$8000` and returns R=0. For D=0, Q16=R16=0 and C=1.
+Decimal mode must be clear; A/X/Y and other flags are volatile.
+
+```sh
+python3 tools/math_builder.py --operation SDIV16 --operation SMOD16 \
+  --zp-budget 0 --ram-budget 241 --build
+```
+
+The CPU-model qualification alternates both exported aliases, checks
+signed division/modulo extremes and seeded random full-width inputs
+at three code/I/O/scratch relocation maps, and verifies that X/Y
+multiplication shares temporary RAM only between non-overlapping calls.
+Native x64sc tests the combined producer at two maps, including the
+entire Q/R and preserved N/D fields. This portable fallback
+does not claim to match historically faster V1–V5 signed division
+kernels; no profile binaries or speed records have changed.
+
 ### Independently linked UMUL32 unsigned full-width reference
 
 The builder now offers `MATH_UMUL32` `link:compact-zerozp`, a

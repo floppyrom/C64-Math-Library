@@ -216,6 +216,26 @@ MODULES = {
             "provenance": "Byte-identical V2 and V5 original 430-byte branch-chain producer; no REU",
         },
     },
+    "MATH_SDIV16": {
+        "link:portable-zerozp": {
+            "source": "routines/divide/sdiv16_smod16_zerozp.asm",
+            "segments": (("KERNEL_CODE", 206),),
+            "entry": "FAST_SDIV16_ZEROZP", "zp": 0, "scratch": 3,
+            "share_producer": "signed-16by16-portable-zerozp",
+            "multi_entry": True, "sdiv16_portable": True,
+            "provenance": "Signed 16/16 quotient+remainder producer: truncate Q toward zero, R signed as N, D=0 sets C, sign-extended domain includes -32768/-1 wrap. Legal 6510 zero-ZP 206-byte source, 3 RAM scratch.",
+        },
+    },
+    "MATH_SMOD16": {
+        "link:portable-zerozp": {
+            "source": "routines/divide/sdiv16_smod16_zerozp.asm",
+            "segments": (("KERNEL_CODE", 206),),
+            "entry": "FAST_SMOD16_ZEROZP", "zp": 0, "scratch": 3,
+            "share_producer": "signed-16by16-portable-zerozp",
+            "multi_entry": True, "sdiv16_portable": True,
+            "provenance": "Signed remainder public entry shares signed 16/16 quotient/remainder producer; no duplicated code, exact N-sign R16, unchanged N/D/Q2+/R2+.",
+        },
+    },
     "MATH_UDIV16": {
         "link:biased": {
             "source": "routines/standalone_lab/portable/div_u16_biased.asm",
@@ -585,6 +605,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv8.py" if mod.get("udiv8_v1") else
                     "tools/test_selective_dist8.py" if mod.get("dist8") else
                     "tools/test_selective_urecip16_q16.py" if mod.get("urecip16") else
+                    "tools/test_selective_sdiv16.py" if mod.get("sdiv16_portable") else
                     "tools/test_selective_udiv16_shl8.py" if mod.get("udiv16_shl8") else
                     "tools/test_selective_udiv24_v2.py" if mod.get("udiv24_v2") else
                     "tools/test_selective_isqrt32_v2.py" if mod.get("isqrt32_v2") else
@@ -1301,6 +1322,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UDIV8: low byte N/D => low byte Q/R; high bytes unchanged; C=1 on D=0.",
         "; UDIV32_16 and UMOD32_16: N32/D16 => Q32/R16 both outputs, C=1 on D=0.",
         "; UDIV16_SHL8: unsigned (N16 << 8)/D16 => Q24/R16, C=1 on D=0.",
+        "; SDIV16/SMOD16: shared signed N16/D16 => Q16 truncated toward zero, R16 N-signed; D=0 C=1.",
         "; URECIP16_Q16: D16 => Q24 = floor(65536/D), C=1 on D=0; Q3/R unchanged.",
         "; Portable 32/16 source is the correctness fallback, not the resident speed champion.",
         "; UMOD8: low byte N/D => low byte R ONLY; Q untouched, C=1 if D=0.",

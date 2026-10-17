@@ -1,3 +1,17 @@
+## Unreleased — source-linked signed SDIV16/SMOD16 shared producer
+
+- Add `MATH_SDIV16` and `MATH_SMOD16` as separate selectable
+  APIs backed by one 206-byte `link:portable-zerozp` quotient-and-
+  remainder routine with 3 bytes of exclusive-call RAM scratch,
+  zero ZP, and 241 RAM bytes including public I/O.
+- Signed quotient truncates toward zero (16-bit wrapped result on
+  -32768/-1), remainder follows numerator sign, N/D and high Q/R
+  bytes preserved. D=0 zeros Q/R and sets carry.
+- Add mixed-API link/dedup and scratch-lifetime tests, three CPU
+  relocations and native VICE checks at two code/I/O maps.
+- Operation-first coverage increases from 39/56 to 41/56 upon merge,
+  with V1–V5 fast-profile sources and timing records intact.
+
 ## Unreleased — independent UMUL32 full 64-bit source
 
 - Add source-linked `MATH_UMUL32` `link:compact-zerozp`:
