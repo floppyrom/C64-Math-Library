@@ -20,12 +20,14 @@ EDGES = (0, 1, 2, 255, 256, 65535, 0x80000000, 0xffffffff)
 COUNT = 192
 CORPUS_SHA256 = "65625f8a89189164c4ac974a166ec5eb6cd677d0159489ddf4d9a4100f05f923"
 EXPECTED = frozenset(("link:compact-zerozp", "link:unified-375",
-                     "link:quarter-square-32", "link:fast31-v2-public"))
+                     "link:quarter-square-32", "link:fast31-v2-public",
+                     "link:fast31-shared-full64"))
 EXPECTED_RESOURCES = {
     "link:compact-zerozp": (204, 0, 12),
     "link:unified-375": (375, 0, 12),
     "link:quarter-square-32": (2050, 0, 4),
     "link:fast31-v2-public": (2560, 31, 0),
+    "link:fast31-shared-full64": (2560, 31, 0),
 }
 
 
@@ -39,7 +41,7 @@ def corpus():
 
 
 def source_assemble(ident, mod, origin, io, scratch, root, zp):
-    if ident == "link:fast31-v2-public":
+    if ident in ("link:fast31-v2-public", "link:fast31-shared-full64"):
         image, entry, ranges, end = fast31.assemble(origin, io, zp, root)
         addresses, expected_end = fast31.layout(origin)
         if end != expected_end or not ranges or entry != origin:
@@ -93,7 +95,8 @@ def bench_umul32(modules, origin, io, scratch, root: Path, zp=0x50):
         if resources != EXPECTED_RESOURCES[ident]:
             raise ValueError("UMUL32 candidate resources changed: " + ident)
         if mod.get("requires_reu") or (mod.get("requires_writable_code") and
-                                       ident != "link:fast31-v2-public"):
+                                       ident not in ("link:fast31-v2-public",
+                                                     "link:fast31-shared-full64")):
             raise ValueError("UMUL32 candidate hardware contract changed")
         memory, entry, mutable = source_assemble(ident, mod, origin, io, scratch, root, zp)
         cpu = CPU(load_sparse(memory))
