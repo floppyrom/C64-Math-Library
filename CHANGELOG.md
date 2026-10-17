@@ -1,3 +1,18 @@
+## Unreleased — 32/32 unsigned public division/modulo cycle baseline
+
+- Add 384 identical-input complete public-call cycle models for
+  `UDIV32_32` and `UMOD32_32`, including divisor zero, Q32/R32,
+  C=1 on D=0, input preservation, SP/stack, deterministic SHA hashes
+  and non-self-modifying executable immutability. Independently source-
+  qualify both DIV32 variants (4-ZP tail vs 4-byte RAM-scratch aligned),
+  plus the dedicated zero-ZP modulo source; no historical donor times.
+- Expand workload-aware speed selection from 14 to **16** public APIs,
+  with exact source size/ZP/scratch assertions and original code-segment
+  relocations. Add two-layout per-operation model tests, zero-ZP fallback,
+  mixed weighted calls, and candidate/resource tamper rejection.
+- This stage establishes a baseline for the next optimized 32/32 kernel
+  transplant; the existing public algorithms are unchanged.
+
 ## Unreleased — selectable canonical V2 fast unsigned 32/16
 
 - Make the fully qualified historical V2 size-fast 32/16 DIV+MOD donor
