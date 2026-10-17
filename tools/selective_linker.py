@@ -350,6 +350,24 @@ MODULES = {
             "provenance": "Independent zero-ZP 16x16 quarter-square shared-table kernel plus 24-bit SHR8 adapter; 256 B code, 1022 B tables, 4 B scratch",
         },
     },
+    "MATH_UMULDIV16": {
+        "link:portable-zerozp": {
+            "source": "routines/muldiv16/umuldiv16_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 288),),
+            "entry": "FAST_UMULDIV16_PORTABLE", "zp": 0, "scratch": 6,
+            "operand_layout": "muldiv16",
+            "provenance": "Private compact UMUL16 full32 product followed by restoring UDIV32_16, 288 code/6 ordinary scratch/zero ZP. D=0 C=1.",
+        },
+    },
+    "MATH_SMULDIV16": {
+        "link:portable-zerozp": {
+            "source": "routines/muldiv16/smuldiv16_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 439),),
+            "entry": "FAST_SMULDIV16_PORTABLE", "zp": 0, "scratch": 6,
+            "operand_layout": "muldiv16",
+            "provenance": "Private compact SMUL16 signed full32 product followed by signed SDIV32_16, 439 code/6 ordinary scratch/zero ZP. D=0 C=1.",
+        },
+    },
     "MATH_SMUL32_SHR16": {
         "link:compact-zerozp": {
             "source": "routines/multiply/smul32_shr16_compact_zerozp.asm",
@@ -1081,6 +1099,9 @@ def relocate_source(mod, locations, root):
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z", "DIST_MAJOR", "DIST_MINOR"}
     elif mod.get("operand_layout") == "nz":
         used |= {"INPUT_NUM", "OUTPUT_Z"}
+    elif mod.get("operand_layout") == "muldiv16":
+        used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z", "INPUT_NUM",
+                 "INPUT_DIV", "OUTPUT_QUOT", "OUTPUT_REM"}
     elif mod.get("operand_layout") == "xyz":
         used |= {"INPUT_X", "INPUT_Y", "OUTPUT_Z"}
     else:
@@ -1463,6 +1484,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; SMUL32: signed X32*Y32 => exact signed64 two\'s-complement Z[0..7], C=0.",
         "; SMUL32_SHR16: signed (X32*Y32)>>16 => low 48 bits in Z[0..5], C=0.",
         "; SMUL32_READY and UMUL32_READY: safe state-independent full64 fallbacks, not resident READY speed.",
+        "; UMULDIV16 / SMULDIV16: full 32-bit signed/unsigned product divided by D16; Q32 R16, zero-div C=1.",
         "; SMUL24: signed X24*Y24 => exact signed48 Z[0..5], Z[6..7] preserved.",
         "; UMUL16_SHR8: unsigned X16*Y16 >> 8 => low 24 bits MATH_Z, C=0.",
         "; SMUL8: signed 8-bit X/Y => signed 16-bit Z low/next, C=0.",
