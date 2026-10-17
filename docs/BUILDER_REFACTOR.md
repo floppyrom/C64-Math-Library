@@ -1,3 +1,37 @@
+### Certified-source V2 highword ISQRT32 fast candidate
+
+`MATH_ISQRT32` has a second independently linkable, opt-in
+`link:v2-highword-source` implementation. The highword seed and two
+four-step 6510 radix-4 refinement calls were extracted from the
+canonical V2 source, with three mathematically generated **256-byte
+tables** (square low, square high, safe highword square-root initial
+estimate). Its resource contract is **192 bytes executable code +
+768 bytes tables + 7 bytes ZP**, no private ordinary RAM scratch,
+no writable code, no REU and no initialization. The total reserved
+main RAM is **992 bytes** including shared 32-byte public I/O.
+
+All 32-bit unsigned radicands return the exact 16-bit floor square
+root with carry clear. The four input bytes, register X/Y and stack
+are preserved; the two upper result sentinel bytes are unchanged.
+Code/table relocation and arbitrary physical table-start offsets are
+supported. Unaligned table placement can cause 6502 indexed
+page-crossing penalties, which are included in exact model cycles
+at the chosen link addresses, not hidden as constant-time lookups.
+
+```sh
+python3 tools/math_builder.py --operation ISQRT32 \
+  --pin ISQRT32=link:v2-highword-source \
+  --zp-budget 7 --ram-budget 992 --build
+```
+
+The `link:radix4-zerozp` 204-code/10-RAM/0-ZP reference remains the
+default space and zero-page option. This speed-oriented source is an
+**additional** variant. Common-input CPU-model benchmark results and
+real native x64sc correctness tests are recorded, but timing estimates
+exclude physical VIC/REU/DMA contention. Global multioperation
+fastest-Pareto selection and historical V1/V5/V4 source imports remain
+unresolved. The V1–V5 distribution is not modified.
+
 ### Canonical high-speed V2 unsigned 24-bit DIV/MOD option
 
 The source-linked `MATH_UDIV24` and `MATH_UMOD24` family now has an
