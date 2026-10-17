@@ -1,3 +1,19 @@
+## Unreleased — selectable zero-ZP unrolled shared U32/16 producer
+
+- Promote source-qualified 32-round unrolled accumulator divider into the
+  operation-first builder as `link:accum-unrolled-32` for both
+  `UDIV32_16` and `UMOD32_16`, sharing one public Q32/R16 producer,
+  1,771 executable code bytes and one ordinary RAM scratch byte, zero ZP.
+- Extend the common 384-pair public Q/R/C speed model to three variants,
+  with exact source hashing, return-cycle measurements and identical
+  operands. Source correctness is separately tested at two code origins,
+  and the builder tests resource-constrained speed selection, mixed DIV/MOD
+  outputs, immutable code, and 1,804-byte combined main-RAM charge.
+- Qualify both linked exports on two native VICE memory maps. This is an
+  optional speed-over-RAM frontier; the 131B zero-ZP accumulator and 162B
+  reference variants are preserved, and the historical V2 fast register
+  core remains future work.
+
 ## Unreleased — experimental unrolled zero-ZP public U32/16 producer
 
 - Create a static 32-iteration unrolled derivative of the qualified
