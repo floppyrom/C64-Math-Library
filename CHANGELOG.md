@@ -1,3 +1,16 @@
+## Unreleased — independently linked signed 32x32 SHR16 fixed-point
+
+- Add standalone `MATH_SMUL32_SHR16` `link:compact-zerozp` using a
+  private signed full64 product producer plus exact 16-bit arithmetic
+  shift adapter; 334 code bytes, 12 reusable ordinary RAM bytes,
+  zero ZP, 378 bytes including shared public I/O.
+- Preserve complete signed32 X/Y, return exact low signed48
+  two's-complement `(X * Y) >> 16` in Z[0..5], clear carry.
+- Add three relocated 6502 CPU-model test maps, mixed signed/unsigned
+  scratch sharing and two native x64sc qualification maps. Independently
+  linkable catalog becomes 51/56; historical V1–V5 resident code and
+  published performance data remain unchanged.
+
 ## Unreleased — standalone signed 32x32 full product
 
 - Source-link `MATH_SMUL32` `link:compact-zerozp` using an exact
