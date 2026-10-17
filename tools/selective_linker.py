@@ -359,12 +359,21 @@ MODULES = {
             "provenance": "Standalone signed 32x32 full64 source plus 41-byte arithmetic SHR16 Q48 adapter; 334 code / 12 RAM scratch / zero ZP.",
         },
     },
+    "MATH_SMUL32_READY": {
+        "link:compact-zerozp": {
+            "source": "routines/multiply/smul32_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 293),),
+            "entry": "FAST_SMUL32_COMPACT", "zp": 0, "scratch": 12,
+            "operand_layout": "xyz", "share_producer": "smul32-safe-core",
+            "provenance": "State-independent signed full64 READY-compatible fallback; deduplicated with SMUL32, zero ZP, 12 RAM scratch, correctness-first rather than faster resident READY ABI",
+        },
+    },
     "MATH_SMUL32": {
         "link:compact-zerozp": {
             "source": "routines/multiply/smul32_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 293),),
             "entry": "FAST_SMUL32_COMPACT", "zp": 0, "scratch": 12,
-            "operand_layout": "xyz", "smul32": True,
+            "operand_layout": "xyz", "share_producer": "smul32-safe-core", "smul32": True,
             "provenance": "Compact 32x32 signed full64: source-local unsigned shift-add plus upper32 two's complement correction, 293 code / 12 ordinary scratch / 0 ZP, not historical faster resident source.",
         },
     },
@@ -386,12 +395,21 @@ MODULES = {
             "provenance": "Standalone compact 32x32 unsigned source returning exact 48-bit (X*Y)>>16 in Z0..5, 245B code/12B ordinary scratch/0 ZP; high Z volatile and historical fastest remains available in resident profiles.",
         },
     },
+    "MATH_UMUL32_READY": {
+        "link:compact-zerozp": {
+            "source": "routines/multiply/umul32_compact_zerozp.asm",
+            "segments": (("KERNEL_CODE", 204),),
+            "entry": "FAST_UMUL32_COMPACT", "zp": 0, "scratch": 12,
+            "operand_layout": "xyz", "share_producer": "umul32-safe-core",
+            "provenance": "State-independent unsigned full64 READY-compatible fallback; deduplicated with UMUL32, zero ZP, 12 RAM scratch, correctness-first rather than faster resident READY ABI",
+        },
+    },
     "MATH_UMUL32": {
         "link:compact-zerozp": {
             "source": "routines/multiply/umul32_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 204),),
             "entry": "FAST_UMUL32_COMPACT", "zp": 0, "scratch": 12,
-            "operand_layout": "xyz", "umul32": True,
+            "operand_layout": "xyz", "share_producer": "umul32-safe-core", "umul32": True,
             "provenance": "Portable standalone exact unsigned 32x32->64, 204 code/12 RAM scratch/0 ZP, untouched X/Y, legal NMOS; not historical 600-cycle fast source.",
         },
     },
@@ -1444,6 +1462,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         "; UMUL32_SHR16: unsigned X32*Y32>>16 => exact unsigned Z[0..5], high Z volatile, C=0.",
         "; SMUL32: signed X32*Y32 => exact signed64 two\'s-complement Z[0..7], C=0.",
         "; SMUL32_SHR16: signed (X32*Y32)>>16 => low 48 bits in Z[0..5], C=0.",
+        "; SMUL32_READY and UMUL32_READY: safe state-independent full64 fallbacks, not resident READY speed.",
         "; SMUL24: signed X24*Y24 => exact signed48 Z[0..5], Z[6..7] preserved.",
         "; UMUL16_SHR8: unsigned X16*Y16 >> 8 => low 24 bits MATH_Z, C=0.",
         "; SMUL8: signed 8-bit X/Y => signed 16-bit Z low/next, C=0.",

@@ -1,3 +1,34 @@
+### READY32 operation-first safe fallbacks
+
+`MATH_UMUL32_READY` and `MATH_SMUL32_READY` are now
+independently selectable `link:compact-zerozp` operations. They
+reuse the standalone 204-byte unsigned and 293-byte signed full64
+multiplication sources respectively. Each consumes 12 bytes of
+call-exclusive ordinary scratch RAM and zero ZP. With both normal
+and READY versions selected, the exact source is linked just once,
+exporting both names at the same entry address. Both ready fallbacks
+therefore work even when unrelated math calls have overwritten
+the historical profile's quarter-square pointer state.
+
+This intentional correctness-first implementation is **not** the
+historical faster READY entry: V1/V5 resident READY omit pointer
+rebinding and can be invalidated by intervening `UMUL24`,
+`SMUL16`, or `SMUL24` calls. No faster READY cycle claims
+can be transferred to this state-independent implementation.
+
+```sh
+python3 tools/math_builder.py --operation UMUL32 --operation UMUL32_READY \
+  --operation SMUL32 --operation SMUL32_READY \
+  --zp-budget 0 --ram-budget 541 --build
+```
+
+The four exports consume 497 executable bytes, 12 scratch bytes,
+32 common I/O bytes and no ZP (541 total main RAM). CPU-model
+tests exercise three relocation maps and interleavings with
+24-bit multiplication. Native x64sc compares the signed/unsigned
+READY and ordinary source aliases at two code/I/O placements.
+V1–V5 resident READY behavior remains unchanged.
+
 ### Independently linked signed 32x32 SHR16 fixed-point
 
 The operation-first builder now exposes `MATH_SMUL32_SHR16` as
