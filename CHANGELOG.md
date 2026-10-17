@@ -1,3 +1,16 @@
+## Unreleased — certified same-input ISQRT32 speed selection
+
+- Extend operation-first `--objective speed` to `MATH_ISQRT32`
+  alone, comparing its highword fast and compact zero-ZP variants on
+  a frozen 512-value full-width seeded+square-boundary corpus.
+- Measure each relocated source's actual 6502 instructions, then
+  apply code, RAM and ZP budgets globally for the selected operation.
+  Keep low-memory fallback and expert pins; prohibit unqualified
+  mixed-operation speed ranking.
+- Preserve corpus/source/toolchain SHA256 provenance and add CPU
+  ABI/resource tests at two memory maps, without updating the
+  historic five-profile benchmarks.
+
 ## Unreleased — canonical-source V2 highword fast ISQRT32 variant
 
 - Add opt-in `MATH_ISQRT32` `link:v2-highword-source`, retaining
