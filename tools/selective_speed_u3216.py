@@ -13,6 +13,7 @@ import random
 import re
 
 from mini6502 import Assembler, CPU, load_sparse
+import selective_v2_fast_u3216 as v2fast
 
 BASIS="cpu-model-u3216-public-quotient-remainder-identical-inputs-v1"
 SEED=0x32160B17
@@ -22,11 +23,12 @@ COUNT=384
 CORPUS_SHA256="d3c5e882c9ee52461ca764dc50b4b9f7d9203bf378ac5a25be3692168bb053e1"
 APIS=frozenset(("MATH_UDIV32_16","MATH_UMOD32_16"))
 EXPECTED=frozenset(("link:portable-restoring","link:accumulator-remainder",
-                    "link:accum-unrolled-32"))
+                    "link:accum-unrolled-32","link:v2-sizefast-public"))
 RESOURCES={
     "link:portable-restoring":(162,0,3),
     "link:accumulator-remainder":(131,0,1),
     "link:accum-unrolled-32":(1771,0,1),
+    "link:v2-sizefast-public":(2368,12,0),
 }
 
 def corpus():
@@ -40,7 +42,10 @@ def corpus():
     assert len(pairs)==COUNT
     return pairs
 
-def assemble_source(ident,mod,code,io,scratch,root):
+def assemble_source(ident,mod,code,io,scratch,root,zp):
+    if ident=="link:v2-sizefast-public":
+        image,labels,_,_ = v2fast.assemble_image(code,io,zp,root)
+        return image,labels[mod["entry"]]
     source=(root/mod["source"]).read_text(encoding="utf-8")
     bindings={
         "KERNEL_CODE":code,"INPUT_NUM":io+16,"INPUT_DIV":io+20,
@@ -61,7 +66,7 @@ def assemble_source(ident,mod,code,io,scratch,root):
         raise ValueError(ident+": public entry label moved")
     return image,entry
 
-def benchmark(api,modules,code,io,scratch,root:Path):
+def benchmark(api,modules,code,io,scratch,root:Path,zp=0x50):
     if api not in APIS:
         raise ValueError("No public 32/16 speed basis for "+api)
     if set(modules)!=EXPECTED:
@@ -81,10 +86,13 @@ def benchmark(api,modules,code,io,scratch,root:Path):
         if (mod.get("requires_reu") or mod.get("requires_writable_code")
             or mod.get("share_producer") not in (
                 "unsigned-32by16-restoring","unsigned-32by16-accum",
-                "unsigned-32by16-accum-unrolled")
+                "unsigned-32by16-accum-unrolled",
+                "unsigned-32by16-v2-sizefast")
             or not mod.get("multi_entry")):
             raise ValueError(api+": hardware/sharing contract changed: "+ident)
-        image,entry=assemble_source(ident,mod,code,io,scratch,root)
+        if ident=="link:v2-sizefast-public" and not mod.get("v2_sizefast_u3216"):
+            raise ValueError(api+": V2 32/16 canonical source qualification flag missing")
+        image,entry=assemble_source(ident,mod,code,io,scratch,root,zp)
         cpu=CPU(load_sparse(image))
         sp=cpu.sp
         cycles=0
@@ -121,8 +129,8 @@ def benchmark(api,modules,code,io,scratch,root:Path):
         "mean_cycles":totals,"source_sha256":hashes,
     }
 
-def bench_udiv32_16(modules,code,io,scratch,root:Path):
-    return benchmark("MATH_UDIV32_16",modules,code,io,scratch,root)
+def bench_udiv32_16(modules,code,io,scratch,root:Path,zp=0x50):
+    return benchmark("MATH_UDIV32_16",modules,code,io,scratch,root,zp)
 
-def bench_umod32_16(modules,code,io,scratch,root:Path):
-    return benchmark("MATH_UMOD32_16",modules,code,io,scratch,root)
+def bench_umod32_16(modules,code,io,scratch,root:Path,zp=0x50):
+    return benchmark("MATH_UMOD32_16",modules,code,io,scratch,root,zp)

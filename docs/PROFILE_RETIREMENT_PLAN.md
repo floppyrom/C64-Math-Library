@@ -126,6 +126,19 @@ prefer unrolled only if its actual measured cycles and project resources
 justify it; the portable reference and compact zero-ZP sources remain
 available. This is not the historical V2 663-cycle native ABI transplant.
 
+The qualified `link:v2-sizefast-public` is now a fourth 32/16 public
+quotient/remainder candidate: it links the historical V2 12-ZP native
+high-word divider/16-step unrolled tail from its canonical source via two
+relocated code islands plus a complete public I/O shim. The 2,368-byte packed
+code image (including reserved island padding) plus the 32-byte public I/O
+uses **2,400 B main RAM**, **12 ZP**, zero ordinary scratch, and stable
+NMOS LAX/ANC undocumented opcodes. The 384-pair complete-public-call model
+averages ~932.63 cycles at `$8000` (rather than the historic native-only
+663.73-cycle record). The optimizer can choose among this source and the
+three zero-ZP variants according to RAM, ZP and workload budgets. No public
+input, carry or divide-by-zero semantics are changed; nested/interrupt use
+of the same ZP workspace is not supported.
+
 Unsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
 `size` and `zp` plans remain fully available for all 56 APIs.

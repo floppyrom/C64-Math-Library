@@ -1,3 +1,22 @@
+## Unreleased — selectable canonical V2 fast unsigned 32/16
+
+- Make the fully qualified historical V2 size-fast 32/16 DIV+MOD donor
+  source an independently linkable, shared fourth variant
+  `link:v2-sizefast-public`: two relocated core islands, a complete public
+  Q32/R16 adapter, 2,368-byte deterministic packed image, 12 exclusive ZP
+  and zero ordinary scratch RAM. One linked binary exports both DIV and MOD.
+- Extend the identical 384-pair public-call CPU-model speed basis to the
+  newly source-authenticated donor and its complete adapter (mean ~932.63
+  cycles at `$8000`). Preserve compact zero-ZP (131 B), portable zero-ZP
+  (162 B), and unrolled zero-ZP (1771 B) candidates. Full public Q/R/C
+  correctness and original inputs/SP are tested at two memory placements;
+  source-code and output provenance are sealed.
+- Add two-map operation-first linked-PRG CPU and native x64sc qualification
+  (DIV/MOD), 12-ZP/2400-B resource boundary and low-resource fallback
+  tests. The historical native-only performance figure is not conflated
+  with the public-call mean. The opcode and non-reentrant constraints remain
+  explicit.
+
 ## Unreleased — historical V2 12-ZP 32/16 public-adapter research
 
 - Import no duplicate executable: the relocation adapter reads the certified

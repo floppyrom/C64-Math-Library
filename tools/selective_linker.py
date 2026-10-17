@@ -30,6 +30,7 @@ import selective_speed_umul32
 import selective_speed_smul32
 import selective_speed_mul32_ready_shr16 as speed32extras
 import selective_speed_u3216 as speed_u3216
+import selective_v2_fast_u3216 as v2u3216
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
@@ -699,6 +700,14 @@ MODULES = {
         },
     },
     "MATH_UDIV32_16": {
+        "link:v2-sizefast-public": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 2368),),
+            "entry": "FAST_UDIV32_16_V2", "zp": 12, "scratch": 0,
+            "share_producer": "unsigned-32by16-v2-sizefast",
+            "multi_entry": True, "v2_sizefast_u3216": True,
+            "provenance": "Relocated canonical V2 12-ZP size-fast high-word 16-bit divider + 16 unrolled low-word quotient bits; public Q32/R16 ABI staging and carry preservation, 2368B image including hole padding, NMOS LAX/ANC, D=0, non-reentrant scratch.",
+        },
         "link:accum-unrolled-32": {
             "source": "routines/divide/u32_by_u16_accum_unrolled_selective.asm",
             "segments": (("KERNEL_CODE", 1771),),
@@ -723,6 +732,14 @@ MODULES = {
         },
     },
     "MATH_UMOD32_16": {
+        "link:v2-sizefast-public": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 2368),),
+            "entry": "FAST_UMOD32_16_V2", "zp": 12, "scratch": 0,
+            "share_producer": "unsigned-32by16-v2-sizefast",
+            "multi_entry": True, "v2_sizefast_u3216": True,
+            "provenance": "Relocated canonical V2 12-ZP size-fast high-word 16-bit divider + 16 unrolled low-word quotient bits; public Q32/R16 ABI staging and carry preservation, 2368B image including hole padding, NMOS LAX/ANC, D=0, non-reentrant scratch.",
+        },
         "link:accum-unrolled-32": {
             "source": "routines/divide/u32_by_u16_accum_unrolled_selective.asm",
             "segments": (("KERNEL_CODE", 1771),),
@@ -879,6 +896,9 @@ def available_variants(root=ROOT):
                     "v2_pareto_fast/resident/modules/pareto_umul32.a": hashlib.sha256(
                         (root / "v2_pareto_fast/resident/modules/pareto_umul32.a").read_bytes()).hexdigest(),
                 } if mod.get("fast31_umul32") else {
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                } if mod.get("v2_sizefast_u3216") else {
                     "tools/selective_isqrt16.py": hashlib.sha256(
                         (root / "tools/selective_isqrt16.py").read_bytes()).hexdigest()
                 } if mod.get("isqrt16") else {
@@ -1387,8 +1407,8 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_SMUL32_READY": (speed32extras.bench_smul32_ready, "scratch", True),
             "MATH_UMUL32_SHR16": (speed32extras.bench_umul32_shr16, "scratch", True),
             "MATH_SMUL32_SHR16": (speed32extras.bench_smul32_shr16, "scratch", True),
-            "MATH_UDIV32_16": (speed_u3216.bench_udiv32_16, "scratch", False),
-            "MATH_UMOD32_16": (speed_u3216.bench_umod32_16, "scratch", False),
+            "MATH_UDIV32_16": (speed_u3216.bench_udiv32_16, "scratch", True),
+            "MATH_UMOD32_16": (speed_u3216.bench_umod32_16, "scratch", True),
         }
         unavailable = sorted(set(names) - set(measured))
         if unavailable:
@@ -1529,6 +1549,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("fast_umul16") and set(x["source_path"] for x in dep_provenance) != {
                 "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py"}:
             raise LinkError(api + ": 16-bit quarter-square emitter provenance missing")
+        if module.get("v2_sizefast_u3216") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_v2_fast_u3216.py"]:
+            raise LinkError(api + ": canonical V2 32/16 source relocation provenance missing")
         if module.get("udiv24_v2") and [x["source_path"] for x in dep_provenance] != [
                 "relocatable_source/v2_pareto_fast/udiv24_direct_repose.inc",
                 "tools/selective_udiv24_v2.py"]:
@@ -1562,7 +1585,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_sizefast_u3216"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -1583,6 +1606,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                         machine, entry, ranges, end = fast31.assemble(
                             pc, io, zb, root, source_path=module["source"],
                             entry_label=module["entry"])
+                elif module.get("v2_sizefast_u3216"):
+                    machine, labels, ranges, end = v2u3216.assemble_image(pc,io,zb,root)
+                    entry = labels[module["entry"]]
                 elif module.get("umul8_v1"):
                     machine, entry, ranges, end = v1umul8.assemble(pc, io, zb, root)
                 elif module.get("seek8"):
@@ -1622,7 +1648,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_sizefast_u3216"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
@@ -1820,6 +1846,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed_umul32.py", "tools/selective_speed_smul32.py",
                        "tools/selective_speed_mul32_ready_shr16.py",
                        "tools/selective_speed_u3216.py",
+                       "tools/selective_v2_fast_u3216.py",
                        "tools/selective_speed_umul16.py",
                        "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                        "tools/selective_speed_isqrt32.py",
