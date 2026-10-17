@@ -1,3 +1,34 @@
+### Shared signed 32-bit division and modulo
+
+The operation-first builder now offers `MATH_SDIV32_32` and
+`MATH_SMOD32_32` as independent operations backed by one
+`link:portable-zerozp` 32/32 restoring producer: **412 legal 6502
+code bytes**, **9 call-exclusive ordinary RAM scratch bytes**, **0 ZP**,
+and **453 total RAM bytes including the public 32-byte I/O field**.
+Selecting both aliases shares the machine-code image rather than
+duplicating it. No initialization, tables, REU, writable code or
+undocumented opcodes are used.
+
+Both N32 and D32 are preserved. Q32 is the signed quotient truncated
+toward zero; R32 has the numerator's sign. For D=0, Q32/R32 become
+zero and carry is set; for nonzero D, carry is clear. The overflowing
+two's-complement case `-2147483648/-1` wraps Q32 to `$80000000`
+with zero remainder. Requires decimal clear, and A/X/Y/other flags
+are volatile.
+
+```sh
+python3 tools/math_builder.py --operation SDIV32_32 --operation SMOD32_32 \
+  --zp-budget 0 --ram-budget 453 --build
+```
+
+CPU-model edge/random tests qualify the exact signed Q32/R32 result,
+caller input preservation, stack and code integrity on three relocated
+memory maps. Linked mixed calls with SDIV32_16/SMOD32_16 and UMUL16
+verify public I/O and scratch lifetimes. Native x64sc tests the
+shared producer at two placements. This is a portable correctness
+baseline, not a replacement for the historically faster V1–V5
+resident division implementations.
+
 ### Shared signed SDIV32_16 / SMOD32_16 portable kernel
 
 `MATH_SDIV32_16` and `MATH_SMOD32_16` now share one relocatable,
