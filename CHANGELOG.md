@@ -1,3 +1,14 @@
+## Unreleased — operation-first UMUL16_SHR8 standalone reference
+
+- Add an independently linkable 126-byte, zero-ZP `MATH_UMUL16_SHR8`
+  portable source with six reusable RAM scratch bytes and an exact
+  24-bit unsigned fixed-point output contract.
+- Include deterministic two-placement CPU-model qualification, mixed
+  `UMUL16` calls, budget checks, and native x64sc correctness coverage.
+  Keep all historical V1–V5 profile sources, optimized implementations
+  and performance records untouched; this is *not* an automatic speed
+  replacement. The fast resident dependency transplant remains open.
+
 ## Unreleased — certified same-input ISQRT32 speed selection
 
 - Extend operation-first `--objective speed` to `MATH_ISQRT32`

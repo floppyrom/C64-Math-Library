@@ -1,3 +1,30 @@
+### Standalone zero-ZP UMUL16_SHR8 link-ready reference
+
+`MATH_UMUL16_SHR8` is independently selectable with
+`link:compact-zerozp` using a 126-byte legal-opcode shift/add multiplier
+and six bytes of call-lifetime ordinary-RAM scratch. The output is the
+low three bytes of `(uint16(X) * uint16(Y)) >> 8` in `MATH_Z`.
+The two 16-bit operands are preserved and carry is clear on return.
+It needs no ZP, external tables, initialization, writable code, or REU;
+the caller must enter with decimal mode clear. A 32-byte public IO block
+makes the single-operation footprint **164 RAM bytes**.
+
+```sh
+python3 tools/math_builder.py --operation UMUL16_SHR8 \
+  --pin UMUL16_SHR8=link:compact-zerozp --zp-budget 0 \
+  --ram-budget 164 --build
+```
+
+CPU-model regression checks include 1,220 deterministic edge/random input
+pairs at two memory placements, mixed UMUL16/UMUL16_SHR8 calls, unchanged
+inputs, carry, stack pointer, source integrity, and resource fallback.
+The native VICE qualification runs 96 input pairs at two placements.
+This is a **portable reference**, not yet a claimed cycle-speed winner:
+the V1/V5 304.80-cycle and V2–V4 243.80-cycle published resident
+implementations remain intact and are priorities for an independent,
+performance-preserving port. Multi-operation automatic speed ranking
+remains blocked pending matched-input certified measurements.
+
 ### ISQRT32 exact same-corpus speed selection
 
 With both source-qualified `ISQRT32` variants available, the builder
