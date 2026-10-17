@@ -765,6 +765,14 @@ MODULES = {
         },
     },
     "MATH_UDIV32_32": {
+        "link:shared-aligned-zerozp": {
+            "source": "routines/standalone_lab/portable/div_u32_aligned_nozp.asm",
+            "segments": (("KERNEL_CODE", 325), ("KERNEL_AUX", 251)),
+            "entry": "FAST_UDIV32_PUBLIC", "zp": 0, "scratch": 4,
+            "share_producer": "unsigned-32by32-aligned-public-qr",
+            "multi_entry": True,
+            "provenance": "Source-qualified public unsigned 32/32 shared Q32/R32 restoring producer: same 576-byte two-island machine image and 4B ordinary scratch for DIV and MOD; 0 ZP; both outputs and divide-zero C flag, caller operands preserved. Uses the existing independently native-qualified aligned DIV source.",
+        },
         "link:zptail": {
             "source": "routines/standalone_lab/portable/div_u32_zptail.asm",
             "segments": (("KERNEL_CODE", 325), ("KERNEL_AUX", 219)),
@@ -843,6 +851,14 @@ MODULES = {
         },
     },
     "MATH_UMOD32_32": {
+        "link:shared-aligned-zerozp": {
+            "source": "routines/standalone_lab/portable/div_u32_aligned_nozp.asm",
+            "segments": (("KERNEL_CODE", 325), ("KERNEL_AUX", 251)),
+            "entry": "FAST_UDIV32_PUBLIC", "zp": 0, "scratch": 4,
+            "share_producer": "unsigned-32by32-aligned-public-qr",
+            "multi_entry": True,
+            "provenance": "Source-qualified public unsigned 32/32 shared Q32/R32 restoring producer: same 576-byte two-island machine image and 4B ordinary scratch for DIV and MOD; 0 ZP; both outputs and divide-zero C flag, caller operands preserved. Uses the existing independently native-qualified aligned DIV source.",
+        },
         "link:aligned-zerozp": {
             "source": "routines/standalone_lab/portable/mod_u32_aligned_carry.asm",
             "segments": (("KERNEL_CODE", 250), ("KERNEL_AUX", 225),
