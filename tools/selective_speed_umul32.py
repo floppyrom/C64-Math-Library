@@ -50,7 +50,7 @@ def source_assemble(ident, mod, origin, io, scratch, root):
         "INPUT_X": io, "INPUT_Y": io + 4, "OUTPUT_Z": io + 8,
         "TEMP_RAM": scratch,
     }.items():
-        pattern = r"(?m)^" + re.escape(symbol) + r"\\s*=\\s*\\$[0-9A-Fa-f]+\\s*$"
+        pattern = r"(?m)^" + re.escape(symbol) + r"\s*=\s*\$[0-9A-Fa-f]+\s*$"
         source, count = re.subn(pattern, symbol + " = $%04X" % addr, source)
         if count != 1:
             raise ValueError("UMUL32 source binding changed: " + symbol)
@@ -89,7 +89,7 @@ def bench_umul32(modules, origin, io, scratch, root: Path):
             xb, yb = x.to_bytes(4, "little"), y.to_bytes(4, "little")
             cpu.mem[io:io+4] = xb
             cpu.mem[io+4:io+8] = yb
-            cpu.mem[io+8:io+16] = b"\\xa5" * 8
+            cpu.mem[io+8:io+16] = b"\xa5" * 8
             cpu.d = 0
             cpu.c = (i ^ x ^ y) & 1
             total += cpu.call(entry, 125000)
