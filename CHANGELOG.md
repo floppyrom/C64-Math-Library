@@ -1,3 +1,16 @@
+## Unreleased — signed FAST31 public-ABI source research
+
+- Add `smul32_fast31_public.asm`: independently relocatable signed 32×32
+  full-64 result using the certified V2 31-byte-ZP native unsigned producer,
+  with exact X/Y sign correction restricted to the high product word.
+  Unmodified public operands; C=0; D=0 prerequisite. The module is
+  self-modifying and uses four exact 511-entry quarter-square tables.
+- Generalize the existing source-locked FAST31 emitter to accept a second
+  signed source and entry point while retaining the qualified unsigned default.
+  Add two-relocation CPU-model and native VICE public-call tests. This
+  candidate is **research-only** until source, native VICE, RAM geometry
+  and signed speed comparisons qualify it for selective builder promotion.
+
 ## Unreleased — historical FAST31 builder promotion
 
 - Enable the V2 31-ZP native producer as `link:fast31-v2-public` in the

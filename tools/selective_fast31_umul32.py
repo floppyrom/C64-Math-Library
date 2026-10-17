@@ -35,8 +35,8 @@ def tables():
     neghi = bytes((255 - ((q(255-i)>>8)&255))&255 for i in range(511))
     return (lo, hi, neglo, neghi)
 
-def render(positions, io, zp, root):
-    s = (root / SOURCE).read_text(encoding="utf-8")
+def render(positions, io, zp, root, source_path=SOURCE):
+    s = (root / source_path).read_text(encoding="utf-8")
     bindings = {"INPUT_X":io, "INPUT_Y":io+4, "OUTPUT_Z":io+8,
                 "TEMP_ZP":zp, **positions}
     for key, value in bindings.items():
@@ -46,16 +46,17 @@ def render(positions, io, zp, root):
             raise ValueError("FAST31 missing/nonunique address: "+key)
     return s
 
-def assemble(start, io, zp, root):
+def assemble(start, io, zp, root, *, source_path=SOURCE,
+             entry_label="FAST_UMUL32_FAST31"):
     if not 2 <= zp <= 225 or zp+ZP_BYTES>256:
         raise ValueError("FAST31 requires 31 ordinary contiguous ZP bytes")
     positions, end = layout(start)
     if end > 65536:
         raise ValueError("FAST31 code+tables exceed 64KiB")
-    code, labels, _ = Assembler().assemble(render(positions,io,zp,root))
+    code, labels, _ = Assembler().assemble(render(positions,io,zp,root,source_path))
     if not code or min(code)<start or max(code)>=start+CODE_SLOT:
         raise ValueError("FAST31 public/native code exceeds reserved code slot")
-    if labels.get("FAST_UMUL32_FAST31")!=start:
+    if labels.get(entry_label)!=start:
         raise ValueError("FAST31 public entry moved")
     # Fill untouched code/padding to make a deterministic contiguous PRG image.
     image = {addr:0xea for addr in range(start,end)}
@@ -72,7 +73,7 @@ def assemble(start, io, zp, root):
                "bytes":positions["sqr_lo"]-(start+CODE_SLOT)}]
     segments.extend({"name":name,"start":"$%04X"%positions[name],
                      "bytes":TABLE_SLOT} for name in TABLES)
-    return image, labels["FAST_UMUL32_FAST31"], segments, end
+    return image, labels[entry_label], segments, end
 
-def source_sha256(root:Path):
-    return hashlib.sha256((root/SOURCE).read_bytes()).hexdigest()
+def source_sha256(root:Path, source_path=SOURCE):
+    return hashlib.sha256((root/source_path).read_bytes()).hexdigest()
