@@ -1,0 +1,19 @@
+name: V2 UDIV24 standalone relocation research
+
+on:
+  pull_request:
+    paths:
+      - tools/selective_udiv24_v2.py
+      - tools/test_selective_udiv24_v2_probe.py
+      - .github/workflows/selective-v2-u24-probe.yml
+
+jobs:
+  relocate-and-prove:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble and run historical V2 U24 relocated source at two maps
+        run: python3 tools/test_selective_udiv24_v2_probe.py
