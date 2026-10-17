@@ -1,3 +1,20 @@
+## Unreleased — matched-input READY/SHR16 FAST31 speed promotion
+
+- Add four same-operand public-call speed bases for UMUL32_READY,
+  SMUL32_READY, UMUL32_SHR16, and SMUL32_SHR16. Each API compares compact
+  zero-ZP, shared unified zero-ZP, and shared FAST31 on a deterministic
+  192-pair signed/unsigned corpus with source SHA, exact geometry, public
+  I/O preservation, stack/carry correctness and 10 SMC-byte protection.
+  Q48 uses the complete >>16 six-byte output and does not reuse full64
+  arithmetic-only cycle measurements.
+- Expand workload-weighted profile-independent global `speed` selection
+  from eight to **twelve** APIs, retaining exact 512-byte code/four aligned
+  512-byte table slots, 31 call-exclusive ZP, per-producer sharing and
+  low-ZP fallbacks. Add budget/weighted-selection and fail-closed candidate
+  regression tests plus required CI execution.
+- CPU-model benchmark times remain estimates at the nominated placement;
+  actual native VICE is a correctness gate, not a claim of hardware timings.
+
 ## Unreleased — six-entry FAST31 operation-first builder selection
 
 - Register the certified shared V2 FAST31 image under the existing
