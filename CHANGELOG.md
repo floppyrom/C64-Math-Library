@@ -1,3 +1,17 @@
+## Unreleased — signed FAST31 selectable-builder promotion
+
+- Add `link:fast31-v2-signed` as a fourth-generation source-linked signed
+  SMUL32 implementation. The global optimizer can compare three signed
+  full64 candidates on one 192-pair operand corpus, including full public
+  input staging/sign corrections and return. FAST31 is only chosen when the
+  complete 31-ZP and page-aligned RAM resource constraints fit.
+- Add two-relocation exact ABI/binary tests, zero-page overlap/budget
+  negatives, alternating signed/unsigned FAST31 calls sharing exclusive ZP,
+  and native VICE tests of the **builder-generated** signed binary. The
+  signed and unsigned routines still carry independent table/code images.
+- Retain zero-ZP compact and six-entry unified fallbacks; make SMUL32 the
+  eighth operation supported by weighted project speed selection.
+
 ## Unreleased — signed FAST31 public-ABI source research
 
 - Add `smul32_fast31_public.asm`: independently relocatable signed 32×32
