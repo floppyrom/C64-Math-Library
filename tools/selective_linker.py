@@ -699,6 +699,14 @@ MODULES = {
         },
     },
     "MATH_UDIV32_16": {
+        "link:accum-unrolled-32": {
+            "source": "routines/divide/u32_by_u16_accum_unrolled_selective.asm",
+            "segments": (("KERNEL_CODE", 1771),),
+            "entry": "FAST_UDIV32_16_ACCUM", "zp": 0, "scratch": 1,
+            "share_producer": "unsigned-32by16-accum-unrolled",
+            "multi_entry": True,
+            "provenance": "Statically unrolled 32-round 32/16 public Q32+R16; zero ZP, one ordinary scratch byte, 1771B executable, no SMC/tables; D=0 prerequisite and C=1/Q=R=0 on divisor zero; research source qualified independently and native VICE tested.",
+        },
         "link:accumulator-remainder": {
             "source": "routines/divide/u32_by_u16_accum_selective.asm",
             "segments": (("KERNEL_CODE", 131),),
@@ -715,6 +723,14 @@ MODULES = {
         },
     },
     "MATH_UMOD32_16": {
+        "link:accum-unrolled-32": {
+            "source": "routines/divide/u32_by_u16_accum_unrolled_selective.asm",
+            "segments": (("KERNEL_CODE", 1771),),
+            "entry": "FAST_UMOD32_16_ACCUM", "zp": 0, "scratch": 1,
+            "share_producer": "unsigned-32by16-accum-unrolled",
+            "multi_entry": True,
+            "provenance": "Statically unrolled 32-round 32/16 public Q32+R16; zero ZP, one ordinary scratch byte, 1771B executable, no SMC/tables; D=0 prerequisite and C=1/Q=R=0 on divisor zero; research source qualified independently and native VICE tested.",
+        },
         "link:accumulator-remainder": {
             "source": "routines/divide/u32_by_u16_accum_selective.asm",
             "segments": (("KERNEL_CODE", 131),),
