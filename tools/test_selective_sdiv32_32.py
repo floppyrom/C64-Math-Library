@@ -105,7 +105,7 @@ class SDIV32x32Tests(unittest.TestCase):
                 self.assertEqual((int.from_bytes(mem[0xc018:0xc01c],"little"),
                                   int.from_bytes(mem[0xc01c:0xc01e],"little"),cpu.c),
                                  reference16(n,d&65535))
-                x,y=rng.getrandbits(32),rng.getrandbits(32)
+                x,y=rng.randrange(65536),rng.randrange(65536)
                 mem[0xc000:0xc002]=x.to_bytes(2,"little")
                 mem[0xc004:0xc006]=y.to_bytes(2,"little")
                 cpu.call(entry["MATH_UMUL16"],50000)
