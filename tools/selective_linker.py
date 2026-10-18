@@ -34,6 +34,7 @@ import selective_speed_umul32
 import selective_speed_smul32
 import selective_speed_mul32_ready_shr16 as speed32extras
 import selective_speed_u3216 as speed_u3216
+import selective_speed_udiv16_shl8 as speed_shl8
 import selective_speed_s3216 as speed_s3216
 import selective_speed_s3232 as speed_s3232
 import selective_speed_u3232 as speed_u3232
@@ -1874,6 +1875,7 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_SMUL32_READY": (speed32extras.bench_smul32_ready, "scratch", True),
             "MATH_UMUL32_SHR16": (speed32extras.bench_umul32_shr16, "scratch", True),
             "MATH_SMUL32_SHR16": (speed32extras.bench_smul32_shr16, "scratch", True),
+            "MATH_UDIV16_SHL8": (speed_shl8.bench_udiv16_shl8, "scratch", True),
             "MATH_UDIV32_16": (speed_u3216.bench_udiv32_16, "scratch", True),
             "MATH_SDIV32_16": (speed_s3216.bench_sdiv32_16, "scratch", True),
             "MATH_SMOD32_16": (speed_s3216.bench_smod32_16, "scratch", True),
