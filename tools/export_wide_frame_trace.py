@@ -59,7 +59,8 @@ def export(out, frames=40, code=0x8000, io=0xc000, signed24_variant=None):
                                     ram_budget=8192, pins=pins)
     with tempfile.TemporaryDirectory() as temp:
         manifest = selective_linker.build(plan, Path(temp), memory={
-            "code_base": code, "math_io": io, "scratch_base": io + 0x40})
+            "code_base": code, "math_io": io, "zp_base": 0x50,
+            "scratch_base": io + 0x40})
         prg = (Path(temp) / "math_selective.prg").read_bytes()
         if int.from_bytes(prg[:2], "little") != code:
             raise ValueError("Bad assembled load address")
@@ -79,7 +80,7 @@ def export(out, frames=40, code=0x8000, io=0xc000, signed24_variant=None):
             start = entries["MATH_SDIV24"]
             addresses = {"KERNEL_CODE": start, "INPUT_NUM": io + 16,
                          "INPUT_DIV": io + 20, "OUTPUT_QUOT": io + 24,
-                         "OUTPUT_REM": io + 28, "TEMP_ZP": 0x40}
+                         "OUTPUT_REM": io + 28, "TEMP_ZP": 0x50}
             source = selective_linker.relocate_source(
                 mod, addresses, selective_linker.ROOT)
             image, labels, _ = Assembler().assemble(source)
