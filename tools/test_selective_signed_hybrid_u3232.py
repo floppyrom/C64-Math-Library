@@ -10,6 +10,7 @@ import math_builder
 import selective_linker as linker
 import selective_signed_hybrid_u3232 as v2s
 from test_selective_sdiv32_32 import corpus,reference
+import selective_speed_s3232 as timing
 
 FAST="link:v2-hybrid-signed"
 COMPACT="link:portable-zerozp"
@@ -71,6 +72,36 @@ class Signed32HybridTests(unittest.TestCase):
                     self.assertEqual(bytes(mem[io+20:io+24]),db)
                     self.assertEqual(cpu.sp,sp)
                 self.assertEqual(bytes(mem[code:code+2880]),original)
+
+    def test_same_corpus_signed32_public_speed_at_two_relocations(self):
+        for code,io,zp in ((0x8000,0xc000,0x50),
+                           (0x7123,0xc040,0x70)):
+            for api in ("MATH_SDIV32_32","MATH_SMOD32_32"):
+                with self.subTest(code=code,api=api):
+                    result=timing.benchmark(api,linker.MODULES[api],
+                        code,io,io+0x40,linker.ROOT,zp)
+                    self.assertEqual(result["cases"],384)
+                    self.assertEqual(result["corpus_sha256"],timing.CORPUS_SHA256)
+                    mean=result["mean_cycles"]
+                    self.assertEqual(set(mean),{COMPACT,FAST})
+                    self.assertLess(mean[FAST],mean[COMPACT])
+                    print("SIGNED3232_V2_PAIRED_SPEED",hex(code),api,
+                          "portable",round(mean[COMPACT],3),
+                          "V2",round(mean[FAST],3),
+                          "max_portable",result["maximum_cycles"][COMPACT],
+                          "max_v2",result["maximum_cycles"][FAST],flush=True)
+            with tempfile.TemporaryDirectory() as td:
+                plan=math_builder.create_plan(self.index,list(OPS),
+                    objective="speed",zp_budget=12,ram_budget=2912,
+                    workload_calls={op:100 for op in OPS})
+                manifest=linker.build(plan,Path(td),memory={
+                    "code_base":code,"math_io":io,"zp_base":zp,
+                    "scratch_base":io+0x40})
+                self.assertEqual({m["variant"] for m in manifest["operations"]},
+                                 {FAST})
+                self.assertEqual(len(manifest["link_order"]),1)
+                self.assertEqual(manifest["resource_use"]["main_ram_total_bytes"],
+                                 2912)
 
     def test_compact_remains_selected_when_zp_or_ram_is_tight(self):
         with tempfile.TemporaryDirectory() as td:
