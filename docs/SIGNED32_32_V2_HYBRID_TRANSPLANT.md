@@ -21,11 +21,22 @@ builder averaged ~3,300. **This hybrid composition is a NEW implementation**,
 not automatically equal in speed to those resident binaries; do not use
 the historical measurements as its speed model.
 
-The first gate checks the exact public ABI, resource sharing, two relocations,
-zero divisor, signed extremes, N/D immutability, code immutability, compact
-fallback, and pinned native VICE r46284 calls. A further same-corpus
-CPU-model performance and busy-frame comparison is required before
-automatic \`speed\` selection is allowed. This candidate remains experimental
-until complete full-library qualification succeeds.
+The full public-call model now compares both implementations on **384
+identical signed operand pairs** at both $8000 and $7123. The V2 hybrid
+measures **610.326 / 610.237 cycles mean**, versus **3177.286 / 3170.797**
+for portable at those origins, respectively. Both shared DIV/MOD aliases
+return the complete quotient, remainder and carry and preserve inputs.
+The qualified speed installer can select this faster V2 donor when code
+memory and 12 ZP bytes are available. The 412-byte compact implementation
+remains eligible under smaller budgets.
 
+The 24-frame paired regression runs **150 calls** per layout, on the same
+frame slots, operations, operands and input registers in both linked
+versions. It reports peak arithmetic-frame costs and any per-call/per-frame
+regressions. The tests and pinned native VICE r46284 qualification are
+required before merging. Frame costs are CPU-model only and exclude
+IRQ/SID/VIC and actual PAL contention.
+
+Example no-profile installation:
+    make builder-speed SPEED_CONFIG=examples/operation-first-signed3232-speed.json
 Neither original V1–V5 sources nor historical performance baselines change.
