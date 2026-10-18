@@ -1,0 +1,10 @@
+{
+  "upstream": "https://svn.code.sf.net/p/vice-emu/code/trunk",
+  "mirror": "https://github.com/VICE-Team/svn-mirror",
+  "revision": 46284,
+  "commit": "d4d62d0b9538238e6a84826e951e76debf5df649",
+  "source_directory": "third_party/vice/vice",
+  "flavor": "headless x64sc",
+  "verified_on": "2026-10-18",
+  "note": "Git submodule lock, not a precompiled emulator. CI must prove functionality."
+}
