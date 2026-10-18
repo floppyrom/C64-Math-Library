@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 27 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 29 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -92,9 +92,16 @@ measurements must fail closed and produce a clear migration task.
   selection across the historical V3 magnitude source, a compact zero-ZP
   source and the quotient-zero-optimized zero-ZP source. All remain
   available as Pareto alternatives under different budgets.
-- Audit full 32/32 DIV/MOD and full 32-bit signed/unsigned multiplication
+- Audit remaining full-width DIV/MOD and full 32-bit signed/unsigned multiplication
   historical producers, including FAST31 / READY / SHR16 and shared
   table alternatives; import only qualified source-linked winners.
+- Both signed32/32 public aliases now have a second independently linked
+  variant using V2 unsigned magnitude arithmetic under a sign-normalizing
+  wrapper. The matched public-call CPU-model speed basis is about 610
+  versus 3,177 cycles with the donor feasible (2,880 code/12 ZP), retaining
+  a genuine 412-code/0-ZP compact option. This is not a reproduction of
+  the historical 514-cycle V2 resident result, and mixed physical frame
+  qualification remains a separate task.
 - Preserve the [biased quarter-square carry-offset identity]
   (BIASED_QUARTERSQUARE_CARRY_OFFSETS.md) as a later 16-bit high-speed
   donor opportunity. Its historical standalone register ABI timing is
