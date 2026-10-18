@@ -47,6 +47,7 @@ import selective_speed_isqrt16 as speed_isqrt16
 import selective_hybrid_u3232 as hybrid_u3232
 import selective_signed_hybrid_u3232 as signed_u3232
 import selective_v2_fast_u3216 as v2u3216
+import selective_v2_shifted_u3216 as v2shifted
 import research_signed_v2_u3216 as signedv2u3216
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
@@ -791,6 +792,13 @@ MODULES = {
         },
     },
     "MATH_UDIV16_SHL8": {
+        "link:v2-shifted-public": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 2368),),
+            "entry": "FAST_UDIV16_SHL8_V2", "zp": 12, "scratch": 0,
+            "v2_shifted_u3216": True,
+            "provenance": "Canonical historical V2 32/16 split-tail source; shifted N16 staging without touching N+2/N+3, full Q24/R16/C ABI; independent 2368-byte code and 12 call-exclusive ZP bytes; NMOS LAX/ANC and D=0 required.",
+        },
         "link:accumulator-remainder": {
             "source": "routines/divide/u16_shl8_accum_selective.asm",
             "segments": (("KERNEL_CODE", 129),),
@@ -1038,6 +1046,11 @@ def available_variants(root=ROOT):
                     "tools/selective_v2_fast_umul24.py": hashlib.sha256(
                         (root / "tools/selective_v2_fast_umul24.py").read_bytes()).hexdigest(),
                 } if mod.get("v2_umul24") else {
+                    "tools/selective_v2_shifted_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_shifted_u3216.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                } if mod.get("v2_shifted_u3216") else {
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
                         (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
                 } if mod.get("v2_sizefast_u3216") else {
@@ -2032,6 +2045,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                 "tools/selective_v2_fast_u3216.py",
                 "routines/standalone_lab/portable/div_u32_zptail.asm"]:
             raise LinkError(api + ": signed V2 32/32 hybrid donor/relocator provenance missing")
+        if module.get("v2_shifted_u3216") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_v2_shifted_u3216.py", "tools/selective_v2_fast_u3216.py"]:
+            raise LinkError(api + ": V2 shifted public-source provenance missing")
         if module.get("v2_sizefast_u3216") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_v2_fast_u3216.py"]:
             raise LinkError(api + ": canonical V2 32/16 source relocation provenance missing")
@@ -2071,7 +2087,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2100,6 +2116,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                     entry = labels[module["entry"]]
                 elif module.get("signed_hybrid_u3232"):
                     machine, labels, ranges, end = signed_u3232.assemble(pc,io,zb,root)
+                    entry = labels[module["entry"]]
+                elif module.get("v2_shifted_u3216"):
+                    machine, labels, ranges, end = v2shifted.assemble_image(pc,io,zb,root)
                     entry = labels[module["entry"]]
                 elif module.get("v2_sizefast_u3216"):
                     machine, labels, ranges, end = v2u3216.assemble_image(pc,io,zb,root)
@@ -2149,7 +2168,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("v2_shifted_u3216") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
