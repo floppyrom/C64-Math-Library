@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 32 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 33 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -96,6 +96,16 @@ averages approximately 719 versus 1,777 CPU-model cycles on 384 identical
 inputs. The original 129-byte/0-ZP portable implementation remains for
 resource-constrained projects; the V2 path needs 2,368 bytes and 12 ZP.
 Measured 24-frame math budgets do not imply VIC/IRQ/PAL frame qualification.
+
+The new `URECIP16_Q16` stock C64 frontier offers three independently
+source-linked no-REU choices: 99-byte compact restoring, 448-byte
+V3/V4-threshold-inspired fast gate with exact restoring fallback, and a
+1,544-byte exact Q24 lookup/binary-threshold producer. All use 0 ZP.
+The first threshold gate is faster on mean but **not on maximum latency**;
+only the source-matched corpus, complete all-divisor public source test,
+native VICE and busiest-frame gate may justify promotion. This is not a
+transplant of the V3/V4 REU resident binary and does not yet establish
+REU-resident hardware timing parity. See `RECIP16_THRESHOLD_STOCK_BUILDER.md`.
 
 ## Active migration priority after PRs #293–#296
 
