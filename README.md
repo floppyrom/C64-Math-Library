@@ -32,11 +32,25 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 30 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 31 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
 can be retired. See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
+
+The historical $CA-biased 24-bit quarter-square multiply source can now
+serve **both** unsigned UMUL24 and signed SMUL24 calls using **one physical
+producer, four shared table planes and 24 ZP bytes**, rather than duplicating
+the lookup image. For the faster measured variants use:
+
+```sh
+make builder-speed SPEED_CONFIG=examples/operation-first-shared24-speed.json OUT=build_shared24
+```
+
+The existing compact 156-byte unsigned / 227-byte signed 0-ZP kernels
+remain independently selectable when code RAM or ZP is constrained.
+Native VICE, same-corpus public-call and mixed-frame qualification are
+required before treating this as a complete speed-parity upgrade.
 
 The [biased quarter-square carry-offset strategy](docs/BIASED_QUARTERSQUARE_CARRY_OFFSETS.md)
 from the historical shifted UMUL16 family is explicitly preserved, with

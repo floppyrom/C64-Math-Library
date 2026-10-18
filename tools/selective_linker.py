@@ -26,6 +26,7 @@ import selective_seek16 as seek16
 import selective_speed
 import selective_speed_umul16
 import selective_speed_umul24 as speed_umul24
+import selective_speed_smul24 as speed_smul24
 import selective_speed_umul16_shr8
 import selective_speed_umod8
 import selective_speed_udiv8
@@ -580,6 +581,17 @@ MODULES = {
             "operand_layout": "xyz", "smul24": True,
             "provenance": "Exact signed24x24 -> signed48 via source-private unsigned 156B core + 24-bit high correction, 227B code/9B RAM/0 ZP; original fast resident algorithms retained.",
         },
+        "link:v2-quarter-square": {
+            "source": "v2_pareto_fast/resident/modules/pareto_umul24.a",
+            "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
+                         ("Q_SQR_HI", 512), ("Q_NEG_LO", 512),
+                         ("Q_NEG_HI", 512)),
+            "entry": "FAST_SMUL24_V2_QS", "zp": 24, "scratch": 0,
+            "operand_layout": "xyz", "v2_umul24": True,
+            "share_producer": "v2-biased-dual-mul24", "multi_entry": True,
+            "requires_writable_code": True,
+            "provenance": "Signed 24x24 modulo-2^48 high-word correction on the exact same historical V2 $CA-biased UMUL24 producer and four 512-byte quarter-square planes; one 512-byte dual-entry code island, 24 call-exclusive ZP, source-linked nonreentrant.",
+        },
     },
     "MATH_UMUL32_SHR16": {
         "link:fast31-shared-full64": {
@@ -700,8 +712,9 @@ MODULES = {
                          ("Q_NEG_HI", 512)),
             "entry": "FAST_UMUL24_V2_QS", "zp": 24, "scratch": 0,
             "operand_layout": "xyz", "v2_umul24": True,
+            "share_producer": "v2-biased-dual-mul24", "multi_entry": True,
             "requires_writable_code": True,
-            "provenance": "Historical V2 source-extracted 24x24 quarter-square carry-neutral $CA bias: 512-byte wrapper/native code island, four 512-byte page-aligned lookup slots, 24 contiguous private ZP bytes, public X/Y->Z48/C, no INIT/REU; writable RAM, non-reentrant.",
+            "provenance": "Historical V2 $CA-biased source-shared unsigned/signed 24x24 quarter-square producer: 512-byte code island with signed correction, four 512-byte aligned tables, 24 private ZP bytes. Both entries share one image, require writable code and are non-reentrant; no INIT/REU.",
         },
     },
     "MATH_SMUL16_SHR8": {
@@ -1865,6 +1878,7 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_UMUL8": (selective_speed.bench_umul8, "scratch", True),
             "MATH_UMUL16": (selective_speed_umul16.bench_umul16, "scratch", False),
             "MATH_UMUL24": (speed_umul24.bench_umul24, "scratch", True),
+            "MATH_SMUL24": (speed_smul24.bench_smul24, "scratch", True),
             "MATH_UMUL16_SHR8": (selective_speed_umul16_shr8.bench_umul16_shr8, "scratch", False),
             "MATH_UMOD8": (selective_speed_umod8.bench_umod8, "zp", False),
             "MATH_UDIV8": (selective_speed_udiv8.bench_udiv8, "zp", False),

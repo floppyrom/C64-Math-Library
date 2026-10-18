@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 30 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 31 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -83,6 +83,12 @@ page-aligned lookup tables, while the 156-byte compact zero-ZP implementation
 remains a feasible size fallback. See
 `V2_UMUL24_QUARTERSQUARE_TRANSPLANT.md`.
 
+- The signed SMUL24 V2 adapter now shares the original $CA-biased
+  unsigned V2 quarter-square product and all four table planes, with the
+  signed high-word correction reusing the exact same 24 ZP bytes. The
+  independent 227-byte / 0-ZP compact source remains a selectable alternative.
+  See [shared signed/unsigned 24-bit multiplication](SMUL24_SHARED_V2_BUILDER.md).
+  
 ## Active migration priority after PRs #293–#296
 
 - The historical V3 signed24 kernel is available and CPU/native qualified,

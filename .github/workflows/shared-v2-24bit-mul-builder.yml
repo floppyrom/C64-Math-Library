@@ -1,0 +1,69 @@
+name: Shared V2 biased 24-bit public MUL builder qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_linker.py'
+      - 'tools/selective_speed_smul24.py'
+      - 'tools/test_selective_v2_smul24_builder.py'
+      - 'tools/test_shared_v2_mul24_paired_frame.py'
+      - 'tools/native_selective_shared_v2_mul24.py'
+      - 'examples/operation-first-shared24-speed.json'
+      - '.github/workflows/shared-v2-24bit-mul-builder.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-model:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify signed paired speed, compact fallback and interleaved source
+        run: |
+          python3 -m compileall -q tools/selective_linker.py tools/selective_speed_smul24.py tools/test_selective_v2_smul24_builder.py tools/test_shared_v2_mul24_paired_frame.py
+          python3 -m unittest discover -s tools -p 'test_selective_v2_smul24_builder.py' -v
+          python3 -m unittest discover -s tools -p 'test_shared_v2_mul24_paired_frame.py' -v
+          make builder-speed SPEED_CONFIG=examples/operation-first-shared24-speed.json OUT=build_shared_v2_mul24
+          test -s build_shared_v2_mul24/math_selective.prg
+          test -s build_shared_v2_mul24/math_api.inc
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('build_shared_v2_mul24/selective_manifest.json').read_text())
+          assert {e["api"]:e["variant"] for e in d["operations"]} == {
+              "MATH_UMUL24":"link:v2-quarter-square",
+              "MATH_SMUL24":"link:v2-quarter-square"}
+          assert len(d["link_order"])==1
+          assert d["resource_use"]["zero_page_bytes"]==24
+          PY
+
+  native-vice:
+    needs: paired-model
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Install VICE native build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned headless VICE r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Native signed and unsigned public calls in one source-linked image
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_selective_shared_v2_mul24.py
