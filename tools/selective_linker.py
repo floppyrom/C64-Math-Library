@@ -33,6 +33,7 @@ import selective_speed_mul32_ready_shr16 as speed32extras
 import selective_speed_u3216 as speed_u3216
 import selective_speed_u3232 as speed_u3232
 import selective_speed_u24 as speed_u24
+import selective_speed_umod16 as speed_umod16
 import selective_hybrid_u3232 as hybrid_u3232
 import selective_v2_fast_u3216 as v2u3216
 import selective_isqrt16 as sqrt16
@@ -1683,12 +1684,13 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_UMOD32_32": (speed_u3232.bench_umod32_32, "scratch", True),
             "MATH_UDIV24": (speed_u24.bench_udiv24, "scratch", True),
             "MATH_UMOD24": (speed_u24.bench_umod24, "scratch", True),
+            "MATH_UMOD16": (speed_umod16.bench_umod16, "scratch", True),
         }
         unavailable = sorted(set(names) - set(measured))
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24")
+                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16")
         models = {}
         per_operation_cycles = {}
         for api in names:
@@ -2130,6 +2132,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed_u3216.py",
                        "tools/selective_speed_u3232.py",
                        "tools/selective_speed_u24.py",
+                       "tools/selective_speed_umod16.py",
                        "tools/selective_hybrid_u3232.py",
                        "tools/selective_v2_fast_u3216.py",
                        "tools/selective_speed_umul16.py",
