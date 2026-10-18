@@ -10,6 +10,7 @@ import os
 import tempfile
 import itertools
 import math
+from functools import lru_cache
 import json
 from pathlib import Path
 import re
@@ -1536,8 +1537,16 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
             ranked = []
             for item in variants:
                 _, ident, spec = item
+                # Any individual ZP demand above the global ceiling is
+                # impossible in a feasible solution. Removing it before
+                # lower-bound calculation tightens the exact search without
+                # changing its admissible candidate set.
+                if zp_budget is not None and spec["zp"] > zp_budget:
+                    continue
                 size = sum(n for _, n in spec["segments"])
                 ranked.append((item, size, shared_identity(item)))
+            if not ranked:
+                raise LinkError("No certified variant combination fits RAM/ZP budgets")
             ranked.sort(key=lambda c: (
                 (c[0][2]["zp"], c[1], c[0][2]["scratch"], c[0][1])
                 if objective == "zp" else
@@ -1555,25 +1564,81 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
         shared_seen = set()
         state_families = {}
 
+        # Each shared producer appears in exactly one connected component.
+        # Unlike the old per-component MAX(min API bytes), the dynamic
+        # programme below proves the minimum *union* of source bytes needed
+        # by all still-unassigned operations in that component. This is an
+        # exact raw-code lower bound; table alignment can only add bytes.
+        suffix_groups = []
+        group_keys = {}
+        for i, variants in enumerate(resource_options):
+            group_keys.setdefault(groups[i], set()).update(
+                key for _, _, key in variants if key is not None)
+        for depth in range(len(order) + 1):
+            remaining = {}
+            for i in order[depth:]:
+                remaining.setdefault(groups[i], []).append(i)
+            suffix_groups.append(tuple(
+                (group, tuple(indices))
+                for group, indices in sorted(remaining.items())))
+
+        @lru_cache(maxsize=65536)
+        def minimum_shared_bytes(indices, present):
+            if not indices:
+                return 0
+            i, rest = indices[0], indices[1:]
+            return min(
+                (0 if key is not None and key in present else size) +
+                minimum_shared_bytes(
+                    rest, present if key is None or key in present
+                    else present | frozenset((key,)))
+                for _, size, key in resource_options[i])
+
+        def consider_candidate(combination):
+            nonlocal best_score, best
+            z = max(spec["zp"] for _, _, spec in combination)
+            temp = max(spec["scratch"] for _, _, spec in combination)
+            if zp_budget is not None and z > zp_budget:
+                return
+            code = projected_end(code_base, place_modules(
+                unique_code_modules(combination), code_base)) - code_base
+            _, permanent = place_state(
+                state_requirements(spec for _, _, spec in combination),
+                scratch_base, temp)
+            ram = code + 32 + temp + permanent
+            if ram_budget is not None and ram > ram_budget:
+                return
+            if objective == "zp":
+                metric = (z, ram, code)
+            elif objective == "balanced":
+                metric = (ram + 8*z, ram, z)
+            else:
+                metric = (ram, z, code)
+            score = (*metric, tuple(ident for _, ident, _ in combination))
+            if best_score is None or score < best_score:
+                best_score = score
+                best = {api: (ident, spec) for api, ident, spec in combination}
+
+        # A feasible greedy layout is only an incumbent upper bound. Search
+        # still runs to exact completion and can replace it, so a heuristic
+        # can never silently replace resource-optimal selection.
+        consider_candidate(tuple(group[0][0] for group in resource_options))
+
         def resource_search(depth, raw, zp, scratch):
             nonlocal best_score, best
-            # Disjoint sharing components have independently unavoidable
-            # code. Within one component, a MAX of per-API minimum new code
-            # is safe even when every other export shares one image.
-            unavoidable = {}
             min_zp = zp
             min_scratch = scratch
             for i in order[depth:]:
                 candidates = resource_options[i]
-                extra = min(0 if key is not None and key in shared_seen else size
-                            for _, size, key in candidates)
-                group = groups[i]
-                unavoidable[group] = max(unavoidable.get(group, 0), extra)
                 min_zp = max(min_zp, min(item[2]["zp"] for item, _, _ in candidates))
                 min_scratch = max(min_scratch,
                                   min(item[2]["scratch"] for item, _, _ in candidates))
+            required_code = sum(
+                minimum_shared_bytes(indices, frozenset(
+                    key for key in group_keys[group] if key in shared_seen))
+                for group, indices in suffix_groups[depth])
             _, persistent = place_state(state_families, scratch_base, min_scratch)
-            low_ram = raw + sum(unavoidable.values()) + 32 + min_scratch + persistent
+            low_ram = raw + required_code + 32 + min_scratch + persistent
             if ram_budget is not None and low_ram > ram_budget:
                 return
             if zp_budget is not None and min_zp > zp_budget:
@@ -1593,28 +1658,7 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
                         (low_ram == best_score[0] and min_zp > best_score[1])):
                         return
             if depth == len(order):
-                combination = tuple(chosen[api] for api in names)
-                z = max(spec["zp"] for _, _, spec in combination)
-                temp = max(spec["scratch"] for _, _, spec in combination)
-                code = projected_end(code_base, place_modules(
-                    unique_code_modules(combination), code_base)) - code_base
-                _, permanent = place_state(
-                    state_requirements(spec for _, _, spec in combination),
-                    scratch_base, temp)
-                ram = code + 32 + temp + permanent
-                if (zp_budget is not None and z > zp_budget or
-                    ram_budget is not None and ram > ram_budget):
-                    return
-                if objective == "zp":
-                    metric = (z, ram, code)
-                elif objective == "balanced":
-                    metric = (ram + 8*z, ram, z)
-                else:
-                    metric = (ram, z, code)
-                score = (*metric, tuple(ident for _, ident, _ in combination))
-                if best_score is None or score < best_score:
-                    best_score = score
-                    best = {api: (ident, spec) for api, ident, spec in combination}
+                consider_candidate(tuple(chosen[api] for api in names))
                 return
             for item, size, key in resource_options[order[depth]]:
                 api, _, spec = item
