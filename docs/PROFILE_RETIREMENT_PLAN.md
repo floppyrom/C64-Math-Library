@@ -244,6 +244,24 @@ state budget accounting. Exhaustive-oracle regression checks constrained and
 unconstrained selections with aligned and shared modules. This does not
 extend measured speed coverage or replace resident V1–V5 profiles.
 
+## Speed-first versus smallest-size install
+
+`make builder` uses the example's `balanced` objective: choosing less RAM
+and ZP may intentionally cost many cycles. It is not a promise to match the
+fastest legacy source. `make builder-speed` instead uses
+`examples/operation-first-speed.json` or your own `SPEED_CONFIG` with
+positive calls-per-frame for every selected API; it fails closed for APIs
+without authenticated full-call same-corpus speed records. The output is
+still the same `math_selective.prg`, generated API include and manifest.
+Neither mode loads all 56 routines unless you explicitly select them.
+
+The exact [performance-parity acceptance policy](PERFORMANCE_PARITY_GATE.md)
+records which slower alternatives are legitimate Pareto choices and which
+untransplanted historical fast kernels block retirement. Preserve the
+[biased quarter-square carry-offset technique](BIASED_QUARTERSQUARE_CARRY_OFFSETS.md)
+as a reusable speed-kernel research option with immutable older sources and
+an exhaustive algebraic regression test.
+
 ## Acceptance gates for retiring fixed profiles
 
 1. Every one of 56 public APIs is independently source-linkable — **done**.
