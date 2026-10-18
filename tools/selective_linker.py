@@ -9,6 +9,7 @@ import hashlib
 import os
 import tempfile
 import itertools
+import math
 import json
 from pathlib import Path
 import re
@@ -1323,40 +1324,146 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
 
     if objective == "speed" and not cycle_metrics:
         raise LinkError("Speed selection requires an authenticated same-corpus cycle model")
-    best_score = None
-    best = None
-    for combination in itertools.product(*options):
-        zp = max(mod["zp"] for _, _, mod in combination)
-        scratch = max(mod["scratch"] for _, _, mod in combination)
-        code = projected_end(code_base, place_modules(unique_code_modules(combination), code_base)) - code_base
-        _, state_allocated = place_state(
-            state_requirements(spec for _, _, spec in combination),
-            scratch_base, scratch)
-        ram = code + 32 + scratch + state_allocated
-        if zp_budget is not None and zp > zp_budget:
-            continue
-        if ram_budget is not None and ram > ram_budget:
-            continue
-        # Never combine unrelated benchmark corpora into a fake speed score.
-        if objective == "speed":
-            try:
-                measured_cycles = sum(
-                    workload_calls[api] * cycle_metrics[api][ident]
-                    for api, ident, _ in combination)
-            except KeyError as exc:
-                raise LinkError("Selected variants lack a comparable cycle model") from exc
-            metric = (measured_cycles, ram, zp)
-        elif objective == "zp":
-            metric = (zp, ram, code)
-        elif objective == "balanced":
-            metric = (ram + 8 * zp, ram, zp)
-        else:  # size, exactly measured RAM footprint
-            metric = (ram, zp, code)
-        fingerprint = tuple(ident for _, ident, _ in combination)
-        score = (*metric, fingerprint)
-        if best_score is None or score < best_score:
-            best_score = score
-            best = {api: (ident, mod) for api, ident, mod in combination}
+    if objective == "speed":
+        # The ordinary Cartesian product grows prohibitively with sixteen
+        # measured APIs. Use an exact branch-and-bound search instead: cycle
+        # minima and packed, unaligned source sizes are *lower bounds* (never
+        # claims of realistic physical placement or shared table padding).
+        # Final candidates still use the original full resource/score model.
+        weighted_options = []
+        for variants in options:
+            api = variants[0][0]
+            measured = cycle_metrics.get(api)
+            if measured is None or set(measured) != set(MODULES[api]):
+                raise LinkError(api + ": missing or incomplete comparable cycle model")
+            candidates = []
+            for item in variants:
+                _, ident, spec = item
+                try:
+                    mean = measured[ident]
+                except KeyError as exc:
+                    raise LinkError(api + ": selected variants lack a comparable cycle model") from exc
+                if type(mean) not in (float, int) or not math.isfinite(mean) or mean <= 0:
+                    raise LinkError(api + ": invalid comparable cycle measurement")
+                if zp_budget is not None and spec["zp"] > zp_budget:
+                    continue
+                # Even with unlimited cross-API sharing, a single source
+                # requires its own raw code/data bytes and 32 public I/O B.
+                raw_size = sum(n for _, n in spec["segments"])
+                if ram_budget is not None and raw_size + 32 + spec["scratch"] > ram_budget:
+                    continue
+                candidates.append((item, workload_calls[api] * mean, raw_size))
+            if not candidates:
+                raise LinkError("No certified variant combination fits RAM/ZP budgets")
+            candidates.sort(key=lambda c: (c[1], c[2], c[0][2]["zp"], c[0][1]))
+            weighted_options.append(candidates)
+
+        # Explore the most discriminating workloads first. A tight cycle
+        # lower bound permits pruning entire shared-producer combinations.
+        order = sorted(range(len(options)), key=lambda i: (
+            -(max(c[1] for c in weighted_options[i]) -
+              min(c[1] for c in weighted_options[i])),
+            len(weighted_options[i]), i))
+        suffix_min = [0.0] * (len(order) + 1)
+        for depth in range(len(order) - 1, -1, -1):
+            suffix_min[depth] = (suffix_min[depth+1] +
+                                 min(c[1] for c in weighted_options[order[depth]]))
+        best_score = None
+        best = None
+        chosen = {}
+        shared_seen = set()
+        state_families = {}
+
+        def search(depth, cycles, raw, zp, scratch):
+            nonlocal best_score, best
+            if zp_budget is not None and zp > zp_budget:
+                return
+            _, state_bytes = place_state(state_families, scratch_base, scratch)
+            minimum_ram = raw + 32 + scratch + state_bytes
+            if ram_budget is not None and minimum_ram > ram_budget:
+                return
+            if best_score is not None:
+                floor = cycles + suffix_min[depth]
+                # Pessimistic rounding safety: a lower bound must never
+                # exclude a genuinely faster combination due to float noise.
+                tolerance = 1e-12 * max(1.0, abs(floor), abs(best_score[0]))
+                if floor > best_score[0] + tolerance:
+                    return
+                if floor >= best_score[0] - tolerance and minimum_ram > best_score[1]:
+                    return
+            if depth == len(order):
+                # Run the exact same layout, shared-state accounting and
+                # lexicographic tie-break as the historical exhaustive loop.
+                combination = tuple(chosen[api] for api in names)
+                code = projected_end(code_base, place_modules(
+                    unique_code_modules(combination), code_base)) - code_base
+                _, state_allocated = place_state(
+                    state_requirements(spec for _, _, spec in combination),
+                    scratch_base, scratch)
+                ram = code + 32 + scratch + state_allocated
+                if ram_budget is not None and ram > ram_budget:
+                    return
+                actual_cycles = sum(workload_calls[api] * cycle_metrics[api][ident]
+                                    for api, ident, _ in combination)
+                fingerprint = tuple(ident for _, ident, _ in combination)
+                score = (actual_cycles, ram, zp, fingerprint)
+                if best_score is None or score < best_score:
+                    best_score = score
+                    best = {api: (ident, spec) for api, ident, spec in combination}
+                return
+            for item, contribution, size in weighted_options[order[depth]]:
+                api, ident, spec = item
+                key = shared_identity(item)
+                additional = 0 if key is not None and key in shared_seen else size
+                family = spec.get("state_family")
+                if family:
+                    count = spec.get("persistent_state")
+                    if not isinstance(count, int) or count <= 0:
+                        raise LinkError("Invalid persistent state requirement")
+                    if family in state_families and state_families[family] != count:
+                        raise LinkError("Conflicting persistent state resource contract")
+                added_family = family is not None and family not in state_families
+                if added_family:
+                    state_families[family] = count
+                if key is not None:
+                    shared_seen.add(key)
+                chosen[api] = item
+                search(depth + 1, cycles + contribution, raw + additional,
+                       max(zp, spec["zp"]), max(scratch, spec["scratch"]))
+                del chosen[api]
+                if key is not None and not any(
+                    shared_identity(previous) == key for previous in chosen.values()):
+                    shared_seen.remove(key)
+                if added_family:
+                    del state_families[family]
+
+        search(0, 0.0, 0, 0, 0)
+    else:
+        best_score = None
+        best = None
+        for combination in itertools.product(*options):
+            zp = max(mod["zp"] for _, _, mod in combination)
+            scratch = max(mod["scratch"] for _, _, mod in combination)
+            code = projected_end(code_base, place_modules(unique_code_modules(combination), code_base)) - code_base
+            _, state_allocated = place_state(
+                state_requirements(spec for _, _, spec in combination),
+                scratch_base, scratch)
+            ram = code + 32 + scratch + state_allocated
+            if zp_budget is not None and zp > zp_budget:
+                continue
+            if ram_budget is not None and ram > ram_budget:
+                continue
+            if objective == "zp":
+                metric = (zp, ram, code)
+            elif objective == "balanced":
+                metric = (ram + 8 * zp, ram, zp)
+            else:
+                metric = (ram, zp, code)
+            fingerprint = tuple(ident for _, ident, _ in combination)
+            score = (*metric, fingerprint)
+            if best_score is None or score < best_score:
+                best_score = score
+                best = {api: (ident, mod) for api, ident, mod in combination}
     if best is None:
         raise LinkError("No certified variant combination fits RAM/ZP budgets")
     return best

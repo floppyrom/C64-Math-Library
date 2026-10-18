@@ -1,3 +1,20 @@
+## Unreleased — exact scalable global workload-speed selection
+
+- Replace the speed objective's exponential full Cartesian enumeration with
+  an exact branch-and-bound solver for the sixteen currently speed-qualified
+  operations. The solver uses independent per-operation same-corpus CPU-model
+  cycle lower bounds, plus safe unaligned packed-code, ZP, shared scratch and
+  persistent-state bounds. Full final candidates still use the original
+  page-aligned, shared-producer-aware linker cost function and deterministic
+  cycle/RAM/ZP/fingerprint tie-breaks; no heuristic selection is introduced.
+- Preserve pinned variants and explicit per-operation workload frequencies;
+  reject incomplete, non-finite or non-positive candidate cycle measurements.
+  Exhaustive regression compares randomized mixed shared FAST31/DIV/MOD/
+  ISQRT selections under differing RAM and ZP limits. A sixteen-operation
+  stress test checks that the solver does not enumerate the entire product.
+- The change affects *selection scalability*, not 6502 kernel timing or
+  the public library ABI. V1–V5 historical binaries remain unchanged.
+
 ## Unreleased — compact source-relocated V2 32/32 hybrid (2496 B)
 
 - Pack the unchanged V2 32/16 donor into shorter relocatable code islands,
