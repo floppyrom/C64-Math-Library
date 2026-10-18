@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but only 23 APIs have authenticated, matched-public-call speed selection.
+APIs, but 25 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -82,13 +82,12 @@ measurements must fail closed and produce a clear migration task.
 - The historical V3 signed24 kernel is available and CPU/native qualified,
   including mixed synthetic worst-frame scoring.
 - The shared historical V2 signed 32/16 magnitude producer from PR #295
-  is **source and native-VICE research-qualified**, but it is **not a
-  selectable builder variant yet**. Promoting both SDIV32_16/SMOD32_16
-  exports with matched public-call models and 56-operation sharing checks
-  is the next practical performance migration. Its research mean is about
-  866–867 full public-call model cycles versus 1,970–1,971 for the compact
-  alternative on that same 384-case corpus; its 2,880-byte / 12-ZP cost
-  must be retained.
+  is now exposed for both `SDIV32_16` and `SMOD32_16` as a shared
+  source-linked operation-first variant. A new identical-corpus 384-call
+  speed basis and mixed busy-frame screen prevent the builder from
+  presenting a compact memory fallback as a speed upgrade. The V2 donor
+  requires 2,880 code bytes / 12 ZP; the independently selectable compact
+  source uses 260 code bytes / 0 ZP. Preserve both Pareto points.
 - Audit full 32/32 DIV/MOD and full 32-bit signed/unsigned multiplication
   historical producers, including FAST31 / READY / SHR16 and shared
   table alternatives; import only qualified source-linked winners.
