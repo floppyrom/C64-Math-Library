@@ -20,6 +20,27 @@ make builder
 The example selects UMUL16, UDIV16 and ISQRT16. Output is a minimal
 `math_selective.prg`, `math_api.inc`, and a machine-readable selection manifest.
 For arbitrary operations, edit a copy of [`examples/operation-first.json`](examples/operation-first.json).
+
+**Performance is a separate objective:** the normal `make builder` example
+uses `balanced` and can select a slower source to save RAM or zero page.
+It is **not** a fastest-possible profile. To compare qualified sources on
+complete same-input public calls, use:
+
+```sh
+make builder-speed OUT=build_speed
+# Or set SPEED_CONFIG=your-speed-operations.json with positive per-frame
+# workload_calls for every operation and realistic RAM/ZP budgets.
+```
+
+Speed selection currently covers only 23 of the 56 APIs. Unsupported speed
+comparisons **fail closed**, not silently fall back to a slower size-selected
+routine. The remaining historical V1–V5 speed donors still require transplantation,
+matched-public-ABI comparisons and worst-frame qualification before profiles
+can be retired. See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
+
+The [biased quarter-square carry-offset strategy](docs/BIASED_QUARTERSQUARE_CARRY_OFFSETS.md)
+from the historical shifted UMUL16 family is explicitly preserved, with
+exhaustive table-arithmetic tests (`make builder-biased-qs-test`).
 [Full setup and legacy transition notes](docs/PROFILE_RETIREMENT_PLAN.md).
 For workload-aware speed optimization of the sixteen measured operations, including 32-bit multiplication and 32/16 division, try
 `make builder CONFIG=examples/operation-first-speed.json OUT=build_speed`.
