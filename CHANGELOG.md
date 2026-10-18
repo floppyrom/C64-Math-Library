@@ -1,3 +1,12 @@
+## Unreleased — full 56-operation linked native VICE integration test
+
+- Build all 56 C64 math operations into one compact PRG and independently
+  exercise the 16-bit/32-bit division and modulo exports across two non-ROM
+  code origins using real x64sc VICE: 768 complete public Q/R/C calls.
+- Validate no overlap between executable code, monitor harness, operand
+  corpus and output buffers; retain four-byte ZP and 18,000-byte main RAM
+  budgets. No packaged C64 binaries are changed or added.
+
 ## Unreleased — exact resource selection across all 56 operations
 
 - Replace the `size`, `balanced`, and `zp` Cartesian product evaluator with

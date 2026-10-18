@@ -211,3 +211,14 @@ Legacy V3/V4 REU accelerated math, Turbo16/Turbo32, and QS16 are not all
 covered by the 56-operation modular baseline. Never infer performance parity
 from an identical public operation name: compare code assembled from the
 specific source variant on exactly the same input corpus and calling ABI.
+
+## Complete 56-operation native integration smoke
+
+The stock C64 builder can emit all 56 operations as one linked PRG in a
+16,640-byte code span at $2000, with 17,104 bytes of combined RAM and four
+call-exclusive ZP bytes, sharing code and tables across 37 physical producers.
+An independent two-map real x64sc test now links the complete operation set
+at code origins $2000 and $4321, moves its harness to $1000 and buffers
+outside executable code, and exercises UDIV16, UMOD16, UDIV32_32 and UMOD32_32
+for 96 pairs each (768 linked calls in total). This is an integration smoke
+check, not a complete 56-export runtime oracle or physical timing claim.
