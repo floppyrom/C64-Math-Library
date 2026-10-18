@@ -272,6 +272,14 @@ MODULES = {
         },
     },
     "MATH_SDIV24": {
+        "link:abs-qzero-guard": {
+            "source": "routines/divide/sdiv24_smod24_qzero_zerozp.asm",
+            "segments": (("KERNEL_CODE", 387),),
+            "entry": "FAST_SDIV24_QZERO", "zp": 0, "scratch": 7,
+            "share_producer": "signed-24by24-abs-qzero-zerozp",
+            "multi_entry": True, "sdiv24_qzero": True,
+            "provenance": "Independent signed 24/24 Q32/R32 public producer; early exact |N|<|D| quotient-zero exit and portable 24-round fallback; 387 B code, 7 RAM scratch, zero ZP.",
+        },
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv24_smod24_zerozp.asm",
             "segments": (("KERNEL_CODE", 325),),
@@ -282,6 +290,14 @@ MODULES = {
         },
     },
     "MATH_SMOD24": {
+        "link:abs-qzero-guard": {
+            "source": "routines/divide/sdiv24_smod24_qzero_zerozp.asm",
+            "segments": (("KERNEL_CODE", 387),),
+            "entry": "FAST_SMOD24_QZERO", "zp": 0, "scratch": 7,
+            "share_producer": "signed-24by24-abs-qzero-zerozp",
+            "multi_entry": True, "sdiv24_qzero": True,
+            "provenance": "Independent signed 24/24 Q32/R32 public producer; early exact |N|<|D| quotient-zero exit and portable 24-round fallback; 387 B code, 7 RAM scratch, zero ZP.",
+        },
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv24_smod24_zerozp.asm",
             "segments": (("KERNEL_CODE", 325),),
@@ -1008,6 +1024,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_urecip16_q16.py" if mod.get("urecip16") else
                     "tools/test_selective_sdiv32_32.py" if mod.get("sdiv32_32_portable") else
                     "tools/test_selective_sdiv32_16.py" if mod.get("sdiv32_16_portable") else
+                    "tools/test_selective_sdiv24_qzero.py" if mod.get("sdiv24_qzero") else
                     "tools/test_selective_sdiv24.py" if mod.get("sdiv24_portable") else
                     "tools/test_selective_sdiv16_shl8.py" if mod.get("sdiv16_shl8_portable") else
                     "tools/test_selective_sdiv16.py" if mod.get("sdiv16_portable") else
