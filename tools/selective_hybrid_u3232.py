@@ -6,8 +6,8 @@ zero-extend its R16 to R32, and retain its Q32/C flag. Otherwise tail-call
 the certified 4-ZP standalone full-width 32/32 quotient/remainder producer.
 Both paths preserve public N32/D32 and have correct D=0 Q=R=0/C=1 semantics.
 
-Source research only, not builder-selected or resident-profile promotion.
-The combined code is independently relocated in a single 3200-byte caller-
+Selectable in the operation-first builder, not in resident V1–V5 profiles.
+The combined code is independently relocated in a compact 2496-byte caller-
 owned RAM image with 12 shared call-exclusive ZP bytes and no RAM scratch.
 The original source bytes are not silently patched with ad hoc opcodes.
 """
@@ -24,11 +24,12 @@ ROOT=Path(__file__).resolve().parents[1]
 WIDE_SOURCE="routines/standalone_lab/portable/div_u32_zptail.asm"
 FAST_SOURCE=v2.SOURCE
 
-FALLBACK_OFFSET=0xA00
+V2_COMPACT_OFFSETS=(0x00c,0x45c,0x73d)
+FALLBACK_OFFSET=0x780
 FALLBACK_CORE=325
 FALLBACK_TAIL=219
-DISPATCH_OFFSET=0xC40
-IMAGE_BYTES=0xC80
+DISPATCH_OFFSET=0x9a0
+IMAGE_BYTES=0x9c0
 ZP_BYTES=12
 API_DIV="FAST_UDIV32_32_HYBRID"
 API_MOD="FAST_UMOD32_32_HYBRID"
@@ -75,8 +76,8 @@ def assemble(code,io,zp,root=ROOT):
         raise ValueError("Hybrid public core reserves 12 non-port ZP bytes")
     if code<0x0200 or code+IMAGE_BYTES>0x10000 or io+32>0x10000:
         raise ValueError("Hybrid code/IO address range exceeds 64 KiB")
-    v2image,v2labels,v2segments=v2.assemble(code,io,zp,root)
-    if v2labels[v2.PUB_ENTRY]!=code+v2.WRAPPER_OFFSET:
+    v2image,v2labels,v2segments=v2.assemble(code,io,zp,root,offsets=V2_COMPACT_OFFSETS)
+    if v2labels[v2.PUB_ENTRY]!=code+V2_COMPACT_OFFSETS[2]:
         raise ValueError("Historical 32/16 public adapter entry relocated")
     wideimage,widelabels,_=Assembler().assemble(render_wide(code,io,zp,root))
     expected_wide=set(range(code+FALLBACK_OFFSET,

@@ -29,8 +29,8 @@ DIV and MOD reuse one aligned quotient/remainder producer: 576 code bytes,
 independently selectable specialized modulo implementation remains available.
 The optional `link:v2-lowdivisor-hybrid` incorporates the source-validated
 V2 Pareto-fast 32/16 public producer and an unrestricted 32/32 fallback.
-It exports both Q32/R32 public calls from one 3,200-byte image with 12
-call-exclusive ZP bytes (3,232 B main RAM including public I/O at `$8000`).
+It exports both Q32/R32 public calls from one 2,496-byte image with 12
+call-exclusive ZP bytes (2,528 B main RAM including public I/O at `$8000`).
 The speed selector compares it on the same 384-pair unrestricted corpus,
 retaining all lower-memory options. Hardware-native timing is not claimed.
 For `UDIV32_16` / `UMOD32_16`, the builder independently measures both
