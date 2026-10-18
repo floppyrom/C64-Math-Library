@@ -1,3 +1,17 @@
+## Unreleased — exact resource selection across all 56 operations
+
+- Replace the `size`, `balanced`, and `zp` Cartesian product evaluator with
+  deterministic exact branch-and-bound. A complete 56-operation selection
+  otherwise has 143,327,232 post-Pareto candidate combinations.
+- Use admissible unaligned code lower bounds for connected groups of
+  potentially shared physical producers, plus live scratch, persistent-state,
+  and ZP minima. Final candidates still use the original code layout,
+  producer sharing, budget checks and lexicographic tie-breaks.
+- Add constrained and unconstrained exhaustive-oracle comparisons involving
+  FAST31, aligned ATAN2/ISQRT32, shared DIV/MOD and pinned hybrid options.
+  Include a full 56-operation stress check. Arithmetic source, public ABI
+  and historical resident profiles remain unchanged.
+
 ## Unreleased — exact scalable global workload-speed selection
 
 - Replace the speed objective's exponential full Cartesian enumeration with
