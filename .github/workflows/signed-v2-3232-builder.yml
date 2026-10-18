@@ -6,6 +6,9 @@ on:
       - 'tools/selective_linker.py'
       - 'tools/selective_signed_hybrid_u3232.py'
       - 'tools/test_selective_signed_hybrid_u3232.py'
+      - 'tools/selective_speed_s3232.py'
+      - 'tools/test_signed3232_paired_frame.py'
+      - 'examples/operation-first-signed3232-speed.json'
       - 'tools/native_selective_signed_hybrid_u3232.py'
       - '.github/workflows/signed-v2-3232-builder.yml'
   workflow_dispatch:
@@ -28,6 +31,23 @@ jobs:
           python3 -m compileall -q tools/selective_signed_hybrid_u3232.py tools/selective_linker.py tools/test_selective_signed_hybrid_u3232.py tools/native_selective_signed_hybrid_u3232.py
           python3 -m unittest discover -s tools -p 'test_selective_signed_hybrid_u3232.py' -v
           python3 tools/selective_signed_hybrid_u3232.py
+      - name: Verify paired 24-frame speed results and zero-profile installer
+        run: |
+          python3 -m unittest discover -s tools -p 'test_signed3232_paired_frame.py' -v
+          make builder-speed SPEED_CONFIG=examples/operation-first-signed3232-speed.json OUT=build_signed3232
+          test -s build_signed3232/math_selective.prg
+          test -s build_signed3232/math_api.inc
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path("build_signed3232/selective_manifest.json").read_text())
+          assert {x["api"]:x["variant"] for x in m["operations"]} == {
+              "MATH_SDIV32_32": "link:v2-hybrid-signed",
+              "MATH_SMOD32_32": "link:v2-hybrid-signed",
+          }
+          assert m["resource_use"]["main_ram_total_bytes"]==2912
+          assert m["resource_use"]["zero_page_bytes"]==12
+          PY
 
   native-vice:
     needs: cpu-model-public
