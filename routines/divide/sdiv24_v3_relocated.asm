@@ -1,0 +1,926 @@
+; Experimental independent transplant of the original V3 signed24 magnitude producer.
+; Source donor: v3_reu_512k/standalone/div_s24_s24_s24_24.asm
+; Original exact donor SHA-256: c34456837b5f9bd24265d7b3108d71ddb1d7a9575402ef49a58a82fb831ca11c
+; 819 original reachable instructions, original machine-code bytes 1894.
+; Relocation: compact three disjoint executable islands, add second public MOD entry.
+; Explicit 9 caller-exclusive ZP bytes, 0 RAM scratch. Writable code required:
+; original self-modifying STA $8802 is redirected to L8801_ADC_IMMEDIATE+1.
+; NMOS LAX raw opcodes preserved; all public C010-C01F IO references symbolic.
+; No INIT, REU access or external lookup tables identified in traced source.
+; Correctness/ABI and native VICE qualification required before promotion.
+!cpu 6510
+KERNEL_CODE = $8000
+INPUT_NUM = $C010
+INPUT_DIV = $C014
+OUTPUT_QUOT = $C018
+OUTPUT_REM = $C01C
+TEMP_ZP = $10
+* = KERNEL_CODE
+FAST_SDIV24_V3:
+    jmp L5A40
+FAST_SMOD24_V3:
+    jmp L5A40
+L5A40:
+lda INPUT_NUM+2
+bpl L5A48
+jmp L5AE8
+L5A48:
+lda INPUT_DIV+2
+bpl L5A50
+jmp L5AA1
+L5A50:
+lda INPUT_DIV
+ora INPUT_DIV+1
+ora INPUT_DIV+2
+bne L5A5E
+jmp L5D5D
+L5A5E:
+!byte $AF, <INPUT_NUM+2, >INPUT_NUM+2
+cmp INPUT_DIV+2
+bcs L5A69
+jmp L5CED
+L5A69:
+bne L5A83
+lda INPUT_NUM+1
+cmp INPUT_DIV+1
+bcs L5A76
+jmp L5CED
+L5A76:
+bne L5A83
+lda INPUT_NUM
+cmp INPUT_DIV
+bcs L5A83
+jmp L5CED
+L5A83:
+lda INPUT_NUM
+sta TEMP_ZP
+lda INPUT_NUM+1
+sta TEMP_ZP+1
+stx TEMP_ZP+2
+lda INPUT_DIV
+sta TEMP_ZP+3
+lda INPUT_DIV+1
+sta TEMP_ZP+4
+lda INPUT_DIV+2
+sta TEMP_ZP+5
+jmp L5B9B
+L5AA1:
+lda #$00
+sec
+sbc INPUT_DIV
+sta TEMP_ZP+3
+lda #$00
+sbc INPUT_DIV+1
+sta TEMP_ZP+4
+lda #$00
+sbc INPUT_DIV+2
+sta TEMP_ZP+5
+!byte $AF, <INPUT_NUM+2, >INPUT_NUM+2
+cmp TEMP_ZP+5
+bcs L5AC1
+jmp L5CED
+L5AC1:
+bne L5AD9
+lda INPUT_NUM+1
+cmp TEMP_ZP+4
+bcs L5ACD
+jmp L5CED
+L5ACD:
+bne L5AD9
+lda INPUT_NUM
+cmp TEMP_ZP+3
+bcs L5AD9
+jmp L5CED
+L5AD9:
+lda INPUT_NUM
+sta TEMP_ZP
+lda INPUT_NUM+1
+sta TEMP_ZP+1
+stx TEMP_ZP+2
+jmp L5BE4
+L5AE8:
+lda INPUT_DIV+2
+bmi L5B45
+lda INPUT_DIV
+ora INPUT_DIV+1
+ora INPUT_DIV+2
+bne L5AFB
+jmp L5D5D
+L5AFB:
+lda #$00
+sec
+sbc INPUT_NUM
+sta TEMP_ZP
+lda #$00
+sbc INPUT_NUM+1
+sta TEMP_ZP+1
+lda #$00
+sbc INPUT_NUM+2
+sta TEMP_ZP+2
+!byte $A7, TEMP_ZP+2
+cmp INPUT_DIV+2
+bcs L5B1B
+jmp L5CED
+L5B1B:
+bne L5B33
+lda TEMP_ZP+1
+cmp INPUT_DIV+1
+bcs L5B27
+jmp L5CED
+L5B27:
+bne L5B33
+lda TEMP_ZP
+cmp INPUT_DIV
+bcs L5B33
+jmp L5CED
+L5B33:
+lda INPUT_DIV
+sta TEMP_ZP+3
+lda INPUT_DIV+1
+sta TEMP_ZP+4
+lda INPUT_DIV+2
+sta TEMP_ZP+5
+jmp L5C2B
+L5B45:
+!byte $AF, <INPUT_NUM+2, >INPUT_NUM+2
+cmp INPUT_DIV+2
+bcc L5B6C
+beq L5B52
+jmp L5CED
+L5B52:
+lda INPUT_NUM+1
+cmp INPUT_DIV+1
+bcc L5B6C
+beq L5B5F
+jmp L5CED
+L5B5F:
+lda INPUT_NUM
+cmp INPUT_DIV
+bcc L5B6C
+beq L5B6C
+jmp L5CED
+L5B6C:
+lda #$00
+sec
+sbc INPUT_NUM
+sta TEMP_ZP
+lda #$00
+sbc INPUT_NUM+1
+sta TEMP_ZP+1
+lda #$00
+sbc INPUT_NUM+2
+sta TEMP_ZP+2
+lda #$00
+sec
+sbc INPUT_DIV
+sta TEMP_ZP+3
+lda #$00
+sbc INPUT_DIV+1
+sta TEMP_ZP+4
+lda #$00
+sbc INPUT_DIV+2
+sta TEMP_ZP+5
+jmp L5C8B
+L5B9B:
+sec
+lda TEMP_ZP
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda TEMP_ZP+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+lda TEMP_ZP+2
+sbc TEMP_ZP+5
+sta OUTPUT_REM+2
+cmp TEMP_ZP+5
+bcc L5BC7
+bne L5BD6
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L5BC7
+bne L5BD6
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L5BD6
+L5BC7:
+lda #$01
+sta OUTPUT_QUOT
+lda #$00
+sta OUTPUT_QUOT+1
+sta OUTPUT_QUOT+2
+clc
+rts
+L5BD6:
+ldx #$00
+stx OUTPUT_QUOT+1
+stx OUTPUT_QUOT+2
+jsr L83E2
+jmp L5D0C
+L5BE4:
+sec
+lda TEMP_ZP
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda TEMP_ZP+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+lda TEMP_ZP+2
+sbc TEMP_ZP+5
+sta OUTPUT_REM+2
+cmp TEMP_ZP+5
+bcc L5C10
+bne L5C1D
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L5C10
+bne L5C1D
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L5C1D
+L5C10:
+lda #$FF
+sta OUTPUT_QUOT
+sta OUTPUT_QUOT+1
+sta OUTPUT_QUOT+2
+clc
+rts
+L5C1D:
+ldx #$00
+stx OUTPUT_QUOT+1
+stx OUTPUT_QUOT+2
+jsr L83E2
+jmp L5D27
+L5C2B:
+sec
+lda TEMP_ZP
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda TEMP_ZP+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+lda TEMP_ZP+2
+sbc TEMP_ZP+5
+sta OUTPUT_REM+2
+cmp TEMP_ZP+5
+bcc L5C57
+bne L5C7D
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L5C57
+bne L5C7D
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L5C7D
+L5C57:
+lda #$00
+sec
+sbc OUTPUT_REM
+sta OUTPUT_REM
+lda #$00
+sbc OUTPUT_REM+1
+sta OUTPUT_REM+1
+lda #$00
+sbc OUTPUT_REM+2
+sta OUTPUT_REM+2
+lda #$FF
+sta OUTPUT_QUOT
+sta OUTPUT_QUOT+1
+sta OUTPUT_QUOT+2
+clc
+rts
+L5C7D:
+ldx #$00
+stx OUTPUT_QUOT+1
+stx OUTPUT_QUOT+2
+jsr L83E2
+jmp L5D0E
+L5C8B:
+sec
+lda TEMP_ZP
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda TEMP_ZP+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+lda TEMP_ZP+2
+sbc TEMP_ZP+5
+sta OUTPUT_REM+2
+cmp TEMP_ZP+5
+bcc L5CB7
+bne L5CDF
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L5CB7
+bne L5CDF
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L5CDF
+L5CB7:
+lda #$00
+sec
+sbc OUTPUT_REM
+sta OUTPUT_REM
+lda #$00
+sbc OUTPUT_REM+1
+sta OUTPUT_REM+1
+lda #$00
+sbc OUTPUT_REM+2
+sta OUTPUT_REM+2
+lda #$01
+sta OUTPUT_QUOT
+lda #$00
+sta OUTPUT_QUOT+1
+sta OUTPUT_QUOT+2
+clc
+rts
+L5CDF:
+ldx #$00
+stx OUTPUT_QUOT+1
+stx OUTPUT_QUOT+2
+jsr L83E2
+jmp L5D42
+L5CED:
+lda #$00
+sta OUTPUT_QUOT
+sta OUTPUT_QUOT+1
+sta OUTPUT_QUOT+2
+lda INPUT_NUM
+sta OUTPUT_REM
+lda INPUT_NUM+1
+sta OUTPUT_REM+1
+lda INPUT_NUM+2
+sta OUTPUT_REM+2
+clc
+rts
+L5D0C:
+clc
+rts
+L5D0E:
+lda #$00
+sec
+sbc OUTPUT_REM
+sta OUTPUT_REM
+lda #$00
+sbc OUTPUT_REM+1
+sta OUTPUT_REM+1
+lda #$00
+sbc OUTPUT_REM+2
+sta OUTPUT_REM+2
+L5D27:
+lda #$00
+sec
+sbc OUTPUT_QUOT
+sta OUTPUT_QUOT
+lda #$00
+sbc OUTPUT_QUOT+1
+sta OUTPUT_QUOT+1
+lda #$00
+sbc OUTPUT_QUOT+2
+sta OUTPUT_QUOT+2
+clc
+rts
+L5D42:
+lda #$00
+sec
+sbc OUTPUT_REM
+sta OUTPUT_REM
+lda #$00
+sbc OUTPUT_REM+1
+sta OUTPUT_REM+1
+lda #$00
+sbc OUTPUT_REM+2
+sta OUTPUT_REM+2
+clc
+rts
+L5D5D:
+lda #$00
+sta OUTPUT_QUOT
+sta OUTPUT_QUOT+1
+sta OUTPUT_QUOT+2
+sta OUTPUT_REM
+sta OUTPUT_REM+1
+sta OUTPUT_REM+2
+sec
+rts
+L83E2:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+lda OUTPUT_REM+2
+sbc TEMP_ZP+5
+cmp TEMP_ZP+5
+bcc L8416
+bne L841F
+sta OUTPUT_REM+2
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L8410
+bne L8422
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L8422
+L8410:
+lda #$02
+sta OUTPUT_QUOT
+rts
+L8416:
+sta OUTPUT_REM+2
+lda #$02
+sta OUTPUT_QUOT
+rts
+L841F:
+sta OUTPUT_REM+2
+L8422:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+lda OUTPUT_REM+2
+sbc TEMP_ZP+5
+sta OUTPUT_REM+2
+lda TEMP_ZP+5
+cmp #$0D
+bcs L8448
+lda #$03
+sta L8801_ADC_IMMEDIATE+1
+jmp L8779
+L8448:
+lda OUTPUT_REM+2
+cmp TEMP_ZP+5
+bcc L8461
+bne L8467
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L8461
+bne L8467
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L8467
+L8461:
+lda #$03
+sta OUTPUT_QUOT
+rts
+L8467:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+lda OUTPUT_REM+2
+sbc TEMP_ZP+5
+tax
+cmp TEMP_ZP+5
+bcc L8493
+bne L849C
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L8493
+bne L849C
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L849C
+L8493:
+stx OUTPUT_REM+2
+lda #$04
+sta OUTPUT_QUOT
+rts
+L849C:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+tax
+cmp TEMP_ZP+5
+bcc L84C6
+bne L84CF
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L84C6
+bne L84CF
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L84CF
+L84C6:
+stx OUTPUT_REM+2
+lda #$05
+sta OUTPUT_QUOT
+rts
+L84CF:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+tax
+cmp TEMP_ZP+5
+bcc L84F9
+bne L8502
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L84F9
+bne L8502
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L8502
+L84F9:
+stx OUTPUT_REM+2
+lda #$06
+sta OUTPUT_QUOT
+rts
+L8502:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+tax
+cmp TEMP_ZP+5
+bcc L852C
+bne L8535
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L852C
+bne L8535
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L8535
+L852C:
+stx OUTPUT_REM+2
+lda #$07
+sta OUTPUT_QUOT
+rts
+L8535:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+tax
+cmp TEMP_ZP+5
+bcc L855F
+bne L8568
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L855F
+bne L8568
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L8568
+L855F:
+stx OUTPUT_REM+2
+lda #$08
+sta OUTPUT_QUOT
+rts
+L8568:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+tax
+cmp TEMP_ZP+5
+bcc L8592
+bne L859B
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L8592
+bne L859B
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L859B
+L8592:
+stx OUTPUT_REM+2
+lda #$09
+sta OUTPUT_QUOT
+rts
+L859B:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+tax
+cmp TEMP_ZP+5
+bcc L85C5
+bne L85CE
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L85C5
+bne L85CE
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L85CE
+L85C5:
+stx OUTPUT_REM+2
+lda #$0A
+sta OUTPUT_QUOT
+rts
+L85CE:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+tax
+cmp TEMP_ZP+5
+bcc L85F8
+bne L8601
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L85F8
+bne L8601
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L8601
+L85F8:
+stx OUTPUT_REM+2
+lda #$0B
+sta OUTPUT_QUOT
+rts
+L8601:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+tax
+cmp TEMP_ZP+5
+bcc L862B
+bne L8634
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L862B
+bne L8634
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L8634
+L862B:
+stx OUTPUT_REM+2
+lda #$0C
+sta OUTPUT_QUOT
+rts
+L8634:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+ldx #$0D
+stx OUTPUT_QUOT
+tax
+cmp TEMP_ZP+5
+bcc L8663
+bne L8667
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L8663
+bne L8667
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L8667
+L8663:
+stx OUTPUT_REM+2
+rts
+L8667:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+inc OUTPUT_QUOT
+tax
+cmp TEMP_ZP+5
+bcc L8694
+bne L8698
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L8694
+bne L8698
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L8698
+L8694:
+stx OUTPUT_REM+2
+rts
+L8698:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+inc OUTPUT_QUOT
+tax
+cmp TEMP_ZP+5
+bcc L86C5
+bne L86C9
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L86C5
+bne L86C9
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L86C9
+L86C5:
+stx OUTPUT_REM+2
+rts
+L86C9:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+inc OUTPUT_QUOT
+tax
+cmp TEMP_ZP+5
+bcc L86F6
+bne L86FA
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L86F6
+bne L86FA
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L86FA
+L86F6:
+stx OUTPUT_REM+2
+rts
+L86FA:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+txa
+sbc TEMP_ZP+5
+inc OUTPUT_QUOT
+sta OUTPUT_REM+2
+cmp TEMP_ZP+5
+bcc L8729
+bne L872A
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L8729
+bne L872A
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L872A
+L8729:
+rts
+L872A:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+lda OUTPUT_REM+2
+sbc TEMP_ZP+5
+inc OUTPUT_QUOT
+sta OUTPUT_REM+2
+cmp TEMP_ZP+5
+bcc L875B
+bne L875C
+lda OUTPUT_REM+1
+cmp TEMP_ZP+4
+bcc L875B
+bne L875C
+lda OUTPUT_REM
+cmp TEMP_ZP+3
+bcs L875C
+L875B:
+rts
+L875C:
+lda OUTPUT_REM
+sbc TEMP_ZP+3
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+4
+sta OUTPUT_REM+1
+lda OUTPUT_REM+2
+sbc TEMP_ZP+5
+inc OUTPUT_QUOT
+sta OUTPUT_REM+2
+clc
+rts
+L8779:
+lda TEMP_ZP+3
+sta TEMP_ZP+6
+lda TEMP_ZP+4
+sta TEMP_ZP+7
+lda TEMP_ZP+5
+sta TEMP_ZP+8
+ldx #$00
+stx OUTPUT_QUOT
+stx OUTPUT_QUOT+1
+stx OUTPUT_QUOT+2
+L8790:
+asl TEMP_ZP+6
+rol TEMP_ZP+7
+rol TEMP_ZP+8
+bcs L87B4
+lda OUTPUT_REM+2
+cmp TEMP_ZP+8
+bcc L87B4
+bne L87B1
+lda OUTPUT_REM+1
+cmp TEMP_ZP+7
+bcc L87B4
+bne L87B1
+lda OUTPUT_REM
+cmp TEMP_ZP+6
+bcc L87B4
+L87B1:
+inx
+bne L8790
+L87B4:
+ror TEMP_ZP+8
+ror TEMP_ZP+7
+ror TEMP_ZP+6
+L87BA:
+lda OUTPUT_REM+2
+cmp TEMP_ZP+8
+bcc L87EB
+bne L87D3
+lda OUTPUT_REM+1
+cmp TEMP_ZP+7
+bcc L87EB
+bne L87D3
+lda OUTPUT_REM
+cmp TEMP_ZP+6
+bcc L87EB
+L87D3:
+lda OUTPUT_REM
+sbc TEMP_ZP+6
+sta OUTPUT_REM
+lda OUTPUT_REM+1
+sbc TEMP_ZP+7
+sta OUTPUT_REM+1
+lda OUTPUT_REM+2
+sbc TEMP_ZP+8
+sta OUTPUT_REM+2
+L87EB:
+rol OUTPUT_QUOT
+rol OUTPUT_QUOT+1
+rol OUTPUT_QUOT+2
+lsr TEMP_ZP+8
+ror TEMP_ZP+7
+ror TEMP_ZP+6
+dex
+bpl L87BA
+lda OUTPUT_QUOT
+clc
+L8801_ADC_IMMEDIATE:
+adc #$00
+sta OUTPUT_QUOT
+bcc L8811
+inc OUTPUT_QUOT+1
+bne L8810
+inc OUTPUT_QUOT+2
+L8810:
+clc
+L8811:
+rts
