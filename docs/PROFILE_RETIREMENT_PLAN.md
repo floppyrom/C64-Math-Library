@@ -146,7 +146,17 @@ Unsigned 32/32 UDIV and UMOD now have the same independent
 producer. UMOD initially has one specialized 250+225+21 code-byte,
 zero-ZP implementation. Both measure full Q32/R32 outputs, C carry status
 on divide-by-zero, preserved 32-bit N/D inputs, and CPU-model cycles
-through RTS. The additional `link:shared-aligned-zerozp` exports the full public
+through RTS. A further selectable `link:v2-lowdivisor-hybrid` shares full Q32/R32/C
+between DIV and MOD, dispatching D<65536 to the canonical V2 32/16 public
+adapter and unrestricted D to the existing native-qualified four-ZP tail.
+The source-hashed 3,200-byte image reserves 12 non-reentrant ZP bytes,
+zero ordinary scratch, and 32 public I/O bytes. This is optional and is
+compared as a complete public call on the same 384-pair corpus as the low-RAM
+producers; fast narrow divisors do not imply a universal 32-bit speed win.
+The producer is tested under native VICE at two RAM/ZP layouts. The source
+benchmarks measure CPU-model cycles rather than physical C64 elapsed time.
+
+The additional `link:shared-aligned-zerozp` exports the full public
 Q32/R32 routine from the existing independently qualified aligned DIV32
 source as both DIV and MOD. Its shared-producer identity makes the builder
 emit a *single* 576-byte code image with four bytes of scratch and zero ZP
