@@ -52,6 +52,7 @@ import selective_signed_hybrid_u3232 as signed_u3232
 import selective_v2_fast_u3216 as v2u3216
 import selective_v2_shifted_u3216 as v2shifted
 import selective_recip16_threshold as recip_threshold
+import selective_recip16_table as recip_table
 import research_signed_v2_u3216 as signedv2u3216
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
@@ -799,6 +800,13 @@ MODULES = {
         },
     },
     "MATH_URECIP16_Q16": {
+        "link:threshold-tables-zerozp": {
+            "source": "tools/selective_recip16_table.py",
+            "segments": (("KERNEL_CODE", 1544),),
+            "entry": "FAST_URECIP16_Q16_TABLE", "zp": 0, "scratch": 0,
+            "recip16_table": True,
+            "provenance": "Stock 6510 exact 256-entry Q24 low-divisor table and V3/V4-inspired eight-step 16-bit threshold bisection for D>=257; no zero-page, REU, writable code, SMC or initialization; complete public Q24/C contract.",
+        },
         "link:threshold-zerozp": {
             "source": "routines/fixed/urecip16_q16_zerozp.asm",
             "segments": (("KERNEL_CODE", 448),),
@@ -1079,6 +1087,9 @@ def available_variants(root=ROOT):
                     "v3_reu_512k/standalone/recip_u16_u24_q16.asm": hashlib.sha256(
                         (root / "v3_reu_512k/standalone/recip_u16_u24_q16.asm").read_bytes()).hexdigest(),
                 } if mod.get("recip16_threshold") else {
+                    "v3_reu_512k/standalone/recip_u16_u24_q16.asm": hashlib.sha256(
+                        (root / "v3_reu_512k/standalone/recip_u16_u24_q16.asm").read_bytes()).hexdigest(),
+                } if mod.get("recip16_table") else {
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
                         (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
                 } if mod.get("v2_sizefast_u3216") else {
@@ -2076,6 +2087,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                 "tools/selective_v2_fast_u3216.py",
                 "routines/standalone_lab/portable/div_u32_zptail.asm"]:
             raise LinkError(api + ": signed V2 32/32 hybrid donor/relocator provenance missing")
+        if module.get("recip16_table") and [x["source_path"] for x in dep_provenance] != [
+                "v3_reu_512k/standalone/recip_u16_u24_q16.asm"]:
+            raise LinkError(api + ": V3 threshold table source provenance missing")
         if module.get("recip16_threshold") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_recip16_threshold.py",
                 "v3_reu_512k/standalone/recip_u16_u24_q16.asm"]:
@@ -2122,7 +2136,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2151,6 +2165,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                     entry = labels[module["entry"]]
                 elif module.get("signed_hybrid_u3232"):
                     machine, labels, ranges, end = signed_u3232.assemble(pc,io,zb,root)
+                    entry = labels[module["entry"]]
+                elif module.get("recip16_table"):
+                    machine, labels, ranges, end = recip_table.assemble_image(pc,io,root)
                     entry = labels[module["entry"]]
                 elif module.get("recip16_threshold"):
                     machine, labels, ranges, end = recip_threshold.assemble_image(pc,io,sb,root)
@@ -2206,7 +2223,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("v2_shifted_u3216") and not module.get("recip16_threshold") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("v2_shifted_u3216") and not module.get("recip16_threshold") and not module.get("recip16_table") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
