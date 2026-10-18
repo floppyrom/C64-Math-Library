@@ -1,0 +1,175 @@
+# Frame-cycle arithmetic trace scorer (research gate)
+
+The operation-first builder currently minimizes weighted public-call **mean**
+cycles for source-qualified variants. That does not by itself guarantee that a
+C64 demonstration meets its **busiest-frame cycle budget**.
+
+## Usage
+
+    python3 tools/frame_cycle_budget.py --baseline before.csv --frame-count 100 --budget 6000 --out frame_report.json
+    python3 tools/frame_cycle_budget.py --baseline before.csv --candidate after.csv --frame-count 100 --budget 6000
+
+CSV header (one row per actual measured public call):
+
+    frame,call,operation,input_id,cycles,variant,measurement_basis,placement
+
+The zero-based frame and call-ordinal identify the position in the frame.
+The operation is the public MATH_* entry; input_id must identify the entire
+argument tuple, including relevant processor state or initialized state.
+Prefer SHA-256 of the canonical serialized input. The scorer can enforce
+matching IDs but cannot prove the exporter hashed the inputs correctly.
+
+Cycles must be **measured for that individual call, entry through RTS**.
+Historical-profile means are not valid observations. Six cycles for each
+caller JSR are included by default; choose --jsr-cycles 0 to omit them.
+
+The variant names the linked kernel, and the source SHA and full build manifest
+must be archived alongside the trace. A file cannot mix variants for the same
+operation. The measurement_basis names the clock methodology; a Mini6502
+CPU-model cycle count must **not** be compared against a native VICE cycle
+count. The placement records code and public I/O locations, for example
+$8000/$C000. A pair must have identical placement; repeat separately at a
+second relocation.
+
+The scorer reports total, mean, p95, and peak per-frame math cycles;
+over-budget frame counts, math-only peak headroom and each operation's
+contribution to the busiest frame. --frame-count includes zero-math frames.
+Paired comparison requires the exact same set of frames, call ordinals,
+operations and hashed arguments. It rejects incompatible timing bases,
+placements and unpaired workloads.
+
+Nominal PAL 6510 frame total is **19,656 cycles** (312 x 63). Set --budget
+to the application's **arithmetic slice**, not the full frame, if other work
+already consumes cycles. This is **not** a hardware frame guarantee: the
+report excludes VIC bus contention, IRQs, input stores, sprite multiplexing,
+music, REU DMA and the rest of application execution. Native VICE recorded
+instruction cycles are also not externally measured elapsed time.
+
+## Qualification boundary and follow-up
+
+This utility **scores imported measurements**. It does not itself execute VICE
+or supply a faster 6502 kernel. The five regression tests use hypothetical
+fixture counts and must not be advertised as benchmark gains. Integrate a
+producer that captures actual per-call cycle traces from the linked binary,
+preserving the source, ABI, corpus and memory-map provenance.
+
+Prioritize signed 24/32-bit DIV/MOD and signed 32-bit multiply/SHR16, including
+divisor magnitudes, zero, sign extremes, and clustered busiest-frame calls.
+Compare historical V1-V5 and OptiSearch donors through identical operands,
+public-call ABI and placement. Keep small/low-ZP Pareto kernels even if they
+are slower. The main builder does not yet optimize the peak-frame objective:
+measured matched input traces are a prerequisite before promoting that
+selection strategy.
+
+
+## Built-in signed-wide trace producer
+
+Use the deterministic **synthetic stress** workload generator to record
+real CPU-model cycles from the 56-operation builder's linked source image:
+
+    python3 tools/export_wide_frame_trace.py --frames 40 --code-base 0x8000 --io-base 0xc000 --out build/wide_8000.csv
+    python3 tools/export_wide_frame_trace.py --frames 40 --code-base 0x7123 --io-base 0xc040 --out build/wide_7123.csv
+    python3 tools/frame_cycle_budget.py --baseline build/wide_8000.csv --frame-count 40
+
+The generator exercises six signed-wide public entries: SMUL32,
+SMUL32_SHR16, SDIV32_16, SMOD32_16, SDIV32_32 and SMOD32_32. It mixes
+divisor-zero/edge cases, full-width signed values and sparse/clustered
+calls at deterministic frames. Each call is checked against Python's exact
+signed mathematical reference, checks carry and stack semantics, and
+produces input SHA-256 and actual CPU.call instruction cycles. It saves a
+companion .manifest.json containing source variant/provenance, resource
+footprint, image checksum and the CSV digest.
+
+Two different relocations are deliberately scored **separately**. This
+producer does not yet emit competing historical-kernel traces, does not
+run native VICE and is not a measured real-game workload. The native VICE
+regressions in the existing builder workflow remain required for qualifying
+any eventual kernel promotion.
+
+## Same-frame paired signed24 Pareto comparison
+
+The same source-assembled CPU-model producer can additionally include both
+signed 24-bit public aliases, `MATH_SDIV24` and `MATH_SMOD24`. Pin the
+original 325-byte compact donor in the baseline and the native-qualified
+387-byte `abs-qzero-guard` donor in the candidate. The other six signed
+wide public operations, frame/call ordering, mathematical arguments, caller
+carry and code/I/O placement stay identical.
+
+```sh
+python3 tools/export_wide_frame_trace.py --frames 24 --code-base 0x8000 --io-base 0xc000 \
+    --signed24-variant link:portable-zerozp --out build/frame_signed24_original.csv
+python3 tools/export_wide_frame_trace.py --frames 24 --code-base 0x8000 --io-base 0xc000 \
+    --signed24-variant link:abs-qzero-guard --out build/frame_signed24_guarded.csv
+python3 tools/frame_cycle_budget.py --baseline build/frame_signed24_original.csv \
+    --candidate build/frame_signed24_guarded.csv --frame-count 24 \
+    --out build/frame_signed24_comparison.json
+```
+
+The exporter verifies **each** public-call result against signed
+24/32-bit mathematical references and carries, including 24-bit high-byte
+preservation, zero divisor, and source-code immutability. Its paired SHA-256
+input IDs capture each argument tuple, initial carry and decimal flag.
+The signed24 candidate and original use the *same deterministic synthetic
+stress frame schedule*, including 24-call bursts, so the paired scorer
+can calculate exact total-cycle and busiest-frame differences without
+conflating memory layouts or benchmark corpora. Both donor source SHA-256
+digests and resource requirements remain in the companion manifests.
+Tests repeat this at $8000/$C000 and $7123/$C040.
+
+A different-size signed24 donor can shift other separately linked
+operations to different absolute addresses. Consequently, even their
+unchanged machine-code sources can incur different branch/page-crossing
+cycle penalties. The report intentionally counts those secondary
+differences in the total busy-frame budget. The regression separately
+attributes changed signed24 call costs versus all other call costs and
+requires those other operations to retain the same source variant.
+
+**Interpretation:** the peak-frame difference is specific to these
+synthetic, CPU-model-measured public calls. It does not measure real VICE
+elapsed time, VIC bus steals, IRQs, SID playback, game logic, or a real
+demo's observed busiest frame. Native VICE r46284 has independently
+validated both signed24 kernels' public ABI in PR #289, but VICE cycles
+are not substituted for CPU-model cycles. For production speed
+promotion, first collect actual workload inputs, transplant and qualify
+the historical fastest V1–V5 and OptiSearch signed kernels, then
+repeat the same paired source/memory/cycle measurements. Keep both
+Pareto candidates regardless of the synthetic frame winner.
+
+## Historical V3 signed24: qualified source linked into the same busiest frames
+
+PR #293 brought the original V3 signed24 magnitude kernel into the independent
+builder as a shared SDIV24/SMOD24 producer (1,897 code bytes; 9 ZP; one
+self-modifying ADC immediate). The mixed-frame exporter now supports that
+explicit Pareto pin and checks that **no other linked executable byte changes**
+during its complete burst trace:
+
+```sh
+python3 tools/export_wide_frame_trace.py --frames 24 --code-base 0x8000 --io-base 0xc000 \
+    --signed24-variant link:v3-signed-magnitude --out build/frame_signed24_v3.csv
+python3 tools/frame_cycle_budget.py --baseline build/frame_signed24_original.csv \
+    --candidate build/frame_signed24_v3.csv --frame-count 24
+```
+
+Repeat at `$7123/$C040` (the CI frame workflow runs both). The shared donor
+is allocated **9 ZP bytes**, not measured against the zero-ZP budget of the
+portable or Q0 sources. The trace exporter explicitly seeds A/X/Y and C/D
+before every call, serializes those caller-state values with signed operands
+into `input_id`, checks the public ABI and paired schedule, and allows only
+the relocated V3 ADC immediate to self-modify. The original portable and Q0
+candidates remain available; no global `--objective speed` default is changed.
+
+The comparison now reports `baseline_peak_frame_cycles_saved`,
+`regressed_frames`, `max_frame_regression_cycles` and
+`max_public_call_regression_cycles` in addition to peak-frame savings.
+A candidate may reduce the overall peak while *worsening another frame or
+individual call*; both regressions must remain visible. A positive saved-cycle
+value means an improvement, not proof of meeting a real C64 frame deadline.
+
+These are synthetic CPU-model *public-call* cycles, not measured effects of
+IRQ, VIC-II badlines, REU DMA, SID or game/demoscene workloads. The V3 kernel's
+native VICE correctness qualification was already established in PR #293;
+the frame trace comparison does not represent a new native-timing result.
+The highest remaining untransplanted historical wide donors are signed 32/16
+DIV/MOD and the full 32-bit DIV/MOD and multiplication producers. They must
+undergo their own ABI, relocatability, shared-table, memory-pressure and
+worst-frame qualifications before automatic speed promotion.

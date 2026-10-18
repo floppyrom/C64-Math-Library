@@ -1,0 +1,47 @@
+name: Pinned VICE SVN r46284 headless qualification
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - .gitmodules
+      - third_party/vice
+      - tools/vice/**
+      - .github/workflows/vice-trunk.yml
+
+jobs:
+  vice-trunk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    steps:
+      - name: Checkout math library and pinned upstream VICE
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Install upstream VICE headless build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build exact VICE r46284
+        env:
+          VICE_JOBS: "2"
+        run: bash tools/vice/build_headless.sh
+      - name: Validate executable and source revision
+        run: |
+          bash tools/vice/verify_headless.sh "$PWD/.vice-build/r46284/bin/x64sc"
+          test "$(git -C third_party/vice rev-parse HEAD)" = "d4d62d0b9538238e6a84826e951e76debf5df649"
+      - name: Native C64 public ABI smoke under r46284
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          python3 tools/native_selective_linker.py
+          python3 tools/native_selective_hybrid_u3232.py
+      - name: Retain source-built headless binary (not ROM assets)
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vice-r46284-headless-linux-x86_64
+          path: .vice-build/r46284/bin/x64sc
+          if-no-files-found: error
+          retention-days: 30
