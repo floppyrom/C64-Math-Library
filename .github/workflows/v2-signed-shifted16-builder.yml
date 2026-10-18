@@ -6,6 +6,7 @@ on:
       - 'tools/selective_v2_signed_shifted16.py'
       - 'tools/selective_speed_sdiv16_shl8.py'
       - 'tools/test_selective_v2_signed_shifted16.py'
+      - 'tools/test_v2_signed_shifted16_frames.py'
       - 'tools/native_selective_v2_signed_shifted16.py'
       - 'tools/selective_linker.py'
       - '.github/workflows/v2-signed-shifted16-builder.yml'
@@ -26,9 +27,10 @@ jobs:
           python-version: '3.12'
       - name: Canonical unsigned donor and complete signed shifted16 public-call qualification
         run: |
-          python3 -m compileall -q tools/selective_v2_signed_shifted16.py tools/selective_speed_sdiv16_shl8.py tools/test_selective_v2_signed_shifted16.py tools/native_selective_v2_signed_shifted16.py tools/selective_linker.py
+          python3 -m compileall -q tools/selective_v2_signed_shifted16.py tools/selective_speed_sdiv16_shl8.py tools/test_selective_v2_signed_shifted16.py tools/test_v2_signed_shifted16_frames.py tools/native_selective_v2_signed_shifted16.py tools/selective_linker.py
           python3 tools/selective_v2_signed_shifted16.py
           python3 -m unittest discover -s tools -p 'test_selective_v2_signed_shifted16.py' -v
+          python3 -m unittest discover -s tools -p 'test_v2_signed_shifted16_frames.py' -v
 
   pinned-vice:
     needs: source-model
