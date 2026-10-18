@@ -7,6 +7,7 @@ on:
       - 'tools/test_research_v2_umul24.py'
       - 'tools/selective_speed_umul24.py'
       - 'tools/test_selective_v2_umul24_builder.py'
+      - 'tools/test_umul24_biased_paired_frame.py'
       - 'tools/native_selective_v2_umul24_builder.py'
       - 'tools/selective_linker.py'
       - 'examples/operation-first-umul24-speed.json'
@@ -36,6 +37,7 @@ jobs:
         run: |
           python3 -m compileall -q tools/selective_speed_umul24.py tools/test_selective_v2_umul24_builder.py
           python3 -m unittest discover -s tools -p 'test_selective_v2_umul24_builder.py' -v
+          python3 -m unittest discover -s tools -p 'test_umul24_biased_paired_frame.py' -v
           make builder-speed SPEED_CONFIG=examples/operation-first-umul24-speed.json OUT=build_fast_umul24
           test -s build_fast_umul24/math_selective.prg
           python3 - <<'PY'
