@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - 'tools/selective_recip16_threshold.py'
+      - 'tools/selective_recip16_table.py'
+      - 'tools/test_recip16_table_builder.py'
+      - 'tools/native_recip16_table.py'
       - 'tools/selective_speed_recip16.py'
       - 'tools/test_recip16_threshold_builder.py'
       - 'tools/native_recip16_threshold.py'
@@ -26,9 +29,11 @@ jobs:
           python-version: '3.12'
       - name: Source-assemble V3/V4-inspired stock reciprocal and test full ABI
         run: |
-          python3 -m compileall -q tools/selective_recip16_threshold.py tools/selective_speed_recip16.py tools/test_recip16_threshold_builder.py tools/native_recip16_threshold.py tools/selective_linker.py
+          python3 -m compileall -q tools/selective_recip16_threshold.py tools/selective_speed_recip16.py tools/test_recip16_threshold_builder.py tools/native_recip16_threshold.py tools/selective_recip16_table.py tools/test_recip16_table_builder.py tools/native_recip16_table.py tools/selective_linker.py
           python3 tools/selective_recip16_threshold.py
+          python3 tools/selective_recip16_table.py
           python3 -m unittest discover -s tools -p 'test_recip16_threshold_builder.py' -v
+          python3 -m unittest discover -s tools -p 'test_recip16_table_builder.py' -v
 
   native-vice:
     needs: source-and-model
@@ -53,3 +58,4 @@ jobs:
           export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
           bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
           python3 tools/native_recip16_threshold.py
+          python3 tools/native_recip16_table.py
