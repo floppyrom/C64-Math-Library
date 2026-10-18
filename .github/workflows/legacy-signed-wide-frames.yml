@@ -1,0 +1,43 @@
+name: Historical V1-V5 signed-wide matched workload benchmarks
+
+on:
+  pull_request:
+    paths:
+      - tools/export_legacy_signed_frame_trace.py
+      - tools/test_export_legacy_signed_frame_trace.py
+      - docs/HISTORICAL_SIGNED_WIDE_FRAME_BASELINES.md
+      - .github/workflows/legacy-signed-wide-frames.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  historical-cpu-public-abi:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Syntax check
+        run: python3 -m compileall -q tools/export_legacy_signed_frame_trace.py tools/test_export_legacy_signed_frame_trace.py
+      - name: Five-profile same-input public result and source-provenance proof
+        run: python3 -m unittest discover -s tools -p 'test_export_legacy_signed_frame_trace.py' -v
+      - name: Gather actual profile public-call cycles on the same 24-frame corpus
+        run: |
+          mkdir -p build/legacy-wide
+          for profile in v1_balanced v2_pareto_fast v3_reu_512k v4_reu_16m v5_hybrid_lowzp; do
+            python3 tools/export_legacy_signed_frame_trace.py --profile "$profile" --frames 24 --out "build/legacy-wide/${profile}.csv" > "build/legacy-wide/${profile}.summary.json"
+            python3 tools/frame_cycle_budget.py --baseline "build/legacy-wide/${profile}.csv" --frame-count 24 --out "build/legacy-wide/${profile}.frame.json"
+          done
+      - name: Publish authenticated CPU-model comparison inputs
+        uses: actions/upload-artifact@v4
+        with:
+          name: historical-signed-wide-frame-baselines
+          path: build/legacy-wide/
+          if-no-files-found: error
+          retention-days: 30
