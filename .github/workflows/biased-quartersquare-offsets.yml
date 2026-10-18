@@ -24,3 +24,9 @@ jobs:
           python-version: '3.12'
       - name: Check all 65536 byte products, 511 offsets and historical tables
         run: python3 -m unittest discover -s tools -p 'test_biased_quartersquare_offsets.py' -v
+      - name: Smoke speed-first installer with measured public-call workloads
+        run: |
+          make builder-speed OUT=build_bias_speed_smoke
+          test -s build_bias_speed_smoke/math_selective.prg
+          test -s build_bias_speed_smoke/math_api.inc
+          test -s build_bias_speed_smoke/selective_manifest.json
