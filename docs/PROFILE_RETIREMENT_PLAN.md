@@ -176,7 +176,15 @@ of the same quotient+remainder calculation.
 
 Unsupported APIs fail closed in `speed` mode rather than using historical
 resident timing from incomparable benchmark corpora. Ordinary `balanced`,
-`size` and `zp` plans remain fully available for all 56 APIs.
+`size` and `zp` plans remain fully available for all 56 APIs. These resource
+objectives now also use exact branch-and-bound rather than expanding the
+143,327,232-combination 56-operation Cartesian frontier. Safe unaligned
+code and disjoint producer-sharing-component lower bounds prune partial
+choices; every finalist retains the historical full aligned code placement,
+shared physical producer deduplication, call-exclusive ZP and persistent
+state budget accounting. Exhaustive-oracle regression checks constrained and
+unconstrained selections with aligned and shared modules. This does not
+extend measured speed coverage or replace resident V1–V5 profiles.
 
 ## Acceptance gates for retiring fixed profiles
 

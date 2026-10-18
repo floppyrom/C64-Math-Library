@@ -1451,31 +1451,139 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
 
         search(0, 0.0, 0, 0, 0)
     else:
+        # The full 56-operation resource frontier has over 143 million
+        # combinations even after independent Pareto filtering. Search it
+        # exactly without creating its Cartesian product. Partial code sizes
+        # are raw unaligned *lower bounds*, never a substitute for the final
+        # full page-aligned, shared-producer-aware physical linker layout.
+        group_parent = list(range(len(options)))
+
+        def find_group(i):
+            while group_parent[i] != i:
+                group_parent[i] = group_parent[group_parent[i]]
+                i = group_parent[i]
+            return i
+
+        first_owner = {}
+        for i, variants in enumerate(options):
+            for item in variants:
+                key = shared_identity(item)
+                if key is not None:
+                    if key in first_owner:
+                        group_parent[find_group(i)] = find_group(first_owner[key])
+                    else:
+                        first_owner[key] = i
+        groups = {i: find_group(i) for i in range(len(options))}
+        resource_options = []
+        for variants in options:
+            ranked = []
+            for item in variants:
+                _, ident, spec = item
+                size = sum(n for _, n in spec["segments"])
+                ranked.append((item, size, shared_identity(item)))
+            ranked.sort(key=lambda c: (
+                (c[0][2]["zp"], c[1], c[0][2]["scratch"], c[0][1])
+                if objective == "zp" else
+                (c[1] + 8*c[0][2]["zp"] if objective == "balanced" else c[1],
+                 c[1], c[0][2]["zp"], c[0][1])))
+            resource_options.append(ranked)
+        # Forced operations are assigned first: their code and shared keys
+        # improve lower bounds immediately. Ties are deterministic.
+        order = sorted(range(len(options)), key=lambda i: (
+            len(resource_options[i]),
+            -min(c[1] for c in resource_options[i]), i))
         best_score = None
         best = None
-        for combination in itertools.product(*options):
-            zp = max(mod["zp"] for _, _, mod in combination)
-            scratch = max(mod["scratch"] for _, _, mod in combination)
-            code = projected_end(code_base, place_modules(unique_code_modules(combination), code_base)) - code_base
-            _, state_allocated = place_state(
-                state_requirements(spec for _, _, spec in combination),
-                scratch_base, scratch)
-            ram = code + 32 + scratch + state_allocated
-            if zp_budget is not None and zp > zp_budget:
-                continue
-            if ram_budget is not None and ram > ram_budget:
-                continue
-            if objective == "zp":
-                metric = (zp, ram, code)
-            elif objective == "balanced":
-                metric = (ram + 8 * zp, ram, zp)
-            else:
-                metric = (ram, zp, code)
-            fingerprint = tuple(ident for _, ident, _ in combination)
-            score = (*metric, fingerprint)
-            if best_score is None or score < best_score:
-                best_score = score
-                best = {api: (ident, mod) for api, ident, mod in combination}
+        chosen = {}
+        shared_seen = set()
+        state_families = {}
+
+        def resource_search(depth, raw, zp, scratch):
+            nonlocal best_score, best
+            # Disjoint sharing components have independently unavoidable
+            # code. Within one component, a MAX of per-API minimum new code
+            # is safe even when every other export shares one image.
+            unavoidable = {}
+            min_zp = zp
+            min_scratch = scratch
+            for i in order[depth:]:
+                candidates = resource_options[i]
+                extra = min(0 if key is not None and key in shared_seen else size
+                            for _, size, key in candidates)
+                group = groups[i]
+                unavoidable[group] = max(unavoidable.get(group, 0), extra)
+                min_zp = max(min_zp, min(item[2]["zp"] for item, _, _ in candidates))
+                min_scratch = max(min_scratch,
+                                  min(item[2]["scratch"] for item, _, _ in candidates))
+            _, persistent = place_state(state_families, scratch_base, min_scratch)
+            low_ram = raw + sum(unavoidable.values()) + 32 + min_scratch + persistent
+            if ram_budget is not None and low_ram > ram_budget:
+                return
+            if zp_budget is not None and min_zp > zp_budget:
+                return
+            if best_score is not None:
+                if objective == "zp":
+                    if ((min_zp > best_score[0]) or
+                        (min_zp == best_score[0] and low_ram > best_score[1])):
+                        return
+                elif objective == "balanced":
+                    floor = low_ram + 8 * min_zp
+                    if ((floor > best_score[0]) or
+                        (floor == best_score[0] and low_ram > best_score[1])):
+                        return
+                else:
+                    if ((low_ram > best_score[0]) or
+                        (low_ram == best_score[0] and min_zp > best_score[1])):
+                        return
+            if depth == len(order):
+                combination = tuple(chosen[api] for api in names)
+                z = max(spec["zp"] for _, _, spec in combination)
+                temp = max(spec["scratch"] for _, _, spec in combination)
+                code = projected_end(code_base, place_modules(
+                    unique_code_modules(combination), code_base)) - code_base
+                _, permanent = place_state(
+                    state_requirements(spec for _, _, spec in combination),
+                    scratch_base, temp)
+                ram = code + 32 + temp + permanent
+                if (zp_budget is not None and z > zp_budget or
+                    ram_budget is not None and ram > ram_budget):
+                    return
+                if objective == "zp":
+                    metric = (z, ram, code)
+                elif objective == "balanced":
+                    metric = (ram + 8*z, ram, z)
+                else:
+                    metric = (ram, z, code)
+                score = (*metric, tuple(ident for _, ident, _ in combination))
+                if best_score is None or score < best_score:
+                    best_score = score
+                    best = {api: (ident, spec) for api, ident, spec in combination}
+                return
+            for item, size, key in resource_options[order[depth]]:
+                api, _, spec = item
+                family = spec.get("state_family")
+                if family:
+                    count = spec.get("persistent_state")
+                    if not isinstance(count, int) or count <= 0:
+                        raise LinkError("Invalid persistent state requirement")
+                    if family in state_families and state_families[family] != count:
+                        raise LinkError("Conflicting persistent state resource contract")
+                added_family = family is not None and family not in state_families
+                if added_family:
+                    state_families[family] = count
+                new_key = key is not None and key not in shared_seen
+                if new_key:
+                    shared_seen.add(key)
+                chosen[api] = item
+                resource_search(depth + 1, raw + (size if key is None or new_key else 0),
+                                max(zp, spec["zp"]), max(scratch, spec["scratch"]))
+                del chosen[api]
+                if new_key:
+                    shared_seen.remove(key)
+                if added_family:
+                    del state_families[family]
+
+        resource_search(0, 0, 0, 0)
     if best is None:
         raise LinkError("No certified variant combination fits RAM/ZP budgets")
     return best
