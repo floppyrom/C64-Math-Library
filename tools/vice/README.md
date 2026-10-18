@@ -12,7 +12,7 @@ cd C64-Math-Library
 # Debian/Ubuntu:
 sudo apt-get update
 sudo apt-get install -y git make gcc g++ autoconf automake libtool pkg-config \
-    bison flex texinfo dos2unix xa65 gettext
+    bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
 bash tools/vice/build_headless.sh
 export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
 bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
