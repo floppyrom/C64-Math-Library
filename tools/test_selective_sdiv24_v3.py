@@ -90,7 +90,9 @@ class Signed24V3TransplantTests(unittest.TestCase):
                 self.assertEqual(len(man["link_order"]),1)
                 self.assertEqual(entry["MATH_SDIV24"],code)
                 self.assertEqual(entry["MATH_SMOD24"],code+3)
-                self.assertEqual(len(labels)>100,True)
+                self.assertTrue(
+                    {"L5A40", "L83E2", "L8801_ADC_IMMEDIATE",
+                     "FAST_SDIV24_V3", "FAST_SMOD24_V3"} <= set(labels))
                 smc=labels["L8801_ADC_IMMEDIATE"]+1
                 assert code<=smc<code+size
                 donor_before=bytes(cpu.mem[code:code+size])
