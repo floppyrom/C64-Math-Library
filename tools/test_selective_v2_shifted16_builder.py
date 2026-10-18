@@ -121,12 +121,12 @@ class ShiftedV2Public(unittest.TestCase):
                     man = linker.build(plan, Path(td)/("speed_%d_%d" %
                                        (budget_zp, budget_ram)))
                     self.assertEqual(man["operations"][0]["variant"], expected)
-                    self.assertEqual(man["cycle_model"]["cases"], 384)
-                    self.assertEqual(man["cycle_model"]["corpus_sha256"],
+                    self.assertEqual(man["cycle_model_benchmark"]["cases"], 384)
+                    self.assertEqual(man["cycle_model_benchmark"]["corpus_sha256"],
                                      "f78373d1422f84e75a96f89e944e44e925cfae4f3531c66696cc5272fab39f6c")
                     self.assertLess(
-                        man["cycle_model"]["mean_cycles"][FAST],
-                        man["cycle_model"]["mean_cycles"][SMALL])
+                        man["cycle_model_benchmark"]["mean_cycles"][FAST],
+                        man["cycle_model_benchmark"]["mean_cycles"][SMALL])
 
     def test_resource_constraints_and_fail_closed_pin(self):
         with tempfile.TemporaryDirectory() as td:
