@@ -32,7 +32,7 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 32 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 33 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -46,6 +46,12 @@ the lookup image. For the faster measured variants use:
 ```sh
 make builder-speed SPEED_CONFIG=examples/operation-first-shared24-speed.json OUT=build_shared24
 ```
+
+A stock-C64 reciprocal speed frontier now offers the original 99-byte compact,
+448-byte historical-threshold and 1,544-byte exact-table alternatives for
+`URECIP16_Q16`. All three use zero ZP and require no REU; automatic speed
+selection uses identical complete public-call source-model comparisons, not
+historic REU resident timing. [Qualification and resource details](docs/RECIP16_THRESHOLD_STOCK_BUILDER.md).
 
 The historical V2 32/16 fast division core is now independently linkable for
 UDIV16_SHL8: approximately 719 full public-call model cycles versus 1,777
