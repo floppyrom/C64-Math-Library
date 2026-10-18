@@ -23,11 +23,15 @@ Run `python3 -m unittest discover -s tools -p
 512 same-corpus calls at both $8000 and $7123, with X/Y preservation,
 carry=0, stack balance and output sentinels.
 
-The next promotion gate must integrate into the global operation-first
-resource accounting and speed model, compare **identical linked public
-calls** versus the 156-byte portable source, validate at both placements
-in native VICE r46284 and retain the compact zero-ZP alternative.
+The operation-first builder now exposes `link:v2-quarter-square` with exact
+page-aligned RAM, 24 ZP, writable-code and canonical source provenance.
+The speed objective compares **512 identical full public calls** against
+the 156-byte portable source. It automatically picks the fastest qualified
+feasible implementation, while preserving compact zero-ZP selection. The
+final acceptance gate is native VICE r46284 and complete library CI at
+two placements, plus full-page resource accounting.
 A signed SMUL24 fast sibling may share the physical unsigned producer
 after sign-correction qualification, but may not be assumed correct or fast.
 
-This first PR is research only, not automatic speed selection.
+The source extraction and native qualification remain under review until
+all exact-head CI checks are green; no historical profile is modified.
