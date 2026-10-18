@@ -43,9 +43,14 @@ Native VICE **r46284**, source-built from the pinned upstream submodule,
 must independently exercise both exported entries on the same 96-call
 public ABI set at two code/I/O relocations (**384 emulator calls**).
 
-This is a **research branch only** pending exact-head CI. Even once
-qualified, follow up with a mixed 56-operation VICE integration check and
-full source-package audit before promoting this resource-hungry donor.
+This is a **research branch only** pending exact-head CI. The new
+`tools/native_all56_sdiv24_v3.py` qualifies the original historical
+donor in an image with **all 56 builder operations resident** (both
+signed24 public entries at two RAM relocations, 384 native calls), while
+keeping the other 54 selected sources pinned. It is combined-image
+compatibility, not execution coverage of all 56 public APIs. The regular
+full-library checks and SHA256 package audit must also pass before
+this resource-hungry donor is eligible for the builder.
 The historical zero-page region cannot be assumed free in arbitrary
 games. Donor timing must be compared on the same corpus, not against
 unrelated V1-V5 published averages or real hardware elapsed time.
