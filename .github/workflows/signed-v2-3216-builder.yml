@@ -7,6 +7,8 @@ on:
       - 'tools/selective_speed_s3216.py'
       - 'tools/test_selective_speed_s3216.py'
       - 'tools/native_selective_signed_v2_3216_builder.py'
+      - 'tools/export_wide_frame_trace.py'
+      - 'tools/test_signed_v2_3216_frame_trace.py'
       - 'tools/research_signed_v2_u3216.py'
       - 'tools/selective_v2_fast_u3216.py'
       - 'v2_pareto_fast/resident/modules/pareto_udiv32_16.a'
@@ -30,6 +32,10 @@ jobs:
         run: |
           python3 -m compileall -q tools/selective_linker.py tools/selective_speed_s3216.py tools/test_selective_speed_s3216.py tools/native_selective_signed_v2_3216_builder.py
           python3 -m unittest discover -s tools -p 'test_selective_speed_s3216.py' -v
+      - name: Verify V2 signed32/16 public-call worst-frame results in mixed workloads
+        run: |
+          python3 -m compileall -q tools/export_wide_frame_trace.py tools/test_signed_v2_3216_frame_trace.py
+          python3 -m unittest discover -s tools -p 'test_signed_v2_3216_frame_trace.py' -v
 
   native-vice:
     needs: paired-public-model
