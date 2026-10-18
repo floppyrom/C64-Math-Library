@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (thirty source-qualified APIs)
+## Workload-weighted speed selection (thirty-one source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **thirty**
+The `speed` objective supports project-level weighted selection for **thirty-one**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UMUL24, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
+SMUL32_SHR16, UMUL24, SMUL24, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -87,6 +87,17 @@ source variants at two complete memory layouts ($2000 and $4321), yielding
 while the other 55 choices retain the original fully budgeted size selection.
 This proves relocation and mixed-residency compatibility for root16, not
 an exhaustive mixed invocation of every math operation.
+
+For SMUL24, the historical V2 $CA-biased kernel now exposes its
+signed correction as another public entry from the **same** four quarter-square
+tables and 512-byte executable code slot used by UMUL24. Both calls share
+a single 24-ZP producer when selected together; the compiler must not
+duplicate either the table planes or the code. The 227-byte zero-ZP
+portable signed source remains available when memory constraints exclude
+the historical fast donor. The new signed speed basis measures 512
+identical full public signed 24x24->48 calls at both memory placements.
+Use `make builder-speed SPEED_CONFIG=examples/operation-first-shared24-speed.json`.
+The 24-frame paired test records per-call and peak-frame regressions.
 
 For UMUL24, `link:v2-quarter-square` uses the original $CA-biased
 four-table carry-neutral V2 arithmetic, reassembled into an independently
