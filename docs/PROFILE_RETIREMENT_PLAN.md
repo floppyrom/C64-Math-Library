@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (eighteen source-qualified APIs)
+## Workload-weighted speed selection (nineteen source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **eighteen**
+The `speed` objective supports project-level weighted selection for **nineteen**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24 and UMOD24. Multiple operations **must**
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24 and UMOD16. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -68,6 +68,12 @@ verifies the newly speed-qualified two-variant UDIV24/UMOD24 source corpus.
 Benchmarks do **not** provide real hardware timing or prove
 cycle invariance after physical link relocation; speed selection is therefore
 an expected workload estimate, not exact total cycle prediction.
+
+For UMOD16, both 2-ZP biased and 0-ZP direct-chain variants have the
+same 384-case public R16/C cycle basis. The 0-ZP direct path saves about
+4.6% CPU-model cycles at an extra 716 RAM bytes. The builder retains the
+294-byte biased source when the RAM budget is tight and the faster 1,010-byte
+zero-ZP path when budgets allow. Existing native VICE tests qualify both.
 
 For 24-bit unsigned division/modulo, both exported public entries share
 an exact Q24/R24/C producer. With 3 ZP bytes and at least 1,493 main RAM

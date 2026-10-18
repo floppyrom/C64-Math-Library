@@ -1,3 +1,16 @@
+## Unreleased — same-input complete public speed selection for UMOD16
+
+- Add `UMOD16` to the builder's comparable weighted-speed frontier (19 APIs).
+  Independently link the existing 2-ZP biased source and the 0-ZP direct
+  chain; compare 384 identical deterministic operand pairs at the public
+  `R16/C` ABI, with N/D, quotient, high-byte sentinels, stack and code intact.
+- On the fixed corpus, direct zero-ZP averages approximately 504 CPU-model
+  cycles versus 529 for the biased source at $8000: faster but requiring
+  1,010 main RAM bytes versus 294. When RAM is constrained, choose biased;
+  when ZP=0, choose direct or reject budgets that cannot fit it.
+- Both source variants have native VICE two-map coverage via the existing
+  selective-linker gate. No assembler source or old resident profile changes.
+
 ## Unreleased — authenticated same-corpus speed selection for UDIV24/UMOD24
 
 - Extend the operation-first builder's workload-weighted `speed` objective
