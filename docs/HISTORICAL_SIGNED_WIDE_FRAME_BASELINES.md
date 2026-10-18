@@ -58,3 +58,41 @@ switching every configuration to the historical donor.
 This research workflow uses the Mini6502 cycle model, not VICE elapsed
 time, does not include frame IRQ/SID/VIC/REU-transfer cost, and does not
 prove a real game's peak frame consumption.
+
+
+## Initial observed 24-frame historical frontier (18 October 2026)
+
+The GitHub CI producer passed on the same **150 public calls**, with
+**identical full input hashes and call ordering** in all five profile
+executions. Every profile's resident PRG starts at `$1000`, with public
+math I/O at `$C000`. The source evidence (including exact PRG/REU digests)
+is retained in GitHub Actions run `39134772130`, artifact
+`historical-signed-wide-frame-baselines`.
+
+| Historical profile | Mean math cycles / frame | P95 math cycles / frame | Peak math cycles / frame | Frames above 19,656 math-only cycles |
+|---|---:|---:|---:|---:|
+| V1 Balanced | 5,714.750 | 21,324 | 22,916 | 3 |
+| V2 Pareto Fast | 3,919.208 | 14,897 | 15,969 | 0 |
+| V3 REU 512K | 3,889.542 | 14,816 | **15,907** | 0 |
+| V4 REU 16M | 3,889.542 | 14,816 | **15,907** | 0 |
+| V5 Hybrid Low-ZP | 4,367.208 | 16,451 | 17,562 | 0 |
+
+V3/V4 save **43,805 total public-call cycles** versus V1 on these
+matched inputs, or **7,009 cycles** in the busiest arithmetic frame.
+The biggest operation-level sources of this difference (V1 → V3)
+are `SDIV32_16` (12,313 cycles), `SMOD24` (11,305),
+`SMOD32_32` (9,639), and `SMOD32_16` (8,137).
+Therefore the next *donor selection* should prioritize the historical
+32/16 signed quotient/magnitude path and the shared signed modulo
+substrates, not attempt to optimize a peripheral public wrapper first.
+
+These **are not** unconditional timing claims for every game:
+the deterministic stress mix deliberately includes high-quotient and
+zero-divisor cases; full program cycles include only mathematical calls
+plus the scorer's 6-cycle JSR per call. The 19,656 comparison is a PAL
+reference frame, not an available math-only budget after graphics and
+music. The old fastest-profile means published on other corpora cannot
+replace this matched evidence, and V3/V4's identical arithmetic timing
+does not imply identical runtime REU transport costs. Code size,
+shared tables, zero-page pressure, and initialization must still be
+accounted for when transplanting these donors.
