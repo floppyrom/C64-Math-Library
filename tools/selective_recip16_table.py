@@ -47,7 +47,7 @@ def render(code: int, io: int) -> str:
        "    rts",
        "RECIP_TABLE_LARGE:",
        "    cmp #$01",
-       "    bne RECIP_TABLE_BINARY",
+       "    bne RECIP_TABLE_QUICK",
        "    lda INPUT_DIV",
        "    bne RECIP_TABLE_QUICK",
        "    lda #$00",
