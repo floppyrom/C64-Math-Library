@@ -23,6 +23,18 @@ def load(td, variant, code, io, zp):
         objective="size",zp_budget=9,ram_budget=2500,
         pins={op:variant for op in OPS})
     folder=Path(td)/(variant.split(":")[-1])
+    if variant==V3:
+        mod=linker.MODULES["MATH_SDIV24"][V3]
+        localmap={"KERNEL_CODE":code,"INPUT_NUM":io+16,"INPUT_DIV":io+20,
+                  "OUTPUT_QUOT":io+24,"OUTPUT_REM":io+28,"TEMP_ZP":zp}
+        candidate, checklabels, _=Assembler().assemble(
+            linker.relocate_source(mod,localmap,linker.ROOT))
+        assert len(candidate)==1897 and set(candidate)==set(
+            range(code,code+1897)), (
+                "V3 compact source layout",len(candidate),
+                hex(min(candidate)),hex(max(candidate)),
+                [hex(v) for v in sorted(set(range(code,code+1897))-set(candidate))[:12]],
+                [hex(v) for v in sorted(set(candidate)-set(range(code,code+1897)))[:12]])
     report=linker.build(plan,folder,memory={
         "code_base":code,"math_io":io,"zp_base":zp,"scratch_base":io+0x40})
     entries={x["api"]:int(x["entry"][1:],16) for x in report["operations"]}
