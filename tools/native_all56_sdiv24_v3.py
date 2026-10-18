@@ -23,7 +23,7 @@ def main():
         raise RuntimeError("VICE_WRAPPER must identify native x64sc")
     index=math_builder.operation_index()
     assert len(index)==56
-    native.H,native.INPUT,native.OUTPUT=0x1000,0x9000,0x9800
+    native.H,native.INPUT,native.OUTPUT=0x1000,0xa000,0xa800
     checked=0
     with tempfile.TemporaryDirectory(prefix="full56_v3_signed24_") as t:
         home=Path(t)
