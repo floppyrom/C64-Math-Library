@@ -5,6 +5,7 @@ on:
     paths:
       - 'tools/selective_v2_shifted_u3216.py'
       - 'tools/selective_speed_udiv16_shl8.py'
+      - 'tools/test_v2_shifted16_paired_frame.py'
       - 'tools/selective_linker.py'
       - 'tools/test_selective_v2_shifted16_builder.py'
       - 'tools/native_selective_v2_shifted16.py'
@@ -29,6 +30,7 @@ jobs:
           python3 -m compileall -q tools/selective_v2_shifted_u3216.py tools/test_selective_v2_shifted16_builder.py tools/native_selective_v2_shifted16.py tools/selective_speed_udiv16_shl8.py tools/selective_linker.py
           python3 tools/selective_v2_shifted_u3216.py
           python3 -m unittest discover -s tools -p 'test_selective_v2_shifted16_builder.py' -v
+          python3 -m unittest discover -s tools -p 'test_v2_shifted16_paired_frame.py' -v
 
   native-vice:
     needs: source-and-model
