@@ -23,6 +23,7 @@ CODE_SLOT=512
 TABLE_SLOT=512
 TABLES=("sqr_lo","sqr_hi","neg_sqr_lo","neg_sqr_hi")
 PUBLIC="FAST_UMUL24_V2_QS"
+SIGNED_PUBLIC="FAST_SMUL24_V2_QS"
 BIAS=0xCA
 
 # Labels are direct aliases of the historical 24 contiguous ZP pointer bytes.
@@ -67,6 +68,45 @@ def native_core(root=ROOT):
     core=core.replace("z0 !byte 0","z0: !byte 0")
     return core
 
+
+
+def signed_wrapper():
+    """Shared V2 unsigned producer plus modulo-2^48 signed correction.
+
+    No extra ZP or tables. The unsigned routine preserves public X24/Y24.
+    Only Z[3:6] needs correction; both wrapper aliases use one source image.
+    """
+    return """FAST_SMUL24_V2_QS:
+    jsr FAST_UMUL24_V2_QS
+    lda INPUT_X+2
+    bpl signed24_x_done
+    sec
+    lda OUTPUT_Z+3
+    sbc INPUT_Y
+    sta OUTPUT_Z+3
+    lda OUTPUT_Z+4
+    sbc INPUT_Y+1
+    sta OUTPUT_Z+4
+    lda OUTPUT_Z+5
+    sbc INPUT_Y+2
+    sta OUTPUT_Z+5
+signed24_x_done:
+    lda INPUT_Y+2
+    bpl signed24_y_done
+    sec
+    lda OUTPUT_Z+3
+    sbc INPUT_X
+    sta OUTPUT_Z+3
+    lda OUTPUT_Z+4
+    sbc INPUT_X+1
+    sta OUTPUT_Z+4
+    lda OUTPUT_Z+5
+    sbc INPUT_X+2
+    sta OUTPUT_Z+5
+signed24_y_done:
+    clc
+    rts
+"""
 
 def render(start,io,zp,root=ROOT):
     if zp<2 or zp+ZP_BYTES>0x100:
@@ -115,13 +155,13 @@ def render(start,io,zp,root=ROOT):
         "    lda z4","    sta OUTPUT_Z+4",
         "    clc","    rts",
     ])
-    return "\n".join(const+wrapper)+"\n"+native_core(root)+"\n"
+    return "\n".join(const+wrapper)+"\n"+native_core(root)+"\n"+signed_wrapper()+"\n"
 
 
 def assemble(start,io,zp,root=ROOT):
     positions,end=layout(start)
     code,labels,_=Assembler().assemble(render(start,io,zp,root))
-    if labels.get(PUBLIC)!=start or "umul24" not in labels:
+    if labels.get(PUBLIC)!=start or "umul24" not in labels or SIGNED_PUBLIC not in labels:
         raise ValueError("UMUL24 public/native entries not source-linked")
     if not code or min(code)<start or max(code)>=start+CODE_SLOT:
         raise ValueError("UMUL24 wrapper+historical code exceeds 512 bytes")
