@@ -1,0 +1,29 @@
+name: Shared biased V2 SMUL24 signed correction research
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_v2_fast_umul24.py'
+      - 'tools/test_research_v2_smul24_shared.py'
+      - '.github/workflows/smul24-v2-shared-research.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-public-unsigned-signed:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-assemble and prove both signed/unsigned public entries
+        run: |
+          python3 -m compileall -q tools/selective_v2_fast_umul24.py tools/test_research_v2_smul24_shared.py
+          python3 -m unittest discover -s tools -p 'test_research_v2_smul24_shared.py' -v
+          python3 -m unittest discover -s tools -p 'test_research_v2_umul24.py' -v
