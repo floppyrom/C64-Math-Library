@@ -1,3 +1,17 @@
+## Unreleased — stock-C64 reciprocal threshold and exact-table Pareto frontier
+
+- Add three source-linked URECIP16_Q16 choices: original 99-byte zero-ZP
+  restoring source; 448-byte V3/V4-inspired large-denominator quotient
+  1..15 threshold gate, sharing its original exact fallback; and a
+  1,544-byte 0-ZP exact table/binary-threshold producer.
+- Guard output Q24/C, untouched Q3/R/N/D bytes, relocations, source hashes,
+  all 65,536 divisors, three-way identical-input full public-call timings,
+  automatic RAM/ZP-aware selection and dual-origin native VICE.
+- Explicitly retain historical V3/V4 REU reciprocal baseline and forbid
+  comparison of old resident timings with new public wrapper timings.
+- Increase authenticated operation-first speed-selection support to 33/56
+  **subject to complete CI and package checksum qualification**.
+
 ## Unreleased — historical V2 UDIV16_SHL8 source-linked speed selection
 
 - Port the canonical V2 32/16 split-tail producer to full Q24/R16/C
