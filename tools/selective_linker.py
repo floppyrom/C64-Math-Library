@@ -36,6 +36,7 @@ import selective_speed_u24 as speed_u24
 import selective_speed_umod16 as speed_umod16
 import selective_speed_dist8_accurate as speed_dist8_accurate
 import selective_speed_atan2 as speed_atan2
+import selective_speed_udiv16 as speed_udiv16
 import selective_hybrid_u3232 as hybrid_u3232
 import selective_v2_fast_u3216 as v2u3216
 import selective_isqrt16 as sqrt16
@@ -323,6 +324,13 @@ MODULES = {
             "source": "routines/standalone_lab/portable/div_u16_biased.asm",
             "segments": (("KERNEL_CODE", 323),),
             "entry": "FAST_UDIV16_BIASED", "zp": 2, "scratch": 0,
+        },
+        "link:v2-zerozp": {
+            "source": "routines/divide/udiv16_v2_zerozp.asm",
+            "segments": (("KERNEL_CODE", 1481),),
+            "entry": "DU16F_div_u16", "zp": 0, "scratch": 0,
+            "udiv16_v2": True,
+            "provenance": "Original V2 direct size-fast 16/16 Q/R/C producer, canonical source alias and public stubs removed; 1481 bytes, 0 ZP, 0 scratch, NMOS 6510 LAX/ANC; historical V2 donor preserved unchanged.",
         },
     },
     "MATH_UMUL8": {
@@ -1689,12 +1697,13 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_UMOD16": (speed_umod16.bench_umod16, "scratch", True),
             "MATH_DIST8_ACCURATE": (speed_dist8_accurate.bench_dist8_accurate, "scratch", True),
             "MATH_ATAN2_8": (speed_atan2.bench_atan2, "scratch", True),
+            "MATH_UDIV16": (speed_udiv16.bench_udiv16, "scratch", True),
         }
         unavailable = sorted(set(names) - set(measured))
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8")
+                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16")
         models = {}
         per_operation_cycles = {}
         for api in names:
@@ -2139,6 +2148,8 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed_umod16.py",
                        "tools/selective_speed_dist8_accurate.py",
                        "tools/selective_speed_atan2.py",
+                       "tools/selective_speed_udiv16.py",
+                       "tools/generate_selective_udiv16_v2.py",
                        "tools/selective_hybrid_u3232.py",
                        "tools/selective_v2_fast_u3216.py",
                        "tools/selective_speed_umul16.py",
