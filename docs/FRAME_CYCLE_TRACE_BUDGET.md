@@ -116,6 +116,14 @@ conflating memory layouts or benchmark corpora. Both donor source SHA-256
 digests and resource requirements remain in the companion manifests.
 Tests repeat this at $8000/$C000 and $7123/$C040.
 
+A different-size signed24 donor can shift other separately linked
+operations to different absolute addresses. Consequently, even their
+unchanged machine-code sources can incur different branch/page-crossing
+cycle penalties. The report intentionally counts those secondary
+differences in the total busy-frame budget. The regression separately
+attributes changed signed24 call costs versus all other call costs and
+requires those other operations to retain the same source variant.
+
 **Interpretation:** the peak-frame difference is specific to these
 synthetic, CPU-model-measured public calls. It does not measure real VICE
 elapsed time, VIC bus steals, IRQs, SID playback, game logic, or a real
