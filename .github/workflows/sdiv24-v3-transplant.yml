@@ -7,6 +7,7 @@ on:
       - tools/selective_linker.py
       - tools/test_selective_sdiv24_v3.py
       - tools/native_selective_sdiv24_v3.py
+      - tools/native_all56_sdiv24_v3.py
       - docs/SDIV24_V3_TRANSPLANT.md
       - .github/workflows/sdiv24-v3-transplant.yml
   workflow_dispatch:
@@ -25,7 +26,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Validate source syntax
-        run: python3 -m compileall -q tools/selective_linker.py tools/test_selective_sdiv24_v3.py tools/native_selective_sdiv24_v3.py
+        run: python3 -m compileall -q tools/selective_linker.py tools/test_selective_sdiv24_v3.py tools/native_selective_sdiv24_v3.py tools/native_all56_sdiv24_v3.py
       - name: Historical V3 signed24 private producer public-ABI, SMC isolation and cycle pairs
         run: python3 -m unittest discover -s tools -p 'test_selective_sdiv24_v3.py' -v
 
@@ -52,3 +53,8 @@ jobs:
           export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
           bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
           python3 tools/native_selective_sdiv24_v3.py
+      - name: Qualify historical donor with all 56 operations resident, two memory maps
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          python3 tools/native_all56_sdiv24_v3.py
