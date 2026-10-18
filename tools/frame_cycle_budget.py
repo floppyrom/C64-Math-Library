@@ -143,11 +143,21 @@ def analyze(baseline_path: Path, candidate_path: Path | None = None, *,
              else max(max(c.frame for c in baseline), max(c.frame for c in candidate)) + 1)
     before = score(baseline, bm, frame_count=count, budget=budget, jsr_cycles=jsr_cycles)
     after = score(candidate, cm, frame_count=count, budget=budget, jsr_cycles=jsr_cycles)
+    before_slots = {c.key: c.cycles for c in baseline}
+    after_slots = {c.key: c.cycles for c in candidate}
+    frame_savings = [old - new for old, new in zip(
+        before["frame_math_cycles"], after["frame_math_cycles"])]
+    call_regression = max((after_slots[k] - cost
+                           for k, cost in before_slots.items()), default=0)
     return {"baseline": before, "candidate": after,
             "comparison": {"paired_calls": len(baseline),
                            "total_math_cycles_saved": before["total_math_cycles"] - after["total_math_cycles"],
                            "peak_frame_math_cycles_saved": before["peak_frame_math_cycles"] - after["peak_frame_math_cycles"],
                            "peak_frame_changed": before["peak_frame"] != after["peak_frame"],
+                           "baseline_peak_frame_cycles_saved": frame_savings[before["peak_frame"]],
+                           "regressed_frames": sum(delta < 0 for delta in frame_savings),
+                           "max_frame_regression_cycles": max(0, -min(frame_savings)),
+                           "max_public_call_regression_cycles": max(0, call_regression),
                            "over_budget_frames_saved": before["over_budget_frames"] - after["over_budget_frames"]}}
 
 
