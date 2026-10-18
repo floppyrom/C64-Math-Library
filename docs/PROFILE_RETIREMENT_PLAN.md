@@ -34,12 +34,13 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (sixteen source-qualified APIs)
+## Workload-weighted speed selection (eighteen source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **sixteen**
+The `speed` objective supports project-level weighted selection for **eighteen**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
-ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32 and UMOD32_32. Multiple operations **must** each have a positive integer call count,
+ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24 and UMOD24. Multiple operations **must**
+each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
 
@@ -62,10 +63,19 @@ Admissible cycle and resource lower bounds prune impossible or dominated
 partial choices, but finalists still receive the original full aligned placement,
 producer-sharing, call-exclusive ZP, scratch and persistent-state checks.
 A reproducible regression compares the solver to exhaustive enumeration and
-checks all 16 speed-qualified APIs with mixed RAM/ZP constraints.
+checks the original 16-operation mixed-speed frontier and independently
+verifies the newly speed-qualified two-variant UDIV24/UMOD24 source corpus.
 Benchmarks do **not** provide real hardware timing or prove
 cycle invariance after physical link relocation; speed selection is therefore
 an expected workload estimate, not exact total cycle prediction.
+
+For 24-bit unsigned division/modulo, both exported public entries share
+an exact Q24/R24/C producer. With 3 ZP bytes and at least 1,493 main RAM
+bytes the builder chooses the historical writable-code V2 Repose-fast
+variant on the 384-case identical-input basis; at 0 ZP or below 1,493 B
+it retains the 226-byte compact restoring implementation. Source hashes
+include the canonical donor and relocator. The measured mean cycles are
+CPU-model whole public calls and do not establish hardware cycles.
 
 With 1,400 total RAM bytes and the two example APIs, the optimizer can use only
 one quarter-square implementation. Heavy UMUL8 workloads select its fast

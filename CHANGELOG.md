@@ -1,3 +1,18 @@
+## Unreleased — authenticated same-corpus speed selection for UDIV24/UMOD24
+
+- Extend the operation-first builder's workload-weighted `speed` objective
+  from 16 to **18** source-qualified public APIs by adding `UDIV24` and
+  `UMOD24`. Independently assemble and benchmark both shared Q24/R24/C
+  producers on the identical deterministic 384-pair public-call corpus.
+- Source-authenticate the V2 Repose 3-ZP writable-SMC donor and the 0-ZP
+  portable restoring alternative, with complete N/D, output sentinel,
+  carry and stack preservation. The compact 226-byte RAM alternative wins
+  when budgets prohibit the 1,493-byte V2 high-speed producer.
+- For code base $8000 the CPU-model complete-call means are 2,127.995
+  (portable) versus 1,117.047 (V2), a 47.5% mean cycle reduction on this
+  corpus. No physical C64 timing or profile parity is claimed. Both source
+  variants already have independent two-map native VICE qualification.
+
 ## Unreleased — all-56 resident native VICE multiplication integration
 
 - Validate a single 56-operation linked C64 PRG at $2000 and $4321 using
