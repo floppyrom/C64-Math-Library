@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (nineteen source-qualified APIs)
+## Workload-weighted speed selection (twenty source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **nineteen**
+The `speed` objective supports project-level weighted selection for **twenty**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24 and UMOD16. Multiple operations **must**
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16 and DIST8_ACCURATE. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -68,6 +68,12 @@ verifies the newly speed-qualified two-variant UDIV24/UMOD24 source corpus.
 Benchmarks do **not** provide real hardware timing or prove
 cycle invariance after physical link relocation; speed selection is therefore
 an expected workload estimate, not exact total cycle prediction.
+
+For the exact-table DIST8_ACCURATE source pair, the V1 0-ZP RAM-scratch
+path is available at 802 B main RAM; the V2 two-ZP fast path uses 800 B
+and averages 78.08 rather than 84.64 CPU-model cycles per call on 384
+identical signed-byte inputs. Both retain the original shared 512-byte
+major/minor tables and source-exhaustive correctness provenance.
 
 For UMOD16, both 2-ZP biased and 0-ZP direct-chain variants have the
 same 384-case public R16/C cycle basis. The 0-ZP direct path saves about
