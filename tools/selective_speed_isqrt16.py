@@ -45,6 +45,8 @@ def bench_isqrt16(modules, base, io, scratch, root=ROOT, zp=0x50):
         if (tuple(length for _,length in module['segments']), module['zp'],
             module['scratch'], bool(module.get('isqrt16'))) != (lens,zpn,temp,aligned):
             raise ValueError('ISQRT16 source/placement contract drifted: '+ident)
+        if (ident=='link:radix4-zerozp') != bool(module.get('isqrt16_radix4')):
+            raise ValueError('ISQRT16 tableless source identity changed: '+ident)
         if module.get('requires_writable_code') or module.get('requires_reu'):
             raise ValueError('ISQRT16 unqualified hardware dependency')
         plan = math_builder.create_plan(index, ['ISQRT16'], objective='size',

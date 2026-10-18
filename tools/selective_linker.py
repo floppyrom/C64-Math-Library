@@ -868,7 +868,7 @@ MODULES = {
             "source": "routines/roots/isqrt16_radix4_zerozp.asm",
             "segments": (("KERNEL_CODE", 137),),
             "entry": "FAST_ISQRT16_RESTORING", "zp": 0, "scratch": 6,
-            "operand_layout": "nz",
+            "operand_layout": "nz", "isqrt16_radix4": True,
             "provenance": "Exhaustive all-65536 unsigned floor-sqrt restoring 137B code +6B RAM scratch, 0 ZP, no tables or SMC; C=0, N preserved",
         },
         "link:square-table": {
@@ -1014,6 +1014,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv16_shl8.py" if mod.get("udiv16_shl8") else
                     "tools/test_selective_udiv24_v2.py" if mod.get("udiv24_v2") else
                     "tools/test_selective_isqrt32_v2.py" if mod.get("isqrt32_v2") else
+                    "tools/test_selective_isqrt16_radix4.py" if mod.get("isqrt16_radix4") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
                     "tools/test_selective_seek16.py" if mod.get("seek16") else
                     "tools/test_selective_seek8.py" if mod.get("seek8") else
