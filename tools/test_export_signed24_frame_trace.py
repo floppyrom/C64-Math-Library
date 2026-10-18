@@ -17,9 +17,10 @@ class Signed24FrameTraceTests(unittest.TestCase):
             with self.subTest(code=code), tempfile.TemporaryDirectory() as directory:
                 target = Path(directory)
                 paths = [target / ("signed24_%d.csv" % i) for i in range(2)]
+                legacy_pair = SIGNED24_VARIANTS[:2]
                 summaries = [
                     export(paths[i], frames=24, code=code, io=io, signed24_variant=variant)
-                    for i, variant in enumerate(SIGNED24_VARIANTS)
+                    for i, variant in enumerate(legacy_pair)
                 ]
                 original, bm = load_trace(paths[0])
                 guarded, gm = load_trace(paths[1])
@@ -72,6 +73,41 @@ class Signed24FrameTraceTests(unittest.TestCase):
                              "other_signed_wide_cycles_saved": others_saved}
                 print("SIGNED24_FRAME_PAIRED", hex(code),
                       json.dumps(breakdown, sort_keys=True), flush=True)
+
+    def test_v3_signed24_mixed_frame_worst_case_and_smc(self):
+        # The same schedule and register state for all three donors. The
+        # exporter refuses any executable write except the V3 ADC immediate.
+        self.assertIn("link:v3-signed-magnitude", SIGNED24_VARIANTS)
+        for code, io in ((0x8000, 0xC000), (0x7123, 0xC040)):
+            with self.subTest(code=code), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                baseline = root / "portable.csv"
+                fast = root / "v3.csv"
+                export(baseline, frames=24, code=code, io=io,
+                       signed24_variant="link:portable-zerozp")
+                export(fast, frames=24, code=code, io=io,
+                       signed24_variant="link:v3-signed-magnitude")
+                before, bm = load_trace(baseline)
+                after, am = load_trace(fast)
+                self.assertEqual(len(before), len(after))
+                self.assertEqual([c.key for c in before],
+                                 [c.key for c in after])
+                self.assertEqual({am["variants"]["MATH_" + name]
+                                  for name in SIGNED24_OPS},
+                                 {"link:v3-signed-magnitude"})
+                self.assertEqual({bm["variants"][name] for name in bm["variants"]
+                                  if name not in ("MATH_SDIV24", "MATH_SMOD24")},
+                                 {am["variants"][name] for name in am["variants"]
+                                  if name not in ("MATH_SDIV24", "MATH_SMOD24")})
+                detail = json.loads(fast.with_suffix(".manifest.json").read_text())
+                self.assertEqual(detail["manifest"]["resource_use"]["zero_page_bytes"], 9)
+                paired = analyze(baseline, fast, frame_count=24)
+                self.assertEqual(paired["comparison"]["paired_calls"], len(before))
+                self.assertGreater(
+                    sum(c.operation in ("MATH_SDIV24", "MATH_SMOD24") for c in before),
+                    0)
+                print("V3_SIGNED24_PAIRED_FRAME", hex(code),
+                      json.dumps(paired["comparison"], sort_keys=True), flush=True)
 
     def test_refuse_unknown_source_and_changed_memory_map(self):
         with tempfile.TemporaryDirectory() as directory:

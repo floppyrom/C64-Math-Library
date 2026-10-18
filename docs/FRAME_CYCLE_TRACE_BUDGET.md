@@ -134,3 +134,42 @@ promotion, first collect actual workload inputs, transplant and qualify
 the historical fastest V1–V5 and OptiSearch signed kernels, then
 repeat the same paired source/memory/cycle measurements. Keep both
 Pareto candidates regardless of the synthetic frame winner.
+
+## Historical V3 signed24: qualified source linked into the same busiest frames
+
+PR #293 brought the original V3 signed24 magnitude kernel into the independent
+builder as a shared SDIV24/SMOD24 producer (1,897 code bytes; 9 ZP; one
+self-modifying ADC immediate). The mixed-frame exporter now supports that
+explicit Pareto pin and checks that **no other linked executable byte changes**
+during its complete burst trace:
+
+```sh
+python3 tools/export_wide_frame_trace.py --frames 24 --code-base 0x8000 --io-base 0xc000 \
+    --signed24-variant link:v3-signed-magnitude --out build/frame_signed24_v3.csv
+python3 tools/frame_cycle_budget.py --baseline build/frame_signed24_original.csv \
+    --candidate build/frame_signed24_v3.csv --frame-count 24
+```
+
+Repeat at `$7123/$C040` (the CI frame workflow runs both). The shared donor
+is allocated **9 ZP bytes**, not measured against the zero-ZP budget of the
+portable or Q0 sources. The trace exporter explicitly seeds A/X/Y and C/D
+before every call, serializes those caller-state values with signed operands
+into `input_id`, checks the public ABI and paired schedule, and allows only
+the relocated V3 ADC immediate to self-modify. The original portable and Q0
+candidates remain available; no global `--objective speed` default is changed.
+
+The comparison now reports `baseline_peak_frame_cycles_saved`,
+`regressed_frames`, `max_frame_regression_cycles` and
+`max_public_call_regression_cycles` in addition to peak-frame savings.
+A candidate may reduce the overall peak while *worsening another frame or
+individual call*; both regressions must remain visible. A positive saved-cycle
+value means an improvement, not proof of meeting a real C64 frame deadline.
+
+These are synthetic CPU-model *public-call* cycles, not measured effects of
+IRQ, VIC-II badlines, REU DMA, SID or game/demoscene workloads. The V3 kernel's
+native VICE correctness qualification was already established in PR #293;
+the frame trace comparison does not represent a new native-timing result.
+The highest remaining untransplanted historical wide donors are signed 32/16
+DIV/MOD and the full 32-bit DIV/MOD and multiplication producers. They must
+undergo their own ABI, relocatability, shared-table, memory-pressure and
+worst-frame qualifications before automatic speed promotion.

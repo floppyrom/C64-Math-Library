@@ -32,7 +32,7 @@ jobs:
           python3 tools/export_wide_frame_trace.py --frames 24 --code-base 0x7123 --io-base 0xc040 --out build/frame_wide_7123.csv
           python3 tools/frame_cycle_budget.py --baseline build/frame_wide_8000.csv --frame-count 24 --out build/frame_wide_8000.json
           python3 tools/frame_cycle_budget.py --baseline build/frame_wide_7123.csv --frame-count 24 --out build/frame_wide_7123.json
-      - name: Paired signed24 Pareto kernels in busy mixed frames at both relocations
+      - name: Paired signed24 compact, Q0 and V3 historical kernels in busy mixed frames at both relocations
         run: |
           python3 -m unittest discover -s tools -p 'test_export_signed24_frame_trace.py' -v
           for layout in "8000 c000" "7123 c040"; do
@@ -41,6 +41,8 @@ jobs:
             python3 tools/export_wide_frame_trace.py --frames 24 --code-base "0x$code" --io-base "0x$io" --signed24-variant link:portable-zerozp --out "build/frame_signed24_${code}_original.csv"
             python3 tools/export_wide_frame_trace.py --frames 24 --code-base "0x$code" --io-base "0x$io" --signed24-variant link:abs-qzero-guard --out "build/frame_signed24_${code}_guarded.csv"
             python3 tools/frame_cycle_budget.py --baseline "build/frame_signed24_${code}_original.csv" --candidate "build/frame_signed24_${code}_guarded.csv" --frame-count 24 --out "build/frame_signed24_${code}_comparison.json"
+            python3 tools/export_wide_frame_trace.py --frames 24 --code-base "0x$code" --io-base "0x$io" --signed24-variant link:v3-signed-magnitude --out "build/frame_signed24_${code}_v3.csv"
+            python3 tools/frame_cycle_budget.py --baseline "build/frame_signed24_${code}_original.csv" --candidate "build/frame_signed24_${code}_v3.csv" --frame-count 24 --out "build/frame_signed24_${code}_v3_comparison.json"
           done
       - name: Archive exact public-call trace and source provenance
         uses: actions/upload-artifact@v4
