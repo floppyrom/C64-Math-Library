@@ -20,7 +20,6 @@ FAST_SDIV24_V3:
     jmp L5A40
 FAST_SMOD24_V3:
     jmp L5A40
-jmp L5A40
 L5A40:
 lda INPUT_NUM+2
 bpl L5A48
