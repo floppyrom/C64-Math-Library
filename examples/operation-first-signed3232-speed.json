@@ -1,0 +1,16 @@
+{
+  "target": "c64",
+  "operations": [
+    "SDIV32_32",
+    "SMOD32_32"
+  ],
+  "objective": "speed",
+  "workload_calls": {
+    "SDIV32_32": 6,
+    "SMOD32_32": 4
+  },
+  "constraints": {
+    "max_zp_bytes": 12,
+    "max_ram_bytes": 2912
+  }
+}

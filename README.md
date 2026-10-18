@@ -32,7 +32,7 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 27 of the 56 APIs, including signed 24-bit and 32/16 DIV/MOD. Unsupported speed
+Speed selection now covers 29 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -78,6 +78,8 @@ budget, rather than asking the user to choose a historical profile:
 
 ```sh
 make builder-speed SPEED_CONFIG=examples/operation-first-signed32-speed.json OUT=build_signed32
+# Full-width signed 32/32, automatically selecting the qualified V2 hybrid:
+make builder-speed SPEED_CONFIG=examples/operation-first-signed3232-speed.json OUT=build_signed3232
 ```
 
 The busy-frame source-model comparison covers both layouts and records the
