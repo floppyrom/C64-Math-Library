@@ -39,8 +39,12 @@ class HistoricalDIST8Tests(unittest.TestCase):
         self.assertEqual(option["resources_reported"]["code_and_table_bytes"], 61)
         self.assertEqual(option["resources_reported"]["scratch_bytes"], 2)
         self.assertEqual(option["zp_bytes_reported"], 0)
-        root, = candidates["MATH_ISQRT16"]
-        self.assertEqual(root["validation_path"], "tools/test_selective_isqrt16.py")
+        roots = {v["id"]: v for v in candidates["MATH_ISQRT16"]}
+        self.assertEqual(set(roots), {"link:square-table", "link:radix4-zerozp"})
+        self.assertEqual(roots["link:square-table"]["validation_path"],
+                         "tools/test_selective_isqrt16.py")
+        self.assertEqual(roots["link:radix4-zerozp"]["validation_path"],
+                         "tools/test_selective_isqrt16_radix4.py")
         self.assertEqual(fast_distance(128, 128), 192)
         self.assertEqual(fast_distance(255, 1), 1)
         self.assertEqual(fast_distance(127, 127), 190)

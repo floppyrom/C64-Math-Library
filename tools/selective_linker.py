@@ -37,6 +37,7 @@ import selective_speed_umod16 as speed_umod16
 import selective_speed_dist8_accurate as speed_dist8_accurate
 import selective_speed_atan2 as speed_atan2
 import selective_speed_udiv16 as speed_udiv16
+import selective_speed_isqrt16 as speed_isqrt16
 import selective_hybrid_u3232 as hybrid_u3232
 import selective_v2_fast_u3216 as v2u3216
 import selective_isqrt16 as sqrt16
@@ -863,6 +864,13 @@ MODULES = {
         },
     },
     "MATH_ISQRT16": {
+        "link:radix4-zerozp": {
+            "source": "routines/roots/isqrt16_radix4_zerozp.asm",
+            "segments": (("KERNEL_CODE", 137),),
+            "entry": "FAST_ISQRT16_RESTORING", "zp": 0, "scratch": 6,
+            "operand_layout": "nz", "isqrt16_radix4": True,
+            "provenance": "Exhaustive all-65536 unsigned floor-sqrt restoring 137B code +6B RAM scratch, 0 ZP, no tables or SMC; C=0, N preserved",
+        },
         "link:square-table": {
             "source": "routines/roots/isqrt16_square_table.asm",
             "segments": (("KERNEL_CODE", 38), ("SQ_LO", 256),
@@ -1006,6 +1014,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_udiv16_shl8.py" if mod.get("udiv16_shl8") else
                     "tools/test_selective_udiv24_v2.py" if mod.get("udiv24_v2") else
                     "tools/test_selective_isqrt32_v2.py" if mod.get("isqrt32_v2") else
+                    "tools/test_selective_isqrt16_radix4.py" if mod.get("isqrt16_radix4") else
                     "tools/test_selective_isqrt16.py" if mod.get("isqrt16") else
                     "tools/test_selective_seek16.py" if mod.get("seek16") else
                     "tools/test_selective_seek8.py" if mod.get("seek8") else
@@ -1698,12 +1707,13 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_DIST8_ACCURATE": (speed_dist8_accurate.bench_dist8_accurate, "scratch", True),
             "MATH_ATAN2_8": (speed_atan2.bench_atan2, "scratch", True),
             "MATH_UDIV16": (speed_udiv16.bench_udiv16, "scratch", True),
+            "MATH_ISQRT16": (speed_isqrt16.bench_isqrt16, "scratch", True),
         }
         unavailable = sorted(set(names) - set(measured))
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16")
+                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16")
         models = {}
         per_operation_cycles = {}
         for api in names:
@@ -2149,6 +2159,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed_dist8_accurate.py",
                        "tools/selective_speed_atan2.py",
                        "tools/selective_speed_udiv16.py",
+                       "tools/selective_speed_isqrt16.py",
                        "tools/generate_selective_udiv16_v2.py",
                        "tools/selective_hybrid_u3232.py",
                        "tools/selective_v2_fast_u3216.py",

@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (twenty-two source-qualified APIs)
+## Workload-weighted speed selection (twenty-three source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **twenty-two**
+The `speed` objective supports project-level weighted selection for **twenty-three**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8 and UDIV16. Multiple operations **must**
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16 and ISQRT16. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -68,6 +68,19 @@ verifies the newly speed-qualified two-variant UDIV24/UMOD24 source corpus.
 Benchmarks do **not** provide real hardware timing or prove
 cycle invariance after physical link relocation; speed selection is therefore
 an expected workload estimate, not exact total cycle prediction.
+
+For ISQRT16, the builder now retains the original 38-byte square-table
+kernel and 768 bytes of exact tables, while also offering a standalone 137-byte
+zero-ZP, tableless radix-4 restoring kernel with 6 bytes of call-exclusive RAM
+scratch. A single-operation size build takes only 175 bytes total main RAM
+(including public I/O) at both tested code origins, compared with 1,056 bytes
+for the fast table source at $8000 (page alignment included). On 384
+identical full-domain input samples the full-public CPU-model calls average
+about 65.10 cycles (table) versus 1,215.37 (tableless). The speed objective
+chooses the fast source when RAM permits, and otherwise uses the compact
+alternative without sacrificing the exact 16-bit result or the zero-ZP ABI.
+Exhaustive 65,536-value CPU-model tests plus both layouts in native VICE
+qualify the tableless source independently; physical C64 timing is not claimed.
 
 For UDIV16, the newly linked canonical V2 size-fast kernel uses 0 ZP and
 1,513 bytes RAM including the 32-byte public I/O window, while the existing

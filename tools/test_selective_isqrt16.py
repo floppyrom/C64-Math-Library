@@ -36,7 +36,7 @@ class SelectiveISQRT16Tests(unittest.TestCase):
         for origin, io in ((0x8000, 0xc000), (0x7123, 0xc040)):
             with self.subTest(origin=origin), tempfile.TemporaryDirectory() as d:
                 result = selective_linker.build(
-                    self.plan(["ISQRT16"], zp_budget=0, ram_budget=1100),
+                    self.plan(["ISQRT16"], zp_budget=0, ram_budget=1100, pins={"ISQRT16":"link:square-table"}),
                     Path(d), memory={"code_base": origin, "math_io": io})
                 resource = result["resource_use"]
                 self.assertEqual(resource["code_and_tables_bytes"], 806)
@@ -84,7 +84,7 @@ class SelectiveISQRT16Tests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             self.assertRaises(selective_linker.LinkError,
                 selective_linker.build,
-                self.plan(["ISQRT16"], zp_budget=0, ram_budget=1055),
+                self.plan(["ISQRT16"], zp_budget=0, ram_budget=1055, pins={"ISQRT16":"link:square-table"}),
                 Path(d))
             self.assertFalse((Path(d)/"math_selective.prg").exists())
 
