@@ -5,6 +5,7 @@ on:
     paths:
       - 'tools/selective_speed_s24.py'
       - 'tools/test_selective_speed_s24.py'
+      - 'examples/operation-first-signed24-speed.json'
       - 'tools/selective_linker.py'
       - 'routines/divide/sdiv24*.asm'
       - '.github/workflows/signed24-matched-speed.yml'
@@ -27,3 +28,17 @@ jobs:
         run: |
           python3 -m compileall -q tools/selective_linker.py tools/selective_speed_s24.py tools/test_selective_speed_s24.py
           python3 -m unittest discover -s tools -p 'test_selective_speed_s24.py' -v
+      - name: Smoke profile-free signed24 speed installation
+        run: |
+          make builder-speed SPEED_CONFIG=examples/operation-first-signed24-speed.json OUT=build_signed24
+          test -s build_signed24/math_selective.prg
+          test -s build_signed24/math_api.inc
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path("build_signed24/selective_manifest.json").read_text())
+          assert {x["api"] for x in m["operations"]}=={"MATH_SDIV24","MATH_SMOD24"}
+          assert m["resource_use"]["zero_page_bytes"]<=9
+          assert m["resource_use"]["main_ram_total_bytes"]<=2000
+          assert m["cycle_model_benchmark"]["cpu_model_only"]
+          PY
