@@ -1,0 +1,29 @@
+name: Source-linked V2 biased quarter-square UMUL24 candidate
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_v2_fast_umul24.py'
+      - 'tools/test_research_v2_umul24.py'
+      - 'docs/V2_UMUL24_QUARTERSQUARE_TRANSPLANT.md'
+      - '.github/workflows/fast-v2-umul24-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-model-relocation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Relocate original V2 UMUL24 and prove full public product at two origins
+        run: |
+          python3 -m compileall -q tools/selective_v2_fast_umul24.py tools/test_research_v2_umul24.py
+          python3 -m unittest discover -s tools -p 'test_research_v2_umul24.py' -v
