@@ -107,12 +107,12 @@ def benchmark(api, modules, code, io, scratch, root: Path, zp=0x50):
         sp = cpu.sp
         cycles = []
         for i, (n, d) in enumerate(pairs):
-            nb = n.to_bytes(3, "little") + b"\\x5a"
-            db = d.to_bytes(3, "little") + b"\\xa5"
+            nb = n.to_bytes(3, "little") + bytes([0x5a])
+            db = d.to_bytes(3, "little") + bytes([0xa5])
             cpu.mem[io+16:io+20] = nb
             cpu.mem[io+20:io+24] = db
-            cpu.mem[io+24:io+28] = b"\\xcc\\xcc\\xcc\\x39"
-            cpu.mem[io+28:io+32] = b"\\xdd\\xdd\\xdd\\x59"
+            cpu.mem[io+24:io+28] = bytes([0xcc, 0xcc, 0xcc, 0x39])
+            cpu.mem[io+28:io+32] = bytes([0xdd, 0xdd, 0xdd, 0x59])
             cpu.d, cpu.c = 0, (i ^ n ^ d) & 1
             cpu.a, cpu.x, cpu.y = (n ^ d) & 255, (n >> 8) & 255, (d >> 8) & 255
             taken = cpu.call(entry, 100000)
