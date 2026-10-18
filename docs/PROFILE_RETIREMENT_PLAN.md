@@ -219,6 +219,10 @@ The stock C64 builder can emit all 56 operations as one linked PRG in a
 call-exclusive ZP bytes, sharing code and tables across 37 physical producers.
 An independent two-map real x64sc test now links the complete operation set
 at code origins $2000 and $4321, moves its harness to $1000 and buffers
-outside executable code, and exercises UDIV16, UMOD16, UDIV32_32 and UMOD32_32
-for 96 pairs each (768 linked calls in total). This is an integration smoke
-check, not a complete 56-export runtime oracle or physical timing claim.
+outside executable code, and exercises all unsigned 8-, 16-, 24- and 32-bit
+DIV/MOD public entry points, plus signed 8- and 16-bit DIV/MOD. There are
+12 independently called APIs with 96 operand pairs each at both origins:
+**2,304 linked native VICE calls**. The signed/24-bit validators additionally
+verify negative/overflow input cases and preservation of public input/sentinel
+bytes where applicable. This is a representative integration smoke check,
+not a complete 56-export runtime oracle or physical timing claim.

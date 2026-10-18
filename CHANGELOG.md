@@ -1,3 +1,17 @@
+## Unreleased — expanded 56-operation integrated native VICE division proof
+
+- Expand the all-56 linked-PRG two-map native VICE integration gate from four
+  to twelve public DIV/MOD operations: unsigned 8, 16, 24 and 32 bits plus
+  signed 8- and 16-bit quotient/remainder producers. Run 96 operand cases per
+  export per RAM origin ($2000 and $4321): **2,304 native public calls**.
+- Preserve negative-operand and sign/overflow edge cases, zero-divisor carry,
+  24-bit high-output sentinel bytes, and input preservation where required.
+  Keep the harness and all operand/result stripes clear of code and public IO.
+- Reuse independently qualified native x64sc validators without changing
+  any arithmetic implementation, selection policy, or historical profile.
+  This remains representative combined-image integration, not a full runtime
+  qualification of every one of the 56 exports or a hardware cycle claim.
+
 ## Unreleased — full 56-operation linked native VICE integration test
 
 - Build all 56 C64 math operations into one compact PRG and independently
