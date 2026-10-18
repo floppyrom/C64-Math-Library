@@ -5,6 +5,16 @@
 **Target CPU:** NMOS 6502/6510, Commodore 64  
 **Profiles:** V1 Balanced, V2 Pareto-Fast, V3 REU 512K, V4 REU 16M, V5 Hybrid Low-ZP
 
+**Current setup guidance (October 2026):** For a new stock-C64 project, use
+the [operation-first installer](docs/PROFILE_RETIREMENT_PLAN.md) instead of
+selecting a fixed V1–V5 resident profile. In particular, `make builder`
+uses a resource-oriented balanced objective, **not** a speed guarantee.
+Use `make builder-speed` with qualified operation names and explicit
+per-frame call weights where speed is the priority. The remainder of this
+manual documents the historical profile and REU/Turbo/QS16 compatibility
+surface, which has not yet been fully replaced. The [performance migration
+gates](docs/PERFORMANCE_PARITY_GATE.md) govern removal of fixed profiles.
+
 This manual explains how to integrate, configure, initialize, call, relocate, and validate the C64 Math Library. The library exposes a common 56-entry stable API across V1–V5 and custom generated stock-C64 profiles. It covers signed and unsigned arithmetic, game/fixed-point helpers, the V5 low-ZP hybrid, the budget-driven Custom Pareto Builder, V3/V4 REU operation, build-time-relocatable Turbo16/Turbo32 overlays, and the V4 QS16 specialized mode.
 
 The short version is:
