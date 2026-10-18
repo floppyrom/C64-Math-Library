@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (twenty-nine source-qualified APIs)
+## Workload-weighted speed selection (thirty source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **twenty-nine**
+The `speed` objective supports project-level weighted selection for **thirty**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
+SMUL32_SHR16, UMUL24, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -87,6 +87,15 @@ source variants at two complete memory layouts ($2000 and $4321), yielding
 while the other 55 choices retain the original fully budgeted size selection.
 This proves relocation and mixed-residency compatibility for root16, not
 an exhaustive mixed invocation of every math operation.
+
+For UMUL24, `link:v2-quarter-square` uses the original $CA-biased
+four-table carry-neutral V2 arithmetic, reassembled into an independently
+relocatable X/Y/Z48 public source. The speed objective compares it against
+`link:compact-zerozp` on 512 identical full public calls and retains
+its 24-ZP and writable-code requirements. Choose it with
+`make builder-speed SPEED_CONFIG=examples/operation-first-umul24-speed.json`.
+The 156-byte zero-ZP compact alternative remains available under constrained
+RAM and ZP budgets.
 
 For UDIV16, the newly linked canonical V2 size-fast kernel uses 0 ZP and
 1,513 bytes RAM including the 32-byte public I/O window, while the existing

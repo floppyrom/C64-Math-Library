@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 29 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 30 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -76,6 +76,12 @@ measurements must fail closed and produce a clear migration task.
    historical reference builds. Archive fixed-profile defaults only
    once stock C64 workload-speed parity and relevant hardware-feature
    replacements or documented separate packages are qualified.
+
+The original $CA-biased V2 UMUL24 source is now also importable as a
+source-linked, writable-code speed candidate. It requires 24 ZP bytes and
+page-aligned lookup tables, while the 156-byte compact zero-ZP implementation
+remains a feasible size fallback. See
+`V2_UMUL24_QUARTERSQUARE_TRANSPLANT.md`.
 
 ## Active migration priority after PRs #293–#296
 

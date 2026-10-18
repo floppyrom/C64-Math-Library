@@ -19,11 +19,13 @@ import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_fast_umul16 as fast16
 import selective_fast31_umul32 as fast31
+import selective_v2_fast_umul24 as v2umul24
 import selective_umul8_v1 as v1umul8
 import selective_seek8 as seek8
 import selective_seek16 as seek16
 import selective_speed
 import selective_speed_umul16
+import selective_speed_umul24 as speed_umul24
 import selective_speed_umul16_shr8
 import selective_speed_umod8
 import selective_speed_udiv8
@@ -689,6 +691,16 @@ MODULES = {
             "operand_layout": "xyz", "umul24": True,
             "provenance": "Portable unsigned 24x24 -> 48-bit source; zero ZP, nine RAM scratch bytes, preserved operands, output Z0..5, no REU/SMC/lookup. Not historical fastest.",
         },
+        "link:v2-quarter-square": {
+            "source": "v2_pareto_fast/resident/modules/pareto_umul24.a",
+            "segments": (("KERNEL_CODE", 512), ("Q_SQR_LO", 512),
+                         ("Q_SQR_HI", 512), ("Q_NEG_LO", 512),
+                         ("Q_NEG_HI", 512)),
+            "entry": "FAST_UMUL24_V2_QS", "zp": 24, "scratch": 0,
+            "operand_layout": "xyz", "v2_umul24": True,
+            "requires_writable_code": True,
+            "provenance": "Historical V2 source-extracted 24x24 quarter-square carry-neutral $CA bias: 512-byte wrapper/native code island, four 512-byte page-aligned lookup slots, 24 contiguous private ZP bytes, public X/Y->Z48/C, no INIT/REU; writable RAM, non-reentrant.",
+        },
     },
     "MATH_SMUL16_SHR8": {
         "link:compact-zerozp": {
@@ -1023,6 +1035,9 @@ def available_variants(root=ROOT):
                     "v2_pareto_fast/resident/modules/pareto_umul32.a": hashlib.sha256(
                         (root / "v2_pareto_fast/resident/modules/pareto_umul32.a").read_bytes()).hexdigest(),
                 } if mod.get("fast31_umul32") else {
+                    "tools/selective_v2_fast_umul24.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_umul24.py").read_bytes()).hexdigest(),
+                } if mod.get("v2_umul24") else {
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
                         (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
                 } if mod.get("v2_sizefast_u3216") else {
@@ -1281,6 +1296,8 @@ def projected_end(start, items):
             cursor = ((cursor + 255) & ~255) + 3587
         elif mod.get("fast31_umul32"):
             _, cursor = fast31.layout(cursor)
+        elif mod.get("v2_umul24"):
+            _, cursor = v2umul24.layout(cursor)
         else:
             cursor += sum(length for _, length in mod["segments"])
     if shared_trig:
@@ -1300,8 +1317,8 @@ def place_modules(items, start):
     minimum padding at the aligned module's code/table boundary. This remains
     O(256 * number_of_modules), not factorial when the catalog expands.
     """
-    aligned = [item for item in items if "atan2" in item[2] or item[2].get("isqrt16") or item[2].get("umul8_v1") or item[2].get("vec2_stock") or item[2].get("fast31_umul32")]
-    ordinary = [item for item in items if "atan2" not in item[2] and not item[2].get("isqrt16") and not item[2].get("umul8_v1") and not item[2].get("vec2_stock") and not item[2].get("fast31_umul32")]
+    aligned = [item for item in items if "atan2" in item[2] or item[2].get("isqrt16") or item[2].get("umul8_v1") or item[2].get("vec2_stock") or item[2].get("fast31_umul32") or item[2].get("v2_umul24")]
+    ordinary = [item for item in items if "atan2" not in item[2] and not item[2].get("isqrt16") and not item[2].get("umul8_v1") and not item[2].get("vec2_stock") and not item[2].get("fast31_umul32") and not item[2].get("v2_umul24")]
     if not aligned:
         return ordinary
     if len(aligned) != 1:
@@ -1313,7 +1330,8 @@ def place_modules(items, start):
                   if "atan2" in atan[2] else sqrt16.CODE_BYTES
                   if atan[2].get("isqrt16") else 0
                    if atan[2].get("vec2_stock") else fast31.CODE_SLOT
-                  if atan[2].get("fast31_umul32") else v1umul8.CODE_BYTES)
+                  if atan[2].get("fast31_umul32") else v2umul24.CODE_SLOT
+                  if atan[2].get("v2_umul24") else v1umul8.CODE_BYTES)
     # Track one deterministic set of indices per possible prefix address.
     # Item order remains stable within the selected prefix and suffix.
     states = {start % 256: ()}
@@ -1832,6 +1850,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         measured = {
             "MATH_UMUL8": (selective_speed.bench_umul8, "scratch", True),
             "MATH_UMUL16": (selective_speed_umul16.bench_umul16, "scratch", False),
+            "MATH_UMUL24": (speed_umul24.bench_umul24, "scratch", True),
             "MATH_UMUL16_SHR8": (selective_speed_umul16_shr8.bench_umul16_shr8, "scratch", False),
             "MATH_UMOD8": (selective_speed_umod8.bench_umod8, "zp", False),
             "MATH_UDIV8": (selective_speed_udiv8.bench_udiv8, "zp", False),
@@ -1864,7 +1883,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, SDIV32_16, SMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, SDIV24, SMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16")
+                            "; available: UMUL8, UMUL16, UMUL24, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, SDIV32_16, SMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, SDIV24, SMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16")
         models = {}
         per_operation_cycles = {}
         for api in names:
@@ -1996,6 +2015,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                 "tools/selective_fast31_umul32.py",
                 "v2_pareto_fast/resident/modules/pareto_umul32.a"}:
             raise LinkError(api + ": historical FAST31 generator/canonical provenance missing")
+        if module.get("v2_umul24") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_v2_fast_umul24.py"]:
+            raise LinkError(api + ": original V2 UMUL24 quarter-square relocator provenance missing")
         if module.get("fast_umul16") and set(x["source_path"] for x in dep_provenance) != {
                 "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py"}:
             raise LinkError(api + ": 16-bit quarter-square emitter provenance missing")
@@ -2049,7 +2071,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_sizefast_u3216") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2070,6 +2092,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                         machine, entry, ranges, end = fast31.assemble(
                             pc, io, zb, root, source_path=module["source"],
                             entry_label=module["entry"])
+                elif module.get("v2_umul24"):
+                    machine, labels, ranges, end = v2umul24.assemble(pc,io,zb,root)
+                    entry = labels[module["entry"]]
                 elif module.get("hybrid_u3232"):
                     machine, labels, ranges, end = hybrid_u3232.assemble(pc,io,zb,root)
                     entry = labels[module["entry"]]
@@ -2124,7 +2149,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_sizefast_u3216") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
