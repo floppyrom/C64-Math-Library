@@ -22,7 +22,7 @@ jobs:
       - name: Install upstream VICE headless build dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
       - name: Build exact VICE r46284
         env:
           VICE_JOBS: "2"
