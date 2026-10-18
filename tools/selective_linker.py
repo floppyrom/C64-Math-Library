@@ -42,6 +42,7 @@ import selective_speed_atan2 as speed_atan2
 import selective_speed_udiv16 as speed_udiv16
 import selective_speed_isqrt16 as speed_isqrt16
 import selective_hybrid_u3232 as hybrid_u3232
+import selective_signed_hybrid_u3232 as signed_u3232
 import selective_v2_fast_u3216 as v2u3216
 import research_signed_v2_u3216 as signedv2u3216
 import selective_isqrt16 as sqrt16
@@ -244,6 +245,14 @@ MODULES = {
             "multi_entry": True, "sdiv32_32_portable": True,
             "provenance": "Portable sign-normalized 32/32 restoring shared Q32/R32 producer, 412 code bytes, 9 ordinary RAM scratch, 0 ZP. Exact signed truncating quotient and N-sign remainder.",
         },
+        "link:v2-hybrid-signed": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 2880),),
+            "entry": "FAST_SDIV32_32_V2MAG", "zp": 12, "scratch": 0,
+            "share_producer": "signed-32by32-v2-hybrid-qr",
+            "multi_entry": True, "signed_hybrid_u3232": True,
+            "provenance": "Signed Q32/R32/C producer composed around the qualified unrestricted V2 low-divisor hybrid, 2880 source-linked executable bytes, 12 call-exclusive ZP, no RAM scratch or tables. Includes 384-byte signed wrapper slot, stable original source hashes, non-reentrant.",
+        },
     },
     "MATH_SMOD32_32": {
         "link:portable-zerozp": {
@@ -253,6 +262,14 @@ MODULES = {
             "share_producer": "signed-32by32-portable-zerozp",
             "multi_entry": True, "sdiv32_32_portable": True,
             "provenance": "Signed SMOD32_32 alias of shared SDIV32_32 Q32/R32 restoring producer; full-width exact R, N/D untouched, no duplicate image.",
+        },
+        "link:v2-hybrid-signed": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 2880),),
+            "entry": "FAST_SMOD32_32_V2MAG", "zp": 12, "scratch": 0,
+            "share_producer": "signed-32by32-v2-hybrid-qr",
+            "multi_entry": True, "signed_hybrid_u3232": True,
+            "provenance": "SMOD32_32 aliases the same composed signed hybrid Q32/R32/C public producer; no duplicated code, 12 shared ZP bytes.",
         },
     },
     "MATH_SDIV32_16": {
@@ -1020,6 +1037,15 @@ def available_variants(root=ROOT):
                     "routines/standalone_lab/portable/div_u32_zptail.asm": hashlib.sha256(
                         (root / "routines/standalone_lab/portable/div_u32_zptail.asm").read_bytes()).hexdigest(),
                 } if mod.get("hybrid_u3232") else {
+                    "tools/selective_signed_hybrid_u3232.py": hashlib.sha256(
+                        (root / "tools/selective_signed_hybrid_u3232.py").read_bytes()).hexdigest(),
+                    "tools/selective_hybrid_u3232.py": hashlib.sha256(
+                        (root / "tools/selective_hybrid_u3232.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                    "routines/standalone_lab/portable/div_u32_zptail.asm": hashlib.sha256(
+                        (root / "routines/standalone_lab/portable/div_u32_zptail.asm").read_bytes()).hexdigest(),
+                } if mod.get("signed_hybrid_u3232") else {
                     "tools/selective_isqrt16.py": hashlib.sha256(
                         (root / "tools/selective_isqrt16.py").read_bytes()).hexdigest()
                 } if mod.get("isqrt16") else {
@@ -1975,6 +2001,12 @@ def build(plan, outdir, memory=None, root=ROOT):
                 "tools/selective_v2_fast_u3216.py",
                 "routines/standalone_lab/portable/div_u32_zptail.asm"]:
             raise LinkError(api + ": V2 32/32 hybrid donor/relocator provenance missing")
+        if module.get("signed_hybrid_u3232") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_signed_hybrid_u3232.py",
+                "tools/selective_hybrid_u3232.py",
+                "tools/selective_v2_fast_u3216.py",
+                "routines/standalone_lab/portable/div_u32_zptail.asm"]:
+            raise LinkError(api + ": signed V2 32/32 hybrid donor/relocator provenance missing")
         if module.get("v2_sizefast_u3216") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_v2_fast_u3216.py"]:
             raise LinkError(api + ": canonical V2 32/16 source relocation provenance missing")
@@ -2038,6 +2070,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                 elif module.get("hybrid_u3232"):
                     machine, labels, ranges, end = hybrid_u3232.assemble(pc,io,zb,root)
                     entry = labels[module["entry"]]
+                elif module.get("signed_hybrid_u3232"):
+                    machine, labels, ranges, end = signed_u3232.assemble(pc,io,zb,root)
+                    entry = labels[module["entry"]]
                 elif module.get("v2_sizefast_u3216"):
                     machine, labels, ranges, end = v2u3216.assemble_image(pc,io,zb,root)
                     entry = labels[module["entry"]]
@@ -2086,7 +2121,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_sizefast_u3216") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_sizefast_u3216") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
