@@ -12,7 +12,6 @@ from pathlib import Path
 import random
 
 from mini6502 import Assembler, CPU, load_sparse
-import selective_linker as linker
 
 CASES = 512
 SEED = 0x5D24249
@@ -68,6 +67,7 @@ def reference(n, d):
 
 
 def benchmark(api, modules, code, io, scratch, root: Path, zp=0x50):
+    import selective_linker as linker  # Delayed: linker imports this speed module.
     if api not in APIS or set(modules) != VARIANTS:
         raise ValueError("Signed24 speed candidate set changed; requalify")
     pairs = corpus()
