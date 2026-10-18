@@ -1,0 +1,41 @@
+name: Signed 32/32 historical-fast donor parity research
+
+on:
+  pull_request:
+    paths:
+      - 'tools/research_signed32_32_parity.py'
+      - 'tools/test_research_signed32_32_parity.py'
+      - 'docs/SIGNED32_32_DONOR_MIGRATION.md'
+      - '.github/workflows/signed32-32-donor-research.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-model-donor-triage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify public signed 32/32 correctness and source-model benchmark
+        run: |
+          python3 -m compileall -q tools/research_signed32_32_parity.py tools/test_research_signed32_32_parity.py
+          python3 -m unittest discover -s tools -p 'test_research_signed32_32_parity.py' -v
+          python3 tools/research_signed32_32_parity.py --cases 192 --out build/signed32_32_research.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("build/signed32_32_research.json").read_text())
+          assert d["status"]=="PASS"
+          assert d["cases"]==192
+          assert len(d["measurements"])==14
+          assert len({r["variant"] for r in d["measurements"]})==6
+          assert len(d["corpus_sha256"])==64
+          assert all(r["calls"]==192 for r in d["measurements"])
+          PY
