@@ -56,7 +56,14 @@ full candidate variant set and corpus hash, then minimizes the sum of
 `calls × mean cycles` under **global** linked-code, scratch, RAM, ZP and
 persistent-state constraints. The manifest contains per-operation corpus hashes,
 source hashes, mean cycles, call counts and the resulting estimated weighted
-CPU-model cycles. Benchmarks do **not** provide real hardware timing or prove
+CPU-model cycles. For larger selections the speed solver uses an **exact**
+branch-and-bound search instead of enumerating the full Cartesian product.
+Admissible cycle and resource lower bounds prune impossible or dominated
+partial choices, but finalists still receive the original full aligned placement,
+producer-sharing, call-exclusive ZP, scratch and persistent-state checks.
+A reproducible regression compares the solver to exhaustive enumeration and
+checks all 16 speed-qualified APIs with mixed RAM/ZP constraints.
+Benchmarks do **not** provide real hardware timing or prove
 cycle invariance after physical link relocation; speed selection is therefore
 an expected workload estimate, not exact total cycle prediction.
 
