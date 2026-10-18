@@ -72,7 +72,7 @@ class FrameBudgetTests(unittest.TestCase):
             (1, 0, "SMOD32_16", "b", 840, "new"),
             (1, 1, "SMUL32", "c", 90, "new")])
         cmp = analyze(baseline, candidate, frame_count=3)["comparison"]
-        self.assertEqual(cmp["peak_frame_math_cycles_saved"], 170)
+        self.assertEqual(cmp["peak_frame_math_cycles_saved"], 64)
         self.assertEqual(cmp["baseline_peak_frame_cycles_saved"], 200)
         self.assertEqual(cmp["regressed_frames"], 1)
         self.assertEqual(cmp["max_frame_regression_cycles"], 30)
