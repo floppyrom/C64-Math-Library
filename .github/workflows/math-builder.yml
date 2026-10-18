@@ -374,7 +374,8 @@ jobs:
           import json,sys
           m=json.load(open(sys.argv[1]))
           assert {e['api'] for e in m['operations']} == {'MATH_UMUL16','MATH_UDIV16','MATH_ISQRT16'}
-          assert m['resource_use']['main_ram_total_bytes'] == 1318
+          assert m['resource_use']['main_ram_total_bytes'] == 606
+          assert next(e['variant'] for e in m['operations'] if e['api'] == 'MATH_ISQRT16') == 'link:radix4-zerozp'
           assert m['resource_use']['zero_page_bytes'] == 2
           PYJSON
       - name: Smoke-test source SHA provenance
