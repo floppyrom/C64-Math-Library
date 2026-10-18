@@ -1,3 +1,20 @@
+## Unreleased — unrestricted 32/32 historical V2 low-divisor hybrid experiment
+
+- Assemble the existing certified V2 12-ZP 32/16 public Q/R producer and
+  the independently certified 4-ZP full-width 32/32 tail in one source-
+  authenticated 3,200-byte RAM image. Dispatch by the high divisor word:
+  narrow divisors take historical V2; wide divisors retain full-width
+  fallback. Clear the high public remainder word only after the 16-bit
+  divisor path. Both public Q32/R32/C aliases share a dispatcher.
+- Add two-code-map, unrestricted-operand CPU-model old/new correctness,
+  carry/input/SP/code immutability, low-versus-wide mean-cycle comparison,
+  and a real native VICE both-API/two-map qualification.
+- Research only; 12 call-exclusive ZP and 3,200 executable RAM bytes make
+  the new candidate a possible Pareto speed-over-RAM option, not a
+  replacement for the stock 0/4-ZP alternatives or validated resident
+  V1–V5 builds. No cycle-speed win or default promotion is claimed without
+  the required benchmarks and exact-head tests.
+
 ## Unreleased — 32/32 DIV/MOD quotient/divisor cycle-tail research
 
 - Add a deterministic, two-relocation nine-band public-ABI audit for
