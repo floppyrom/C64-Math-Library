@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (twenty-five source-qualified APIs)
+## Workload-weighted speed selection (twenty-seven source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **twenty-five**
+The `speed` objective supports project-level weighted selection for **twenty-seven**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16 and SMOD32_16. Multiple operations **must**
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -289,6 +289,15 @@ from an identical public operation name: compare code assembled from the
 specific source variant on exactly the same input corpus and calling ABI.
 
 ## Complete 56-operation native integration smoke
+
+For signed 24-bit division and modulo the selector now compares the
+three already source/native-qualified shared producers (`link:portable-zerozp`,
+`link:abs-qzero-guard`, `link:v3-signed-magnitude`) on one authenticated
+512-case Q24/R24/C public-call corpus at both code origins. Both API exports
+share the producer when they choose the same variant; source hashes,
+resource budgets and the historical V3 SMC contract remain enforced. To
+build without profiles:
+`make builder-speed SPEED_CONFIG=examples/operation-first-signed24-speed.json`.
 
 The historical signed V2 32/16 magnitude producer is source-linked as
 `link:v2-signed-magnitude` for both `SDIV32_16` and `SMOD32_16`, with

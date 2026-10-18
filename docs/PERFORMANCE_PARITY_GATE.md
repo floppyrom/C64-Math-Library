@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 25 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 27 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -88,6 +88,10 @@ measurements must fail closed and produce a clear migration task.
   presenting a compact memory fallback as a speed upgrade. The V2 donor
   requires 2,880 code bytes / 12 ZP; the independently selectable compact
   source uses 260 code bytes / 0 ZP. Preserve both Pareto points.
+- Signed 24-bit DIV/MOD now has automatic authenticated full-call speed
+  selection across the historical V3 magnitude source, a compact zero-ZP
+  source and the quotient-zero-optimized zero-ZP source. All remain
+  available as Pareto alternatives under different budgets.
 - Audit full 32/32 DIV/MOD and full 32-bit signed/unsigned multiplication
   historical producers, including FAST31 / READY / SHR16 and shared
   table alternatives; import only qualified source-linked winners.

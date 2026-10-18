@@ -32,7 +32,7 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 25 of the 56 APIs, including signed 32/16 DIV/MOD. Unsupported speed
+Speed selection now covers 27 of the 56 APIs, including signed 24-bit and 32/16 DIV/MOD. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -58,6 +58,17 @@ It exports both Q32/R32 public calls from one 2,496-byte image with 12
 call-exclusive ZP bytes (2,528 B main RAM including public I/O at `$8000`).
 The speed selector compares it on the same 384-pair unrestricted corpus,
 retaining all lower-memory options. Hardware-native timing is not claimed.
+The source-qualified signed 24/24 `SDIV24` and `SMOD24` implementations
+now participate in matched 512-input full-public-call speed selection:
+compact restoring (0 ZP), quotient-zero guard (0 ZP), or the relocated
+historical V3-magnitude kernel (9 ZP). The signed24 option is selected
+according to the actual workload, RAM and zero-page budget, never by
+incomparable historical resident timing. For example:
+
+```sh
+make builder-speed SPEED_CONFIG=examples/operation-first-signed24-speed.json OUT=build_signed24
+```
+
 For historical V2 signed `SDIV32_16` and `SMOD32_16`, the operation-first
 installer retains the original compact 260-byte/0-ZP shared kernel alongside
 the V2-magnitude 2,880-byte/12-ZP shared producer. The speed objective

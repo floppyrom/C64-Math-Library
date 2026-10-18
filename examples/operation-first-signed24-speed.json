@@ -1,0 +1,16 @@
+{
+  "target": "c64",
+  "operations": [
+    "SDIV24",
+    "SMOD24"
+  ],
+  "objective": "speed",
+  "workload_calls": {
+    "SDIV24": 8,
+    "SMOD24": 3
+  },
+  "constraints": {
+    "max_zp_bytes": 9,
+    "max_ram_bytes": 2000
+  }
+}
