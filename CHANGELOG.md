@@ -1,3 +1,19 @@
+## Unreleased — tableless zero-ZP ISQRT16 and automatic size/speed fallback
+
+- Add an independently linkable 137-byte restoring ISQRT16 implementation,
+  with six bytes of reusable call scratch, zero ZP and no writable code,
+  lookup tables, initializer or additional hardware. The historical 806-byte
+  source and its exact aligned table layout remain unchanged.
+- The exact resource optimizer can now select ISQRT16 under a 175-byte total
+  RAM budget (including public I/O). With at least 1,056 bytes at $8000,
+  comparable same-input speed selection retains the much faster original
+  square-table implementation: 65.10 vs 1,215.37 simulated cycles per
+  complete public call on an authenticated 384-case corpus.
+- Extend ISQRT16 standalone qualification to exhaustive 65,536 input values,
+  both real VICE RAM layouts and the already-qualified old table source;
+  enforce source identities, unchanged caller input, output, stack, carry and
+  no self-modification. No historical fixed profile sources are altered.
+
 ## Unreleased — V2 canonical UDIV16 zero-ZP historical donor and speed provenance
 
 - Transplant the complete 1,481-byte original V2 size-fast 16/16 divider as a
