@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (twenty-seven source-qualified APIs)
+## Workload-weighted speed selection (twenty-nine source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **twenty-seven**
+The `speed` objective supports project-level weighted selection for **twenty-nine**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -298,6 +298,21 @@ share the producer when they choose the same variant; source hashes,
 resource budgets and the historical V3 SMC contract remain enforced. To
 build without profiles:
 `make builder-speed SPEED_CONFIG=examples/operation-first-signed24-speed.json`.
+
+Signed unrestricted 32/32 DIV/MOD now retain both the 412-byte, 0-ZP,
+9-byte-scratch restoring reference and the source-linked
+`link:v2-hybrid-signed` magnitude producer. The latter occupies a single
+2,880-byte executable image for both SDIV32_32 and SMOD32_32, using
+12 call-exclusive ZP bytes and zero ordinary scratch. The signed public
+shim normalizes and restores public inputs, computes signed Q32 and R32,
+and uses the qualified V2 low-divisor / ZP-tail unrestricted unsigned core.
+On an identical 384-case full-public CPU-model corpus, the hybrid averages
+610.326 cycles at $8000 versus 3,177.286 for portable; at $7123 the
+figures are 610.237 versus 3,170.797. The source-model speed selector
+chooses the hybrid automatically when memory and ZP budgets permit; smaller
+configurations retain the original compact producer. To install:
+`make builder-speed SPEED_CONFIG=examples/operation-first-signed3232-speed.json`.
+Source timing is not physical VIC-II-contended PAL frame timing.
 
 The historical signed V2 32/16 magnitude producer is source-linked as
 `link:v2-signed-magnitude` for both `SDIV32_16` and `SMOD32_16`, with
