@@ -77,6 +77,43 @@ class ResourceBranchBoundTests(unittest.TestCase):
                 self.assertEqual(len(L.unique_code_modules([(api,*selected[api]) for api in names])),1)
             with self.assertRaises(L.LinkError):
                 L.choose(names,pins,objective,11,2528)
+    def test_issue285_pinned_table_full56_at_both_origins(self):
+        # Exercise the exact (not 55-source-pinned) optimizer under the
+        # issue's actual 18 KB/4-ZP budget. Performance is logged, not
+        # asserted as a flaky shared-runner wall-clock threshold.
+        names = tuple(sorted(L.MODULES))
+        self.assertEqual(len(names), 56)
+        for origin in (0x2000, 0x4321):
+            for objective in ('size', 'balanced', 'zp'):
+                for pinned in (False, True):
+                    pins = ({'MATH_ISQRT16': 'link:square-table'}
+                            if pinned else {})
+                    with self.subTest(origin=hex(origin), objective=objective,
+                                      pinned=pinned):
+                        start = time.perf_counter()
+                        selected = L.choose(names, pins, objective, 4, 18000,
+                                            code_base=origin,
+                                            scratch_base=0xc020)
+                        duration = time.perf_counter() - start
+                        self.assertEqual(set(selected), set(names))
+                        if pinned:
+                            self.assertEqual(selected['MATH_ISQRT16'][0],
+                                             'link:square-table')
+                        chosen = [(api, *selected[api]) for api in names]
+                        zp = max(spec['zp'] for _, _, spec in chosen)
+                        scratch = max(spec['scratch'] for _, _, spec in chosen)
+                        code = (L.projected_end(origin, L.place_modules(
+                            L.unique_code_modules(chosen), origin)) - origin)
+                        _, persistent = L.place_state(
+                            L.state_requirements(spec for _, _, spec in chosen),
+                            0xc020, scratch)
+                        ram = code + 32 + scratch + persistent
+                        self.assertLessEqual(ram, 18000)
+                        self.assertLessEqual(zp, 4)
+                        print('ISSUE285 EXACT56', hex(origin), objective,
+                              'pinned', pinned, 'RAM', ram, 'ZP', zp,
+                              'elapsed_s', round(duration, 4), flush=True)
+
     def test_all_56_complete_without_cartesian_expansion(self):
         all_names=tuple(sorted(L.MODULES))
         product=1
