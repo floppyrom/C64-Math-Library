@@ -14,6 +14,8 @@ import selective_linker
 from frame_cycle_budget import COLUMNS, load_trace, score
 
 OPS = ("SMUL32", "SMUL32_SHR16", "SDIV32_16", "SMOD32_16", "SDIV32_32", "SMOD32_32")
+SIGNED24_OPS = ("SDIV24", "SMOD24")
+SIGNED24_VARIANTS = ("link:portable-zerozp", "link:abs-qzero-guard")
 
 
 def signed(value, bits):
@@ -22,28 +24,37 @@ def signed(value, bits):
 
 def operands(rng, frame, ordinal, bits):
     k = (31 * frame + ordinal) % 12
-    numerators = (0, 1, 2, 3, 0x7fffffff, 0x80000000, 0x80000001, 0xffffffff)
-    denominators = ((0, 1, 2, 3, 0x7fff, 0x8000, 0xffff) if bits == 16
-                    else (0, 1, 2, 3, 0x7fffffff, 0x80000000, 0xffffffff))
-    return ((numerators[k] if k < 8 else rng.getrandbits(32)),
+    if bits == 24:
+        numerators = (0, 1, 2, 3, 0x7fffff, 0x800000, 0x800001, 0xffffff)
+        denominators = (0, 1, 2, 3, 0x7fffff, 0x800000, 0xffffff)
+    else:
+        numerators = (0, 1, 2, 3, 0x7fffffff, 0x80000000, 0x80000001, 0xffffffff)
+        denominators = ((0, 1, 2, 3, 0x7fff, 0x8000, 0xffff) if bits == 16
+                        else (0, 1, 2, 3, 0x7fffffff, 0x80000000, 0xffffffff))
+    return ((numerators[k] if k < 8 else rng.getrandbits(24 if bits == 24 else 32)),
             (denominators[k] if k < 7 else rng.getrandbits(bits)))
 
 
 def divmod_reference(n, d, bits):
-    n, d = signed(n, 32), signed(d, bits)
+    n, d = signed(n, 24 if bits == 24 else 32), signed(d, bits)
     if d == 0:
         return 0, 0, 1
     q = abs(n) // abs(d)
     q = -q if (n < 0) != (d < 0) else q
-    return q & 0xffffffff, (n - q * d) & ((1 << bits) - 1), 0
+    return q & ((1 << (24 if bits == 24 else 32)) - 1), (n - q * d) & ((1 << bits) - 1), 0
 
 
-def export(out, frames=40, code=0x8000, io=0xc000):
+def export(out, frames=40, code=0x8000, io=0xc000, signed24_variant=None):
     if not 1 <= frames <= 2000:
         raise ValueError("frames must be in 1..2000")
+    if signed24_variant is not None and signed24_variant not in SIGNED24_VARIANTS:
+        raise ValueError("Unqualified signed24 variant: " + str(signed24_variant))
     rng = random.Random(0xC643232)
-    plan = math_builder.create_plan(math_builder.operation_index(), list(OPS),
-                                    objective="size", zp_budget=0, ram_budget=8192)
+    operations = OPS + SIGNED24_OPS if signed24_variant else OPS
+    pins = ({"MATH_" + op: signed24_variant for op in SIGNED24_OPS}
+            if signed24_variant else None)
+    plan = math_builder.create_plan(math_builder.operation_index(), list(operations),
+                                    objective="size", zp_budget=0, ram_budget=8192, pins=pins)
     with tempfile.TemporaryDirectory() as temp:
         manifest = selective_linker.build(plan, Path(temp), memory={
             "code_base": code, "math_io": io, "scratch_base": io + 0x40})
@@ -57,13 +68,13 @@ def export(out, frames=40, code=0x8000, io=0xc000):
         sp = cpu.sp
         entries = {e["api"]: int(e["entry"][1:], 16) for e in manifest["operations"]}
         variants = {e["api"]: e["variant"] for e in manifest["operations"]}
-        if set(entries) != {"MATH_" + op for op in OPS}:
+        if set(entries) != {"MATH_" + op for op in operations}:
             raise ValueError("Incomplete operation link")
         observations = []
         for frame in range(frames):
             volume = 24 if frame % 8 == 0 else 8 if frame % 4 == 0 else 3
             for ordinal in range(volume):
-                operation = "MATH_" + OPS[(3 * frame + 5 * ordinal) % len(OPS)]
+                operation = "MATH_" + operations[(3 * frame + 5 * ordinal) % len(operations)]
                 carry_in = (frame + ordinal) & 1
                 if "MUL" in operation:
                     x, y = operands(rng, frame, ordinal, 32)
@@ -71,11 +82,20 @@ def export(out, frames=40, code=0x8000, io=0xc000):
                     mem[io + 4:io + 8] = y.to_bytes(4, "little")
                     mem[io + 8:io + 16] = bytes([0xA5] * 8)
                 else:
-                    bits = 16 if operation.endswith("32_16") else 32
+                    bits = 24 if operation in {"MATH_SDIV24", "MATH_SMOD24"} else (
+                        16 if operation.endswith("32_16") else 32)
                     x, y = operands(rng, frame, ordinal, bits)
-                    mem[io + 16:io + 20] = x.to_bytes(4, "little")
-                    mem[io + 20:io + 24] = y.to_bytes(4, "little")
-                    mem[io + 24:io + 32] = bytes([0xA5] * 8)
+                    if bits == 24:
+                        # The 24-bit public ABI preserves the high N/D/Q/R
+                        # sentinel byte, unlike a 32-bit public operation.
+                        mem[io + 16:io + 20] = x.to_bytes(3, "little") + bytes([0x5A])
+                        mem[io + 20:io + 24] = y.to_bytes(3, "little") + bytes([0xA5])
+                        mem[io + 24:io + 28] = bytes([0xCC, 0xCC, 0xCC, 0x39])
+                        mem[io + 28:io + 32] = bytes([0xDD, 0xDD, 0xDD, 0x59])
+                    else:
+                        mem[io + 16:io + 20] = x.to_bytes(4, "little")
+                        mem[io + 20:io + 24] = y.to_bytes(4, "little")
+                        mem[io + 24:io + 32] = bytes([0xA5] * 8)
                 cpu.d, cpu.c = 0, carry_in
                 cycles = cpu.call(entries[operation], 150000)
                 if "MUL" in operation:
@@ -86,10 +106,16 @@ def export(out, frames=40, code=0x8000, io=0xc000):
                     if actual != expected or cpu.c:
                         raise ValueError("Incorrect multiply result: " + operation)
                 else:
-                    q = int.from_bytes(mem[io + 24:io + 28], "little")
+                    q = int.from_bytes(mem[io + 24:io + (27 if bits == 24 else 28)], "little")
                     r = int.from_bytes(mem[io + 28:io + 28 + bits // 8], "little")
                     if (q, r, cpu.c) != divmod_reference(x, y, bits):
                         raise ValueError("Incorrect divide/mod result: " + operation)
+                    if bits == 24 and (
+                        mem[io + 27] != 0x39 or mem[io + 31] != 0x59
+                        or bytes(mem[io + 16:io + 20]) != x.to_bytes(3, "little") + bytes([0x5A])
+                        or bytes(mem[io + 20:io + 24]) != y.to_bytes(3, "little") + bytes([0xA5])
+                    ):
+                        raise ValueError("Signed24 high bytes or operands modified")
                 if cpu.sp != sp:
                     raise ValueError("Stack not preserved: " + operation)
                 identity = hashlib.sha256(
@@ -124,5 +150,8 @@ if __name__ == "__main__":
     parser.add_argument("--frames", type=int, default=40)
     parser.add_argument("--code-base", type=lambda x: int(x, 0), default=0x8000)
     parser.add_argument("--io-base", type=lambda x: int(x, 0), default=0xc000)
+    parser.add_argument("--signed24-variant", choices=SIGNED24_VARIANTS,
+                        help="also exercise SDIV24/SMOD24 with a pinned shared producer")
     args = parser.parse_args()
-    print(json.dumps(export(args.out, args.frames, args.code_base, args.io_base), indent=2))
+    print(json.dumps(export(args.out, args.frames, args.code_base, args.io_base,
+                            args.signed24_variant), indent=2))
