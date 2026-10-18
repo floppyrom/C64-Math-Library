@@ -27,7 +27,12 @@ The optional `link:shared-aligned-zerozp` variant lets both public 32/32
 DIV and MOD reuse one aligned quotient/remainder producer: 576 code bytes,
 4 ordinary scratch bytes, 0 ZP, and 612 B main RAM including I/O. The
 independently selectable specialized modulo implementation remains available.
-Historical full-width DIV/MOD fast transplants are still separate work.
+The optional `link:v2-lowdivisor-hybrid` incorporates the source-validated
+V2 Pareto-fast 32/16 public producer and an unrestricted 32/32 fallback.
+It exports both Q32/R32 public calls from one 3,200-byte image with 12
+call-exclusive ZP bytes (3,232 B main RAM including public I/O at `$8000`).
+The speed selector compares it on the same 384-pair unrestricted corpus,
+retaining all lower-memory options. Hardware-native timing is not claimed.
 For `UDIV32_16` / `UMOD32_16`, the builder independently measures both
 zero-ZP shared quotient/remainder producers on identical 384-input public-call
 corpora; the zero-ZP 1771-byte statically unrolled accumulator derivative is an

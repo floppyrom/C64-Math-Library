@@ -31,6 +31,7 @@ import selective_speed_smul32
 import selective_speed_mul32_ready_shr16 as speed32extras
 import selective_speed_u3216 as speed_u3216
 import selective_speed_u3232 as speed_u3232
+import selective_hybrid_u3232 as hybrid_u3232
 import selective_v2_fast_u3216 as v2u3216
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
@@ -765,6 +766,14 @@ MODULES = {
         },
     },
     "MATH_UDIV32_32": {
+        "link:v2-lowdivisor-hybrid": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 3200),),
+            "entry": "FAST_UDIV32_32_HYBRID", "zp": 12, "scratch": 0,
+            "share_producer": "unsigned-32by32-v2-lowdivisor-public-qr",
+            "multi_entry": True, "hybrid_u3232": True,
+            "provenance": "Source-authenticated unrestricted Q32/R32/C using canonical V2 12-ZP low-D 32/16 public kernel and qualified 4-ZP full-D 32/32 tail; shared 3200B caller-RAM image, 12 call-exclusive ZP, no tables/SMC/REU/scratch, D=0 prerequisite. Preserves N32/D32 and C=1 on D=0.",
+        },
         "link:shared-aligned-zerozp": {
             "source": "routines/standalone_lab/portable/div_u32_aligned_nozp.asm",
             "segments": (("KERNEL_CODE", 325), ("KERNEL_AUX", 251)),
@@ -851,6 +860,14 @@ MODULES = {
         },
     },
     "MATH_UMOD32_32": {
+        "link:v2-lowdivisor-hybrid": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 3200),),
+            "entry": "FAST_UMOD32_32_HYBRID", "zp": 12, "scratch": 0,
+            "share_producer": "unsigned-32by32-v2-lowdivisor-public-qr",
+            "multi_entry": True, "hybrid_u3232": True,
+            "provenance": "Source-authenticated unrestricted Q32/R32/C using canonical V2 12-ZP low-D 32/16 public kernel and qualified 4-ZP full-D 32/32 tail; shared 3200B caller-RAM image, 12 call-exclusive ZP, no tables/SMC/REU/scratch, D=0 prerequisite. Preserves N32/D32 and C=1 on D=0.",
+        },
         "link:shared-aligned-zerozp": {
             "source": "routines/standalone_lab/portable/div_u32_aligned_nozp.asm",
             "segments": (("KERNEL_CODE", 325), ("KERNEL_AUX", 251)),
@@ -916,6 +933,13 @@ def available_variants(root=ROOT):
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
                         (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
                 } if mod.get("v2_sizefast_u3216") else {
+                    "tools/selective_hybrid_u3232.py": hashlib.sha256(
+                        (root / "tools/selective_hybrid_u3232.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                    "routines/standalone_lab/portable/div_u32_zptail.asm": hashlib.sha256(
+                        (root / "routines/standalone_lab/portable/div_u32_zptail.asm").read_bytes()).hexdigest(),
+                } if mod.get("hybrid_u3232") else {
                     "tools/selective_isqrt16.py": hashlib.sha256(
                         (root / "tools/selective_isqrt16.py").read_bytes()).hexdigest()
                 } if mod.get("isqrt16") else {
@@ -951,6 +975,7 @@ def available_variants(root=ROOT):
                     "tools/test_selective_fast31_shared.py" if mod.get("fast31_shared") else
                     "tools/test_selective_fast31_smul32_builder.py" if mod.get("fast31_smul32") else
                     "tools/test_selective_umul32_fast31_builder.py" if mod.get("fast31_umul32") else
+                    "tools/test_selective_u3232_hybrid_builder.py" if mod.get("hybrid_u3232") else
                     "tools/test_selective_umul32_quartersquare.py" if mod.get("fast_umul32") else
                     "tools/test_selective_fast_umul16.py" if mod.get("fast_umul16") else
                     "tools/test_selective_dist8_accurate.py" if mod.get("dist8_accurate") else
@@ -1568,6 +1593,11 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("fast_umul16") and set(x["source_path"] for x in dep_provenance) != {
                 "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py"}:
             raise LinkError(api + ": 16-bit quarter-square emitter provenance missing")
+        if module.get("hybrid_u3232") and [x["source_path"] for x in dep_provenance] != [
+                "tools/selective_hybrid_u3232.py",
+                "tools/selective_v2_fast_u3216.py",
+                "routines/standalone_lab/portable/div_u32_zptail.asm"]:
+            raise LinkError(api + ": V2 32/32 hybrid donor/relocator provenance missing")
         if module.get("v2_sizefast_u3216") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_v2_fast_u3216.py"]:
             raise LinkError(api + ": canonical V2 32/16 source relocation provenance missing")
@@ -1604,7 +1634,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_sizefast_u3216"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_sizefast_u3216") or module.get("hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -1625,6 +1655,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                         machine, entry, ranges, end = fast31.assemble(
                             pc, io, zb, root, source_path=module["source"],
                             entry_label=module["entry"])
+                elif module.get("hybrid_u3232"):
+                    machine, labels, ranges, end = hybrid_u3232.assemble(pc,io,zb,root)
+                    entry = labels[module["entry"]]
                 elif module.get("v2_sizefast_u3216"):
                     machine, labels, ranges, end = v2u3216.assemble_image(pc,io,zb,root)
                     entry = labels[module["entry"]]
@@ -1667,7 +1700,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_sizefast_u3216"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_sizefast_u3216") and not module.get("hybrid_u3232"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
@@ -1866,6 +1899,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                        "tools/selective_speed_mul32_ready_shr16.py",
                        "tools/selective_speed_u3216.py",
                        "tools/selective_speed_u3232.py",
+                       "tools/selective_hybrid_u3232.py",
                        "tools/selective_v2_fast_u3216.py",
                        "tools/selective_speed_umul16.py",
                        "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",

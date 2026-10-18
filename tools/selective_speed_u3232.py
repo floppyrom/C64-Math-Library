@@ -14,6 +14,7 @@ import random
 import re
 
 from mini6502 import Assembler, CPU, load_sparse
+import selective_hybrid_u3232 as hybrid
 
 SEED=0x3232C64
 COUNT=384
@@ -23,15 +24,18 @@ CORPUS_SHA256="96e691eace2ab60671c984c61b4adc567720f3116c5873f13d0a07fc47344acf"
 BASE="cpu-model-unsigned-32by32-complete-public-q32-r32-v1"
 EXPECTED={
     "MATH_UDIV32_32":frozenset(("link:zptail","link:aligned-zerozp",
-                                  "link:shared-aligned-zerozp")),
+                                  "link:shared-aligned-zerozp",
+                                  "link:v2-lowdivisor-hybrid")),
     "MATH_UMOD32_32":frozenset(("link:aligned-zerozp",
-                                  "link:shared-aligned-zerozp")),
+                                  "link:shared-aligned-zerozp",
+                                  "link:v2-lowdivisor-hybrid")),
 }
 RESOURCES={
     "link:zptail":((325,219),4,0),
     "link:aligned-zerozp":((325,251),0,4),
     "link:shared-aligned-zerozp":((325,251),0,4),
     "link:mod-aligned-zerozp":((250,225,21),0,4),
+    "link:v2-lowdivisor-hybrid":((3200,),12,0),
 }
 
 def corpus():
@@ -47,6 +51,12 @@ def corpus():
     return pairs
 
 def assemble_source(api,ident,mod,base,io,scratch,zp,root):
+    if ident=="link:v2-lowdivisor-hybrid":
+        image,labels,ranges,end=hybrid.assemble(base,io,zp,root)
+        if (end!=base+3200 or len(ranges)!=1 or
+            set(image)!=set(range(base,end))):
+            raise ValueError(api+": V2 hybrid packed source layout changed")
+        return image,labels[mod["entry"]]
     parts=tuple(n for _,n in mod["segments"])
     expected=RESOURCES["link:mod-aligned-zerozp" if
         api=="MATH_UMOD32_32" and ident=="link:aligned-zerozp" else ident]
@@ -90,6 +100,10 @@ def benchmark(api,modules,base,io,scratch,root:Path,zp=0x50):
             not mod.get("multi_entry") or
             mod.get("share_producer")!="unsigned-32by32-aligned-public-qr"):
             raise ValueError(api+": shared producer identity changed")
+        if ident=="link:v2-lowdivisor-hybrid" and (
+            not mod.get("hybrid_u3232") or not mod.get("multi_entry") or
+            mod.get("share_producer")!="unsigned-32by32-v2-lowdivisor-public-qr"):
+            raise ValueError(api+": V2 hybrid shared producer identity changed")
         if mod.get("requires_reu") or mod.get("requires_writable_code"):
             raise ValueError(api+": candidate hardware requirement changed")
         code,entry=assemble_source(api,ident,mod,base,io,scratch,zp,root)

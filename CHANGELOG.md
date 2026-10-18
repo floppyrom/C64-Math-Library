@@ -1,3 +1,18 @@
+## Unreleased — selectable unrestricted V2-lowdivisor 32/32 hybrid
+
+- Promote the native- and CPU-qualified unrestricted public Q32/R32/C
+  hybrid as `link:v2-lowdivisor-hybrid` for both `UDIV32_32` and
+  `UMOD32_32`. A single source-authenticated 3,200-byte NOP-padded
+  executable and 12 call-exclusive ZP slots serve both aliases; combined
+  main RAM is 3,232 B including the common 32-byte public I/O region.
+- Extend the authenticated 384-pair matched public-call speed basis to the
+  unrestricted hybrid. The project selector retains small 4-ZP and zero-ZP
+  implementations when RAM/ZP budgets prohibit the fast option. Hybrid
+  benchmarks include both narrow and wide divisors, zero, C flag and Q/R.
+- Add linked-binary two-map CPU proof, producer-sharing/resource fail-closed
+  gates and native VICE both-export qualification. Preserve raw V2,
+  full-width tail and source-generator SHA provenance in the manifest.
+
 ## Unreleased — unrestricted 32/32 historical V2 low-divisor hybrid experiment
 
 - Assemble the existing certified V2 12-ZP 32/16 public Q/R producer and
