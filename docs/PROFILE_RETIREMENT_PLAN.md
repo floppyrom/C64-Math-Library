@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (twenty source-qualified APIs)
+## Workload-weighted speed selection (twenty-one source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **twenty**
+The `speed` objective supports project-level weighted selection for **twenty-one**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16 and DIST8_ACCURATE. Multiple operations **must**
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE and ATAN2_8. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -68,6 +68,14 @@ verifies the newly speed-qualified two-variant UDIV24/UMOD24 source corpus.
 Benchmarks do **not** provide real hardware timing or prove
 cycle invariance after physical link relocation; speed selection is therefore
 an expected workload estimate, not exact total cycle prediction.
+
+For ATAN2_8, both signed-domain-correct sources use zero ZP. The compact
+variant uses 800 B main RAM at $8000 and averages 44.417 CPU-model cycles
+per public call; sum-fast uses 1,312 B and averages 40.927 cycles on the
+same 384 signed-vector input pairs. All 65,536 signed-byte vectors were
+separately proof-tested for identical outputs, and both source kernels
+passed native VICE at two relocations. Resource-aware speed selection
+uses sum-fast when tables fit and compact when RAM is constrained.
 
 For the exact-table DIST8_ACCURATE source pair, the V1 0-ZP RAM-scratch
 path is available at 802 B main RAM; the V2 two-ZP fast path uses 800 B
