@@ -36,8 +36,12 @@ class U3232SpeedTests(unittest.TestCase):
                     self.assertTrue(model["cpu_model_only"])
                     self.assertEqual(set(model["mean_cycles"]),speed.EXPECTED["MATH_"+op])
                     self.assertTrue(all(v>0 for v in model["mean_cycles"].values()))
+                    eligible={ident:value for ident,value in model["mean_cycles"].items()
+                              if linker.MODULES["MATH_"+op][ident]["zp"]<=4
+                              and (sum(n for _,n in linker.MODULES["MATH_"+op][ident]["segments"])
+                                   +32+linker.MODULES["MATH_"+op][ident]["scratch"])<=4000}
                     self.assertEqual(manifest["operations"][0]["variant"],
-                                     min(model["mean_cycles"],key=model["mean_cycles"].get))
+                                     min(eligible,key=eligible.get))
                     print("U3232 MATCHED PUBLIC",op,hex(base),
                           model["mean_cycles"],flush=True)
 
