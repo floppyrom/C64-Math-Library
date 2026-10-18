@@ -32,9 +32,9 @@ jobs:
           bash tools/vice/verify_headless.sh "$PWD/.vice-build/r46284/bin/x64sc"
           test "$(git -C third_party/vice rev-parse HEAD)" = "d4d62d0b9538238e6a84826e951e76debf5df649"
       - name: Native C64 public ABI smoke under r46284
-        env:
-          VICE_WRAPPER: "$GITHUB_WORKSPACE/.vice-build/r46284/bin/x64sc"
         run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
           python3 tools/native_selective_linker.py
           python3 tools/native_selective_hybrid_u3232.py
       - name: Retain source-built headless binary (not ROM assets)
