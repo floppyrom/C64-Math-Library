@@ -50,11 +50,28 @@ class Signed24FrameTraceTests(unittest.TestCase):
                 self.assertGreater(result["comparison"]["total_math_cycles_saved"], 0)
                 self.assertEqual(
                     result["baseline"]["frames"], result["candidate"]["frames"])
-                self.assertEqual(
-                    [c.cycles for c in original if c.operation not in ("MATH_SDIV24", "MATH_SMOD24")],
-                    [c.cycles for c in guarded if c.operation not in ("MATH_SDIV24", "MATH_SMOD24")])
+                non24 = set(bm["variants"]) - {"MATH_SDIV24", "MATH_SMOD24"}
+                # A longer source changes linked addresses, so non24 calls
+                # can experience 6502 page-crossing cycle differences even
+                # with identical source bytes. Verify *source identity*, but
+                # retain observed secondary cycle costs in the frame score.
+                for op in non24:
+                    self.assertEqual(bm["variants"][op], gm["variants"][op])
+                signed24_saved = sum(
+                    before.cycles - after.cycles
+                    for before, after in zip(original, guarded)
+                    if before.operation in ("MATH_SDIV24", "MATH_SMOD24"))
+                others_saved = sum(
+                    before.cycles - after.cycles
+                    for before, after in zip(original, guarded)
+                    if before.operation not in ("MATH_SDIV24", "MATH_SMOD24"))
+                self.assertEqual(signed24_saved + others_saved,
+                                 result["comparison"]["total_math_cycles_saved"])
+                breakdown = {**result["comparison"],
+                             "signed24_cycles_saved": signed24_saved,
+                             "other_signed_wide_cycles_saved": others_saved}
                 print("SIGNED24_FRAME_PAIRED", hex(code),
-                      json.dumps(result["comparison"], sort_keys=True), flush=True)
+                      json.dumps(breakdown, sort_keys=True), flush=True)
 
     def test_refuse_unknown_source_and_changed_memory_map(self):
         with tempfile.TemporaryDirectory() as directory:
