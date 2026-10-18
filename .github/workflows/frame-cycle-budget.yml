@@ -1,0 +1,39 @@
+name: Frame arithmetic trace scoring (CPU-model/native input gate)
+
+on:
+  pull_request:
+    paths:
+      - tools/frame_cycle_budget.py
+      - tools/test_frame_cycle_budget.py
+      - tools/export_wide_frame_trace.py
+      - docs/FRAME_CYCLE_TRACE_BUDGET.md
+      - .github/workflows/frame-cycle-budget.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  frame-trace-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Static compilation
+        run: python3 -m compileall -q tools/frame_cycle_budget.py tools/test_frame_cycle_budget.py tools/export_wide_frame_trace.py
+      - name: Paired traces, strict rejection, busy-frame regression
+        run: python3 -m unittest discover -s tools -p 'test_frame_cycle_budget.py' -v
+      - name: Source-assembled six signed-wide APIs in deterministic burst frames, both relocations
+        run: |
+          python3 tools/export_wide_frame_trace.py --frames 24 --code-base 0x8000 --io-base 0xc000 --out build/frame_wide_8000.csv
+          python3 tools/export_wide_frame_trace.py --frames 24 --code-base 0x7123 --io-base 0xc040 --out build/frame_wide_7123.csv
+          python3 tools/frame_cycle_budget.py --baseline build/frame_wide_8000.csv --frame-count 24 --out build/frame_wide_8000.json
+          python3 tools/frame_cycle_budget.py --baseline build/frame_wide_7123.csv --frame-count 24 --out build/frame_wide_7123.json
+      - name: Archive exact public-call trace and source provenance
+        uses: actions/upload-artifact@v4
+        with:
+          name: signed-wide-frame-cpu-traces
+          path: build/frame_wide_*
+          retention-days: 30
