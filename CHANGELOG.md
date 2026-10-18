@@ -15,6 +15,22 @@
   V1–V5 builds. No cycle-speed win or default promotion is claimed without
   the required benchmarks and exact-head tests.
 
+## Unreleased — 32/32 DIV/MOD quotient/divisor cycle-tail research
+
+- Add a deterministic, two-relocation nine-band public-ABI audit for
+  `UDIV32_32` and `UMOD32_32` across all currently selectable
+  32-bit quotient/remainder producers. Each run verifies exact Q32/R32/C,
+  preserved numerator/divisor/SP and immutable code while measuring complete
+  source-linked public-call cycles, nearest-rank p95, median and worst cases.
+- Report source SHA256, RAM/ZP, 64 identical inputs per divisor/quotient band,
+  candidate-wise means and paired fastest/slower/equal counts to expose
+  small-divisor and high-quotient regressions hidden by one average.
+  Two-code-map assertions and the full source audit are CI-required;
+  the complete JSON diagnostic is uploaded as a 30-day GitHub Actions artifact.
+- Research-only: no new kernel, production promotion, V1–V5 binary replacement,
+  or native-VICE timing claim. The existing 16 speed-modelled APIs remain
+  unchanged.
+
 ## Unreleased — shared zero-ZP Q32/R32 DIV and MOD physical producer
 
 - Publish an optional `link:shared-aligned-zerozp` source-linked variant
