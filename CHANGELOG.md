@@ -1,3 +1,17 @@
+## Unreleased — same-corpus phase-accurate ATAN2 speed frontier
+
+- Add ATAN2_8 as a 21st independently speed-qualified API. The historical
+  85-byte sum-fast + 1,024-byte table producer averages 40.927 CPU-model
+  cycles per public call, versus 44.417 for the 94-byte compact + 512-byte
+  table producer. The faster source uses 1,312 B RAM at $8000; compact
+  requires only 800 B. Both require no ZP and preserve the public ABI.
+- Fixed 384-pair input corpus and public output hash, source/table provenance,
+  exact phase/A/carry/input/sentinel/stack checks, two source relocations,
+  RAM budget fallback and fail-closed resource contracts. Both historical
+  sources already passed exhaustive 65,536-vector proof and real native VICE.
+- No historical resident profile code is changed. CPU-model cycles are not
+  measured physical machine timings.
+
 ## Unreleased — source-qualified accurate-distance speed choice
 
 - Qualify `DIST8_ACCURATE` as a 20th workload-speed API using a fixed,
