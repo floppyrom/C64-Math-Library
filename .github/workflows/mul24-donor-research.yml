@@ -1,0 +1,41 @@
+name: Matched 24-bit UMUL/SMUL resident donor research
+
+on:
+  pull_request:
+    paths:
+      - 'tools/research_umul24_smul24_parity.py'
+      - 'tools/test_research_umul24_smul24_parity.py'
+      - 'docs/MUL24_HISTORICAL_DONOR_RESEARCH.md'
+      - '.github/workflows/mul24-donor-research.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  same-public-corpus:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify 24-bit historical and portable full public source
+        run: |
+          python3 -m compileall -q tools/research_umul24_smul24_parity.py tools/test_research_umul24_smul24_parity.py
+          python3 -m unittest discover -s tools -p 'test_research_umul24_smul24_parity.py' -v
+          python3 tools/research_umul24_smul24_parity.py --cases 384 --out build/umul24_smul24_donors.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("build/umul24_smul24_donors.json").read_text())
+          assert r["status"]=="PASS"
+          assert r["cases"]==384
+          assert len(r["results"])==14
+          assert len({x["variant"] for x in r["results"]})==6
+          assert all(x["calls"]==384 for x in r["results"])
+          assert len(r["corpus_sha256"])==64
+          PY
