@@ -1,3 +1,14 @@
+## Unreleased — source-qualified accurate-distance speed choice
+
+- Qualify `DIST8_ACCURATE` as a 20th workload-speed API using a fixed,
+  identical signed-byte 384-pair CPU-model public-entry corpus. The V2
+  ZP-scratch source averages 78.08 cycles; the V1 0-ZP RAM-scratch source
+  84.64 at $8000. Both use the unchanged exact historical 512-byte tables.
+- Preserve input bytes, R8/carry, stack, output sentinels and code/table
+  immutability under two memory layouts, plus missing-source and resource
+  metadata fail-closed checks. Builder keeps V1 at ZP=0 and chooses V2
+  when 2 ZP bytes are available. No physical C64 timing is asserted.
+
 ## Unreleased — same-input complete public speed selection for UMOD16
 
 - Add `UMOD16` to the builder's comparable weighted-speed frontier (19 APIs).
