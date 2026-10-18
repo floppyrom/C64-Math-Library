@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (twenty-one source-qualified APIs)
+## Workload-weighted speed selection (twenty-two source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **twenty-one**
+The `speed` objective supports project-level weighted selection for **twenty-two**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE and ATAN2_8. Multiple operations **must**
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8 and UDIV16. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -68,6 +68,15 @@ verifies the newly speed-qualified two-variant UDIV24/UMOD24 source corpus.
 Benchmarks do **not** provide real hardware timing or prove
 cycle invariance after physical link relocation; speed selection is therefore
 an expected workload estimate, not exact total cycle prediction.
+
+For UDIV16, the newly linked canonical V2 size-fast kernel uses 0 ZP and
+1,513 bytes RAM including the 32-byte public I/O window, while the existing
+2-ZP biased kernel uses 355 B. On an identical 384-call public Q16/R16/C
+CPU-model corpus, the biased kernel averages 162.729 cycles and the V2
+zero-ZP kernel 177.836 cycles at $8000. The builder therefore keeps the
+faster biased kernel when 2 ZP bytes fit, and supports 0 ZP for projects
+that can allocate the larger V2 source. Both are independently VICE-tested
+at two layouts. This is a resource migration, not a speed improvement.
 
 For ATAN2_8, both signed-domain-correct sources use zero ZP. The compact
 variant uses 800 B main RAM at $8000 and averages 44.417 CPU-model cycles

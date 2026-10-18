@@ -326,15 +326,16 @@ class SelectiveLinkTests(unittest.TestCase):
     def test_constraints_and_unavailable_operations(self):
         with tempfile.TemporaryDirectory() as d:
             path = Path(d)
-            baseline = self.plan(["UDIV16"], zp_budget=1)
+            baseline = self.plan(["UDIV16"], zp_budget=1, ram_budget=1512)
             with self.assertRaises(linker.LinkError):
                 linker.build(baseline, path)
+            no_zp = self.plan(["UDIV16"], zp_budget=0, ram_budget=1513)
+            self.assertEqual(linker.build(no_zp, path / "zero_zp")["operations"][0]["variant"], "link:v2-zerozp")
             unlinked = sorted(api for api, operation in self.index.items()
                               if not any(v["selective_link_ready"]
                                          for v in operation["variants"]))
             self.assertEqual(unlinked, [], "All 56 operations must be source-linkable")
-            with self.assertRaises(linker.LinkError):
-                linker.build(self.plan(["UDIV16"], objective="speed"), path)
+            self.assertEqual(linker.build(self.plan(["UDIV16"], objective="speed"), path / "speed")["operations"][0]["variant"], "link:biased")
             with self.assertRaises(linker.LinkError):
                 linker.build(self.plan(["UDIV16"], ram_budget=300), path)
             good = self.plan(["UDIV16"])
@@ -416,7 +417,7 @@ class SelectiveLinkTests(unittest.TestCase):
             man = linker.build(plan, Path(d))
             files = ("tools/math_builder.py", "tools/selective_linker.py",
                      "tools/selective_atan2.py", "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py", "tools/selective_fast31_umul32.py",
-                     "tools/selective_speed_umul32.py", "tools/selective_speed_smul32.py", "tools/selective_speed_mul32_ready_shr16.py", "tools/selective_speed_u3216.py", "tools/selective_speed_u3232.py", "tools/selective_speed_u24.py", "tools/selective_speed_umod16.py", "tools/selective_speed_dist8_accurate.py", "tools/selective_speed_atan2.py", "tools/selective_hybrid_u3232.py", "tools/selective_v2_fast_u3216.py", "tools/selective_speed_umul16.py", "tools/selective_speed_umul16_shr8.py", "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
+                     "tools/selective_speed_umul32.py", "tools/selective_speed_smul32.py", "tools/selective_speed_mul32_ready_shr16.py", "tools/selective_speed_u3216.py", "tools/selective_speed_u3232.py", "tools/selective_speed_u24.py", "tools/selective_speed_umod16.py", "tools/selective_speed_dist8_accurate.py", "tools/selective_speed_atan2.py", "tools/selective_speed_udiv16.py", "tools/generate_selective_udiv16_v2.py", "tools/selective_hybrid_u3232.py", "tools/selective_v2_fast_u3216.py", "tools/selective_speed_umul16.py", "tools/selective_speed_umul16_shr8.py", "tools/selective_speed_umod8.py", "tools/selective_speed_udiv8.py",
                      "tools/selective_speed_isqrt32.py",
                      "tools/selective_speed.py", "tools/selective_isqrt16.py",
                      "tools/selective_trig8.py", "tools/selective_dist8_accurate.py", "tools/selective_smul8.py",

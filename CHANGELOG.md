@@ -1,3 +1,20 @@
+## Unreleased — V2 canonical UDIV16 zero-ZP historical donor and speed provenance
+
+- Transplant the complete 1,481-byte original V2 size-fast 16/16 divider as a
+  stock NMOS 6510 independently linkable source. Only fixed profile jump stubs
+  and symbolic N/D/Q/R names are rewritten; generator checks the original
+  canonical V2 donor text, and the existing fast 323-byte biased 2-ZP kernel
+  remains the resource-small, cycle-fast default.
+- Public full-call, exact same 384 N16/D16 inputs at $8000: biased 162.729
+  CPU-model cycles (355 RAM bytes including 32-byte public I/O, 2 ZP);
+  V2 zero-ZP 177.836 cycles (1,513 RAM bytes, 0 ZP). This is a **resource
+  alternative**, not a claimed speedup. The builder chooses biased whenever
+  the 2-byte ZP budget fits, and V2 when ZP=0 with enough RAM.
+- Both relocations ($8000, $7123) checked against exact Q16/R16/C and caller
+  input, sentinel, SP and code preservation. Native VICE at both maps passes
+  384 public calls. Matched-input CPU-model speed selection is now qualified
+  for 22 operations. Profile PRGs and original canonical source stay unchanged.
+
 ## Unreleased — same-corpus phase-accurate ATAN2 speed frontier
 
 - Add ATAN2_8 as a 21st independently speed-qualified API. The historical
