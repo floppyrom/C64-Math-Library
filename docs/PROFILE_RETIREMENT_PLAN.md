@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (thirty-one source-qualified APIs)
+## Workload-weighted speed selection (thirty-two source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **thirty-one**
+The `speed` objective supports project-level weighted selection for **thirty-two**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UMUL24, SMUL24, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
+SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -87,6 +87,15 @@ source variants at two complete memory layouts ($2000 and $4321), yielding
 while the other 55 choices retain the original fully budgeted size selection.
 This proves relocation and mixed-residency compatibility for root16, not
 an exhaustive mixed invocation of every math operation.
+
+For UDIV16_SHL8, the operation-first builder now retains two selectable
+implementations: a 129-byte/0-ZP portable restoring source and the source-linked
+historical V2 split-tail 32/16 arithmetic kernel (2,368 bytes and 12
+call-exclusive ZP). The latter stages `N16 << 8` directly without changing
+caller operands and delivers the same complete Q24/R16/C contract. On 384
+identical public-call operands its model mean is about 719 cycles against
+1,777 portable; the auto speed objective chooses V2 only when RAM and ZP fit.
+A 150-call/24-frame paired trace covers math CPU cycles, not physical PAL frames.
 
 For SMUL24, the historical V2 $CA-biased kernel now exposes its
 signed correction as another public entry from the **same** four quarter-square

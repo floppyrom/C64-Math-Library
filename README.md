@@ -32,7 +32,7 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 31 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 32 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -46,6 +46,13 @@ the lookup image. For the faster measured variants use:
 ```sh
 make builder-speed SPEED_CONFIG=examples/operation-first-shared24-speed.json OUT=build_shared24
 ```
+
+The historical V2 32/16 fast division core is now independently linkable for
+UDIV16_SHL8: approximately 719 full public-call model cycles versus 1,777
+for the 129-byte portable 0-ZP fallback on identical 384-case inputs.
+The fast variant requires 2,368 code bytes and 12 call-exclusive ZP bytes,
+and keeps the slower source for constrained projects. The 24-frame model
+workload and native VICE qualifications are not physical PAL timing.
 
 The existing compact 156-byte unsigned / 227-byte signed 0-ZP kernels
 remain independently selectable when code RAM or ZP is constrained.

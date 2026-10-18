@@ -1,3 +1,15 @@
+## Unreleased — historical V2 UDIV16_SHL8 source-linked speed selection
+
+- Port the canonical V2 32/16 split-tail producer to full Q24/R16/C
+  shifted-numerator API, preserving input and output sentinels.
+- Retain both 129-byte/0-ZP compact and 2,368-byte/12-ZP V2 Pareto variants;
+  compare 384 complete-public same-input calls at two origins.
+- Add source-authenticated speed selection, 150-call/24-frame math workload
+  comparison and pinned native VICE r46284 relocation tests. Increase speed
+  qualification coverage to 32/56, pending exact-head publication gates.
+- Preserve all five historical binaries, their source hashes and hardware
+  compatibility surfaces.
+
 ## Unreleased — two-layout full-56 ISQRT16 dual-source native proof
 
 - Add a real VICE integration gate for both ISQRT16 implementations selected

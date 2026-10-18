@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 31 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 32 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -89,6 +89,14 @@ remains a feasible size fallback. See
   independent 227-byte / 0-ZP compact source remains a selectable alternative.
   See [shared signed/unsigned 24-bit multiplication](SMUL24_SHARED_V2_BUILDER.md).
   
+The historical V2 32/16 source is independently linkable for `UDIV16_SHL8`.
+It stages the shifted 16-bit numerator in the native private state while
+preserving public operands, Q24/R16 and carry. At the complete-call ABI it
+averages approximately 719 versus 1,777 CPU-model cycles on 384 identical
+inputs. The original 129-byte/0-ZP portable implementation remains for
+resource-constrained projects; the V2 path needs 2,368 bytes and 12 ZP.
+Measured 24-frame math budgets do not imply VIC/IRQ/PAL frame qualification.
+
 ## Active migration priority after PRs #293–#296
 
 - The historical V3 signed24 kernel is available and CPU/native qualified,
