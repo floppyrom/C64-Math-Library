@@ -1,0 +1,41 @@
+name: Historical 24-bit signed and unsigned multiply donor audit
+
+on:
+  pull_request:
+    paths:
+      - 'tools/research_mul24_historical_parity.py'
+      - 'tools/test_research_mul24_historical_parity.py'
+      - 'docs/MUL24_HISTORICAL_DONOR_AUDIT.md'
+      - '.github/workflows/mul24-historical-donor-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-model-paired-public:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate identical public multiply inputs against all resident profiles
+        run: |
+          python3 -m compileall -q tools/research_mul24_historical_parity.py tools/test_research_mul24_historical_parity.py
+          python3 -m unittest discover -s tools -p 'test_research_mul24_historical_parity.py' -v
+          python3 tools/research_mul24_historical_parity.py --out build/mul24_donor_audit.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("build/mul24_donor_audit.json").read_text())
+          assert d["status"]=="PASS"
+          assert d["cases_per_api"]==512
+          assert len(d["measurements"])==14
+          assert {x["api"] for x in d["measurements"]}=={"MATH_UMUL24","MATH_SMUL24"}
+          assert len({x["variant"] for x in d["measurements"]})==6
+          assert all(x["calls"]==512 for x in d["measurements"])
+          PY
