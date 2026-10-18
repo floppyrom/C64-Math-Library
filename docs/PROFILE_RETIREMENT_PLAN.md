@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (twenty-three source-qualified APIs)
+## Workload-weighted speed selection (twenty-five source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **twenty-three**
+The `speed` objective supports project-level weighted selection for **twenty-five**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16 and ISQRT16. Multiple operations **must**
+SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16 and SMOD32_16. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -289,6 +289,17 @@ from an identical public operation name: compare code assembled from the
 specific source variant on exactly the same input corpus and calling ABI.
 
 ## Complete 56-operation native integration smoke
+
+The historical signed V2 32/16 magnitude producer is source-linked as
+`link:v2-signed-magnitude` for both `SDIV32_16` and `SMOD32_16`, with
+a single 2,880-byte code image, 12 call-exclusive ZP bytes, and no ordinary
+scratch. The 260-byte / 0-ZP portable alternative remains available. The
+`speed` objective compares 384 identical signed input pairs with the
+full public Q32/R16/C ABI, while the mixed source-model frame test records
+peak and average cycle changes for actual operation call sequences. To try it,
+use `make builder-speed SPEED_CONFIG=examples/operation-first-signed32-speed.json`.
+The historical V2 producer is not an REU accelerator and the original
+V1–V5 binaries remain unchanged.
 
 The stock C64 builder can emit all 56 operations as one linked PRG in a
 16,640-byte code span at $2000, with 17,104 bytes of combined RAM and four

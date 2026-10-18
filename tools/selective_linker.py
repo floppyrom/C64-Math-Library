@@ -32,6 +32,7 @@ import selective_speed_umul32
 import selective_speed_smul32
 import selective_speed_mul32_ready_shr16 as speed32extras
 import selective_speed_u3216 as speed_u3216
+import selective_speed_s3216 as speed_s3216
 import selective_speed_u3232 as speed_u3232
 import selective_speed_u24 as speed_u24
 import selective_speed_umod16 as speed_umod16
@@ -41,6 +42,7 @@ import selective_speed_udiv16 as speed_udiv16
 import selective_speed_isqrt16 as speed_isqrt16
 import selective_hybrid_u3232 as hybrid_u3232
 import selective_v2_fast_u3216 as v2u3216
+import research_signed_v2_u3216 as signedv2u3216
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
 import selective_dist8_accurate as dist8tab
@@ -261,6 +263,14 @@ MODULES = {
             "multi_entry": True, "sdiv32_16_portable": True,
             "provenance": "Shared signed N32/D16 exact Q32 signed/R16 numerator-signed, zero-D carry; 260 code/3 scratch/0 ZP, N/D preserved, high R unchanged.",
         },
+        "link:v2-signed-magnitude": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 2880),),
+            "entry": "FAST_SDIV32_16_V2MAG", "zp": 12, "scratch": 0,
+            "share_producer": "signed-32by16-v2-magnitude",
+            "multi_entry": True, "signed_v2_u3216": True,
+            "provenance": "Relocated original V2 unsigned magnitude donor with signed numerator/divisor normalization and correction; complete Q32/R16/C ABI, 2880B code + 12 call-exclusive ZP, NMOS illegal opcodes, non-reentrant.",
+        },
     },
     "MATH_SMOD32_16": {
         "link:portable-zerozp": {
@@ -270,6 +280,14 @@ MODULES = {
             "share_producer": "signed-32by16-portable-zerozp",
             "multi_entry": True, "sdiv32_16_portable": True,
             "provenance": "SMOD32_16 aliases signed 32/16 public Q32/R16 producer; no duplicated image or N/D clobber.",
+        },
+        "link:v2-signed-magnitude": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 2880),),
+            "entry": "FAST_SMOD32_16_V2MAG", "zp": 12, "scratch": 0,
+            "share_producer": "signed-32by16-v2-magnitude",
+            "multi_entry": True, "signed_v2_u3216": True,
+            "provenance": "One canonical signed V2 magnitude Q32/R16/C producer shared by DIV and MOD without a second code island; 12 ZP.",
         },
     },
     "MATH_SDIV24": {
@@ -989,6 +1007,11 @@ def available_variants(root=ROOT):
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
                         (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
                 } if mod.get("v2_sizefast_u3216") else {
+                    "tools/research_signed_v2_u3216.py": hashlib.sha256(
+                        (root / "tools/research_signed_v2_u3216.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                } if mod.get("signed_v2_u3216") else {
                     "tools/selective_hybrid_u3232.py": hashlib.sha256(
                         (root / "tools/selective_hybrid_u3232.py").read_bytes()).hexdigest(),
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
@@ -1792,6 +1815,8 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_UMUL32_SHR16": (speed32extras.bench_umul32_shr16, "scratch", True),
             "MATH_SMUL32_SHR16": (speed32extras.bench_smul32_shr16, "scratch", True),
             "MATH_UDIV32_16": (speed_u3216.bench_udiv32_16, "scratch", True),
+            "MATH_SDIV32_16": (speed_s3216.bench_sdiv32_16, "scratch", True),
+            "MATH_SMOD32_16": (speed_s3216.bench_smod32_16, "scratch", True),
             "MATH_UMOD32_16": (speed_u3216.bench_umod32_16, "scratch", True),
             "MATH_UDIV32_32": (speed_u3232.bench_udiv32_32, "scratch", True),
             "MATH_UMOD32_32": (speed_u3232.bench_umod32_32, "scratch", True),
@@ -1807,7 +1832,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16")
+                            "; available: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, SDIV32_16, SMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16")
         models = {}
         per_operation_cycles = {}
         for api in names:
@@ -1950,6 +1975,9 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("v2_sizefast_u3216") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_v2_fast_u3216.py"]:
             raise LinkError(api + ": canonical V2 32/16 source relocation provenance missing")
+        if module.get("signed_v2_u3216") and [x["source_path"] for x in dep_provenance] != [
+                "tools/research_signed_v2_u3216.py", "tools/selective_v2_fast_u3216.py"]:
+            raise LinkError(api + ": V2 signed magnitude canonical generator provenance missing")
         if module.get("udiv24_v2") and [x["source_path"] for x in dep_provenance] != [
                 "relocatable_source/v2_pareto_fast/udiv24_direct_repose.inc",
                 "tools/selective_udiv24_v2.py"]:
@@ -1983,7 +2011,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_sizefast_u3216") or module.get("hybrid_u3232"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_sizefast_u3216") or module.get("signed_v2_u3216") or module.get("hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2010,6 +2038,12 @@ def build(plan, outdir, memory=None, root=ROOT):
                 elif module.get("v2_sizefast_u3216"):
                     machine, labels, ranges, end = v2u3216.assemble_image(pc,io,zb,root)
                     entry = labels[module["entry"]]
+                elif module.get("signed_v2_u3216"):
+                    machine, labels, _ = signedv2u3216.assemble(pc,io,zb,root)
+                    entry = labels[module["entry"]]
+                    end = pc + signedv2u3216.IMAGE_BYTES
+                    ranges = [{"name": "KERNEL_CODE", "start": "$%04X" % pc,
+                               "bytes": signedv2u3216.IMAGE_BYTES}]
                 elif module.get("umul8_v1"):
                     machine, entry, ranges, end = v1umul8.assemble(pc, io, zb, root)
                 elif module.get("seek8"):
@@ -2049,7 +2083,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_sizefast_u3216") and not module.get("hybrid_u3232"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_sizefast_u3216") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:

@@ -17,6 +17,7 @@ OPS = ("SMUL32", "SMUL32_SHR16", "SDIV32_16", "SMOD32_16", "SDIV32_32", "SMOD32_
 SIGNED24_OPS = ("SDIV24", "SMOD24")
 SIGNED24_VARIANTS = ("link:portable-zerozp", "link:abs-qzero-guard",
                      "link:v3-signed-magnitude")
+SIGNED32_16_VARIANTS = ("link:portable-zerozp", "link:v2-signed-magnitude")
 
 
 def signed(value, bits):
@@ -45,18 +46,25 @@ def divmod_reference(n, d, bits):
     return q & ((1 << (24 if bits == 24 else 32)) - 1), (n - q * d) & ((1 << bits) - 1), 0
 
 
-def export(out, frames=40, code=0x8000, io=0xc000, signed24_variant=None):
+def export(out, frames=40, code=0x8000, io=0xc000, signed24_variant=None, signed32_16_variant=None):
     if not 1 <= frames <= 2000:
         raise ValueError("frames must be in 1..2000")
     if signed24_variant is not None and signed24_variant not in SIGNED24_VARIANTS:
         raise ValueError("Unqualified signed24 variant: " + str(signed24_variant))
+    if signed32_16_variant is not None and signed32_16_variant not in SIGNED32_16_VARIANTS:
+        raise ValueError("Unqualified signed32/16 variant: " + str(signed32_16_variant))
     rng = random.Random(0xC643232)
     operations = OPS + SIGNED24_OPS if signed24_variant else OPS
     pins = ({"MATH_" + op: signed24_variant for op in SIGNED24_OPS}
-            if signed24_variant else None)
+            if signed24_variant else {})
+    if signed32_16_variant:
+        pins.update({"MATH_SDIV32_16": signed32_16_variant,
+                     "MATH_SMOD32_16": signed32_16_variant})
+    needed_zp = max(12 if signed32_16_variant == "link:v2-signed-magnitude" else 0,
+                    9 if signed24_variant == "link:v3-signed-magnitude" else 0)
     plan = math_builder.create_plan(math_builder.operation_index(), list(operations),
-                                    objective="size", zp_budget=9 if signed24_variant == "link:v3-signed-magnitude" else 0,
-                                    ram_budget=8192, pins=pins)
+                                    objective="size", zp_budget=needed_zp,
+                                    ram_budget=8192, pins=pins or None)
     with tempfile.TemporaryDirectory() as temp:
         manifest = selective_linker.build(plan, Path(temp), memory={
             "code_base": code, "math_io": io, "zp_base": 0x50,
@@ -186,6 +194,8 @@ if __name__ == "__main__":
     parser.add_argument("--io-base", type=lambda x: int(x, 0), default=0xc000)
     parser.add_argument("--signed24-variant", choices=SIGNED24_VARIANTS,
                         help="also exercise SDIV24/SMOD24 with a pinned shared producer")
+    parser.add_argument("--signed32-16-variant", choices=SIGNED32_16_VARIANTS,
+                        help="pin shared signed32/16 Q32/R16 producer across mixed frames")
     args = parser.parse_args()
     print(json.dumps(export(args.out, args.frames, args.code_base, args.io_base,
-                            args.signed24_variant), indent=2))
+                            args.signed24_variant, args.signed32_16_variant), indent=2))

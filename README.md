@@ -32,7 +32,7 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection currently covers only 23 of the 56 APIs. Unsupported speed
+Speed selection now covers 25 of the 56 APIs, including signed 32/16 DIV/MOD. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -42,7 +42,7 @@ The [biased quarter-square carry-offset strategy](docs/BIASED_QUARTERSQUARE_CARR
 from the historical shifted UMUL16 family is explicitly preserved, with
 exhaustive table-arithmetic tests (`make builder-biased-qs-test`).
 [Full setup and legacy transition notes](docs/PROFILE_RETIREMENT_PLAN.md).
-For workload-aware speed optimization of the sixteen measured operations, including 32-bit multiplication and 32/16 division, try
+For workload-aware speed optimization of the measured operations, including 32-bit multiplication and 32/16 division, try
 `make builder CONFIG=examples/operation-first-speed.json OUT=build_speed`.
 For unrestricted `UDIV32_32` the selector compares the 4-ZP and
 4-byte RAM-scratch 32/32 quotient/remainder implementations on the same
@@ -58,6 +58,21 @@ It exports both Q32/R32 public calls from one 2,496-byte image with 12
 call-exclusive ZP bytes (2,528 B main RAM including public I/O at `$8000`).
 The speed selector compares it on the same 384-pair unrestricted corpus,
 retaining all lower-memory options. Hardware-native timing is not claimed.
+For historical V2 signed `SDIV32_16` and `SMOD32_16`, the operation-first
+installer retains the original compact 260-byte/0-ZP shared kernel alongside
+the V2-magnitude 2,880-byte/12-ZP shared producer. The speed objective
+compares both on the identical 384-case complete public-call corpus. It can
+select the faster V2 implementation automatically with a sufficient RAM/ZP
+budget, rather than asking the user to choose a historical profile:
+
+```sh
+make builder-speed SPEED_CONFIG=examples/operation-first-signed32-speed.json OUT=build_signed32
+```
+
+The busy-frame source-model comparison covers both layouts and records the
+worst frame; native VICE qualification covers both public DIV/MOD aliases.
+This does not establish full-56-operation or physical-PAL worst-frame parity.
+
 For `UDIV32_16` / `UMOD32_16`, the builder independently measures both
 zero-ZP shared quotient/remainder producers on identical 384-input public-call
 corpora; the zero-ZP 1771-byte statically unrolled accumulator derivative is an

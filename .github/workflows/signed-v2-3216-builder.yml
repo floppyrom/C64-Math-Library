@@ -1,0 +1,77 @@
+name: Signed historical V2 32/16 shared builder qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_linker.py'
+      - 'tools/selective_speed_s3216.py'
+      - 'tools/test_selective_speed_s3216.py'
+      - 'tools/native_selective_signed_v2_3216_builder.py'
+      - 'tools/export_wide_frame_trace.py'
+      - 'tools/test_signed_v2_3216_frame_trace.py'
+      - 'examples/operation-first-signed32-speed.json'
+      - 'tools/research_signed_v2_u3216.py'
+      - 'tools/selective_v2_fast_u3216.py'
+      - 'v2_pareto_fast/resident/modules/pareto_udiv32_16.a'
+      - '.github/workflows/signed-v2-3216-builder.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  paired-public-model:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and prove speed, fallback, shared source, public ABI
+        run: |
+          python3 -m compileall -q tools/selective_linker.py tools/selective_speed_s3216.py tools/test_selective_speed_s3216.py tools/native_selective_signed_v2_3216_builder.py
+          python3 -m unittest discover -s tools -p 'test_selective_speed_s3216.py' -v
+      - name: Smoke speed-first installer without any profile selection
+        run: |
+          make builder-speed SPEED_CONFIG=examples/operation-first-signed32-speed.json OUT=build_signed_v2
+          test -s build_signed_v2/math_selective.prg
+          test -s build_signed_v2/math_api.inc
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("build_signed_v2/selective_manifest.json").read_text())
+          variants={op["api"]:op["variant"] for op in d["operations"]}
+          assert variants=={"MATH_SDIV32_16":"link:v2-signed-magnitude","MATH_SMOD32_16":"link:v2-signed-magnitude"},variants
+          assert d["resource_use"]["main_ram_total_bytes"]==2912
+          assert d["resource_use"]["zero_page_bytes"]==12
+          PY
+      - name: Verify V2 signed32/16 public-call worst-frame results in mixed workloads
+        run: |
+          python3 -m compileall -q tools/export_wide_frame_trace.py tools/test_signed_v2_3216_frame_trace.py
+          python3 -m unittest discover -s tools -p 'test_signed_v2_3216_frame_trace.py' -v
+
+  native-vice:
+    needs: paired-public-model
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Install VICE r46284 build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned headless VICE r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Qualify both signed public entry aliases in the linker at two placements
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_selective_signed_v2_3216_builder.py
