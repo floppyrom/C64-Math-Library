@@ -149,7 +149,7 @@ on divide-by-zero, preserved 32-bit N/D inputs, and CPU-model cycles
 through RTS. A further selectable `link:v2-lowdivisor-hybrid` shares full Q32/R32/C
 between DIV and MOD, dispatching D<65536 to the canonical V2 32/16 public
 adapter and unrestricted D to the existing native-qualified four-ZP tail.
-The source-hashed 3,200-byte image reserves 12 non-reentrant ZP bytes,
+The source-hashed 2,496-byte compact image reserves 12 non-reentrant ZP bytes,
 zero ordinary scratch, and 32 public I/O bytes. This is optional and is
 compared as a complete public call on the same 384-pair corpus as the low-RAM
 producers; fast narrow divisors do not imply a universal 32-bit speed win.

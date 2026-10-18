@@ -54,8 +54,8 @@ class V2HybridBuilderTests(unittest.TestCase):
                 p=(out/"math_selective.prg").read_bytes()
                 self.assertEqual(len(p),hybrid.IMAGE_BYTES+2)
                 source,_,_,_=hybrid.assemble(base,io,zp)
-                self.assertEqual(p[2:],bytes(source[i] for i in range(base,base+3200)))
-                memory=bytearray(65536);memory[base:base+3200]=p[2:]
+                self.assertEqual(p[2:],bytes(source[i] for i in range(base,base+hybrid.IMAGE_BYTES)))
+                memory=bytearray(65536);memory[base:base+hybrid.IMAGE_BYTES]=p[2:]
                 cpu=CPU(memory);sp=cpu.sp
                 for i,(n,d) in enumerate(pairs):
                     nb=n.to_bytes(4,"little");db=d.to_bytes(4,"little")
@@ -72,7 +72,7 @@ class V2HybridBuilderTests(unittest.TestCase):
                         self.assertEqual(memory[io+16:io+20],nb)
                         self.assertEqual(memory[io+20:io+24],db)
                         self.assertEqual(cpu.sp,sp)
-                self.assertEqual(bytes(memory[base:base+3200]),p[2:])
+                self.assertEqual(bytes(memory[base:base+hybrid.IMAGE_BYTES]),p[2:])
 
     def test_speed_model_and_hybrid_budget_guards(self):
         with tempfile.TemporaryDirectory() as td:

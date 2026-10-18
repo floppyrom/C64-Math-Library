@@ -32,11 +32,11 @@ class HybridU3232Tests(unittest.TestCase):
         self.assertEqual(set(hashes),{hybrid.FAST_SOURCE,hybrid.WIDE_SOURCE})
         self.assertTrue(all(len(s)==64 for s in hashes.values()))
         self.assertEqual(hybrid.ZP_BYTES,12)
-        self.assertEqual(hybrid.IMAGE_BYTES,3200)
+        self.assertEqual(hybrid.IMAGE_BYTES,2496)
         for code,io,zp in ((0x8000,0xc000,0x50),(0x7123,0xc040,0x70)):
             image,labels,ranges,end=hybrid.assemble(code,io,zp)
             self.assertEqual(set(image),set(range(code,end)))
-            self.assertEqual(end-code,3200)
+            self.assertEqual(end-code,hybrid.IMAGE_BYTES)
             self.assertEqual(labels[hybrid.API_DIV],labels[hybrid.API_MOD])
             self.assertEqual(labels[hybrid.API_DIV],code+hybrid.DISPATCH_OFFSET)
             self.assertNotEqual(labels["V2_LOW_ENTRY"],labels["WIDE_ENTRY"])

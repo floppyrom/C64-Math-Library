@@ -24,20 +24,23 @@ PUB_ENTRY="FAST_UDIV32_16_V2"
 PUBLIC_CODE_BYTES=64
 IMAGE_BYTES=WRAPPER_OFFSET+PUBLIC_CODE_BYTES
 
-def layout(code):
-    cg=code+12
-    mx=code+0x500
-    wrapper=code+WRAPPER_OFFSET
+def layout(code, offsets=None):
+    cg_off,mx_off,wrapper_off = offsets if offsets is not None else (12,0x500,WRAPPER_OFFSET)
+    if not (12<=cg_off<mx_off<wrapper_off):
+        raise ValueError("V2 source island offsets are invalid")
+    cg=code+cg_off
+    mx=code+mx_off
+    wrapper=code+wrapper_off
     if wrapper+MAX_WRAPPER>0x10000:
         raise ValueError("V2 size-fast 32/16 code islands exceed 64 KiB")
     return cg,mx,wrapper
 
-def render(code,io,zp,root:Path=ROOT):
+def render(code,io,zp,root:Path=ROOT,*,offsets=None):
     if not (2<=zp<=0xf4):
         raise ValueError("V2 32/16 needs 12 reserved non-port zero-page bytes")
     if io+32>0x10000:
         raise ValueError("public IO exceeds 64 KiB")
-    cg,mx,wrapper=layout(code)
+    cg,mx,wrapper=layout(code,offsets)
     src=(root/SOURCE).read_text(encoding="utf-8")
     original="* = $0010\ncg_zp_start:\n"+''.join(
         "%s: !byte 0\n"%name for name in ZP_NAMES[:8])+"cg_zp_end:\n\n"
@@ -82,9 +85,9 @@ def render(code,io,zp,root:Path=ROOT):
     before+="    rts\n"
     return header+src+"\n"+before
 
-def assemble(code,io,zp,root:Path=ROOT):
-    cg,mx,wrapper=layout(code)
-    memory,labels,_=Assembler().assemble(render(code,io,zp,root))
+def assemble(code,io,zp,root:Path=ROOT,*,offsets=None):
+    cg,mx,wrapper=layout(code,offsets)
+    memory,labels,_=Assembler().assemble(render(code,io,zp,root,offsets=offsets))
     sections={}
     for name,start,limit in (
         ("FAST16",cg,mx),
@@ -96,8 +99,8 @@ def assemble(code,io,zp,root:Path=ROOT):
         sections[name]=(start,len(addresses))
     if min(memory)!=cg or max(memory)>=wrapper+MAX_WRAPPER:
         raise ValueError("V2 32/16 unexpected compiled code outside islands")
-    if (sections["FAST16"][1]>CG_SLOT or
-        sections["TAIL16"][1]>MX_SLOT or
+    if (sections["FAST16"][1]>mx-cg or
+        sections["TAIL16"][1]>wrapper-mx or
         sections["PUBLIC"][1]>MAX_WRAPPER):
         raise ValueError("V2 32/16 historical code islands overflowed")
     if (labels.get(PUB_ENTRY)!=wrapper or

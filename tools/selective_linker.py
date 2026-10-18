@@ -768,11 +768,11 @@ MODULES = {
     "MATH_UDIV32_32": {
         "link:v2-lowdivisor-hybrid": {
             "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
-            "segments": (("KERNEL_CODE", 3200),),
+            "segments": (("KERNEL_CODE", 2496),),
             "entry": "FAST_UDIV32_32_HYBRID", "zp": 12, "scratch": 0,
             "share_producer": "unsigned-32by32-v2-lowdivisor-public-qr",
             "multi_entry": True, "hybrid_u3232": True,
-            "provenance": "Source-authenticated unrestricted Q32/R32/C using canonical V2 12-ZP low-D 32/16 public kernel and qualified 4-ZP full-D 32/32 tail; shared 3200B caller-RAM image, 12 call-exclusive ZP, no tables/SMC/REU/scratch, D=0 prerequisite. Preserves N32/D32 and C=1 on D=0.",
+            "provenance": "Source-authenticated unrestricted Q32/R32/C using canonical V2 12-ZP low-D 32/16 public kernel and qualified 4-ZP full-D 32/32 tail; shared 2496B caller-RAM image, 12 call-exclusive ZP, no tables/SMC/REU/scratch, D=0 prerequisite. Preserves N32/D32 and C=1 on D=0.",
         },
         "link:shared-aligned-zerozp": {
             "source": "routines/standalone_lab/portable/div_u32_aligned_nozp.asm",
@@ -862,11 +862,11 @@ MODULES = {
     "MATH_UMOD32_32": {
         "link:v2-lowdivisor-hybrid": {
             "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
-            "segments": (("KERNEL_CODE", 3200),),
+            "segments": (("KERNEL_CODE", 2496),),
             "entry": "FAST_UMOD32_32_HYBRID", "zp": 12, "scratch": 0,
             "share_producer": "unsigned-32by32-v2-lowdivisor-public-qr",
             "multi_entry": True, "hybrid_u3232": True,
-            "provenance": "Source-authenticated unrestricted Q32/R32/C using canonical V2 12-ZP low-D 32/16 public kernel and qualified 4-ZP full-D 32/32 tail; shared 3200B caller-RAM image, 12 call-exclusive ZP, no tables/SMC/REU/scratch, D=0 prerequisite. Preserves N32/D32 and C=1 on D=0.",
+            "provenance": "Source-authenticated unrestricted Q32/R32/C using canonical V2 12-ZP low-D 32/16 public kernel and qualified 4-ZP full-D 32/32 tail; shared 2496B caller-RAM image, 12 call-exclusive ZP, no tables/SMC/REU/scratch, D=0 prerequisite. Preserves N32/D32 and C=1 on D=0.",
         },
         "link:shared-aligned-zerozp": {
             "source": "routines/standalone_lab/portable/div_u32_aligned_nozp.asm",

@@ -1,10 +1,22 @@
+## Unreleased — compact source-relocated V2 32/32 hybrid (2496 B)
+
+- Pack the unchanged V2 32/16 donor into shorter relocatable code islands,
+  followed by the existing full-width ZP-tail and shared public dispatch.
+  Shrink the hybrid image from 3,200 to 2,496 bytes (704 B, 22%) while
+  keeping 12 call-exclusive ZP bytes and full 32-bit Q/R/C semantics.
+- Preserve standalone V2 source ABI/layout by making code-island offsets
+  an explicit optional assembler argument; donor bytes remain unmodified.
+- Require exact resource contracts for the speed benchmark, validate
+  two-map complete public calls in the CPU model and native VICE, and
+  retain historical 3,200 B evidence in the earlier research entry.
+
 ## Unreleased — selectable unrestricted V2-lowdivisor 32/32 hybrid
 
 - Promote the native- and CPU-qualified unrestricted public Q32/R32/C
   hybrid as `link:v2-lowdivisor-hybrid` for both `UDIV32_32` and
-  `UMOD32_32`. A single source-authenticated 3,200-byte NOP-padded
+  `UMOD32_32`. A single source-authenticated 2,496-byte NOP-padded
   executable and 12 call-exclusive ZP slots serve both aliases; combined
-  main RAM is 3,232 B including the common 32-byte public I/O region.
+  main RAM is 2,528 B including the common 32-byte public I/O region.
 - Extend the authenticated 384-pair matched public-call speed basis to the
   unrestricted hybrid. The project selector retains small 4-ZP and zero-ZP
   implementations when RAM/ZP budgets prohibit the fast option. Hybrid

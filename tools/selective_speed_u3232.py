@@ -35,7 +35,7 @@ RESOURCES={
     "link:aligned-zerozp":((325,251),0,4),
     "link:shared-aligned-zerozp":((325,251),0,4),
     "link:mod-aligned-zerozp":((250,225,21),0,4),
-    "link:v2-lowdivisor-hybrid":((3200,),12,0),
+    "link:v2-lowdivisor-hybrid":((2496,),12,0),
 }
 
 def corpus():
@@ -52,8 +52,11 @@ def corpus():
 
 def assemble_source(api,ident,mod,base,io,scratch,zp,root):
     if ident=="link:v2-lowdivisor-hybrid":
+        expected=RESOURCES[ident]
+        if (tuple(n for _,n in mod["segments"]),mod["zp"],mod["scratch"])!=expected:
+            raise ValueError(api+": source resource contract changed: "+ident)
         image,labels,ranges,end=hybrid.assemble(base,io,zp,root)
-        if (end!=base+3200 or len(ranges)!=1 or
+        if (end!=base+hybrid.IMAGE_BYTES or len(ranges)!=1 or
             set(image)!=set(range(base,end))):
             raise ValueError(api+": V2 hybrid packed source layout changed")
         return image,labels[mod["entry"]]

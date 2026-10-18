@@ -7,6 +7,7 @@ import tempfile
 from pathlib import Path
 import math_builder
 import selective_linker
+import selective_hybrid_u3232 as hybrid
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/"routines/standalone_lab/portable"))
@@ -25,7 +26,7 @@ def main():
         for k,(code,io,zp) in enumerate(((0x8000,0xc000,0x50),
                                          (0x7123,0xc040,0x70))):
             plan=math_builder.create_plan(
-                idx,list(APIS),objective="size",ram_budget=3232,
+                idx,list(APIS),objective="size",ram_budget=hybrid.IMAGE_BYTES+32,
                 zp_budget=12,pins={api:ID for api in APIS})
             man=selective_linker.build(plan,root,memory={
                 "code_base":code,"math_io":io,"zp_base":zp})
