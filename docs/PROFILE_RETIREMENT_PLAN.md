@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (thirty-two source-qualified APIs)
+## Workload-weighted speed selection (thirty-three source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **thirty-two**
+The `speed` objective supports project-level weighted selection for **thirty-three**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
+SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -87,6 +87,16 @@ source variants at two complete memory layouts ($2000 and $4321), yielding
 while the other 55 choices retain the original fully budgeted size selection.
 This proves relocation and mixed-residency compatibility for root16, not
 an exhaustive mixed invocation of every math operation.
+
+For URECIP16_Q16, three independently selectable stock-6510 variants have
+exact public D16 -> Q24/C behavior and 0 ZP: 99-byte restoring (1 scratch),
+448-byte historical-threshold gate with restoring fallback (1 scratch), and
+1,544-byte exact Q24 small-denominator lookup plus indexed threshold
+binary search (0 scratch). All preserve Q3/R, N/D and need no REU/SMC/INIT.
+The threshold-only route improves mean cycles but worsens the rare slow call;
+the builder must evaluate same-input full-call speed and physical budgets,
+not claim profile speed parity on incompatible resident/REU timings. See
+`RECIP16_THRESHOLD_STOCK_BUILDER.md`.
 
 For UDIV16_SHL8, the operation-first builder now retains two selectable
 implementations: a 129-byte/0-ZP portable restoring source and the source-linked
