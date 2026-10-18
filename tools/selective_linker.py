@@ -1561,8 +1561,15 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
         best_score = None
         best = None
         chosen = {}
-        shared_seen = set()
         state_families = {}
+
+        # Integer bit identities avoid hashing producer tuples during search.
+        keys = {key for candidates in resource_options
+                for _, _, key in candidates if key is not None}
+        key_bits = {key: 1 << i for i, key in enumerate(sorted(keys, key=repr))}
+        bit_options = [[(item, size, key_bits.get(key, 0))
+                        for item, size, key in candidates]
+                       for candidates in resource_options]
 
         # Each shared producer appears in exactly one connected component.
         # Unlike the old per-component MAX(min API bytes), the dynamic
@@ -1570,10 +1577,12 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
         # by all still-unassigned operations in that component. This is an
         # exact raw-code lower bound; table alignment can only add bytes.
         suffix_groups = []
-        group_keys = {}
-        for i, variants in enumerate(resource_options):
-            group_keys.setdefault(groups[i], set()).update(
-                key for _, _, key in variants if key is not None)
+        group_bits = {}
+        for i, variants in enumerate(bit_options):
+            mask = group_bits.get(groups[i], 0)
+            for _, _, bit in variants:
+                mask |= bit
+            group_bits[groups[i]] = mask
         for depth in range(len(order) + 1):
             remaining = {}
             for i in order[depth:]:
@@ -1583,16 +1592,14 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
                 for group, indices in sorted(remaining.items())))
 
         @lru_cache(maxsize=65536)
-        def minimum_shared_bytes(indices, present):
+        def minimum_shared_bytes(indices, seen_mask):
             if not indices:
                 return 0
             i, rest = indices[0], indices[1:]
             return min(
-                (0 if key is not None and key in present else size) +
-                minimum_shared_bytes(
-                    rest, present if key is None or key in present
-                    else present | frozenset((key,)))
-                for _, size, key in resource_options[i])
+                (0 if bit and seen_mask & bit else size) +
+                minimum_shared_bytes(rest, seen_mask | bit)
+                for _, size, bit in bit_options[i])
 
         def consider_candidate(combination):
             nonlocal best_score, best
@@ -1624,43 +1631,54 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
         # can never silently replace resource-optimal selection.
         consider_candidate(tuple(group[0][0] for group in resource_options))
 
-        def resource_search(depth, raw, zp, scratch):
+        def bound_prunes(low_ram, min_zp):
+            if ram_budget is not None and low_ram > ram_budget:
+                return True
+            if zp_budget is not None and min_zp > zp_budget:
+                return True
+            if best_score is None:
+                return False
+            if objective == "zp":
+                return ((min_zp > best_score[0]) or
+                        (min_zp == best_score[0] and low_ram > best_score[1]))
+            if objective == "balanced":
+                floor = low_ram + 8 * min_zp
+                return ((floor > best_score[0]) or
+                        (floor == best_score[0] and low_ram > best_score[1]))
+            return ((low_ram > best_score[0]) or
+                    (low_ram == best_score[0] and min_zp > best_score[1]))
+
+        def resource_search(depth, raw, zp, scratch, seen_mask):
             nonlocal best_score, best
             min_zp = zp
             min_scratch = scratch
+            cheap = {}
             for i in order[depth:]:
                 candidates = resource_options[i]
                 min_zp = max(min_zp, min(item[2]["zp"] for item, _, _ in candidates))
                 min_scratch = max(min_scratch,
                                   min(item[2]["scratch"] for item, _, _ in candidates))
-            required_code = sum(
-                minimum_shared_bytes(indices, frozenset(
-                    key for key in group_keys[group] if key in shared_seen))
-                for group, indices in suffix_groups[depth])
+                # Cheap legacy max-of-minima prunes first. Use the stronger
+                # exact group DP only on branches that might improve the
+                # incumbent, avoiding unnecessary memoization overhead.
+                extra = min(0 if bit and seen_mask & bit else size
+                            for _, size, bit in bit_options[i])
+                group = groups[i]
+                cheap[group] = max(cheap.get(group, 0), extra)
             _, persistent = place_state(state_families, scratch_base, min_scratch)
+            quick_ram = raw + sum(cheap.values()) + 32 + min_scratch + persistent
+            if bound_prunes(quick_ram, min_zp):
+                return
+            required_code = sum(
+                minimum_shared_bytes(indices, seen_mask & group_bits[group])
+                for group, indices in suffix_groups[depth])
             low_ram = raw + required_code + 32 + min_scratch + persistent
-            if ram_budget is not None and low_ram > ram_budget:
+            if bound_prunes(low_ram, min_zp):
                 return
-            if zp_budget is not None and min_zp > zp_budget:
-                return
-            if best_score is not None:
-                if objective == "zp":
-                    if ((min_zp > best_score[0]) or
-                        (min_zp == best_score[0] and low_ram > best_score[1])):
-                        return
-                elif objective == "balanced":
-                    floor = low_ram + 8 * min_zp
-                    if ((floor > best_score[0]) or
-                        (floor == best_score[0] and low_ram > best_score[1])):
-                        return
-                else:
-                    if ((low_ram > best_score[0]) or
-                        (low_ram == best_score[0] and min_zp > best_score[1])):
-                        return
             if depth == len(order):
                 consider_candidate(tuple(chosen[api] for api in names))
                 return
-            for item, size, key in resource_options[order[depth]]:
+            for item, size, bit in bit_options[order[depth]]:
                 api, _, spec = item
                 family = spec.get("state_family")
                 if family:
@@ -1672,19 +1690,15 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
                 added_family = family is not None and family not in state_families
                 if added_family:
                     state_families[family] = count
-                new_key = key is not None and key not in shared_seen
-                if new_key:
-                    shared_seen.add(key)
                 chosen[api] = item
-                resource_search(depth + 1, raw + (size if key is None or new_key else 0),
-                                max(zp, spec["zp"]), max(scratch, spec["scratch"]))
+                resource_search(depth + 1, raw + (0 if bit and seen_mask & bit else size),
+                                max(zp, spec["zp"]), max(scratch, spec["scratch"]),
+                                seen_mask | bit)
                 del chosen[api]
-                if new_key:
-                    shared_seen.remove(key)
                 if added_family:
                     del state_families[family]
 
-        resource_search(0, 0, 0, 0)
+        resource_search(0, 0, 0, 0, 0)
     if best is None:
         raise LinkError("No certified variant combination fits RAM/ZP budgets")
     return best
