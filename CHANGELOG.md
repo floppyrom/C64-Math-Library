@@ -1,3 +1,15 @@
+## Unreleased — all-56 resident native VICE multiplication integration
+
+- Validate a single 56-operation linked C64 PRG at $2000 and $4321 using
+  the six unsigned/signed 8-, 16- and 24-bit multiplication public entries:
+  96 complete native x64sc calls per API and map, **1,152 calls** in total.
+- Reuse proven standalone public ABI validators to check products, carry,
+  operand preservation and sentinel bytes. Preserve executable/data/harness
+  nonoverlap across both code layouts, with a four-byte ZP budget.
+- Keep this as an independent CI workflow step alongside the earlier 2,304
+  DIV/MOD integration calls. No math producer, benchmark or V1–V5 profile
+  implementation is changed; physical hardware timing is not claimed.
+
 ## Unreleased — expanded 56-operation integrated native VICE division proof
 
 - Expand the all-56 linked-PRG two-map native VICE integration gate from four

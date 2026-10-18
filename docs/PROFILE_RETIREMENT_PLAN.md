@@ -226,3 +226,10 @@ DIV/MOD public entry points, plus signed 8- and 16-bit DIV/MOD. There are
 verify negative/overflow input cases and preservation of public input/sentinel
 bytes where applicable. This is a representative integration smoke check,
 not a complete 56-export runtime oracle or physical timing claim.
+
+A second two-map native VICE gate validates unsigned and signed UMUL/SMUL at
+8, 16 and 24 bits from the same combined all-56 image, with 96 cases per
+API and layout (**1,152 linked multiplication calls**). Its independent
+oracles check exact products, preserved caller inputs, carry and sentinels.
+Neither integration gate qualifies all 56 public calls under one interleaved
+workload or replaces the historical source-specific standalone proofs.
