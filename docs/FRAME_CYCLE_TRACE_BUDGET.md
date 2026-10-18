@@ -85,3 +85,44 @@ producer does not yet emit competing historical-kernel traces, does not
 run native VICE and is not a measured real-game workload. The native VICE
 regressions in the existing builder workflow remain required for qualifying
 any eventual kernel promotion.
+
+## Same-frame paired signed24 Pareto comparison
+
+The same source-assembled CPU-model producer can additionally include both
+signed 24-bit public aliases, `MATH_SDIV24` and `MATH_SMOD24`. Pin the
+original 325-byte compact donor in the baseline and the native-qualified
+387-byte `abs-qzero-guard` donor in the candidate. The other six signed
+wide public operations, frame/call ordering, mathematical arguments, caller
+carry and code/I/O placement stay identical.
+
+```sh
+python3 tools/export_wide_frame_trace.py --frames 24 --code-base 0x8000 --io-base 0xc000 \
+    --signed24-variant link:portable-zerozp --out build/frame_signed24_original.csv
+python3 tools/export_wide_frame_trace.py --frames 24 --code-base 0x8000 --io-base 0xc000 \
+    --signed24-variant link:abs-qzero-guard --out build/frame_signed24_guarded.csv
+python3 tools/frame_cycle_budget.py --baseline build/frame_signed24_original.csv \
+    --candidate build/frame_signed24_guarded.csv --frame-count 24 \
+    --out build/frame_signed24_comparison.json
+```
+
+The exporter verifies **each** public-call result against signed
+24/32-bit mathematical references and carries, including 24-bit high-byte
+preservation, zero divisor, and source-code immutability. Its paired SHA-256
+input IDs capture each argument tuple, initial carry and decimal flag.
+The signed24 candidate and original use the *same deterministic synthetic
+stress frame schedule*, including 24-call bursts, so the paired scorer
+can calculate exact total-cycle and busiest-frame differences without
+conflating memory layouts or benchmark corpora. Both donor source SHA-256
+digests and resource requirements remain in the companion manifests.
+Tests repeat this at $8000/$C000 and $7123/$C040.
+
+**Interpretation:** the peak-frame difference is specific to these
+synthetic, CPU-model-measured public calls. It does not measure real VICE
+elapsed time, VIC bus steals, IRQs, SID playback, game logic, or a real
+demo's observed busiest frame. Native VICE r46284 has independently
+validated both signed24 kernels' public ABI in PR #289, but VICE cycles
+are not substituted for CPU-model cycles. For production speed
+promotion, first collect actual workload inputs, transplant and qualify
+the historical fastest V1–V5 and OptiSearch signed kernels, then
+repeat the same paired source/memory/cycle measurements. Keep both
+Pareto candidates regardless of the synthetic frame winner.
