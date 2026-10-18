@@ -57,6 +57,26 @@ class FrameBudgetTests(unittest.TestCase):
         self.assertEqual(comparison["peak_frame_math_cycles_saved"], 100)
         self.assertFalse(comparison["peak_frame_changed"])
         self.assertEqual(comparison["over_budget_frames_saved"], 1)
+        self.assertEqual(comparison["baseline_peak_frame_cycles_saved"], 100)
+        self.assertEqual(comparison["regressed_frames"], 0)
+        self.assertEqual(comparison["max_frame_regression_cycles"], 0)
+        self.assertEqual(comparison["max_public_call_regression_cycles"], 0)
+
+    def test_nonpeak_frame_and_single_call_regression_not_hidden_by_better_peak(self):
+        baseline = self.trace("baseline.csv", [
+            (0, 0, "SDIV32_16", "a", 1000, "old"),
+            (1, 0, "SMOD32_16", "b", 800, "old"),
+            (1, 1, "SMUL32", "c", 100, "old")])
+        candidate = self.trace("candidate.csv", [
+            (0, 0, "SDIV32_16", "a", 800, "new"),
+            (1, 0, "SMOD32_16", "b", 840, "new"),
+            (1, 1, "SMUL32", "c", 90, "new")])
+        cmp = analyze(baseline, candidate, frame_count=3)["comparison"]
+        self.assertEqual(cmp["peak_frame_math_cycles_saved"], 170)
+        self.assertEqual(cmp["baseline_peak_frame_cycles_saved"], 200)
+        self.assertEqual(cmp["regressed_frames"], 1)
+        self.assertEqual(cmp["max_frame_regression_cycles"], 30)
+        self.assertEqual(cmp["max_public_call_regression_cycles"], 40)
 
     def test_reject_changed_operands_and_incompatible_measurements(self):
         rows = self.fixture()
