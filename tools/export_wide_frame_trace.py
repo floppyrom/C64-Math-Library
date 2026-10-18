@@ -8,14 +8,15 @@ import random
 import tempfile
 from pathlib import Path
 
-from mini6502 import CPU
+from mini6502 import CPU, Assembler
 import math_builder
 import selective_linker
 from frame_cycle_budget import COLUMNS, load_trace, score
 
 OPS = ("SMUL32", "SMUL32_SHR16", "SDIV32_16", "SMOD32_16", "SDIV32_32", "SMOD32_32")
 SIGNED24_OPS = ("SDIV24", "SMOD24")
-SIGNED24_VARIANTS = ("link:portable-zerozp", "link:abs-qzero-guard")
+SIGNED24_VARIANTS = ("link:portable-zerozp", "link:abs-qzero-guard",
+                     "link:v3-signed-magnitude")
 
 
 def signed(value, bits):
@@ -54,7 +55,8 @@ def export(out, frames=40, code=0x8000, io=0xc000, signed24_variant=None):
     pins = ({"MATH_" + op: signed24_variant for op in SIGNED24_OPS}
             if signed24_variant else None)
     plan = math_builder.create_plan(math_builder.operation_index(), list(operations),
-                                    objective="size", zp_budget=0, ram_budget=8192, pins=pins)
+                                    objective="size", zp_budget=9 if signed24_variant == "link:v3-signed-magnitude" else 0,
+                                    ram_budget=8192, pins=pins)
     with tempfile.TemporaryDirectory() as temp:
         manifest = selective_linker.build(plan, Path(temp), memory={
             "code_base": code, "math_io": io, "scratch_base": io + 0x40})
@@ -68,6 +70,26 @@ def export(out, frames=40, code=0x8000, io=0xc000, signed24_variant=None):
         sp = cpu.sp
         entries = {e["api"]: int(e["entry"][1:], 16) for e in manifest["operations"]}
         variants = {e["api"]: e["variant"] for e in manifest["operations"]}
+        # The historical V3 donor deliberately patches one relocated ADC
+        # immediate. Derive the *actual* linked address from its source label;
+        # do not exempt a generic code range or silently waive the check.
+        writable = set()
+        if signed24_variant == "link:v3-signed-magnitude":
+            mod = selective_linker.MODULES["MATH_SDIV24"][signed24_variant]
+            start = entries["MATH_SDIV24"]
+            addresses = {"KERNEL_CODE": start, "INPUT_NUM": io + 16,
+                         "INPUT_DIV": io + 20, "OUTPUT_QUOT": io + 24,
+                         "OUTPUT_REM": io + 28, "TEMP_ZP": 0x40}
+            source = selective_linker.relocate_source(
+                mod, addresses, selective_linker.ROOT)
+            image, labels, _ = Assembler().assemble(source)
+            smc = labels["L8801_ADC_IMMEDIATE"] + 1
+            if (len(image) != 1897 or
+                    set(image) != set(range(start, start + 1897)) or
+                    not start <= smc < start + 1897 or
+                    any(mem[addr] != byte for addr, byte in image.items())):
+                raise ValueError("V3 signed24 source-linked SMC geometry changed")
+            writable = {smc}
         if set(entries) != {"MATH_" + op for op in operations}:
             raise ValueError("Incomplete operation link")
         observations = []
@@ -96,6 +118,13 @@ def export(out, frames=40, code=0x8000, io=0xc000, signed24_variant=None):
                         mem[io + 16:io + 20] = x.to_bytes(4, "little")
                         mem[io + 20:io + 24] = y.to_bytes(4, "little")
                         mem[io + 24:io + 32] = bytes([0xA5] * 8)
+                # Explicitly restore caller-visible registers on every call.
+                # This makes source-linked and legacy traces hash the same
+                # complete public input state rather than inherited A/X/Y.
+                cpu.a = (frame * 17 + ordinal * 29) & 255
+                cpu.x = (frame * 31 + ordinal * 7) & 255
+                cpu.y = (frame * 13 + ordinal * 23) & 255
+                start_regs = (cpu.a, cpu.x, cpu.y)
                 cpu.d, cpu.c = 0, carry_in
                 cycles = cpu.call(entries[operation], 150000)
                 if "MUL" in operation:
@@ -119,14 +148,18 @@ def export(out, frames=40, code=0x8000, io=0xc000, signed24_variant=None):
                 if cpu.sp != sp:
                     raise ValueError("Stack not preserved: " + operation)
                 identity = hashlib.sha256(
-                    f"{operation}|{x:08x}|{y:08x}|C={carry_in}|D=0".encode()).hexdigest()
+                    ("%s|%08x|%08x|A=%02x|X=%02x|Y=%02x|C=%d|D=0" %
+                     (operation, x, y, *start_regs, carry_in)).encode()).hexdigest()
                 observations.append({"frame": frame, "call": ordinal,
                                      "operation": operation, "input_id": identity,
                                      "cycles": cycles, "variant": variants[operation],
                                      "measurement_basis": "cpu-model-public-entry-through-rts",
                                      "placement": "$%04X/$%04X" % (code, io)})
-        if bytes(mem[code:code + len(prg) - 2]) != image_before:
-            raise ValueError("Public source unexpectedly self-modified")
+        mutated = {code + offset for offset, (before, after) in enumerate(
+            zip(image_before, mem[code:code + len(prg) - 2])) if before != after}
+        if not mutated <= writable:
+            raise ValueError("Unexpected self-modifying code bytes: " +
+                             repr(sorted(mutated - writable)))
         out.parent.mkdir(parents=True, exist_ok=True)
         with out.open("w", newline="", encoding="utf-8") as stream:
             writer = csv.DictWriter(stream, fieldnames=COLUMNS)
