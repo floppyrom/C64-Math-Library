@@ -1,0 +1,54 @@
+name: Historical shared signed32/16 V2 magnitude research
+
+on:
+  pull_request:
+    paths:
+      - tools/research_signed_v2_u3216.py
+      - tools/test_research_signed_v2_u3216.py
+      - tools/native_research_signed_v2_u3216.py
+      - tools/selective_v2_fast_u3216.py
+      - v2_pareto_fast/resident/modules/pareto_udiv32_16.a
+      - .github/workflows/signed-v2-3216-research.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-paired-abi:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile relocated historical signed magnitude source and test
+        run: |
+          python3 -m compileall -q tools/research_signed_v2_u3216.py tools/test_research_signed_v2_u3216.py
+          python3 -m unittest discover -s tools -p 'test_research_signed_v2_u3216.py' -v
+
+  pinned-vice-native:
+    needs: source-paired-abi
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Install upstream VICE r46284 headless build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned VICE r46284
+        env:
+          VICE_JOBS: "2"
+        run: bash tools/vice/build_headless.sh
+      - name: Native signed32/16 public ABI for both aliases at two memory maps
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_research_signed_v2_u3216.py
