@@ -1368,6 +1368,17 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
         for depth in range(len(order) - 1, -1, -1):
             suffix_min[depth] = (suffix_min[depth+1] +
                                  min(c[1] for c in weighted_options[order[depth]]))
+        # Only use RAM tie pruning when the primary score is provably
+        # unchanged (all candidate values equal), or every weighted mean is
+        # an exactly represented integer with an exactly summable total.
+        # Fractional CPU means may round differently in API order, and a
+        # tolerance-based RAM tie would incorrectly discard a faster result.
+        uniform_cycles = all(len({c[1] for c in group}) == 1
+                             for group in weighted_options)
+        integer_cycles = (sum(max(c[1] for c in group)
+                              for group in weighted_options) < 2**53 and
+                          all(float(c[1]).is_integer() for group in weighted_options
+                              for c in group))
         best_score = None
         best = None
         chosen = {}
@@ -1389,7 +1400,8 @@ def choose(names, pins, objective, zp_budget, ram_budget=None, code_base=0x8000,
                 tolerance = 1e-12 * max(1.0, abs(floor), abs(best_score[0]))
                 if floor > best_score[0] + tolerance:
                     return
-                if floor >= best_score[0] - tolerance and minimum_ram > best_score[1]:
+                if minimum_ram > best_score[1] and (
+                    uniform_cycles or (integer_cycles and floor >= best_score[0])):
                     return
             if depth == len(order):
                 # Run the exact same layout, shared-state accounting and

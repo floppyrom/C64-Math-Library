@@ -73,6 +73,20 @@ class BranchBoundTests(unittest.TestCase):
         with self.assertRaisesRegex(L.LinkError,'incomplete comparable'):
             L.choose((api,),{},'speed',31,cycle_metrics={api:{}},workload_calls={api:1})
 
+    def test_close_fractional_cycle_wins_over_ram_and_uniform_ties_scale(self):
+        api='MATH_UDIV32_32'
+        models={api:{ident:100.0 for ident in L.MODULES[api]}}
+        models[api]['link:v2-lowdivisor-hybrid']=99.9999999999
+        result=L.choose((api,),{},'speed',12,cycle_metrics=models,workload_calls={api:1})
+        self.assertEqual(result[api][0],'link:v2-lowdivisor-hybrid')
+        # A fully tied non-integer workload must still avoid exponential
+        # enumeration when neither RAM nor ZP is constrained.
+        tied={op:{key:100.25 for key in L.MODULES[op]} for op in SIXTEEN}
+        with patch.object(L,'projected_end',wraps=L.projected_end) as layouts:
+            L.choose(SIXTEEN,{},'speed',None,None,cycle_metrics=tied,
+                     workload_calls={op:10 for op in SIXTEEN})
+        self.assertLess(layouts.call_count,10_000)
+
     def test_sixteen_operation_scaling(self):
         names=SIXTEEN
         product=1

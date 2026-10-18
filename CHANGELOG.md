@@ -14,6 +14,9 @@
   stress test checks that the solver does not enumerate the entire product.
 - The change affects *selection scalability*, not 6502 kernel timing or
   the public library ABI. V1–V5 historical binaries remain unchanged.
+- Only prune on RAM score ties when weighted CPU costs are provably
+  identical or exactly representable integers; preserve fractional-cycle
+  ordering for near-equal candidates.
 
 ## Unreleased — compact source-relocated V2 32/32 hybrid (2496 B)
 
