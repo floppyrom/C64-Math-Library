@@ -1,0 +1,29 @@
+name: Matched signed24 DIV/MOD speed selection
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_speed_s24.py'
+      - 'tools/test_selective_speed_s24.py'
+      - 'tools/selective_linker.py'
+      - 'routines/divide/sdiv24*.asm'
+      - '.github/workflows/signed24-matched-speed.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  complete-public-cycles:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test all three signed24 public-call variants against identical corpus at both layouts
+        run: |
+          python3 -m compileall -q tools/selective_linker.py tools/selective_speed_s24.py tools/test_selective_speed_s24.py
+          python3 -m unittest discover -s tools -p 'test_selective_speed_s24.py' -v
