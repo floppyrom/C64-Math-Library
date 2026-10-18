@@ -14,12 +14,14 @@ from pathlib import Path
 from mini6502 import Assembler, CPU, load_sparse
 import selective_linker as linker
 import selective_recip16_threshold as thresholds
+import selective_recip16_table as table_fast
 
 BASIS = "stock-c64-recip16-v3v4-threshold-public512-v1"
 FAST = "link:threshold-zerozp"
 SMALL = "link:compact-zerozp"
-EXPECTED = frozenset((FAST, SMALL))
-SIZE = {FAST: 448, SMALL: 99}
+TABLE = "link:threshold-tables-zerozp"
+EXPECTED = frozenset((FAST, SMALL, TABLE))
+SIZE = {FAST: 448, SMALL: 99, TABLE: 1544}
 COUNT = 512
 CORPUS_SHA256 = "037d4fad53f2034a11a1b87ed5fee34f04a26eee998377c77ebe5586e283712b"
 EDGE = (0,1,2,3,4,5,7,15,16,17,31,32,63,64,127,128,
@@ -43,6 +45,9 @@ def assemble(ident, module, code, io, scratch, root: Path):
     if ident == FAST:
         image, labels, _, _ = thresholds.assemble_image(code, io, scratch, root)
         return image, labels[module["entry"]]
+    if ident == TABLE:
+        image, labels, _, _ = table_fast.assemble_image(code,io,root)
+        return image, labels[module["entry"]]
     bindings = {
         "KERNEL_CODE":code, "INPUT_NUM":io+16,
         "INPUT_DIV":io+20, "OUTPUT_QUOT":io+24,
@@ -65,7 +70,8 @@ def bench_urecip16_q16(modules,code,io,scratch,root:Path):
     costs, maxima, p95s, hashes = {}, {}, {}, {}
     for ident,mod in sorted(modules.items()):
         if (sum(n for _,n in mod["segments"])!=SIZE[ident]
-            or mod["zp"]!=0 or mod["scratch"]!=1
+            or mod["zp"]!=0 or mod["scratch"]!=(0 if ident==TABLE else 1)
+            or bool(mod.get("recip16_table"))!=(ident==TABLE)
             or bool(mod.get("recip16_threshold"))!=(ident==FAST)
             or mod.get("requires_reu") or mod.get("requires_writable_code")):
             raise ValueError("Reciprocal source resource contract changed")
