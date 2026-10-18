@@ -49,3 +49,29 @@ full source-package audit before promoting this resource-hungry donor.
 The historical zero-page region cannot be assumed free in arbitrary
 games. Donor timing must be compared on the same corpus, not against
 unrelated V1-V5 published averages or real hardware elapsed time.
+
+
+## Matched public-call CPU-model results
+
+The first exact-code source qualification completed successfully on
+**912 identical signed24 inputs per placement** (edge values, zero
+divisors, signed sign quadrants, small divisors and explicit quotient
+zero cases). Observed public-entry-through-RTS cycles were:
+
+| Placement | Portable zero-ZP mean | V3 magnitude mean | Historical source code | Maximum V3 call | Worst call-level regression |
+|---|---:|---:|---:|---:|---:|
+| $8000/$C000 | 2,101.160 | **655.678** | 1,897 B | 3,358 | +867 cycles |
+| $7123/$C040 | 2,100.639 | **648.091** | 1,897 B | 3,313 | +822 cycles |
+
+The same input corpus shows an approximately **69% mean-cycle reduction**
+from migrating the *actual arithmetic core* rather than only a wrapper.
+This comes with a large code (+1,572 B) and zero-page (9 B) cost,
+requires executable RAM, and sometimes loses on individual operands.
+Thus it is a **fast/high-memory Pareto candidate**, not a replacement
+for the existing low-ZP and compact alternatives. The worst-case
+regression also means the busy-frame objective must use actual workload
+calls before selecting the V3 donor by default.
+
+This measurement is CPU-model data, not VICE frame elapsed time.
+Native VICE and the global linked 56-operation qualification remain
+separate acceptance gates.
