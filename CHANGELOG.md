@@ -1,3 +1,17 @@
+## Unreleased — two-layout full-56 ISQRT16 dual-source native proof
+
+- Add a real VICE integration gate for both ISQRT16 implementations selected
+  inside a full 56-operation resident PRG, using two relocated layouts and 96
+  deterministic operand cases per case: 384 complete public native calls.
+- Keep all other 55 implementation choices pinned to the resource-optimal
+  baseline when replacing the root kernel. This isolates source correctness
+  and avoids re-enumerating the all-56 global resource frontier; no public
+  operations, source assemblers or old-profile outputs change.
+- Check exact Z16 and carry, preserved N16, valid RAM/ZP budget, nonoverlap
+  with monitor harness and buffer arrays, and two independently preserved
+  source-output digests. This is a representative combined image test,
+  not an exhaustive runtime verification of the 56-operation catalog.
+
 ## Unreleased — tableless zero-ZP ISQRT16 and automatic size/speed fallback
 
 - Add an independently linkable 137-byte restoring ISQRT16 implementation,

@@ -81,6 +81,12 @@ chooses the fast source when RAM permits, and otherwise uses the compact
 alternative without sacrificing the exact 16-bit result or the zero-ZP ABI.
 Exhaustive 65,536-value CPU-model tests plus both layouts in native VICE
 qualify the tableless source independently; physical C64 timing is not claimed.
+A separate all-56 native integration gate tests **both** independent ISQRT16
+source variants at two complete memory layouts ($2000 and $4321), yielding
+384 correct combined-image public calls. The root variant alone is pinned
+while the other 55 choices retain the original fully budgeted size selection.
+This proves relocation and mixed-residency compatibility for root16, not
+an exhaustive mixed invocation of every math operation.
 
 For UDIV16, the newly linked canonical V2 size-fast kernel uses 0 ZP and
 1,513 bytes RAM including the 32-byte public I/O window, while the existing
