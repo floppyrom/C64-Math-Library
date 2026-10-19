@@ -109,9 +109,14 @@ class Signed8QSPairedFrames(unittest.TestCase):
             }
             print("SMUL8_READONLY_QS_PAIRED_FRAME",
                   json.dumps(report,sort_keys=True),flush=True)
-            self.assertEqual(report["readonly_qs_main_ram_saved"],1143)
-            self.assertEqual(old["main_ram"],2336)
+            # Historical SMC table alignment depends on code origin.
+            # Preserve both genuinely measured RAM footprints rather than
+            # assuming the $8000 alignment at a non-page origin.
+            self.assertEqual(old["main_ram"],2336 if code==0x8000 else 2301)
             self.assertEqual(new["main_ram"],1193)
+            self.assertEqual(report["readonly_qs_main_ram_saved"],
+                             old["main_ram"]-new["main_ram"])
+            self.assertGreaterEqual(report["readonly_qs_main_ram_saved"],1100)
             self.assertEqual(len(old["per_frame"]),FRAMES)
             self.assertEqual(len(new["per_frame"]),FRAMES)
 
