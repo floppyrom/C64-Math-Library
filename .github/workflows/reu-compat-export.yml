@@ -1,0 +1,32 @@
+name: Verify exact V3 V4 REU legacy compatibility export
+
+on:
+  pull_request:
+    paths:
+      - 'tools/export_reu_compat.py'
+      - 'tools/test_export_reu_compat.py'
+      - 'SHA256SUMS.txt'
+      - '.github/workflows/reu-compat-export.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  immutable-hardware-compat:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test original binary hashes and exact REU lifecycle contract
+        run: |
+          python3 -m compileall -q tools/export_reu_compat.py tools/test_export_reu_compat.py
+          python3 -m unittest discover -s tools -p 'test_export_reu_compat.py' -v
+          mkdir -p build
+          python3 tools/export_reu_compat.py --profile v3_reu_512k --out build/legacy-reu-v3
+          python3 tools/export_reu_compat.py --profile v4_reu_16m --out build/legacy-reu-v4
