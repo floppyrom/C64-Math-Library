@@ -68,6 +68,8 @@ The source-linked signed32 full64 `SMUL32` donor family also has a **four-way, i
 
 The joint signed+unsigned full64 FAST31 evaluation builds four **two-public-API** source plans at identical memory placements: compact independent, unified 375-byte, two separate 31-ZP FAST31 images, or one shared FAST31 image. The measured same-input 24-frame workload compares RAM/ZP and worst-frame math cycles, rather than assuming that selecting per-operation fastest standalone kernels minimizes whole-project memory. See `MUL32_JOINT_SHARED_VS_SEPARATE.md`; all source CPU-model results exclude PAL VIC-II/IRQ/SID hardware timing.
 
+A new three-operation mixed source-linked frame qualifier includes `MATH_UMUL32`, `MATH_SMUL32` and `MATH_ISQRT16` with the original square-table and tableless Pareto alternatives. The offline generic frame frontier compares complete linked image RAM, ZP and matched synthetic peak/p95 frames at two origins. It does **not** currently change the 56-operation installer selection algorithm or qualify PAL hardware timing; see [MIXED_THREE_OPERATION_FRAME_FRONTIER.md](MIXED_THREE_OPERATION_FRAME_FRONTIER.md).
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

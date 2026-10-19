@@ -1,3 +1,9 @@
+## Unreleased — linked mixed three-operation frame and resource Pareto qualification
+
+- Build eight independent UMUL32+SMUL32+ISQRT16 source plans at two relocations, verify 150 identical complete public calls over 24 synthetic frames, and record full 64-bit products, square roots, ABI/state preservation and source+PRG hashes.
+- Generalize offline project-level frame Pareto screening from two to three or more public operations using strict matching inputs/variants, full linked producer RAM/ZP and peak/p95 CPU-model frame cycles.
+- Retain historical profiles and all source variants; this is not an automatic installer peak objective or physical PAL/VIC/IRQ/SID/REU time.
+
 ## Unreleased — two-placement joint full64 multiplication peak-frame resource frontier
 
 - Add an offline, source-proven two-API selection gate for RAM, ZP and synthetic peak-frame budgets; preserve non-dominated shared FAST31, separate FAST31 and compact zero-ZP plans.
