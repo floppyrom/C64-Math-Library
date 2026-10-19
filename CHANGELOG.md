@@ -1,17 +1,43 @@
-## Unreleased — shared historical V2 fast SDIV16/SMOD16 producer
+## Unreleased — original V1 DIST8_FAST public speed provenance
 
-- Source-link the canonical V2 1,481-byte unsigned direct divider and a
-  private 224-byte signed Q16/R16/C public adapter. Both signed operations
-  select the same physical image (1,705 code + 8 RAM scratch, 0 ZP), while
-  the original 206-byte/3-scratch zero-ZP shared portable source remains.
-- Tested signed boundaries, D=0 and -32768/-1, 384 identical complete
-  signed public calls at two relocations and 150 calls across 24 busy math
-  frames; require pinned native VICE r46284 and package qualification.
-- Initial model: ~474 vs ~822 mean cycles, 1,229 vs 1,366 sampled maximum;
-  p95 is slightly higher for V2 (~1,138 vs ~1,120). Do not equate the
-  CPU-model frame trace with physical PAL/VIC-II or resident timing.
-- Qualified speed-selection coverage reaches 39/56 APIs **only when all
-  exact-head checks pass**; preserve the historical five profiles.
+- Authenticate unchanged 61-byte signed8 max/min distance approximation with
+  512 full public X8/Y8 signed cases at two relocations and original Z8/C,
+  high-byte/input preservation, full-call mean, p95 and worst-case cycles.
+- Allow objective=speed only with real RAM/ZP and positive workload calls;
+  retain historical source and native VICE r46284 checks unchanged.
+- Increase authenticated operation-first speed coverage to 45 of 56 APIs
+  after combined exact-head public/source/package qualification.
+
+## Unreleased — historical shared V1 SDIV8/SMOD8 public speed
+
+- Authenticate both names of the original 530-byte V1–V5 signed8 quotient
+  and remainder kernel using 512 identical Q8/R8/C public calls at two
+  code, I/O and private ZP placements, including divide-by-zero cases.
+- Preserve exactly one shared physical producer and one private ZP byte,
+  full public operands/output sentinel ABI, and native VICE r46284.
+- Extend measured speed selection to 44/56 APIs after full exact-head CI;
+  do not substitute a slower or nonhistorical kernel.
+
+## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
+
+- Authenticate the unchanged 11/15/22-byte canonical V1–V5 trigonometric
+  sources on all 256 phases, two code origins and exactly one shared
+  immutable sine-table page, with complete X/Y/Z/C and SP preservation.
+- Enable measured speed objective for all three public API names without
+  replacing a historical fast source; qualified catalog grows to 42/56.
+- Native VICE r46284 and exact SHA256 publication required before merge.
+
+## Unreleased — signed SMULDIV16 quarter-square + V2 fast public source
+
+- Compose the immutable canonical signed 16×16 quarter-square source and
+  already source-qualified V2 signed 32/16 division magnitude core with an
+  independent public SMULDIV16 adapter; no changes to profile binaries.
+- Retain the 439-byte/zero-ZP compact source; the fast 4,263-byte image
+  requires 12 exclusive ZP and 4 ordinary scratch bytes.
+- Verify 512 matched Q32/R16/C and signed full-product calls at two origins,
+  a 150-call/24-frame busiest-math workload, two native VICE r46284 layouts,
+  and source integrity. Coverage gains are provisional until the dependent
+  unsigned UMULDIV16 source and full exact-head CI pass.
 
 ## Unreleased — qualified read-only signed8 quarter-square Pareto choice
 

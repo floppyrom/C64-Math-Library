@@ -1,0 +1,52 @@
+name: Exact original V1 DIST8_FAST full-public speed qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_speed_dist8_fast.py'
+      - 'tools/test_selective_speed_dist8_fast.py'
+      - 'tools/selective_linker.py'
+      - '.github/workflows/dist8-fast-public-speed.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  original-model:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source-assemble original V1 DIST8_FAST, verify 512 full public calls and speed budgets
+        run: |
+          python3 -m compileall -q tools/selective_speed_dist8_fast.py tools/test_selective_speed_dist8_fast.py tools/selective_linker.py
+          python3 -m unittest discover -s tools -p 'test_selective_speed_dist8_fast.py' -v
+
+  pinned-native-vice:
+    needs: original-model
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Install native VICE prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned native VICE r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Revalidate original V1 distance source in native VICE
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_selective_dist8.py

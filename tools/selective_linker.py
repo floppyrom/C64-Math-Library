@@ -19,6 +19,8 @@ import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_smul8_qs_readonly as smul8qs
 import selective_fast_umul16 as fast16
+import selective_umuldiv16_qs_v2 as muldiv16qs
+import selective_smuldiv16_qs_v2 as signed_muldiv16qs
 import selective_smul16_quartersquare as qs16signed
 import selective_smul16_shr8_quartersquare as qs16shr
 import selective_fast31_umul32 as fast31
@@ -29,10 +31,13 @@ import selective_seek16 as seek16
 import selective_speed
 import selective_speed_smul8 as speed_smul8
 import selective_speed_umul16
+import selective_speed_umuldiv16_qsv2 as speed_umuldiv16
+import selective_speed_smuldiv16_qsv2 as speed_smuldiv16
 import selective_speed_smul16 as speed_smul16
 import selective_speed_smul16_shr8 as speed_smul16_shr8
 import selective_speed_umul24 as speed_umul24
 import selective_speed_smul24 as speed_smul24
+import selective_speed_sdiv8_shared as speed_sdiv8_shared
 import selective_speed_umul16_shr8
 import selective_speed_umod8
 import selective_speed_udiv8
@@ -43,7 +48,6 @@ import selective_speed_mul32_ready_shr16 as speed32extras
 import selective_speed_u3216 as speed_u3216
 import selective_speed_udiv16_shl8 as speed_shl8
 import selective_speed_sdiv16_shl8 as speed_signedshl8
-import selective_speed_sdiv16_shared as speed_sdiv16shared
 import selective_speed_recip16 as speed_recip16
 import selective_speed_s3216 as speed_s3216
 import selective_speed_s3232 as speed_s3232
@@ -52,6 +56,7 @@ import selective_speed_u24 as speed_u24
 import selective_speed_s24 as speed_s24
 import selective_speed_umod16 as speed_umod16
 import selective_speed_dist8_accurate as speed_dist8_accurate
+import selective_speed_dist8_fast as speed_dist8_fast
 import selective_speed_atan2 as speed_atan2
 import selective_speed_udiv16 as speed_udiv16
 import selective_speed_isqrt16 as speed_isqrt16
@@ -60,12 +65,12 @@ import selective_signed_hybrid_u3232 as signed_u3232
 import selective_v2_fast_u3216 as v2u3216
 import selective_v2_shifted_u3216 as v2shifted
 import selective_v2_signed_shifted16 as signedshift
-import selective_v2_signed16_shared as v2signed16
 import selective_recip16_threshold as recip_threshold
 import selective_recip16_table as recip_table
 import research_signed_v2_u3216 as signedv2u3216
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
+import selective_speed_trig8 as speed_trig8
 import selective_dist8_accurate as dist8tab
 import selective_smul8 as smul8tab
 
@@ -406,14 +411,6 @@ MODULES = {
         },
     },
     "MATH_SDIV16": {
-        "link:v2-signed-shared": {
-            "source": "routines/divide/udiv16_v2_zerozp.asm",
-            "segments": (("KERNEL_CODE", 1481), ("SIGNED_ADAPTER", 224)),
-            "entry": "FAST_SDIV16_V2_SHARED", "zp": 0, "scratch": 8,
-            "share_producer": "signed-16by16-v2-direct", "multi_entry": True,
-            "signed16_v2_shared": True,
-            "provenance": "Unmodified historical V2 direct unsigned 16/16 kernel source-linked into a private 8-byte N/D/Q/R workspace, with exact signed quotient-and-remainder adapter; common public Q/R/C ABI, zero ZP/REU/SMC/INIT and shared image for both signed APIs.",
-        },
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv16_smod16_zerozp.asm",
             "segments": (("KERNEL_CODE", 206),),
@@ -424,14 +421,6 @@ MODULES = {
         },
     },
     "MATH_SMOD16": {
-        "link:v2-signed-shared": {
-            "source": "routines/divide/udiv16_v2_zerozp.asm",
-            "segments": (("KERNEL_CODE", 1481), ("SIGNED_ADAPTER", 224)),
-            "entry": "FAST_SMOD16_V2_SHARED", "zp": 0, "scratch": 8,
-            "share_producer": "signed-16by16-v2-direct", "multi_entry": True,
-            "signed16_v2_shared": True,
-            "provenance": "Unmodified historical V2 direct unsigned 16/16 kernel source-linked into a private 8-byte N/D/Q/R workspace, with exact signed quotient-and-remainder adapter; common public Q/R/C ABI, zero ZP/REU/SMC/INIT and shared image for both signed APIs.",
-        },
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv16_smod16_zerozp.asm",
             "segments": (("KERNEL_CODE", 206),),
@@ -503,6 +492,13 @@ MODULES = {
         },
     },
     "MATH_UMULDIV16": {
+        "link:qs-v2-fused": {
+            "source": "routines/multiply/umul16_quartersquare.asm",
+            "segments": (("KERNEL_CODE", 3655),),
+            "entry": "FAST_UMULDIV16_QS_V2", "zp": 12, "scratch": 4,
+            "operand_layout": "muldiv16", "umuldiv16_qsv2": True,
+            "provenance": "Original 233-byte unsigned quarter-square 16x16 with two 511-byte immutable planes, canonical V2 12-ZP 32/16 split-tail producer and a 32-byte direct compound public adapter; exact Q32/R16/C, preserves X/Y/D.",
+        },
         "link:portable-zerozp": {
             "source": "routines/muldiv16/umuldiv16_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 288),),
@@ -512,6 +508,13 @@ MODULES = {
         },
     },
     "MATH_SMULDIV16": {
+        "link:signed-qs-v2-fused": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 4263),),
+            "entry": "FAST_SMULDIV16_SIGNED_QS_V2", "zp": 12, "scratch": 4,
+            "operand_layout": "muldiv16", "smuldiv16_qsv2": True,
+            "provenance": "Independent source fusion of certified signed QS16 full32, canonical V2 signed 32/16 quotient and direct signed muldiv public adapter. Preserves X/Y/D, Z32 and volatile N32, trunc-toward-zero Q32/R16/C, 12 ZP, 4 ordinary scratch.",
+        },
         "link:portable-zerozp": {
             "source": "routines/muldiv16/smuldiv16_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 439),),
@@ -1134,6 +1137,30 @@ def available_variants(root=ROOT):
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
                     "tools/selective_fast_umul16.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                    "tools/selective_umuldiv16_qs_v2.py": hashlib.sha256(
+                        (root / "tools/selective_umuldiv16_qs_v2.py").read_bytes()).hexdigest(),
+                    "v2_pareto_fast/resident/modules/pareto_udiv32_16.a": hashlib.sha256(
+                        (root / "v2_pareto_fast/resident/modules/pareto_udiv32_16.a").read_bytes()).hexdigest(),
+                } if mod.get("umuldiv16_qsv2") else {
+                    "tools/selective_fast_umul8.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
+                    "tools/selective_fast_umul16.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
+                    "tools/selective_smul16_quartersquare.py": hashlib.sha256(
+                        (root / "tools/selective_smul16_quartersquare.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                    "tools/research_signed_v2_u3216.py": hashlib.sha256(
+                        (root / "tools/research_signed_v2_u3216.py").read_bytes()).hexdigest(),
+                    "tools/selective_smuldiv16_qs_v2.py": hashlib.sha256(
+                        (root / "tools/selective_smuldiv16_qs_v2.py").read_bytes()).hexdigest(),
+                } if mod.get("smuldiv16_qsv2") else {
+                    "tools/selective_fast_umul8.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
+                    "tools/selective_fast_umul16.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
                     "tools/selective_smul16_quartersquare.py": hashlib.sha256(
                         (root / "tools/selective_smul16_quartersquare.py").read_bytes()).hexdigest(),
                 } if mod.get("smul16_qs") else {
@@ -1164,11 +1191,6 @@ def available_variants(root=ROOT):
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
                         (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
                 } if mod.get("v2_signed_shifted16") else {
-                    "tools/selective_v2_signed16_shared.py": hashlib.sha256(
-                        (root / "tools/selective_v2_signed16_shared.py").read_bytes()).hexdigest(),
-                    "relocatable_source/v2_pareto_fast/udiv16_direct_fast.inc": hashlib.sha256(
-                        (root / "relocatable_source/v2_pareto_fast/udiv16_direct_fast.inc").read_bytes()).hexdigest(),
-                } if mod.get("signed16_v2_shared") else {
                     "tools/selective_recip16_threshold.py": hashlib.sha256(
                         (root / "tools/selective_recip16_threshold.py").read_bytes()).hexdigest(),
                     "v3_reu_512k/standalone/recip_u16_u24_q16.asm": hashlib.sha256(
@@ -1988,9 +2010,17 @@ def build(plan, outdir, memory=None, root=ROOT):
                    for x in workload_calls.values())):
             raise LinkError("Speed builds require positive workload calls for every operation")
         measured = {
+            "MATH_DIST8_FAST": (speed_dist8_fast.bench_dist8_fast, "scratch", False),
+            "MATH_SDIV8": (speed_sdiv8_shared.bench_sdiv8, "zp", False),
+            "MATH_SMOD8": (speed_sdiv8_shared.bench_smod8, "zp", False),
+            "MATH_SIN8": (speed_trig8.bench_sin8, "scratch", False),
+            "MATH_COS8": (speed_trig8.bench_cos8, "scratch", False),
+            "MATH_SINCOS8": (speed_trig8.bench_sincos8, "scratch", False),
             "MATH_UMUL8": (selective_speed.bench_umul8, "scratch", True),
             "MATH_SMUL8": (speed_smul8.bench_smul8, "scratch", False),
             "MATH_UMUL16": (selective_speed_umul16.bench_umul16, "scratch", False),
+            "MATH_UMULDIV16": (speed_umuldiv16.bench_umuldiv16, "scratch", True),
+            "MATH_SMULDIV16": (speed_smuldiv16.bench_smuldiv16, "scratch", True),
             "MATH_SMUL16": (speed_smul16.bench_smul16, "scratch", False),
             "MATH_SMUL16_SHR8": (speed_smul16_shr8.bench_smul16_shr8, "scratch", False),
             "MATH_UMUL24": (speed_umul24.bench_umul24, "scratch", True),
@@ -2007,8 +2037,6 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_SMUL32_SHR16": (speed32extras.bench_smul32_shr16, "scratch", True),
             "MATH_UDIV16_SHL8": (speed_shl8.bench_udiv16_shl8, "scratch", True),
             "MATH_SDIV16_SHL8": (speed_signedshl8.bench_sdiv16_shl8, "scratch", True),
-            "MATH_SDIV16": (speed_sdiv16shared.bench_sdiv16, "scratch", False),
-            "MATH_SMOD16": (speed_sdiv16shared.bench_sdiv16, "scratch", False),
             "MATH_URECIP16_Q16": (speed_recip16.bench_urecip16_q16, "scratch", False),
             "MATH_UDIV32_16": (speed_u3216.bench_udiv32_16, "scratch", True),
             "MATH_SDIV32_16": (speed_s3216.bench_sdiv32_16, "scratch", True),
@@ -2161,6 +2189,20 @@ def build(plan, outdir, memory=None, root=ROOT):
                 "tools/selective_fast_umul8.py",
                 "tools/selective_smul8_qs_readonly.py"}:
             raise LinkError(api + ": read-only signed8 quarter-square source provenance missing")
+        if module.get("smuldiv16_qsv2") and set(x["source_path"] for x in dep_provenance) != {
+                "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py",
+                "tools/selective_smul16_quartersquare.py",
+                "tools/selective_v2_fast_u3216.py",
+                "tools/research_signed_v2_u3216.py",
+                "tools/selective_smuldiv16_qs_v2.py"}:
+            raise LinkError(api + ": signed muldiv16 source provenance missing")
+        if module.get("umuldiv16_qsv2") and set(x["source_path"] for x in dep_provenance) != {
+                "tools/selective_fast_umul8.py",
+                "tools/selective_fast_umul16.py",
+                "tools/selective_v2_fast_u3216.py",
+                "tools/selective_umuldiv16_qs_v2.py",
+                "v2_pareto_fast/resident/modules/pareto_udiv32_16.a"}:
+            raise LinkError(api + ": UMULDIV16 canonical QS/V2 source provenance missing")
         if module.get("fast_umul8") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_fast_umul8.py"]:
             raise LinkError(api + ": quarter-square table generator provenance missing")
@@ -2201,10 +2243,6 @@ def build(plan, outdir, memory=None, root=ROOT):
                 "tools/selective_recip16_threshold.py",
                 "v3_reu_512k/standalone/recip_u16_u24_q16.asm"]:
             raise LinkError(api + ": historical threshold donor/relocator provenance missing")
-        if module.get("signed16_v2_shared") and set(x["source_path"] for x in dep_provenance) != {
-                "tools/selective_v2_signed16_shared.py",
-                "relocatable_source/v2_pareto_fast/udiv16_direct_fast.inc"}:
-            raise LinkError(api + ": signed V2 shared direct 16/16 source provenance missing")
         if module.get("v2_signed_shifted16") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_v2_signed_shifted16.py", "tools/selective_v2_fast_u3216.py"]:
             raise LinkError(api + ": historical signed shifted16 source provenance missing")
@@ -2250,7 +2288,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("smul8_qs") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed16_v2_shared") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("umuldiv16_qsv2") or module.get("smuldiv16_qsv2") or module.get("fast_umul8") or module.get("smul8_qs") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2285,9 +2323,6 @@ def build(plan, outdir, memory=None, root=ROOT):
                     entry = labels[module["entry"]]
                 elif module.get("recip16_threshold"):
                     machine, labels, ranges, end = recip_threshold.assemble_image(pc,io,sb,root)
-                    entry = labels[module["entry"]]
-                elif module.get("signed16_v2_shared"):
-                    machine, labels, ranges, end = v2signed16.assemble_image(pc,io,sb,root)
                     entry = labels[module["entry"]]
                 elif module.get("v2_signed_shifted16"):
                     machine, labels, ranges, end = signedshift.assemble_image(pc,io,zb,root)
@@ -2341,6 +2376,12 @@ def build(plan, outdir, memory=None, root=ROOT):
                 elif module.get("smul8_qs"):
                     machine, labels, ranges, end = smul8qs.assemble_image(pc,io,sb,root)
                     entry = labels[module["entry"]]
+                elif module.get("smuldiv16_qsv2"):
+                    machine, labels, ranges, end = signed_muldiv16qs.assemble_image(pc,io,zb,sb,root)
+                    entry = labels[module["entry"]]
+                elif module.get("umuldiv16_qsv2"):
+                    machine, labels, ranges, end = muldiv16qs.assemble_image(pc,io,zb,sb,root)
+                    entry = labels[module["entry"]]
                 elif module.get("fast_umul16"):
                     machine, entry, ranges, end = fast16.assemble(
                         pc, io, sb, root, source_path=module["source"],
@@ -2352,7 +2393,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("v2_shifted_u3216") and not module.get("recip16_threshold") and not module.get("recip16_table") and not module.get("v2_signed_shifted16") and not module.get("signed16_v2_shared") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("v2_shifted_u3216") and not module.get("recip16_threshold") and not module.get("recip16_table") and not module.get("v2_signed_shifted16") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:

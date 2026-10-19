@@ -80,9 +80,7 @@ class MeasuredUMUL8SpeedTests(unittest.TestCase):
             self.assertFalse((Path(d)/"too_small").exists())
 
     def test_other_operations_cannot_claim_unmeasured_speed(self):
-        # SDIV16 is now matched-input qualified by the V2 shared Q/R
-        # benchmark; DIST8_FAST remains a genuine unmeasured example.
-        for operation in ("DIST8_FAST",):
+        for operation in ("DIST8_FAST", "SDIV16"):
             with self.subTest(operation=operation), tempfile.TemporaryDirectory() as d:
                 with self.assertRaisesRegex(selective_linker.LinkError,
                                             "No authenticated matched-input speed basis"):
