@@ -1,0 +1,57 @@
+name: Signed QS16 historical V2 full multiply-divide public qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_smuldiv16_qs_v2.py'
+      - 'tools/selective_speed_smuldiv16_qsv2.py'
+      - 'tools/test_selective_smuldiv16_qsv2.py'
+      - 'tools/test_smuldiv16_qsv2_frames.py'
+      - 'tools/native_selective_smuldiv16_qsv2.py'
+      - 'tools/selective_linker.py'
+      - '.github/workflows/smuldiv16-signed-qsv2-source-builder.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-model:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Signed Q32/R16/C correct full public calls, matched corpus and peak math frames
+        run: |
+          python3 -m compileall -q tools/selective_smuldiv16_qs_v2.py tools/selective_speed_smuldiv16_qsv2.py tools/test_selective_smuldiv16_qsv2.py tools/test_smuldiv16_qsv2_frames.py tools/native_selective_smuldiv16_qsv2.py tools/selective_linker.py
+          python3 tools/selective_smuldiv16_qs_v2.py
+          python3 -m unittest discover -s tools -p 'test_selective_smuldiv16_qsv2.py' -v
+          python3 -m unittest discover -s tools -p 'test_smuldiv16_qsv2_frames.py' -v
+
+  native-vice:
+    needs: source-model
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Install pinned native headless VICE build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned native VICE r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Verify native signed Q32/R16/C and public operand preservation
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_selective_smuldiv16_qsv2.py
