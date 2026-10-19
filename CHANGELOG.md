@@ -1,14 +1,22 @@
-## Unreleased — signed 16-bit quarter-square speed and RAM Pareto frontier
+## Unreleased — signed16 quarter-square canonical source performance
 
-- Adapt the canonical 233-byte unsigned UMUL16 quarter-square kernel and its
-  two immutable 511-byte tables with a bounded signed32 high-word correction
-  public entry. Keep compact 161-byte/0-ZP source unchanged.
-- Measure 512 identical signed32 complete calls at two origins, the peak of
-  a 150-call/24-frame math trace, and native VICE r46284 qualifications.
-- 1,351 code+table bytes and 4 RAM scratch (0 ZP) for the fast candidate;
-  161 code bytes, 6 RAM scratch (0 ZP) for compact. Final speed coverage
-  rises to 34/56 only after exact-head full-library qualification.
-- Retain all historical V1–V5 resident binaries and REU/Turbo facilities.
+- Source-link the canonical 233-byte unsigned quarter-square 16x16 engine,
+  its two immutable 511-byte planes and a bounded signed high-word correction
+  entry for `SMUL16`. Exact full signed32 output, 0 ZP, 4 scratch bytes.
+- Preserve the compact 161-byte/0-ZP, 6-scratch signed alternative;
+  compare 512 matched full public calls, paired 24-frame math cycles and
+  192 native VICE r46284 calls at two relocated public addresses.
+- After complete qualification, speed selection expands to 35 of 56 APIs.
+  Historical V1–V5 binaries, REU, and Turbo alternatives remain unchanged.
+
+## Unreleased — source-linked historical V2 signed shifted16 speed
+
+- Offer historical V2 32/16 split-tail magnitude with direct signed
+  `SDIV16_SHL8` Q24/R16/C adapter; source-qualify on 384 matched public
+  calls at two relocation origins, busy math frames and pinned VICE r46284.
+- Retain both 2,624-byte/12-ZP speed and 237-byte/zero-ZP compact options.
+  Qualified installer speed coverage rises to 34/56 pending full CI.
+- No historical V1–V5 profiles, REU services or Turbo binaries are changed.
 
 ## Unreleased — stock-C64 reciprocal threshold and exact-table Pareto frontier
 

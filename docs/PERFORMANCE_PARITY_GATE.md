@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 34 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 35 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -107,11 +107,17 @@ native VICE and busiest-frame gate may justify promotion. This is not a
 transplant of the V3/V4 REU resident binary and does not yet establish
 REU-resident hardware timing parity. See `RECIP16_THRESHOLD_STOCK_BUILDER.md`.
 
-A stock-C64 16-bit signed full-width multiply quarter-square producer
-has also been added as an explicit 1,351-byte/0-ZP option alongside
-161-byte/0-ZP compact SMUL16. Its resource and performance frontier
-requires matched signed32 full public calls, busy-frame math trace and
-native VICE qualification before profile retirement.
+The signed shifted-16 API now exposes a canonical V2-fast unsigned 32/16
+magnitude producer with a public signed Q24/R16/C adapter. It requires
+2,624 code bytes and 12 exclusive ZP bytes; the compact 237-byte
+portable zero-ZP version remains selectable. Qualification is against
+identical inputs and full public-call costs, not historical resident cycles.
+
+A full signed16x16->32 quarter-square stock-C64 public kernel is now an
+explicit 1,351-byte/0-ZP choice alongside 161-byte compact zero-ZP.
+The faster variant's exact speed and worst-case latency are certified with
+identical input pairs, a busy-math-frame replay, and two-map native VICE,
+not only resident-profile timing.
 
 ## Active migration priority after PRs #293–#296
 
