@@ -96,6 +96,54 @@ class Fused16QSV2(unittest.TestCase):
                 self.assertEqual(man["operations"][0]["variant"],expected)
                 self.assertEqual(man["cycle_model_benchmark"]["cases"],512)
 
+    def test_mixed_fast_unsigned_and_compact_signed_public_entries(self):
+        # Critical coexistence gate: one independent V2-fast unsigned
+        # compound caller and one canonical portable signed compound caller.
+        from test_selective_muldiv16 import expected
+        for code,io,zp in ((0x8000,0xc000,0x50),
+                           (0x7123,0xc040,0x70)):
+            with self.subTest(code=code),tempfile.TemporaryDirectory() as td:
+                plan=math_builder.create_plan(
+                    self.index,["UMULDIV16","SMULDIV16"],
+                    objective="size",zp_budget=12,ram_budget=4300,
+                    pins={"UMULDIV16":FAST,
+                          "SMULDIV16":"link:portable-zerozp"})
+                man=linker.build(plan,Path(td),memory={
+                    "code_base":code,"math_io":io,"zp_base":zp,
+                    "scratch_base":io+0x40})
+                self.assertEqual(man["resource_use"]["zero_page_bytes"],12)
+                self.assertEqual({v["api"] for v in man["operations"]},
+                                 {"MATH_UMULDIV16","MATH_SMULDIV16"})
+                prg=(Path(td)/"math_selective.prg").read_bytes()
+                mem=bytearray(65536)
+                mem[code:code+len(prg)-2]=prg[2:]
+                cpu=CPU(mem)
+                sp=cpu.sp
+                entries={op["api"]:int(op["entry"][1:],16)
+                         for op in man["operations"]}
+                cases=speed.corpus()[:96]
+                for k,(x,y,d) in enumerate(cases):
+                    xb=x.to_bytes(2,"little")+bytes((0xa5,0x5a))
+                    yb=y.to_bytes(2,"little")+bytes((0x6b,0x7c))
+                    db=d.to_bytes(2,"little")+bytes((0xe1,0xe2))
+                    mem[io:io+4]=xb
+                    mem[io+4:io+8]=yb
+                    mem[io+20:io+24]=db
+                    for signed in (bool(k&1),not bool(k&1)):
+                        cpu.d=0
+                        cpu.c=(x+y+d+k)&1
+                        op="MATH_SMULDIV16" if signed else "MATH_UMULDIV16"
+                        cpu.call(entries[op],80000)
+                        q,r,carry=expected(x,y,d,signed)
+                        got=(int.from_bytes(mem[io+24:io+28],"little"),
+                             int.from_bytes(mem[io+28:io+30],"little"),
+                             cpu.c)
+                        self.assertEqual(got,(q,r,carry),(code,op,x,y,d))
+                        self.assertEqual(bytes(mem[io:io+4]),xb)
+                        self.assertEqual(bytes(mem[io+4:io+8]),yb)
+                        self.assertEqual(bytes(mem[io+20:io+24]),db)
+                        self.assertEqual(cpu.sp,sp)
+
     def test_pinned_fast_fails_precise_resource_shortage(self):
         with tempfile.TemporaryDirectory() as td:
             for ram,zp in ((3690,12),(3691,11)):
