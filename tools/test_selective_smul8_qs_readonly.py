@@ -69,6 +69,29 @@ class StockSigned8QS(unittest.TestCase):
                         self.assertEqual(cpu.sp,sp)
                 self.assertEqual(bytes(mem[code:code+1159]),before)
 
+    def test_authentic_full_public_speed_selection_respects_ram(self):
+        for ram in (1193,2336):
+            with self.subTest(ram=ram),tempfile.TemporaryDirectory() as td:
+                plan=math_builder.create_plan(
+                    self.index,["SMUL8"],objective="speed",
+                    zp_budget=0,ram_budget=ram,
+                    workload_calls={"SMUL8":100})
+                man=linker.build(plan,Path(td))
+                model=man["cycle_model_benchmark"]
+                self.assertEqual(model["cases"],512)
+                self.assertTrue(model["cpu_model_only"])
+                self.assertEqual(set(model["mean_cycles"]),{FAST,OLD})
+                self.assertEqual(set(model["source_sha256"]),{FAST,OLD})
+                if ram==1193:
+                    self.assertEqual(man["operations"][0]["variant"],FAST)
+                else:
+                    fastest=min(model["mean_cycles"],
+                                key=model["mean_cycles"].get)
+                    self.assertEqual(man["operations"][0]["variant"],fastest)
+                self.assertLessEqual(
+                    man["resource_use"]["main_ram_total_bytes"],ram)
+                self.assertEqual(man["resource_use"]["zero_page_bytes"],0)
+
     def test_historical_smc_stays_accessible_and_ram_bounds_fail_closed(self):
         variants=linker.available_variants()["MATH_SMUL8"]
         self.assertEqual({v["id"] for v in variants},{FAST,OLD})
