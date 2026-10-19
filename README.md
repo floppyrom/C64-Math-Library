@@ -32,7 +32,7 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 34 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 35 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -46,6 +46,13 @@ the lookup image. For the faster measured variants use:
 ```sh
 make builder-speed SPEED_CONFIG=examples/operation-first-shared24-speed.json OUT=build_shared24
 ```
+
+The Q8.8-scaled `SMUL16_SHR8` public signed24 operation now also has an
+independent 0-ZP quarter-square candidate (1,383 bytes including two
+immutable planes, four scratch bytes), retaining the compact 184-byte,
+six-scratch alternative. Qualification uses matched full public calls,
+real resource budgets and a busy-frame math workload; see
+`docs/SMUL16_SHR8_QS_BUILDER.md`. This builds on the signed SMUL16 source.
 
 A new 0-ZP signed `SMUL16` quarter-square Pareto choice reuses the
 certified unsigned 16-bit producer and immutable table planes with a

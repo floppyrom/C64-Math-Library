@@ -1,3 +1,16 @@
+## Unreleased — signed quarter-square Q8.8 shifted 16×16 speed migration
+
+- Source-link canonical unsigned quarter-square 16-bit tables, signed32
+  high-word correction and independent Q8.8 >>8 public arithmetic byte-slice.
+- Retain `SMUL16_SHR8` compact 184-byte/0-ZP, 6-scratch alternative; fast
+  1,383-byte/0-ZP, 4-scratch Pareto alternative is project-budget gated.
+- Add two-origin 512-case matched signed Q24 public ABI and speed checks,
+  150 calls over 24 synthetic math frames, pinned VICE r46284 native checks.
+- Authenticated speed selection rises to 35/56 APIs on this dependent branch
+  **subject to complete exact-head release qualification**; the earlier
+  signed shifted DIV16 branch would separately lift eventual coverage to 36.
+- Keep V1–V5 profiles, reference binaries and REU/Turbo services untouched.
+
 ## Unreleased — signed 16-bit quarter-square speed and RAM Pareto frontier
 
 - Adapt the canonical 233-byte unsigned UMUL16 quarter-square kernel and its
