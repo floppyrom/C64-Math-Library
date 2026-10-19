@@ -16,7 +16,8 @@ import math_builder
 import selective_linker as linker
 import selective_speed_umul32 as speed
 from frame_cycle_budget import Call, score
-from mini6502 import CPU
+from mini6502 import CPU, Assembler
+import selective_fast31_umul32 as fast31
 
 ROOT = Path(__file__).resolve().parents[1]
 API = "MATH_UMUL32"
@@ -79,8 +80,24 @@ def evaluate(variant, code=0x8000, io=0xc000, zp=0x50):
         mem[code:code+length] = binary[2:]
         before = bytes(mem[code:code+length])
         mod = linker.MODULES[API][variant]
-        source_image, source_entry, mutable = speed.source_assemble(
-            variant, mod, code, io, io + 0x40, ROOT, zp)
+        # Shared FAST31 adds a signed export in the same physical image.
+        # Assemble the exact variant-specific donor source, not the standalone
+        # FAST31 default from the per-operation speed helper.
+        if variant in ("link:fast31-shared-full64", "link:fast31-v2-public"):
+            source_image, source_entry, _, source_end = fast31.assemble(
+                code, io, zp, ROOT, source_path=mod["source"])
+            layout, end = fast31.layout(code)
+            if source_end != end:
+                raise AssertionError("FAST31 original table/code layout drift")
+            rendered = fast31.render(layout, io, zp, ROOT, mod["source"])
+            _, labels, _ = Assembler().assemble(rendered)
+            mutable = {addr + 1 for key, addr in labels.items()
+                       if key.startswith("SMC_")}
+            if len(mutable) != 10:
+                raise AssertionError("FAST31 original ten SMC operands changed")
+        else:
+            source_image, source_entry, mutable = speed.source_assemble(
+                variant, mod, code, io, io + 0x40, ROOT, zp)
         entry = int(operations[0]["entry"][1:], 16)
         if entry != source_entry or any(
             mem[addr] != val for addr, val in source_image.items()):
