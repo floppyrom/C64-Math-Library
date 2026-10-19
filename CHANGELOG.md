@@ -1,16 +1,13 @@
-## Unreleased — read-only SMUL8 quarter-square Pareto alternative
+## Unreleased — signed Q8.8 scaled quarter-square multiplier
 
-- Source-link the canonical 73-byte unsigned UMUL8 two-table producer and
-  a bounded signed high-byte correction adapter to yield exact signed16.
-- Preserve the original 46-byte V1-V5 SMC producer and four original table
-  pages unchanged; the new read-only, 0-ZP option uses 1,159 bytes plus two
-  RAM scratch bytes and needs no REU, INIT or writable executable code.
-- Add exhaustive 65,536-pair public source-model checks, two-map native
-  VICE r46284 qualification and identical 512-pair full-call cycle
-  comparison and separate 150-call/24-frame busiest-math replay,
-  plus RAM-aware automatic speed selection. Do not count the
-  additional speed-qualified API until source-model, native VICE,
-  builder and integrity checks pass.
+- Add an independently source-linked `SMUL16_SHR8` quarter-square implementation
+  with bounded signed32 correction and 32-byte public Q24 byte-slice.
+- Retain 184-byte/0-ZP compact source (six scratch) and 1,383-byte/0-ZP
+  QS source (four scratch) as separately selectable size/speed alternatives.
+- Add two-address-space 512-call source-model qualification, 150-call/24-frame
+  math latency tests and 192 real native VICE r46284 signed public calls.
+- Speed-selection coverage reaches 36/56 APIs on the combined dependency tree
+  **once complete exact-head CI qualifies**; all five historical profiles remain.
 
 ## Unreleased — signed16 quarter-square canonical source performance
 

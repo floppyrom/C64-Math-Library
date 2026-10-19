@@ -34,10 +34,10 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (thirty-five source-qualified APIs)
+## Workload-weighted speed selection (thirty-six source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **thirty-five**
-individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
+The `speed` objective supports project-level weighted selection for **thirty-six**
+individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
 SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
@@ -93,6 +93,12 @@ an exhaustive mixed invocation of every math operation.
 portable exact restoring source. Same-input public Q24/R16/C and
 busiest-frame math-model timings determine preference under real resource
 budgets. Historic resident-only timings are not directly comparable.
+
+The signed fixed Q8.8 scaled multiplication `SMUL16_SHR8` retains an
+independent 184-byte/0-ZP restoring variant (6 scratch), and a source-linked
+1,383-byte/0-ZP quarter-square variant (4 scratch) with exact Q24 output.
+The quarter-square planes are currently replicated if SMUL16 and SHR8 are
+both selected: sharing remains a separate measured future objective.
 
 For SMUL16, a canonical quarter-square signed full32 producer is available
 as a separate 1,351-code/table-byte, 4-scratch, zero-ZP Pareto alternative
