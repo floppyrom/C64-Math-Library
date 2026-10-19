@@ -64,6 +64,7 @@ import selective_recip16_table as recip_table
 import research_signed_v2_u3216 as signedv2u3216
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
+import selective_speed_trig8 as speed_trig8
 import selective_dist8_accurate as dist8tab
 import selective_smul8 as smul8tab
 
@@ -1965,6 +1966,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                    for x in workload_calls.values())):
             raise LinkError("Speed builds require positive workload calls for every operation")
         measured = {
+            "MATH_SIN8": (speed_trig8.bench_sin8, "scratch", False),
+            "MATH_COS8": (speed_trig8.bench_cos8, "scratch", False),
+            "MATH_SINCOS8": (speed_trig8.bench_sincos8, "scratch", False),
             "MATH_UMUL8": (selective_speed.bench_umul8, "scratch", True),
             "MATH_SMUL8": (speed_smul8.bench_smul8, "scratch", False),
             "MATH_UMUL16": (selective_speed_umul16.bench_umul16, "scratch", False),
