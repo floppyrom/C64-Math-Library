@@ -1,3 +1,15 @@
+## Unreleased — signed 16-bit quarter-square speed and RAM Pareto frontier
+
+- Adapt the canonical 233-byte unsigned UMUL16 quarter-square kernel and its
+  two immutable 511-byte tables with a bounded signed32 high-word correction
+  public entry. Keep compact 161-byte/0-ZP source unchanged.
+- Measure 512 identical signed32 complete calls at two origins, the peak of
+  a 150-call/24-frame math trace, and native VICE r46284 qualifications.
+- 1,351 code+table bytes and 4 RAM scratch (0 ZP) for the fast candidate;
+  161 code bytes, 6 RAM scratch (0 ZP) for compact. Final speed coverage
+  rises to 34/56 only after exact-head full-library qualification.
+- Retain all historical V1–V5 resident binaries and REU/Turbo facilities.
+
 ## Unreleased — stock-C64 reciprocal threshold and exact-table Pareto frontier
 
 - Add three source-linked URECIP16_Q16 choices: original 99-byte zero-ZP

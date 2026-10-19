@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 33 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 34 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -106,6 +106,12 @@ only the source-matched corpus, complete all-divisor public source test,
 native VICE and busiest-frame gate may justify promotion. This is not a
 transplant of the V3/V4 REU resident binary and does not yet establish
 REU-resident hardware timing parity. See `RECIP16_THRESHOLD_STOCK_BUILDER.md`.
+
+A stock-C64 16-bit signed full-width multiply quarter-square producer
+has also been added as an explicit 1,351-byte/0-ZP option alongside
+161-byte/0-ZP compact SMUL16. Its resource and performance frontier
+requires matched signed32 full public calls, busy-frame math trace and
+native VICE qualification before profile retirement.
 
 ## Active migration priority after PRs #293–#296
 
