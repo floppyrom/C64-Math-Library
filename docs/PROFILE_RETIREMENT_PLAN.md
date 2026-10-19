@@ -339,6 +339,8 @@ untransplanted historical fast kernels block retirement. Preserve the
 as a reusable speed-kernel research option with immutable older sources and
 an exhaustive algebraic regression test.
 
+The SEEK8/SEEK16 mixed-object 24-frame link-time CPU trace is now reproducibly exported through `tools/export_seek_frame_trace.py`, including actual INIT bursts and all three steppers from their original shared code. It is a useful **math-only** frame budget input, not a VIC-II/IRQ-aware gameplay parity demonstration; see `SEEK_MIXED_FRAME_PARITY.md`.
+
 ## Acceptance gates for retiring fixed profiles
 
 1. Every one of 56 public APIs is independently source-linkable — **done**.

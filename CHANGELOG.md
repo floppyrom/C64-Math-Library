@@ -1,3 +1,9 @@
+## Unreleased — measured linked SEEK8/SEEK16 mixed-frame cycle traces
+
+- Add source-linked deterministic 24-frame eight-object-per-family movement replay with real 6510 model instruction-cycle traces, INIT bursts every ninth frame and original shared DDA steppers.
+- Authenticate caller input/X/SP, carry-on-arrival, slot isolation and code immutability while exporting the exact source manifest, CSV digest and per-call frame-budget scoring at two code/I/O relocations.
+- Preserve the distinction between synthetic math-only cycles and physical PAL/VIC-II/IRQ/REU, Turbo and QS16 parity; no arithmetic kernel or V1–V5 profile binaries changed.
+
 ## Unreleased — all eight historical SEEK8/SEEK16 APIs source-speed qualified
 
 - Measure original shared 651-byte SEEK8 and 898-byte SEEK16 DDA producers for all four INIT/STEP/STEP_INT/STEP1 public entries independently. Preserve 160/248 bytes of eight-object state, 19 bytes of INIT scratch, and 0 ZP; no slower substitute kernel.

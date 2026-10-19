@@ -6,6 +6,8 @@ APIs, and all 56 APIs have authenticated, matched-public-call CPU-model speed se
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** or **source-cycle qualification** with full V1–V5 performance/hardware parity.
 
+A reproducible mixed eight-slot SEEK8/SEEK16 frame trace now captures actual linked-source complete-call Mini6502 cycles under two relocations. It checks shared state, arrival, retargeting, and busy INIT bursts, then passes measured calls to the frame-budget scorer. This is a **synthetic math-only CPU timing gate**, not proof of hardware time, VIC bus contention, REU/Turbo or application-level speed parity; see `SEEK_MIXED_FRAME_PARITY.md`.
+
 Historical V1 signed8 division and modulo are speed-authenticated on
 512 identical Q8/R8/C full public calls at two layouts. The shared
 530-byte physical source and one private ZP remain unchanged; the result
