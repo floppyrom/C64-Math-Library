@@ -2,9 +2,19 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 44 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 48 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
+
+Historical V1 signed8 division and modulo are speed-authenticated on
+512 identical Q8/R8/C full public calls at two layouts. The shared
+530-byte physical source and one private ZP remain unchanged; the result
+is a source-model public-call measurement, not a PAL/IRQ frame estimate.
+
+The original 61-byte `DIST8_FAST` historical signed8 max/min approximation
+now has matched-public 512-pair speed measurements, immutable source
+qualification and native VICE at two placements. Its approximation is
+unchanged; it is not interchangeable with `DIST8_ACCURATE`.
 
 ## Which slower kernels are legitimate?
 

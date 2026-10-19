@@ -57,6 +57,7 @@ import selective_speed_u24 as speed_u24
 import selective_speed_s24 as speed_s24
 import selective_speed_umod16 as speed_umod16
 import selective_speed_dist8_accurate as speed_dist8_accurate
+import selective_speed_dist8_fast as speed_dist8_fast
 import selective_speed_atan2 as speed_atan2
 import selective_speed_udiv16 as speed_udiv16
 import selective_speed_isqrt16 as speed_isqrt16
@@ -71,6 +72,7 @@ import selective_recip16_table as recip_table
 import research_signed_v2_u3216 as signedv2u3216
 import selective_isqrt16 as sqrt16
 import selective_trig8 as trig8
+import selective_speed_vec2_stock as speed_vec2_stock
 import selective_speed_trig8 as speed_trig8
 import selective_dist8_accurate as dist8tab
 import selective_smul8 as smul8tab
@@ -505,6 +507,7 @@ MODULES = {
             "segments": (("KERNEL_CODE", 3587),),
             "entry": "VEC2_NORMALIZE_Q8_8_NATIVE", "zp": 4, "scratch": 0,
             "operand_layout": "vec2", "vec2_stock": True,
+            "requires_writable_code": True,
             "provenance": "Canonical V1/V5 4-quadrant signed Q8.8 normalizer and exact 2560B ratio/log/component stock tables; 865 code bytes plus 162 page gaps, 3587 aligned RAM image span, 4 volatile ZP, NMOS LAX abs and self-modifying operand; unchanged full-domain precision certificate <=0.3621 degrees / <=202 LSB.",
         },
     },
@@ -2032,6 +2035,8 @@ def build(plan, outdir, memory=None, root=ROOT):
                    for x in workload_calls.values())):
             raise LinkError("Speed builds require positive workload calls for every operation")
         measured = {
+            "MATH_VEC2_NORMALIZE_Q8_8": (speed_vec2_stock.bench_vec2_normalize, "scratch", True),
+            "MATH_DIST8_FAST": (speed_dist8_fast.bench_dist8_fast, "scratch", False),
             "MATH_SDIV8": (speed_sdiv8_shared.bench_sdiv8, "zp", False),
             "MATH_SMOD8": (speed_sdiv8_shared.bench_smod8, "zp", False),
             "MATH_SIN8": (speed_trig8.bench_sin8, "scratch", False),

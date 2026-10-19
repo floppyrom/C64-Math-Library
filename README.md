@@ -8,7 +8,9 @@ The builder also offers a **tableless ISQRT16** for memory-constrained C64
 programs (137 bytes code + 6 bytes scratch, no ZP), preserving the original
 fast square-table implementation as the automatic speed-preferred option.
 
-The signed 16-bit quotient/remainder APIs also offer a shared source-linked historical V2 magnitude divider with a signed public adapter. The fast source occupies 1,705 code bytes plus eight ordinary scratch bytes and zero ZP, while the original 206-byte compact zero-ZP implementation remains selectable. Full public-call speed measurements decide only when RAM permits; see `docs/SDIV16_SMOD16_V2_SHARED.md`.
+The certified original V1/V5 signed Q8.8 vector normalizer is now also eligible for authenticated `speed` builds: it retains its 3,587-byte aligned code/table image, four private ZP bytes and self-modifying code requiring executable RAM. Its single unchanged source is compared on 512 identical complete public calls at two origins; see `docs/VEC2_STOCK_PUBLIC_SPEED.md`.
+
+The signed 16-bit quotient/remainder APIs additionally offer a shared source-linked historical V2 magnitude divider with a signed public adapter. This fast donor occupies 1,705 code bytes and eight ordinary scratch bytes, with zero ZP. The existing 206-byte compact zero-ZP implementation remains selectable when RAM is constrained. See `docs/SDIV16_SMOD16_V2_SHARED.md`.
 
 **Start without profiles:**
 
@@ -39,7 +41,17 @@ all-256-phase same-call speed models at two origins, sharing **one** immutable
 256-byte sine table. No historical routine is replaced by a slower source;
 see `docs/TRIG8_SHARED_PUBLIC_SPEED.md`.
 
-Speed selection now covers 44 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+The original V1–V5 signed8 `SDIV8` and `SMOD8` Q/R producer now has
+identical-corpus complete-public-call speed provenance for both exports.
+Both names continue to share one 530-byte physical source and one ZP byte;
+see `docs/SDIV8_SMOD8_SHARED_PUBLIC_SPEED.md`.
+
+`DIST8_FAST` also authenticates the unchanged historical V1 61-byte
+signed8 approximate-distance source over 512 identical full-public calls.
+Its max/min approximation is preserved, not substituted with a slower
+or more precise source; see `docs/DIST8_FAST_PUBLIC_SPEED.md`.
+
+Speed selection now covers 48 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles

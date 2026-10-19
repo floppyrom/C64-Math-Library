@@ -1,14 +1,34 @@
 ## Unreleased — restore historical V2 fast shared signed16 DIV/MOD in installer
 
-- Provide a 1,481-byte unchanged historical unsigned V2 divider under one bounded signed Q16/R16/C adapter for both SDIV16 and SMOD16, with a single 1,705-byte source-linked producer, eight ordinary scratch bytes and zero ZP.
-- Preserve the 206-byte compact source. Source-model measurements use identical 384-pair complete calls, report the p95 trade-off, and score a 24-frame math-only workload.
-- Keep exact two-layout native VICE proof and untouched V1–V5 binaries. CPU-model results are not physical PAL frame timing.
+- Add one source-linked 1,705-byte V2 divider+signed adapter for `SDIV16` and `SMOD16`, requiring eight bytes of scratch and no zero page.
+- Preserve the 206-byte compact zero-ZP variant and all five historical profiles. Certify 384 matched complete-public calls, both relocations, a 24-frame workload and pinned native VICE r46284. The V2 variant improves mean cycles but has a documented p95 trade-off.
+- Extend authenticated stock-C64 speed selection to 48 of 56 APIs. Benchmarks are CPU-model measurements, not physical PAL frame timings.
 
-## Unreleased — authenticated original V1 signed8 DIV/MOD speed selection
+## Unreleased — original V1/V5 vector-normalization full public speed provenance
 
-- Add full-public matched-input CPU-model speed provenance for the unchanged shared 530-byte original V1–V5 `SDIV8`/`SMOD8` quotient/remainder producer, preserving one physical code owner and one private ZP byte for both exports.
-- Verify 512 signed Q8/R8/C calls at two relocations including divide-by-zero, input/sentinel/stack preservation, native VICE and strict RAM/ZP budgeting.
-- Increase authenticated speed coverage to 44 of 56 without substituting a slower portable routine or changing the historical V1–V5 profiles.
+- Authenticate unchanged source-linked log-ratio VEC2_NORMALIZE_Q8_8 with its exact table geometry, fixed Q1.15 outputs, zero-vector carry and all input/stack preservation on 512 signed pairs at two physical placements.
+- Require writable code for the original eight self-modifying LDX operand bytes; retain four call-exclusive ZP bytes and do not introduce a slower approximate replacement.
+- Advance installer speed qualification to 46/56 after original V1 DIST8_FAST integration. Preserve all five old profiles and their binaries.
+
+## Unreleased — original V1 DIST8_FAST complete-public speed provenance
+
+- Authenticate the existing 61-byte signed8 max/min approximate-distance
+  producer on 512 matched full-public X8/Y8 calls, at two source origins,
+  with original result/carry/operand/high output/stack behavior unchanged.
+- Keep one original fast source; no replacement with a slower portable
+  alternative, and no precision-converting substitution.
+- Raise authenticated installer speed coverage to 45 of 56 APIs after
+  exact-head CPU-model, pinned native VICE and package integrity gates.
+
+## Unreleased — original shared V1 signed8 divide/modulo public speed
+
+- Certify unchanged historical 530-byte signed8 Q/R source on 512
+  identical complete-public Q8/R8/C calls at two origins and private
+  ZP relocations; preserve exactly one physical producer for two API names.
+- Native VICE r46284, complete public operand/high-output/stack semantics
+  and source SHA256 provenance remain mandatory.
+- Speed-qualified API coverage increases to 44/56 after full validation;
+  no V1–V5 binaries are changed or historical kernels replaced.
 
 ## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
 

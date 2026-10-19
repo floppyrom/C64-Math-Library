@@ -34,16 +34,24 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (forty-four source-qualified APIs)
+## Workload-weighted speed selection (forty-eight source-qualified APIs)
 
 All three original SIN8/COS8/SINCOS8 sources now carry public-call speed
 measurements over 256 phases, at two origins, with one shared sine page.
 Existing kernel performance is authenticated, not replaced by portable code.
 
-The `speed` objective supports project-level weighted selection for **forty-four**
-individually qualified APIs: UMUL8, SMUL8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
-ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
+Both names of the unchanged historical V1 signed8 Q/R source now have
+512-pair complete-public-call cycle measurements. `SDIV8`/`SMOD8`
+continue to share one physical kernel and one private ZP byte; no slower
+portable replacement is introduced.
+
+The unchanged original V1 61-byte DIST8_FAST approximation now carries
+512 signed X/Y pairs of complete-public-call cycle provenance at two
+relocations. It continues to calculate the historical fast approximation,
+not the distinct accurate distance operation.
+
+The `speed` objective supports project-level weighted selection for **forty-eight**
+individually qualified APIs: DIST8_FAST, SDIV8, SMOD8, SIN8, COS8, SINCOS8, UMUL8, SMUL8, UMUL16, UMULDIV16, SMULDIV16, SMUL16, SMUL16_SHR8, UMUL24, SMUL24, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, SDIV32_16, SMOD32_16, SDIV32_32, SMOD32_32, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, SDIV24, SMOD24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
