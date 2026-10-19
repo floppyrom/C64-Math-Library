@@ -32,11 +32,22 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-The existing V1 DIST8_FAST 61-byte source now has authenticated
-512-pair full-public cycle provenance, without changing its signed
-approximation arithmetic; see `docs/DIST8_FAST_PUBLIC_SPEED.md`.
+The exact V1–V5 SIN8/COS8/SINCOS8 public sources now have authenticated,
+all-256-phase same-call speed models at two origins, sharing **one** immutable
+256-byte sine table. No historical routine is replaced by a slower source;
+see `docs/TRIG8_SHARED_PUBLIC_SPEED.md`.
 
-Speed selection now covers 39 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+The historical V1–V5 shared SDIV8/SMOD8 producer now has measured full
+Q8/R8/C public-call cycle models for both exports. Selecting both retains
+one 530-byte physical kernel and one private ZP byte; see
+`docs/SDIV8_SMOD8_SHARED_PUBLIC_SPEED.md`.
+
+The original V1 signed8 `DIST8_FAST` 61-byte approximate distance source
+also has 512-matched-public-call cycle provenance at two memory placements.
+Its approximation semantics are unchanged; see
+`docs/DIST8_FAST_PUBLIC_SPEED.md`.
+
+Speed selection now covers 45 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
