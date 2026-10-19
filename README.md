@@ -47,7 +47,14 @@ signed8 approximate-distance source over 512 identical full-public calls.
 Its max/min approximation is preserved, not substituted with a slower
 or more precise source; see `docs/DIST8_FAST_PUBLIC_SPEED.md`.
 
-Speed selection now covers 45 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Original V2 fast signed16 division and modulo now share a source-locked
+1,705-byte Q16/R16/C producer with eight ordinary scratch bytes and zero
+ZP. The 206-byte portable zero-ZP alternative remains available for
+memory-constrained builds. Matched-call and busiest-frame measurements
+qualify the speed preference, including a documented p95 caveat; see
+`docs/SDIV16_SMOD16_V2_SHARED.md`.
+
+Speed selection now covers 47 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
