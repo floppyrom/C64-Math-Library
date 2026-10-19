@@ -26,6 +26,8 @@ The signed/unsigned 32-bit shared-vs-separate comparison also provides an **offl
 
 A **three-operation mixed busiest-frame research gate** now links all eight combinations of signed/unsigned 32×32 full64 multiplication with table or tableless ISQRT16 at two memory origins, checks identical full public-call input histories and computes RAM/ZP/peak-frame Pareto alternatives. See [mixed three-operation frame qualification](docs/MIXED_THREE_OPERATION_FRAME_FRONTIER.md). This is a CPU-model-only offline selector, not physical PAL/REU certification or a new 56-operation speed-mode guarantee.
 
+A **source-verified project configuration exporter** can now convert a qualified three-operation peak-frame choice into a normal pinned builder config, reassemble the exact linked PRG and check its SHA before publication. See [frame-qualified installer configuration](docs/FRAME_QUALIFIED_INSTALLER_CONFIG.md). This is for one reproducible synthetic workload and does not change the production automatic speed objective or claim PAL timing.
+
 **Start without profiles:**
 
 ```sh

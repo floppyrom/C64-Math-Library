@@ -22,6 +22,10 @@ class MixedThreeFrameTests(unittest.TestCase):
             with self.subTest(code=report["code"]):
                 self.assertTrue(report["cpu_model_only"])
                 self.assertFalse(report["native_pal_timing"])
+                self.assertEqual(report["zp_base"], "$%04X" %
+                                 (0x50 if report["code"] == "$8000" else 0x70))
+                self.assertEqual(report["scratch_base"], "$%04X" %
+                                 (int(report["io"][1:], 16) + 0x40))
                 self.assertEqual(report["paired_calls"], 150)
                 self.assertEqual(report["frames"], 24)
                 self.assertEqual(set(report["per_option"]), set(OPTIONS))

@@ -1,3 +1,9 @@
+## Unreleased — source-verified frame-qualified project configuration
+
+- Export qualified mixed-frame whole-project selections as ordinary pinned operation-first configs with complete code, I/O, ZP and scratch placement; reassemble and demand the original linked PRG SHA, source hashes and RAM/ZP evidence before writing.
+- Record exact ZP/scratch addresses in the two-origin three-API source benchmark; reject drift, wrong layout or reinterpreting math-only model cycles as physical PAL timing.
+- Include dedicated exact-binary reproducibility regression and CI while retaining all V1–V5 reference PRGs/REUs and production weighted-mean speed selection.
+
 ## Unreleased — linked mixed three-operation frame and resource Pareto qualification
 
 - Build eight independent UMUL32+SMUL32+ISQRT16 source plans at two relocations, verify 150 identical complete public calls over 24 synthetic frames, and record full 64-bit products, square roots, ABI/state preservation and source+PRG hashes.
