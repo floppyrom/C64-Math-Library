@@ -1,3 +1,13 @@
+## Unreleased — V1 DIST8_FAST public speed source authentication
+
+- Preserve original 61-byte signed8 max/min approximation with 0 ZP and
+  2 ordinary scratch, authenticating all public results and source-cycle
+  mean/p95/max over 512 pairs at two code origins.
+- Enable budget-aware objective=speed for original DIST8_FAST without any
+  slower replacement; test native VICE r46284 and package integrity.
+- Qualified speed catalog rises to 39/56 on this isolated main baseline,
+  subject to final exact-head CI and reconciliation with other pending PRs.
+
 ## Unreleased — qualified read-only signed8 quarter-square Pareto choice
 
 - Preserve the exact V1–V5 46-byte signed SMUL8 SMC source and all four
