@@ -1,8 +1,22 @@
-## Unreleased — authenticated original V1 signed8 DIV/MOD speed selection
+## Unreleased — original V1 DIST8_FAST complete-public speed provenance
 
-- Add full-public matched-input CPU-model speed provenance for the unchanged shared 530-byte original V1–V5 `SDIV8`/`SMOD8` quotient/remainder producer, preserving one physical code owner and one private ZP byte for both exports.
-- Verify 512 signed Q8/R8/C calls at two relocations including divide-by-zero, input/sentinel/stack preservation, native VICE and strict RAM/ZP budgeting.
-- Increase authenticated speed coverage to 44 of 56 without substituting a slower portable routine or changing the historical V1–V5 profiles.
+- Authenticate the existing 61-byte signed8 max/min approximate-distance
+  producer on 512 matched full-public X8/Y8 calls, at two source origins,
+  with original result/carry/operand/high output/stack behavior unchanged.
+- Keep one original fast source; no replacement with a slower portable
+  alternative, and no precision-converting substitution.
+- Raise authenticated installer speed coverage to 45 of 56 APIs after
+  exact-head CPU-model, pinned native VICE and package integrity gates.
+
+## Unreleased — original shared V1 signed8 divide/modulo public speed
+
+- Certify unchanged historical 530-byte signed8 Q/R source on 512
+  identical complete-public Q8/R8/C calls at two origins and private
+  ZP relocations; preserve exactly one physical producer for two API names.
+- Native VICE r46284, complete public operand/high-output/stack semantics
+  and source SHA256 provenance remain mandatory.
+- Speed-qualified API coverage increases to 44/56 after full validation;
+  no V1–V5 binaries are changed or historical kernels replaced.
 
 ## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
 
