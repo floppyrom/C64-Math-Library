@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 45 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 47 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -145,6 +145,12 @@ kernel replaces this source.
 The existing original V1 DIST8_FAST source now has 512-pair public-call
 source-model cycle provenance at two placements, without changing its
 61-byte signed approximation or replacing it with slower exact code.
+
+The canonical V2 direct 16/16 signed public adapter now serves both
+SDIV16 and SMOD16 via one physical 1,705-byte producer, 8 scratch bytes,
+0 ZP, and unchanged portable alternatives. The V2 source improves
+mean and 24-frame peak model cost, with a small p95 tail regression
+which remains documented rather than hidden.
 
 ## Active migration priority after PRs #293–#296
 

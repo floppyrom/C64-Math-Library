@@ -1,3 +1,14 @@
+## Unreleased — canonical historical V2 shared signed16 division/modulo
+
+- Source-link the unmodified V2 direct 16/16 unsigned producer with a
+  bounded exact signed Q16/R16/C adapter. SDIV16 and SMOD16 share one
+  physical 1,705-byte source, eight private ordinary scratch bytes, 0 ZP.
+- Preserve compact 206-byte/zero-ZP alternatives; compare 384 identical
+  complete public calls and a 150-call/24-frame busy math trace. The
+  fast producer improves mean and peak, but has a slight p95 regression.
+- Complete release requires native VICE r46284 and checksum qualification;
+  combined authenticated speed support targets 47 of 56 APIs.
+
 ## Unreleased — original V1 DIST8_FAST public speed provenance
 
 - Authenticate unchanged 61-byte signed8 max/min distance approximation with

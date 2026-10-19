@@ -47,7 +47,13 @@ also has 512-matched-public-call cycle provenance at two memory placements.
 Its approximation semantics are unchanged; see
 `docs/DIST8_FAST_PUBLIC_SPEED.md`.
 
-Speed selection now covers 45 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+The shared original V2 SDIV16/SMOD16 source has now gained a direct
+signed public Q16/R16/C adapter (one 1,705-byte shared producer, 8 RAM
+scratch bytes, 0 ZP), retaining the compact 206-byte source. Matched
+public calls and slow-call tails are tracked; see
+`docs/SDIV16_SMOD16_V2_SHARED.md`.
+
+Speed selection now covers 47 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles

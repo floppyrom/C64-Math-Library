@@ -80,7 +80,7 @@ class MeasuredUMUL8SpeedTests(unittest.TestCase):
             self.assertFalse((Path(d)/"too_small").exists())
 
     def test_other_operations_cannot_claim_unmeasured_speed(self):
-        for operation in ("DIST8_FAST", "SDIV16"):
+        for operation in ("SEEK8_INIT",):
             with self.subTest(operation=operation), tempfile.TemporaryDirectory() as d:
                 with self.assertRaisesRegex(selective_linker.LinkError,
                                             "No authenticated matched-input speed basis"):

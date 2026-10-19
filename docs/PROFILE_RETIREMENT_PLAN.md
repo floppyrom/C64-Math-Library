@@ -34,7 +34,7 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (forty-five source-qualified APIs)
+## Workload-weighted speed selection (forty-seven source-qualified APIs)
 
 All three original SIN8/COS8/SINCOS8 sources now carry public-call speed
 measurements over 256 phases, at two origins, with one shared sine page.
@@ -48,7 +48,12 @@ portable substitute is introduced.
 The existing V1 DIST8_FAST approximation now has same-public ABI cycle
 provenance on 512 signed X/Y pairs, with no change to original fast source.
 
-The `speed` objective supports project-level weighted selection for **forty-five**
+Signed16 division and modulo now use one original V2 direct 16/16 Q/R
+producer (1,705 code, 8 scratch, 0 ZP) with a signed public adapter.
+The 206-byte compact 0-ZP alternative remains eligible where RAM is
+restricted; complete public-input benchmarks preserve p95 caveats.
+
+The `speed` objective supports project-level weighted selection for **forty-seven**
 individually qualified APIs: UMUL8, SMUL8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
 SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
