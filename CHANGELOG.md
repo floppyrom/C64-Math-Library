@@ -4,6 +4,18 @@
 - Verify unsigned/signed 64-bit mathematical output, full public operands, C=0 and stack, code/image SHA and actual RAM/ZP/shared-source count; report peak/p95/total math-frame CPU-model cycles and any per-call regressions.
 - Preserve all source Pareto variants and V1–V5 reference binaries; do not market this synthetic 6510 math model as PAL/VIC-II/IRQ/SID/REU timing.
 
+## Unreleased — matched full64 signed32 four-source busiest-frame comparison
+
+- Execute all four original source-linked SMUL32 signed 32x32→64 implementations on 150 identical complete-public calls over 24 deterministic synthetic frames at two relocations.
+- Verify signed full64 result, input bytes, carry, stack, exact source/PRG match and strict original FAST31 self-modifying-code whitelist; report mean, peak, p95, slower calls, and RAM/ZP Pareto costs.
+- Retain all historical V1–V5 reference images and existing selectable compact and shared sources; CPU-model arithmetic frame cycles are not physical PAL, SID, IRQ, REU or VIC-II time.
+
+## Unreleased — five-way UMUL32 historical same-input worst-frame certificate
+
+- Assemble and execute all five qualified original UMUL32 full64 implementations independently on 150 identical public operand/caller-state calls over 24 deterministic synthetic frames at two relocation origins.
+- Verify exact source-linked PRG bytes, X/Y and carry/stack preservation, full64 product correctness, and FAST31's restricted original self-modifying-code sites; report mean cycles, per-call and peak-frame regressions, RAM/ZP and source SHA.
+- Keep all historical source variants and V1–V5 reference packages, and do not equate model arithmetic cycles with physical PAL/VIC-II/REU timing.
+
 ## Unreleased — machine-audited REU/Turbo/QS16 profile-retirement evidence
 
 - Inventory all 56 source-cycle-qualified stock-C64 public operations, source candidate counts, persistent state, ZP, writable-code and original lineage in a deterministic JSON report.
