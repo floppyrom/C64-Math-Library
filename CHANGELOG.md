@@ -7,7 +7,8 @@
   RAM scratch bytes and needs no REU, INIT or writable executable code.
 - Add exhaustive 65,536-pair public source-model checks, two-map native
   VICE r46284 qualification and identical 512-pair full-call cycle
-  comparison, plus RAM-aware automatic speed selection. Do not count the
+  comparison and separate 150-call/24-frame busiest-math replay,
+  plus RAM-aware automatic speed selection. Do not count the
   additional speed-qualified API until source-model, native VICE,
   builder and integrity checks pass.
 

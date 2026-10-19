@@ -34,7 +34,9 @@ The new alternative is **not yet declared faster** than the canonical
 SMC source. Qualification includes exhaustive 256×256 signed operand
 pairs, unchanged-source checks, two memory maps, native VICE r46284,
 a 512-pair same-public-call CPU-model comparison of mean/p95/max
-cycles, source provenance and RAM-budget enforcement. The operation-first builder now supports an authenticated-source speed
+cycles, a separate 150-call/24-frame busiest-math-frame comparison,
+source provenance and RAM-budget enforcement. Neither trace is physical
+PAL/VIC-II/IRQ timing; the new read-only source need not be the fastest. The operation-first builder now supports an authenticated-source speed
 comparison for both candidates: 512 identical complete public calls,
 including signed correction and SMC behavior, determine which fastest
 candidate fits actual RAM/ZP budgets. This remains provisional until
