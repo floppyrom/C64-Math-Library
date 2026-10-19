@@ -49,8 +49,10 @@ class Vec2HistoricalSpeedTests(unittest.TestCase):
             self.assertEqual(man["resource_use"]["zero_page_bytes"],4)
             self.assertEqual(man["resource_use"]["private_ram_scratch_bytes"],0)
             self.assertEqual(man["cycle_model_benchmark"]["cases"],512)
-            self.assertIn("MATH_VEC2_NORMALIZE_Q8_8",
-                          man["cycle_model_benchmark"]["operations"])
+            self.assertEqual(set(man["cycle_model_benchmark"]["mean_cycles"]),
+                             {speed.VARIANT})
+            self.assertEqual(man["cycle_model_benchmark"]["corpus_sha256"],
+                             speed.CORPUS_SHA256)
 
     def test_too_few_zp_bytes_fail_closed(self):
         with tempfile.TemporaryDirectory() as td:
