@@ -1,3 +1,15 @@
+## Unreleased — read-only SMUL8 quarter-square Pareto alternative
+
+- Source-link the canonical 73-byte unsigned UMUL8 two-table producer and
+  a bounded signed high-byte correction adapter to yield exact signed16.
+- Preserve the original 46-byte V1-V5 SMC producer and four original table
+  pages unchanged; the new read-only, 0-ZP option uses 1,159 bytes plus two
+  RAM scratch bytes and needs no REU, INIT or writable executable code.
+- Add exhaustive 65,536-pair public source-model checks, two-map native
+  VICE r46284 qualification and identical 512-pair full-call cycle
+  comparison. Do not automatically count an additional speed-qualified
+  API before a consistent comparison and release checks are complete.
+
 ## Unreleased — source-linked historical V2 signed shifted16 speed
 
 - Offer historical V2 32/16 split-tail magnitude with direct signed
