@@ -1,3 +1,13 @@
+## Unreleased — original V1 DIST8_FAST complete-public speed provenance
+
+- Authenticate the existing 61-byte signed8 max/min approximate-distance
+  producer on 512 matched full-public X8/Y8 calls, at two source origins,
+  with original result/carry/operand/high output/stack behavior unchanged.
+- Keep one original fast source; no replacement with a slower portable
+  alternative, and no precision-converting substitution.
+- Raise authenticated installer speed coverage to 45 of 56 APIs after
+  exact-head CPU-model, pinned native VICE and package integrity gates.
+
 ## Unreleased — original shared V1 signed8 divide/modulo public speed
 
 - Certify unchanged historical 530-byte signed8 Q/R source on 512
