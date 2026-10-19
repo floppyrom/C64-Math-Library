@@ -43,6 +43,8 @@ all-256-phase same-call speed models at two origins, sharing **one** immutable
 256-byte sine table. No historical routine is replaced by a slower source;
 see `docs/TRIG8_SHARED_PUBLIC_SPEED.md`.
 
+The operation-first builder now has a deterministic mixed SEEK8/SEEK16 50 Hz-style math-only trace from the actual linked binary: 16 concurrent sprite-slot step calls per frame, periodic INIT bursts, and a source/manifest-backed CSV for worst-frame scoring. This is a **synthetic CPU-model** workload, not actual PAL/VIC-II/IRQ elapsed timing; see `docs/SEEK_MIXED_FRAME_PARITY.md`.
+
 The original V1–V5 signed8 `SDIV8` and `SMOD8` Q/R producer now has
 identical-corpus complete-public-call speed provenance for both exports.
 Both names continue to share one 530-byte physical source and one ZP byte;

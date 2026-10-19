@@ -1,0 +1,45 @@
+name: Original SEEK mixed 50Hz-style frame-cycle trace
+
+on:
+  pull_request:
+    paths:
+      - 'tools/export_seek_frame_trace.py'
+      - 'tools/test_export_seek_frame_trace.py'
+      - 'tools/selective_linker.py'
+      - 'tools/frame_cycle_budget.py'
+      - '.github/workflows/seek-mixed-frame-parity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measured-source-frames:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify linked mixed DDA frame traces at two relocations
+        run: |
+          python3 -m compileall -q tools/export_seek_frame_trace.py tools/test_export_seek_frame_trace.py
+          python3 -m unittest discover -s tools -p 'test_export_seek_frame_trace.py' -v
+          mkdir -p build
+          python3 tools/export_seek_frame_trace.py --frames 24 --out build/seek_8000.csv
+          python3 tools/frame_cycle_budget.py --baseline build/seek_8000.csv --frame-count 24 --out build/seek_8000_report.json
+          python3 tools/export_seek_frame_trace.py --frames 24 --code-base 0x7123 --io-base 0xc100 --out build/seek_7123.csv
+          python3 tools/frame_cycle_budget.py --baseline build/seek_7123.csv --frame-count 24 --out build/seek_7123_report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seek-two-relocation-mixed-cpu-frame-traces
+          path: |
+            build/seek_*.csv
+            build/seek_*.manifest.json
+            build/seek_*_report.json
+          if-no-files-found: warn
+          retention-days: 30
