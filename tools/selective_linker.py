@@ -30,6 +30,7 @@ import selective_seek16 as seek16
 import selective_speed
 import selective_speed_umul16
 import selective_speed_umuldiv16_qsv2 as speed_umuldiv16
+import selective_speed_smuldiv16_qsv2 as speed_smuldiv16
 import selective_speed_smul16 as speed_smul16
 import selective_speed_smul16_shr8 as speed_smul16_shr8
 import selective_speed_umul24 as speed_umul24
@@ -1993,6 +1994,7 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_UMUL8": (selective_speed.bench_umul8, "scratch", True),
             "MATH_UMUL16": (selective_speed_umul16.bench_umul16, "scratch", False),
             "MATH_UMULDIV16": (speed_umuldiv16.bench_umuldiv16, "scratch", True),
+            "MATH_SMULDIV16": (speed_smuldiv16.bench_smuldiv16, "scratch", True),
             "MATH_SMUL16": (speed_smul16.bench_smul16, "scratch", False),
             "MATH_SMUL16_SHR8": (speed_smul16_shr8.bench_smul16_shr8, "scratch", False),
             "MATH_UMUL24": (speed_umul24.bench_umul24, "scratch", True),
