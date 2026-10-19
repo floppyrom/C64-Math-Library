@@ -1,3 +1,12 @@
+## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
+
+- Authenticate the unchanged 11/15/22-byte canonical V1–V5 trigonometric
+  sources on all 256 phases, two code origins and exactly one shared
+  immutable sine-table page, with complete X/Y/Z/C and SP preservation.
+- Enable measured speed objective for all three public API names without
+  replacing a historical fast source; qualified catalog grows to 42/56.
+- Native VICE r46284 and exact SHA256 publication required before merge.
+
 ## Unreleased — signed SMULDIV16 quarter-square + V2 fast public source
 
 - Compose the immutable canonical signed 16×16 quarter-square source and
