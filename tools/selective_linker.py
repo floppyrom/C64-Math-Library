@@ -1172,6 +1172,7 @@ def available_variants(root=ROOT):
                 "validation_path": (
                     "tools/test_selective_umod8_variants.py" if mod.get("umod8_extra") else
                     "tools/test_selective_umod8.py" if mod.get("umod8_v1") else
+                    "tools/test_selective_smul8_qs_readonly.py" if mod.get("smul8_qs") else
                     "tools/test_selective_smul8.py" if mod.get("smul8_v1") else
                     "tools/test_selective_fast_umul16_shr8.py" if mod.get("fast_umul16_shr8") else
                     "tools/test_selective_fast31_shared.py" if mod.get("fast31_shared") else
