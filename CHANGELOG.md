@@ -1,3 +1,17 @@
+## Unreleased — original shared SEEK8 DDA four-entry public speed
+
+- Authenticate original 651-byte generated SEEK8 source on 256 deterministic
+  live eight-slot speed/movement cases at two source-code/IO placements.
+  Preserve distinct INIT, STEP, STEP_INT, STEP1 exports, one physical
+  producer, 19 initializer scratch, 160 persistent state bytes and zero ZP.
+- Source-model STEP calls are measured after exact historical INIT setup,
+  whose cycles belong to INIT workload calls, not every STEP; preserve
+  original input/slot/carry/stack and immutable executable invariants.
+- Add full speed-installer shared-owner/resource-plan qualification and
+  native VICE r46284 two-map regression; exact-head package seal required.
+- Speed-provenance coverage increases from 42 to 46/56 if release checks
+  pass; all five historical profiles remain available.
+
 ## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
 
 - Authenticate the unchanged 11/15/22-byte canonical V1–V5 trigonometric
