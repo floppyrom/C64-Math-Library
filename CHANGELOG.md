@@ -1,3 +1,9 @@
+## Unreleased — machine-audited REU/Turbo/QS16 profile-retirement evidence
+
+- Inventory all 56 source-cycle-qualified stock-C64 public operations, source candidate counts, persistent state, ZP, writable-code and original lineage in a deterministic JSON report.
+- Fail closed if any of nine V3/V4 lifecycle-only Turbo16/Turbo32/QS16 symbols or per-mode 122/135/16-ZP ownership is lost, and refuse to claim full profile retirement while physical/PAL and historical fastest-donor gates are open.
+- Keep all V1–V5 reference binaries and REU images intact; this is a contract and acceptance-tracking aid, **not** a new hardware backend or measured speed win.
+
 ## Unreleased — original SEEK DDA cold-start and staggered frame scheduling research
 
 - Compare deterministic 24-frame burst and staggered retargets at two code/I/O origins on identical source PRG, each with 48 INIT and 384 STEP public calls.

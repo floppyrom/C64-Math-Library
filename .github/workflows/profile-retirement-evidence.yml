@@ -1,0 +1,41 @@
+name: Profile-retirement evidence and REU compatibility gate
+
+on:
+  pull_request:
+    paths:
+      - 'tools/profile_retirement_audit.py'
+      - 'tools/test_profile_retirement_audit.py'
+      - 'tools/selective_linker.py'
+      - 'tools/math_builder.py'
+      - 'v3_reu_512k/resident/math_api.inc'
+      - 'v4_reu_16m/resident/math_api.inc'
+      - '.github/workflows/profile-retirement-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify 56 stock source models and nine legacy service exports
+        run: |
+          python3 -m compileall -q tools/profile_retirement_audit.py tools/test_profile_retirement_audit.py
+          python3 -m unittest discover -s tools -p 'test_profile_retirement_audit.py' -v
+          mkdir -p build
+          python3 tools/profile_retirement_audit.py --out build/profile_retirement_evidence.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: stock-c64-retirement-evidence
+          path: build/profile_retirement_evidence.json
+          if-no-files-found: warn
+          retention-days: 30

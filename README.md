@@ -14,6 +14,8 @@ The signed 16-bit quotient/remainder APIs additionally offer a shared source-lin
 
 SEEK8/SEEK16 INIT and per-frame steppers now have original-source full-public movement-cycle provenance, including arrival and post-arrival, for all eight public entries. Two physical code/I/O placements and native VICE proofs preserve the one-producer-per-family state layout; see `docs/SEEK_PUBLIC_SPEED.md`. No alternative slower DDA kernel was introduced. These timings remain CPU-model estimates, not PAL badline/IRQ budgets.
 
+The **profile-retirement evidence gate** now distinguishes the 56 source-speed-qualified stock APIs from nine additional V3/V4 REU/Turbo/QS16 public lifecycle exports. It inventories profile symbol files and mode-private ZP ownership, and refuses to mark full hardware and historical speed parity as complete. Run `python3 tools/profile_retirement_audit.py --out build/retirement.json`; see `docs/PROFILE_RETIREMENT_EVIDENCE.md`. No legacy profiles or REU images are deleted.
+
 **Start without profiles:**
 
 ```sh
