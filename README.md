@@ -32,11 +32,20 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 36 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 37 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
 can be retired. See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
+
+A new stock-C64 **read-only `SMUL8` quarter-square** option complements the
+original V1–V5 signed8 self-modifying producer. On 512 identical full-public
+calls, historical V1 averages about **68 cycles** while the smaller, read-only
+source averages **123 cycles**. It uses 1,159 code+table bytes and two scratch
+bytes with 0 ZP, rather than V1's four original 511-byte lookup planes and
+46-byte self-modifying code. Keep V1 as the speed winner when eligible; the
+read-only candidate is a RAM/ROM-safety Pareto choice, not a speed upgrade.
+See [SMUL8 source tradeoffs](docs/SMUL8_READONLY_QS.md).
 
 The historical $CA-biased 24-bit quarter-square multiply source can now
 serve **both** unsigned UMUL24 and signed SMUL24 calls using **one physical

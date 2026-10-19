@@ -10,6 +10,24 @@
   and source integrity. Coverage gains are provisional until the dependent
   unsigned UMULDIV16 source and full exact-head CI pass.
 
+## Unreleased — qualified read-only signed8 quarter-square Pareto choice
+
+- Preserve the exact V1–V5 46-byte signed SMUL8 SMC source and all four
+  511-byte historic lookup planes while introducing a stock 6510 read-only
+  producer with two 511-byte quarter-square planes and a 64-byte signed
+  correction slot, 1,159 image bytes, 0 ZP and two scratch bytes.
+- Exhaustively test 65,536 signed8 pairs at two code origins, 512 identical
+  complete-public-call cycle measurements, and a 150-call/24-frame math
+  replay. Historical V1 remains faster (~68 mean CPU-model cycles vs ~123),
+  while the new choice saves more than 1,100 bytes of total main RAM.
+- Add native VICE r46284, exact signed public-call preservation, RAM-aware
+  selection, and mixed UMOD8/SMUL8 speed checks. Never substitute the
+  read-only candidate for the fast historical kernel in speed mode unless
+  project RAM/writable-code constraints exclude V1.
+- Operation-first catalog increases to 37/56 APIs with same-public-call
+  speed selection after exact-head publication and native CI validation.
+  Historical profiles remain unchanged.
+
 ## Unreleased — signed Q8.8 scaled quarter-square multiplier
 
 - Add an independently source-linked `SMUL16_SHR8` quarter-square implementation

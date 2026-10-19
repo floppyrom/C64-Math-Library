@@ -34,10 +34,10 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (thirty-six source-qualified APIs)
+## Workload-weighted speed selection (thirty-seven source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **thirty-six**
-individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
+The `speed` objective supports project-level weighted selection for **thirty-seven**
+individually qualified APIs: UMUL8, SMUL8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
 SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
@@ -68,6 +68,14 @@ verifies the newly speed-qualified two-variant UDIV24/UMOD24 source corpus.
 Benchmarks do **not** provide real hardware timing or prove
 cycle invariance after physical link relocation; speed selection is therefore
 an expected workload estimate, not exact total cycle prediction.
+
+The signed8 `SMUL8` operation now offers a source-qualified **RAM/ROM-safe**
+alternative: historical V1 SMC with four 511-byte table planes (~68 complete
+public-call cycles) and a read-only two-table quarter-square kernel (~123
+cycles). The second saves more than 1,100 bytes of RAM and needs no writable
+code, but is deliberately slower. Automatic speed selection must keep
+historical V1 whenever resource constraints permit; 0 ZP for both candidates.
+The V1–V5 profiles and original tables remain available.
 
 For ISQRT16, the builder now retains the original 38-byte square-table
 kernel and 768 bytes of exact tables, while also offering a standalone 137-byte
