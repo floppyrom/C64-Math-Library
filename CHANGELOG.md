@@ -12,6 +12,17 @@
   additional speed-qualified API until source-model, native VICE,
   builder and integrity checks pass.
 
+## Unreleased — signed16 quarter-square canonical source performance
+
+- Source-link the canonical 233-byte unsigned quarter-square 16x16 engine,
+  its two immutable 511-byte planes and a bounded signed high-word correction
+  entry for `SMUL16`. Exact full signed32 output, 0 ZP, 4 scratch bytes.
+- Preserve the compact 161-byte/0-ZP, 6-scratch signed alternative;
+  compare 512 matched full public calls, paired 24-frame math cycles and
+  192 native VICE r46284 calls at two relocated public addresses.
+- After complete qualification, speed selection expands to 35 of 56 APIs.
+  Historical V1–V5 binaries, REU, and Turbo alternatives remain unchanged.
+
 ## Unreleased — source-linked historical V2 signed shifted16 speed
 
 - Offer historical V2 32/16 split-tail magnitude with direct signed

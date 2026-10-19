@@ -32,12 +32,11 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 34 of the 56 APIs, including signed 24-bit
-and both signed 32-bit DIV/MOD families. Unsupported comparisons **fail
-closed**, rather than silently using slower size-selected routines. The
-remaining historical V1–V5 speed donors still need comparable public-call
-and worst-frame qualification before profiles can be retired.
-See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
+Speed selection now covers 35 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+comparisons **fail closed**, not silently fall back to a slower size-selected
+routine. The remaining historical V1–V5 speed donors still require transplantation,
+matched-public-ABI comparisons and worst-frame qualification before profiles
+can be retired. See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
 
 A separate stock-C64 **read-only SMUL8 quarter-square** Pareto option is
 under qualification alongside the exact V1–V5 self-modifying historical
@@ -62,6 +61,12 @@ The signed `SDIV16_SHL8` now retains both the 237-byte zero-ZP portable
 kernel and a 2,624-byte/12-ZP source-linked canonical V2 fast magnitude
 producer. Its Q24/R16/C public-call performance is independently certified;
 see `docs/SDIV16_SHL8_V2_BUILDER.md`.
+
+The signed `SMUL16` operation also offers a 0-ZP source-linked quarter-square
+1,351-byte code/table producer with four ordinary scratch bytes, preserving
+the compact 161-byte/zero-ZP six-scratch alternative. Both have identical
+full signed32 public-call comparisons, and the historical profiles remain
+available until performance parity is certified. See `docs/SMUL16_QS_BUILDER.md`.
 
 A stock-C64 reciprocal speed frontier now offers the original 99-byte compact,
 448-byte historical-threshold and 1,544-byte exact-table alternatives for

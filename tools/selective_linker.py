@@ -19,6 +19,7 @@ import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_smul8_qs_readonly as smul8qs
 import selective_fast_umul16 as fast16
+import selective_smul16_quartersquare as qs16signed
 import selective_fast31_umul32 as fast31
 import selective_v2_fast_umul24 as v2umul24
 import selective_umul8_v1 as v1umul8
@@ -27,6 +28,7 @@ import selective_seek16 as seek16
 import selective_speed
 import selective_speed_smul8 as speed_smul8
 import selective_speed_umul16
+import selective_speed_smul16 as speed_smul16
 import selective_speed_umul24 as speed_umul24
 import selective_speed_smul24 as speed_smul24
 import selective_speed_umul16_shr8
@@ -749,6 +751,13 @@ MODULES = {
         },
     },
     "MATH_SMUL16": {
+        "link:qs-signed-public": {
+            "source": "routines/multiply/umul16_quartersquare.asm",
+            "segments": (("KERNEL_CODE", 233), ("Q_LO", 511), ("Q_HI", 511), ("SIGNED_ADAPTER", 96)),
+            "entry": "FAST_SMUL16_QUARTERSQUARE", "zp": 0, "scratch": 4,
+            "operand_layout": "xyz", "smul16_qs": True,
+            "provenance": "Canonical unsigned 16x16 quarter-square 233-byte producer and two 511-byte tables with a separate signed high-word correction public entry; exact full signed32 result, 0 ZP, four ordinary scratch, no REU, SMC or INIT.",
+        },
         "link:compact-zerozp": {
             "source": "routines/multiply/smul16_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 161),),
@@ -1093,6 +1102,13 @@ def available_variants(root=ROOT):
                     "tools/selective_fast_umul16.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
                 } if mod.get("fast_umul16") else {
+                    "tools/selective_fast_umul8.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
+                    "tools/selective_fast_umul16.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
+                    "tools/selective_smul16_quartersquare.py": hashlib.sha256(
+                        (root / "tools/selective_smul16_quartersquare.py").read_bytes()).hexdigest(),
+                } if mod.get("smul16_qs") else {
                     "tools/selective_fast31_umul32.py": hashlib.sha256(
                         (root / "tools/selective_fast31_umul32.py").read_bytes()).hexdigest(),
                     "v2_pareto_fast/resident/modules/pareto_umul32.a": hashlib.sha256(
@@ -1933,6 +1949,7 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_UMUL8": (selective_speed.bench_umul8, "scratch", True),
             "MATH_SMUL8": (speed_smul8.bench_smul8, "scratch", False),
             "MATH_UMUL16": (selective_speed_umul16.bench_umul16, "scratch", False),
+            "MATH_SMUL16": (speed_smul16.bench_smul16, "scratch", False),
             "MATH_UMUL24": (speed_umul24.bench_umul24, "scratch", True),
             "MATH_SMUL24": (speed_smul24.bench_smul24, "scratch", True),
             "MATH_UMUL16_SHR8": (selective_speed_umul16_shr8.bench_umul16_shr8, "scratch", False),
@@ -2109,6 +2126,10 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("v2_umul24") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_v2_fast_umul24.py"]:
             raise LinkError(api + ": original V2 UMUL24 quarter-square relocator provenance missing")
+        if module.get("smul16_qs") and set(x["source_path"] for x in dep_provenance) != {
+                "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py",
+                "tools/selective_smul16_quartersquare.py"}:
+            raise LinkError(api + ": signed 16-bit QS source/adapter provenance missing")
         if module.get("fast_umul16") and set(x["source_path"] for x in dep_provenance) != {
                 "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py"}:
             raise LinkError(api + ": 16-bit quarter-square emitter provenance missing")
@@ -2175,7 +2196,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("smul8_qs") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("smul8_qs") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2254,6 +2275,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                         {"name": "VEC2_COMPONENTS", "start": "$%04X" % (pc+0x900), "bytes": 1280},
                         {"name": "VEC2_EXPORT", "start": "$%04X" % (pc+0xE00), "bytes": 3},
                     ]
+                elif module.get("smul16_qs"):
+                    machine, labels, ranges, end = qs16signed.assemble_image(pc,io,sb,root)
+                    entry = labels[module["entry"]]
                 elif module.get("smul8_qs"):
                     machine, labels, ranges, end = smul8qs.assemble_image(pc,io,sb,root)
                     entry = labels[module["entry"]]
