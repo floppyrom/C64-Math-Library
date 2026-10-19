@@ -1,3 +1,15 @@
+## Unreleased — signed SMULDIV16 quarter-square + V2 fast public source
+
+- Compose the immutable canonical signed 16×16 quarter-square source and
+  already source-qualified V2 signed 32/16 division magnitude core with an
+  independent public SMULDIV16 adapter; no changes to profile binaries.
+- Retain the 439-byte/zero-ZP compact source; the fast 4,263-byte image
+  requires 12 exclusive ZP and 4 ordinary scratch bytes.
+- Verify 512 matched Q32/R16/C and signed full-product calls at two origins,
+  a 150-call/24-frame busiest-math workload, two native VICE r46284 layouts,
+  and source integrity. Coverage gains are provisional until the dependent
+  unsigned UMULDIV16 source and full exact-head CI pass.
+
 ## Unreleased — qualified read-only signed8 quarter-square Pareto choice
 
 - Preserve the exact V1–V5 46-byte signed SMUL8 SMC source and all four
