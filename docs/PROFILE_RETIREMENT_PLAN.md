@@ -34,12 +34,12 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (thirty-three source-qualified APIs)
+## Workload-weighted speed selection (thirty-four source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **thirty-three**
+The `speed` objective supports project-level weighted selection for **thirty-four**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
-SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
+SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
@@ -87,6 +87,12 @@ source variants at two complete memory layouts ($2000 and $4321), yielding
 while the other 55 choices retain the original fully budgeted size selection.
 This proves relocation and mixed-residency compatibility for root16, not
 an exhaustive mixed invocation of every math operation.
+
+`SDIV16_SHL8` has a historical V2 32/16 direct sign/magnitude option
+(2,624 code bytes and 12 reserved ZP) alongside a 237-byte/0-ZP
+portable exact restoring source. Same-input public Q24/R16/C and
+busiest-frame math-model timings determine preference under real resource
+budgets. Historic resident-only timings are not directly comparable.
 
 For URECIP16_Q16, three independently selectable stock-6510 variants have
 exact public D16 -> Q24/C behavior and 0 ZP: 99-byte restoring (1 scratch),

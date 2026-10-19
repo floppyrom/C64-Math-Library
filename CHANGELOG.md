@@ -1,3 +1,12 @@
+## Unreleased — source-linked historical V2 signed shifted16 speed
+
+- Offer historical V2 32/16 split-tail magnitude with direct signed
+  `SDIV16_SHL8` Q24/R16/C adapter; source-qualify on 384 matched public
+  calls at two relocation origins, busy math frames and pinned VICE r46284.
+- Retain both 2,624-byte/12-ZP speed and 237-byte/zero-ZP compact options.
+  Qualified installer speed coverage rises to 34/56 pending full CI.
+- No historical V1–V5 profiles, REU services or Turbo binaries are changed.
+
 ## Unreleased — stock-C64 reciprocal threshold and exact-table Pareto frontier
 
 - Add three source-linked URECIP16_Q16 choices: original 99-byte zero-ZP
