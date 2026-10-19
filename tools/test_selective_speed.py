@@ -79,12 +79,14 @@ class MeasuredUMUL8SpeedTests(unittest.TestCase):
                                        Path(d)/"too_small")
             self.assertFalse((Path(d)/"too_small").exists())
 
-    def test_other_operations_cannot_claim_unmeasured_speed(self):
+    def test_new_seek_sources_are_authenticated_in_speed_mode(self):
         for operation in ("SEEK8_INIT", "SEEK16_INIT"):
             with self.subTest(operation=operation), tempfile.TemporaryDirectory() as d:
-                with self.assertRaisesRegex(selective_linker.LinkError,
-                                            "No authenticated matched-input speed basis"):
-                    selective_linker.build(self.plan([operation],4096),Path(d))
+                plan = self.plan([operation], 4096)
+                output = selective_linker.build(plan, Path(d))
+                self.assertEqual(output["operations"][0]["variant"],
+                                 "link:generated-dda")
+                self.assertTrue(output["cycle_model_benchmark"]["cpu_model_only"])
         with self.assertRaisesRegex(math_builder.SelectionError,
                                     "requires workload calls"):
             self.plan(["UMUL8","UDIV16"],4096)

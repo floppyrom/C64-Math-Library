@@ -28,6 +28,7 @@ import selective_v2_fast_umul24 as v2umul24
 import selective_umul8_v1 as v1umul8
 import selective_seek8 as seek8
 import selective_seek16 as seek16
+import selective_speed_seek as speed_seek
 import selective_speed
 import selective_speed_smul8 as speed_smul8
 import selective_speed_umul16
@@ -2035,6 +2036,14 @@ def build(plan, outdir, memory=None, root=ROOT):
                    for x in workload_calls.values())):
             raise LinkError("Speed builds require positive workload calls for every operation")
         measured = {
+            "MATH_SEEK8_INIT": (speed_seek.bench_seek8_init, "scratch", False),
+            "MATH_SEEK8_STEP": (speed_seek.bench_seek8_step, "scratch", False),
+            "MATH_SEEK8_STEP_INT": (speed_seek.bench_seek8_step_int, "scratch", False),
+            "MATH_SEEK8_STEP1": (speed_seek.bench_seek8_step1, "scratch", False),
+            "MATH_SEEK16_INIT": (speed_seek.bench_seek16_init, "scratch", False),
+            "MATH_SEEK16_STEP": (speed_seek.bench_seek16_step, "scratch", False),
+            "MATH_SEEK16_STEP_INT": (speed_seek.bench_seek16_step_int, "scratch", False),
+            "MATH_SEEK16_STEP1": (speed_seek.bench_seek16_step1, "scratch", False),
             "MATH_VEC2_NORMALIZE_Q8_8": (speed_vec2_stock.bench_vec2_normalize, "scratch", True),
             "MATH_DIST8_FAST": (speed_dist8_fast.bench_dist8_fast, "scratch", False),
             "MATH_SDIV8": (speed_sdiv8_shared.bench_sdiv8, "zp", False),
@@ -2088,7 +2097,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         if unavailable:
             raise LinkError("No authenticated matched-input speed basis for " +
                             ", ".join(unavailable) +
-                            "; available: UMUL8, UMUL16, UMUL24, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV32_16, UMOD32_16, SDIV32_16, SMOD32_16, UDIV32_32, UMOD32_32, UDIV24, UMOD24, SDIV24, SMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16")
+                            "; available: " + ", ".join(sorted(measured)))
         models = {}
         per_operation_cycles = {}
         for api in names:

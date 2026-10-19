@@ -2,9 +2,9 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 48 APIs now have authenticated, matched-public-call speed selection.
+APIs, and all 56 APIs have authenticated, matched-public-call CPU-model speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
-Do not confuse **linkability** with **speed parity**.
+Do not confuse **linkability** or **source-cycle qualification** with full V1–V5 performance/hardware parity.
 
 Historical V1 signed8 division and modulo are speed-authenticated on
 512 identical Q8/R8/C full public calls at two layouts. The shared
