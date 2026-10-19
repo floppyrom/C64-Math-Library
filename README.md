@@ -32,6 +32,8 @@ The exact frame-qualified installer PRG now also has **real pinned VICE x64sc co
 
 REU-specific V3/V4 Turbo16/Turbo32 and QS16 services remain available in **separate original resident compatibility packages**, checksum-locked from the actual V3/V4 PRG, 512-KiB or 16-MiB REU image, ABI include and licensing files. Export with `python3 tools/export_reu_compat.py --profile v3_reu_512k --out build/compat-v3` (or `v4_reu_16m`). These are **exclusive full legacy residents**, never modules to mix with `math_selective.prg`. See `docs/REU_COMPAT_EXPORT.md`.
 
+The operation-first CLI also has a **strict opt-in `frame` objective**: supply a whole-project same-input measured frame report and explicit RAM/ZP/layout budgets; it selects a qualified physical source combination and rebuilds its exact SHA-matched PRG. [Frame-aware builder instructions](docs/FRAME_BUILDER_OBJECTIVE.md). This is *not* a real PAL/VIC/IRQ/REU timing claim and leaves the default `balanced` and weighted `speed` objectives unchanged.
+
 **Start without profiles:**
 
 ```sh

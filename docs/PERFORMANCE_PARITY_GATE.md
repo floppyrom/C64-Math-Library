@@ -74,6 +74,8 @@ Native VICE **correctness** of ordinary byte-identical, frame-qualified installe
 
 Original V3/V4 Turbo16/Turbo32/QS16 REU services may be kept available as **standalone, immutable compatibility bundles** via `tools/export_reu_compat.py`, including the exact REU image and resident and source SHA/ABI proof. See `REU_COMPAT_EXPORT.md`. This avoids accidental loss of hardware-specific services while the stock builder becomes standard, but **does not** add REU-mode support to the operation-first linker or certify physical PAL/DMA timing.
 
+An explicit `frame` objective is now supported by the operation-first command-line installer for **source-verified complete linked-project frame reports**. It selects only previously measured candidate combinations, checks the full public API set and exact memory map, and refuses to publish a different PRG or a configuration violating RAM, ZP or measured synthetic peak-frame limits. This is not a generalized all-56-API search or a physical PAL/REU/IRQ timing qualification; see [FRAME_BUILDER_OBJECTIVE.md](FRAME_BUILDER_OBJECTIVE.md).
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

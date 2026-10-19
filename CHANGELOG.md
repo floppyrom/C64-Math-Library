@@ -1,3 +1,9 @@
+## Unreleased — evidence-gated linked-image peak frame objective in operation-first CLI
+
+- Add explicit `--objective frame --frame-report ... --build`: use only measured complete-source same-input project plans across multiple placements, enforcing RAM/ZP and optional synthetic peak math frame budgets, never mixing independent call-cycle averages.
+- Derive immutable variant pins at the measured I/O/ZP/code/scratch locations and re-verify original PRG SHA, public exports, resource envelope and source hashes before publication; reject unqualified or tampered evidence.
+- Retain existing four standard builder objectives, all 56 source-linked stock APIs, Pareto alternatives and historical V1–V5/REU compatibility binaries.
+
 ## Unreleased — native pinned-frame installer PRG correctness certification
 
 - Rebuild four actual frame-qualified project PRGs via standard installer CLI using source-verified pins, exact code/I/O/ZP/scratch addresses, and fully matching measured original binary SHA-256.

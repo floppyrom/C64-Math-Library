@@ -3,7 +3,7 @@
 PYTHON ?= python3
 ACME ?= acme
 
-.PHONY: builder-help builder-list builder builder-speed builder-biased-qs-test builder-measure sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all
+.PHONY: builder-help builder-list builder builder-speed builder-frame builder-biased-qs-test builder-measure sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all
 
 all: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
 
@@ -17,6 +17,7 @@ builder-help:
 	@echo 'C64 Math Library: operation-first builder (default)' 
 	@echo '  make builder                       # balanced: optimize resources, NOT fastest cycles'
 	@echo '  make builder-speed                 # speed: compare same-corpus kernel cycles'
+	@echo '  make builder-frame                 # source-qualified math-only frame objective'
 	@echo '  make builder CONFIG=path/to.json    # build your own operation set'
 	@echo '  make builder-measure                # measure exact assembled footprint'
 	@echo '  make builder-list                   # show 56 public operations'
@@ -38,6 +39,13 @@ SPEED_CONFIG ?= examples/operation-first-speed.json
 
 builder-speed:
 	$(PYTHON) tools/math_builder.py --config $(SPEED_CONFIG) --objective speed --out $(OUT)/selection_manifest.json --build
+
+# Strict opt-in whole linked-image synthetic frame objective.
+FRAME_CONFIG ?= examples/operation-first-frame.json
+FRAME_REPORT ?= build_selective/mixed3.json
+
+builder-frame:
+	$(PYTHON) tools/math_builder.py --config $(FRAME_CONFIG) --objective frame --frame-report $(FRAME_REPORT) --out $(OUT)/selection_manifest.json --build
 
 builder-biased-qs-test:
 	$(PYTHON) -m unittest discover -s tools -p 'test_biased_quartersquare_offsets.py' -v
