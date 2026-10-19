@@ -1,3 +1,9 @@
+## Unreleased — native pinned-frame installer PRG correctness certification
+
+- Rebuild four actual frame-qualified project PRGs via standard installer CLI using source-verified pins, exact code/I/O/ZP/scratch addresses, and fully matching measured original binary SHA-256.
+- Qualify UMUL32, SMUL32 and ISQRT16 native public entrypoint correctness with independent x64sc r46284 oracles (96 calls × 3 APIs × 4 pinned images = 1,152 calls), including 0-ZP and 31-ZP Pareto projects at two placements.
+- Preserve original V1–V5 profiles and REU/Turbo/QS16 compatibility. Source CPU model frame peaks are not real PAL raster/bus/IRQ timing.
+
 ## Unreleased — source-verified frame-qualified project configuration
 
 - Export qualified mixed-frame whole-project selections as ordinary pinned operation-first configs with complete code, I/O, ZP and scratch placement; reassemble and demand the original linked PRG SHA, source hashes and RAM/ZP evidence before writing.
