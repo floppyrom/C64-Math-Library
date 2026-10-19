@@ -8,7 +8,7 @@ import math_builder
 import selective_linker as linker
 import native_selective_muldiv16 as native
 
-VARIANT="link:qs-v2-fused"
+VARIANT="link:signed-qs-v2-fused"
 
 def main():
     vice=os.environ.get("VICE_WRAPPER","")
