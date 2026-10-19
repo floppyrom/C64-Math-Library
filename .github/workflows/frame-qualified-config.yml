@@ -1,0 +1,62 @@
+name: Source-verified frame-qualified installer config
+
+on:
+  pull_request:
+    paths:
+      - 'tools/frame_qualified_config.py'
+      - 'tools/test_frame_qualified_config.py'
+      - 'tools/mixed3_frame_parity.py'
+      - '.github/workflows/frame-qualified-config.yml'
+      - 'tools/mixed_frame_frontier.py'
+      - 'tools/mul32_frame_frontier.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-exact-prg:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify same-input source hashes and reproducible project config
+        run: |
+          python3 -m compileall -q tools/frame_qualified_config.py tools/test_frame_qualified_config.py tools/mixed3_frame_parity.py
+          python3 -m unittest discover -s tools -p 'test_frame_qualified_config.py' -v
+      - name: Generate, pin and rebuild selected source-linked combination
+        run: |
+          mkdir -p build/qualified
+          python3 tools/mixed3_frame_parity.py --out build/qualified/mixed3.json
+          python3 tools/frame_qualified_config.py \
+            --in-report build/qualified/mixed3.json \
+            --out-config build/qualified/math-config.json \
+            --out-evidence build/qualified/provenance.json \
+            --ram-budget 12000 --zp-budget 31 \
+            --code-base 0x8000 --math-io 0xc000 --zp-base 0x50 --scratch-base 0xc040
+          python3 tools/math_builder.py --config build/qualified/math-config.json \
+            --build --out build/qualified/output/selection_manifest.json
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          folder=pathlib.Path("build/qualified")
+          source=json.loads((folder/"provenance.json").read_text())
+          binary=(folder/"output/math_selective.prg").read_bytes()
+          assert hashlib.sha256(binary).hexdigest()==source["qualified_prg_sha256"]
+          assert source["physical_pal_feasibility_claim"] is False
+          print("PUBLIC LINKED PRG SHA MATCH",source["qualified_prg_sha256"])
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frame-qualified-project-installer-snapshot
+          path: |
+            build/qualified/math-config.json
+            build/qualified/provenance.json
+            build/qualified/mixed3.json
+          if-no-files-found: warn
+          retention-days: 30
