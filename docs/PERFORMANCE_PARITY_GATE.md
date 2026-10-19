@@ -62,6 +62,8 @@ measurements must fail closed and produce a clear migration task.
 
 The automated [profile-retirement evidence report](PROFILE_RETIREMENT_EVIDENCE.md) distinguishes all 56 stock selectable APIs from **nine hardware-only REU lifecycle symbols** (six Turbo16/Turbo32 exports on V3/V4 plus three V4 QS16 exports). It detects source/REU ABI omissions but does not substitute for historical fastest-donor or measured physical-frame proof. The cutover assertion deliberately remains blocked.
 
+An authenticated five-way UMUL32 source-linked busy-frame comparison can now be reproduced with `tools/umul32_all_five_paired_frames.py` for 24 frames and 150 same-input full64 calls at two relocations. Unlike unrelated resident-profile mean figures, these candidate traces are paired on the *same* public operands, registers and placement. They report worst individual-call and whole-frame regressions alongside code/ZP/writable-code resource costs. See `UMUL32_ALL_FIVE_PAIRED_FRAME_PARITY.md`. This remains a synthetic stock 6510 CPU-model check, not V1–V5 or REU/PAL hardware parity.
+
 The source-linked signed32 full64 `SMUL32` donor family also has a **four-way, identical-public-input synthetic busiest-frame comparison** of compact, unified, V2 FAST31 and shared FAST31 at two placements. The report records per-call regressions as well as peak/p95/total cycles and code/ZP footprints. See `SMUL32_FOUR_PAIRED_FRAME_PARITY.md`. This is **not** actual PAL frame time, a signed FAST31 speed guarantee on every input, or permission to remove historical compact kernels.
 
 ## Non-negotiable acceptance rules

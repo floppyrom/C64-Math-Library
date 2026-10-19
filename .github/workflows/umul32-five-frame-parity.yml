@@ -1,0 +1,39 @@
+name: UMUL32 five historical sources same-input busy frame
+
+on:
+  pull_request:
+    paths:
+      - 'tools/umul32_all_five_paired_frames.py'
+      - 'tools/test_umul32_all_five_paired_frames.py'
+      - 'tools/selective_linker.py'
+      - 'tools/selective_speed_umul32.py'
+      - '.github/workflows/umul32-five-frame-parity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  matched-public-frames:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare all five exact public 32x32 source variants at two relocations
+        run: |
+          python3 -m compileall -q tools/umul32_all_five_paired_frames.py tools/test_umul32_all_five_paired_frames.py
+          python3 -m unittest discover -s tools -p 'test_umul32_all_five_paired_frames.py' -v
+          mkdir -p build
+          python3 tools/umul32_all_five_paired_frames.py --out build/umul32_five_frame_report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: five-umul32-same-input-public-peak-frame
+          path: build/umul32_five_frame_report.json
+          if-no-files-found: warn
+          retention-days: 30
