@@ -6,6 +6,7 @@ on:
       - 'tools/selective_v2_signed16_shared.py'
       - 'tools/selective_speed_sdiv16_shared.py'
       - 'tools/test_selective_v2_signed16_shared.py'
+      - 'tools/test_v2_signed16_shared_frames.py'
       - 'tools/native_selective_v2_signed16_shared.py'
       - 'tools/selective_linker.py'
       - '.github/workflows/v2-signed16-shared-builder.yml'
@@ -26,9 +27,10 @@ jobs:
           python-version: '3.12'
       - name: Historical 1481-byte V2 source, full signed Q/R public ABI and matched cycles
         run: |
-          python3 -m compileall -q tools/selective_v2_signed16_shared.py tools/selective_speed_sdiv16_shared.py tools/test_selective_v2_signed16_shared.py tools/native_selective_v2_signed16_shared.py tools/selective_linker.py
+          python3 -m compileall -q tools/selective_v2_signed16_shared.py tools/selective_speed_sdiv16_shared.py tools/test_selective_v2_signed16_shared.py tools/test_v2_signed16_shared_frames.py tools/native_selective_v2_signed16_shared.py tools/selective_linker.py
           python3 tools/selective_v2_signed16_shared.py
           python3 -m unittest discover -s tools -p 'test_selective_v2_signed16_shared.py' -v
+          python3 -m unittest discover -s tools -p 'test_v2_signed16_shared_frames.py' -v
 
   native-vice:
     needs: public-source-and-model
