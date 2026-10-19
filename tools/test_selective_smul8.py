@@ -137,7 +137,7 @@ class HistoricalSMUL8(unittest.TestCase):
 
     def test_provenance_and_write_ram_contract(self):
         available=selective_linker.available_variants()["MATH_SMUL8"]
-        one,=available
+        (one,) = (v for v in available if v["id"] == "link:v1-resident-smc")
         self.assertEqual(one["validation_path"],"tools/test_selective_smul8.py")
         self.assertEqual(set(one["dependency_sha256"]),{"tools/selective_smul8.py"})
         self.assertEqual(one["zp_bytes_reported"],0)
