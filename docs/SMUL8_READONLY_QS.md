@@ -34,9 +34,12 @@ The new alternative is **not yet declared faster** than the canonical
 SMC source. Qualification includes exhaustive 256×256 signed operand
 pairs, unchanged-source checks, two memory maps, native VICE r46284,
 a 512-pair same-public-call CPU-model comparison of mean/p95/max
-cycles, source provenance and RAM-budget enforcement. Any speed-based
-automatic selection must use comparable full-public measurements,
-never historical resident-only timings.
+cycles, source provenance and RAM-budget enforcement. The operation-first builder now supports an authenticated-source speed
+comparison for both candidates: 512 identical complete public calls,
+including signed correction and SMC behavior, determine which fastest
+candidate fits actual RAM/ZP budgets. This remains provisional until
+complete source-model, native VICE and package qualification passes;
+resident-only historical timings are never substituted.
 
 The operation-first builder still needs a generalized accounting
 mechanism to share tables when UMUL8 and the read-only SMUL8 are
