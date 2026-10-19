@@ -137,11 +137,6 @@ all-256-phase, two-placement, full-public-call measured cycle provenance.
 They share one physical immutable sine-table page and preserve their
 original source and outputs. These are CPU-model timings, not PAL timing.
 
-The original shared V1 signed8 Q/R producer also exposes measured identical
-public-input cycle provenance for both SDIV8 and SMOD8, retaining one 530-byte
-image and one private zero-page byte when both are selected. No slower
-kernel replaces this source.
-
 ## Active migration priority after PRs #293–#296
 
 - The historical V3 signed24 kernel is available and CPU/native qualified,

@@ -35,9 +35,9 @@ import selective_speed_umuldiv16_qsv2 as speed_umuldiv16
 import selective_speed_smuldiv16_qsv2 as speed_smuldiv16
 import selective_speed_smul16 as speed_smul16
 import selective_speed_smul16_shr8 as speed_smul16_shr8
+import selective_speed_sdiv8_shared as speed_sdiv8_shared
 import selective_speed_umul24 as speed_umul24
 import selective_speed_smul24 as speed_smul24
-import selective_speed_sdiv8_shared as speed_sdiv8_shared
 import selective_speed_umul16_shr8
 import selective_speed_umod8
 import selective_speed_udiv8

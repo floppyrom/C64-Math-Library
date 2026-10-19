@@ -1,12 +1,8 @@
-## Unreleased — historical shared V1 SDIV8/SMOD8 public speed
+## Unreleased — authenticated original V1 signed8 DIV/MOD speed selection
 
-- Authenticate both names of the original 530-byte V1–V5 signed8 quotient
-  and remainder kernel using 512 identical Q8/R8/C public calls at two
-  code, I/O and private ZP placements, including divide-by-zero cases.
-- Preserve exactly one shared physical producer and one private ZP byte,
-  full public operands/output sentinel ABI, and native VICE r46284.
-- Extend measured speed selection to 44/56 APIs after full exact-head CI;
-  do not substitute a slower or nonhistorical kernel.
+- Add full-public matched-input CPU-model speed provenance for the unchanged shared 530-byte original V1–V5 `SDIV8`/`SMOD8` quotient/remainder producer, preserving one physical code owner and one private ZP byte for both exports.
+- Verify 512 signed Q8/R8/C calls at two relocations including divide-by-zero, input/sentinel/stack preservation, native VICE and strict RAM/ZP budgeting.
+- Increase authenticated speed coverage to 44 of 56 without substituting a slower portable routine or changing the historical V1–V5 profiles.
 
 ## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
 

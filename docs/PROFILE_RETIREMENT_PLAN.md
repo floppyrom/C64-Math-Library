@@ -40,11 +40,6 @@ All three original SIN8/COS8/SINCOS8 sources now carry public-call speed
 measurements over 256 phases, at two origins, with one shared sine page.
 Existing kernel performance is authenticated, not replaced by portable code.
 
-V1 source-locked SDIV8 and SMOD8 public exports now have 512-pair matching
-cycle measurements, and still share one physical executable and private
-ZP byte. This authenticates their original performance; no alternative
-portable substitute is introduced.
-
 The `speed` objective supports project-level weighted selection for **forty-four**
 individually qualified APIs: UMUL8, SMUL8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
