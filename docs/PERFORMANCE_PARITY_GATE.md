@@ -70,6 +70,8 @@ The joint signed+unsigned full64 FAST31 evaluation builds four **two-public-API*
 
 A new three-operation mixed source-linked frame qualifier includes `MATH_UMUL32`, `MATH_SMUL32` and `MATH_ISQRT16` with the original square-table and tableless Pareto alternatives. The offline generic frame frontier compares complete linked image RAM, ZP and matched synthetic peak/p95 frames at two origins. It does **not** currently change the 56-operation installer selection algorithm or qualify PAL hardware timing; see [MIXED_THREE_OPERATION_FRAME_FRONTIER.md](MIXED_THREE_OPERATION_FRAME_FRONTIER.md).
 
+Native VICE **correctness** of ordinary byte-identical, frame-qualified installer PRGs can now be checked in the exact pinned source/layout using 1,152 signed/unsigned full64 and ISQRT16 public calls (four CLI images, two layouts, two memory budgets). This closes an application-*artifact correctness* gap, **not** physical PAL/IRQ/SID/REU frame-parity timing; see [`FRAME_QUALIFIED_NATIVE_VICE.md`](FRAME_QUALIFIED_NATIVE_VICE.md).
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

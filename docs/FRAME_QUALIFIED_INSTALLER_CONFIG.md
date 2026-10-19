@@ -1,5 +1,7 @@
 # Source-verified frame-qualified project installer snapshot
 
+After exporting a pinned config, run `python3 tools/native_frame_qualified_config.py` with `VICE_WRAPPER` pointing to pinned x64sc r46284 to verify the **actual, byte-identical CLI-produced PRG** in the emulator (2 layouts × 2 Pareto budgets × 3 independently checked public APIs). See [`FRAME_QUALIFIED_NATIVE_VICE.md`](FRAME_QUALIFIED_NATIVE_VICE.md). This is native correctness validation, not PAL raster-cycle timing.
+
 This project-level export bridges the *research* mixed frame Pareto frontier
 to a standard operation-first C64 Math Library configuration. It is deliberately
 **not** a new 56-operation `speed` optimizer or a general physical PAL timing

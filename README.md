@@ -28,6 +28,8 @@ A **three-operation mixed busiest-frame research gate** now links all eight comb
 
 A **source-verified project configuration exporter** can now convert a qualified three-operation peak-frame choice into a normal pinned builder config, reassemble the exact linked PRG and check its SHA before publication. See [frame-qualified installer configuration](docs/FRAME_QUALIFIED_INSTALLER_CONFIG.md). This is for one reproducible synthetic workload and does not change the production automatic speed objective or claim PAL timing.
 
+The exact frame-qualified installer PRG now also has **real pinned VICE x64sc correctness checks**: four ordinary CLI-rebuilt, source/placement-SHA-matched project images (two relocations × fast/zero-ZP choices) run 1,152 independent unsigned/signed full64 multiplication and square-root public calls under x64sc r46284. This validates the actual selected source and public ABI, not physical PAL frame timing; see `docs/FRAME_QUALIFIED_NATIVE_VICE.md`. V1–V5 and REU compatibility images stay unchanged.
+
 **Start without profiles:**
 
 ```sh
