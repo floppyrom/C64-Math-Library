@@ -32,7 +32,7 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 33 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 34 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -46,6 +46,11 @@ the lookup image. For the faster measured variants use:
 ```sh
 make builder-speed SPEED_CONFIG=examples/operation-first-shared24-speed.json OUT=build_shared24
 ```
+
+The signed `SDIV16_SHL8` now retains both the 237-byte zero-ZP portable
+kernel and a 2,624-byte/12-ZP source-linked canonical V2 fast magnitude
+producer. Its Q24/R16/C public-call performance is independently certified;
+see `docs/SDIV16_SHL8_V2_BUILDER.md`.
 
 A stock-C64 reciprocal speed frontier now offers the original 99-byte compact,
 448-byte historical-threshold and 1,544-byte exact-table alternatives for

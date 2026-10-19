@@ -1,0 +1,57 @@
+name: V2 signed shifted16 shared 32/16 public builder qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_v2_signed_shifted16.py'
+      - 'tools/selective_speed_sdiv16_shl8.py'
+      - 'tools/test_selective_v2_signed_shifted16.py'
+      - 'tools/test_v2_signed_shifted16_frames.py'
+      - 'tools/native_selective_v2_signed_shifted16.py'
+      - 'tools/selective_linker.py'
+      - '.github/workflows/v2-signed-shifted16-builder.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-model:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Canonical unsigned donor and complete signed shifted16 public-call qualification
+        run: |
+          python3 -m compileall -q tools/selective_v2_signed_shifted16.py tools/selective_speed_sdiv16_shl8.py tools/test_selective_v2_signed_shifted16.py tools/test_v2_signed_shifted16_frames.py tools/native_selective_v2_signed_shifted16.py tools/selective_linker.py
+          python3 tools/selective_v2_signed_shifted16.py
+          python3 -m unittest discover -s tools -p 'test_selective_v2_signed_shifted16.py' -v
+          python3 -m unittest discover -s tools -p 'test_v2_signed_shifted16_frames.py' -v
+
+  pinned-vice:
+    needs: source-model
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Install native headless VICE dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned native VICE r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Validate 192 signed 16-shifted public calls on real NMOS-emulated CPU
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_selective_v2_signed_shifted16.py
