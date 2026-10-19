@@ -1,0 +1,45 @@
+name: Mixed three-API signed unsigned multiplication and sqrt frame parity
+
+on:
+  pull_request:
+    paths:
+      - 'tools/mixed3_frame_parity.py'
+      - 'tools/mixed_frame_frontier.py'
+      - 'tools/test_mixed3_frame_parity.py'
+      - 'tools/test_mixed_frame_frontier.py'
+      - '.github/workflows/mixed3-frame-parity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-linked-three-api:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate generic multi-operation input and resource evidence
+        run: |
+          python3 -m compileall -q tools/mixed3_frame_parity.py tools/mixed_frame_frontier.py tools/test_mixed3_frame_parity.py tools/test_mixed_frame_frontier.py
+          python3 -m unittest discover -s tools -p 'test_mixed_frame_frontier.py' -v
+      - name: Qualify 8 three-operation source plans at both relocations
+        run: |
+          python3 -m unittest discover -s tools -p 'test_mixed3_frame_parity.py' -v
+          mkdir -p build
+          python3 tools/mixed3_frame_parity.py --out build/mixed3_frame_parity.json
+          python3 tools/mixed_frame_frontier.py --in-report build/mixed3_frame_parity.json --ram-budget 12000 --zp-budget 31 --out build/mixed3_frame_frontier.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mixed-three-api-source-frame-frontier
+          path: |
+            build/mixed3_frame_parity.json
+            build/mixed3_frame_frontier.json
+          if-no-files-found: warn
+          retention-days: 30
