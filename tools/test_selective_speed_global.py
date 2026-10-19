@@ -89,7 +89,7 @@ class GlobalSpeedTests(unittest.TestCase):
         with self.assertRaises(mb.SelectionError):
             mb.create_plan(self.index,['UMUL8'],objective='balanced',
                            workload_calls={'UMUL8':1})
-        unknown = mb.create_plan(self.index,['SDIV16'],objective='speed')
+        unknown = mb.create_plan(self.index,['SEEK8_INIT'],objective='speed')
         with tempfile.TemporaryDirectory() as td:
             with self.assertRaisesRegex(linker.LinkError,'No authenticated'):
                 linker.build(unknown,Path(td))
