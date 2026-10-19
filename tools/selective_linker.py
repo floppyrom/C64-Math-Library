@@ -19,6 +19,7 @@ import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_fast_umul16 as fast16
 import selective_umuldiv16_qs_v2 as muldiv16qs
+import selective_smuldiv16_qs_v2 as signed_muldiv16qs
 import selective_smul16_quartersquare as qs16signed
 import selective_smul16_shr8_quartersquare as qs16shr
 import selective_fast31_umul32 as fast31
@@ -493,6 +494,13 @@ MODULES = {
         },
     },
     "MATH_SMULDIV16": {
+        "link:signed-qs-v2-fused": {
+            "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
+            "segments": (("KERNEL_CODE", 4263),),
+            "entry": "FAST_SMULDIV16_SIGNED_QS_V2", "zp": 12, "scratch": 4,
+            "operand_layout": "muldiv16", "smuldiv16_qsv2": True,
+            "provenance": "Independent source fusion of certified signed QS16 full32, canonical V2 signed 32/16 quotient and direct signed muldiv public adapter. Preserves X/Y/D, Z32 and volatile N32, trunc-toward-zero Q32/R16/C, 12 ZP, 4 ordinary scratch.",
+        },
         "link:portable-zerozp": {
             "source": "routines/muldiv16/smuldiv16_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 439),),
@@ -1117,6 +1125,19 @@ def available_variants(root=ROOT):
                     "v2_pareto_fast/resident/modules/pareto_udiv32_16.a": hashlib.sha256(
                         (root / "v2_pareto_fast/resident/modules/pareto_udiv32_16.a").read_bytes()).hexdigest(),
                 } if mod.get("umuldiv16_qsv2") else {
+                    "tools/selective_fast_umul8.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
+                    "tools/selective_fast_umul16.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
+                    "tools/selective_smul16_quartersquare.py": hashlib.sha256(
+                        (root / "tools/selective_smul16_quartersquare.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                    "tools/research_signed_v2_u3216.py": hashlib.sha256(
+                        (root / "tools/research_signed_v2_u3216.py").read_bytes()).hexdigest(),
+                    "tools/selective_smuldiv16_qs_v2.py": hashlib.sha256(
+                        (root / "tools/selective_smuldiv16_qs_v2.py").read_bytes()).hexdigest(),
+                } if mod.get("smuldiv16_qsv2") else {
                     "tools/selective_fast_umul8.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
                     "tools/selective_fast_umul16.py": hashlib.sha256(
@@ -2136,6 +2157,13 @@ def build(plan, outdir, memory=None, root=ROOT):
         if "atan2" in module and [x["source_path"] for x in dep_provenance] != [
                 "routines/atan2/tables.py"]:
             raise LinkError(api + ": ATAN2 table generator provenance missing")
+        if module.get("smuldiv16_qsv2") and set(x["source_path"] for x in dep_provenance) != {
+                "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py",
+                "tools/selective_smul16_quartersquare.py",
+                "tools/selective_v2_fast_u3216.py",
+                "tools/research_signed_v2_u3216.py",
+                "tools/selective_smuldiv16_qs_v2.py"}:
+            raise LinkError(api + ": signed muldiv16 source provenance missing")
         if module.get("umuldiv16_qsv2") and set(x["source_path"] for x in dep_provenance) != {
                 "tools/selective_fast_umul8.py",
                 "tools/selective_fast_umul16.py",
@@ -2228,7 +2256,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("umuldiv16_qsv2") or module.get("fast_umul8") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("umuldiv16_qsv2") or module.get("smuldiv16_qsv2") or module.get("fast_umul8") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2312,6 +2340,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                     entry = labels[module["entry"]]
                 elif module.get("smul16_qs"):
                     machine, labels, ranges, end = qs16signed.assemble_image(pc,io,sb,root)
+                    entry = labels[module["entry"]]
+                elif module.get("smuldiv16_qsv2"):
+                    machine, labels, ranges, end = signed_muldiv16qs.assemble_image(pc,io,zb,sb,root)
                     entry = labels[module["entry"]]
                 elif module.get("umuldiv16_qsv2"):
                     machine, labels, ranges, end = muldiv16qs.assemble_image(pc,io,zb,sb,root)
