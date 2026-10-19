@@ -33,6 +33,10 @@ jobs:
           python3 tools/frame_cycle_budget.py --baseline build/seek_8000.csv --frame-count 24 --out build/seek_8000_report.json
           python3 tools/export_seek_frame_trace.py --frames 24 --code-base 0x7123 --io-base 0xc100 --out build/seek_7123.csv
           python3 tools/frame_cycle_budget.py --baseline build/seek_7123.csv --frame-count 24 --out build/seek_7123_report.json
+          python3 tools/export_seek_frame_trace.py --frames 24 --retarget-policy staggered --out build/seek_staggered_8000.csv
+          python3 tools/frame_cycle_budget.py --baseline build/seek_staggered_8000.csv --frame-count 24 --out build/seek_staggered_8000_report.json
+          python3 tools/export_seek_frame_trace.py --frames 24 --retarget-policy staggered --code-base 0x7123 --io-base 0xc100 --out build/seek_staggered_7123.csv
+          python3 tools/frame_cycle_budget.py --baseline build/seek_staggered_7123.csv --frame-count 24 --out build/seek_staggered_7123_report.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
