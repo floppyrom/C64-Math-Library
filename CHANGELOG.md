@@ -1,3 +1,18 @@
+## Unreleased — shared historical V2 fast SDIV16/SMOD16 producer
+
+- Source-link the canonical V2 1,481-byte unsigned direct divider and a
+  private 224-byte signed Q16/R16/C public adapter. Both signed operations
+  select the same physical image (1,705 code + 8 RAM scratch, 0 ZP), while
+  the original 206-byte/3-scratch zero-ZP shared portable source remains.
+- Tested signed boundaries, D=0 and -32768/-1, 384 identical complete
+  signed public calls at two relocations and 150 calls across 24 busy math
+  frames; require pinned native VICE r46284 and package qualification.
+- Initial model: ~474 vs ~822 mean cycles, 1,229 vs 1,366 sampled maximum;
+  p95 is slightly higher for V2 (~1,138 vs ~1,120). Do not equate the
+  CPU-model frame trace with physical PAL/VIC-II or resident timing.
+- Qualified speed-selection coverage reaches 39/56 APIs **only when all
+  exact-head checks pass**; preserve the historical five profiles.
+
 ## Unreleased — qualified read-only signed8 quarter-square Pareto choice
 
 - Preserve the exact V1–V5 46-byte signed SMUL8 SMC source and all four

@@ -32,11 +32,18 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 37 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 39 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
 can be retired. See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
+
+`SDIV16` and `SMOD16` can now share an immutable historical V2 direct
+16/16 arithmetic producer plus one signed public Q/R/C adapter. The
+fast path reserves 1,705 bytes and eight ordinary scratch bytes;
+206-byte/3-scratch compact remains selectable. Both use zero ZP.
+The speed selector compares identical signed public calls, not resident-only
+timings. See [shared signed16 divider research](docs/SDIV16_SMOD16_V2_SHARED.md).
 
 A new stock-C64 **read-only `SMUL8` quarter-square** option complements the
 original V1–V5 signed8 self-modifying producer. On 512 identical full-public

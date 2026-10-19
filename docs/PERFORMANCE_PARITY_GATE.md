@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 37 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 39 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -131,6 +131,14 @@ stock-C64 read-only two-plane QS implementation (roughly 123 cycles).
 The read-only source saves over 1,100 bytes, but is **not** a speed win:
 speed mode should retain V1 when its RAM and writable-code requirements
 are feasible. Separate native VICE and package qualification are required.
+
+The shared signed 16/16 quotient/remainder family now retains a 206-byte
+zero-ZP compact source and a 1,705-byte historical V2-direct producer
+with eight RAM scratch bytes (also zero-ZP). Each signed API selects a
+qualified physical image; two operations choosing the same producer
+share its code exactly once. Match full Q16/R16/C and per-frame latency;
+p95 may regress slightly even when mean and sampled worst call improve.
+See `SDIV16_SMOD16_V2_SHARED.md`.
 
 ## Active migration priority after PRs #293–#296
 
