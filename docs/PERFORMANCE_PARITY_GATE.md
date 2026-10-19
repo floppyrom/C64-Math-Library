@@ -60,6 +60,8 @@ measurements must fail closed and produce a clear migration task.
   cycles in the busiest PAL frame. A small but adversarial input class can
   make an apparently faster kernel worse for a game or demo.
 
+The automated [profile-retirement evidence report](PROFILE_RETIREMENT_EVIDENCE.md) distinguishes all 56 stock selectable APIs from **nine hardware-only REU lifecycle symbols** (six Turbo16/Turbo32 exports on V3/V4 plus three V4 QS16 exports). It detects source/REU ABI omissions but does not substitute for historical fastest-donor or measured physical-frame proof. The cutover assertion deliberately remains blocked.
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,
