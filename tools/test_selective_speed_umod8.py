@@ -117,11 +117,20 @@ class QualifiedUMOD8SpeedTests(unittest.TestCase):
                 with self.assertRaisesRegex(math_builder.SelectionError,
                                             "requires workload calls"):
                     self.plan(ops,ram=4096)
+        # SMUL8 became source-authenticated when its historical-SMC and
+        # read-only QS variants gained a matched full-public-call corpus.
+        # Mixed speed selection must now succeed rather than be rejected.
         with tempfile.TemporaryDirectory() as d:
             p=math_builder.create_plan(self.index,["SMUL8","UMOD8"],
                   objective="speed",workload_calls={"SMUL8":1,"UMOD8":1})
-            with self.assertRaisesRegex(selective_linker.LinkError,"No authenticated"):
-                selective_linker.build(p,Path(d))
+            man=selective_linker.build(p,Path(d))
+            self.assertEqual(man["selection_objective"],"speed")
+            self.assertEqual({op["api"] for op in man["operations"]},
+                             {"MATH_SMUL8","MATH_UMOD8"})
+            self.assertIn(man["operations"][0]["variant"],
+                          selective_linker.MODULES[man["operations"][0]["api"]])
+            self.assertIn(man["operations"][1]["variant"],
+                          selective_linker.MODULES[man["operations"][1]["api"]])
 
     def test_cli_uses_certified_source_but_does_not_claim_hardware_timing(self):
         with tempfile.TemporaryDirectory() as d:

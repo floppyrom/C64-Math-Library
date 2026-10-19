@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 36 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 37 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -124,6 +124,13 @@ planes, exact signed32 wrapper and a bounded 32-byte Q24 output slice. Its
 1,383-byte/zero-ZP fast and 184-byte/zero-ZP compact paths require
 matched signed public calls and busiest-frame comparison, not unwrapped
 resident-profile timing. Table sharing with SMUL16 is future work.
+
+The signed8 `SMUL8` Pareto frontier now has source-matched public-cycle
+measurements for original V1 writable SMC (roughly 68 cycles) and the
+stock-C64 read-only two-plane QS implementation (roughly 123 cycles).
+The read-only source saves over 1,100 bytes, but is **not** a speed win:
+speed mode should retain V1 when its RAM and writable-code requirements
+are feasible. Separate native VICE and package qualification are required.
 
 ## Active migration priority after PRs #293–#296
 
