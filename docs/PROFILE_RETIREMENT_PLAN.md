@@ -34,9 +34,15 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (thirty-seven source-qualified APIs)
+Existing V1 source-locked signed SDIV8 and SMOD8 exports now have per-call
+public cycle provenance and retain exactly one 530-byte kernel and one
+private zero-page byte when both APIs are selected. With the qualified
+UMULDIV16 fusion, the current source-measured catalog is 40/56 APIs,
+subject to new dedicated native and full-library CI.
 
-The `speed` objective supports project-level weighted selection for **thirty-seven**
+## Workload-weighted speed selection (forty source-qualified APIs)
+
+The `speed` objective supports project-level weighted selection for **forty**
 individually qualified APIs: UMUL8, SMUL8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
 SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
