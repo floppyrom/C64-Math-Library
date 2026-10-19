@@ -34,9 +34,13 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (thirty-seven source-qualified APIs)
+## Workload-weighted speed selection (forty-three source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **thirty-seven**
+All three original SIN8/COS8/SINCOS8 sources now carry public-call speed
+measurements over 256 phases, at two origins, with one shared sine page.
+Existing kernel performance is authenticated, not replaced by portable code.
+
+The `speed` objective supports project-level weighted selection for **forty-three**
 individually qualified APIs: UMUL8, SMUL8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
 SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
