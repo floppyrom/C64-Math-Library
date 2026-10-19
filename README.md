@@ -32,19 +32,22 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 34 of the 56 APIs
+Speed selection now covers 34 of the 56 APIs, including signed 24-bit
+and both signed 32-bit DIV/MOD families. Unsupported comparisons **fail
+closed**, rather than silently using slower size-selected routines. The
+remaining historical V1–V5 speed donors still need comparable public-call
+and worst-frame qualification before profiles can be retired.
+See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
 
-A separate **read-only SMUL8 quarter-square** selectable option is being
-qualified alongside the exact V1-V5 self-modifying historical source.
-The no-SMC variant reserves 1,159 code+table bytes, two scratch bytes
-and 0 ZP, versus four original 511-byte table planes for V1's 46-byte
-SMC kernel. It is a RAM/immutability alternative, **not** a claimed
-speed winner without matched public-call benchmark evidence.
-See `docs/SMUL8_READONLY_QS.md`., including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
-comparisons **fail closed**, not silently fall back to a slower size-selected
-routine. The remaining historical V1–V5 speed donors still require transplantation,
-matched-public-ABI comparisons and worst-frame qualification before profiles
-can be retired. See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
+A separate stock-C64 **read-only SMUL8 quarter-square** Pareto option is
+under qualification alongside the exact V1–V5 self-modifying historical
+kernel. The new candidate needs 1,159 code+table bytes, two RAM scratch
+bytes and zero ZP, compared with the original four 511-entry table planes
+and 46-byte SMC code. The builder has a matched 512-pair full-public-call
+speed model for both implementations, automatically choosing among those
+that fit code/RAM/ZP constraints. No speed claim or profile retirement is
+made until source-model, VICE and release-package checks pass.
+See [SMUL8 read-only design](docs/SMUL8_READONLY_QS.md).
 
 The historical $CA-biased 24-bit quarter-square multiply source can now
 serve **both** unsigned UMUL24 and signed SMUL24 calls using **one physical
