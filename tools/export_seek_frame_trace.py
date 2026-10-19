@@ -18,7 +18,7 @@ from pathlib import Path
 from mini6502 import CPU
 import math_builder
 import selective_linker as linker
-from frame_cycle_budget import COLUMNS, load_trace, score
+from frame_cycle_budget import COLUMNS, load_trace, score, nearest_rank
 
 ROOT = Path(__file__).resolve().parents[1]
 FAMILIES = ("SEEK8", "SEEK16")
@@ -43,7 +43,24 @@ def set_positions(mem, state, family, slot, x, y):
         mem[state + 16 + slot] = y
 
 
-def export(out: Path, frames=24, code=0x8000, io=0xc000):
+def should_retarget(frame, family, slot, policy):
+    """Preserve the cold-start INIT burst; stagger later retargets."""
+    if policy not in ("burst", "staggered"):
+        raise ValueError("Unqualified retarget policy")
+    if frame == 0:
+        return True
+    if frame < 9:
+        return False
+    if policy == "burst":
+        return frame % 9 == 0
+    phase = (slot + (2 if family == "SEEK16" else 0)) % 4
+    return (frame - 9) % 9 == phase
+
+
+def export(out: Path, frames=24, code=0x8000, io=0xc000,
+           retarget_policy="burst"):
+    if retarget_policy not in ("burst", "staggered"):
+        raise ValueError("retarget_policy must be burst or staggered")
     if not (1 <= frames <= 200):
         raise ValueError("frame count must be in 1..200")
     if not (0x2000 <= code < 0xa000 and 0xb000 <= io <= 0xd000):
@@ -94,7 +111,7 @@ def export(out: Path, frames=24, code=0x8000, io=0xc000):
                 for slot in range(8):
                     mode = METHODS[slot % 3]
                     x, y = state_positions(mem, state, family, slot)
-                    if frame % 9 == 0:
+                    if should_retarget(frame, family, slot, retarget_policy):
                         # Retarget each slot to a bounded, reproducible waypoint;
                         # zero-distance, axis, diagonal and nonarrival cases.
                         dx = (0, 17, -11, 25, -18, 23, -21, 9)[slot]
@@ -130,14 +147,26 @@ def export(out: Path, frames=24, code=0x8000, io=0xc000):
             "synthetic_not_real_game": True,
             "not_pal_bus_or_irq_timing": True,
             "frames": frames,
+            "retarget_policy": retarget_policy,
+            "cold_start_remains_16_init_calls": True,
             "manifest": man,
             "trace_sha256": hashlib.sha256(out.read_bytes()).hexdigest(),
         }, indent=2,sort_keys=True)+"\n",encoding="utf-8")
     calls, meta = load_trace(out)
     result = score(calls, meta, frame_count=frames)
-    return {key: result[key] for key in (
+    warm = result["frame_math_cycles"][1:]
+    report = {key: result[key] for key in (
         "calls", "peak_frame", "peak_frame_math_cycles",
         "p95_frame_math_cycles", "peak_hotspots")}
+    report.update({
+        "retarget_policy": retarget_policy,
+        "init_calls": sum(c.operation.endswith("_INIT") for c in calls),
+        "cold_start_frame_math_cycles": result["frame_math_cycles"][0],
+        "post_cold_start_peak_frame_math_cycles": max(warm) if warm else None,
+        "post_cold_start_p95_frame_math_cycles":
+            nearest_rank(warm, 95) if warm else None,
+    })
+    return report
 
 
 def _measure(cpu, mem, observations, manifest, entries, variants,
@@ -176,6 +205,8 @@ if __name__ == "__main__":
     parser.add_argument("--frames",type=int,default=24)
     parser.add_argument("--code-base",type=lambda s:int(s,0),default=0x8000)
     parser.add_argument("--io-base",type=lambda s:int(s,0),default=0xc000)
+    parser.add_argument("--retarget-policy", choices=("burst","staggered"),
+                        default="burst")
     args=parser.parse_args()
-    print(json.dumps(export(args.out,args.frames,args.code_base,args.io_base),
-                     indent=2))
+    print(json.dumps(export(args.out,args.frames,args.code_base,args.io_base,
+                            retarget_policy=args.retarget_policy),indent=2))

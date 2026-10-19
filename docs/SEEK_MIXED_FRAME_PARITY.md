@@ -36,3 +36,24 @@ mixed-frame parity gate; **not** an actual PAL hardware timing
 measurement. VIC-II bus steals, display badlines, sprite DMA, IRQ/SID,
 REU, Turbo16/Turbo32 and legacy V4 QS16 remain separate acceptance
 criteria before fixed V1–V5 profiles can be deprecated.
+
+## Burst versus staggered movement retargeting
+
+The optional `--retarget-policy staggered` changes only when objects receive
+new targets. **All 16 cold-start INIT calls remain on frame zero**. Later
+epochs spread 16 retargets over frames 9–12 and 18–21, four calls each,
+instead of all 16 at frames 9 and 18. Both policies still issue **48 INIT
+and 384 STEP calls** over 24 frames from the identical compiled code
+and source/PRG hashes. Regression tests check the preserved call count.
+
+The exporter reports first-frame cycles separately from subsequent
+peak/p95 frame math cycles. Staggering changes target timestamps, positions
+and input state: these traces are NOT valid as same-call A/B comparisons or
+evidence of a faster DDA kernel. The cold-start spike is not removed. Use
+only if the actual game/demo permits staggered targets and verify physical
+PAL/IRQ/VIC workloads separately.
+
+```sh
+python3 tools/export_seek_frame_trace.py --frames 24 --retarget-policy staggered --out build/seek_staggered_8000.csv
+python3 tools/frame_cycle_budget.py --baseline build/seek_staggered_8000.csv --frame-count 24
+```

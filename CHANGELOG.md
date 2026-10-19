@@ -1,3 +1,9 @@
+## Unreleased — original SEEK DDA cold-start and staggered frame scheduling research
+
+- Compare deterministic 24-frame burst and staggered retargets at two code/I/O origins on identical source PRG, each with 48 INIT and 384 STEP public calls.
+- Measure cold-start separately from later busiest/p95 math-only frame cycles. Spreading later INIT calls does not change algorithm cycles, source code or the unavoidable first-frame burst.
+- Reject interpreting different retarget timings/input trajectories as matched-call speedups. Preserve original V1–V5 binaries and source.
+
 ## Unreleased — measured linked SEEK8/SEEK16 mixed-frame cycle traces
 
 - Add source-linked deterministic 24-frame eight-object-per-family movement replay with real 6510 model instruction-cycle traces, INIT bursts every ninth frame and original shared DDA steppers.
