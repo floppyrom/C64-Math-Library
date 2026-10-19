@@ -19,6 +19,7 @@ import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_fast_umul16 as fast16
 import selective_smul16_quartersquare as qs16signed
+import selective_smul16_shr8_quartersquare as qs16shr
 import selective_fast31_umul32 as fast31
 import selective_v2_fast_umul24 as v2umul24
 import selective_umul8_v1 as v1umul8
@@ -723,6 +724,14 @@ MODULES = {
         },
     },
     "MATH_SMUL16_SHR8": {
+        "link:qs-signed-shr8-public": {
+            "source": "routines/multiply/umul16_quartersquare.asm",
+            "segments": (("KERNEL_CODE", 233), ("Q_LO", 511), ("Q_HI", 511),
+                         ("SIGNED_ADAPTER", 96), ("SHR8_ADAPTER", 32)),
+            "entry": "FAST_SMUL16_SHR8_QUARTERSQUARE", "zp": 0, "scratch": 4,
+            "operand_layout": "xyz", "smul16_shr8_qs": True,
+            "provenance": "Stock C64 canonical quarter-square signed full32 producer with bounded high24 arithmetic byte-slice entry; exact signed X16*Y16>>8, 0 ZP and 4 scratch; no REU/SMC.",
+        },
         "link:compact-zerozp": {
             "source": "routines/multiply/smul16_shr8_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 184),),
@@ -1085,6 +1094,15 @@ def available_variants(root=ROOT):
                     "tools/selective_smul16_quartersquare.py": hashlib.sha256(
                         (root / "tools/selective_smul16_quartersquare.py").read_bytes()).hexdigest(),
                 } if mod.get("smul16_qs") else {
+                    "tools/selective_fast_umul8.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
+                    "tools/selective_fast_umul16.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
+                    "tools/selective_smul16_quartersquare.py": hashlib.sha256(
+                        (root / "tools/selective_smul16_quartersquare.py").read_bytes()).hexdigest(),
+                    "tools/selective_smul16_shr8_quartersquare.py": hashlib.sha256(
+                        (root / "tools/selective_smul16_shr8_quartersquare.py").read_bytes()).hexdigest(),
+                } if mod.get("smul16_shr8_qs") else {
                     "tools/selective_fast31_umul32.py": hashlib.sha256(
                         (root / "tools/selective_fast31_umul32.py").read_bytes()).hexdigest(),
                     "v2_pareto_fast/resident/modules/pareto_umul32.a": hashlib.sha256(
@@ -2090,6 +2108,11 @@ def build(plan, outdir, memory=None, root=ROOT):
         if module.get("v2_umul24") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_v2_fast_umul24.py"]:
             raise LinkError(api + ": original V2 UMUL24 quarter-square relocator provenance missing")
+        if module.get("smul16_shr8_qs") and set(x["source_path"] for x in dep_provenance) != {
+                "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py",
+                "tools/selective_smul16_quartersquare.py",
+                "tools/selective_smul16_shr8_quartersquare.py"}:
+            raise LinkError(api + ": signed SHR8 QS16 source provenance missing")
         if module.get("smul16_qs") and set(x["source_path"] for x in dep_provenance) != {
                 "tools/selective_fast_umul8.py", "tools/selective_fast_umul16.py",
                 "tools/selective_smul16_quartersquare.py"}:
@@ -2157,7 +2180,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2233,6 +2256,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                         {"name": "VEC2_COMPONENTS", "start": "$%04X" % (pc+0x900), "bytes": 1280},
                         {"name": "VEC2_EXPORT", "start": "$%04X" % (pc+0xE00), "bytes": 3},
                     ]
+                elif module.get("smul16_shr8_qs"):
+                    machine, labels, ranges, end = qs16shr.assemble_image(pc,io,sb,root)
+                    entry = labels[module["entry"]]
                 elif module.get("smul16_qs"):
                     machine, labels, ranges, end = qs16signed.assemble_image(pc,io,sb,root)
                     entry = labels[module["entry"]]
