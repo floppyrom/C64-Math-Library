@@ -337,12 +337,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--operation", action="append", default=[],
                         help="select an API/typed operation (repeat or comma-separate)")
     parser.add_argument("--config", type=Path, help="JSON selection configuration")
-    parser.add_argument("--objective", choices=OBJECTIVES)
+    parser.add_argument("--objective", choices=OBJECTIVES + ("frame",))
     parser.add_argument("--target", choices=TARGETS)
     parser.add_argument("--zp-budget", type=int)
     parser.add_argument("--ram-budget", type=int)
     parser.add_argument("--calls", action="append", default=[], metavar="OP=COUNT",
                         help="speed workload: calls of this operation per frame (repeat)")
+    parser.add_argument("--frame-report", type=Path,
+                        help="source-linked exact mixed frame evidence (frame objective only)")
+    parser.add_argument("--frame-max-cycles", type=int,
+                        help="max synthetic math-only peak cycles per measured frame")
+    parser.add_argument("--frame-optimize", choices=("peak", "ram", "zp"),
+                        help="goal within frame-qualified full linked source plans")
     parser.add_argument("--pin", action="append", default=[], metavar="OP=VARIANT",
                         help="pin a catalog variant for subsequent integration")
     parser.add_argument("--out", type=Path,
@@ -422,6 +428,17 @@ def main(argv: list[str] | None = None) -> int:
                 if not value.isdecimal():
                     raise SelectionError("Invalid workload call count: " + value)
                 workloads[name] = int(value)
+        objective_requested = args.objective or cfg.get("objective", "balanced")
+        if objective_requested == "frame":
+            import frame_builder_mode
+            try:
+                return frame_builder_mode.run(
+                    args, cfg, selected, pins, constraints, workloads, index)
+            except (ValueError, KeyError) as error:
+                raise SelectionError("frame evidence: " + str(error)) from error
+        if args.frame_report is not None or args.frame_max_cycles is not None or args.frame_optimize is not None:
+            raise SelectionError("Frame evidence flags require --objective frame")
+
         plan = create_plan(
             index, selected,
             target=args.target or cfg.get("target", "c64"),
