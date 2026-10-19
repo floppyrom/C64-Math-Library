@@ -1,3 +1,9 @@
+## Unreleased — authenticated original V1 signed8 DIV/MOD speed selection
+
+- Add full-public matched-input CPU-model speed provenance for the unchanged shared 530-byte original V1–V5 `SDIV8`/`SMOD8` quotient/remainder producer, preserving one physical code owner and one private ZP byte for both exports.
+- Verify 512 signed Q8/R8/C calls at two relocations including divide-by-zero, input/sentinel/stack preservation, native VICE and strict RAM/ZP budgeting.
+- Increase authenticated speed coverage to 44 of 56 without substituting a slower portable routine or changing the historical V1–V5 profiles.
+
 ## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
 
 - Authenticate the unchanged 11/15/22-byte canonical V1–V5 trigonometric
