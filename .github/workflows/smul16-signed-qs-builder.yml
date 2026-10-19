@@ -6,6 +6,7 @@ on:
       - 'tools/selective_smul16_quartersquare.py'
       - 'tools/selective_speed_smul16.py'
       - 'tools/test_selective_smul16_quartersquare.py'
+      - 'tools/test_smul16_qs_paired_frame.py'
       - 'tools/native_selective_smul16_quartersquare.py'
       - 'tools/selective_linker.py'
       - '.github/workflows/smul16-signed-qs-builder.yml'
@@ -26,9 +27,10 @@ jobs:
           python-version: '3.12'
       - name: Preserve canonical unsigned QS while qualifying exact signed public entry
         run: |
-          python3 -m compileall -q tools/selective_smul16_quartersquare.py tools/selective_speed_smul16.py tools/test_selective_smul16_quartersquare.py tools/native_selective_smul16_quartersquare.py tools/selective_linker.py
+          python3 -m compileall -q tools/selective_smul16_quartersquare.py tools/selective_speed_smul16.py tools/test_selective_smul16_quartersquare.py tools/test_smul16_qs_paired_frame.py tools/native_selective_smul16_quartersquare.py tools/selective_linker.py
           python3 tools/selective_smul16_quartersquare.py
           python3 -m unittest discover -s tools -p 'test_selective_smul16_quartersquare.py' -v
+          python3 -m unittest discover -s tools -p 'test_smul16_qs_paired_frame.py' -v
 
   pinned-native-vice:
     needs: source-model
