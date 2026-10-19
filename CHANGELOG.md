@@ -1,13 +1,33 @@
-## Unreleased — historical shared V1 SDIV8/SMOD8 measured speed provenance
+## Unreleased — historical shared V1 SDIV8/SMOD8 public speed
 
-- Authenticate complete signed Q8/R8/C public-call speed for the unchanged
-  canonical 530-byte V1–V5 signed8 source over 512 identical signed pairs
-  at two relocations, including zero-divisor and sign/overflow boundaries.
-- Preserve exactly one shared source image, one private ZP byte and caller
-  input/output and stack ABI when SDIV8 and SMOD8 are selected together.
-- Add two-API weighted speed selection without a slower replacement, and
-  pinned native VICE r46284 checks of the existing source. Qualified speed
-  coverage reaches 40/56 on this main-based branch if all checks pass.
+- Authenticate both names of the original 530-byte V1–V5 signed8 quotient
+  and remainder kernel using 512 identical Q8/R8/C public calls at two
+  code, I/O and private ZP placements, including divide-by-zero cases.
+- Preserve exactly one shared physical producer and one private ZP byte,
+  full public operands/output sentinel ABI, and native VICE r46284.
+- Extend measured speed selection to 44/56 APIs after full exact-head CI;
+  do not substitute a slower or nonhistorical kernel.
+
+## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
+
+- Authenticate the unchanged 11/15/22-byte canonical V1–V5 trigonometric
+  sources on all 256 phases, two code origins and exactly one shared
+  immutable sine-table page, with complete X/Y/Z/C and SP preservation.
+- Enable measured speed objective for all three public API names without
+  replacing a historical fast source; qualified catalog grows to 42/56.
+- Native VICE r46284 and exact SHA256 publication required before merge.
+
+## Unreleased — signed SMULDIV16 quarter-square + V2 fast public source
+
+- Compose the immutable canonical signed 16×16 quarter-square source and
+  already source-qualified V2 signed 32/16 division magnitude core with an
+  independent public SMULDIV16 adapter; no changes to profile binaries.
+- Retain the 439-byte/zero-ZP compact source; the fast 4,263-byte image
+  requires 12 exclusive ZP and 4 ordinary scratch bytes.
+- Verify 512 matched Q32/R16/C and signed full-product calls at two origins,
+  a 150-call/24-frame busiest-math workload, two native VICE r46284 layouts,
+  and source integrity. Coverage gains are provisional until the dependent
+  unsigned UMULDIV16 source and full exact-head CI pass.
 
 ## Unreleased — qualified read-only signed8 quarter-square Pareto choice
 
