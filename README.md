@@ -18,6 +18,8 @@ The **profile-retirement evidence gate** now distinguishes the 56 source-speed-q
 
 A **five-way, identical-public-input UMUL32 busiest-frame parity audit** is now available: the compact zero-ZP, unified shared, quarter-square, original FAST31 and physically shared FAST31 versions are built at two identical addresses and scored on 150 full64 public calls across 24 synthetic frames. The report preserves resource, per-call regression, worst-frame and SHA provenance; see `docs/UMUL32_ALL_FIVE_PAIRED_FRAME_PARITY.md`. These are CPU-model cycles, not PAL/VIC-II/IRQ or REU timing.
 
+The historical `SMUL32` signed full64 variants can now be compared on **150 identical complete public calls over 24 synthetic frames**, at two code/I/O relocations. The report preserves full64 correctness, carry/stack/inputs, permitted FAST31 SMC operands, source/PRG hashes, peak and p95 math-frame cycles, individual-call regressions, RAM/ZP and shared-source costs; see `docs/SMUL32_FOUR_PAIRED_FRAME_PARITY.md`. This is a CPU-model math-only measurement and does not replace PAL/VIC-II/IRQ hardware qualification.
+
 **Start without profiles:**
 
 ```sh

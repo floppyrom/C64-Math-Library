@@ -1,0 +1,39 @@
+name: SMUL32 four historical sources same-input busy frame
+
+on:
+  pull_request:
+    paths:
+      - 'tools/smul32_four_paired_frames.py'
+      - 'tools/test_smul32_four_paired_frames.py'
+      - 'tools/selective_linker.py'
+      - 'tools/selective_speed_smul32.py'
+      - '.github/workflows/smul32-four-frame-parity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  matched-public-frames:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare four exact signed full64 public sources at two relocations
+        run: |
+          python3 -m compileall -q tools/smul32_four_paired_frames.py tools/test_smul32_four_paired_frames.py
+          python3 -m unittest discover -s tools -p 'test_smul32_four_paired_frames.py' -v
+          mkdir -p build
+          python3 tools/smul32_four_paired_frames.py --out build/smul32_four_frame_report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: four-smul32-same-input-public-peak-frame
+          path: build/smul32_four_frame_report.json
+          if-no-files-found: warn
+          retention-days: 30

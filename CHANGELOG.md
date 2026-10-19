@@ -1,3 +1,9 @@
+## Unreleased — matched full64 signed32 four-source busiest-frame comparison
+
+- Execute all four original source-linked SMUL32 signed 32x32→64 implementations on 150 identical complete-public calls over 24 deterministic synthetic frames at two relocations.
+- Verify signed full64 result, input bytes, carry, stack, exact source/PRG match and strict original FAST31 self-modifying-code whitelist; report mean, peak, p95, slower calls, and RAM/ZP Pareto costs.
+- Retain all historical V1–V5 reference images and existing selectable compact and shared sources; CPU-model arithmetic frame cycles are not physical PAL, SID, IRQ, REU or VIC-II time.
+
 ## Unreleased — five-way UMUL32 historical same-input worst-frame certificate
 
 - Assemble and execute all five qualified original UMUL32 full64 implementations independently on 150 identical public operand/caller-state calls over 24 deterministic synthetic frames at two relocation origins.
