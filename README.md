@@ -16,6 +16,8 @@ SEEK8/SEEK16 INIT and per-frame steppers now have original-source full-public mo
 
 The **profile-retirement evidence gate** now distinguishes the 56 source-speed-qualified stock APIs from nine additional V3/V4 REU/Turbo/QS16 public lifecycle exports. It inventories profile symbol files and mode-private ZP ownership, and refuses to mark full hardware and historical speed parity as complete. Run `python3 tools/profile_retirement_audit.py --out build/retirement.json`; see `docs/PROFILE_RETIREMENT_EVIDENCE.md`. No legacy profiles or REU images are deleted.
 
+The historical `SMUL32` signed full64 variants can now be compared on **150 identical complete public calls over 24 synthetic frames**, at two code/I/O relocations. The report preserves full64 correctness, carry/stack/inputs, permitted FAST31 SMC operands, source/PRG hashes, peak and p95 math-frame cycles, individual-call regressions, RAM/ZP and shared-source costs; see `docs/SMUL32_FOUR_PAIRED_FRAME_PARITY.md`. This is a CPU-model math-only measurement and does not replace PAL/VIC-II/IRQ hardware qualification.
+
 **Start without profiles:**
 
 ```sh
