@@ -32,7 +32,15 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 34 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 34 of the 56 APIs
+
+A separate **read-only SMUL8 quarter-square** selectable option is being
+qualified alongside the exact V1-V5 self-modifying historical source.
+The no-SMC variant reserves 1,159 code+table bytes, two scratch bytes
+and 0 ZP, versus four original 511-byte table planes for V1's 46-byte
+SMC kernel. It is a RAM/immutability alternative, **not** a claimed
+speed winner without matched public-call benchmark evidence.
+See `docs/SMUL8_READONLY_QS.md`., including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
