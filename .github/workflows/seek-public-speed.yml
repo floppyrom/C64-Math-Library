@@ -1,0 +1,60 @@
+name: Original SEEK8 and SEEK16 all-eight public speed provenance
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_speed_seek.py'
+      - 'tools/test_selective_speed_seek.py'
+      - 'tools/selective_linker.py'
+      - 'routines/movement/seek_u8_u8_dda.asm'
+      - 'routines/movement/seek_u16_u8_dda.asm'
+      - 'tools/seek_kernel.py'
+      - '.github/workflows/seek-public-speed.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check deterministic source generator and eight public models
+        run: |
+          python3 tools/generate_seek_sources.py --check
+          python3 -m compileall -q tools/selective_speed_seek.py tools/test_selective_speed_seek.py tools/selective_linker.py
+          python3 -m unittest discover -s tools -p 'test_selective_speed_seek.py' -v
+          python3 -m unittest discover -s tools -p 'test_selective_seek8.py' -v
+          python3 -m unittest discover -s tools -p 'test_selective_seek16.py' -v
+
+  native-vice:
+    needs: source-model
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Install pinned VICE build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned headless VICE
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Verify original shared SEEK8 and SEEK16 binaries at two relocations
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_selective_seek8.py
+          python3 tools/native_selective_seek16.py

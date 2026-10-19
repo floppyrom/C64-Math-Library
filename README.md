@@ -12,6 +12,8 @@ The certified original V1/V5 signed Q8.8 vector normalizer is now also eligible 
 
 The signed 16-bit quotient/remainder APIs additionally offer a shared source-linked historical V2 magnitude divider with a signed public adapter. This fast donor occupies 1,705 code bytes and eight ordinary scratch bytes, with zero ZP. The existing 206-byte compact zero-ZP implementation remains selectable when RAM is constrained. See `docs/SDIV16_SMOD16_V2_SHARED.md`.
 
+SEEK8/SEEK16 INIT and per-frame steppers now have original-source full-public movement-cycle provenance, including arrival and post-arrival, for all eight public entries. Two physical code/I/O placements and native VICE proofs preserve the one-producer-per-family state layout; see `docs/SEEK_PUBLIC_SPEED.md`. No alternative slower DDA kernel was introduced. These timings remain CPU-model estimates, not PAL badline/IRQ budgets.
+
 **Start without profiles:**
 
 ```sh
@@ -51,7 +53,7 @@ signed8 approximate-distance source over 512 identical full-public calls.
 Its max/min approximation is preserved, not substituted with a slower
 or more precise source; see `docs/DIST8_FAST_PUBLIC_SPEED.md`.
 
-Speed selection now covers 48 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers all 56 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles

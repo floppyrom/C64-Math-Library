@@ -1,3 +1,9 @@
+## Unreleased — all eight historical SEEK8/SEEK16 APIs source-speed qualified
+
+- Measure original shared 651-byte SEEK8 and 898-byte SEEK16 DDA producers for all four INIT/STEP/STEP_INT/STEP1 public entries independently. Preserve 160/248 bytes of eight-object state, 19 bytes of INIT scratch, and 0 ZP; no slower substitute kernel.
+- Verify 80 deterministic moves per API at two relocations with X/C/SP and input preservation, slot isolation, exact arrival and post-arrival, and immutable generated source checksums. Complete call means, p95 and worst are CPU-model timings, not PAL/IRQ timing.
+- Permit measured, weighted operation-first speed selection for all 56/56 public APIs; retain all five historical profiles pending hardware/resource/performance-parity acceptance.
+
 ## Unreleased — restore historical V2 fast shared signed16 DIV/MOD in installer
 
 - Add one source-linked 1,705-byte V2 divider+signed adapter for `SDIV16` and `SMOD16`, requiring eight bytes of scratch and no zero page.

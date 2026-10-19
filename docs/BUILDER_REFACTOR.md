@@ -1804,3 +1804,7 @@ The tests cover the real published 56-operation index, historical/typed
 aliases, idempotent operation selection, pin errors, resource validation,
 catalog checksum verification, deterministic plans, and hard rejection of
 an unsupported selective binary.
+
+## 2026-10-19 SEEK speed-model qualification update
+
+The earlier warning that single-operation SEEK8 speed selection was unavailable has been superseded by source-locked two-placement full public-call models for SEEK8 and SEEK16 INIT, STEP, STEP_INT and STEP1. All eight operations retain their exact original 651/898-byte producers and shared state, with arrival/post-arrival timing included. See `docs/SEEK_PUBLIC_SPEED.md`. Source CPU cycles are not physical PAL badline or IRQ-qualified latency, and V1–V5 compatibility images remain in place pending final hardware acceptance.

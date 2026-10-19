@@ -34,7 +34,7 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (forty-eight source-qualified APIs)
+## Workload-weighted speed selection (all fifty-six source-qualified APIs)
 
 All three original SIN8/COS8/SINCOS8 sources now carry public-call speed
 measurements over 256 phases, at two origins, with one shared sine page.
@@ -50,8 +50,8 @@ The unchanged original V1 61-byte DIST8_FAST approximation now carries
 relocations. It continues to calculate the historical fast approximation,
 not the distinct accurate distance operation.
 
-The `speed` objective supports project-level weighted selection for **forty-eight**
-individually qualified APIs: DIST8_FAST, SDIV8, SMOD8, SIN8, COS8, SINCOS8, UMUL8, SMUL8, UMUL16, UMULDIV16, SMULDIV16, SMUL16, SMUL16_SHR8, UMUL24, SMUL24, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, SDIV32_16, SMOD32_16, SDIV32_32, SMOD32_32, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, SDIV24, SMOD24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16. Multiple operations **must**
+The `speed` objective supports project-level weighted selection for **fifty-six**
+individually qualified APIs: DIST8_FAST, SDIV8, SMOD8, SIN8, COS8, SINCOS8, UMUL8, SMUL8, UMUL16, UMULDIV16, SMULDIV16, SMUL16, SMUL16_SHR8, UMUL24, SMUL24, UMUL16_SHR8, UMOD8, UDIV8, ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16, SMUL32_SHR16, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, SDIV32_16, SMOD32_16, SDIV32_32, SMOD32_32, UMOD32_16, UDIV32_32, UMOD32_32, UDIV24, SDIV24, SMOD24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SEEK8_INIT, SEEK8_STEP, SEEK8_STEP_INT, SEEK8_STEP1, SEEK16_INIT, SEEK16_STEP, SEEK16_STEP_INT, SEEK16_STEP1. Multiple operations **must**
 each have a positive integer call count,
 reflecting expected calls per game frame (no implicit equal-frequency guess).
 For example:
