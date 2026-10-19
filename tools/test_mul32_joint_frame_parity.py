@@ -14,6 +14,7 @@ class Joint32MulFrameTests(unittest.TestCase):
                 report=compare(code,io,zp)
                 self.assertEqual(report["paired_calls"],150)
                 self.assertEqual(report["frames"],24)
+                self.assertEqual(len(report["input_corpus_sha256"]),64)
                 self.assertEqual(set(report["per_option"]),set(OPTIONS))
                 choices=report["per_option"]
                 self.assertEqual(choices["fast31-shared"]["linked_source_count"],1)

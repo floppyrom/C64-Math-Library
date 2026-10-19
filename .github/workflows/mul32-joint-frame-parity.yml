@@ -5,6 +5,8 @@ on:
     paths:
       - 'tools/mul32_joint_frame_parity.py'
       - 'tools/test_mul32_joint_frame_parity.py'
+      - 'tools/mul32_frame_frontier.py'
+      - 'tools/test_mul32_frame_frontier.py'
       - 'tools/selective_linker.py'
       - '.github/workflows/mul32-joint-frame-parity.yml'
   workflow_dispatch:
@@ -27,12 +29,16 @@ jobs:
         run: |
           python3 -m compileall -q tools/mul32_joint_frame_parity.py tools/test_mul32_joint_frame_parity.py
           python3 -m unittest discover -s tools -p 'test_mul32_joint_frame_parity.py' -v
+          python3 -m unittest discover -s tools -p 'test_mul32_frame_frontier.py' -v
           mkdir -p build
           python3 tools/mul32_joint_frame_parity.py --out build/mul32_joint_source_parity.json
+          python3 tools/mul32_frame_frontier.py --in-report build/mul32_joint_source_parity.json --ram-budget 3072 --zp-budget 31 --max-peak-math-cycles 20000 --out build/mul32_peak_frontier.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: joint-signed-unsigned-full64-source-parity
-          path: build/mul32_joint_source_parity.json
+          path: |
+            build/mul32_joint_source_parity.json
+            build/mul32_peak_frontier.json
           if-no-files-found: warn
           retention-days: 30
