@@ -5,6 +5,7 @@ on:
     paths:
       - 'tools/selective_smul8_qs_readonly.py'
       - 'tools/test_selective_smul8_qs_readonly.py'
+      - 'tools/test_smul8_qs_pareto_bench.py'
       - 'tools/test_selective_smul8.py'
       - 'tools/native_smul8_qs_readonly.py'
       - 'tools/selective_linker.py'
@@ -27,9 +28,10 @@ jobs:
           python-version: '3.12'
       - name: Exhaustive 65536 signed pairs, immutable program and historical source safety
         run: |
-          python3 -m compileall -q tools/selective_smul8_qs_readonly.py tools/test_selective_smul8_qs_readonly.py tools/test_selective_smul8.py tools/native_smul8_qs_readonly.py tools/selective_linker.py
+          python3 -m compileall -q tools/selective_smul8_qs_readonly.py tools/test_selective_smul8_qs_readonly.py tools/test_smul8_qs_pareto_bench.py tools/test_selective_smul8.py tools/native_smul8_qs_readonly.py tools/selective_linker.py
           python3 tools/selective_smul8_qs_readonly.py
           python3 -m unittest discover -s tools -p 'test_selective_smul8_qs_readonly.py' -v
+          python3 -m unittest discover -s tools -p 'test_smul8_qs_pareto_bench.py' -v
           python3 -m unittest discover -s tools -p 'test_selective_smul8.py' -v
 
   pinned-vice:
