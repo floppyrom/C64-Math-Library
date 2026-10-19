@@ -1,11 +1,23 @@
-## Unreleased — measured V1–V5 shared trigonometric full-public cycles
+## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
 
-- Authenticate the existing SIN8, COS8 and SINCOS8 11/15/22-byte public
-  sources over all 256 phases at two relocations, sharing one 256-byte sine
-  page and preserving caller input/output/stack semantics.
-- Enable measured-source speed objective for these three operations; the
-  original source code and historical binaries are unchanged.
-- With qualified historical UMULDIV16, measured speed catalog covers 41/56.
+- Authenticate the unchanged 11/15/22-byte canonical V1–V5 trigonometric
+  sources on all 256 phases, two code origins and exactly one shared
+  immutable sine-table page, with complete X/Y/Z/C and SP preservation.
+- Enable measured speed objective for all three public API names without
+  replacing a historical fast source; qualified catalog grows to 42/56.
+- Native VICE r46284 and exact SHA256 publication required before merge.
+
+## Unreleased — signed SMULDIV16 quarter-square + V2 fast public source
+
+- Compose the immutable canonical signed 16×16 quarter-square source and
+  already source-qualified V2 signed 32/16 division magnitude core with an
+  independent public SMULDIV16 adapter; no changes to profile binaries.
+- Retain the 439-byte/zero-ZP compact source; the fast 4,263-byte image
+  requires 12 exclusive ZP and 4 ordinary scratch bytes.
+- Verify 512 matched Q32/R16/C and signed full-product calls at two origins,
+  a 150-call/24-frame busiest-math workload, two native VICE r46284 layouts,
+  and source integrity. Coverage gains are provisional until the dependent
+  unsigned UMULDIV16 source and full exact-head CI pass.
 
 ## Unreleased — qualified read-only signed8 quarter-square Pareto choice
 
