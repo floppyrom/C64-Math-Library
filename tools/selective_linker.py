@@ -17,6 +17,7 @@ import re
 from mini6502 import Assembler
 import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
+import selective_smul8_qs_readonly as smul8qs
 import selective_fast_umul16 as fast16
 import selective_fast31_umul32 as fast31
 import selective_v2_fast_umul24 as v2umul24
@@ -175,6 +176,14 @@ MODULES = {
         },
     },
     "MATH_SMUL8": {
+        "link:qs-readonly": {
+            "source": "routines/multiply/umul8_quartersquare.asm",
+            "segments": (("KERNEL_CODE", 73),("Q_LO", 511),("Q_HI", 511),
+                         ("SIGNED8_ADAPTER", 64)),
+            "entry": "FAST_SMUL8_QS_READONLY", "zp": 0, "scratch": 2,
+            "operand_layout": "xyz", "smul8_qs": True,
+            "provenance": "Canonical 73-byte unsigned quarter-square 8x8 source, two 511-entry exact Q planes and fixed signed high-byte correction; stock NMOS 6510, read-only, no ZP, two RAM scratch bytes.",
+        },
         "link:v1-resident-smc": {
             "source": "routines/multiply/smul8_v1_smc.asm",
             "segments": (("KERNEL_CODE", 46),),
@@ -1060,6 +1069,11 @@ def available_variants(root=ROOT):
                     "tools/selective_fast_umul8.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest()
                 } if mod.get("fast_umul8") else {
+                    "tools/selective_fast_umul8.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
+                    "tools/selective_smul8_qs_readonly.py": hashlib.sha256(
+                        (root / "tools/selective_smul8_qs_readonly.py").read_bytes()).hexdigest(),
+                } if mod.get("smul8_qs") else {
                     "tools/selective_umul8_v1.py": hashlib.sha256(
                         (root / "tools/selective_umul8_v1.py").read_bytes()).hexdigest(),
                 } if mod.get("umul8_v1") else {
@@ -2078,6 +2092,10 @@ def build(plan, outdir, memory=None, root=ROOT):
         if "atan2" in module and [x["source_path"] for x in dep_provenance] != [
                 "routines/atan2/tables.py"]:
             raise LinkError(api + ": ATAN2 table generator provenance missing")
+        if module.get("smul8_qs") and set(x["source_path"] for x in dep_provenance) != {
+                "tools/selective_fast_umul8.py",
+                "tools/selective_smul8_qs_readonly.py"}:
+            raise LinkError(api + ": read-only signed8 quarter-square source provenance missing")
         if module.get("fast_umul8") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_fast_umul8.py"]:
             raise LinkError(api + ": quarter-square table generator provenance missing")
@@ -2154,7 +2172,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("fast_umul8") or module.get("smul8_qs") or module.get("fast_umul16") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2233,6 +2251,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                         {"name": "VEC2_COMPONENTS", "start": "$%04X" % (pc+0x900), "bytes": 1280},
                         {"name": "VEC2_EXPORT", "start": "$%04X" % (pc+0xE00), "bytes": 3},
                     ]
+                elif module.get("smul8_qs"):
+                    machine, labels, ranges, end = smul8qs.assemble_image(pc,io,sb,root)
+                    entry = labels[module["entry"]]
                 elif module.get("fast_umul16"):
                     machine, entry, ranges, end = fast16.assemble(
                         pc, io, sb, root, source_path=module["source"],
