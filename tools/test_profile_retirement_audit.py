@@ -25,6 +25,8 @@ class RetirementEvidenceTests(unittest.TestCase):
         self.assertEqual(result["selectable_variants_per_operation"],
                          {"1": 15, "2": 26, "3": 10, "4": 4, "5": 1})
         self.assertEqual(len(result["legacy_hardware_services"]), 9)
+        self.assertEqual(len(result["stock_nonoperation_public_symbols"]), 13)
+        self.assertIn("MATH_INIT", result["stock_nonoperation_public_symbols"])
         self.assertEqual(set(result["stock_operations"]),
                          set(audited.selective_linker.MODULES))
         self.assertFalse(result["ready_to_retire_all_v1_v5_profiles"])

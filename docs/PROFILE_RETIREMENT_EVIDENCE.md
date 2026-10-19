@@ -23,6 +23,10 @@ full historical performance/hardware parity.
   15 retain one exact historical source. Stock linker resource constraints,
   shared producer, scratch/ZP/state and writable-code flags are inventoried.
   A single original-source variant does not imply a slower routine.
+- **13 stock non-operation symbols**: MATH_INIT, seven shared I/O aliases
+  (X/Y/Z/N/D/Q/R), and five SEEK8/SEEK16 position-field aliases. These
+  are public ABI symbols but **not** standalone callable math operations or
+  REU backend services; the audit protects them separately on all V1–V5.
 - **Nine extra REU lifecycle exports**: V3/V4 each provide six
   `MATH_REU_UMUL16/UMUL32_{BEGIN,CALL,END}` entry points; V4 additionally
   provides three `MATH_REU_QS16_{BEGIN,CALL,END}` entries. Their public

@@ -35,6 +35,12 @@ LEGACY_REU_SERVICE_FAMILIES = {
               "exclusive_zp_bytes": 16, "hardware": "REU 16MiB"},
 }
 SERVICE_PARTS = ("BEGIN", "", "END")
+STOCK_NON_OPERATION_SYMBOLS = frozenset({
+    "MATH_INIT", "MATH_X", "MATH_Y", "MATH_Z",
+    "MATH_N", "MATH_D", "MATH_Q", "MATH_R",
+    "MATH_SEEK8_POS_X", "MATH_SEEK8_POS_Y",
+    "MATH_SEEK16_POS_XL", "MATH_SEEK16_POS_XH", "MATH_SEEK16_POS_Y",
+})
 ASSIGNMENT = re.compile(r"^(MATH_[A-Z0-9_]+)\s*=\s*\$[0-9A-Fa-f]{4}\b", re.M)
 
 
@@ -140,10 +146,11 @@ def audit(root: Path = ROOT):
                 "hardware": contract["hardware"],
                 "lifecycle_phase": suffix or "CALL",
             }
-    unexpected = (symbols["v3_reu_512k"]|symbols["v4_reu_16m"])-set(catalog)-{"MATH_INIT"}-expected_reu
-    if unexpected:
-        raise RetirementAuditError("Uncatalogued additional REU service: "
-                                   +repr(sorted(unexpected)))
+    for profile, exports in symbols.items():
+        extras = exports - set(catalog) - expected_reu
+        if extras != STOCK_NON_OPERATION_SYMBOLS:
+            raise RetirementAuditError("Historical public data/INIT symbols changed in "
+                                       +profile+": "+repr(sorted(extras)))
     counts = {}
     for a in by_api.values():
         n = len(a["candidate_variants"])
@@ -160,6 +167,7 @@ def audit(root: Path = ROOT):
         "source_cycle_model_declarations": len(speed),
         "selectable_variants_per_operation": {str(k): counts[k] for k in sorted(counts)},
         "stock_operations": by_api,
+        "stock_nonoperation_public_symbols": sorted(STOCK_NON_OPERATION_SYMBOLS),
         "legacy_hardware_services": reu_services,
         "legacy_profile_symbol_sources": PROFILE_INCLUDE,
         "hardware_backend_status": {
