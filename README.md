@@ -32,7 +32,7 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 35 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 36 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -47,18 +47,22 @@ the lookup image. For the faster measured variants use:
 make builder-speed SPEED_CONFIG=examples/operation-first-shared24-speed.json OUT=build_shared24
 ```
 
-The Q8.8-scaled `SMUL16_SHR8` public signed24 operation now also has an
-independent 0-ZP quarter-square candidate (1,383 bytes including two
-immutable planes, four scratch bytes), retaining the compact 184-byte,
-six-scratch alternative. Qualification uses matched full public calls,
-real resource budgets and a busy-frame math workload; see
-`docs/SMUL16_SHR8_QS_BUILDER.md`. This builds on the signed SMUL16 source.
+The signed `SDIV16_SHL8` now retains both the 237-byte zero-ZP portable
+kernel and a 2,624-byte/12-ZP source-linked canonical V2 fast magnitude
+producer. Its Q24/R16/C public-call performance is independently certified;
+see `docs/SDIV16_SHL8_V2_BUILDER.md`.
 
-A new 0-ZP signed `SMUL16` quarter-square Pareto choice reuses the
-certified unsigned 16-bit producer and immutable table planes with a
-bounded signed high-word correction adapter. It retains the 161-byte
-compact alternative; the fast candidate uses 1,351 code+table bytes and
-four ordinary scratch bytes. See `docs/SMUL16_QS_BUILDER.md`.
+The signed Q8.8-scaled `SMUL16_SHR8` adds a separate 1,383-byte,
+zero-ZP quarter-square fast public source, four scratch bytes, and preserves
+the portable 184-byte six-scratch choice. Qualified timing uses complete
+signed24 public calls and synthetic busy-frame models; see
+`docs/SMUL16_SHR8_QS_BUILDER.md`.
+
+The signed `SMUL16` operation also offers a 0-ZP source-linked quarter-square
+1,351-byte code/table producer with four ordinary scratch bytes, preserving
+the compact 161-byte/zero-ZP six-scratch alternative. Both have identical
+full signed32 public-call comparisons, and the historical profiles remain
+available until performance parity is certified. See `docs/SMUL16_QS_BUILDER.md`.
 
 A stock-C64 reciprocal speed frontier now offers the original 99-byte compact,
 448-byte historical-threshold and 1,544-byte exact-table alternatives for
