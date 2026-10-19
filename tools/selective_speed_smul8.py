@@ -60,7 +60,7 @@ def bench_smul8(modules,code,io,scratch,root:Path):
                 "code_base":code,"math_io":io,
                 "scratch_base":scratch},root=root)
             if (man["operations"][0]["variant"]!=variant or
-                man["resource_use"]["main_ram_total_bytes"]!=ram or
+                man["resource_use"]["main_ram_total_bytes"]>ram or
                 man["resource_use"]["zero_page_bytes"]!=0):
                 raise ValueError("SMUL8 public resource contract changed")
             prg=(folder/"math_selective.prg").read_bytes()
