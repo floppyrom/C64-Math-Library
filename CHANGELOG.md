@@ -1,3 +1,13 @@
+## Unreleased — original shared V1 signed8 divide/modulo public speed
+
+- Certify unchanged historical 530-byte signed8 Q/R source on 512
+  identical complete-public Q8/R8/C calls at two origins and private
+  ZP relocations; preserve exactly one physical producer for two API names.
+- Native VICE r46284, complete public operand/high-output/stack semantics
+  and source SHA256 provenance remain mandatory.
+- Speed-qualified API coverage increases to 44/56 after full validation;
+  no V1–V5 binaries are changed or historical kernels replaced.
+
 ## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
 
 - Authenticate the unchanged 11/15/22-byte canonical V1–V5 trigonometric
