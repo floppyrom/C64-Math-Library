@@ -25,6 +25,7 @@ import selective_umul8_v1 as v1umul8
 import selective_seek8 as seek8
 import selective_seek16 as seek16
 import selective_speed
+import selective_speed_smul8 as speed_smul8
 import selective_speed_umul16
 import selective_speed_umul24 as speed_umul24
 import selective_speed_smul24 as speed_smul24
@@ -1930,6 +1931,7 @@ def build(plan, outdir, memory=None, root=ROOT):
             raise LinkError("Speed builds require positive workload calls for every operation")
         measured = {
             "MATH_UMUL8": (selective_speed.bench_umul8, "scratch", True),
+            "MATH_SMUL8": (speed_smul8.bench_smul8, "scratch", False),
             "MATH_UMUL16": (selective_speed_umul16.bench_umul16, "scratch", False),
             "MATH_UMUL24": (speed_umul24.bench_umul24, "scratch", True),
             "MATH_SMUL24": (speed_smul24.bench_smul24, "scratch", True),
