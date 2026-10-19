@@ -16,6 +16,8 @@ SEEK8/SEEK16 INIT and per-frame steppers now have original-source full-public mo
 
 The **profile-retirement evidence gate** now distinguishes the 56 source-speed-qualified stock APIs from nine additional V3/V4 REU/Turbo/QS16 public lifecycle exports. It inventories profile symbol files and mode-private ZP ownership, and refuses to mark full hardware and historical speed parity as complete. Run `python3 tools/profile_retirement_audit.py --out build/retirement.json`; see `docs/PROFILE_RETIREMENT_EVIDENCE.md`. No legacy profiles or REU images are deleted.
 
+A **project-level joint signed/unsigned 32×32→64 multiplication comparison** now distinguishes the one-image original FAST31 shared producer from two independent FAST31 images, compact sources and the six-entry unified compact source. It measures 150 identical interleaved public calls over 24 synthetic frames at two memory origins and reports actual shared code/table RAM cost, 31-ZP requirements, slower calls and peak-frame math CPU-model cycles. See `docs/MUL32_JOINT_SHARED_VS_SEPARATE.md`. This does not certify physical PAL timing.
+
 **Start without profiles:**
 
 ```sh

@@ -62,6 +62,8 @@ measurements must fail closed and produce a clear migration task.
 
 The automated [profile-retirement evidence report](PROFILE_RETIREMENT_EVIDENCE.md) distinguishes all 56 stock selectable APIs from **nine hardware-only REU lifecycle symbols** (six Turbo16/Turbo32 exports on V3/V4 plus three V4 QS16 exports). It detects source/REU ABI omissions but does not substitute for historical fastest-donor or measured physical-frame proof. The cutover assertion deliberately remains blocked.
 
+The joint signed+unsigned full64 FAST31 evaluation builds four **two-public-API** source plans at identical memory placements: compact independent, unified 375-byte, two separate 31-ZP FAST31 images, or one shared FAST31 image. The measured same-input 24-frame workload compares RAM/ZP and worst-frame math cycles, rather than assuming that selecting per-operation fastest standalone kernels minimizes whole-project memory. See `MUL32_JOINT_SHARED_VS_SEPARATE.md`; all source CPU-model results exclude PAL VIC-II/IRQ/SID hardware timing.
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

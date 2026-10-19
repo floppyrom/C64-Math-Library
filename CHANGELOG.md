@@ -1,3 +1,9 @@
+## Unreleased — mixed signed/unsigned FAST31 source-sharing parity audit
+
+- Link four alternative **two-public-operation** full64 multiplier plans and compare one shared FAST31 source against two independent original FAST31 images plus compact/unified fallback, on 150 identical signed/unsigned calls over 24 synthetic frames at two placements.
+- Verify unsigned/signed 64-bit mathematical output, full public operands, C=0 and stack, code/image SHA and actual RAM/ZP/shared-source count; report peak/p95/total math-frame CPU-model cycles and any per-call regressions.
+- Preserve all source Pareto variants and V1–V5 reference binaries; do not market this synthetic 6510 math model as PAL/VIC-II/IRQ/SID/REU timing.
+
 ## Unreleased — machine-audited REU/Turbo/QS16 profile-retirement evidence
 
 - Inventory all 56 source-cycle-qualified stock-C64 public operations, source candidate counts, persistent state, ZP, writable-code and original lineage in a deterministic JSON report.
