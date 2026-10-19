@@ -1,0 +1,57 @@
+name: Historical V2 signed16 Q/R shared source qualification
+
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_v2_signed16_shared.py'
+      - 'tools/selective_speed_sdiv16_shared.py'
+      - 'tools/test_selective_v2_signed16_shared.py'
+      - 'tools/test_v2_signed16_shared_frames.py'
+      - 'tools/native_selective_v2_signed16_shared.py'
+      - 'tools/selective_linker.py'
+      - '.github/workflows/v2-signed16-shared-builder.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-source-and-model:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Historical 1481-byte V2 source, full signed Q/R public ABI and matched cycles
+        run: |
+          python3 -m compileall -q tools/selective_v2_signed16_shared.py tools/selective_speed_sdiv16_shared.py tools/test_selective_v2_signed16_shared.py tools/test_v2_signed16_shared_frames.py tools/native_selective_v2_signed16_shared.py tools/selective_linker.py
+          python3 tools/selective_v2_signed16_shared.py
+          python3 -m unittest discover -s tools -p 'test_selective_v2_signed16_shared.py' -v
+          python3 -m unittest discover -s tools -p 'test_v2_signed16_shared_frames.py' -v
+
+  native-vice:
+    needs: public-source-and-model
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - name: Install pinned native VICE dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned headless x64sc r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Qualify 192 signed quotient/remainder ABI calls under native VICE
+        run: |
+          mkdir -p "$HOME/.local/state/vice"
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_selective_v2_signed16_shared.py
