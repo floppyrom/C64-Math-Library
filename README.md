@@ -10,6 +10,8 @@ fast square-table implementation as the automatic speed-preferred option.
 
 The certified original V1/V5 signed Q8.8 vector normalizer is now also eligible for authenticated `speed` builds: it retains its 3,587-byte aligned code/table image, four private ZP bytes and self-modifying code requiring executable RAM. Its single unchanged source is compared on 512 identical complete public calls at two origins; see `docs/VEC2_STOCK_PUBLIC_SPEED.md`.
 
+The signed 16-bit quotient/remainder APIs additionally offer a shared source-linked historical V2 magnitude divider with a signed public adapter. This fast donor occupies 1,705 code bytes and eight ordinary scratch bytes, with zero ZP. The existing 206-byte compact zero-ZP implementation remains selectable when RAM is constrained. See `docs/SDIV16_SMOD16_V2_SHARED.md`.
+
 **Start without profiles:**
 
 ```sh
@@ -49,7 +51,7 @@ signed8 approximate-distance source over 512 identical full-public calls.
 Its max/min approximation is preserved, not substituted with a slower
 or more precise source; see `docs/DIST8_FAST_PUBLIC_SPEED.md`.
 
-Speed selection now covers 46 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 48 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles

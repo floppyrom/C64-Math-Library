@@ -1,3 +1,9 @@
+## Unreleased — restore historical V2 fast shared signed16 DIV/MOD in installer
+
+- Add one source-linked 1,705-byte V2 divider+signed adapter for `SDIV16` and `SMOD16`, requiring eight bytes of scratch and no zero page.
+- Preserve the 206-byte compact zero-ZP variant and all five historical profiles. Certify 384 matched complete-public calls, both relocations, a 24-frame workload and pinned native VICE r46284. The V2 variant improves mean cycles but has a documented p95 trade-off.
+- Extend authenticated stock-C64 speed selection to 48 of 56 APIs. Benchmarks are CPU-model measurements, not physical PAL frame timings.
+
 ## Unreleased — original V1/V5 vector-normalization full public speed provenance
 
 - Authenticate unchanged source-linked log-ratio VEC2_NORMALIZE_Q8_8 with its exact table geometry, fixed Q1.15 outputs, zero-vector carry and all input/stack preservation on 512 signed pairs at two physical placements.
