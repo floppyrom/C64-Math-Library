@@ -24,6 +24,8 @@ A **project-level joint signed/unsigned 32×32→64 multiplication comparison** 
 
 The signed/unsigned 32-bit shared-vs-separate comparison also provides an **offline peak-frame and RAM/ZP Pareto frontier**, checking both memory placements and exact input/source hashes before selecting a full two-API plan. See [the project-level frame selection gate](docs/MUL32_JOINT_SHARED_VS_SEPARATE.md); it does not yet replace weighted-mean automatic builder selection or certify physical PAL time.
 
+A **three-operation mixed busiest-frame research gate** now links all eight combinations of signed/unsigned 32×32 full64 multiplication with table or tableless ISQRT16 at two memory origins, checks identical full public-call input histories and computes RAM/ZP/peak-frame Pareto alternatives. See [mixed three-operation frame qualification](docs/MIXED_THREE_OPERATION_FRAME_FRONTIER.md). This is a CPU-model-only offline selector, not physical PAL/REU certification or a new 56-operation speed-mode guarantee.
+
 **Start without profiles:**
 
 ```sh
