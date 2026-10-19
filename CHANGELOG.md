@@ -1,3 +1,16 @@
+## Unreleased — original V2 fast signed16 quotient/remainder source sharing
+
+- Reuse canonical V2 direct 16/16 unsigned divider plus signed Q16/R16/C
+  adapter for shared `SDIV16` and `SMOD16` public APIs, 1,705 B source,
+  8 ordinary RAM scratch, zero ZP, no REU/SMC/INIT.
+- Preserve compact 206-byte zero-ZP producer with 3 RAM scratch bytes,
+  along with source-locked V1–V5 profile binaries.
+- On 384 matched signed full-public inputs, historical V2 mean is about
+  474 vs portable 822 CPU-model cycles. p95 slightly regresses; 24-frame
+  busiest math model and two-map native VICE r46284 gate selection.
+- Increase authenticated speed selection to 47 of 56 APIs subject to
+  exact-head package, builder and source/VICE qualification.
+
 ## Unreleased — original V1 DIST8_FAST complete-public speed provenance
 
 - Authenticate the existing 61-byte signed8 max/min approximate-distance
