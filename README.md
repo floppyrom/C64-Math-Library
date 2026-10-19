@@ -32,7 +32,12 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 37 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+The original V1 shared signed8 Q/R producer now has source-authenticated
+full public-call cycle models for SDIV8 and SMOD8. Both public names
+retain one 530-byte code image and one private ZP byte; see
+`docs/SDIV8_SMOD8_SHARED_PUBLIC_SPEED.md`.
+
+Speed selection now covers 40 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
