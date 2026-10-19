@@ -37,7 +37,12 @@ all-256-phase same-call speed models at two origins, sharing **one** immutable
 256-byte sine table. No historical routine is replaced by a slower source;
 see `docs/TRIG8_SHARED_PUBLIC_SPEED.md`.
 
-Speed selection now covers 42 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+The original V1–V5 signed8 `SDIV8` and `SMOD8` Q/R producer now has
+identical-corpus complete-public-call speed provenance for both exports.
+Both names continue to share one 530-byte physical source and one ZP byte;
+see `docs/SDIV8_SMOD8_SHARED_PUBLIC_SPEED.md`.
+
+Speed selection now covers 44 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
