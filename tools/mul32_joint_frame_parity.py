@@ -141,6 +141,8 @@ def compare(code, io, zp=0x50):
     baseline = data["compact-pair"]["scored"]
     result = {"code": "$%04X" % code, "io": "$%04X" % io,
               "paired_calls": CALLS, "frames": FRAMES, "cpu_model_only": True,
+              "input_corpus_sha256": hashlib.sha256(
+                  json.dumps(keys, separators=(",", ":")).encode("utf-8")).hexdigest(),
               "native_pal_timing": False, "per_option": {}}
     for choice, option in data.items():
         calls = option["calls"]

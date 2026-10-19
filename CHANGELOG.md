@@ -1,3 +1,9 @@
+## Unreleased — two-placement joint full64 multiplication peak-frame resource frontier
+
+- Add an offline, source-proven two-API selection gate for RAM, ZP and synthetic peak-frame budgets; preserve non-dominated shared FAST31, separate FAST31 and compact zero-ZP plans.
+- Seal deterministic 150-call corpus SHA across both relocations and reject divergent ABI/source/timing evidence; retain weighted-mean production builder behavior and all historical profiles.
+- Run focused frontiers and full signed/unsigned same-call parity in CI; explicitly do not claim PAL VIC/IRQ/SID/REU physical frame feasibility.
+
 ## Unreleased — mixed signed/unsigned FAST31 source-sharing parity audit
 
 - Link four alternative **two-public-operation** full64 multiplier plans and compare one shared FAST31 source against two independent original FAST31 images plus compact/unified fallback, on 150 identical signed/unsigned calls over 24 synthetic frames at two placements.

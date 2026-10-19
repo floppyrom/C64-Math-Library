@@ -35,3 +35,30 @@ unmodified and remain separately protected.
 python3 -m unittest discover -s tools -p 'test_mul32_joint_frame_parity.py' -v
 python3 tools/mul32_joint_frame_parity.py --out build/mul32_joint_source_parity.json
 ```
+
+## Frame-aware project budget frontier (offline qualification)
+
+`tools/mul32_frame_frontier.py` consumes the **two-placement, source-linked**
+report and fails closed if candidate sets, input-corpus SHA, source hashes, ABI
+exports, placement count or timing basis disagree. It calculates the worst
+relocation RAM, ZP, peak and p95 frame costs, with total arithmetic cycles
+summed across placements, then identifies nondominated *joint* source plans.
+No arithmetic routine changes and no per-API speed extrapolation occurs.
+
+```sh
+python3 tools/mul32_joint_frame_parity.py --out build/mul32_joint_source_parity.json
+python3 tools/mul32_frame_frontier.py \
+  --in-report build/mul32_joint_source_parity.json \
+  --ram-budget 3072 --zp-budget 31 --max-peak-math-cycles 20000 \
+  --out build/mul32_peak_frontier.json
+```
+
+At the qualified paired corpus, the robust two-map FAST31 shared image
+occupies at most **2,813 main RAM bytes**, with **31 ZP bytes** and a
+**19,638-cycle** busiest synthetic math-only frame. The independent FAST31
+pair needs up to **5,373 main RAM bytes** but has a lower **19,429-cycle**
+worst-of-two frame. A RAM-constrained project can choose shared FAST31,
+while an unconstrained peak-minimizing project chooses independent FAST31.
+The `unified375` zero-ZP plan remains selectable when memory/ZP is tighter.
+These are **synthetic CPU-model public-call + JSR cycles**, not verified
+PAL 50Hz application frame costs or hardware REU/VIC/IRQ/SID measurements.

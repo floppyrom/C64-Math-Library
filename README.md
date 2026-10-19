@@ -22,6 +22,8 @@ The historical `SMUL32` signed full64 variants can now be compared on **150 iden
 
 A **project-level joint signed/unsigned 32×32→64 multiplication comparison** now distinguishes the one-image original FAST31 shared producer from two independent FAST31 images, compact sources and the six-entry unified compact source. It measures 150 identical interleaved public calls over 24 synthetic frames at two memory origins and reports actual shared code/table RAM cost, 31-ZP requirements, slower calls and peak-frame math CPU-model cycles. See `docs/MUL32_JOINT_SHARED_VS_SEPARATE.md`. This does not certify physical PAL timing.
 
+The signed/unsigned 32-bit shared-vs-separate comparison also provides an **offline peak-frame and RAM/ZP Pareto frontier**, checking both memory placements and exact input/source hashes before selecting a full two-API plan. See [the project-level frame selection gate](docs/MUL32_JOINT_SHARED_VS_SEPARATE.md); it does not yet replace weighted-mean automatic builder selection or certify physical PAL time.
+
 **Start without profiles:**
 
 ```sh
