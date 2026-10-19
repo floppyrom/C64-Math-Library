@@ -1,3 +1,14 @@
+## Unreleased — signed Q8.8 scaled quarter-square multiplier
+
+- Add an independently source-linked `SMUL16_SHR8` quarter-square implementation
+  with bounded signed32 correction and 32-byte public Q24 byte-slice.
+- Retain 184-byte/0-ZP compact source (six scratch) and 1,383-byte/0-ZP
+  QS source (four scratch) as separately selectable size/speed alternatives.
+- Add two-address-space 512-call source-model qualification, 150-call/24-frame
+  math latency tests and 192 real native VICE r46284 signed public calls.
+- Speed-selection coverage reaches 36/56 APIs on the combined dependency tree
+  **once complete exact-head CI qualifies**; all five historical profiles remain.
+
 ## Unreleased — signed16 quarter-square canonical source performance
 
 - Source-link the canonical 233-byte unsigned quarter-square 16x16 engine,

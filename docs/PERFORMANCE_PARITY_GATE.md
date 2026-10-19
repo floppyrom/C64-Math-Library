@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 35 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 36 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -118,6 +118,12 @@ explicit 1,351-byte/0-ZP choice alongside 161-byte compact zero-ZP.
 The faster variant's exact speed and worst-case latency are certified with
 identical input pairs, a busy-math-frame replay, and two-map native VICE,
 not only resident-profile timing.
+
+Signed Q8.8 `SMUL16_SHR8` reuses the original unsigned 16x16 quarter-square
+planes, exact signed32 wrapper and a bounded 32-byte Q24 output slice. Its
+1,383-byte/zero-ZP fast and 184-byte/zero-ZP compact paths require
+matched signed public calls and busiest-frame comparison, not unwrapped
+resident-profile timing. Table sharing with SMUL16 is future work.
 
 ## Active migration priority after PRs #293–#296
 

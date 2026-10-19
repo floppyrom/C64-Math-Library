@@ -32,7 +32,7 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 35 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 36 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -51,6 +51,12 @@ The signed `SDIV16_SHL8` now retains both the 237-byte zero-ZP portable
 kernel and a 2,624-byte/12-ZP source-linked canonical V2 fast magnitude
 producer. Its Q24/R16/C public-call performance is independently certified;
 see `docs/SDIV16_SHL8_V2_BUILDER.md`.
+
+The signed Q8.8-scaled `SMUL16_SHR8` adds a separate 1,383-byte,
+zero-ZP quarter-square fast public source, four scratch bytes, and preserves
+the portable 184-byte six-scratch choice. Qualified timing uses complete
+signed24 public calls and synthetic busy-frame models; see
+`docs/SMUL16_SHR8_QS_BUILDER.md`.
 
 The signed `SMUL16` operation also offers a 0-ZP source-linked quarter-square
 1,351-byte code/table producer with four ordinary scratch bytes, preserving
