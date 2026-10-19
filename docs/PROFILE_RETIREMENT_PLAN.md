@@ -34,10 +34,15 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (forty source-qualified APIs)
+Historical SIN8, COS8 and SINCOS8 sources and their one physical sine page
+have 256-phase public cycle provenance. Together with the merged fast
+UMULDIV16 producer, speed-basis coverage is 41/56. These models measure
+existing historical kernels, not a new slower or faster implementation.
 
-The `speed` objective supports project-level weighted selection for **forty**
-individually qualified APIs: UMUL8, SMUL8, SIN8, COS8, SINCOS8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
+## Workload-weighted speed selection (forty-one source-qualified APIs)
+
+The `speed` objective supports project-level weighted selection for **forty-one**
+individually qualified APIs: UMUL8, SMUL8, UMUL16, UMUL16_SHR8, SMUL16, SMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
 SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
 each have a positive integer call count,
@@ -68,12 +73,6 @@ verifies the newly speed-qualified two-variant UDIV24/UMOD24 source corpus.
 Benchmarks do **not** provide real hardware timing or prove
 cycle invariance after physical link relocation; speed selection is therefore
 an expected workload estimate, not exact total cycle prediction.
-
-Three original one-variant V1–V5 table routines—SIN8, COS8 and
-SINCOS8—are now individually authenticated for complete-public-call
-cycle accounting. Mixed speed plans still share one 256-byte SINE8
-plane, not three copies. This qualifies exact planning costs, not an
-algorithmic speed improvement or verified physical PAL timing.
 
 The signed8 `SMUL8` operation now offers a source-qualified **RAM/ROM-safe**
 alternative: historical V1 SMC with four 511-byte table planes (~68 complete

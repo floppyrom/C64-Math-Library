@@ -1,13 +1,11 @@
-## Unreleased — authenticated V1–V5 shared trigonometry speed planning
+## Unreleased — measured V1–V5 shared trigonometric full-public cycles
 
-- Source-authenticate all 256 phase-byte complete public-call timings for
-  SIN8, COS8 and SINCOS8 at two independently relocated code origins.
-- Keep the exact 11/15/22-byte historical kernels and one immutable
-  shared 256-byte sine table. No new slower algorithm or duplicate tables.
-- Add weighted speed-mode selection, per-operation mean/p95/max models,
-  exhaustive ABI and unchanged-source checks, and native VICE r46284 proof.
-- Extend measured speed support from 37 to 40 of 56 APIs subject to complete
-  exact-head release CI. Preserve all five resident reference profiles.
+- Authenticate the existing SIN8, COS8 and SINCOS8 11/15/22-byte public
+  sources over all 256 phases at two relocations, sharing one 256-byte sine
+  page and preserving caller input/output/stack semantics.
+- Enable measured-source speed objective for these three operations; the
+  original source code and historical binaries are unchanged.
+- With qualified historical UMULDIV16, measured speed catalog covers 41/56.
 
 ## Unreleased — qualified read-only signed8 quarter-square Pareto choice
 

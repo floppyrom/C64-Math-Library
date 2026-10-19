@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 40 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 41 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -132,11 +132,10 @@ The read-only source saves over 1,100 bytes, but is **not** a speed win:
 speed mode should retain V1 when its RAM and writable-code requirements
 are feasible. Separate native VICE and package qualification are required.
 
-The original historical SIN8/COS8/SINCOS8 one-page source now has exact
-256-phase complete-public-call cycle models at two code relocations, while
-retaining the single immutable sine-table owner. This authenticates speed
-*planning*, but does not constitute a faster replacement for any original
-V1–V5 trig kernel. See `TRIG8_SHARED_PUBLIC_SPEED.md`.
+The exact historical 11/15/22-byte SIN8/COS8/SINCOS8 sources now have
+256-phase two-origin measured full-public-call speed bases and reuse their
+single physical 256-byte sine-table page. This only authenticates speed
+provenance; it does not replace kernels or claim hardware PAL timing.
 
 ## Active migration priority after PRs #293–#296
 

@@ -32,17 +32,16 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 40 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+The original V1–V5 SIN8/COS8/SINCOS8 producers now have measured,
+matched-public speed bases at both code placements for all 256 phases.
+They preserve a *single* shared immutable 256-byte sine table; no slower
+replacement is introduced. See `docs/TRIG8_SHARED_PUBLIC_SPEED.md`.
+
+Speed selection now covers 41 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
 can be retired. See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
-
-Speed mode now supports **SIN8, COS8 and SINCOS8** using the exact
-original V1–V5 public code, all 256 phase-byte measurements and a
-single shared 256-byte immutable sine page. These three gain verified
-cycle-cost models, not new faster routines or duplicated lookup tables.
-See [shared trig speed certification](docs/TRIG8_SHARED_PUBLIC_SPEED.md).
 
 A new stock-C64 **read-only `SMUL8` quarter-square** option complements the
 original V1–V5 signed8 self-modifying producer. On 512 identical full-public
