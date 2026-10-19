@@ -1,3 +1,9 @@
+## Unreleased — immutable separate V3/V4 REU legacy compatibility export
+
+- Export unchanged, source-SHA-verified V3 512KiB or V4 16MiB hardware profile as separate resident PRG+matching REU image, math_api include and original license/readme; reverify staged bytes before publishing without overwriting existing output.
+- Lock six V3/V4 Turbo16/Turbo32 and nine V4 inclusive-QS16 BEGIN/CALL/END public symbols and original exclusive ZP overlay lifetimes; explicitly forbid simultaneous use with an operation-first selective image.
+- Preserve V1–V5 historical binaries. This is legacy distribution/ABI continuity, not a new selective REU backend or measured physical PAL performance parity.
+
 ## Unreleased — source-verified frame-qualified project configuration
 
 - Export qualified mixed-frame whole-project selections as ordinary pinned operation-first configs with complete code, I/O, ZP and scratch placement; reassemble and demand the original linked PRG SHA, source hashes and RAM/ZP evidence before writing.

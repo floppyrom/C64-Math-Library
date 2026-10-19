@@ -48,6 +48,8 @@ were already qualified via #327 and native VICE. Use the
 [REU family hardware review](ISSUE39_REU_MULTIPLY_FAMILY_REVIEW_2026-10-14.md)
 for actual evidence.
 
+The original V3/V4 PRG+REU pairs now have an explicit immutable compatibility exporter, `tools/export_reu_compat.py`, which verifies each exact source against SHA256SUMS.txt, copies unchanged ABI/license references and fails closed on changes or existing destinations. This is a **separate whole-resident compatibility package**, **not a linkable operation-first REU backend**. See [REU compatibility export](REU_COMPAT_EXPORT.md). It retains access to current Turbo/QS16 contracts but cannot prove hardware portability or permit simultaneous selective linking.
+
 ## Gates still blocking profile retirement
 
 1. Per-operation historical V1–V5/OptiSearch fastest-variant parity on

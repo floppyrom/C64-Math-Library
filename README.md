@@ -28,6 +28,8 @@ A **three-operation mixed busiest-frame research gate** now links all eight comb
 
 A **source-verified project configuration exporter** can now convert a qualified three-operation peak-frame choice into a normal pinned builder config, reassemble the exact linked PRG and check its SHA before publication. See [frame-qualified installer configuration](docs/FRAME_QUALIFIED_INSTALLER_CONFIG.md). This is for one reproducible synthetic workload and does not change the production automatic speed objective or claim PAL timing.
 
+REU-specific V3/V4 Turbo16/Turbo32 and QS16 services remain available in **separate original resident compatibility packages**, checksum-locked from the actual V3/V4 PRG, 512-KiB or 16-MiB REU image, ABI include and licensing files. Export with `python3 tools/export_reu_compat.py --profile v3_reu_512k --out build/compat-v3` (or `v4_reu_16m`). These are **exclusive full legacy residents**, never modules to mix with `math_selective.prg`. See `docs/REU_COMPAT_EXPORT.md`.
+
 **Start without profiles:**
 
 ```sh

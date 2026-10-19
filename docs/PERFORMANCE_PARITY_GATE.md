@@ -70,6 +70,8 @@ The joint signed+unsigned full64 FAST31 evaluation builds four **two-public-API*
 
 A new three-operation mixed source-linked frame qualifier includes `MATH_UMUL32`, `MATH_SMUL32` and `MATH_ISQRT16` with the original square-table and tableless Pareto alternatives. The offline generic frame frontier compares complete linked image RAM, ZP and matched synthetic peak/p95 frames at two origins. It does **not** currently change the 56-operation installer selection algorithm or qualify PAL hardware timing; see [MIXED_THREE_OPERATION_FRAME_FRONTIER.md](MIXED_THREE_OPERATION_FRAME_FRONTIER.md).
 
+Original V3/V4 Turbo16/Turbo32/QS16 REU services may be kept available as **standalone, immutable compatibility bundles** via `tools/export_reu_compat.py`, including the exact REU image and resident and source SHA/ABI proof. See `REU_COMPAT_EXPORT.md`. This avoids accidental loss of hardware-specific services while the stock builder becomes standard, but **does not** add REU-mode support to the operation-first linker or certify physical PAL/DMA timing.
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,
