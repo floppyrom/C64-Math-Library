@@ -2,9 +2,16 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 42 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 46 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
+
+Four SEEK8 entries share one physical DDA producer but now expose
+separately measured full-public INIT, STEP, STEP_INT, STEP1 cycle
+models; STEP samples include state initialized by the authentic INIT
+routine, excluding that setup from STEP cycles. The speed objective
+still requires positive per-entry project call counts and the original
+160 bytes of eight-slot persistent state.
 
 ## Which slower kernels are legitimate?
 
