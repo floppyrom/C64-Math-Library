@@ -138,6 +138,7 @@ def compare(code, io, zp):
     fingerprint = hashlib.sha256(
         json.dumps(keys, separators=(",", ":")).encode("utf-8")).hexdigest()
     report = {"code": "$%04X" % code, "io": "$%04X" % io,
+              "zp_base": "$%04X" % zp, "scratch_base": "$%04X" % (io + 0x40),
               "paired_calls": CALLS, "frames": FRAMES,
               "cpu_model_only": True, "native_pal_timing": False,
               "input_corpus_sha256": fingerprint, "per_option": {}}
