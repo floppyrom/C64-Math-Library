@@ -34,9 +34,9 @@ never silently substitute a source lacking matched-input correctness proof.
 No project source analyser is needed. Use the generated include instead of
 copying a resident profile's symbol addresses.
 
-## Workload-weighted speed selection (thirty-four source-qualified APIs)
+## Workload-weighted speed selection (thirty-five source-qualified APIs)
 
-The `speed` objective supports project-level weighted selection for **thirty-four**
+The `speed` objective supports project-level weighted selection for **thirty-five**
 individually qualified APIs: UMUL8, UMUL16, UMUL16_SHR8, UMOD8, UDIV8,
 ISQRT32, UMUL32, SMUL32, UMUL32_READY, SMUL32_READY, UMUL32_SHR16,
 SMUL32_SHR16, UMUL24, SMUL24, UDIV16_SHL8, SDIV16_SHL8, URECIP16_Q16, UDIV32_16, UMOD32_16, UDIV32_32, UMOD32_32, SDIV32_32, SMOD32_32, UDIV24, UMOD24, UMOD16, DIST8_ACCURATE, ATAN2_8, UDIV16, ISQRT16, SDIV32_16, SMOD32_16, SDIV24 and SMOD24. Multiple operations **must**
@@ -93,6 +93,12 @@ an exhaustive mixed invocation of every math operation.
 portable exact restoring source. Same-input public Q24/R16/C and
 busiest-frame math-model timings determine preference under real resource
 budgets. Historic resident-only timings are not directly comparable.
+
+For SMUL16, a canonical quarter-square signed full32 producer is available
+as a separate 1,351-code/table-byte, 4-scratch, zero-ZP Pareto alternative
+to the original 161-byte, 6-scratch compact source. Automatic speed builds
+select against identical signed32 public-call timings, not REU timings.
+No global shared-table coalescing is claimed yet.
 
 For URECIP16_Q16, three independently selectable stock-6510 variants have
 exact public D16 -> Q24/C behavior and 0 ZP: 99-byte restoring (1 scratch),
