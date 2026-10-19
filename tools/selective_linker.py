@@ -56,6 +56,7 @@ import selective_speed_u24 as speed_u24
 import selective_speed_s24 as speed_s24
 import selective_speed_umod16 as speed_umod16
 import selective_speed_dist8_accurate as speed_dist8_accurate
+import selective_speed_dist8_fast as speed_dist8_fast
 import selective_speed_atan2 as speed_atan2
 import selective_speed_udiv16 as speed_udiv16
 import selective_speed_isqrt16 as speed_isqrt16
@@ -2009,6 +2010,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                    for x in workload_calls.values())):
             raise LinkError("Speed builds require positive workload calls for every operation")
         measured = {
+            "MATH_DIST8_FAST": (speed_dist8_fast.bench_dist8_fast, "scratch", False),
             "MATH_SDIV8": (speed_sdiv8_shared.bench_sdiv8, "zp", False),
             "MATH_SMOD8": (speed_sdiv8_shared.bench_smod8, "zp", False),
             "MATH_SIN8": (speed_trig8.bench_sin8, "scratch", False),

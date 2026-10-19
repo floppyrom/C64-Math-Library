@@ -1,3 +1,9 @@
+## Unreleased — authenticated canonical DIST8_FAST public-call speed
+
+- Source-qualify the original V1 `DIST8_FAST` 61-byte signed-8 max(abs X,abs Y)+floor(min/2) approximation without changing the existing arithmetic, code image or V1–V5 profiles.
+- Record mean/p95/max over 512 identical complete public X8/Y8 calls at two placements with preserved inputs, high result sentinel, carry and stack, plus native VICE r46284; respect zero ZP and 2-byte scratch.
+- Enable `objective=speed` for this existing 61-byte source (45 of 56 APIs) and replace the now-invalid negative-speed test for DIST8_FAST with SEEK8_INIT.
+
 ## Unreleased — authenticated original V1 signed8 DIV/MOD speed selection
 
 - Add full-public matched-input CPU-model speed provenance for the unchanged shared 530-byte original V1–V5 `SDIV8`/`SMOD8` quotient/remainder producer, preserving one physical code owner and one private ZP byte for both exports.
