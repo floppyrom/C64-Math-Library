@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 44 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 42 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -136,11 +136,6 @@ Existing V1–V5 11/15/22-byte SIN8, COS8 and SINCOS8 sources now carry
 all-256-phase, two-placement, full-public-call measured cycle provenance.
 They share one physical immutable sine-table page and preserve their
 original source and outputs. These are CPU-model timings, not PAL timing.
-
-The original shared V1 signed8 Q/R producer also exposes measured identical
-public-input cycle provenance for both SDIV8 and SMOD8, retaining one 530-byte
-image and one private zero-page byte when both are selected. No slower
-kernel replaces this source.
 
 ## Active migration priority after PRs #293–#296
 

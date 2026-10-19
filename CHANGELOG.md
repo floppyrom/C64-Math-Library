@@ -1,13 +1,3 @@
-## Unreleased — historical shared V1 SDIV8/SMOD8 public speed
-
-- Authenticate both names of the original 530-byte V1–V5 signed8 quotient
-  and remainder kernel using 512 identical Q8/R8/C public calls at two
-  code, I/O and private ZP placements, including divide-by-zero cases.
-- Preserve exactly one shared physical producer and one private ZP byte,
-  full public operands/output sentinel ABI, and native VICE r46284.
-- Extend measured speed selection to 44/56 APIs after full exact-head CI;
-  do not substitute a slower or nonhistorical kernel.
-
 ## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
 
 - Authenticate the unchanged 11/15/22-byte canonical V1–V5 trigonometric
