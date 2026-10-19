@@ -37,9 +37,15 @@ all-256-phase same-call speed models at two origins, sharing **one** immutable
 256-byte sine table. No historical routine is replaced by a slower source;
 see `docs/TRIG8_SHARED_PUBLIC_SPEED.md`.
 
-Speed selection now covers 42 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 46 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
-routine. The remaining historical V1–V5 speed donors still require transplantation,
+routine. The original four-entry SEEK8 DDA source now has separately measured
+INIT, STEP, STEP_INT and STEP1 public-call speed models while keeping one
+651-byte executable, eight-slot persistent state, and zero ZP. Source
+qualification, two-layout native VICE and exact package checks are
+required; see `docs/SEEK8_SHARED_PUBLIC_SPEED.md`.
+
+The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
 can be retired. See the [performance-parity checklist](docs/PERFORMANCE_PARITY_GATE.md).
 
