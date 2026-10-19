@@ -1,3 +1,14 @@
+## Unreleased — historical shared V1 SDIV8/SMOD8 measured speed provenance
+
+- Authenticate complete signed Q8/R8/C public-call speed for the unchanged
+  canonical 530-byte V1–V5 signed8 source over 512 identical signed pairs
+  at two relocations, including zero-divisor and sign/overflow boundaries.
+- Preserve exactly one shared source image, one private ZP byte and caller
+  input/output and stack ABI when SDIV8 and SMOD8 are selected together.
+- Add two-API weighted speed selection without a slower replacement, and
+  pinned native VICE r46284 checks of the existing source. Qualified speed
+  coverage reaches 40/56 on this main-based branch if all checks pass.
+
 ## Unreleased — qualified read-only signed8 quarter-square Pareto choice
 
 - Preserve the exact V1–V5 46-byte signed SMUL8 SMC source and all four
