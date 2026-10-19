@@ -18,6 +18,7 @@ from mini6502 import Assembler
 import selective_atan2 as atan2
 import selective_fast_umul8 as fast8
 import selective_fast_umul16 as fast16
+import selective_umuldiv16_qs_v2 as muldiv16qs
 import selective_smul16_quartersquare as qs16signed
 import selective_smul16_shr8_quartersquare as qs16shr
 import selective_fast31_umul32 as fast31
@@ -475,6 +476,13 @@ MODULES = {
         },
     },
     "MATH_UMULDIV16": {
+        "link:qs-v2-fused": {
+            "source": "routines/multiply/umul16_quartersquare.asm",
+            "segments": (("KERNEL_CODE", 3655),),
+            "entry": "FAST_UMULDIV16_QS_V2", "zp": 12, "scratch": 4,
+            "operand_layout": "muldiv16", "umuldiv16_qsv2": True,
+            "provenance": "Original 233-byte unsigned quarter-square 16x16 with two 511-byte immutable planes, canonical V2 12-ZP 32/16 split-tail producer and a 32-byte direct compound public adapter; exact Q32/R16/C, preserves X/Y/D.",
+        },
         "link:portable-zerozp": {
             "source": "routines/muldiv16/umuldiv16_compact_zerozp.asm",
             "segments": (("KERNEL_CODE", 288),),
@@ -1097,6 +1105,17 @@ def available_variants(root=ROOT):
                     "tools/selective_fast_umul16.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
                 } if mod.get("fast_umul16") else {
+                    "tools/selective_fast_umul8.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
+                    "tools/selective_fast_umul16.py": hashlib.sha256(
+                        (root / "tools/selective_fast_umul16.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                    "tools/selective_umuldiv16_qs_v2.py": hashlib.sha256(
+                        (root / "tools/selective_umuldiv16_qs_v2.py").read_bytes()).hexdigest(),
+                    "v2_pareto_fast/resident/modules/pareto_udiv32_16.a": hashlib.sha256(
+                        (root / "v2_pareto_fast/resident/modules/pareto_udiv32_16.a").read_bytes()).hexdigest(),
+                } if mod.get("umuldiv16_qsv2") else {
                     "tools/selective_fast_umul8.py": hashlib.sha256(
                         (root / "tools/selective_fast_umul8.py").read_bytes()).hexdigest(),
                     "tools/selective_fast_umul16.py": hashlib.sha256(
@@ -2115,6 +2134,13 @@ def build(plan, outdir, memory=None, root=ROOT):
         if "atan2" in module and [x["source_path"] for x in dep_provenance] != [
                 "routines/atan2/tables.py"]:
             raise LinkError(api + ": ATAN2 table generator provenance missing")
+        if module.get("umuldiv16_qsv2") and set(x["source_path"] for x in dep_provenance) != {
+                "tools/selective_fast_umul8.py",
+                "tools/selective_fast_umul16.py",
+                "tools/selective_v2_fast_u3216.py",
+                "tools/selective_umuldiv16_qs_v2.py",
+                "v2_pareto_fast/resident/modules/pareto_udiv32_16.a"}:
+            raise LinkError(api + ": UMULDIV16 canonical QS/V2 source provenance missing")
         if module.get("fast_umul8") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_fast_umul8.py"]:
             raise LinkError(api + ": quarter-square table generator provenance missing")
@@ -2200,7 +2226,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("fast_umul8") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("umuldiv16_qsv2") or module.get("fast_umul8") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2284,6 +2310,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                     entry = labels[module["entry"]]
                 elif module.get("smul16_qs"):
                     machine, labels, ranges, end = qs16signed.assemble_image(pc,io,sb,root)
+                    entry = labels[module["entry"]]
+                elif module.get("umuldiv16_qsv2"):
+                    machine, labels, ranges, end = muldiv16qs.assemble_image(pc,io,zb,sb,root)
                     entry = labels[module["entry"]]
                 elif module.get("fast_umul16"):
                     machine, entry, ranges, end = fast16.assemble(
