@@ -72,7 +72,7 @@ def check_cli_exact_image(config, evidence, folder: Path):
         cwd=ROOT, capture_output=True, text=True, timeout=120)
     if proc.returncode:
         raise AssertionError("Pinned CLI rebuild failed: "+proc.stderr[-2000:])
-    man = json.loads(output.read_text(encoding="utf-8"))
+    man = json.loads((output.parent / "selective_manifest.json").read_text(encoding="utf-8"))
     image = (output.parent/"math_selective.prg").read_bytes()
     digest = hashlib.sha256(image).hexdigest()
     if digest != evidence["qualified_prg_sha256"]:
