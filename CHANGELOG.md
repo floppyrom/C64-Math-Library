@@ -1,13 +1,16 @@
-## Unreleased — historical V1/V5 VEC2 normalized public speed authentication
+## Unreleased — authenticate original stock VEC2 public speed
 
-- Authenticate existing VEC2_NORMALIZE_Q8_8 Q8.8 -> Q1.15 stock source,
-  complete public Q1.15/C cycles for 512 identical signed input pairs at
-  two relocations, and unchanged 2,560 exact lookup-table bytes.
-- Mark bounded LDX abs,Y self-modifying source as requiring writable code RAM,
-  keep its four exclusive zero-page bytes and precise alignment in installer.
-- Preserve full-domain precision model/native VICE r46284 proofs; this adds
-  one measured API (40/56 on the isolated main-based branch) without changing
-  the historical fast algorithm or V1–V5 images.
+- Authenticate the original V1/V5 `VEC2_NORMALIZE_Q8_8` 3,587-byte source image under a 512-vector exact public speed corpus at two placements, preserving four ZP bytes and original high-precision lookup planes.
+- Correct its existing NMOS operand-patch requirement to `requires_writable_code=True`. No slower substitute or historical profiles modified; speed coverage adds one API only after exact-head CI.
+
+## Unreleased — shared original SIN8/COS8/SINCOS8 public speed provenance
+
+- Authenticate the unchanged 11/15/22-byte canonical V1–V5 trigonometric
+  sources on all 256 phases, two code origins and exactly one shared
+  immutable sine-table page, with complete X/Y/Z/C and SP preservation.
+- Enable measured speed objective for all three public API names without
+  replacing a historical fast source; qualified catalog grows to 42/56.
+- Native VICE r46284 and exact SHA256 publication required before merge.
 
 ## Unreleased — signed SMULDIV16 quarter-square + V2 fast public source
 

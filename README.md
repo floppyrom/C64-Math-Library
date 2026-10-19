@@ -32,13 +32,12 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-The unchanged historical V1/V5 `VEC2_NORMALIZE_Q8_8` source now also
-has 512-pair matched full-public Q1.15/C cycle measurements over two
-relocations. Its original bounded self-modifying code **requires writable
-RAM** and four private ZP bytes; this is authenticated speed provenance,
-not a newly faster approximation. See `docs/VEC2_STOCK_PUBLIC_SPEED.md`.
+The exact V1–V5 SIN8/COS8/SINCOS8 public sources now have authenticated,
+all-256-phase same-call speed models at two origins, sharing **one** immutable
+256-byte sine table. No historical routine is replaced by a slower source;
+see `docs/TRIG8_SHARED_PUBLIC_SPEED.md`.
 
-Speed selection now covers 40 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 42 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles
@@ -117,6 +116,8 @@ It exports both Q32/R32 public calls from one 2,496-byte image with 12
 call-exclusive ZP bytes (2,528 B main RAM including public I/O at `$8000`).
 The speed selector compares it on the same 384-pair unrestricted corpus,
 retaining all lower-memory options. Hardware-native timing is not claimed.
+The historical V1/V5 `VEC2_NORMALIZE_Q8_8` now has full-public speed provenance and its original NMOS self-modifying code contract is explicit. The 3,587-byte page-aligned source is unchanged; see `docs/VEC2_STOCK_PUBLIC_SPEED.md`.
+
 The source-qualified signed 24/24 `SDIV24` and `SMOD24` implementations
 now participate in matched 512-input full-public-call speed selection:
 compact restoring (0 ZP), quotient-zero guard (0 ZP), or the relocated

@@ -2,7 +2,7 @@
 
 The operation-first builder is already the preferred **selection and linking**
 path for a stock C64. It has independently linkable source for all 56 public
-APIs, but 40 APIs now have authenticated, matched-public-call speed selection.
+APIs, but 43 APIs now have authenticated, matched-public-call speed selection.
 All 56 are eligible for exact RAM / ZP / balanced resource optimization.
 Do not confuse **linkability** with **speed parity**.
 
@@ -132,11 +132,10 @@ The read-only source saves over 1,100 bytes, but is **not** a speed win:
 speed mode should retain V1 when its RAM and writable-code requirements
 are feasible. Separate native VICE and package qualification are required.
 
-The original V1/V5 Q8.8 VEC2 normalizer now has 512-pair measured
-public entry-through-RTS CPU-model cycles. Its certified 3,587-byte
-aligned source with four private ZP bytes retains the bounded NMOS LDX
-absolute indexed self-modifying addresses and requires writable code RAM.
-No alternate, slower approximation is substituted.
+Existing V1–V5 11/15/22-byte SIN8, COS8 and SINCOS8 sources now carry
+all-256-phase, two-placement, full-public-call measured cycle provenance.
+They share one physical immutable sine-table page and preserve their
+original source and outputs. These are CPU-model timings, not PAL timing.
 
 ## Active migration priority after PRs #293–#296
 
