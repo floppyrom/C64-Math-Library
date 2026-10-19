@@ -8,6 +8,8 @@ The builder also offers a **tableless ISQRT16** for memory-constrained C64
 programs (137 bytes code + 6 bytes scratch, no ZP), preserving the original
 fast square-table implementation as the automatic speed-preferred option.
 
+The certified original V1/V5 signed Q8.8 vector normalizer is now also eligible for authenticated `speed` builds: it retains its 3,587-byte aligned code/table image, four private ZP bytes and self-modifying code requiring executable RAM. Its single unchanged source is compared on 512 identical complete public calls at two origins; see `docs/VEC2_STOCK_PUBLIC_SPEED.md`.
+
 **Start without profiles:**
 
 ```sh
@@ -47,7 +49,7 @@ signed8 approximate-distance source over 512 identical full-public calls.
 Its max/min approximation is preserved, not substituted with a slower
 or more precise source; see `docs/DIST8_FAST_PUBLIC_SPEED.md`.
 
-Speed selection now covers 45 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+Speed selection now covers 46 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles

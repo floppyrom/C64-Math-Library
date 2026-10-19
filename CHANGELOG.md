@@ -1,3 +1,9 @@
+## Unreleased — original V1/V5 vector-normalization full public speed provenance
+
+- Authenticate unchanged source-linked log-ratio VEC2_NORMALIZE_Q8_8 with its exact table geometry, fixed Q1.15 outputs, zero-vector carry and all input/stack preservation on 512 signed pairs at two physical placements.
+- Require writable code for the original eight self-modifying LDX operand bytes; retain four call-exclusive ZP bytes and do not introduce a slower approximate replacement.
+- Advance installer speed qualification to 46/56 after original V1 DIST8_FAST integration. Preserve all five old profiles and their binaries.
+
 ## Unreleased — original V1 DIST8_FAST complete-public speed provenance
 
 - Authenticate the existing 61-byte signed8 max/min approximate-distance
