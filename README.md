@@ -32,7 +32,13 @@ make builder-speed OUT=build_speed
 # workload_calls for every operation and realistic RAM/ZP budgets.
 ```
 
-Speed selection now covers 37 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
+The unchanged historical V1/V5 `VEC2_NORMALIZE_Q8_8` source now also
+has 512-pair matched full-public Q1.15/C cycle measurements over two
+relocations. Its original bounded self-modifying code **requires writable
+RAM** and four private ZP bytes; this is authenticated speed provenance,
+not a newly faster approximation. See `docs/VEC2_STOCK_PUBLIC_SPEED.md`.
+
+Speed selection now covers 40 of the 56 APIs, including signed 24-bit and both signed 32-bit DIV/MOD families. Unsupported speed
 comparisons **fail closed**, not silently fall back to a slower size-selected
 routine. The remaining historical V1–V5 speed donors still require transplantation,
 matched-public-ABI comparisons and worst-frame qualification before profiles

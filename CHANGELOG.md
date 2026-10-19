@@ -1,3 +1,14 @@
+## Unreleased — historical V1/V5 VEC2 normalized public speed authentication
+
+- Authenticate existing VEC2_NORMALIZE_Q8_8 Q8.8 -> Q1.15 stock source,
+  complete public Q1.15/C cycles for 512 identical signed input pairs at
+  two relocations, and unchanged 2,560 exact lookup-table bytes.
+- Mark bounded LDX abs,Y self-modifying source as requiring writable code RAM,
+  keep its four exclusive zero-page bytes and precise alignment in installer.
+- Preserve full-domain precision model/native VICE r46284 proofs; this adds
+  one measured API (40/56 on the isolated main-based branch) without changing
+  the historical fast algorithm or V1–V5 images.
+
 ## Unreleased — signed SMULDIV16 quarter-square + V2 fast public source
 
 - Compose the immutable canonical signed 16×16 quarter-square source and
