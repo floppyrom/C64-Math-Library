@@ -1,3 +1,9 @@
+## Unreleased — native pinned-frame installer PRG correctness certification
+
+- Rebuild four actual frame-qualified project PRGs via standard installer CLI using source-verified pins, exact code/I/O/ZP/scratch addresses, and fully matching measured original binary SHA-256.
+- Qualify UMUL32, SMUL32 and ISQRT16 native public entrypoint correctness with independent x64sc r46284 oracles (96 calls × 3 APIs × 4 pinned images = 1,152 calls), including 0-ZP and 31-ZP Pareto projects at two placements.
+- Preserve original V1–V5 profiles and REU/Turbo/QS16 compatibility. Source CPU model frame peaks are not real PAL raster/bus/IRQ timing.
+
 ## Unreleased — immutable separate V3/V4 REU legacy compatibility export
 
 - Export unchanged, source-SHA-verified V3 512KiB or V4 16MiB hardware profile as separate resident PRG+matching REU image, math_api include and original license/readme; reverify staged bytes before publishing without overwriting existing output.
