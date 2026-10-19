@@ -20,6 +20,8 @@ A **five-way, identical-public-input UMUL32 busiest-frame parity audit** is now 
 
 The historical `SMUL32` signed full64 variants can now be compared on **150 identical complete public calls over 24 synthetic frames**, at two code/I/O relocations. The report preserves full64 correctness, carry/stack/inputs, permitted FAST31 SMC operands, source/PRG hashes, peak and p95 math-frame cycles, individual-call regressions, RAM/ZP and shared-source costs; see `docs/SMUL32_FOUR_PAIRED_FRAME_PARITY.md`. This is a CPU-model math-only measurement and does not replace PAL/VIC-II/IRQ hardware qualification.
 
+A **project-level joint signed/unsigned 32×32→64 multiplication comparison** now distinguishes the one-image original FAST31 shared producer from two independent FAST31 images, compact sources and the six-entry unified compact source. It measures 150 identical interleaved public calls over 24 synthetic frames at two memory origins and reports actual shared code/table RAM cost, 31-ZP requirements, slower calls and peak-frame math CPU-model cycles. See `docs/MUL32_JOINT_SHARED_VS_SEPARATE.md`. This does not certify physical PAL timing.
+
 **Start without profiles:**
 
 ```sh

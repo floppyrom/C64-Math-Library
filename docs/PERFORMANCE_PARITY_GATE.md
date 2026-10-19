@@ -66,6 +66,8 @@ An authenticated five-way UMUL32 source-linked busy-frame comparison can now be 
 
 The source-linked signed32 full64 `SMUL32` donor family also has a **four-way, identical-public-input synthetic busiest-frame comparison** of compact, unified, V2 FAST31 and shared FAST31 at two placements. The report records per-call regressions as well as peak/p95/total cycles and code/ZP footprints. See `SMUL32_FOUR_PAIRED_FRAME_PARITY.md`. This is **not** actual PAL frame time, a signed FAST31 speed guarantee on every input, or permission to remove historical compact kernels.
 
+The joint signed+unsigned full64 FAST31 evaluation builds four **two-public-API** source plans at identical memory placements: compact independent, unified 375-byte, two separate 31-ZP FAST31 images, or one shared FAST31 image. The measured same-input 24-frame workload compares RAM/ZP and worst-frame math cycles, rather than assuming that selecting per-operation fastest standalone kernels minimizes whole-project memory. See `MUL32_JOINT_SHARED_VS_SEPARATE.md`; all source CPU-model results exclude PAL VIC-II/IRQ/SID hardware timing.
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

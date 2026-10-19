@@ -1,0 +1,38 @@
+name: Joint unsigned and signed FAST31 source-sharing frame parity
+
+on:
+  pull_request:
+    paths:
+      - 'tools/mul32_joint_frame_parity.py'
+      - 'tools/test_mul32_joint_frame_parity.py'
+      - 'tools/selective_linker.py'
+      - '.github/workflows/mul32-joint-frame-parity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mixed-full64-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compare exact four two-operation source plans at two placements
+        run: |
+          python3 -m compileall -q tools/mul32_joint_frame_parity.py tools/test_mul32_joint_frame_parity.py
+          python3 -m unittest discover -s tools -p 'test_mul32_joint_frame_parity.py' -v
+          mkdir -p build
+          python3 tools/mul32_joint_frame_parity.py --out build/mul32_joint_source_parity.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: joint-signed-unsigned-full64-source-parity
+          path: build/mul32_joint_source_parity.json
+          if-no-files-found: warn
+          retention-days: 30
