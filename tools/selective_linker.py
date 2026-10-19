@@ -27,6 +27,7 @@ import selective_fast31_umul32 as fast31
 import selective_v2_fast_umul24 as v2umul24
 import selective_umul8_v1 as v1umul8
 import selective_seek8 as seek8
+import selective_speed_seek8 as speed_seek8
 import selective_seek16 as seek16
 import selective_speed
 import selective_speed_smul8 as speed_smul8
@@ -2011,6 +2012,10 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_SIN8": (speed_trig8.bench_sin8, "scratch", False),
             "MATH_COS8": (speed_trig8.bench_cos8, "scratch", False),
             "MATH_SINCOS8": (speed_trig8.bench_sincos8, "scratch", False),
+            "MATH_SEEK8_INIT": (speed_seek8.bench_seek8_init, "scratch", False),
+            "MATH_SEEK8_STEP": (speed_seek8.bench_seek8_step, "scratch", False),
+            "MATH_SEEK8_STEP_INT": (speed_seek8.bench_seek8_step_int, "scratch", False),
+            "MATH_SEEK8_STEP1": (speed_seek8.bench_seek8_step1, "scratch", False),
             "MATH_UMUL8": (selective_speed.bench_umul8, "scratch", True),
             "MATH_SMUL8": (speed_smul8.bench_smul8, "scratch", False),
             "MATH_UMUL16": (selective_speed_umul16.bench_umul16, "scratch", False),
