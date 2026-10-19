@@ -82,6 +82,59 @@ class SignedSHR8QuarterSquare(unittest.TestCase):
                 self.assertEqual(man["operations"][0]["variant"],winner)
                 self.assertEqual(man["cycle_model_benchmark"]["cases"],512)
 
+    def test_mixed_signed_and_scaled_quartersquare_public_calls(self):
+        # The two producer images are not deduplicated yet; certify mixed
+        # correctness and avoid claiming shared tables before coalescing.
+        for code, io in ((0x8000, 0xc000), (0x7123, 0xc040)):
+            with self.subTest(code=code), tempfile.TemporaryDirectory() as td:
+                plan = math_builder.create_plan(
+                    self.index, ["SMUL16", "SMUL16_SHR8"],
+                    objective="size", zp_budget=0, ram_budget=3200,
+                    pins={"SMUL16": "link:qs-signed-public",
+                          "SMUL16_SHR8": FAST})
+                man = linker.build(plan, Path(td), memory={
+                    "code_base": code, "math_io": io,
+                    "scratch_base": io + 0x40})
+                ops = {op["api"]: op for op in man["operations"]}
+                self.assertEqual(set(ops), {"MATH_SMUL16", "MATH_SMUL16_SHR8"})
+                self.assertEqual(man["resource_use"]["zero_page_bytes"], 0)
+                self.assertEqual(man["resource_use"]["image_span_bytes"], 2734)
+                raw = (Path(td)/"math_selective.prg").read_bytes()
+                image = bytearray(65536)
+                image[code:code+len(raw)-2] = raw[2:]
+                original = bytes(image[code:code+len(raw)-2])
+                cpu = CPU(image)
+                sp = cpu.sp
+                entries = {api: int(op["entry"][1:],16)
+                           for api,op in ops.items()}
+                for k,(x,y) in enumerate(speed.corpus()[:192]):
+                    xb = x.to_bytes(2, "little") + bytes((0xa5,0x5a))
+                    yb = y.to_bytes(2, "little") + bytes((0x6b,0x7c))
+                    image[io:io+4] = xb
+                    image[io+4:io+8] = yb
+                    for api in ("MATH_SMUL16", "MATH_SMUL16_SHR8"):
+                        image[io+8:io+16] = bytes((0xdd,))*8
+                        cpu.a=(k+x)&255
+                        cpu.x=(k+y)&255
+                        cpu.y=(x^y^k)&255
+                        cpu.c=(k^x^y)&1
+                        cpu.d=0
+                        cpu.call(entries[api], 60000)
+                        value = int.from_bytes(
+                            image[io+8:io+(12 if api=="MATH_SMUL16" else 11)],
+                            "little")
+                        expected = ((speed.base.signed(x)*speed.base.signed(y))
+                                    & 0xffffffff if api=="MATH_SMUL16"
+                                    else speed.oracle(x,y))
+                        self.assertEqual(value,expected,(code,api,x,y))
+                        self.assertEqual(bytes(image[io:io+4]), xb)
+                        self.assertEqual(bytes(image[io+4:io+8]), yb)
+                        self.assertEqual(bytes(image[io+12:io+16]),
+                                         bytes((0xdd,))*4)
+                        self.assertEqual(cpu.c,0)
+                        self.assertEqual(cpu.sp,sp)
+                self.assertEqual(bytes(image[code:code+len(raw)-2]),original)
+
     def test_pinned_fast_fails_insufficient_ram(self):
         with tempfile.TemporaryDirectory() as td:
             with self.assertRaises(linker.LinkError):
