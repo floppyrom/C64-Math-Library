@@ -1,3 +1,9 @@
+## Unreleased — restore historical V2 fast shared signed16 DIV/MOD in installer
+
+- Provide a 1,481-byte unchanged historical unsigned V2 divider under one bounded signed Q16/R16/C adapter for both SDIV16 and SMOD16, with a single 1,705-byte source-linked producer, eight ordinary scratch bytes and zero ZP.
+- Preserve the 206-byte compact source. Source-model measurements use identical 384-pair complete calls, report the p95 trade-off, and score a 24-frame math-only workload.
+- Keep exact two-layout native VICE proof and untouched V1–V5 binaries. CPU-model results are not physical PAL frame timing.
+
 ## Unreleased — authenticated original V1 signed8 DIV/MOD speed selection
 
 - Add full-public matched-input CPU-model speed provenance for the unchanged shared 530-byte original V1–V5 `SDIV8`/`SMOD8` quotient/remainder producer, preserving one physical code owner and one private ZP byte for both exports.

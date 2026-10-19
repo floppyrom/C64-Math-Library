@@ -48,6 +48,7 @@ import selective_speed_mul32_ready_shr16 as speed32extras
 import selective_speed_u3216 as speed_u3216
 import selective_speed_udiv16_shl8 as speed_shl8
 import selective_speed_sdiv16_shl8 as speed_signedshl8
+import selective_speed_sdiv16_shared as speed_sdiv16shared
 import selective_speed_recip16 as speed_recip16
 import selective_speed_s3216 as speed_s3216
 import selective_speed_s3232 as speed_s3232
@@ -64,6 +65,7 @@ import selective_signed_hybrid_u3232 as signed_u3232
 import selective_v2_fast_u3216 as v2u3216
 import selective_v2_shifted_u3216 as v2shifted
 import selective_v2_signed_shifted16 as signedshift
+import selective_v2_signed16_shared as v2signed16
 import selective_recip16_threshold as recip_threshold
 import selective_recip16_table as recip_table
 import research_signed_v2_u3216 as signedv2u3216
@@ -410,6 +412,14 @@ MODULES = {
         },
     },
     "MATH_SDIV16": {
+        "link:v2-signed-shared": {
+            "source": "routines/divide/udiv16_v2_zerozp.asm",
+            "segments": (("KERNEL_CODE", 1481),("SIGNED_ADAPTER", 224)),
+            "entry": "FAST_SDIV16_V2_SHARED", "zp": 0, "scratch": 8,
+            "share_producer": "signed-16by16-v2-direct", "multi_entry": True,
+            "signed16_v2_shared": True,
+            "provenance": "Historical canonical V2 direct 16/16 source with signed Q/R/C adapter and one physical shared producer; zero ZP, no REU/SMC/INIT.",
+        },
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv16_smod16_zerozp.asm",
             "segments": (("KERNEL_CODE", 206),),
@@ -420,6 +430,14 @@ MODULES = {
         },
     },
     "MATH_SMOD16": {
+        "link:v2-signed-shared": {
+            "source": "routines/divide/udiv16_v2_zerozp.asm",
+            "segments": (("KERNEL_CODE", 1481),("SIGNED_ADAPTER", 224)),
+            "entry": "FAST_SMOD16_V2_SHARED", "zp": 0, "scratch": 8,
+            "share_producer": "signed-16by16-v2-direct", "multi_entry": True,
+            "signed16_v2_shared": True,
+            "provenance": "Historical canonical V2 direct 16/16 source with signed Q/R/C adapter and one physical shared producer; zero ZP, no REU/SMC/INIT.",
+        },
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv16_smod16_zerozp.asm",
             "segments": (("KERNEL_CODE", 206),),
@@ -1190,6 +1208,11 @@ def available_variants(root=ROOT):
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
                         (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
                 } if mod.get("v2_signed_shifted16") else {
+                    "tools/selective_v2_signed16_shared.py": hashlib.sha256(
+                        (root / "tools/selective_v2_signed16_shared.py").read_bytes()).hexdigest(),
+                    "relocatable_source/v2_pareto_fast/udiv16_direct_fast.inc": hashlib.sha256(
+                        (root / "relocatable_source/v2_pareto_fast/udiv16_direct_fast.inc").read_bytes()).hexdigest(),
+                } if mod.get("signed16_v2_shared") else {
                     "tools/selective_recip16_threshold.py": hashlib.sha256(
                         (root / "tools/selective_recip16_threshold.py").read_bytes()).hexdigest(),
                     "v3_reu_512k/standalone/recip_u16_u24_q16.asm": hashlib.sha256(
@@ -2035,6 +2058,8 @@ def build(plan, outdir, memory=None, root=ROOT):
             "MATH_SMUL32_SHR16": (speed32extras.bench_smul32_shr16, "scratch", True),
             "MATH_UDIV16_SHL8": (speed_shl8.bench_udiv16_shl8, "scratch", True),
             "MATH_SDIV16_SHL8": (speed_signedshl8.bench_sdiv16_shl8, "scratch", True),
+            "MATH_SDIV16": (speed_sdiv16shared.bench_sdiv16, "scratch", False),
+            "MATH_SMOD16": (speed_sdiv16shared.bench_sdiv16, "scratch", False),
             "MATH_URECIP16_Q16": (speed_recip16.bench_urecip16_q16, "scratch", False),
             "MATH_UDIV32_16": (speed_u3216.bench_udiv32_16, "scratch", True),
             "MATH_SDIV32_16": (speed_s3216.bench_sdiv32_16, "scratch", True),
@@ -2241,6 +2266,10 @@ def build(plan, outdir, memory=None, root=ROOT):
                 "tools/selective_recip16_threshold.py",
                 "v3_reu_512k/standalone/recip_u16_u24_q16.asm"]:
             raise LinkError(api + ": historical threshold donor/relocator provenance missing")
+        if module.get("signed16_v2_shared") and set(x["source_path"] for x in dep_provenance) != {
+                "tools/selective_v2_signed16_shared.py",
+                "relocatable_source/v2_pareto_fast/udiv16_direct_fast.inc"}:
+            raise LinkError(api + ": signed V2 16/16 shared donor provenance missing")
         if module.get("v2_signed_shifted16") and [x["source_path"] for x in dep_provenance] != [
                 "tools/selective_v2_signed_shifted16.py", "tools/selective_v2_fast_u3216.py"]:
             raise LinkError(api + ": historical signed shifted16 source provenance missing")
@@ -2286,7 +2315,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("umuldiv16_qsv2") or module.get("smuldiv16_qsv2") or module.get("fast_umul8") or module.get("smul8_qs") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("umuldiv16_qsv2") or module.get("smuldiv16_qsv2") or module.get("fast_umul8") or module.get("smul8_qs") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed16_v2_shared") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2321,6 +2350,9 @@ def build(plan, outdir, memory=None, root=ROOT):
                     entry = labels[module["entry"]]
                 elif module.get("recip16_threshold"):
                     machine, labels, ranges, end = recip_threshold.assemble_image(pc,io,sb,root)
+                    entry = labels[module["entry"]]
+                elif module.get("signed16_v2_shared"):
+                    machine, labels, ranges, end = v2signed16.assemble_image(pc,io,sb,root)
                     entry = labels[module["entry"]]
                 elif module.get("v2_signed_shifted16"):
                     machine, labels, ranges, end = signedshift.assemble_image(pc,io,zb,root)
@@ -2391,7 +2423,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("v2_shifted_u3216") and not module.get("recip16_threshold") and not module.get("recip16_table") and not module.get("v2_signed_shifted16") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("v2_shifted_u3216") and not module.get("recip16_threshold") and not module.get("recip16_table") and not module.get("v2_signed_shifted16") and not module.get("signed16_v2_shared") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:

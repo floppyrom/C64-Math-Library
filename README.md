@@ -8,6 +8,8 @@ The builder also offers a **tableless ISQRT16** for memory-constrained C64
 programs (137 bytes code + 6 bytes scratch, no ZP), preserving the original
 fast square-table implementation as the automatic speed-preferred option.
 
+The signed 16-bit quotient/remainder APIs also offer a shared source-linked historical V2 magnitude divider with a signed public adapter. The fast source occupies 1,705 code bytes plus eight ordinary scratch bytes and zero ZP, while the original 206-byte compact zero-ZP implementation remains selectable. Full public-call speed measurements decide only when RAM permits; see `docs/SDIV16_SMOD16_V2_SHARED.md`.
+
 **Start without profiles:**
 
 ```sh
