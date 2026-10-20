@@ -27,16 +27,16 @@ cycles are checked. Each call is charged its caller JSR overhead.
 
 Run:
 
-\`\`\`sh
+```sh
 python3 -m unittest discover -s tools -p 'test_mixed_seven_frame_parity.py' -v
 python3 tools/mixed_seven_frame_parity.py --out build/seven/frame-report.json
 python3 tools/mixed_frame_frontier.py \
   --in-report build/seven/frame-report.json \
   --ram-budget 16000 --zp-budget 64 --out build/seven/frontier.json
-\`\`\`
+```
 
 **This is a source-qualified experimental benchmark, not a registered
-installer workload yet.** The production \`frame\` objective must not trust
+installer workload yet.** The production `frame` objective must not trust
 its peak cycles until the exact deterministic seven-API producer is
 registered with strict replay and binary checks.
 
