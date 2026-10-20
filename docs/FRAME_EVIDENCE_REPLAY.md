@@ -38,8 +38,6 @@ mismatched physical source SHA, different PRG, differing actual
 RAM/ZP resource, incorrect cycle aggregates or falsified
 peak/p95/total math-only frame costs all reject the build.
 
-A **second registered producer** now handles public `MATH_UDIV32_32` / `MATH_UMOD32_32` at two locations, comparing four whole linked quotient/remainder plans (shared 0-ZP, independent 0-ZP, V2 12-ZP hybrid, and mixed 4-ZP DIV). This is deterministic CPU-model public Q32/R32/carry replay, not physical PAL frame timing; see [U3232_FRAME_INSTALLER.md](U3232_FRAME_INSTALLER.md).
-
 **No generic certification:** Arbitrary operations and traces are not
 suddenly measured by this research gate. Future workloads must add an
 explicitly qualified deterministic producer. Existing standard builder

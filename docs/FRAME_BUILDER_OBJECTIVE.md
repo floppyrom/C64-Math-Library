@@ -29,6 +29,8 @@ limit, rather than an estimate of physical frame time. Use
 `--frame-optimize peak|ram|zp` to choose between measured combined
 project plans within all budgets.
 
+**Publication safety:** All five related output files are first staged and verified; existing files are backed up before replacement. On a filesystem write failure the command restores previous files (or removes any partially installed new files). Unsafe symlink targets are rejected and unrelated project files are preserved. The selective binary manifest is published last as a completion marker. This is rollback-safe error handling, *not* an atomic multi-file snapshot for concurrent readers; treat active build directories as single-writer and regenerate after a host crash.
+
 On success the builder writes the normal `math_selective.prg`,
 `math_api.inc`, `selective_manifest.json`, plus
 `frame_qualified_config.json` (fixed normal resource-mode pins) and
@@ -49,8 +51,6 @@ coverage. It is **not** a claim of an optimized or fastest selectable
 combination for every possible subset of the 56 operations.
 
 **Imported timing provenance is reverified, not merely checksum-checked.** The `frame` objective first re-executes the exact registered three-operation source-linked benchmark at every declared origin. It rejects altered cycle peaks, p95, RAM/ZP, input corpus and source/PRG hashes even if the original binary still matches. Unsupported benchmark producers fail closed; see [FRAME_EVIDENCE_REPLAY.md](FRAME_EVIDENCE_REPLAY.md).
-
-**Additional replay-qualified workload:** Generate `tools/u3232_joint_frame_parity.py` evidence and select with `examples/operation-first-u3232-frame.json` to optimize complete unsigned 32-bit DIV/MOD public Q/R/C projects, subject to exact source-backed frame replay. See [U3232_FRAME_INSTALLER.md](U3232_FRAME_INSTALLER.md). No generic trace import is accepted.
 
 **Physical timing limitation:** this gate uses Mini6502 complete
 public-call cycles plus caller JSR charges from synthetic frames.

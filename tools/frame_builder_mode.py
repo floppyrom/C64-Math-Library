@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import os
 import tempfile
 from pathlib import Path
 
@@ -76,18 +75,12 @@ def run(args, cfg, names, pins, constraints, workloads, index):
                         if p["code"] == "$%04X" % memory["code_base"]
                         and p["io"] == "$%04X" % memory["math_io"])):
             raise EvidenceError("Installer output diverges from qualified physical source image")
-        parent = args.out.parent
-        parent.mkdir(parents=True, exist_ok=True)
         (stage / "frame_qualified_config.json").write_text(
             json.dumps(pinned, sort_keys=True, indent=2) + "\n", encoding="utf-8")
         (stage / "frame_qualified_evidence.json").write_text(
             json.dumps(evidence, sort_keys=True, indent=2) + "\n", encoding="utf-8")
-        for filename in ("math_selective.prg", "math_api.inc",
-                         "selective_manifest.json", "frame_qualified_config.json",
-                         "frame_qualified_evidence.json"):
-            # This opt-in mode preserves original linker filenames. Publication
-            # only occurs after all source/ABI/checksum checks have passed.
-            os.replace(stage / filename, parent / filename)
+        from frame_publish import publish
+        publish(stage, args.out.parent)
     print("Built frame-qualified PRG:", args.out.parent / "math_selective.prg")
     print("Selected measured plan:", evidence["choice"])
     print("Exact source-linked SHA-256:", evidence["qualified_prg_sha256"])

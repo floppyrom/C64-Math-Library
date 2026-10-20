@@ -36,9 +36,9 @@ The operation-first CLI also has a **strict opt-in `frame` objective**: supply a
 
 The strict `frame` objective now **replays source-linked public-call measurements before trusting performance numbers**. Matching PRG and source checksums alone cannot authenticate claimed peak cycles. See [frame evidence replay](docs/FRAME_EVIDENCE_REPLAY.md); this is still a CPU-model-only research gate, not a real PAL-frame guarantee.
 
-A **matched linked-image 32/32 DIV/MOD frame study** now measures four real project plans, including shared full quotient/remainder producers, at two relocations with the same public-call input history. See [unsigned 32-bit DIV/MOD frame qualification](docs/U3232_JOINT_FRAME_PARITY.md). This is synthetic CPU-model research, not a physically qualified PAL frame or a new registered production installer workload.
+The frame-qualified PRG publisher now stages and verifies the complete five-artifact output set. If a filesystem replacement fails, previously installed artifacts are restored rather than silently leaving an inconsistent mix of old and new code. This is **rollback-safe**, not atomic visibility for concurrent readers; see [frame builder documentation](docs/FRAME_BUILDER_OBJECTIVE.md).
 
-The replay-verified `frame` installer can now select a **complete unsigned 32-bit DIV/MOD project** as well as the original multiplication/square-root project. Both use fresh source-linked public-call replay, exact output PRG SHA, and memory/peak constraints. See [32-bit DIV/MOD frame installer](docs/U3232_FRAME_INSTALLER.md). These are registered research workloads, not a general all-56-API frame oracle or physical PAL timing guarantee.
+A **matched linked-image 32/32 DIV/MOD frame study** now measures four real project plans, including shared full quotient/remainder producers, at two relocations with the same public-call input history. See [unsigned 32-bit DIV/MOD frame qualification](docs/U3232_JOINT_FRAME_PARITY.md). This is synthetic CPU-model research, not a physically qualified PAL frame or a new registered production installer workload.
 
 **Start without profiles:**
 

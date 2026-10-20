@@ -1,14 +1,14 @@
-## Unreleased — replay-qualified unsigned 32-bit DIV MOD operation-first frame objective
-
-- Register the four-source matched `UDIV32_32`/`UMOD32_32` two-relocation, 150-call/24-synthetic-frame benchmark as a second reproducible source-linked timing producer, without changing the original multiply/sqrt producer.
-- Before accepting a wide DIV/MOD peak-frame claim, independently re-link and replay all public Q32/R32/carry/operand/stack cases and compare the complete reported math-cycle/provenance evidence; reject numerical tampering even with valid source/PRG hashes.
-- Add end-to-end zero-ZP and 12-ZP selected binary tests, an example frame config and dedicated CI; preserve ordinary speed/balanced/size/ZP selectors and legacy V1–V5/REU distributions.
-
 ## Unreleased — matched complete-public 32-bit unsigned division/modulo frame study
 
 - Link and execute four whole-project UDIV32_32+UMOD32_32 source-pair variants across two relocations, checking the identical 150-call/24-synthetic-frame Q32/R32/carry/operand/stack input history.
 - Compare shared zero-ZP, independent zero-ZP, V2-hybrid 12-ZP and mixed 4-ZP DIV source choices with real source/PRG hash, occupied physical producer RAM/ZP and peak/p95/total arithmetic frame measurements.
 - Keep this as offline research until its benchmark is separately replay-registered and application-level PAL timing is proved. Historical V1–V5 and hardware REU bundles unchanged.
+
+## Unreleased — rollback-safe qualified-frame binary publication
+
+- Stage all five frame-mode artifacts and validate them before publication; snapshot original output files, including completed manifests, and restore them if any replace operation fails.
+- Reject symlink/missing/unsafe staged or destination files, preserve unrelated project outputs, and write `selective_manifest.json` last as the successful publication marker.
+- Test mid-publication disk failure and rollback for existing and fresh installations. No changes to math kernels, V1–V5 or preserved V3/V4 REU images; publication is not an atomic multi-file reader transaction.
 
 ## Unreleased — independently replayed linked-source frame evidence
 
