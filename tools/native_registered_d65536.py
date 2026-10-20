@@ -27,7 +27,7 @@ def verify(vice):
     with tempfile.TemporaryDirectory(prefix="d65536_registered_") as td:
         folder=Path(td)
         for placement,(code,io,zp) in enumerate(CODES):
-            binary,entries,manifest=build_at(code,io,zp,original_native.research.ROOT)
+            binary,entries,manifest=build_at(code,io,zp,original_native.candidate.ROOT)
             memory=bytearray(65536)
             memory[code:code+len(binary)-2]=binary[2:]
             mapping={"INPUT_NUM":io+16,"INPUT_DIV":io+20,
@@ -59,7 +59,7 @@ def verify(vice):
                     "calls":count,"output_sha256":digest,
                     "linked_binary_sha256":hashlib.sha256(binary).hexdigest(),
                     "source_sha256":hashlib.sha256(
-                        (original_native.research.ROOT/"tools/research_d65536_hybrid.py").read_bytes()).hexdigest(),
+                        (original_native.candidate.ROOT/"tools/research_d65536_hybrid.py").read_bytes()).hexdigest(),
                     "zero_page_bytes":manifest["resource_use"]["zero_page_bytes"],
                 })
                 print("NATIVE INSTALLED D65536",tag,count,"PASS",flush=True)
