@@ -60,7 +60,7 @@ def verify(vice):
                     "linked_binary_sha256":hashlib.sha256(binary).hexdigest(),
                     "source_sha256":hashlib.sha256(
                         (original_native.research.ROOT/"tools/research_d65536_hybrid.py").read_bytes()).hexdigest(),
-                    "zero_page_bytes":manifest["resource_use"]["zp_bytes"],
+                    "zero_page_bytes":manifest["resource_use"]["zero_page_bytes"],
                 })
                 print("NATIVE INSTALLED D65536",tag,count,"PASS",flush=True)
     for api in APIS:
