@@ -17,7 +17,19 @@ class ResearchSevenPALTests(unittest.TestCase):
         before={api:copy.deepcopy(linker.MODULES[api][variant])
                 for api,variant in research.PAIRED.items()}
         with tempfile.TemporaryDirectory() as td:
-            image, entries, proof=research.research_source_image(Path(td))
+            root=Path(td)
+            old=root/"stock"
+            new=root/"research"
+            old.mkdir()
+            new.mkdir()
+            baseline, original_entries, baseproof=research.research_source_image(
+                old,use_candidate=False)
+            image, entries, proof=research.research_source_image(new)
+        self.assertEqual(baseproof["zero_page_bytes"],proof["zero_page_bytes"])
+        self.assertEqual(proof["main_ram_bytes"]-baseproof["main_ram_bytes"],192)
+        self.assertEqual(len(image)-len(baseline),192)
+        self.assertEqual(set(entries),set(original_entries))
+        self.assertFalse(baseproof["research_only_with_temporarily_injected_source_emitters"])
         after={api:copy.deepcopy(linker.MODULES[api][variant])
                for api,variant in research.PAIRED.items()}
         self.assertEqual(before,after)
