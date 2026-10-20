@@ -14,8 +14,8 @@ class MixedSevenFrameTests(unittest.TestCase):
     def setUpClass(cls):
         cls.report = {
             "basis": BASIS, "operations": list(OPS),
-            "placements": [compare(0x8000, 0xc000, 0x50),
-                           compare(0x7123, 0xc040, 0x70)],
+            "placements": [compare(0x2000, 0xc000, 0x50),
+                           compare(0x4123, 0xc040, 0x70)],
         }
 
     def test_complete_deterministic_workload_and_all_seven_apis(self):
