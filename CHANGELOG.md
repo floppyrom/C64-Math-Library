@@ -1,3 +1,8 @@
+## Unreleased — native PAL timing of installed signed-only and both-D65536 source plans
+
+- Pinned native x64sc r46284 signed-only winner: worst VIC-visible frame **19,883 → 17,580** PHI2 slots (−2,303) against stock, better than both D65536 (17,618), with **8,957 B linked RAM** unchanged from stock and 0/24 isolated deadline misses. This is not yet consecutive 50 Hz application certification.
+- Independently native-verify all 24 PAL/VIC/CIA bursts for **three actual installer-linked** seven-API alternatives: stock V2, signed-only D65536, and signed+unsigned D65536, each with display on/off, exact source/PRG hashes and public input/output/carry verification. Retain synthetic, isolated-burst timing scope; this is not a 50 Hz IRQ/SID/REU demo certificate.
+
 ## Unreleased — nine-plan D65536 seven-operation peak-frame source replay
 
 - Add nine complete signed/unsigned D65536 and stock-V2/zero-ZP seven-API public-source plans, each reassembled and executed on the original 150 matched calls across 24 synthetic frames at two physical relocations. Keep previous sixteen-plan report/basis unchanged.
