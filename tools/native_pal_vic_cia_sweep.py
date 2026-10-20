@@ -115,6 +115,7 @@ def run(vice: str, *, frames: tuple[int, ...], profiles: tuple[str, ...]) -> dic
                     sample=run_one(vice,image,entries,folder,tag,port,
                                    frame=frame,display=display)
                     sample["selected_choice"]=proof["choice"]
+                    sample["qualified_prg_sha256"]=proof["qualified_prg_sha256"]
                     rows.append(sample)
                     native_runs.append(sample)
                     print("PAL FRAME SAMPLE",tag,
