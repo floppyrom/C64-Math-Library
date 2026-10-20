@@ -44,6 +44,10 @@ def run(args, cfg, names, pins, constraints, workloads, index):
     if optimize not in ("peak", "ram", "zp"):
         raise EvidenceError("Unsupported qualified frame optimization goal")
     data = json.loads(Path(report_path).read_text(encoding="utf-8"))
+    # A self-consistent report alone cannot authenticate its alleged timings.
+    # Re-execute the registered complete public-call trace against current sources.
+    from frame_evidence_replay import replay
+    replay(data)
     pinned, evidence = export_config(
         data, ram_budget=budget_ram, zp_budget=budget_zp,
         code_base=memory["code_base"], math_io=memory["math_io"],
