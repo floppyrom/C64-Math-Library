@@ -1,0 +1,47 @@
+name: Replay-attested unsigned wide DIV MOD frame installer
+
+on:
+  pull_request:
+    paths:
+      - 'tools/frame_evidence_replay.py'
+      - 'tools/u3232_joint_frame_parity.py'
+      - 'tools/test_u3232_frame_installer.py'
+      - 'tools/frame_builder_mode.py'
+      - '.github/workflows/u3232-frame-installer.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  replay-source-divmod:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify deterministic full Q/R/C corpus and end-to-end frame config
+        run: |
+          python3 -m compileall -q tools/frame_evidence_replay.py tools/u3232_joint_frame_parity.py tools/test_u3232_frame_installer.py
+          python3 -m unittest discover -s tools -p 'test_u3232_frame_installer.py' -v
+          python3 -m unittest discover -s tools -p 'test_frame_evidence_replay.py' -v
+      - name: Replay registered source benchmark through ordinary installer CLI
+        run: |
+          mkdir -p build/u3232-frame
+          python3 tools/u3232_joint_frame_parity.py --out build/u3232-frame/frames.json
+          python3 tools/frame_evidence_replay.py --report build/u3232-frame/frames.json --out build/u3232-frame/proof.json
+          python3 tools/math_builder.py --objective frame --config examples/operation-first-u3232-frame.json --frame-report build/u3232-frame/frames.json --build --out build/u3232-frame/built/selection_manifest.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unsigned-wide-divmod-frame-builder-evidence
+          path: |
+            build/u3232-frame/frames.json
+            build/u3232-frame/proof.json
+            build/u3232-frame/built/frame_qualified_evidence.json
+          if-no-files-found: warn
+          retention-days: 30
