@@ -1,3 +1,8 @@
+## Unreleased — nine-plan D65536 seven-operation peak-frame source replay
+
+- Add nine complete signed/unsigned D65536 and stock-V2/zero-ZP seven-API public-source plans, each reassembled and executed on the original 150 matched calls across 24 synthetic frames at two physical relocations. Keep previous sixteen-plan report/basis unchanged.
+- Register strict nine-choice frame-evidence replay, preserving physical PRG/source hashes, operand order, full 32-bit public ABI, ZP/RAM and worst-frame model costs. Extend frame-objective installation tests including selection by memory/ZP budget, with an explicit fail-closed evidence gate and no physical PAL feasibility claim.
+
 ## Unreleased — optional independently linkable D=$00010000 32/32 Pareto variants
 
 - Register `link:d65536-hybrid` as an optional source-SHA/dependency-authenticated signed/unsigned 32/32 public Q/R/C DIV/MOD producer, preserving exact historical V2 and compact sources and independent shared physical aliasing. Increase producer-size contracts by 96 B each (whole seven-API research workload: +256 linked bytes including alignment).
