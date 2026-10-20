@@ -54,8 +54,6 @@ combination for every possible subset of the 56 operations.
 
 **Additional replay-qualified workload:** Generate `tools/u3232_joint_frame_parity.py` evidence and select with `examples/operation-first-u3232-frame.json` to optimize complete unsigned 32-bit DIV/MOD public Q/R/C projects, subject to exact source-backed frame replay. See [U3232_FRAME_INSTALLER.md](U3232_FRAME_INSTALLER.md). No generic trace import is accepted.
 
-**Signed wide DIV/MOD replay:** a distinct registered source-linked 0-ZP/12-ZP signed full Q/R/C selection workload is available via `examples/operation-first-s3232-frame.json`, after mandatory deterministic timing replay. See [S3232_FRAME_INSTALLER.md](S3232_FRAME_INSTALLER.md). This is not general-purpose peak-frame optimization.
-
 **Physical timing limitation:** this gate uses Mini6502 complete
 public-call cycles plus caller JSR charges from synthetic frames.
 Actual PAL/VIC-II bus contention, badlines, IRQ/SID, REU DMA,

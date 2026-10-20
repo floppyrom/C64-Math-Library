@@ -44,8 +44,6 @@ The replay-verified `frame` installer can now select a **complete unsigned 32-bi
 
 A new **signed 32-bit DIV/MOD synthetic frame study** compares the compact zero-ZP signed restoring source against the shared V2 12-ZP hybrid using identical full public-call inputs. This is offline research, not yet a registered `frame` installer workload; see [signed 32-bit shared DIV/MOD frame study](docs/S3232_JOINT_FRAME_PARITY.md).
 
-The replay-qualified frame installer also supports **signed 32-bit DIV/MOD** zero-ZP versus V2 12-ZP linked-image choices. It independently reruns full signed quotient/remainder/carry test frames before selecting a source; see [signed 32-bit frame installer](docs/S3232_FRAME_INSTALLER.md). This does not imply arbitrary all-56-API frame support or PAL physical frame timing.
-
 **Start without profiles:**
 
 ```sh

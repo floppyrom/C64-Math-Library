@@ -1,9 +1,3 @@
-## Unreleased — replay-qualified signed 32-bit DIV/MOD frame installer
-
-- Register the signed restoring 0-ZP and V2 signed hybrid 12-ZP Q32/R32/carry source-linked frame experiment as a third deterministic producer; replay the same signed 150-call/24-synthetic-frame corpus at two code/I/O/ZP origins.
-- Reject signed quotient, remainder, carry, N/D preservation, stack, peak/p95/total synthetic cycle or linked PRG/source-hash changes before publishing the exact pinned C64 project.
-- Add zero-ZP and 12-ZP end-to-end tests, an example config and dedicated workflow. Other existing builder objectives, historical profiles and REU compatibility are unchanged.
-
 ## Unreleased — source-linked signed 32-bit DIV/MOD paired-frame performance study
 
 - Compare source-shared signed portable 0-ZP and signed V2 hybrid 12-ZP Q32/R32/C producers in identical 150-public-call, 24-synthetic-frame workloads at two relocations.
