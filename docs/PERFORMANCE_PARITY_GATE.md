@@ -72,6 +72,8 @@ A new three-operation mixed source-linked frame qualifier includes `MATH_UMUL32`
 
 Native VICE **correctness** of ordinary byte-identical, frame-qualified installer PRGs can now be checked in the exact pinned source/layout using 1,152 signed/unsigned full64 and ISQRT16 public calls (four CLI images, two layouts, two memory budgets). This closes an application-*artifact correctness* gap, **not** physical PAL/IRQ/SID/REU frame-parity timing; see [`FRAME_QUALIFIED_NATIVE_VICE.md`](FRAME_QUALIFIED_NATIVE_VICE.md).
 
+Original V3/V4 Turbo16/Turbo32/QS16 REU services may be kept available as **standalone, immutable compatibility bundles** via `tools/export_reu_compat.py`, including the exact REU image and resident and source SHA/ABI proof. See `REU_COMPAT_EXPORT.md`. This avoids accidental loss of hardware-specific services while the stock builder becomes standard, but **does not** add REU-mode support to the operation-first linker or certify physical PAL/DMA timing.
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

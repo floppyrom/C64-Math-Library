@@ -30,6 +30,8 @@ A **source-verified project configuration exporter** can now convert a qualified
 
 The exact frame-qualified installer PRG now also has **real pinned VICE x64sc correctness checks**: four ordinary CLI-rebuilt, source/placement-SHA-matched project images (two relocations × fast/zero-ZP choices) run 1,152 independent unsigned/signed full64 multiplication and square-root public calls under x64sc r46284. This validates the actual selected source and public ABI, not physical PAL frame timing; see `docs/FRAME_QUALIFIED_NATIVE_VICE.md`. V1–V5 and REU compatibility images stay unchanged.
 
+REU-specific V3/V4 Turbo16/Turbo32 and QS16 services remain available in **separate original resident compatibility packages**, checksum-locked from the actual V3/V4 PRG, 512-KiB or 16-MiB REU image, ABI include and licensing files. Export with `python3 tools/export_reu_compat.py --profile v3_reu_512k --out build/compat-v3` (or `v4_reu_16m`). These are **exclusive full legacy residents**, never modules to mix with `math_selective.prg`. See `docs/REU_COMPAT_EXPORT.md`.
+
 **Start without profiles:**
 
 ```sh
