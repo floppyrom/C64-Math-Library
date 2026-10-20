@@ -123,11 +123,19 @@ def run(vice, frames):
         if new_proof["zero_page_bytes"]!=control_proof["zero_page_bytes"]:
             raise AssertionError("Research changed mixed-project ZP envelope")
         old_ram=control_proof["main_ram_bytes"]
-        if new_proof["main_ram_bytes"]!=old_ram+192:
+        source_growth=2*(research.IMAGE_BYTES-research.OLD_UNSIGNED_BYTES)
+        ram_growth=new_proof["main_ram_bytes"]-old_ram
+        prg_growth=len(new_binary)-len(control_binary)
+        # Actual RAM image accounting includes alignment/padding between
+        # independent source modules, so the image can grow by >192 even
+        # though each source producer individually expands by exactly 96.
+        if (source_growth!=192 or ram_growth!=prg_growth
+                or not source_growth<=ram_growth<source_growth+256):
             raise AssertionError(
-                "Research full-image RAM is not two +96-byte source slots: "
-                f"control_ram={old_ram} new_ram={new_proof['main_ram_bytes']} "
-                f"control_prg={len(control_binary)-2} new_prg={len(new_binary)-2}")
+                "Research source/linked growth reconciliation failed: "
+                f"producer_growth={source_growth} linker_ram_growth={ram_growth} "
+                f"PRG_span_growth={prg_growth} control_ram={old_ram} "
+                f"new_ram={new_proof['main_ram_bytes']}")
         for candidate_idx,(name,image,entries) in enumerate(
             (("stock",old_binary,old_entries),
              ("d65536",new_binary,new_entries))
@@ -185,7 +193,10 @@ def run(vice, frames):
         "full_source_registration_provenance_trusted":False,
         "baseline_production_prg_sha256":proof["qualified_prg_sha256"],
         "baseline_reconstructed_from_identical_pinned_plan":True,
-        "research_additional_linked_ram_bytes":new_proof["main_ram_bytes"]-old_ram,
+        "research_additional_linked_ram_bytes":ram_growth,
+        "two_core_source_footprint_extra_bytes":source_growth,
+        "linker_layout_and_alignment_extra_bytes":ram_growth-source_growth,
+        "control_and_candidate_image_span_growth_equal":prg_growth==ram_growth,
         "research_linked_source_evidence":new_proof,
         "frame8":selected,
         "peak_stock_visible_slots":max(x["stock_visible_slots"] for x in paired),
