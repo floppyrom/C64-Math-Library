@@ -26,6 +26,17 @@ PAL_FRAME = 19656
 JSR_CYCLES = 6
 
 
+def divisor_input_class(api, raw_y):
+    """Input-class triage only; no claim of a measured native instruction path."""
+    if api not in seven.OPS[3:] or type(raw_y) is not int or not 0 <= raw_y < 2**32:
+        return None
+    signed = api in seven.OPS[5:]
+    value = raw_y-(1<<32) if signed and (raw_y & 0x80000000) else raw_y
+    return ("zero" if value == 0 else
+            ("negative-" if value < 0 else "positive-") +
+            ("narrow16" if abs(value) <= 0xffff else "wide32"))
+
+
 def model_calls(source, frame=8):
     if frame not in range(seven.FRAMES) or type(frame) is not int:
         raise ValueError("Frame must be an existing source-benchmark frame")
@@ -49,10 +60,14 @@ def model_calls(source, frame=8):
         "calls": [
             {"frame": c.frame, "ordinal": c.ordinal,
              "operation": c.operation, "input_id": c.input_id,
+             "operand_x_u32_hex": "%08X" % original[3],
+             "operand_y_u32_hex": "%08X" % original[4],
+             "sqrt_n_u16_hex": "%04X" % original[5],
+             "divisor_input_class": divisor_input_class(c.operation, original[4]),
              "source_variant": c.variant,
              "entry_through_rts_cycles": c.cycles,
              "math_and_jsr_cycles": c.cycles + JSR_CYCLES}
-            for c in call_rows
+            for c, original in zip(call_rows, scenario)
         ],
     }
 
@@ -87,6 +102,10 @@ def rank_attribution(compact, fast):
     individual = [
         {"ordinal": b["ordinal"], "operation": b["operation"],
          "input_id": b["input_id"],
+         "operand_x_u32_hex": b.get("operand_x_u32_hex"),
+         "operand_y_u32_hex": b.get("operand_y_u32_hex"),
+         "sqrt_n_u16_hex": b.get("sqrt_n_u16_hex"),
+         "divisor_input_class": b.get("divisor_input_class"),
          "compact_math_model_cycles": a["math_and_jsr_cycles"],
          "fast31_math_model_cycles": b["math_and_jsr_cycles"],
          "math_model_cycles_saved": a["math_and_jsr_cycles"] - b["math_and_jsr_cycles"]}
