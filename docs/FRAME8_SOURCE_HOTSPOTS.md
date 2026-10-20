@@ -53,3 +53,11 @@ relocations, then remeasured using this exact full-frame native probe.
 The tool does not modify V1–V5, REU/Turbo/QS16 compatibility, source
 selection or performance-frontier registrations. The next acceptance
 goal is measurable worst-frame savings, not improving unrelated averages.
+
+The ranked-call table also records the original complete-public-call operand words
+in eight-hex-digit unsigned form, the exact 16-bit square-root input, and a
+signed-aware divisor category (zero, positive/negative narrow16, or
+positive/negative wide32). This is an **input-class hint**, not an assertion
+that a specific 6502 internal division branch was taken. The expensive
+`SMOD32_32` example can thus be reconstructed without relying on an opaque
+input hash and reproduced with unchanged public ABI semantics.
