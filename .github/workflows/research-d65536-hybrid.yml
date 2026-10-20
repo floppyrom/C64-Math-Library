@@ -6,6 +6,8 @@ on:
       - 'tools/test_research_d65536_hybrid.py'
       - 'tools/native_research_d65536.py'
       - 'tools/test_native_research_d65536.py'
+      - 'tools/research_d65536_seven_pal.py'
+      - 'tools/test_research_d65536_seven_pal.py'
       - '.github/workflows/research-d65536-hybrid.yml'
       - 'tools/selective_hybrid_u3232.py'
       - 'tools/selective_signed_hybrid_u3232.py'
@@ -29,6 +31,7 @@ jobs:
           python3 -m compileall -q tools/research_d65536_hybrid.py tools/test_research_d65536_hybrid.py
           python3 -m unittest discover -s tools -p 'test_research_d65536_hybrid.py' -v
           python3 -m unittest discover -s tools -p 'test_native_research_d65536.py' -v
+          python3 -m unittest discover -s tools -p 'test_research_d65536_seven_pal.py' -v
       - name: Compare signed and unsigned source-linked public corpus at both memory placements
         run: |
           python3 tools/research_d65536_hybrid.py --out build/research/d65536-comparison.json
@@ -65,10 +68,13 @@ jobs:
           export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
           bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
           python3 tools/native_research_d65536.py --out build/research/d65536-native-isolated-pal.json
+          python3 tools/research_d65536_seven_pal.py --frames all --out build/research/d65536-seven-frame-native-pal.json
       - name: Preserve explicitly research-only native public ABI and exact-target timing
         uses: actions/upload-artifact@v4
         with:
           name: research-d65536-native-pal-targeted
-          path: build/research/d65536-native-isolated-pal.json
+          path: |
+            build/research/d65536-native-isolated-pal.json
+            build/research/d65536-seven-frame-native-pal.json
           if-no-files-found: error
           retention-days: 14
