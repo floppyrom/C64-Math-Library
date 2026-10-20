@@ -1,0 +1,38 @@
+name: Research D65536 exact public DIVMOD fast path
+on:
+  pull_request:
+    paths:
+      - 'tools/research_d65536_hybrid.py'
+      - 'tools/test_research_d65536_hybrid.py'
+      - '.github/workflows/research-d65536-hybrid.yml'
+      - 'tools/selective_hybrid_u3232.py'
+      - 'tools/selective_signed_hybrid_u3232.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-research:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prove relocations, exact Q32/R32/C and source immutability
+        run: |
+          python3 -m compileall -q tools/research_d65536_hybrid.py tools/test_research_d65536_hybrid.py
+          python3 -m unittest discover -s tools -p 'test_research_d65536_hybrid.py' -v
+      - name: Compare signed and unsigned source-linked public corpus at both memory placements
+        run: |
+          python3 tools/research_d65536_hybrid.py --out build/research/d65536-comparison.json
+      - name: Publish explicitly unqualified matched-input research measurement
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-d65536-source-public-abi-performance
+          path: build/research/d65536-comparison.json
+          if-no-files-found: error
+          retention-days: 14
