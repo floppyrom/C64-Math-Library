@@ -52,6 +52,8 @@ The **seven-operation frame installer** now replay-verifies UMUL32/SMUL32/ISQRT1
 
 The seven-API mixed-project frame installer now has an additional [**exact-binary native x64sc verification**](docs/NATIVE_SEVEN_FRAME_INSTALLER.md): two replay-registered resource-envelope choices, with all seven public arithmetic exports tested in the complete linked PRG. This is emulator correctness evidence, **not** physical PAL/IRQ/SID/REU frame timing.
 
+The linked seven-operation research now includes a [**full sixteen-way cross of the MUL, ISQRT16, unsigned DIV/MOD and signed DIV/MOD choices**](docs/MIXED_SEVEN_CROSS_PARETO.md). It retains the four previously qualified production-frame candidates and measures any additional Pareto choices on identical public-call input frames before considering them for registration. This is not physical PAL frame qualification.
+
 **Start without profiles:**
 
 ```sh

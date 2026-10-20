@@ -83,10 +83,11 @@ def scenario():
     return tuple(calls)
 
 
-def evaluate(name: str, code=0x8000, io=0xc000, zp=0x50):
-    if name not in OPTIONS:
+def evaluate(name: str, code=0x8000, io=0xc000, zp=0x50, *, candidates=None):
+    choices = OPTIONS if candidates is None else candidates
+    if name not in choices:
         raise ValueError("Unqualified seven-operation candidate plan")
-    pins = OPTIONS[name]
+    pins = choices[name]
     for api, variant in pins.items():
         if variant not in linker.MODULES[api]:
             raise AssertionError("Linked public variant missing " + api + " " + variant)
@@ -179,8 +180,10 @@ def evaluate(name: str, code=0x8000, io=0xc000, zp=0x50):
         }
 
 
-def compare(code, io, zp):
-    variants = {label: evaluate(label, code, io, zp) for label in OPTIONS}
+def compare(code, io, zp, *, candidates=None):
+    choices = OPTIONS if candidates is None else candidates
+    variants = {label: evaluate(label, code, io, zp, candidates=choices)
+                for label in choices}
     first = tuple(c.key for c in next(iter(variants.values()))["calls"])
     if len(first) != CALLS or len(set(first)) != CALLS:
         raise AssertionError("Invalid matched seven-operation public-call history")
@@ -200,7 +203,7 @@ def compare(code, io, zp):
         use = data["manifest"]["resource_use"]
         scored = data["score"]
         result["per_option"][label] = {
-            "variant_map": OPTIONS[label],
+            "variant_map": choices[label],
             "source_sha256": data["source_sha256"],
             "linked_prg_sha256": data["linked_prg_sha256"],
             "linked_source_count": len(data["manifest"]["link_order"]),

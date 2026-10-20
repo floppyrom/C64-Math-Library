@@ -1,0 +1,41 @@
+name: Exhaustive sixteen-choice seven-API linked-frame Pareto research
+on:
+  pull_request:
+    paths:
+      - 'tools/mixed_seven_cross_pareto.py'
+      - 'tools/test_mixed_seven_cross_pareto.py'
+      - 'tools/mixed_seven_frame_parity.py'
+      - '.github/workflows/mixed-seven-cross-pareto.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-linked-seven-cross-frontier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify original four and all sixteen crossed linked public projects
+        run: |
+          python3 -m compileall -q tools/mixed_seven_frame_parity.py tools/mixed_seven_cross_pareto.py tools/test_mixed_seven_cross_pareto.py
+          python3 -m unittest discover -s tools -p 'test_mixed_seven_cross_pareto.py' -v
+          python3 -m unittest discover -s tools -p 'test_mixed_seven_frame_parity.py' -v
+      - name: Export complete source-linked frame research and resource Pareto
+        run: |
+          mkdir -p build/seven-cross
+          python3 tools/mixed_seven_cross_pareto.py --out build/seven-cross/frames.json
+          python3 tools/mixed_frame_frontier.py --in-report build/seven-cross/frames.json --ram-budget 16000 --zp-budget 64 --out build/seven-cross/frontier.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seven-api-all-sixteen-measured-linked-source-frontier
+          path: |
+            build/seven-cross/frames.json
+            build/seven-cross/frontier.json
+          if-no-files-found: warn
+          retention-days: 30

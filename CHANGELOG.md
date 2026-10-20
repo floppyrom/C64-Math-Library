@@ -1,3 +1,9 @@
+## Unreleased — fully crossed seven-API source-linked Pareto research
+
+- Qualify sixteen complete linked mathematical source combinations across independent shared-MUL, ISQRT16 table, unsigned DIV/MOD and signed DIV/MOD decisions at both original source-relocated RAM maps and on the same 150 public-call/24-synthetic-frame workload.
+- Retain the four originally replay-registered production frame images unchanged; compare exact public ABI results, shared source/PRG checksums, executable RAM, ZP, and worst-placement peak/p95/total math cycles for the twelve additional crossed choices.
+- Keep new candidate sets offline until deterministic replay and native qualification; no historical V1–V5 reference images or REU compatibility resources are changed.
+
 ## Unreleased — exact seven-operation frame-selected native x64sc qualification
 
 - Rebuild both zero-ZP and performance-oriented seven-API source-qualified installer PRGs with the production `--objective frame --build` CLI; require identical measured PRG SHA, selected source pins, public exports and RAM/ZP envelopes before native execution.
