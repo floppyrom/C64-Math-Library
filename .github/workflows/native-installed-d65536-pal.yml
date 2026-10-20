@@ -1,0 +1,49 @@
+name: Native installed D65536 signed-only versus both and V2 24 PAL frames
+on:
+  pull_request:
+    paths:
+      - 'tools/native_installed_d65536_pal.py'
+      - 'tools/test_native_installed_d65536_pal.py'
+      - 'tools/mixed_seven_d65536_frame.py'
+      - 'tools/frame_evidence_replay.py'
+      - 'tools/selective_linker.py'
+      - '.github/workflows/native-installed-d65536-pal.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pinned-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 145
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and verify actual source-selected installer PRGs and strict clock/output evidence
+        run: |
+          python3 -m compileall -q tools/native_installed_d65536_pal.py tools/test_native_installed_d65536_pal.py
+          python3 -m unittest discover -s tools -p 'test_native_installed_d65536_pal.py' -v
+      - name: Install pinned headless VICE prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Compile native PAL x64sc trunk r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Measure three exact installed seven-source plans for all 24 PAL/VIC CIA bursts and both display controls
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_installed_d65536_pal.py --out build/registered/d65536-installed-native-three-plan-pal.json
+      - name: Publish raw pinned native installed-source PAL burst distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-installed-d65536-stock-signed-only-both
+          path: build/registered/d65536-installed-native-three-plan-pal.json
+          if-no-files-found: error
+          retention-days: 14
