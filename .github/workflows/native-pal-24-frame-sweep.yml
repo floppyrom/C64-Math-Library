@@ -1,0 +1,48 @@
+name: Native PAL VIC/CIA 24-frame independent source sweep
+on:
+  pull_request:
+    paths:
+      - 'tools/native_pal_vic_cia_sweep.py'
+      - 'tools/test_native_pal_vic_cia_sweep.py'
+      - 'tools/native_pal_vic_cia_probe.py'
+      - '.github/workflows/native-pal-24-frame-sweep.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  pal-24-frame-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fail closed on missing source frames, forged results, and invalid latency percentile
+        run: |
+          python3 -m compileall -q tools/native_pal_vic_cia_probe.py tools/native_pal_vic_cia_sweep.py tools/test_native_pal_vic_cia_sweep.py
+          python3 -m unittest discover -s tools -p 'test_native_pal_vic_cia_probe.py' -v
+          python3 -m unittest discover -s tools -p 'test_native_pal_vic_cia_sweep.py' -v
+      - name: Install pinned headless VICE build prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build exact pinned x64sc r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Execute all 24 native source-linked math bursts with and without VIC display
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_pal_vic_cia_sweep.py --profiles both --frames all --out build/pal-vic-cia/24-native-bursts.json
+      - name: Upload non-release native PAL sample distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-pal-24-independent-frame-distribution
+          path: build/pal-vic-cia/24-native-bursts.json
+          if-no-files-found: error
+          retention-days: 14
