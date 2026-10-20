@@ -166,7 +166,7 @@ def native_sweep_attribution(report, compact, fast, *, frame=8):
             "whole_burst_cia_display_on_slots": selected["display_on_native_slots"],
             "whole_burst_cia_display_off_slots": selected["display_off_native_slots"],
             "display_on_vic_overhead_slots": selected["display_vic_overhead_slots"],
-            "nominal_19566_slot_margin": selected["nominal_frame_headroom_slots"],
+            "nominal_19656_slot_margin": selected["nominal_frame_headroom_slots"],
             "all_24_frame_peak_cia_slots": summary["peak_display_on_native_slots"],
             "all_24_frame_peak_index": summary["peak_display_on_frame"],
             "all_24_frame_deadline_misses": summary["nominal_pal_deadline_misses"],
