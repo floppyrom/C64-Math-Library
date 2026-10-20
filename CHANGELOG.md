@@ -1,5 +1,6 @@
 ## Unreleased — source-linked frame-8 call-level arithmetic hotspot attribution
 
+- Preserve each frame-8 hotspot's original public 32-bit X/Y operands and classify signed/unsigned divisor width and sign, enabling exact expensive-input reproductions without inferring a hardware-internal fast path.
 - Reexecute two exact source-pinned seven-operation configurations on identical public calls at the qualified installer map; rank the frame-8 operation-family and individual-input CPU-model entry-through-RTS+JSR contributions, preserving concrete executable/source hashes.
 - Combine call-level modeling only with exact pinned native PAL whole-burst evidence; reject mismatched native PRG hashes, input histories, call counts, output/carry digests or frame summaries. Do not claim native per-operation timing or 50 Hz application certification.
 
