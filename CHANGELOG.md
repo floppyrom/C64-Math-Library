@@ -1,3 +1,8 @@
+## Unreleased — independent native PAL/VIC/CIA sweep of all 24 synthetic math frames
+
+- Add per-frame pinned x64sc CIA Timer A/B elapsed-PHI2 measurement across all 24 independently raster-synchronised source-linked seven-API synthetic frames, on both 0-ZP compact and 31-ZP FAST31 linked installer plans, each with VIC display on/off.
+- Cross-check exact public output/carry bytes and physical PRG SHA between source variants and display conditions, and publish per-frame peak/p95 and nominal over-budget count for the isolated bursts. No continuous 50 Hz/IRQ/SID/REU real-time certificate is claimed.
+
 ## Unreleased — experimental native PAL VIC/CIA busy-frame wall-slot qualification
 
 - Prototype a native x64sc r46284 PAL raster-synchronised 24-call seven-API source-linked math burst. Capture cascaded CIA Timer A/B elapsed PHI2 slots with a display-off control and display-on normal badlines, including public-output/carry validation and timer rollover evidence.
