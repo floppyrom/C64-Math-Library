@@ -36,6 +36,8 @@ The operation-first CLI also has a **strict opt-in `frame` objective**: supply a
 
 The strict `frame` objective now **replays source-linked public-call measurements before trusting performance numbers**. Matching PRG and source checksums alone cannot authenticate claimed peak cycles. See [frame evidence replay](docs/FRAME_EVIDENCE_REPLAY.md); this is still a CPU-model-only research gate, not a real PAL-frame guarantee.
 
+A **matched linked-image 32/32 DIV/MOD frame study** now measures four real project plans, including shared full quotient/remainder producers, at two relocations with the same public-call input history. See [unsigned 32-bit DIV/MOD frame qualification](docs/U3232_JOINT_FRAME_PARITY.md). This is synthetic CPU-model research, not a physically qualified PAL frame or a new registered production installer workload.
+
 **Start without profiles:**
 
 ```sh
