@@ -1,3 +1,8 @@
+## Unreleased — experimental native PAL VIC/CIA busy-frame wall-slot qualification
+
+- Prototype a native x64sc r46284 PAL raster-synchronised 24-call seven-API source-linked math burst. Capture cascaded CIA Timer A/B elapsed PHI2 slots with a display-off control and display-on normal badlines, including public-output/carry validation and timer rollover evidence.
+- Keep this as a separate *experimental probe*, not a real 50 Hz app/IRQ/SID/REU parity certificate; leave all V1–V5 and REU artifacts unaltered.
+
 ## Unreleased — replay-verified PAL arithmetic-frame necessary headroom check
 
 - Add a source-replay-verified preflight that compares linked-project peak synthetic math cycles with 19,656 nominal PAL raster slots and optional explicitly hypothetical nonmath reservations; never claim real PAL timing from CPU-model arithmetic alone.
