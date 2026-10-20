@@ -1,0 +1,35 @@
+name: Operation-first evidence-gated frame objective
+
+on:
+  pull_request:
+    paths:
+      - 'tools/math_builder.py'
+      - 'tools/frame_builder_mode.py'
+      - 'tools/test_frame_builder_objective.py'
+      - 'tools/frame_qualified_config.py'
+      - 'tools/mixed_frame_frontier.py'
+      - '.github/workflows/frame-builder-objective.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measured-frame-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify linked measured frame objective and reject invalid layouts
+        run: |
+          python3 -m compileall -q tools/math_builder.py tools/frame_builder_mode.py tools/test_frame_builder_objective.py
+          python3 -m unittest discover -s tools -p 'test_frame_builder_objective.py' -v
+      - name: Verify original builder catalog and no-binary safety
+        run: |
+          python3 -m unittest discover -s tools -p 'test_math_builder.py' -v
+          python3 -m unittest discover -s tools -p 'test_frame_qualified_config.py' -v
