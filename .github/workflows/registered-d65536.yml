@@ -1,0 +1,76 @@
+name: Qualified D65536 installer public ABI and pinned native VICE
+on:
+  pull_request:
+    paths:
+      - 'tools/selective_linker.py'
+      - 'tools/selective_speed_s3232.py'
+      - 'tools/selective_speed_u3232.py'
+      - 'tools/research_d65536_hybrid.py'
+      - 'tools/test_registered_d65536_hybrid.py'
+      - 'tools/native_registered_d65536.py'
+      - '.github/workflows/registered-d65536.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linked-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and validate production source-pinned candidate and complete 32-bit ABI at both physical placements
+        run: |
+          python3 -m compileall -q tools/selective_linker.py tools/selective_speed_s3232.py tools/selective_speed_u3232.py tools/test_registered_d65536_hybrid.py tools/native_registered_d65536.py
+          python3 -m unittest discover -s tools -p 'test_registered_d65536_hybrid.py' -v
+      - name: Qualify signed and unsigned all-variant matched-input speed model
+        run: |
+          PYTHONPATH=tools python3 - <<'PY'
+          import math_builder, selective_speed_s3232 as s, selective_speed_u3232 as u, selective_linker as linker
+          root=math_builder.ROOT
+          for api in ('MATH_SDIV32_32','MATH_SMOD32_32'):
+              result=s.benchmark(api,linker.MODULES[api],0x4123,0xc040,0xc080,root,zp=0x70)
+              assert result['cpu_model_only'] and result['mean_cycles']['link:d65536-hybrid']>0
+              print(api, result['mean_cycles'], flush=True)
+          for api in ('MATH_UDIV32_32','MATH_UMOD32_32'):
+              result=u.benchmark(api,linker.MODULES[api],0x4123,0xc040,0xc080,root,zp=0x70)
+              assert result['cpu_model_only'] and result['mean_cycles']['link:d65536-hybrid']>0
+              print(api, result['mean_cycles'], flush=True)
+          PY
+  native-vice:
+    needs: linked-model
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install native headless r46284 emulator build prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build source-pinned x64sc
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Verify all four registered public aliases at both RAM maps and compare native Q32/R32/C output digests
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_registered_d65536.py --out build/registered/d65536-native-two-maps.json
+      - name: Preserve source-pinned, independently qualified native results
+        uses: actions/upload-artifact@v4
+        with:
+          name: registered-d65536-native-public-abi-two-maps
+          path: build/registered/d65536-native-two-maps.json
+          if-no-files-found: error
+          retention-days: 14
