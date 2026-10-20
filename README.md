@@ -38,6 +38,8 @@ The strict `frame` objective now **replays source-linked public-call measurement
 
 A **matched linked-image 32/32 DIV/MOD frame study** now measures four real project plans, including shared full quotient/remainder producers, at two relocations with the same public-call input history. See [unsigned 32-bit DIV/MOD frame qualification](docs/U3232_JOINT_FRAME_PARITY.md). This is synthetic CPU-model research, not a physically qualified PAL frame or a new registered production installer workload.
 
+The replay-verified `frame` installer can now select a **complete unsigned 32-bit DIV/MOD project** as well as the original multiplication/square-root project. Both use fresh source-linked public-call replay, exact output PRG SHA, and memory/peak constraints. See [32-bit DIV/MOD frame installer](docs/U3232_FRAME_INSTALLER.md). These are registered research workloads, not a general all-56-API frame oracle or physical PAL timing guarantee.
+
 **Start without profiles:**
 
 ```sh
