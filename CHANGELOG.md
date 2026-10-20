@@ -1,3 +1,9 @@
+## Unreleased — optional independently linkable D=$00010000 32/32 Pareto variants
+
+- Register `link:d65536-hybrid` as an optional source-SHA/dependency-authenticated signed/unsigned 32/32 public Q/R/C DIV/MOD producer, preserving exact historical V2 and compact sources and independent shared physical aliasing. Increase producer-size contracts by 96 B each (whole seven-API research workload: +256 linked bytes including alignment).
+- Extend both matched-input speed selectors, source-geometry and two-memory-relocation public-ABI regression, plus an independent two-relocation native x64sc test of the **ordinary installed PRG**. No change to V1–V5 resident profiles, REU/Turbo/QS16 images or legacy V2 code.
+- Previous 24-frame pinned PAL/VIC research proof: 19,883 to 17,618 worst isolated PHI2 slots, but no real consecutive 50 Hz IRQ/SID/REU application certification.
+
 ## Unreleased — separate research D=$00010000 signed/unsigned 32/32 fast path
 
 - Extend the research qualification to a throwaway seven-operation linked source image with two extended 96-byte DIV/MOD producers; compare native VIC/CIA elapsed cycles on all 24 original synthetic frames against the exact stock installer PRG, preserving external candidate-source provenance rather than falsely qualifying it as an installed source.
