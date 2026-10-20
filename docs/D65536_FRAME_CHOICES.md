@@ -40,6 +40,27 @@ configurations retain unsigned/signed V2 or D65536 alternatives. On a
 math-peak, not mean single-operation timing. A RAM-tight design may
 keep original V2 despite the D65536 hotspot saving.
 
+## Workload-specific result (two memory maps)
+
+Source replay identified a stronger Pareto combination than enabling both
+signed and unsigned D65536. With a 31-byte zero-page budget, select
+**FAST31 + original unsigned V2 + signed D65536** for this exact trace:
+
+| Fully linked seven-API source plan | Worst modeled frame | Worst mapped RAM | ZP |
+|---|---:|---:|---:|
+| FAST31 and original signed/unsigned V2 | 16,172 cycles | 8,992 B | 31 B |
+| FAST31 and both D65536 sources | 13,897 cycles | 9,213 B | 31 B |
+| **FAST31, unsigned V2, signed D65536** | **13,849 cycles** | **8,992 B** | **31 B** |
+
+This signed-only configuration saves **2,323 modeled cycles** over stock
+while retaining the same measured maximum RAM/ZP. Replacing the unsigned
+source as well wastes RAM and slightly *increases* the worst modeled frame,
+so the original unsigned V2 source must remain on the Pareto frontier.
+
+These are exact public-call *CPU-model* results, not measured native
+PAL/VIC clock slots for the signed-only mixed plan. Its own native
+24-frame timing must be tested before claiming it fits a PAL frame.
+
 This nine-choice report is **synthetic CPU-model arithmetic evidence**
 and is deliberately separate from the pinned native PAL/VIC
 measurement in [PR #357](https://github.com/floppyrom/C64-Math-Library/pull/357).
