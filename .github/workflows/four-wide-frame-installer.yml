@@ -1,0 +1,44 @@
+name: Replay-qualified four-wide signed and unsigned DIV MOD installer
+on:
+  pull_request:
+    paths:
+      - 'tools/frame_evidence_replay.py'
+      - 'tools/mixed_four_divmod_frame_parity.py'
+      - 'tools/test_four_wide_frame_installer.py'
+      - '.github/workflows/four-wide-frame-installer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay-four-way:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify four-API same-input source replay and fail-closed installer
+        run: |
+          python3 -m compileall -q tools/frame_evidence_replay.py tools/mixed_four_divmod_frame_parity.py tools/test_four_wide_frame_installer.py
+          python3 -m unittest discover -s tools -p 'test_four_wide_frame_installer.py' -v
+          python3 -m unittest discover -s tools -p 'test_s3232_frame_installer.py' -v
+          python3 -m unittest discover -s tools -p 'test_u3232_frame_installer.py' -v
+      - name: Rebuild selected combined source plan via stock builder CLI
+        run: |
+          mkdir -p build/mixed-four-frame
+          python3 tools/mixed_four_divmod_frame_parity.py --out build/mixed-four-frame/frames.json
+          python3 tools/frame_evidence_replay.py --report build/mixed-four-frame/frames.json --out build/mixed-four-frame/proof.json
+          python3 tools/math_builder.py --objective frame --config examples/operation-first-four-wide-frame.json --frame-report build/mixed-four-frame/frames.json --build --out build/mixed-four-frame/selected/selection_manifest.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: replay-qualified-four-divmod-source-linked-builder-evidence
+          path: |
+            build/mixed-four-frame/proof.json
+            build/mixed-four-frame/frames.json
+            build/mixed-four-frame/selected/frame_qualified_evidence.json
+          if-no-files-found: warn
+          retention-days: 30
