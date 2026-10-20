@@ -19,7 +19,8 @@ ROOT = Path(__file__).resolve().parents[1]
 class FrameObjectiveCLITests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.frame = {"operations": list(OPS),
+        cls.frame = {"basis": "three-operation same-input linked source math-only frames",
+                     "operations": list(OPS),
                      "placements": [compare(0x8000, 0xc000, 0x50),
                                     compare(0x7123, 0xc040, 0x70)]}
 
@@ -88,6 +89,19 @@ class FrameObjectiveCLITests(unittest.TestCase):
                 self.assertNotEqual(response.returncode, 0)
                 self.assertFalse((output / "math_selective.prg").exists())
                 self.assertIn("frame evidence", response.stderr)
+
+    def test_reject_false_synthetic_latency_even_with_valid_prg_and_source_sha(self):
+        tampered = copy.deepcopy(self.frame)
+        for placement in tampered["placements"]:
+            for option in placement["per_option"].values():
+                # A trusted-looking report can preserve the original code/
+                # binary hashes while lying about synthetic peak frame costs.
+                option["peak_frame_math_cycles"] += 1000
+        with tempfile.TemporaryDirectory() as temp:
+            response, output = self.invoke(temp, self.config(), report=tampered)
+            self.assertNotEqual(response.returncode, 0)
+            self.assertIn("source-linked public-call replay", response.stderr)
+            self.assertFalse((output / "math_selective.prg").exists())
 
     def test_fail_closed_corrupt_source_or_peak_budget(self):
         corrupt = copy.deepcopy(self.frame)
