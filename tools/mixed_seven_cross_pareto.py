@@ -53,6 +53,11 @@ BASELINE_MAP = {
 }
 
 
+def compare(code, io, zp):
+    """Rebuild exactly the pinned sixteen linked plans at a given RAM map."""
+    return seven.compare(code, io, zp, candidates=options())
+
+
 def complete_report():
     """Measure each complete project; do not estimate by summing API averages."""
     choices = options()
@@ -63,7 +68,7 @@ def complete_report():
         "basis": BASIS, "operations": list(OPS),
         "cpu_model_only": True, "physical_pal_frame_qualified": False,
         "candidate_count": len(choices),
-        "placements": [seven.compare(code, io, zp, candidates=choices)
+        "placements": [compare(code, io, zp)
                        for code, io, zp in LOCATIONS],
     }
     a, b = output["placements"]
