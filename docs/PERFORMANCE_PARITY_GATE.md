@@ -76,6 +76,8 @@ Original V3/V4 Turbo16/Turbo32/QS16 REU services may be kept available as **stan
 
 An explicit `frame` objective is now supported by the operation-first command-line installer for **source-verified complete linked-project frame reports**. It selects only previously measured candidate combinations, checks the full public API set and exact memory map, and refuses to publish a different PRG or a configuration violating RAM, ZP or measured synthetic peak-frame limits. This is not a generalized all-56-API search or a physical PAL/REU/IRQ timing qualification; see [FRAME_BUILDER_OBJECTIVE.md](FRAME_BUILDER_OBJECTIVE.md).
 
+A separately qualified, **offline** source-linked 32-bit unsigned DIV/MOD frame comparison now evaluates shared and independent producer plans on the same complete-public-call corpus. The results cannot be passed to the production `frame` objective without registering and reexecuting the matching benchmark producer. See [U3232_JOINT_FRAME_PARITY.md](U3232_JOINT_FRAME_PARITY.md).
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

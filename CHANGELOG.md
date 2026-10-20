@@ -1,3 +1,9 @@
+## Unreleased — matched complete-public 32-bit unsigned division/modulo frame study
+
+- Link and execute four whole-project UDIV32_32+UMOD32_32 source-pair variants across two relocations, checking the identical 150-call/24-synthetic-frame Q32/R32/carry/operand/stack input history.
+- Compare shared zero-ZP, independent zero-ZP, V2-hybrid 12-ZP and mixed 4-ZP DIV source choices with real source/PRG hash, occupied physical producer RAM/ZP and peak/p95/total arithmetic frame measurements.
+- Keep this as offline research until its benchmark is separately replay-registered and application-level PAL timing is proved. Historical V1–V5 and hardware REU bundles unchanged.
+
 ## Unreleased — rollback-safe qualified-frame binary publication
 
 - Stage all five frame-mode artifacts and validate them before publication; snapshot original output files, including completed manifests, and restore them if any replace operation fails.

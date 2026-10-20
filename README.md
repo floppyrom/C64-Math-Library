@@ -38,6 +38,8 @@ The strict `frame` objective now **replays source-linked public-call measurement
 
 The frame-qualified PRG publisher now stages and verifies the complete five-artifact output set. If a filesystem replacement fails, previously installed artifacts are restored rather than silently leaving an inconsistent mix of old and new code. This is **rollback-safe**, not atomic visibility for concurrent readers; see [frame builder documentation](docs/FRAME_BUILDER_OBJECTIVE.md).
 
+A **matched linked-image 32/32 DIV/MOD frame study** now measures four real project plans, including shared full quotient/remainder producers, at two relocations with the same public-call input history. See [unsigned 32-bit DIV/MOD frame qualification](docs/U3232_JOINT_FRAME_PARITY.md). This is synthetic CPU-model research, not a physically qualified PAL frame or a new registered production installer workload.
+
 **Start without profiles:**
 
 ```sh
