@@ -29,6 +29,8 @@ limit, rather than an estimate of physical frame time. Use
 `--frame-optimize peak|ram|zp` to choose between measured combined
 project plans within all budgets.
 
+**Publication safety:** All five related output files are first staged and verified; existing files are backed up before replacement. On a filesystem write failure the command restores previous files (or removes any partially installed new files). Unsafe symlink targets are rejected and unrelated project files are preserved. The selective binary manifest is published last as a completion marker. This is rollback-safe error handling, *not* an atomic multi-file snapshot for concurrent readers; treat active build directories as single-writer and regenerate after a host crash.
+
 On success the builder writes the normal `math_selective.prg`,
 `math_api.inc`, `selective_manifest.json`, plus
 `frame_qualified_config.json` (fixed normal resource-mode pins) and
