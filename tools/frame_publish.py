@@ -13,8 +13,8 @@ import shutil
 import tempfile
 from pathlib import Path
 
-NAMES = ("math_selective.prg", "math_api.inc", "selective_manifest.json",
-         "frame_qualified_config.json", "frame_qualified_evidence.json")
+NAMES = ("math_selective.prg", "math_api.inc", "frame_qualified_config.json",
+         "frame_qualified_evidence.json", "selective_manifest.json")
 
 
 class PublicationError(OSError):
