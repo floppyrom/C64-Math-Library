@@ -1,3 +1,9 @@
+## Unreleased — rollback-safe qualified-frame binary publication
+
+- Stage all five frame-mode artifacts and validate them before publication; snapshot original output files, including completed manifests, and restore them if any replace operation fails.
+- Reject symlink/missing/unsafe staged or destination files, preserve unrelated project outputs, and write `selective_manifest.json` last as the successful publication marker.
+- Test mid-publication disk failure and rollback for existing and fresh installations. No changes to math kernels, V1–V5 or preserved V3/V4 REU images; publication is not an atomic multi-file reader transaction.
+
 ## Unreleased — independently replayed linked-source frame evidence
 
 - Before accepting an externally supplied frame report in the opt-in builder `frame` objective, rerun the exact registered 150-call/24-synthetic-frame UMUL32+SMUL32+ISQRT16 public-call benchmark across each recorded placement and all eight source-linked candidate images.
