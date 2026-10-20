@@ -1,0 +1,46 @@
+name: Matched source-linked unsigned 32bit DIV MOD frame evidence
+
+on:
+  pull_request:
+    paths:
+      - 'tools/u3232_joint_frame_parity.py'
+      - 'tools/test_u3232_joint_frame_parity.py'
+      - 'tools/mixed_frame_frontier.py'
+      - 'tools/selective_linker.py'
+      - '.github/workflows/u3232-joint-frame-parity.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unsigned-divmod-joint-frames:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify paired DIV/MOD inputs and source-linked public Q/R/C results
+        run: |
+          python3 -m compileall -q tools/u3232_joint_frame_parity.py tools/test_u3232_joint_frame_parity.py
+          python3 -m unittest discover -s tools -p 'test_u3232_joint_frame_parity.py' -v
+      - name: Export and score actual complete linked 32bit DIV/MOD projects
+        run: |
+          mkdir -p build/u3232
+          python3 tools/u3232_joint_frame_parity.py --out build/u3232/frame-parity.json
+          python3 tools/mixed_frame_frontier.py \
+            --in-report build/u3232/frame-parity.json \
+            --ram-budget 12000 --zp-budget 12 --out build/u3232/frame-frontier.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-linked-unsigned-32bit-divmod-frame-parity
+          path: |
+            build/u3232/frame-parity.json
+            build/u3232/frame-frontier.json
+          if-no-files-found: warn
+          retention-days: 30
