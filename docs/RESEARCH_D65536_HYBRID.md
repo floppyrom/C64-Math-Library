@@ -113,11 +113,15 @@ and ordinary unmodified V2 source emitters. Its PRG **must be byte-for-byte
 identical to the independently built production frame-selected PRG**,
 including exported public addresses. Only after that proof does it compare
 the separate candidate's actual occupied RAM against the same control
-linker, expecting +96 bytes for each of the two independent signed and
-unsigned source producers.
+linker. It verifies **+96 raw source bytes per independent signed
+and unsigned producer** (192 bytes in all) while separately measuring the
+*actual linked program's image-size delta*.
 
-The producer-level 96-byte changes are source-assembly footprints; an
-installer report's *worst-placement resource envelope* is not by itself
+The first exact-link comparison reported **256 additional linked RAM bytes**,
+not 192, indicating 64 further bytes from whole-link image layout/alignment.
+The tests now require the linked-image byte delta and recorded RAM-resource
+delta to agree while retaining a strict +192-byte producer-source floor.
+The installer report's *worst-placement resource envelope* is not by itself
 an authoritative exact RAM-length comparator for a particular link.
 The revised tests reject mixed source-pinning or unexplained memory
 differences instead of treating a discrepancy as an optimized result.
