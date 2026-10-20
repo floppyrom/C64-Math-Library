@@ -1,3 +1,7 @@
+## Unreleased — separate research D=$00010000 signed/unsigned 32/32 fast path
+
+- Prototype an unregistered 96-byte-larger full32 Q/R/C producer that bypasses wide long division only for exact unsigned magnitude D=$00010000, retaining original V2 32/16 and full-width historical fallback source bytes and relocating the signed wrapper. Requalify complete source-linked ABI and equal-input CPU-model cycles at two placements; do not alter production builder, V1–V5 or REU assets.
+
 ## Unreleased — source-linked frame-8 call-level arithmetic hotspot attribution
 
 - Preserve each frame-8 hotspot's original public 32-bit X/Y operands and classify signed/unsigned divisor width and sign, enabling exact expensive-input reproductions without inferring a hardware-internal fast path.
