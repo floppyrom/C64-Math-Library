@@ -15,6 +15,7 @@ import re
 
 from mini6502 import Assembler, CPU, load_sparse
 import selective_hybrid_u3232 as hybrid
+import research_d65536_hybrid as d65536
 
 SEED=0x3232C64
 COUNT=384
@@ -25,10 +26,10 @@ BASE="cpu-model-unsigned-32by32-complete-public-q32-r32-v1"
 EXPECTED={
     "MATH_UDIV32_32":frozenset(("link:zptail","link:aligned-zerozp",
                                   "link:shared-aligned-zerozp",
-                                  "link:v2-lowdivisor-hybrid")),
+                                  "link:v2-lowdivisor-hybrid","link:d65536-hybrid")),
     "MATH_UMOD32_32":frozenset(("link:aligned-zerozp",
                                   "link:shared-aligned-zerozp",
-                                  "link:v2-lowdivisor-hybrid")),
+                                  "link:v2-lowdivisor-hybrid","link:d65536-hybrid")),
 }
 RESOURCES={
     "link:zptail":((325,219),4,0),
@@ -36,6 +37,7 @@ RESOURCES={
     "link:shared-aligned-zerozp":((325,251),0,4),
     "link:mod-aligned-zerozp":((250,225,21),0,4),
     "link:v2-lowdivisor-hybrid":((2496,),12,0),
+    "link:d65536-hybrid":((2592,),12,0),
 }
 
 def corpus():
@@ -59,6 +61,15 @@ def assemble_source(api,ident,mod,base,io,scratch,zp,root):
         if (end!=base+hybrid.IMAGE_BYTES or len(ranges)!=1 or
             set(image)!=set(range(base,end))):
             raise ValueError(api+": V2 hybrid packed source layout changed")
+        return image,labels[mod["entry"]]
+    if ident=="link:d65536-hybrid":
+        expected=RESOURCES[ident]
+        if ((tuple(n for _,n in mod["segments"]),mod["zp"],mod["scratch"])!=expected
+                or not mod.get("d65536_unsigned_u3232")):
+            raise ValueError(api+": D65536 unsigned producer resource provenance changed")
+        image,labels,end=d65536.assemble_unsigned(base,io,zp,root)
+        if end!=base+d65536.IMAGE_BYTES or set(image)!=set(range(base,end)):
+            raise ValueError(api+": D65536 unsigned packed source layout changed")
         return image,labels[mod["entry"]]
     parts=tuple(n for _,n in mod["segments"])
     expected=RESOURCES["link:mod-aligned-zerozp" if
@@ -107,6 +118,10 @@ def benchmark(api,modules,base,io,scratch,root:Path,zp=0x50):
             not mod.get("hybrid_u3232") or not mod.get("multi_entry") or
             mod.get("share_producer")!="unsigned-32by32-v2-lowdivisor-public-qr"):
             raise ValueError(api+": V2 hybrid shared producer identity changed")
+        if ident=="link:d65536-hybrid" and (
+            not mod.get("d65536_unsigned_u3232") or not mod.get("multi_entry") or
+            mod.get("share_producer")!="unsigned-32by32-d65536-public-qr"):
+            raise ValueError(api+": D65536 producer identity changed")
         if mod.get("requires_reu") or mod.get("requires_writable_code"):
             raise ValueError(api+": candidate hardware requirement changed")
         code,entry=assemble_source(api,ident,mod,base,io,scratch,zp,root)

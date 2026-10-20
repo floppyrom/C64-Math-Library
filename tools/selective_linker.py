@@ -64,6 +64,7 @@ import selective_speed_udiv16 as speed_udiv16
 import selective_speed_isqrt16 as speed_isqrt16
 import selective_hybrid_u3232 as hybrid_u3232
 import selective_signed_hybrid_u3232 as signed_u3232
+import research_d65536_hybrid as d65536_hybrid
 import selective_v2_fast_u3216 as v2u3216
 import selective_v2_shifted_u3216 as v2shifted
 import selective_v2_signed_shifted16 as signedshift
@@ -273,6 +274,15 @@ MODULES = {
         },
     },
     "MATH_SDIV32_32": {
+        "link:d65536-hybrid": {
+            "source": "tools/research_d65536_hybrid.py",
+            "segments": (("KERNEL_CODE", 2976),),
+            "entry": "FAST_SDIV32_32_V2MAG", "zp": 12, "scratch": 0,
+            "share_producer": "signed-32by32-d65536-public-qr",
+            "multi_entry": True,
+            "d65536_signed_u3232": True,
+            "provenance": "Optional D=$00010000 fast source-reassembled full32 Q/R/C and unchanged V2 narrow/wide donors, 12 call-exclusive ZP. Larger code than original V2; preserve original V2 and portable Pareto sources. Independent source-model/native PAL evidence from #357.",
+        },
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv32_smod32_zerozp.asm",
             "segments": (("KERNEL_CODE", 412),),
@@ -291,6 +301,15 @@ MODULES = {
         },
     },
     "MATH_SMOD32_32": {
+        "link:d65536-hybrid": {
+            "source": "tools/research_d65536_hybrid.py",
+            "segments": (("KERNEL_CODE", 2976),),
+            "entry": "FAST_SMOD32_32_V2MAG", "zp": 12, "scratch": 0,
+            "share_producer": "signed-32by32-d65536-public-qr",
+            "multi_entry": True,
+            "d65536_signed_u3232": True,
+            "provenance": "Optional D=$00010000 fast source-reassembled full32 Q/R/C and unchanged V2 narrow/wide donors, 12 call-exclusive ZP. Larger code than original V2; preserve original V2 and portable Pareto sources. Independent source-model/native PAL evidence from #357.",
+        },
         "link:portable-zerozp": {
             "source": "routines/divide/sdiv32_smod32_zerozp.asm",
             "segments": (("KERNEL_CODE", 412),),
@@ -983,6 +1002,15 @@ MODULES = {
         },
     },
     "MATH_UDIV32_32": {
+        "link:d65536-hybrid": {
+            "source": "tools/research_d65536_hybrid.py",
+            "segments": (("KERNEL_CODE", 2592),),
+            "entry": "FAST_UDIV32_32_HYBRID", "zp": 12, "scratch": 0,
+            "share_producer": "unsigned-32by32-d65536-public-qr",
+            "multi_entry": True,
+            "d65536_unsigned_u3232": True,
+            "provenance": "Optional D=$00010000 fast source-reassembled full32 Q/R/C and unchanged V2 narrow/wide donors, 12 call-exclusive ZP. Larger code than original V2; preserve original V2 and portable Pareto sources. Independent source-model/native PAL evidence from #357.",
+        },
         "link:v2-lowdivisor-hybrid": {
             "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
             "segments": (("KERNEL_CODE", 2496),),
@@ -1084,6 +1112,15 @@ MODULES = {
         },
     },
     "MATH_UMOD32_32": {
+        "link:d65536-hybrid": {
+            "source": "tools/research_d65536_hybrid.py",
+            "segments": (("KERNEL_CODE", 2592),),
+            "entry": "FAST_UMOD32_32_HYBRID", "zp": 12, "scratch": 0,
+            "share_producer": "unsigned-32by32-d65536-public-qr",
+            "multi_entry": True,
+            "d65536_unsigned_u3232": True,
+            "provenance": "Optional D=$00010000 fast source-reassembled full32 Q/R/C and unchanged V2 narrow/wide donors, 12 call-exclusive ZP. Larger code than original V2; preserve original V2 and portable Pareto sources. Independent source-model/native PAL evidence from #357.",
+        },
         "link:v2-lowdivisor-hybrid": {
             "source": "v2_pareto_fast/resident/modules/pareto_udiv32_16.a",
             "segments": (("KERNEL_CODE", 2496),),
@@ -1240,6 +1277,22 @@ def available_variants(root=ROOT):
                     "routines/standalone_lab/portable/div_u32_zptail.asm": hashlib.sha256(
                         (root / "routines/standalone_lab/portable/div_u32_zptail.asm").read_bytes()).hexdigest(),
                 } if mod.get("hybrid_u3232") else {
+                    "tools/selective_hybrid_u3232.py": hashlib.sha256(
+                        (root / "tools/selective_hybrid_u3232.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                    "routines/standalone_lab/portable/div_u32_zptail.asm": hashlib.sha256(
+                        (root / "routines/standalone_lab/portable/div_u32_zptail.asm").read_bytes()).hexdigest(),
+                } if mod.get("d65536_unsigned_u3232") else {
+                    "tools/selective_signed_hybrid_u3232.py": hashlib.sha256(
+                        (root / "tools/selective_signed_hybrid_u3232.py").read_bytes()).hexdigest(),
+                    "tools/selective_hybrid_u3232.py": hashlib.sha256(
+                        (root / "tools/selective_hybrid_u3232.py").read_bytes()).hexdigest(),
+                    "tools/selective_v2_fast_u3216.py": hashlib.sha256(
+                        (root / "tools/selective_v2_fast_u3216.py").read_bytes()).hexdigest(),
+                    "routines/standalone_lab/portable/div_u32_zptail.asm": hashlib.sha256(
+                        (root / "routines/standalone_lab/portable/div_u32_zptail.asm").read_bytes()).hexdigest(),
+                } if mod.get("d65536_signed_u3232") else {
                     "tools/selective_signed_hybrid_u3232.py": hashlib.sha256(
                         (root / "tools/selective_signed_hybrid_u3232.py").read_bytes()).hexdigest(),
                     "tools/selective_hybrid_u3232.py": hashlib.sha256(
@@ -2273,6 +2326,19 @@ def build(plan, outdir, memory=None, root=ROOT):
                 "tools/selective_v2_fast_u3216.py",
                 "routines/standalone_lab/portable/div_u32_zptail.asm"]:
             raise LinkError(api + ": signed V2 32/32 hybrid donor/relocator provenance missing")
+        if module.get("d65536_unsigned_u3232") and [
+                x["source_path"] for x in dep_provenance] != [
+                "tools/selective_hybrid_u3232.py",
+                "tools/selective_v2_fast_u3216.py",
+                "routines/standalone_lab/portable/div_u32_zptail.asm"]:
+            raise LinkError(api + ": D65536 unsigned donor-source provenance missing")
+        if module.get("d65536_signed_u3232") and [
+                x["source_path"] for x in dep_provenance] != [
+                "tools/selective_signed_hybrid_u3232.py",
+                "tools/selective_hybrid_u3232.py",
+                "tools/selective_v2_fast_u3216.py",
+                "routines/standalone_lab/portable/div_u32_zptail.asm"]:
+            raise LinkError(api + ": D65536 signed donor-source provenance missing")
         if module.get("recip16_table") and [x["source_path"] for x in dep_provenance] != [
                 "v3_reu_512k/standalone/recip_u16_u24_q16.asm"]:
             raise LinkError(api + ": V3 threshold table source provenance missing")
@@ -2329,7 +2395,7 @@ def build(plan, outdir, memory=None, root=ROOT):
         expected = set()
         ranges = []
         try:
-            if "atan2" in module or module.get("umuldiv16_qsv2") or module.get("smuldiv16_qsv2") or module.get("fast_umul8") or module.get("smul8_qs") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed16_v2_shared") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232"):
+            if "atan2" in module or module.get("umuldiv16_qsv2") or module.get("smuldiv16_qsv2") or module.get("fast_umul8") or module.get("smul8_qs") or module.get("fast_umul16") or module.get("smul16_qs") or module.get("smul16_shr8_qs") or module.get("isqrt16") or module.get("umul8_v1") or module.get("seek8") or module.get("seek16") or module.get("vec2_stock") or module.get("fast31_umul32") or module.get("v2_umul24") or module.get("v2_sizefast_u3216") or module.get("v2_shifted_u3216") or module.get("recip16_threshold") or module.get("recip16_table") or module.get("v2_signed_shifted16") or module.get("signed16_v2_shared") or module.get("signed_v2_u3216") or module.get("hybrid_u3232") or module.get("signed_hybrid_u3232") or module.get("d65536_unsigned_u3232") or module.get("d65536_signed_u3232"):
                 if "atan2" in module:
                     machine, entry, ranges, end = atan2.assemble(
                         module["atan2"], pc, io, root)
@@ -2358,6 +2424,16 @@ def build(plan, outdir, memory=None, root=ROOT):
                     entry = labels[module["entry"]]
                 elif module.get("signed_hybrid_u3232"):
                     machine, labels, ranges, end = signed_u3232.assemble(pc,io,zb,root)
+                    entry = labels[module["entry"]]
+                elif module.get("d65536_unsigned_u3232"):
+                    machine, labels, end = d65536_hybrid.assemble_unsigned(pc,io,zb,root)
+                    ranges = [{"name": "KERNEL_CODE", "start": "$%04X" % pc,
+                               "bytes": end-pc}]
+                    entry = labels[module["entry"]]
+                elif module.get("d65536_signed_u3232"):
+                    machine, labels, end = d65536_hybrid.assemble_signed(pc,io,zb,root)
+                    ranges = [{"name": "KERNEL_CODE", "start": "$%04X" % pc,
+                               "bytes": end-pc}]
                     entry = labels[module["entry"]]
                 elif module.get("recip16_table"):
                     machine, labels, ranges, end = recip_table.assemble_image(pc,io,root)
@@ -2437,7 +2513,7 @@ def build(plan, outdir, memory=None, root=ROOT):
                 for seg in ([] if module.get("vec2_stock") else ranges):
                     start = int(seg["start"][1:], 16)
                     expected.update(range(start, start + seg["bytes"]))
-                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("v2_shifted_u3216") and not module.get("recip16_threshold") and not module.get("recip16_table") and not module.get("v2_signed_shifted16") and not module.get("signed16_v2_shared") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232"):
+                if not module.get("seek8") and not module.get("seek16") and not module.get("vec2_stock") and not module.get("fast31_shared") and not module.get("v2_umul24") and not module.get("v2_sizefast_u3216") and not module.get("v2_shifted_u3216") and not module.get("recip16_threshold") and not module.get("recip16_table") and not module.get("v2_signed_shifted16") and not module.get("signed16_v2_shared") and not module.get("signed_v2_u3216") and not module.get("hybrid_u3232") and not module.get("signed_hybrid_u3232") and not module.get("d65536_unsigned_u3232") and not module.get("d65536_signed_u3232"):
                     labels = {module["entry"]: entry}
                 pc = end
             else:
