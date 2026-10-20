@@ -1,3 +1,8 @@
+## Unreleased — replay-verified PAL arithmetic-frame necessary headroom check
+
+- Add a source-replay-verified preflight that compares linked-project peak synthetic math cycles with 19,656 nominal PAL raster slots and optional explicitly hypothetical nonmath reservations; never claim real PAL timing from CPU-model arithmetic alone.
+- Flag that 15 of 16 seven-API crossed plans exceed the full nominal frame budget on this specific busy-frame workload; the sole model-under-budget FAST31/table/V2 choice leaves 3,484 nominal slots before graphics/interrupts/music. Preserve all original profiles and REU reference images.
+
 ## Unreleased — replay and independent native qualification of crossed seven-API plans
 
 - Register the complete sixteen-choice source-linked synthetic-frame experiment as a separate deterministic replay producer; retain the original four-choice report and replay path without modification.
