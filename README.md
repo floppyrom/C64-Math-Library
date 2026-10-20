@@ -4,6 +4,8 @@ High-performance integer, fixed-point and game math for the Commodore 64 / NMOS 
 
 The **operation-first builder** is the default way to configure a stock C64 library: select from **56 independently linkable public operations**, specify resource limits and emit only the needed code. The five historical fixed profiles are retained as verified compatibility/performance references while their fastest kernels are migrated. V3/V4 additionally provide REU/Turbo services, and V4 QS16, that are not yet replaced by the operation-first builder.
 
+A [separate, unregistered D=$00010000 DIV/MOD research candidate](docs/RESEARCH_D65536_HYBRID.md) also tests whether a 96-byte larger source-assembled 32/32 dispatcher can accelerate the exact frame-8 signed modulo boundary case without affecting the original V2 or compact alternatives. **Research only**: not installer-selectable and not yet native PAL-qualified.
+
 A [source-linked frame-8 hotspot attribution tool](docs/FRAME8_SOURCE_HOTSPOTS.md) now ranks public-call and operation-family CPU-model costs against the same linked compact/FAST31 source choices. When supplied the native 24-frame sweep, it cross-checks installed PRG hashes and original public-call input/output digests, but **does not mislabel modeled per-call cycles as native timing**.
 
 A separate [24-frame native PAL/CIA workload sweep](docs/NATIVE_PAL_24_FRAME_SWEEP.md) measures each of the 24 exact-source seven-API synthetic frames independently with display-on/off native x64sc, retaining per-frame output hashes, worst/p95 wall-clock PHI2 slots, and counts of *isolated-burst* nominal PAL deadline overruns. These are **not consecutive 50 Hz application frames**, do not include IRQ/SID/REU, and cannot certify profile retirement.
