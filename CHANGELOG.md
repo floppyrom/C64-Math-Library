@@ -1,5 +1,6 @@
 ## Unreleased — separate research D=$00010000 signed/unsigned 32/32 fast path
 
+- Extend the research qualification to a throwaway seven-operation linked source image with two extended 96-byte DIV/MOD producers; compare native VIC/CIA elapsed cycles on all 24 original synthetic frames against the exact stock installer PRG, preserving external candidate-source provenance rather than falsely qualifying it as an installed source.
 - Add a separate pinned native x64sc acceptance probe for this research-only candidate: 96 matched boundary-enriched public Q/R/C inputs for both signed and unsigned paths and an isolated display-on/off VIC/CIA timer comparison on frame-8's exact signed modulo operand pair.
 - Prototype an unregistered 96-byte-larger full32 Q/R/C producer that bypasses wide long division only for exact unsigned magnitude D=$00010000, retaining original V2 32/16 and full-width historical fallback source bytes and relocating the signed wrapper. Requalify complete source-linked ABI and equal-input CPU-model cycles at two placements; do not alter production builder, V1–V5 or REU assets.
 
