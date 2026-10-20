@@ -48,6 +48,8 @@ The replay-qualified frame installer also supports **signed 32-bit DIV/MOD** zer
 
 A new **seven-operation linked-project frame benchmark** tests signed/unsigned full64 multiplication, ISQRT16 and signed/unsigned 32/32 DIV/MOD *together*, with actual shared RAM/ZP and identical per-frame public calls. See [seven-operation frame research](docs/MIXED_SEVEN_FRAME_PARITY.md). It is offline model-only evidence, not a new accepted installer trace or a physical PAL budget.
 
+The **seven-operation frame installer** now replay-verifies UMUL32/SMUL32/ISQRT16 and signed/unsigned 32/32 DIV/MOD together, using measured linked-project source and PRG SHA, shared RAM/ZP, and math-only busiest-frame costs. See [seven-API replay-qualified frame builder](docs/MIXED_SEVEN_FRAME_INSTALLER.md). This is not an arbitrary 56-API trace importer or physical PAL certification.
+
 **Start without profiles:**
 
 ```sh

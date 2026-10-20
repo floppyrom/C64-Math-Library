@@ -1,3 +1,9 @@
+## Unreleased — replay-qualified seven-operation mixed arithmetic frame installer
+
+- Replay all four full seven-operation linked MUL/SQRT/signed and unsigned DIV/MOD project source combinations at two ROM-safe placements; reject altered peak, input history, source and binary hashes.
+- Test both 64-ZP and zero-ZP installer builds, complete public Q/R/C/results, shared physical memory and hard synthetic peak limits.
+- Preserve ordinary selector objectives and all historical V1–V5 and V3/V4 REU service binaries; no physical PAL or general 56-API frame certification is claimed.
+
 ## Unreleased — seven-operation full-source mixed math frame experiment
 
 - Link seven independently selectable stock public APIs together (UMUL32, SMUL32, ISQRT16, UDIV32_32/UMOD32_32, SDIV32_32/SMOD32_32) in four resource/speed combinations across two relocations.

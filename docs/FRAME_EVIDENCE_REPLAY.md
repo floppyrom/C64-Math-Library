@@ -42,6 +42,8 @@ A **second registered producer** now handles public `MATH_UDIV32_32` / `MATH_UMO
 
 A **third replay producer** now qualifies signed `MATH_SDIV32_32` / `MATH_SMOD32_32` as one source-shared complete linked Q32/R32/carry project, comparing zero-ZP restoring and V2 signed hybrid (12-ZP) sources with the same two-relocation 150-call/24-synthetic-frame signed corpus. See [S3232_FRAME_INSTALLER.md](S3232_FRAME_INSTALLER.md).
 
+A **fifth deterministic registered producer** now combines full64 signed/unsigned multiplication, ISQRT16, and signed/unsigned 32/32 DIV/MOD as a complete seven-operation source-linked project. The compiler and CPU-model replay remeasure each candidate under two ROM-safe origins. See [MIXED_SEVEN_FRAME_INSTALLER.md](MIXED_SEVEN_FRAME_INSTALLER.md).
+
 **No generic certification:** Arbitrary operations and traces are not
 suddenly measured by this research gate. Future workloads must add an
 explicitly qualified deterministic producer. Existing standard builder

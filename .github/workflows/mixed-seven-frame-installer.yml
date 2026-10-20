@@ -1,0 +1,44 @@
+name: Replay verified seven-API project frame installer
+on:
+  pull_request:
+    paths:
+      - 'tools/frame_evidence_replay.py'
+      - 'tools/mixed_seven_frame_parity.py'
+      - 'tools/test_mixed_seven_frame_installer.py'
+      - 'tools/frame_builder_mode.py'
+      - '.github/workflows/mixed-seven-frame-installer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reexecute-seven-source-plans:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify registered 7-operation synthetic call stream and installed PRG
+        run: |
+          python3 -m compileall -q tools/frame_evidence_replay.py tools/mixed_seven_frame_parity.py tools/test_mixed_seven_frame_installer.py
+          python3 -m unittest discover -s tools -p 'test_mixed_seven_frame_installer.py' -v
+          python3 -m unittest discover -s tools -p 'test_frame_evidence_replay.py' -v
+      - name: Replay qualified seven-API project and link output at safe placement
+        run: |
+          mkdir -p build/seven-replay
+          python3 tools/mixed_seven_frame_parity.py --out build/seven-replay/measured.json
+          python3 tools/frame_evidence_replay.py --report build/seven-replay/measured.json --out build/seven-replay/proof.json
+          python3 tools/math_builder.py --objective frame --config examples/operation-first-seven-frame.json --frame-report build/seven-replay/measured.json --build --out build/seven-replay/selected/selection_manifest.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: replay-attested-seven-api-linked-project
+          path: |
+            build/seven-replay/measured.json
+            build/seven-replay/proof.json
+            build/seven-replay/selected/frame_qualified_evidence.json
+          if-no-files-found: warn
+          retention-days: 30
