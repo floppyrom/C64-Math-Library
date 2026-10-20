@@ -1,6 +1,7 @@
 ## Unreleased — nine-plan D65536 seven-operation peak-frame source replay
 
 - Add nine complete signed/unsigned D65536 and stock-V2/zero-ZP seven-API public-source plans, each reassembled and executed on the original 150 matched calls across 24 synthetic frames at two physical relocations. Keep previous sixteen-plan report/basis unchanged.
+- Full source-replayed seven-API workload prefers **signed-only D65536** with unsigned V2 under the 31-ZP peak-frame objective: measured CPU-model peak **16,172 → 13,849** with equal worst-placement linked RAM (8,992 B). Both D65536 sources together produce 13,897 peak cycles and 9,213 B RAM, demonstrating that retaining Pareto alternatives matters; physical PAL still requires separate qualification.
 - Register strict nine-choice frame-evidence replay, preserving physical PRG/source hashes, operand order, full 32-bit public ABI, ZP/RAM and worst-frame model costs. Extend frame-objective installation tests including selection by memory/ZP budget, with an explicit fail-closed evidence gate and no physical PAL feasibility claim.
 
 ## Unreleased — optional independently linkable D=$00010000 32/32 Pareto variants
