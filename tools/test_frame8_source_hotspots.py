@@ -9,6 +9,7 @@ import unittest
 import mixed_seven_frame_parity as seven
 from frame8_source_hotspots import (
     PROFILE_LABELS, PAL_FRAME, rank_attribution, native_sweep_attribution,
+    divisor_input_class,
 )
 from native_pal_vic_cia_probe import expected_byte
 from native_pal_vic_cia_sweep import summarize as summarize_native
@@ -69,6 +70,20 @@ def synthetic_native(compact, fast):
 
 
 class SourceHotspotsTests(unittest.TestCase):
+    def test_public_divisor_classes_keep_signed_width(self):
+        self.assertIsNone(divisor_input_class("MATH_SMUL32",0xffffffff))
+        self.assertEqual(divisor_input_class("MATH_SMOD32_32",0xffffffff),
+                         "negative-narrow16")
+        self.assertEqual(divisor_input_class("MATH_SDIV32_32",0x80000000),
+                         "negative-wide32")
+        self.assertEqual(divisor_input_class("MATH_UDIV32_32",0xffffffff),
+                         "positive-wide32")
+        self.assertEqual(divisor_input_class("MATH_UMOD32_32",0),"zero")
+        self.assertEqual(divisor_input_class("MATH_UDIV32_32",0xffff),
+                         "positive-narrow16")
+        self.assertEqual(divisor_input_class("MATH_UDIV32_32",0x10000),
+                         "positive-wide32")
+
     def test_source_model_ranking_and_pairing(self):
         compact, fast = model("compact",shift=500), model("fast31")
         result=rank_attribution(compact,fast)
