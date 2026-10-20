@@ -1,0 +1,33 @@
+name: Frame installer rollback-safe publication
+
+on:
+  pull_request:
+    paths:
+      - 'tools/frame_publish.py'
+      - 'tools/frame_builder_mode.py'
+      - 'tools/test_frame_publish.py'
+      - '.github/workflows/frame-publication-rollback.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  reject-partial-binaries:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exercise staged publication, error injection and rollback
+        run: |
+          python3 -m compileall -q tools/frame_publish.py tools/frame_builder_mode.py tools/test_frame_publish.py
+          python3 -m unittest discover -s tools -p 'test_frame_publish.py' -v
+      - name: Check qualified builder and replay end to end
+        run: |
+          python3 -m unittest discover -s tools -p 'test_frame_builder_objective.py' -v
+          python3 -m unittest discover -s tools -p 'test_frame_evidence_replay.py' -v
