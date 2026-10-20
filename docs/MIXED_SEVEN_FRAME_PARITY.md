@@ -10,7 +10,8 @@ zero page, or busiest frame. A shared-source assembler/linker may reuse
 producers and tables, and call placement can change per-frame peaks.
 
 Four complete pinned source combinations are compared, using the same
-150 complete public calls in 24 synthetic frames at two relocations:
+150 complete public calls in 24 synthetic frames at two **ROM-safe RAM** relocations
+(`$2000/$C000/$50` and `$4123/$C040/$70`, respectively code/I-O/ZP):
 
 | Plan | MUL+SQRT source choices | DIV+MOD source choices |
 |---|---|---|
