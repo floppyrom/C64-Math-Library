@@ -52,6 +52,8 @@ combination for every possible subset of the 56 operations.
 
 **Imported timing provenance is reverified, not merely checksum-checked.** The `frame` objective first re-executes the exact registered three-operation source-linked benchmark at every declared origin. It rejects altered cycle peaks, p95, RAM/ZP, input corpus and source/PRG hashes even if the original binary still matches. Unsupported benchmark producers fail closed; see [FRAME_EVIDENCE_REPLAY.md](FRAME_EVIDENCE_REPLAY.md).
 
+**Additional replay-qualified workload:** Generate `tools/u3232_joint_frame_parity.py` evidence and select with `examples/operation-first-u3232-frame.json` to optimize complete unsigned 32-bit DIV/MOD public Q/R/C projects, subject to exact source-backed frame replay. See [U3232_FRAME_INSTALLER.md](U3232_FRAME_INSTALLER.md). No generic trace import is accepted.
+
 **Physical timing limitation:** this gate uses Mini6502 complete
 public-call cycles plus caller JSR charges from synthetic frames.
 Actual PAL/VIC-II bus contention, badlines, IRQ/SID, REU DMA,

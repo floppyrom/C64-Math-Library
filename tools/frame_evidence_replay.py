@@ -3,7 +3,7 @@
 
 Never trust the source/PRG SHA alone as proof of latency: those hashes do not
 authenticate claims about frame scheduling, call counts, peaks or p95.
-Re-execute the registered 3-operation deterministic source-linked benchmark
+Re-execute each registered deterministic source-linked arithmetic benchmark
 at every reported relocation and require complete byte-value JSON equality.
 
 No generalization to arbitrary 56-API traces is implied; a new trace producer
@@ -30,12 +30,23 @@ def replay(report):
     Unlike a report checksum, this checks that actual measured frame costs,
     selected source hashes and PRG provenance are still true *now*.
     """
-    from mixed3_frame_parity import OPS, compare
+    from mixed3_frame_parity import OPS as MUL_OPS, compare as mul_compare
+    from u3232_joint_frame_parity import (
+        BASIS as U3232_BASIS, OPS as U3232_OPS, compare as u3232_compare,
+    )
 
-    if not isinstance(report, dict) or report.get("basis") != REGISTERED_BASIS:
+    if not isinstance(report, dict):
         raise EvidenceError("Unsupported/unattested frame benchmark producer")
-    if report.get("operations") != list(OPS):
-        raise EvidenceError("This benchmark requires exact three-operation ABI order")
+    basis = report.get("basis")
+    registered = {
+        REGISTERED_BASIS: (MUL_OPS, mul_compare),
+        U3232_BASIS: (U3232_OPS, u3232_compare),
+    }
+    if basis not in registered:
+        raise EvidenceError("Unsupported/unattested frame benchmark producer")
+    operations, compare = registered[basis]
+    if report.get("operations") != list(operations):
+        raise EvidenceError("Wrong public ABI operation set/order for registered benchmark")
     locations = report.get("placements")
     if not isinstance(locations, list) or len(locations) != 2:
         raise EvidenceError("Require two independent registered benchmark relocations")
@@ -51,11 +62,10 @@ def replay(report):
         if (code, io, zp, scratch) in seen or scratch != io + 0x40:
             raise EvidenceError("Duplicated relocation or invalid benchmark scratch position")
         seen.add((code, io, zp, scratch))
-        # This calls math_builder and the real source linker, runs 150 public
-        # UMUL32/SMUL32/ISQRT16 calls for every one of eight source plans,
-        # and remeasures all 24 frames using the qualified CPU model.
+        # Each registered producer links the exact source-pinned candidates,
+        # validates all public-call semantics and remeasures 24 synthetic frames.
         measured.append(compare(code, io, zp))
-    regenerated = {"basis": REGISTERED_BASIS, "operations": list(OPS),
+    regenerated = {"basis": basis, "operations": list(operations),
                    "placements": measured}
     if report != regenerated:
         raise EvidenceError(
@@ -77,7 +87,7 @@ def main():
         ap.error(str(exc))
     proof = {
         "schema": "frame-source-replay-proof-v1",
-        "benchmark": REGISTERED_BASIS,
+        "benchmark": regenerated["basis"],
         "reexecuted": True,
         "placements": len(regenerated["placements"]),
         "operations": regenerated["operations"],
