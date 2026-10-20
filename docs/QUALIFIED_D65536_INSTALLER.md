@@ -21,19 +21,16 @@ Only use the additional RAM when that trade-off is actually worthwhile.
 Pin the variant on all four APIs for the native PAL seven-operation example:
 
 ```sh
-python3 tools/math_builder.py plan \
-  --operations UDIV32_32,UMOD32_32,SDIV32_32,SMOD32_32 \
-  --objective size --max-zp 12 --max-ram 10000 \
+python3 tools/math_builder.py \
+  --operation UDIV32_32,UMOD32_32,SDIV32_32,SMOD32_32 \
+  --objective size --zp-budget 12 --ram-budget 10000 \
   --pin UDIV32_32=link:d65536-hybrid \
   --pin UMOD32_32=link:d65536-hybrid \
   --pin SDIV32_32=link:d65536-hybrid \
   --pin SMOD32_32=link:d65536-hybrid \
-  --out build/d65536-plan.json
+  --validate-sources --build \
+  --out build/d65536/selection_manifest.json
 ```
-
-(The exact CLI flag spelling is documented by `python3
-tools/math_builder.py plan --help`; this example is illustrative if
-an invocation style changes.)
 
 Install with the normal linker, retaining source SHA verification,
 resource budgets and public ABI. The old V2 options remain independently
