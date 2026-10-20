@@ -1,0 +1,43 @@
+name: Replay source-linked frame evidence before installer publication
+on:
+  pull_request:
+    paths:
+      - 'tools/frame_evidence_replay.py'
+      - 'tools/frame_builder_mode.py'
+      - 'tools/test_frame_builder_objective.py'
+      - 'tools/test_frame_evidence_replay.py'
+      - '.github/workflows/frame-evidence-replay.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-frame-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify registered input, frame arithmetic and tamper rejection
+        run: |
+          python3 -m compileall -q tools/frame_evidence_replay.py tools/frame_builder_mode.py
+          python3 -m unittest discover -s tools -p 'test_frame_evidence_replay.py' -v
+      - name: Verify exact resulting PRG under ordinary frame installer
+        run: |
+          python3 -m unittest discover -s tools -p 'test_frame_builder_objective.py' -v
+          mkdir -p build/frame-proof
+          python3 tools/mixed3_frame_parity.py --out build/frame-proof/mixed3.json
+          python3 tools/frame_evidence_replay.py --report build/frame-proof/mixed3.json --out build/frame-proof/proof.json
+          python3 tools/math_builder.py --config examples/operation-first-frame.json --objective frame --frame-report build/frame-proof/mixed3.json --build --out build/frame-proof/selected/selection_manifest.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-frame-replay-provenance
+          path: |
+            build/frame-proof/proof.json
+            build/frame-proof/selected/frame_qualified_evidence.json
+          if-no-files-found: warn
+          retention-days: 30
