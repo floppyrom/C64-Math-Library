@@ -12,13 +12,15 @@ from pathlib import Path
 from mini6502 import Assembler,CPU,load_sparse
 import selective_linker as linker
 import selective_signed_hybrid_u3232 as fast
+import research_d65536_hybrid as d65536
 
 BASIS="cpu-model-signed3232-public-paired-v2-hybrid-v1"
 APIS=frozenset(("MATH_SDIV32_32","MATH_SMOD32_32"))
 PORTABLE="link:portable-zerozp"
 FAST="link:v2-hybrid-signed"
-VARIANTS=frozenset((PORTABLE,FAST))
-COUNTS={PORTABLE:(412,0,9),FAST:(2880,12,0)}
+D65536="link:d65536-hybrid"
+VARIANTS=frozenset((PORTABLE,FAST,D65536))
+COUNTS={PORTABLE:(412,0,9),FAST:(2880,12,0),D65536:(2976,12,0)}
 CASES=384
 CORPUS_SHA256="435b05f1226c3663a8a788f04795348a3ee4e986fe6855a7f6ef56b5eba55adc"
 N_EDGES=(0,1,2,3,127,255,65535,65536,65537,0x7fffffff,
@@ -65,12 +67,16 @@ def benchmark(api,modules,code,io,scratch,root:Path,zp=0x50):
                 module["scratch"])
         if budget!=COUNTS[ident] or not module.get("multi_entry"):
             raise ValueError("Signed32/32 resource contract changed "+ident)
-        if bool(module.get("signed_hybrid_u3232"))!=(ident==FAST):
+        if bool(module.get("signed_hybrid_u3232"))!=(ident==FAST) or bool(module.get("d65536_signed_u3232"))!=(ident==D65536):
             raise ValueError("Signed32/32 emitter source provenance drifted")
         if ident==FAST:
             image,labels,_,end=fast.assemble(code,io,zp,root)
             if end!=code+2880:
                 raise ValueError("signed hybrid image span changed")
+        elif ident==D65536:
+            image,labels,end=d65536.assemble_signed(code,io,zp,root)
+            if end!=code+d65536.SIGNED_IMAGE_BYTES:
+                raise ValueError("D65536 signed source image span changed")
         else:
             locations={"KERNEL_CODE":code,"INPUT_NUM":io+16,
                        "INPUT_DIV":io+20,"OUTPUT_QUOT":io+24,
