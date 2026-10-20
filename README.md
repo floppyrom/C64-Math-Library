@@ -42,6 +42,8 @@ A **matched linked-image 32/32 DIV/MOD frame study** now measures four real proj
 
 The replay-verified `frame` installer can now select a **complete unsigned 32-bit DIV/MOD project** as well as the original multiplication/square-root project. Both use fresh source-linked public-call replay, exact output PRG SHA, and memory/peak constraints. See [32-bit DIV/MOD frame installer](docs/U3232_FRAME_INSTALLER.md). These are registered research workloads, not a general all-56-API frame oracle or physical PAL timing guarantee.
 
+A new **signed 32-bit DIV/MOD synthetic frame study** compares the compact zero-ZP signed restoring source against the shared V2 12-ZP hybrid using identical full public-call inputs. This is offline research, not yet a registered `frame` installer workload; see [signed 32-bit shared DIV/MOD frame study](docs/S3232_JOINT_FRAME_PARITY.md).
+
 **Start without profiles:**
 
 ```sh

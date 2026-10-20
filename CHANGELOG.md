@@ -1,3 +1,9 @@
+## Unreleased — source-linked signed 32-bit DIV/MOD paired-frame performance study
+
+- Compare source-shared signed portable 0-ZP and signed V2 hybrid 12-ZP Q32/R32/C producers in identical 150-public-call, 24-synthetic-frame workloads at two relocations.
+- Check truncating signed Q/R correctness, divisor-zero carry and N/D/stack preservation, linking actual binary/source SHA and shared-source RAM/ZP to real synthetic peak/p95/total cycles; retain all historical kernels and REU packages.
+- Keep these results offline until a deterministic replay registration and physical PAL timing qualification are available.
+
 ## Unreleased — replay-qualified unsigned 32-bit DIV MOD operation-first frame objective
 
 - Register the four-source matched `UDIV32_32`/`UMOD32_32` two-relocation, 150-call/24-synthetic-frame benchmark as a second reproducible source-linked timing producer, without changing the original multiply/sqrt producer.
