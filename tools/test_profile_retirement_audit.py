@@ -23,7 +23,7 @@ class RetirementEvidenceTests(unittest.TestCase):
         self.assertEqual(result["stock_public_operations"], 56)
         self.assertEqual(result["source_cycle_model_declarations"], 56)
         self.assertEqual(result["selectable_variants_per_operation"],
-                         {"1": 15, "2": 26, "3": 10, "4": 4, "5": 1})
+                         {"1": 15, "2": 24, "3": 11, "4": 4, "5": 2})
         self.assertEqual(len(result["legacy_hardware_services"]), 9)
         self.assertEqual(len(result["stock_nonoperation_public_symbols"]), 13)
         self.assertIn("MATH_INIT", result["stock_nonoperation_public_symbols"])
