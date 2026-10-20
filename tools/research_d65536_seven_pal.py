@@ -49,22 +49,23 @@ def patched_signed(code,io,zp,root=linker.ROOT):
                              "bytes":len(machine)}],end
 
 
-def research_source_image(folder):
+def research_source_image(folder, *, use_candidate=True):
     """Temporary source-planner override; build is deliberately unregistered."""
     index=math_builder.operation_index()
     plan=math_builder.create_plan(
         index,list(OPS),objective="size",zp_budget=31,ram_budget=16000,
         pins={api[5:]:variant for api,variant in VARIANT_BY_API.items()})
     with ExitStack() as stack:
-        for api, variant in PAIRED.items():
+        for api, variant in (PAIRED.items() if use_candidate else ()):
             rec=linker.MODULES[api][variant]
             size=(research.IMAGE_BYTES if api.startswith("MATH_U")
                   else research.SIGNED_IMAGE_BYTES)
             stack.enter_context(patch.dict(rec,{"segments":(("KERNEL_CODE",size),)}))
-        stack.enter_context(patch.object(linker.hybrid_u3232,"assemble",
-                                         side_effect=patched_unsigned))
-        stack.enter_context(patch.object(linker.signed_u3232,"assemble",
-                                         side_effect=patched_signed))
+        if use_candidate:
+            stack.enter_context(patch.object(linker.hybrid_u3232,"assemble",
+                                             side_effect=patched_unsigned))
+            stack.enter_context(patch.object(linker.signed_u3232,"assemble",
+                                             side_effect=patched_signed))
         manifest=linker.build(plan,folder,memory={
             "code_base":CODE,"math_io":IO,"scratch_base":IO+0x40,
             "zp_base":ZP})
@@ -85,7 +86,7 @@ def research_source_image(folder):
         "main_ram_bytes":resource["main_ram_total_bytes"],
         "zero_page_bytes":resource["zero_page_bytes"],
         "production_builder_source_qualified":False,
-        "research_only_with_temporarily_injected_source_emitters":True,
+        "research_only_with_temporarily_injected_source_emitters":use_candidate,
     }
 
 
@@ -102,14 +103,31 @@ def run(vice, frames):
             report,root/"baseline",zp_budget=31,frame_optimize="peak")
         if proof["choice"]!=CHOICE:
             raise AssertionError("Production reference selection moved")
+        # Match source geometry against *the same pinned linker plan*.
+        # The production frame report counts conservative worst-placement
+        # envelopes which need not equal one particular linker's occupied RAM.
+        # Byte-identically reconcile the control image to the actual builder.
+        baseline_dir=root/"source-control"
+        baseline_dir.mkdir()
+        control_binary,control_entries,control_proof=research_source_image(
+            baseline_dir,use_candidate=False)
+        if (control_binary!=old_binary or control_entries!=old_entries):
+            raise AssertionError(
+                "Same source-pinned production/control builds differ: "
+                f"CLI={proof['qualified_prg_sha256']}, "
+                f"plain_link={control_proof['research_linked_prg_sha256']}, "
+                f"entries_equal={control_entries==old_entries}")
         research_dir=root/"research"
         research_dir.mkdir()
         new_binary,new_entries,new_proof=research_source_image(research_dir)
-        if new_proof["zero_page_bytes"]!=31:
+        if new_proof["zero_page_bytes"]!=control_proof["zero_page_bytes"]:
             raise AssertionError("Research changed mixed-project ZP envelope")
-        old_ram=proof["worst_placement_measured_envelope"]["main_ram_total_bytes"]
+        old_ram=control_proof["main_ram_bytes"]
         if new_proof["main_ram_bytes"]!=old_ram+192:
-            raise AssertionError("Full project research did not add exactly two 96-byte core slots")
+            raise AssertionError(
+                "Research full-image RAM is not two +96-byte source slots: "
+                f"control_ram={old_ram} new_ram={new_proof['main_ram_bytes']} "
+                f"control_prg={len(control_binary)-2} new_prg={len(new_binary)-2}")
         for candidate_idx,(name,image,entries) in enumerate(
             (("stock",old_binary,old_entries),
              ("d65536",new_binary,new_entries))
@@ -166,6 +184,8 @@ def run(vice, frames):
         "production_builder_variant_registered":False,
         "full_source_registration_provenance_trusted":False,
         "baseline_production_prg_sha256":proof["qualified_prg_sha256"],
+        "baseline_reconstructed_from_identical_pinned_plan":True,
+        "research_additional_linked_ram_bytes":new_proof["main_ram_bytes"]-old_ram,
         "research_linked_source_evidence":new_proof,
         "frame8":selected,
         "peak_stock_visible_slots":max(x["stock_visible_slots"] for x in paired),
