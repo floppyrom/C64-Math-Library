@@ -51,6 +51,25 @@ class D65536FrameChoicesTests(unittest.TestCase):
             self.summary["per_option"]["fast31-stock-v2"]
                 ["peak_frame_math_cycles"])
 
+    def test_signed_only_d65536_is_better_than_both_for_this_exact_trace(self):
+        rows=self.summary["per_option"]
+        signed=rows["fast31-uv2-s65536"]
+        both=rows["fast31-u65536-s65536"]
+        stock=rows["fast31-stock-v2"]
+        self.assertLess(signed["peak_frame_math_cycles"],both["peak_frame_math_cycles"])
+        self.assertLess(signed["peak_frame_math_cycles"],stock["peak_frame_math_cycles"])
+        self.assertEqual(signed["main_ram_total_bytes"],stock["main_ram_total_bytes"])
+        self.assertLess(signed["main_ram_total_bytes"],both["main_ram_total_bytes"])
+        self.assertEqual(signed["zero_page_bytes"],31)
+        winner=select(self.summary,stock["main_ram_total_bytes"],31,
+                      objective="peak")
+        self.assertEqual(winner["choice"],"fast31-uv2-s65536")
+        self.assertEqual(winner["measured_envelope"]["peak_frame_math_cycles"],
+                         signed["peak_frame_math_cycles"])
+        with self.assertRaises(EvidenceError):
+            select(self.summary,stock["main_ram_total_bytes"],31,
+                   max_peak_cycles=1,objective="peak")
+
     def test_budget_pareto_keeps_compact_without_extra_zp(self):
         for zp in (0,12,31):
             with self.subTest(zp=zp):
