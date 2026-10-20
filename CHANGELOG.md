@@ -1,3 +1,9 @@
+## Unreleased — replay and independent native qualification of crossed seven-API plans
+
+- Register the complete sixteen-choice source-linked synthetic-frame experiment as a separate deterministic replay producer; retain the original four-choice report and replay path without modification.
+- Reconstruct exact installer-selected zero-ZP square-table and mixed 12-ZP binaries at the previously qualified $4123/$C040/$70 map, with independent pinned native x64sc 96-call/7-export oracles on both images (1,344 public calls).
+- Reject forged cycles, sources, images, placement or options; preserve V1–V5 kernels, REU service images and all existing selection modes. No physical PAL, IRQ, VIC, SID or REU frame timing is claimed.
+
 ## Unreleased — fully crossed seven-API source-linked Pareto research
 
 - Qualify sixteen complete linked mathematical source combinations across independent shared-MUL, ISQRT16 table, unsigned DIV/MOD and signed DIV/MOD decisions at both original source-relocated RAM maps and on the same 150 public-call/24-synthetic-frame workload.
