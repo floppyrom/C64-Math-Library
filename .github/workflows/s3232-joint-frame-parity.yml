@@ -1,0 +1,40 @@
+name: Matched signed 32bit DIV MOD whole-frame research
+on:
+  pull_request:
+    paths:
+      - 'tools/s3232_joint_frame_parity.py'
+      - 'tools/test_s3232_joint_frame_parity.py'
+      - 'tools/selective_speed_s3232.py'
+      - '.github/workflows/s3232-joint-frame-parity.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  signed-divmod-frames:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Qualify exact signed Q/R/C and shared 32bit frame costs
+        run: |
+          python3 -m compileall -q tools/s3232_joint_frame_parity.py tools/test_s3232_joint_frame_parity.py
+          python3 -m unittest discover -s tools -p 'test_s3232_joint_frame_parity.py' -v
+      - name: Score signed two-source linked Pareto
+        run: |
+          mkdir -p build/s3232
+          python3 tools/s3232_joint_frame_parity.py --out build/s3232/linked-frames.json
+          python3 tools/mixed_frame_frontier.py --in-report build/s3232/linked-frames.json --ram-budget 12000 --zp-budget 12 --out build/s3232/frontier.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-linked-signed-32bit-divmod-math-frame-research
+          path: |
+            build/s3232/linked-frames.json
+            build/s3232/frontier.json
+          if-no-files-found: warn
+          retention-days: 30
