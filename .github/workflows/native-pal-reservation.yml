@@ -1,0 +1,26 @@
+name: Offline native PAL burst headroom reservation gate
+on:
+  pull_request:
+    paths:
+      - 'tools/native_pal_reserved_workload.py'
+      - 'tools/test_native_pal_reserved_workload.py'
+      - '.github/workflows/native-pal-reservation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  internal-consistency-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test exact scoped native-report shape, hashes, arithmetic and resource rejection
+        run: |
+          python3 -m compileall -q tools/native_pal_reserved_workload.py tools/test_native_pal_reserved_workload.py
+          python3 -m unittest discover -s tools -p 'test_native_pal_reserved_workload.py' -v
