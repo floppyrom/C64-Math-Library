@@ -1,0 +1,40 @@
+name: D65536 exact nine-plan 24-frame source replay and frame installer
+on:
+  pull_request:
+    paths:
+      - 'tools/mixed_seven_d65536_frame.py'
+      - 'tools/test_mixed_seven_d65536_frame.py'
+      - 'tools/frame_evidence_replay.py'
+      - '.github/workflows/d65536-frame-choice.yml'
+      - 'tools/selective_linker.py'
+      - 'tools/research_d65536_hybrid.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-and-frame:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile and verify nine-configuration public-ABI source replay and strict frame-source installer evidence
+        run: |
+          python3 -m compileall -q tools/mixed_seven_d65536_frame.py tools/test_mixed_seven_d65536_frame.py tools/frame_evidence_replay.py
+          python3 -m unittest discover -s tools -p 'test_mixed_seven_d65536_frame.py' -v
+      - name: Save all nine fully reassembled and 24-frame-replayed alternatives at both memory maps
+        run: |
+          python3 tools/mixed_seven_d65536_frame.py --out build/frame-evidence/d65536-nine-plans.json
+          python3 tools/frame_evidence_replay.py --report build/frame-evidence/d65536-nine-plans.json --out build/frame-evidence/d65536-nine-replay-proof.json
+      - name: Upload two-relocation model-only exact source evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: d65536-nine-source-frame-pareto
+          path: build/frame-evidence/d65536-nine-*.json
+          if-no-files-found: error
+          retention-days: 14
