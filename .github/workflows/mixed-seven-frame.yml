@@ -1,0 +1,42 @@
+name: Seven-API linked source math-frame Pareto
+on:
+  pull_request:
+    paths:
+      - 'tools/mixed_seven_frame_parity.py'
+      - 'tools/test_mixed_seven_frame_parity.py'
+      - 'tools/mixed_frame_frontier.py'
+      - '.github/workflows/mixed-seven-frame.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  seven-public-arithmetic-apis:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Rebuild and verify matched complete public 7-API frame histories
+        run: |
+          python3 -m compileall -q tools/mixed_seven_frame_parity.py tools/test_mixed_seven_frame_parity.py
+          python3 -m unittest discover -s tools -p 'test_mixed_seven_frame_parity.py' -v
+      - name: Emit measured seven-operation linked-project frontier
+        run: |
+          mkdir -p build/seven
+          python3 tools/mixed_seven_frame_parity.py --out build/seven/frame-report.json
+          python3 tools/mixed_frame_frontier.py \
+            --in-report build/seven/frame-report.json \
+            --ram-budget 16000 --zp-budget 64 --out build/seven/frontier.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: seven-operation-source-linked-frame-evidence
+          path: |
+            build/seven/frame-report.json
+            build/seven/frontier.json
+          if-no-files-found: warn
+          retention-days: 30

@@ -80,6 +80,8 @@ A separately qualified, **offline** source-linked 32-bit unsigned DIV/MOD frame 
 
 A new offline signed full-32-bit DIV/MOD shared-source comparison measures both 0-ZP portable and 12-ZP V2 signed hybrid combinations at two relocations and reports source-linked synthetic peak/p95 arithmetic frame costs. It is **not** yet replay-registered in the production frame installer; see [S3232_JOINT_FRAME_PARITY.md](S3232_JOINT_FRAME_PARITY.md).
 
+A new **offline seven-operation whole linked-image arithmetic experiment** tests 32×32 signed/unsigned multiply, ISQRT16 and 32/32 signed/unsigned DIV/MOD on the same 150-call synthetic frame history, accounting for real shared-source/linker RAM, scratch and ZP. This does not yet qualify arbitrary runtime input traces or real PAL timings; see [MIXED_SEVEN_FRAME_PARITY.md](MIXED_SEVEN_FRAME_PARITY.md).
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

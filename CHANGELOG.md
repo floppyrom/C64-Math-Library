@@ -1,3 +1,9 @@
+## Unreleased — seven-operation full-source mixed math frame experiment
+
+- Link seven independently selectable stock public APIs together (UMUL32, SMUL32, ISQRT16, UDIV32_32/UMOD32_32, SDIV32_32/SMOD32_32) in four resource/speed combinations across two relocations.
+- Qualify exact signed/unsigned products, integer square root, quotient/remainder/carry, public input and stack preservation, source and PRG hashes, plus actual linked RAM/ZP and 150-call/24-synthetic-frame peak/p95/total CPU-model arithmetic work.
+- Report measured full-project Pareto alternatives rather than adding separate three-API and four-API peaks. Preserve normal builder objectives, historical V1–V5 and REU service images; the seven-API producer is experimental and not yet replay-registered.
+
 ## Unreleased — replay-qualified signed 32-bit DIV/MOD frame installer
 
 - Register the signed restoring 0-ZP and V2 signed hybrid 12-ZP Q32/R32/carry source-linked frame experiment as a third deterministic producer; replay the same signed 150-call/24-synthetic-frame corpus at two code/I/O/ZP origins.
