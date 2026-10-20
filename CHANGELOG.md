@@ -1,3 +1,9 @@
+## Unreleased — independently replayed linked-source frame evidence
+
+- Before accepting an externally supplied frame report in the opt-in builder `frame` objective, rerun the exact registered 150-call/24-synthetic-frame UMUL32+SMUL32+ISQRT16 public-call benchmark across each recorded placement and all eight source-linked candidate images.
+- Reject forged/obsolete peak, p95, total arithmetic cycles, source/PRG hashes, memory geometry or input histories even if the linked binary SHA is valid; unsupported/unrepeatable producers fail closed.
+- Keep all 56 ordinary stock operations, previous objectives, historic V1–V5 profiles and separately preserved REU compatibility intact; replay is not actual PAL raster/IRQ/SID/REU time qualification.
+
 ## Unreleased — evidence-gated linked-image peak frame objective in operation-first CLI
 
 - Add explicit `--objective frame --frame-report ... --build`: use only measured complete-source same-input project plans across multiple placements, enforcing RAM/ZP and optional synthetic peak math frame budgets, never mixing independent call-cycle averages.

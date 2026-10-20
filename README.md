@@ -34,6 +34,8 @@ REU-specific V3/V4 Turbo16/Turbo32 and QS16 services remain available in **separ
 
 The operation-first CLI also has a **strict opt-in `frame` objective**: supply a whole-project same-input measured frame report and explicit RAM/ZP/layout budgets; it selects a qualified physical source combination and rebuilds its exact SHA-matched PRG. [Frame-aware builder instructions](docs/FRAME_BUILDER_OBJECTIVE.md). This is *not* a real PAL/VIC/IRQ/REU timing claim and leaves the default `balanced` and weighted `speed` objectives unchanged.
 
+The strict `frame` objective now **replays source-linked public-call measurements before trusting performance numbers**. Matching PRG and source checksums alone cannot authenticate claimed peak cycles. See [frame evidence replay](docs/FRAME_EVIDENCE_REPLAY.md); this is still a CPU-model-only research gate, not a real PAL-frame guarantee.
+
 **Start without profiles:**
 
 ```sh
