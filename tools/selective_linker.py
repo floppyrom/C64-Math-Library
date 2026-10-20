@@ -1277,8 +1277,6 @@ def available_variants(root=ROOT):
                     "routines/standalone_lab/portable/div_u32_zptail.asm": hashlib.sha256(
                         (root / "routines/standalone_lab/portable/div_u32_zptail.asm").read_bytes()).hexdigest(),
                 } if mod.get("hybrid_u3232") else {
-                    "tools/selective_signed_hybrid_u3232.py": hashlib.sha256(
-                        (root / "tools/selective_signed_hybrid_u3232.py").read_bytes()).hexdigest(),
                     "tools/selective_hybrid_u3232.py": hashlib.sha256(
                         (root / "tools/selective_hybrid_u3232.py").read_bytes()).hexdigest(),
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
@@ -1286,6 +1284,8 @@ def available_variants(root=ROOT):
                     "routines/standalone_lab/portable/div_u32_zptail.asm": hashlib.sha256(
                         (root / "routines/standalone_lab/portable/div_u32_zptail.asm").read_bytes()).hexdigest(),
                 } if mod.get("d65536_unsigned_u3232") else {
+                    "tools/selective_signed_hybrid_u3232.py": hashlib.sha256(
+                        (root / "tools/selective_signed_hybrid_u3232.py").read_bytes()).hexdigest(),
                     "tools/selective_hybrid_u3232.py": hashlib.sha256(
                         (root / "tools/selective_hybrid_u3232.py").read_bytes()).hexdigest(),
                     "tools/selective_v2_fast_u3216.py": hashlib.sha256(
