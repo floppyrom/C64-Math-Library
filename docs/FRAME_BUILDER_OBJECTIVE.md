@@ -48,6 +48,8 @@ whole-library trace-dependent branch-and-bound selector may extend
 coverage. It is **not** a claim of an optimized or fastest selectable
 combination for every possible subset of the 56 operations.
 
+**Imported timing provenance is reverified, not merely checksum-checked.** The `frame` objective first re-executes the exact registered three-operation source-linked benchmark at every declared origin. It rejects altered cycle peaks, p95, RAM/ZP, input corpus and source/PRG hashes even if the original binary still matches. Unsupported benchmark producers fail closed; see [FRAME_EVIDENCE_REPLAY.md](FRAME_EVIDENCE_REPLAY.md).
+
 **Physical timing limitation:** this gate uses Mini6502 complete
 public-call cycles plus caller JSR charges from synthetic frames.
 Actual PAL/VIC-II bus contention, badlines, IRQ/SID, REU DMA,
