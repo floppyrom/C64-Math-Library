@@ -39,12 +39,14 @@ It does **not** assume a combination is faster before complete
 matching-input measurement. The original four candidate IDs, source
 variants and benchmark history remain exactly reproducible.
 
-**Not yet production-replay registered.** The production installer
-currently accepts only its explicitly measured registered source
-candidate sets; the sixteen-option report is research, not a license
-to import unverified cycle claims or automatically replace the
-production benchmark. Future registration requires strict
-regeneration/replay checks and independent native VICE qualification.
+**The exact sixteen-choice producer is now separately replay-registered**
+for opt-in `math_builder.py --objective frame` projects. Reexecuted
+source-linked evidence is required at both registered placements before
+publishing a selected PRG. Its zero-ZP square-table and 12-ZP mixed
+performance alternatives additionally undergo pinned native x64sc
+correctness checks. The original four registered candidate IDs and
+source reports remain available and unchanged. See
+[production replay and independent native qualification](SEVEN_CROSS_FRAME_PRODUCTION.md).
 This is math-only CPU-model arithmetic time, **not** real PAL
 VIC-II/badline/IRQ/SID/REU DMA or application busiest-frame duration.
 Historical profile PRGs and V3/V4 REU services remain preserved.
