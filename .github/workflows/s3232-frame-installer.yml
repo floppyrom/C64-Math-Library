@@ -1,0 +1,45 @@
+name: Replay-attested signed 32bit DIV MOD frame installer
+on:
+  pull_request:
+    paths:
+      - 'tools/frame_evidence_replay.py'
+      - 'tools/s3232_joint_frame_parity.py'
+      - 'tools/test_s3232_frame_installer.py'
+      - 'tools/frame_builder_mode.py'
+      - '.github/workflows/s3232-frame-installer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  replay-source-signed-divmod:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify signed public Q/R/C and repeatable full-image selection
+        run: |
+          python3 -m compileall -q tools/frame_evidence_replay.py tools/s3232_joint_frame_parity.py tools/test_s3232_frame_installer.py
+          python3 -m unittest discover -s tools -p 'test_s3232_frame_installer.py' -v
+          python3 -m unittest discover -s tools -p 'test_u3232_frame_installer.py' -v
+          python3 -m unittest discover -s tools -p 'test_frame_evidence_replay.py' -v
+      - name: Generate and verify exact signed linked installer plan
+        run: |
+          mkdir -p build/s3232-frame
+          python3 tools/s3232_joint_frame_parity.py --out build/s3232-frame/frames.json
+          python3 tools/frame_evidence_replay.py --report build/s3232-frame/frames.json --out build/s3232-frame/proof.json
+          python3 tools/math_builder.py --objective frame --config examples/operation-first-s3232-frame.json --frame-report build/s3232-frame/frames.json --build --out build/s3232-frame/built/selection_manifest.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: signed-wide-divmod-replay-qualified-installer-evidence
+          path: |
+            build/s3232-frame/frames.json
+            build/s3232-frame/proof.json
+            build/s3232-frame/built/frame_qualified_evidence.json
+          if-no-files-found: warn
+          retention-days: 30

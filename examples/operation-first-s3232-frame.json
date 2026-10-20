@@ -1,0 +1,19 @@
+{
+  "target": "c64",
+  "objective": "frame",
+  "operations": [
+    "SDIV32_32",
+    "SMOD32_32"
+  ],
+  "constraints": {
+    "max_ram_bytes": 12000,
+    "max_zp_bytes": 12
+  },
+  "memory": {
+    "code_base": 32768,
+    "math_io": 49152,
+    "scratch_base": 49216,
+    "zp_base": 80
+  },
+  "frame_optimize": "peak"
+}

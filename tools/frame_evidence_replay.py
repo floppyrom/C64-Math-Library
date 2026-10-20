@@ -34,6 +34,9 @@ def replay(report):
     from u3232_joint_frame_parity import (
         BASIS as U3232_BASIS, OPS as U3232_OPS, compare as u3232_compare,
     )
+    from s3232_joint_frame_parity import (
+        BASIS as S3232_BASIS, OPS as S3232_OPS, compare as s3232_compare,
+    )
 
     if not isinstance(report, dict):
         raise EvidenceError("Unsupported/unattested frame benchmark producer")
@@ -41,6 +44,7 @@ def replay(report):
     registered = {
         REGISTERED_BASIS: (MUL_OPS, mul_compare),
         U3232_BASIS: (U3232_OPS, u3232_compare),
+        S3232_BASIS: (S3232_OPS, s3232_compare),
     }
     if basis not in registered:
         raise EvidenceError("Unsupported/unattested frame benchmark producer")
