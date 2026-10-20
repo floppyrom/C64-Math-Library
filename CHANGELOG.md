@@ -1,3 +1,7 @@
+## Unreleased — fail-closed hypothetical native PAL non-math reservation gate
+
+- Add source-scoped offline headroom checking for the three native installed stock/both/signed-only D65536 seven-API PAL burst plans. Authenticate internal source/prg/frame-output consistency, budget RAM and ZP, compute an explicit hypothetical non-math slot reservation and reject insufficient worst-burst headroom; do not claim SID/IRQ/REU or 50 Hz application certification.
+
 ## Unreleased — native PAL timing of installed signed-only and both-D65536 source plans
 
 - Pinned native x64sc r46284 signed-only winner: worst VIC-visible frame **19,883 → 17,580** PHI2 slots (−2,303) against stock, better than both D65536 (17,618), with **8,957 B linked RAM** unchanged from stock and 0/24 isolated deadline misses. This is not yet consecutive 50 Hz application certification.
