@@ -82,6 +82,8 @@ A new offline signed full-32-bit DIV/MOD shared-source comparison measures both 
 
 A new **offline seven-operation whole linked-image arithmetic experiment** tests 32×32 signed/unsigned multiply, ISQRT16 and 32/32 signed/unsigned DIV/MOD on the same 150-call synthetic frame history, accounting for real shared-source/linker RAM, scratch and ZP. This does not yet qualify arbitrary runtime input traces or real PAL timings; see [MIXED_SEVEN_FRAME_PARITY.md](MIXED_SEVEN_FRAME_PARITY.md).
 
+The seven-operation **replay-selected exact linked PRG** now has an independent native VICE ABI test covering two complete compact/fast project builds, with SHA-verified sources and actual VICE arithmetic calls. This does not convert math-only CPU-model frame cycles into physical PAL performance data. See [NATIVE_SEVEN_FRAME_INSTALLER.md](NATIVE_SEVEN_FRAME_INSTALLER.md).
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

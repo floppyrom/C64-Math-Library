@@ -50,6 +50,8 @@ A new **seven-operation linked-project frame benchmark** tests signed/unsigned f
 
 The **seven-operation frame installer** now replay-verifies UMUL32/SMUL32/ISQRT16 and signed/unsigned 32/32 DIV/MOD together, using measured linked-project source and PRG SHA, shared RAM/ZP, and math-only busiest-frame costs. See [seven-API replay-qualified frame builder](docs/MIXED_SEVEN_FRAME_INSTALLER.md). This is not an arbitrary 56-API trace importer or physical PAL certification.
 
+The seven-API mixed-project frame installer now has an additional [**exact-binary native x64sc verification**](docs/NATIVE_SEVEN_FRAME_INSTALLER.md): two replay-registered resource-envelope choices, with all seven public arithmetic exports tested in the complete linked PRG. This is emulator correctness evidence, **not** physical PAL/IRQ/SID/REU frame timing.
+
 **Start without profiles:**
 
 ```sh
