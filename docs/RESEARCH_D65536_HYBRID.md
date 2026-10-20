@@ -69,3 +69,38 @@ python3 tools/native_research_d65536.py \
 The dedicated CI workflow runs this only after the source-model corpus
 passes, and labels all outputs research-only. The original stock source
 and linker API remain untouched.
+
+## Separate seven-operation native PAL regression
+
+`tools/research_d65536_seven_pal.py` constructs the same **exact seven
+public operation** mix used by the source-registered PAL workload. It
+reuses the normal builder/linker for the five other source registrations,
+then *temporarily* inserts the experimental unsigned and signed
+assemblies, with their true 96-byte-larger footprints, into this one
+throwaway local source-linked image. It never writes a new entry into the
+persistent `MODULES` catalog or modifies the installed V2 variant.
+
+The resulting source-evidence artifact names the original production
+baseline PRG SHA, experimental PRG SHA and this experimental emitter's
+own source SHA. Any production-format manifest produced during the
+temporary injection is expressly **not valid production provenance**,
+because the experimental variant is not a qualified catalog entry.
+
+The probe replays each of the same 24 synthetic frames twice per
+configuration (normal VIC display on and display off), with native
+CIA1 A/B elapsed-clock capture and per-call output/carry hashes. It
+reports the full-project native worst burst, frame-8 saving, resource
+delta, and which isolated synthetic frames exceed 19,656 PAL slots.
+
+```sh
+python3 -m unittest discover -s tools -p 'test_research_d65536_seven_pal.py' -v
+export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+python3 tools/research_d65536_seven_pal.py --frames all \
+  --out build/research/d65536-seven-frame-native-pal.json
+```
+
+This is a research-only **mixed-source benchmark**. Although complete
+native bursts are measured, it still excludes music, IRQ, sprites, REU
+DMA and real 50 Hz consecutive-frame scheduling. Production installer
+registration, workload-specific Pareto selection, and profile retirement
+remain explicitly separate follow-ups.
