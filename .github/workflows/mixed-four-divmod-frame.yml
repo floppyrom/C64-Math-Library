@@ -1,0 +1,39 @@
+name: Mixed signed and unsigned four-operation DIV MOD frame Pareto
+on:
+  pull_request:
+    paths:
+      - 'tools/mixed_four_divmod_frame_parity.py'
+      - 'tools/test_mixed_four_divmod_frame_parity.py'
+      - '.github/workflows/mixed-four-divmod-frame.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  linked-signed-unsigned-divmod:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate all four source-linked full-public DIV MOD APIs and frame costs
+        run: |
+          python3 -m compileall -q tools/mixed_four_divmod_frame_parity.py tools/test_mixed_four_divmod_frame_parity.py
+          python3 -m unittest discover -s tools -p 'test_mixed_four_divmod_frame_parity.py' -v
+      - name: Export and select complete linked four-operation plans
+        run: |
+          mkdir -p build/mixed-four
+          python3 tools/mixed_four_divmod_frame_parity.py --out build/mixed-four/linked-report.json
+          python3 tools/mixed_frame_frontier.py --in-report build/mixed-four/linked-report.json --ram-budget 12000 --zp-budget 31 --out build/mixed-four/frontier.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: four-api-unsigned-signed-divmod-whole-image-frame-qualification
+          path: |
+            build/mixed-four/linked-report.json
+            build/mixed-four/frontier.json
+          if-no-files-found: warn
+          retention-days: 30
