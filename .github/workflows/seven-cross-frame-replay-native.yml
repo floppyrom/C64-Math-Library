@@ -1,0 +1,43 @@
+name: Exact sixteen-choice frame replay and native VICE qualification
+on:
+  pull_request:
+    paths:
+      - 'tools/mixed_seven_cross_pareto.py'
+      - 'tools/frame_evidence_replay.py'
+      - 'tools/native_seven_frame_installer.py'
+      - 'tools/test_seven_cross_frame_installer.py'
+      - '.github/workflows/seven-cross-frame-replay-native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-cross-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 105
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Reject tampered reports and verify exact production CLI binary choices
+        run: |
+          python3 -m compileall -q tools/frame_evidence_replay.py tools/mixed_seven_cross_pareto.py tools/native_seven_frame_installer.py tools/test_seven_cross_frame_installer.py
+          python3 -m unittest discover -s tools -p 'test_seven_cross_frame_installer.py' -v
+          python3 -m unittest discover -s tools -p 'test_mixed_seven_cross_pareto.py' -v
+          python3 -m unittest discover -s tools -p 'test_mixed_seven_frame_installer.py' -v
+      - name: Install pinned VICE dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned x64sc r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Native public-ABI qualification of two new exact linked seven-API PRGs
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_seven_frame_installer.py --cross
