@@ -4,9 +4,11 @@ from __future__ import annotations
 
 import copy
 import unittest
+from unittest.mock import patch
+from pathlib import Path
 
 from native_pal_vic_cia_sweep import (PAL_SLOTS, parse_frames,
-                                      percentile95, summarize)
+                                      percentile95, summarize, run)
 
 
 class NativePALSweepTests(unittest.TestCase):
@@ -74,6 +76,23 @@ class NativePALSweepTests(unittest.TestCase):
         forged[1]['measured_cia_phi2_slots']=True
         with self.assertRaises(ValueError):
             summarize(forged,frames=(0,),profile='fast31')
+
+
+    def test_real_run_attaches_linked_installer_digest_to_native_samples(self):
+        digest='a'*64
+        def fake_native(vice, image, entries, folder, tag, port, *, frame, display):
+            return self.sample(frame,display,17244 if display else 16174)
+
+        with patch('native_pal_vic_cia_sweep.crossed.complete_report',return_value={'basis':'mock'}), \
+             patch('native_pal_vic_cia_sweep.build_exact_frame_prg',
+                   return_value=(b'\\x23\\x41',{}, {'choice':'source-pinned','qualified_prg_sha256':digest})), \
+             patch('native_pal_vic_cia_sweep.run_one',side_effect=fake_native):
+            result=run(__file__,frames=(0,),profiles=('fast31',))
+        self.assertEqual(len(result['runs']),2)
+        self.assertTrue(all(row['qualified_prg_sha256']==digest for row in result['runs']))
+        self.assertTrue(all(row['selected_choice']=='source-pinned' for row in result['runs']))
+        self.assertEqual(result['summaries'][0]['qualified_prg_sha256'],digest)
+        self.assertEqual(result['summaries'][0]['peak_display_on_native_slots'],17244)
 
 
 if __name__=='__main__':
