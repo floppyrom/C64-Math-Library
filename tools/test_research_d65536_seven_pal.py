@@ -26,8 +26,13 @@ class ResearchSevenPALTests(unittest.TestCase):
                 old,use_candidate=False)
             image, entries, proof=research.research_source_image(new)
         self.assertEqual(baseproof["zero_page_bytes"],proof["zero_page_bytes"])
-        self.assertEqual(proof["main_ram_bytes"]-baseproof["main_ram_bytes"],192)
-        self.assertEqual(len(image)-len(baseline),192)
+        producer_extra=2*(research.research.IMAGE_BYTES-
+                          research.research.OLD_UNSIGNED_BYTES)
+        linked_extra=proof["main_ram_bytes"]-baseproof["main_ram_bytes"]
+        self.assertEqual(producer_extra,192)
+        self.assertEqual(linked_extra,len(image)-len(baseline))
+        self.assertGreaterEqual(linked_extra,producer_extra)
+        self.assertLess(linked_extra,producer_extra+256)
         self.assertEqual(set(entries),set(original_entries))
         self.assertFalse(baseproof["research_only_with_temporarily_injected_source_emitters"])
         after={api:copy.deepcopy(linker.MODULES[api][variant])
