@@ -45,6 +45,11 @@ def replay(report):
         BASIS as SEVEN_BASIS, OPS as SEVEN_OPS, compare as seven_compare,
     )
 
+    from mixed_seven_cross_pareto import (
+        BASIS as CROSS_BASIS, OPS as CROSS_OPS,
+        LOCATIONS as CROSS_LOCATIONS, compare as cross_compare,
+    )
+
     if not isinstance(report, dict):
         raise EvidenceError("Unsupported/unattested frame benchmark producer")
     basis = report.get("basis")
@@ -54,6 +59,7 @@ def replay(report):
         S3232_BASIS: (S3232_OPS, s3232_compare),
         FOUR_WIDE_BASIS: (FOUR_WIDE_OPS, four_wide_compare),
         SEVEN_BASIS: (SEVEN_OPS, seven_compare),
+        CROSS_BASIS: (CROSS_OPS, cross_compare),
     }
     if basis not in registered:
         raise EvidenceError("Unsupported/unattested frame benchmark producer")
@@ -75,11 +81,19 @@ def replay(report):
         if (code, io, zp, scratch) in seen or scratch != io + 0x40:
             raise EvidenceError("Duplicated relocation or invalid benchmark scratch position")
         seen.add((code, io, zp, scratch))
+        if basis == CROSS_BASIS and (code, io, zp) not in CROSS_LOCATIONS:
+            raise EvidenceError("Sixteen-choice producer has unqualified relocation")
         # Each registered producer links the exact source-pinned candidates,
         # validates all public-call semantics and remeasures 24 synthetic frames.
         measured.append(compare(code, io, zp))
+    if basis == CROSS_BASIS and {x[:3] for x in seen} != set(CROSS_LOCATIONS):
+        raise EvidenceError("Sixteen-choice report must replay both original RAM maps")
     regenerated = {"basis": basis, "operations": list(operations),
                    "placements": measured}
+    if basis == CROSS_BASIS:
+        regenerated.update({"cpu_model_only": True,
+                            "physical_pal_frame_qualified": False,
+                            "candidate_count": 16})
     if report != regenerated:
         raise EvidenceError(
             "Frame evidence disagrees with fresh source-linked public-call replay "

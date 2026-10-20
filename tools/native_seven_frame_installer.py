@@ -18,6 +18,7 @@ import sys
 import tempfile
 
 import mixed_seven_frame_parity as seven
+import mixed_seven_cross_pareto as crossed
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "routines/standalone_lab/portable"))
@@ -31,14 +32,16 @@ from native_vice import N as UNSIGNED_N, VICE, check as unsigned_check
 CODE, IO, ZP = 0x4123, 0xc040, 0x70
 ORIGINS = ((0x2000, 0xc000, 0x50), (CODE, IO, ZP))
 BUDGETS = (("peak", 64), ("ram", 0))
+CROSSED_BUDGETS = (("peak", 0), ("peak", 12))
 N = 96
 OPS = tuple(seven.OPS)
 
 
-def qualified_cases():
+def qualified_cases(*, crossed_replay=False):
     """Return the report without pretending the native oracle timed PAL frames."""
-    result = seven.complete_report()
-    if (result["basis"] != seven.BASIS or result["operations"] != list(OPS)
+    result = crossed.complete_report() if crossed_replay else seven.complete_report()
+    expected_basis = crossed.BASIS if crossed_replay else seven.BASIS
+    if (result["basis"] != expected_basis or result["operations"] != list(OPS)
             or result["placements"][1]["code"] != "$4123"
             or result["placements"][1]["io"] != "$C040"
             or result["placements"][1]["zp_base"] != "$0070"
@@ -50,15 +53,16 @@ def qualified_cases():
 
 
 def build_exact_frame_prg(report: dict, destination: Path,
-                          *, zp_budget: int):
+                          *, zp_budget: int, frame_optimize=None):
     """Rebuild using the *production frame CLI*, not a hand-picked native source."""
     from frame_qualified_config import export_config
 
     destination.mkdir(parents=True, exist_ok=True)
+    objective = frame_optimize or ("peak" if zp_budget else "ram")
     config, expected = export_config(
         report, ram_budget=16000, zp_budget=zp_budget,
         code_base=CODE, math_io=IO, zp_base=ZP, scratch_base=IO + 0x40,
-        objective="peak" if zp_budget else "ram")
+        objective=objective)
     if set(config["pins"]) != set(OPS):
         raise AssertionError("Seven native exports missing in pinned source plan")
     project = {
@@ -67,7 +71,7 @@ def build_exact_frame_prg(report: dict, destination: Path,
         "constraints": {"max_ram_bytes": 16000, "max_zp_bytes": zp_budget},
         "memory": {"code_base": CODE, "math_io": IO,
                    "zp_base": ZP, "scratch_base": IO+0x40},
-        "frame_optimize": "peak" if zp_budget else "ram",
+        "frame_optimize": objective,
     }
     path = destination / "project.json"
     path.write_text(json.dumps(project, sort_keys=True, indent=2) + "\n", encoding="utf-8")
@@ -100,8 +104,17 @@ def build_exact_frame_prg(report: dict, destination: Path,
             or proof["cpu_model_only"] is not True
             or proof["physical_pal_feasibility_claim"] is not False):
         raise AssertionError("Native verification image differs from source-proved installer")
-    if zp_budget == 0 and proof["choice"] != "compact-everywhere":
-        raise AssertionError("Unqualified zero-ZP candidate selected")
+    if zp_budget == 0:
+        expected_choice = (
+            "mul-compact+sqrt-table+udiv-compact+sdiv-compact"
+            if report["basis"] == crossed.BASIS and objective == "peak"
+            else "compact-everywhere"
+        )
+        if proof["choice"] != expected_choice:
+            raise AssertionError("Unqualified zero-ZP candidate selected")
+    if report["basis"] == crossed.BASIS and zp_budget == 12 and objective == "peak":
+        if proof["choice"] != "mul-compact+sqrt-table+udiv-v2+sdiv-v2":
+            raise AssertionError("Unqualified mixed 12-ZP candidate selected")
     return binary, entries, proof
 
 
@@ -118,21 +131,25 @@ def check_native_map(binary: bytes):
     return end
 
 
-def verify_native(vice: str, directory: Path):
+def verify_native(vice: str, directory: Path, *, crossed_replay=False):
     if not os.environ.get("VICE_WRAPPER") or not Path(vice).is_file() or VICE != Path(vice):
         raise RuntimeError("VICE_WRAPPER must point to pinned, functioning x64sc")
     if not (N == umul.N == smul.N == sqrt.N == signed.N == UNSIGNED_N):
         raise AssertionError("Native independent public oracle counts differ")
-    report = qualified_cases()
+    report = qualified_cases(crossed_replay=crossed_replay)
+    budgets = CROSSED_BUDGETS if crossed_replay else BUDGETS
     rows = []
-    for ordinal, (objective, limit) in enumerate(BUDGETS):
-        folder = directory / objective
-        binary, entries, proof = build_exact_frame_prg(report, folder, zp_budget=limit)
+    for ordinal, (objective, limit) in enumerate(budgets):
+        folder = directory / (objective + "_" + str(limit))
+        binary, entries, proof = build_exact_frame_prg(
+            report, folder, zp_budget=limit,
+            frame_optimize=objective if crossed_replay else None)
         end = check_native_map(binary)
         native = {}
         for j, api in enumerate(OPS):
-            tag = "seven_exact_%s_%s" % (objective, api.lower())
-            port = 11000 + ordinal*8 + j
+            tag = "seven_%s_%s_%s" % (
+                "cross" if crossed_replay else "exact", limit, api.lower())
+            port = (12000 if crossed_replay else 11000) + ordinal*8 + j
             entry = entries[api]
             if api == "MATH_UMUL32":
                 digest = umul.run_native(vice, binary, entry, CODE, IO, tag, port, folder)
@@ -153,7 +170,7 @@ def verify_native(vice: str, directory: Path):
             else:
                 digest = signed.verify(vice, binary, entry, CODE, IO, tag, port, folder)
             native[api] = digest
-            print("NATIVE SEVEN EXACT PASS", objective, api, N, digest, flush=True)
+            print("NATIVE SEVEN PASS", "cross" if crossed_replay else "original", limit, api, N, digest, flush=True)
         rows.append({
             "selected_plan": proof["choice"], "objective": objective,
             "code": "$%04X" % CODE, "io": "$%04X" % IO,
@@ -167,22 +184,27 @@ def verify_native(vice: str, directory: Path):
             "physical_pal_frame_cycles_measured": False,
             "hardware_reu_qualified": False,
         })
-    if len(rows) != len(BUDGETS) or len({r["qualified_prg_sha256"] for r in rows}) != 2:
+    if len(rows) != len(budgets) or len({r["qualified_prg_sha256"] for r in rows}) != 2:
         raise AssertionError("Did not qualify two distinct exact project binaries")
-    return {"basis": "native pinned x64sc public ABI for exact 7-API frame installer PRGs",
+    return {"basis": ("native pinned x64sc public ABI for crossed 7-API frame PRGs"
+                      if crossed_replay else "native pinned x64sc public ABI for exact 7-API frame installer PRGs"),
             "emulator_calls": sum(x["public_native_calls"] for x in rows),
             "native_builds": rows, "physical_pal_timing_measured": False}
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--cross", action="store_true", help="verify two newly registered Pareto selections")
+    args = parser.parse_args()
     vice = os.environ.get("VICE_WRAPPER", "")
     if not vice:
         raise RuntimeError("Set VICE_WRAPPER to pinned native x64sc")
     with tempfile.TemporaryDirectory(prefix="native_seven_frame_") as temp:
-        result = verify_native(vice, Path(temp))
+        result = verify_native(vice, Path(temp), crossed_replay=args.cross)
     print(json.dumps(result, sort_keys=True, indent=2))
     assert result["emulator_calls"] == 2 * 7 * N
-    print("NATIVE EXACT SEVEN FRAME 1344 API CALLS PASS", flush=True)
+    print("NATIVE SEVEN FRAME 1344 API CALLS PASS", "cross" if args.cross else "original", flush=True)
 
 
 if __name__ == "__main__":
