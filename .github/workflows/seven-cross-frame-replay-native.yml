@@ -6,6 +6,8 @@ on:
       - 'tools/frame_evidence_replay.py'
       - 'tools/native_seven_frame_installer.py'
       - 'tools/test_seven_cross_frame_installer.py'
+      - 'tools/pal_math_frame_headroom.py'
+      - 'tools/test_pal_math_frame_headroom.py'
       - '.github/workflows/seven-cross-frame-replay-native.yml'
   workflow_dispatch:
 permissions:
@@ -24,9 +26,10 @@ jobs:
           python-version: '3.12'
       - name: Reject tampered reports and verify exact production CLI binary choices
         run: |
-          python3 -m compileall -q tools/frame_evidence_replay.py tools/mixed_seven_cross_pareto.py tools/native_seven_frame_installer.py tools/test_seven_cross_frame_installer.py
+          python3 -m compileall -q tools/frame_evidence_replay.py tools/mixed_seven_cross_pareto.py tools/native_seven_frame_installer.py tools/test_seven_cross_frame_installer.py tools/pal_math_frame_headroom.py tools/test_pal_math_frame_headroom.py
           python3 -m unittest discover -s tools -p 'test_seven_cross_frame_installer.py' -v
           python3 -m unittest discover -s tools -p 'test_mixed_seven_cross_pareto.py' -v
+          python3 -m unittest discover -s tools -p 'test_pal_math_frame_headroom.py' -v
           python3 -m unittest discover -s tools -p 'test_mixed_seven_frame_installer.py' -v
       - name: Install pinned VICE dependencies
         run: |
