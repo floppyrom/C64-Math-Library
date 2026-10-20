@@ -19,7 +19,9 @@ pair shares a separate source. Four complete plans are evaluated:
 
 The source linker allocates the combined resources, including **one
 physical producer for each sign domain**, with separately linked
-I/O, scratch and zero-page layouts. Identical signed and unsigned
+I/O and scratch layouts. **Both V2 shared sources reuse a single
+12-byte ZP scratch allocation**, rather than summing to 24 bytes,
+provided the public routines run sequentially (not reentrantly). Identical signed and unsigned
 32-bit dividends/divisors are exercised across 150 deterministic
 public calls and 24 synthetic frames at both qualified relocations.
 The signed remainder follows truncation-toward-zero quotient semantics,

@@ -44,7 +44,7 @@ class MixedFourDivModFrameTests(unittest.TestCase):
                                          item["peak_frame_math_cycles"])
                     self.assertEqual(sum(x["calls"] for x in item["per_operation"]), CALLS)
                 self.assertEqual(location["per_option"]["both-compact-zerozp"]["zero_page_bytes"], 0)
-                self.assertEqual(location["per_option"]["both-v2-hybrid"]["zero_page_bytes"], 24)
+                self.assertEqual(location["per_option"]["both-v2-hybrid"]["zero_page_bytes"], 12)
 
     def test_measured_four_operation_pareto(self):
         summary = summarize(self.report)
