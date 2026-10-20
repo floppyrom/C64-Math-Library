@@ -5,6 +5,8 @@ on:
       - 'tools/native_pal_vic_cia_sweep.py'
       - 'tools/test_native_pal_vic_cia_sweep.py'
       - 'tools/native_pal_vic_cia_probe.py'
+      - 'tools/frame8_source_hotspots.py'
+      - 'tools/test_frame8_source_hotspots.py'
       - '.github/workflows/native-pal-24-frame-sweep.yml'
   workflow_dispatch:
 permissions:
@@ -23,9 +25,10 @@ jobs:
           python-version: '3.12'
       - name: Fail closed on missing source frames, forged results, and invalid latency percentile
         run: |
-          python3 -m compileall -q tools/native_pal_vic_cia_probe.py tools/native_pal_vic_cia_sweep.py tools/test_native_pal_vic_cia_sweep.py
+          python3 -m compileall -q tools/native_pal_vic_cia_probe.py tools/native_pal_vic_cia_sweep.py tools/test_native_pal_vic_cia_sweep.py tools/frame8_source_hotspots.py tools/test_frame8_source_hotspots.py
           python3 -m unittest discover -s tools -p 'test_native_pal_vic_cia_probe.py' -v
           python3 -m unittest discover -s tools -p 'test_native_pal_vic_cia_sweep.py' -v
+          python3 -m unittest discover -s tools -p 'test_frame8_source_hotspots.py' -v
       - name: Install pinned headless VICE build prerequisites
         run: |
           sudo apt-get update -qq
@@ -39,10 +42,13 @@ jobs:
           export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
           bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
           python3 tools/native_pal_vic_cia_sweep.py --profiles both --frames all --out build/pal-vic-cia/24-native-bursts.json
+          python3 tools/frame8_source_hotspots.py --frame 8 --native-sweep build/pal-vic-cia/24-native-bursts.json --out build/pal-vic-cia/frame8-source-attribution.json
       - name: Upload non-release native PAL sample distribution
         uses: actions/upload-artifact@v4
         with:
           name: native-pal-24-independent-frame-distribution
-          path: build/pal-vic-cia/24-native-bursts.json
+          path: |
+            build/pal-vic-cia/24-native-bursts.json
+            build/pal-vic-cia/frame8-source-attribution.json
           if-no-files-found: error
           retention-days: 14
