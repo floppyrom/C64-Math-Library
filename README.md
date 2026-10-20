@@ -4,6 +4,8 @@ High-performance integer, fixed-point and game math for the Commodore 64 / NMOS 
 
 The **operation-first builder** is the default way to configure a stock C64 library: select from **56 independently linkable public operations**, specify resource limits and emit only the needed code. The five historical fixed profiles are retained as verified compatibility/performance references while their fastest kernels are migrated. V3/V4 additionally provide REU/Turbo services, and V4 QS16, that are not yet replaced by the operation-first builder.
 
+An [offline native PAL non-math reservation gate](docs/NATIVE_PAL_NONMATH_RESERVE.md) now uses the exact three-plan installed-burst report to reject RAM/ZP/headroom budgets that cannot fit even a chosen **hypothetical** IRQ/SID/effects allowance. It never claims true continuous 50 Hz timing.
+
 The [native installed-PRG D65536 PAL comparison](docs/NATIVE_INSTALLED_D65536_PAL.md) checks the actual operation-first source-linked FAST31 stock, signed-only D65536, and both-D65536 binaries across all 24 isolated VIC/CIA-timed PAL bursts, with byte-identical provenance and public ABI checks. It is not a consecutive 50 Hz application timing certificate.
 
 The [nine-plan source-replayed D65536 frame objective](docs/D65536_FRAME_CHOICES.md) now compares compact/FAST31 public seven-operation source choices with independent signed/unsigned D65536 selection across **both qualified memory relocations**, preserving the old zero-ZP and V2 options. These are source-linked CPU-model workload measurements, not continuous PAL 50 Hz application certification.
