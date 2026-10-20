@@ -41,6 +41,9 @@ def replay(report):
         BASIS as FOUR_WIDE_BASIS, OPS as FOUR_WIDE_OPS,
         compare as four_wide_compare,
     )
+    from mixed_seven_frame_parity import (
+        BASIS as SEVEN_BASIS, OPS as SEVEN_OPS, compare as seven_compare,
+    )
 
     if not isinstance(report, dict):
         raise EvidenceError("Unsupported/unattested frame benchmark producer")
@@ -50,6 +53,7 @@ def replay(report):
         U3232_BASIS: (U3232_OPS, u3232_compare),
         S3232_BASIS: (S3232_OPS, s3232_compare),
         FOUR_WIDE_BASIS: (FOUR_WIDE_OPS, four_wide_compare),
+        SEVEN_BASIS: (SEVEN_OPS, seven_compare),
     }
     if basis not in registered:
         raise EvidenceError("Unsupported/unattested frame benchmark producer")
