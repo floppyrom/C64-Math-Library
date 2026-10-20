@@ -277,7 +277,7 @@ MODULES = {
         "link:d65536-hybrid": {
             "source": "tools/research_d65536_hybrid.py",
             "segments": (("KERNEL_CODE", 2976),),
-            "entry": "MATH_SDIV32_32", "zp": 12, "scratch": 0,
+            "entry": "FAST_SDIV32_32_V2MAG", "zp": 12, "scratch": 0,
             "share_producer": "signed-32by32-d65536-public-qr",
             "multi_entry": True,
             "d65536_signed_u3232": True,
@@ -304,7 +304,7 @@ MODULES = {
         "link:d65536-hybrid": {
             "source": "tools/research_d65536_hybrid.py",
             "segments": (("KERNEL_CODE", 2976),),
-            "entry": "MATH_SMOD32_32", "zp": 12, "scratch": 0,
+            "entry": "FAST_SMOD32_32_V2MAG", "zp": 12, "scratch": 0,
             "share_producer": "signed-32by32-d65536-public-qr",
             "multi_entry": True,
             "d65536_signed_u3232": True,
@@ -1005,7 +1005,7 @@ MODULES = {
         "link:d65536-hybrid": {
             "source": "tools/research_d65536_hybrid.py",
             "segments": (("KERNEL_CODE", 2592),),
-            "entry": "MATH_UDIV32_32", "zp": 12, "scratch": 0,
+            "entry": "FAST_UDIV32_32_HYBRID", "zp": 12, "scratch": 0,
             "share_producer": "unsigned-32by32-d65536-public-qr",
             "multi_entry": True,
             "d65536_unsigned_u3232": True,
@@ -1115,7 +1115,7 @@ MODULES = {
         "link:d65536-hybrid": {
             "source": "tools/research_d65536_hybrid.py",
             "segments": (("KERNEL_CODE", 2592),),
-            "entry": "MATH_UMOD32_32", "zp": 12, "scratch": 0,
+            "entry": "FAST_UMOD32_32_HYBRID", "zp": 12, "scratch": 0,
             "share_producer": "unsigned-32by32-d65536-public-qr",
             "multi_entry": True,
             "d65536_unsigned_u3232": True,
