@@ -1,0 +1,24 @@
+{
+  "target": "c64",
+  "objective": "frame",
+  "operations": [
+    "UMUL32",
+    "SMUL32",
+    "ISQRT16",
+    "UDIV32_32",
+    "UMOD32_32",
+    "SDIV32_32",
+    "SMOD32_32"
+  ],
+  "constraints": {
+    "max_ram_bytes": 16000,
+    "max_zp_bytes": 64
+  },
+  "memory": {
+    "code_base": 8192,
+    "math_io": 49152,
+    "zp_base": 80,
+    "scratch_base": 49216
+  },
+  "frame_optimize": "peak"
+}
