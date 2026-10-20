@@ -1,3 +1,9 @@
+## Unreleased — exact seven-operation frame-selected native x64sc qualification
+
+- Rebuild both zero-ZP and performance-oriented seven-API source-qualified installer PRGs with the production `--objective frame --build` CLI; require identical measured PRG SHA, selected source pins, public exports and RAM/ZP envelopes before native execution.
+- Run the independent pinned native x64sc r46284 oracle for 96 complete public calls per export on each of two linked images (1,344 native calls); ensure verification buffers never overlap the measured arithmetic PRG.
+- Maintain separate CPU-model synthetic frame and native correctness evidence without claiming physical PAL/VIC/IRQ/SID/REU frame timing or changing historical V1–V5 and REU releases.
+
 ## Unreleased — replay-qualified seven-operation mixed arithmetic frame installer
 
 - Replay all four full seven-operation linked MUL/SQRT/signed and unsigned DIV/MOD project source combinations at two ROM-safe placements; reject altered peak, input history, source and binary hashes.
