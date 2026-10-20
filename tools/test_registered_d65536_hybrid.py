@@ -70,7 +70,7 @@ class RegisteredD65536Tests(unittest.TestCase):
                 self.assertEqual(entries["MATH_SDIV32_32"],entries["MATH_SMOD32_32"])
                 self.assertEqual(entries["MATH_UDIV32_32"],entries["MATH_UMOD32_32"])
                 self.assertNotEqual(entries["MATH_SDIV32_32"],entries["MATH_UDIV32_32"])
-                self.assertEqual(manifest["resource_use"]["zp_bytes"],12)
+                self.assertEqual(manifest["resource_use"]["zero_page_bytes"],12)
                 executable={code+i:b for i,b in enumerate(binary[2:])}
                 for api in APIS:
                     cpu=CPU(load_sparse(executable))
