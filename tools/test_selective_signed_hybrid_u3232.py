@@ -83,7 +83,8 @@ class Signed32HybridTests(unittest.TestCase):
                     self.assertEqual(result["cases"],384)
                     self.assertEqual(result["corpus_sha256"],timing.CORPUS_SHA256)
                     mean=result["mean_cycles"]
-                    self.assertEqual(set(mean),{COMPACT,FAST})
+                    self.assertEqual(set(mean),{COMPACT,FAST,"link:d65536-hybrid"})
+                    self.assertGreater(mean["link:d65536-hybrid"],0)
                     self.assertLess(mean[FAST],mean[COMPACT])
                     print("SIGNED3232_V2_PAIRED_SPEED",hex(code),api,
                           "portable",round(mean[COMPACT],3),
