@@ -1,3 +1,9 @@
+## Unreleased — nine source-replayed D65536 full-frame installer Pareto choices
+
+- Register a new nine-plan, seven-public-API source-linked frame replay producer comprising original zero-ZP, low-ZP and FAST31 stock alternatives plus independently signed/unsigned D=$00010000 source crosses. Reexecute 150 identical complete public calls over 24 synthetic frames at both physical relocations.
+- Exercise the real frame-objective CLI with the registered nine-plan report and verify that published installer PRG bytes, selection evidence, and every public source pin match the independently rebuilt source plan.
+- Add strict frame evidence replay authorization and normal frame-objective installer selection; reject altered cycle peaks, source hashes, public inputs, linked PRG hashes and memory maps. Retain old 16-choice benchmark unchanged. All measurements here are CPU-model math-only, not actual consecutive PAL-frame qualification.
+
 ## Unreleased — optional independently linkable D=$00010000 32/32 Pareto variants
 
 - Register `link:d65536-hybrid` as an optional source-SHA/dependency-authenticated signed/unsigned 32/32 public Q/R/C DIV/MOD producer, preserving exact historical V2 and compact sources and independent shared physical aliasing. Increase producer-size contracts by 96 B each (whole seven-API research workload: +256 linked bytes including alignment).
