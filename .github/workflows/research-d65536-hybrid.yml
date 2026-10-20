@@ -4,6 +4,8 @@ on:
     paths:
       - 'tools/research_d65536_hybrid.py'
       - 'tools/test_research_d65536_hybrid.py'
+      - 'tools/native_research_d65536.py'
+      - 'tools/test_native_research_d65536.py'
       - '.github/workflows/research-d65536-hybrid.yml'
       - 'tools/selective_hybrid_u3232.py'
       - 'tools/selective_signed_hybrid_u3232.py'
@@ -26,6 +28,7 @@ jobs:
         run: |
           python3 -m compileall -q tools/research_d65536_hybrid.py tools/test_research_d65536_hybrid.py
           python3 -m unittest discover -s tools -p 'test_research_d65536_hybrid.py' -v
+          python3 -m unittest discover -s tools -p 'test_native_research_d65536.py' -v
       - name: Compare signed and unsigned source-linked public corpus at both memory placements
         run: |
           python3 tools/research_d65536_hybrid.py --out build/research/d65536-comparison.json
@@ -34,5 +37,38 @@ jobs:
         with:
           name: research-d65536-source-public-abi-performance
           path: build/research/d65536-comparison.json
+          if-no-files-found: error
+          retention-days: 14
+
+  native-r46284:
+    needs: source-research
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install headless VICE development prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned x64sc trunk r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Recheck independent native boundary inputs and measure visible PAL CIA slots
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_research_d65536.py --out build/research/d65536-native-isolated-pal.json
+      - name: Preserve explicitly research-only native public ABI and exact-target timing
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-d65536-native-pal-targeted
+          path: build/research/d65536-native-isolated-pal.json
           if-no-files-found: error
           retention-days: 14
