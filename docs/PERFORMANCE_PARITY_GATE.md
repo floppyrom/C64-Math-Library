@@ -84,6 +84,8 @@ A new **offline seven-operation whole linked-image arithmetic experiment** tests
 
 The seven-operation **replay-selected exact linked PRG** now has an independent native VICE ABI test covering two complete compact/fast project builds, with SHA-verified sources and actual VICE arithmetic calls. This does not convert math-only CPU-model frame cycles into physical PAL performance data. See [NATIVE_SEVEN_FRAME_INSTALLER.md](NATIVE_SEVEN_FRAME_INSTALLER.md).
 
+A separate [sixteen-choice seven-operation crossed Pareto research benchmark](MIXED_SEVEN_CROSS_PARETO.md) preserves the four production-replay-registered source candidates while testing additional independently mixed combinations on the exact same public-call corpus. Any newly favorable combination must be replay-registered and independently native-qualified before production acceptance; CPU-model arithmetic peaks do not prove physical PAL frame feasibility.
+
 ## Non-negotiable acceptance rules
 
 1. For each of 56 APIs, map the fastest **source-reproducible** V1–V5,

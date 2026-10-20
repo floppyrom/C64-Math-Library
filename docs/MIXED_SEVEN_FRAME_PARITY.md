@@ -36,6 +36,8 @@ python3 tools/mixed_frame_frontier.py \
   --ram-budget 16000 --zp-budget 64 --out build/seven/frontier.json
 ```
 
+A [separate sixteen-choice full crossed-source research sweep](MIXED_SEVEN_CROSS_PARETO.md) also compares independently selected MUL, ISQRT and signed/unsigned DIV strategies. Its extra twelve candidate combinations are not replay-registered production selections, and the original four-image benchmark evidence remains unchanged.
+
 **This workload is now registered for deterministic frame-evidence replay** by the operation-first installer, with exact source and binary qualification. See [MIXED_SEVEN_FRAME_INSTALLER.md](MIXED_SEVEN_FRAME_INSTALLER.md). This does not authorize arbitrary workloads or physical PAL timing conclusions.
 
 The measurements are *CPU-model arithmetic plus JSR*, not a physically
