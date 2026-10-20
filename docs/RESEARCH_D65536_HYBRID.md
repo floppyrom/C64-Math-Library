@@ -104,3 +104,20 @@ native bursts are measured, it still excludes music, IRQ, sprites, REU
 DMA and real 50 Hz consecutive-frame scheduling. Production installer
 registration, workload-specific Pareto selection, and profile retirement
 remain explicitly separate follow-ups.
+
+### Identical-link baseline reconciliation
+
+The PAL test now constructs a **third source-linked control** with the
+same seven operations, same code/IO/ZP placement, same pinned variants,
+and ordinary unmodified V2 source emitters. Its PRG **must be byte-for-byte
+identical to the independently built production frame-selected PRG**,
+including exported public addresses. Only after that proof does it compare
+the separate candidate's actual occupied RAM against the same control
+linker, expecting +96 bytes for each of the two independent signed and
+unsigned source producers.
+
+The producer-level 96-byte changes are source-assembly footprints; an
+installer report's *worst-placement resource envelope* is not by itself
+an authoritative exact RAM-length comparator for a particular link.
+The revised tests reject mixed source-pinning or unexplained memory
+differences instead of treating a discrepancy as an optimized result.
