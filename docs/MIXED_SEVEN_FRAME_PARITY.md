@@ -36,10 +36,7 @@ python3 tools/mixed_frame_frontier.py \
   --ram-budget 16000 --zp-budget 64 --out build/seven/frontier.json
 ```
 
-**This is a source-qualified experimental benchmark, not a registered
-installer workload yet.** The production `frame` objective must not trust
-its peak cycles until the exact deterministic seven-API producer is
-registered with strict replay and binary checks.
+**This workload is now registered for deterministic frame-evidence replay** by the operation-first installer, with exact source and binary qualification. See [MIXED_SEVEN_FRAME_INSTALLER.md](MIXED_SEVEN_FRAME_INSTALLER.md). This does not authorize arbitrary workloads or physical PAL timing conclusions.
 
 The measurements are *CPU-model arithmetic plus JSR*, not a physically
 measured PAL frame including VIC-II bus stealing, IRQ/SID, REU DMA, or

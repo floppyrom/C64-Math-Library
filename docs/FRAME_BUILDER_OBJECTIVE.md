@@ -56,6 +56,8 @@ combination for every possible subset of the 56 operations.
 
 **Signed wide DIV/MOD replay:** a distinct registered source-linked 0-ZP/12-ZP signed full Q/R/C selection workload is available via `examples/operation-first-s3232-frame.json`, after mandatory deterministic timing replay. See [S3232_FRAME_INSTALLER.md](S3232_FRAME_INSTALLER.md). This is not general-purpose peak-frame optimization.
 
+**Seven-operation combined workload:** Complete unsigned/signed MUL32, ISQRT16 and 32/32 DIV/MOD projects are now eligible under registered exact linked-source replay at two ROM-safe origins. See [MIXED_SEVEN_FRAME_INSTALLER.md](MIXED_SEVEN_FRAME_INSTALLER.md) and [`operation-first-seven-frame.json`](../examples/operation-first-seven-frame.json). These are whole linked images, not sums of separate synthetic benchmarks.
+
 **Physical timing limitation:** this gate uses Mini6502 complete
 public-call cycles plus caller JSR charges from synthetic frames.
 Actual PAL/VIC-II bus contention, badlines, IRQ/SID, REU DMA,
