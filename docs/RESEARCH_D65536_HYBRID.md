@@ -43,3 +43,29 @@ gate is native x64sc validation against the same public corpus and complete
 RAM and ZP*, and checking that the historical V2 still wins where expected.
 No legacy V1–V5 profile, 56-API operation-first catalog, REU or Turbo/QS16
 asset is changed by this experiment.
+
+## Separate native PAL qualification step
+
+`tools/native_research_d65536.py` builds both old and research unsigned
+and signed public source images at the qualified `$4123/$C040/$70` map.
+It drives each source through existing native x64sc public **Q32/R32/C**
+oracles using an identical 96-pair edge-enriched corpus, including the
+exact frame-8 `$80000001/$00010000` input, and independently checks that
+old/new native capture digests match.
+
+The same exact signed public input is also run by a one-call VIC/CIA
+raster-synchronised PAL microprobe, with the display on and off. Its
+measured PHI2-slot difference *includes identical operand staging,
+instrumentation and VIC contention*, and therefore is an isolated-call
+native time delta, **not a 24-frame whole-project optimization**.
+
+```sh
+export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+python3 -m unittest discover -s tools -p 'test_native_research_d65536.py' -v
+python3 tools/native_research_d65536.py \
+  --out build/research/d65536-native-isolated-pal.json
+```
+
+The dedicated CI workflow runs this only after the source-model corpus
+passes, and labels all outputs research-only. The original stock source
+and linker API remain untouched.
