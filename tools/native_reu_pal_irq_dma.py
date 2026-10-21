@@ -389,6 +389,11 @@ def main():
         "reu_16384_display1_irq0","reu_16384_display1_irq1"),
         help="Diagnostic single hardware case; does not provide qualification")
     args=p.parse_args()
+    # Certification may never come from emulator warp or an experimental
+    # monitor start mode; those runs are strictly diagnostic.
+    if args.only_case is None and (args.warp or args.monitor_start != "register-go"):
+        p.error("Eight-case PAL qualification requires non-warp and register-go; "
+                "use --only-case for experimental emulator modes")
     if args.trace_irq_entry and args.only_case is None:
         p.error("--trace-irq-entry requires --only-case")
     if args.diagnostic_16m_bank != 200 and (
