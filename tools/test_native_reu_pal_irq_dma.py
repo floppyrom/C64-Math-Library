@@ -51,6 +51,22 @@ class NativePALREUContracts(unittest.TestCase):
                     pal.main()
                 self.assertEqual(raised.exception.code,2)
 
+    def test_experimental_basic_matrix_remains_distinct_from_release_gate(self):
+        from unittest.mock import patch
+        invalid=[
+            ["--basic-matrix"],
+            ["--basic-matrix","--launch-mode","monitor"],
+            ["--basic-matrix","--launch-mode","basic-autostart","--warp"],
+            ["--basic-matrix","--launch-mode","basic-autostart","--only-case","reu_16384_display0_irq1"],
+            ["--basic-matrix","--launch-mode","basic-autostart","--monitor-start","goto"],
+        ]
+        for args in invalid:
+            with self.subTest(args=args),patch(
+                    "sys.argv",["native_reu_pal_irq_dma.py","--out","ignore.json"]+args):
+                with self.assertRaises(SystemExit) as err:
+                    pal.main()
+                self.assertEqual(err.exception.code,2)
+
     def test_paired_matrix_fails_closed(self):
         with self.assertRaises(AssertionError):
             pal.summarize([])
