@@ -59,13 +59,21 @@ def assemble(exports, stock_entry, stock_io, *, display, irq):
         "lda #$%02x"%(IRQ>>8),"sta $ffff",
         "lda #$%02x"%(NMI_GUARD&255),"sta $fffa",
         "lda #$%02x"%(NMI_GUARD>>8),"sta $fffb",
+        "lda #$73","sta $%04x"%(SNAP+0x31),
+        # Early diagnostic NMI covers armed IRQ *and raster sync*, not
+        # merely the math batch. Max one normal PAL frame to sync.
         "lda #$7f","sta $dd0d",
+        "lda #$60","sta $dd04",
+        "lda #$ea","sta $dd05",
+        "lda #$81","sta $dd0d",
+        "lda #$11","sta $dd0e",
         "lda #$17","sta $d012",
         "lda #$01","sta $d019",
         "lda #$%02x"%(1 if irq else 0),"sta $d01a",
         "lda $dc0d","lda $dd0d",
         "PAL_SYNC_HI:","bit $d011","bpl PAL_SYNC_HI",
         "PAL_SYNC_LO:","bit $d011","bmi PAL_SYNC_LO",
+        "lda #$74","sta $%04x"%(SNAP+0x31),
         "lda #$00","sta $%04x"%(SNAP+6),"sta $%04x"%(SNAP+7),
         "cli",
         "lda #$ff","sta $dc04","sta $dc05","sta $dc06","sta $dc07"
@@ -242,11 +250,18 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
                         monitor(sock,"break "+format(IRQ,"04x"),"BREAK:")
                     hit=monitor(sock,"g "+format(HARNESS,"04x"),"Stop on  exec")
                     if trace_irq:
+                        monitor(sock,'bsave "'+str(dumped)+'" 0 1a00 1ab9',"Saving")
+                        snap=dumped.read_bytes()
+                        if snap[7]==0xdd:
+                            raise AssertionError(("NMI watchdog fired before IRQ breakpoint",
+                                                  "last_stage",snap[0x31],
+                                                  "irq_count",snap[6]))
                         print("TRACE_NATIVE_IRQ_BREAKPOINT",tag,
                               hit[-1000:].decode(errors="replace"),flush=True)
                         sock.sendall(b"quit\n")
                         return {"case":tag,"status":"IRQ_ENTRY_MONITOR_TRACE_ONLY",
                                 "trace_monitor_output":hit[-1000:].decode(errors="replace"),
+                                "stage_marker":snap[0x31],
                                 "full_batch_qualified":False}
                     monitor(sock,'bsave "'+str(dumped)+'" 0 1a00 1ab9',"Saving")
                     sock.sendall(b"quit\n")
@@ -254,6 +269,7 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
                     log.flush()
                     reason={
                         "case":tag,
+                        "original_monitor_failure":str(exc),
                         "vice_process_returncode":proc.poll(),
                         "vice_log_tail":logfile.read_text(errors="replace")[-7500:],
                         "image_bytes":len(machine),
