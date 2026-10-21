@@ -13,7 +13,9 @@ make builder-setup
 
 
 Choose the operations and one of `balanced`, `speed`, `size` or
-`zp`, then give the usable RAM and ZP budgets. The builder outputs:
+`zp`, then give the usable RAM and ZP budgets. The guided setup also
+asks whether to add an optional Turbo16, Turbo32 or QS16 REU module.
+The builder outputs:
 
 - `my_math.json`: a reusable, editable project configuration.
 - `build_my_math/math_selective.prg`: actual linked C64 load image.
