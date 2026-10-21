@@ -395,6 +395,34 @@ def main(argv: list[str] | None = None) -> int:
         cfg = json.loads(args.config.read_text(encoding="utf-8")) if args.config else {}
         if not isinstance(cfg, dict):
             raise SelectionError("Configuration must be a JSON object")
+        if "hardware" in cfg:
+            # Saved operation-first project configurations must not silently
+            # drop the user's selected REU service on a later rebuild.
+            if not (args.build or args.measure) or args.preview:
+                raise SelectionError("Hardware REU config requires --build or --measure")
+            if (args.operation or args.objective or args.target or args.zp_budget is not None or
+                    args.ram_budget is not None or args.pin or args.calls or
+                    args.frame_report or args.frame_max_cycles is not None or
+                    args.frame_optimize or args.validate_sources):
+                raise SelectionError("REU rebuild must use saved project options unchanged")
+            import configure_math as user_setup
+            if args.measure:
+                with tempfile.TemporaryDirectory(prefix="math_reu_measure_") as folder:
+                    stock = user_setup.build_checked(cfg,index,Path(folder))
+                    combined = json.loads(
+                        (Path(folder)/"math_project_manifest.json").read_text())
+                print(json.dumps({
+                    "stock_operations":[o["api"] for o in stock["operations"]],
+                    "combined_resource_use":combined["combined_resource_use"],
+                    "hardware":combined["hardware"],
+                    "native_mixed_irq_vic_qualified":False,
+                },indent=2))
+            else:
+                result = user_setup.build_checked(cfg,index,args.out.parent)
+                print("Built operation-first stock PRG:",args.out.parent/"math_selective.prg")
+                print("Built explicit REU Turbo16 companion:",args.out.parent/"turbo16_reu.prg")
+                print("Stock operations:",", ".join(o["api"] for o in result["operations"]))
+            return 0
         selected = cfg.get("operations", []) + args.operation
         if not selected:
             if not sys.stdin.isatty():

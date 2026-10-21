@@ -1,11 +1,15 @@
 name: Source-built standalone Turbo16 native REU preflight
 on:
+  push:
+    branches: [engineering/operation-first-turbo16-reu-optin-20261021]
   pull_request:
     paths:
       - 'relocatable_source/turbo/turbo16_reu_preflight.asm'
       - 'tools/reu_turbo16_standalone_package.py'
       - 'tools/test_reu_turbo16_standalone_package.py'
       - 'tools/native_reu_turbo16_standalone.py'
+      - 'tools/native_reu_mixed_selective.py'
+      - 'tools/reu_user_setup.py'
       - 'docs/TURBO16_REU_STANDALONE_PREFLIGHT.md'
       - '.github/workflows/reu-turbo16-native-preflight.yml'
   workflow_dispatch:
@@ -43,12 +47,14 @@ jobs:
           export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
           bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
           python3 tools/native_reu_turbo16_standalone.py --out build/reu-native/preflight.json
+          python3 tools/native_reu_mixed_selective.py --out build/reu-native/mixed-stock-reu.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: source-built-turbo16-reu-physical-dma-preflight
           path: |
             build/reu-native/preflight.json
+            build/reu-native/mixed-stock-reu.json
             build/preflight-reu-512/
             build/preflight-reu-16m/
           retention-days: 14

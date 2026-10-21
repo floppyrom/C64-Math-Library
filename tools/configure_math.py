@@ -16,6 +16,7 @@ import tempfile
 
 import math_builder as builder
 import selective_linker as linker
+import reu_user_setup as reu_setup
 
 OBJECTIVES = builder.OBJECTIVES
 
@@ -134,20 +135,47 @@ def collect(args, index: dict, *, interactive: bool):
         }
     if memory:
         config["memory"] = memory
+    reu_selected = getattr(args, "reu_turbo16", False)
+    reu_kib = getattr(args, "reu_kib", None)
+    reu_bank = getattr(args, "reu_bank", None)
+    reu_reserved = getattr(args, "reu_reserved_bank", [])
+    if not reu_selected and (reu_kib is not None or reu_bank is not None or reu_reserved):
+        raise builder.SelectionError("REU tier, bank and reservations require --reu-turbo16")
+    if reu_selected:
+        if "MATH_UMUL16" not in operations:
+            raise builder.SelectionError("Select --operation UMUL16 for a stock fallback to REU Turbo16")
+        capacity = 512 if reu_kib is None else reu_kib
+        if capacity not in (512, 16384):
+            raise builder.SelectionError("REU tier must be 512 or 16384 KiB")
+        bank = (4 if capacity==512 else 200) if reu_bank is None else reu_bank
+        config["hardware"] = {"reu":{"turbo16":{
+            "capacity_kib":capacity, "bank":bank,
+            "reserved_banks":reu_reserved,
+        }}}
     return config
 
 
 def build_checked(config: dict, index: dict, folder: Path) -> dict:
     """Re-use the production selector and linker, never a DIY estimator."""
+    reu_selected = "hardware" in config
+    if reu_selected:
+        reu_setup.qualified_hardware(config)
+    zp_budget = config["constraints"]["max_zp_bytes"]
+    ram_budget = config["constraints"]["max_ram_bytes"]
+    if reu_selected:
+        zp_budget = reu_setup._budget(zp_budget, reu_setup.ZP_COST, "ZP")
+        ram_budget = reu_setup._budget(ram_budget, reu_setup.RAM_COST, "RAM")
     plan = builder.create_plan(
         index, config["operations"],
         target=config["target"],
         objective=config["objective"],
-        zp_budget=config["constraints"]["max_zp_bytes"],
-        ram_budget=config["constraints"]["max_ram_bytes"],
+        zp_budget=zp_budget,
+        ram_budget=ram_budget,
         workload_calls=config.get("workload_calls"),
         pins=config.get("pins"),
     )
+    if reu_selected:
+        return reu_setup.install(config,index,plan,folder,linker)
     return linker.build(plan, folder, memory=config.get("memory", {}))
 
 
@@ -178,6 +206,9 @@ def run(args, index=None, *, interactive: bool | None = None) -> dict:
         source_dir = Path(work)
         manifest = build_checked(config, index, source_dir)
         names = ("math_selective.prg", "math_api.inc", "selective_manifest.json")
+        if "hardware" in config:
+            names += ("turbo16_reu.prg","turbo16_reu_manifest.json",
+                      "math_project_manifest.json","math_reu_turbo16.inc")
         for name in names:
             if not (source_dir / name).is_file():
                 raise builder.SelectionError("Linker did not produce " + name)
@@ -210,6 +241,14 @@ def main(argv: list[str] | None = None) -> int:
                         help="expert override to a specific certified linkable variant")
     parser.add_argument("--memory-config", type=Path,
                         help="optional JSON object defining the linker's memory map and reservations")
+    parser.add_argument("--reu-turbo16", action="store_true",
+                        help="opt in to guarded native REU Turbo16 add-on; normal UMUL16 remains the fallback")
+    parser.add_argument("--reu-kib", type=int, choices=(512,16384),
+                        help="physical REU tier for Turbo16, default 512 KiB")
+    parser.add_argument("--reu-bank", type=lambda x: int(x,0),
+                        help="exclusive REU 64KiB bank, default 4 (512KiB) or 200 (16MiB)")
+    parser.add_argument("--reu-reserved-bank", type=int, action="append", default=[],
+                        help="REU bank occupied by another subsystem; repeat to reject collisions")
     parser.add_argument("--config-out", type=Path, default=Path("my_math.json"),
                         help="write reusable config; refuses to overwrite existing files")
     parser.add_argument("--build-dir", type=Path, default=Path("build_my_math"),
@@ -228,6 +267,12 @@ def main(argv: list[str] | None = None) -> int:
         print("Objective: " + manifest["selection_objective"])
         print("Total main RAM bytes: " + str(usage["main_ram_total_bytes"]))
         print("Total ZP bytes: " + str(usage["zero_page_bytes"]))
+        if args.reu_turbo16:
+            project=json.loads((args.build_dir/"math_project_manifest.json").read_text())
+            print("Opt-in REU Turbo16 PRG: " + str(args.build_dir/"turbo16_reu.prg"))
+            print("Total REU+stock RAM bytes: " + str(project["combined_resource_use"]["main_ram_total_bytes"]))
+            print("Total REU+stock ZP bytes: " + str(project["combined_resource_use"]["zero_page_bytes"]))
+            print("Use INSTALL/BEGIN/CALL/END explicitly; no IRQ/VIC mixed qualification.")
         print("No historical V1-V5 profile was installed or replaced.")
         return 0
     except (builder.SelectionError, linker.LinkError, OSError,

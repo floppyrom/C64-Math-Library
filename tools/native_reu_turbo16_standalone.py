@@ -23,7 +23,7 @@ START=0x0800
 EXAMPLES=((0x1234,0x5678),(0xffff,0xffff))
 
 
-def compile_harness(exports):
+def compile_harness(exports,stock_entry=None,stock_io=None):
     addr={k:int(v[1:],16) for k,v in exports.items()}
     seed=bytes((i*73+19)&255 for i in range(122))
     code=[
@@ -37,7 +37,8 @@ def compile_harness(exports):
         "jsr $%04x" % addr["T16_REU_INSTALL"],
         "php", "pla", "sta $1a00",
         "lda $%04x" % (STATE+1), "sta $1a01",
-        "bcc NATIVE_START_MATH", "jmp NATIVE_SNAPSHOT",
+        "bcc NATIVE_START_MATH",
+        "jmp NATIVE_STOCK" if stock_entry is not None else "jmp NATIVE_SNAPSHOT",
         "NATIVE_START_MATH:"
     ]
     for batch,(x,y) in enumerate(EXAMPLES):
@@ -57,6 +58,21 @@ def compile_harness(exports):
                      "sta $%04x" % (SNAP+0x10+batch*4+i)]
         code += ["jsr $%04x" % addr["T16_REU_END"],
                  "php", "pla", "sta $%04x" % (SNAP+4+batch*3)]
+    if stock_entry is not None:
+        if stock_io is None:
+            raise AssertionError("Stock public math IO must be explicitly provided")
+        x,y=0x2345,0x1321
+        code += ["NATIVE_STOCK:"]
+        for shift,index in ((0,0),(8,1)):
+            code += ["lda #$%02x" % (x>>shift&255),
+                     "sta $%04x" % (stock_io+index),
+                     "lda #$%02x" % (y>>shift&255),
+                     "sta $%04x" % (stock_io+4+index)]
+        code += ["jsr $%04x" % stock_entry,
+                 "php","pla","sta $%04x" % (SNAP+0x0A)]
+        for j in range(4):
+            code += ["lda $%04x" % (stock_io+8+j),
+                     "sta $%04x" % (SNAP+0x20+j)]
     code += [
         "NATIVE_SNAPSHOT:",
         "ldx #$00",
@@ -91,13 +107,22 @@ def command(sock,line,needle):
     raise RuntimeError(("VICE remote response",line,needle,data[-1100:]))
 
 
-def native_case(exe, folder, label, reu_kib, packed_kib, bank, port):
+def native_case(exe, folder, label, reu_kib, packed_kib, bank, port,
+                *, stock_prg=None, stock_entry=None, stock_io=None):
     manifest,prg=build(packed_kib,bank)
-    harness,stop,seed=compile_harness(manifest["public_exports"])
-    memory=bytearray(LIMIT-START)
+    harness,stop,seed=compile_harness(manifest["public_exports"],stock_entry,stock_io)
+    if (stock_prg is None) != (stock_entry is None):
+        raise AssertionError("Stock PRG and its actual exported entry must be supplied together")
+    stock_load = int.from_bytes(stock_prg[:2],"little") if stock_prg is not None else 0
+    stock_end = stock_load+len(stock_prg)-2 if stock_prg is not None else LIMIT
+    if stock_prg is not None and (stock_load<LIMIT or stock_end>0xD000):
+        raise AssertionError("Stock loader image overlaps REU or I/O")
+    memory=bytearray(max(LIMIT,stock_end)-START)
     offset=BASE-START
     memory[offset:offset+len(prg)-2]=prg[2:]
     memory[:len(harness)]=harness
+    if stock_prg is not None:
+        memory[stock_load-START:stock_end-START]=stock_prg[2:]
     image=folder/(label+".prg")
     dump=folder/(label+".dump")
     logfile=folder/(label+".log")
@@ -145,12 +170,17 @@ def native_case(exe, folder, label, reu_kib, packed_kib, bank, port):
     else:
         assert result[0]&1 and result[1]==0,(label,"absent or aliased REU was accepted",result[:8])
     assert result[0x40:0x40+122]==seed,(label,"caller ZP was corrupted")
+    if stock_prg is not None:
+        product=int.from_bytes(result[0x20:0x24],"little")
+        assert product==0x2345*0x1321,(label,"stock fallback/coexistence failed",product)
+        assert result[0x0A]&1==0,(label,"stock UMUL16 returned carry",result[0x0A])
     return {
         "test":label,"vice_native_dma_registers_exercised":True,
         "actual_vice_reu_kib":reu_kib,"package_declared_reu_kib":packed_kib,
         "installed_bank":bank,"rejected_safely":not expect_success,
         "two_batches_passed":expect_success,
         "caller_zp_exact_restoration":True,
+        "stock_fallback_correct_with_or_without_reu":stock_prg is not None,
         "output_sha256":hashlib.sha256(result).hexdigest(),
         "native_dma_cycle_timing_measured":False,
     }

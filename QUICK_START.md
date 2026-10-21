@@ -90,9 +90,22 @@ compatibility/research references, **not alternate recommended installers**.
 The archive includes the original README's extensive optimization history:
 [pre-cutover research notes](docs/README_RESEARCH_ARCHIVE_2026-10-21.md).
 
-V3/V4 REU Turbo16/Turbo32 and V4 QS16 BEGIN/CALL/END services are still
-separate legacy-resident capabilities. For them, use the **whole-resident**
-checksum-preserving [REU compatibility exporter](docs/REU_COMPAT_EXPORT.md).
-Such a bundle **cannot be combined with a selective PRG**. REU backend and
-1541/1571/1581 operation-first binaries have not been implemented; do not
-assume hardware or complete historical fastest-kernel parity.
+An **experimental native Turbo16 REU add-on** can now be selected through
+the operation-first configuration, while keeping a normal UMUL16 fallback:
+
+```sh
+python3 tools/configure_math.py --operation UMUL16 --objective size \
+  --zp-budget 200 --ram-budget 25000 --reu-turbo16 --reu-kib 512 \
+  --config-out reu-math.json --build-dir build_reu_math
+```
+
+This produces a **separate source-built** REU PRG as well as the stock
+PRG, with global memory reservations and a combined manifest. It is not
+automatically accelerated: use the REU lifecycle only after INSTALL
+succeeds. See the [opt-in REU guide](docs/OPERATION_FIRST_REU_TURBO16.md).
+IRQ/VIC contention and timing remain unqualified.
+
+The historical V3/V4 Turbo16/Turbo32 and V4 QS16 resident services are
+still preserved as [REU compatibility exports](docs/REU_COMPAT_EXPORT.md),
+not mixed into the selective PRG. 1541/1571/1581 operation-first
+backends and complete historical fastest-kernel parity remain unfinished.
