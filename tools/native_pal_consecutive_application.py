@@ -148,8 +148,10 @@ def extract_frame(entries, frame, display):
             base[start:start+10],base[start+10:stop]+b'\x60',expected,count)
 
 
-def build_harness(entries, *, display):
-    """Return one machine image containing the exact varied 150-call trace."""
+def build_harness(entries, *, display, reserve_cpu_cycles=0):
+    """Return authentic varied calls, without adding synthetic NOP workload."""
+    if type(reserve_cpu_cycles) is not int or reserve_cpu_cycles != 0:
+        raise ValueError("Real SID/renderer harness rejects injected NOP reserve")
     if type(display) is not bool or set(entries)!=set(source.OPS):
         raise ValueError("Seven public exports and explicit VIC display choice required")
     frames=[extract_frame(entries,n,display) for n in range(RUNS)]
