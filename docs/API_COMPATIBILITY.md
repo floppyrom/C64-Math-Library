@@ -1,4 +1,32 @@
-# API compatibility
+# Public API compatibility — operation-first stock C64
+
+**For new projects, use the operation-first builder, not V1–V5.** Choose
+from 56 individually linkable public operations; only selected callable
+entries and shared physical dependencies are emitted. Addresses are **not**
+fixed historic resident addresses. Always consume the generated
+`math_api.inc` and `selective_manifest.json` to obtain the
+actual public aliases, operand I/O, initializer and output/Carry contracts,
+source variants and relocations.
+
+Normal installation: `make builder-setup`. For source/budget
+configuration see [the installer guide](OPERATION_FIRST_USER_SETUP.md) and
+[release qualification](BUILDER_RELEASE_ACCEPTANCE.md).
+
+A selected operation's calling convention must match its documented
+source-qualified public ABI. Physical shared code/tables or source-aliasing
+may change across configurations. The math library is **not reentrant**.
+
+## Historical resident API and compatibility notes (archived)
+
+The following material documents the frozen V1–V5 common API, historical
+initialization requirements, fixed-address symbol layouts, V3/V4 REU Turbo
+and QS16 lifecycle services and the older Custom Pareto builds. It
+is **not** guidance to select a historical resident profile for a new
+stock-C64 project. V3/V4 stateful hardware extensions remain available
+only through a [separate compatible resident package](REU_COMPAT_EXPORT.md),
+which must not be mixed with the selective image.
+
+---
 
 The release retains the authoritative **56-entry stable signed/unsigned/game-math API** in all five resident profiles **and in all generated Custom Pareto builds**. `PUBLIC_API_COMPLETE.csv` remains authoritative for that common surface. Normal operations use the configured public memory geometry and preserve the documented input semantics.
 
