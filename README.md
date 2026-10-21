@@ -58,7 +58,8 @@ It produces four files:
 
 **To call it:** Load the generated PRG, include its matching
 `math_api.inc` in your assembly project, write operands to the exported
-math I/O locations, call `JSR MATH_<operation>`, and read the documented
+math I/O locations, call the selected entry (for example,
+`JSR MATH_UMUL16`), and read the documented
 result/Carry. Do **not** hardcode addresses from old releases.
 See [API instructions](docs/API_COMPATIBILITY.md).
 
