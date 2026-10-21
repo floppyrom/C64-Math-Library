@@ -3,9 +3,10 @@
 
 This module actually executes a source-assembled 6510 controller with $92
 REU SWAP, validates full zero-page restoration, nested-state rejection,
-and repeated multiplication batches. The lookup-table bytes in this test
-are extracted only from the frozen V3 reference PRG; independent table
-generation, native-VICE timings and stock builder integration remain TODO.
+and repeated multiplication batches. Lookup-table bytes are materialized from checksum-locked V3/V4 source tables;
+no historical PRG is needed to build or run the arithmetic fixture. A truly
+independent math-derived table generator, native-VICE timings and stock
+builder integration remain TODO.
 """
 from __future__ import annotations
 
@@ -17,12 +18,11 @@ import random
 
 from mini6502 import Assembler, CPU, load_sparse
 import reu_turbo16_fragment as fragment
+import reu_turbo16_source_tables as source_tables
 
 ROOT=Path(__file__).resolve().parents[1]
 CONTROLLER=Path("relocatable_source/turbo/turbo16_swap_controller.asm")
-FROZEN=Path("v3_reu_512k/resident/math_v3_reu_512k_game_math.prg")
-TABLE_OFFSETS=(0x1000,0x1200,0x1400,0x1600)
-SOURCE_TABLE_OFFSETS=(0x1000,0x1200,0x1400,0x1600)
+TABLE_OFFSETS=source_tables.OFFSETS
 N=122
 BANK_SIZE=65536
 
@@ -111,24 +111,20 @@ def assemble(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
     return manifest,parts,mem,{k:v for k,v in expected.items()}
 
 
-def historical_tables():
-    """Test-only 4x512 physical square-table planes from checksum-locked V3."""
-    raw=(ROOT/FROZEN).read_bytes()
-    refs={}
-    for line in (ROOT/"SHA256SUMS.txt").read_text("utf-8").splitlines():
-        if len(line)>=67 and line[64:66]=="  ":
-            refs[line[66:]]=line[:64]
-    if hashlib.sha256(raw).hexdigest()!=refs.get(str(FROZEN)):
-        raise SwapError("Historical V3 PRG hash changed")
-    load=raw[0]|raw[1]<<8
-    full=bytearray(65536)
-    full[load:load+len(raw)-2]=raw[2:]
-    data=tuple(bytes(full[0x6000+ofs:0x6000+ofs+512])
-               for ofs in SOURCE_TABLE_OFFSETS)
-    if not all(len(x)==512 and any(x) for x in data):
-        raise SwapError("Incomplete frozen V3 historical lookup table fixture")
-    return data
+def source_table_fixture():
+    """Read 4x512 table planes only from SHA-locked V3 AND V4 source.
 
+    Original reference PRGs are independently checked by the source-table
+    regression, not required for this REU executable demonstration.
+    """
+    manifest, pages = source_tables.materialize()
+    if manifest["total_bytes"] != 2048 or not manifest[
+        "byte_identical_v3_v4_source_tables"
+    ]:
+        raise SwapError("Incomplete or inconsistent Turbo16 source tables")
+    if tuple(pages) != source_tables.NAMES:
+        raise SwapError("Unexpected Turbo16 source table plane ordering")
+    return manifest, tuple(pages[name] for name in source_tables.NAMES)
 
 def cpu_model_proof(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
                     ctrl=0x3a00,state=0xc040,bank=4,reu_bytes=524288):
@@ -140,7 +136,8 @@ def cpu_model_proof(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
     ):
         blob=parts[filename]
         mem[addr:addr+len(blob)]=blob
-    for base,plane in zip(TABLE_OFFSETS,historical_tables()):
+    table_manifest, source_planes = source_table_fixture()
+    for base,plane in zip(TABLE_OFFSETS,source_planes):
         mem[table+base:table+base+512]=plane
     initial_zp=bytes(((i*73+19)&255 for i in range(N)))
     mem[zp:zp+N]=initial_zp
@@ -212,9 +209,12 @@ def cpu_model_proof(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
                             "reu_overlay_persisted_with_live_smc_operands":True,
                             "nested_begin_rejected":True})
     return {**manifest,"proof_status":"CPU_MODEL_FULL_ARITHMETIC_AND_DMA_SWAP_TWO_BATCHES",
-            "test_only_table_fixture":str(FROZEN),
-            "test_only_table_planes":4,
-            "test_only_table_bytes":2048,
+            "source_table_fixture":"sha256_locked_v3_and_v4_relocatable_asm",
+            "source_table_source_sha256":table_manifest["reference_sources_sha256"],
+            "source_table_plane_sha256":table_manifest["plane_sha256"],
+            "source_table_planes":len(source_planes),
+            "source_table_bytes":table_manifest["total_bytes"],
+            "frozen_prg_needed_for_arithmetic_test":False,
             "arithmetic_calls":sum(x["calls"] for x in batch_stats),
             "batch_evidence":batch_stats,
             "result_digest_sha256":dig.hexdigest()}
@@ -228,7 +228,7 @@ def main(argv=None):
         ap.exit(2,"REU DMA prototype: refusing to overwrite output\n")
     try:
         proof=cpu_model_proof()
-    except (SwapError,fragment.FragmentError,OSError,ValueError) as exc:
+    except (SwapError,fragment.FragmentError,source_tables.TableError,OSError,ValueError) as exc:
         ap.exit(2,"REU DMA prototype: "+str(exc)+"\n")
     args.out.mkdir(parents=True)
     (args.out/"turbo16_reu_swap_cpu_model.json").write_text(

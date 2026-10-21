@@ -3,6 +3,7 @@
 import unittest
 from unittest.mock import patch
 import reu_turbo16_swap_experiment as exp
+import reu_turbo16_source_tables as source_tables
 
 class Turbo16ModularSwapTests(unittest.TestCase):
     def test_default_and_relocated_dma_lifecycle_and_math(self):
@@ -11,6 +12,12 @@ class Turbo16ModularSwapTests(unittest.TestCase):
             with self.subTest(opts=opts):
                 d=exp.cpu_model_proof(**opts)
                 self.assertEqual(d["arithmetic_calls"],224)
+                self.assertEqual(d["source_table_planes"],4)
+                self.assertEqual(d["source_table_bytes"],2048)
+                self.assertFalse(d["frozen_prg_needed_for_arithmetic_test"])
+                self.assertEqual(set(d["source_table_plane_sha256"]),set(source_tables.NAMES))
+                self.assertEqual(set(d["source_table_source_sha256"]),
+                                 {x.as_posix() for x in source_tables.SOURCES})
                 self.assertEqual(d["proof_status"],
                                  "CPU_MODEL_FULL_ARITHMETIC_AND_DMA_SWAP_TWO_BATCHES")
                 self.assertFalse(d["native_vice_qualified"])
@@ -52,6 +59,19 @@ class Turbo16ModularSwapTests(unittest.TestCase):
             with self.assertRaisesRegex(exp.fragment.FragmentError,
                                         "tampered source"):
                 exp.assemble()
+
+    def test_source_tables_are_mandatory_and_fail_closed(self):
+        with patch.object(exp.source_tables, "materialize",
+                          side_effect=source_tables.TableError("tampered source")):
+            with self.assertRaisesRegex(source_tables.TableError, "tampered source"):
+                exp.cpu_model_proof()
+
+    def test_reu_hardware_tier_16_mib_remains_a_model_only_result(self):
+        d=exp.cpu_model_proof(bank=200,reu_bytes=16777216)
+        self.assertEqual(d["arithmetic_calls"],224)
+        self.assertEqual(d["reu_capacity_bytes"],16777216)
+        self.assertFalse(d["native_vice_qualified"])
+        self.assertFalse(d["source_linker_reu_variant_available"])
 
     def test_proof_replay_is_deterministic(self):
         left=exp.cpu_model_proof()
