@@ -1,5 +1,12 @@
 # Public routine sources
 
+> **User installation:** use `make builder-setup`, not a source from one
+> frozen V1–V5 resident directory. The source catalog and old profile mirrors
+> remain essential immutable provenance records; actual linker selections
+> and published implementations appear in the generated manifest.
+> [Start here](../QUICK_START.md).
+
+
 This directory is the public source index for the C64 Math Library.
 
 There are two source classes:
