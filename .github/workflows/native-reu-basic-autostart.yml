@@ -1,0 +1,69 @@
+name: Diagnostic native REU PAL BASIC-autostart without monitor PC injection
+on:
+  push:
+    branches: [engineering/reu-pal-basic-autostart-diagnostic-20261021]
+    paths:
+      - 'tools/native_reu_pal_irq_dma.py'
+      - '.github/workflows/native-reu-basic-autostart.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: reu-pal-basic-autostart-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  isolated-16m-basic-sys:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Prove tokenized BASIC bootstrap and assembler segment isolation
+        run: |
+          python3 -m py_compile tools/native_reu_pal_irq_dma.py
+          python3 -m unittest discover -s tools -p 'test_native_reu_pal_irq_dma.py' -v
+          python3 - <<'PY'
+          import sys
+          sys.path.insert(0,'tools')
+          import native_reu_pal_irq_dma as pal
+          import reu_turbo16_standalone_package as package
+          for tier,bank in ((512,4),(16384,200)):
+              manifest,_=package.build(tier,bank)
+              sparse,stop,seed=pal.assemble(manifest['public_exports'],0x8000,0xc040,
+                                            display=False,irq=True,code_base=0x0c00)
+              assert 0x0c00 in sparse and stop<pal.IRQ and len(seed)==122
+          print('PASS_BASIC_SYS_RELOCATION_ASSEMBLY')
+          PY
+      - name: Pinned VICE build prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build source-pinned VICE r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: First native process BASIC SYS boot with high-bank 16MiB IRQ
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_reu_pal_irq_dma.py \
+            --only-case reu_16384_display0_irq1 \
+            --launch-mode basic-autostart \
+            --out build/reu-pal-basic/first-cold-16m-highbank-irq.json
+          python3 tools/native_reu_pal_irq_dma.py \
+            --only-case reu_512_display0_irq1 \
+            --launch-mode basic-autostart \
+            --out build/reu-pal-basic/512-irq-autostart.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: diagnostic-basic-autostart-no-monitor-pc
+          path: build/reu-pal-basic/
+          retention-days: 14
