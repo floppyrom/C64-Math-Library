@@ -1,0 +1,48 @@
+name: Native PAL consecutive math reserve sensitivity with raster IRQ and SID writes
+on:
+  pull_request:
+    paths:
+      - 'tools/native_pal_consecutive_busiest.py'
+      - 'tools/native_pal_consecutive_reserve.py'
+      - 'tools/test_native_pal_consecutive_reserve.py'
+      - '.github/workflows/native-pal-consecutive-reserve.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reserve-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 105
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact original 24-call math source plus calibrated extra CPU NOPs
+        run: |
+          python3 -m compileall -q tools/native_pal_consecutive_busiest.py tools/native_pal_consecutive_reserve.py tools/test_native_pal_consecutive_reserve.py
+          python3 -m unittest discover -s tools -p 'test_native_pal_consecutive_busiest.py' -v
+          python3 -m unittest discover -s tools -p 'test_native_pal_consecutive_reserve.py' -v
+      - name: Install pinned VICE compilation dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned native PAL x64sc r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Measure consecutive-frame native PAL misses against graduated nonmath CPU work
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_pal_consecutive_reserve.py --reserves 0,256,512,768,1024,1536,2048 --out build/pal-consecutive/nonmath-reserve-24frame.json
+      - name: Publish synthetic CPU reserve versus actual native PAL deadline evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-pal-consecutive-nonmath-reserve
+          path: build/pal-consecutive/nonmath-reserve-24frame.json
+          if-no-files-found: error
+          retention-days: 14
