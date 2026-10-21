@@ -1,5 +1,7 @@
 # Benchmarks — operation-first system
 
+**Per-routine and per-variant numeric reference:** [all 56 operations: cycles, code+tables, total RAM, ZP, persistent stack](../docs/OPERATION_FIRST_ROUTINE_METRICS.md), with [the full measured-source variant CSV](OPERATION_FIRST_VARIANT_METRICS.csv) and [machine-readable corpus/provenance manifest](../validation/OPERATION_FIRST_VARIANT_METRICS.json). These are generated from the operation-first builder and should never be confused with V1–V5 rows.
+
 **Current chart and measurement interpretation:** [Performance — operation-first](../PERFORMANCE.md). It compares actual source-linked **whole-library plans**, RAM/ZP budgets and matched trace outcomes, not profile columns. Individual source variant CPU-model means for a chosen operation are **recomputed by the normal speed installer** and published in `selective_manifest.json` with the original corpus hash; see [operation-first setup](../docs/OPERATION_FIRST_USER_SETUP.md).
 
 ## Preserved historical data (not current installation choices)

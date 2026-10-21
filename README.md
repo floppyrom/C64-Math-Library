@@ -63,6 +63,10 @@ make builder-list
 No `--profile` switch is used in the supported installer. The
 old reference-source targets are kept only for reproducibility and tests.
 
+## Check each routine's cycles and memory
+
+Use the [operation-first routine metric table](docs/OPERATION_FIRST_ROUTINE_METRICS.md) for **all 56 APIs**: measured per-call CPU cycles, code/tables, total isolated RAM, ZP and persistent stack-page reservation. The [complete variant CSV](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv) lists each independently linkable source alternative, with corpus/source hashes and scratch/state footprint. These reference rows are individual one-operation builds; **your combined project's exact memory consumption** is in its generated `selective_manifest.json`, not the sum of table rows. Transient CPU stack high-water is not measured and is distinct from persistent stack-page reservation.
+
 ## Choose according to your application
 
 | Objective | What it optimizes | What it does **not** promise |
