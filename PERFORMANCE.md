@@ -1,5 +1,15 @@
 # Performance
 
+> **Current installer (October 2026):** V1–V5 are *archived benchmark and
+> compatibility baselines*, not installation choices. The supported
+> operation-first build selects source-qualified variants for the user's
+> exact operation set, RAM/ZP constraints and workload weights. Figures below
+> describe fixed *historical resident* binaries; they are not guaranteed
+> cycle totals or automatically preferred variants of every generated PRG.
+> Use [the setup guide](docs/OPERATION_FIRST_USER_SETUP.md), the generated
+> `selective_manifest.json`, and the [retirement evidence boundary](docs/PROFILE_RETIREMENT_EVIDENCE.md).
+
+
 This is the quickest way to answer **“how fast is it?”** for the current C64 Math Library. All figures below are cycles measured at the public entry through `RTS`; caller `JSR` and input stores are excluded unless a row explicitly says otherwise.
 
 The five fixed profiles use different memory/ZP trade-offs, so the fastest number is not automatically the best choice for every program. For exact code size, ZP ranges, stack reservation, corpus and a direct source link for every row, use [`docs/CONSOLIDATED_ROUTINE_TABLE.md`](docs/CONSOLIDATED_ROUTINE_TABLE.md) or [`benchmarks/PUBLIC_PROFILE_RESULTS.csv`](benchmarks/PUBLIC_PROFILE_RESULTS.csv). For a one-row-per-routine view that automatically selects the fastest shipped profile, use [`benchmarks/BEST_PROFILE_RESULTS.csv`](benchmarks/BEST_PROFILE_RESULTS.csv).
