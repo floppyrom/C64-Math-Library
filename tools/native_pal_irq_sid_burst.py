@@ -174,6 +174,16 @@ def run(vice: str, *, frames=FRAME_SET, lines=LINES, plans=PLANS):
         for i,plan in enumerate(plans):
             folder=root/plan
             image,entries,proof=installed.build_one(plan,report,folder)
+            if i==0:
+                # Confirm that the unchanged official native harness and
+                # source-linked image still reach the monitor breakpoint.
+                smoke=cia.run_one(
+                    vice,image,entries,folder,plan+"_unmodified_smoke",18299,
+                    display=False,frame=8)
+                if smoke["source_linked_calls"]!=24:
+                    raise AssertionError("Unmodified PAL harness smoke trace drifted")
+                print("NATIVE PAL BASELINE SMOKE PASS",smoke["measured_cia_phi2_slots"],
+                      flush=True)
             for frame in frames:
                 for display in (False,True):
                     for armed in (False,True):
@@ -182,11 +192,19 @@ def run(vice: str, *, frames=FRAME_SET, lines=LINES, plans=PLANS):
                             def run_harness(e, *, frame, display):
                                 return irq_harness(e,frame=frame,display=display,
                                                    irq_enabled=armed,raster_line=line)
-                            with patch.object(cia,"harness",side_effect=run_harness):
-                                sample=cia.run_one(
-                                    vice,image,entries,folder,tag,
-                                    18300+i*100+frame*4+int(display)*2+int(armed),
-                                    display=display,frame=frame)
+                            try:
+                                with patch.object(cia,"harness",side_effect=run_harness):
+                                    sample=cia.run_one(
+                                        vice,image,entries,folder,tag,
+                                        18300+i*100+frame*4+int(display)*2+int(armed),
+                                        display=display,frame=frame)
+                            except Exception as error:
+                                log_path=folder/(tag+".log")
+                                diagnostic=(log_path.read_text(errors="replace")[-4000:]
+                                            if log_path.is_file() else "no native x64sc log")
+                                raise RuntimeError(
+                                    "Native IRQ/SID harness failed for "+tag+
+                                    "; vice log tail: "+diagnostic) from error
                             sample["plan"]=plan
                             sample["qualified_prg_sha256"]=proof["linked_prg_sha256"]
                             sample["raster_irq_enabled"]=armed
