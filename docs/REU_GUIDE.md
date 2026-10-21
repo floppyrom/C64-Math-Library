@@ -1,5 +1,13 @@
 # REU guide — V3 and V4
 
+> **Archived REU-service manual.** The stock C64 default is now the
+> [operation-first installer](OPERATION_FIRST_USER_SETUP.md). V3/V4 REU
+> Turbo/QS16 residents below remain separate [checksum-locked compatibility
+> bundles](REU_COMPAT_EXPORT.md), not variants selectable in a mixed
+> operation-first PRG. Never merge the resident ABI or exclusive overlay ZP
+> lifetimes with a selective-library build.
+
+
 ## REU is DMA memory, not directly executable RAM
 
 The 6510 cannot fetch instructions directly from REU memory. Code overlays must be transferred to C64-visible RAM/ZP first. This is why the library does not simply store every Extreme routine in the REU.
