@@ -28,7 +28,9 @@ arithmetic kernels or original 150 calls/300 output+carry oracle bytes.
   at $D800 (64/128/192/256 real character cell stores and
   32/64/96/128 colour stores per work item). At completion an on-6510 oracle
   checks the first, last, and final-row screen/colour cells against the
-  deterministic frame-23 pattern. A failed SID or screen check increments
+  deterministic frame-23 pattern (the completed-job counter is 24 and is
+  decremented before the last-frame witness comparison). A failed SID or
+  screen check increments
   the existing error counter and fails native qualification.
 * Original per-frame source-linked staged operands, public JSR bytes,
   captured Q/R/C outputs, 24 distinct frame call counts, source PRG hashes
