@@ -41,7 +41,10 @@ class UnifiedREUError(ValueError):
 def qualified_hardware(config):
     if config.get("target")!="c64":
         raise UnifiedREUError("REU modules require C64 target")
-    r=config.get("hardware",{}).get("reu")
+    hardware=config.get("hardware")
+    if not isinstance(hardware,dict):
+        raise UnifiedREUError("Hardware selection must be an object")
+    r=hardware.get("reu")
     if (not isinstance(r,dict) or len(r)!=1 or
         next(iter(r),None) not in SERVICES or
         set(config["hardware"])!={"reu"}):
@@ -81,10 +84,31 @@ def _mapped_stock_memory(config,name):
     zpreserved=memory.setdefault("zp_reserved",[])
     if not isinstance(reserved,list) or not isinstance(zpreserved,list):
         raise UnifiedREUError("Memory reservations must be arrays")
-    reserved_names={"__reu_service_prg","__reu_service_io","__reu_service_scratch"}
+    reserved_names={"__reu_service_prg","__reu_service_io","__reu_service_scratch",
+                    "__reu_service_zp"}
     if any(not isinstance(x,dict) or x.get("name") in reserved_names
            for x in reserved+zpreserved):
         raise UnifiedREUError("Invalid or duplicate REU memory reservation")
+    def span(entry,label,upper):
+        try:
+            lo,hi=(int(entry[k][1:],16) for k in ("start","end"))
+        except (KeyError,TypeError,ValueError,AttributeError) as exc:
+            raise UnifiedREUError("Invalid "+label+" reservation") from exc
+        if not 0<=lo<=hi<=upper:
+            raise UnifiedREUError("Out-of-range "+label+" reservation")
+        return lo,hi
+    reserved_ram=[(0x3000,0x77ff),(0xc000,0xc01f)]
+    if name=="qs16":
+        reserved_ram.append((0xc020,0xc023))
+    reserved_zp=[spec["zp"]]
+    for label,existing,owned,upper in (
+        ("RAM",reserved,reserved_ram,0xffff),
+        ("ZP",zpreserved,reserved_zp,0xff),
+    ):
+        for entry in existing:
+            lo,hi=span(entry,label,upper)
+            if any(lo<=top and bottom<=hi for bottom,top in owned):
+                raise UnifiedREUError("Existing "+label+" owner collides with "+name+" REU")
     reserved += [
         {"name":"__reu_service_prg","start":"$3000","end":"$77FF"},
         {"name":"__reu_service_io","start":"$C000","end":"$C01F"},
