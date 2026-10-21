@@ -154,13 +154,13 @@ def monitor(sock, line, needle):
             if not block:break
             data+=block
             if needle.encode() in data and data.endswith(b") "):
-                return
+                return data
         except socket.timeout:
             continue
     raise RuntimeError(("Native PAL REU VICE monitor failed",line,data[-1200:]))
 
 
-def native_case(exe, work, tag, tier, bank, display, irq, port):
+def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=False):
     work.mkdir()
     conf={
         "target":"c64","operations":["UMUL16"],"objective":"size",
@@ -213,7 +213,16 @@ def native_case(exe, work, tag, tier, bank, display, irq, port):
                 try:
                     monitor(sock,'load "'+str(image)+'" 0',"Loading")
                     monitor(sock,"break "+format(stop,"04x"),"BREAK:")
-                    monitor(sock,"g "+format(HARNESS,"04x"),"Stop on  exec")
+                    if trace_irq:
+                        monitor(sock,"break "+format(IRQ,"04x"),"BREAK:")
+                    hit=monitor(sock,"g "+format(HARNESS,"04x"),"Stop on  exec")
+                    if trace_irq:
+                        print("TRACE_NATIVE_IRQ_BREAKPOINT",tag,
+                              hit[-1000:].decode(errors="replace"),flush=True)
+                        sock.sendall(b"quit\n")
+                        return {"case":tag,"status":"IRQ_ENTRY_MONITOR_TRACE_ONLY",
+                                "trace_monitor_output":hit[-1000:].decode(errors="replace"),
+                                "full_batch_qualified":False}
                     monitor(sock,'bsave "'+str(dumped)+'" 0 1a00 1ab9',"Saving")
                     sock.sendall(b"quit\n")
                 except Exception as exc:
@@ -301,6 +310,8 @@ def summarize(rows):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--out",type=Path,required=True)
+    p.add_argument("--trace-irq-entry",action="store_true",
+                   help="Stop at first real IRQ handler entry; diagnostic only")
     p.add_argument("--only-case",choices=(
         "reu_512_display0_irq0","reu_512_display0_irq1",
         "reu_512_display1_irq0","reu_512_display1_irq1",
@@ -308,6 +319,8 @@ def main():
         "reu_16384_display1_irq0","reu_16384_display1_irq1"),
         help="Diagnostic single hardware case; does not provide qualification")
     args=p.parse_args()
+    if args.trace_irq_entry and args.only_case is None:
+        p.error("--trace-irq-entry requires --only-case")
     exe=os.environ.get("VICE_WRAPPER")
     if not exe or not Path(exe).is_file():
         raise RuntimeError("Pinned VICE x64sc required for native PAL REU timing")
@@ -322,14 +335,16 @@ def main():
                     if args.only_case is not None and tag!=args.only_case:
                         index+=1
                         continue
-                    row=native_case(exe,root/tag,tag,tier,bank,display,armed,9910+index)
+                    row=native_case(exe,root/tag,tag,tier,bank,display,armed,9910+index,
+                                    trace_irq=args.trace_irq_entry)
                     rows.append(row)
                     index+=1
                     print(tag,row["native_cia_phi2_slots"],
                           "irq",row["raster_interrupts_serviced"],flush=True)
     report={
         "schema":"source-linked-native-pal-reu-vic-irq-cia-bounded-probe-v1",
-        "status":("DIAGNOSTIC_SINGLE_CASE_NOT_QUALIFIED" if args.only_case is not None
+        "status":("DIAGNOSTIC_IRQ_ENTRY_NOT_QUALIFIED" if args.trace_irq_entry
+                  else "DIAGNOSTIC_SINGLE_CASE_NOT_QUALIFIED" if args.only_case is not None
                   else "PASS_NATIVE_PAL_REU_IRQ_SID_CIA_BOUNDED_PROBE"),
         "real_vice_reu_dma_timing_included":True,
         "real_vic_screen_contention_included":True,
