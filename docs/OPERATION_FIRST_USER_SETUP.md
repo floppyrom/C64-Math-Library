@@ -114,6 +114,17 @@ python3 tools/math_builder.py --config project-math.json --measure
 The generated include is essential: public entry addresses can move
 when another operation or a different optimization goal is selected.
 
+## Experimental REU Turbo16 add-on
+
+An explicitly requested `--reu-turbo16 --reu-kib 512` (or `16384`)
+option builds a **separate, independently loadable Turbo16 REU service**
+alongside the selected stock library. It retains the normal UMUL16
+fallback and globally reserves the entire REU PRG RAM envelope,
+122-byte executable ZP, public I/O and REU bank before selecting stock
+implementations. Both allocations count toward the user's budgets.
+See [the exact physical contract and dual-PRG build instructions](OPERATION_FIRST_REU_TURBO16.md).
+This does not certify concurrent IRQ/VIC overlay use or DMA timings.
+
 ## Scope and limitations
 
 The source-qualified operation-first stock-C64 linker covers all 56 public
