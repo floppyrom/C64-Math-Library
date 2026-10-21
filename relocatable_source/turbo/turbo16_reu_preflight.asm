@@ -38,7 +38,9 @@ T16_CHECK_READY:
         jsr T16_ONE_BYTE
         lda T16_PROBE
         cmp #$6b
-        bne T16_INSTALL_BAD
+        beq T16_INSTALL_ALIAS_TEST
+        jmp T16_INSTALL_BAD
+T16_INSTALL_ALIAS_TEST:
         ; 16MiB bank numbering can alias on a physically smaller REU.
         ; Caller reserves the lower mirror location before permitting probe.
         lda #REU_HIGH_BANK
