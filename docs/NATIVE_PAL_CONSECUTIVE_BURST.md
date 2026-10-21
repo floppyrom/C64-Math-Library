@@ -1,4 +1,4 @@
-# Native repeated PAL busiest-frame stress — 24 successive raster periods
+# Native repeated PAL busiest-frame stress — 24 raster-zero-scheduled repetitions
 
 Merged #363 measured *one independently raster-aligned math burst per native
 x64sc startup* with a real VIC-II raster IRQ on line 90 and four SID register
@@ -8,7 +8,7 @@ writes. The signed-only D65536 installed source's busiest burst required
 PAL frame to the next.
 
 `tools/native_pal_consecutive_busiest.py` now runs a distinct experimental
-**24-consecutive-raster-period stress loop inside one x64sc process**.
+**24 raster-zero-scheduled repeated work items inside one x64sc process**.
 The workload is the exact original source-linked **frame 8**, all 24
 public calls, repeated 24 times rather than the original varying 24-frame
 corpus. Three ordinary installer PRGs compete: stock V2, both signed and
@@ -16,7 +16,7 @@ unsigned D65536, and the signed-only D65536 winner.
 
 - Compile the identical frame-8 public operand writes and 24 original JSRs
   *once* into RAM at `$8000`. A separate `$7000` driver calls them on
-  24 successive PAL raster-zero transitions, with a real RAM IRQ at
+  24 raster-zero opportunities, counting skipped physical PAL periods, with a real RAM IRQ at
   `$7E00` and `$D019` acknowledgement on raster line 90.
 - Keep cascaded CIA1 A/B **running continuously**, starting only at the first
   scheduled raster-zero transition. Record the actual 32-bit timer counters
@@ -24,8 +24,10 @@ unsigned D65536, and the signed-only D65536 winner.
   boundary or busy-frame backlog shows up in cumulative deadlines
   `19,656 × (frame index + 1)`.
 - Execute the real IRQ's A/X/Y preservation and four SID voice/control/
-  volume register stores on each raster event. Confirm exactly **24
-  serviced IRQs**, not merely a mask bit or a simulated elapsed reserve.
+  volume register stores on each raster event. Record the actual IRQ count rather than falsely requiring 24: 
+  **47 raster IRQs for 24 work items**, for instance, indicates a heavy
+  trace missed raster-zero opportunities. Such extra IRQs must not be
+  mistaken for an arithmetic failure.
 - Verify **every one** of the 24 × 48 live public output/carry bytes against
   its original oracle by executing a 6510 comparison loop *every frame*,
   recording an explicit mismatch counter; the final 48-byte output snapshot
@@ -55,3 +57,11 @@ must never be presented as consecutive real-frame measurements.
 
 Historical V1–V5 profiles, the original V2/compact alternatives, stock
 operation-first selection, and REU/Turbo/QS16 images remain unchanged.
+
+**Native qualification finding during the initial run:** Stock V2's
+visible-disabled control executed 24 repeated math work items, but the CPU
+serviced **47 real raster IRQs**. The initial test correctly caught this
+but mistakenly asserted it was invalid. The revised verifier separates
+*raster events* from *completed work items* and records all cumulative CIA
+deadline misses. The isolated static workflow still must be rerun on the
+revised head before claiming a complete native result for all source plans.
