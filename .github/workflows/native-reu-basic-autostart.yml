@@ -4,6 +4,7 @@ on:
     branches: [engineering/reu-pal-basic-autostart-diagnostic-20261021]
     paths:
       - 'tools/native_reu_pal_irq_dma.py'
+      - 'tools/test_native_reu_pal_irq_dma.py'
       - '.github/workflows/native-reu-basic-autostart.yml'
   workflow_dispatch:
 permissions:
@@ -15,6 +16,10 @@ jobs:
   isolated-16m-basic-sys:
     runs-on: ubuntu-24.04
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        independent_cold_runner: [1, 2, 3]
     env:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:
@@ -61,9 +66,26 @@ jobs:
             --only-case reu_512_display0_irq1 \
             --launch-mode basic-autostart \
             --out build/reu-pal-basic/512-irq-autostart.json
+          python3 tools/native_reu_pal_irq_dma.py \
+            --launch-mode basic-autostart --basic-matrix \
+            --out build/reu-pal-basic/complete-experimental-eight-case-matrix.json
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          path=Path("build/reu-pal-basic/complete-experimental-eight-case-matrix.json")
+          doc=json.loads(path.read_text())
+          assert doc["status"]=="PASS_EXPERIMENTAL_BASIC_AUTOSTART_8_CASES_NOT_RELEASE_QUALIFIED"
+          assert doc["experimental_basic_matrix_not_main_release_gate"]
+          assert not doc["vice_warp_enabled"]
+          assert doc["emulator_launch_mode"]=="basic-autostart"
+          assert len(doc["results"])==8
+          assert all(r["caller_zero_page_restored"] and r["stock_fallback_still_correct"]
+                     for r in doc["results"])
+          print("PASS_COLD_EXPERIMENTAL_BASIC_BOOT_FULL_EIGHT_CASES_NOT_RELEASE")
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: diagnostic-basic-autostart-no-monitor-pc
+          name: diagnostic-basic-autostart-cold-runner-${{ matrix.independent_cold_runner }}
           path: build/reu-pal-basic/
           retention-days: 14
