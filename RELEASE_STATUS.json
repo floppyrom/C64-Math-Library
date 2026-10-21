@@ -1,4 +1,38 @@
 {
+
+  "operation_first_installer_cutover_2026_10_21": {
+    "status": "COMPLETE_STOCK_C64_USER_CONFIGURATION_CUTOVER",
+    "installation_method": "make builder-setup or tools/configure_math.py",
+    "historical_profiles_user_selectable": false,
+    "stock_public_operations": 56,
+    "optimization_objectives": [
+      "balanced",
+      "speed",
+      "size",
+      "zp"
+    ],
+    "profile_ux_retirement": "complete",
+    "stronger_full_historical_binary_elimination": false,
+    "historical_frozen_profiles_preserved": true,
+    "historical_performance_parity_all_donors_certified": false,
+    "reu_turbo_qs16_backend": "separate_legacy_compatibility_whole_resident_only",
+    "drives_1541_1571_1581_selective_backend": "not_implemented",
+    "installer_acceptance_prs": {
+      "guided_setup": 370,
+      "four_objective_release": 372
+    },
+    "test_requirements": [
+      "all_56_selective_operations",
+      "build_reproducibility",
+      "ram_zp_and_memory_reservations",
+      "historical_binary_regressions"
+    ],
+    "external_application_pal_stress_required_for_installer": false,
+    "public_numbered_release_created_by_cutover": false,
+    "readme": "README.md",
+    "quick_start": "QUICK_START.md",
+    "documentation": "docs/OPERATION_FIRST_USER_SETUP.md"
+  },
   "issue144_versioned_source_distribution_2026_10_16": {
     "status": "SOURCE_CANDIDATE_DISTRIBUTION_CI_UNQUALIFIED_PENDING",
     "description": "immutable new 10 PRGs / 4 REU dual map candidate ZIP with verified 56-entry source ABI and same-root corpus",
