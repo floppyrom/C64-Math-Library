@@ -1,3 +1,10 @@
+> **ARCHIVED RESIDENT — not the current installation path (2026-10-21).**
+> This folder preserves the exact historical **V2 Pareto-Fast** release for source,
+> benchmark and regression reproducibility. New stock-C64 projects should
+> choose their own operations and budgets using
+> [`make builder-setup`](../QUICK_START.md), not a fixed V1–V5 profile.
+> Historical entry addresses, code placement and tuning describe only this frozen resident.
+
 # v2_pareto_fast — Pareto-fast stock C64
 
 Faster stock profile; call MATH_INIT once.
