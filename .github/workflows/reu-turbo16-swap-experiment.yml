@@ -1,0 +1,39 @@
+name: Turbo16 source-backed REU DMA SWAP experiment
+on:
+  pull_request:
+    paths:
+      - 'relocatable_source/turbo/turbo16_swap_controller.asm'
+      - 'tools/reu_turbo16_swap_experiment.py'
+      - 'tools/test_reu_turbo16_swap_experiment.py'
+      - 'docs/TURBO16_REU_SWAP_EXPERIMENT.md'
+      - '.github/workflows/reu-turbo16-swap-experiment.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  two-batch-dma-cpu-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Execute source-built 6510 REU SWAP with two complete arithmetic batches
+        run: python3 -m unittest discover -s tools -p 'test_reu_turbo16_swap_experiment.py' -v
+      - name: Emit CPU-model proof but not native hardware certificate
+        run: |
+          python3 tools/reu_turbo16_swap_experiment.py --out build/reu-swap-experiment
+          python3 -c 'import json,pathlib; x=json.loads(pathlib.Path("build/reu-swap-experiment/turbo16_reu_swap_cpu_model.json").read_text()); assert x["arithmetic_calls"]==224 and not x["native_vice_qualified"] and not x["source_linker_reu_variant_available"]'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: turbo16-source-dma-swap-cpu-model-not-native-reu
+          path: build/reu-swap-experiment/
+          retention-days: 14
+      - name: Verify immutable historical source and package checksum
+        run: |
+          rm -rf build/reu-swap-experiment
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
