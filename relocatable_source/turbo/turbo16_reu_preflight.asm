@@ -22,6 +22,10 @@ T16_CHECK_READY:
         beq T16_INSTALL_FAIL
         php
         sei
+        txa
+        pha
+        tya
+        pha
         lda #$00
         sta $DF09
         sta $DF0A
@@ -41,13 +45,16 @@ T16_CHECK_READY:
         beq T16_INSTALL_ALIAS_TEST
         jmp T16_INSTALL_BAD
 T16_INSTALL_ALIAS_TEST:
-        ; 16MiB bank numbering can alias on a physically smaller REU.
-        ; Caller reserves the lower mirror location before permitting probe.
-        lda #REU_HIGH_BANK
+        ; Detect mirroring at each smaller power-of-two REU capacity,
+        ; not only 512KiB. Only distinct lower-bank probe locations
+        ; declared owned by the package are touched.
+        ldy #$00
+T16_ALIAS_NEXT:
+        cpy #T16_ALIAS_COUNT
         beq T16_INSTALL_UPLOAD
         lda #$a5
         sta T16_PROBE
-        ldx #REU_ALIAS_BANK
+        ldx T16_ALIAS_BANKS,y
         lda #$90
         jsr T16_ONE_BYTE
         lda #$24
@@ -57,7 +64,11 @@ T16_INSTALL_ALIAS_TEST:
         jsr T16_ONE_BYTE
         lda T16_PROBE
         cmp #$6b
-        bne T16_INSTALL_BAD
+        beq T16_ALIAS_OK
+        jmp T16_INSTALL_BAD
+T16_ALIAS_OK:
+        iny
+        bne T16_ALIAS_NEXT
 T16_INSTALL_UPLOAD:
         lda #<T16_OVERLAY_STAGE
         sta $DF02
@@ -78,10 +89,18 @@ T16_INSTALL_UPLOAD:
         sta $DF01
         lda #$01
         sta T16_READY
+        pla
+        tay
+        pla
+        tax
         plp
         clc
         rts
 T16_INSTALL_BAD:
+        pla
+        tay
+        pla
+        tax
         plp
         sec
         rts
@@ -124,3 +143,7 @@ T16_REU_END:
 T16_PUBLIC_REJECT:
         sec
         rts
+
+; Bank aliases to exclude before trusting physical high-bank addressing.
+T16_ALIAS_BANKS:
+        !byte T16_ALIAS_BYTES
