@@ -1,0 +1,39 @@
+name: Primary installer and archived profile boundary
+on:
+  pull_request:
+    paths:
+      - 'README.md'
+      - 'QUICK_START.md'
+      - 'USER_MANUAL.md'
+      - 'Makefile'
+      - 'RELEASE_STATUS.json'
+      - 'docs/PROFILE_RETIREMENT_PLAN.md'
+      - 'docs/PROFILE_RETIREMENT_EVIDENCE.md'
+      - 'docs/API_COMPATIBILITY.md'
+      - 'tools/test_primary_installer_cutover.py'
+      - '.github/workflows/primary-installer-cutover.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  primary-stock-c64:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Enforce operation-first as the only new-project Makefile path
+        run: |
+          python3 -m unittest discover -s tools -p 'test_primary_installer_cutover.py' -v
+      - name: Validate real user-selected library remains usable
+        run: |
+          python3 -m unittest discover -s tools -p 'test_user_builder_release.py' -v
+          python3 -m unittest discover -s tools -p 'test_configure_math.py' -v
+      - name: Check archive boundary and package integrity
+        run: |
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
