@@ -1,0 +1,47 @@
+name: Source-built QS16 native REU DMA and table preflight
+on:
+  pull_request:
+    paths:
+      - 'tools/reu_qs16_standalone_package.py'
+      - 'tools/native_reu_qs16_standalone.py'
+      - 'relocatable_source/turbo/qs16_reu_table_generator.asm'
+      - '.github/workflows/reu-qs16-native-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-16m-and-absent-alias:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate independently generated QS16 table and source package
+        run: |
+          python3 -m unittest discover -s tools -p 'test_reu_qs16_standalone_package.py' -v
+      - name: Install pinned VICE headless dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build VICE x64sc r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Test physical DMA table install, batches, missing and mirrored REU
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_reu_qs16_standalone.py --out build/reu-native/qs16-preflight.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: qs16-source-built-native-reu-preflight
+          path: build/reu-native/qs16-preflight.json
+          retention-days: 14
