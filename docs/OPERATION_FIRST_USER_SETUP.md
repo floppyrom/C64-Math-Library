@@ -1,5 +1,12 @@
 # Operation-first C64 Math Library: configure once, build to your budget
 
+> **Current primary user interface:** the operation-first builder is the
+> sole supported stock-C64 installation path. V1–V5 are archived for
+> reproduction and separate REU compatibility, not selectable installer
+> profiles. All 56 public operations, four objectives and custom budgets
+> passed release acceptance; see [the acceptance matrix](BUILDER_RELEASE_ACCEPTANCE.md).
+
+
 This is the **normal installation path**. Do not choose V1, V2, V3, V4 or V5
 first. Those releases, historical kernels and REU compatibility packages
 remain as source/performance references, but are not the configuration UI.
