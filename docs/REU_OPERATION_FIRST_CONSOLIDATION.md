@@ -96,3 +96,62 @@ This source qualification is deliberately a **staging deliverable**, not a
 completed REU consolidation. Once every gate above passes, normal users
 should never need `tools/export_reu_compat.py`; the immutable exporter
 may remain in the repository for regression reproduction only.
+
+## Unified operation-first setup (staged in PR #392)
+
+The same configuration command now accepts **one** of
+`--reu-turbo16`, `--reu-turbo32`, or `--reu-qs16`.
+These are opt-in hardware modules: the corresponding normal stock
+multiply is always selected as fallback and the generated project
+includes two separate loadable PRGs, not a monolithic historical resident.
+
+**Turbo32 (512KiB or 16MiB):**
+
+```sh
+python3 tools/configure_math.py --operation UMUL32 \
+  --objective size --ram-budget 30000 --zp-budget 210 \
+  --reu-turbo32 --reu-kib 512 \
+  --config-out reu32.json --build-dir build_reu32
+```
+
+**QS16 (16MiB only):**
+
+```sh
+python3 tools/configure_math.py --operation UMUL16 \
+  --objective size --ram-budget 30000 --zp-budget 210 \
+  --reu-qs16 --reu-kib 16384 \
+  --config-out qs16.json --build-dir build_qs16
+```
+
+**Generated outputs** for service `NAME`: `math_selective.prg`,
+`math_api.inc`, `selective_manifest.json`,
+`NAME_reu.prg`, `NAME_reu_manifest.json`,
+`math_reu_NAME.inc`, and `math_project_manifest.json`.
+
+The last manifest records the **sum of physical RAM and ZP ownership**,
+not a misleading sum of isolated reference table rows. User-specified
+RAM/ZP reservations and reserved REU banks are rejected if they collide
+with the selected hardware service. Saved configurations rebuild with the
+same hardware option; no historical `--profile` is permitted.
+
+The separate REU module must be installed and hardware-checked at runtime
+before calling its guarded BEGIN/CALL/END. If INSTALL fails, call the
+stock `MATH_UMUL16` or `MATH_UMUL32` instead. Never call the normal math
+library, an IRQ handler or user routines that touch the REU overlay ZP
+**inside** an active batch. The service may use self-modifying executable
+zero page and has distinct public operand/output locations.
+
+**One REU service per configuration is a deliberate safety boundary.**
+Multi-service concurrent residency and IRQ/VIC/SID real-time coexistence
+are *not qualified* and must not be inferred from passing isolated DMA
+or arithmetic tests. A native Turbo32 certificate and full QS16 native
+hardware test, package checksum closure and merged exact-head CI are
+the gates before regarding these new flags as released.
+
+## Historical data retention
+
+Keep the reference V1–V5 source and REU images as immutable test oracles,
+not as a user configuration format. Once each operation-first service
+has passed the gates above, `tools/export_reu_compat.py` can remain
+strictly a reproducibility tool, with no instruction requiring it for
+new supported applications.
