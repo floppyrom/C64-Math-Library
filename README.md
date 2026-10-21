@@ -327,6 +327,42 @@ div_u32_u16_u32_16
 
 Every callable fixed-profile entry has an exact source mirror under `<profile>/standalone/`. Independently benchmarked alternatives live under `routines/`. The complete source index is [`routines/SOURCE_CATALOG.csv`](routines/SOURCE_CATALOG.csv).
 
+## Configure your own math library (recommended)
+
+The simplest starting point is the **guided operation-first setup**, with no
+historical V1-V5 profile selection:
+
+```sh
+make builder-setup
+```
+
+Select your operations, optimize for **balanced**, **speed**, **size**, or
+**minimum ZP**, and set your project's available zero-page and total RAM
+budgets. For speed, supply expected positive call counts for **every**
+selected operation; the builder will not invent equal-frequency workloads.
+
+After validating the complete source-linked layout, this produces
+`my_math.json` (editable, reusable configuration) and
+`build_my_math/math_selective.prg`, `math_api.inc`, and
+`selective_manifest.json` (exact source/ABI/resource proof).
+Existing paths are never overwritten. In a script or CI, use the same
+front-end noninteractively:
+
+```sh
+python3 tools/configure_math.py --operation UMUL16 --operation UDIV16 \
+  --objective size --zp-budget 0 --ram-budget 4096 \
+  --config-out project-math.json --build-dir build_project_math
+# Rebuild later after editing project-math.json:
+make builder CONFIG=project-math.json OUT=build_rebuild
+```
+
+The optional `--memory-config memory.json` flag imports the linker's
+custom memory layout and game-reserved RAM/ZP ranges. All sources,
+relocations, resource limits, and memory collisions are checked **before**
+configuration and binaries are committed to disk. Advanced developers can
+pin certified variants via `--pin UMUL16=link:variant`. For complete
+instructions see [one-command setup](docs/OPERATION_FIRST_USER_SETUP.md).
+
 ## Build
 
 **Default: operation-first.** Run `make builder` or `make builder CONFIG=your-operations.json`.
