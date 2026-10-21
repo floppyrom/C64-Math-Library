@@ -59,12 +59,14 @@ results were **6,408** PHI2 slots with display disabled and no IRQ,
 **6,491** with an IRQ, **6,751–6,752** with the display enabled and no IRQ,
 and **6,834–6,835** with both display and IRQ enabled.
 
-The monitor is started using an address-free `g` command. Its PC is set
-and read back **before** completion breakpoints are installed to avoid
-known VICE monitor/IRQ interaction hazards, including the continuing
-[VICE #2024 issue](https://sourceforge.net/p/vice-emu/bugs/2024/).
-The reorder is an additional test-hardening change and must pass its
-own exact-head native qualification before this PR can merge.
+The monitor uses an address-free `g` rather than `g <address>`,
+because the latter is implicated in
+[VICE monitor bug #2024](https://sourceforge.net/p/vice-emu/bugs/2024/).
+The experimental alternative of setting PC **before** the breakpoints
+failed the cold 16 MiB IRQ test despite normal-speed emulation. It was
+reverted to the previously passing source to avoid claiming an unproved
+fix. The emulator monitor remains a qualification uncertainty even when
+a specific native test run completes successfully.
 
 Only the displayed, no-warp, bounded PAL result is qualified; no
 unconditional claim of IRQ-safe calls on actual hardware follows.
