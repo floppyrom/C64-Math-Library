@@ -339,8 +339,12 @@ def main():
                                     trace_irq=args.trace_irq_entry)
                     rows.append(row)
                     index+=1
-                    print(tag,row["native_cia_phi2_slots"],
-                          "irq",row["raster_interrupts_serviced"],flush=True)
+                    if args.trace_irq_entry:
+                        print(tag,"IRQ entry breakpoint hit; trace-only, no batch certification",
+                              flush=True)
+                    else:
+                        print(tag,row["native_cia_phi2_slots"],
+                              "irq",row["raster_interrupts_serviced"],flush=True)
     report={
         "schema":"source-linked-native-pal-reu-vic-irq-cia-bounded-probe-v1",
         "status":("DIAGNOSTIC_IRQ_ENTRY_NOT_QUALIFIED" if args.trace_irq_entry
