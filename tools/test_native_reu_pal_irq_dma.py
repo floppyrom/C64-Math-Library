@@ -2,6 +2,7 @@
 """Fast CPU-side assembly, contract and timing-pair regressions for PAL REU."""
 from __future__ import annotations
 import unittest
+from unittest.mock import patch
 
 import native_reu_pal_irq_dma as pal
 import reu_turbo16_standalone_package as package
@@ -40,6 +41,15 @@ class NativePALREUContracts(unittest.TestCase):
                         self.assertIn(bytes((0xa9,0xdd,0x8d,0x07,0x1a)),nmi)
                         self.assertTrue(nmi.endswith(bytes((0x4c,
                             halt&255,(halt>>8)&255))))
+
+    def test_unqualified_emulator_modes_cannot_pass_full_matrix(self):
+        for args in (["--warp"],["--monitor-start","goto"],
+                     ["--warp","--monitor-start","goto"]):
+            with self.subTest(args=args),patch(
+                    "sys.argv",["native_reu_pal_irq_dma.py","--out","discard.json"]+args):
+                with self.assertRaises(SystemExit) as raised:
+                    pal.main()
+                self.assertEqual(raised.exception.code,2)
 
     def test_paired_matrix_fails_closed(self):
         with self.assertRaises(AssertionError):
