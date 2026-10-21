@@ -5,8 +5,6 @@ on:
   push:
     branches:
       - engineering/turbo16-reu-native-preflight-package-20261021
-    paths:
-      - '.github/workflows/turbo16-reu-draft-reseal.yml'
 permissions:
   contents: write
 jobs:
