@@ -26,10 +26,25 @@ python3 tools/native_reu_pal_irq_dma.py \
   --out build/autostart-diagnostic.json
 ```
 
-A passing isolated run is only a **diagnostic**. It must be repeated on
-independent cold runners and across 512 KiB / 16 MiB, display-on/off
-and IRQ-on/off configurations before it is considered a possible
-replacement for the production test gate. No IRQ handler may use the
+The [first pinned VICE run](https://github.com/floppyrom/C64-Math-Library/actions/runs/39660398732)
+passed isolated first-process 16 MiB bank-200 IRQ and 512 KiB bank-4 IRQ,
+both measuring 6,491 native PAL clock slots and exactly one IRQ, with
+correct arithmetic and restored 122-byte caller ZP.
+
+The extended qualification runs **three separate cold GitHub Actions
+machines**, each with the 16 MiB high-bank IRQ test as the very first
+emulator process, the 512 KiB IRQ control and the entire eight-case
+BASIC-autostart hardware/display/IRQ matrix. Source-image identity,
+math products, Carry, caller ZP, and real CIA timings must all pass.
+No diagnostic warmup runs beforehand.
+
+The full research matrix has a deliberately distinct status:
+`PASS_EXPERIMENTAL_BASIC_AUTOSTART_8_CASES_NOT_RELEASE_QUALIFIED`.
+Production/native PAL certification remains exclusively bound to the
+unchanged non-warp monitor launch gate from PR #385 until new criteria
+are reviewed. Even 3/3 passing cold machines would demonstrate
+repeatability of this alternative *emulated* launch, not prove the
+real-hardware IRQ/REU corner case fully resolved. No IRQ handler may use the
 122-byte executable Turbo16 overlay while the REU batch is active.
 Real SID playback, continuous 50 Hz and actual hardware remain unqualified.
 
