@@ -22,6 +22,8 @@ make builder-setup
 
 You choose the public math operations needed by your program (from 56),
 an optimization goal, and your **maximum total zero-page and RAM bytes**.
+The guided installer also offers optional Turbo16, Turbo32 or QS16
+REU acceleration, defaulting to no REU.
 The installer makes a source-verified physical PRG using the established
 exact global optimizer, including shared producer code/tables, 32 public
 I/O bytes, call-exclusive scratch and any persistent SEEK object state.
