@@ -165,7 +165,7 @@ def contents(rows, per_api):
             r["variant"],
         ))
         lines.append(
-            f'| \`{api}\` | \`{best["variant"]}\` | '
+            f'| `{api}` | `{best["variant"]}` | '
             f'{float(best["mean_cpu_cycles"]):.6f} | '
             f'{best["code_and_tables_bytes"]} | '
             f'{best["main_ram_total_bytes"]} | '
@@ -178,12 +178,12 @@ def contents(rows, per_api):
         "",
         f"**{len(rows)} separately source-linked variant observations covering 56",
         "operations** are available in",
-        "[\`benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv\`](../benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv).",
+        "[`benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv`](../benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv).",
         "That detailed file includes each source's exact mean CPU-model cycles,",
         "code-and-tables size, full isolated RAM total, alignment/image span,",
         "shared tables, scratch, persistent object state, ZP and persistent",
         "stack-page reservation, benchmark case count/basis/input SHA,",
-        "source SHA and linked PRG SHA. Filter its \`operation\` column to",
+        "source SHA and linked PRG SHA. Filter its `operation` column to",
         "compare only like-for-like input corpora.",
         "",
         "### What the columns mean",
@@ -194,7 +194,7 @@ def contents(rows, per_api):
         "  source functions record each input corpus SHA in the CSV.",
         "- **Code + tables B:** independently source-assembled executable",
         "  and owned lookup-table bytes; padding is separately represented",
-        "  by \`image_span_bytes\` and \`alignment_padding_bytes\` in the CSV.",
+        "  by `image_span_bytes` and `alignment_padding_bytes` in the CSV.",
         "- **Total isolated RAM B:** the actual physical one-operation linker",
         "  charge, including 32 B of public I/O, scratch, persistent state",
         "  and alignment. This is **not additive** across APIs: code and",
@@ -222,7 +222,7 @@ def contents(rows, per_api):
         "python3 -m json.tool build_umul16_speed/selective_manifest.json",
         "```",
         "",
-        "For multiple operations, the **combined** \`selective_manifest.json\`",
+        "For multiple operations, the **combined** `selective_manifest.json`",
         "overrides the isolated per-row memory figures. The optional Turbo16",
         "REU service uses **additional** independently reserved executable",
         "ZP and C64/REU memory and is not included in these stock-only rows.",
@@ -319,7 +319,7 @@ def verify(md_path=MD, csv_path=CSV, meta_path=META):
             int(r["zero_page_bytes"]),
             r["variant"],
         ))
-        expected = (f'| \`{api}\` | \`{best["variant"]}\` | '
+        expected = (f'| `{api}` | `{best["variant"]}` | '
                     f'{float(best["mean_cpu_cycles"]):.6f} | '
                     f'{best["code_and_tables_bytes"]} | '
                     f'{best["main_ram_total_bytes"]} | '
