@@ -1,0 +1,86 @@
+name: Operation-first performance chart provenance
+on:
+  push:
+    paths:
+      - PERFORMANCE.md
+      - README.md
+      - benchmarks/README.md
+      - docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md
+      - docs/SEVEN_CROSS_FRAME_PRODUCTION.md
+      - docs/D65536_FRAME_CHOICES.md
+      - docs/NATIVE_INSTALLED_D65536_PAL.md
+      - tools/test_operation_performance_charts.py
+      - .github/workflows/operation-first-performance-charts.yml
+  pull_request:
+    paths:
+      - PERFORMANCE.md
+      - docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md
+      - docs/SEVEN_CROSS_FRAME_PRODUCTION.md
+      - docs/D65536_FRAME_CHOICES.md
+      - docs/NATIVE_INSTALLED_D65536_PAL.md
+      - tools/test_operation_performance_charts.py
+      - .github/workflows/operation-first-performance-charts.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  performance-provenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify every current chart against benchmark provenance
+        run: python3 -m unittest discover -s tools -p 'test_operation_performance_charts.py' -v
+  reseal-current-charts:
+    needs: performance-provenance
+    if: github.event_name == 'push' && github.ref == 'refs/heads/docs/operation-first-performance-20261021'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerate full SHA256SUMS and audit to stability
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          import subprocess
+          root = Path(".")
+          sums = root / "SHA256SUMS.txt"
+          def reseal():
+              files = sorted(
+                  (p for p in root.rglob("*")
+                   if p.is_file() and ".git" not in p.parts
+                   and p.name != "SHA256SUMS.txt"),
+                  key=lambda p: p.as_posix()
+              )
+              sums.write_text("\n".join(
+                  hashlib.sha256(p.read_bytes()).hexdigest()
+                  + "  " + p.as_posix() for p in files
+              ) + "\n")
+          for _ in range(6):
+              before = (root / "validation/PACKAGE_AUDIT.json").read_bytes()
+              reseal()
+              subprocess.run(["python3", "tools/package_audit.py"], check=True)
+              if before == (root / "validation/PACKAGE_AUDIT.json").read_bytes():
+                  break
+          else:
+              raise RuntimeError("Package audit did not stabilize")
+          reseal()
+          subprocess.run(["python3", "tools/package_audit.py"], check=True)
+          assert before == (root / "validation/PACKAGE_AUDIT.json").read_bytes()
+          PY
+      - name: Commit exact hashes and audit only
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json
+          git diff --cached --quiet || git commit -m 'docs: seal operation-first performance charts and package audit'
+          git push origin "HEAD:$GITHUB_REF_NAME"
