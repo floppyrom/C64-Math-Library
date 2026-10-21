@@ -13,12 +13,31 @@ Q16_SWAP_BEGIN:
         sec
         rts
 Q16_BEGIN_FREE:
+        php
+        pha
+        txa
+        pha
+        tya
+        pha
+        ldx #$00
+Q16_SAVE_ZP:
+        lda Q16_SCRATCH_ZP,x
+        sta Q16_BACKUP,x
+        inx
+        cpx #$10
+        bne Q16_SAVE_ZP
         jsr MATH_REU_QS16_BEGIN
         lda #$00
         sta $DF08
         sta $DF09
         lda #$01
         sta Q16_ACTIVE
+        pla
+        tay
+        pla
+        tax
+        pla
+        plp
         clc
         rts
 Q16_SWAP_CALL:
@@ -34,9 +53,28 @@ Q16_SWAP_END:
         sec
         rts
 Q16_END_ACTIVE:
+        php
+        pha
+        txa
+        pha
+        tya
+        pha
         jsr MATH_REU_QS16_END
+        ldx #$00
+Q16_RESTORE_ZP:
+        lda Q16_BACKUP,x
+        sta Q16_SCRATCH_ZP,x
+        inx
+        cpx #$10
+        bne Q16_RESTORE_ZP
         lda #$00
         sta Q16_ACTIVE
+        pla
+        tay
+        pla
+        tax
+        pla
+        plp
         clc
         rts
 
