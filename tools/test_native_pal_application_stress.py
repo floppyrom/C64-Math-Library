@@ -120,9 +120,16 @@ class NativeRealWorkTests(unittest.TestCase):
                           stress.word(source["table_address"]),code)
             self.assertIn(bytes((0xcd,))+
                           stress.word(source["shadow_address"]),code)
-        for addr in (0x0400,0x040f,0x0400+40*15+15,
-                     0xd800,0xd80f,0xd800+40*14+15):
+        for addr in (0x0400,0x040f,0x0400+40*15+15):
             self.assertIn(bytes((0xcd,))+stress.word(addr),code)
+        # SID and screen bytes are ordinary 8-bit RAM; C64 colour RAM is
+        # only four bits.  Never compare its undefined high nibble.
+        for addr in (0xd800,0xd80f,0xd800+40*14+15):
+            self.assertIn(bytes((0xad,))+stress.word(addr),code)
+        self.assertEqual(code.count(bytes((0x8d,))+
+                                    stress.word(stress.COLOR_EXPECT)),3)
+        self.assertEqual(code.count(bytes((0xcd,))+
+                                    stress.word(stress.COLOR_EXPECT)),3)
         # The scheduler incremented its frame count to 24; the final
         # actual drawn frame is 23. Every on-6510 visual witness must
         # subtract one before comparing screen/colour RAM.
