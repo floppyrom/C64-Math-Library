@@ -396,6 +396,8 @@ def summarize(rows):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--out",type=Path,required=True)
+    p.add_argument("--basic-matrix",action="store_true",
+                   help="Experimental full BASIC-autostart eight-case research matrix; not production certified")
     p.add_argument("--launch-mode",choices=("monitor","basic-autostart"),
                    default="monitor",help="Diagnostic: avoid monitor PC boot with BASIC RUN/SYS")
     p.add_argument("--warp",action="store_true",
@@ -415,9 +417,16 @@ def main():
         "reu_16384_display1_irq0","reu_16384_display1_irq1"),
         help="Diagnostic single hardware case; does not provide qualification")
     args=p.parse_args()
-    # Certification may never come from emulator warp or an experimental
-    # monitor start mode; those runs are strictly diagnostic.
-    if args.only_case is None and (
+    # The *normal* PAL release gate cannot be satisfied by experimental
+    # bootstraps. Full BASIC replay has its own clearly unqualified status,
+    # while manual monitor runs retain their exact certification contract.
+    if args.basic_matrix and (
+            args.only_case is not None or args.warp or args.trace_irq_entry
+            or args.monitor_start != "register-go"
+            or args.launch_mode != "basic-autostart"
+            or args.diagnostic_16m_bank != 200):
+        p.error("--basic-matrix requires unmodified 8-case BASIC autostart, no warp, no trace")
+    if args.only_case is None and not args.basic_matrix and (
             args.warp or args.monitor_start != "register-go"
             or args.launch_mode!="monitor"):
         p.error("Eight-case PAL qualification requires non-warp, monitor boot and register-go; "
@@ -474,9 +483,12 @@ def main():
         "schema":"source-linked-native-pal-reu-vic-irq-cia-bounded-probe-v1",
         "status":("DIAGNOSTIC_IRQ_ENTRY_NOT_QUALIFIED" if args.trace_irq_entry
                   else "DIAGNOSTIC_SINGLE_CASE_NOT_QUALIFIED" if args.only_case is not None
+                  else "PASS_EXPERIMENTAL_BASIC_AUTOSTART_8_CASES_NOT_RELEASE_QUALIFIED"
+                  if args.basic_matrix
                   else "PASS_NATIVE_PAL_REU_IRQ_SID_CIA_BOUNDED_PROBE"),
         "monitor_launch_mode":args.monitor_start,
         "emulator_launch_mode":args.launch_mode,
+        "experimental_basic_matrix_not_main_release_gate":args.basic_matrix,
         "vice_warp_enabled":args.warp,
         "diagnostic_bank_override":args.diagnostic_16m_bank != 200,
         "real_vice_reu_dma_timing_included":True,
