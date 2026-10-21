@@ -45,10 +45,15 @@ jobs:
         env:
           VICE_JOBS: '2'
         run: bash tools/vice/build_headless.sh
-      - name: Cold-start repeated eight-case native REU PAL matrix, without diagnostic warmup
+      - name: Cold single 16MiB IRQ first, then three independent complete PAL matrices
         run: |
           export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
           bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          # First native process on a new runner: the previously unreliable
+          # high REU bank with live raster IRQ. No other REU process precedes it.
+          python3 tools/native_reu_pal_irq_dma.py \
+            --only-case reu_16384_display0_irq1 \
+            --out build/reu-pal/first-process-16m-highbank-irq.json
           for i in 1 2 3; do
             python3 tools/native_reu_pal_irq_dma.py --out "build/reu-pal/cold-repeat-$i.json"
           done
