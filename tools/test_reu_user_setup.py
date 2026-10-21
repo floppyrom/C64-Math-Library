@@ -60,6 +60,24 @@ class OperationFirstREUOptIn(unittest.TestCase):
                     self.assertEqual(len(claims["user_zp_reserved"]),1)
                     self.assertEqual(project["reu_entrypoints"],reuman["public_exports"])
 
+    def test_second_valid_application_map_remains_globally_disjoint(self):
+        data=self.config(ram=29000,bank=6)
+        data["memory"]={
+            "code_base":"$9000","math_io":"$C080","zp_base":"$D0",
+            "reserved":[{"name":"game_level","start":"$8000","end":"$8FFF"}],
+            "zp_reserved":[{"name":"raster_irq","start":"$02","end":"$1F"}]
+        }
+        with tempfile.TemporaryDirectory() as td:
+            folder=Path(td)
+            stock=setup.build_checked(data,self.index,folder)
+            project=json.loads((folder/"math_project_manifest.json").read_text())
+            self.assertEqual(stock["memory_map"]["math_io_start"],"$C080")
+            self.assertGreaterEqual(int(stock["memory_map"]["code_start"][1:],16),0x9000)
+            self.assertTrue(project["physical_memory_bound_by_stock_linker"])
+            self.assertEqual(project["hardware"]["reu"]["turbo16"]["bank"],6)
+            self.assertEqual(len(stock["memory_map"]["user_reserved"]),3)
+            self.assertEqual(len(stock["memory_map"]["user_zp_reserved"]),2)
+
     def test_budget_and_memory_overlaps_fail_without_publishing(self):
         for config in (
             self.config(zp=121),
