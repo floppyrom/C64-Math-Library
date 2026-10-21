@@ -1,0 +1,38 @@
+name: Matched historical five-profile versus selective UDIV8
+on:
+  pull_request:
+    paths:
+      - 'tools/benchmark_historical_selective_udiv8.py'
+      - 'tools/test_benchmark_historical_selective_udiv8.py'
+      - 'docs/MATCHED_HISTORICAL_UDIV8.md'
+      - '.github/workflows/matched-historical-udiv8.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  seven-way-public-udiv8:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify original V1-V5 and selective UDIV8 same corpus full Q/R/C
+        run: python3 -m unittest discover -s tools -p 'test_benchmark_historical_selective_udiv8.py' -v
+      - name: Emit reproducible 1000-pair historical-vs-selective CPU timings
+        run: |
+          python3 tools/benchmark_historical_selective_udiv8.py --out build/matched-udiv8/report.json
+          python3 -c 'import json,pathlib; p=json.loads(pathlib.Path("build/matched-udiv8/report.json").read_text()); assert p["all_seven_source_paths_identical_input"] and not p["native_vice_certified"]'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: matched-v1-v5-selective-udiv8-cpu-model
+          path: build/matched-udiv8/
+          retention-days: 14
+      - name: Verify checksum-locked source package
+        run: |
+          rm -rf build/matched-udiv8
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
