@@ -1,0 +1,54 @@
+name: Source-linked native REU PAL VIC IRQ SID timing probe
+on:
+  push:
+    branches: [engineering/reu-pal-vic-irq-qualification-20261021]
+  pull_request:
+    paths:
+      - 'tools/native_reu_pal_irq_dma.py'
+      - 'docs/TURBO16_REU_PAL_IRQ_DMA.md'
+      - '.github/workflows/native-reu-pal-irq-dma.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  measured-native-pal-reu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile exact physical co-load and overlay contracts
+        run: |
+          python3 -m py_compile tools/native_reu_pal_irq_dma.py
+          python3 -m unittest discover -s tools -p 'test_native_reu_pal_irq_dma.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_user_setup.py' -v
+      - name: Native pinned VICE build prerequisites
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build SHA-qualified VICE x64sc r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Run 8 source-linked native PAL REU/VIC/IRQ/SID CIA timing controls
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_reu_pal_irq_dma.py \
+            --only-case reu_16384_display0_irq1 \
+            --out build/reu-pal/isolated-16m-irq.json
+          python3 tools/native_reu_pal_irq_dma.py --out build/reu-pal/irq-vic-dma-cia.json
+      - name: Upload exact raw timings and checksum-linked image identity
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-reu-pal-irq-vic-cia-timing
+          path: build/reu-pal/
+          retention-days: 14

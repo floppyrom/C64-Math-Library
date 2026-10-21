@@ -6,6 +6,7 @@ on:
     branches:
       - engineering/turbo16-reu-native-preflight-package-20261021
       - engineering/operation-first-turbo16-reu-optin-20261021
+      - engineering/reu-pal-vic-irq-qualification-20261021
 permissions:
   contents: write
 jobs:
