@@ -1,0 +1,38 @@
+name: Matched historical V1 vs selective UMUL8 public speed
+on:
+  pull_request:
+    paths:
+      - 'tools/benchmark_historical_selective_umul8.py'
+      - 'tools/test_benchmark_historical_selective_umul8.py'
+      - 'docs/MATCHED_HISTORICAL_SPEED_PARITY.md'
+      - '.github/workflows/matched-historical-umul8.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  same-input-original-resident:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify all UMUL8 public ABI outputs and same corpus timings
+        run: python3 -m unittest discover -s tools -p 'test_benchmark_historical_selective_umul8.py' -v
+      - name: Produce parity evidence, not a native hardware certificate
+        run: |
+          python3 tools/benchmark_historical_selective_umul8.py --out build/matched-umul8/historical-v1-versus-selective.json
+          python3 -c 'import json,pathlib; p=json.loads(pathlib.Path("build/matched-umul8/historical-v1-versus-selective.json").read_text()); assert p["hist_to_selective_same_input"] and not p["native_vice_verified"] and not p["all_56_historical_speed_parity"]'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: matched-historical-v1-selective-umul8-cpu-model
+          path: build/matched-umul8/
+          retention-days: 14
+      - name: Preserve checksum-locked package
+        run: |
+          rm -rf build/matched-umul8
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
