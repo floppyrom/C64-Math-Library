@@ -30,7 +30,7 @@ class NativePALREUContracts(unittest.TestCase):
                         # Hardware handler saves/restores registers and
                         # never reads/writes the executable $3E-$B7 ZP.
                         op=bytes(memory[p] for p in range(pal.IRQ,
-                            max(k for k in memory if k>=pal.IRQ)+1))
+                            max(k for k in memory if pal.IRQ<=k<pal.NMI_GUARD)+1))
                         self.assertTrue(op.startswith(bytes((0x48,0x8a,0x48,0x98,0x48))))
                         self.assertTrue(op.endswith(bytes((0x68,0xa8,0x68,0xaa,0x68,0x40))))
                         self.assertNotIn(bytes((0x85,0x3e)),op)
