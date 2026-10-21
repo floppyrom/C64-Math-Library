@@ -193,7 +193,8 @@ def monitor(sock, line, needle):
     raise RuntimeError(("Native PAL REU VICE monitor failed",line,data[-1200:]))
 
 
-def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=False):
+def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=False,
+                monitor_start="register-go"):
     work.mkdir()
     conf={
         "target":"c64","operations":["UMUL16"],"objective":"size",
@@ -248,7 +249,15 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
                     monitor(sock,"break "+format(stop,"04x"),"BREAK:")
                     if trace_irq:
                         monitor(sock,"break "+format(IRQ,"04x"),"BREAK:")
-                    hit=monitor(sock,"g "+format(HARNESS,"04x"),"Stop on  exec")
+                    if monitor_start == "register-go":
+                        # Avoid address-bearing 'g xxxx', which has documented
+                        # monitor/interrupt timing hazards in older VICE builds.
+                        monitor(sock,"r pc="+format(HARNESS,"04x"),"PC")
+                        hit=monitor(sock,"g","Stop on  exec")
+                    elif monitor_start == "goto":
+                        hit=monitor(sock,"g "+format(HARNESS,"04x"),"Stop on  exec")
+                    else:
+                        raise AssertionError("Unqualified remote monitor start mode")
                     if trace_irq:
                         monitor(sock,'bsave "'+str(dumped)+'" 0 1a00 1ab9',"Saving")
                         snap=dumped.read_bytes()
@@ -269,6 +278,7 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
                     log.flush()
                     reason={
                         "case":tag,
+                        "monitor_start":monitor_start,
                         "original_monitor_failure":str(exc),
                         "vice_process_returncode":proc.poll(),
                         "vice_log_tail":logfile.read_text(errors="replace")[-7500:],
@@ -356,6 +366,9 @@ def summarize(rows):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--out",type=Path,required=True)
+    p.add_argument("--monitor-start",choices=("register-go","goto"),
+                   default="register-go",
+                   help="Set PC with 'r pc=' then plain 'g' (default); legacy 'g xxxx' control")
     p.add_argument("--trace-irq-entry",action="store_true",
                    help="Stop at first real IRQ handler entry; diagnostic only")
     p.add_argument("--only-case",choices=(
@@ -383,7 +396,8 @@ def main():
                         continue
                     try:
                         row=native_case(exe,root/tag,tag,tier,bank,display,armed,9910+index,
-                                        trace_irq=args.trace_irq_entry)
+                                        trace_irq=args.trace_irq_entry,
+                                        monitor_start=args.monitor_start)
                     except Exception as error:
                         args.out.parent.mkdir(parents=True,exist_ok=True)
                         args.out.write_text(json.dumps({
@@ -413,6 +427,7 @@ def main():
         "status":("DIAGNOSTIC_IRQ_ENTRY_NOT_QUALIFIED" if args.trace_irq_entry
                   else "DIAGNOSTIC_SINGLE_CASE_NOT_QUALIFIED" if args.only_case is not None
                   else "PASS_NATIVE_PAL_REU_IRQ_SID_CIA_BOUNDED_PROBE"),
+        "monitor_launch_mode":args.monitor_start,
         "real_vice_reu_dma_timing_included":True,
         "real_vic_screen_contention_included":True,
         "real_irq_and_sid_register_writes_included":True,
