@@ -252,7 +252,11 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
                     if monitor_start == "register-go":
                         # Avoid address-bearing 'g xxxx', which has documented
                         # monitor/interrupt timing hazards in older VICE builds.
-                        monitor(sock,"r pc="+format(HARNESS,"04x"),"PC")
+                        monitor(sock,"r pc="+format(HARNESS,"04x"),"")
+                        regs=monitor(sock,"r","")
+                        if format(HARNESS,"04x").encode() not in regs.lower():
+                            raise RuntimeError(("VICE register-go PC readback mismatch",
+                                                regs[-1000:]))
                         hit=monitor(sock,"g","Stop on  exec")
                     elif monitor_start == "goto":
                         hit=monitor(sock,"g "+format(HARNESS,"04x"),"Stop on  exec")
