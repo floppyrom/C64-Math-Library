@@ -17,12 +17,11 @@ import random
 
 from mini6502 import Assembler, CPU, load_sparse
 import reu_turbo16_fragment as fragment
+import reu_turbo16_source_tables as source_tables
 
 ROOT=Path(__file__).resolve().parents[1]
 CONTROLLER=Path("relocatable_source/turbo/turbo16_swap_controller.asm")
-FROZEN=Path("v3_reu_512k/resident/math_v3_reu_512k_game_math.prg")
 TABLE_OFFSETS=(0x1000,0x1200,0x1400,0x1600)
-SOURCE_TABLE_OFFSETS=(0x1000,0x1200,0x1400,0x1600)
 N=122
 BANK_SIZE=65536
 
@@ -111,36 +110,33 @@ def assemble(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
     return manifest,parts,mem,{k:v for k,v in expected.items()}
 
 
-def historical_tables():
-    """Test-only 4x512 physical square-table planes from checksum-locked V3."""
-    raw=(ROOT/FROZEN).read_bytes()
-    refs={}
-    for line in (ROOT/"SHA256SUMS.txt").read_text("utf-8").splitlines():
-        if len(line)>=67 and line[64:66]=="  ":
-            refs[line[66:]]=line[:64]
-    if hashlib.sha256(raw).hexdigest()!=refs.get(str(FROZEN)):
-        raise SwapError("Historical V3 PRG hash changed")
-    load=raw[0]|raw[1]<<8
-    full=bytearray(65536)
-    full[load:load+len(raw)-2]=raw[2:]
-    data=tuple(bytes(full[0x6000+ofs:0x6000+ofs+512])
-               for ofs in SOURCE_TABLE_OFFSETS)
-    if not all(len(x)==512 and any(x) for x in data):
-        raise SwapError("Incomplete frozen V3 historical lookup table fixture")
-    return data
+def source_qualified_tables():
+    """Build exact 4x512 Turbo16 planes from V3/V4 SOURCE, not reference PRGs.
+
+    This is still a literal source extraction, not a mathematical independent
+    generator and not a native-VICE-validated REU installer.
+    """
+    manifest, chunks = source_tables.materialize()
+    if manifest["total_bytes"] != 2048 or manifest["native_reu_backend_available"]:
+        raise SwapError("Source-qualified Turbo16 table contract changed")
+    planes = tuple(chunks[name] for name in source_tables.NAMES)
+    if len(planes) != 4 or any(len(plane) != 512 for plane in planes):
+        raise SwapError("Incorrect source-table payload length")
+    return manifest, planes
 
 
 def cpu_model_proof(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
                     ctrl=0x3a00,state=0xc040,bank=4,reu_bytes=524288):
     manifest,parts,control,labels=assemble(
         zp,io,table,api,ctrl,state,bank,reu_bytes)
+    table_manifest, table_planes = source_qualified_tables()
     mem=load_sparse(control)
     for filename,addr in (
         ("turbo16_call_binder.bin",api+0x840),
     ):
         blob=parts[filename]
         mem[addr:addr+len(blob)]=blob
-    for base,plane in zip(TABLE_OFFSETS,historical_tables()):
+    for base,plane in zip(TABLE_OFFSETS,table_planes):
         mem[table+base:table+base+512]=plane
     initial_zp=bytes(((i*73+19)&255 for i in range(N)))
     mem[zp:zp+N]=initial_zp
@@ -212,7 +208,10 @@ def cpu_model_proof(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
                             "reu_overlay_persisted_with_live_smc_operands":True,
                             "nested_begin_rejected":True})
     return {**manifest,"proof_status":"CPU_MODEL_FULL_ARITHMETIC_AND_DMA_SWAP_TWO_BATCHES",
-            "test_only_table_fixture":str(FROZEN),
+            "test_only_table_fixture":None,
+            "lookup_table_provenance":"SHA-locked literal V3/V4 source, no resident PRG required",
+            "source_table_hashes":table_manifest["plane_sha256"],
+            "historical_table_source_hashes":table_manifest["reference_sources_sha256"],
             "test_only_table_planes":4,
             "test_only_table_bytes":2048,
             "arithmetic_calls":sum(x["calls"] for x in batch_stats),
