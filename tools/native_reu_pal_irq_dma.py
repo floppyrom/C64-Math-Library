@@ -34,13 +34,15 @@ STOCK_A, STOCK_B = 0x2345, 0x1321
 PAL_SLOTS = 312*63
 
 
-def assemble(exports, stock_entry, stock_io, *, display, irq):
+def assemble(exports, stock_entry, stock_io, *, display, irq, code_base=HARNESS):
     addr = {n:int(v[1:],16) for n,v in exports.items()}
     seed = bytes((i*73+19)&255 for i in range(122))
     if stock_io != 0xc040:
         raise ValueError("This reference timing probe expects source-linked stock IO $C040")
+    if code_base not in (HARNESS,0x0c00):
+        raise ValueError("Unsupported executable PAL bootstrap location")
     code = [
-        "* = $0800",
+        "* = $%04x" % code_base,
         "PAL_INIT:",
         "sei","cld","lda #$35","sta $01",
         "lda #$7f","sta $dc0d","sta $dd0d",
@@ -163,12 +165,12 @@ def assemble(exports, stock_entry, stock_io, *, display, irq):
     ]
     memory,symbols,_=Assembler().assemble("\n".join(code)+"\n")
     if symbols["PAL_HALT"]>=IRQ or any(
-        p not in range(HARNESS,IRQ) and
+        p not in range(code_base,IRQ) and
         p not in range(IRQ,IRQ+0x100) and
         p not in range(NMI_GUARD,NMI_GUARD+0x100)
         for p in memory):
         raise AssertionError("Native PAL probe escaped segregated CPU/IRQ allocations")
-    if symbols["PAL_HALT"]-HARNESS>0x600 or IRQ not in memory or NMI_GUARD not in memory:
+    if symbols["PAL_HALT"]-code_base>0x600 or IRQ not in memory or NMI_GUARD not in memory:
         raise AssertionError("Native PAL program too large or missing handler")
     return memory,symbols["PAL_HALT"],seed
 
@@ -194,7 +196,7 @@ def monitor(sock, line, needle):
 
 
 def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=False,
-                monitor_start="register-go", warp=False):
+                monitor_start="register-go", warp=False, launch_mode="monitor"):
     work.mkdir()
     conf={
         "target":"c64","operations":["UMUL16"],"objective":"size",
@@ -210,27 +212,42 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
     if not m or not report["physical_memory_bound_by_stock_linker"]:
         raise AssertionError("Missing stock ABI or global resource ownership")
     stock_io=int(stock["memory_map"]["math_io_start"][1:],16)
+    if launch_mode not in ("monitor","basic-autostart"):
+        raise ValueError("Unqualified emulator launch mode")
+    code_base = 0x0c00 if launch_mode=="basic-autostart" else HARNESS
     stub,stop,seed=assemble(reuman["public_exports"],int(m.group(1),16),
-                            stock_io,display=display,irq=irq)
+                            stock_io,display=display,irq=irq,code_base=code_base)
     stock_prg=(work/"math_selective.prg").read_bytes()
     reu_prg=(work/"turbo16_reu.prg").read_bytes()
     base=int.from_bytes(stock_prg[:2],"little")
     end=base+len(stock_prg)-2
     if not LIMIT<=base<end<=0xd000:
         raise AssertionError("Physical source-linked stock placement violates REU footprint")
-    machine=bytearray(end-HARNESS)
-    machine[BASE-HARNESS:LIMIT-HARNESS]=reu_prg[2:]
-    machine[base-HARNESS:end-HARNESS]=stock_prg[2:]
-    for k,v in stub.items():machine[k-HARNESS]=v
+    load_base = 0x0801 if launch_mode=="basic-autostart" else HARNESS
+    machine=bytearray(end-load_base)
+    machine[BASE-load_base:LIMIT-load_base]=reu_prg[2:]
+    machine[base-load_base:end-load_base]=stock_prg[2:]
+    for k,v in stub.items():machine[k-load_base]=v
+    if launch_mode=="basic-autostart":
+        # Real tokenized BASIC line 10 SYS 3072 at $0801, end pointer $080C.
+        # The call goes to self-contained code at $0C00 without a monitor PC write.
+        basic=bytes((0x0c,0x08,0x0a,0x00,0x9e,0x20,
+                     0x33,0x30,0x37,0x32,0x00,0x00,0x00))
+        if load_base+11 != 0x080c or basic[0:2] != b"\x0c\x08":
+            raise AssertionError("Malformed BASIC autostart line pointer")
+        machine[:len(basic)] = basic
     image=work/(tag+".prg")
     dumped=work/(tag+".dump")
     logfile=work/(tag+".log")
-    image.write_bytes(bytes((HARNESS&255,HARNESS>>8))+machine)
+    image.write_bytes(bytes((load_base&255,load_base>>8))+machine)
     cmd=[str(exe),"-console","-silent","-pal","-sounddev","dummy",
          *(['-warp'] if warp else []),
          "-reu","-reusize",str(tier),
-         "-remotemonitor","-remotemonitoraddress",f"127.0.0.1:{port}",
-         "-initbreak","reset"]
+         "-remotemonitor","-remotemonitoraddress",f"127.0.0.1:{port}"]
+    if launch_mode=="basic-autostart":
+        cmd += ["-autostart",str(image)]
+    else:
+        cmd += ["-initbreak","reset"]
     with logfile.open("w") as log:
         proc=subprocess.Popen(cmd,cwd=work,stdout=log,stderr=log)
         try:
@@ -246,11 +263,16 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
             sock.settimeout(.35)
             try:
                 try:
-                    monitor(sock,'load "'+str(image)+'" 0',"Loading")
+                    if launch_mode=="monitor":
+                        monitor(sock,'load "'+str(image)+'" 0',"Loading")
+                    # In basic-autostart mode the emulator has loaded the PRG
+                    # via its own BASIC RUN/SYS path; no CPU PC assignment.
                     monitor(sock,"break "+format(stop,"04x"),"BREAK:")
                     if trace_irq:
                         monitor(sock,"break "+format(IRQ,"04x"),"BREAK:")
-                    if monitor_start == "register-go":
+                    if launch_mode=="basic-autostart":
+                        hit=monitor(sock,"g","Stop on  exec")
+                    elif monitor_start == "register-go":
                         # Avoid address-bearing 'g xxxx', which has documented
                         # monitor/interrupt timing hazards in older VICE builds.
                         monitor(sock,"r pc="+format(HARNESS,"04x"),"")
@@ -284,6 +306,7 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
                     reason={
                         "case":tag,
                         "monitor_start":monitor_start,
+                        "emulator_launch_mode":launch_mode,
                         "original_monitor_failure":str(exc),
                         "vice_process_returncode":proc.poll(),
                         "vice_log_tail":logfile.read_text(errors="replace")[-7500:],
@@ -329,6 +352,7 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
         raise AssertionError((tag,"invalid native CIA elapsed PHI2 slots",slots))
     return {
         "case":tag,"tier_kib":tier,"bank":bank,
+        "emulator_launch_mode":launch_mode,
         "vice_warp_enabled":warp,
         "display_enabled":display,"raster_irq_enabled":irq,
         "raster_interrupts_serviced":serviced,
@@ -372,6 +396,8 @@ def summarize(rows):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--out",type=Path,required=True)
+    p.add_argument("--launch-mode",choices=("monitor","basic-autostart"),
+                   default="monitor",help="Diagnostic: avoid monitor PC boot with BASIC RUN/SYS")
     p.add_argument("--warp",action="store_true",
                    help="Opt-in emulator warp speed for comparison; native PAL certification defaults to real-time mode")
     p.add_argument("--monitor-start",choices=("register-go","goto"),
@@ -391,8 +417,10 @@ def main():
     args=p.parse_args()
     # Certification may never come from emulator warp or an experimental
     # monitor start mode; those runs are strictly diagnostic.
-    if args.only_case is None and (args.warp or args.monitor_start != "register-go"):
-        p.error("Eight-case PAL qualification requires non-warp and register-go; "
+    if args.only_case is None and (
+            args.warp or args.monitor_start != "register-go"
+            or args.launch_mode!="monitor"):
+        p.error("Eight-case PAL qualification requires non-warp, monitor boot and register-go; "
                 "use --only-case for experimental emulator modes")
     if args.trace_irq_entry and args.only_case is None:
         p.error("--trace-irq-entry requires --only-case")
@@ -417,7 +445,7 @@ def main():
                         row=native_case(exe,root/tag,tag,tier,bank,display,armed,9910+index,
                                         trace_irq=args.trace_irq_entry,
                                         monitor_start=args.monitor_start,
-                                        warp=args.warp)
+                                        warp=args.warp,launch_mode=args.launch_mode)
                     except Exception as error:
                         args.out.parent.mkdir(parents=True,exist_ok=True)
                         args.out.write_text(json.dumps({
@@ -448,6 +476,7 @@ def main():
                   else "DIAGNOSTIC_SINGLE_CASE_NOT_QUALIFIED" if args.only_case is not None
                   else "PASS_NATIVE_PAL_REU_IRQ_SID_CIA_BOUNDED_PROBE"),
         "monitor_launch_mode":args.monitor_start,
+        "emulator_launch_mode":args.launch_mode,
         "vice_warp_enabled":args.warp,
         "diagnostic_bank_override":args.diagnostic_16m_bank != 200,
         "real_vice_reu_dma_timing_included":True,
