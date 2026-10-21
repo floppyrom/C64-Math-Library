@@ -146,15 +146,20 @@ def add_readback(rom, old_halt, rows):
     for item in STREAMS:
         b.extend((0xbd,)+tuple(word(item["table_address"]))) # expected table
         check_accumulator_against(item["shadow_address"])
-    # Final original frame is 23; X=0..15 writer: char = X^23.
+    # The scheduler increments FRAME_COUNTER after rendering frame 23.
+    # Readback runs after all 24 jobs: compare the rendered pattern against
+    # FRAME_COUNTER-1, not the advanced counter (24).  This correction is
+    # essential; otherwise six legitimate screen/colour checks fail.
     for addr,mask in ((0x0400,0),(0x040f,15),
                       (0x0400+40*(rows-1)+15,15)):
         b.extend((0xad,)+tuple(word(previous.FRAMES_ADDR)))
+        b.extend((0x38,0xe9,0x01))           # SEC; SBC #1 (last drawn frame)
         if mask: b.extend((0x49,mask))
         check_accumulator_against(addr)
     for addr,mask in ((0xd800,0),(0xd80f,15),
                       (0xd800+40*((rows-1)//2*2)+15,15)):
         b.extend((0xad,)+tuple(word(previous.FRAMES_ADDR)))
+        b.extend((0x38,0xe9,0x01))           # SEC; SBC #1 (last drawn frame)
         if mask: b.extend((0x49,mask))
         b.extend((0x29,0x0f))
         check_accumulator_against(addr)
