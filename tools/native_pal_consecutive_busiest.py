@@ -44,6 +44,19 @@ OUTPUT=cia.RESULT+6
 PAL=cia.PAL_SLOTS
 assert PAL==19656 and HANDLER==0x7e00 and MAIN==0x7000
 
+def extra_irq_events(serviced, completed=RUNS):
+    """Count real IRQ events beyond the number of *completed math jobs*.
+
+    Never equate scheduler work item count with elapsed physical PAL frames.
+    An overrun can skip raster-zero opportunities and legitimately service
+    more than one real raster interrupt between two arithmetic jobs.
+    """
+    if (type(serviced) is not int or type(completed) is not int or
+            completed<=0 or not completed<=serviced<255):
+        raise ValueError("Missing or implausible real raster IRQ event count")
+    return serviced-completed
+
+
 def word(value):
     if type(value) is not int or not 0<=value<65536:
         raise ValueError("Unqualified 6510 absolute address")
@@ -204,8 +217,10 @@ def read_monitor(vice, image, entries, folder, tag, port, *, display):
     # Each extra real IRQ is therefore a measured scheduling symptom,
     # not an arithmetic or harness failure.  Stop only on missing IRQs,
     # impossible 8-bit overflow or unqualified counter values.
-    if not RUNS<=irq_count<255:
-        raise AssertionError(("Native PAL raster IRQ count unqualified",tag,irq_count))
+    try:
+        extra_irqs=extra_irq_events(irq_count,RUNS)
+    except ValueError as exc:
+        raise AssertionError(("Native PAL raster IRQ count unqualified",tag,irq_count)) from exc
     elapsed=[cia.decode_elapsed(count_data[i*4:i*4+4]) for i in range(RUNS)]
     if any(a<=0 or a>=2_000_000 for a in elapsed) or any(
         elapsed[i]<=elapsed[i-1] for i in range(1,RUNS)):
@@ -223,7 +238,7 @@ def read_monitor(vice, image, entries, folder, tag, port, *, display):
         "source_frame":FRAME,"raster_irq_count":irq_count,
         "frame_count":count,"public_output_error_count":errors,
         "observed_raster_irq_events":irq_count,
-        "extra_raster_irq_events_vs_completed_work_items":irq_count-RUNS,
+        "extra_raster_irq_events_vs_completed_work_items":extra_irqs,
         "public_output_sha256":hashlib.sha256(actual).hexdigest(),
         "source_frame_inputs_sha256":hashlib.sha256(
             json.dumps([x[-1] for x in cia.busiest_calls(FRAME)],
