@@ -1,0 +1,33 @@
+name: User builder release acceptance matrix
+on:
+  pull_request:
+    paths:
+      - 'tools/configure_math.py'
+      - 'tools/test_user_builder_release.py'
+      - 'tools/test_configure_math.py'
+      - 'tools/math_builder.py'
+      - 'tools/selective_linker.py'
+      - 'docs/BUILDER_RELEASE_ACCEPTANCE.md'
+      - '.github/workflows/user-builder-release.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  four-objectives-rebuild-and-custom-memory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate installed paths for every user goal
+        run: |
+          python3 -m compileall -q tools/configure_math.py tools/test_user_builder_release.py
+          python3 -m unittest discover -s tools -p 'test_user_builder_release.py' -v
+      - name: Preserve existing wizard/optimizer contract
+        run: python3 -m unittest discover -s tools -p 'test_configure_math.py' -v
+      - name: Validate published source package
+        run: |
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
