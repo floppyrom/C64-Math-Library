@@ -335,9 +335,26 @@ def main():
                     if args.only_case is not None and tag!=args.only_case:
                         index+=1
                         continue
-                    row=native_case(exe,root/tag,tag,tier,bank,display,armed,9910+index,
-                                    trace_irq=args.trace_irq_entry)
+                    try:
+                        row=native_case(exe,root/tag,tag,tier,bank,display,armed,9910+index,
+                                        trace_irq=args.trace_irq_entry)
+                    except Exception as error:
+                        args.out.parent.mkdir(parents=True,exist_ok=True)
+                        args.out.write_text(json.dumps({
+                            "status":"FAIL_NATIVE_PAL_REU_GATE_NO_CERTIFICATION",
+                            "failed_case":tag,
+                            "error":str(error),
+                            "completed_case_results":rows,
+                            "no_claim_of_16m_irq_safety":True,
+                        },indent=2,sort_keys=True)+"\n")
+                        raise
                     rows.append(row)
+                    args.out.parent.mkdir(parents=True,exist_ok=True)
+                    args.out.write_text(json.dumps({
+                        "status":"PARTIAL_RESULTS_NOT_QUALIFIED",
+                        "completed_case_results":rows,
+                        "total_qualified_cases":0,
+                    },indent=2,sort_keys=True)+"\n")
                     index+=1
                     if args.trace_irq_entry:
                         print(tag,"IRQ entry breakpoint hit; trace-only, no batch certification",
