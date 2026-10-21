@@ -1,15 +1,32 @@
 name: Source-linked native REU PAL VIC IRQ SID timing probe
 on:
   push:
-    branches: [engineering/reu-pal-vic-irq-qualification-20261021]
+    branches:
+      - main
+      - engineering/reu-pal-vic-irq-qualification-20261021
     paths:
       - 'tools/native_reu_pal_irq_dma.py'
       - 'tools/test_native_reu_pal_irq_dma.py'
+      - 'tools/reu_user_setup.py'
+      - 'tools/reu_turbo16_standalone_package.py'
+      - 'tools/native_reu_mixed_selective.py'
+      - 'tools/configure_math.py'
+      - 'tools/math_builder.py'
+      - 'tools/vice/build_headless.sh'
+      - 'relocatable_source/turbo/**'
       - 'docs/TURBO16_REU_PAL_IRQ_DMA.md'
       - '.github/workflows/native-reu-pal-irq-dma.yml'
   pull_request:
     paths:
       - 'tools/native_reu_pal_irq_dma.py'
+      - 'tools/test_native_reu_pal_irq_dma.py'
+      - 'tools/reu_user_setup.py'
+      - 'tools/reu_turbo16_standalone_package.py'
+      - 'tools/native_reu_mixed_selective.py'
+      - 'tools/configure_math.py'
+      - 'tools/math_builder.py'
+      - 'tools/vice/build_headless.sh'
+      - 'relocatable_source/turbo/**'
       - 'docs/TURBO16_REU_PAL_IRQ_DMA.md'
       - '.github/workflows/native-reu-pal-irq-dma.yml'
   workflow_dispatch:
