@@ -1,0 +1,41 @@
+name: Turbo16 source-table and REU SWAP integrated CPU-model proof
+on:
+  pull_request:
+    paths:
+      - 'tools/reu_turbo16_swap_experiment.py'
+      - 'tools/test_reu_turbo16_source_integrated_swap.py'
+      - 'docs/REU_TURBO16_SOURCE_INTEGRATION.md'
+      - '.github/workflows/reu-turbo16-source-integrated-swap.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-only-table-swap-integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test source table origin and REU SWAP complete 16x16 arithmetic
+        run: |
+          python3 -m unittest discover -s tools -p 'test_reu_turbo16_source_tables.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_turbo16_swap_experiment.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_turbo16_source_integrated_swap.py' -v
+      - name: Publish source-only integrated two-batch CPU evidence
+        run: |
+          python3 tools/reu_turbo16_swap_experiment.py --out build/turbo16-source-swap
+          python3 -c 'import json,pathlib; p=json.loads(pathlib.Path("build/turbo16-source-swap/turbo16_reu_swap_cpu_model.json").read_text()); assert p["test_only_table_fixture"] is None and p["arithmetic_calls"]==224 and not p["native_vice_qualified"]'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: turbo16-source-table-swap-cpu-model-only
+          path: build/turbo16-source-swap/
+          retention-days: 14
+      - name: Preserve archive and package manifest
+        run: |
+          rm -rf build/turbo16-source-swap
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
