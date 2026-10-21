@@ -1,0 +1,33 @@
+name: Operation-first performance chart provenance
+on:
+  push:
+    paths:
+      - PERFORMANCE.md
+      - README.md
+      - benchmarks/README.md
+      - docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md
+      - docs/SEVEN_CROSS_FRAME_PRODUCTION.md
+      - docs/D65536_FRAME_CHOICES.md
+      - docs/NATIVE_INSTALLED_D65536_PAL.md
+      - tools/test_operation_performance_charts.py
+      - .github/workflows/operation-first-performance-charts.yml
+  pull_request:
+    paths:
+      - PERFORMANCE.md
+      - docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md
+      - docs/SEVEN_CROSS_FRAME_PRODUCTION.md
+      - docs/D65536_FRAME_CHOICES.md
+      - docs/NATIVE_INSTALLED_D65536_PAL.md
+      - tools/test_operation_performance_charts.py
+      - .github/workflows/operation-first-performance-charts.yml
+  workflow_dispatch:
+jobs:
+  performance-provenance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify every current chart against benchmark provenance
+        run: python3 -m unittest discover -s tools -p 'test_operation_performance_charts.py' -v

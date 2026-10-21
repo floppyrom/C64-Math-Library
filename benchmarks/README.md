@@ -1,15 +1,16 @@
-# Benchmarks
+# Benchmarks — operation-first system
 
-This folder is the machine-readable performance front door.
+**Current chart and measurement interpretation:** [Performance — operation-first](../PERFORMANCE.md). It compares actual source-linked **whole-library plans**, RAM/ZP budgets and matched trace outcomes, not profile columns. Individual source variant CPU-model means for a chosen operation are **recomputed by the normal speed installer** and published in `selective_manifest.json` with the original corpus hash; see [operation-first setup](../docs/OPERATION_FIRST_USER_SETUP.md).
 
-- [`PUBLIC_PROFILE_RESULTS.csv`](PUBLIC_PROFILE_RESULTS.csv): all 245 callable rows across V1-V5, with cycles, memory/ZP information, exact public source path and source SHA-256.
-- [`BEST_PROFILE_RESULTS.csv`](BEST_PROFILE_RESULTS.csv): one row per canonical routine, selecting the fastest shipped profile by measured mean cycle count.
-- [`STANDALONE_RESULTS.csv`](STANDALONE_RESULTS.csv): independently useful record/Pareto kernels and optional alternatives, with timing basis and validation path.
+## Preserved historical data (not current installation choices)
 
-- [`UNSIGNED_COMMON_PROFILE_RESULTS.csv`](UNSIGNED_COMMON_PROFILE_RESULTS.csv): 55 apples-to-apples cross-profile observations (11 unsigned APIs × 5 profiles), deterministic identical inputs, with p95/worst-case cycles and SHA-256 case/provenance hashes. Ranking winners for these 11 APIs in `BEST_PROFILE_RESULTS.csv` now use this comparable basis, not the old different-seed profile means.
+- [`PUBLIC_PROFILE_RESULTS.csv`](PUBLIC_PROFILE_RESULTS.csv): 245 archived callable rows across V1–V5, original public resident benchmark samples, resources and SHA references.
+- [`BEST_PROFILE_RESULTS.csv`](BEST_PROFILE_RESULTS.csv): archived fastest-profile ranking, **not** today's optimizer ranking. Different benchmark bases must not be mixed.
+- [`UNSIGNED_COMMON_PROFILE_RESULTS.csv`](UNSIGNED_COMMON_PROFILE_RESULTS.csv): 55 matched-input observations (11 APIs × 5 legacy residents), including p95/worst-case and corpus hashes, reproducible historical comparability only.
+- [`STANDALONE_RESULTS.csv`](STANDALONE_RESULTS.csv): independent Pareto and record kernels; may have distinct ABI, corpus or memory state and are **not necessarily selectable** by the current source linker.
 
-The human-readable summary is [`../PERFORMANCE.md`](../PERFORMANCE.md).
+The original historical Markdown table is retained [unchanged in the performance archive](../docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md).
 
-Cycle numbers are not automatically comparable across different benchmark corpora. The `cycle_basis` column is part of the result and should be quoted with the number whenever comparing standalone alternatives.
+## Never mix measurement bases
 
-**Important:** `PUBLIC_PROFILE_RESULTS.csv` and consolidated legacy tables retain the independent per-profile validation seeds. Their numerical differences are not proof of faster code. Workload class, call frequency, ZP, and external REU DMA costs still matter.
+CPU-model entry-through-RTS means, whole-project math-only CPU+JSR frame peaks, and native VICE PAL/CIA **elapsed slots** measure different things. External REU DMA/bus delay is absent from historical CPU-model-only REU timings. Source-only record means on different corpora cannot prove one variant is faster than another. Quote the specific source, input corpus, selected `link:...` variant, physical RAM/ZP budget and measured scope.

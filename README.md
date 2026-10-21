@@ -136,6 +136,8 @@ make legacy-validate         # opt-in historical profile reproducibility tests
 ```
 
 
+The [current operation-first performance charts](PERFORMANCE.md) compare verified whole-project source variants and link budgets; [the historical V1–V5 timing tables](docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md) are retained separately. Do not use archived profile rankings as current speed-mode selections.
+
 A successful installer test demonstrates **correctly linked configurations**;
 it is not a guarantee of peak historical V1–V5 speed for every API, and
 CPU-model cycle estimates are not full VIC-II/SID/REU frame measurements.
