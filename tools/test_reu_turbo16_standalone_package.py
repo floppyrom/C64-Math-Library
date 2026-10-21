@@ -75,6 +75,55 @@ class StandaloneREUTests(unittest.TestCase):
         with self.assertRaisesRegex(p.PackageError,"overlay collision"):
             p.build(reserved_zp=[(0x00,0xff)])
 
+
+    def test_import_stock_builder_physical_occupancy_and_fail_closed(self):
+        # A successful operation-first build can only coexist if its public
+        # IO, ZP, scratch and source-built occupied code do not collide.
+        stock = {
+            "target":"c64", "operations":[{"api":"MATH_UMUL8"}],
+            "resource_use":{
+                "public_io_bytes":32, "private_ram_scratch_bytes":16,
+                "zero_page_bytes":8
+            },
+            "memory_map":{
+                "code_start":"$8000","code_end":"$8400",
+                "math_io_start":"$C040","scratch_start":"$C060",
+                "zp_start":"$C0","persistent_state":{},
+                "user_reserved":[{"name":"game","start":"$9000","end":"$91FF"}],
+                "user_zp_reserved":[{"name":"irq","start":"$02","end":"$1F"}]
+            }
+        }
+        out, blob = p.build(stock_manifest=stock)
+        self.assertEqual(out["stock_manifest_collision_check"],
+                         "PASSED_FOR_REPORTED_RESOURCES")
+        self.assertEqual(out["stock_selected_operations_checked"],1)
+        self.assertTrue(blob)
+        # Default stock public IO ($C000) always collides with standalone IO.
+        import copy
+        io_conflict=copy.deepcopy(stock)
+        io_conflict["memory_map"]["math_io_start"]="$C000"
+        with self.assertRaisesRegex(p.PackageError,"collision"):
+            p.build(stock_manifest=io_conflict)
+        zp_conflict=copy.deepcopy(stock)
+        zp_conflict["memory_map"]["zp_start"]="$70"
+        with self.assertRaisesRegex(p.PackageError,"overlay collision"):
+            p.build(stock_manifest=zp_conflict)
+        ram_conflict=copy.deepcopy(stock)
+        ram_conflict["memory_map"]["code_start"]="$7100"
+        ram_conflict["memory_map"]["code_end"]="$7300"
+        with self.assertRaisesRegex(p.PackageError,"collision"):
+            p.build(stock_manifest=ram_conflict)
+        state_unqualified=copy.deepcopy(stock)
+        state_unqualified["memory_map"]["persistent_state"]={"seek":"$A000"}
+        with self.assertRaisesRegex(p.PackageError,"persistent state"):
+            p.build(stock_manifest=state_unqualified)
+        missing=copy.deepcopy(stock)
+        del missing["memory_map"]["code_end"]
+        with self.assertRaisesRegex(p.PackageError,"Incomplete"):
+            p.build(stock_manifest=missing)
+        with self.assertRaisesRegex(p.PackageError,"Expected"):
+            p.build(stock_manifest={"target":"1541"})
+
     def test_source_package_deterministic(self):
         a,p1=p.build()
         b,p2=p.build()
