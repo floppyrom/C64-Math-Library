@@ -31,6 +31,14 @@ class HistoricalParityTriageTests(unittest.TestCase):
             self.assertGreater(len(item["selective_candidates"]), 0)
             self.assertTrue(item["historical_published_leader"]["source_sha256"])
 
+    def test_missing_historical_extrema_stay_explicitly_unknown(self):
+        # The published UMUL8 donor has a mean but no min/max observations.
+        # Do not substitute 0 or derive extrema from an unrelated corpus.
+        prior = self.result["operation_results"]["MATH_UMUL8"]["historical_published_leader"]
+        self.assertGreater(prior["mean_cycles"], 0)
+        self.assertIsNone(prior["min_cycles"])
+        self.assertIsNone(prior["max_cycles"])
+
     def test_unsigned_five_profile_inputs_are_identical_only_within_legacy(self):
         same = [r for r in self.result["operation_results"].values()
                 if r["historical_five_profile_same_input"] is not None]
