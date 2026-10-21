@@ -39,6 +39,36 @@ stock/REU generated images and matched IRQ/display deltas. This is
 **physical DMA timing included in an application-sized burst**, not the
 isolated CPU-only cycle estimates used in historical variants.
 
+## Cold-start reproducibility and monitor hygiene
+
+The native qualification uses **normal-speed PAL x64sc**, not emulator
+`-warp`. The initial warp-mode runs intermittently stalled at the 16 MiB
+high-bank IRQ case, including a fresh-run isolated replay, even though
+other identical inputs passed. This is a limitation of that test setup,
+**not proof** of an actual C64 hardware or Turbo16 arithmetic defect.
+An explicit `--warp` flag remains available for investigating that
+difference, but no warp-mode timing result is accepted as a release gate.
+
+[Native cold-start run #39656111190](https://github.com/floppyrom/C64-Math-Library/actions/runs/39656111190)
+passed the high-bank 16 MiB IRQ case as the **first machine process**,
+then passed **three complete eight-case matrices** without diagnostic
+warmup. It checked 24 separate cases with native REU DMA, true raster
+IRQs, SID writes, real CIA wall-clock counters and intact caller ZP,
+and retained per-case source-image hashes. Representative normal-speed
+results were **6,408** PHI2 slots with display disabled and no IRQ,
+**6,491** with an IRQ, **6,751–6,752** with the display enabled and no IRQ,
+and **6,834–6,835** with both display and IRQ enabled.
+
+The monitor is started using an address-free `g` command. Its PC is set
+and read back **before** completion breakpoints are installed to avoid
+known VICE monitor/IRQ interaction hazards, including the continuing
+[VICE #2024 issue](https://sourceforge.net/p/vice-emu/bugs/2024/).
+The reorder is an additional test-hardening change and must pass its
+own exact-head native qualification before this PR can merge.
+
+Only the displayed, no-warp, bounded PAL result is qualified; no
+unconditional claim of IRQ-safe calls on actual hardware follows.
+
 ## What this does not qualify
 
 - It is not a full SID music player, an authenticated 24-frame arithmetic
