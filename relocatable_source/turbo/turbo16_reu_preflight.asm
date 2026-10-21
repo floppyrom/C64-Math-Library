@@ -7,7 +7,11 @@
 
 T16_REU_INSTALL:
         lda T16_STATE
-        bne T16_INSTALL_FAIL
+        beq T16_CHECK_READY
+T16_INSTALL_FAIL:
+        sec
+        rts
+T16_CHECK_READY:
         lda T16_READY
         bne T16_INSTALL_FAIL
         lda $01
@@ -77,7 +81,6 @@ T16_INSTALL_UPLOAD:
         rts
 T16_INSTALL_BAD:
         plp
-T16_INSTALL_FAIL:
         sec
         rts
 
