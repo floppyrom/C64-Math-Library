@@ -19,8 +19,8 @@ class QS16NativeSourceBuilder(unittest.TestCase):
         mem=bytearray(65536)
         mem[q16.BASE:q16.LIMIT]=prg[2:]
         mem[1]=0x35
-        mem[0x4e]=0xb2
-        mem[0x4f]=0x51
+        seed=bytes((0xb2+i*73)&255 for i in range(16))
+        mem[0x4e:0x5e]=seed
         reu=bytearray(16*1024*1024)
         cpu=CPU(mem,reu=reu)
         stack=cpu.sp
@@ -31,7 +31,7 @@ class QS16NativeSourceBuilder(unittest.TestCase):
         self.assertEqual(mem[q16.READY],1)
         self.assertEqual(mem[q16.ACTIVE],0)
         self.assertEqual(cpu.sp,stack)
-        self.assertEqual(bytes(mem[0x4e:0x50]),bytes((0xb2,0x51)))
+        self.assertEqual(bytes(mem[0x4e:0x5e]),seed)
         start=q16.TABLE_BANK*65536
         expect=qs16_table()
         self.assertEqual(reu[start:start+len(expect)],expect)
@@ -64,6 +64,7 @@ class QS16NativeSourceBuilder(unittest.TestCase):
             cpu.call(symbols["Q16_REU_END"])
             self.assertEqual(cpu.c,0)
             self.assertEqual(mem[q16.ACTIVE],0)
+            self.assertEqual(bytes(mem[0x4e:0x5e]),seed)
             cpu.call(symbols["Q16_REU_END"])
             self.assertEqual(cpu.c,1)
 
