@@ -40,6 +40,10 @@ All 24 frame jobs run in **one** PAL process per plan/display combination:
   minimum margin, and per-frame public-call counts are retained in JSON.
   Extra raster IRQs caused by skipped frame opportunities are **reported**,
   not silently discarded or mistaken for arithmetic errors.
+  Because the final short 3-call frame can complete *before* its line-90
+  raster IRQ, **23 observed IRQs for 24 completed frame jobs is valid**;
+  the unobserved late-in-frame interrupt is never invented. Counts of 24
+  or more still require scrutiny alongside actual cumulative CIA deadlines.
 
 Run static regression checks:
 
