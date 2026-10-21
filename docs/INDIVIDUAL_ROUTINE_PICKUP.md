@@ -1,18 +1,79 @@
-# Pick up a single routine: public API, exact source, or portable module
+# Pick up a single C64 math routine
 
-This is the practical entry point for demo, game, and tool developers who want **one operation**, not necessarily the whole C64 Math Library.
+**For a new stock-C64 project, start with the operation-first builder.**
+All **56 public math operations** can be selected individually without
+installing a whole historical V1–V5 resident profile.
 
-**All 56 stable public calls are available in every V1–V5 resident profile.** The five profile directories also publish one named `.asm` **source mirror per stable call**. REU profiles include their additional Turbo/QS entry mirrors. The current `routines/SOURCE_CATALOG.csv` indexes **295 shipped-profile source mirrors** plus **25 standalone alternatives**, with individual file paths, source SHA-256, measured cycles, ZP budgets and evidence.
+There are **two ways** to take just what you need:
 
-There are three distinct ways to use these sources. Do not confuse them:
+| What you want | Recommended approach |
+| --- | --- |
+| **One working routine, already linked** | Select one operation with `make builder-setup`. The generated PRG contains its code and necessary dependencies, with a matching `math_api.inc` and resource manifest. |
+| **Assembly source to transplant or modify** | Compare source-backed variants in the [current variant table](../benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv), follow each row's `source_path`, and read its memory, I/O and dependency contract. |
 
-| You want | Start here | What you get |
-|---|---|---|
-| Use a routine in an actual game/demo | [V1 resident](../v1_balanced/resident/) or [V5 resident](../v5_hybrid_lowzp/resident/), plus that profile's `math_api.inc` | Complete tested public ABI; assemble/load the **profile image**, then `JSR MATH_* `; V1/V5 work on stock C64 |
-| Examine/extract **one shipped implementation** | [V1 standalone mirror index](../v1_balanced/standalone/README.md), [V5 standalone mirror index](../v5_hybrid_lowzp/standalone/README.md) and [source catalog](../routines/SOURCE_CATALOG.csv) | One auditable `.asm` per public entry with all statically reachable executable instructions and byte/address annotations |
-| Integrate a **relocatable source kernel** | [V1 symbolic source tree](../relocatable_source/v1_balanced/) or [full relocation guide](SOURCE_RELOCATION.md), and curated [liftable modules](../routines/README.md) | Symbolic operands/address definitions and explicit profile dependencies; some modules are directly reusable, others depend on their host core |
+## Option 1: build just one operation
 
-**Important limitation:** a file named `<profile>/standalone/<typed-name>.asm` is an **exact extracted executable graph**, **not automatically a self-contained drop-in library**. It may require shared immutable tables, zero-page reservations, REU data or another public/private routine, and its annotated addresses belong to a chosen profile. The buildable complete profile and the separately curated `routines/` modules are different packaging products. Check dependencies before copying a mirror alone. We deliberately do not claim every `standalone/*.asm` file compiles and functions independently.
+The guided command lets you choose **only one operation**:
+
+```sh
+make builder-setup
+```
+
+Or build a single unsigned 16-bit multiplication routine with a reproducible
+configuration:
+
+```sh
+python3 tools/configure_math.py \
+  --operation UMUL16 --objective balanced \
+  --zp-budget 8 --ram-budget 4096 \
+  --config-out just-umul16.json --build-dir build_just_umul16
+```
+
+Use the generated `math_selective.prg` and `math_api.inc` together.
+Consult `selective_manifest.json` for the actual linked variant, code location,
+ZP allocation, public I/O and any initialization requirements.
+**Do not use a V1–V5 fixed address with this PRG.**
+
+For other selected operations, replace `UMUL16` with a name from the
+[public catalog](../routines/PUBLIC_OPERATIONS.csv). To compare available
+qualified implementations before selecting one:
+
+```sh
+python3 tools/math_builder.py --variants UMUL16
+```
+
+[Full configuration instructions](OPERATION_FIRST_USER_SETUP.md) ·
+[Current cycles/RAM/ZP/stack reference](OPERATION_FIRST_ROUTINE_METRICS.md).
+
+## Option 2: lift or adapt the assembly source
+
+1. Open the [current per-variant CSV](../benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv).
+   Filter on `operation`, e.g. `MATH_UMUL16`. Compare variants on the
+   **same operation and input corpus**.
+2. Follow the chosen row's `source_path` to its assembly file and check
+   any related documentation and linked dependencies.
+3. Check the **operand/result ABI, tables, scratch RAM, ZP reservations,
+   initialization, relocations and self-modifying code** before including
+   the source in a different project. Validate it at your actual addresses.
+
+Useful starting points: [curated symbolic sources](../routines/README.md),
+[portable standalone kernels with configurable addresses](../routines/standalone_lab/portable/README.md),
+and [source relocation notes](SOURCE_RELOCATION.md).
+
+**Source-linkable does not automatically mean one-file, copy-and-paste
+portable.** Some source files are bound by the builder into an executable
+module using generated symbols, dedicated tables and scratch. For the simplest
+integration, choose **Option 1** instead.
+
+## Historical source mirrors (reference only)
+
+The old V1–V5 `standalone/` directories and
+[routine source catalog](../routines/SOURCE_CATALOG.csv) remain useful for
+investigating exact shipped implementations. **They are not the new-project
+installer** and individual mirror files are not necessarily self-contained:
+shared data and hard-coded profile addresses may be missing or unsuitable.
+The following sections retain their historical examples for developers
+studying or reproducing those releases.
 
 ## Direct links to the recent issue #39 unsigned improvements
 
