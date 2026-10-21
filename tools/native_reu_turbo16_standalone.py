@@ -166,14 +166,16 @@ def main():
     cases=(( "no_reu",0,512,4),
            ( "512k",512,512,4),
            ( "16m",16384,16384,200),
-           ( "512k_alias_reject_16m",512,16384,200))
+           ( "512k_alias_reject_16m",512,16384,200),
+           ( "1m_alias_reject_16m",1024,16384,200),
+           ( "8m_alias_reject_16m",8192,16384,200))
     with tempfile.TemporaryDirectory(prefix="turbo16_native_reu_") as temp:
         folder=Path(temp)
         rows=[native_case(exe,folder,name,installed,declared,bank,9550+i)
               for i,(name,installed,declared,bank) in enumerate(cases)]
     result={
         "schema":"native-source-built-turbo16-reu-dma-preflight-v1",
-        "status":"PASS_NATIVE_VICE_4_DMA_CASES",
+        "status":"PASS_NATIVE_VICE_6_DMA_CASES",
         "native_vice_hardware_behaviour_tested":True,
         "native_cycle_timing_measured":False,
         "irq_vic_coexistence_qualified":False,
