@@ -17,6 +17,7 @@ import tempfile
 import math_builder as builder
 import selective_linker as linker
 import reu_user_setup as reu_setup
+import reu_unified_setup as reu_modular
 
 OBJECTIVES = builder.OBJECTIVES
 
@@ -135,21 +136,28 @@ def collect(args, index: dict, *, interactive: bool):
         }
     if memory:
         config["memory"] = memory
-    reu_selected = getattr(args, "reu_turbo16", False)
-    reu_kib = getattr(args, "reu_kib", None)
-    reu_bank = getattr(args, "reu_bank", None)
-    reu_reserved = getattr(args, "reu_reserved_bank", [])
-    if not reu_selected and (reu_kib is not None or reu_bank is not None or reu_reserved):
-        raise builder.SelectionError("REU tier, bank and reservations require --reu-turbo16")
-    if reu_selected:
-        if "MATH_UMUL16" not in operations:
-            raise builder.SelectionError("Select --operation UMUL16 for a stock fallback to REU Turbo16")
-        capacity = 512 if reu_kib is None else reu_kib
-        if capacity not in (512, 16384):
+    reu_choices = [service for service in ("turbo16","turbo32","qs16")
+                   if getattr(args,"reu_"+service,False)]
+    if len(reu_choices)>1:
+        raise builder.SelectionError("Choose exactly one REU service per build")
+    reu_kib = getattr(args,"reu_kib",None)
+    reu_bank = getattr(args,"reu_bank",None)
+    reu_reserved = getattr(args,"reu_reserved_bank",[])
+    if not reu_choices and (reu_kib is not None or reu_bank is not None or reu_reserved):
+        raise builder.SelectionError("REU tier/bank options require a selected REU service")
+    if reu_choices:
+        service=reu_choices[0]
+        fallback="UMUL32" if service=="turbo32" else "UMUL16"
+        if "MATH_"+fallback not in operations:
+            raise builder.SelectionError("REU "+service+" requires stock fallback "+fallback)
+        capacity=(16384 if service=="qs16" else 512) if reu_kib is None else reu_kib
+        if service=="qs16" and capacity!=16384:
+            raise builder.SelectionError("QS16 requires 16MiB REU")
+        if capacity not in (512,16384):
             raise builder.SelectionError("REU tier must be 512 or 16384 KiB")
-        bank = (4 if capacity==512 else 200) if reu_bank is None else reu_bank
-        config["hardware"] = {"reu":{"turbo16":{
-            "capacity_kib":capacity, "bank":bank,
+        bank=(4 if capacity==512 else 200) if reu_bank is None else reu_bank
+        config["hardware"]={"reu":{service:{
+            "capacity_kib":capacity,"bank":bank,
             "reserved_banks":reu_reserved,
         }}}
     return config
@@ -158,13 +166,23 @@ def collect(args, index: dict, *, interactive: bool):
 def build_checked(config: dict, index: dict, folder: Path) -> dict:
     """Re-use the production selector and linker, never a DIY estimator."""
     reu_selected = "hardware" in config
+    service = None
     if reu_selected:
-        reu_setup.qualified_hardware(config)
+        hw=config.get("hardware")
+        if not isinstance(hw,dict) or not isinstance(hw.get("reu"),dict) or len(hw["reu"])!=1:
+            raise builder.SelectionError("Exactly one REU service is required")
+        service=next(iter(hw["reu"]))
+        if service=="turbo16":
+            reu_setup.qualified_hardware(config)
+            zp_cost,ram_cost=reu_setup.ZP_COST,reu_setup.RAM_COST
+        else:
+            costs=reu_modular.requirements(config)
+            zp_cost,ram_cost=costs["zero_page_bytes"],costs["main_ram_total_bytes"]
     zp_budget = config["constraints"]["max_zp_bytes"]
     ram_budget = config["constraints"]["max_ram_bytes"]
     if reu_selected:
-        zp_budget = reu_setup._budget(zp_budget, reu_setup.ZP_COST, "ZP")
-        ram_budget = reu_setup._budget(ram_budget, reu_setup.RAM_COST, "RAM")
+        zp_budget = reu_setup._budget(zp_budget, zp_cost, "ZP")
+        ram_budget = reu_setup._budget(ram_budget, ram_cost, "RAM")
     plan = builder.create_plan(
         index, config["operations"],
         target=config["target"],
@@ -175,7 +193,9 @@ def build_checked(config: dict, index: dict, folder: Path) -> dict:
         pins=config.get("pins"),
     )
     if reu_selected:
-        return reu_setup.install(config,index,plan,folder,linker)
+        if service=="turbo16":
+            return reu_setup.install(config,index,plan,folder,linker)
+        return reu_modular.install(config,index,plan,folder,linker)
     return linker.build(plan, folder, memory=config.get("memory", {}))
 
 
@@ -207,8 +227,9 @@ def run(args, index=None, *, interactive: bool | None = None) -> dict:
         manifest = build_checked(config, index, source_dir)
         names = ("math_selective.prg", "math_api.inc", "selective_manifest.json")
         if "hardware" in config:
-            names += ("turbo16_reu.prg","turbo16_reu_manifest.json",
-                      "math_project_manifest.json","math_reu_turbo16.inc")
+            service=next(iter(config["hardware"]["reu"]))
+            names += (service+"_reu.prg",service+"_reu_manifest.json",
+                      "math_project_manifest.json","math_reu_"+service+".inc")
         for name in names:
             if not (source_dir / name).is_file():
                 raise builder.SelectionError("Linker did not produce " + name)
@@ -242,11 +263,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--memory-config", type=Path,
                         help="optional JSON object defining the linker's memory map and reservations")
     parser.add_argument("--reu-turbo16", action="store_true",
-                        help="opt in to guarded native REU Turbo16 add-on; normal UMUL16 remains the fallback")
+                        help="optional source-built Turbo16 REU; requires stock UMUL16")
+    parser.add_argument("--reu-turbo32", action="store_true",
+                        help="optional source-built Turbo32 REU; requires stock UMUL32")
+    parser.add_argument("--reu-qs16", action="store_true",
+                        help="optional source-built 16MiB QS16; requires stock UMUL16")
     parser.add_argument("--reu-kib", type=int, choices=(512,16384),
-                        help="physical REU tier for Turbo16, default 512 KiB")
+                        help="physical REU tier; defaults 512KiB for Turbo, 16MiB for QS16")
     parser.add_argument("--reu-bank", type=lambda x: int(x,0),
-                        help="exclusive REU 64KiB bank, default 4 (512KiB) or 200 (16MiB)")
+                        help="exclusive REU bank; default 4 (512KiB) or 200 (16MiB)")
     parser.add_argument("--reu-reserved-bank", type=int, action="append", default=[],
                         help="REU bank occupied by another subsystem; repeat to reject collisions")
     parser.add_argument("--config-out", type=Path, default=Path("my_math.json"),
@@ -267,9 +292,12 @@ def main(argv: list[str] | None = None) -> int:
         print("Objective: " + manifest["selection_objective"])
         print("Total main RAM bytes: " + str(usage["main_ram_total_bytes"]))
         print("Total ZP bytes: " + str(usage["zero_page_bytes"]))
-        if args.reu_turbo16:
+        chosen=[name for name in ("turbo16","turbo32","qs16")
+                if getattr(args,"reu_"+name,False)]
+        if chosen:
+            service=chosen[0]
             project=json.loads((args.build_dir/"math_project_manifest.json").read_text())
-            print("Opt-in REU Turbo16 PRG: " + str(args.build_dir/"turbo16_reu.prg"))
+            print("Opt-in REU "+service+" PRG: " + str(args.build_dir/(service+"_reu.prg")))
             print("Total REU+stock RAM bytes: " + str(project["combined_resource_use"]["main_ram_total_bytes"]))
             print("Total REU+stock ZP bytes: " + str(project["combined_resource_use"]["zero_page_bytes"]))
             print("Use INSTALL/BEGIN/CALL/END explicitly; no IRQ/VIC mixed qualification.")
