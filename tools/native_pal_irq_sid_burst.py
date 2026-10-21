@@ -22,6 +22,8 @@ import mixed_seven_d65536_frame as model
 import native_installed_d65536_pal as installed
 import native_pal_vic_cia_probe as cia
 
+BASE_HARNESS = cia.harness
+
 IRQ = 0x7e00
 IRQ_COUNT = 0x3a00
 IRQ_AUX = 0x3a01
@@ -66,7 +68,7 @@ def irq_harness(entries, *, frame: int, display: bool,
         raise ValueError("Raster IRQ line must be a low-half PAL line")
     if type(irq_enabled) is not bool:
         raise ValueError("Explicit enable/disable IRQ control required")
-    base, old_halt, expected, calls = cia.harness(
+    base, old_halt, expected, calls = BASE_HARNESS(
         entries, frame=frame, display=display)
     if base[:2] != b'\x78\xd8' or base[-3] != 0x4c:
         raise AssertionError("Underlying source-proven PAL harness drifted")
