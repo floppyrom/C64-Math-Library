@@ -373,6 +373,9 @@ def main():
     p.add_argument("--monitor-start",choices=("register-go","goto"),
                    default="register-go",
                    help="Set PC with 'r pc=' then plain 'g' (default); legacy 'g xxxx' control")
+    p.add_argument("--diagnostic-16m-bank",type=int,choices=(4,200),
+                   default=200,
+                   help="Diagnose high-bank address vs 16MiB device; restricted to --only-case")
     p.add_argument("--trace-irq-entry",action="store_true",
                    help="Stop at first real IRQ handler entry; diagnostic only")
     p.add_argument("--only-case",choices=(
@@ -384,6 +387,9 @@ def main():
     args=p.parse_args()
     if args.trace_irq_entry and args.only_case is None:
         p.error("--trace-irq-entry requires --only-case")
+    if args.diagnostic_16m_bank != 200 and (
+            not args.only_case or not args.only_case.startswith("reu_16384")):
+        p.error("Alternate 16MiB bank is diagnostic only and needs 16MiB --only-case")
     exe=os.environ.get("VICE_WRAPPER")
     if not exe or not Path(exe).is_file():
         raise RuntimeError("Pinned VICE x64sc required for native PAL REU timing")
@@ -391,7 +397,7 @@ def main():
     with tempfile.TemporaryDirectory(prefix="reu_pal_irq_dma_") as td:
         root=Path(td)
         index=0
-        for tier,bank in ((512,4),(16384,200)):
+        for tier,bank in ((512,4),(16384,args.diagnostic_16m_bank)):
             for display in (False,True):
                 for armed in (False,True):
                     tag=f"reu_{tier}_display{int(display)}_irq{int(armed)}"
@@ -432,6 +438,7 @@ def main():
                   else "DIAGNOSTIC_SINGLE_CASE_NOT_QUALIFIED" if args.only_case is not None
                   else "PASS_NATIVE_PAL_REU_IRQ_SID_CIA_BOUNDED_PROBE"),
         "monitor_launch_mode":args.monitor_start,
+        "diagnostic_bank_override":args.diagnostic_16m_bank != 200,
         "real_vice_reu_dma_timing_included":True,
         "real_vic_screen_contention_included":True,
         "real_irq_and_sid_register_writes_included":True,
