@@ -1,0 +1,47 @@
+name: Native 24 consecutive PAL busiest-frame IRQ/SID stress
+on:
+  pull_request:
+    paths:
+      - 'tools/native_pal_consecutive_busiest.py'
+      - 'tools/test_native_pal_consecutive_busiest.py'
+      - 'tools/native_pal_irq_sid_burst.py'
+      - '.github/workflows/native-pal-consecutive-busiest.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-consecutive-pal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify assembled repeated-source math, exact public oracle, VIC/IRQ code and rollover before native execution
+        run: |
+          python3 -m compileall -q tools/native_pal_consecutive_busiest.py tools/test_native_pal_consecutive_busiest.py
+          python3 -m unittest discover -s tools -p 'test_native_pal_consecutive_busiest.py' -v
+      - name: Install pinned PAL x64sc build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned x64sc r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Run twenty-four successive raster-zero math frames with one real VIC IRQ and SID register writes per period
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_pal_consecutive_busiest.py --out build/pal-consecutive/consecutive-frame8-irq-sid.json
+      - name: Upload experimental 24-consecutive-period evidence (not full game certification)
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-pal-24-consecutive-busiest-irq-sid
+          path: build/pal-consecutive/consecutive-frame8-irq-sid.json
+          if-no-files-found: error
+          retention-days: 14
