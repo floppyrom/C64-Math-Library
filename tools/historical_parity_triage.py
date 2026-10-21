@@ -135,7 +135,8 @@ def report(root: Path = ROOT) -> dict:
             "historical_published_leader": {
                 "profile": baseline["profile"],
                 "mean_cycles": float(baseline["mean_cycles"]),
-                "max_cycles": int(baseline["max_cycles"]),
+                "min_cycles": int(baseline["min_cycles"]) if baseline["min_cycles"] else None,
+            "max_cycles": int(baseline["max_cycles"]) if baseline["max_cycles"] else None,
                 "cycle_basis": baseline["cycle_basis"],
                 "source": baseline["source_path"],
                 "source_sha256": baseline["source_sha256"],
