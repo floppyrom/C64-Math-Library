@@ -56,16 +56,28 @@ Q16_GENERATE_TABLE:
         lda #REU_QS16_BASE_BANK
         sta Q16_REU_BANK
 Q16_NEXT_BLOCK:
+        lda #<Q16_DATA_BUFFER
+        sta Q16_BUF_PTR
+        lda #>Q16_DATA_BUFFER
+        sta Q16_BUF_PTR+1
+        ldx #$04
+Q16_RECORD_PAGE:
         ldy #$00
 Q16_NEXT_RECORD:
+        ; Interleave four little-endian bytes for each record, not
+        ; four separate 256-byte value planes.
         lda Q16_Q0
-        sta Q16_DATA_BUFFER,y
+        sta (Q16_BUF_PTR),y
+        iny
         lda Q16_Q1
-        sta Q16_DATA_BUFFER+$0100,y
+        sta (Q16_BUF_PTR),y
+        iny
         lda Q16_Q2
-        sta Q16_DATA_BUFFER+$0200,y
+        sta (Q16_BUF_PTR),y
+        iny
         lda Q16_Q3
-        sta Q16_DATA_BUFFER+$0300,y
+        sta (Q16_BUF_PTR),y
+        iny
         ; Increment by floor((n+1)/2). On every second record increase
         ; the 16-bit half increment, then add it to the 32-bit Q(n).
         lda Q16_PARITY
@@ -89,9 +101,14 @@ Q16_HALF_READY:
         lda Q16_Q3
         adc #$00
         sta Q16_Q3
-        iny
-        beq Q16_UPLOAD_BLOCK
+        tya
+        beq Q16_PAGE_DONE
         jmp Q16_NEXT_RECORD
+Q16_PAGE_DONE:
+        inc Q16_BUF_PTR+1
+        dex
+        beq Q16_UPLOAD_BLOCK
+        jmp Q16_RECORD_PAGE
 
 Q16_UPLOAD_BLOCK:
         lda #<Q16_DATA_BUFFER
