@@ -31,6 +31,12 @@ def intersects(a, b):
     return a[0] <= b[1] and b[0] <= a[1]
 
 
+def alias_banks(bank):
+    """All distinct mirror candidates for smaller power-of-two REUs."""
+    return tuple(dict.fromkeys(bank % n for n in (8,16,32,64,128)
+                               if bank >= n))
+
+
 def check_claims(reu_kib, bank, *, reserved_zp=(), reserved_ram=(),
                  reserved_reu_banks=()):
     if reu_kib not in (512, 16384):
@@ -44,12 +50,13 @@ def check_claims(reu_kib, bank, *, reserved_zp=(), reserved_ram=(),
     if any(intersects((BASE, LIMIT-1), x) or
            intersects((IO, IO+31), x) for x in reserved_ram):
         raise PackageError("Single-file PRG envelope or public math I/O collision")
-    alias = bank & 7 if bank >= 8 else None
-    if alias is not None and alias in reserved_reu_banks:
+    aliases = alias_banks(bank)
+    if any(a in reserved_reu_banks for a in aliases):
         raise PackageError("16MiB alias verification needs ownership of mirror probe byte")
     return {
         "reu_bank_exclusive": [bank * 65536, (bank+1)*65536-1],
-        "alias_guard_one_byte": alias*65536+65535 if alias is not None else None,
+        "alias_guard_one_byte": aliases[0]*65536+65535 if aliases else None,
+        "alias_guard_bytes": [a*65536+65535 for a in aliases],
         "exclusive_zp": [ZP, ZP+121],
         "c64_prg_envelope": [BASE, LIMIT-1],
         "public_io": [IO, IO+31],
@@ -142,14 +149,15 @@ def build(reu_kib=512, bank=None, *, reserved_zp=(), reserved_ram=(),
         "T16_PROBE = $%04X" % PROBE,
         "T16_OVERLAY_STAGE = $%04X" % STAGE,
         "REU_TURBO16_BANK = $%02X" % bank,
-        "REU_ALIAS_BANK = $%02X" % (bank & 7),
-        "REU_HIGH_BANK = $%02X" % int(bank >= 8),
+        "T16_ALIAS_COUNT = $%02X" % len(alias_banks(bank)),
         "T16_SWAP_BEGIN = $%04X" % labels["begin"],
         "T16_SWAP_CALL = $%04X" % labels["call"],
         "T16_SWAP_END = $%04X" % labels["end"],
     )) + "\n"
     try:
-        memory, symbols, _ = Assembler().assemble(prefix+source)
+        alias_data = ",".join("$%02X" % a for a in (alias_banks(bank) or (0,)))
+        memory, symbols, _ = Assembler().assemble(
+            prefix+source.replace("!byte T16_ALIAS_BYTES", "!byte "+alias_data))
     except (ValueError, KeyError, AssertionError) as exc:
         raise PackageError("Independent REU loader assembly failed: "+str(exc)) from exc
     if not memory or set(memory) != set(range(LOADER, LOADER+len(memory))):
@@ -189,6 +197,7 @@ def build(reu_kib=512, bank=None, *, reserved_zp=(), reserved_ram=(),
         "requires_no_live_irq_users_of_exclusive_zp": True,
         "hardware_minimum_reu_kib": reu_kib,
         "reu_bank": bank,
+        "smaller_reu_alias_banks_excluded": list(alias_banks(bank)),
         "zero_page_restored_after_each_end": True,
         "single_file_loader_prg_bytes": len(payload),
         "prg_load_address": "$%04X" % BASE,
