@@ -169,7 +169,7 @@
   "summary": {
     "checks_passed": 30,
     "file_count_excluding_checksum": 2609,
-    "uncompressed_bytes_excluding_checksum": 42609133,
+    "uncompressed_bytes_excluding_checksum": 42611502,
     "reference_prgs": 5,
     "reference_reu_images": 2
   }
