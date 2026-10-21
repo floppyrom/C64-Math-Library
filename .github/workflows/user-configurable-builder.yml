@@ -1,0 +1,41 @@
+name: User-configurable operation-first setup and selective binary
+on:
+  pull_request:
+    paths:
+      - 'tools/configure_math.py'
+      - 'tools/test_configure_math.py'
+      - 'docs/OPERATION_FIRST_USER_SETUP.md'
+      - 'README.md'
+      - 'Makefile'
+      - '.github/workflows/user-configurable-builder.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  user-configurable-builder:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Exercise config generation, pins, strict budgets and same-image binary
+        run: |
+          python3 -m compileall -q tools/configure_math.py tools/test_configure_math.py
+          python3 -m unittest discover -s tools -p 'test_configure_math.py' -v
+      - name: Verify standalone user setup without historic profiles
+        run: |
+          python3 tools/configure_math.py --operation UMUL8 --operation UDIV16 \
+            --objective size --zp-budget 0 --ram-budget 4096 \
+            --config-out build/user-config.json --build-dir build/user-selective
+          python3 tools/math_builder.py --config build/user-config.json --measure \
+            > build/user-selective/measured.json
+          python3 -c 'import json,pathlib; m=json.loads(pathlib.Path("build/user-selective/selective_manifest.json").read_text()); assert len(m["operations"]) == 2; assert m["resource_use"]["zero_page_bytes"]==0'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: user-configurable-builder-sample
+          path: |
+            build/user-config.json
+            build/user-selective/
+          retention-days: 14

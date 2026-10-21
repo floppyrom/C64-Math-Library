@@ -3,7 +3,7 @@
 PYTHON ?= python3
 ACME ?= acme
 
-.PHONY: builder-help builder-list builder builder-speed builder-frame builder-biased-qs-test builder-measure sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all
+.PHONY: builder-help builder-list builder-setup builder builder-speed builder-frame builder-biased-qs-test builder-measure sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all
 
 all: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
 
@@ -21,7 +21,11 @@ builder-help:
 	@echo '  make builder CONFIG=path/to.json    # build your own operation set'
 	@echo '  make builder-measure                # measure exact assembled footprint'
 	@echo '  make builder-list                   # show 56 public operations'
+	@echo '  make builder-setup                  # guided setup, editable JSON plus tested PRG'
 	@echo '  make all                            # legacy V1-V5 validation (opt-in)'
+
+builder-setup:
+	$(PYTHON) tools/configure_math.py
 
 builder-list:
 	$(PYTHON) tools/math_builder.py --list-linkable
