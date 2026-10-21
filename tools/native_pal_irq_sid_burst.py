@@ -80,7 +80,8 @@ def irq_harness(entries, *, frame: int, display: bool,
         store(0xfffe,IRQ & 255)+store(0xffff,IRQ >> 8)+
         store(0xd012,raster_line)+store(0xd019,0x01)+
         store(0xd01a,0x01 if irq_enabled else 0x00)+
-        bytes((0x58,))  # CLI: preserve original P across source public JSR
+        bytes((0xad,0x0d,0xdc,0xad,0x0d,0xdd))+  # read latched CIA1/CIA2 ICR IRQ/NMI flags
+        bytes((0x58,))  # CLI only after draining pending interrupts
     )
     reset=store(IRQ_COUNT,0)+store(IRQ_AUX,0)
     b=bytearray(base[:first]+setup+base[first:start]+reset+base[start:])
