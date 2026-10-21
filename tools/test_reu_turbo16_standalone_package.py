@@ -69,7 +69,11 @@ class StandaloneREUTests(unittest.TestCase):
                    dict(reserved_ram=[(0xc010,0xc010)]),
                    dict(reserved_reu_banks=[4]),
                    dict(reu_kib=512,bank=8),
-                   dict(reu_kib=1024)):
+                   dict(reu_kib=1024),
+                   dict(reserved_zp=[(0x100,0x120)]),
+                   dict(reserved_zp=[(-1,0x10)]),
+                   dict(reserved_ram=[(0xf000,0x10000)]),
+                   dict(reserved_reu_banks=[8])):
             with self.subTest(kw=kw), self.assertRaises(p.PackageError):
                 p.build(**kw)
         for mirror_bank in (0,8,72):
