@@ -4,8 +4,10 @@ on:
     paths:
       - 'relocatable_source/turbo/turbo16_swap_controller.asm'
       - 'tools/reu_turbo16_swap_experiment.py'
+      - 'tools/reu_turbo16_source_tables.py'
       - 'tools/test_reu_turbo16_swap_experiment.py'
       - 'docs/TURBO16_REU_SWAP_EXPERIMENT.md'
+      - 'docs/TURBO16_REU_SOURCE_TABLE_SWAP.md'
       - '.github/workflows/reu-turbo16-swap-experiment.yml'
   workflow_dispatch:
 permissions:
@@ -22,11 +24,13 @@ jobs:
         with:
           python-version: '3.12'
       - name: Execute source-built 6510 REU SWAP with two complete arithmetic batches
-        run: python3 -m unittest discover -s tools -p 'test_reu_turbo16_swap_experiment.py' -v
+        run: |
+          python3 -m unittest discover -s tools -p 'test_reu_turbo16_source_tables.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_turbo16_swap_experiment.py' -v
       - name: Emit CPU-model proof but not native hardware certificate
         run: |
           python3 tools/reu_turbo16_swap_experiment.py --out build/reu-swap-experiment
-          python3 -c 'import json,pathlib; x=json.loads(pathlib.Path("build/reu-swap-experiment/turbo16_reu_swap_cpu_model.json").read_text()); assert x["arithmetic_calls"]==224 and not x["native_vice_qualified"] and not x["source_linker_reu_variant_available"]'
+          python3 -c 'import json,pathlib; x=json.loads(pathlib.Path("build/reu-swap-experiment/turbo16_reu_swap_cpu_model.json").read_text()); assert x["arithmetic_calls"]==224 and x["source_table_bytes"]==2048 and not x["frozen_prg_needed_for_arithmetic_test"] and not x["native_vice_qualified"] and not x["source_linker_reu_variant_available"]'
       - uses: actions/upload-artifact@v4
         with:
           name: turbo16-source-dma-swap-cpu-model-not-native-reu
