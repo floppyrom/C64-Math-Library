@@ -1,10 +1,28 @@
-# Operation-first C64 library: primary build and profile retirement
+# Operation-first C64 library: installer cutover and legacy preservation
 
-The stock-C64 builder is the **primary setup path**. A project selects only the
-math operations it calls. It does **not** choose V1, V2, V3, V4 or V5 first.
-The historical profiles remain available until the performance and hardware
-migration acceptance gates below pass. This is a staged retirement, not a
-removal of validated legacy binary images.
+**Installer cutover completed, 2026-10-21.** The stock-C64 **operation-first
+builder is the only supported new-project installation/configuration path**.
+It passed user-configurable setup and release tests (PRs #370 and #372,
+35/35 and 34/34 exact-head checks respectively). All 56 public operations
+are independently linkable and have selectable source-qualified choices
+where available. A user selects *operations, objective, RAM/ZP budgets,
+workload call weights, pins and memory map*, not V1, V2, V3, V4 or V5.
+
+**This is a retirement of the fixed-profile installation UX, not deletion
+or unconditional technical parity certification of the old binaries.**
+Historical V1–V5 directories are archived compatibility, reproducibility
+and research records. V3/V4 REU Turbo/QS16 whole-resident bundles remain
+necessary for their unique lifecycle services, and must not be combined
+with a selective stock-C64 PRG. Full historical fastest-donor parity,
+REU backend parity and complete game PAL timing are **not** certified.
+The machine auditor still rightly reports
+`ready_to_retire_all_v1_v5_profiles=false` for *unconditional removal*;
+this does not block the completed **user-facing installer cutover**.
+
+**Current instructions:** [quick start](../QUICK_START.md),
+[installer guide](OPERATION_FIRST_USER_SETUP.md),
+[release acceptance](BUILDER_RELEASE_ACCEPTANCE.md),
+[historic REU compatibility](REU_COMPAT_EXPORT.md).
 
 ## Build your application-specific math library
 
@@ -343,22 +361,26 @@ The SEEK8/SEEK16 mixed-object 24-frame link-time CPU trace is now reproducibly e
 
 Automated source/ABI/capability inventory: `python3 tools/profile_retirement_audit.py --out build/retirement-evidence.json` creates a reproducible stock/legacy evidence matrix; `--require-retirement-ready` fails closed until actual parity and REU/Turbo/QS16 cutover gates pass. The nine lifecycle REU symbols are **not** interchangeable with the 56 stock operations. See [`PROFILE_RETIREMENT_EVIDENCE.md`](PROFILE_RETIREMENT_EVIDENCE.md).
 
-## Acceptance gates for retiring fixed profiles
+## Historical full-parity/removal research gates (not installer release blockers)
 
-1. Every one of 56 public APIs is independently source-linkable — **done**.
+1. Every one of 56 public APIs is independently source-linkable — **done**; user-facing profile choice retired.
 2. Multi-operation sharing, state lifetime, ABI, scratch ownership, RAM and
-   ZP budgets receive deterministic CPU-model and native VICE qualification —
-   **active**, including shared unsigned/signed 32-bit producers.
+   ZP budgets have passed user-configuration and full selective-image native
+   integration gates. Further donor-specific optimization remains research.
 3. Historical high-speed V1–V5 and OptiSearch variants are imported only after
    source relocation and matched-input performance proof — **not complete**.
-4. The builder optimizes a **whole operation set**, honoring workload weights,
-   comparable cycles, shared tables/code/state, initializer cost, SMC, and REU
-   requirements — **resource frontier active; global speed unfinished**.
+4. The stock-C64 builder already optimizes **whole operation sets** with
+   global physical shared code/tables/state, call-exclusive scratch/ZP and
+   positive weighted matched-source cycle estimates — **completed for the
+   stock-C64 installer**. A selective REU backend and global historical
+   speed parity are separate incomplete research.
 5. Stock C64 release/API compatibility and native VICE independent validation
    pass for realistic mixed workloads; hardware-specific REU/Turbo/QS16 need
    qualified equivalents or explicit separate compatibility packages.
-6. When all gates pass, archive V1–V5 as reference distributions; do not
-   delete historical sources, benchmarks or qualified reproducibility records.
+6. V1–V5 are already **archived as non-default installation choices**.
+   Until full hardware and speed parity exist, preserve all frozen sources,
+   binaries, benchmark history, REU compatibility and validation records.
+   The stronger future gate would govern *removal*, not normal setup.
 
 ## Scope and limits
 
