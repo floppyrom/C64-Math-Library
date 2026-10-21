@@ -42,6 +42,9 @@ jobs:
           export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
           bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
           python3 tools/native_reu_pal_irq_dma.py \
+            --only-case reu_16384_display0_irq1 --trace-irq-entry \
+            --out build/reu-pal/trace-16m-first-irq.json
+          python3 tools/native_reu_pal_irq_dma.py \
             --only-case reu_16384_display0_irq1 \
             --out build/reu-pal/isolated-16m-irq.json
           python3 tools/native_reu_pal_irq_dma.py --out build/reu-pal/irq-vic-dma-cia.json
