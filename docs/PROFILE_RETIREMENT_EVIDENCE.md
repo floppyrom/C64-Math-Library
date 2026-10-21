@@ -1,8 +1,23 @@
-# Machine-audited profile-retirement evidence gate
+# Machine-audited full-profile removal/parity gate (historical research)
 
-The operation-first **stock C64** builder already links 56/56 stable public
+**Scope distinction, October 21, 2026:** the fixed V1–V5 *configuration
+workflow* is retired for new stock-C64 projects. The 56-operation
+operation-first installer has passed the user-configuration and rebuild
+acceptance gates and is the sole supported setup path.
+See [setup](OPERATION_FIRST_USER_SETUP.md),
+[release acceptance](BUILDER_RELEASE_ACCEPTANCE.md), and
+[installer cutover policy](PROFILE_RETIREMENT_PLAN.md).
+
+This **stronger** audit deliberately still blocks deleting all historical
+sources/binaries, promising fastest-donor parity or claiming V3/V4
+REU/Turbo/QS16 replacement. Its `ready_to_retire_all_v1_v5_profiles=false`
+refers to *unconditional historical hardware/performance elimination*,
+**not** to the completed user-interface retirement. The archived profiles
+and REU compatibility bundles remain intentionally available.
+
+The operation-first **stock C64** builder links 56/56 stable public
 operations and declares public-call CPU-model speed evidence for all 56.
-This is not equivalent to proof that every historical V1–V5 fastest donor
+This is not proof that every historical V1–V5 fastest donor
 has been transplanted or that V3/V4 REU services can disappear.
 
 Run:
@@ -13,7 +28,7 @@ python3 tools/profile_retirement_audit.py --require-retirement-ready
 ```
 
 The first command generates a machine-readable source/ABI/resource catalog.
-The second deliberately exits **2** while the cutover is unqualified. No
+The second deliberately exits **2** while **unconditional archival removal** is unqualified. Normal stock-C64 installer cutover is already complete. No
 workflow should automatically delete V1–V5 release artifacts or advertise
 full historical performance/hardware parity.
 
@@ -50,7 +65,7 @@ for actual evidence.
 
 The original V3/V4 PRG+REU pairs now have an explicit immutable compatibility exporter, `tools/export_reu_compat.py`, which verifies each exact source against SHA256SUMS.txt, copies unchanged ABI/license references and fails closed on changes or existing destinations. This is a **separate whole-resident compatibility package**, **not a linkable operation-first REU backend**. See [REU compatibility export](REU_COMPAT_EXPORT.md). It retains access to current Turbo/QS16 contracts but cannot prove hardware portability or permit simultaneous selective linking.
 
-## Gates still blocking profile retirement
+## Gates still blocking total historical profile elimination (not installer usage)
 
 1. Per-operation historical V1–V5/OptiSearch fastest-variant parity on
    identical complete public-call corpora, mean/p95/maximum and frame tail.

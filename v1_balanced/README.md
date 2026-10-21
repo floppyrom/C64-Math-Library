@@ -1,3 +1,10 @@
+> **ARCHIVED RESIDENT — not the current installation path (2026-10-21).**
+> This folder preserves the exact historical **V1 Balanced** release for source,
+> benchmark and regression reproducibility. New stock-C64 projects should
+> choose their own operations and budgets using
+> [`make builder-setup`](../QUICK_START.md), not a fixed V1–V5 profile.
+> Historical entry addresses, code placement and tuning describe only this frozen resident.
+
 # v1_balanced — Balanced stock C64
 
 31-byte shared ZP contract; game-math extension adds no ZP.

@@ -1,3 +1,11 @@
+## Unreleased — operation-first stock-C64 installer cutover (2026-10-21)
+
+- **Retire V1–V5 as user-selectable installation profiles.** The one supported new stock-C64 configuration path is `make builder-setup` / `tools/configure_math.py`: select only required operations, an objective (balanced, speed, size or ZP), usable RAM/ZP budgets and optional source pins or memory reservations. Use the generated PRG, include and manifest; do not copy fixed historic entry addresses.
+- Change `make all` to the default operation-first image; retain all previous V1–V5 reproducibility validations under explicitly opt-in `make legacy-validate`. No kernels, binaries, REU data, compatibility ABI or benchmarks are deleted.
+- Replace the README and Quick Start with user-specific setup. Archive the pre-cutover README intact under `docs/README_RESEARCH_ARCHIVE_2026-10-21.md`. Promote the current installer in the full manual, API, performance and release-acceptance docs; mark the old release README files as archived resident documentation.
+- Maintain the strict distinction between **installer retirement** (completed after PR #370, 35/35 checks, and PR #372, 34/34 checks) and **total historical elimination** (still blocked by full fastest-donor parity and V3/V4 Turbo/QS16 REU hardware services). `tools/profile_retirement_audit.py --require-retirement-ready` correctly still exits 2. The REU exporter remains a separate, whole-resident compatibility service.
+- Add a deterministic project-entrypoint retirement regression so future development cannot accidentally switch `make all` back to historical residents. Application-specific SID/rendering/PAL benchmarks remain optional and do not block the installer.
+
 ## Unreleased — native consecutive PAL non-math CPU reserve sensitivity
 
 - Run the exact already-qualified 24 consecutive raster-zero frame-8 stress workload at seven injected non-math NOP instruction-cycle loads (0, 256, 512, 768, 1,024, 1,536 and 2,048) per math burst. Compare signed-only vs both-D65536 installed PRGs under normal VIC display on/off, real raster IRQ and minimal SID register writes. Report all cumulative CIA deadline margins, first tested failing reserve, actual IRQs and unchanged per-frame Q/R/C capture hashes; keep CPU-NOP cycles distinct from physical PHI2 wall slots and do not claim SID music/game/REU qualification.

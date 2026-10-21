@@ -1,5 +1,13 @@
 # Stock-C64 user-configurable builder: release acceptance
 
+> **Status: COMPLETED / merged into main (2026-10-21).** Guided configuration
+> and source-linked selective builds passed PR #370 (35/35 workflows);
+> four-objective, pinned-memory and exact rebuild acceptance passed PR #372
+> (34/34 workflows). This retires historic fixed profiles **as the normal
+> user setup**, while preserving REU whole-resident compatibility and
+> stronger, unresolved total-history speed/hardware parity research.
+
+
 **Release target:** users choose the mathematical operations needed by their
 own program, resource limits and optimization goal. The operation-first
 installer builds only the selected independently linkable operations and

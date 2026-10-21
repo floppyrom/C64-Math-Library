@@ -1,3 +1,10 @@
+> **ARCHIVED RESIDENT — not the current installation path (2026-10-21).**
+> This folder preserves the exact historical **V4 REU 16M** release for source,
+> benchmark and regression reproducibility. New stock-C64 projects should
+> choose their own operations and budgets using
+> [`make builder-setup`](../QUICK_START.md), not a fixed V1–V5 profile.
+> Hardware-specific REU Turbo16/Turbo32 and QS16 lifecycle services remain available only as a [separate full-resident REU compatibility bundle](../docs/REU_COMPAT_EXPORT.md); do not mix it with the selective stock-C64 PRG.
+
 # v4_reu_16m — 16 MiB REU
 
 Uses the matching 16 MiB game-math REU image; call MATH_INIT once.

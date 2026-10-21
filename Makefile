@@ -3,18 +3,23 @@
 PYTHON ?= python3
 ACME ?= acme
 
-.PHONY: builder-help builder-list builder-setup builder builder-speed builder-frame builder-biased-qs-test builder-measure sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all
+.PHONY: builder-help builder-list builder-setup builder builder-speed builder-frame builder-biased-qs-test builder-measure sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all legacy-validate
 
-all: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
+# "all" is now the supported stock-C64 installer, not five historical
+# resident distributions. Their reproducibility checks remain explicitly
+# runnable via "make legacy-validate". No source or binary is removed.
+all: builder
 
-# Preferred operation-first C64 distribution: no V1-V5 profile selection.
-# Override CONFIG and OUT to build another operation set; keep all historical
-# profile targets as explicit legacy release/validation compatibility tools.
+legacy-validate: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
+
+# Sole supported new-project installer is operation-first. Override CONFIG and
+# OUT to build another operation set. Historical residents are read-only
+# reference/validation artifacts; REU service bundles remain separate.
 CONFIG ?= examples/operation-first.json
 OUT ?= build_selective
 
 builder-help:
-	@echo 'C64 Math Library: operation-first builder (default)' 
+	@echo 'C64 Math Library: operation-first installer (sole new-project workflow)'
 	@echo '  make builder                       # balanced: optimize resources, NOT fastest cycles'
 	@echo '  make builder-speed                 # speed: compare same-corpus kernel cycles'
 	@echo '  make builder-frame                 # source-qualified math-only frame objective'
@@ -22,7 +27,8 @@ builder-help:
 	@echo '  make builder-measure                # measure exact assembled footprint'
 	@echo '  make builder-list                   # show 56 public operations'
 	@echo '  make builder-setup                  # guided setup, editable JSON plus tested PRG'
-	@echo '  make all                            # legacy V1-V5 validation (opt-in)'
+	@echo '  make all                            # stock C64 operation-first default build'
+	@echo '  make legacy-validate                # archived V1-V5 reproducibility tests'
 
 builder-setup:
 	$(PYTHON) tools/configure_math.py
@@ -55,6 +61,9 @@ builder-biased-qs-test:
 	$(PYTHON) -m unittest discover -s tools -p 'test_biased_quartersquare_offsets.py' -v
 
 
+# Historical residents below are kept for source provenance, exact binary
+# reproducibility and separate V3/V4 REU compatibility. They are NOT normal
+# library installation commands; see README.md and docs/REU_COMPAT_EXPORT.md.
 sources:
 	$(PYTHON) tools/generate_sources.py
 
