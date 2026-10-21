@@ -42,6 +42,10 @@ Q16_END_ACTIVE:
 
 * = Q16_GENERATOR_BASE
 Q16_GENERATE_TABLE:
+        lda Q16_BUF_PTR
+        sta Q16_SAVE_PTR0
+        lda Q16_BUF_PTR+1
+        sta Q16_SAVE_PTR1
         lda #$00
         sta Q16_Q0
         sta Q16_Q1
@@ -171,6 +175,10 @@ Q16_VERIFY_NEXT:
         bne Q16_VERIFY_NEXT
         jmp Q16_NEXT_TRANSFER
 Q16_VERIFY_FAILED:
+        lda Q16_SAVE_PTR0
+        sta Q16_BUF_PTR
+        lda Q16_SAVE_PTR1
+        sta Q16_BUF_PTR+1
         sec
         rts
 
@@ -192,6 +200,10 @@ Q16_DO_NEXT:
         jmp Q16_NEXT_BLOCK
 
 Q16_GENERATE_DONE:
+        lda Q16_SAVE_PTR0
+        sta Q16_BUF_PTR
+        lda Q16_SAVE_PTR1
+        sta Q16_BUF_PTR+1
         ; Original QS16 routine expects DMA C64 address at its 4-byte
         ; scratch area, and REU length high=0 for four-byte fetches.
         lda #<REU_SCRATCH
