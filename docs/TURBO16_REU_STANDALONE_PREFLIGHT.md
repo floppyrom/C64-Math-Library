@@ -25,7 +25,7 @@ python3 tools/reu_turbo16_standalone_package.py --out build/my-turbo16 \
   --reserved-reu-bank 2
 ```
 
-Overlaps are fatal, not warnings. The PRG is **not** suitable for linking into a random project or existing operation-first PRG without the still-missing global allocator integration. In particular, stock math might occupy the reserved PRG envelope; `--reserved-ram` must cover application *and stock-library* placements. A declared size is not treated as an actual hardware size until the runtime DMA/alias check passes.
+Overlaps are fatal, not warnings. For an existing operation-first project, add `--stock-manifest build_my_math/selective_manifest.json` to import the **actual installed stock code span, public I/O, scratch and ZP reservations** and fail closed on collisions, including reported game/IRQ reservations. If the stock manifest includes persistent SEEK or other object state without an exact per-family extent, the preflight intentionally rejects it rather than guessing. This is a read-only coexistence audit, **not** automatic global memory reallocation. The PRG is **not** suitable for linking into a random project or existing operation-first PRG without the still-missing global allocator integration. In particular, stock math might occupy the reserved PRG envelope; `--reserved-ram` must cover application *and stock-library* placements. A declared size is not treated as an actual hardware size until the runtime DMA/alias check passes.
 
 ## Qualification
 
