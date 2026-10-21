@@ -149,7 +149,6 @@ def cpu_model_proof(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
     reu[bank*BANK_SIZE:bank*BANK_SIZE+N]=parts["turbo16_zp_overlay.bin"]
     cpu=CPU(mem,reu=reu)
     stack=cpu.sp
-    orig_reu=bytes(reu[bank*BANK_SIZE:bank*BANK_SIZE+N])
     io_pairs=[(0,0),(1,1),(0xffff,0xffff),(0xff00,0x0101),
               (0x1234,0x9876),(0,0xffff),(0xffff,0)]
     rng=random.Random(0xC64E2026)
@@ -158,6 +157,7 @@ def cpu_model_proof(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
     batch_stats=[]
     for batch in range(2):
         prior_irq=batch&1
+        loaded_before=bytes(reu[bank*BANK_SIZE:bank*BANK_SIZE+N])
         cpu.i=prior_irq
         # A no-BEGIN call cannot execute through invalid ZP contents.
         if batch==0:
@@ -168,7 +168,7 @@ def cpu_model_proof(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
         begin=cpu.call(labels["begin"])
         if cpu.c or cpu.i!=prior_irq or cpu.sp!=stack:
             raise SwapError("BEGIN failed to preserve caller flags/stack")
-        if cpu.mem[state]!=1 or bytes(cpu.mem[zp:zp+N])!=orig_reu:
+        if cpu.mem[state]!=1 or bytes(cpu.mem[zp:zp+N])!=loaded_before:
             raise SwapError("BEGIN did not load executable ZP overlay")
         if bytes(reu[bank*BANK_SIZE:bank*BANK_SIZE+N])!=initial_zp:
             raise SwapError("BEGIN did not save the exact caller zero page in REU")
@@ -196,19 +196,20 @@ def cpu_model_proof(zp=0x3e,io=0xc000,table=0x6000,api=0x3000,
             dig.update(bytes((x&255,x>>8,y&255,y>>8)))
             dig.update(q.to_bytes(4,"little"))
             cycles.append(delta)
+        active_overlay=bytes(cpu.mem[zp:zp+N])
         end=cpu.call(labels["end"])
         if cpu.c or cpu.sp!=stack or cpu.i!=prior_irq:
             raise SwapError("END failed to restore caller flags/stack")
         if cpu.mem[state]!=0 or bytes(cpu.mem[zp:zp+N])!=initial_zp:
             raise SwapError("END failed to restore all 122 bytes of caller zero page")
-        if bytes(reu[bank*BANK_SIZE:bank*BANK_SIZE+N])!=orig_reu:
-            raise SwapError("END failed to restore original executable REU bank")
+        if bytes(reu[bank*BANK_SIZE:bank*BANK_SIZE+N])!=active_overlay:
+            raise SwapError("END did not preserve SMC-patched executable overlay in REU")
         batch_stats.append({"calls":len(cycles),"begin_model_cycles":begin,
                             "end_model_cycles":end,
                             "mean_call_cycles":sum(cycles)/len(cycles),
                             "max_call_cycles":max(cycles),
                             "zero_page_exact_restoration":True,
-                            "reu_overlay_exact_restoration":True,
+                            "reu_overlay_persisted_with_live_smc_operands":True,
                             "nested_begin_rejected":True})
     return {**manifest,"proof_status":"CPU_MODEL_FULL_ARITHMETIC_AND_DMA_SWAP_TWO_BATCHES",
             "test_only_table_fixture":str(FROZEN),
