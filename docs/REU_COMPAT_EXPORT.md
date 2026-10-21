@@ -1,17 +1,18 @@
 # Immutable V3/V4 legacy REU compatibility bundles
 
-> **Archived exception, not another installer:** normal stock-C64 builds
-> use `make builder-setup` and never select V1–V5. The V3/V4 REU services
-> documented here are retained as **frozen, stand-alone whole-resident
-> compatibility exports** because Turbo/QS16 lifecycle functionality has
-> no qualified operation-first REU backend. Mixing an exported resident
-> with `math_selective.prg` is unsupported.
+> **Historical regression/export only, not a new-project installer.**
+> The operation-first builder supports all 56 stock-C64 operations plus
+> optional, independently source-built REU Turbo16, Turbo32 and QS16
+> modules. See [the unified setup](REU_OPERATION_FIRST_CONSOLIDATION.md).
+> The original V3/V4 resident images are preserved unchanged for historical
+> API compatibility and benchmark reproduction, **not because modern
+> REU modules depend on them**. Mixing a frozen resident with
+> `math_selective.prg` remains unsupported.
 
-
-The operation-first math builder is the preferred setup for its 56 stock-C64
-public math operations. Existing V3/V4 REU Turbo16/Turbo32 and V4 QS16
-BEGIN/CALL/END lifecycle services have different hardware and exclusive ZP
-contracts; they do not yet have an operation-first REU backend.
+The commands below reproduce byte-identical **old installations** for
+existing projects or regression testing. For a new project, use
+`make builder-setup` or the `--reu-turbo16`, `--reu-turbo32`, and
+`--reu-qs16` options of `tools/configure_math.py`.
 
 This tool produces a **separate** checksum-locked, source-identical copy of
 each entire historical REU-enabled resident. Use either of these commands:
@@ -42,6 +43,6 @@ ordinary library scratch. Original BEGIN/CALL/END contracts still apply.
 
 Native VICE and identical-input REU model studies already exist in the
 historical V3/V4 research. This exporter preserves byte-identical access,
-not physical PAL timing and not full V1–V5 retirement readiness. True REU
-operation-first backends require independent lifecycle/DMA/IRQ/source
-qualification before they can replace this separate compatibility path.
+not physical PAL timing and not full V1–V5 retirement readiness. The source-built new REU modules have separate lifecycle/DMA/source
+regressions. Mixed IRQ/VIC/SID use and concurrent REU-service
+residency are not qualified; consult the new module guide.
