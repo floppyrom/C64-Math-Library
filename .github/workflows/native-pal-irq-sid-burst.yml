@@ -1,0 +1,47 @@
+name: Experimental native PAL raster IRQ and SID math burst
+on:
+  pull_request:
+    paths:
+      - 'tools/native_pal_irq_sid_burst.py'
+      - 'tools/test_native_pal_irq_sid_burst.py'
+      - 'tools/native_pal_vic_cia_probe.py'
+      - '.github/workflows/native-pal-irq-sid-burst.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native-irq-sid-pal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 125
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test exact IRQ/RTI vector, SID stores, unmodified source caller and paired output evidence
+        run: |
+          python3 -m compileall -q tools/native_pal_irq_sid_burst.py tools/test_native_pal_irq_sid_burst.py
+          python3 -m unittest discover -s tools -p 'test_native_pal_irq_sid_burst.py' -v
+      - name: Install pinned native headless VICE build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned x64sc PAL trunk r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Run real VIC raster IRQ, minimal SID writes and source-exact installed public Q/R/C burst comparisons
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_pal_irq_sid_burst.py --out build/irq-sid-pal/installed-math-bursts.json
+      - name: Upload experimental IRQ/SID evidence, not real 50 Hz certificate
+        uses: actions/upload-artifact@v4
+        with:
+          name: experimental-irq-sid-pal-source-installed
+          path: build/irq-sid-pal/installed-math-bursts.json
+          if-no-files-found: error
+          retention-days: 14
