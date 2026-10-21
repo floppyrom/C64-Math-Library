@@ -1,0 +1,38 @@
+name: Turbo16 lookup tables from SHA-locked V3 V4 source
+on:
+  pull_request:
+    paths:
+      - 'tools/reu_turbo16_source_tables.py'
+      - 'tools/test_reu_turbo16_source_tables.py'
+      - 'docs/REU_TURBO16_TABLE_PROVENANCE.md'
+      - '.github/workflows/reu-turbo16-source-tables.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify-v3-v4-source-tables:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assert source tables match both archived REU reference binaries
+        run: python3 -m unittest discover -s tools -p 'test_reu_turbo16_source_tables.py' -v
+      - name: Emit reusable four-plane lookup payload for linking experiments
+        run: |
+          python3 tools/reu_turbo16_source_tables.py --out build/turbo16-source-tables
+          python3 -c 'import json,pathlib; p=json.loads(pathlib.Path("build/turbo16-source-tables/source_table_manifest.json").read_text()); assert p["total_bytes"]==2048 and not p["native_reu_backend_available"]'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: turbo16-source-four-lookup-planes
+          path: build/turbo16-source-tables/
+          retention-days: 14
+      - name: Verify immutable package
+        run: |
+          rm -rf build/turbo16-source-tables
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
