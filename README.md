@@ -4,6 +4,8 @@ High-performance integer, fixed-point and game math for the Commodore 64 / NMOS 
 
 The **operation-first builder** is the default way to configure a stock C64 library: select from **56 independently linkable public operations**, specify resource limits and emit only the needed code. The five historical fixed profiles are retained as verified compatibility/performance references while their fastest kernels are migrated. V3/V4 additionally provide REU/Turbo services, and V4 QS16, that are not yet replaced by the operation-first builder.
 
+A new [24-successive-PAL-period busiest-frame stress probe](docs/NATIVE_PAL_CONSECUTIVE_BURST.md) repeats the exact source-linked 24-call frame-8 sequence in one pinned x64sc run, with a continuously running 32-bit CIA clock, real line-90 VIC IRQ and SID writes, and an in-6510 oracle after **every** repeated frame. It measures cumulative deadlines and skipped periods; it still does not simulate a varied game, full SID player, sprites or REU.
+
 An experimental [native PAL raster IRQ and SID-register interference probe](docs/NATIVE_PAL_IRQ_SID_BURST.md) now times actual VIC-II interrupt entry/RTI, SID I/O stores, and VIC DMA during source-qualified arithmetic bursts under pinned x64sc, with an otherwise identical IRQ-disabled control. It is deliberately **not** a 50 Hz SID music-player or continuous application-frame certificate.
 
 An [offline native PAL non-math reservation gate](docs/NATIVE_PAL_NONMATH_RESERVE.md) now uses the exact three-plan installed-burst report to reject RAM/ZP/headroom budgets that cannot fit even a chosen **hypothetical** IRQ/SID/effects allowance. It never claims true continuous 50 Hz timing.
