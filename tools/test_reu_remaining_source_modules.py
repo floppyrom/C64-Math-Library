@@ -132,9 +132,9 @@ class IndependentREUSourceModules(unittest.TestCase):
 
     def test_fail_closed_on_out_of_bounds_or_conflicts(self):
         for args in (
-            {"zp": 0x7a}, {"zp": 0}, {"table": 0xd000},
+            {"zp": 0x7a}, {"zp": 0}, {"table": 0xc000},
             {"low": 0xd000}, {"io": 0x4000},
-            {"api": 0x4000},
+            {"api": 0x3700},
         ):
             with self.subTest(turbo32=args):
                 with self.assertRaises(REUSourceError):
