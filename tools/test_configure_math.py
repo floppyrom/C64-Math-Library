@@ -65,7 +65,7 @@ class UserSetupTests(unittest.TestCase):
     def test_speed_requires_exposed_weights_and_no_guessing(self):
         with tempfile.TemporaryDirectory() as d:
             root=Path(d)
-            args=self.args(root,objective="speed",operation=["UMUL8","UDIV8"],
+            args=self.args(root,objective="speed",zp_budget=8,operation=["UMUL8","UDIV8"],
                            calls=["UMUL8=100"])
             with self.assertRaisesRegex(mb.SelectionError,"requires --calls"):
                 setup.run(args,self.index,interactive=False)
@@ -149,7 +149,7 @@ class UserSetupTests(unittest.TestCase):
                 ({"objective":"speed","calls":["UMUL8=2","UMUL8=3"]},
                  "Repeated"),
                 ({"objective":"speed","calls":["UMUL8=0"]},
-                 "positive"),
+                 "from 1"),
                 ({"operation":[]},"requires --operation"),
             ):
                 with self.subTest(kwargs=kwargs):
