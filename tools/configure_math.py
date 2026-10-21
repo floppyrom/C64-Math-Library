@@ -301,11 +301,10 @@ def main(argv: list[str] | None = None) -> int:
         print("Objective: " + manifest["selection_objective"])
         print("Total main RAM bytes: " + str(usage["main_ram_total_bytes"]))
         print("Total ZP bytes: " + str(usage["zero_page_bytes"]))
-        chosen=[name for name in ("turbo16","turbo32","qs16")
-                if getattr(args,"reu_"+name,False)]
-        if chosen:
-            service=chosen[0]
-            project=json.loads((args.build_dir/"math_project_manifest.json").read_text())
+        project_path=args.build_dir/"math_project_manifest.json"
+        if project_path.is_file():
+            project=json.loads(project_path.read_text(encoding="utf-8"))
+            service=next(iter(project["hardware"]["reu"]))
             print("Opt-in REU "+service+" PRG: " + str(args.build_dir/(service+"_reu.prg")))
             print("Total REU+stock RAM bytes: " + str(project["combined_resource_use"]["main_ram_total_bytes"]))
             print("Total REU+stock ZP bytes: " + str(project["combined_resource_use"]["zero_page_bytes"]))
