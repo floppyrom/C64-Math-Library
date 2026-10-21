@@ -34,7 +34,7 @@ class Turbo16ModularSwapTests(unittest.TestCase):
             {"zp":0x86},
             {"ctrl":0xc000},
             {"state":0xc004},
-            {"table":0xd000},
+            {"table":0xc000},
             {"api":0xd000},
             {"bank":8},
             {"bank":256,"reu_bytes":16777216},
