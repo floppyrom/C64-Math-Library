@@ -1,3 +1,7 @@
+## Unreleased — experimental native VIC raster IRQ plus minimal SID-register interference
+
+- Replay three proven operation-first seven-API source plans under real native PAL hardware raster IRQ/RTI at line 90, four SID register stores, and IRQ-disabled matched controls on three 24-call busy bursts with visible VIC DMA and display-off. Check exact source PRG and public result/carry SHA, one serviced IRQ per stressed burst, and CIA PHI2 elapsed-slot effect. No continuous 50 Hz/SID player/REU compatibility certification; keep the historical profiles untouched.
+
 ## Unreleased — fail-closed hypothetical native PAL non-math reservation gate
 
 - Add source-scoped offline headroom checking for the three native installed stock/both/signed-only D65536 seven-API PAL burst plans. Authenticate internal source/prg/frame-output consistency, budget RAM and ZP, compute an explicit hypothetical non-math slot reservation and reject insufficient worst-burst headroom; do not claim SID/IRQ/REU or 50 Hz application certification.
