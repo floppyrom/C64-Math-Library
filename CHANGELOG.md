@@ -1,6 +1,6 @@
 ## Unreleased — 24 successive PAL busiest-frame stress periods under native raster IRQ and SID writes
 
-- Add one-session pinned x64sc r46284 execution of the same fully source-qualified 24-call busiest synthetic math burst at 24 successive raster-zero transitions, continuously timestamped through cascaded CIA1 A/B rather than restarting the emulator. Check all 24 × 48 public result/carry bytes *in live 6510 code*, the expected 24 serviced raster IRQs, SID register writes and per-period deadline misses with VIC display enabled/disabled; compare stock, signed-only D65536, and both-D65536 installed PRGs. Preserve the strict boundary against claiming a full music/game/REU/varied-frame qualification.
+- Add one-session pinned x64sc r46284 execution of the same fully source-qualified 24-call busiest synthetic math burst at 24 raster-zero-scheduled work items, explicitly recording additional IRQ events and missed periods when a burst overruns, continuously timestamped through cascaded CIA1 A/B rather than restarting the emulator. Check all 24 × 48 public result/carry bytes *in live 6510 code*, the actual native raster IRQ event count (which may exceed 24 when work misses a physical frame), SID register writes and per-period deadline misses with VIC display enabled/disabled; compare stock, signed-only D65536, and both-D65536 installed PRGs. Preserve the strict boundary against claiming a full music/game/REU/varied-frame qualification.
 
 ## Unreleased — experimental native VIC raster IRQ plus minimal SID-register interference
 
