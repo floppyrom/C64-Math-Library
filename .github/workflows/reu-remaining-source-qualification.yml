@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - 'tools/reu_remaining_source_modules.py'
+      - 'tools/reu_turbo32_standalone_package.py'
+      - 'tools/test_reu_turbo32_standalone_package.py'
       - 'tools/test_reu_remaining_source_modules.py'
       - 'relocatable_source/turbo/turbo32_*'
       - 'relocatable_source/v4_reu_16m/v4_qs16_relocatable.asm'
@@ -11,6 +13,8 @@ on:
   pull_request:
     paths:
       - 'tools/reu_remaining_source_modules.py'
+      - 'tools/reu_turbo32_standalone_package.py'
+      - 'tools/test_reu_turbo32_standalone_package.py'
       - 'tools/test_reu_remaining_source_modules.py'
       - 'relocatable_source/turbo/turbo32_*'
       - 'relocatable_source/v4_reu_16m/v4_qs16_relocatable.asm'
@@ -26,4 +30,6 @@ jobs:
         with:
           python-version: '3.12'
       - name: Execute relocated Turbo32 and source-backed QS16 REU arithmetic
-        run: python3 -m unittest discover -s tools -p 'test_reu_remaining_source_modules.py' -v
+        run: |
+          python3 -m unittest discover -s tools -p 'test_reu_remaining_source_modules.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_turbo32_standalone_package.py' -v
