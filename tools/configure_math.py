@@ -143,6 +143,15 @@ def collect(args, index: dict, *, interactive: bool):
     reu_kib = getattr(args,"reu_kib",None)
     reu_bank = getattr(args,"reu_bank",None)
     reu_reserved = getattr(args,"reu_reserved_bank",[])
+    if interactive and not reu_choices and reu_kib is None and reu_bank is None and not reu_reserved:
+        selected_reu = choice(
+            "Optional REU acceleration (none / turbo16 / turbo32 / qs16)",
+            ("none","turbo16","turbo32","qs16"), "none")
+        if selected_reu != "none":
+            reu_choices = [selected_reu]
+    if interactive and reu_choices and reu_kib is None and reu_choices[0] != "qs16":
+        reu_kib = int(choice("REU capacity, KiB (512 / 16384)",
+                             ("512","16384"),"512"))
     if not reu_choices and (reu_kib is not None or reu_bank is not None or reu_reserved):
         raise builder.SelectionError("REU tier/bank options require a selected REU service")
     if reu_choices:
