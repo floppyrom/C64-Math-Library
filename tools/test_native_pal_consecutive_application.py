@@ -63,6 +63,17 @@ class ApplicationPALTests(unittest.TestCase):
             self.assertIn(bytes((0x9d,))+application.word(address),painter)
         self.assertIn(bytes((0xee,0x01,0x3a)),painter)
 
+    def test_light_final_frame_can_finish_before_line90(self):
+        self.assertEqual(application.varied_irq_events(23),0)
+        self.assertEqual(application.varied_irq_events(24),0)
+        self.assertEqual(application.varied_irq_events(25),1)
+        for invalid in (-1,0,22,255,256,True,23.0,"23"):
+            with self.subTest(invalid=invalid),self.assertRaises(ValueError):
+                application.varied_irq_events(invalid)
+        for invalid_jobs in (0,23,25,True):
+            with self.assertRaises(ValueError):
+                application.varied_irq_events(23,invalid_jobs)
+
     def test_invalid_source_set_or_display_rejected(self):
         for bad in ({},dict(list(self.exports.items())[:-1])):
             with self.assertRaises(ValueError):
