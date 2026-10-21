@@ -46,6 +46,8 @@ The guided setup lets you:
    (measured cycles), `size` (minimum RAM), or `zp` (minimum zero page).
 3. **Set your RAM/ZP budgets.** Speed mode also asks how often you expect
    to call each operation.
+4. **Optionally select REU acceleration:** Turbo16, Turbo32 or QS16
+   (or leave it off for a stock C64).
 
 It produces four files:
 
