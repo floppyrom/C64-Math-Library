@@ -43,6 +43,16 @@ def check_claims(reu_kib, bank, *, reserved_zp=(), reserved_ram=(),
         raise PackageError("Only 512KiB and 16MiB hardware tiers were planned")
     if not isinstance(bank, int) or not 0 <= bank < reu_kib // 64:
         raise PackageError("REU bank outside declared hardware tier")
+    for label, ranges, maximum in (("zero-page", reserved_zp, 255),
+                                    ("RAM", reserved_ram, 65535)):
+        for region in ranges:
+            if (not isinstance(region, (tuple, list)) or len(region) != 2 or
+                    any(type(n) is not int for n in region) or
+                    not 0 <= region[0] <= region[1] <= maximum):
+                raise PackageError("Invalid user-reserved "+label+" region")
+    if any(type(n) is not int or n < 0 or n >= reu_kib//64
+           for n in reserved_reu_banks):
+        raise PackageError("Invalid user-reserved REU bank")
     if bank in reserved_reu_banks:
         raise PackageError("Selected REU bank is owned by another user")
     if any(intersects((ZP, ZP + 121), x) for x in reserved_zp):
