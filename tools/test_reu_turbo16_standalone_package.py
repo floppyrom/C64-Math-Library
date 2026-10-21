@@ -15,6 +15,8 @@ class StandaloneREUTests(unittest.TestCase):
                 self.assertEqual(manifest["claimed_resources"]["reu_bank_exclusive"][0],bank*65536)
                 self.assertEqual(manifest["claimed_resources"]["alias_guard_one_byte"],
                                  None if bank<8 else 65535)
+                self.assertEqual(manifest["claimed_resources"]["alias_guard_bytes"],
+                                 [] if bank<8 else [65535, 8*65536+65535, 72*65536+65535])
                 mem=bytearray(65536)
                 mem[p.BASE:p.LIMIT]=raw[2:]
                 mem[1]=0x35
@@ -70,8 +72,10 @@ class StandaloneREUTests(unittest.TestCase):
                    dict(reu_kib=1024)):
             with self.subTest(kw=kw), self.assertRaises(p.PackageError):
                 p.build(**kw)
-        with self.assertRaisesRegex(p.PackageError,"mirror probe"):
-            p.build(16384,200,reserved_reu_banks=[0])
+        for mirror_bank in (0,8,72):
+            with self.subTest(mirror_bank=mirror_bank), self.assertRaisesRegex(
+                    p.PackageError,"mirror probe"):
+                p.build(16384,200,reserved_reu_banks=[mirror_bank])
         with self.assertRaisesRegex(p.PackageError,"overlay collision"):
             p.build(reserved_zp=[(0x00,0xff)])
 
