@@ -1,0 +1,50 @@
+name: Native PAL graded SID player and visible renderer headroom
+on:
+  pull_request:
+    paths:
+      - 'tools/native_pal_application_stress.py'
+      - 'tools/test_native_pal_application_stress.py'
+      - 'tools/native_pal_consecutive_application.py'
+      - '.github/workflows/native-pal-application-stress.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  graded-pal-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check exact original public call bodies and every SID/screen readback encoding
+        run: |
+          python3 -m compileall -q tools/native_pal_application_stress.py tools/test_native_pal_application_stress.py
+          python3 -m unittest discover -s tools -p 'test_native_pal_consecutive_application.py' -v
+          python3 -m unittest discover -s tools -p 'test_native_pal_application_stress.py' -v
+      - name: Install pinned VICE build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build pinned native PAL x64sc r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Measure twelve SID stores and four real renderer workloads per plan
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_pal_application_stress.py \
+            --rows 4,8,12,16 \
+            --out build/pal-consecutive/sid-render-graded.json
+      - name: Publish per-frame CIA output and real player/renderer readback evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-pal-graded-sid-render-headroom
+          path: build/pal-consecutive/sid-render-graded.json
+          if-no-files-found: error
+          retention-days: 14
