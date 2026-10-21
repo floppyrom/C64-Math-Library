@@ -79,6 +79,14 @@ class ConsecutivePALTests(unittest.TestCase):
                 counter=(0xffffffff-t).to_bytes(4,'little')
                 self.assertEqual(cia.decode_elapsed(counter),t)
 
+    def test_overloaded_bursts_report_skipped_raster_events_instead_of_failing(self):
+        self.assertEqual(burst.extra_irq_events(24),0)
+        self.assertEqual(burst.extra_irq_events(47),23)
+        self.assertEqual(burst.extra_irq_events(48),24)
+        for bad in (0,23,255,True,24.0,"47"):
+            with self.subTest(bad=bad),self.assertRaises(ValueError):
+                burst.extra_irq_events(bad)
+
     def test_reject_invalid_source_entries_and_display_controls(self):
         for bad in (0,1,None,"True"):
             with self.subTest(bad=bad),self.assertRaises(ValueError):
