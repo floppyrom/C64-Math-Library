@@ -74,6 +74,18 @@ class ApplicationPALTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 application.varied_irq_events(23,invalid_jobs)
 
+    def test_shared_monitor_reserve_parameter_rejects_synthetic_nops(self):
+        for display in (False, True):
+            raw, halt, oracle, layout = application.build_harness(
+                self.exports, display=display)
+            same = application.build_harness(
+                self.exports, display=display, reserve_cpu_cycles=0)
+            self.assertEqual((raw, halt, oracle, layout), same)
+        for bad in (-2, 1, 256, True, False, 0.0, "0", None):
+            with self.subTest(bad=bad), self.assertRaises(ValueError):
+                application.build_harness(
+                    self.exports, display=True, reserve_cpu_cycles=bad)
+
     def test_invalid_source_set_or_display_rejected(self):
         for bad in ({},dict(list(self.exports.items())[:-1])):
             with self.assertRaises(ValueError):
