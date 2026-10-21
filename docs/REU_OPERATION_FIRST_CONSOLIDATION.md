@@ -40,9 +40,14 @@ in the last bank). It is a *resource ownership requirement*, not stock C64
 RAM. The legacy QS16 source uses a 16-byte span of zero-page state,
 with ten distinct scratch locations within that span.
 
-The dedicated CPU-model suite checks distinct source placements and
-identical mathematical results. **This does not provide a safe INSTALL,
-hardware detection or native DMA REU service.**
+The source model checks distinct placements and identical mathematical
+results. A further source-built Turbo32 candidate now packages hardware
+preflight, 135-byte DMA SWAP, and guarded INSTALL/BEGIN/CALL/END in an
+independent PRG (`tools/reu_turbo32_standalone_package.py`). Its new
+CPU-model tests cover actual REU DMA and repeated batches. **This remains
+experimental until native VICE and global mixed-project qualification pass.**
+QS16 has source and table proofs only; a safe source-built table installer,
+readback verification and lifecycle guards remain outstanding.
 
 ## Gates before exposing Turbo32 and QS16 in configure_math.py
 
