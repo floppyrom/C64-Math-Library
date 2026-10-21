@@ -54,6 +54,7 @@ class NativeIRQSIDTests(unittest.TestCase):
                     self.assertEqual(calls0,len([x for x in seven.scenario() if x[0]==frame]))
                     self.assertEqual(calls0,24)
                     self.assertEqual(len(control),len(armed))
+                    self.assertIn(bytes((0xad,0x0d,0xdc,0xad,0x0d,0xdd,0x58)),armed)
                     diff=[i for i,(x,y) in enumerate(zip(control,armed)) if x!=y]
                     self.assertEqual(len(diff),1)
                     self.assertEqual((control[diff[0]],armed[diff[0]]),(0,1))
