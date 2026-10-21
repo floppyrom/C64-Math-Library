@@ -1,0 +1,39 @@
+name: Turbo16 modular arithmetic fragment source proof
+on:
+  pull_request:
+    paths:
+      - 'tools/reu_turbo16_fragment.py'
+      - 'tools/test_reu_turbo16_fragment.py'
+      - 'docs/REU_TURBO16_SOURCE_FRAGMENT.md'
+      - '.github/workflows/reu-turbo16-source-fragment.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-assembly-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Assemble and compare real source-derived Turbo16 at two maps
+        run: |
+          python3 -m unittest discover -s tools -p 'test_reu_turbo16_fragment.py' -v
+      - name: Publish source fragments for review, explicitly not a REU backend
+        run: |
+          python3 tools/reu_turbo16_fragment.py --out build/turbo16-fragments
+          python3 -c 'import json,pathlib; p=json.loads(pathlib.Path("build/turbo16-fragments/fragment_manifest.json").read_text()); assert p["exclusive_zp_bytes"]==122 and not p["reu_dma_begin_end_implemented"] and not p["source_code_link_qualified"]'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: turbo16-source-fragments-not-reu-backend
+          path: build/turbo16-fragments/
+          retention-days: 14
+      - name: Full source package remains unchanged
+        run: |
+          rm -rf build/turbo16-fragments
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
