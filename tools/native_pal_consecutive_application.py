@@ -43,6 +43,22 @@ DATA=repeated.DATA
 assert RUNS==24 and seven.CALLS==150 and PAL==19656
 
 
+
+def varied_irq_events(serviced, completed=RUNS):
+    """Final light frame may finish before its line-90 IRQ has occurred.
+
+    Unlike a repeated heavy frame-8 loop, a varied 3-call frame often
+    completes *before* line 90. For 24 raster-zero-scheduled jobs, the
+    first 23 line-90 interrupts must have occurred; the last interrupt
+    need not have occurred when the final CIA snapshot is taken.
+    Report all observed IRQs, never synthesize the missing final event.
+    """
+    if (type(serviced) is not int or type(completed) is not int
+            or completed!=RUNS or not completed-1<=serviced<255):
+        raise ValueError("Unqualified varied-frame real raster IRQ count")
+    return max(0,serviced-completed)
+
+
 def word(a):
     return repeated.word(a)
 
@@ -258,7 +274,8 @@ def run(vice):
             for screen in (False,True):
                 # Reuse the independently exercised native one-process remote
                 # monitor and continuous CIA oracle, but replace its harness.
-                with patch.object(repeated,"build_harness",build_harness):
+                with (patch.object(repeated,"build_harness",build_harness),
+                      patch.object(repeated,"extra_irq_events",varied_irq_events)):
                     row=repeated.read_monitor(
                         vice,image,entries,directory,
                         plan+"_screen_"+str(int(screen)),19400+i*4+int(screen),
@@ -270,6 +287,8 @@ def run(vice):
                     source_frame_inputs_sha256=source_digest,
                     source_linked_calls_per_frame=None,
                     total_public_calls=seven.CALLS,
+                    final_frame_can_finish_before_line90_irq=True,
+                    raster_irqs_observed_at_final_math_completion=row["raster_irq_count"],
                     linked_ram_bytes=proof["linked_ram_bytes"],
                     zero_page_bytes=proof["zero_page_bytes"],
                 )
