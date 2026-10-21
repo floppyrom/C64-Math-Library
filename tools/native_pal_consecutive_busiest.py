@@ -65,10 +65,13 @@ def word(value):
 def one_instruction_store(addr,value):
     return bytes((0xa9,value&255,0x8d))+word(addr)
 
-def build_harness(entries, *, display):
+def build_harness(entries, *, display, reserve_cpu_cycles=0):
     """Return exact linked math body, 24-frame caller and complete expected bytes."""
     if type(display) is not bool or set(entries)!=set(source.OPS):
         raise ValueError("Expected seven public installer exports and display boolean")
+    if (type(reserve_cpu_cycles) is not int or reserve_cpu_cycles < 0 or
+            reserve_cpu_cycles > 2048 or reserve_cpu_cycles % 2):
+        raise ValueError("NOP workload reserve must be an even 0..2048 CPU instruction cycles")
     base,_,expected,count=irq.irq_harness(
         entries,frame=FRAME,display=display,irq_enabled=True,raster_line=90)
     assert count==24 and len(expected)==48
@@ -82,7 +85,11 @@ def build_harness(entries, *, display):
         raise AssertionError("Original native raster/CIA/public-call harness moved")
     prefix=base[:first]
     barrier=base[first:start-len(reset)]
-    math=base[start+10:stop]+b'\x60'  # identical 24 public loads/JSRs, then RTS
+    # Extra, deliberately simple non-math work executes in the repeated
+    # math-call subroutine after *all original* public stores/JSRs. Each
+    # NOP costs two 6510 CPU instruction cycles absent VIC contention.
+    # Native CIA measures actual elapsed PHI2 slots including VIC/IRQ.
+    math=base[start+10:stop]+b'\xea'*(reserve_cpu_cycles//2)+b'\x60'
     if not math or SUB+len(math)>=0xc000:
         raise AssertionError("Busiest source call program would collide with I/O")
     b=bytearray(prefix)
@@ -145,12 +152,14 @@ def build_harness(entries, *, display):
         raise AssertionError("Repeated busy source escaped reserved PAL RAM")
     return bytes(b),halt,expected,{"body_start":SUB,"body_bytes":len(math),
                                    "main_loop":loop_start,"main_halt":halt,
-                                   "raster_irq_handler":HANDLER}
+                                   "raster_irq_handler":HANDLER,
+                                   "injected_nonmath_nop_cpu_cycles":reserve_cpu_cycles}
 
-def read_monitor(vice, image, entries, folder, tag, port, *, display):
+def read_monitor(vice, image, entries, folder, tag, port, *, display, reserve_cpu_cycles=0):
     if not vice or not Path(vice).is_file() or image[:2]!=CODE.to_bytes(2,'little'):
         raise ValueError("Pinned native PAL x64sc and real source-linked PRG required")
-    stub,halt,expected,geometry=build_harness(entries,display=display)
+    stub,halt,expected,geometry=build_harness(entries,display=display,
+                                              reserve_cpu_cycles=reserve_cpu_cycles)
     if CODE+len(image)-2>=MAIN:
         raise AssertionError("Native installed math source overlaps PAL loop")
     image_ram=bytearray(65536)
@@ -234,6 +243,7 @@ def read_monitor(vice, image, entries, folder, tag, port, *, display):
     } for i,x in enumerate(elapsed)]
     return {
         "display_enabled":display,"source_linked_calls_per_frame":24,
+        "injected_nonmath_nop_cpu_cycles":reserve_cpu_cycles,
         "total_public_calls":RUNS*24,
         "source_frame":FRAME,"raster_irq_count":irq_count,
         "frame_count":count,"public_output_error_count":errors,

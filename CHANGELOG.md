@@ -1,3 +1,7 @@
+## Unreleased — native consecutive PAL non-math CPU reserve sensitivity
+
+- Run the exact already-qualified 24 consecutive raster-zero frame-8 stress workload at seven injected non-math NOP instruction-cycle loads (0, 256, 512, 768, 1,024, 1,536 and 2,048) per math burst. Compare signed-only vs both-D65536 installed PRGs under normal VIC display on/off, real raster IRQ and minimal SID register writes. Report all cumulative CIA deadline margins, first tested failing reserve, actual IRQs and unchanged per-frame Q/R/C capture hashes; keep CPU-NOP cycles distinct from physical PHI2 wall slots and do not claim SID music/game/REU qualification.
+
 ## Unreleased — 24 successive PAL busiest-frame stress periods under native raster IRQ and SID writes
 
 - Add one-session pinned x64sc r46284 execution of the same fully source-qualified 24-call busiest synthetic math burst at 24 raster-zero-scheduled work items, explicitly recording additional IRQ events and missed periods when a burst overruns, continuously timestamped through cascaded CIA1 A/B rather than restarting the emulator. Check all 24 × 48 public result/carry bytes *in live 6510 code*, the actual native raster IRQ event count (which may exceed 24 when work misses a physical frame), SID register writes and per-period deadline misses with VIC display enabled/disabled; compare stock, signed-only D65536, and both-D65536 installed PRGs. Preserve the strict boundary against claiming a full music/game/REU/varied-frame qualification.
