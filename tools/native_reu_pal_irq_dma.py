@@ -194,7 +194,7 @@ def monitor(sock, line, needle):
 
 
 def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=False,
-                monitor_start="register-go"):
+                monitor_start="register-go", warp=False):
     work.mkdir()
     conf={
         "target":"c64","operations":["UMUL16"],"objective":"size",
@@ -226,7 +226,8 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
     dumped=work/(tag+".dump")
     logfile=work/(tag+".log")
     image.write_bytes(bytes((HARNESS&255,HARNESS>>8))+machine)
-    cmd=[str(exe),"-console","-silent","-pal","-sounddev","dummy","-warp",
+    cmd=[str(exe),"-console","-silent","-pal","-sounddev","dummy",
+         *(['-warp'] if warp else []),
          "-reu","-reusize",str(tier),
          "-remotemonitor","-remotemonitoraddress",f"127.0.0.1:{port}",
          "-initbreak","reset"]
@@ -328,6 +329,7 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
         raise AssertionError((tag,"invalid native CIA elapsed PHI2 slots",slots))
     return {
         "case":tag,"tier_kib":tier,"bank":bank,
+        "vice_warp_enabled":warp,
         "display_enabled":display,"raster_irq_enabled":irq,
         "raster_interrupts_serviced":serviced,
         "native_cia_phi2_slots":slots,
@@ -370,6 +372,8 @@ def summarize(rows):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--out",type=Path,required=True)
+    p.add_argument("--warp",action="store_true",
+                   help="Opt-in emulator warp speed for comparison; native PAL certification defaults to real-time mode")
     p.add_argument("--monitor-start",choices=("register-go","goto"),
                    default="register-go",
                    help="Set PC with 'r pc=' then plain 'g' (default); legacy 'g xxxx' control")
@@ -407,7 +411,8 @@ def main():
                     try:
                         row=native_case(exe,root/tag,tag,tier,bank,display,armed,9910+index,
                                         trace_irq=args.trace_irq_entry,
-                                        monitor_start=args.monitor_start)
+                                        monitor_start=args.monitor_start,
+                                        warp=args.warp)
                     except Exception as error:
                         args.out.parent.mkdir(parents=True,exist_ok=True)
                         args.out.write_text(json.dumps({
@@ -438,6 +443,7 @@ def main():
                   else "DIAGNOSTIC_SINGLE_CASE_NOT_QUALIFIED" if args.only_case is not None
                   else "PASS_NATIVE_PAL_REU_IRQ_SID_CIA_BOUNDED_PROBE"),
         "monitor_launch_mode":args.monitor_start,
+        "vice_warp_enabled":args.warp,
         "diagnostic_bank_override":args.diagnostic_16m_bank != 200,
         "real_vice_reu_dma_timing_included":True,
         "real_vic_screen_contention_included":True,
