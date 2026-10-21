@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - engineering/turbo16-reu-native-preflight-package-20261021
+      - engineering/operation-first-turbo16-reu-optin-20261021
 permissions:
   contents: write
 jobs:
@@ -53,4 +54,4 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add SHA256SUMS.txt validation/PACKAGE_AUDIT.json
           git diff --cached --quiet || git commit -m 'reu: seal independent preflight package contents and audit'
-          git push origin HEAD:engineering/turbo16-reu-native-preflight-package-20261021
+          git push origin "HEAD:$GITHUB_REF_NAME"

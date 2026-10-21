@@ -1,0 +1,52 @@
+name: Optional operation-first Turbo16 REU linker integration
+on:
+  push:
+    branches: [engineering/operation-first-turbo16-reu-optin-20261021]
+  pull_request:
+    paths:
+      - 'tools/configure_math.py'
+      - 'tools/math_builder.py'
+      - 'tools/reu_user_setup.py'
+      - 'tools/test_reu_user_setup.py'
+      - 'docs/OPERATION_FIRST_REU_TURBO16.md'
+      - '.github/workflows/operation-first-reu-optin.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-stock-and-reu-two-prg:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate explicit REU selection, exact global allocations and configuration replay
+        run: |
+          python3 -m unittest discover -s tools -p 'test_reu_user_setup.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_turbo16_standalone_package.py' -v
+      - name: Build a dual-image real user project and verify its manifests
+        run: |
+          python3 tools/configure_math.py --operation UMUL16 --objective size \
+            --zp-budget 200 --ram-budget 25000 --reu-turbo16 --reu-kib 512 \
+            --config-out build/reu-option.json --build-dir build/reu-option
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          p=Path("build/reu-option")
+          m=json.loads((p/"math_project_manifest.json").read_text())
+          assert m["explicit_reu_optin"] and m["stock_remains_default"]
+          assert m["physical_memory_bound_by_stock_linker"]
+          assert not m["mixed_stock_reu_vic_irq_qualified"]
+          for n,k in (("math_selective.prg","stock_prg_sha256"),
+                      ("turbo16_reu.prg","reu_prg_sha256")):
+              assert hashlib.sha256((p/n).read_bytes()).hexdigest()==m[k]
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: operation-first-reu-turbo16-optin-two-prg
+          path: build/reu-option/
+          retention-days: 14
