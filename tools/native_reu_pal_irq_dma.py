@@ -26,6 +26,7 @@ from reu_turbo16_standalone_package import BASE, LIMIT, IO, ZP, STATE
 
 HARNESS = 0x0800
 IRQ = 0x1000
+NMI_GUARD = 0x1100
 SNAP = 0x1a00
 COUNT = 24
 A, B = 0x1234, 0x5678
@@ -56,6 +57,9 @@ def assemble(exports, stock_entry, stock_io, *, display, irq):
         "PAL_INSTALLED:",
         "lda #$%02x"%(IRQ&255),"sta $fffe",
         "lda #$%02x"%(IRQ>>8),"sta $ffff",
+        "lda #$%02x"%(NMI_GUARD&255),"sta $fffa",
+        "lda #$%02x"%(NMI_GUARD>>8),"sta $fffb",
+        "lda #$7f","sta $dd0d",
         "lda #$17","sta $d012",
         "lda #$01","sta $d019",
         "lda #$%02x"%(1 if irq else 0),"sta $d01a",
@@ -73,11 +77,20 @@ def assemble(exports, stock_entry, stock_io, *, display, irq):
         ]
     code += [
         "lda #$%02x"%COUNT,"sta $%04x"%(SNAP+0x30),
+        # Diagnostic fail-closed CIA2 NMI after 18,000 PHI2 clocks.
+        # A normal measured batch ends in ~6,000-7,000 clocks, before it.
+        "lda #$50","sta $dd04",
+        "lda #$46","sta $dd05",
+        "lda #$81","sta $dd0d",
+        "lda #$11","sta $dd0e",
         "lda #$51","sta $dc0f",
         "lda #$11","sta $dc0e",
+        "lda #$b0","sta $%04x"%(SNAP+0x31),
         "jsr $%04x"%addr["T16_REU_BEGIN"],
+        "lda #$b1","sta $%04x"%(SNAP+0x31),
         "php","pla","sta $%04x"%(SNAP+2),
         "PAL_REPEAT:",
+        "lda #$b2","sta $%04x"%(SNAP+0x31),
         "jsr $%04x"%addr["T16_REU_CALL"],
         "dec $%04x"%(SNAP+0x30),
         "bne PAL_REPEAT",
@@ -86,9 +99,11 @@ def assemble(exports, stock_entry, stock_io, *, display, irq):
     for i in range(4):
         code += ["lda $%04x"%(IO+8+i),"sta $%04x"%(SNAP+0x10+i)]
     code += [
+        "lda #$b3","sta $%04x"%(SNAP+0x31),
         "jsr $%04x"%addr["T16_REU_END"],
         "php","pla","sta $%04x"%(SNAP+4),
-        "lda #$00","sta $dc0e","sta $dc0f",
+        "lda #$00","sta $dd0e","sta $dc0e","sta $dc0f",
+        "lda #$7f","sta $dd0d",
     ]
     for j,p in enumerate((0xdc04,0xdc05,0xdc06,0xdc07)):
         code += ["lda $%04x"%p,"sta $%04x"%(SNAP+8+j)]
@@ -130,12 +145,22 @@ def assemble(exports, stock_entry, stock_io, *, display, irq):
         "lda #$11","sta $d404",
         "lda #$0f","sta $d418",
         "pla","tay","pla","tax","pla","rti",
+        "* = $1100",
+        "PAL_NMI_GUARD:",
+        # A timer NMI only means the test failed to reach END in time.
+        # It is not permitted to turn a hung REU/IRQ run into a pass.
+        "lda $dd0d",
+        "lda #$dd","sta $%04x"%(SNAP+7),
+        "ldx #$fd","txs","jmp PAL_HALT",
     ]
     memory,symbols,_=Assembler().assemble("\n".join(code)+"\n")
-    if symbols["PAL_HALT"]>=IRQ or any(p not in range(HARNESS,IRQ) and
-        p not in range(IRQ,IRQ+0x100) for p in memory):
+    if symbols["PAL_HALT"]>=IRQ or any(
+        p not in range(HARNESS,IRQ) and
+        p not in range(IRQ,IRQ+0x100) and
+        p not in range(NMI_GUARD,NMI_GUARD+0x100)
+        for p in memory):
         raise AssertionError("Native PAL probe escaped segregated CPU/IRQ allocations")
-    if symbols["PAL_HALT"]-HARNESS>0x600 or IRQ not in memory:
+    if symbols["PAL_HALT"]-HARNESS>0x600 or IRQ not in memory or NMI_GUARD not in memory:
         raise AssertionError("Native PAL program too large or missing handler")
     return memory,symbols["PAL_HALT"],seed
 
@@ -249,6 +274,11 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
     snapshot=dumped.read_bytes()
     if len(snapshot)!=0xba:
         raise AssertionError((tag,"snapshot wrong size",len(snapshot)))
+    if snapshot[7]==0xdd:
+        raise AssertionError((tag,"CIA2 NMI fail-closed: bounded physical REU IRQ batch failed",
+                              "calls_remaining",snapshot[0x30],
+                              "last_math_stage",snapshot[0x31],
+                              "irq_entries",snapshot[6],"flags",snapshot[:12].hex()))
     if snapshot[7]==0xee:
         raise AssertionError((tag,"VIC IRQ watchdog: at least five IRQ entries before normal return",
                               "irq_entries",snapshot[6],"flags",snapshot[:12].hex()))
