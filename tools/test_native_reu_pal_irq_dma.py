@@ -21,8 +21,11 @@ class NativePALREUContracts(unittest.TestCase):
                             display=display,irq=irq)
                         self.assertLess(halt,pal.IRQ)
                         self.assertIn(pal.IRQ,memory)
+                        self.assertIn(pal.NMI_GUARD,memory)
                         self.assertTrue(all(pal.HARNESS<=addr<pal.IRQ or
-                                            pal.IRQ<=addr<pal.IRQ+256 for addr in memory))
+                                            pal.IRQ<=addr<pal.IRQ+256 or
+                                            pal.NMI_GUARD<=addr<pal.NMI_GUARD+256
+                                            for addr in memory))
                         self.assertEqual(len(seed),122)
                         # Hardware handler saves/restores registers and
                         # never reads/writes the executable $3E-$B7 ZP.
@@ -31,6 +34,12 @@ class NativePALREUContracts(unittest.TestCase):
                         self.assertTrue(op.startswith(bytes((0x48,0x8a,0x48,0x98,0x48))))
                         self.assertTrue(op.endswith(bytes((0x68,0xa8,0x68,0xaa,0x68,0x40))))
                         self.assertNotIn(bytes((0x85,0x3e)),op)
+                        # CIA2 timeout handler is a diagnostic bailout only.
+                        nmi=bytes(memory[p] for p in range(pal.NMI_GUARD,
+                            max(k for k in memory if k>=pal.NMI_GUARD)+1))
+                        self.assertIn(bytes((0xa9,0xdd,0x8d,0x07,0x1a)),nmi)
+                        self.assertTrue(nmi.endswith(bytes((0x4c,
+                            halt&255,(halt>>8)&255))))
 
     def test_paired_matrix_fails_closed(self):
         with self.assertRaises(AssertionError):
