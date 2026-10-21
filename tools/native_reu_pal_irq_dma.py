@@ -247,27 +247,22 @@ def native_case(exe, work, tag, tier, bank, display, irq, port, *, trace_irq=Fal
             try:
                 try:
                     monitor(sock,'load "'+str(image)+'" 0',"Loading")
+                    monitor(sock,"break "+format(stop,"04x"),"BREAK:")
+                    if trace_irq:
+                        monitor(sock,"break "+format(IRQ,"04x"),"BREAK:")
                     if monitor_start == "register-go":
-                        # VICE monitor ticket #2024 documents interrupt and
-                        # opcode hazards around address-bearing "g xxxx".
-                        # Read/set CPU PC *before* creating any checkpoint,
-                        # and use address-free "g" afterwards.
+                        # Avoid address-bearing 'g xxxx', which has documented
+                        # monitor/interrupt timing hazards in older VICE builds.
                         monitor(sock,"r pc="+format(HARNESS,"04x"),"")
                         regs=monitor(sock,"r","")
                         if format(HARNESS,"04x").encode() not in regs.lower():
                             raise RuntimeError(("VICE register-go PC readback mismatch",
                                                 regs[-1000:]))
-                    elif monitor_start != "goto":
-                        raise AssertionError("Unqualified remote monitor start mode")
-                    monitor(sock,"break "+format(stop,"04x"),"BREAK:")
-                    if trace_irq:
-                        monitor(sock,"break "+format(IRQ,"04x"),"BREAK:")
-                    if monitor_start == "register-go":
                         hit=monitor(sock,"g","Stop on  exec")
-                    else:
-                        # Legacy comparison only. Do not certify this start
-                        # mode with live raster interrupts.
+                    elif monitor_start == "goto":
                         hit=monitor(sock,"g "+format(HARNESS,"04x"),"Stop on  exec")
+                    else:
+                        raise AssertionError("Unqualified remote monitor start mode")
                     if trace_irq:
                         monitor(sock,'bsave "'+str(dumped)+'" 0 1a00 1ab9',"Saving")
                         snap=dumped.read_bytes()
@@ -448,7 +443,6 @@ def main():
                   else "DIAGNOSTIC_SINGLE_CASE_NOT_QUALIFIED" if args.only_case is not None
                   else "PASS_NATIVE_PAL_REU_IRQ_SID_CIA_BOUNDED_PROBE"),
         "monitor_launch_mode":args.monitor_start,
-        "monitor_checkpoint_after_pc_readback":args.monitor_start=="register-go",
         "vice_warp_enabled":args.warp,
         "diagnostic_bank_override":args.diagnostic_16m_bank != 200,
         "real_vice_reu_dma_timing_included":True,
