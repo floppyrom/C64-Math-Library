@@ -1,4 +1,59 @@
-# C64 Math Library V1–V5 + Custom Pareto Builder — Complete User Manual
+# C64 Math Library — user guide and historical compatibility manual
+
+## Current supported setup: operation-first (October 2026)
+
+**V1–V5 and the legacy Custom Pareto Wizard are retired as new-stock-C64
+installation choices.** The normal installation is not a version/profile
+selection: the **56-operation selective builder** generates the exact
+routines and physical resources needed by your project.
+
+```sh
+make builder-setup
+# Scriptable equivalent:
+python3 tools/configure_math.py \
+  --operation UMUL16 --operation UDIV16 --objective size \
+  --zp-budget 0 --ram-budget 4096 \
+  --config-out project-math.json --build-dir build_project_math
+```
+
+
+Use the generated `math_api.inc` and `selective_manifest.json`
+for your program's **actual** exported addresses, module allocation,
+initialization and selected source hashes. Do not use hard-coded V1–V5
+entry addresses with the operation-first PRG.
+
+Available user objectives: balanced, speed, size and ZP. In speed mode,
+declare positive call counts **for every selected operation** using
+`--calls OP=COUNT`. Supply project reservations through
+`--memory-config`, and use `--pin` only for a certified
+variant. The new wizard refuses to overwrite an existing output pair.
+
+**Read these current documents first:**
+[Quick start](QUICK_START.md) ·
+[Full installer guide](docs/OPERATION_FIRST_USER_SETUP.md) ·
+[Release acceptance](docs/BUILDER_RELEASE_ACCEPTANCE.md) ·
+[API compatibility](docs/API_COMPATIBILITY.md).
+
+**REU exception:** V3/V4 Turbo16/Turbo32 and V4 QS16 services are
+historical, separate whole-resident compatibility products only. The
+[REU exporter](docs/REU_COMPAT_EXPORT.md) keeps the original binaries,
+tables and lifecycle contracts; do not mix its resident image or ABI
+with a selective math PRG. Drive-side math backends are still not available.
+
+---
+
+## Archived manual: V1–V5 residents and old Pareto profiles
+
+**The remainder of this manual is preserved verbatim as historical API,
+initialization, source-build and REU compatibility reference.** Its
+instructions to "pick a fixed profile", use the legacy Pareto wizard, or
+initialize one of the V1–V5 resident formats apply **only** when reproducing
+those historical images—not when configuring a new stock-C64 math library.
+Historical API contracts and source data remain valuable and are not
+deleted. Complete fastest-donor parity and full REU operation-first
+hardware functionality have not been certified.
+
+# Historical V1–V5 + Custom Pareto Builder — original complete manual
 
 **Release:** Consolidated source-backed V1–V5  
 **Manual revision:** 2026-10-06  
