@@ -171,7 +171,7 @@ def qs16_fragments(*, io=0xc000, scratch=0xc020, zp=0x02,
     sources = {
         "qs16_begin.bin": (api + 0xa80, api + 0xa8a),
         "qs16_call.bin": (api + 0xa8b, api + 0xb5b),
-        "qs16_end.bin": (api + 0xb5c, api + 0xb63),
+        "qs16_end.bin": (api + 0xb5c, api + 0xb66),
     }
     chunks = _chunks(memory, sources)
     if len(chunks) != 3:
