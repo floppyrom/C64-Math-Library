@@ -1,0 +1,47 @@
+name: Native PAL original 24-frame arithmetic with SID sequencer and VIC renderer
+on:
+  pull_request:
+    paths:
+      - 'tools/native_pal_consecutive_application.py'
+      - 'tools/test_native_pal_consecutive_application.py'
+      - '.github/workflows/native-pal-consecutive-application.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  application-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 105
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify original trace and real SID/VIC source encodings
+        run: |
+          python3 -m compileall -q tools/native_pal_consecutive_application.py tools/test_native_pal_consecutive_application.py
+          python3 -m unittest discover -s tools -p 'test_native_pal_consecutive_busiest.py' -v
+          python3 -m unittest discover -s tools -p 'test_native_pal_consecutive_application.py' -v
+      - name: Install VICE build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build exact pinned native x64sc r46284
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Qualify original varied 150-call 24-frame workload under SID and rendering
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_pal_consecutive_application.py --out build/pal-consecutive/original-varied-sid-render.json
+      - name: Retain native per-frame CIA deadlines and public output evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-pal-varied-24frame-sid-render
+          path: build/pal-consecutive/original-varied-sid-render.json
+          if-no-files-found: error
+          retention-days: 14
