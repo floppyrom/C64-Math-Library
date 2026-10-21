@@ -57,12 +57,78 @@ def check_claims(reu_kib, bank, *, reserved_zp=(), reserved_ram=(),
     }
 
 
+def stock_manifest_claims(stock):
+    """Read actual physical allocations from a successful stock selective build.
+
+    This is an *additional* fail-closed compatibility audit, not global
+    allocation, relocation, or source linking. Unknown dimensions must fail.
+    """
+    try:
+        if not isinstance(stock, dict) or stock["target"] != "c64":
+            raise PackageError("Expected an operation-first stock C64 manifest")
+        memory, use = stock["memory_map"], stock["resource_use"]
+        if not isinstance(stock["operations"], list) or not stock["operations"]:
+            raise PackageError("Missing selected stock math operations")
+
+        def number(value, name):
+            if not isinstance(value, str) or not value.startswith("$"):
+                raise PackageError("Missing/invalid stock physical address: " + name)
+            number = int(value[1:], 16)
+            if not 0 <= number <= 0xffff:
+                raise PackageError("Invalid stock address: "+name)
+            return number
+
+        def span(start, size, name, *, is_zp=False):
+            if type(size) is not int or size < 0:
+                raise PackageError("Unqualified stock allocation size: "+name)
+            if size == 0:
+                return None
+            lo = number(start, name)
+            hi = lo + size - 1
+            if hi > (255 if is_zp else 0xffff):
+                raise PackageError("Stock resource extent out of bounds: "+name)
+            return (lo, hi)
+
+        ram = []
+        zp = []
+        cs = number(memory["code_start"], "code_start")
+        ce = number(memory["code_end"], "code_end")
+        if ce < cs:
+            raise PackageError("Stock code end before start")
+        ram.append((cs,ce))
+        ram.append(span(memory["math_io_start"], use["public_io_bytes"], "math_io_start"))
+        if use["private_ram_scratch_bytes"]:
+            ram.append(span(memory["scratch_start"], use["private_ram_scratch_bytes"], "scratch_start"))
+        if use["zero_page_bytes"]:
+            zp.append(span(memory["zp_start"], use["zero_page_bytes"], "zp_start",is_zp=True))
+        # Manifest reports family starts and total persistent bytes, but not
+        # individual family lengths. Guessing would be unsafe: refuse.
+        if memory["persistent_state"] or use.get("persistent_state_bytes",0):
+            raise PackageError("Stock persistent state extents not individually reported; cannot audit safely")
+        for field,destination,zero in (("user_reserved",ram,False),("user_zp_reserved",zp,True)):
+            for item in memory[field]:
+                a=number(item["start"],field+".start")
+                b=number(item["end"],field+".end")
+                if not 0 <= a <= b <= (255 if zero else 0xffff):
+                    raise PackageError("Bad stock reserved range: "+field)
+                destination.append((a,b))
+        if any(item is None for item in ram+zp):
+            raise PackageError("Unknown stock RAM or ZP occupancy")
+        return {"ram":ram, "zp":zp, "stock_operations":len(stock["operations"])}
+    except (KeyError, TypeError, ValueError, IndexError) as exc:
+        if isinstance(exc, PackageError):
+            raise
+        raise PackageError("Incomplete or invalid stock linker resource manifest: "+str(exc)) from exc
+
+
 def build(reu_kib=512, bank=None, *, reserved_zp=(), reserved_ram=(),
-          reserved_reu_banks=()):
+          reserved_reu_banks=(), stock_manifest=None):
     if bank is None:
         bank = 4 if reu_kib == 512 else 200
-    claims = check_claims(reu_kib, bank, reserved_zp=reserved_zp,
-                          reserved_ram=reserved_ram,
+    stock = stock_manifest_claims(stock_manifest) if stock_manifest is not None else None
+    claims = check_claims(reu_kib, bank,
+                          reserved_zp=tuple(reserved_zp)+(tuple(stock["zp"]) if stock else ()),
+                          reserved_ram=tuple(reserved_ram)+(tuple(stock["ram"]) if stock else ()),
                           reserved_reu_banks=reserved_reu_banks)
     old, pieces, controller, labels = swap.assemble(
         zp=ZP, io=IO, table=TABLE, api=API, ctrl=CTRL, state=STATE,
@@ -131,6 +197,8 @@ def build(reu_kib=512, bank=None, *, reserved_zp=(), reserved_ram=(),
         "controller_source_sha256": old["controller_source_sha256"],
         "quarter_square_source_sha256": table_manifest["reference_sources_sha256"],
         "claimed_resources": claims,
+        "stock_manifest_collision_check": ("PASSED_FOR_REPORTED_RESOURCES" if stock else "NOT_SUPPLIED"),
+        "stock_selected_operations_checked": stock["stock_operations"] if stock else 0,
         "reu_mode_selectable_in_operation_first_builder": False,
         "native_vice_qualified": False,
         "known_limits": [
@@ -163,6 +231,7 @@ def main(argv=None):
     parser.add_argument("--reserved-zp", type=parse_range, action="append", default=[])
     parser.add_argument("--reserved-ram", type=parse_range, action="append", default=[])
     parser.add_argument("--reserved-reu-bank", type=int, action="append", default=[])
+    parser.add_argument("--stock-manifest", type=Path, help="Audit physical resources in an existing operation-first selective_manifest.json; fail closed on incomplete extents")
     args = parser.parse_args(argv)
     if args.out.exists():
         parser.exit(2, "REU package: output exists; refusing overwrite\n")
@@ -170,7 +239,8 @@ def main(argv=None):
         manifest, payload = build(args.reu_kib, args.bank,
                                   reserved_zp=args.reserved_zp,
                                   reserved_ram=args.reserved_ram,
-                                  reserved_reu_banks=args.reserved_reu_bank)
+                                  reserved_reu_banks=args.reserved_reu_bank,
+                                  stock_manifest=json.loads(args.stock_manifest.read_text("utf-8")) if args.stock_manifest else None)
     except (PackageError, swap.SwapError, OSError, ValueError) as exc:
         parser.exit(2, "REU package: "+str(exc)+"\n")
     args.out.mkdir(parents=True)
