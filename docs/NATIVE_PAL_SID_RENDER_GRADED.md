@@ -32,6 +32,8 @@ arithmetic kernels or original 150 calls/300 output+carry oracle bytes.
   decremented before the last-frame witness comparison). A failed SID or
   screen check increments
   the existing error counter and fails native qualification.
+  C64 colour RAM has only four defined data bits, so the native readback
+  masks its undefined high nibble before comparing expected colours.
 * Original per-frame source-linked staged operands, public JSR bytes,
   captured Q/R/C outputs, 24 distinct frame call counts, source PRG hashes
   and standard emitted linker bytes are preserved. The small final-only
