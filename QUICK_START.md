@@ -90,22 +90,42 @@ compatibility/research references, **not alternate recommended installers**.
 The archive includes the original README's extensive optimization history:
 [pre-cutover research notes](docs/README_RESEARCH_ARCHIVE_2026-10-21.md).
 
-An **experimental native Turbo16 REU add-on** can now be selected through
-the operation-first configuration, while keeping a normal UMUL16 fallback:
+## Optional REU math acceleration
+
+The **same operation-first builder** offers three explicitly selected,
+source-built REU modules. You select **one per project**; each keeps the
+ordinary stock-C64 multiplication as fallback and generates its own
+loadable PRG, include and combined resource manifest.
+
+| REU service | Required fallback | Hardware |
+| --- | --- | --- |
+| `--reu-turbo16` | `UMUL16` | 512KiB or 16MiB |
+| `--reu-turbo32` | `UMUL32` | 512KiB or 16MiB |
+| `--reu-qs16` | `UMUL16` | 16MiB only |
+
+For example, Turbo32:
 
 ```sh
-python3 tools/configure_math.py --operation UMUL16 --objective size \
-  --zp-budget 200 --ram-budget 25000 --reu-turbo16 --reu-kib 512 \
-  --config-out reu-math.json --build-dir build_reu_math
+python3 tools/configure_math.py \
+  --operation UMUL32 --objective size --ram-budget 30000 \
+  --zp-budget 210 --reu-turbo32 --reu-kib 512 \
+  --config-out my_reu.json --build-dir build_reu
 ```
 
-This produces a **separate source-built** REU PRG as well as the stock
-PRG, with global memory reservations and a combined manifest. It is not
-automatically accelerated: use the REU lifecycle only after INSTALL
-succeeds. See the [opt-in REU guide](docs/OPERATION_FIRST_REU_TURBO16.md).
-IRQ/VIC contention and timing remain unqualified.
+Load the resulting *stock and REU* PRGs. Call the REU module's INSTALL
+and check Carry before entering the guarded BEGIN/CALL/END lifecycle.
+Fallback to normal stock math if no qualified REU is present. No REU
+service is implicitly selected by the `speed` objective.
 
-The historical V3/V4 Turbo16/Turbo32 and V4 QS16 resident services are
-still preserved as [REU compatibility exports](docs/REU_COMPAT_EXPORT.md),
-not mixed into the selective PRG. 1541/1571/1581 operation-first
-backends and complete historical fastest-kernel parity remain unfinished.
+All selected code, ZP overlays, buffers and REU banks must fit within
+the configured limits. A concurrent second REU service, active IRQ use
+of executable overlay ZP, and native mixed VIC/SID deadline safety are
+**not qualified**. See the
+[unified REU guide](docs/REU_OPERATION_FIRST_CONSOLIDATION.md) for
+resource reservations and precise qualification status.
+
+The historical V3/V4 images remain available as
+[immutable regression/compatibility archives](docs/REU_COMPAT_EXPORT.md),
+not to be linked or mixed with operation-first programs.
+1541/1571/1581 operation-first math backends and full historical
+fastest-kernel speed parity remain separate unfinished efforts.
