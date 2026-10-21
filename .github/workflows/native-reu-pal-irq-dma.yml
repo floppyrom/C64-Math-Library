@@ -45,23 +45,36 @@ jobs:
         env:
           VICE_JOBS: '2'
         run: bash tools/vice/build_headless.sh
-      - name: Run 8 source-linked native PAL REU/VIC/IRQ/SID CIA timing controls
+      - name: Cold-start repeated eight-case native REU PAL matrix, without diagnostic warmup
         run: |
           export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
           bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
-          python3 tools/native_reu_pal_irq_dma.py \
-            --diagnostic-16m-bank 4 --only-case reu_16384_display0_irq0 \
-            --out build/reu-pal/diagnostic-16m-bank4-noirq.json
-          python3 tools/native_reu_pal_irq_dma.py \
-            --diagnostic-16m-bank 4 --only-case reu_16384_display0_irq1 \
-            --out build/reu-pal/diagnostic-16m-bank4-irq.json
-          python3 tools/native_reu_pal_irq_dma.py \
-            --only-case reu_16384_display0_irq1 --trace-irq-entry \
-            --out build/reu-pal/trace-16m-first-irq.json
-          python3 tools/native_reu_pal_irq_dma.py \
-            --only-case reu_16384_display0_irq1 \
-            --out build/reu-pal/isolated-16m-irq.json
-          python3 tools/native_reu_pal_irq_dma.py --out build/reu-pal/irq-vic-dma-cia.json
+          for i in 1 2 3; do
+            python3 tools/native_reu_pal_irq_dma.py --out "build/reu-pal/cold-repeat-$i.json"
+          done
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          paths=[Path(f"build/reu-pal/cold-repeat-{i}.json") for i in (1,2,3)]
+          runs=[json.loads(p.read_text()) for p in paths]
+          assert all(r["status"]=="PASS_NATIVE_PAL_REU_IRQ_SID_CIA_BOUNDED_PROBE" for r in runs)
+          assert all(len(r["results"])==8 for r in runs)
+          first={x["case"]:x for x in runs[0]["results"]}
+          assert len(first)==8
+          out={}
+          for name,base in sorted(first.items()):
+            peers=[next(x for x in r["results"] if x["case"]==name) for r in runs]
+            assert all(p["source_reu_prg_sha256"]==base["source_reu_prg_sha256"]
+                       and p["source_stock_prg_sha256"]==base["source_stock_prg_sha256"]
+                       and p["caller_zero_page_restored"] and p["stock_fallback_still_correct"]
+                       for p in peers)
+            out[name]=[p["native_cia_phi2_slots"] for p in peers]
+          p=Path("build/reu-pal/cold-repeat-comparison.json")
+          p.write_text(json.dumps({"status":"THREE_COLD_NATIVE_EIGHT_CASE_MATRICES_PASS",
+              "historical_16m_irq_interaction":"retested_cold_without_diagnostic_warmup",
+              "slots_by_case":out},indent=2,sort_keys=True)+"\n")
+          print("THREE_COLD_NATIVE_EIGHT_CASE_MATRICES_PASS")
+          PY
       - name: Upload exact raw timings and checksum-linked image identity
         uses: actions/upload-artifact@v4
         if: always()
