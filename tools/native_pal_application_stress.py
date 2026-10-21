@@ -35,6 +35,7 @@ MAIN=previous.MAIN
 VERIFY=0x7a40
 HALT=0x7b80
 PLAYER_SHADOW=0x3e20
+COLOR_EXPECT=0x3e30   # non-ZP safe scratch; CPU colour RAM is only 4 bits
 LEVELS=(4,8,12,16)
 RUNS=previous.RUNS
 assert HANDLER==0x7e00 and RENDER==0x7f00 and RUNS==24
@@ -161,8 +162,11 @@ def add_readback(rom, old_halt, rows):
         b.extend((0xad,)+tuple(word(previous.FRAMES_ADDR)))
         b.extend((0x38,0xe9,0x01))           # SEC; SBC #1 (last drawn frame)
         if mask: b.extend((0x49,mask))
-        b.extend((0x29,0x0f))
-        check_accumulator_against(addr)
+        b.extend((0x29,0x0f))                 # expected 4-bit colour
+        b.extend((0x8d,)+tuple(word(COLOR_EXPECT))) # save expected nibble
+        b.extend((0xad,)+tuple(word(addr)))    # read actual colour RAM
+        b.extend((0x29,0x0f))                 # high nibble is undefined!
+        check_accumulator_against(COLOR_EXPECT)
     b.extend((0x4c,)+tuple(word(HALT)))
     if VERIFY+len(b)>=HALT:
         raise AssertionError("End-only player/renderer oracle exceeds reserved RAM")
