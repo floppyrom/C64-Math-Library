@@ -1,45 +1,73 @@
 # C64 Math Library
 
-**Build only the math routines your Commodore 64 application needs.** The supported
-stock-C64 installation system is the **operation-first builder**, with **56
-independently linkable public operations**, configurable resource budgets,
-source-qualified implementation alternatives and an exact physical linker.
+**Pick the math routines your Commodore 64 project needs — and leave the rest out.**
 
-**V1–V5 are retired as configuration profiles.** New applications should not
-choose "Balanced V1", "Fast V2", "REU V3", "REU V4" or "Low-ZP V5" as their
-library build strategy. Those named historical releases are preserved,
-unchanged, for source provenance, comparative benchmarks, regression
-testing and certain **separate REU compatibility services**. They are *not*
-deleted, and no unconditional historical speed/REU parity is claimed.
+The library offers **56 individually selectable 6502/6510 math operations**.
+Choose only the operations you need; the builder links their code, tables and
+dependencies into a C64 `.prg`, while respecting your RAM and zero-page limits.
+You can also inspect and reuse the source in your own project.
 
-## Get started
+**New here? Choose what you want to do:**
 
-Requirements: Python 3.12+ and Make for the Makefile shortcuts. The
-repository contains its own deterministic 6502 assembler; an external
-assembler is not required for normal installation.
+| I want to… | Start here |
+| --- | --- |
+| **See what routines are available** | [Browse all 56 operations](routines/PUBLIC_OPERATIONS.csv) or run `make builder-list` |
+| **Compare speed and memory use** | [Cycles / RAM / ZP / stack table](docs/OPERATION_FIRST_ROUTINE_METRICS.md) |
+| **Compare alternative implementations** | [Full per-variant CSV](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv) |
+| **Build my own selection** | [Quick start](#build-a-library-for-your-project) |
+| **Take just one routine's source** | [Single-routine pickup guide](docs/INDIVIDUAL_ROUTINE_PICKUP.md) |
 
-**Interactive setup:**
+## What's inside?
+
+Signed and unsigned **multiply, divide and modulo** routines (including
+wide-integer variants), plus **integer square roots, trigonometry, ATAN2,
+distance, fixed-point/vector helpers and target-seeking movement**.
+
+The [full operation catalog](routines/PUBLIC_OPERATIONS.csv) lists the
+exact names and types. Look up a routine in the
+[performance table](docs/OPERATION_FIRST_ROUTINE_METRICS.md) to see its
+measured cost before choosing it.
+
+## Build a library for your project
+
+**Requirements:** Python 3.12+ and Make. No external assembler is needed for
+the normal installer.
+
+From the repository folder, run:
 
 ```sh
 make builder-setup
 ```
 
+The guided setup asks you to:
 
-Select your operations, optimization objective and available RAM/zero page.
-The setup produces:
+1. **Pick operations** — one, several, or all 56.
+2. **Choose a goal** — `balanced` (general trade-off), `speed` (measured
+   CPU-model cycles), `size` (less RAM), or `zp` (less zero-page use).
+3. **Set your available RAM and ZP** — the builder checks that the result fits.
+   In `speed` mode, it also asks how frequently you expect to call each operation.
 
-| Output | Purpose |
-|---|---|
-| `my_math.json` | Editable, reusable application-specific configuration |
-| `build_my_math/math_selective.prg` | Real, minimal source-linked C64 load image |
-| `build_my_math/math_api.inc` | Actual exported function and operand addresses |
-| `build_my_math/selective_manifest.json` | Selected variants, source hashes, physical RAM/ZP placements, link proof |
+You receive:
 
-Existing configuration and build paths are **not overwritten**. Make a
-new output directory for another configuration. The builder validates the
-selected sources, budgets and memory reservations before publishing outputs.
+| File | What it is |
+| --- | --- |
+| `my_math.json` | Your choices; edit and reuse them later |
+| `build_my_math/math_selective.prg` | Your selected C64 library, ready to load |
+| `build_my_math/math_api.inc` | The **actual** entry points and operand addresses for your build |
+| `build_my_math/selective_manifest.json` | The selected sources, exact memory placement and RAM/ZP allocations |
 
-**Noninteractive or CI setup:**
+**Using it:** Load the generated `.prg` at its configured address, include
+the *matching* `math_api.inc` in your assembly project, write operands to
+the exported math I/O symbols, `JSR` the selected `MATH_*` entry, then
+read its documented result and Carry status. Entry addresses can change
+when you rebuild; don't copy addresses from an old release.
+See [calling conventions](docs/API_COMPATIBILITY.md) and the
+[step-by-step setup guide](docs/OPERATION_FIRST_USER_SETUP.md).
+
+### Prefer a command instead of the setup wizard?
+
+This example builds only unsigned 16-bit multiplication, unsigned 16-bit
+division and 16-bit integer square root:
 
 ```sh
 python3 tools/configure_math.py \
@@ -48,160 +76,73 @@ python3 tools/configure_math.py \
   --config-out project-math.json --build-dir build_project_math
 ```
 
-
-To edit an existing project, modify its JSON configuration and rebuild:
+Edit `project-math.json` to change your choices, then rebuild into a
+**new** output directory:
 
 ```sh
 make builder CONFIG=project-math.json OUT=build_new_math
-# Check the actual assembled footprint without making a new image:
-make builder-measure CONFIG=project-math.json
-# Browse the complete public operation catalog:
-make builder-list
 ```
 
+Existing configurations and build directories are not silently overwritten.
+For custom memory maps, source pins and speed call counts, see the
+[full setup guide](docs/OPERATION_FIRST_USER_SETUP.md).
 
-No `--profile` switch is used in the supported installer. The
-old reference-source targets are kept only for reproducibility and tests.
+## Want to reuse **one** routine in your own code?
 
-## Check each routine's cycles and memory
+You have two options:
 
-Use the [operation-first routine metric table](docs/OPERATION_FIRST_ROUTINE_METRICS.md) for **all 56 APIs**: measured per-call CPU cycles, code/tables, total isolated RAM, ZP and persistent stack-page reservation. The [complete variant CSV](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv) lists each independently linkable source alternative, with corpus/source hashes and scratch/state footprint. These reference rows are individual one-operation builds; **your combined project's exact memory consumption** is in its generated `selective_manifest.json`, not the sum of table rows. Transient CPU stack high-water is not measured and is distinct from persistent stack-page reservation.
+**Easiest: build only that operation.** Run `make builder-setup` and select
+one operation (for example, `UMUL16`). You'll get a small loadable `.prg`,
+its API include and an exact footprint manifest, without taking a whole
+legacy resident library. Required shared code and tables are included.
 
-## Choose according to your application
+**Prefer to copy or adapt the assembly source?** Use the
+[variant CSV](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv): filter the
+`operation` column (for example, `MATH_UMUL16`) and follow the
+`source_path` for the implementation you're interested in.
+Start with [curated routine sources](routines/README.md) and the
+[single-routine pickup guide](docs/INDIVIDUAL_ROUTINE_PICKUP.md).
+Some [portable standalone kernels](routines/standalone_lab/portable/README.md)
+have their own documented, editable addresses and calling conventions.
 
-| Objective | What it optimizes | What it does **not** promise |
-|---|---|---|
-| `balanced` | A trade-off across physical RAM and ZP constraints | Fastest historical or possible runtime |
-| `speed` | Minimize estimated calls × matched-input mean cycles | Hardware-exact frame timing, or unmeasured donor performance |
-| `size` | Smallest qualifying main RAM footprint | Fastest execution |
-| `zp` | Lowest qualifying zero-page use | Smallest code or fastest execution |
+**Important:** An individual source file is *not always* a drop-in module.
+It may need shared tables, scratch memory, symbolic bindings or setup code.
+Check its dependencies and ABI before transplanting it.
+The builder is the safer route if you simply want a working one-operation
+library.
 
-A tight memory budget can legitimately select a slower but smaller
-qualified routine. The global optimizer considers sharing, code and table
-alignment, 32-byte public I/O, call-exclusive scratch and ZP, persistent
-SEEK state and reserved memory. It does **not** independently choose a
-"best" routine per API and then merely add isolated byte counts.
+## How fast? How much memory?
 
-Speed mode requires **positive workload call counts for every requested
-operation** and refuses to silently assume they run equally often:
+The [consolidated routine table](docs/OPERATION_FIRST_ROUTINE_METRICS.md)
+shows **mean CPU cycles/call, code + tables, total isolated RAM, ZP and
+persistent stack-page reservations** for all 56 operations.
+The [full variant CSV](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv)
+lets you compare alternatives for the *same* operation.
+[Performance charts](PERFORMANCE.md) show selected combined-project
+trade-offs.
 
-```sh
-python3 tools/configure_math.py \
-  --operation UMUL8 --operation UMUL16 --objective speed \
-  --calls UMUL8=1000 --calls UMUL16=1 \
-  --ram-budget 1400 --zp-budget 4 \
-  --config-out my_speed_math.json --build-dir build_my_speed_math
-```
+These are measured reference figures, **not a promise of exact PAL frame
+timing**. Isolated routine footprints cannot simply be added together:
+linked projects may share code, tables and scratch. Check **your own**
+`selective_manifest.json` for actual combined RAM/ZP allocation.
+The stack-page column does **not** measure temporary JSR/RTS or interrupt
+stack depth.
 
+## More information
 
-You may pin a certified `link:...` implementation, reserve RAM/ZP
-occupied by your game with `--memory-config your-layout.json` and
-inspect selectable implementations with
-`python3 tools/math_builder.py --variants UMUL16`.
-The installer refuses unqualified source substitutions or overlapping
-allocations. See the [complete setup guide](docs/OPERATION_FIRST_USER_SETUP.md),
-[public API details](docs/API_COMPATIBILITY.md) and
-[resource-qualified acceptance matrix](docs/BUILDER_RELEASE_ACCEPTANCE.md).
+- [Complete setup and memory-map options](docs/OPERATION_FIRST_USER_SETUP.md)
+- [Public API and calling conventions](docs/API_COMPATIBILITY.md)
+- [Source pickup and relocation notes](docs/INDIVIDUAL_ROUTINE_PICKUP.md)
+- [Validation and release acceptance](docs/BUILDER_RELEASE_ACCEPTANCE.md)
+- [Experimental Turbo16 REU add-on](docs/OPERATION_FIRST_REU_TURBO16.md) and [separate legacy REU services](docs/REU_COMPAT_EXPORT.md)
+- [Historical V1–V5 performance archive](docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md), [research README archive](docs/README_RESEARCH_ARCHIVE_2026-10-21.md) and [changelog](CHANGELOG.md)
 
-## Use the generated library
+**Which version should I install?** For a new stock-C64 project, use the
+**operation-first builder above**, not the old V1–V5 configuration profiles.
+The historic source, binaries, benchmarks and compatibility services are
+preserved for reference. The optional REU service is experimental; other
+historical REU services remain separate and cannot be mixed into the stock
+selective `.prg`. 1541/1571/1581 math backends are not available yet.
 
-Load `math_selective.prg` into the application's chosen legal
-C64 address range, include the **generated** `math_api.inc` in the
-6502 program, write operands into the exported public I/O block, call
-the exported `MATH_*` entry and read the operation's documented
-result/Carry. Check `selective_manifest.json` for the exact
-selected module contracts, initialization requirements and memory map.
-Do not hardcode old resident profile entry addresses.
-
-The code is non-reentrant: do not call into shared math state from an
-IRQ/NMI while another library call is active. Source-level public API
-contracts and operation-specific caveats remain relevant regardless
-of the chosen memory/speed objective.
-
-## Release qualification
-
-The operation-first user interface and binary-linking acceptance have
-passed their exact-head CI suites:
-
-- [Guided builder PR #370](https://github.com/floppyrom/C64-Math-Library/pull/370):
-  **35/35 checks**, source-qualified config and generated PRG/include/manifest.
-- [User configuration release matrix PR #372](https://github.com/floppyrom/C64-Math-Library/pull/372):
-  **34/34 checks**, balanced/size/ZP/speed and a pinned reserved-memory
-  configuration each rebuilding bit-for-bit; invalid reservations fail closed.
-- Native VICE and source-model regressions independently validate the
-  all-56 linked C64 image and many historical arithmetic implementations.
-  Exact package hashes are tracked in `SHA256SUMS.txt`.
-
-```sh
-make builder                 # build from default operation-first JSON
-make builder-validate        # comprehensive selective-source checks
-make package-audit           # package integrity checks
-make legacy-validate         # opt-in historical profile reproducibility tests
-```
-
-
-The [current operation-first performance charts](PERFORMANCE.md) compare verified whole-project source variants and link budgets; [the historical V1–V5 timing tables](docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md) are retained separately. Do not use archived profile rankings as current speed-mode selections.
-
-A successful installer test demonstrates **correctly linked configurations**;
-it is not a guarantee of peak historical V1–V5 speed for every API, and
-CPU-model cycle estimates are not full VIC-II/SID/REU frame measurements.
-SID/music, graphics and PAL stress experiments are application-level
-research and **do not gate use of the math library**.
-
-## Archived releases and hardware-specific services
-
-The historical `v1_balanced/`, `v2_pareto_fast/`,
-`v3_reu_512k/`, `v4_reu_16m/` and
-`v5_hybrid_lowzp/` directories, old custom-Pareto tools,
-source tables, benchmark baselines and validation scripts remain
-**unchanged and available**. They are a compatibility/reproducibility
-archive, not alternative recommended installers.
-
-**Experimental opt-in native Turbo16 REU:** The operation-first setup can now
-also reserve and build an **independently loadable** Turbo16 REU service
-alongside the stock math PRG. This does not turn the usual MATH_UMUL16
-into an implicit REU call: it stays the non-REU fallback.
-
-```sh
-python3 tools/configure_math.py --operation UMUL16 \
-  --objective size --zp-budget 200 --ram-budget 25000 \
-  --reu-turbo16 --reu-kib 512 \
-  --config-out my_reu_math.json --build-dir build_my_reu_math
-```
-
-The builder produces both `math_selective.prg` and `turbo16_reu.prg`,
-plus the combined `math_project_manifest.json` and
-`math_reu_turbo16.inc`. It reserves the full REU add-on's RAM, 122-byte
-executable ZP, public I/O and REU bank **before** optimizing the stock
-operations. Load both PRGs; explicitly call INSTALL, check Carry, and
-only use guarded BEGIN/CALL/END when hardware is qualified. The pinned
-native VICE coexistence test includes absent-REU stock fallback.
-
-This remains **experimental**: simultaneous live IRQ/VIC contention,
-hardware DMA timing and full historical parity are not yet certified.
-Read the [REU operation-first opt-in guide](docs/OPERATION_FIRST_REU_TURBO16.md).
-
-**Other REU services:** Turbo32 and V4 QS16, and whole-resident historical
-REU compatibility, still require the **separate checksum-locked legacy
-bundle**:
-
-```sh
-python3 tools/export_reu_compat.py \
-  --profile v4_reu_16m --out build/reu-legacy-compat
-```
-
-
-That historical whole-resident bundle **cannot** be linked into
-`math_selective.prg` or mixed with the generated stock ABI:
-see [REU compatibility](docs/REU_COMPAT_EXPORT.md) and
-[historical REU contracts](docs/REU_GUIDE.md). The 1541/1571/1581
-math backends remain planning-only.
-
-For readers reproducing the old releases, consult the
-[archived historical user manual](USER_MANUAL.md),
-[archived pre-cutover development README](docs/README_RESEARCH_ARCHIVE_2026-10-21.md),
-[historical retirement/performance evidence](docs/PROFILE_RETIREMENT_EVIDENCE.md),
-[performance results](PERFORMANCE.md) and
-[changelog](CHANGELOG.md). The documented distinction is **retired
-installation UX, preserved and still partially required legacy hardware
-compatibility**.
+**License:** [MIT](LICENSE) — you may use, adapt and redistribute the code,
+subject to the license terms.
