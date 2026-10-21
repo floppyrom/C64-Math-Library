@@ -123,6 +123,10 @@ class NativeRealWorkTests(unittest.TestCase):
         for addr in (0x0400,0x040f,0x0400+40*15+15,
                      0xd800,0xd80f,0xd800+40*14+15):
             self.assertIn(bytes((0xcd,))+stress.word(addr),code)
+        # The scheduler incremented its frame count to 24; the final
+        # actual drawn frame is 23. Every on-6510 visual witness must
+        # subtract one before comparing screen/colour RAM.
+        self.assertEqual(code.count(bytes((0x38,0xe9,0x01))),6)
         self.assertEqual(code[-3:],bytes((0x4c,))+stress.word(halt))
         self.assertIn(bytes((0xee,))+stress.word(previous.ERRORS_ADDR),code)
 
