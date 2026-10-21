@@ -134,11 +134,25 @@ class UserSetupTests(unittest.TestCase):
             # Keep the real planner; substitute the *selection prompt* only,
             # not the linker, resource accounting or source verification.
             with patch.object(mb,"interactive_pick",return_value=["UMUL8"]),\
-                 patch("builtins.input",side_effect=["speed","0","4096","12"]):
+                 patch("builtins.input",side_effect=["speed","0","4096","12","none"]):
                 result=setup.run(args,self.index,interactive=True)
             self.assertEqual(result["selection_objective"],"speed")
             cfg=json.loads(args.config_out.read_text())
             self.assertEqual(cfg["workload_calls"],{"UMUL8":12})
+
+    def test_guided_setup_offers_all_reu_options(self):
+        with tempfile.TemporaryDirectory() as d:
+            folder=Path(d)
+            args=self.args(folder,operation=[],objective="size",zp_budget=210,
+                           ram_budget=30000)
+            with patch.object(mb,"interactive_pick",return_value=["UMUL32"]),\
+                 patch("builtins.input",side_effect=["turbo32","512"]):
+                result=setup.run(args,self.index,interactive=True)
+            cfg=json.loads(args.config_out.read_text())
+            self.assertEqual(cfg["hardware"]["reu"]["turbo32"]["capacity_kib"],512)
+            self.assertIn("MATH_UMUL32",[o["api"] for o in result["operations"]])
+            self.assertTrue((args.build_dir/"turbo32_reu.prg").exists())
+            self.assertTrue((args.build_dir/"math_project_manifest.json").exists())
 
     def test_unknown_pin_duplicate_calls_and_invalid_config(self):
         with tempfile.TemporaryDirectory() as d:
