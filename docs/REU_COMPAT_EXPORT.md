@@ -1,5 +1,13 @@
 # Immutable V3/V4 legacy REU compatibility bundles
 
+> **Archived exception, not another installer:** normal stock-C64 builds
+> use `make builder-setup` and never select V1–V5. The V3/V4 REU services
+> documented here are retained as **frozen, stand-alone whole-resident
+> compatibility exports** because Turbo/QS16 lifecycle functionality has
+> no qualified operation-first REU backend. Mixing an exported resident
+> with `math_selective.prg` is unsupported.
+
+
 The operation-first math builder is the preferred setup for its 56 stock-C64
 public math operations. Existing V3/V4 REU Turbo16/Turbo32 and V4 QS16
 BEGIN/CALL/END lifecycle services have different hardware and exclusive ZP
