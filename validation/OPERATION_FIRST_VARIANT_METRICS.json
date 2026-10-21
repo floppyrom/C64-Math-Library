@@ -1,0 +1,470 @@
+{
+  "csv_sha256": "089ecccdbcb19c250a76da9a4dc734841f1050e74ee16e5ff0344fad68b5f00d",
+  "cycle_units": "Mini6502 public entry through RTS, per-operation matched input corpus",
+  "generator_sha256": "18f1ef3f68e826794ea3ab2303f5836dfa74983bcf3cbc9987ac460b089eae46",
+  "markdown_sha256": "afe46c80f48362dccdef69499cbcce7ca027ffaccbfb70a0d211252b2d7c3f83",
+  "measured_variants": 122,
+  "memory_units": "bytes of isolated fully linked source image + I/O/scratch/state",
+  "operation_bases": {
+    "MATH_ATAN2_8": {
+      "basis": "cpu-model-atan2-8-full-public-phase-v1",
+      "corpus_sha256": "37033402d5f21c0be3cf81ae59222d02a52cdd8d06ca48d0e4a1b1476f94aaa3",
+      "note": "Fixed signed xy public phase/A/C, preserved input and code, exact original tables",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_COS8": {
+      "basis": "v1-v5-shared-trig8-exact-public-256-v1",
+      "corpus_sha256": "40aff2e9d2d8922e47afd4648e6967497158785fbd1da870e7110266bf944880",
+      "note": "Same complete phase-byte public ABI; original source only, one V1-V5 shared immutable sine plane; not physical PAL timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_DIST8_ACCURATE": {
+      "basis": "cpu-model-dist8-accurate-complete-public-v1",
+      "corpus_sha256": "990bd1cdd5658052c8d485df417d7da8d9ff8f683d34510030eecb3097820aff",
+      "note": "Identical signed-byte public distance inputs, R8/C, preserved inputs/output sentinel, full 512B certified tables",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_DIST8_FAST": {
+      "basis": "v1-dist8-fast-exact-512-full-public-v1",
+      "corpus_sha256": "cba346471e3f963654d3618a45542f178c9e2c74f09b0e0bd4b9c93993fa9544",
+      "note": "Original V1 61-byte signed8 approximate distance; complete 6502 source public cycles, not physical PAL timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_ISQRT16": {
+      "basis": "cpu-model-isqrt16-full-public-z16-v1",
+      "corpus_sha256": "32570e8b82c82b425548d46aeac245ce7083a7f48973550d7e4e41720334e89c",
+      "note": "Full Z16/C public ABI, input/SP/sentinel preservation, code and table immutable",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_ISQRT32": {
+      "basis": "cpu-model-isqrt32-v2-highword-versus-radix4-identical-inputs-v1",
+      "corpus_sha256": "f2a1e49ca20b8763b4ba27557a473dac2410b8019dd74035454923f2b409df16",
+      "note": "Identical 6502 CPU-model calls at requested code/I/O/ZP/RAM maps; no native VIC/REU/IRQ wall-clock timing and no mixed-operation speed certification",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SDIV16": {
+      "basis": "signed16-qr-v2-historical-public384-v1",
+      "corpus_sha256": "4292179a7d02762915ae2f46d238314d4c7306c4e32b091b8a62529a140424f7",
+      "note": "Identical full public signed Q16/R16/C calls, not historical native-resident timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SDIV16_SHL8": {
+      "basis": "sdiv16-shl8-v2-signed-matched-public384-v1",
+      "corpus_sha256": "9b98169f5fa4a2d628b081dae8659085b01efa550ea6016d0c891d4b53bd3a32",
+      "note": "Identical full signed Q24/R16/C calls, not resident-profile timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SDIV24": {
+      "basis": "cpu-model-signed24-public-Q24-R24-matched-512-v1-math_sdiv24",
+      "corpus_sha256": "429e92374a1b337cd0634f37be32afec5b3e79540a73dddf01d43a1b51f9a1fd",
+      "note": "Complete public Q24/R24/C, signed domain, high-sentinel and input preserved; CPU model only, no physical VICE cycle claim",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_SDIV32_16": {
+      "basis": "cpu-model-signed3216-paired-public-v2-mag-v1-math_sdiv32_16",
+      "corpus_sha256": "6b35c319b133bc6c32e45ce5d9a9f0ff59e05dd24fbc739192db80916dc46d1e",
+      "note": "Complete public Q32/R16/C through RTS; not native VICE timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SDIV32_32": {
+      "basis": "cpu-model-signed3232-public-paired-v2-hybrid-v1-math_sdiv32_32",
+      "corpus_sha256": "435b05f1226c3663a8a788f04795348a3ee4e986fe6855a7f6ef56b5eba55adc",
+      "note": "Complete public Q32/R32/C through RTS at identical placements; no hardware cycle claim",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_SDIV8": {
+      "basis": "v1-v5-shared-sdiv8-smod8-public-512-v1",
+      "corpus_sha256": "f0aa8606df564d1aa0daf4a155d246a1867669781344708368e376eba3bfa293",
+      "note": "Complete public signed Q8/R8/C original shared V1\u2013V5 producer; not hardware PAL/IRQ timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SEEK16_INIT": {
+      "basis": "original-shared-seek-dda-complete-public-movement-v1",
+      "corpus_sha256": "c862322d1ee09e394f2f2ba039f1c646d473fc8f7d895419184915a0cec3adfc",
+      "note": "One original shared multi-entry DDA producer; INIT and each stepper measured separately including arrival and post-arrival; CPU-model cycles, not PAL/IRQ timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SEEK16_STEP": {
+      "basis": "original-shared-seek-dda-complete-public-movement-v1",
+      "corpus_sha256": "fe5dd8c1c701f63ea24a68c834c7170a210849c64c01872e1eea2595ed3cd0c3",
+      "note": "One original shared multi-entry DDA producer; INIT and each stepper measured separately including arrival and post-arrival; CPU-model cycles, not PAL/IRQ timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SEEK16_STEP1": {
+      "basis": "original-shared-seek-dda-complete-public-movement-v1",
+      "corpus_sha256": "02010151501f33e53c257eb956fc674f526d64778d45df415d06c63690fe88fd",
+      "note": "One original shared multi-entry DDA producer; INIT and each stepper measured separately including arrival and post-arrival; CPU-model cycles, not PAL/IRQ timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SEEK16_STEP_INT": {
+      "basis": "original-shared-seek-dda-complete-public-movement-v1",
+      "corpus_sha256": "5b710067bf6ac323d85f9e040313730849967435ecf6c53c629e91d4a5b7a7c8",
+      "note": "One original shared multi-entry DDA producer; INIT and each stepper measured separately including arrival and post-arrival; CPU-model cycles, not PAL/IRQ timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SEEK8_INIT": {
+      "basis": "original-shared-seek-dda-complete-public-movement-v1",
+      "corpus_sha256": "a286e1a68f0140683a2ede5677176180c12db40338a0da8a59df97d0261de2bc",
+      "note": "One original shared multi-entry DDA producer; INIT and each stepper measured separately including arrival and post-arrival; CPU-model cycles, not PAL/IRQ timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SEEK8_STEP": {
+      "basis": "original-shared-seek-dda-complete-public-movement-v1",
+      "corpus_sha256": "e3bf022c29d910cf97e616900181e00270ecc0825673601722c9cb06a832d70d",
+      "note": "One original shared multi-entry DDA producer; INIT and each stepper measured separately including arrival and post-arrival; CPU-model cycles, not PAL/IRQ timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SEEK8_STEP1": {
+      "basis": "original-shared-seek-dda-complete-public-movement-v1",
+      "corpus_sha256": "ffaf3779ea32a9511f0861228efdaa134624681a1cfd9cbbcb3ceb6f8efdeeb6",
+      "note": "One original shared multi-entry DDA producer; INIT and each stepper measured separately including arrival and post-arrival; CPU-model cycles, not PAL/IRQ timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SEEK8_STEP_INT": {
+      "basis": "original-shared-seek-dda-complete-public-movement-v1",
+      "corpus_sha256": "5eaffbb316428fe56d3d643223c2c2e2a9c0bfd02b7f2008f2c627c6364b4d0d",
+      "note": "One original shared multi-entry DDA producer; INIT and each stepper measured separately including arrival and post-arrival; CPU-model cycles, not PAL/IRQ timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SIN8": {
+      "basis": "v1-v5-shared-trig8-exact-public-256-v1",
+      "corpus_sha256": "40aff2e9d2d8922e47afd4648e6967497158785fbd1da870e7110266bf944880",
+      "note": "Same complete phase-byte public ABI; original source only, one V1-V5 shared immutable sine plane; not physical PAL timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SINCOS8": {
+      "basis": "v1-v5-shared-trig8-exact-public-256-v1",
+      "corpus_sha256": "40aff2e9d2d8922e47afd4648e6967497158785fbd1da870e7110266bf944880",
+      "note": "Same complete phase-byte public ABI; original source only, one V1-V5 shared immutable sine plane; not physical PAL timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SMOD16": {
+      "basis": "signed16-qr-v2-historical-public384-v1",
+      "corpus_sha256": "4292179a7d02762915ae2f46d238314d4c7306c4e32b091b8a62529a140424f7",
+      "note": "Identical full public signed Q16/R16/C calls, not historical native-resident timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SMOD24": {
+      "basis": "cpu-model-signed24-public-Q24-R24-matched-512-v1-math_smod24",
+      "corpus_sha256": "429e92374a1b337cd0634f37be32afec5b3e79540a73dddf01d43a1b51f9a1fd",
+      "note": "Complete public Q24/R24/C, signed domain, high-sentinel and input preserved; CPU model only, no physical VICE cycle claim",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_SMOD32_16": {
+      "basis": "cpu-model-signed3216-paired-public-v2-mag-v1-math_smod32_16",
+      "corpus_sha256": "6b35c319b133bc6c32e45ce5d9a9f0ff59e05dd24fbc739192db80916dc46d1e",
+      "note": "Complete public Q32/R16/C through RTS; not native VICE timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SMOD32_32": {
+      "basis": "cpu-model-signed3232-public-paired-v2-hybrid-v1-math_smod32_32",
+      "corpus_sha256": "435b05f1226c3663a8a788f04795348a3ee4e986fe6855a7f6ef56b5eba55adc",
+      "note": "Complete public Q32/R32/C through RTS at identical placements; no hardware cycle claim",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_SMOD8": {
+      "basis": "v1-v5-shared-sdiv8-smod8-public-512-v1",
+      "corpus_sha256": "f0aa8606df564d1aa0daf4a155d246a1867669781344708368e376eba3bfa293",
+      "note": "Complete public signed Q8/R8/C original shared V1\u2013V5 producer; not hardware PAL/IRQ timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    },
+    "MATH_SMUL16": {
+      "basis": "smul16-quarter-square-signed-public512-v1",
+      "corpus_sha256": "880b139d0a8b3b7dc156ef35435cb71653768997ce6456a62281b79cf73c0742",
+      "note": "Matched complete signed public calls, not resident 16x16 instruction timings",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SMUL16_SHR8": {
+      "basis": "smul16-shr8-exact-public512-qs-v1",
+      "corpus_sha256": "880b139d0a8b3b7dc156ef35435cb71653768997ce6456a62281b79cf73c0742",
+      "note": "Full signed shifted Q24 public-call timing, not resident profile timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SMUL24": {
+      "basis": "cpu-model-smul24-public-biased-v2-512-v1",
+      "corpus_sha256": "3a5112914567bb731f19df5e98cd4425be30fad9155f9132f2d715bc7ba9d042",
+      "note": "Complete signed48 public calls at identical origins; excludes native PAL cycle timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SMUL32": {
+      "basis": "cpu-model-smul32-full64-public-identical-inputs-v1",
+      "corpus_sha256": "928b2da2262eca3c95347f97698ae45d1e01a54bddca98d00ee7d9482b90a8f9",
+      "note": "Signed full64 identical-input complete public calls through RTS; CPU-model only, not native VICE cycle claim",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 4
+    },
+    "MATH_SMUL32_READY": {
+      "basis": "cpu-model-math_smul32_ready-complete-public-identical-inputs-v1",
+      "corpus_sha256": "928b2da2262eca3c95347f97698ae45d1e01a54bddca98d00ee7d9482b90a8f9",
+      "note": "Same-input complete READY or Q48 SHR16 public calls through RTS; CPU-model only, not VICE elapsed timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_SMUL32_SHR16": {
+      "basis": "cpu-model-math_smul32_shr16-complete-public-identical-inputs-v1",
+      "corpus_sha256": "928b2da2262eca3c95347f97698ae45d1e01a54bddca98d00ee7d9482b90a8f9",
+      "note": "Same-input complete READY or Q48 SHR16 public calls through RTS; CPU-model only, not VICE elapsed timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_SMUL8": {
+      "basis": "smul8-source-linked-public512-smc-vs-readonly-qs-v1",
+      "corpus_sha256": "57fe2c656256229f109cab5779414b57775d7f0c4b819884dc20e9de46a4c2c9",
+      "note": "Two source-linked and same-input public signed16 returns; native PAL frame timing not claimed",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_SMULDIV16": {
+      "basis": "smuldiv16-signedqs-v2-matched-public512-v1",
+      "corpus_sha256": "97f45181ed72cedc342d28e31c8e1a4818110776e07541a541b8d67b8cb02337",
+      "note": "Full signed X16*Y16/D16 Q32/R16/C public-call cycles, not resident V2 kernel timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UDIV16": {
+      "basis": "cpu-model-udiv16-full-public-qr-v1",
+      "corpus_sha256": "e473a9872d63db4728f3d682dddf1d3642b1e157d0803f65672f36ff4d5be292",
+      "note": "Complete Q16/R16/C public ABI, immutable input/stack/code; 0-ZP donor is resource alternate, not claimed faster",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UDIV16_SHL8": {
+      "basis": "cpu-model-udiv16-shl8-public-v2-source-384-v1",
+      "corpus_sha256": "f78373d1422f84e75a96f89e944e44e925cfae4f3531c66696cc5272fab39f6c",
+      "note": "Source-assembled full public Q32/R16/C calls at same origins; CPU model only, not physical PAL timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UDIV24": {
+      "basis": "cpu-model-unsigned-24by24-complete-public-q24-r24-v1-math_udiv24",
+      "corpus_sha256": "e9643acad59e0783d3e7e9c4f1e95cc302a16cb264b865813ddf7a514ca00590",
+      "note": "Fixed-input public Q24/R24/C and N/D/SP through RTS; V2 writable SMC; hardware timing not claimed",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UDIV32_16": {
+      "basis": "cpu-model-u3216-public-quotient-remainder-identical-inputs-v1-math_udiv32_16",
+      "corpus_sha256": "d3c5e882c9ee52461ca764dc50b4b9f7d9203bf378ac5a25be3692168bb053e1",
+      "note": "Public 32/16 Q32+R16, divide-by-zero and carry, through RTS; CPU model only; input corpus includes small and arbitrary divisors",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 4
+    },
+    "MATH_UDIV32_32": {
+      "basis": "cpu-model-unsigned-32by32-complete-public-q32-r32-v1-math_udiv32_32",
+      "corpus_sha256": "96e691eace2ab60671c984c61b4adc567720f3116c5873f13d0a07fc47344acf",
+      "note": "Identical-input complete public Q32/R32 calls through RTS, C=1 on divisor zero; native VICE required for correctness, not CPU-model timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 5
+    },
+    "MATH_UDIV8": {
+      "basis": "cpu-model-udiv8-matched-small-divisor-v1",
+      "corpus_sha256": "86639c1545d78e6bbd95aab5db39d9a0b7d02cf9100e5ea41c863142cb975def",
+      "note": "Measured identical assembled-source 6502 calls; NOT native VICE cycle timing or a certified mixed-operation speed model",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UMOD16": {
+      "basis": "cpu-model-unsigned-16by16-mod-complete-public-r16-v1",
+      "corpus_sha256": "2258e90b0e86173fc502c83e5ca8506f5adbe8704bd6f4aaeb006578877f4dcb",
+      "note": "Identical operands, R16/C, preserved N16/D16/Q16/stack; no REU/SMC; native VICE validation separate",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UMOD24": {
+      "basis": "cpu-model-unsigned-24by24-complete-public-q24-r24-v1-math_umod24",
+      "corpus_sha256": "e9643acad59e0783d3e7e9c4f1e95cc302a16cb264b865813ddf7a514ca00590",
+      "note": "Fixed-input public Q24/R24/C and N/D/SP through RTS; V2 writable SMC; hardware timing not claimed",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UMOD32_16": {
+      "basis": "cpu-model-u3216-public-quotient-remainder-identical-inputs-v1-math_umod32_16",
+      "corpus_sha256": "d3c5e882c9ee52461ca764dc50b4b9f7d9203bf378ac5a25be3692168bb053e1",
+      "note": "Public 32/16 Q32+R16, divide-by-zero and carry, through RTS; CPU model only; input corpus includes small and arbitrary divisors",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 4
+    },
+    "MATH_UMOD32_32": {
+      "basis": "cpu-model-unsigned-32by32-complete-public-q32-r32-v1-math_umod32_32",
+      "corpus_sha256": "96e691eace2ab60671c984c61b4adc567720f3116c5873f13d0a07fc47344acf",
+      "note": "Identical-input complete public Q32/R32 calls through RTS, C=1 on divisor zero; native VICE required for correctness, not CPU-model timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 4
+    },
+    "MATH_UMOD8": {
+      "basis": "cpu-model-umod8-same-input-small-divisor-v1",
+      "corpus_sha256": "9842b98d29eb3e842c8bb1632e9b627d645ad057a866804fbbda42eec0572fc9",
+      "note": "Same source-assembled 6502 input corpus, not VICE hardware timing; does not certify mixed-operation speed ranking",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_UMUL16": {
+      "basis": "cpu-model-umul16-seeded-edge-uniform-v1",
+      "corpus_sha256": "10dab9c676b5109a7989236199ebc6ee1e670a7b6d4f95743cb38e3d5a6d25f5",
+      "note": "Measured assembled-source call-through-RTS cycles; not native VICE timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UMUL16_SHR8": {
+      "basis": "cpu-model-umul16-shr8-matched-edge-uniform-v1",
+      "corpus_sha256": "ed1b2dbd5c805dfd9f42e1b862cc38747d0da9689ba01ad20a049af950ba3eff",
+      "note": "Matched-input source-assembled 6502 call-through-RTS cycles; native VICE verifies correctness, not timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UMUL24": {
+      "basis": "cpu-model-umul24-public-biased-V2-512-v1",
+      "corpus_sha256": "528baa842ce1bc6d9dec54bd7c6d40881cf97c9f2e8a1fcd300885076aab843a",
+      "note": "same 512 complete public calls at identical code origin; actual linked placement may differ; no native hardware timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_UMUL32": {
+      "basis": "cpu-model-umul32-full64-source-linked-identical-inputs-v1",
+      "corpus_sha256": "65625f8a89189164c4ac974a166ec5eb6cd677d0159489ddf4d9a4100f05f923",
+      "note": "Matched full64 32x32 source-assembled calls through RTS; no native hardware cycle claim",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 5
+    },
+    "MATH_UMUL32_READY": {
+      "basis": "cpu-model-math_umul32_ready-complete-public-identical-inputs-v1",
+      "corpus_sha256": "65625f8a89189164c4ac974a166ec5eb6cd677d0159489ddf4d9a4100f05f923",
+      "note": "Same-input complete READY or Q48 SHR16 public calls through RTS; CPU-model only, not VICE elapsed timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_UMUL32_SHR16": {
+      "basis": "cpu-model-math_umul32_shr16-complete-public-identical-inputs-v1",
+      "corpus_sha256": "65625f8a89189164c4ac974a166ec5eb6cd677d0159489ddf4d9a4100f05f923",
+      "note": "Same-input complete READY or Q48 SHR16 public calls through RTS; CPU-model only, not VICE elapsed timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_UMUL8": {
+      "basis": "cpu-model-umul8-seeded-edge-and-uniform-v1-with-original-v1",
+      "corpus_sha256": "46d1c03d8a31b0bbb72b2aaa68b704e818a0c5755f85a9587cbedf28f929d7d7",
+      "note": "Measured source-assembled call-through-RTS CPU cycles, not native hardware cycles",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_UMULDIV16": {
+      "basis": "umuldiv16-canonical-qs-v2-public512-v1",
+      "corpus_sha256": "6763ce18f751e319d025b232da815195a119ed60d4092e4c4cc54244b445e3c7",
+      "note": "Complete signed-free X16*Y16/D16 public Q32/R16/C calls, NOT resident V2 division timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 2
+    },
+    "MATH_URECIP16_Q16": {
+      "basis": "stock-c64-recip16-v3v4-threshold-public512-v1",
+      "corpus_sha256": "037d4fad53f2034a11a1b87ed5fee34f04a26eee998377c77ebe5586e283712b",
+      "note": "Identical-input complete public Q24/C cycles, not REU or PAL timing",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 3
+    },
+    "MATH_VEC2_NORMALIZE_Q8_8": {
+      "basis": "vec2-normalize-original-v1v5-full-public512-v1",
+      "corpus_sha256": "a6d2fd929b035a31916e1c1674f8b204d0c8ee4ed81c8a7590e8cb04b6dd3242",
+      "note": "Original stock SMC/log-ratio source, full public Q1.15/C, 512 pairs; CPU model only",
+      "source_benchmark_code_origin": "$8000",
+      "source_benchmark_io_origin": "$C000",
+      "variants": 1
+    }
+  },
+  "operations": 56,
+  "persistent_stack_page_only": true,
+  "reported_standard_placement": {
+    "code": "$8000",
+    "io": "$C000",
+    "scratch": "$C020",
+    "zp": "$50"
+  },
+  "reu_dma_included": false,
+  "schema": "c64-operation-first-isolated-variant-metrics-v1",
+  "target": "stock C64 operation-first source linker",
+  "transient_runtime_stack_peak_measured": false
+}

@@ -2,6 +2,8 @@
 
 > **Current performance charts (21 October 2026).** The supported installation method selects **operations and qualified source variants**, not V1–V5 resident profiles. **There is no single universal speed, RAM or zero-page number for an operation**: the physical linked image, shared tables, chosen workload, resource budget and memory placement affect the result. The historical profile-by-profile charts have been preserved, unchanged, in the [historical performance archive](docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md).
 
+**For individual routines:** open the [56-operation cycle/RAM/ZP/stack reference](docs/OPERATION_FIRST_ROUTINE_METRICS.md), with one row per public operation and a complete [all-variant CSV](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv). This table includes only current source-linkable routines, not retired resident profiles. Persistent stack reservations are measured separately from unmeasured transient stack depth.
+
 The library's **56 independently linkable stock-C64 public operations** are configured through [the operation-first setup](docs/OPERATION_FIRST_USER_SETUP.md). The performance evidence below comes from verified *operation-first, fully linked source plans*, not obsolete whole-profile benchmark rows. Values should only be compared **within the same table and benchmark basis**.
 
 ## 1. Complete linked-project Pareto chart: seven operations
