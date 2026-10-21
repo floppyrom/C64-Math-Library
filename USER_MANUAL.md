@@ -17,7 +17,8 @@ python3 tools/configure_math.py \
 ```
 
 
-Use the generated `math_api.inc` and `selective_manifest.json`
+Load the generated `math_selective.prg`; use its companion
+`math_api.inc` and `selective_manifest.json`
 for your program's **actual** exported addresses, module allocation,
 initialization and selected source hashes. Do not use hard-coded V1–V5
 entry addresses with the operation-first PRG.
