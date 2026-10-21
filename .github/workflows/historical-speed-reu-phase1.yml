@@ -1,0 +1,48 @@
+name: Historical speed and REU contract phase one
+on:
+  pull_request:
+    paths:
+      - 'tools/historical_parity_triage.py'
+      - 'tools/reu_selective_contract.py'
+      - 'tools/test_historical_parity_reu_phase1.py'
+      - 'docs/HISTORICAL_SPEED_REU_PHASE1.md'
+      - '.github/workflows/historical-speed-reu-phase1.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  provenance-and-reu-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate source provenance and historical REU lifecycle contract
+        run: |
+          python3 -m compileall -q tools/historical_parity_triage.py tools/reu_selective_contract.py tools/test_historical_parity_reu_phase1.py
+          python3 -m unittest discover -s tools -p 'test_historical_parity_reu_phase1.py' -v
+      - name: Export deterministic triage reports (not hardware qualification)
+        run: |
+          mkdir -p build/phase1
+          python3 tools/historical_parity_triage.py --out build/phase1/historical-parity.json
+          python3 tools/reu_selective_contract.py --reference-tier v3_reu_512k --family UMUL16 --out build/phase1/reu-turbo16.json
+          python3 tools/reu_selective_contract.py --reference-tier v4_reu_16m --family UMUL32 --out build/phase1/reu-turbo32.json
+          python3 tools/reu_selective_contract.py --reference-tier v4_reu_16m --family QS16 --out build/phase1/reu-qs16.json
+          python3 -c 'import json,pathlib; d=json.loads(pathlib.Path("build/phase1/historical-parity.json").read_text()); assert d["public_operation_count"]==56 and d["qualified_full_speed_parity_apis"]==0'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: historical-speed-reu-contract-phase1
+          path: build/phase1/
+          retention-days: 14
+      - name: Verify locked source package and frozen references
+        run: |
+          # Compileall and the uploaded JSON reports are test artifacts,
+          # not part of the checksum-locked distribution.
+          find tools -type d -name __pycache__ -prune -exec rm -rf {} +
+          rm -rf build/phase1
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
