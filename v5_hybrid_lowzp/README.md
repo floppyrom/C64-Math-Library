@@ -1,3 +1,10 @@
+> **ARCHIVED RESIDENT — not the current installation path (2026-10-21).**
+> This folder preserves the exact historical **V5 Hybrid Low-ZP** release for source,
+> benchmark and regression reproducibility. New stock-C64 projects should
+> choose their own operations and budgets using
+> [`make builder-setup`](../QUICK_START.md), not a fixed V1–V5 profile.
+> Historical entry addresses, code placement and tuning describe only this frozen resident.
+
 # V5 Hybrid Low-ZP — stock C64 game/demo profile
 
 V5 keeps the **V1 31-byte normal zero-page footprint** while selectively importing V2 implementations that are faster without requiring additional ZP.
