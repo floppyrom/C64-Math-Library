@@ -151,10 +151,33 @@ source tables, benchmark baselines and validation scripts remain
 **unchanged and available**. They are a compatibility/reproducibility
 archive, not alternative recommended installers.
 
-**REU exception:** V3/V4 Turbo16/Turbo32 and V4 QS16 BEGIN/CALL/END
-services are not implemented by the new stock-C64 selective backend.
-Existing applications that specifically require those services must
-use their **separate checksum-locked historical REU resident bundle**:
+**Experimental opt-in native Turbo16 REU:** The operation-first setup can now
+also reserve and build an **independently loadable** Turbo16 REU service
+alongside the stock math PRG. This does not turn the usual MATH_UMUL16
+into an implicit REU call: it stays the non-REU fallback.
+
+```sh
+python3 tools/configure_math.py --operation UMUL16 \
+  --objective size --zp-budget 200 --ram-budget 25000 \
+  --reu-turbo16 --reu-kib 512 \
+  --config-out my_reu_math.json --build-dir build_my_reu_math
+```
+
+The builder produces both `math_selective.prg` and `turbo16_reu.prg`,
+plus the combined `math_project_manifest.json` and
+`math_reu_turbo16.inc`. It reserves the full REU add-on's RAM, 122-byte
+executable ZP, public I/O and REU bank **before** optimizing the stock
+operations. Load both PRGs; explicitly call INSTALL, check Carry, and
+only use guarded BEGIN/CALL/END when hardware is qualified. The pinned
+native VICE coexistence test includes absent-REU stock fallback.
+
+This remains **experimental**: simultaneous live IRQ/VIC contention,
+hardware DMA timing and full historical parity are not yet certified.
+Read the [REU operation-first opt-in guide](docs/OPERATION_FIRST_REU_TURBO16.md).
+
+**Other REU services:** Turbo32 and V4 QS16, and whole-resident historical
+REU compatibility, still require the **separate checksum-locked legacy
+bundle**:
 
 ```sh
 python3 tools/export_reu_compat.py \
