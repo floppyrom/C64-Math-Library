@@ -1,0 +1,54 @@
+name: Source-built standalone Turbo16 native REU preflight
+on:
+  pull_request:
+    paths:
+      - 'relocatable_source/turbo/turbo16_reu_preflight.asm'
+      - 'tools/reu_turbo16_standalone_package.py'
+      - 'tools/test_reu_turbo16_standalone_package.py'
+      - 'tools/native_reu_turbo16_standalone.py'
+      - 'docs/TURBO16_REU_STANDALONE_PREFLIGHT.md'
+      - '.github/workflows/reu-turbo16-native-preflight.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  independent-prg-native-1750-and-16m:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Source built physical package and absence/bank safety CPU tests
+        run: |
+          python3 -m unittest discover -s tools -p 'test_reu_turbo16_standalone_package.py' -v
+          python3 tools/reu_turbo16_standalone_package.py --out build/preflight-reu-512
+          python3 tools/reu_turbo16_standalone_package.py --reu-kib 16384 --bank 200 --out build/preflight-reu-16m
+      - name: Install pinned VICE x64sc build dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq git make gcc g++ autoconf automake libtool pkg-config bison flex texinfo dos2unix xa65 gettext libpng-dev zlib1g-dev libreadline-dev
+      - name: Build exact VICE r46284 and verify SHA-pinned SVN source
+        env:
+          VICE_JOBS: '2'
+        run: bash tools/vice/build_headless.sh
+      - name: Native physical REU upload, two batches, absence and mirroring rejection
+        run: |
+          export VICE_WRAPPER="$PWD/.vice-build/r46284/bin/x64sc"
+          bash tools/vice/verify_headless.sh "$VICE_WRAPPER"
+          python3 tools/native_reu_turbo16_standalone.py --out build/reu-native/preflight.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-built-turbo16-reu-physical-dma-preflight
+          path: |
+            build/reu-native/preflight.json
+            build/preflight-reu-512/
+            build/preflight-reu-16m/
+          retention-days: 14
