@@ -49,4 +49,16 @@ make builder-validate
 make package-audit
 ```
 
+Optional math-only frame qualification (not a physical 25/50 fps promise):
+
+```sh
+make builder-frame OUT=build_frame_example
+```
+
+On a fresh checkout the example generates its own source-qualified
+three-operation report in `build_frame_example/mixed3.json` before building.
+For a different application, supply a previously qualified
+`FRAME_REPORT=path/to/report.json` and the matching `FRAME_CONFIG=...`;
+unknown or missing reports are rejected rather than fabricated.
+
 For REU flags, bank reservations, compatibility and limits, read the [REU guide](docs/REU_OPERATION_FIRST_CONSOLIDATION.md). For individual assembly sources, use the [routine pickup guide](docs/INDIVIDUAL_ROUTINE_PICKUP.md). Historical V1–V5 packages remain reproducible archives, **not** new-project installation choices.
