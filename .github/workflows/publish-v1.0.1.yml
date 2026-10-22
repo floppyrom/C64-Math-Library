@@ -8,6 +8,7 @@ on:
       - main
     paths:
       - 'docs/releases/v1.0.1.md'
+      - '.github/workflows/publish-v1.0.1.yml'
   workflow_dispatch:
 
 permissions:
@@ -89,7 +90,8 @@ jobs:
           }
           PY
       - name: Disclose strict frozen PRG verification separately
-        run: echo "Known strict V1-V4 frozen PRG drift is issue #398, not a v1.0.1 release gate."
+        run: |
+          echo "Known strict V1-V4 frozen PRG drift is issue #398, not a v1.0.1 release gate."
 
   publish:
     needs:
