@@ -257,7 +257,9 @@ def map_v2_abs(old: int, vals: dict, aux: int, pack: str|None=None) -> int:
         ln=256 if src in (0x6C00,0x6D00) else 511
         if src <= old < src+ln: return dst+(old-src)
     # Pack code locations.
-    if 0x5300 <= old <= 0x5322: return aux+AUX_UMUL8_CODE+(old-0x5300)
+    # Current V2 UMUL8 direct-output core starts with SEC at $52FE,
+    # two bytes before its historical $5300 origin. Include its prologue.
+    if 0x52FE <= old <= 0x5322: return aux+AUX_UMUL8_CODE+(old-0x52FE)
     if 0x53EC <= old <= 0x5458: return aux+AUX_UMUL16_CODE+(old-0x53EC)
     if 0x5649 <= old <= 0x5763: return aux+AUX_UMUL24_CODE+(old-0x5649)
     if 0x34C0 <= old <= 0x3505: return aux+AUX_UMUL24_ADAPTER+(old-0x34C0)
@@ -353,7 +355,12 @@ def apply_umul8_16(dst, src, vals, man, aux, v2_entries):
     dst[aux+AUX_DIFF_LO:aux+AUX_DIFF_LO+256]=src[0x6C00:0x6D00]
     dst[aux+AUX_DIFF_HI:aux+AUX_DIFF_HI+256]=src[0x6D00:0x6E00]
     starts=trace(src,v2_entries['MATH_UMUL8'])
-    copy_code_block(dst,src,0x5300,0x5322,aux+AUX_UMUL8_CODE,starts,vals,aux)
+    # The direct-public-output donor now begins at $52FE, not $5300.
+    # Relocate the *whole* 37-byte kernel to AUX+$0200; starting at $5300
+    # drops SEC/STX and causes a run-away UMUL8 call in the 36-ZP pack.
+    if bytes(src[0x52FE:0x5301]) != bytes((0x38,0x86,0x39)):
+        raise RuntimeError('Pareto UMUL8 V2 donor prologue changed')
+    copy_code_block(dst,src,0x52FE,0x5322,aux+AUX_UMUL8_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x3000,0x3012,public_addr(man,'MATH_UMUL8'),starts,vals,aux)
     # MATH_SMUL8 is intentionally left on the V1 base: all fixed profiles now
     # share the same 67.992188-cycle direct signed-domain kernel.
