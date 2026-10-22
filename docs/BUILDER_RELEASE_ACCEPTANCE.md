@@ -4,8 +4,10 @@
 > and source-linked selective builds passed PR #370 (35/35 workflows);
 > four-objective, pinned-memory and exact rebuild acceptance passed PR #372
 > (34/34 workflows). This retires historic fixed profiles **as the normal
-> user setup**, while preserving REU whole-resident compatibility and
-> stronger, unresolved total-history speed/hardware parity research.
+> user setup**, while preserving historical whole-resident compatibility and adding
+> explicit source-built REU Turbo16/Turbo32/QS16 opt-in services (PR #393).
+> Stronger total-history speed and application/hardware-timing parity research
+> remains separate from the installer release.
 
 
 **Release target:** users choose the mathematical operations needed by their
