@@ -130,7 +130,7 @@ hybrid:
 	$(PYTHON) tools/build_hybrid.py --config-kind reference
 	$(PYTHON) tools/build_hybrid.py --config-kind alternate
 
-hybrid-validate: hybrid
+hybrid-validate: reference hybrid
 	$(PYTHON) tools/validate_hybrid.py
 	$(PYTHON) tools/test_hybrid_config.py
 	$(PYTHON) tools/verify_hybrid_deterministic.py
@@ -209,7 +209,7 @@ builder-validate:
 	$(PYTHON) tools/test_selective_trig8.py
 	$(PYTHON) tools/test_selective_dist8_accurate.py
 
-pareto-validate:
+pareto-validate: reference
 	$(PYTHON) tools/validate_pareto.py
 	$(PYTHON) tools/test_pareto_config.py
 	$(PYTHON) tools/stress_pareto.py
