@@ -125,24 +125,44 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Run strict historical frozen-PRG parity test (known drift issue #398)
-        id: legacy
+      - name: Current legacy API/relocation/reproducibility regression
+        run: |
+          make legacy-validate
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("build_source/CURRENT_SOURCE_REPEATABILITY.json").read_text())
+          assert r["status"] == "PASS", r
+          assert r["check_type"] == "current_source_repeatability_NOT_frozen_reference_PRG_identity"
+          assert len(r["checks"]) == 8
+          assert all(x["status"]=="PASS" and x["repeat_prg_identical"] is True for x in r["checks"])
+          assert all(x["repeat_reu_identical"] in (None,True) and
+                     x["reference_reu_identical"] in (None,True) for x in r["checks"])
+          assert r["frozen_prg_identity"]["status"] == "MISMATCH"
+          assert set(r["frozen_prg_identity"]["profiles_different_from_frozen"]) == {
+              "v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m"}
+          PY
+      - name: Run separate strict frozen-PRG identity test (issue #398)
+        id: frozen
         continue-on-error: true
-        run: make legacy-validate
-      - name: Verify known archived/current source discrepancy without masking other failures
-        if: ${{ steps.legacy.outcome == 'failure' }}
+        run: make legacy-frozen-verify
+      - name: Verify the strict frozen identity failure is specifically known drift
+        if: ${{ steps.frozen.outcome == 'failure' }}
         run: |
           python3 - <<'PY'
           import json
           from pathlib import Path
-          evidence=json.loads(Path("validation/source_relocation/DETERMINISTIC_REBUILD.json").read_text())
-          cases=evidence["checks"]
-          assert len(cases)==8 and evidence["status"]=="FAIL"
+          r=json.loads(Path("validation/source_relocation/DETERMINISTIC_REBUILD.json").read_text())
+          assert r["status"] == "FAIL" and r["check_type"] == "strict_frozen_reference_binary_identity"
+          assert len(r["checks"])==8
           assert all(x["repeat_prg_identical"] is True and
-                     x["repeat_reu_identical"] in (True,None) for x in cases)
-          mismatches={x["profile"] for x in cases if x["reference_prg_identical"] is False}
-          assert mismatches=={"v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m"}, mismatches
-          assert all(x["reference_reu_identical"] in (True,None) for x in cases)
-          assert all(x["reference_prg_identical"] is None for x in cases if x["kind"]=="alternate")
+                     x["repeat_reu_identical"] in (True,None) for x in r["checks"])
+          mismatch={x["profile"] for x in r["checks"] if x["reference_prg_identical"] is False}
+          assert mismatch=={"v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m"}
+          assert all(x["reference_reu_identical"] in (True,None) for x in r["checks"])
           PY
-          echo "::warning::Strict legacy-validate FAILS: evolving reference source PRGs differ from frozen historical PRGs; see #398. Current-source repeatability and REU identity pass. Not a certified historical reference parity PASS."
+          echo "::warning::Strict frozen-PRG source parity still fails (issue #398). This is not a passed reference-identity test."
+      - name: Strict frozen verification must not be silently reported as passing
+        if: ${{ steps.frozen.outcome == 'success' }}
+        run: |
+          echo "Strict archived binary identity unexpectedly passed; inspect and close #398 only after reviewing hashes."
