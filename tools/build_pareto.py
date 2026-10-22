@@ -385,11 +385,13 @@ def apply_umul24(dst,src,vals,man,aux,v2_entries):
     # Match the helper's first two persistent-pointer writes in *assembled*
     # source, because source-owned fast paths shift the trailing offsets.
     starts=trace(src,v2_entries['MATH_UMUL24'])
+    donor_config=asm.parse_config(
+        ROOT/'relocatable_source/v2_pareto_fast/math_config_reference.inc')
     helper_prefix=bytes((
-        0xA9, (vals['REG_TABLE']>>8)&0xFF,
-        0x85, (vals['ZP_MAIN']+0x20)&0xFF,
-        0x85, (vals['ZP_MAIN']+0x28)&0xFF,
-        0x85, (vals['ZP_MAIN']+0x30)&0xFF))
+        0xA9, (donor_config['REG_TABLE']>>8)&0xFF,
+        0x85, (donor_config['ZP_MAIN']+0x20)&0xFF,
+        0x85, (donor_config['ZP_MAIN']+0x28)&0xFF,
+        0x85, (donor_config['ZP_MAIN']+0x30)&0xFF))
     helper_start=src.find(helper_prefix,0x5750,0x57C0)
     if helper_start<0:
         raise RuntimeError(
