@@ -84,7 +84,10 @@ PACKS = {
 
 AUX_DIFF_LO = 0x000
 AUX_DIFF_HI = 0x100
-AUX_UMUL8_CODE = 0x200
+# Preserve donor $52FE low-byte phase to retain BCC page-cross timing.
+# Private $2FE-$322 is free: UMUL16 ends before $2FE and UMUL24
+# begins at $349. The old +$200 origin silently shifted this kernel.
+AUX_UMUL8_CODE = 0x2FE
 AUX_UMUL16_CODE = 0x240
 # Preserve the certified V2 UMUL24 donor's low-byte/page geometry.
 # The record core starts at $5649 and its ABI adapter at $34C0; keeping
