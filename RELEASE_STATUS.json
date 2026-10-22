@@ -1,4 +1,22 @@
 {
+  "v1_0_0_operation_first_release_2026_10_22": {
+    "version": "v1.0.0",
+    "release_title": "C64 Math Library v1.0.0 — Operation-First Edition",
+    "release_notes": "docs/releases/v1.0.0.md",
+    "publication": "GitHub Release only after exact-head release workflow qualification",
+    "release_workflow": ".github/workflows/publish-v1-release.yml",
+    "supported_target": "c64",
+    "public_operations": 56,
+    "source_linked_variants_measured": 122,
+    "user_objectives": ["balanced", "speed", "size", "zp"],
+    "reu_services": ["turbo16", "turbo32", "qs16"],
+    "reu_qualification": "explicit_opt_in_one_at_a_time_no_unrestricted_irq_vic_sid_or_real_hardware_certification",
+    "historical_v1_v5_profiles": "immutable_reference_only_not_installation_choices",
+    "full_historical_fastest_donor_parity_qualified": false,
+    "drive_targets_1541_1571_1581": "planning_only_no_binary_backend",
+    "source_archive": "github_automatically_generated_on_tag",
+    "exact_head_release_check": "user_setup_reu_setup_source_built_smoke_and_package_audit"
+  },
 
   "operation_first_installer_cutover_2026_10_21": {
     "status": "COMPLETE_STOCK_C64_USER_CONFIGURATION_CUTOVER",
@@ -15,7 +33,7 @@
     "stronger_full_historical_binary_elimination": false,
     "historical_frozen_profiles_preserved": true,
     "historical_performance_parity_all_donors_certified": false,
-    "reu_turbo_qs16_backend": "separate_legacy_compatibility_whole_resident_only",
+    "reu_turbo_qs16_backend": "merged_operation_first_explicit_opt_in_turbo16_turbo32_qs16_pr393",
     "drives_1541_1571_1581_selective_backend": "not_implemented",
     "installer_acceptance_prs": {
       "guided_setup": 370,
