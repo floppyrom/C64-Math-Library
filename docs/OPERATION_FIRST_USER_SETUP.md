@@ -1,15 +1,10 @@
-# Operation-first C64 Math Library: configure once, build to your budget
+# Operation-first setup: advanced configuration
 
-> **Current primary user interface:** the operation-first builder is the
-> sole supported stock-C64 installation path. V1–V5 are archived for
-> reproduction and separate REU compatibility, not selectable installer
-> profiles. All 56 public operations, four objectives and custom budgets
-> passed release acceptance; see [the acceptance matrix](BUILDER_RELEASE_ACCEPTANCE.md).
-
-
-This is the **normal installation path**. Do not choose V1, V2, V3, V4 or V5
-first. Those releases, historical kernels and REU compatibility packages
-remain as source/performance references, but are not the configuration UI.
+**Start with the [README](../README.md) or [Quick Start](../QUICK_START.md).**
+This guide explains scripting, per-operation speed weights, variants,
+physical RAM/zero-page reservations and reproducible builds. All 56
+stock-C64 public operations use the operation-first builder. Historical
+V1–V5 profiles are preserved for regression, not installation.
 
 ## Quick start
 
@@ -118,34 +113,24 @@ when another operation or a different optimization goal is selected.
 
 ## Optional REU acceleration with the same installer
 
-Select exactly **one REU service per configuration**. All three are
-source-built modules with explicit INSTALL and BEGIN/CALL/END lifecycles,
-a normal stock fallback, and a combined RAM/ZP/resource manifest.
+The guided installer offers **none, Turbo16, Turbo32 or QS16**. The CLI
+uses `--reu-turbo16`, `--reu-turbo32` or `--reu-qs16`, with
+`--reu-kib`, `--reu-bank` and repeatable `--reu-reserved-bank`
+when needed. Select **exactly one** REU service and include its
+required stock multiplication fallback (UMUL16 or UMUL32).
 
-| Hardware option | Stock fallback | Required REU |
-| --- | --- | --- |
-| `--reu-turbo16` | `--operation UMUL16` | 512KiB or 16MiB |
-| `--reu-turbo32` | `--operation UMUL32` | 512KiB or 16MiB |
-| `--reu-qs16` | `--operation UMUL16` | 16MiB |
+The linker reserves the companion's code, public I/O, exclusive
+ZP scratch/overlay and REU banks, and counts them toward the global
+RAM/ZP limits. Each result contains a separate REU PRG, its API include
+and a combined `math_project_manifest.json`.
 
-For example:
+You must load and successfully INSTALL the companion before using
+BEGIN/CALL/END. If detection fails, use the stock math call. No
+concurrent REU modules or live IRQ/VIC/SID timing safety is claimed.
 
-```sh
-python3 tools/configure_math.py --operation UMUL32 --objective size \
-  --ram-budget 30000 --zp-budget 210 --reu-turbo32 --reu-kib 512 \
-  --config-out reu-math.json --build-dir build_reu_math
-```
-
-The REU module is separate from `math_selective.prg` and gets its own
-`math_reu_<service>.inc` exports. Call its INSTALL successfully before
-any accelerated batch; otherwise use stock math. The builder reserves
-the REU module's C64 image, public I/O and executable/scratch ZP,
-validates its REU bank reservations, and rejects memory collisions.
-
-REU acceleration is **opt-in**: `--objective speed` does not assume
-hardware is present. Multi-service residency and IRQ/VIC/SID
-real-time coexistence remain unqualified. See
-[REU modules and limitations](REU_OPERATION_FIRST_CONSOLIDATION.md).
+For the hardware matrix, worked Turbo32/QS16 commands, lifecycle
+and precise resource ownership, consult the
+[REU integration guide](REU_OPERATION_FIRST_CONSOLIDATION.md).
 
 ## Scope and limitations
 

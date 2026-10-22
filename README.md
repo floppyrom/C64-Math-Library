@@ -1,72 +1,35 @@
 # C64 Math Library
 
-**Use only the math your Commodore 64 project needs.** Choose from **56
-individually selectable 6502/6510 operations**. The builder combines your
-choices into one loadable C64 library, subject to your RAM and zero-page
-limits. Prefer the raw assembly? You can reuse individual sources too.
+**Build the math your Commodore 64 actually needs.** Choose from **56 independently linkable 6502/6510 operations**, optimize for speed or memory, and generate a source-built PRG with the actual entry points and resource map. **Turbo16, Turbo32 and QS16 REU acceleration** are available as optional companions through the *same* operation-first installer.
 
-**Start here:**
-[See all routines](routines/PUBLIC_OPERATIONS.csv) ·
-[Compare cycles, RAM, ZP and stack](docs/OPERATION_FIRST_ROUTINE_METRICS.md) ·
-[Build your selection](#build-your-own-library) ·
-[Pick up a single routine](#want-only-one-routine)
+**Start here:** [Browse all 56 operations](routines/PUBLIC_OPERATIONS.csv) · [Cycles / RAM / ZP / stack per routine](docs/OPERATION_FIRST_ROUTINE_METRICS.md) · [Try the quick start](QUICK_START.md) · [Use an individual routine](docs/INDIVIDUAL_ROUTINE_PICKUP.md)
 
-## What's available?
+## What can it do?
 
-Signed and unsigned **multiplication, division, modulo** (including wide
-integers), **square roots, sine/cosine, ATAN2, distance, fixed-point/vector
-helpers, and movement/target-seeking routines**.
+Unsigned and signed multiplication, division and modulo (including 24-/32-bit and mixed-width arithmetic), integer square roots, trigonometry, ATAN2, distances, fixed-point/vector helpers, and movement/target-seeking operations.
 
-- [Full list of 56 operations](routines/PUBLIC_OPERATIONS.csv) — names and types.
-- [Consolidated performance table](docs/OPERATION_FIRST_ROUTINE_METRICS.md) — mean CPU cycles per call, code/tables, total isolated RAM, zero-page bytes, and persistent stack-page reservation.
-- [All implementation variants (CSV)](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv) — compare alternative sources for the **same operation**, including the original source file and measured trade-offs.
-- [Combined-project performance charts](PERFORMANCE.md) — examples of speed/memory choices after linking.
+The normal installation model is **operation-first**, not the historical V1–V5 profile system. Select individual APIs, not a preset resident or an entire release. The builder can share qualified implementation code and tables where beneficial, while checking exact physical RAM, zero-page, I/O and application reservations.
 
-**How to read the numbers:** per-routine RAM figures are for **isolated
-builds**, not additive totals. The stack column excludes temporary
-JSR/RTS/interrupt use; cycle means are CPU-model measurements, not
-guaranteed PAL frame times. Your final build reports its actual linked
-RAM and ZP usage.
+## Build a project
 
-## Build your own library
-
-**Requirements:** Python 3.12+ and Make. The normal builder includes its
-own assembler.
-
-From the repository folder:
+**Requirements:** Python 3.12+ and Make. The normal build uses the repository's own assembler.
 
 ```sh
 make builder-setup
 ```
 
-The guided setup lets you:
+The guided installer asks for operations, optimization goal, RAM/ZP budgets and optional REU acceleration. For the optimization goal choose:
 
-1. **Select exactly the operations you want.**
-2. **Choose an objective:** `balanced` (general trade-off), `speed`
-   (measured cycles), `size` (minimum RAM), or `zp` (minimum zero page).
-3. **Set your RAM/ZP budgets.** Speed mode also asks how often you expect
-   to call each operation.
-4. **Optionally select REU acceleration:** Turbo16, Turbo32 or QS16
-   (or leave it off for a stock C64).
-
-It produces four files:
-
-| File | Purpose |
+| Goal | Selection behavior |
 | --- | --- |
-| `my_math.json` | Editable selection and build settings |
-| `build_my_math/math_selective.prg` | Your C64 library to load |
-| `build_my_math/math_api.inc` | Correct entry points and operand addresses |
-| `build_my_math/selective_manifest.json` | Selected sources and **actual RAM/ZP placement** |
+| `balanced` | Balance memory and measured speed under your limits |
+| `speed` | Optimize measured CPU-model cycles using your **per-operation call counts** |
+| `size` | Minimize main RAM use |
+| `zp` | Minimize zero-page use |
 
-**To call it:** Load the generated PRG, include its matching
-`math_api.inc` in your assembly project, write operands to the exported
-math I/O locations, call the selected entry (for example,
-`JSR MATH_UMUL16`), and read the documented
-result/Carry. Do **not** hardcode addresses from old releases.
-See [API instructions](docs/API_COMPATIBILITY.md).
+All four respect resource constraints. No goal silently enables REU hardware, and a speed-optimal **isolated** kernel is not necessarily the best kernel for a combined project.
 
-Prefer a scripted build? This selects only multiplication, division and
-integer square root:
+For noninteractive builds, for example:
 
 ```sh
 python3 tools/configure_math.py \
@@ -75,66 +38,69 @@ python3 tools/configure_math.py \
   --config-out project-math.json --build-dir build_project_math
 ```
 
-To edit and rebuild, change the JSON and run
-`make builder CONFIG=project-math.json OUT=build_new_math`.
-The guided setup won't overwrite an existing config/build directory.
-See the [full configuration guide](docs/OPERATION_FIRST_USER_SETUP.md)
-for custom memory maps, variant pins and speed call counts.
+Edit the saved JSON and rebuild into a *new* output directory:
 
-## Want only one routine?
+```sh
+make builder CONFIG=project-math.json OUT=build_new_math
+make builder-measure CONFIG=project-math.json
+make builder-list
+```
 
-**Option A — ready to use:** Run `make builder-setup` and select just
-`UMUL16` (or any other operation). You get a **one-operation PRG**,
-its API include and a manifest; the builder supplies required dependencies.
+The installer refuses to overwrite an existing configuration or output directory. For `speed`, provide positive `--calls OP=COUNT` values for **every** selected operation. To reserve application code/ZP or pin a qualified source variant, see the [configuration guide](docs/OPERATION_FIRST_USER_SETUP.md).
 
-**Option B — lift the assembly:** Find your operation in the
-[variant CSV](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv), choose
-an implementation, and open its `source_path`. The
-[single-routine pickup guide](docs/INDIVIDUAL_ROUTINE_PICKUP.md) explains
-how to inspect dependencies and ABI conventions. See also
-[curated sources](routines/README.md) and
-[portable standalone kernels](routines/standalone_lab/portable/README.md).
+## What do I load, and where are the numbers?
 
-**Not every `.asm` file is a drop-in module.** Some require shared tables,
-RAM/ZP scratch, generated symbols or initialization. For a tested,
-complete one-operation build, use Option A.
+| File / resource | What it tells you |
+| --- | --- |
+| `math_selective.prg` | Independently assembled stock-C64 library for your selected APIs |
+| `math_api.inc` | Actual public symbols, operand locations and call addresses |
+| `selective_manifest.json` | Selected source variants, **actual combined RAM/ZP use**, physical placements and hashes |
+| [56-operation metric table](docs/OPERATION_FIRST_ROUTINE_METRICS.md) | Per-call mean cycles, code/tables, **isolated RAM**, ZP and persistent stack-page bytes |
+| [Complete variant CSV](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv) | Every measured linkable alternative, source path and speed/memory trade-offs |
+| [Performance comparisons](PERFORMANCE.md) | Comparable examples and limits of cycle measurements |
 
-## More for advanced users
+**Read the measurements correctly:** individual routine footprints cannot simply be added together; the linker can share memory and tables. The manifest of *your build* is authoritative for total RAM/ZP. Cycle means are measured under a CPU model, not guaranteed PAL frame times. “Persistent stack-page bytes” does **not** measure transient JSR/RTS or interrupt stack high-water.
 
-[Detailed setup](docs/OPERATION_FIRST_USER_SETUP.md) ·
-[API and calling conventions](docs/API_COMPATIBILITY.md) ·
-[Validation](docs/BUILDER_RELEASE_ACCEPTANCE.md) ·
-[Optional REU acceleration](docs/REU_OPERATION_FIRST_CONSOLIDATION.md) ·
-[Historical REU compatibility archive](docs/REU_COMPAT_EXPORT.md) ·
-[Historical performance archive](docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md) ·
-[Older research documentation](docs/README_RESEARCH_ARCHIVE_2026-10-21.md) ·
-[Changelog](CHANGELOG.md).
+Load the generated PRG, include its *matching* `math_api.inc`, write operands to its exported I/O block, call a `MATH_*` entry and read its documented result/Carry. Do not hardcode historical V1–V5 addresses. The library is **non-reentrant**; consult the [ABI and calling conventions](docs/API_COMPATIBILITY.md).
 
 ## Optional REU acceleration
 
-The same installer also supports **one optional REU service per project**:
-`--reu-turbo16` (16-bit multiply), `--reu-turbo32` (32-bit multiply),
-or `--reu-qs16` (16-bit quarter-square lookup; **16MiB REU required**).
-Each builds an independent, source-linked REU PRG plus a normal stock-C64
-fallback, API include, and combined memory manifest. No legacy V3/V4
-resident is required for these new module builds.
+The same guided installer, or an explicit CLI flag, can add **one** independently loadable REU service alongside its required stock fallback:
 
-For example:
+| Option | Stock fallback operation | REU capacity | Service ZP ownership |
+| --- | --- | --- | ---: |
+| `--reu-turbo16` | `UMUL16` | 512KiB or 16MiB | 122 B executable overlay |
+| `--reu-turbo32` | `UMUL32` | 512KiB or 16MiB | 135 B executable overlay |
+| `--reu-qs16` | `UMUL16` | 16MiB | 16 B scratch |
+
+Example: build a Turbo32 project with a normal 32-bit multiplication fallback:
 
 ```sh
-python3 tools/configure_math.py --operation UMUL32 --objective size \
-  --ram-budget 30000 --zp-budget 210 --reu-turbo32 \
+python3 tools/configure_math.py \
+  --operation UMUL32 --objective size \
+  --ram-budget 30000 --zp-budget 210 \
+  --reu-turbo32 --reu-kib 512 \
   --config-out reu-math.json --build-dir build_reu_math
 ```
 
-The REU service must pass runtime INSTALL before BEGIN/CALL/END.
-Multiple REU services in one project, IRQ use of overlaid ZP, and
-PAL/VIC/SID real-time coexistence remain **unqualified**.
-See [REU setup and limits](docs/REU_OPERATION_FIRST_CONSOLIDATION.md).
+In addition to the three stock files, REU builds generate `<service>_reu.prg`, `math_reu_<service>.inc`, `<service>_reu_manifest.json` and `math_project_manifest.json`. The latter accounts for **combined** C64 RAM, ZP and REU bank ownership.
 
-**New projects use the operation-first builder, not V1–V5 installation
-profiles.** Historical residents remain immutable regression archives,
-not dependencies of the new modules. 1541/1571/1581 math backends
-remain future work.
+Load both PRGs in their assigned regions. **Call REU INSTALL and check success before BEGIN → CALL → END; fall back to stock math if INSTALL fails.** Do not access the service-owned ZP from an IRQ or another routine during an active batch. Selecting multiple REU services in one project, REU/IRQ/VIC/SID concurrent timing safety, and automatic DMA-inclusive speed comparisons are **not qualified**. See the [REU integration and memory guide](docs/REU_OPERATION_FIRST_CONSOLIDATION.md).
+
+## Need just one routine—or want the source?
+
+Select a single operation with the normal installer to get a self-contained one-operation PRG plus its API and dependencies. Or look up its `source_path` in the [variant CSV](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv) and follow the [standalone source pickup guide](docs/INDIVIDUAL_ROUTINE_PICKUP.md). Not every raw `.asm` file is drop-in: some depend on shared tables, generated symbols, scratch memory or initialization.
+
+## Verify and understand the project
+
+```sh
+make builder-validate       # qualified stock/builder regression suite
+make package-audit          # source and distribution integrity
+make legacy-validate        # optional historical V1–V5 regression tests
+```
+
+See the [quick-start commands](QUICK_START.md), [full setup/manual memory placement](docs/OPERATION_FIRST_USER_SETUP.md), [API guide](docs/API_COMPATIBILITY.md), [acceptance criteria](docs/BUILDER_RELEASE_ACCEPTANCE.md), and [changelog](CHANGELOG.md).
+
+**Historical V1–V5 releases are preserved as immutable reference and compatibility assets, not installation profiles.** New Turbo16/Turbo32/QS16 projects do **not** need a frozen V3/V4 REU image or whole-resident legacy bundle. The [legacy exporter](docs/REU_COMPAT_EXPORT.md) remains for existing software and reproducible comparisons. Full historical speed parity and operation-first drive-side (1541/1571/1581) backends are not claimed.
 
 **License:** [MIT](LICENSE).

@@ -1,18 +1,28 @@
-# Operation-first REU acceleration
+# Operation-first REU acceleration: hardware integration
 
-**One project builder. Three optional, independently source-built REU
-services. No historical V3/V4 resident required for a new project.**
+**For the normal installation flow, start with the [README](../README.md).**
+This page covers the REU-specific lifecycle, capacity checks and physical
+resource ownership. The three source-built services were consolidated into
+the operation-first installer in [PR #393](https://github.com/floppyrom/C64-Math-Library/pull/393);
+new projects do not require a frozen V3/V4 resident.
 
 The normal [operation-first setup](OPERATION_FIRST_USER_SETUP.md) selects
 among all 56 stock-C64 math operations and exact RAM/ZP budgets. An REU
 service is an **opt-in hardware companion**, not a historical profile and
 not an automatically chosen `speed` variant.
 
-| Service | Select | Stock fallback | REU capacity | Active ZP |
-| --- | --- | --- | --- | --- |
-| Turbo16 | `--reu-turbo16` | `UMUL16` | 512KiB / 16MiB | 122 B executable |
-| Turbo32 | `--reu-turbo32` | `UMUL32` | 512KiB / 16MiB | 135 B executable |
-| QS16 | `--reu-qs16` | `UMUL16` | 16MiB only | 16 B scratch |
+| Service | Select | Stock fallback | REU capacity | Extra C64 RAM reservation | Exclusive ZP |
+| --- | --- | --- | --- | ---: | ---: |
+| Turbo16 | `--reu-turbo16` | `UMUL16` | 512KiB / 16MiB | 18,464 B | 122 B |
+| Turbo32 | `--reu-turbo32` | `UMUL32` | 512KiB / 16MiB | 18,464 B | 135 B |
+| QS16 | `--reu-qs16` | `UMUL16` | 16MiB only | 18,468 B | 16 B |
+
+The C64 RAM figure is the entire module's reserved address envelope plus
+public I/O (and QS16 scratch), **not** only its machine-code bytes. It is
+charged separately from the selected stock library; find the final
+combined total, exact placements and REU bank ownership in
+`math_project_manifest.json`. The ZP figure is reserved while a batch
+is active, not transient CPU stack high-water.
 
 **Select exactly one REU service per project.** Concurrent services
 aren't qualified: their C64 load images, public I/O and REU ownership
@@ -88,13 +98,13 @@ table byte counts.
 
 ## Qualification and limits
 
-The independent modules have CPU-model tests for arithmetic, lifecycle
-and full ZP restoration, and native pinned VICE x64sc preflights for
-absent/present or aliased REU, real DMA and repeated batches. There is
-a shared saved-configuration/build test for Turbo16, Turbo32 and QS16
-that checks resource accounting and reproducible output. Production
-integration is released **only after exact-head CI and the package
-SHA manifest are green**.
+The merged implementation is covered by CPU-model arithmetic,
+lifecycle and exact-ZP-restoration tests, plus pinned native VICE x64sc
+preflights for absent/present or aliased REU, real DMA and repeated
+batches. The shared operation-first acceptance tests cover all three
+REU choices, RAM/ZP resource accounting, deterministic saved-config
+rebuilds and package integrity. This is the **merged source-built
+REU integration**, not a historical bundle or a pending installer port.
 
 These tests do **not** certify arbitrary mixed application frame timing,
 IRQ/VIC/SID contention, nested/reentrant operation, a second simultaneous
