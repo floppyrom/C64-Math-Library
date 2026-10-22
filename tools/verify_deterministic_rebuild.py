@@ -33,6 +33,12 @@ def main():
                     bundled=ROOT/p/'reu'/refname
                     ref_reu_same=reu_a.read_bytes()==bundled.read_bytes()
                 ok=same and (ref_same is not False) and (reu_same is not False) and (ref_reu_same is not False)
+                if not ok:
+                    print('DETERMINISTIC DETAIL', kind, p,
+                          'repeat_prg_identical=', same,
+                          'reference_prg_identical=', ref_same,
+                          'repeat_reu_identical=', reu_same,
+                          'reference_reu_identical=', ref_reu_same)
                 checks.append({'kind':kind,'profile':p,'status':'PASS' if ok else 'FAIL','prg_sha256':h,'repeat_prg_identical':same,'reference_prg_identical':ref_same,'reu_sha256':reu_hash,'repeat_reu_identical':reu_same,'reference_reu_identical':ref_reu_same})
     status='PASS' if all(x['status']=='PASS' for x in checks) else 'FAIL'
     out={'status':status,'statement':'Two clean source builds are byte-identical for every reference/alternate PRG and generated REU image; reference builds also reproduce the bundled fast-ISQRT32 resident PRG/REU artifacts exactly.','checks':checks}

@@ -17,7 +17,10 @@ python3 tools/math_builder.py \
   --objective frame --frame-report build_selective/mixed3.json \
   --build --out build_selective/selection_manifest.json
 
-# Equivalent after first generating the measured report:
+# On a clean checkout, make now generates this example report first:
+make builder-frame OUT=build_selective
+
+# Or explicitly use your own already-qualified report:
 make builder-frame FRAME_REPORT=build_selective/mixed3.json
 ```
 
@@ -39,7 +42,11 @@ selected plan and measured worst-of-all-relocations resources and cycles).
 
 On an ineligible source, budget, public operation set, memory layout,
 mismatched input corpus or unexpectedly rebuilt PRG, it **fails closed**
-and does not publish an executable. Calling `--objective frame`
+and does not publish an executable. Calling the underlying `--objective frame` command without a measured
+report is an error. The Makefile generates only its **known, authenticated
+three-operation example** when the default report is missing;
+an explicitly supplied custom `FRAME_REPORT` must already exist.
+No generic application frame evidence is invented. Calling `--objective frame`
 without a measured report is an error; manual pins and inferred call
 weights are rejected. It is not a user-project source analyzer.
 

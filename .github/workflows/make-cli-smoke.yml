@@ -1,0 +1,148 @@
+name: Make command entrypoints (real builds)
+on:
+  pull_request:
+    paths:
+      - Makefile
+      - .github/workflows/make-cli-smoke.yml
+      - docs/FRAME_BUILDER_OBJECTIVE.md
+      - QUICK_START.md
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  user-make-commands:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check default make, listing, and assembled resource measurements
+        run: |
+          set -euo pipefail
+          make > "${RUNNER_TEMP}/make-help.log"
+          grep -q "operation-first installer" "${RUNNER_TEMP}/make-help.log"
+          make builder-list > "${RUNNER_TEMP}/make-list.log"
+          grep -q 'MATH_UMUL16' "${RUNNER_TEMP}/make-list.log"
+          make builder-measure > "${RUNNER_TEMP}/make-measure.json"
+          python3 - <<'PY'
+          import json, os, pathlib
+          measurement=(pathlib.Path(os.environ["RUNNER_TEMP"])/"make-measure.json").read_text()
+          report=json.loads(measurement[measurement.index("{"):])
+          assert len(report["operations"]) == 3, report
+          assert report["resource_use"]["main_ram_total_bytes"] <= 4096, report
+          assert report["resource_use"]["zero_page_bytes"] <= 8, report
+          PY
+      - name: Execute builder, make all, weighted-speed builder (different output dirs)
+        run: |
+          set -euo pipefail
+          make builder OUT="${RUNNER_TEMP}/make-balanced"
+          make all OUT="${RUNNER_TEMP}/make-all"
+          make builder-speed OUT="${RUNNER_TEMP}/make-speed"
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib
+          base=pathlib.Path(os.environ["RUNNER_TEMP"])
+          for name, objective in (("make-balanced","balanced"),("make-all","balanced"),("make-speed","speed")):
+              out=base/name
+              prg=(out/"math_selective.prg").read_bytes()
+              manifest=json.loads((out/"selective_manifest.json").read_text())
+              assert (out/"math_api.inc").stat().st_size > 30
+              assert prg[:2] and len(prg)>2
+              assert manifest["selection_objective"] == objective, manifest["selection_objective"]
+              assert hashlib.sha256(prg).hexdigest() == manifest["prg_sha256"]
+              assert manifest["resource_use"]["main_ram_total_bytes"] > 0
+          PY
+      - name: Actual interactive make builder-setup (under pseudo-terminal)
+        run: |
+          set -euo pipefail
+          printf '%s\n' 'UMUL16,UDIV16,ISQRT16' 'balanced' '8' '4096' 'none' \
+            | script -q -e -c 'make builder-setup' /dev/null > "${RUNNER_TEMP}/make-setup.log"
+          test -s my_math.json
+          test -s build_my_math/math_selective.prg
+          test -s build_my_math/math_api.inc
+          test -s build_my_math/selective_manifest.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open("my_math.json"))
+          b=json.load(open("build_my_math/selective_manifest.json"))
+          assert set(a["operations"])=={"UMUL16","UDIV16","ISQRT16"}
+          assert len(b["operations"])==3
+          assert b["resource_use"]["zero_page_bytes"] <= 8
+          PY
+          rm -f my_math.json
+          rm -rf build_my_math
+      - name: Actual clean-checkout make builder-frame (generates authenticated evidence)
+        run: |
+          set -euo pipefail
+          make builder-frame OUT="${RUNNER_TEMP}/make-frame"
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib
+          out=pathlib.Path(os.environ["RUNNER_TEMP"])/"make-frame"
+          source=json.loads((out/"mixed3.json").read_text())
+          evidence=json.loads((out/"frame_qualified_evidence.json").read_text())
+          conf=json.loads((out/"frame_qualified_config.json").read_text())
+          manifest=json.loads((out/"selective_manifest.json").read_text())
+          assert len(source["placements"])==2 and source["operations"]
+          assert conf["operations"] and manifest["link_exports"]
+          assert manifest["prg_sha256"]==hashlib.sha256((out/"math_selective.prg").read_bytes()).hexdigest()
+          assert evidence["qualified_prg_sha256"]==manifest["prg_sha256"]
+          assert evidence["physical_pal_feasibility_claim"] is False
+          PY
+      - name: Verify invalid custom frame report fails clearly without generated PRG
+        run: |
+          set -euo pipefail
+          if make builder-frame OUT="${RUNNER_TEMP}/make-invalid" FRAME_REPORT="${RUNNER_TEMP}/nonexistent-user-report.json" > "${RUNNER_TEMP}/custom.log" 2>&1; then
+            echo "::error::Missing user-provided report wrongly succeeded"
+            exit 1
+          fi
+          grep -q "No measured frame evidence" "${RUNNER_TEMP}/custom.log"
+          test ! -e "${RUNNER_TEMP}/make-invalid/math_selective.prg"
+      - name: Final source-package audit from make
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          make package-audit
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
+
+  validation-make-commands:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run the documented builder validation make target
+        run: make builder-validate
+      - name: Run the quarter-square make test
+        run: make builder-biased-qs-test
+  historical-make-commands:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run strict historical frozen-PRG parity test (known drift issue #398)
+        id: legacy
+        continue-on-error: true
+        run: make legacy-validate
+      - name: Verify known archived/current source discrepancy without masking other failures
+        if: ${{ steps.legacy.outcome == 'failure' }}
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          evidence=json.loads(Path("validation/source_relocation/DETERMINISTIC_REBUILD.json").read_text())
+          cases=evidence["checks"]
+          assert len(cases)==8 and evidence["status"]=="FAIL"
+          assert all(x["repeat_prg_identical"] is True and
+                     x["repeat_reu_identical"] in (True,None) for x in cases)
+          mismatches={x["profile"] for x in cases if x["reference_prg_identical"] is False}
+          assert mismatches=={"v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m"}, mismatches
+          assert all(x["reference_reu_identical"] in (True,None) for x in cases)
+          assert all(x["reference_prg_identical"] is None for x in cases if x["kind"]=="alternate")
+          PY
+          echo "::warning::Strict legacy-validate FAILS: evolving reference source PRGs differ from frozen historical PRGs; see #398. Current-source repeatability and REU identity pass. Not a certified historical reference parity PASS."

@@ -52,10 +52,21 @@ builder-speed:
 
 # Strict opt-in whole linked-image synthetic frame objective.
 FRAME_CONFIG ?= examples/operation-first-frame.json
-FRAME_REPORT ?= build_selective/mixed3.json
+# The default example has a deterministic, source-qualified report generator.
+# User-supplied reports are never guessed, created or silently replaced.
+FRAME_REPORT ?= $(OUT)/mixed3.json
 
 builder-frame:
-	$(PYTHON) tools/math_builder.py --config $(FRAME_CONFIG) --objective frame --frame-report $(FRAME_REPORT) --out $(OUT)/selection_manifest.json --build
+	@if [ ! -f "$(FRAME_REPORT)" ]; then \
+		if [ "$(FRAME_REPORT)" = "$(OUT)/mixed3.json" ]; then \
+			echo "Generating qualified default math-only frame evidence: $(FRAME_REPORT)"; \
+			$(PYTHON) tools/mixed3_frame_parity.py --out "$(FRAME_REPORT)" || exit $?; \
+		else \
+			echo "No measured frame evidence at $(FRAME_REPORT); provide a verified report." >&2; \
+			exit 2; \
+		fi; \
+	fi
+	$(PYTHON) tools/math_builder.py --config $(FRAME_CONFIG) --objective frame --frame-report "$(FRAME_REPORT)" --out $(OUT)/selection_manifest.json --build
 
 builder-biased-qs-test:
 	$(PYTHON) -m unittest discover -s tools -p 'test_biased_quartersquare_offsets.py' -v

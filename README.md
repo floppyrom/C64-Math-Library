@@ -4,6 +4,8 @@
 
 **Versioned release:** [v1.0.0 release notes](docs/releases/v1.0.0.md) · [GitHub Releases](https://github.com/floppyrom/C64-Math-Library/releases)
 
+**Verified Make commands:** `make` for help; `make builder`, `make all`, `make builder-speed`, `make builder-measure`, `make builder-list`, `make builder-setup`, and the opt-in `make builder-frame`. [Recipes](QUICK_START.md) · [CI entrypoint tests](.github/workflows/make-cli-smoke.yml).
+
 **Start here:** [Browse all 56 operations](routines/PUBLIC_OPERATIONS.csv) · [Cycles / RAM / ZP / stack per routine](docs/OPERATION_FIRST_ROUTINE_METRICS.md) · [Try the quick start](QUICK_START.md) · [Use an individual routine](docs/INDIVIDUAL_ROUTINE_PICKUP.md)
 
 ## What can it do?
