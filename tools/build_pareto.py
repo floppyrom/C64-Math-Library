@@ -385,13 +385,18 @@ def apply_umul24(dst,src,vals,man,aux,v2_entries):
     copy_code_block(dst,src,0x5649,0x5767,aux+AUX_UMUL24_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x34C0,0x34FA,aux+AUX_UMUL24_ADAPTER,starts,vals,aux)
     write_jmp(dst,public_addr(man,'MATH_UMUL24'),aux+AUX_UMUL24_ADAPTER)
-    # Refreshed FAST24 native-signed core. The current V2 implementation is a
-    # single private island at $CD00-$CED5 plus a 3-byte public trampoline.
-    # Copy the private island and point the stable custom-profile entry directly
-    # at the relocated public implementation ($CE96 in the V2 reference map).
+    # Refreshed FAST24 native-signed core: derive the actual donor entry
+    # from the source-built V2 public JMP. Historical fixed $CE96 drifted
+    # when the native signed implementation moved to $CE90.
     sstarts=trace(src,v2_entries['MATH_SMUL24'])
     copy_code_block(dst,src,0xCD00,0xCED5,aux+AUX_SMUL24_PRIVATE,sstarts,vals,aux)
-    write_jmp(dst,public_addr(man,'MATH_SMUL24'),aux+AUX_SMUL24_PRIVATE+(0xCE96-0xCD00))
+    donor_public=v2_entries['MATH_SMUL24']
+    if src[donor_public] != 0x4C:
+        raise RuntimeError('Pareto SMUL24 donor public JMP signature changed')
+    donor_entry=src[donor_public+1]|(src[donor_public+2]<<8)
+    if not (0xCD00 <= donor_entry <= 0xCED5):
+        raise RuntimeError(f'Pareto SMUL24 donor entry {donor_entry:#06x} outside copied island')
+    write_jmp(dst,public_addr(man,'MATH_SMUL24'),aux+AUX_SMUL24_PRIVATE+(donor_entry-0xCD00))
 
 
 def apply_umul32(dst,src,vals,man,aux,v2_entries):
