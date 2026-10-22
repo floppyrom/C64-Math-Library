@@ -261,7 +261,8 @@ def map_v2_abs(old: int, vals: dict, aux: int, pack: str|None=None) -> int:
     # two bytes before its historical $5300 origin. Include its prologue.
     if 0x52FE <= old <= 0x5322: return aux+AUX_UMUL8_CODE+(old-0x52FE)
     if 0x53EC <= old <= 0x5458: return aux+AUX_UMUL16_CODE+(old-0x53EC)
-    if 0x5649 <= old <= 0x5763: return aux+AUX_UMUL24_CODE+(old-0x5649)
+    # Copy the final ADC/BCC of the $575C carry tail. $5768 is init-only.
+    if 0x5649 <= old <= 0x5767: return aux+AUX_UMUL24_CODE+(old-0x5649)
     if 0x34C0 <= old <= 0x3505: return aux+AUX_UMUL24_ADAPTER+(old-0x34C0)
     if 0x5800 <= old <= 0x5912: return aux+AUX_UMUL32_CODE+(old-0x5800)
     if 0x3420 <= old <= 0x346A: return aux+AUX_UMUL32_ADAPTER+(old-0x3420)
@@ -374,9 +375,14 @@ def apply_umul24(dst,src,vals,man,aux,v2_entries):
     copy_code_block(dst,src,0x53EC,0x5458,aux+AUX_UMUL16_CODE,u16starts,vals,aux)
     copy_code_block(dst,src,0x3020,0x3045,public_addr(man,'MATH_UMUL16'),u16starts,vals,aux)
 
-    # Record UMUL24.  Likewise omit its dead standalone init tail beginning at $5764.
+    # Record UMUL24. The $575C carry tail ends with an ADC at $5764 and
+    # BCC at $5766-$5767. The standalone init begins at $5768 and is replaced
+    # by the generated Pareto MATH_INIT helper. Earlier copies ending $5763
+    # truncated executable code and could run off into an invalid routine.
     starts=trace(src,v2_entries['MATH_UMUL24'])
-    copy_code_block(dst,src,0x5649,0x5763,aux+AUX_UMUL24_CODE,starts,vals,aux)
+    if src[0x5766]!=0x90 or src[0x5768]!=0xA9:
+        raise RuntimeError('Pareto UMUL24 carry-tail or init boundary drift')
+    copy_code_block(dst,src,0x5649,0x5767,aux+AUX_UMUL24_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x34C0,0x34FA,aux+AUX_UMUL24_ADAPTER,starts,vals,aux)
     write_jmp(dst,public_addr(man,'MATH_UMUL24'),aux+AUX_UMUL24_ADAPTER)
     # Refreshed FAST24 native-signed core. The current V2 implementation is a
