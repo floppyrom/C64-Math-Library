@@ -1,0 +1,85 @@
+name: Publish v1.0.0 operation-first release
+
+# A one-time, exact-head release. The release-notes file is introduced by
+# the release preparation PR; routine development pushes never re-publish it.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/releases/v1.0.0.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-v1.0.0
+  cancel-in-progress: false
+
+jobs:
+  qualify-and-publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact release commit
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate all 56 public entries
+        run: |
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+          rows = list(csv.DictReader((Path("routines") / "PUBLIC_OPERATIONS.csv").open(newline="")))
+          assert len(rows) == 56 and len({r["api"] for r in rows}) == 56
+          print("56 distinct public operations")
+          PY
+      - name: Release user-configuration regression
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 -m unittest discover -s tools -p 'test_user_builder_release.py' -v
+          python3 -m unittest discover -s tools -p 'test_configure_math.py' -v
+      - name: Release REU source-built configuration regression
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 -m unittest discover -s tools -p 'test_reu_unified_user_setup.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_user_setup.py' -v
+      - name: Rebuild a real operation-first PRG from source
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 tools/math_builder.py --config examples/operation-first.json \
+            --build --out "${RUNNER_TEMP}/release-v1-smoke/selection_manifest.json"
+          test -s "${RUNNER_TEMP}/release-v1-smoke/math_selective.prg"
+          test -s "${RUNNER_TEMP}/release-v1-smoke/math_api.inc"
+          test -s "${RUNNER_TEMP}/release-v1-smoke/selective_manifest.json"
+      - name: Audit package and all SHA-256 source inventories
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
+      - name: Create immutable first GitHub Release (no overwrite)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view v1.0.0 >/dev/null 2>&1; then
+            echo "v1.0.0 release already exists; refusing to overwrite"
+            exit 0
+          fi
+          if gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v1.0.0" >/dev/null 2>&1; then
+            echo "::error::Tag v1.0.0 exists without a GitHub Release; inspect manually"
+            exit 1
+          fi
+          gh release create v1.0.0 --target "${GITHUB_SHA}" \
+            --title "C64 Math Library v1.0.0 — Operation-First Edition" \
+            --notes-file docs/releases/v1.0.0.md --latest
