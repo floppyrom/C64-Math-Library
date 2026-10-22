@@ -61,9 +61,12 @@ configuration or partial binary.
    reproducibly; impossible budgets or collisions fail closed.
 4. The existing complete native VICE all-56 image and historical
    reference/REU checksum regressions remain green.
-5. A release notes summary makes clear that stock-C64 is the only
-   current selective hardware backend; drive-side and REU Turbo/QS16
-   services remain separate historical compatibility exports.
+5. A release notes summary makes clear that the **56 stock-C64 math
+   operations** are linked selectively, while Turbo16, Turbo32 and
+   QS16 are **opt-in source-built REU companions** through the same
+   project configuration. The legacy V3/V4 REU exporter is archival
+   only. Drive-side backends are not implemented, and shared multi-REU
+   residency / live IRQ/VIC/SID timing are not qualified.
 
 **Preservation:** all V1–V5 profiles, source snapshots, reference PRGs,
 V3/V4 REU compatibility images, source hashes and specialized research

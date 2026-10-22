@@ -73,13 +73,39 @@ The resulting manifest's `cycle_model_benchmark` provides the measured source-va
 
 The original benchmark archives remain available for reproducibility: [full historical chart](docs/PERFORMANCE_ARCHIVE_HISTORICAL_RESIDENTS_2026-10-21.md), [archived CSV inputs](benchmarks/README.md), [source integration and measurement basis](docs/BUILDER_MIGRATION_CYCLE_BASIS.md) and [historical parity limitations](docs/PROFILE_RETIREMENT_EVIDENCE.md). Published single-kernel native record timings are not substituted for source-linked full-public-call measurements.
 
-## 5. Optional Turbo16 REU: do not mix CPU cycles with DMA timing
+## 5. Optional REU services: measure DMA separately
 
-The operation-first installer supports an **explicitly selected, independently loadable** Turbo16 REU service, plus the normal stock-C64 `UMUL16` fallback. Its fixed **C64 reservation** is **18,432 B** for the `$3000–$77FF` load envelope, plus a **32 B** public-I/O block: **18,464 B** before the separately selected stock library. The service additionally owns **122 exclusive ZP bytes** (`$3E–$B7`), its chosen 64 KiB REU bank and any required high-bank alias-probe bytes.
+The operation-first installer supports explicit, independently loadable
+**Turbo16, Turbo32 and QS16** REU services. The final project manifest
+reports each source-built module and its combined physical RAM/ZP use
+with the selected stock math fallback:
 
-Pinned native VICE tests qualified **512 KiB and 16 MiB** REU detection, real DMA operation, batch arithmetic, mirrored/absent-hardware rejection and exact caller-ZP restoration. **No generally comparable DMA-inclusive performance ranking against stock UMUL16 is currently published**; consequently the builder does not auto-select REU as “fastest.” Old V3/V4 Turbo16/Turbo32 per-CALL CPU-model figures are *historical service measurements*, not the effective cycle cost of the new hardware add-on.
+| REU service | C64 RAM reserved beyond stock | Exclusive ZP while active | REU ownership | Normal fallback |
+| --- | ---: | ---: | --- | --- |
+| Turbo16 | 18,464 B | 122 B | One 64KiB bank + alias probes | `UMUL16` |
+| Turbo32 | 18,464 B | 135 B | One 64KiB bank + alias probes | `UMUL32` |
+| QS16 | 18,468 B | 16 B | Eight 64KiB banks + alias probes | `UMUL16` |
 
-Use the [opt-in REU integration guide](docs/OPERATION_FIRST_REU_TURBO16.md) and its `INSTALL` / Carry / `BEGIN` / `CALL` / `END` safety contract. The optional raster/SID research [PR #385](https://github.com/floppyrom/C64-Math-Library/pull/385) is **not** a release or installer acceptance gate.
+These RAM amounts include the **entire** loadable PRG envelope, public
+I/O, and for QS16 the four-byte external scratch, not just executable
+instructions. A generated `math_project_manifest.json` provides the
+actual total and bank assignments. The ZP columns mean exclusive
+resource ownership, **not stack high-water**. Transient call/IRQ
+stack consumption and DMA-inclusive wall-clock costs are not inferred
+from these figures.
+
+The native pinned VICE tests validate DMA, lifecycle, hardware absence
+and bank-mirroring safety, source-built products, and exact zero-page
+restoration. They do **not** provide comparable whole-batch REU
+performance against each stock fallback under the same live
+VIC/IRQ/SID contention. Therefore the builder does **not**
+automatically select any REU service under the `speed` objective.
+The original V3/V4 per-CALL Turbo/QS16 cycle figures remain
+**historical CPU-side measurements**, not modern DMA-inclusive rankings.
+
+See [operation-first REU configuration and limitations](docs/REU_OPERATION_FIRST_CONSOLIDATION.md).
+The optional raster/SID research [PR #385](https://github.com/floppyrom/C64-Math-Library/pull/385)
+is **not** an installer acceptance gate.
 
 ## Measurement integrity
 

@@ -22,6 +22,8 @@ make builder-setup
 
 You choose the public math operations needed by your program (from 56),
 an optimization goal, and your **maximum total zero-page and RAM bytes**.
+The guided installer also offers optional Turbo16, Turbo32 or QS16
+REU acceleration, defaulting to no REU.
 The installer makes a source-verified physical PRG using the established
 exact global optimizer, including shared producer code/tables, 32 public
 I/O bytes, call-exclusive scratch and any persistent SEEK object state.
@@ -114,16 +116,36 @@ python3 tools/math_builder.py --config project-math.json --measure
 The generated include is essential: public entry addresses can move
 when another operation or a different optimization goal is selected.
 
-## Experimental REU Turbo16 add-on
+## Optional REU acceleration with the same installer
 
-An explicitly requested `--reu-turbo16 --reu-kib 512` (or `16384`)
-option builds a **separate, independently loadable Turbo16 REU service**
-alongside the selected stock library. It retains the normal UMUL16
-fallback and globally reserves the entire REU PRG RAM envelope,
-122-byte executable ZP, public I/O and REU bank before selecting stock
-implementations. Both allocations count toward the user's budgets.
-See [the exact physical contract and dual-PRG build instructions](OPERATION_FIRST_REU_TURBO16.md).
-This does not certify concurrent IRQ/VIC overlay use or DMA timings.
+Select exactly **one REU service per configuration**. All three are
+source-built modules with explicit INSTALL and BEGIN/CALL/END lifecycles,
+a normal stock fallback, and a combined RAM/ZP/resource manifest.
+
+| Hardware option | Stock fallback | Required REU |
+| --- | --- | --- |
+| `--reu-turbo16` | `--operation UMUL16` | 512KiB or 16MiB |
+| `--reu-turbo32` | `--operation UMUL32` | 512KiB or 16MiB |
+| `--reu-qs16` | `--operation UMUL16` | 16MiB |
+
+For example:
+
+```sh
+python3 tools/configure_math.py --operation UMUL32 --objective size \
+  --ram-budget 30000 --zp-budget 210 --reu-turbo32 --reu-kib 512 \
+  --config-out reu-math.json --build-dir build_reu_math
+```
+
+The REU module is separate from `math_selective.prg` and gets its own
+`math_reu_<service>.inc` exports. Call its INSTALL successfully before
+any accelerated batch; otherwise use stock math. The builder reserves
+the REU module's C64 image, public I/O and executable/scratch ZP,
+validates its REU bank reservations, and rejects memory collisions.
+
+REU acceleration is **opt-in**: `--objective speed` does not assume
+hardware is present. Multi-service residency and IRQ/VIC/SID
+real-time coexistence remain unqualified. See
+[REU modules and limitations](REU_OPERATION_FIRST_CONSOLIDATION.md).
 
 ## Scope and limitations
 
@@ -132,11 +154,13 @@ operations. Every output uses source SHA checks, independently linkable
 kernel contracts, actual byte placement, shared tables, scratch and ZP
 accounting, and a deterministic manifest.
 
-No user needs to run SID music, sprite, graphics, PAL deadline or REU DMA
-benchmarks to install a library. Those application-specific experiments
-are optional. For physical REU Turbo/QS16 functionality on V3/V4,
-the separately qualified legacy REU export is still required; the stock
-C64 operation-first image is **not** a mix-and-match REU service provider.
+No user needs to run SID music, sprite, graphics or PAL deadline
+benchmarks to install a library. Those experiments are optional
+application-level qualification. The modern REU modules do **not** require
+a legacy V3/V4 exported resident. Original V3/V4 REU images remain
+checksum-locked [archives](REU_COMPAT_EXPORT.md) for old applications
+and reproducible regression tests; never mix the original resident
+with `math_selective.prg`.
 The 1541, 1571 and 1581 backends remain planning-only.
 
 For detailed variant history and performance parity see

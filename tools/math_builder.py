@@ -420,7 +420,9 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 result = user_setup.build_checked(cfg,index,args.out.parent)
                 print("Built operation-first stock PRG:",args.out.parent/"math_selective.prg")
-                print("Built explicit REU Turbo16 companion:",args.out.parent/"turbo16_reu.prg")
+                service=next(iter(cfg["hardware"]["reu"]))
+                print("Built explicit REU "+service+" companion:",
+                      args.out.parent/(service+"_reu.prg"))
                 print("Stock operations:",", ".join(o["api"] for o in result["operations"]))
             return 0
         selected = cfg.get("operations", []) + args.operation

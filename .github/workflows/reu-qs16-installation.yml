@@ -1,0 +1,28 @@
+name: Source-built QS16 REU table installation and arithmetic
+on:
+  pull_request:
+    paths:
+      - 'tools/reu_qs16_standalone_package.py'
+      - 'tools/test_reu_qs16_standalone_package.py'
+      - 'tools/reu_remaining_source_modules.py'
+      - 'relocatable_source/turbo/qs16_reu_table_generator.asm'
+      - '.github/workflows/reu-qs16-installation.yml'
+  push:
+    paths:
+      - 'tools/reu_qs16_standalone_package.py'
+      - 'tools/test_reu_qs16_standalone_package.py'
+      - 'relocatable_source/turbo/qs16_reu_table_generator.asm'
+      - '.github/workflows/reu-qs16-installation.yml'
+jobs:
+  source-and-dma-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build source-backed QS16 and prove a complete 16MiB REU DMA installation
+        run: |
+          python3 -m unittest discover -s tools -p 'test_reu_remaining_source_modules.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_qs16_standalone_package.py' -v
