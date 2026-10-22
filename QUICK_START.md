@@ -1,31 +1,16 @@
-# Quick start — build your own C64 math library
+# Quick start — C64 Math Library
 
-**V1–V5 are retired as new-project installation choices.** For a stock
-C64, use the operation-first builder to link precisely the math operations,
-RAM footprint, zero-page allocation and qualified speed variants your
-application needs. All 56 public operations can be selected independently.
+**Use the [README](README.md) as the main entry point.** This page is the short build recipe; the [configuration guide](docs/OPERATION_FIRST_USER_SETUP.md) covers budgets, variant pins, reserved-memory maps and speed call counts.
 
-## 1. Interactive setup (recommended)
+## 1. Choose and build
 
 ```sh
 make builder-setup
 ```
 
+Select any of the [56 independently linkable operations](routines/PUBLIC_OPERATIONS.csv), one goal (`balanced` / `speed` / `size` / `zp`), RAM/ZP budgets, and optionally **one** REU module (Turbo16, Turbo32 or QS16). Stock C64 is the default.
 
-Choose the operations and one of `balanced`, `speed`, `size` or
-`zp`, then give the usable RAM and ZP budgets. The guided setup also
-asks whether to add an optional Turbo16, Turbo32 or QS16 REU module.
-The builder outputs:
-
-- `my_math.json`: a reusable, editable project configuration.
-- `build_my_math/math_selective.prg`: actual linked C64 load image.
-- `build_my_math/math_api.inc`: the generated public ABI addresses.
-- `build_my_math/selective_manifest.json`: exact source variants,
-  physical RAM/ZP usage, code placement and SHA verification.
-
-A project config or directory is never silently overwritten.
-
-## 2. Noninteractive / automated setup
+To automate a stock build:
 
 ```sh
 python3 tools/configure_math.py \
@@ -34,100 +19,34 @@ python3 tools/configure_math.py \
   --config-out project-math.json --build-dir build_project_math
 ```
 
-
-Later, change `project-math.json` and run:
+Edit the saved configuration and rebuild in a **new** directory:
 
 ```sh
-make builder CONFIG=project-math.json OUT=build_rebuilt
+make builder CONFIG=project-math.json OUT=build_new_math
 make builder-measure CONFIG=project-math.json
+```
+
+No existing config or output directory is silently overwritten.
+
+## 2. Use the generated files
+
+- `math_selective.prg` — assembled stock-C64 operations
+- `math_api.inc` — exact public call and operand addresses
+- `selective_manifest.json` — linked variants, shared code, physical memory map and total RAM/ZP
+- With REU selected: `<service>_reu.prg`, `math_reu_<service>.inc`, `<service>_reu_manifest.json` and `math_project_manifest.json`
+
+Load the stock PRG and use the *generated* API include; don't hardcode V1–V5 addresses. For REU, load the companion as well and require successful **INSTALL** before **BEGIN → CALL → END**. The selected stock operation remains the fallback.
+
+## 3. Inspect performance and validate
+
+[Cycles, RAM, ZP and persistent stack-page bytes for all 56 operations](docs/OPERATION_FIRST_ROUTINE_METRICS.md) · [Every measured implementation variant](benchmarks/OPERATION_FIRST_VARIANT_METRICS.csv) · [Combined-project comparisons](PERFORMANCE.md)
+
+Individual footprints are not additive; use your generated manifest for real combined memory. CPU-model cycle counts are not a hardware PAL deadline guarantee.
+
+```sh
 make builder-list
+make builder-validate
+make package-audit
 ```
 
-
-Speed selection requires real positive per-operation call weights and
-optimizes comparable CPU-model mean cycles; it does not guess a workload:
-
-```sh
-python3 tools/configure_math.py \
-  --operation UMUL8 --operation UMUL16 \
-  --objective speed --calls UMUL8=1000 --calls UMUL16=1 \
-  --zp-budget 4 --ram-budget 1400 \
-  --config-out speed-math.json --build-dir build_speed
-```
-
-
-For strict memory maps, use `--memory-config game-layout.json`
-to reserve application code and zero page. For an expert-certified source
-override, use `--pin UMUL8=link:compact-zerozp`. The resulting
-physical image must still fit all configured resource constraints.
-
-## 3. Link into your 6502 program
-
-Use the **generated** `math_api.inc`—never old profile address
-constants—place operands in the exported 32-byte math I/O block, call the
-required `MATH_*` symbol, and read the documented result/Carry.
-Check the manifest for the actual chosen source, memory layout and init
-requirements. The library is **not reentrant**.
-
-## 4. Verify the distribution
-
-```sh
-make all                    # alias for the default operation-first build
-make builder-validate       # operation-first qualification suite
-make package-audit          # source hash/package integrity
-make legacy-validate        # optional frozen V1–V5 reproductions
-```
-
-
-The [release acceptance matrix](docs/BUILDER_RELEASE_ACCEPTANCE.md) verifies
-the four objectives and a custom reserved-memory build from real PRG output.
-Read [setup details](docs/OPERATION_FIRST_USER_SETUP.md),
-[public ABI](docs/API_COMPATIBILITY.md), and [performance scope](PERFORMANCE.md).
-
-## Historical compatibility only
-
-Source snapshots, binaries, the old Pareto wizard, historic benchmarks and
-legacy regression targets have **not been deleted**. They are frozen
-compatibility/research references, **not alternate recommended installers**.
-The archive includes the original README's extensive optimization history:
-[pre-cutover research notes](docs/README_RESEARCH_ARCHIVE_2026-10-21.md).
-
-## Optional REU math acceleration
-
-The **same operation-first builder** offers three explicitly selected,
-source-built REU modules. You select **one per project**; each keeps the
-ordinary stock-C64 multiplication as fallback and generates its own
-loadable PRG, include and combined resource manifest.
-
-| REU service | Required fallback | Hardware |
-| --- | --- | --- |
-| `--reu-turbo16` | `UMUL16` | 512KiB or 16MiB |
-| `--reu-turbo32` | `UMUL32` | 512KiB or 16MiB |
-| `--reu-qs16` | `UMUL16` | 16MiB only |
-
-For example, Turbo32:
-
-```sh
-python3 tools/configure_math.py \
-  --operation UMUL32 --objective size --ram-budget 30000 \
-  --zp-budget 210 --reu-turbo32 --reu-kib 512 \
-  --config-out my_reu.json --build-dir build_reu
-```
-
-Load the resulting *stock and REU* PRGs. Call the REU module's INSTALL
-and check Carry before entering the guarded BEGIN/CALL/END lifecycle.
-Fallback to normal stock math if no qualified REU is present. No REU
-service is implicitly selected by the `speed` objective.
-
-All selected code, ZP overlays, buffers and REU banks must fit within
-the configured limits. A concurrent second REU service, active IRQ use
-of executable overlay ZP, and native mixed VIC/SID deadline safety are
-**not qualified**. See the
-[unified REU guide](docs/REU_OPERATION_FIRST_CONSOLIDATION.md) for
-resource reservations and precise qualification status.
-
-The historical V3/V4 images remain available as
-[immutable regression/compatibility archives](docs/REU_COMPAT_EXPORT.md),
-not to be linked or mixed with operation-first programs.
-1541/1571/1581 operation-first math backends and full historical
-fastest-kernel speed parity remain separate unfinished efforts.
+For REU flags, bank reservations, compatibility and limits, read the [REU guide](docs/REU_OPERATION_FIRST_CONSOLIDATION.md). For individual assembly sources, use the [routine pickup guide](docs/INDIVIDUAL_ROUTINE_PICKUP.md). Historical V1–V5 packages remain reproducible archives, **not** new-project installation choices.
