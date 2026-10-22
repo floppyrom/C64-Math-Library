@@ -1,3 +1,16 @@
+## v1.0.0 — Operation-First Edition (2026-10-22)
+
+- **First supported versioned release** of the new operation-first C64 Math Library (not the old historical V1 resident). Configure and independently link all 56 public stock-C64 math APIs; choose balanced, speed, size or zero-page optimization under actual project RAM/ZP constraints.
+- Export a usable source-built PRG, matching API include, selected-variant/provenance and physical resource manifest. Publish 122 source-qualified variant measurements with per-call CPU-model cycles, isolated code/RAM/ZP/stack data and a qualified combined-project performance guide.
+- Offer Turbo16, Turbo32 and QS16 as **opt-in, one-at-a-time** source-built REU modules with guarded hardware install/batch lifecycle, separate PRGs, stock fallback and explicit resource ownership. They are not universal speedups or guaranteed mixed SID/VIC/IRQ real-time companions.
+- Preserve immutable V1–V5 reference residents/REU images and historic research source; they are **not installation profiles** in the new configuration workflow.
+- Document supported C64 scope, known non-reentrancy / DMA and timing limitations, verified user-setup examples, and source release qualification at [docs/releases/v1.0.0.md](docs/releases/v1.0.0.md). Drive-side 1541/1571/1581 backends and complete historical donor speed parity remain future work.
+- **Release automation** checks current operation count, user setup, source-built REU selection, actual PRG creation and package/SHA-256 inventory before it creates an immutable `v1.0.0` tag and GitHub Release.
+
+The entries marked **Unreleased** below preserve earlier pre-1.0 research and development history; they are **not** outstanding mandatory v1.0.0 release gates.
+
+---
+
 ## Unreleased — operation-first stock-C64 installer cutover (2026-10-21)
 
 - **Retire V1–V5 as user-selectable installation profiles.** The one supported new stock-C64 configuration path is `make builder-setup` / `tools/configure_math.py`: select only required operations, an objective (balanced, speed, size or ZP), usable RAM/ZP budgets and optional source pins or memory reservations. Use the generated PRG, include and manifest; do not copy fixed historic entry addresses.

@@ -2,6 +2,8 @@
 
 **Build the math your Commodore 64 actually needs.** Choose from **56 independently linkable 6502/6510 operations**, optimize for speed or memory, and generate a source-built PRG with the actual entry points and resource map. **Turbo16, Turbo32 and QS16 REU acceleration** are available as optional companions through the *same* operation-first installer.
 
+**Versioned release:** [v1.0.0 release notes](docs/releases/v1.0.0.md) · [GitHub Releases](https://github.com/floppyrom/C64-Math-Library/releases)
+
 **Start here:** [Browse all 56 operations](routines/PUBLIC_OPERATIONS.csv) · [Cycles / RAM / ZP / stack per routine](docs/OPERATION_FIRST_ROUTINE_METRICS.md) · [Try the quick start](QUICK_START.md) · [Use an individual routine](docs/INDIVIDUAL_ROUTINE_PICKUP.md)
 
 ## What can it do?
