@@ -52,7 +52,7 @@ PACKS = {
         # pack because the record UMUL16 reuses the first 17 bytes of UMUL24's
         # 24-byte pointer workspace.
         'extra_zp': 5,
-        'extra_ram': 547,
+        'extra_ram': 549,
         'requires_init': True,
         'description': 'V2 UMUL8 island; SMUL8 is already the refreshed direct-signed kernel in the V1 base (legacy pack name)',
         'savings': {
@@ -84,7 +84,10 @@ PACKS = {
 
 AUX_DIFF_LO = 0x000
 AUX_DIFF_HI = 0x100
-AUX_UMUL8_CODE = 0x200
+# Preserve donor $52FE low-byte phase to retain BCC page-cross timing.
+# Private $2FE-$322 is free: UMUL16 ends before $2FE and UMUL24
+# begins at $349. The old +$200 origin silently shifted this kernel.
+AUX_UMUL8_CODE = 0x2FE
 AUX_UMUL16_CODE = 0x240
 # Preserve the certified V2 UMUL24 donor's low-byte/page geometry.
 # The record core starts at $5649 and its ABI adapter at $34C0; keeping
@@ -257,9 +260,14 @@ def map_v2_abs(old: int, vals: dict, aux: int, pack: str|None=None) -> int:
         ln=256 if src in (0x6C00,0x6D00) else 511
         if src <= old < src+ln: return dst+(old-src)
     # Pack code locations.
-    if 0x5300 <= old <= 0x5322: return aux+AUX_UMUL8_CODE+(old-0x5300)
+    # Current V2 UMUL8 direct-output core starts with SEC at $52FE,
+    # two bytes before its historical $5300 origin. Include its prologue.
+    if 0x52FE <= old <= 0x5322: return aux+AUX_UMUL8_CODE+(old-0x52FE)
     if 0x53EC <= old <= 0x5458: return aux+AUX_UMUL16_CODE+(old-0x53EC)
-    if 0x5649 <= old <= 0x5763: return aux+AUX_UMUL24_CODE+(old-0x5649)
+    # UMUL24's source-owned carry tail can shift as kernel revisions change.
+    # $5649-$577F remains within its dedicated AUX island; actual copy length
+    # is derived from reachable instructions, not a fixed historical end.
+    if 0x5649 <= old <= 0x577F: return aux+AUX_UMUL24_CODE+(old-0x5649)
     if 0x34C0 <= old <= 0x3505: return aux+AUX_UMUL24_ADAPTER+(old-0x34C0)
     if 0x5800 <= old <= 0x5912: return aux+AUX_UMUL32_CODE+(old-0x5800)
     if 0x3420 <= old <= 0x346A: return aux+AUX_UMUL32_ADAPTER+(old-0x3420)
@@ -353,7 +361,12 @@ def apply_umul8_16(dst, src, vals, man, aux, v2_entries):
     dst[aux+AUX_DIFF_LO:aux+AUX_DIFF_LO+256]=src[0x6C00:0x6D00]
     dst[aux+AUX_DIFF_HI:aux+AUX_DIFF_HI+256]=src[0x6D00:0x6E00]
     starts=trace(src,v2_entries['MATH_UMUL8'])
-    copy_code_block(dst,src,0x5300,0x5322,aux+AUX_UMUL8_CODE,starts,vals,aux)
+    # The direct-public-output donor now begins at $52FE, not $5300.
+    # Relocate the *whole* 37-byte kernel to AUX+$0200; starting at $5300
+    # drops SEC/STX and causes a run-away UMUL8 call in the 36-ZP pack.
+    if bytes(src[0x52FE:0x5301]) != bytes((0x38,0x86,0x39)):
+        raise RuntimeError('Pareto UMUL8 V2 donor prologue changed')
+    copy_code_block(dst,src,0x52FE,0x5322,aux+AUX_UMUL8_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x3000,0x3012,public_addr(man,'MATH_UMUL8'),starts,vals,aux)
     # MATH_SMUL8 is intentionally left on the V1 base: all fixed profiles now
     # share the same 67.992188-cycle direct signed-domain kernel.
@@ -367,18 +380,41 @@ def apply_umul24(dst,src,vals,man,aux,v2_entries):
     copy_code_block(dst,src,0x53EC,0x5458,aux+AUX_UMUL16_CODE,u16starts,vals,aux)
     copy_code_block(dst,src,0x3020,0x3045,public_addr(man,'MATH_UMUL16'),u16starts,vals,aux)
 
-    # Record UMUL24.  Likewise omit its dead standalone init tail beginning at $5764.
+    # The current V2 standalone UMUL24 init helper follows the private
+    # carry-tail code and must not be copied (our MATH_INIT emits its own).
+    # Match the helper's first two persistent-pointer writes in *assembled*
+    # source, because source-owned fast paths shift the trailing offsets.
     starts=trace(src,v2_entries['MATH_UMUL24'])
-    copy_code_block(dst,src,0x5649,0x5763,aux+AUX_UMUL24_CODE,starts,vals,aux)
+    donor_config=asm.parse_config(
+        ROOT/'relocatable_source/v2_pareto_fast/math_config_reference.inc')
+    helper_prefix=bytes((
+        0xA9, (donor_config['REG_TABLE']>>8)&0xFF,
+        0x85, (donor_config['ZP_MAIN']+0x20)&0xFF,
+        0x85, (donor_config['ZP_MAIN']+0x28)&0xFF,
+        0x85, (donor_config['ZP_MAIN']+0x30)&0xFF))
+    helper_start=src.find(helper_prefix,0x5750,0x57C0)
+    if helper_start<0:
+        raise RuntimeError(
+            'Pareto UMUL24 source-built init boundary unrecognized: '
+            +src[0x5750:0x5790].hex())
+    core_end=helper_start-1
+    if not (0x5760 <= core_end <= 0x577F):
+        raise RuntimeError(f'Pareto UMUL24 carry-tail boundary out of range: {core_end:#06x}')
+    copy_code_block(dst,src,0x5649,core_end,aux+AUX_UMUL24_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x34C0,0x34FA,aux+AUX_UMUL24_ADAPTER,starts,vals,aux)
     write_jmp(dst,public_addr(man,'MATH_UMUL24'),aux+AUX_UMUL24_ADAPTER)
-    # Refreshed FAST24 native-signed core. The current V2 implementation is a
-    # single private island at $CD00-$CED5 plus a 3-byte public trampoline.
-    # Copy the private island and point the stable custom-profile entry directly
-    # at the relocated public implementation ($CE96 in the V2 reference map).
+    # Refreshed FAST24 native-signed core: derive the actual donor entry
+    # from the source-built V2 public JMP. Historical fixed $CE96 drifted
+    # when the native signed implementation moved to $CE90.
     sstarts=trace(src,v2_entries['MATH_SMUL24'])
     copy_code_block(dst,src,0xCD00,0xCED5,aux+AUX_SMUL24_PRIVATE,sstarts,vals,aux)
-    write_jmp(dst,public_addr(man,'MATH_SMUL24'),aux+AUX_SMUL24_PRIVATE+(0xCE96-0xCD00))
+    donor_public=v2_entries['MATH_SMUL24']
+    if src[donor_public] != 0x4C:
+        raise RuntimeError('Pareto SMUL24 donor public JMP signature changed')
+    donor_entry=src[donor_public+1]|(src[donor_public+2]<<8)
+    if not (0xCD00 <= donor_entry <= 0xCED5):
+        raise RuntimeError(f'Pareto SMUL24 donor entry {donor_entry:#06x} outside copied island')
+    write_jmp(dst,public_addr(man,'MATH_SMUL24'),aux+AUX_SMUL24_PRIVATE+(donor_entry-0xCD00))
 
 
 def apply_umul32(dst,src,vals,man,aux,v2_entries):
@@ -439,7 +475,7 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
     if 'umul8_16' in packs:
         add('PARETO_DIFF_LO', aux+AUX_DIFF_LO, aux+AUX_DIFF_LO+0xff)
         add('PARETO_DIFF_HI', aux+AUX_DIFF_HI, aux+AUX_DIFF_HI+0xff)
-        add('PARETO_UMUL8_CODE', aux+AUX_UMUL8_CODE, aux+AUX_UMUL8_CODE+0x22)
+        add('PARETO_UMUL8_CODE', aux+AUX_UMUL8_CODE, aux+AUX_UMUL8_CODE+0x24)
     if 'umul24' in packs:
         add('PARETO_UMUL16_CODE', aux+AUX_UMUL16_CODE, aux+AUX_UMUL16_CODE+0x6c)
         add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x11a)

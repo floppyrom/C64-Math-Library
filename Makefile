@@ -3,14 +3,21 @@
 PYTHON ?= python3
 ACME ?= acme
 
-.PHONY: builder-help builder-list builder-setup builder builder-speed builder-frame builder-biased-qs-test builder-measure sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all legacy-validate
+.PHONY: builder-help builder-list builder-setup builder builder-speed builder-frame builder-biased-qs-test builder-measure sources reference alternate validate public-index public-audit signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid hybrid-validate pareto pareto-validate pareto-config pareto-stress builder-validate normalize seek audit acme clean package-audit all legacy-validate legacy-frozen-verify deterministic-current
 
 # "all" is now the supported stock-C64 installer, not five historical
 # resident distributions. Their reproducibility checks remain explicitly
 # runnable via "make legacy-validate". No source or binary is removed.
 all: builder
 
-legacy-validate: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic hybrid-validate pareto-validate audit
+# Functional/current-source legacy regression for developers. Rebuilt V1-V4
+# images are deterministic but include newer source-owned arithmetic modules;
+# they are NOT claimed identical to the immutable historical resident PRGs.
+legacy-validate: reference alternate validate signed-layout signed-multiply turbo turbo-boundary isqrt config deterministic-current hybrid-validate pareto-validate
+	@echo "LEGACY CURRENT-SOURCE VALIDATION: PASS does not certify frozen PRG byte identity."
+# Historical freeze check deliberately remains exact and FAILS on known V1-V4
+# current-source-vs-frozen discrepancies (issue #398). Never silently relax it.
+legacy-frozen-verify: reference alternate deterministic audit
 
 # Sole supported new-project installer is operation-first. Override CONFIG and
 # OUT to build another operation set. Historical residents are read-only
@@ -28,7 +35,7 @@ builder-help:
 	@echo '  make builder-list                   # show 56 public operations'
 	@echo '  make builder-setup                  # guided setup, editable JSON plus tested PRG'
 	@echo '  make all                            # stock C64 operation-first default build'
-	@echo '  make legacy-validate                # archived V1-V5 reproducibility tests'
+	@echo '  make legacy-validate                # current-source legacy regression (not frozen PRG identity)'\n\t@echo '  make legacy-frozen-verify           # strict frozen resident identity (known #398 failure)'
 
 builder-setup:
 	$(PYTHON) tools/configure_math.py
@@ -116,11 +123,14 @@ config:
 deterministic: reference alternate
 	$(PYTHON) tools/verify_deterministic_rebuild.py
 
+deterministic-current: reference alternate
+	$(PYTHON) tools/verify_deterministic_rebuild.py --current-repeatability
+
 hybrid:
 	$(PYTHON) tools/build_hybrid.py --config-kind reference
 	$(PYTHON) tools/build_hybrid.py --config-kind alternate
 
-hybrid-validate: hybrid
+hybrid-validate: reference hybrid
 	$(PYTHON) tools/validate_hybrid.py
 	$(PYTHON) tools/test_hybrid_config.py
 	$(PYTHON) tools/verify_hybrid_deterministic.py
@@ -199,7 +209,7 @@ builder-validate:
 	$(PYTHON) tools/test_selective_trig8.py
 	$(PYTHON) tools/test_selective_dist8_accurate.py
 
-pareto-validate:
+pareto-validate: reference hybrid
 	$(PYTHON) tools/validate_pareto.py
 	$(PYTHON) tools/test_pareto_config.py
 	$(PYTHON) tools/stress_pareto.py

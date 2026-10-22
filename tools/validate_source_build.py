@@ -94,7 +94,9 @@ def validate(profile,build):
  def call(n,lim=2_000_000):
   nonlocal checks
   try: cy=c.call(P[n],lim)
-  except RuntimeError as e: raise RuntimeError(f'{profile} {n} at {P[n]:#06x}: {e}') from e
+  except RuntimeError as e:
+   pc=c.pc&0xffff;code=bytes(c.mem[pc:pc+8]).hex(); stack=bytes(c.mem[0x100:0x110]).hex()
+   raise RuntimeError(f'{profile} {n} at {P[n]:#06x}: {e}; final_PC={pc:#06x}; opcode8={code}; A={c.a:#04x} X={c.x:#04x} Y={c.y:#04x} SP={c.sp:#04x}; stack_bottom={stack}') from e
   hits[n]+=1;checks+=1;return cy
  # Publication stubs for game entries remain JMP ABI slots at the relocated block.
  for n in list(P)[26:]:

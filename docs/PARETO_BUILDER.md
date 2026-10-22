@@ -1,5 +1,16 @@
 # Custom Pareto Builder
 
+**Validation donor provenance:** Exact public-call cycle comparisons against V2
+are made using the **current source-built V2 donor**, matching the code actually
+used by the V5/Pareto source builder. Comparing the evolving donor to the
+historical frozen V2 PRG can yield false cycle-parity failures; strict archived
+resident identity remains a separate check (issue #398). The Pareto V5-style
+`UMOD8` wrapper retains a different D>=32 guard from current V2's D>=24
+implementation, so that path checks result parity and records measured cycle
+deltas rather than claiming exact cycle identity. Pure V1 and optional V5
+endpoint identity compares against contemporary source-built baselines.
+
+
 The **Custom Pareto Builder** generates one stock-C64 C64 Math Library build from certified V1/V2 implementation packs. It is intended for games and demos that know how much zero page and ordinary RAM they can dedicate to math.
 
 There is **no runtime dispatcher**. Selection happens at build time and the generated library keeps the same 56-entry public API.
@@ -78,7 +89,7 @@ makes the 24-bit multiplier much more important. At the same 55-byte ZP budget, 
 | `atan2_fast` | 0 | 1024 B | ATAN2_8 |
 | V5 zero-ZP imports | 0 | 8609 B | refreshed UDIV/SDIV/UMOD/SMOD transplant plus COS8/SINCOS8 |
 | initialized UMUL32 (retired catalog entry) | 0 | 627 B | no longer selectable: refreshed V1 already carries FAST31/V29 UMUL32/SMUL32 |
-| UMUL8 (legacy pack name `umul8_16`) | 5 B | 547 B | UMUL8 |
+| UMUL8 (legacy pack name `umul8_16`) | 5 B | 549 B | UMUL8 |
 | record UMUL16/UMUL24 | 24 B | 911 B | UMUL16, UMUL16_SHR8, UMUL24, SMUL24 |
 | native SMUL16 executable-ZP | 116 B | 176 B | SMUL16, SMUL16_SHR8 |
 

@@ -8,6 +8,19 @@ This is not two complete libraries loaded side-by-side. V5 produces **one reside
 
 ## Selection policy
 
+**Parity reference:** V5 imports the **current source-built V2 donor**, not
+the frozen historical V2 resident. The V5 validator therefore compares
+against that freshly assembled V2 donor at the matching source map. This
+preserves strict identical-input, result and cycle comparisons for imported
+identical paths without mistaking later source optimizations for corruption.
+Exception: V5's `UMOD8` intentionally keeps a D>=32 guard, while current
+V2 uses a D>=24 guard. Its validation is exhaustive on correctness and
+records the sampled public-call cycle differences without falsely asserting
+cycle equality. Frozen original PRG
+identity is tested separately; see
+[issue #398](https://github.com/floppyrom/C64-Math-Library/issues/398).
+
+
 V5 is selected profile-by-profile rather than being a blind V2 transplant. The current refresh keeps the 31-byte V1 normal-ZP contract while repacking division implementations that win under that constraint. V3/V4 REU-specific choices are irrelevant to V5 because V5 is stock-C64.
 
 Current V5 division highlights on the final resident validator are `UDIV8` **59.383**, `UDIV16` **126.386**, `UDIV24` **187.122**, `UDIV32/16` **756.639**, `SDIV16` **171.905**, and `SDIV24` **253.487** mean cycles. Cross-release selection is certified by the separate same-corpus audit, which reports zero regressions across all 23 measured public division-family paths.
