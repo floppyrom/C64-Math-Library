@@ -4,7 +4,11 @@
 are made using the **current source-built V2 donor**, matching the code actually
 used by the V5/Pareto source builder. Comparing the evolving donor to the
 historical frozen V2 PRG can yield false cycle-parity failures; strict archived
-resident identity remains a separate check (issue #398).
+resident identity remains a separate check (issue #398). The Pareto V5-style
+`UMOD8` wrapper retains a different D>=32 guard from current V2's D>=24
+implementation, so that path checks result parity and records measured cycle
+deltas rather than claiming exact cycle identity. Pure V1 and optional V5
+endpoint identity compares against contemporary source-built baselines.
 
 
 The **Custom Pareto Builder** generates one stock-C64 C64 Math Library build from certified V1/V2 implementation packs. It is intended for games and demos that know how much zero page and ordinary RAM they can dedicate to math.
