@@ -41,8 +41,14 @@ def load_custom(out:Path,do_init=True):
     return c,P,I,m
 
 def load_v2():
-    _,init=sr.load_reference('v2_pareto_fast'); c=CPU(bytearray(init));c.d=0
-    return c,dict(sr.public_entries()),0xC000
+    """Parity donor actually used by the source-built Pareto selector.
+
+    Archived sr.load_reference() images predate source-side arithmetic
+    refinements; comparing against them falsely flags current-source code.
+    """
+    c, public, io, manifest, init_cycles = common.load(
+        'v2_pareto_fast', ROOT/'build_source'/'reference')
+    return c, public, io
 
 def signed(v,b): return v-(1<<b) if v&(1<<(b-1)) else v
 
