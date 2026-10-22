@@ -62,3 +62,11 @@ For a different application, supply a previously qualified
 unknown or missing reports are rejected rather than fabricated.
 
 For REU flags, bank reservations, compatibility and limits, read the [REU guide](docs/REU_OPERATION_FIRST_CONSOLIDATION.md). For individual assembly sources, use the [routine pickup guide](docs/INDIVIDUAL_ROUTINE_PICKUP.md). Historical V1–V5 packages remain reproducible archives, **not** new-project installation choices.
+
+**Historical compatibility check:** `make legacy-validate` currently fails its
+strict *current-source-versus-frozen-reference PRG* identity check for the four
+V1–V4 historical profiles, although repeated current-source builds and V3/V4
+REU images match their respective comparators. This distinct archival
+reproducibility discrepancy is tracked in [issue #398](https://github.com/floppyrom/C64-Math-Library/issues/398);
+it is not a failure of the operation-first installer. Do not interpret this
+legacy check as passing until the reference mismatch is resolved.
