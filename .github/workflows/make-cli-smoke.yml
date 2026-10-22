@@ -28,7 +28,8 @@ jobs:
           make builder-measure > "${RUNNER_TEMP}/make-measure.json"
           python3 - <<'PY'
           import json, os, pathlib
-          report=json.loads((pathlib.Path(os.environ["RUNNER_TEMP"])/"make-measure.json").read_text())
+          measurement=(pathlib.Path(os.environ["RUNNER_TEMP"])/"make-measure.json").read_text()
+          report=json.loads(measurement[measurement.index("{"):])
           assert len(report["operations"]) == 3, report
           assert report["resource_use"]["main_ram_total_bytes"] <= 4096, report
           assert report["resource_use"]["zero_page_bytes"] <= 8, report
