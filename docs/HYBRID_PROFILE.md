@@ -11,8 +11,12 @@ This is not two complete libraries loaded side-by-side. V5 produces **one reside
 **Parity reference:** V5 imports the **current source-built V2 donor**, not
 the frozen historical V2 resident. The V5 validator therefore compares
 against that freshly assembled V2 donor at the matching source map. This
-preserves strict identical-input and exact-cycle parity checks without
-mistaking later source optimizations for corruption. Frozen original PRG
+preserves strict identical-input, result and cycle comparisons for imported
+identical paths without mistaking later source optimizations for corruption.
+Exception: V5's `UMOD8` intentionally keeps a D>=32 guard, while current
+V2 uses a D>=24 guard. Its validation is exhaustive on correctness and
+records the sampled public-call cycle differences without falsely asserting
+cycle equality. Frozen original PRG
 identity is tested separately; see
 [issue #398](https://github.com/floppyrom/C64-Math-Library/issues/398).
 
