@@ -1,0 +1,137 @@
+name: Publish v1.0.1 maintenance release
+
+# Only adding the v1.0.1 notes on main (or deliberate manual dispatch)
+# can request a new patch release. No force tag and no overwrite of v1.0.0.
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/releases/v1.0.1.md'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-v1.0.1
+  cancel-in-progress: false
+
+jobs:
+  operation-first-release-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify the operation-first public API catalog
+        run: |
+          python3 - <<'PY'
+          import csv
+          from pathlib import Path
+          rows=list(csv.DictReader((Path("routines")/"PUBLIC_OPERATIONS.csv").open(newline="")))
+          assert len(rows)==56 and len({r["api"] for r in rows})==56
+          print("56 distinct public math operations")
+          PY
+      - name: Public configuration and optional REU regressions
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 -m unittest discover -s tools -p 'test_user_builder_release.py' -v
+          python3 -m unittest discover -s tools -p 'test_configure_math.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_unified_user_setup.py' -v
+          python3 -m unittest discover -s tools -p 'test_reu_user_setup.py' -v
+      - name: Builder, frame and source-built PRG qualification
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          make builder-validate
+          make builder-frame OUT="${RUNNER_TEMP}/v101-frame"
+          make builder-speed OUT="${RUNNER_TEMP}/v101-speed"
+          test -s "${RUNNER_TEMP}/v101-frame/math_selective.prg"
+          test -s "${RUNNER_TEMP}/v101-speed/math_api.inc"
+      - name: Package audit against exact checked-in manifest
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          git clean -fdX
+          make package-audit
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
+
+  historical-current-source-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Real current-source compatibility regressions (not frozen binary identity)
+        run: |
+          make legacy-validate
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("build_source/CURRENT_SOURCE_REPEATABILITY.json").read_text())
+          assert r["status"]=="PASS"
+          assert r["check_type"]=="current_source_repeatability_NOT_frozen_reference_PRG_identity"
+          assert len(r["checks"])==8
+          assert all(x["status"]=="PASS" and x["repeat_prg_identical"] for x in r["checks"])
+          assert r["frozen_prg_identity"]["status"]=="MISMATCH"
+          assert set(r["frozen_prg_identity"]["profiles_different_from_frozen"])=={
+              "v1_balanced","v2_pareto_fast","v3_reu_512k","v4_reu_16m"
+          }
+          PY
+      - name: Disclose strict frozen PRG verification separately
+        run: echo "Known strict V1-V4 frozen PRG drift is issue #398, not a v1.0.1 release gate."
+
+  publish:
+    needs:
+      - operation-first-release-qualification
+      - historical-current-source-qualification
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Recheck exact release package integrity
+        env:
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 tools/package_audit.py
+          git diff --exit-code -- validation/PACKAGE_AUDIT.json
+      - name: Create v1.0.1 GitHub Release from the exact checked commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          remote_head="$(gh api "repos/${GITHUB_REPOSITORY}/branches/main" --jq '.commit.sha')"
+          if [ "$remote_head" != "$GITHUB_SHA" ]; then
+            echo "::error::main moved after qualification; refusing a stale release"
+            exit 1
+          fi
+          if gh release view v1.0.1 >/dev/null 2>&1; then
+            tagged="$(gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v1.0.1" --jq '.object.sha')"
+            if [ "$tagged" != "$GITHUB_SHA" ]; then
+              echo "::error::v1.0.1 exists at a different commit; refusing overwrite"
+              exit 1
+            fi
+            echo "v1.0.1 already published from this exact commit; no changes made"
+            exit 0
+          fi
+          if gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v1.0.1" >/dev/null 2>&1; then
+            echo "::error::v1.0.1 tag exists without a GitHub Release; inspect manually"
+            exit 1
+          fi
+          gh release create v1.0.1 --target "$GITHUB_SHA" --title             "C64 Math Library v1.0.1 — Maintenance Release"             --notes-file docs/releases/v1.0.1.md --latest
