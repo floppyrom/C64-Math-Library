@@ -89,7 +89,7 @@ makes the 24-bit multiplier much more important. At the same 55-byte ZP budget, 
 | `atan2_fast` | 0 | 1024 B | ATAN2_8 |
 | V5 zero-ZP imports | 0 | 8609 B | refreshed UDIV/SDIV/UMOD/SMOD transplant plus COS8/SINCOS8 |
 | initialized UMUL32 (retired catalog entry) | 0 | 627 B | no longer selectable: refreshed V1 already carries FAST31/V29 UMUL32/SMUL32 |
-| UMUL8 (legacy pack name `umul8_16`) | 5 B | 547 B | UMUL8 |
+| UMUL8 (legacy pack name `umul8_16`) | 5 B | 549 B | UMUL8 |
 | record UMUL16/UMUL24 | 24 B | 911 B | UMUL16, UMUL16_SHR8, UMUL24, SMUL24 |
 | native SMUL16 executable-ZP | 116 B | 176 B | SMUL16, SMUL16_SHR8 |
 
