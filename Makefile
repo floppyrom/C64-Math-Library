@@ -209,7 +209,7 @@ builder-validate:
 	$(PYTHON) tools/test_selective_trig8.py
 	$(PYTHON) tools/test_selective_dist8_accurate.py
 
-pareto-validate: reference
+pareto-validate: reference hybrid
 	$(PYTHON) tools/validate_pareto.py
 	$(PYTHON) tools/test_pareto_config.py
 	$(PYTHON) tools/stress_pareto.py
