@@ -1,5 +1,12 @@
 # Custom Pareto Builder
 
+**Validation donor provenance:** Exact public-call cycle comparisons against V2
+are made using the **current source-built V2 donor**, matching the code actually
+used by the V5/Pareto source builder. Comparing the evolving donor to the
+historical frozen V2 PRG can yield false cycle-parity failures; strict archived
+resident identity remains a separate check (issue #398).
+
+
 The **Custom Pareto Builder** generates one stock-C64 C64 Math Library build from certified V1/V2 implementation packs. It is intended for games and demos that know how much zero page and ordinary RAM they can dedicate to math.
 
 There is **no runtime dispatcher**. Selection happens at build time and the generated library keeps the same 56-entry public API.
