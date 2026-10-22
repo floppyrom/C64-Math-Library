@@ -1,3 +1,12 @@
+## v1.0.1 — Maintenance release (2026-10-22)
+
+- Repair documented `make builder-frame` on a clean checkout: generate authenticated default math-only frame evidence while still failing closed for nonexistent user-supplied reports (PR #397).
+- Make `make legacy-validate` a genuine passing **current-source** legacy regression, covering source relocation, repeatability, signed and unsigned arithmetic, hybrid and Pareto builds (PR #399). Preserve the separate strict `make legacy-frozen-verify` gate and the known V1–V4 PRG binary differences (issue #398); do not claim archival byte identity.
+- Correct current-source historical donor comparison and validation in hybrid/Pareto compatibility tooling. Repair legacy Pareto transplants of UMUL8, UMUL24 and SMUL24, including complete source ranges, carry tails, relocated entry points, RAM accounting and cycle-sensitive page geometry.
+- Extend actual `make` command smoke tests for interactive builder setup, stock/speed builder output, clean frame example, archive validation and source-package audits.
+- **Scope:** maintenance of CLI examples, validation and legacy compatibility tooling. Operation-first remains the only supported new-project installer; the 56 stock-C64 APIs, user-owned resource budgets, optional separate REU services and stated timing limitations are unchanged.
+- Release qualification, limitations, and exact commands: [docs/releases/v1.0.1.md](docs/releases/v1.0.1.md). v1.0.0 remains published and unchanged.
+
 ## v1.0.0 — Operation-First Edition (2026-10-22)
 
 - **First supported versioned release** of the new operation-first C64 Math Library (not the old historical V1 resident). Configure and independently link all 56 public stock-C64 math APIs; choose balanced, speed, size or zero-page optimization under actual project RAM/ZP constraints.
