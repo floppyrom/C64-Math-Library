@@ -52,7 +52,7 @@ PACKS = {
         # pack because the record UMUL16 reuses the first 17 bytes of UMUL24's
         # 24-byte pointer workspace.
         'extra_zp': 5,
-        'extra_ram': 547,
+        'extra_ram': 549,
         'requires_init': True,
         'description': 'V2 UMUL8 island; SMUL8 is already the refreshed direct-signed kernel in the V1 base (legacy pack name)',
         'savings': {
@@ -446,7 +446,7 @@ def private_ram_ranges(vals: dict, packs: set[str], aux: int, init_len: int | No
     if 'umul8_16' in packs:
         add('PARETO_DIFF_LO', aux+AUX_DIFF_LO, aux+AUX_DIFF_LO+0xff)
         add('PARETO_DIFF_HI', aux+AUX_DIFF_HI, aux+AUX_DIFF_HI+0xff)
-        add('PARETO_UMUL8_CODE', aux+AUX_UMUL8_CODE, aux+AUX_UMUL8_CODE+0x22)
+        add('PARETO_UMUL8_CODE', aux+AUX_UMUL8_CODE, aux+AUX_UMUL8_CODE+0x24)
     if 'umul24' in packs:
         add('PARETO_UMUL16_CODE', aux+AUX_UMUL16_CODE, aux+AUX_UMUL16_CODE+0x6c)
         add('PARETO_UMUL24_CODE', aux+AUX_UMUL24_CODE, aux+AUX_UMUL24_CODE+0x11a)
