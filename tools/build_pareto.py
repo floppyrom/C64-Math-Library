@@ -380,17 +380,24 @@ def apply_umul24(dst,src,vals,man,aux,v2_entries):
     copy_code_block(dst,src,0x53EC,0x5458,aux+AUX_UMUL16_CODE,u16starts,vals,aux)
     copy_code_block(dst,src,0x3020,0x3045,public_addr(man,'MATH_UMUL16'),u16starts,vals,aux)
 
-    # Copy every reachable instruction of the current source-built UMUL24
-    # private kernel. Earlier transplants used a fixed end ($5763) that could
-    # truncate its carry-tail instruction stream; newer source overlays also
-    # make hardcoded opcode-boundary assumptions unreliable.
+    # The current V2 standalone UMUL24 init helper follows the private
+    # carry-tail code and must not be copied (our MATH_INIT emits its own).
+    # Match the helper's first two persistent-pointer writes in *assembled*
+    # source, because source-owned fast paths shift the trailing offsets.
     starts=trace(src,v2_entries['MATH_UMUL24'])
-    used=[pc for pc in starts if 0x5649 <= pc <= 0x577F]
-    if not used or min(used)>0x5649:
-        raise RuntimeError('Pareto UMUL24 donor private entry missing')
-    core_end=max(pc+SIZE[REV[src[pc]][1]]-1 for pc in used)
-    if not (0x5700 <= core_end <= 0x577F):
-        raise RuntimeError(f'Pareto UMUL24 reached beyond reserved source island: {core_end:#06x}')
+    helper_prefix=bytes((
+        0xA9, (vals['REG_TABLE']>>8)&0xFF,
+        0x85, (vals['ZP_MAIN']+0x20)&0xFF,
+        0x85, (vals['ZP_MAIN']+0x28)&0xFF,
+        0x85, (vals['ZP_MAIN']+0x30)&0xFF))
+    helper_start=src.find(helper_prefix,0x5750,0x57C0)
+    if helper_start<0:
+        raise RuntimeError(
+            'Pareto UMUL24 source-built init boundary unrecognized: '
+            +src[0x5750:0x5790].hex())
+    core_end=helper_start-1
+    if not (0x5760 <= core_end <= 0x577F):
+        raise RuntimeError(f'Pareto UMUL24 carry-tail boundary out of range: {core_end:#06x}')
     copy_code_block(dst,src,0x5649,core_end,aux+AUX_UMUL24_CODE,starts,vals,aux)
     copy_code_block(dst,src,0x34C0,0x34FA,aux+AUX_UMUL24_ADAPTER,starts,vals,aux)
     write_jmp(dst,public_addr(man,'MATH_UMUL24'),aux+AUX_UMUL24_ADAPTER)
